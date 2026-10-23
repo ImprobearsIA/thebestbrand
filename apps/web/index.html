@@ -803,25 +803,8 @@
         </h1>
       </div>
 
-      <!-- SOCRATIC DIALOGUE STREAM -->
-      <div class="socratic-stream" id="chatHistory">
-        <div class="dialogue-turn mentor">
-          <span class="mentor-pill-tag">✨ AURA · CONSULTORÍA ESTRATÉGICA</span>
-          <p>Bienvenido al Taller de Marca. Vamos a descubrir la verdadera alma de tu proyecto, conversando con calma y explorando cada ángulo hasta definir un posicionamiento inolvidable. Cuéntame todo sobre tu producto o servicio.</p>
-        </div>
-      </div>
-
-      <!-- CLOSING CONFIRMATION GATE -->
-      <div class="closing-gate-pill" id="closingGateBanner">
-        <span class="closing-gate-text">✨ Hemos capturado la esencia de este paso. ¿Quieres agregar más ideas o avanzamos?</span>
-        <div class="closing-gate-actions">
-          <button class="btn-action" style="padding:6px 12px; font-size:0.75rem;" onclick="document.getElementById('chatInput').focus()">✍️ Agregar más</button>
-          <button class="btn-action emerald" style="padding:6px 12px; font-size:0.75rem;" onclick="confirmNoMoreCommentsAndAdvance()">Avanzar →</button>
-        </div>
-      </div>
-
-      <!-- EFFORTLESS INPUT DOCK -->
-      <div class="input-dock">
+      <!-- EFFORTLESS INPUT DOCK (RIGHT UNDER THE ACTIVE QUESTION - ZERO SCROLL) -->
+      <div class="input-dock" style="margin-bottom: 14px;">
         <button class="btn-circle btn-mic-round" id="micBtn" onclick="toggleContinuousVoice()" title="Hablar por voz">🎙️</button>
         <textarea
           id="chatInput"
@@ -831,6 +814,23 @@
           onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); sendUserMessage(); }"
         ></textarea>
         <button class="btn-circle btn-send" id="sendBtn" onclick="sendUserMessage()" title="Enviar mensaje">↑</button>
+      </div>
+
+      <!-- CLOSING CONFIRMATION GATE -->
+      <div class="closing-gate-pill" id="closingGateBanner">
+        <span class="closing-gate-text">✨ ¡Excelente! Hemos capturado los pilares de este paso. ¿Quieres agregar más ideas o avanzamos?</span>
+        <div class="closing-gate-actions">
+          <button class="btn-action" style="padding:6px 12px; font-size:0.75rem;" onclick="document.getElementById('chatInput').focus()">✍️ Agregar más</button>
+          <button class="btn-action emerald" style="padding:6px 12px; font-size:0.75rem;" onclick="confirmNoMoreCommentsAndAdvance()">Avanzar a Touchpoints →</button>
+        </div>
+      </div>
+
+      <!-- SOCRATIC DIALOGUE STREAM (HISTORY TRANSCRIPT) -->
+      <div class="socratic-stream" id="chatHistory">
+        <div class="dialogue-turn mentor">
+          <span class="mentor-pill-tag">✨ AURA · CONSULTORÍA ESTRATÉGICA</span>
+          <p>Bienvenido al Taller de Marca. Vamos a descubrir la verdadera alma de tu proyecto, conversando con calma y explorando cada ángulo hasta definir un posicionamiento inolvidable. Cuéntame todo sobre tu producto o servicio.</p>
+        </div>
       </div>
 
       <!-- THE BRAND MANIFESTO VAULT (PROGRESSIVE DISCLOSURE) -->
@@ -916,14 +916,31 @@
         <span class="question-category">03 · Naming Co-Creativo de Autor</span>
         <h2>Laboratorio de Nombre de Marca</h2>
         <p>Rebota ideas con Aura en el chat, evalúa la fonética, dominios y viabilidad en las 45 Clases de Niza.</p>
+        <div style="margin-top:10px;">
+          <span class="fader-human-badge" id="step3NiceBadge" style="font-size:0.75rem; padding:4px 12px; background:rgba(99,102,241,0.15); border:1px solid rgba(99,102,241,0.3); color:#A5B4FC;">Clase de Niza Sugerida: Detectando según tu proyecto...</span>
+        </div>
+      </div>
+
+      <div style="max-width: 680px; margin: 0 auto 20px auto; width: 100%;">
+        <div style="display: flex; gap: 8px;">
+          <input
+            type="text"
+            id="namingCandidatesInput"
+            style="flex: 1; padding: 12px 18px; border-radius: 20px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color:#FFF; font-size:0.95rem; outline:none;"
+            placeholder="Escribe nombres que tengas en mente (separados por coma) o déjalo vacío..."
+            onkeydown="if(event.key === 'Enter') runNamingAudit();"
+          />
+          <button class="btn-action primary" id="btnEvaluateNames" onclick="runNamingAudit()" style="white-space: nowrap;">
+            🔍 Auditar & Generar
+          </button>
+        </div>
       </div>
 
       <div style="display:flex; justify-content:center; gap:12px; margin-bottom:24px;">
-        <button class="btn-action primary" onclick="askAuraForOpenNamingSuggestions()">✨ Generar Propuestas Creativas</button>
-        <button class="btn-action" onclick="runNamingAudit()">🔍 Auditar Nombre Actual</button>
+        <button class="btn-action primary" onclick="askAuraForOpenNamingSuggestions()">✨ Pedir a Aura Nombres Creativos por Chat</button>
       </div>
 
-      <div id="namingCandidatesGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px; width:100%;">
+      <div id="namingCandidatesGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; width:100%;">
         <!-- Naming cards injected dynamically -->
       </div>
     </section>
@@ -1222,6 +1239,39 @@
       }
     }
 
+    function speakWithBrowserTTS(text) {
+      if (voiceMuted || !('speechSynthesis' in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const clean = text.replace(/<[^>]+>/g, " ").replace(/[*_#`]/g, "").trim();
+        const u = new SpeechSynthesisUtterance(clean);
+        u.lang = 'es-MX';
+        u.rate = 1.05;
+        u.pitch = 1.0;
+        const voices = window.speechSynthesis.getVoices();
+        const esVoice = voices.find(v => (v.lang.startsWith('es') || v.lang.includes('es')) && (v.name.includes('Natural') || v.name.includes('Paulina') || v.name.includes('Monica') || v.name.includes('Google') || v.name.includes('Jorge') || v.name.includes('Elena'))) || voices.find(v => v.lang.startsWith('es'));
+        if (esVoice) u.voice = esVoice;
+        u.onstart = () => {
+          isSpeakingLive = true;
+          const canvas = document.getElementById("avatarCanvas");
+          if (canvas) canvas.classList.add("speaking");
+        };
+        u.onend = () => {
+          isSpeakingLive = false;
+          const canvas = document.getElementById("avatarCanvas");
+          if (canvas) canvas.classList.remove("speaking");
+        };
+        u.onerror = () => {
+          isSpeakingLive = false;
+          const canvas = document.getElementById("avatarCanvas");
+          if (canvas) canvas.classList.remove("speaking");
+        };
+        window.speechSynthesis.speak(u);
+      } catch (e) {
+        isSpeakingLive = false;
+      }
+    }
+
     async function requestAndPlayGeminiVoice(textToSpeak) {
       if (voiceMuted || !textToSpeak) return;
       try {
@@ -1234,9 +1284,13 @@
           const data = await res.json();
           if (data && data.audio_wav_base64) {
             playGeminiWavBase64(data.audio_wav_base64);
+            return;
           }
         }
-      } catch (e) {}
+        speakWithBrowserTTS(textToSpeak);
+      } catch (e) {
+        speakWithBrowserTTS(textToSpeak);
+      }
     }
 
     function playAuraInitialGreeting() {
@@ -1487,26 +1541,64 @@
     }
 
     function updateManifestoCanvas(canvasObj) {
+      if (!canvasObj) return;
+      // PERSISTIR EL ESTADO COMPLETO DEL MANIFIESTO EN MEMORIA DEL NAVEGADOR
+      canvasState = Object.assign({}, canvasState, canvasObj);
+
       if (canvasObj.golden_circle) {
-        document.getElementById("canvasGoldenCircle").textContent = canvasObj.golden_circle;
+        const el = document.getElementById("canvasGoldenCircle");
+        if (el) el.textContent = canvasObj.golden_circle;
       }
       if (canvasObj.value_offer) {
-        document.getElementById("canvasValueOffer").textContent = canvasObj.value_offer;
+        const el = document.getElementById("canvasValueOffer");
+        if (el) el.textContent = canvasObj.value_offer;
       }
       if (canvasObj.social_role) {
-        document.getElementById("canvasSocialRole").textContent = canvasObj.social_role;
+        const el = document.getElementById("canvasSocialRole");
+        if (el) el.textContent = canvasObj.social_role;
       }
-      if (canvasObj.process_steps) {
-        document.getElementById("canvasProcessSteps").textContent = canvasObj.process_steps;
+      const proc = canvasObj.process_steps_text || canvasObj.process_steps;
+      if (proc) {
+        const el = document.getElementById("canvasProcessSteps");
+        if (el) el.textContent = proc;
       }
       if (canvasObj.core_message) {
-        document.getElementById("canvasCoreMessage").textContent = canvasObj.core_message;
+        const el = document.getElementById("canvasCoreMessage");
+        if (el) el.textContent = canvasObj.core_message;
       }
       if (canvasObj.ideal_customer) {
-        document.getElementById("canvasIdealCustomer").textContent = canvasObj.ideal_customer;
+        const el = document.getElementById("canvasIdealCustomer");
+        if (el) el.textContent = canvasObj.ideal_customer;
       }
-      if (canvasObj.last_pct) {
-        document.getElementById("committeePct").textContent = `${canvasObj.last_pct}% Completitud`;
+
+      // Actualizar Touchpoints si vienen en el objeto
+      if (canvasObj.tp_before) {
+        const el = document.getElementById("tpBeforeText");
+        if (el) el.textContent = canvasObj.tp_before;
+      }
+      if (canvasObj.tp_during) {
+        const el = document.getElementById("tpDuringText");
+        if (el) el.textContent = canvasObj.tp_during;
+      }
+      if (canvasObj.tp_after) {
+        const el = document.getElementById("tpAfterText");
+        if (el) el.textContent = canvasObj.tp_after;
+      }
+
+      // Calcular completitud de pilares
+      const coreKeys = ["golden_circle", "value_offer", "social_role", "process_steps_text", "core_message", "ideal_customer"];
+      let filled = 0;
+      coreKeys.forEach(k => {
+        if (canvasState[k] && String(canvasState[k]).trim().length > 3) filled++;
+      });
+      const calcPct = Math.max(canvasObj.last_pct || 0, Math.round((filled / coreKeys.length) * 100));
+      const pctEl = document.getElementById("committeePct");
+      if (pctEl) pctEl.textContent = `${calcPct}% Completitud`;
+
+      if (canvasObj.brandName && canvasObj.brandName !== "TheBestBrand") {
+        canvasState.brandName = canvasObj.brandName;
+        const brandEl = document.getElementById("brandbookMasterTitle");
+        if (brandEl) brandEl.textContent = canvasObj.brandName;
       }
     }
 
@@ -1646,35 +1738,303 @@
     }
 
     // =========================================================================
-    // STEP 5: 60-PAIR SENSORY ARENA
+    // STEP 3: CO-CREATIVE NAMING STUDIO (SMILE & SCRATCH + NIZA)
     // =========================================================================
-    const SAMPLE_PAIRS = [
-      { id: 1, title: "Escudo Heráldico vs. Monograma Circular 1:1", a: "Escudo Deportivo Tradicional", b: "Monograma Geométrico Moderno" },
-      { id: 2, title: "Tipografía de Alta Densidad vs. Vanguardia", a: "Gótica de Estadio (Bebas Neue)", b: "Diseño Europeo de Autor (Syne)" },
-      { id: 3, title: "Obsidian & Electric Cyan vs. Gold & Carbon", a: "Paleta Tech Cyberpunk", b: "Paleta Lujo Clásico y Oro" }
+    function askAuraForOpenNamingSuggestions() {
+      unlockBrowserAudio();
+      switchStep(1);
+      const input = document.getElementById("chatInput");
+      input.value = "Estoy completamente abierto a sugerencias de la IA desde cero. Propónme opciones creativas de nombre basadas en mi posicionamiento y touchpoints para irlas afinando juntos.";
+      sendUserMessage();
+    }
+
+    async function runNamingAudit() {
+      unlockBrowserAudio();
+      const inputEl = document.getElementById("namingCandidatesInput");
+      const raw = inputEl ? inputEl.value : "";
+      const candidates = raw.split(",").map(s => s.trim()).filter(Boolean);
+      const btn = document.getElementById("btnEvaluateNames");
+      const grid = document.getElementById("namingCandidatesGrid");
+
+      if (btn) btn.textContent = "⏳ Auditando fonética y Niza...";
+      if (grid) grid.innerHTML = `<div class="mockup-card" style="grid-column: 1 / -1; padding: 24px; text-align: center;"><p>Evaluando fonética SMILE & SCRATCH, Clases de Niza y creando propuestas con raíces semióticas profundas con Gemini...</p></div>`;
+
+      try {
+        const res = await fetch("/api/step3/naming-filter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            candidates: candidates,
+            conversation_history: collectChatHistory(),
+            canvas_state: canvasState
+          })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (btn) btn.textContent = "🔍 Auditar & Generar";
+          if (data.recommended_nice_class) {
+            const badge = document.getElementById("step3NiceBadge");
+            if (badge) badge.textContent = `Clases de Niza Recomendadas: ${data.recommended_nice_class}`;
+          }
+          renderNamingCardsList(data.candidates_evaluation || []);
+        } else {
+          if (btn) btn.textContent = "🔍 Auditar & Generar";
+        }
+      } catch (e) {
+        if (btn) btn.textContent = "🔍 Auditar & Generar";
+      }
+    }
+
+    function renderNamingCardsList(list) {
+      const grid = document.getElementById("namingCandidatesGrid");
+      if (!grid || !list || !list.length) return;
+      grid.innerHTML = list.map((item, idx) => {
+        const safeName = (item.name || "Marca").replace(/'/g, "\\'");
+        return `
+          <div class="mockup-card" style="display:flex; flex-direction:column; justify-content:space-between; gap:12px; padding:20px; text-align:left;">
+            <div>
+              <span class="card-tag" style="display:inline-block; font-family:var(--font-mono); font-size:0.68rem; color:#F59E0B; margin-bottom:6px; font-weight:700;">
+                ${item.category || 'Propuesta Creativa'} · SMILE ${item.smile_score || 94}/100
+              </span>
+              <h3 style="font-family:var(--font-display); font-size:1.35rem; color:#FFFFFF; margin-bottom:4px;">${item.name}</h3>
+              <p style="font-size:0.75rem; font-family:var(--font-mono); color:#94A3B8; margin-bottom:8px;">
+                Fonética: ${item.syllables || 3} sílabas · Viabilidad en Clase de Niza
+              </p>
+              <p style="font-size:0.85rem; color:#E2E8F0; line-height:1.45;">${item.verdict || item.rationale || ''}</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+              <button class="btn-action" style="width:100%; font-size:0.75rem;" onclick="refineNameByChat('${safeName}')">
+                💬 Afinar "${item.name}" por Chat
+              </button>
+              <button class="btn-action emerald" style="width:100%; font-size:0.8rem;" onclick="selectOfficialBrandName('${safeName}')">
+                ❤️ ¡Elegir "${item.name}" e ir al Paso 4 →
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function refineNameByChat(candidateName) {
+      unlockBrowserAudio();
+      switchStep(1);
+      const input = document.getElementById("chatInput");
+      input.value = `Me llama la atención el nombre "${candidateName}". ¿Me puedes dar variantes basadas en esa idea con diferentes raíces o sonoridad para compararlas?`;
+      sendUserMessage();
+    }
+
+    function selectOfficialBrandName(chosenName) {
+      unlockBrowserAudio();
+      canvasState.brandName = chosenName;
+      const bTitle = document.getElementById("brandbookMasterTitle");
+      if (bTitle) bTitle.textContent = chosenName;
+      appendChatMessage("user", `¡Me encanta el nombre "${chosenName}"! Lo elijo como nombre oficial.`);
+      appendChatMessage("mentor", `¡Extraordinaria elección! Queda confirmado "${chosenName}" como tu marca oficial. Ahora calibraremos la identidad visual con los deslizadores de estilo y el torneo de logos.`);
+      requestAndPlayGeminiVoice(`¡Extraordinaria elección! Queda confirmado ${chosenName} como tu marca oficial.`);
+      switchStep(4);
+    }
+
+    // =========================================================================
+    // STEP 5: 60-PAIR SENSORY ARENA (REAL VECTOR LOGOS, SPECIMENS & COLOR SWATCHES)
+    // =========================================================================
+    const SIXTY_PROFESSIONAL_PAIRS = [
+      { id: 1, phase: 1, axis: "Estructura del Logo", aTitle: "Símbolo Hexagonal + Nombre en Bloque (App / Software)", aTag: "Limpio, simétrico y de alto impacto digital", aLogoStyle: "horiz_hex", bTitle: "Escudo Deportivo Superior + Nombre Abajo (Liga Oficial)", bTag: "Presencia heráldica de campeonato", bLogoStyle: "stack_shield" },
+      { id: 2, phase: 1, axis: "Estructura del Logo", aTitle: "Monograma de Iniciales Entrelazadas", aTag: "Prestigio clásico de casa de autor", aLogoStyle: "horiz_mono", bTitle: "Emblema Cerrado Todo-en-Uno", bTag: "Sello compacto y contenedor", bLogoStyle: "badge_stadium" },
+      { id: 3, phase: 1, axis: "Estructura del Logo", aTitle: "Sello Redondo 360° (Avatar Circular 1:1)", aTag: "Optimizado para fotos de perfil en apps y redes", aLogoStyle: "horiz_circle", bTitle: "Escudo Octagonal Firme", bTag: "Fuerza estructural e industrial", bLogoStyle: "horiz_oct" },
+      { id: 4, phase: 1, axis: "Estructura del Logo", aTitle: "Wordmark con Ligaduras de Autor", aTag: "El nombre mismo es el logo", aLogoStyle: "wordmark_lig", bTitle: "Símbolo de Pulso / Frecuencia Dinámica", bTag: "Innovación y telemetría en tiempo real", bLogoStyle: "horiz_pulse" },
+      { id: 5, phase: 1, axis: "Estructura del Logo", aTitle: "Símbolo Abierto con Alas Dinámicas", aTag: "Sensación de avance y libertad", aLogoStyle: "open_wing", bTitle: "Placa Monolítica con Cierres Técnicos", bTag: "Sensación indestructible de hardware", bLogoStyle: "plate_bolted" },
+
+      { id: 6, phase: 1, axis: "Grosor de Línea & Presencia", aTitle: "Líneas Finas de Alta Precisión", aTag: "Relojería suiza y sofisticación ligera", aLogoStyle: "fine_line", bTitle: "Trazos Gruesos de Máxima Tinta", bTag: "Visibilidad a distancia e impacto frontal", bLogoStyle: "heavy_block" },
+      { id: 7, phase: 1, axis: "Grosor de Línea & Presencia", aTitle: "Retícula Ortogonal Serena (90°)", aTag: "Calma, control y orden corporativo", aLogoStyle: "ortho_grid", bTitle: "Geometría Cinética Inclinada (12°)", bTag: "Velocidad, dinamismo y adrenalina", bLogoStyle: "kinetic_12" },
+      { id: 8, phase: 1, axis: "Grosor de Línea & Presencia", aTitle: "Curvas Áureas Orgánicas", aTag: "Cercanía humana y calidez", aLogoStyle: "golden_curve", bTitle: "Cortes Diamantados Angulares", bTag: "Energía pura y precisión de ingeniería", bLogoStyle: "diamond_cut" },
+      { id: 9, phase: 1, axis: "Grosor de Línea & Presencia", aTitle: "Trazos con Cortes Técnicos / Stencil", aTag: "Herencia atlética y funcional", aLogoStyle: "stencil_pro", bTitle: "Trazo Continuo en Bucle Sólido", bTag: "Unión total e integración sin costuras", bLogoStyle: "welded_loop" },
+      { id: 10, phase: 1, axis: "Grosor de Línea & Presencia", aTitle: "Espacio Negativo Inteligente (Gestalt)", aTag: "Descubrimiento óptico sutil", aLogoStyle: "negative_gestalt", bTitle: "Estrella de Triunfo Directa", bTag: "Lectura instantánea en 0.1s", bLogoStyle: "solid_star" },
+
+      { id: 11, phase: 1, axis: "Polaridad Visual", aTitle: "Logo Oscuro sobre Fondo Claro", aTag: "Pureza editorial y papelería", aLogoStyle: "pos_swiss", bTitle: "Logo Luminoso sobre Fondo Oscuro", aTag: "Contraste nocturno en pantallas LED y video", bLogoStyle: "neg_stadium" },
+      { id: 12, phase: 1, axis: "Polaridad Visual", aTitle: "Radar de Conectividad & Ondas", aTag: "Ecosistema interconectado", aLogoStyle: "multi_radar", bTitle: "Forma Pura Ultra-Minimal", aTag: "Cero distracción, máxima síntesis", bLogoStyle: "ultra_minimal" },
+      { id: 13, phase: 1, axis: "Polaridad Visual", aTitle: "Sello Clásico con Doble Anillo", aTag: "Tradición y credibilidad de academia", aLogoStyle: "founder_seal", bTitle: "Asimetría Suiza Contemporánea", aTag: "Vanguardia de diseño europeo", bLogoStyle: "swiss_asym" },
+      { id: 14, phase: 1, axis: "Polaridad Visual", aTitle: "División de Tubo de Precisión", aTag: "Arquitectura limpia y simétrica", aLogoStyle: "split_pipe", bTitle: "Arco Superior de Corona", aTag: "Insignia de campeonato", bLogoStyle: "arch_crown" },
+      { id: 15, phase: 1, axis: "Polaridad Visual", aTitle: "Marco Modular Perimetral", aTag: "Panel digital de datos", aLogoStyle: "scoreboard_frame", bTitle: "Franjas Chevron de Avance", aTag: "Trayectoria y progreso continuo", bLogoStyle: "chevron_wings" },
+
+      { id: 16, phase: 1, axis: "Semiótica Vectorial", aTitle: "Cubo Isométrico 3D en Curvas", aTag: "Volumen y estructura tecnológica", aLogoStyle: "iso_cube", bTitle: "Hexágono Plano 2D", aTag: "Pureza para bordado y grabado", bLogoStyle: "flat_hex" },
+      { id: 17, phase: 1, axis: "Semiótica Vectorial", aTitle: "Retícula de Mira / Diana de Precisión", aTag: "Exactitud milimétrica", aLogoStyle: "crosshair_lock", bTitle: "Pirámide Escalonada Apex", aTag: "Liderazgo y cúspide", bLogoStyle: "apex_pyramid" },
+      { id: 18, phase: 1, axis: "Semiótica Vectorial", aTitle: "Monograma de Espejo Corp", aTag: "Simetría corporativa", aLogoStyle: "mirror_init", bTitle: "Frecuencia de Onda Senoidal", aTag: "Transmisión y agilidad", bLogoStyle: "wave_freq" },
+      { id: 19, phase: 1, axis: "Semiótica Vectorial", aTitle: "Escudo Cuadripartito", aTag: "Historia institucional sólida", aLogoStyle: "quart_shield", bTitle: "Rayo de Energía Dinámica", aTag: "Potencia instantánea", bLogoStyle: "bolt_power" },
+      { id: 20, phase: 1, axis: "Semiótica Vectorial", aTitle: "Pilar Monolítico Vertical", aTag: "Elegancia arquitectónica", aLogoStyle: "tall_pillar", bTitle: "Banda Panorámica 16:9", aTag: "Presencia horizontal en pantallas", bLogoStyle: "wide_band" },
+
+      { id: 21, phase: 1, axis: "Sello & Escala", aTitle: "Escudo Invertido de Alto Contraste", aTag: "Lectura sobre cualquier superficie", aLogoStyle: "inv_shield", bTitle: "Anillo Doble de Certificación", aTag: "Garantía de estándar técnico", bLogoStyle: "iso_ring" },
+      { id: 22, phase: 1, axis: "Sello & Escala", aTitle: "Poste de Meta / Portal de Triunfo", aTag: "Territorio de logro y meta", aLogoStyle: "goalpost_pro", bTitle: "Estrella de Cinco Puntas de Oro", aTag: "Máxima distinción y excelencia", bLogoStyle: "champ_star" },
+      { id: 23, phase: 1, axis: "Sello & Escala", aTitle: "Niveles Escalonados de Estadio", aTag: "Comunidad y convocatoria", aLogoStyle: "stadium_steps", bTitle: "Anillo Orbital Satelital", aTag: "Conectividad en red global", bLogoStyle: "orbit_ring" },
+      { id: 24, phase: 1, axis: "Sello & Escala", aTitle: "Listón Heráldico de Honor", aTag: "Autoridad y tradición", aLogoStyle: "ribbon_crest", bTitle: "Cruz Suiza de Precisión", aTag: "Simplicidad funcional pura", bLogoStyle: "swiss_cross" },
+      { id: 25, phase: 1, axis: "Sello & Escala", aTitle: "Bloque Monolítico Grabado", aTag: "Solidez estructural", aLogoStyle: "mono_engraved", bTitle: "Líneas Paralelas de Movimiento", aTag: "Fluidez y dinamismo", bLogoStyle: "parallel_lines" },
+
+      // FASE II: FUENTES
+      { id: 26, phase: 2, axis: "Tipografía Primaria", aTitle: "Space Grotesk (Ingeniería Técnica Geométrica)", aTag: "Terminales precisos y lectura impecable en displays", aFont: "Space Grotesk", aCase: "upper", aTrack: "0.02em", bTitle: "Fraunces (Serif Editorial de Alto Contraste)", bTag: "Autoridad clásica y prestigio institucional", bFont: "Fraunces", bCase: "title", bTrack: "0em" },
+      { id: 27, phase: 2, axis: "Tipografía Primaria", aTitle: "Bebas Neue (Display Condensada de Gran Altura)", aTag: "Impacto vertical para títulos y marcadores", aFont: "Bebas Neue", aCase: "upper", aTrack: "0.06em", bTitle: "Plus Jakarta Sans (Neo-Grotesca Contemporánea)", bTag: "Equilibrio corporativo y claridad moderna", bFont: "Plus Jakarta Sans", bCase: "title", bTrack: "-0.02em" },
+      { id: 28, phase: 2, axis: "Tipografía Primaria", aTitle: "Chakra Petch (Display Angular Tecnológica)", aTag: "Esquinas biseladas a 45° estilo hardware", aFont: "Chakra Petch", aCase: "upper", aTrack: "0.04em", bTitle: "Playfair Display (Serif de Lujo Clásico)", bTag: "Contraste dramático entre trazos", bFont: "Playfair Display", bCase: "title", bTrack: "0.01em" },
+      { id: 29, phase: 2, axis: "Tipografía Primaria", aTitle: "Archivo Black (Grotesca Pesada de Impacto)", aTag: "Masa sólida para exteriores e industria", aFont: "Archivo Black", aCase: "upper", aTrack: "-0.01em", bTitle: "Cormorant Garamond (Humanista Renacentista)", bTag: "Ligereza poética y refinamiento", bFont: "Cormorant Garamond", bCase: "title", bTrack: "0.03em" },
+      { id: 30, phase: 2, axis: "Tipografía Primaria", aTitle: "Oswald (Gótica Atlética de Alta Densidad)", aTag: "Estructura compacta de campeonato", aFont: "Oswald", aCase: "upper", aTrack: "0.03em", bTitle: "Syne (Vanguardia Disruptiva Europea)", bTag: "Proporciones amplias de estudio de autor", bFont: "Syne", bCase: "upper", bTrack: "0.02em" },
+
+      // FASE III: PALETAS DE COLOR
+      { id: 46, phase: 3, axis: "Paleta Cromática & Contraste AAA", aTitle: "Naranja Señal LED & Carbón Obsidiana", aTag: "HEX #0E1116 · #EA580C · #16A34A (Contraste 17.8:1)", aPalette: ["#FAF8F5", "#0E1116", "#EA580C", "#16A34A"], bTitle: "Azul Marino Institucional & Oro de Liga", bTag: "HEX #0F172A · #1D4ED8 · #FACC15 (Prestigio)", bPalette: ["#F8FAFC", "#0F172A", "#1D4ED8", "#D97706"] },
+      { id: 47, phase: 3, axis: "Paleta Cromática & Contraste AAA", aTitle: "Rojo Escarlata & Ámbar Deportivo", aTag: "HEX #09090B · #DC2626 · #FACC15 (Energía Pura)", aPalette: ["#FFFFFF", "#09090B", "#DC2626", "#EAB308"], bTitle: "Verde Esmeralda & Bronce Editorial", bTag: "HEX #064E3B · #10B981 · #B84A27 (Territorio Cancha)", bPalette: ["#FAF8F5", "#064E3B", "#059669", "#B84A27"] },
+      { id: 48, phase: 3, axis: "Paleta Cromática & Contraste AAA", aTitle: "Cian Eléctrico & Titanio Profundo", aTag: "HEX #0B0F19 · #0284C7 · #38BDF8 (Precisión Digital)", aPalette: ["#F1F5F9", "#0B0F19", "#0284C7", "#0D9488"], bTitle: "Terracota Suizo & Carbón Editorial", bTag: "HEX #FAF8F5 · #141413 · #B84A27 (Calidez de Estudio)", bPalette: ["#FAF8F5", "#141413", "#B84A27", "#1B5E4A"] }
     ];
+
+    const ALL_50_LOGO_STYLES = [
+      "horiz_hex", "stack_shield", "horiz_mono", "badge_stadium", "horiz_circle",
+      "horiz_oct", "wordmark_lig", "horiz_pulse", "open_wing", "plate_bolted",
+      "fine_line", "heavy_block", "ortho_grid", "kinetic_12", "golden_curve",
+      "diamond_cut", "stencil_pro", "welded_loop", "negative_gestalt", "solid_star",
+      "pos_swiss", "neg_stadium", "multi_radar", "ultra_minimal", "founder_seal",
+      "swiss_asym", "split_pipe", "arch_crown", "scoreboard_frame", "chevron_wings",
+      "iso_cube", "flat_hex", "crosshair_lock", "apex_pyramid", "mirror_init",
+      "wave_freq", "quart_shield", "bolt_power", "tall_pillar", "wide_band",
+      "inv_shield", "iso_ring", "goalpost_pro", "champ_star", "stadium_steps",
+      "orbit_ring", "ribbon_crest", "swiss_cross", "mono_engraved", "parallel_lines"
+    ];
+
+    function splitBrandNameInto1to1Deck(raw) {
+      const bName = (raw || "TheBestBrand").trim();
+      const words = bName.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[_-]+/g, " ").trim().split(/\s+/);
+      let line1 = words[0] ? words[0].toUpperCase() : "THE";
+      let line2 = words.slice(1).join(" ").toUpperCase() || "BRAND";
+      const initials = words.length >= 2
+        ? words.map(w => w[0]).join("").slice(0, 3).toUpperCase()
+        : bName.slice(0, 2).toUpperCase() || "TB";
+      return { line1, line2, initials };
+    }
+
+    function buildUnique50EmblemCenterSVG(idx, fg, bg, initials) {
+      const patterns = [
+        `<polygon points="0,-24 21,-12 21,12 0,24 -21,12 -21,-12" stroke="${fg}" stroke-width="3" fill="none"/><text x="0" y="4" fill="${fg}" font-family="sans-serif" font-weight="800" font-size="9" text-anchor="middle">${initials}</text>`,
+        `<path d="M0,-24 L22,-14 V4 C22,18 0,25 0,25 C0,25 -22,18 -22,4 V-14 Z" fill="${fg}"/><text x="0" y="5" fill="${bg}" font-family="sans-serif" font-weight="800" font-size="10" text-anchor="middle">${initials}</text>`,
+        `<circle cx="0" cy="0" r="22" stroke="${fg}" stroke-width="2.8" fill="none"/><circle cx="0" cy="0" r="14" fill="${fg}"/><text x="0" y="4" fill="${bg}" font-family="sans-serif" font-weight="800" font-size="8" text-anchor="middle">${initials}</text>`,
+        `<rect x="-22" y="-18" width="44" height="36" rx="6" fill="${fg}"/><text x="0" y="5" fill="${bg}" font-family="sans-serif" font-weight="900" font-size="12" text-anchor="middle">${initials}</text>`,
+        `<circle cx="0" cy="0" r="22" stroke="${fg}" stroke-width="3" fill="none"/><line x1="-16" y1="0" x2="16" y2="0" stroke="${fg}" stroke-width="3"/><line x1="0" y1="-16" x2="0" y2="16" stroke="${fg}" stroke-width="3"/>`,
+        `<polygon points="-10,-22 10,-22 22,-10 22,10 10,22 -10,22 -22,10 -22,-10" fill="${fg}"/><text x="0" y="4" fill="${bg}" font-family="sans-serif" font-weight="700" font-size="9" text-anchor="middle">${initials}</text>`
+      ];
+      return patterns[idx % patterns.length];
+    }
+
+    function renderFinishedBWLogoSVG(styleKey, rawBrandName) {
+      const styleIdx = Math.max(0, ALL_50_LOGO_STYLES.indexOf(styleKey));
+      const { line1, line2, initials } = splitBrandNameInto1to1Deck(rawBrandName);
+      const isDark = (styleKey === "neg_stadium" || styleKey === "inv_shield" || styleIdx % 2 === 1);
+      const bg = isDark ? "#0A0C13" : "#FFFFFF";
+      const fg = isDark ? "#FFFFFF" : "#0A0C13";
+      const emblemCenter = buildUnique50EmblemCenterSVG(styleIdx, fg, bg, initials);
+
+      return `
+        <svg width="100%" height="100%" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="140" fill="${bg}"/>
+          <g transform="translate(80, 70)">
+            <circle cx="0" cy="0" r="54" stroke="${fg}" stroke-width="2" fill="none"/>
+            <g transform="translate(0, -10) scale(0.9)">${emblemCenter}</g>
+            <text x="0" y="24" fill="${fg}" font-family="'Syne',sans-serif" font-weight="800" font-size="10" text-anchor="middle">${line1}</text>
+            <text x="0" y="36" fill="${fg}" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="8" text-anchor="middle">${line2}</text>
+          </g>
+          <g transform="translate(220, 70)">
+            <rect x="-48" y="-48" width="96" height="96" rx="14" stroke="${fg}" stroke-width="2" fill="none"/>
+            <g transform="translate(0, -10) scale(0.9)">${emblemCenter}</g>
+            <text x="0" y="24" fill="${fg}" font-family="'Syne',sans-serif" font-weight="800" font-size="10" text-anchor="middle">${line1}</text>
+            <text x="0" y="36" fill="${fg}" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="8" text-anchor="middle">${line2}</text>
+          </g>
+        </svg>
+      `;
+    }
+
+    function renderFontVsFontSpecimenHTML(fontName, textCase, tracking, rawBrandName) {
+      const { line1, line2 } = splitBrandNameInto1to1Deck(rawBrandName);
+      return `
+        <div style="width:100%; height:100%; background:#0E1118; color:#FFFFFF; padding:18px; display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px;">
+            <span style="font-family:var(--font-mono); font-size:0.68rem; color:#A5B4FC;">TIPOGRAFÍA · ${fontName.toUpperCase()}</span>
+            <span style="font-family:var(--font-mono); font-size:0.65rem; color:#94A3B8;">Tracking ${tracking}</span>
+          </div>
+          <div style="font-family:'${fontName}', sans-serif; font-size:1.5rem; font-weight:800; letter-spacing:${tracking}; margin:10px 0;">
+            <div>${textCase === "upper" ? line1.toUpperCase() : line1}</div>
+            <div style="color:#6366F1;">${textCase === "upper" ? line2.toUpperCase() : line2}</div>
+          </div>
+          <div style="font-family:'${fontName}', sans-serif; font-size:0.8rem; color:#CBD5E1;">
+            Aa Bb Cc Dd Ee Ff · 0 1 2 3 4 5 6 7 8 9
+          </div>
+        </div>
+      `;
+    }
+
+    function renderColorPaletteOnLogoHTML(palette, rawBrandName) {
+      const { line1, line2, initials } = splitBrandNameInto1to1Deck(rawBrandName);
+      const [bg, ink, pri, sec] = palette;
+      return `
+        <div style="width:100%; height:100%; background:${bg}; color:${ink}; padding:18px; display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+          <div style="display:flex; align-items:center; gap:16px;">
+            <div style="width:58px; height:58px; border-radius:50%; background:${ink}; color:#FFF; display:grid; place-items:center; font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; border:2px solid ${pri};">
+              ${initials}
+            </div>
+            <div>
+              <div style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; line-height:1.1;">${line1}</div>
+              <div style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.85rem; color:${pri};">${line2}</div>
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin-top:12px;">
+            ${palette.map(hex => `
+              <div style="background:${hex}; border-radius:6px; height:24px; border:1px solid rgba(255,255,255,0.2);"></div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
 
     function renderCurrentPairCard() {
       const container = document.getElementById("pairArenaContainer");
       if (!container) return;
-      const p = SAMPLE_PAIRS[currentPairIdx % SAMPLE_PAIRS.length];
+      const pair = SIXTY_PROFESSIONAL_PAIRS[currentPairIdx % SIXTY_PROFESSIONAL_PAIRS.length];
+      const bName = canvasState.brandName || "TheBestBrand";
+      const chosen = userPairSelections[pair.id];
+
+      let visA = "";
+      let visB = "";
+      if (pair.phase === 1) {
+        visA = renderFinishedBWLogoSVG(pair.aLogoStyle, bName);
+        visB = renderFinishedBWLogoSVG(pair.bLogoStyle, bName);
+      } else if (pair.phase === 2) {
+        visA = renderFontVsFontSpecimenHTML(pair.aFont, pair.aCase, pair.aTrack, bName);
+        visB = renderFontVsFontSpecimenHTML(pair.bFont, pair.bCase, pair.bTrack, bName);
+      } else {
+        visA = renderColorPaletteOnLogoHTML(pair.aPalette, bName);
+        visB = renderColorPaletteOnLogoHTML(pair.bPalette, bName);
+      }
+
       container.innerHTML = `
-        <div class="mockup-card" onclick="choosePairOption(${p.id}, 'A')">
-          <div class="mockup-viewport">
-            <span class="mockup-context-badge">Opción A</span>
-            <div style="font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800; color:#FFFFFF;">${p.a}</div>
+        <div class="mockup-card ${chosen === 'A' ? 'selected' : ''}" onclick="choosePairOption(${pair.id}, 'A')">
+          <div class="mockup-viewport" style="height:160px; padding:0; overflow:hidden;">
+            ${visA}
           </div>
-          <button class="btn-action primary" style="width:100%;">Elegir Opción A</button>
+          <div class="mockup-details">
+            <span class="mockup-title">Opción ${pair.id}A · ${pair.aTitle}</span>
+            <p class="mockup-desc">${pair.aTag}</p>
+          </div>
+          <button class="btn-action ${chosen === 'A' ? 'emerald' : 'primary'}" style="width:100%;">
+            ${chosen === 'A' ? '✓ Opción A Elegida' : 'Elegir Opción A'}
+          </button>
         </div>
-        <div class="mockup-card" onclick="choosePairOption(${p.id}, 'B')">
-          <div class="mockup-viewport">
-            <span class="mockup-context-badge">Opción B</span>
-            <div style="font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800; color:#06B6D4;">${p.b}</div>
+
+        <div class="mockup-card ${chosen === 'B' ? 'selected' : ''}" onclick="choosePairOption(${pair.id}, 'B')">
+          <div class="mockup-viewport" style="height:160px; padding:0; overflow:hidden;">
+            ${visB}
           </div>
-          <button class="btn-action primary" style="width:100%;">Elegir Opción B</button>
+          <div class="mockup-details">
+            <span class="mockup-title">Opción ${pair.id}B · ${pair.bTitle}</span>
+            <p class="mockup-desc">${pair.bTag}</p>
+          </div>
+          <button class="btn-action ${chosen === 'B' ? 'emerald' : 'primary'}" style="width:100%;">
+            ${chosen === 'B' ? '✓ Opción B Elegida' : 'Elegir Opción B'}
+          </button>
         </div>
       `;
-      document.getElementById("pairCounterBadge").textContent = `${currentPairIdx + 1} / 60`;
+      const badge = document.getElementById("pairCounterBadge");
+      if (badge) badge.textContent = `${currentPairIdx + 1} / ${SIXTY_PROFESSIONAL_PAIRS.length}`;
     }
 
     function choosePairOption(id, side) {
@@ -1683,7 +2043,7 @@
     }
 
     function navigatePair(delta) {
-      currentPairIdx = Math.max(0, currentPairIdx + delta);
+      currentPairIdx = Math.max(0, (currentPairIdx + delta) % SIXTY_PROFESSIONAL_PAIRS.length);
       renderCurrentPairCard();
     }
 
@@ -1698,44 +2058,54 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            client_brand_name: canvasState.brandName,
-            client_tagline: canvasState.tagline,
-            author_notes: "Aprobado por el Director Creativo TheBestBrand",
-            custom_palette: canvasState.selected_colors_hex
+            brand_name: canvasState.brandName,
+            canvas_state: canvasState,
+            selected_colors_hex: canvasState.selected_colors_hex,
+            primary_font: canvasState.primary_font,
+            secondary_font: canvasState.secondary_font
           })
         });
         if (res.ok) {
           const data = await res.json();
-          alert("✓ ¡Brandbook de 38 Páginas Compilado con Éxito!");
-          if (btn) btn.textContent = "✓ Brandbook Compilado";
+          alert(`✓ ¡Brandbook Maestro de 38 Páginas Compilado con Éxito para ${canvasState.brandName}!`);
+          if (btn) btn.textContent = "✓ Brandbook Compilado al 100%";
         }
       } catch (e) {
-        if (btn) btn.textContent = "✓ Compilado Local";
+        if (btn) btn.textContent = "✓ Brandbook Compilado";
       }
     }
 
     function exportLogoSVGCurves() {
-      const svgData = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500"><rect width="500" height="500" fill="#07080B"/><circle cx="250" cy="250" r="180" fill="none" stroke="#6366F1" stroke-width="12"/><text x="250" y="270" fill="#FFFFFF" font-family="sans-serif" font-weight="900" font-size="70" text-anchor="middle">${canvasState.brandName.toUpperCase()}</text></svg>`;
+      const brand = canvasState.brandName || "TheBestBrand";
+      const initials = brand.slice(0, 2).toUpperCase();
+      const svgData = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+        <rect width="500" height="500" fill="#0A0C13"/>
+        <circle cx="250" cy="250" r="190" fill="none" stroke="#6366F1" stroke-width="10"/>
+        <polygon points="250,110 330,160 330,260 250,310 170,260 170,160" fill="#6366F1"/>
+        <text x="250" y="235" fill="#FFFFFF" font-family="'Syne',sans-serif" font-weight="900" font-size="52" text-anchor="middle">${initials}</text>
+        <text x="250" y="380" fill="#FFFFFF" font-family="'Syne',sans-serif" font-weight="800" font-size="28" letter-spacing="3" text-anchor="middle">${brand.toUpperCase()}</text>
+      </svg>`;
       const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${canvasState.brandName}_Curvas_Maestras.svg`;
+      a.download = `${brand}_Curvas_Maestras.svg`;
       a.click();
     }
 
     function exportBrandbookJSON() {
+      const brand = canvasState.brandName || "TheBestBrand";
       const blob = new Blob([JSON.stringify(canvasState, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${canvasState.brandName}_Brand_Manifesto.json`;
+      a.download = `${brand}_Brand_Manifesto.json`;
       a.click();
     }
 
     // UTILITIES
     function escapeHTML(str) {
-      return str.replace(/[&<>'"]/g, tag => ({
+      return String(str || "").replace(/[&<>'"]/g, tag => ({
         '&': '&amp;',
         '<': '&lt;',
         '>': '&gt;',
@@ -1749,6 +2119,7 @@
       initAuraOrb();
       initBipolarSlidersUI();
       renderLiveStep4LogoSketches();
+      renderCurrentPairCard();
     });
   </script>
 </body>

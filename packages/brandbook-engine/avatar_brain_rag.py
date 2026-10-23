@@ -301,21 +301,18 @@ class LiveGeminiSocraticBrain:
     }
 
     STEP1_DIMENSIONS = [
-        ("golden_circle", "1. El Propósito (Círculo Dorado: historia de origen, dolor que resuelve, Por qué, Cómo y Qué)"),
-        ("value_offer", "2. El Posicionamiento y Oferta de Valor (diferencial competitivo y por qué te eligen)"),
-        ("social_role", "3. Su Rol en la Sociedad (aporte a la comunidad/industria y transformación a 5 años)"),
-        ("process_steps_text", "4. Su Proceso Operativo (etapas clave de fabricación, diseño o entrega del servicio)"),
-        ("core_message", "5. El Mensaje Nuclear (promesa central e idea fuerza de la marca)"),
-        ("brand_persona", "6. Su Personalidad (La Marca como Persona: carácter, porte, voz y actitud)"),
-        ("customer_behavior", "7. Su Comportamiento con Clientes (trato en momentos de verdad y resolución de problemas)"),
-        ("brand_world", "8. Su Mundo Imaginario (atmósfera física/digital, materiales y sensaciones)"),
-        ("ideal_customer", "9. El Cliente Ideal (quién compra, quién decide y qué exige)")
+        ("golden_circle", "1. El Propósito Nuclear (Círculo Dorado: dolor que resuelve, Por qué y Para qué)"),
+        ("value_offer", "2. La Oferta de Valor y Diferencial (por qué te eligen a ti frente a cualquier alternativa)"),
+        ("social_role", "3. El Rol en la Sociedad e Impacto (cómo transforma la industria o la vida de la comunidad a 5 años)"),
+        ("process_steps_text", "4. El Proceso Operativo Cero Fricción (cómo funciona paso a paso desde el minuto uno)"),
+        ("core_message", "5. El Mensaje Nuclear (la promesa central e idea fuerza en 1 sola frase potente)"),
+        ("ideal_customer", "6. El Perfil del Cliente Ideal (quién es el decisor que paga y qué exige)")
     ]
 
     STEP2_DIMENSIONS = [
-        ("tp_before", "1. Antes de la Compra (Canales de descubrimiento, atracción, demostraciones técnicas, muestras y evaluación)"),
+        ("tp_before", "1. Antes de la Compra (Canales de descubrimiento, atracción, demostraciones técnicas y evaluación)"),
         ("tp_during", "2. Durante la Compra (Proceso de cotización, negociación, contrato, cierre y ritual de pago)"),
-        ("tp_after", "3. Después de la Compra (Entrega física, empaque, instalación en sitio, capacitación, garantía, soporte y aplicaciones físicas/digitales)")
+        ("tp_after", "3. Después de la Compra (Entrega, instalación, capacitación, garantía, soporte y fidelización)")
     ]
 
     SYSTEM_INSTRUCTION = """Eres Aura, Consultora Top a Nivel Mundial en Estrategia de Marca, Producto y Diseño (nivel Pentagram, IDEO, Apple Craig Federighi y McKinsey).
@@ -707,7 +704,7 @@ Devuelve SIEMPRE JSON válido:
         target_pillar_hint = (
             missing_pillars[0]
             if missing_pillars
-            else "Todos los pilares base ya tienen contenido; profundiza en la idea más interesante que acaba de mencionar el usuario con un ejemplo del mundo real y pregúntale si desea agregar más información o pasar al siguiente paso."
+            else "Todos los pilares base ya tienen contenido; haz una pregunta socrática de valor real y pregunta si desea pasar al siguiente paso o agregar más."
         )
 
         if step == 3:
@@ -720,19 +717,21 @@ Devuelve SIEMPRE JSON válido:
             )
         else:
             step3_instruction = (
-                f"MODO PASO {step} (REBOTE DE IDEAS CON EJEMPLOS DEL MUNDO REAL): "
-                "Haz una pregunta MUY FÁCIL DE CONTESTAR usando un ejemplo práctico del mundo real que valide su idea y eche a andar su mente."
+                f"MODO PASO {step} (REBOTE ESTRATÉGICO): "
+                f"OBLIGATORIO: En este turno concéntrate EXCLUSIVAMENTE en indagar sobre el pilar: '{target_pillar_hint}'. "
+                f"Formula una pregunta MUY FÁCIL DE CONTESTAR usando un ejemplo práctico de su industria. "
+                f"JAMÁS vuelvas a preguntar sobre temas ya cubiertos."
             )
 
         prompt = (
             f"PASO {step} (Turno #{sub_step}).\n"
             f"{step3_instruction}\n"
-            f"PILAR A ENRIQUECER EN updated_pillar_key: {target_pillar_hint}\n"
-            f"PILARES AÚN VACÍOS ({len(missing_pillars)} de {len(dims)}): {', '.join([m.split(' ')[0] for m in missing_pillars]) or 'Ninguno (Fase completa, rebotando ideas adicionales)'}\n"
-            f"ÁNGULOS YA PREGUNTADOS (PROHIBIDO REPETIRLOS): {', '.join(prev_angles) or 'Ninguno aún'}\n"
-            f"CONTEXTO ACUMULADO: Propósito={updated_canvas.get('golden_circle', '')[:120]} | Oferta={updated_canvas.get('value_offer', '')[:120]}\n"
-            f"HISTORIAL RECIENTE: {' | '.join(history[-5:])}\n"
-            f"MENSAJE DEL FUNDADOR: \"{cleaned_message}\""
+            f"PILAR A ENRIQUECER EN updated_pillar_key Y updated_pillar_synthesis: {target_pillar_hint}\n"
+            f"PILARES AÚN VACÍOS ({len(missing_pillars)} de {len(dims)}): {', '.join([m.split(' ')[0] for m in missing_pillars]) or 'Ninguno (Fase completa)'}\n"
+            f"ÁNGULOS YA PREGUNTADOS: {', '.join(prev_angles) or 'Ninguno aún'}\n"
+            f"CONTEXTO ACUMULADO:\n" + "\n".join([f"- {k}: {str(updated_canvas.get(k, ''))[:100]}" for k, _ in dims if str(updated_canvas.get(k, '')).strip()]) + "\n"
+            f"HISTORIAL RECIENTE: {' | '.join(history[-4:])}\n"
+            f"MENSAJE ACTUAL DEL FUNDADOR: \"{cleaned_message}\""
         )
 
         gemini_out = cls._call_gemini_json(prompt, cls.SYSTEM_INSTRUCTION, active_key) or {}
@@ -748,11 +747,11 @@ Devuelve SIEMPRE JSON válido:
         # Aplicar actualización Delta enriqueciendo el contenido existente
         p_key = gemini_out.get("updated_pillar_key", "")
         p_val = gemini_out.get("updated_pillar_synthesis", "")
-        valid_keys = {
+        valid_keys = {k for k, _ in dims}.union({
             "golden_circle", "value_offer", "social_role", "process_steps_text",
             "core_message", "brand_persona", "customer_behavior", "brand_world",
             "ideal_customer", "tp_before", "tp_during", "tp_after"
-        }
+        })
         if p_key in valid_keys and p_val:
             updated_canvas[p_key] = str(p_val).strip()
 
@@ -761,7 +760,7 @@ Devuelve SIEMPRE JSON válido:
         if s_key in valid_keys and s_val:
             updated_canvas[s_key] = str(s_val).strip()
 
-        # Garantizar que el primer pilar vacío se llene con la síntesis de este turno
+        # Garantizar que el primer pilar vacío se llene obligatoriamente en este turno
         if missing_before and step in (1, 2):
             first_missing_key = missing_before[0]
             if not str(updated_canvas.get(first_missing_key, "")).strip():
