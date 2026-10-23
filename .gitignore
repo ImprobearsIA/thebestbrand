@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+.env
+
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Replit Local state
+.replit.local
+
+# Archivos pesados y almacenamiento propio (Google Drive / Cloud Storage)
+# Evita cobros de almacenamiento en Replit manteniendo el Repl ultra-ligero (<1MB)
+*.pdf
+BENEFIC_MANUAL_160318.pdf
+*.zip
+*.tar.gz
+*.mp4
+*.mov
+

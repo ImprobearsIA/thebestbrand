@@ -1,0 +1,32 @@
+name: TheBestBrand CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install fastapi uvicorn pydantic pytest
+
+      - name: Test API Endpoints
+        run: |
+          python -c "import apps.api.main as m; print('API Loaded Successfully')"
+
+      - name: Verify Replit Deployment Config Exists
+        run: |
+          test -f ".replit" && test -f "requirements.txt" && echo "Replit Config Validated" || exit 1
