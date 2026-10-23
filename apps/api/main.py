@@ -48,7 +48,7 @@ class ChatTurnRequest(BaseModel):
     step: int = 1
     sub_step: int = 1
     user_message: str
-    conversation_history: List[str] = []
+    conversation_history: List[Any] = []
     canvas_state: Dict[str, Any] = {}
     llm_provider: str = "gemini"
     llm_api_key: str = ""
@@ -118,7 +118,14 @@ def synthesize_gemini_voice(req: TTSRequest):
 
 @app.post("/api/chat/turn")
 def process_avatar_chat_turn(req: ChatTurnRequest):
-    full_transcript = " ".join(req.conversation_history + [req.user_message])
+    clean_history: List[str] = []
+    for item in req.conversation_history:
+        if isinstance(item, dict):
+            clean_history.append(f"{item.get('role', 'user')}: {item.get('content', '')}")
+        else:
+            clean_history.append(str(item))
+
+    full_transcript = " ".join(clean_history + [req.user_message])
     brain_result = ZeroHallucinationAvatarBrain.process_turn_without_hallucination(
         user_message=full_transcript,
         external_verified_facts=[
@@ -132,7 +139,7 @@ def process_avatar_chat_turn(req: ChatTurnRequest):
         step=req.step,
         sub_step=req.sub_step,
         user_message=req.user_message,
-        history=req.conversation_history,
+        history=clean_history,
         canvas_state=req.canvas_state,
         llm_provider=req.llm_provider,
         llm_api_key=req.llm_api_key,
