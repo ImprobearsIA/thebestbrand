@@ -11,6 +11,11 @@ Sirve la aplicación interactiva completa en http://127.0.0.1:8000 y conecta tod
 
 import sys
 import os
+from dotenv import load_dotenv
+
+# Cargar variables de entorno locales (.env)
+load_dotenv()
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../packages/brandbook-engine")))
 
 from fastapi import FastAPI
@@ -102,6 +107,35 @@ def serve_web_app():
     html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/index.html"))
     with open(html_path, "r", encoding="utf-8") as f:
         return HTMLResponse(content=f.read())
+
+
+@app.get("/api/health")
+def health_check():
+    return {
+        "status": "healthy",
+        "service": "TheBestBrand Live Atelier v11.0",
+        "neon_project": os.environ.get("NEON_PROJECT_ID", "green-cherry-54371329"),
+        "database_connected": bool(os.environ.get("DATABASE_URL"))
+    }
+
+
+@app.get("/api/db/status")
+def database_status():
+    db_url = os.environ.get("DATABASE_URL", "")
+    return {
+        "engine": "Neon Serverless Postgres 18",
+        "project_id": os.environ.get("NEON_PROJECT_ID", "green-cherry-54371329"),
+        "tables": [
+            "users",
+            "projects",
+            "brand_manifestos",
+            "naming_candidates",
+            "sensory_preferences",
+            "compiled_brandbooks"
+        ],
+        "configured": bool(db_url)
+    }
+
 
 
 @app.get("/api/step-video/{step_id}")
