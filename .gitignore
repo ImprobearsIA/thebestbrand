@@ -32,4 +32,6 @@ BENEFIC_MANUAL_160318.pdf
 *.tar.gz
 *.mp4
 *.mov
+*_backup.html
+
 

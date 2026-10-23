@@ -1045,6 +1045,7 @@
   <script>
     // ESTADO GLOBAL
     let currentStep = 1;
+    let currentSubStep = 1;
     let audioUnlocked = false;
     let voiceMuted = false;
     let lipSyncInterval = null;
@@ -1409,9 +1410,10 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             step: currentStep,
-            sub_step: 1,
+            sub_step: currentSubStep,
             user_message: text,
-            conversation_history: history
+            conversation_history: history,
+            canvas_state: canvasState
           })
         });
 
@@ -1421,6 +1423,11 @@
 
         if (res.ok) {
           const data = await res.json();
+          if (data.next_sub_step) {
+            currentSubStep = data.next_sub_step;
+          } else {
+            currentSubStep++;
+          }
           if (data.avatar_response) {
             appendChatMessage("mentor", data.avatar_response);
             requestAndPlayGeminiVoice(data.avatar_response);
@@ -1583,9 +1590,9 @@
         },
         {
           idx: 2,
-          title: "Identidad 03 · Placa Panorámica Broadcast 16:9",
-          context: "OBS Studio & Transmisiones Internacionales de TV",
-          desc: "Proporción horizontal de marcador deportivo. Lectura instantánea a alta velocidad.",
+          title: "Identidad 03 · Placa Panorámica Multi-Pantalla 16:9",
+          context: "Pantallas Digitales, Video & Aplicación Móvil",
+          desc: "Proporción horizontal panorámica. Lectura instantánea en monitores y dispositivos móviles.",
           svg: `
             <svg viewBox="0 0 180 100" width="160" height="90">
               <rect x="8" y="14" width="164" height="72" rx="14" fill="#0C0E17" stroke="#6366F1" stroke-width="2"/>

@@ -321,9 +321,9 @@ class LiveGeminiSocraticBrain:
     SYSTEM_INSTRUCTION = """Eres Aura, Consultora Top a Nivel Mundial en Estrategia de Marca, Producto y Diseño (nivel Pentagram, IDEO, Apple Craig Federighi y McKinsey).
 TU ADN COMO CONSULTORA MUNDIAL:
 1. ACTITUD ENTUSIASTA, OPTIMISTA Y CON OJO CRÍTICO DE VALOR REAL (`avatar_response` de 38 a 62 palabras):
-   - Primero: Celebra con entusiasmo genuino lo que el usuario acaba de contar y aporta un INSIGHT CRÍTICO Y CONSTRUCTIVO del mundo real (ej. si habla de un marcador para OBS de fútbol americano o transmisiones tipo cadena internacional, destaca cómo en transmisiones tipo NFL/ESPN la clave crítica es que el marcador luzca de millón de dólares sin tapar la jugada en celulares y que el operador cambie el down y reloj en 1 clic sin estrés).
-   - Segundo: Formula UNA pregunta MUY FÁCIL DE CONTESTAR sobre el siguiente ángulo estratégico usando un EJEMPLO DEL MUNDO REAL que despierte su mente.
-   - PROHIBIDO CICLARSE O REPETIR PREGUNTAS: Jamás uses frases genéricas repetidas. Cada respuesta debe citar las palabras exactas que acaba de decir el usuario y avanzar a un ángulo nuevo.
+   - Primero: Celebra con entusiasmo genuino lo que el usuario acaba de contar, conectando directamente con su producto o industria específica, y aporta un INSIGHT CRÍTICO Y CONSTRUCTIVO del mundo real (ej. si habla de un software o plataforma para ligas deportivas, destaca cómo soluciones de clase mundial resuelven el dolor de cobrar, asignar árbitros y estadísticas en vivo sin usar hojas de cálculo).
+   - Segundo: Formula UNA pregunta MUY FÁCIL DE CONTESTAR sobre el siguiente ángulo estratégico usando un EJEMPLO DEL MUNDO REAL adaptado a su caso que despierte su mente.
+   - PROHIBIDO CICLARSE O ASUMIR INDUSTRIAS AJENAS: Jamás menciones herramientas o temas no dichos por el usuario (como OBS, streaming, hardware o comercio físico) a menos que él los mencione explícitamente. Cita sus palabras exactas y avanza de forma socrática.
 2. CUANDO SE LLENAN TODOS LOS PILARES DE LA FASE 1 O FASE 2:
    - NO cortes la conversación de golpe. Pregúntale si desea agregar más información sobre el tema o rebotar otra idea, o si prefiere pasar al siguiente paso.
 3. EN LA FASE 3 (NAMING CO-CREATIVO POR CHAT):
@@ -357,62 +357,90 @@ Devuelve SIEMPRE JSON válido con estas llaves:
     WORLD_CLASS_CONSULTANT_PILLAR_GUIDE: Dict[str, Dict[str, str]] = {
         "golden_circle": {
             "angle": "Propósito e Historia de Origen",
-            "question": "Por ejemplo, pensando en cuando viste una transmisión deportiva amateur que se veía floja frente a una de televisión internacional: ¿qué fue lo que te hizo decir 'yo tengo que crear esta solución'?"
+            "question": "¿Cuál fue el momento o fricción clave en tu experiencia que te hizo decir 'esto no puede seguir haciéndose a la antigua, tengo que crear esta solución'?"
         },
         "value_offer": {
             "angle": "Diferencial Competitivo y Ventaja sin Fricción",
-            "question": "Como consultora te digo algo clave: en transmisiones en vivo el operador tiene segundos entre jugada y jugada. Por ejemplo, frente a configurar gráficos manuales en OBS, ¿cuál es el superpoder de tu interfaz para que cualquiera logre calidad de TV internacional sin complicarse?"
+            "question": "Pensando en las alternativas actuales que usan tus clientes (hojas de cálculo, procesos manuales o soluciones parchadas): ¿cuál es el superpoder o ventaja diferencial que hace que elijan tu plataforma de inmediato?"
         },
         "social_role": {
-            "angle": "Impacto en la Comunidad y Nivel Profesional",
-            "question": "¡Elevar ligas locales al nivel visual de la NFL o ESPN cambia por completo cómo se vive el deporte! Imagina un equipo colegial o liga amateur usando tu sistema: ¿cómo les cambia la emoción a los jugadores, papás y patrocinadores al verse como en televisión internacional?"
+            "angle": "Impacto en la Comunidad y Transformación",
+            "question": "A 3 o 5 años, cuando tu plataforma sea el estándar de la industria: ¿cómo transforma la vida diaria y la experiencia de las personas y comunidades que la usan?"
         },
         "process_steps_text": {
-            "angle": "Experiencia de Uso Paso a Paso (Cero Fricción estilo Apple)",
-            "question": "Aplicando la regla de Craig Federighi en Apple ('cero fricción desde el minuto uno'): imagina que un productor descarga o abre tu interfaz 15 minutos antes del kickoff en OBS, ¿cuáles son los 3 pasos simples que sigue desde que la abre hasta que el marcador ya está al aire?"
+            "angle": "Experiencia de Uso Paso a Paso (Cero Fricción)",
+            "question": "Aplicando la regla de Craig Federighi ('cero fricción desde el minuto uno'): imagina a tu usuario abriendo tu plataforma por primera vez, ¿cuáles son los 3 pasos simples que sigue para ver su primer gran resultado?"
         },
         "core_message": {
             "angle": "Promesa Nuclear en 1 Frase",
-            "question": "¡Esa facilidad operativa es oro puro! Si pusieras un anuncio corto en un reel para productores y ligas de fútbol americano de todo el mundo, ¿qué frase te gustaría que piensen al instante (por ejemplo: 'Tu transmisión en OBS con calidad de cadena internacional en 2 minutos')?"
+            "question": "Si tuvieras que sintetizar el valor de tu proyecto en una sola frase potente y memorable que se quede grabada en la mente de tus usuarios, ¿cuál sería esa promesa nuclear?"
         },
         "brand_persona": {
-            "angle": "Personalidad de Marca y Autoridad",
-            "question": "Pensemos en el carácter de tu marca. Si tu aplicación fuera un comentarista o director de cámaras de televisión internacional: ¿cómo hablaría y se comportaría (por ejemplo: apasionado y enérgico como narrador de domingo, o ultra preciso y tecnológico como ingeniero de transmisión)?"
+            "angle": "Personalidad de Marca y Porte",
+            "question": "Pensemos en el carácter de tu marca como persona. Si entrara a una sala: ¿cómo hablaría y se comportaría (por ejemplo: innovadora y cercana, o técnica, estructurada y de máxima autoridad)?"
         },
         "customer_behavior": {
             "angle": "Trato al Usuario en Momentos Críticos",
-            "question": "Un punto crítico que siempre cuidamos en software de transmisión en vivo es el soporte cuando hay partido en curso. Imagina que un usuario tiene una duda a mitad del tercer cuarto: ¿cómo quieres que tu marca lo respalde o le resuelva para que se sienta 100% seguro?"
+            "question": "En momentos de máxima presión o cuando surge un imprevisto en la operación de tus usuarios: ¿cómo responde y respalda tu marca para que se sientan 100% seguros y respaldados?"
         },
         "brand_world": {
-            "angle": "Territorio Visual y Estética Broadcast",
-            "question": "Visualicemos el universo estético de tu marca. Cuando alguien entra a tu web o abre el panel de control junto a OBS, ¿qué atmósfera visual quieres que sienta (por ejemplo: cabina nocturna de estadio con luces LED tipo Monday Night Football, o estudio limpio y minimalista tipo Apple)?"
+            "angle": "Territorio Visual y Atmósfera de Marca",
+            "question": "Visualicemos el universo estético de tu marca. Cuando alguien entra a tu plataforma o ve tus materiales, ¿qué atmósfera visual quieres que sienta (por ejemplo: minimalista y tecnológica, o enérgica, audaz y de alto impacto)?"
         },
         "ideal_customer": {
             "angle": "Perfil del Cliente Ideal y Decisor",
-            "question": "Para cerrar con broche de oro el Paso 1: pensemos en tu comprador número uno en el mundo real. ¿Quién es el primero en sacar la tarjeta para pagar tu interfaz (por ejemplo: streamers deportivos independientes, colegios y universidades, o ligas de fútbol americano y productoras locales)?"
+            "question": "Pensemos en tu cliente número uno: ¿quién es la persona exacta que toma la decisión de adoptar y pagar por tu solución, y cuál es su principal urgencia?"
         },
         "tp_before": {
-            "angle": "Descubrimiento y Prueba Visual en Redes / OBS",
-            "question": "¡Los reels de Instagram, TikTok y ver el marcador en vivo son el mejor imán porque el producto entra por los ojos! Como consultora te sugiero mostrar un 'Antes (OBS vacío) vs. Después (TV Internacional)'. Cuando un interesado da clic a tu reel, ¿prefieres llevarlo a probar un demo interactivo gratis o a una página con videos cortos?"
+            "angle": "Descubrimiento y Atracción",
+            "question": "¿A través de qué canal o recomendación se entera por primera vez tu cliente ideal de que existes, y qué prueba o contenido necesita ver para decir 'esto es justo lo que necesito'?"
         },
         "tp_during": {
-            "angle": "Cotización, Suscripción y Activación Inmediata",
-            "question": "Ahora imagina el momento exacto en que ese productor o liga dice '¡Lo quiero para el partido de este sábado!': ¿cómo te gustaría que sea el pago y la entrega (por ejemplo: suscripción mensual/anual con activación instantánea por código en OBS, o licencia única descargable)?"
+            "angle": "Contratación, Activación y Ritual de Pago",
+            "question": "Cuando deciden dar el paso: ¿cómo es la experiencia de contratación, pago y activación para que comiencen a operar en cuestión de minutos y sin trabas?"
         },
         "tp_after": {
-            "angle": "Retención, Comunidad y Recomendación Viral",
-            "question": "¡Cero fricción al activar es clave para escalar a todo el mundo! Y después del partido, cuando su transmisión fue un éxito total: ¿qué detalle te gustaría tener con ellos (por ejemplo: plantillas nuevas para playoffs, marca de agua discreta tipo 'Powered by...' para atraer más ligas, o grupo VIP)?"
+            "angle": "Fidelización, Retención y Recomendación Orgánica",
+            "question": "Una vez que ya operan con éxito: ¿qué experiencia o valor continuo les entregas para que se conviertan en embajadores apasionados y recomienden tu solución a otros colegas?"
         }
     }
 
     @classmethod
     def _call_gemini_json(cls, prompt: str, system_inst: str, api_key: str = "") -> Optional[Dict[str, Any]]:
         key = (api_key or DEFAULT_GEMINI_API_KEY).strip()
-        # Cascada de alta velocidad verificada (<1.5s por turno)
+        # Cascada de alta velocidad verificada (<1.0s por turno, cuota activa)
         models_to_try = [
+            "gemini-flash-lite-latest",
+            "gemini-3.1-flash-lite-preview",
             "gemini-3.6-flash",
             "gemini-3.5-flash"
         ]
+        for model_name in models_to_try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
+            gen_cfg: Dict[str, Any] = {
+                "temperature": 0.65,
+                "maxOutputTokens": 900,
+                "responseMimeType": "application/json"
+            }
+            payload = {
+                "systemInstruction": {"parts": [{"text": system_inst}]},
+                "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+                "generationConfig": gen_cfg
+            }
+            try:
+                req = urllib.request.Request(
+                    url,
+                    data=json.dumps(payload).encode("utf-8"),
+                    headers={"Content-Type": "application/json"}
+                )
+                with urllib.request.urlopen(req, timeout=5.0) as resp:
+                    raw = json.loads(resp.read().decode("utf-8"))
+                    text_out = raw["candidates"][0]["content"]["parts"][0]["text"].strip()
+                    text_out = re.sub(r"^```(?:json)?\s*|\s*```$", "", text_out).strip()
+                    return json.loads(text_out)
+            except Exception:
+                continue
+        return None
         for model_name in models_to_try:
             url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
             gen_cfg: Dict[str, Any] = {
@@ -515,46 +543,46 @@ Devuelve SIEMPRE JSON válido:
                 })
         default_creative_pool = [
             {
-                "name": "KronoLux",
-                "category": "Neologismo Corto de Precisión",
+                "name": "OmniGrid",
+                "category": "Compuesto de Autoridad",
                 "smile_score": 96,
                 "syllables": 3,
-                "rationale": "Une 'Kronos' (tiempo exacto) y 'Lux' (visibilidad óptica bajo sol directo)."
+                "rationale": "Une 'Omni' (control total centralizado) y 'Grid' (estructura, orden y precisión)."
             },
             {
-                "name": "ApexScore",
-                "category": "Compuesto de Autoridad",
+                "name": "KronoCore",
+                "category": "Neologismo Corto de Precisión",
                 "smile_score": 95,
                 "syllables": 3,
-                "rationale": "Proyecta liderazgo ('Apex') y dominio claro en marcadores y resultados."
+                "rationale": "Evoca sincronía exacta de tiempo y motor central de operaciones en tiempo real."
             },
             {
                 "name": "Vértice Pro",
                 "category": "Evocativo / Ingeniería",
                 "smile_score": 94,
                 "syllables": 4,
-                "rationale": "Evoca estructura arquitectónica, exactitud técnica y punto culminante."
+                "rationale": "Evoca estructura sólida, exactitud técnica y punto culminante de rendimiento."
             },
             {
-                "name": "AegisVision",
+                "name": "ApexFlow",
                 "category": "Compuesto de Autoridad",
-                "smile_score": 93,
-                "syllables": 4,
-                "rationale": "Combina resistencia blindada ('Aegis') con claridad visual de alto contraste."
+                "smile_score": 95,
+                "syllables": 3,
+                "rationale": "Proyecta liderazgo ('Apex') y fluidez operativa continua sin fricción."
             },
             {
-                "name": "LuminorX",
-                "category": "Neologismo Corto",
+                "name": "NovusPlay",
+                "category": "Neologismo de Categoría",
+                "smile_score": 93,
+                "syllables": 3,
+                "rationale": "Sonoridad fresca que comunica innovación moderna en el ecosistema operativo."
+            },
+            {
+                "name": "ZenithOS",
+                "category": "Arquitectura de Software",
                 "smile_score": 94,
                 "syllables": 3,
-                "rationale": "Sonoridad potente y memorable que destaca potencia lumínica y tecnología."
-            },
-            {
-                "name": "StadiaCore",
-                "category": "Evocativo de Escenario",
-                "smile_score": 92,
-                "syllables": 4,
-                "rationale": "Conecta directamente con el corazón operativo de estadios, clubes y recintos."
+                "rationale": "Comunica el punto más alto de sofisticación y sistema operativo integral."
             }
         ]
         for item in default_creative_pool:
