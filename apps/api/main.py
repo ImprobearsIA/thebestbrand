@@ -35,10 +35,11 @@ from avatar_brain_rag import (
 )
 from master_brandbook_compiler import MasterBrandbookCompiler
 from brand_sprint_bradley_terry import AlgorithmicIdentityDecisionEngine
+from kansei_generative_architect import KanseiEngineeringQTT1Engine, CorporateBackendAIHub
 
 app = FastAPI(
-    title="TheBestBrand Live Studio v11.0 (Osgood EPA + Bradley-Terry + Socratic Idea-Bouncing + Interactive Naming + Only Aoede Voice)",
-    version="11.0.0"
+    title="TheBestBrand Live Studio v15.0 (Lean Triad UI + Kansei QTTI + Corporate Backend AI + Neutral Futuristic Aura)",
+    version="15.0.0"
 )
 
 app.add_middleware(
@@ -145,6 +146,28 @@ def database_status():
         "configured": bool(db_url)
     }
 
+
+
+@app.get("/api/corporate/status")
+def corporate_backend_status():
+    return CorporateBackendAIHub.get_corporate_credentials_status()
+
+
+@app.post("/api/kansei/qt1-synthesis")
+def run_kansei_qtt1_synthesis(req: Step4SynthesizeRequest):
+    sliders = req.bipolar_sliders or {}
+    pairs_map = {p.get("pair_id", f"p{i}"): p.get("choice", "A") for i, p in enumerate(req.pair_choices)}
+    kansei_result = KanseiEngineeringQTT1Engine.compute_hayashi_qtt1_morphology(sliders, pairs_map)
+    brand_name = req.canvas_state.get("brandName", "TheBestBrand")
+    nanobanana_logos = CorporateBackendAIHub.generate_nanobanana_brand_logos(
+        brand_name=brand_name,
+        industry="global_brand",
+        kansei_spec=kansei_result
+    )
+    return {
+        "kansei_qtt1": kansei_result,
+        "corporate_nanobanana_synthesis": nanobanana_logos
+    }
 
 
 @app.get("/api/step-video/{step_id}")

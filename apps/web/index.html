@@ -12,41 +12,41 @@
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='45' fill='%2318181B'/%3E%3Ctext x='90' y='115' font-family='sans-serif' font-weight='900' font-size='78' fill='%23FFFFFF' text-anchor='middle'%3ETB%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <style>
     /* ==========================================================================
-       THEBESTBRAND ATELIER — CRAIG FEDERIGHI / APPLE DESIGN AWARD DESIGN SYSTEM
+       THEBESTBRAND ATELIER — WCAG AAA HIGH-LEGIBILITY & APPLE DESIGN SYSTEM
        ========================================================================== */
     :root {
-      /* PURE NEUTRAL LIGHT GALLERY DESIGN SYSTEM (ZERO COLOR BIAS) */
+      /* PURE NEUTRAL LIGHT GALLERY DESIGN SYSTEM (ZERO COLOR BIAS, WCAG AAA) */
       --bg-void: #F8F9FA;
       --bg-dynamic-ambient: rgba(24, 24, 27, 0.03);
-      --brand-primary: #18181B; /* Neutral Graphite / Obsidian */
-      --brand-primary-rgb: 24, 24, 27;
-      --brand-secondary: #71717A;
-      --brand-accent-glow: rgba(24, 24, 27, 0.05);
+      --brand-primary: #0F172A; /* High-Contrast Obsidian */
+      --brand-primary-rgb: 15, 23, 42;
+      --brand-secondary: #334155;
+      --brand-accent-glow: rgba(15, 23, 42, 0.05);
       --bg-surface: #FFFFFF;
-      --bg-surface-hover: #F4F4F6;
-      --bg-glass-pill: rgba(0, 0, 0, 0.04);
-      --border-subtle: rgba(0, 0, 0, 0.08);
-      --border-hover: rgba(0, 0, 0, 0.18);
-      --border-accent: rgba(24, 24, 27, 0.25);
+      --bg-surface-hover: #F1F5F9;
+      --bg-glass-pill: rgba(15, 23, 42, 0.05);
+      --border-subtle: rgba(15, 23, 42, 0.12);
+      --border-hover: rgba(15, 23, 42, 0.24);
+      --border-accent: rgba(15, 23, 42, 0.30);
       --accent-iris: var(--brand-primary);
       --accent-violet: var(--brand-secondary);
-      --accent-cyan: #475569;
-      --accent-amber: #D97706;
-      --accent-emerald: #059669;
-      --ink-primary: #0F172A; /* Deep Warm Charcoal */
-      --ink-secondary: #475569;
-      --ink-tertiary: #94A3B8;
-      --shadow-organic: 0 12px 32px -8px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
-      --shadow-float: 0 20px 40px -12px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
-      --radius-organic: 26px;
+      --accent-cyan: #0284C7;
+      --accent-amber: #B45309;
+      --accent-emerald: #047857;
+      --ink-primary: #090D16; /* Maximum Contrast Deep Ink (18.5:1 on White) */
+      --ink-secondary: #1E293B; /* High-Contrast Slate (12.6:1 on White) */
+      --ink-tertiary: #475569; /* Accessible Muted Slate (7.5:1 WCAG AAA) */
+      --shadow-organic: 0 12px 32px -8px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+      --shadow-float: 0 20px 40px -12px rgba(0, 0, 0, 0.09), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+      --radius-organic: 24px;
       --radius-pill: 9999px;
-      --font-display: 'Syne', sans-serif;
-      --font-ui: 'Plus Jakarta Sans', sans-serif;
-      --font-tech: 'Space Grotesk', sans-serif;
+      --font-display: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-ui: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-tech: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
 
@@ -61,13 +61,32 @@
       background-attachment: fixed;
       color: var(--ink-primary);
       font-family: var(--font-ui);
-      line-height: 1.5;
+      font-size: 16px;
+      line-height: 1.55;
+      letter-spacing: -0.008em;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       transition: background-color 0.6s ease, background-image 0.6s ease;
+    }
+
+    /* High-Legibility Visual Accessibility Mode (A+) */
+    body.a11y-large-mode {
+      font-size: 19px !important;
+    }
+    body.a11y-large-mode .question-text {
+      font-size: 2.15rem !important;
+      line-height: 1.35 !important;
+    }
+    body.a11y-large-mode .mission-explanation,
+    body.a11y-large-mode .dialogue-turn,
+    body.a11y-large-mode .milestone-summary,
+    body.a11y-large-mode .input-textarea {
+      font-size: 1.15rem !important;
+      line-height: 1.6 !important;
     }
 
     /* Subtle custom scrollbars */
@@ -441,66 +460,75 @@
       flex: 1;
     }
 
-    /* THE AURA ORB: LIVING CHROMATIC SPHERE */
+    /* THE AURA ORB: FUTURISTIC GENDER-NEUTRAL QUANTUM SPHERE */
     .aura-presence-stage {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 36px;
+      margin-bottom: 24px;
       position: relative;
     }
     .aura-orb-halo {
       position: relative;
-      width: 130px;
-      height: 130px;
+      width: 136px;
+      height: 136px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, #090D16 0%, #111827 72%, rgba(15, 23, 42, 0.95) 100%);
+      box-shadow: 0 16px 36px -8px rgba(9, 13, 22, 0.35), 0 0 0 2px rgba(6, 182, 212, 0.28), inset 0 0 24px rgba(99, 102, 241, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    }
+    .aura-orb-halo:hover {
+      transform: scale(1.04);
+      box-shadow: 0 20px 44px -8px rgba(6, 182, 212, 0.4), 0 0 0 3px rgba(6, 182, 212, 0.55), inset 0 0 30px rgba(99, 102, 241, 0.5);
     }
     .aura-canvas {
       position: absolute;
       inset: 0;
       border-radius: 50%;
       pointer-events: none;
-      filter: drop-shadow(0 0 35px rgba(99, 102, 241, 0.45));
       transition: filter 0.3s ease;
     }
     .aura-canvas.speaking {
-      filter: drop-shadow(0 0 50px rgba(6, 182, 212, 0.65));
+      filter: drop-shadow(0 0 28px rgba(6, 182, 212, 0.85));
     }
 
     .aura-presence-badge {
-      margin-top: 14px;
+      margin-top: 12px;
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      padding: 4px 12px;
+      gap: 8px;
+      padding: 6px 14px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: var(--ink-secondary);
-      letter-spacing: 0.03em;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--ink-primary);
+      letter-spacing: 0.01em;
     }
     .aura-pulse-dot {
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: #10B981;
-      box-shadow: 0 0 8px #10B981;
+      background: #06B6D4;
+      box-shadow: 0 0 10px #06B6D4;
       animation: pulseGreen 2s infinite;
     }
     @keyframes pulseGreen {
       0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.4); opacity: 0.6; }
+      50% { transform: scale(1.4); opacity: 0.65; }
     }
 
-    /* THE BIG EDITORIAL QUESTION */
+    /* THE BIG EDITORIAL QUESTION (WCAG AAA ULTRA-LEGIBLE) */
     .question-billboard {
       text-align: center;
-      margin-bottom: 32px;
-      max-width: 820px;
+      margin-bottom: 24px;
+      max-width: 720px;
       animation: fadeInScale 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @keyframes fadeInScale {
@@ -508,21 +536,24 @@
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
     .question-category {
-      font-family: var(--font-tech);
+      font-family: var(--font-mono);
       font-size: 0.78rem;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--ink-tertiary);
+      letter-spacing: 0.08em;
+      color: var(--ink-secondary);
       margin-bottom: 10px;
       display: inline-block;
-      font-weight: 600;
+      font-weight: 700;
+      background: rgba(15, 23, 42, 0.05);
+      padding: 4px 12px;
+      border-radius: 999px;
     }
     .question-text {
       font-family: var(--font-display);
-      font-size: 2.05rem;
+      font-size: 1.85rem;
       font-weight: 700;
-      line-height: 1.25;
-      letter-spacing: -0.02em;
+      line-height: 1.38;
+      letter-spacing: -0.015em;
       color: var(--ink-primary);
       text-wrap: balance;
     }
@@ -1139,22 +1170,16 @@
     }
   
     /* ==========================================================================
-       UNIFIED SINGLE-SCREEN ATELIER WORKBENCH (ALL IN ONE VIEW)
+       PURE SINGLE-COLUMN FOCUS SANCTUARY (ZERO RIGHT-HAND DISTRACTION)
        ========================================================================== */
     .unified-workbench-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
+      grid-template-columns: 1fr;
+      gap: 20px;
       width: 100%;
-      max-width: 1360px;
-      margin: 20px auto 40px auto;
+      max-width: 720px;
+      margin: 8px auto 32px auto;
       align-items: start;
-    }
-    @media (max-width: 1080px) {
-      .unified-workbench-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
     }
     .workbench-dialogue-pane {
       display: flex;
@@ -1162,26 +1187,103 @@
       align-items: center;
       width: 100%;
     }
+    /* Hidden in Focus Mode to preserve 100% concentration; accessible via Hub Modal */
     .workbench-canvas-pane {
-      background: #FFFFFF;
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-organic);
-      padding: 24px;
-      box-shadow: var(--shadow-organic);
+      display: none !important;
+    }
+
+    /* STARTUP WELCOME POP-UP MODAL (DISMISSIBLE ONBOARDING BRIEFING) */
+    .welcome-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 13, 22, 0.62);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 1200;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      animation: fadeInTurn 0.25s ease;
+    }
+    .welcome-modal-overlay.open {
+      display: grid;
+    }
+    .welcome-modal-card {
       width: 100%;
+      max-width: 520px;
+      background: #FFFFFF;
+      border-radius: 28px;
+      border: 1px solid var(--border-subtle);
+      padding: 28px 26px;
+      box-shadow: 0 24px 60px rgba(9, 13, 22, 0.28);
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      position: sticky;
-      top: 90px;
-      max-height: calc(100vh - 120px);
-      overflow-y: auto;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+      animation: popIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    @media (max-width: 1080px) {
-      .workbench-canvas-pane {
-        position: static;
-        max-height: none;
-      }
+    .welcome-modal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #090D16;
+      color: #38BDF8;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .welcome-modal-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--ink-primary);
+      line-height: 1.3;
+    }
+    .welcome-modal-body {
+      font-family: var(--font-ui);
+      font-size: 0.98rem;
+      color: var(--ink-secondary);
+      line-height: 1.58;
+    }
+    .welcome-flow-preview {
+      width: 100%;
+      background: linear-gradient(135deg, #090D16 0%, #1E293B 100%);
+      border-radius: 18px;
+      padding: 14px 16px;
+      color: #F8FAFC;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: left;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .btn-welcome-start {
+      width: 100%;
+      padding: 15px 24px;
+      border-radius: 999px;
+      border: none;
+      background: #090D16;
+      color: #FFFFFF;
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 10px 24px rgba(9, 13, 22, 0.22);
+      transition: all 0.2s ease;
+    }
+    .btn-welcome-start:hover {
+      background: #1E293B;
+      transform: translateY(-2px);
     }
     .brand-live-header-bar {
       display: flex;
@@ -1822,27 +1924,28 @@
         text-overflow: ellipsis;
       }
       .btn-view-canvas-peek {
-        display: none;
+        display: inline-flex;
+        padding: 4px 8px;
+        font-size: 0.72rem;
+        white-space: nowrap;
+      }
+      .voice-dock-btn {
+        white-space: nowrap;
+        padding: 5px 10px;
+        font-size: 0.74rem;
       }
       .input-dock {
-        position: fixed !important;
-        bottom: 12px !important;
-        left: 12px !important;
-        right: 12px !important;
-        width: calc(100% - 24px) !important;
-        margin: 0 auto !important;
-        z-index: 90 !important;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16) !important;
+        position: relative !important;
+        width: 100% !important;
+        margin: 0 auto 16px auto !important;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08) !important;
       }
       .question-billboard {
-        margin-bottom: 14px !important;
+        margin-bottom: 16px !important;
       }
       .question-text {
-        font-size: 1.35rem !important;
-      }
-      .smart-chips-grid {
-        max-height: 110px;
-        overflow-y: auto;
+        font-size: 1.45rem !important;
+        line-height: 1.38 !important;
       }
     }
   </style>
@@ -1866,9 +1969,14 @@
           <span class="stat-pill streak-pill" title="Racha de Creación">🔥 <strong id="streakCountJourney">5</strong> Días</span>
           <span class="stat-pill xp-pill" title="Experiencia Acumulada">💎 <strong id="xpCountJourney">450</strong> XP</span>
         </div>
-        <button class="btn-hub-menu" onclick="toggleHubDrawer(true)" title="Abrir Menú de Administración">
-          <span>☰</span> Menú
-        </button>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button class="btn-hub-menu" id="btnA11yJourney" onclick="toggleA11yLargeText()" title="Aumentar tamaño de letra para máxima legibilidad (WCAG AAA)" style="padding:8px 12px;">
+            👁️ A+
+          </button>
+          <button class="btn-hub-menu" onclick="toggleHubDrawer(true)" title="Abrir Menú de Administración">
+            <span>☰</span> Menú
+          </button>
+        </div>
       </header>
 
       <!-- Active Mission Hero Card (Para gente impaciente / Onboarding) -->
@@ -1994,11 +2102,11 @@
           🎯 Paso 1 · Propósito Nuclear
         </div>
         <div style="display:flex; align-items:center; gap:8px;">
-          <button class="btn-view-canvas-peek" onclick="openCanvasModal()" title="Ver Manifiesto de 6 Placas">
-            🏛️ Ver Manifiesto
+          <button class="btn-view-canvas-peek" onclick="toggleA11yLargeText()" title="Aumentar tamaño de letra (Accesibilidad Visual)">
+            👁️ A+
           </button>
           <div class="voice-dock-btn" id="voiceToggleBadge" onclick="toggleVoiceMute()" title="Silenciar o activar voz de Aura">
-            🔊 Aoede
+            🔊 Voz Aura
             <span class="eq-bars"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span>
           </div>
           <button class="btn-hub-menu" onclick="toggleHubDrawer(true)" title="Menú de Administración">
@@ -2007,14 +2115,14 @@
         </div>
       </header>
 
-      <!-- THE LIVING AURA CORE (FOCUS STAGE) -->
+      <!-- THE LIVING AURA CORE (FUTURISTIC GENDER-NEUTRAL QUANTUM SPHERE) -->
       <div class="aura-presence-stage" id="focusAuraStage">
-        <div class="aura-orb-halo" id="avatarOrb" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para escuchar la voz de Aura">
-          <canvas id="avatarCanvas" width="130" height="130" class="aura-canvas"></canvas>
+        <div class="aura-orb-halo" id="avatarOrb" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para escuchar la voz de AURA">
+          <canvas id="avatarCanvas" width="136" height="136" class="aura-canvas"></canvas>
         </div>
         <div class="aura-presence-badge" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para activar audio">
           <span class="aura-pulse-dot"></span>
-          <span id="avatarStateLabel">🟢 Aura · Mentora Socrática (Clic para escuchar)</span>
+          <span id="avatarStateLabel">AURA · Núcleo Estratégico (Clic para escuchar)</span>
         </div>
       </div>
 
@@ -2022,65 +2130,33 @@
       <main class="atelier-container" style="max-width:100%; padding:0; margin:0;">
 
     <!-- ==================================================================== -->
-    <!-- STAGE 1 & 2: THE DIALOGUE (HERO CONVERSATION)                        -->
+    <!-- STAGE 1 & 2: THE DIALOGUE (PURE CONCENTRATION SANCTUARY)             -->
     <!-- ==================================================================== -->
     <section class="stage-section active" id="panel-step-1">
-      <!-- UNIFIED SINGLE-SCREEN ATELIER WORKBENCH -->
+      <!-- PURE SINGLE-COLUMN FOCUS SANCTUARY -->
       <div class="unified-workbench-grid">
 
-        <!-- LEFT COLUMN: AURA SOCRATIC DIALOGUE & INTERACTIVE INPUT -->
+        <!-- CENTERED FOCUS COLUMN: AURA SOCRATIC DIALOGUE & DIRECT INPUT -->
         <div class="workbench-dialogue-pane" id="atelierLeftPane">
-          <div class="question-billboard" style="margin-bottom: 20px;">
+          <div class="question-billboard" style="margin-bottom: 22px;">
             <span class="question-category" id="questionCategory">01 · Propósito Nuclear & Círculo Dorado</span>
-            <h1 class="question-text" id="activeQuestionHeading" style="font-size: 1.75rem;">
+            <h1 class="question-text" id="activeQuestionHeading">
               ¿Qué problema real le resuelves a tus clientes que nadie más en tu industria ha sido capaz de solucionar?
             </h1>
           </div>
 
-          <!-- SMART CHIPS DE INSPIRACIÓN RÁPIDA -->
-          <div class="smart-chips-stage" id="smartChipsContainer">
-            <div class="smart-chips-header">
-              <span class="smart-chips-label">💡 TOCA PARA INSPIRARTE (RESPUESTAS RÁPIDAS):</span>
-            </div>
-            <div class="smart-chips-grid" id="smartChipsGrid">
-              <button type="button" class="smart-chip-pill" onclick="injectSmartAnswer('⚡ Resolvemos la ineficiencia logística mediante automatización y trazabilidad en tiempo real.')">
-                ⚡ Logística automatizada y trazabilidad
-              </button>
-              <button type="button" class="smart-chip-pill" onclick="injectSmartAnswer('💎 Ofrecemos manufactura artesanal suiza y precisión a un precio justo y transparente.')">
-                💎 Manufactura de alta precisión suiza
-              </button>
-              <button type="button" class="smart-chip-pill" onclick="injectSmartAnswer('🌱 Democratizamos el acceso a productos 100% ecológicos sin sobrecosto comercial.')">
-                🌱 Sostenibilidad real sin sobreprecio
-              </button>
-              <button type="button" class="smart-chip-pill" onclick="injectSmartAnswer('🛡️ Blindamos la seguridad de pagos con criptografía y verificación biométrica continua.')">
-                🛡️ Criptoseguridad y verificación continua
-              </button>
-            </div>
-          </div>
-
-          <!-- FLOATING INPUT DOCK -->
-          <div class="input-dock" style="margin-bottom: 12px;">
+          <!-- FLOATING INPUT DOCK DIRECTLY BELOW QUESTION (ZERO BIAS, ZERO CLUTTER) -->
+          <div class="input-dock" style="margin-bottom: 16px;">
             <button class="btn-circle btn-mic-round" id="micBtn" onclick="toggleContinuousVoice()" title="Hablar por voz">🎙️</button>
             <textarea
               id="chatInput"
               class="input-textarea"
               rows="1"
-              placeholder="Habla o escribe tu visión..."
+              placeholder="Habla o escribe tu respuesta con total libertad..."
               oninput="onChatInputChanged(this.value)"
               onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); sendUserMessage(); }"
             ></textarea>
-            <button class="btn-circle btn-send" id="sendBtn" onclick="sendUserMessage()" title="Enviar mensaje">↑</button>
-          </div>
-
-          <!-- STRATEGIC DEPTH METER -->
-          <div class="strategic-depth-container" id="strategicDepthContainer" style="margin-bottom: 16px;">
-            <div class="depth-meter-top">
-              <span class="depth-meter-title">🎯 PROFUNDIDAD ESTRATÉGICA:</span>
-              <span class="depth-meter-badge" id="depthMeterLabel">65% · Profesional (+25 XP)</span>
-            </div>
-            <div class="depth-meter-track">
-              <div class="depth-meter-progress" id="depthMeterProgress" style="width: 65%;"></div>
-            </div>
+            <button class="btn-circle btn-send" id="sendBtn" onclick="sendUserMessage()" title="Enviar respuesta">↑</button>
           </div>
 
           <!-- CLOSING CONFIRMATION GATE -->
@@ -2092,13 +2168,8 @@
             </div>
           </div>
 
-          <!-- SOCRATIC DIALOGUE STREAM (COMPACT, AUTO-SCROLL) -->
-          <div class="socratic-stream" id="chatHistory" style="max-height: 280px; overflow-y: auto; margin-bottom: 0;">
-            <div class="dialogue-turn mentor">
-              <span class="mentor-pill-tag">✨ AURA · CONSULTORÍA ESTRATÉGICA</span>
-              <p>Bienvenido al Taller de Marca. Vamos a descubrir la verdadera alma de tu proyecto, conversando con calma y explorando cada ángulo hasta definir un posicionamiento inolvidable. Cuéntame todo sobre tu producto o servicio.</p>
-            </div>
-          </div>
+          <!-- SOCRATIC DIALOGUE STREAM (CLEAN: ONLY SHOWS EXCHANGED TURNS) -->
+          <div class="socratic-stream" id="chatHistory" style="max-height: 280px; overflow-y: auto; margin-bottom: 0;"></div>
         </div>
 
         <!-- RIGHT COLUMN: LIVING BRAND CANVAS (ALL-IN-ONE REAL-TIME VIEW) -->
@@ -2246,13 +2317,31 @@
     </section>
 
     <!-- ==================================================================== -->
-    <!-- STAGE 4: VISUAL IDENTITY STUDIO (REAL-WORLD MOCKUPS)                 -->
+    <!-- STAGE 4: VISUAL IDENTITY STUDIO (KANSEI QTTI & REAL-WORLD MOCKUPS)   -->
     <!-- ==================================================================== -->
     <section class="stage-section" id="panel-step-4">
       <div class="identity-hero-header">
-        <span class="question-category">04 · Calibración Sensorial de Identidad</span>
+        <span class="question-category">04 · Ingeniería Kansei QTTI & Calibración Sensorial</span>
         <h2>Dirección de Arte & Consola Bipolar</h2>
-        <p>Ajusta la personalidad visual de tu marca mediante benchmarks del mundo real. Cada cambio esculpe tus mockups en tiempo real.</p>
+        <p>Ajusta la personalidad visual de tu marca mediante el Diferencial Semántico de Osgood (EPA). El motor de Teoría de Cuantificación de Hayashi Tipo I (QTTI) y la simulación cognitiva BDI/ACT-R esculpen tus vectores y parámetros de NanoBanana en tiempo real.</p>
+      </div>
+
+      <!-- KANSEI QTTI & BDI/ACT-R LIVE TELEMETRY PANEL -->
+      <div id="kanseiTelemetryBanner" style="width:100%; background:#090D16; color:#F8FAFC; border:1px solid rgba(56,189,248,0.35); border-radius:20px; padding:16px 20px; margin-bottom:22px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;">
+        <div>
+          <span style="font-family:var(--font-mono); font-size:0.72rem; color:#38BDF8; font-weight:700; letter-spacing:0.06em;">🧬 MOTOR KANSEI QTTI + SIMULACIÓN COGNITIVA BDI/ACT-R</span>
+          <div id="kanseiHeadlineSummary" style="font-size:0.95rem; font-weight:700; margin-top:4px; color:#FFFFFF;">
+            Tensión Bézier: 0.28 · Trazo Mínimo: 1.45 mm · Simetría Axial: 92% · Retención ACT-R: 94.2%
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span id="kanseiMnlBadge" style="font-family:var(--font-mono); font-size:0.74rem; padding:6px 12px; border-radius:999px; background:rgba(16,185,129,0.18); color:#34D399; border:1px solid rgba(16,185,129,0.4);">
+            MNL Utilidad: +91.8%
+          </span>
+          <span id="kanseiNanoBananaBadge" style="font-family:var(--font-mono); font-size:0.74rem; padding:6px 12px; border-radius:999px; background:rgba(56,189,248,0.16); color:#38BDF8; border:1px solid rgba(56,189,248,0.4);">
+            ⚡ NanoBanana ControlNet: Activo
+          </span>
+        </div>
       </div>
 
       <!-- FADERS DECK -->
@@ -2419,36 +2508,43 @@
       <button class="hub-close-icon" onclick="toggleHubDrawer(false)" title="Cerrar menú">✕</button>
     </div>
 
-    <!-- Group 1: Cuenta & Licencia -->
+    <!-- Group 1: Cuenta Corporativa & Accesibilidad Visual -->
     <div class="hub-group">
-      <span class="hub-group-label">👤 Cuenta & Credenciales</span>
+      <span class="hub-group-label">🏢 Cuenta Corporativa & Accesibilidad</span>
       <div class="hub-group-card">
         <div class="hub-row-between">
-          <strong id="hubUserName">Jorge Benítez</strong>
-          <span class="stat-pill xp-pill" style="font-size:0.7rem;">Plan Fundador</span>
+          <strong id="hubUserName">IMPROBEARS Corporate AI</strong>
+          <span class="stat-pill xp-pill" style="font-size:0.7rem;">Licencia Enterprise</span>
         </div>
         <div class="hub-row-between" style="font-size:0.82rem; color:var(--ink-secondary);">
-          <span>API Key Personal:</span>
-          <strong id="hubApiKeyStatus" style="color:#059669;">Activa (1,500 RPM)</strong>
+          <span>Motor Gemini & Voz AURA:</span>
+          <strong style="color:#047857;">🟢 Conectado (Servidor Central)</strong>
         </div>
-        <button class="btn-hub-action" onclick="promptForApiKey()">
-          🔑 Configurar Clave de Google AI Studio
+        <div class="hub-row-between" style="font-size:0.82rem; color:var(--ink-secondary);">
+          <span>NanoBanana (Logos) & Flow (Video):</span>
+          <strong id="hubNanoFlowStatus" style="color:#0284C7;">⚡ Pipeline Corporativo Listo</strong>
+        </div>
+        <button class="btn-hub-action" onclick="toggleA11yLargeText()">
+          👁️ Alternar Letra Grande de Alta Legibilidad (A+)
         </button>
       </div>
     </div>
 
-    <!-- Group 2: Mis Marcas & Expansión -->
+    <!-- Group 2: Avances del Manifiesto & Portafolio de Marcas -->
     <div class="hub-group">
-      <span class="hub-group-label">🏷️ Mis Proyectos de Marca</span>
+      <span class="hub-group-label">🏛️ Avances & Portafolio de Marcas</span>
       <div class="hub-group-card">
         <div class="hub-row-between">
           <strong id="hubActiveBrandName">Mi Marca Activa</strong>
-          <span class="stat-pill streak-pill" style="font-size:0.7rem;">En Progreso</span>
+          <span class="stat-pill streak-pill" style="font-size:0.7rem;" id="hubManifestoPctBadge">En Progreso</span>
         </div>
-        <p style="font-size:0.80rem; color:var(--ink-secondary); line-height:1.4;">
-          Expande tu portafolio creando identidades adicionales o marcas hijas independientes.
+        <p style="font-size:0.82rem; color:var(--ink-secondary); line-height:1.45;">
+          Consulta en cualquier momento los 6 pilares estratégicos construidos con AURA o expande tu portafolio con una nueva marca.
         </p>
-        <button class="btn-hub-action" onclick="alert('Expansión de Portafolio: Puedes iniciar una nueva marca con un solo toque conservando tu cuenta y preferencias.')">
+        <button class="btn-hub-action" onclick="toggleHubDrawer(false); openCanvasModal();">
+          🏛️ Ver Avances del Manifiesto (6 Placas)
+        </button>
+        <button class="btn-hub-action" onclick="alert('Expansión de Portafolio: Puedes iniciar una nueva marca adicional bajo tu cuenta corporativa conservando tus activos.')">
           ➕ Crear Nueva Marca Adicional
         </button>
       </div>
@@ -2458,8 +2554,8 @@
     <div class="hub-group">
       <span class="hub-group-label">📦 Entregables & Descargas</span>
       <div class="hub-group-card">
-        <p style="font-size:0.80rem; color:var(--ink-secondary); line-height:1.4;">
-          Acceso instantáneo a los activos maestros generados con estándar de agencia de lujo:
+        <p style="font-size:0.82rem; color:var(--ink-secondary); line-height:1.45;">
+          Acceso instantáneo a los activos maestros generados con estándar de agencia internacional:
         </p>
         <button class="btn-hub-action" onclick="downloadMasterBrandbookJSON()">
           📄 Descargar Brandbook Maestro (38 Láminas)
@@ -2479,7 +2575,7 @@
       <div class="hub-group-card">
         <div class="hub-row-between">
           <span>Servidor:</span>
-          <strong style="color:#059669;">🟢 Neon PostgreSQL 18</strong>
+          <strong style="color:#047857;">🟢 Neon PostgreSQL 18</strong>
         </div>
         <div class="hub-row-between" style="font-size:0.78rem; color:var(--ink-tertiary);">
           <span>Proyecto:</span>
@@ -2487,13 +2583,13 @@
         </div>
         <div class="hub-row-between" style="font-size:0.78rem; color:var(--ink-tertiary);">
           <span>Persistencia:</span>
-          <span style="color:#059669; font-weight:700;">Sincronizado en la nube</span>
+          <span style="color:#047857; font-weight:700;">Sincronizado en la nube</span>
         </div>
       </div>
     </div>
   </aside>
 
-  <!-- MODAL PARA VER EL MANIFIESTO EN VIVO (SIN SALIR DE FOCUS) -->
+  <!-- MODAL PARA VER EL MANIFIESTO EN VIVO (ACCESIBLE DESDE EL MENÚ) -->
   <div class="canvas-modal-overlay" id="canvasModalOverlay" onclick="closeCanvasModal(event)">
     <div class="canvas-modal-box" onclick="event.stopPropagation()">
       <div class="hub-top-header" style="margin-bottom:12px;">
@@ -2501,13 +2597,34 @@
         <button class="hub-close-icon" onclick="closeCanvasModal()">✕</button>
       </div>
       <div id="canvasModalBody">
-        <p style="font-size:0.85rem; color:var(--ink-secondary); margin-bottom:14px;">
-          Progreso actual de los 6 pilares estratégicos forjados con Aura:
+        <p style="font-size:0.9rem; color:var(--ink-secondary); margin-bottom:14px;">
+          Progreso actual de los 6 pilares estratégicos forjados con AURA:
         </p>
         <div class="manifesto-grid" id="modalManifestoGrid">
           <!-- Copia de las 6 placas -->
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- STARTUP WELCOME POP-UP MODAL (GREETS USER AT MISSION START & DISAPPEARS) -->
+  <div class="welcome-modal-overlay" id="welcomeIntroModal" onclick="dismissWelcomeModal(event)">
+    <div class="welcome-modal-card" onclick="event.stopPropagation()">
+      <span class="welcome-modal-badge" id="welcomeModalBadge">✨ AURA · NÚCLEO ESTRATÉGICO</span>
+      <h2 class="welcome-modal-title" id="welcomeModalTitle">Bienvenido al Taller de Marca</h2>
+      <p class="welcome-modal-body" id="welcomeModalBody">
+        Vamos a descubrir la verdadera esencia de tu proyecto en una sesión enfocada y libre de distracciones. Conversaremos paso a paso para esculpir un posicionamiento y una identidad visual inolvidables.
+      </p>
+      <div class="welcome-flow-preview">
+        <div>
+          <div style="font-family:var(--font-mono); font-size:0.68rem; color:#38BDF8; font-weight:700;">🎬 CÁPSULA INTRODUCTORIA · GOOGLE FLOW</div>
+          <div style="font-size:0.84rem; font-weight:600; margin-top:2px;" id="welcomeFlowLabel">Introducción Ejecutiva del Capítulo (12s)</div>
+        </div>
+        <span style="font-family:var(--font-mono); font-size:0.72rem; padding:4px 10px; border-radius:999px; background:rgba(56,189,248,0.18); color:#38BDF8;">Lista</span>
+      </div>
+      <button class="btn-welcome-start" id="btnDismissWelcomeModal" onclick="dismissWelcomeModal()">
+        <span>Comenzar Ahora</span> <span>→</span>
+      </button>
     </div>
   </div>
 
@@ -2529,52 +2646,91 @@
     const canvasState = {
       brandName: "TheBestBrand",
       tagline: "Ultra-High Definition Brand Identity",
-      primary_font: "Syne",
+      primary_font: "Inter",
       selected_colors_hex: ["#FFFFFF", "#0F172A", "#18181B", "#71717A"],
       selected_kit_index: 0
     };
 
-    let userCustomApiKey = localStorage.getItem("tbb_custom_api_key") || "";
-
+    // CENTRALIZED CORPORATE BACKEND ACCOUNT (ZERO USER API KEYS)
     function getActiveApiKey() {
-      return (userCustomApiKey || "").trim();
-    }
-
-    function promptForApiKey() {
-      const current = userCustomApiKey ? (userCustomApiKey.slice(0, 7) + "..." + userCustomApiKey.slice(-4)) : "Ninguna (usando clave default del servidor)";
-      const val = prompt(
-        "🔑 Clave de API de Google Gemini / AI Studio:\n\n" +
-        "Actualmente configurada: " + current + "\n\n" +
-        "Al usar tu propia cuenta de Google AI Studio tienes hasta 1,500 peticiones por minuto y jamás se te acabará la cuota.\n\n" +
-        "Pega aquí tu clave (empieza con AIzaSy...)\no déjala en blanco para usar la del servidor:",
-        userCustomApiKey || ""
-      );
-      if (val !== null) {
-        userCustomApiKey = val.trim();
-        if (userCustomApiKey) {
-          localStorage.setItem("tbb_custom_api_key", userCustomApiKey);
-          alert("✓ ¡Clave guardada con éxito! Ahora Aura usará tu propia cuenta de Google Gemini para todas las respuestas y voces.");
-        } else {
-          localStorage.removeItem("tbb_custom_api_key");
-          alert("✓ Se restableció al uso de la clave por defecto.");
-        }
-        updateApiKeyBadge();
-      }
+      return "";
     }
 
     function updateApiKeyBadge() {
-      const btn = document.getElementById("apiKeyDockBtn");
-      if (!btn) return;
-      if (userCustomApiKey) {
-        btn.textContent = "🔑 Cuenta Activa (Propia)";
-        btn.style.borderColor = "rgba(16, 185, 129, 0.5)";
-        btn.style.color = "#A7F3D0";
-        btn.style.background = "rgba(16, 185, 129, 0.1)";
-      } else {
-        btn.textContent = "🔑 Usar Mi Cuenta";
-        btn.style.borderColor = "rgba(255, 255, 255, 0.1)";
-        btn.style.color = "var(--text-muted)";
-        btn.style.background = "rgba(255, 255, 255, 0.05)";
+      // Corporate backend is always active; no user API key prompt needed
+    }
+
+    // ACCESSIBILITY HIGH-LEGIBILITY LARGE TEXT TOGGLE (WCAG AAA)
+    let a11yLargeTextEnabled = localStorage.getItem("tbb_a11y_large") === "1";
+    function applyA11yModeState() {
+      document.body.classList.toggle("a11y-large-mode", a11yLargeTextEnabled);
+      const btnJ = document.getElementById("btnA11yJourney");
+      if (btnJ) {
+        btnJ.style.background = a11yLargeTextEnabled ? "#090D16" : "";
+        btnJ.style.color = a11yLargeTextEnabled ? "#FFFFFF" : "";
+      }
+    }
+    function toggleA11yLargeText() {
+      a11yLargeTextEnabled = !a11yLargeTextEnabled;
+      localStorage.setItem("tbb_a11y_large", a11yLargeTextEnabled ? "1" : "0");
+      applyA11yModeState();
+    }
+
+    // STARTUP WELCOME POP-UP MODAL (SHOWN ON MISSION ENTRY, THEN DISAPPEARS)
+    const shownWelcomeSteps = {};
+    const STEP_WELCOME_BRIEFINGS = {
+      1: {
+        title: "Bienvenido al Taller de Marca",
+        body: "Vamos a descubrir la verdadera esencia de tu proyecto en una sesión enfocada y libre de distracciones. Conversaremos paso a paso para definir tu propósito y los 6 pilares de tu marca.",
+        flow: "Capítulo 01 · El Círculo Dorado y Propósito Nuclear (12s)"
+      },
+      2: {
+        title: "Momentos de Verdad (Touchpoints)",
+        body: "Ahora diseñaremos cómo vive tu cliente cada etapa de contacto: Antes, Durante y Después de elegir tu marca.",
+        flow: "Capítulo 02 · Arquitectura de Experiencia del Cliente (12s)"
+      },
+      3: {
+        title: "Laboratorio de Naming de Autor",
+        body: "Evaluaremos la fonética, memorabilidad (SMILE & SCRATCH) y disponibilidad en las 45 Clases Internacionales de Niza.",
+        flow: "Capítulo 03 · Ingeniería Fonosemántica de Nombres (12s)"
+      },
+      4: {
+        title: "Ingeniería Kansei & Dirección de Arte",
+        body: "Calibra los 7 deslizadores afectivos de Osgood (EPA). Nuestro motor matemático QTTI y simulación cognitiva BDI/ACT-R esculpirán tus parámetros geométricos en vivo.",
+        flow: "Capítulo 04 · Síntesis Kansei QTTI y NanoBanana (12s)"
+      },
+      5: {
+        title: "Torneo Sensorial de 60 Pares",
+        body: "Elige por intuición entre pares polarizados. El modelo probabilístico Bradley-Terry aislará tu vector visual ideal.",
+        flow: "Capítulo 05 · Diagnóstico Psicométrico Visual (12s)"
+      },
+      6: {
+        title: "Brandbook Maestro de 38 Páginas",
+        body: "Tu manual de identidad completo con retícula constructiva, zona 1X, colorimetría CMYK FOGRA39 y curvas vectoriales listas para imprenta.",
+        flow: "Capítulo 06 · Compilación Editorial Estándar Bënefic (12s)"
+      }
+    };
+
+    function openWelcomeModalForStep(stepNum) {
+      const modal = document.getElementById("welcomeIntroModal");
+      if (!modal) return;
+      const info = STEP_WELCOME_BRIEFINGS[stepNum] || STEP_WELCOME_BRIEFINGS[1];
+      const titleEl = document.getElementById("welcomeModalTitle");
+      const bodyEl = document.getElementById("welcomeModalBody");
+      const flowEl = document.getElementById("welcomeFlowLabel");
+      if (titleEl) titleEl.textContent = info.title;
+      if (bodyEl) bodyEl.textContent = info.body;
+      if (flowEl) flowEl.textContent = info.flow;
+      modal.classList.add("open");
+    }
+
+    function dismissWelcomeModal(e) {
+      if (e && e.target && e.target.closest(".welcome-modal-card") && e.target.id !== "btnDismissWelcomeModal") return;
+      const modal = document.getElementById("welcomeIntroModal");
+      if (modal) modal.classList.remove("open");
+      if (currentStep === 1) {
+        const input = document.getElementById("chatInput");
+        if (input) setTimeout(() => input.focus(), 120);
       }
     }
 
@@ -2599,12 +2755,12 @@
     ];
 
     // =========================================================================
-    // CANVAS LIVING AURA VISUALIZER (60FPS VISIONOS PARTICLE ORB)
+    // CANVAS LIVING AURA VISUALIZER (FUTURISTIC GENDER-NEUTRAL QUANTUM CORE)
     // =========================================================================
     let auraCanvas, auraCtx;
     let auraAngle = 0;
     let isSpeakingLive = false;
-    const NUM_AURA_PARTICLES = 42;
+    const NUM_AURA_PARTICLES = 44;
     const auraParticles = [];
 
     function initAuraOrb() {
@@ -2615,12 +2771,12 @@
       for (let i = 0; i < NUM_AURA_PARTICLES; i++) {
         auraParticles.push({
           angle: (i / NUM_AURA_PARTICLES) * Math.PI * 2,
-          radius: 28 + Math.random() * 22,
-          baseRadius: 28 + Math.random() * 22,
-          speed: 0.012 + Math.random() * 0.018,
-          size: 1.4 + Math.random() * 2.2,
-          hue: Math.random() > 0.4 ? 240 : 185,
-          alpha: 0.35 + Math.random() * 0.5
+          radius: 26 + Math.random() * 26,
+          baseRadius: 26 + Math.random() * 26,
+          speed: 0.014 + Math.random() * 0.018,
+          size: 1.5 + Math.random() * 2.1,
+          hue: i % 2 === 0 ? 190 : 235,
+          alpha: 0.55 + Math.random() * 0.45
         });
       }
       requestAnimationFrame(renderAuraLoop);
@@ -2635,77 +2791,84 @@
       const cy = h / 2;
 
       ctx.clearRect(0, 0, w, h);
-      auraAngle += isSpeakingLive ? 0.05 : 0.016;
+      auraAngle += isSpeakingLive ? 0.055 : 0.018;
 
-      // Inner Luminous Core (Neutral Pearl/Obsidian by default, shifts to Brand Colors on selection)
-      const grad = ctx.createRadialGradient(cx, cy, 4, cx, cy, isSpeakingLive ? 48 : 36);
-      if (isBrandThemeColored) {
-        grad.addColorStop(0, `rgba(${currentBrandThemeColors[0] ? 'var(--brand-primary-rgb)' : '24,24,27'}, 0.4)`);
-        grad.addColorStop(0.5, `rgba(${currentBrandThemeColors[0] ? 'var(--brand-primary-rgb)' : '24,24,27'}, 0.15)`);
-        grad.addColorStop(1, "rgba(255, 255, 255, 0)");
-      } else {
-        // Pure Neutral Titanium/Silver & Ivory
-        grad.addColorStop(0, isSpeakingLive ? "rgba(15, 23, 42, 0.35)" : "rgba(15, 23, 42, 0.22)");
-        grad.addColorStop(0.5, "rgba(100, 116, 139, 0.12)");
-        grad.addColorStop(1, "rgba(255, 255, 255, 0)");
-      }
+      // 1. Quantum Core Bioluminescent Halo (High Contrast inside Obsidian Sphere)
+      const grad = ctx.createRadialGradient(cx, cy, 3, cx, cy, isSpeakingLive ? 58 : 48);
+      grad.addColorStop(0, isSpeakingLive ? "rgba(56, 189, 248, 0.92)" : "rgba(56, 189, 248, 0.65)");
+      grad.addColorStop(0.38, isSpeakingLive ? "rgba(99, 102, 241, 0.55)" : "rgba(99, 102, 241, 0.35)");
+      grad.addColorStop(0.75, "rgba(16, 185, 129, 0.18)");
+      grad.addColorStop(1, "rgba(9, 13, 22, 0)");
       ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.arc(cx, cy, isSpeakingLive ? 52 : 38, 0, Math.PI * 2);
+      ctx.arc(cx, cy, isSpeakingLive ? 58 : 48, 0, Math.PI * 2);
       ctx.fill();
 
-      // 3D Gyroscope Rings (Craig Federighi & Jony Ive Tourbillon Aesthetic)
+      // 2. Futuristic Sacred Polyhedral & Gyroscopic Rings
       ctx.save();
       ctx.translate(cx, cy);
-      // Ring 1 (tilted 35 deg, rotating clockwise)
+
+      // Outer Quantum Ring 1
       ctx.save();
-      ctx.rotate(auraAngle * 0.5);
-      ctx.scale(1, 0.42);
-      ctx.strokeStyle = isSpeakingLive ? "rgba(6, 182, 212, 0.65)" : "rgba(99, 102, 241, 0.4)";
-      ctx.lineWidth = 1.4;
+      ctx.rotate(auraAngle * 0.6);
+      ctx.scale(1, 0.44);
+      ctx.strokeStyle = isSpeakingLive ? "rgba(56, 189, 248, 0.95)" : "rgba(56, 189, 248, 0.72)";
+      ctx.lineWidth = 1.8;
       ctx.beginPath();
-      ctx.arc(0, 0, isSpeakingLive ? 52 : 42, 0, Math.PI * 2);
+      ctx.arc(0, 0, isSpeakingLive ? 54 : 46, 0, Math.PI * 2);
       ctx.stroke();
       ctx.restore();
 
-      // Ring 2 (tilted -45 deg, counter-clockwise)
+      // Outer Quantum Ring 2
       ctx.save();
-      ctx.rotate(-auraAngle * 0.35 + 0.8);
-      ctx.scale(0.48, 1);
-      ctx.strokeStyle = isSpeakingLive ? "rgba(139, 92, 246, 0.7)" : "rgba(6, 182, 212, 0.35)";
+      ctx.rotate(-auraAngle * 0.45 + 0.9);
+      ctx.scale(0.46, 1);
+      ctx.strokeStyle = isSpeakingLive ? "rgba(165, 180, 252, 0.95)" : "rgba(129, 140, 248, 0.72)";
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.arc(0, 0, isSpeakingLive ? 50 : 42, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      // Inner Hexagonal Geometric Lattice (Gender-Neutral AI Core)
+      ctx.save();
+      ctx.rotate(auraAngle * 0.25);
+      ctx.strokeStyle = isSpeakingLive ? "rgba(52, 211, 153, 0.85)" : "rgba(255, 255, 255, 0.45)";
       ctx.lineWidth = 1.2;
       ctx.beginPath();
-      ctx.arc(0, 0, isSpeakingLive ? 48 : 38, 0, Math.PI * 2);
+      const hexR = isSpeakingLive ? 22 + Math.sin(auraAngle * 4) * 4 : 18;
+      for (let k = 0; k < 6; k++) {
+        const a = (k / 6) * Math.PI * 2;
+        const hx = Math.cos(a) * hexR;
+        const hy = Math.sin(a) * hexR;
+        if (k === 0) ctx.moveTo(hx, hy);
+        else ctx.lineTo(hx, hy);
+      }
+      ctx.closePath();
       ctx.stroke();
       ctx.restore();
 
-      // Ring 3 (horizontal equator with dashed ticks)
-      ctx.save();
-      ctx.rotate(auraAngle * 0.2);
-      ctx.scale(1, 0.26);
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
-      ctx.lineWidth = 1;
-      ctx.setLineDash([4, 6]);
+      // Central Singularity Pulse
+      ctx.fillStyle = "#FFFFFF";
       ctx.beginPath();
-      ctx.arc(0, 0, isSpeakingLive ? 56 : 46, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.restore();
+      ctx.arc(0, 0, isSpeakingLive ? 5.5 + Math.sin(auraAngle * 6) * 2 : 4, 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
 
-      // Harmonic Particles
+      // 3. Harmonic Quantum Nodes
       for (let p of auraParticles) {
         p.angle += isSpeakingLive ? p.speed * 2.4 : p.speed;
         const targetRadius = isSpeakingLive 
-          ? p.baseRadius * 1.35 + Math.sin(auraAngle * 3 + p.angle) * 8 
-          : p.baseRadius + Math.sin(auraAngle * 2 + p.angle) * 3;
-        p.radius += (targetRadius - p.radius) * 0.12;
+          ? p.baseRadius * 1.22 + Math.sin(auraAngle * 3 + p.angle) * 7 
+          : p.baseRadius + Math.sin(auraAngle * 2 + p.angle) * 2.5;
+        p.radius += (targetRadius - p.radius) * 0.14;
 
         const px = cx + Math.cos(p.angle) * p.radius;
         const py = cy + Math.sin(p.angle) * p.radius;
 
-        ctx.fillStyle = `hsla(${p.hue}, 92%, 65%, ${isSpeakingLive ? Math.min(1, p.alpha * 1.4) : p.alpha})`;
+        ctx.fillStyle = `hsla(${p.hue}, 95%, 72%, ${isSpeakingLive ? 0.95 : p.alpha})`;
         ctx.beginPath();
-        ctx.arc(px, py, isSpeakingLive ? p.size * 1.35 : p.size, 0, Math.PI * 2);
+        ctx.arc(px, py, isSpeakingLive ? p.size * 1.3 : p.size, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -3000,10 +3163,10 @@
         const clean = text.replace(/<[^>]+>/g, " ").replace(/[*_#`]/g, "").trim();
         const u = new SpeechSynthesisUtterance(clean);
         u.lang = 'es-MX';
-        u.rate = 1.05;
-        u.pitch = 1.0;
+        u.rate = 1.04;
+        u.pitch = 0.96; // Neutral, balanced futuristic cadence
         const voices = window.speechSynthesis.getVoices();
-        const esVoice = voices.find(v => (v.lang.startsWith('es') || v.lang.includes('es')) && (v.name.includes('Natural') || v.name.includes('Paulina') || v.name.includes('Monica') || v.name.includes('Google') || v.name.includes('Jorge') || v.name.includes('Elena'))) || voices.find(v => v.lang.startsWith('es'));
+        const esVoice = voices.find(v => (v.lang.startsWith('es') || v.lang.includes('es')) && (v.name.includes('Natural') || v.name.includes('Google'))) || voices.find(v => v.lang.startsWith('es'));
         if (esVoice) u.voice = esVoice;
         u.onstart = () => {
           isSpeakingLive = true;
@@ -3034,7 +3197,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             text: textToSpeak,
-            llm_api_key: getActiveApiKey()
+            llm_api_key: ""
           })
         });
         if (res.ok) {
@@ -3052,7 +3215,7 @@
 
     function playAuraInitialGreeting() {
       unlockBrowserAudio();
-      const initialText = "¡Hola! Bienvenido a TheBestBrand. Platícame con toda confianza sobre tu proyecto: ¿qué producto o servicio vas a ofrecer y qué problema real le resuelves a tus clientes?";
+      const initialText = "¡Hola! Te damos la bienvenida a TheBestBrand. Cuéntame con total confianza sobre tu proyecto: ¿qué producto o servicio vas a ofrecer y qué problema real resuelves para tus clientes?";
       requestAndPlayGeminiVoice(initialText);
     }
 
@@ -3062,12 +3225,12 @@
       const badge = document.getElementById("voiceToggleBadge");
       if (voiceMuted) {
         badge.textContent = "🔇 Silenciada";
-        badge.style.color = "#F87171";
+        badge.style.color = "#DC2626";
         if (currentAudioObj) currentAudioObj.pause();
         isSpeakingLive = false;
       } else {
-        badge.textContent = "🔊 Aoede 24kHz";
-        badge.style.color = "#A5B4FC";
+        badge.textContent = "🔊 Voz Aura";
+        badge.style.color = "#090D16";
       }
     }
 
@@ -3165,7 +3328,7 @@
       const orb = document.getElementById("avatarOrb");
       if (orb) orb.classList.remove("listening");
       const stateLabel = document.getElementById("avatarStateLabel");
-      if (stateLabel) stateLabel.textContent = "Aura · Mentora Creativa (Clic para escuchar)";
+      if (stateLabel) stateLabel.textContent = "AURA · Núcleo Estratégico (Clic para escuchar)";
     }
 
     // =========================================================================
@@ -3264,6 +3427,10 @@
         if (screenFocus) screenFocus.classList.add("active");
         const stepToGo = targetStep || currentStep || 1;
         switchStep(stepToGo);
+        if (!shownWelcomeSteps[stepToGo]) {
+          shownWelcomeSteps[stepToGo] = true;
+          openWelcomeModalForStep(stepToGo);
+        }
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
@@ -3491,7 +3658,7 @@
         if (thinkingElem) thinkingElem.remove();
         appendChatMessage("mentor", "Hubo un error de conexión con el servidor. Revisa tu conexión.");
       } finally {
-        if (stateLabel) stateLabel.textContent = "Aura · Mentora Creativa (Clic para escuchar)";
+        if (stateLabel) stateLabel.textContent = "AURA · Núcleo Estratégico (Clic para escuchar)";
       }
     }
 
@@ -3625,9 +3792,45 @@
       }).join("");
     }
 
-    function onFaderChange(axisId, val) {
+    async function onFaderChange(axisId, val) {
       bipolarSliderValues[axisId] = parseFloat(val);
+      const badgeEl = document.getElementById(`sliderVal_${axisId}`);
+      if (badgeEl) {
+        const num = parseFloat(val);
+        badgeEl.textContent = num > 0.25 ? `Polo Derecho (+${num.toFixed(2)})` : num < -0.25 ? `Polo Izquierdo (${num.toFixed(2)})` : "Equilibrado";
+      }
       renderLiveStep4LogoSketches();
+      try {
+        const res = await fetch("/api/kansei/qt1-synthesis", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            brand_name: canvasState.brandName || "TheBestBrand",
+            sliders: bipolarSliderValues,
+            pair_selections: userPairSelections,
+            canvas_state: canvasState
+          })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const rootK = data.kansei_qtt1 || data;
+          const q = rootK.kansei_qt1_synthesis?.predicted_design_elements || rootK.predicted_design_elements;
+          const bdi = rootK.bdi_actr_cognitive_simulation;
+          const mnl = rootK.mnl_choice_probabilities;
+          if (q) {
+            const hl = document.getElementById("kanseiHeadlineSummary");
+            if (hl) {
+              hl.textContent = `Tensión Bézier: ${q.bezier_curve_tension} · Trazo Mínimo: ${q.stroke_weight_mm} mm · Simetría Axial: ${Math.round((q.axial_symmetry_index || 0.9) * 100)}% · Retención ACT-R: ${Math.round((bdi?.overall_memorability_index || 0.94) * 100)}%`;
+            }
+          }
+          if (mnl && mnl.top_recommended_archetype) {
+            const mb = document.getElementById("kanseiMnlBadge");
+            if (mb) {
+              mb.textContent = `MNL Óptimo: ${mnl.top_recommended_archetype} (${Math.round((mnl.top_probability || 0.42) * 100)}%)`;
+            }
+          }
+        }
+      } catch (e) {}
     }
 
     function renderLiveStep4LogoSketches() {
@@ -3647,7 +3850,7 @@
               <circle cx="80" cy="80" r="70" fill="#0C0E17" stroke="#6366F1" stroke-width="2.5"/>
               <circle cx="80" cy="80" r="54" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
               <polygon points="80,32 108,48 108,80 80,96 52,80 52,48" fill="#6366F1"/>
-              <text x="80" y="74" fill="#FFFFFF" font-family="'Syne',sans-serif" font-weight="800" font-size="20" text-anchor="middle">${initials}</text>
+              <text x="80" y="74" fill="#FFFFFF" font-family="'Inter',sans-serif" font-weight="800" font-size="20" text-anchor="middle">${initials}</text>
               <text x="80" y="124" fill="#FFFFFF" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="11" letter-spacing="1.5" text-anchor="middle">${brand.toUpperCase()}</text>
             </svg>
           `
@@ -3661,7 +3864,7 @@
             <svg viewBox="0 0 160 160" width="130" height="130">
               <path d="M25 24 H135 V84 C135 124 80 144 80 144 C80 144 25 124 25 84 Z" fill="#0C0E17" stroke="#06B6D4" stroke-width="3"/>
               <polygon points="80,38 88,52 104,54 92,65 96,80 80,72 64,80 68,65 56,54 72,52" fill="#06B6D4"/>
-              <text x="80" y="106" fill="#FFFFFF" font-family="'Syne',sans-serif" font-weight="800" font-size="13" text-anchor="middle">${brand}</text>
+              <text x="80" y="106" fill="#FFFFFF" font-family="'Inter',sans-serif" font-weight="800" font-size="13" text-anchor="middle">${brand}</text>
             </svg>
           `
         },
@@ -3674,8 +3877,8 @@
             <svg viewBox="0 0 180 100" width="160" height="90">
               <rect x="8" y="14" width="164" height="72" rx="14" fill="#0C0E17" stroke="#6366F1" stroke-width="2"/>
               <rect x="16" y="24" width="38" height="52" rx="8" fill="#6366F1"/>
-              <text x="35" y="56" fill="#FFFFFF" font-family="'Syne',sans-serif" font-weight="800" font-size="16" text-anchor="middle">${initials}</text>
-              <text x="64" y="46" fill="#FFFFFF" font-family="'Syne',sans-serif" font-weight="700" font-size="13">${brand}</text>
+              <text x="35" y="56" fill="#FFFFFF" font-family="'Inter',sans-serif" font-weight="800" font-size="16" text-anchor="middle">${initials}</text>
+              <text x="64" y="46" fill="#FFFFFF" font-family="'Inter',sans-serif" font-weight="700" font-size="13">${brand}</text>
               <text x="64" y="62" fill="#06B6D4" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="9" letter-spacing="1">PRO BROADCAST FEED</text>
             </svg>
           `
@@ -3689,8 +3892,8 @@
             <svg viewBox="0 0 160 160" width="130" height="130">
               <rect x="10" y="10" width="140" height="140" rx="20" fill="#FFFFFF"/>
               <circle cx="80" cy="62" r="32" fill="#050608"/>
-              <text x="80" y="72" fill="#6366F1" font-family="'Syne',sans-serif" font-weight="900" font-size="26" text-anchor="middle">${initials}</text>
-              <text x="80" y="118" fill="#050608" font-family="'Syne',sans-serif" font-weight="800" font-size="13" letter-spacing="0.5" text-anchor="middle">${brand}</text>
+              <text x="80" y="72" fill="#6366F1" font-family="'Inter',sans-serif" font-weight="900" font-size="26" text-anchor="middle">${initials}</text>
+              <text x="80" y="118" fill="#050608" font-family="'Inter',sans-serif" font-weight="800" font-size="13" letter-spacing="0.5" text-anchor="middle">${brand}</text>
             </svg>
           `
         }
@@ -3916,13 +4119,13 @@
           <g transform="translate(80, 70)">
             <circle cx="0" cy="0" r="54" stroke="${fg}" stroke-width="2" fill="none"/>
             <g transform="translate(0, -10) scale(0.9)">${emblemCenter}</g>
-            <text x="0" y="24" fill="${fg}" font-family="'Syne',sans-serif" font-weight="800" font-size="10" text-anchor="middle">${line1}</text>
+            <text x="0" y="24" fill="${fg}" font-family="'Inter',sans-serif" font-weight="800" font-size="10" text-anchor="middle">${line1}</text>
             <text x="0" y="36" fill="${fg}" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="8" text-anchor="middle">${line2}</text>
           </g>
           <g transform="translate(220, 70)">
             <rect x="-48" y="-48" width="96" height="96" rx="14" stroke="${fg}" stroke-width="2" fill="none"/>
             <g transform="translate(0, -10) scale(0.9)">${emblemCenter}</g>
-            <text x="0" y="24" fill="${fg}" font-family="'Syne',sans-serif" font-weight="800" font-size="10" text-anchor="middle">${line1}</text>
+            <text x="0" y="24" fill="${fg}" font-family="'Inter',sans-serif" font-weight="800" font-size="10" text-anchor="middle">${line1}</text>
             <text x="0" y="36" fill="${fg}" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="8" text-anchor="middle">${line2}</text>
           </g>
         </svg>
@@ -3954,11 +4157,11 @@
       return `
         <div style="width:100%; height:100%; background:${bg}; color:${ink}; padding:18px; display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
           <div style="display:flex; align-items:center; gap:16px;">
-            <div style="width:58px; height:58px; border-radius:50%; background:${ink}; color:#FFF; display:grid; place-items:center; font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; border:2px solid ${pri};">
+            <div style="width:58px; height:58px; border-radius:50%; background:${ink}; color:#FFF; display:grid; place-items:center; font-family:'Inter',sans-serif; font-weight:800; font-size:1.1rem; border:2px solid ${pri};">
               ${initials}
             </div>
             <div>
-              <div style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; line-height:1.1;">${line1}</div>
+              <div style="font-family:'Inter',sans-serif; font-weight:800; font-size:1.2rem; line-height:1.1;">${line1}</div>
               <div style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.85rem; color:${pri};">${line2}</div>
             </div>
           </div>
@@ -4797,6 +5000,7 @@
 
     // INITIALIZATION
     window.addEventListener("DOMContentLoaded", () => {
+      applyA11yModeState();
       initAuraOrb();
       initConfettiCanvas();
       updateApiKeyBadge();

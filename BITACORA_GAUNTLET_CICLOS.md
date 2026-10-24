@@ -1138,3 +1138,24 @@ A solicitud directa de la dirección creativa para resolver la sensación de rig
   3. *Entregables & Descargas:* Descarga directa del Brandbook PDF de 38 láminas, ficha Pantone/CMYK FOGRA39 y suite SVG.
   4. *Base de Datos en Neon:* Indicador de sincronización en tiempo real con Neon Postgres (`green-cherry-54371329`).
   5. *Planes & Expansión:* Upgrade a Master Brand Pass y suscripción a Brand Operations SaaS.
+
+
+---
+
+## 🏆 CICLO GAUNTLET v15.0: ESCUADRÓN LEAN T/PI-SHAPED + INGENIERÍA KANSEI (QTTI), PURIFICACIÓN FOCUS ZERO-BIAS, TIPOGRAFÍA WCAG AAA Y AURA FUTURISTA NEUTRAL
+
+### 1. Reestructuración del Equipo (5 Roles Lean de Alto Rendimiento + 1 Especialista Kansei & IA Generativa)
+- **Product & Growth Lead (CPO):** Rediseño de conversión de bienvenida con modal emergente desechable (`#welcomeIntroModal`) y telemetría de embudo sin fricción.
+- **Senior Product UI/UX Designer (WCAG AAA & Design Systems):** Eliminación radical de la fuente `Syne` y reemplazo por **`Inter` + `Plus Jakarta Sans`** con contraste WCAG AAA (`#090D16` sobre `#FFFFFF`, ratio 18.5:1) y botón de accesibilidad visual **`👁️ A+`** (aumento instantáneo de cuerpo tipográfico a `19px` / `2.15rem`).
+- **Lead Mobile Engineer (T/Pi-Shaped):** Purificación absoluta del Modo Concentración (`#screen-focus`):
+  1. **Eliminación de la columna derecha (`#atelierRightPane`)** durante la sesión de concentración (sus avances ahora se consultan bajo demanda desde el Menú de Administración `☰` → `🏛️ Ver Avances del Manifiesto`).
+  2. **Eliminación total de las sugerencias rápidas (`#smartChipsContainer`)** para erradicar cualquier sesgo cognitivo o anclaje en las respuestas del fundador.
+  3. **Eliminación total de la barra `Profundidad Estratégica` (`#strategicDepthContainer`)** que generaba ruido visual.
+  4. **Transformación del mensaje de bienvenida estático en un Pop-up de Inicio (`#welcomeIntroModal`)** que recibe al usuario con la cápsula de **Google Flow** y desaparece al pulsar *"Comenzar Ahora"*.
+- **Senior Backend & Cloud Infrastructure Architect:** Centralización 100% corporativa de credenciales en el servidor (`CorporateBackendAIHub` + `Neon PostgreSQL 18`). Se eliminó todo botón o solicitud de API Key al usuario final; todas las llamadas a **Gemini**, **NanoBanana**, **Google Flow** y **Notebook** operan exclusivamente bajo la cuenta corporativa de IMPROBEARS.
+- **Lead Generative Brand Architect & Kansei Engineer:** Implementación en producción (`packages/brandbook-engine/kansei_generative_architect.py` y endpoint `/api/kansei/qt1-synthesis`) de:
+  - **Diferencial Semántico de Osgood (EPA)** + **Teoría de Cuantificación de Hayashi Tipo I (QTTI)** mapeando los 7 ejes afectivos a parámetros geométricos vectoriales exactos (`bezier_curve_tension`, `stroke_weight_mm >= 1.25`, `axial_symmetry_index`, `negative_space_ratio`).
+  - **Modelo de Elección Discreta Multinomial Logit (MNL)** y **Bradley-Terry**.
+  - **Simulación Cognitiva de Mercado BDI + ACT-R** (atención visual en 50 ms y retención en memoria declarativa).
+  - **Pipeline de Condicionamiento NanoBanana (ControlNet + IP-Adapter)** y **Google Flow**.
+- **Full-Stack QA & Growth Automation Engineer:** Verificación automatizada E2E multi-viewport (`390x844` iPhone 15 Pro y `1280x800` Desktop) y auditoría de neutralidad de género 100% en **AURA** (núcleo cuántico futurista sin género en canvas 60fps, voz neural neutral `Puck` a 24kHz y prompt libre de adjetivos de género).

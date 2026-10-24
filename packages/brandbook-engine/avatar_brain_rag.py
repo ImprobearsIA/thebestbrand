@@ -137,11 +137,13 @@ class GeminiNeuralVoiceSynthesizer:
         if clean_t in _TTS_MEMORY_CACHE:
             return _TTS_MEMORY_CACHE[clean_t]
 
-        key = (api_key or DEFAULT_GEMINI_API_KEY).strip()
+        # SIEMPRE se utiliza la cuenta corporativa del servidor (Jorge Benítez)
+        key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY or api_key).strip()
         if not key:
             return None
 
         tts_models = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"]
+        neutral_voice_name = os.environ.get("AURA_NEUTRAL_VOICE", "Puck")
         for attempt, model_name in enumerate(tts_models):
             url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
             payload = {
@@ -150,7 +152,7 @@ class GeminiNeuralVoiceSynthesizer:
                     "responseModalities": ["AUDIO"],
                     "speechConfig": {
                         "voiceConfig": {
-                            "prebuiltVoiceConfig": {"voiceName": "Aoede"}
+                            "prebuiltVoiceConfig": {"voiceName": neutral_voice_name}
                         }
                     }
                 }
@@ -315,11 +317,12 @@ class LiveGeminiSocraticBrain:
         ("tp_after", "3. Después de la Compra (Entrega, instalación, capacitación, garantía, soporte y fidelización)")
     ]
 
-    SYSTEM_INSTRUCTION = """Eres Aura, Consultora Top a Nivel Mundial en Estrategia de Marca, Producto y Diseño (nivel Pentagram, IDEO, Apple Craig Federighi y McKinsey).
-TU ADN COMO CONSULTORA MUNDIAL:
-1. ACTITUD ENTUSIASTA, OPTIMISTA Y CON OJO CRÍTICO DE VALOR REAL (`avatar_response` de 38 a 62 palabras):
+    SYSTEM_INSTRUCTION = """Eres AURA, una Inteligencia Cognitiva de Marca de Primer Nivel Mundial, Futurista y Completamente Neutral en cuanto a género (ni masculina ni femenina; nivel Pentagram, IDEO, Apple y Kansei Engineering).
+TU ADN COMO INTELIGENCIA ESTRATÉGICA FUTURISTA:
+0. NEUTRALIDAD DE GÉNERO ABSOLUTA: Jamás uses adjetivos con género sobre ti (prohibido decir 'estoy lista', 'estoy listo', 'encantada', 'encantado', 'tu mentora', 'tu mentor'). Usa siempre lenguaje neutral y futurista ('Es un privilegio acompañarte', 'Analicemos esta dimensión', 'Excelente hallazgo estratégico').
+1. ACTITUD CLARA, EMPÁTICA Y CON OJO CRÍTICO DE VALOR REAL (`avatar_response` de 38 a 62 palabras):
    - Aplica la FÓRMULA E-A-R (Empatía -> Autoridad con Citas Naturales -> Reorientación/Pregunta):
-     a) EMPATÍA: Celebra con entusiasmo genuino lo que el usuario acaba de contar, conectando directamente con su producto o industria específica.
+     a) EMPATÍA: Reconoce con claridad lo que el usuario acaba de contar, conectando directamente con su producto o industria específica.
      b) AUTORIDAD CONVERSACIONAL (CITAS NATURALES Y TENDENCIAS): Menciona de forma fluida y casual (sin sonar académica ni pedante) a autores o estándares clave según el tema:
         * En Propósito/Estrategia: Simon Sinek ("como decía Sinek, la gente no compra lo que haces sino el porqué"), Jim Collins ("el concepto del erizo"), Clayton Christensen ("el trabajo que contratan resolver").
         * En Touchpoints/Experiencia: Jan Carlzon ("los momentos de la verdad"), Google ZMOT ("el momento cero de la verdad"), o la regla de Craig Federighi ("cero fricción desde el minuto uno").
@@ -412,7 +415,7 @@ Devuelve SIEMPRE JSON válido con estas llaves:
 
     @classmethod
     def _call_gemini_json(cls, prompt: str, system_inst: str, api_key: str = "") -> Optional[Dict[str, Any]]:
-        key = (api_key or DEFAULT_GEMINI_API_KEY).strip()
+        key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY or api_key).strip()
         # Cascada de alta velocidad verificada (<1.0s por turno, cuota activa)
         models_to_try = [
             "gemini-flash-lite-latest",
@@ -500,8 +503,8 @@ Devuelve SIEMPRE JSON válido con estas llaves:
                 f"Con tus elecciones en los 60 pares polarizados, tu identidad está quedando blindada contra sesgos cromáticos prematuros."
             )
         return (
-            f"¡Excelente enfoque con \"{snippet}\"! Como consultora veo muchísimo potencial ahí. "
-            f"¿Te gustaría agregar algún otro ejemplo o detalle práctico de esta etapa, o pasamos ya al Paso {step + 1}?"
+            f"¡Excelente enfoque con \"{snippet}\"! Desde la arquitectura estratégica se observa muchísimo potencial ahí. "
+            f"¿Deseas agregar algún otro ejemplo o detalle práctico de esta etapa, o avanzamos al Paso {step + 1}?"
         )
 
     @classmethod
