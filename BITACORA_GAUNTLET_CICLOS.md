@@ -1232,3 +1232,68 @@ Utilizando la API corporativa activa de Google AI Studio (`GEMINI_API_KEY` en `.
    - **Paso 5 (Diagnóstico de Aislamiento de 1 Solo Atributo a la Vez — *Ceteris Paribus*):** Recibe los rasgos calibrados del Paso 4. Se eliminaron por completo los gráficos repetitivos y se diseñaron **12 Duelos Científicos de 1 Solo Atributo Aislado**, donde **todo permanece idéntico entre A y B salvo el único atributo evaluado** (1. Geometría del Vértice, 2. Grosor del Trazo, 3. Contenedor Espacial, 4. Eje de Simetría, 5. Figura-Fondo Gestalt, 6. Disposición Espacial, 7. Familia Tipográfica Sans vs Serif, 8. Modulación Display vs Ejecutiva, 9. Tracking Tipográfico, 10. Polaridad Lumínica, 11. Temperatura Cromática, 12. Materialidad Física), respaldados por láminas de Google AI Studio (`step5_attr1` a `step5_attr8`), rastreador de rasgos en vivo y el **Cierre de Descubrimiento del Paso 5 (`#step5DiscoveryClosureCard`)**.
 
 
+
+---
+
+# 🎬 RONDA GAUNTLET v19.0: PERFECCIONAMIENTO INTEGRAL DE LAS 6 FASES — DICTADO SIN CORTE POR PAUSAS, EXTRACCIÓN ACTIVA DE TOUCHPOINTS CON AURA, CÁPSULAS DE VIDEO EN TRANSICIONES, MOTOR EVOLUTIVO DE 20 CICLOS DE NAMING (6 ESTILOS + ESTUDIO DE REGISTRO Y DOMINIOS), LENGUAJE HUMANO EN FASE 4, 24 DUELOS DE AISLAMIENTO EN FASE 5 Y BRANDBOOK MAESTRO ILUSTRADO SIN LÍMITE DE HOJAS (FASE 6)
+
+## 1. Síntesis de Requerimientos del Director Creativo (`Jorge Benítez`) y Auditoría de Steve Jobs (`C-00`)
+El usuario probó el flujo completo de las 6 fases y señaló 6 mejoras estructurales y de experiencia que el equipo implementó y verificó de extremo a extremo:
+
+1. **Instrucciones Evidentes de Voz o Texto + Cero Corte al Hacer Pausas Reflexivas (Envío Manual Exclusivo):**
+   - **Problema detectado:** No era suficientemente evidente cómo enviar voz o texto, y el temporizador automático (`silenceTimer` de 2.2 segundos) cortaba y enviaba la respuesta cuando el usuario hacía una pausa natural para pensar profundamente.
+   - **Solución implementada (`#voiceTextInstructionBanner`, `startContinuousVoice()`):**
+     - Se incorporó un banner de instrucciones de alto contraste en las Fases 1 y 2 explicando claramente las **2 opciones**: **Opción 1 (Voz)** pulsando `🎙️ Dictar por Voz` y **Opción 2 (Texto)** escribiendo directamente en el recuadro.
+     - Se **eliminó por completo el corte automático por silencio (`silenceTimer`)** y se programó la reconexión transparente en `recognition.onend` mientras `isListening === true`, garantizando que el usuario pueda hacer todas las pausas necesarias para reflexionar y que el mensaje **se envíe únicamente al presionar el botón `Enviar Respuesta ↑`**.
+
+2. **Fase 2 (Touchpoints: Antes, Durante y Después de la Compra) — Extracción Interactiva con Aura + Cápsula de Video de Cierre:**
+   - **Problema detectado:** Las 3 columnas visuales (*Antes, Durante y Después*) estaban bien estructuradas, pero faltaba la interacción activa con Aura para extraer la mayor cantidad posible de touchpoints del negocio del usuario.
+   - **Solución implementada (`#panel-step-2`, `selectTouchpointPhase()`, `addQuickTouchpointChip()`, `sendTouchpointMessageToAura()`):**
+     - Se construyó una estación interactiva donde Aura guía al usuario momento por momento (**1️⃣ Antes de Comprar**, **2️⃣ Durante la Compra**, **3️⃣ Después de Comprar**), ofreciendo **etiquetas rápidas de un clic (`#tpQuickChipsRow`)** además de dictado continuo por voz o escritura para poblar en vivo las 3 columnas de puntos de contacto.
+   - **Mecánica de Cápsulas de Video en Transiciones de Fase (`#phaseTransitionVideoModal`, `openPhaseTransitionVideoCapsule()`):**
+     - Al dar clic para avanzar de una fase a la siguiente, se abre una **Cápsula de Video de Cierre & Síntesis en Vivo** con animación generativa en canvas a 60 FPS, narración hablada de Aura y una **reseña estructurada de todo lo que el usuario acaba de descubrir**, motivándolo a seguir siendo cada vez más específico mientras el sistema prepara el reporte de la siguiente etapa.
+
+3. **Fase 3 (Naming Studio) — Motor Evolutivo de 20 Ciclos con los 6 Estilos Clásicos + Estudio Fonético de Registro y Dominios Disponibles:**
+   - **Problema detectado:** Al llegar al nombre de la marca, el sistema debía generar opciones basadas en toda la información previa utilizando los grandes estilos de nombres de marca en memoria (institucionales, largos compuestos, palabras nuevas fusionadas, siglas, evocativos y abstractos), permitiendo aceptar los que gustan y descartar los que no a lo largo de hasta 20 ciclos, hasta elegir las mejores 4 opciones para pasarlas al estudio fonético de registro y dominios disponibles.
+   - **Solución implementada (`NAMING_SIX_STYLES_POOL`, `renderEvolutionaryNamingCards()`, `toggleAcceptNamingCandidate()`, `discardAndMutateNamingCandidate()`, `advanceNamingEvolutionCycle()`, `promoteTop4ToTrademarkStudy()`):**
+     - Se implementó un **Motor Evolutivo de 20 Ciclos (`Ciclo X de 20`)** que presenta **6 propuestas simultáneas por ciclo**, una por cada uno de los **6 estilos clásicos de naming**:
+       1. *Estilo Institucional / Autoridad*
+       2. *Estilo Compuesto / Explicativo Largo*
+       3. *Neologismo / Palabra Nueva Compuesta (Portmanteau)*
+       4. *Estilo Siglas / Acrónimo Estratégico*
+       5. *Estilo Evocativo / Metafórico*
+       6. *Estilo Abstracto Fonético / Sonoridad Pura*
+     - Cada tarjeta tiene dos botones claros: **`💚 Conservar (Me Gusta)`** (que guarda el nombre de forma permanente en la bóveda `#acceptedNamesVaultRow`) y **`✕ Descartar (Cambiar)`** (que reemplaza de inmediato esa tarjeta por una nueva mutación).
+     - En cualquier momento (o al completar los 20 ciclos), el botón **`🏛️ Pasar Mejores 4 al Estudio de Registro y Dominios`** promueve los **4 mejores finalistas** al panel `#step3TrademarkDomainStudy`, donde se presenta el dictamen de **Búsqueda Fonética y Ortográfica (`Soundex`, `SMILE & SCRATCH`)**, **Clases Internacionales de Niza** derivadas de los Touchpoints de la Fase 2, **Dominios Web Disponibles (`.com`, `.ai`, `.io`, `.mx`)** y el botón para coronar el **Nombre Oficial Definitivo**.
+
+4. **Fase 4 (Personalidad Visual y Familia Arquitectónica Base) — Instrucciones Grandes y Claras en Lenguaje Humano + Sin Envío Prematuro a Google AI Studio:**
+   - **Problema detectado:** En la Fase 4 había jerga técnica interna incomprensible para el usuario (`PCA & OSGOOD`, `GA-BPNN & SVR`, `FLUX.1 + IP-ADAPTER`, `λ_IP=0.78`), las instrucciones no se veían en grande y no tenía sentido mandar a diseñar el logo a Google AI Studio antes de elegir la Familia Arquitectónica Base y completar las comparaciones de aislamiento visual de la Fase 5.
+   - **Solución implementada (`#panel-step-4`, `updateKanseiEngine()`):**
+     - Se eliminó toda la jerga algorítmica interna de la vista del usuario y se reemplazó por un **cuadro de instrucciones grandes y claras en 2 pasos sencillos** y 4 indicadores comprensibles al instante (**🚀 MODERNIDAD**, **🛡️ SOLIDEZ Y FUERZA**, **⚡ DINAMISMO Y ENERGÍA**, **🤝 CONFIANZA Y ORDEN**).
+     - Se conservaron y pulieron los **7 deslizadores con ejemplos reales en cada extremo** (Rolex vs. Apple, Nike vs. Porsche, Airbnb vs. TAG Heuer, Leica vs. Formula 1, IBM vs. Red Bull, Chanel vs. Nothing, Espiral Áurea vs. Bauhaus) y la selección de las **4 Familias Arquitectónicas Base**.
+     - Se retiró el botón prematuro de Google AI Studio de la Fase 4 para que la síntesis generativa ocurra **únicamente al final de la Fase 5**, cuando ya se cuenta con el 100% del expediente.
+
+5. **Fase 5 (Laboratorio de Aislamiento Visual) — El Doble de Comparaciones (24 Duelos de 1 Solo Atributo a la Vez) + Síntesis Generativa Unificada al Final:**
+   - **Problema detectado:** El aislamiento visual de un atributo a la vez funcionaba muy bien, pero necesitaba el doble de comparaciones para extraer con precisión quirúrgica lo que el usuario realmente quiere antes de enviar toda la información acumulada de todas las fases al motor generativo.
+   - **Solución implementada (`SIXTY_PROFESSIONAL_PAIRS` ampliado a 24 duelos, `renderSingleAttributeMorphologySVG()`, `renderFontVsFontSpecimenHTML()`, `renderColorPaletteOnLogoHTML()`):**
+     - Se duplicó el diagnóstico de 12 a **24 Duelos Científicos de 1 Solo Atributo Aislado (*Ceteris Paribus*)**:
+       - **Fase I (Atributos 1 al 12 — Forma, Geometría y Estructura en B/N):** 1. Geometría del Vértice, 2. Grosor del Trazo, 3. Contenedor Espacial, 4. Inclinación y Movimiento, 5. Relación Figura-Fondo, 6. Acomodo del Símbolo y Nombre, 7. Geometría Exterior Base, 8. Continuidad Constructiva, 9. Nivel de Detalle Interno, 10. Dimensión Espacial, 11. Remate de Puntas de Línea, 12. Centro de Gravedad Visual.
+       - **Fase II (Atributos 13 al 18 — Anatomía y Carácter Tipográfico):** 13. Estilo de Letras (Sans vs. Serif), 14. Ancho de Letra (Estándar vs. Expandida), 15. Aire entre Letras (Tracking), 16. Uso de Mayúsculas vs. Minúsculas, 17. Peso Visual del Titular, 18. Estilo del Descriptor/Subtítulo.
+       - **Fase III (Atributos 19 al 24 — Polaridad, Color y Materialidad):** 19. Fondo Principal (Claro vs. Oscuro), 20. Temperatura del Color Principal, 21. Energía del Color de Acento, 22. Sobriedad Monocromática vs. Riqueza Bicolor, 23. Acabado Físico en Papelería/Empaque, 24. Comportamiento en Pantalla (Tinta Plana vs. Gradiente).
+     - Al concluir los 24 atributos, la tarjeta `#step5DiscoveryClosureCard` consolida **toda la información de las Fases 1 a 5** y habilita el disparo unificado hacia **Google AI Studio / Nano Banana / Flow** y la compilación del Brandbook Maestro.
+
+6. **Fase 6 (Brandbook Maestro Ilustrado sin Límite de Hojas) — 100% Conectado con Todas las Fases y Entregables Ilustrados en Alta Calidad:**
+   - **Problema detectado:** El documento final estaba desconectado de los hallazgos conversados en las fases previas y requería generación de imágenes de alta calidad para que todos los entregables estuvieran perfectamente ilustrados sin límite de hojas.
+   - **Solución implementada (`renderFull38PageIllustratedPlates()`, 6 nuevas láminas fotográficas de estudio en `apps/web/assets/avi/brandbook_plate_*.jpg`):**
+     - Se generaron e integraron **6 láminas fotográficas de estudio en alta resolución** (`brandbook_plate_touchpoints_ecosystem.jpg`, `brandbook_plate_stationery_suite.jpg`, `brandbook_plate_packaging_unboxing.jpg`, `brandbook_plate_architectural_signage.jpg`, `brandbook_plate_apparel_embroidery.jpg`, `brandbook_plate_digital_ecosystem.jpg`).
+     - Se rediseñó el compilador editorial en **10 Tomos Completos sin límite de páginas (`TOMO I` a `TOMO X`)** que rescatan e imprimen dinámicamente:
+       - **Tomo I:** Portada Oficial, Índice General Conectado y Memoria del Diálogo Socrático con Aura (Fase 1).
+       - **Tomo II:** Los 8 Pilares de Posicionamiento Estratégico + Arquetipo de Cliente Ideal (Fase 1).
+       - **Tomo III:** Arquitectura de Experiencia y todos los Touchpoints *Antes, Durante y Después de la Compra* ilustrados (Fase 2).
+       - **Tomo IV:** Estudio Evolutivo de Naming, Top Finalistas, Dictamen Fonético (`SMILE & SCRATCH`, `Soundex`), Clases de Niza y Dominios Web Disponibles (Fase 3).
+       - **Tomo V:** Calibración exacta de los 7 Deslizadores Visuales y Familia Arquitectónica Base (Fase 4).
+       - **Tomo VI:** Tabla completa de los **24 Atributos Visuales Aislados** decididos uno por uno (Fase 5).
+       - **Tomo VII:** Ingeniería Vectorial en Curvas `<path>`, Retícula Constructiva $8X \times 3X$, Área de Aislamiento $1X$, Escalas Mínimas y Usos Correctos/Incorrectos.
+       - **Tomo VIII:** Especímenes Tipográficos Oficiales y Tablas Colorimétricas (`HEX`, `RGB`, `CMYK FOGRA39`, `Pantone Solid Coated`).
+       - **Tomo IX:** Catálogo Ilustrado de Entregables Físicos conectados a los Touchpoints (Papelería Ejecutiva $350\text{g}$, Empaque Rígido/Unboxing, Señalética Arquitectónica Exterior/Interior e Indumentaria Bordada).
+       - **Tomo X:** Ecosistema Digital Multi-Dispositivo (Web Flagship, App Icon, Social Kit) y Certificado de Integridad Documental con exportación PDF sin límite de hojas y curvas `.SVG`.
