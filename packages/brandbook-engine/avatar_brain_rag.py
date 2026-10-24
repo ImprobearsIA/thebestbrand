@@ -418,10 +418,10 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY or api_key).strip()
         # Cascada de alta velocidad verificada (<1.0s por turno, cuota activa)
         models_to_try = [
-            "gemini-flash-lite-latest",
-            "gemini-3.1-flash-lite-preview",
+            "gemini-3.8-flash",
+            "gemini-3.7-flash",
             "gemini-3.6-flash",
-            "gemini-3.5-flash"
+            "gemini-flash-lite-latest"
         ]
         for model_name in models_to_try:
             url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
@@ -441,33 +441,7 @@ Devuelve SIEMPRE JSON válido con estas llaves:
                     data=json.dumps(payload).encode("utf-8"),
                     headers={"Content-Type": "application/json"}
                 )
-                with urllib.request.urlopen(req, timeout=5.0) as resp:
-                    raw = json.loads(resp.read().decode("utf-8"))
-                    text_out = raw["candidates"][0]["content"]["parts"][0]["text"].strip()
-                    text_out = re.sub(r"^```(?:json)?\s*|\s*```$", "", text_out).strip()
-                    return json.loads(text_out)
-            except Exception:
-                continue
-        return None
-        for model_name in models_to_try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
-            gen_cfg: Dict[str, Any] = {
-                "temperature": 0.65,
-                "maxOutputTokens": 900,
-                "responseMimeType": "application/json"
-            }
-            payload = {
-                "systemInstruction": {"parts": [{"text": system_inst}]},
-                "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-                "generationConfig": gen_cfg
-            }
-            try:
-                req = urllib.request.Request(
-                    url,
-                    data=json.dumps(payload).encode("utf-8"),
-                    headers={"Content-Type": "application/json"}
-                )
-                with urllib.request.urlopen(req, timeout=4.5) as resp:
+                with urllib.request.urlopen(req, timeout=7.5) as resp:
                     raw = json.loads(resp.read().decode("utf-8"))
                     text_out = raw["candidates"][0]["content"]["parts"][0]["text"].strip()
                     text_out = re.sub(r"^```(?:json)?\s*|\s*```$", "", text_out).strip()
