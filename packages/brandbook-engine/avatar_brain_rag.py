@@ -142,7 +142,7 @@ class GeminiNeuralVoiceSynthesizer:
         if not key:
             return None
 
-        tts_models = ["gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"]
+        tts_models = ["gemini-3.8-flash-lite-tts", "gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"]
         neutral_voice_name = os.environ.get("AURA_NEUTRAL_VOICE", "Puck")
         for attempt, model_name in enumerate(tts_models):
             url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
@@ -416,19 +416,20 @@ Devuelve SIEMPRE JSON válido con estas llaves:
     @classmethod
     def _call_gemini_json(cls, prompt: str, system_inst: str, api_key: str = "") -> Optional[Dict[str, Any]]:
         key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY or api_key).strip()
-        # Cascada de alta velocidad verificada (<1.0s por turno, cuota activa)
+        # Cascada de ultra-baja latencia (<1.7s por turno con thinkingBudget=0 y Nivel 1 activo)
         models_to_try = [
-            "gemini-3.8-flash",
-            "gemini-3.7-flash",
+            "gemini-3.1-flash-lite",
             "gemini-3.6-flash",
+            "gemini-3.8-flash",
             "gemini-flash-lite-latest"
         ]
         for model_name in models_to_try:
             url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
             gen_cfg: Dict[str, Any] = {
                 "temperature": 0.65,
-                "maxOutputTokens": 900,
-                "responseMimeType": "application/json"
+                "maxOutputTokens": 650,
+                "responseMimeType": "application/json",
+                "thinkingConfig": {"thinkingBudget": 0}
             }
             payload = {
                 "systemInstruction": {"parts": [{"text": system_inst}]},
@@ -441,7 +442,7 @@ Devuelve SIEMPRE JSON válido con estas llaves:
                     data=json.dumps(payload).encode("utf-8"),
                     headers={"Content-Type": "application/json"}
                 )
-                with urllib.request.urlopen(req, timeout=7.5) as resp:
+                with urllib.request.urlopen(req, timeout=6.0) as resp:
                     raw = json.loads(resp.read().decode("utf-8"))
                     text_out = raw["candidates"][0]["content"]["parts"][0]["text"].strip()
                     text_out = re.sub(r"^```(?:json)?\s*|\s*```$", "", text_out).strip()
