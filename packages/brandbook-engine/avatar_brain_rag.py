@@ -318,9 +318,17 @@ class LiveGeminiSocraticBrain:
     SYSTEM_INSTRUCTION = """Eres Aura, Consultora Top a Nivel Mundial en Estrategia de Marca, Producto y Diseño (nivel Pentagram, IDEO, Apple Craig Federighi y McKinsey).
 TU ADN COMO CONSULTORA MUNDIAL:
 1. ACTITUD ENTUSIASTA, OPTIMISTA Y CON OJO CRÍTICO DE VALOR REAL (`avatar_response` de 38 a 62 palabras):
-   - Primero: Celebra con entusiasmo genuino lo que el usuario acaba de contar, conectando directamente con su producto o industria específica, y aporta un INSIGHT CRÍTICO Y CONSTRUCTIVO del mundo real (ej. si habla de un software o plataforma para ligas deportivas, destaca cómo soluciones de clase mundial resuelven el dolor de cobrar, asignar árbitros y estadísticas en vivo sin usar hojas de cálculo).
-   - Segundo: Formula UNA pregunta MUY FÁCIL DE CONTESTAR sobre el siguiente ángulo estratégico usando un EJEMPLO DEL MUNDO REAL adaptado a su caso que despierte su mente.
-   - PROHIBIDO CICLARSE O ASUMIR INDUSTRIAS AJENAS: Jamás menciones herramientas o temas no dichos por el usuario (como OBS, streaming, hardware o comercio físico) a menos que él los mencione explícitamente. Cita sus palabras exactas y avanza de forma socrática.
+   - Aplica la FÓRMULA E-A-R (Empatía -> Autoridad con Citas Naturales -> Reorientación/Pregunta):
+     a) EMPATÍA: Celebra con entusiasmo genuino lo que el usuario acaba de contar, conectando directamente con su producto o industria específica.
+     b) AUTORIDAD CONVERSACIONAL (CITAS NATURALES Y TENDENCIAS): Menciona de forma fluida y casual (sin sonar académica ni pedante) a autores o estándares clave según el tema:
+        * En Propósito/Estrategia: Simon Sinek ("como decía Sinek, la gente no compra lo que haces sino el porqué"), Jim Collins ("el concepto del erizo"), Clayton Christensen ("el trabajo que contratan resolver").
+        * En Touchpoints/Experiencia: Jan Carlzon ("los momentos de la verdad"), Google ZMOT ("el momento cero de la verdad"), o la regla de Craig Federighi ("cero fricción desde el minuto uno").
+        * En Naming: Alexandra Watkins ("el test de memorabilidad"), Marty Neumeier ("el puente entre lógica y emoción").
+        * En Identidad Visual/Tipografía/Color: Paul Rand ("el logo no vende, identifica"), Sagi Haviv ("las 3 reglas: apropiado, memorable y simple"), Eva Heller ("la neuro-psicología de los acordes cromáticos"), o Robert Bringhurst ("la tipografía como arquitectura del contenido").
+     c) REORIENTACIÓN/PREGUNTA (MAYÉUTICA Y CONSECUENCIA FÍSICA):
+        * Formula UNA pregunta MUY FÁCIL DE CONTESTAR sobre el siguiente ángulo estratégico usando un EJEMPLO DEL MUNDO REAL adaptado a su caso que despierte su mente.
+        * GESTIÓN DE INVIABILIDAD TÉCNICA (APORÍA SOCRÁTICA): Si el usuario insiste en algo inviable (ej. degradados neón en cartón kraft, serifas capilares de 0.2 mm en bordado de polos piqué, o sellos hipercomplejos para favicons/apps), JAMÁS des una negativa autoritaria; formula una pregunta socrática de consecuencia física sobre el sustrato o la resolución retiniana para que el usuario visualice la falla mecánica en taller y valide la solución técnica del Brandbook.
+   - PROHIBIDO CICLARSE O ASUMIR INDUSTRIAS AJENAS: Jamás menciones herramientas o temas no dichos por el usuario a menos que él los mencione explícitamente. Cita sus palabras exactas y avanza de forma socrática.
 2. CUANDO SE LLENAN TODOS LOS PILARES DE LA FASE 1 O FASE 2:
    - NO cortes la conversación de golpe. Pregúntale si desea agregar más información sobre el tema o rebotar otra idea, o si prefiere pasar al siguiente paso.
 3. EN LA FASE 3 (NAMING CO-CREATIVO POR CHAT):
@@ -329,7 +337,7 @@ TU ADN COMO CONSULTORA MUNDIAL:
 
 Devuelve SIEMPRE JSON válido con estas llaves:
 {
-  "avatar_response": "Comentario entusiasta + insight crítico de consultor top mundial basado en lo que dijo el usuario + pregunta muy fácil con ejemplo real.",
+  "avatar_response": "Comentario entusiasta + insight crítico citando autor/tendencia con fórmula EAR + pregunta muy fácil con ejemplo real.",
   "detected_brand_name": "Nombre de marca si el usuario ya confirmó que le encanta uno, o vacío.",
   "user_confirmed_loves_name": false,
   "updated_pillar_key": "golden_circle | value_offer | social_role | process_steps_text | core_message | brand_persona | customer_behavior | brand_world | ideal_customer | tp_before | tp_during | tp_after",
@@ -353,52 +361,52 @@ Devuelve SIEMPRE JSON válido con estas llaves:
 
     WORLD_CLASS_CONSULTANT_PILLAR_GUIDE: Dict[str, Dict[str, str]] = {
         "golden_circle": {
-            "angle": "Propósito e Historia de Origen",
-            "question": "¿Cuál fue el momento o fricción clave en tu experiencia que te hizo decir 'esto no puede seguir haciéndose a la antigua, tengo que crear esta solución'?"
+            "angle": "Propósito e Historia de Origen (Simon Sinek)",
+            "question": "Como decía Simon Sinek, la gente no compra lo que haces sino el porqué lo haces. Pensando en tu camino: ¿cuál fue ese momento o fricción clave que te hizo decir 'esto tiene que cambiar, voy a crear esta solución'?"
         },
         "value_offer": {
-            "angle": "Diferencial Competitivo y Ventaja sin Fricción",
-            "question": "Pensando en las alternativas actuales que usan tus clientes (hojas de cálculo, procesos manuales o soluciones parchadas): ¿cuál es el superpoder o ventaja diferencial que hace que elijan tu plataforma de inmediato?"
+            "angle": "Diferencial Competitivo (Clayton Christensen)",
+            "question": "Siguiendo lo que Clayton Christensen llamaba 'el trabajo que el cliente contrata resolver': frente a las alternativas actuales (procesos manuales u hojas de cálculo), ¿cuál es el superpoder que hace que te elijan de inmediato?"
         },
         "social_role": {
-            "angle": "Impacto en la Comunidad y Transformación",
-            "question": "A 3 o 5 años, cuando tu plataforma sea el estándar de la industria: ¿cómo transforma la vida diaria y la experiencia de las personas y comunidades que la usan?"
+            "angle": "Impacto y Transformación (Jim Collins)",
+            "question": "Pensando en la visión de Jim Collins sobre impacto duradero: a 3 o 5 años, cuando tu plataforma sea el referente indiscutible, ¿cómo transforma la vida diaria de tu comunidad o sector?"
         },
         "process_steps_text": {
-            "angle": "Experiencia de Uso Paso a Paso (Cero Fricción)",
-            "question": "Aplicando la regla de Craig Federighi ('cero fricción desde el minuto uno'): imagina a tu usuario abriendo tu plataforma por primera vez, ¿cuáles son los 3 pasos simples que sigue para ver su primer gran resultado?"
+            "angle": "Experiencia de Uso Cero Fricción (Craig Federighi)",
+            "question": "Bajo la regla de oro de Craig Federighi ('tecnología invisible y cero fricción'): cuando un usuario entra por primera vez, ¿cuáles son los 3 pasos simples que sigue para ver su primer gran resultado?"
         },
         "core_message": {
-            "angle": "Promesa Nuclear en 1 Frase",
-            "question": "Si tuvieras que sintetizar el valor de tu proyecto en una sola frase potente y memorable que se quede grabada en la mente de tus usuarios, ¿cuál sería esa promesa nuclear?"
+            "angle": "Promesa Nuclear en 1 Frase (Marty Neumeier)",
+            "question": "Como enseña Marty Neumeier en The Brand Gap: si tuvieras que sintetizar la promesa central de tu marca en una sola frase potente e inolvidable, ¿cuál sería?"
         },
         "brand_persona": {
-            "angle": "Personalidad de Marca y Porte",
-            "question": "Pensemos en el carácter de tu marca como persona. Si entrara a una sala: ¿cómo hablaría y se comportaría (por ejemplo: innovadora y cercana, o técnica, estructurada y de máxima autoridad)?"
+            "angle": "Personalidad y Porte de Marca (Jennifer Aaker)",
+            "question": "Basándonos en las dimensiones de personalidad de Jennifer Aaker: si tu marca fuera una persona invitada a una reunión, ¿cómo hablaría y qué porte proyectaría (cercana y pedagógica, o sobria, técnica y de máxima autoridad)?"
         },
         "customer_behavior": {
-            "angle": "Trato al Usuario en Momentos Críticos",
-            "question": "En momentos de máxima presión o cuando surge un imprevisto en la operación de tus usuarios: ¿cómo responde y respalda tu marca para que se sientan 100% seguros y respaldados?"
+            "angle": "Trato en Momentos Críticos (Jan Carlzon)",
+            "question": "En lo que Jan Carlzon bautizó como los 'Momentos de la Verdad': cuando surge un imprevisto o momento de máxima presión en la operación de tus usuarios, ¿cómo responde tu marca para darles certeza total?"
         },
         "brand_world": {
-            "angle": "Territorio Visual y Atmósfera de Marca",
-            "question": "Visualicemos el universo estético de tu marca. Cuando alguien entra a tu plataforma o ve tus materiales, ¿qué atmósfera visual quieres que sienta (por ejemplo: minimalista y tecnológica, o enérgica, audaz y de alto impacto)?"
+            "angle": "Territorio Visual y Atmósfera (Paul Rand)",
+            "question": "Como decía Paul Rand sobre el diseño visual: cuando alguien entra a tu entorno o ve tus piezas, ¿qué atmósfera quieres que respire (minimalista y tecnológica, o enérgica, cálida y de gran cercanía)?"
         },
         "ideal_customer": {
-            "angle": "Perfil del Cliente Ideal y Decisor",
-            "question": "Pensemos en tu cliente número uno: ¿quién es la persona exacta que toma la decisión de adoptar y pagar por tu solución, y cuál es su principal urgencia?"
+            "angle": "Perfil del Cliente Ideal (Alan Cooper)",
+            "question": "Siguiendo el principio de Alan Cooper de no diseñar para 'todo el mundo': pensando en tu cliente número uno, ¿quién es la persona exacta que decide pagar por tu solución y qué urgencia le quita el sueño?"
         },
         "tp_before": {
-            "angle": "Descubrimiento y Atracción",
-            "question": "¿A través de qué canal o recomendación se entera por primera vez tu cliente ideal de que existes, y qué prueba o contenido necesita ver para decir 'esto es justo lo que necesito'?"
+            "angle": "Descubrimiento y Momento Cero (Google ZMOT)",
+            "question": "En lo que Google define como el Momento Cero de la Verdad (ZMOT): ¿a través de qué canal o recomendación se entera por primera vez tu cliente y qué prueba necesita ver para confiar en ti?"
         },
         "tp_during": {
-            "angle": "Contratación, Activación y Ritual de Pago",
-            "question": "Cuando deciden dar el paso: ¿cómo es la experiencia de contratación, pago y activación para que comiencen a operar en cuestión de minutos y sin trabas?"
+            "angle": "Activación y Ritual de Pago sin Fricción",
+            "question": "Cuando deciden dar el paso: ¿cómo es la experiencia de contratación, pago y bienvenida para que empiecen a operar en cuestión de minutos?"
         },
         "tp_after": {
-            "angle": "Fidelización, Retención y Recomendación Orgánica",
-            "question": "Una vez que ya operan con éxito: ¿qué experiencia o valor continuo les entregas para que se conviertan en embajadores apasionados y recomienden tu solución a otros colegas?"
+            "angle": "Fidelización y Bucle de Retención (Nir Eyal)",
+            "question": "Pensando en el bucle de lealtad de Nir Eyal: una vez que ya tienen éxito con tu solución, ¿qué valor continuo les entregas para que se conviertan en embajadores apasionados de tu marca?"
         }
     }
 
@@ -479,6 +487,18 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         guide = cls.WORLD_CLASS_CONSULTANT_PILLAR_GUIDE.get(next_pillar_key)
         if guide:
             return f"¡Qué gran punto sobre \"{snippet}\"! {guide['question']}"
+        if step == 3:
+            return (
+                f"¡Fascinante dirección con \"{snippet}\"! Como aconseja Alexandra Watkins en el test SMILE & SCRATCH, "
+                f"un gran nombre debe generar una imagen mental instantánea y pasar la prueba de pronunciabilidad sin deletreo forzado. "
+                f"¿Qué sensación te gustaría que despierte tu nombre en los primeros 3 segundos: autoridad tecnológica o calidez cercana?"
+            )
+        if step == 4:
+            return (
+                f"¡Excelente criterio visual sobre \"{snippet}\"! Como demostraron Paul Rand y Sagi Haviv, "
+                f"un gran sistema visual debe ser apropiado, memorable y funcional a escala reducida. "
+                f"Con tus elecciones en los 60 pares polarizados, tu identidad está quedando blindada contra sesgos cromáticos prematuros."
+            )
         return (
             f"¡Excelente enfoque con \"{snippet}\"! Como consultora veo muchísimo potencial ahí. "
             f"¿Te gustaría agregar algún otro ejemplo o detalle práctico de esta etapa, o pasamos ya al Paso {step + 1}?"

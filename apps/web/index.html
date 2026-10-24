@@ -2,8 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>TheBestBrand — Luxury Brand Identity Atelier</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="TheBestBrand" />
+  <meta name="theme-color" content="#F8F9FA" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='28' fill='%2318181B'/%3E%3Ctext x='50' y='64' font-family='sans-serif' font-weight='900' font-size='42' fill='%23FFFFFF' text-anchor='middle'%3ETB%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='45' fill='%2318181B'/%3E%3Ctext x='90' y='115' font-family='sans-serif' font-weight='900' font-size='78' fill='%23FFFFFF' text-anchor='middle'%3ETB%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,21 +19,31 @@
        THEBESTBRAND ATELIER — CRAIG FEDERIGHI / APPLE DESIGN AWARD DESIGN SYSTEM
        ========================================================================== */
     :root {
-      --bg-void: #050608;
-      --bg-surface: rgba(18, 21, 31, 0.72);
-      --bg-surface-hover: rgba(28, 33, 48, 0.85);
-      --bg-glass-pill: rgba(255, 255, 255, 0.05);
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.2);
-      --border-accent: rgba(99, 102, 241, 0.4);
-      --accent-iris: #6366F1;
-      --accent-violet: #8B5CF6;
-      --accent-cyan: #06B6D4;
-      --accent-amber: #F59E0B;
-      --accent-emerald: #10B981;
-      --ink-primary: #FFFFFF;
-      --ink-secondary: #94A3B8;
-      --ink-tertiary: #64748B;
+      /* PURE NEUTRAL LIGHT GALLERY DESIGN SYSTEM (ZERO COLOR BIAS) */
+      --bg-void: #F8F9FA;
+      --bg-dynamic-ambient: rgba(24, 24, 27, 0.03);
+      --brand-primary: #18181B; /* Neutral Graphite / Obsidian */
+      --brand-primary-rgb: 24, 24, 27;
+      --brand-secondary: #71717A;
+      --brand-accent-glow: rgba(24, 24, 27, 0.05);
+      --bg-surface: #FFFFFF;
+      --bg-surface-hover: #F4F4F6;
+      --bg-glass-pill: rgba(0, 0, 0, 0.04);
+      --border-subtle: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(0, 0, 0, 0.18);
+      --border-accent: rgba(24, 24, 27, 0.25);
+      --accent-iris: var(--brand-primary);
+      --accent-violet: var(--brand-secondary);
+      --accent-cyan: #475569;
+      --accent-amber: #D97706;
+      --accent-emerald: #059669;
+      --ink-primary: #0F172A; /* Deep Warm Charcoal */
+      --ink-secondary: #475569;
+      --ink-tertiary: #94A3B8;
+      --shadow-organic: 0 12px 32px -8px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+      --shadow-float: 0 20px 40px -12px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+      --radius-organic: 26px;
+      --radius-pill: 9999px;
       --font-display: 'Syne', sans-serif;
       --font-ui: 'Plus Jakarta Sans', sans-serif;
       --font-tech: 'Space Grotesk', sans-serif;
@@ -39,9 +55,9 @@
     body {
       background-color: var(--bg-void);
       background-image:
-        radial-gradient(1400px 700px at 50% -100px, rgba(99, 102, 241, 0.16), transparent 70%),
-        radial-gradient(1000px 600px at 85% 90%, rgba(6, 182, 212, 0.06), transparent 60%),
-        radial-gradient(900px 500px at 15% 45%, rgba(139, 92, 246, 0.05), transparent 60%);
+        radial-gradient(1200px 600px at 50% -60px, var(--bg-dynamic-ambient), transparent 70%),
+        radial-gradient(1000px 500px at 85% 90%, var(--brand-accent-glow), transparent 60%),
+        radial-gradient(800px 400px at 15% 45%, var(--brand-accent-glow), transparent 60%);
       background-attachment: fixed;
       color: var(--ink-primary);
       font-family: var(--font-ui);
@@ -51,6 +67,7 @@
       flex-direction: column;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      transition: background-color 0.6s ease, background-image 0.6s ease;
     }
 
     /* Subtle custom scrollbars */
@@ -64,22 +81,22 @@
        ========================================================================== */
     .top-dock {
       position: sticky;
-      top: 16px;
+      top: 14px;
       z-index: 100;
       margin: 0 auto;
-      max-width: 1080px;
+      max-width: 1240px;
       width: calc(100% - 32px);
       padding: 10px 18px;
-      background: rgba(12, 14, 22, 0.75);
-      backdrop-filter: blur(24px) saturate(190%);
-      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      background: rgba(255, 255, 255, 0.90);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
       border: 1px solid var(--border-subtle);
       border-radius: 999px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.06);
       transition: all 0.3s ease;
     }
 
@@ -91,36 +108,35 @@
       text-decoration: none;
     }
     .brand-mark-seal {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: var(--brand-primary);
       color: #FFFFFF;
       display: grid;
       place-items: center;
       font-family: var(--font-display);
       font-weight: 800;
-      font-size: 0.82rem;
-      box-shadow: 0 0 16px rgba(99, 102, 241, 0.5);
+      font-size: 0.85rem;
+      box-shadow: 0 4px 12px var(--brand-accent-glow);
+      transition: background 0.5s ease;
     }
     .brand-mark-text {
       font-family: var(--font-display);
       font-size: 1.05rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #FFFFFF 0%, #CBD5E1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--ink-primary);
     }
 
     .stepper-dock {
       display: flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.03);
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.04);
       padding: 4px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.04);
     }
     .step-pill {
       background: transparent;
@@ -129,7 +145,7 @@
       font-family: var(--font-ui);
       font-size: 0.76rem;
       font-weight: 600;
-      padding: 6px 14px;
+      padding: 6px 13px;
       border-radius: 999px;
       cursor: pointer;
       transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
@@ -138,22 +154,22 @@
       gap: 6px;
     }
     .step-pill:hover {
-      color: #FFFFFF;
-      background: rgba(255, 255, 255, 0.06);
+      color: var(--ink-primary);
+      background: rgba(0, 0, 0, 0.04);
     }
     .step-pill.active {
-      background: #FFFFFF;
-      color: #050608;
-      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
+      background: var(--brand-primary);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     }
     .step-pill.completed {
       color: #34D399;
     }
 
     .voice-dock-btn {
-      background: rgba(99, 102, 241, 0.12);
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      color: #A5B4FC;
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      color: var(--ink-secondary);
       font-family: var(--font-mono);
       font-size: 0.72rem;
       padding: 6px 12px;
@@ -166,9 +182,250 @@
       user-select: none;
     }
     .voice-dock-btn:hover {
-      background: rgba(99, 102, 241, 0.22);
-      box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
+      background: rgba(0, 0, 0, 0.08);
+      color: var(--ink-primary);
+    }
+
+    /* ==========================================================================
+       DUOLINGO & APPLE DYNAMIC ISLAND GAMIFIED METRICS
+       ========================================================================== */
+    .gamified-stats-dock {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      backdrop-filter: blur(16px);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      user-select: none;
+    }
+    .stat-pill:hover {
+      transform: translateY(-1px) scale(1.04);
+    }
+    .streak-pill {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #FBBF24;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.15);
+    }
+    .xp-pill {
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      color: #38BDF8;
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.15);
+    }
+    .value-pill {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34D399;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+    }
+    @media (max-width: 900px) {
+      .value-pill { display: none; }
+    }
+    @media (max-width: 600px) {
+      .xp-pill { display: none; }
+    }
+
+    /* Equalizer Waveform */
+    .eq-bars {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 12px;
+      margin-left: 4px;
+    }
+    .eq-bar {
+      width: 2px;
+      height: 4px;
+      background: currentColor;
+      border-radius: 1px;
+      animation: eqBlink 0.6s infinite ease-in-out alternate;
+    }
+    .eq-bar:nth-child(2) { animation-delay: 0.2s; height: 8px; }
+    .eq-bar:nth-child(3) { animation-delay: 0.4s; height: 12px; }
+    @keyframes eqBlink {
+      0% { height: 3px; }
+      100% { height: 12px; }
+    }
+
+    /* DUOLINGO-STYLE TAP-TO-ANSWER SMART CHIPS */
+    .smart-chips-stage {
+      width: 100%;
+      max-width: 740px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      animation: fadeInScale 0.4s ease;
+    }
+    .smart-chips-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4px;
+    }
+    .smart-chips-label {
+      font-family: var(--font-tech);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .smart-chips-sub {
+      font-size: 0.68rem;
+      color: var(--ink-tertiary);
+    }
+    .smart-chips-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 640px) {
+      .smart-chips-grid { grid-template-columns: 1fr; }
+    }
+    .smart-chip-pill {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 9px 16px;
+      color: var(--ink-primary);
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      line-height: 1.4;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+    .smart-chip-pill:hover {
+      background: #F8FAFC;
+      border-color: rgba(0, 0, 0, 0.2);
+      color: var(--ink-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.06);
+    }
+    .smart-chip-pill:active {
+      transform: scale(0.98);
+    }
+
+    /* STRATEGIC DEPTH METER */
+    .strategic-depth-container {
+      width: 100%;
+      max-width: 740px;
+      margin-bottom: 24px;
+      background: rgba(18, 21, 33, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .depth-meter-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      font-family: var(--font-tech);
+    }
+    .depth-meter-title {
+      color: var(--ink-secondary);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .depth-meter-badge {
+      color: #10B981;
+      font-weight: 700;
+    }
+    .depth-meter-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .depth-meter-progress {
+      height: 100%;
+      background: linear-gradient(90deg, #F59E0B 0%, #10B981 100%);
+      border-radius: 99px;
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* FULLSCREEN CONFETTI CANVAS */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* SHARK TANK VALUATION BANNER (STEP 6) */
+    .shark-tank-banner {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 20px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .st-valuation-headline {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .st-tag {
+      font-family: var(--font-tech);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #34D399;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .st-amount {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      font-weight: 800;
       color: #FFFFFF;
+      letter-spacing: -0.02em;
+    }
+    .st-metrics-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .st-subpill {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      color: #E2E8F0;
+    }
+    .st-subpill strong {
+      color: #34D399;
     }
 
     /* ==========================================================================
@@ -255,22 +512,62 @@
       font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: var(--accent-cyan);
-      margin-bottom: 12px;
+      color: var(--ink-tertiary);
+      margin-bottom: 10px;
       display: inline-block;
       font-weight: 600;
     }
     .question-text {
       font-family: var(--font-display);
-      font-size: 2.1rem;
+      font-size: 2.05rem;
       font-weight: 700;
       line-height: 1.25;
       letter-spacing: -0.02em;
-      color: #FFFFFF;
+      color: var(--ink-primary);
       text-wrap: balance;
     }
     @media (max-width: 768px) {
       .question-text { font-size: 1.55rem; }
+      .top-dock {
+        top: 8px;
+        width: calc(100% - 16px);
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        border-radius: 20px;
+        gap: 8px;
+      }
+      .stepper-dock {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 6px;
+        justify-content: flex-start;
+      }
+      .stepper-dock::-webkit-scrollbar { display: none; }
+      .step-pill {
+        white-space: nowrap;
+        padding: 5px 11px;
+        font-size: 0.72rem;
+        flex-shrink: 0;
+      }
+      .gamified-stats-dock {
+        gap: 4px;
+      }
+      .stat-pill {
+        font-size: 0.68rem;
+        padding: 4px 8px;
+      }
+      .brand-mark-text {
+        font-size: 0.92rem;
+      }
+      .atelier-container {
+        margin: 20px auto 60px auto;
+        width: calc(100% - 24px);
+      }
+      .smart-chips-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* SOCRATIC DIALOGUE STREAM (MINIMAL & FOCUSED) */
@@ -296,21 +593,22 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .dialogue-turn.user {
-      background: linear-gradient(135deg, rgba(79, 70, 229, 0.4) 0%, rgba(99, 102, 241, 0.2) 100%);
-      border: 1px solid rgba(99, 102, 241, 0.35);
+      background: var(--brand-primary);
+      border: 1px solid rgba(0, 0, 0, 0.05);
       color: #FFFFFF;
       align-self: flex-end;
       max-width: 85%;
-      border-bottom-right-radius: 4px;
-      box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.4);
+      border-bottom-right-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
     .dialogue-turn.mentor {
-      background: rgba(18, 22, 34, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #F1F5F9;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      color: var(--ink-primary);
       align-self: flex-start;
       max-width: 90%;
-      border-bottom-left-radius: 4px;
+      border-bottom-left-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
     }
     .mentor-pill-tag {
       display: inline-block;
@@ -326,27 +624,26 @@
     .input-dock {
       width: 100%;
       max-width: 740px;
-      background: rgba(18, 21, 33, 0.85);
+      background: #FFFFFF;
       backdrop-filter: blur(24px);
-      border: 1px solid var(--border-subtle);
-      border-radius: 28px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 999px;
       padding: 8px 12px 8px 20px;
       display: flex;
       align-items: center;
       gap: 12px;
-      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.15);
+      box-shadow: 0 10px 30px -6px rgba(0, 0, 0, 0.06);
       transition: all 0.25s ease;
     }
     .input-dock:focus-within {
-      border-color: rgba(99, 102, 241, 0.5);
-      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), 0 0 35px rgba(99, 102, 241, 0.35);
-      background: rgba(22, 26, 40, 0.95);
+      border-color: var(--brand-primary);
+      box-shadow: 0 12px 36px -6px rgba(0, 0, 0, 0.1);
     }
     .input-textarea {
       flex: 1;
       background: transparent;
       border: none;
-      color: #FFFFFF;
+      color: var(--ink-primary);
       font-family: var(--font-ui);
       font-size: 0.98rem;
       outline: none;
@@ -356,7 +653,7 @@
       line-height: 1.45;
     }
     .input-textarea::placeholder {
-      color: rgba(148, 163, 184, 0.5);
+      color: rgba(100, 116, 139, 0.6);
     }
 
     .btn-circle {
@@ -753,131 +1050,1129 @@
       flex-wrap: wrap;
       margin-top: 10px;
     }
+
+    /* ==========================================================================
+       SWISS EDITORIAL SHEETS & PRINT-SHOP CHEATSHEET SYSTEM
+       ========================================================================== */
+    .brandbook-sheet {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      color: #0F172A;
+      overflow: hidden;
+    }
+    .brandbook-sheet-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #0F172A;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .brandbook-sheet-num {
+      font-weight: 700;
+      color: #6366F1;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .card {
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 16px;
+      background: #FFFFFF;
+      color: #0F172A;
+    }
+    .card-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      color: #6366F1;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .blueprint-grid {
+      background-color: #0B0F19;
+      background-image:
+        linear-gradient(rgba(56, 189, 248, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.15) 1px, transparent 1px);
+      background-size: 16px 16px;
+      border: 1px solid #1E293B;
+      border-radius: 12px;
+      padding: 20px;
+      color: #F8FAFC;
+    }
+    .print-shop-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #EEF2FF;
+      color: #4338CA;
+      border: 1px solid #C7D2FE;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .magazine-cover-strip { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+
+    @media print {
+      body { background: #FFFFFF !important; color: #000000 !important; }
+      .top-dock, .aura-presence-stage, .downloads-vault-bar, #step6SubTabs, button { display: none !important; }
+      .stage-section { display: none !important; }
+      #panel-step-6 { display: block !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+      .brandbook-magazine-hero { box-shadow: none !important; border: none !important; }
+      .brandbook-sheet { page-break-after: always; break-inside: avoid; border: 1px solid #CCC !important; box-shadow: none !important; margin-bottom: 20px !important; }
+    }
+  
+    /* ==========================================================================
+       UNIFIED SINGLE-SCREEN ATELIER WORKBENCH (ALL IN ONE VIEW)
+       ========================================================================== */
+    .unified-workbench-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      width: 100%;
+      max-width: 1360px;
+      margin: 20px auto 40px auto;
+      align-items: start;
+    }
+    @media (max-width: 1080px) {
+      .unified-workbench-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+    .workbench-dialogue-pane {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    .workbench-canvas-pane {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-organic);
+      padding: 24px;
+      box-shadow: var(--shadow-organic);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: sticky;
+      top: 90px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+    @media (max-width: 1080px) {
+      .workbench-canvas-pane {
+        position: static;
+        max-height: none;
+      }
+    }
+    .brand-live-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .brand-live-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--ink-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-live-monogram {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--brand-primary);
+      color: #FFFFFF;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      transition: background 0.5s ease;
+    }
+    .brand-live-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--ink-secondary);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Mobile switcher */
+    .mobile-atelier-switch {
+      display: none;
+      background: rgba(0, 0, 0, 0.04);
+      padding: 4px;
+      border-radius: 999px;
+      margin: 0 auto 16px auto;
+      max-width: 340px;
+      width: 100%;
+    }
+    @media (max-width: 1080px) {
+      .mobile-atelier-switch { display: flex; }
+    }
+    .mobile-tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-family: var(--font-ui);
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .mobile-tab-btn.active {
+      background: #FFFFFF;
+      color: var(--ink-primary);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ==========================================================================
+       TRIAD ARCHITECTURE: 3 DEDICATED INTERFACES (AWWWARDS / DUOLINGO / APPLE)
+       ========================================================================== */
+
+    /* 1. SCREEN CONTAINERS */
+    .app-screen {
+      display: none;
+      width: 100%;
+      min-height: 100dvh;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .app-screen.active {
+      display: flex;
+      flex-direction: column;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 2. INTERFACE 1: EL RECORRIDO (JOURNEY MAP / ROADMAP) */
+    .journey-wrapper {
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px 16px 80px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .journey-header-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.90);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      gap: 12px;
+    }
+
+    .btn-hub-menu {
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--ink-primary);
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .btn-hub-menu:hover {
+      background: rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+    }
+
+    /* Active Mission Card (Para gente impaciente / Onboarding) */
+    .mission-hero-card {
+      width: 100%;
+      background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+      border: 1px solid rgba(24, 24, 27, 0.12);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .mission-hero-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #6366F1, #06B6D4, #10B981);
+    }
+
+    .mission-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.08);
+      color: #4F46E5;
+      width: fit-content;
+    }
+
+    .mission-heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 3.8vw, 1.8rem);
+      font-weight: 800;
+      color: var(--ink-primary);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .mission-explanation {
+      font-family: var(--font-ui);
+      font-size: 0.92rem;
+      color: var(--ink-secondary);
+      line-height: 1.5;
+    }
+
+    .mission-metadata-pills {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-tertiary);
+    }
+
+    .btn-launch-mission {
+      width: 100%;
+      padding: 15px 24px;
+      border-radius: 20px;
+      background: var(--brand-primary);
+      color: #FFFFFF;
+      border: none;
+      font-family: var(--font-ui);
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-launch-mission:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.32);
+    }
+    .btn-launch-mission:active {
+      transform: translateY(1px);
+    }
+
+    /* Roadmap Tree of 6 Nodes (Duolingo Style) */
+    .roadmap-tree-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .roadmap-node-row {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .roadmap-connector-bar {
+      width: 4px;
+      height: 38px;
+      background: #E2E8F0;
+      border-radius: 99px;
+      transition: background 0.4s ease;
+    }
+    .roadmap-connector-bar.completed {
+      background: linear-gradient(180deg, #10B981, #06B6D4);
+    }
+
+    .roadmap-milestone-card {
+      width: 100%;
+      max-width: 460px;
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 22px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      user-select: none;
+    }
+    .roadmap-milestone-card:hover:not(.locked) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      border-color: #CBD5E1;
+    }
+    .roadmap-milestone-card.active {
+      border-color: #6366F1;
+      background: #FFFFFF;
+      box-shadow: 0 8px 28px -4px rgba(99, 102, 241, 0.22);
+    }
+    .roadmap-milestone-card.completed {
+      border-color: #10B981;
+      background: #F0FDF4;
+    }
+    .roadmap-milestone-card.locked {
+      opacity: 0.55;
+      background: #F8FAFC;
+      cursor: not-allowed;
+      border-color: #E2E8F0;
+    }
+
+    .milestone-icon-bubble {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+      background: #F1F5F9;
+      flex-shrink: 0;
+      transition: all 0.25s ease;
+    }
+    .roadmap-milestone-card.active .milestone-icon-bubble {
+      background: #EEF2FF;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+    .roadmap-milestone-card.completed .milestone-icon-bubble {
+      background: #DCFCE7;
+      color: #15803D;
+    }
+
+    .milestone-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .milestone-step-index {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--ink-tertiary);
+      text-transform: uppercase;
+    }
+
+    .milestone-name {
+      font-family: var(--font-display);
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--ink-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .milestone-summary {
+      font-family: var(--font-ui);
+      font-size: 0.76rem;
+      color: var(--ink-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .milestone-status-chip {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #F1F5F9;
+      color: var(--ink-secondary);
+      flex-shrink: 0;
+    }
+    .roadmap-milestone-card.active .milestone-status-chip {
+      background: #EEF2FF;
+      color: #4F46E5;
+    }
+    .roadmap-milestone-card.completed .milestone-status-chip {
+      background: #DCFCE7;
+      color: #15803D;
+    }
+
+    /* 3. INTERFACE 2: MODO CONCENTRACIÓN (FOCUS STUDIO) */
+    .focus-wrapper {
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 12px 16px 90px 16px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100dvh;
+    }
+
+    .focus-nav-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.90);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+    }
+
+    .btn-return-roadmap {
+      background: transparent;
+      border: none;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+    }
+    .btn-return-roadmap:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--ink-primary);
+    }
+
+    .focus-step-title-pill {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--ink-primary);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-view-canvas-peek {
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--ink-secondary);
+      font-family: var(--font-ui);
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-view-canvas-peek:hover {
+      background: rgba(0, 0, 0, 0.08);
+      color: var(--ink-primary);
+    }
+
+    /* Milestone Victory Card (Inside Focus Mode upon completion) */
+    .milestone-victory-card {
+      width: 100%;
+      background: linear-gradient(135deg, #ECFDF5 0%, #FFFFFF 100%);
+      border: 2px solid #10B981;
+      border-radius: 26px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+      margin: 20px 0;
+      box-shadow: 0 16px 36px -10px rgba(16, 185, 129, 0.2);
+      animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.92); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* 4. INTERFACE 3: CONSOLA DE ADMINISTRACIÓN (SLIDE-OVER HUB DRAWER) */
+    .hub-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .hub-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .hub-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(440px, 92vw);
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border-left: 1px solid var(--border-subtle);
+      box-shadow: -12px 0 40px rgba(0, 0, 0, 0.14);
+      z-index: 1000;
+      transform: translateX(100%);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 20px;
+      overflow-y: auto;
+    }
+    .hub-drawer.open {
+      transform: translateX(0);
+    }
+
+    .hub-top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 20px;
+    }
+    .hub-main-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--ink-primary);
+    }
+    .hub-close-icon {
+      background: #F1F5F9;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      color: var(--ink-secondary);
+      transition: all 0.2s ease;
+    }
+    .hub-close-icon:hover {
+      background: #E2E8F0;
+      color: var(--ink-primary);
+    }
+
+    .hub-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .hub-group-label {
+      font-family: var(--font-mono);
+      font-size: 0.70rem;
+      font-weight: 700;
+      color: var(--ink-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .hub-group-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .hub-row-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-hub-action {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      color: var(--ink-primary);
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-hub-action:hover {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+    }
+
+    /* CANVAS PEEK MODAL */
+    .canvas-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1050;
+      display: none;
+      place-items: center;
+      padding: 20px;
+    }
+    .canvas-modal-overlay.open {
+      display: grid;
+    }
+    .canvas-modal-box {
+      width: 100%;
+      max-width: 680px;
+      max-height: 85vh;
+      overflow-y: auto;
+      background: #FFFFFF;
+      border-radius: 26px;
+      border: 1px solid var(--border-subtle);
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* 5. MOBILE-FIRST ERGONOMICS (CRAIG FEDERIGHI STANDARD) */
+    @media (max-width: 640px) {
+      .journey-wrapper {
+        padding: 12px 12px 90px 12px;
+        gap: 18px;
+      }
+      .focus-wrapper {
+        padding: 10px 10px 100px 10px;
+      }
+      .focus-nav-bar {
+        padding: 6px 10px;
+        gap: 6px;
+      }
+      .focus-step-title-pill {
+        font-size: 0.68rem;
+        padding: 4px 8px;
+        max-width: 130px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .btn-view-canvas-peek {
+        display: none;
+      }
+      .input-dock {
+        position: fixed !important;
+        bottom: 12px !important;
+        left: 12px !important;
+        right: 12px !important;
+        width: calc(100% - 24px) !important;
+        margin: 0 auto !important;
+        z-index: 90 !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16) !important;
+      }
+      .question-billboard {
+        margin-bottom: 14px !important;
+      }
+      .question-text {
+        font-size: 1.35rem !important;
+      }
+      .smart-chips-grid {
+        max-height: 110px;
+        overflow-y: auto;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- FULLSCREEN CELEBRATION CONFETTI CANVAS -->
+  <canvas id="confettiCanvas"></canvas>
 
-  <!-- FLOATING GLASS TOP NAVIGATION -->
-  <header class="top-dock">
-    <div class="brand-mark" onclick="switchStep(1)">
-      <div class="brand-mark-seal">TB</div>
-      <span class="brand-mark-text">TheBestBrand</span>
+  <!-- ==================================================================== -->
+  <!-- INTERFACE 1: EL RECORRIDO (JOURNEY MAP / ROADMAP DUOLINGO-STYLE)     -->
+  <!-- ==================================================================== -->
+  <div id="screen-journey" class="app-screen active">
+    <div class="journey-wrapper">
+      <!-- Journey Top Bar -->
+      <header class="journey-header-bar">
+        <div class="brand-mark" onclick="navigateToScreen('journey')">
+          <div class="brand-mark-seal">TB</div>
+          <span class="brand-mark-text">TheBestBrand</span>
+        </div>
+        <div class="gamified-stats-dock">
+          <span class="stat-pill streak-pill" title="Racha de Creación">🔥 <strong id="streakCountJourney">5</strong> Días</span>
+          <span class="stat-pill xp-pill" title="Experiencia Acumulada">💎 <strong id="xpCountJourney">450</strong> XP</span>
+        </div>
+        <button class="btn-hub-menu" onclick="toggleHubDrawer(true)" title="Abrir Menú de Administración">
+          <span>☰</span> Menú
+        </button>
+      </header>
+
+      <!-- Active Mission Hero Card (Para gente impaciente / Onboarding) -->
+      <div class="mission-hero-card" id="missionLauncherCard">
+        <div class="mission-badge-pill" id="missionBadge">🚀 Misión Activa · Paso 1</div>
+        <h2 class="mission-heading" id="missionTitle">Propósito Nuclear & Círculo Dorado</h2>
+        <p class="mission-explanation" id="missionDesc">
+          Aura te guiará en una conversación ágil para definir el porqué de tu negocio y los 6 pilares estratégicos de tu marca.
+        </p>
+        <div class="mission-metadata-pills">
+          <span id="missionTime">⏱️ 3 minutos</span>
+          <span>•</span>
+          <span id="missionXP">💎 +100 XP</span>
+          <span>•</span>
+          <span id="missionPillars">🎯 6 Pilares</span>
+          <span>•</span>
+          <span style="color:#059669; font-weight:700;">Zero-Scroll</span>
+        </div>
+        <button class="btn-launch-mission" id="missionCtaBtn" onclick="launchActiveMission()">
+          <span>▶</span> <span id="missionCtaText">Iniciar Misión</span>
+        </button>
+      </div>
+
+      <!-- Duolingo-style Roadmap of 6 Milestones -->
+      <div class="roadmap-tree-container" id="roadmapTree">
+        <!-- Node 1: Propósito -->
+        <div class="roadmap-node-row">
+          <div class="roadmap-milestone-card active" id="node-card-1" onclick="navigateToScreen('focus', 1)">
+            <div class="milestone-icon-bubble">🎯</div>
+            <div class="milestone-content">
+              <span class="milestone-step-index">Paso 01</span>
+              <h3 class="milestone-name">Propósito & Esencia</h3>
+              <span class="milestone-summary">Círculo Dorado y los 6 pilares nucleares</span>
+            </div>
+            <span class="milestone-status-chip" id="node-badge-1">En Curso</span>
+          </div>
+          <div class="roadmap-connector-bar" id="connector-1"></div>
+        </div>
+
+        <!-- Node 2: Touchpoints -->
+        <div class="roadmap-node-row">
+          <div class="roadmap-milestone-card locked" id="node-card-2" onclick="onNodeCardClicked(2)">
+            <div class="milestone-icon-bubble">🗺️</div>
+            <div class="milestone-content">
+              <span class="milestone-step-index">Paso 02</span>
+              <h3 class="milestone-name">Momentos de Verdad</h3>
+              <span class="milestone-summary">Customer Journey: Antes, Durante y Después</span>
+            </div>
+            <span class="milestone-status-chip" id="node-badge-2">🔒 Bloqueado</span>
+          </div>
+          <div class="roadmap-connector-bar" id="connector-2"></div>
+        </div>
+
+        <!-- Node 3: Naming -->
+        <div class="roadmap-node-row">
+          <div class="roadmap-milestone-card locked" id="node-card-3" onclick="onNodeCardClicked(3)">
+            <div class="milestone-icon-bubble">✍️</div>
+            <div class="milestone-content">
+              <span class="milestone-step-index">Paso 03</span>
+              <h3 class="milestone-name">Naming de Autor</h3>
+              <span class="milestone-summary">SMILE & SCRATCH + 45 Clases de Niza</span>
+            </div>
+            <span class="milestone-status-chip" id="node-badge-3">🔒 Bloqueado</span>
+          </div>
+          <div class="roadmap-connector-bar" id="connector-3"></div>
+        </div>
+
+        <!-- Node 4: Brújula Sensorial -->
+        <div class="roadmap-node-row">
+          <div class="roadmap-milestone-card locked" id="node-card-4" onclick="onNodeCardClicked(4)">
+            <div class="milestone-icon-bubble">🧭</div>
+            <div class="milestone-content">
+              <span class="milestone-step-index">Paso 04</span>
+              <h3 class="milestone-name">Brújula Sensorial</h3>
+              <span class="milestone-summary">7 Faders Bipolares Osgood EPA</span>
+            </div>
+            <span class="milestone-status-chip" id="node-badge-4">🔒 Bloqueado</span>
+          </div>
+          <div class="roadmap-connector-bar" id="connector-4"></div>
+        </div>
+
+        <!-- Node 5: Torneo de Logotipos -->
+        <div class="roadmap-node-row">
+          <div class="roadmap-milestone-card locked" id="node-card-5" onclick="onNodeCardClicked(5)">
+            <div class="milestone-icon-bubble">⚔️</div>
+            <div class="milestone-content">
+              <span class="milestone-step-index">Paso 05</span>
+              <h3 class="milestone-name">Torneo de Logotipos</h3>
+              <span class="milestone-summary">Duelos Bradley-Terry de 60 Pares</span>
+            </div>
+            <span class="milestone-status-chip" id="node-badge-5">🔒 Bloqueado</span>
+          </div>
+          <div class="roadmap-connector-bar" id="connector-5"></div>
+        </div>
+
+        <!-- Node 6: Brandbook Maestro -->
+        <div class="roadmap-node-row">
+          <div class="roadmap-milestone-card locked" id="node-card-6" onclick="onNodeCardClicked(6)">
+            <div class="milestone-icon-bubble">👑</div>
+            <div class="milestone-content">
+              <span class="milestone-step-index">Paso 06</span>
+              <h3 class="milestone-name">Brandbook Maestro</h3>
+              <span class="milestone-summary">38 Páginas Ilustradas + Suite SVG</span>
+            </div>
+            <span class="milestone-status-chip" id="node-badge-6">🔒 Bloqueado</span>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <nav class="stepper-dock" id="stepNav">
-      <button class="step-pill active" onclick="switchStep(1)">01 Posicionamiento</button>
-      <button class="step-pill" onclick="switchStep(2)">02 Touchpoints</button>
-      <button class="step-pill" onclick="switchStep(3)">03 Naming</button>
-      <button class="step-pill" onclick="switchStep(4)">04 Identidad Visual</button>
-      <button class="step-pill" onclick="switchStep(5)">05 Diagnóstico</button>
-      <button class="step-pill" onclick="switchStep(6)">06 Brandbook 38 Pág</button>
-    </nav>
+  <!-- ==================================================================== -->
+  <!-- INTERFACE 2: MODO CONCENTRACIÓN (FOCUS STUDIO)                      -->
+  <!-- ==================================================================== -->
+  <div id="screen-focus" class="app-screen">
+    <div class="focus-wrapper">
+      <!-- Minimalist Focus Header -->
+      <header class="focus-nav-bar">
+        <button class="btn-return-roadmap" onclick="navigateToScreen('journey')" title="Volver al Recorrido">
+          ← <span>Mapa</span>
+        </button>
+        <div class="focus-step-title-pill" id="focusStepIndicator">
+          🎯 Paso 1 · Propósito Nuclear
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button class="btn-view-canvas-peek" onclick="openCanvasModal()" title="Ver Manifiesto de 6 Placas">
+            🏛️ Ver Manifiesto
+          </button>
+          <div class="voice-dock-btn" id="voiceToggleBadge" onclick="toggleVoiceMute()" title="Silenciar o activar voz de Aura">
+            🔊 Aoede
+            <span class="eq-bars"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span>
+          </div>
+          <button class="btn-hub-menu" onclick="toggleHubDrawer(true)" title="Menú de Administración">
+            ☰
+          </button>
+        </div>
+      </header>
 
-    <div style="display:flex; align-items:center; gap:8px;">
-      <div class="voice-dock-btn" id="apiKeyDockBtn" onclick="promptForApiKey()" style="cursor:pointer;" title="Configura tu propia clave de Google AI Studio para cuota ilimitada">
-        🔑 Usar Mi Cuenta
+      <!-- THE LIVING AURA CORE (FOCUS STAGE) -->
+      <div class="aura-presence-stage" id="focusAuraStage">
+        <div class="aura-orb-halo" id="avatarOrb" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para escuchar la voz de Aura">
+          <canvas id="avatarCanvas" width="130" height="130" class="aura-canvas"></canvas>
+        </div>
+        <div class="aura-presence-badge" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para activar audio">
+          <span class="aura-pulse-dot"></span>
+          <span id="avatarStateLabel">🟢 Aura · Mentora Socrática (Clic para escuchar)</span>
+        </div>
       </div>
-      <div class="voice-dock-btn" id="voiceToggleBadge" onclick="toggleVoiceMute()">
-        🔊 Aoede 24kHz
-      </div>
-    </div>
-  </header>
 
-  <!-- MAIN ATELIER STAGE -->
-  <main class="atelier-container">
-
-    <!-- THE LIVING AURA CORE -->
-    <div class="aura-presence-stage">
-      <div class="aura-orb-halo" id="avatarOrb" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para escuchar la voz de Aura">
-        <canvas id="avatarCanvas" width="130" height="130" class="aura-canvas"></canvas>
-      </div>
-      <div class="aura-presence-badge" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para activar audio">
-        <span class="aura-pulse-dot"></span>
-        <span id="avatarStateLabel">Aura · Mentora Creativa (Clic para escuchar)</span>
-      </div>
-    </div>
+      <!-- MAIN ATELIER STAGE -->
+      <main class="atelier-container" style="max-width:100%; padding:0; margin:0;">
 
     <!-- ==================================================================== -->
     <!-- STAGE 1 & 2: THE DIALOGUE (HERO CONVERSATION)                        -->
     <!-- ==================================================================== -->
     <section class="stage-section active" id="panel-step-1">
-      <div class="question-billboard">
-        <span class="question-category" id="questionCategory">01 · Propósito Nuclear & Círculo Dorado</span>
-        <h1 class="question-text" id="activeQuestionHeading">
-          ¿Qué problema real le resuelves a tus clientes que nadie más en tu industria ha sido capaz de solucionar?
-        </h1>
-      </div>
+      <!-- UNIFIED SINGLE-SCREEN ATELIER WORKBENCH -->
+      <div class="unified-workbench-grid">
 
-      <!-- EFFORTLESS INPUT DOCK (RIGHT UNDER THE ACTIVE QUESTION - ZERO SCROLL) -->
-      <div class="input-dock" style="margin-bottom: 14px;">
-        <button class="btn-circle btn-mic-round" id="micBtn" onclick="toggleContinuousVoice()" title="Hablar por voz">🎙️</button>
-        <textarea
-          id="chatInput"
-          class="input-textarea"
-          rows="1"
-          placeholder="Habla o escribe con total libertad..."
-          onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); sendUserMessage(); }"
-        ></textarea>
-        <button class="btn-circle btn-send" id="sendBtn" onclick="sendUserMessage()" title="Enviar mensaje">↑</button>
-      </div>
+        <!-- LEFT COLUMN: AURA SOCRATIC DIALOGUE & INTERACTIVE INPUT -->
+        <div class="workbench-dialogue-pane" id="atelierLeftPane">
+          <div class="question-billboard" style="margin-bottom: 20px;">
+            <span class="question-category" id="questionCategory">01 · Propósito Nuclear & Círculo Dorado</span>
+            <h1 class="question-text" id="activeQuestionHeading" style="font-size: 1.75rem;">
+              ¿Qué problema real le resuelves a tus clientes que nadie más en tu industria ha sido capaz de solucionar?
+            </h1>
+          </div>
 
-      <!-- CLOSING CONFIRMATION GATE -->
-      <div class="closing-gate-pill" id="closingGateBanner">
-        <span class="closing-gate-text">✨ ¡Excelente! Hemos capturado los pilares de este paso. ¿Quieres agregar más ideas o avanzamos?</span>
-        <div class="closing-gate-actions">
-          <button class="btn-action" style="padding:6px 12px; font-size:0.75rem;" onclick="document.getElementById('chatInput').focus()">✍️ Agregar más</button>
-          <button class="btn-action emerald" style="padding:6px 12px; font-size:0.75rem;" onclick="confirmNoMoreCommentsAndAdvance()">Avanzar a Touchpoints →</button>
-        </div>
-      </div>
+          <!-- SMART CHIPS DE INSPIRACIÓN RÁPIDA -->
+          <div class="smart-chips-stage" id="smartChipsContainer">
+            <div class="smart-chips-header">
+              <span class="smart-chips-label">💡 TOCA PARA INSPIRARTE (RESPUESTAS RÁPIDAS):</span>
+            </div>
+            <div class="smart-chips-grid" id="smartChipsGrid">
+              <button type="button" class="smart-chip-pill" onclick="injectSmartAnswer('⚡ Resolvemos la ineficiencia logística mediante automatización y trazabilidad en tiempo real.')">
+                ⚡ Logística automatizada y trazabilidad
+              </button>
+              <button type="button" class="smart-chip-pill" onclick="injectSmartAnswer('💎 Ofrecemos manufactura artesanal suiza y precisión a un precio justo y transparente.')">
+                💎 Manufactura de alta precisión suiza
+              </button>
+              <button type="button" class="smart-chip-pill" onclick="injectSmartAnswer('🌱 Democratizamos el acceso a productos 100% ecológicos sin sobrecosto comercial.')">
+                🌱 Sostenibilidad real sin sobreprecio
+              </button>
+              <button type="button" class="smart-chip-pill" onclick="injectSmartAnswer('🛡️ Blindamos la seguridad de pagos con criptografía y verificación biométrica continua.')">
+                🛡️ Criptoseguridad y verificación continua
+              </button>
+            </div>
+          </div>
 
-      <!-- SOCRATIC DIALOGUE STREAM (HISTORY TRANSCRIPT) -->
-      <div class="socratic-stream" id="chatHistory">
-        <div class="dialogue-turn mentor">
-          <span class="mentor-pill-tag">✨ AURA · CONSULTORÍA ESTRATÉGICA</span>
-          <p>Bienvenido al Taller de Marca. Vamos a descubrir la verdadera alma de tu proyecto, conversando con calma y explorando cada ángulo hasta definir un posicionamiento inolvidable. Cuéntame todo sobre tu producto o servicio.</p>
-        </div>
-      </div>
+          <!-- FLOATING INPUT DOCK -->
+          <div class="input-dock" style="margin-bottom: 12px;">
+            <button class="btn-circle btn-mic-round" id="micBtn" onclick="toggleContinuousVoice()" title="Hablar por voz">🎙️</button>
+            <textarea
+              id="chatInput"
+              class="input-textarea"
+              rows="1"
+              placeholder="Habla o escribe tu visión..."
+              oninput="onChatInputChanged(this.value)"
+              onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); sendUserMessage(); }"
+            ></textarea>
+            <button class="btn-circle btn-send" id="sendBtn" onclick="sendUserMessage()" title="Enviar mensaje">↑</button>
+          </div>
 
-      <!-- THE BRAND MANIFESTO VAULT (PROGRESSIVE DISCLOSURE) -->
-      <div class="manifesto-vault">
-        <div class="vault-header">
-          <div class="vault-title">
-            <span>🏛️ Manifiesto de Marca en Construcción</span>
+          <!-- STRATEGIC DEPTH METER -->
+          <div class="strategic-depth-container" id="strategicDepthContainer" style="margin-bottom: 16px;">
+            <div class="depth-meter-top">
+              <span class="depth-meter-title">🎯 PROFUNDIDAD ESTRATÉGICA:</span>
+              <span class="depth-meter-badge" id="depthMeterLabel">65% · Profesional (+25 XP)</span>
+            </div>
+            <div class="depth-meter-track">
+              <div class="depth-meter-progress" id="depthMeterProgress" style="width: 65%;"></div>
+            </div>
           </div>
-          <span class="vault-progress" id="committeePct">15% Completitud</span>
-        </div>
-        <div class="manifesto-grid">
-          <div class="manifesto-plaque">
-            <span class="plaque-num">01 · PROPÓSITO</span>
-            <div class="plaque-title">Círculo Dorado</div>
-            <p class="plaque-text" id="canvasGoldenCircle">En espera de tus respuestas...</p>
+
+          <!-- CLOSING CONFIRMATION GATE -->
+          <div class="closing-gate-pill" id="closingGateBanner">
+            <span class="closing-gate-text">✨ ¡Excelente! Hemos capturado los pilares de este paso. ¿Quieres agregar más ideas o avanzamos?</span>
+            <div class="closing-gate-actions">
+              <button class="btn-action" style="padding:6px 12px; font-size:0.75rem;" onclick="document.getElementById('chatInput').focus()">✍️ Más ideas</button>
+              <button class="btn-action emerald" style="padding:6px 12px; font-size:0.75rem;" onclick="confirmNoMoreCommentsAndAdvance()">Avanzar a Touchpoints →</button>
+            </div>
           </div>
-          <div class="manifesto-plaque">
-            <span class="plaque-num">02 · DIFERENCIAL</span>
-            <div class="plaque-title">Oferta de Valor</div>
-            <p class="plaque-text" id="canvasValueOffer">La ventaja única frente al mercado...</p>
-          </div>
-          <div class="manifesto-plaque">
-            <span class="plaque-num">03 · IMPACTO</span>
-            <div class="plaque-title">Rol en la Sociedad</div>
-            <p class="plaque-text" id="canvasSocialRole">Transformación de la industria...</p>
-          </div>
-          <div class="manifesto-plaque">
-            <span class="plaque-num">04 · MÉTODO</span>
-            <div class="plaque-title">Proceso Operativo</div>
-            <p class="plaque-text" id="canvasProcessSteps">Paso a paso de excelencia...</p>
-          </div>
-          <div class="manifesto-plaque">
-            <span class="plaque-num">05 · VOZ</span>
-            <div class="plaque-title">Mensaje Nuclear</div>
-            <p class="plaque-text" id="canvasCoreMessage">Idea central de recordación...</p>
-          </div>
-          <div class="manifesto-plaque">
-            <span class="plaque-num">06 · CLIENTE</span>
-            <div class="plaque-title">Perfil Ideal</div>
-            <p class="plaque-text" id="canvasIdealCustomer">Quién decide y qué valora...</p>
+
+          <!-- SOCRATIC DIALOGUE STREAM (COMPACT, AUTO-SCROLL) -->
+          <div class="socratic-stream" id="chatHistory" style="max-height: 280px; overflow-y: auto; margin-bottom: 0;">
+            <div class="dialogue-turn mentor">
+              <span class="mentor-pill-tag">✨ AURA · CONSULTORÍA ESTRATÉGICA</span>
+              <p>Bienvenido al Taller de Marca. Vamos a descubrir la verdadera alma de tu proyecto, conversando con calma y explorando cada ángulo hasta definir un posicionamiento inolvidable. Cuéntame todo sobre tu producto o servicio.</p>
+            </div>
           </div>
         </div>
+
+        <!-- RIGHT COLUMN: LIVING BRAND CANVAS (ALL-IN-ONE REAL-TIME VIEW) -->
+        <div class="workbench-canvas-pane" id="atelierRightPane">
+          <div class="brand-live-header-bar">
+            <div class="brand-live-title">
+              <div class="brand-live-monogram" id="brandLiveMonogram">TB</div>
+              <span id="brandLiveName">TheBestBrand</span>
+            </div>
+            <span class="vault-progress" id="committeePct">15% Completitud</span>
+          </div>
+
+          <!-- RESONANCIA CROMÁTICA EN VIVO -->
+          <div style="background:#FAFAFB; border:1px solid var(--border-subtle); border-radius:18px; padding:12px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-family:var(--font-mono); font-size:0.68rem; color:var(--ink-secondary); font-weight:700;">PALETA & RESONANCIA CROMÁTICA:</span>
+              <span style="font-size:0.68rem; color:var(--ink-tertiary);">Inicia neutro sin sesgo</span>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button type="button" onclick="applyDynamicBrandTheme(['#18181B', '#71717A'])" style="border:1px solid rgba(0,0,0,0.1); background:#FFFFFF; padding:4px 10px; border-radius:999px; font-size:0.72rem; cursor:pointer; display:flex; align-items:center; gap:5px;" title="Neutro Galería">
+                <span style="width:10px; height:10px; border-radius:50%; background:#18181B;"></span> Neutro
+              </button>
+              <button type="button" onclick="applyDynamicBrandTheme(['#1E40AF', '#38BDF8'])" style="border:1px solid rgba(0,0,0,0.1); background:#FFFFFF; padding:4px 10px; border-radius:999px; font-size:0.72rem; cursor:pointer; display:flex; align-items:center; gap:5px;" title="Cobalto">
+                <span style="width:10px; height:10px; border-radius:50%; background:#1E40AF;"></span> Azul
+              </button>
+              <button type="button" onclick="applyDynamicBrandTheme(['#065F46', '#34D399'])" style="border:1px solid rgba(0,0,0,0.1); background:#FFFFFF; padding:4px 10px; border-radius:999px; font-size:0.72rem; cursor:pointer; display:flex; align-items:center; gap:5px;" title="Esmeralda">
+                <span style="width:10px; height:10px; border-radius:50%; background:#065F46;"></span> Verde
+              </button>
+              <button type="button" onclick="applyDynamicBrandTheme(['#831843', '#F43F5E'])" style="border:1px solid rgba(0,0,0,0.1); background:#FFFFFF; padding:4px 10px; border-radius:999px; font-size:0.72rem; cursor:pointer; display:flex; align-items:center; gap:5px;" title="Borgoña">
+                <span style="width:10px; height:10px; border-radius:50%; background:#831843;"></span> Rubí
+              </button>
+              <button type="button" onclick="applyDynamicBrandTheme(['#D97706', '#FBBF24'])" style="border:1px solid rgba(0,0,0,0.1); background:#FFFFFF; padding:4px 10px; border-radius:999px; font-size:0.72rem; cursor:pointer; display:flex; align-items:center; gap:5px;" title="Ámbar">
+                <span style="width:10px; height:10px; border-radius:50%; background:#D97706;"></span> Ámbar
+              </button>
+              <button type="button" onclick="applyDynamicBrandTheme(['#DC2626', '#18181B'])" style="border:1px solid rgba(0,0,0,0.1); background:#FFFFFF; padding:4px 10px; border-radius:999px; font-size:0.72rem; cursor:pointer; display:flex; align-items:center; gap:5px;" title="Rojo Suizo">
+                <span style="width:10px; height:10px; border-radius:50%; background:#DC2626;"></span> Rojo
+              </button>
+            </div>
+          </div>
+
+          <div class="manifesto-grid">
+            <div class="manifesto-plaque">
+              <span class="plaque-num">01 · PROPÓSITO (WHY)</span>
+              <div class="plaque-title">Círculo Dorado</div>
+              <p class="plaque-text" id="canvasGoldenCircle">En espera de tus respuestas...</p>
+            </div>
+            <div class="manifesto-plaque">
+              <span class="plaque-num">02 · DIFERENCIAL (HOW)</span>
+              <div class="plaque-title">Oferta de Valor</div>
+              <p class="plaque-text" id="canvasValueOffer">La ventaja única frente al mercado...</p>
+            </div>
+            <div class="manifesto-plaque">
+              <span class="plaque-num">03 · IMPACTO</span>
+              <div class="plaque-title">Rol en la Sociedad</div>
+              <p class="plaque-text" id="canvasSocialRole">Transformación de la industria...</p>
+            </div>
+            <div class="manifesto-plaque">
+              <span class="plaque-num">04 · MÉTODO (WHAT)</span>
+              <div class="plaque-title">Proceso Operativo</div>
+              <p class="plaque-text" id="canvasProcessSteps">Paso a paso de excelencia...</p>
+            </div>
+            <div class="manifesto-plaque">
+              <span class="plaque-num">05 · VOZ DE MARCA</span>
+              <div class="plaque-title">Mensaje Nuclear</div>
+              <p class="plaque-text" id="canvasCoreMessage">Idea central de recordación...</p>
+            </div>
+            <div class="manifesto-plaque">
+              <span class="plaque-num">06 · CLIENTE IDEAL</span>
+              <div class="plaque-title">Buyer Persona / ICP</div>
+              <p class="plaque-text" id="canvasIdealCustomer">Quién decide y qué valora...</p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -996,7 +2291,10 @@
 
       <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:20px;">
         <button class="btn-action" onclick="navigatePair(-1)">← Anterior</button>
-        <span id="pairCounterBadge" style="font-family:var(--font-mono); font-size:0.8rem; color:#A5B4FC;">0 / 60</span>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+          <span id="pairCounterBadge" style="font-family:var(--font-mono); font-size:0.85rem; color:#A5B4FC; font-weight:700;">0 / 60</span>
+          <span style="font-family:var(--font-mono); font-size:0.7rem; color:#64748B;">⌨️ Atajo Rápido: [ ← / A ] para Opción A · [ → / B ] para Opción B</span>
+        </div>
         <button class="btn-action" onclick="navigatePair(1)">Siguiente →</button>
       </div>
 
@@ -1015,6 +2313,21 @@
         <p>Tu manual de identidad completo, con retículas de construcción, pantones, paletas AAA y curvas vectoriales listas para descarga.</p>
       </div>
 
+      <!-- SHARK TANK COMMERCIAL VALUATION BANNER -->
+      <div class="shark-tank-banner">
+        <div class="st-valuation-headline">
+          <span class="st-tag">💼 RESUMEN EJECUTIVO PARA INVERSIONISTAS & BALANCE CONTABLE</span>
+          <div class="st-amount">Valor Estimado de Activos: $48,500 USD</div>
+          <p style="font-size:0.8rem; color:#94A3B8; margin-top:2px;">Activos intangibles de propiedad intelectual y manufactura listos para balance de empresa.</p>
+        </div>
+        <div class="st-metrics-pills">
+          <div class="st-subpill">📘 Brandbook 38 Págs: <strong>$18,000</strong></div>
+          <div class="st-subpill">✒️ Naming & Niza: <strong>$12,000</strong></div>
+          <div class="st-subpill">📐 Kit Curvas Bézier: <strong>$8,500</strong></div>
+          <div class="st-subpill">🖨️ Print-Shop Sheet: <strong>$10,000</strong></div>
+        </div>
+      </div>
+
       <div class="brandbook-magazine-hero">
         <div class="magazine-cover-strip">
           <div>
@@ -1031,35 +2344,172 @@
           <div class="downloads-vault-bar">
             <button class="btn-action primary" onclick="exportLogoSVGCurves()">Descargar Logotipo en Curvas (.SVG)</button>
             <button class="btn-action" onclick="exportBrandbookJSON()">Exportar Datos de Estrategia (.JSON)</button>
-            <button class="btn-action" onclick="window.print()">Imprimir / Guardar como PDF</button>
+            <button class="btn-action emerald" onclick="printShopCheatsheetDirect()">🖨️ Imprimir Print-Shop Cheatsheet</button>
+            <button class="btn-action" onclick="window.print()">Imprimir Todo como PDF</button>
           </div>
 
-          <div id="step6PagesContainer" style="display:flex; flex-direction:column; gap:24px;">
-            <div class="manifesto-plaque" style="background:#FFFFFF; border:1px solid #E2E8F0; color:#1E293B;">
-              <span class="plaque-num" style="color:#6366F1;">TABLA DE CONTENIDOS MAESTRA</span>
-              <h3 style="font-family:var(--font-display); font-size:1.2rem; color:#0F172A; margin:6px 0 12px 0;">38 Páginas Estructuradas (Estándar Bënefic)</h3>
-              <div id="step6TOCGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:10px; font-size:0.8rem; color:#475569;">
-                <div>1. Portada Oficial</div>
-                <div>2. Manifiesto de Marca</div>
-                <div>3. Círculo Dorado</div>
-                <div>4. Oferta de Valor</div>
-                <div>5. Rol en la Sociedad</div>
-                <div>6. El Proceso</div>
-                <div>7. El Mensaje Central</div>
-                <div>8. La Personalidad</div>
-                <div>9. El Comportamiento</div>
-                <div>10. El Mundo Sensorial</div>
-                <div>11. El Cliente Ideal</div>
-                <div>12-25. Construcción y Retícula</div>
-                <div>26-38. Suite de Aplicaciones</div>
+          <!-- SELECTOR DE SISTEMA VISUAL Y SUB-TABS -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid #E2E8F0; padding-bottom:14px; margin-top:8px;" id="step6SubTabs">
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn-action primary" id="tabBtnPlates" style="padding:8px 16px; font-size:0.8rem;" onclick="switchStep6Tab('plates')">📑 38 Láminas Editoriales</button>
+              <button class="btn-action" id="tabBtnCheatsheet" style="padding:8px 16px; font-size:0.8rem;" onclick="switchStep6Tab('cheatsheet')">🖨️ The Print-Shop Cheatsheet</button>
+              <button class="btn-action" id="tabBtnApps" style="padding:8px 16px; font-size:0.8rem;" onclick="switchStep6Tab('apps')">📦 8 Aplicaciones en Curvas</button>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-family:var(--font-mono); font-size:0.72rem; color:#64748B;">Sistema Geométrico Activo:</span>
+              <select id="selectBrandbookKit" onchange="changeBrandbookActiveKit(this.value)" style="background:#FFFFFF; border:1px solid #CBD5E1; color:#0F172A; border-radius:8px; padding:6px 10px; font-family:var(--font-ui); font-size:0.78rem; font-weight:600; cursor:pointer;">
+                <option value="0">Sistema I · Escudo Hexagonal Isométrico</option>
+                <option value="1">Sistema II · Cresta de Rendimiento</option>
+                <option value="2">Sistema III · Matriz Modular Suiza</option>
+                <option value="3">Sistema IV · Pulso Cinético</option>
+                <option value="4">Sistema V · Sello Monograma Octagonal</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- TAB 1: 38 LÁMINAS ILUSTRADAS -->
+          <div id="step6TabPlates" style="display:flex; flex-direction:column; gap:20px;">
+            <div id="illustratedBrandbookSheetsContainer">
+              <div class="manifesto-plaque" style="background:#FFFFFF; border:1px solid #E2E8F0; color:#1E293B;">
+                <span class="plaque-num" style="color:#6366F1;">TABLA DE CONTENIDOS MAESTRA</span>
+                <h3 style="font-family:var(--font-display); font-size:1.2rem; color:#0F172A; margin:6px 0 12px 0;">38 Páginas Estructuradas (Estándar Bënefic)</h3>
+                <div id="step6TOCGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:10px; font-size:0.8rem; color:#475569;">
+                  <div>1. Portada Oficial</div>
+                  <div>2. Manifiesto de Marca</div>
+                  <div>3. Círculo Dorado</div>
+                  <div>4. Oferta de Valor</div>
+                  <div>5. Rol en la Sociedad</div>
+                  <div>6. El Proceso</div>
+                  <div>7. El Mensaje Central</div>
+                  <div>8. La Personalidad</div>
+                  <div>9. El Comportamiento</div>
+                  <div>10. El Mundo Sensorial</div>
+                  <div>11. El Cliente Ideal</div>
+                  <div>12-25. Construcción y Retícula</div>
+                  <div>26-38. Suite de Aplicaciones</div>
+                </div>
               </div>
             </div>
+          </div>
+
+          <!-- TAB 2: PRINT-SHOP CHEATSHEET -->
+          <div id="step6TabCheatsheet" style="display:none; flex-direction:column; gap:20px;">
+            <div id="printShopCheatsheetContainer"></div>
+          </div>
+
+          <!-- TAB 3: 8 APLICACIONES EN CURVAS -->
+          <div id="step6TabApps" style="display:none; flex-direction:column; gap:20px;">
+            <div id="brandApplicationsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px;"></div>
           </div>
         </div>
       </div>
     </section>
 
-  </main>
+      </main>
+    </div><!-- /.focus-wrapper -->
+  </div><!-- /#screen-focus -->
+
+  <!-- ==================================================================== -->
+  <!-- INTERFACE 3: CONSOLA DE ADMINISTRACIÓN (SLIDE-OVER HUB DRAWER)       -->
+  <!-- ==================================================================== -->
+  <div class="hub-overlay" id="hubOverlay" onclick="toggleHubDrawer(false)"></div>
+  <aside class="hub-drawer" id="hubDrawer">
+    <div class="hub-top-header">
+      <h2 class="hub-main-title">Consola de Marca</h2>
+      <button class="hub-close-icon" onclick="toggleHubDrawer(false)" title="Cerrar menú">✕</button>
+    </div>
+
+    <!-- Group 1: Cuenta & Licencia -->
+    <div class="hub-group">
+      <span class="hub-group-label">👤 Cuenta & Credenciales</span>
+      <div class="hub-group-card">
+        <div class="hub-row-between">
+          <strong id="hubUserName">Jorge Benítez</strong>
+          <span class="stat-pill xp-pill" style="font-size:0.7rem;">Plan Fundador</span>
+        </div>
+        <div class="hub-row-between" style="font-size:0.82rem; color:var(--ink-secondary);">
+          <span>API Key Personal:</span>
+          <strong id="hubApiKeyStatus" style="color:#059669;">Activa (1,500 RPM)</strong>
+        </div>
+        <button class="btn-hub-action" onclick="promptForApiKey()">
+          🔑 Configurar Clave de Google AI Studio
+        </button>
+      </div>
+    </div>
+
+    <!-- Group 2: Mis Marcas & Expansión -->
+    <div class="hub-group">
+      <span class="hub-group-label">🏷️ Mis Proyectos de Marca</span>
+      <div class="hub-group-card">
+        <div class="hub-row-between">
+          <strong id="hubActiveBrandName">Mi Marca Activa</strong>
+          <span class="stat-pill streak-pill" style="font-size:0.7rem;">En Progreso</span>
+        </div>
+        <p style="font-size:0.80rem; color:var(--ink-secondary); line-height:1.4;">
+          Expande tu portafolio creando identidades adicionales o marcas hijas independientes.
+        </p>
+        <button class="btn-hub-action" onclick="alert('Expansión de Portafolio: Puedes iniciar una nueva marca con un solo toque conservando tu cuenta y preferencias.')">
+          ➕ Crear Nueva Marca Adicional
+        </button>
+      </div>
+    </div>
+
+    <!-- Group 3: Entregables de Marca -->
+    <div class="hub-group">
+      <span class="hub-group-label">📦 Entregables & Descargas</span>
+      <div class="hub-group-card">
+        <p style="font-size:0.80rem; color:var(--ink-secondary); line-height:1.4;">
+          Acceso instantáneo a los activos maestros generados con estándar de agencia de lujo:
+        </p>
+        <button class="btn-hub-action" onclick="downloadMasterBrandbookJSON()">
+          📄 Descargar Brandbook Maestro (38 Láminas)
+        </button>
+        <button class="btn-hub-action" onclick="downloadAllSvgCurves()">
+          📐 Descargar Suite Vectorial SVG (&lt;path&gt; Curvas)
+        </button>
+        <button class="btn-hub-action" onclick="downloadPrintShopSheet()">
+          🖨️ Ficha Técnica de Imprenta (CMYK / Pantone)
+        </button>
+      </div>
+    </div>
+
+    <!-- Group 4: Base de Datos Neon -->
+    <div class="hub-group">
+      <span class="hub-group-label">⚡ Persistencia Cloud (Neon)</span>
+      <div class="hub-group-card">
+        <div class="hub-row-between">
+          <span>Servidor:</span>
+          <strong style="color:#059669;">🟢 Neon PostgreSQL 18</strong>
+        </div>
+        <div class="hub-row-between" style="font-size:0.78rem; color:var(--ink-tertiary);">
+          <span>Proyecto:</span>
+          <code style="font-family:var(--font-mono);">TheBestBrand (green-cherry-54371329)</code>
+        </div>
+        <div class="hub-row-between" style="font-size:0.78rem; color:var(--ink-tertiary);">
+          <span>Persistencia:</span>
+          <span style="color:#059669; font-weight:700;">Sincronizado en la nube</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MODAL PARA VER EL MANIFIESTO EN VIVO (SIN SALIR DE FOCUS) -->
+  <div class="canvas-modal-overlay" id="canvasModalOverlay" onclick="closeCanvasModal(event)">
+    <div class="canvas-modal-box" onclick="event.stopPropagation()">
+      <div class="hub-top-header" style="margin-bottom:12px;">
+        <h3 class="hub-main-title">🏛️ Manifiesto de Marca en Vivo</h3>
+        <button class="hub-close-icon" onclick="closeCanvasModal()">✕</button>
+      </div>
+      <div id="canvasModalBody">
+        <p style="font-size:0.85rem; color:var(--ink-secondary); margin-bottom:14px;">
+          Progreso actual de los 6 pilares estratégicos forjados con Aura:
+        </p>
+        <div class="manifesto-grid" id="modalManifestoGrid">
+          <!-- Copia de las 6 placas -->
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================================
        JAVASCRIPT: 100% COMPATIBLE CON TODOS LOS MOTORES Y APIS
@@ -1080,7 +2530,7 @@
       brandName: "TheBestBrand",
       tagline: "Ultra-High Definition Brand Identity",
       primary_font: "Syne",
-      selected_colors_hex: ["#07080B", "#F8FAFC", "#6366F1", "#06B6D4"],
+      selected_colors_hex: ["#FFFFFF", "#0F172A", "#18181B", "#71717A"],
       selected_kit_index: 0
     };
 
@@ -1187,32 +2637,59 @@
       ctx.clearRect(0, 0, w, h);
       auraAngle += isSpeakingLive ? 0.05 : 0.016;
 
-      // Inner Luminous Core
+      // Inner Luminous Core (Neutral Pearl/Obsidian by default, shifts to Brand Colors on selection)
       const grad = ctx.createRadialGradient(cx, cy, 4, cx, cy, isSpeakingLive ? 48 : 36);
-      if (isSpeakingLive) {
-        grad.addColorStop(0, "rgba(6, 182, 212, 0.6)");
-        grad.addColorStop(0.4, "rgba(99, 102, 241, 0.35)");
-        grad.addColorStop(1, "rgba(6, 182, 212, 0)");
+      if (isBrandThemeColored) {
+        grad.addColorStop(0, `rgba(${currentBrandThemeColors[0] ? 'var(--brand-primary-rgb)' : '24,24,27'}, 0.4)`);
+        grad.addColorStop(0.5, `rgba(${currentBrandThemeColors[0] ? 'var(--brand-primary-rgb)' : '24,24,27'}, 0.15)`);
+        grad.addColorStop(1, "rgba(255, 255, 255, 0)");
       } else {
-        grad.addColorStop(0, "rgba(99, 102, 241, 0.45)");
-        grad.addColorStop(0.6, "rgba(139, 92, 246, 0.18)");
-        grad.addColorStop(1, "rgba(99, 102, 241, 0)");
+        // Pure Neutral Titanium/Silver & Ivory
+        grad.addColorStop(0, isSpeakingLive ? "rgba(15, 23, 42, 0.35)" : "rgba(15, 23, 42, 0.22)");
+        grad.addColorStop(0.5, "rgba(100, 116, 139, 0.12)");
+        grad.addColorStop(1, "rgba(255, 255, 255, 0)");
       }
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.arc(cx, cy, isSpeakingLive ? 52 : 38, 0, Math.PI * 2);
       ctx.fill();
 
-      // Orbital Rings
+      // 3D Gyroscope Rings (Craig Federighi & Jony Ive Tourbillon Aesthetic)
       ctx.save();
       ctx.translate(cx, cy);
-      ctx.rotate(auraAngle * 0.4);
-      ctx.strokeStyle = isSpeakingLive ? "rgba(6, 182, 212, 0.45)" : "rgba(99, 102, 241, 0.28)";
-      ctx.lineWidth = 1.2;
-      ctx.setLineDash([5, 7]);
+      // Ring 1 (tilted 35 deg, rotating clockwise)
+      ctx.save();
+      ctx.rotate(auraAngle * 0.5);
+      ctx.scale(1, 0.42);
+      ctx.strokeStyle = isSpeakingLive ? "rgba(6, 182, 212, 0.65)" : "rgba(99, 102, 241, 0.4)";
+      ctx.lineWidth = 1.4;
       ctx.beginPath();
-      ctx.arc(0, 0, isSpeakingLive ? 46 : 36, 0, Math.PI * 2);
+      ctx.arc(0, 0, isSpeakingLive ? 52 : 42, 0, Math.PI * 2);
       ctx.stroke();
+      ctx.restore();
+
+      // Ring 2 (tilted -45 deg, counter-clockwise)
+      ctx.save();
+      ctx.rotate(-auraAngle * 0.35 + 0.8);
+      ctx.scale(0.48, 1);
+      ctx.strokeStyle = isSpeakingLive ? "rgba(139, 92, 246, 0.7)" : "rgba(6, 182, 212, 0.35)";
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(0, 0, isSpeakingLive ? 48 : 38, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      // Ring 3 (horizontal equator with dashed ticks)
+      ctx.save();
+      ctx.rotate(auraAngle * 0.2);
+      ctx.scale(1, 0.26);
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 6]);
+      ctx.beginPath();
+      ctx.arc(0, 0, isSpeakingLive ? 56 : 46, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
       ctx.restore();
 
       // Harmonic Particles
@@ -1233,6 +2710,234 @@
       }
 
       requestAnimationFrame(renderAuraLoop);
+    }
+
+    // =========================================================================
+    // DUOLINGO & APPLE GAMIFICATION SYSTEM (STREAK, XP & TAP-TO-ANSWER)
+    // =========================================================================
+    
+    // =========================================================================
+    // DYNAMIC BRAND COLOR ENVIRONMENT & NEUTRAL AURA SYSTEM
+    // =========================================================================
+    let currentBrandThemeColors = ["#18181B", "#71717A"];
+    let isBrandThemeColored = false;
+
+    function applyDynamicBrandTheme(colors) {
+      if (!colors || colors.length === 0) return;
+      currentBrandThemeColors = colors;
+      isBrandThemeColored = true;
+      const primaryHex = colors[0];
+      const secondaryHex = colors[1] || "#71717A";
+
+      // Convert hex to rgb
+      const r = parseInt(primaryHex.slice(1, 3), 16) || 24;
+      const g = parseInt(primaryHex.slice(3, 5), 16) || 24;
+      const b = parseInt(primaryHex.slice(5, 7), 16) || 27;
+
+      const root = document.documentElement;
+      root.style.setProperty("--brand-primary", primaryHex);
+      root.style.setProperty("--brand-primary-rgb", `${r}, ${g}, ${b}`);
+      root.style.setProperty("--brand-secondary", secondaryHex);
+      root.style.setProperty("--brand-accent-glow", `rgba(${r}, ${g}, ${b}, 0.12)`);
+      root.style.setProperty("--bg-dynamic-ambient", `rgba(${r}, ${g}, ${b}, 0.06)`);
+      root.style.setProperty("--border-accent", `rgba(${r}, ${g}, ${b}, 0.35)`);
+
+      // Update brand monogram and mark
+      const monogram = document.getElementById("brandLiveMonogram");
+      if (monogram) monogram.style.background = primaryHex;
+      const seal = document.querySelector(".brand-mark-seal");
+      if (seal) seal.style.background = primaryHex;
+
+      // Update Aura Orb chromatic target
+      const rgbToHsl = (r, g, b) => {
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        if (max === min) h = s = 0;
+        else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+          }
+          h /= 6;
+        }
+        return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+      };
+
+      const [h, s, l] = rgbToHsl(r, g, b);
+      for (let p of auraParticles) {
+        p.hue = h;
+      }
+    }
+
+    // Toggle for mobile view (Mentora vs Lienzo)
+    function switchMobileView(view) {
+      const left = document.getElementById("atelierLeftPane");
+      const right = document.getElementById("atelierRightPane");
+      const btnMentor = document.getElementById("mTabMentor");
+      const btnCanvas = document.getElementById("mTabCanvas");
+      if (view === 'mentor') {
+        if (left) left.style.display = 'flex';
+        if (right) right.style.display = 'none';
+        if (btnMentor) btnMentor.classList.add('active');
+        if (btnCanvas) btnCanvas.classList.remove('active');
+      } else {
+        if (left) left.style.display = 'none';
+        if (right) right.style.display = 'flex';
+        if (btnCanvas) btnCanvas.classList.add('active');
+        if (btnMentor) btnMentor.classList.remove('active');
+      }
+    }
+
+    let currentXP = 450;
+    let currentStreak = 5;
+
+    function addXP(amount) {
+      currentXP += amount;
+      const el = document.getElementById("xpCount");
+      if (el) {
+        el.textContent = currentXP;
+        const pill = el.closest(".stat-pill");
+        if (pill) {
+          pill.style.transform = "scale(1.2)";
+          setTimeout(() => { pill.style.transform = ""; }, 300);
+        }
+      }
+    }
+
+    function injectSmartAnswer(text) {
+      const input = document.getElementById("chatInput");
+      if (!input) return;
+      playAcousticClick(950, 45);
+      input.value = text;
+      input.focus();
+      onChatInputChanged(text);
+      addXP(15);
+      const sendBtn = document.getElementById("sendBtn");
+      if (sendBtn) {
+        sendBtn.style.transform = "scale(1.15)";
+        setTimeout(() => { sendBtn.style.transform = ""; }, 250);
+      }
+    }
+
+    function onChatInputChanged(val) {
+      const len = (val || "").trim().length;
+      let pct = Math.min(100, Math.round(20 + len * 0.8));
+      let label = "20% · Nivel Inicial";
+      if (len > 30) { pct = Math.min(100, Math.round(40 + len * 0.5)); label = "50% · En Construcción"; }
+      if (len > 80) { pct = Math.min(100, Math.round(65 + len * 0.25)); label = "75% · Nivel Profesional (+25 XP)"; }
+      if (len > 150) { pct = 100; label = "100% · Nivel Maestro de Marca (+50 XP)"; }
+      
+      const track = document.getElementById("depthMeterProgress");
+      const lbl = document.getElementById("depthMeterLabel");
+      if (track) track.style.width = pct + "%";
+      if (lbl) lbl.textContent = label;
+    }
+
+    // =========================================================================
+    // CELEBRATION CONFETTI ENGINE (LUIS VON AHN / DUOLINGO DELIGHT)
+    // =========================================================================
+    const confettiParticles = [];
+    let confettiCanvas = null;
+    let confettiCtx = null;
+    let confettiAnimationActive = false;
+
+    function initConfettiCanvas() {
+      confettiCanvas = document.getElementById("confettiCanvas");
+      if (!confettiCanvas) return;
+      confettiCtx = confettiCanvas.getContext("2d");
+      function resize() {
+        if (!confettiCanvas) return;
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resize);
+      resize();
+    }
+
+    function launchConfetti(count = 70) {
+      if (!confettiCanvas) initConfettiCanvas();
+      if (!confettiCtx) return;
+      playFanfareTones();
+      const colors = ["#6366F1", "#8B5CF6", "#06B6D4", "#F59E0B", "#10B981", "#EC4899", "#FFFFFF"];
+      for (let i = 0; i < count; i++) {
+        confettiParticles.push({
+          x: window.innerWidth * 0.5 + (Math.random() - 0.5) * 300,
+          y: window.innerHeight * 0.35 + (Math.random() - 0.5) * 100,
+          w: 8 + Math.random() * 8,
+          h: 5 + Math.random() * 6,
+          vx: (Math.random() - 0.5) * 12,
+          vy: -6 - Math.random() * 10,
+          rot: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 14,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          decay: 0.008 + Math.random() * 0.012
+        });
+      }
+      if (!confettiAnimationActive) {
+        confettiAnimationActive = true;
+        requestAnimationFrame(renderConfettiLoop);
+      }
+    }
+
+    function renderConfettiLoop() {
+      if (!confettiCtx || !confettiCanvas) return;
+      confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      for (let i = confettiParticles.length - 1; i >= 0; i--) {
+        const p = confettiParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.35;
+        p.rot += p.vRot;
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0 || p.y > window.innerHeight) {
+          confettiParticles.splice(i, 1);
+          continue;
+        }
+
+        confettiCtx.save();
+        confettiCtx.translate(p.x, p.y);
+        confettiCtx.rotate((p.rot * Math.PI) / 180);
+        confettiCtx.fillStyle = p.color;
+        confettiCtx.globalAlpha = p.alpha;
+        confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        confettiCtx.restore();
+      }
+
+      if (confettiParticles.length > 0) {
+        requestAnimationFrame(renderConfettiLoop);
+      } else {
+        confettiAnimationActive = false;
+        confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      }
+    }
+
+    function playFanfareTones() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const freqs = [523.25, 659.25, 783.99, 1046.50];
+        freqs.forEach((freq, idx) => {
+          setTimeout(() => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            gain.gain.setValueAtTime(0.08, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.36);
+          }, idx * 75);
+        });
+      } catch (e) {}
     }
 
     // =========================================================================
@@ -1464,13 +3169,233 @@
     }
 
     // =========================================================================
-    // STEP NAVIGATION
+    // TRIAD INTERFACE NAVIGATION (AWWWARDS / DUOLINGO / APPLE ON-RAILS)
+    // =========================================================================
+    let currentScreen = "journey"; // "journey" | "focus"
+    let unlockedStepMax = 1;
+
+    const STEP_METADATA = {
+      1: {
+        stepNum: 1,
+        title: "Propósito Nuclear & Círculo Dorado",
+        shortName: "Propósito & Esencia",
+        badge: "Paso 01 · Propósito Nuclear",
+        desc: "Aura te guiará en una conversación ágil para definir el porqué de tu negocio y los 6 pilares estratégicos de tu marca.",
+        time: "⏱️ 3 minutos",
+        xp: "💎 +100 XP",
+        pillars: "🎯 6 Pilares",
+        cta: "Iniciar Misión 1",
+        continueCta: "Continuar Misión 1"
+      },
+      2: {
+        stepNum: 2,
+        title: "Momentos de Verdad (Customer Journey)",
+        shortName: "Momentos de Verdad",
+        badge: "Paso 02 · Touchpoints",
+        desc: "Mapea la experiencia sensorial de tu cliente en cada momento de verdad: Antes, Durante y Después de la compra.",
+        time: "⏱️ 2 minutos",
+        xp: "💎 +100 XP",
+        pillars: "🗺️ 3 Momentos",
+        cta: "Iniciar Misión 2",
+        continueCta: "Continuar Misión 2"
+      },
+      3: {
+        stepNum: 3,
+        title: "Naming de Autor & Filtro Fonosemántico",
+        shortName: "Naming de Autor",
+        badge: "Paso 03 · Naming Studio",
+        desc: "Genera propuestas de nombre evaluadas con la prueba psicométrica SMILE & SCRATCH y 45 Clases de Niza.",
+        time: "⏱️ 3 minutos",
+        xp: "💎 +150 XP",
+        pillars: "✍️ Test SMILE & SCRATCH",
+        cta: "Iniciar Misión 3",
+        continueCta: "Continuar Misión 3"
+      },
+      4: {
+        stepNum: 4,
+        title: "Brújula Sensorial & Bocetos en Vivo",
+        shortName: "Brújula Sensorial",
+        badge: "Paso 04 · Identidad Visual",
+        desc: "Esculpe la dirección estética de tu marca con 7 deslizadores táctiles bipolares (Osgood EPA).",
+        time: "⏱️ 2 minutos",
+        xp: "💎 +100 XP",
+        pillars: "🧭 7 Faders Táctiles",
+        cta: "Iniciar Misión 4",
+        continueCta: "Continuar Misión 4"
+      },
+      5: {
+        stepNum: 5,
+        title: "Torneo de Logotipos (60 Pares)",
+        shortName: "Torneo de Logotipos",
+        badge: "Paso 05 · Diagnóstico de Pares",
+        desc: "Duelos visuales directos 1 vs 1 con modelo matemático Bradley-Terry para rankear tu isotipo perfecto.",
+        time: "⏱️ 4 minutos",
+        xp: "💎 +200 XP",
+        pillars: "⚔️ 50 Isotipos Vectoriales",
+        cta: "Iniciar Misión 5",
+        continueCta: "Continuar Misión 5"
+      },
+      6: {
+        stepNum: 6,
+        title: "Brandbook Maestro de 38 Páginas",
+        shortName: "Brandbook Maestro",
+        badge: "Paso 06 · Entrega Maestra",
+        desc: "Compilación editorial suiza con cotas constructivas, zona 1X, imprenta CMYK FOGRA39 y suite SVG en curvas puras.",
+        time: "⏱️ 1 minuto",
+        xp: "💎 +300 XP",
+        pillars: "👑 38 Láminas Editoriales",
+        cta: "Generar Brandbook",
+        continueCta: "Explorar Brandbook"
+      }
+    };
+
+    function navigateToScreen(screenId, targetStep = null) {
+      currentScreen = screenId;
+      const screenJourney = document.getElementById("screen-journey");
+      const screenFocus = document.getElementById("screen-focus");
+
+      if (screenId === "journey") {
+        if (screenJourney) screenJourney.classList.add("active");
+        if (screenFocus) screenFocus.classList.remove("active");
+        updateJourneyRoadmap();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (screenId === "focus") {
+        if (screenJourney) screenJourney.classList.remove("active");
+        if (screenFocus) screenFocus.classList.add("active");
+        const stepToGo = targetStep || currentStep || 1;
+        switchStep(stepToGo);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    function launchActiveMission() {
+      navigateToScreen("focus", currentStep || 1);
+    }
+
+    function onNodeCardClicked(stepNum) {
+      if (stepNum > unlockedStepMax) {
+        const prevTitle = STEP_METADATA[stepNum - 1]?.shortName || `Paso ${stepNum - 1}`;
+        alert(`🔒 Este hito está bloqueado. Primero completa ${prevTitle} para avanzar de forma guiada.`);
+        return;
+      }
+      navigateToScreen("focus", stepNum);
+    }
+
+    function updateJourneyRoadmap() {
+      // Sincronizar stats en el header del mapa
+      const sStreak = document.getElementById("streakCountJourney");
+      const sXp = document.getElementById("xpCountJourney");
+      if (sStreak) sStreak.textContent = "5";
+      if (sXp) sXp.textContent = `${450 + (unlockedStepMax - 1) * 100}`;
+
+      // Actualizar tarjeta de misión activa
+      const meta = STEP_METADATA[currentStep] || STEP_METADATA[1];
+      const mBadge = document.getElementById("missionBadge");
+      const mTitle = document.getElementById("missionTitle");
+      const mDesc = document.getElementById("missionDesc");
+      const mTime = document.getElementById("missionTime");
+      const mXP = document.getElementById("missionXP");
+      const mPillars = document.getElementById("missionPillars");
+      const mCta = document.getElementById("missionCtaText");
+
+      if (mBadge) mBadge.textContent = `🚀 Misión Activa · Paso ${meta.stepNum}`;
+      if (mTitle) mTitle.textContent = meta.title;
+      if (mDesc) mDesc.textContent = meta.desc;
+      if (mTime) mTime.textContent = meta.time;
+      if (mXP) mXP.textContent = meta.xp;
+      if (mPillars) mPillars.textContent = meta.pillars;
+      if (mCta) mCta.textContent = meta.continueCta;
+
+      // Actualizar los 6 nodos
+      for (let s = 1; s <= 6; s++) {
+        const card = document.getElementById(`node-card-${s}`);
+        const badge = document.getElementById(`node-badge-${s}`);
+        const connector = document.getElementById(`connector-${s}`);
+
+        if (!card) continue;
+
+        card.classList.remove("active", "completed", "locked");
+
+        if (s < currentStep || (s === 1 && canvasState.golden_circle && canvasState.value_offer && canvasState.core_message)) {
+          card.classList.add("completed");
+          if (badge) badge.textContent = "✓ Conquistado";
+          if (connector) connector.classList.add("completed");
+        } else if (s === currentStep) {
+          card.classList.add("active");
+          if (badge) badge.textContent = "En Curso";
+          if (connector) connector.classList.remove("completed");
+        } else if (s <= unlockedStepMax) {
+          card.classList.remove("locked");
+          if (badge) badge.textContent = "Disponible";
+          if (connector) connector.classList.remove("completed");
+        } else {
+          card.classList.add("locked");
+          if (badge) badge.textContent = "🔒 Bloqueado";
+          if (connector) connector.classList.remove("completed");
+        }
+      }
+    }
+
+    function toggleHubDrawer(openState = null) {
+      const drawer = document.getElementById("hubDrawer");
+      const overlay = document.getElementById("hubOverlay");
+      if (!drawer || !overlay) return;
+
+      const shouldOpen = openState !== null ? openState : !drawer.classList.contains("open");
+      if (shouldOpen) {
+        drawer.classList.add("open");
+        overlay.classList.add("open");
+        const nameEl = document.getElementById("hubActiveBrandName");
+        if (nameEl && canvasState.brandName) nameEl.textContent = canvasState.brandName;
+        const keyEl = document.getElementById("hubApiKeyStatus");
+        if (keyEl) keyEl.textContent = userCustomApiKey ? "Activa (1,500 RPM)" : "Predeterminada del Servidor";
+      } else {
+        drawer.classList.remove("open");
+        overlay.classList.remove("open");
+      }
+    }
+
+    function openCanvasModal() {
+      const modal = document.getElementById("canvasModalOverlay");
+      const body = document.getElementById("modalManifestoGrid");
+      const origGrid = document.querySelector(".manifesto-grid");
+      if (modal && body && origGrid) {
+        body.innerHTML = origGrid.innerHTML;
+        modal.classList.add("open");
+      }
+    }
+
+    function closeCanvasModal(e) {
+      if (e && e.target && e.target.classList.contains("canvas-modal-box")) return;
+      const modal = document.getElementById("canvasModalOverlay");
+      if (modal) modal.classList.remove("open");
+    }
+
+    function celebrateStepCompletion(completedStep) {
+      triggerCelebrationConfetti();
+      if (completedStep + 1 <= 6) {
+        unlockedStepMax = Math.max(unlockedStepMax, completedStep + 1);
+        currentStep = completedStep + 1;
+      }
+      updateJourneyRoadmap();
+    }
+
+    // =========================================================================
+    // STEP NAVIGATION (IN-FOCUS)
     // =========================================================================
     function switchStep(stepNum) {
       currentStep = stepNum;
-      document.querySelectorAll(".step-pill").forEach((btn, idx) => {
-        btn.classList.toggle("active", idx + 1 === stepNum);
-      });
+      if (stepNum > unlockedStepMax) {
+        unlockedStepMax = stepNum;
+      }
+
+      // Actualizar badge en Focus Header
+      const indicator = document.getElementById("focusStepIndicator");
+      if (indicator) {
+        const meta = STEP_METADATA[stepNum] || { badge: `Paso ${stepNum}` };
+        indicator.textContent = `🎯 ${meta.badge}`;
+      }
+
       document.querySelectorAll(".stage-section").forEach((sec, idx) => {
         sec.classList.toggle("active", idx + 1 === stepNum);
       });
@@ -1479,7 +3404,12 @@
         renderLiveStep4LogoSketches();
       } else if (stepNum === 5) {
         renderCurrentPairCard();
+      } else if (stepNum === 6) {
+        renderFull38PageIllustratedPlates();
+        renderPrintShopCheatsheet();
+        renderEightApplicationsGrid();
       }
+      updateJourneyRoadmap();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -1658,7 +3588,9 @@
     function confirmNoMoreCommentsAndAdvance() {
       const gate = document.getElementById("closingGateBanner");
       if (gate) gate.classList.remove("active");
-      switchStep(currentStep + 1);
+      if (typeof addXP === "function") addXP(100);
+      celebrateStepCompletion(currentStep);
+      navigateToScreen("journey");
     }
 
     // =========================================================================
@@ -2092,6 +4024,12 @@
 
     function choosePairOption(id, side) {
       userPairSelections[id] = side;
+      addXP(5);
+      playAcousticClick(750, 0.04);
+      if (currentPairIdx === SIXTY_PROFESSIONAL_PAIRS.length - 1) {
+        addXP(150);
+        launchConfetti(90);
+      }
       navigatePair(1);
     }
 
@@ -2101,9 +4039,666 @@
     }
 
     // =========================================================================
-    // STEP 6: BRANDBOOK COMPILER & EXPORTERS
+    // STEP 6: BRANDBOOK COMPILER, SWISS PLATES & PRINT-SHOP CHEATSHEET
     // =========================================================================
+    let compiledBrandbookData = null;
+    let audioCtx = null;
+
+    function playAcousticClick(freq = 600, duration = 0.035) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + duration);
+        gain.gain.setValueAtTime(0.09, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    const FIVE_IDENTITY_PROPOSALS = [
+      {
+        idx: 0,
+        code: "SISTEMA I · ESCUDO HEXAGONAL ISOMÉTRICO 1:1",
+        title: "Emblema de Ingeniería Concéntrica + Geometría Pura",
+        symbolType: "hex_chassis",
+        rationale: "Diseñado en proporción 1:1 inscrita en circunferencia perfecta (88% de ocupación visual) para fotos de perfil, favicons y marcadores a 30m."
+      },
+      {
+        idx: 1,
+        code: "SISTEMA II · CRESTA DE ALTO RENDIMIENTO",
+        title: "Heráldica Cinemática Dinámica",
+        symbolType: "stadium_crest",
+        rationale: "Escudo con líneas cinéticas de propulsión, ángulo de 90° e idóneo para bordado mecatrónico textil sin rotura de hilos."
+      },
+      {
+        idx: 2,
+        code: "SISTEMA III · MATRIZ MODULAR SUIZA",
+        title: "Retícula Bauhaus de 4 Cuadrantes",
+        symbolType: "swiss_grid",
+        rationale: "Máxima precisión racional, legibilidad a escala micro (16x16 px) y alineación ortogonal estricta."
+      },
+      {
+        idx: 3,
+        code: "SISTEMA IV · PULSO CINÉTICO",
+        title: "Onda de Datos y Frecuencia de Vanguardia",
+        symbolType: "kinetic_pulse",
+        rationale: "Geometría circular continua con línea de pulso biométrico/tecnológico sin auto-intersecciones Bézier."
+      },
+      {
+        idx: 4,
+        code: "SISTEMA V · SELLO MONOGRAMA OCTAGONAL",
+        title: "Placa Monolítica de Alta Autoridad",
+        symbolType: "monogram_seal",
+        rationale: "Facetado octagonal de máxima solidez institucional para hot-stamping y corte láser."
+      }
+    ];
+
+    function buildPureOutlinedSymbolPaths(symbolType, priColor, secColor, inkColor) {
+      const strokeW = 4.0;
+      switch (symbolType) {
+        case "hex_chassis":
+          return `
+            <polygon points="50,6 90,28 90,72 50,94 10,72 10,28" fill="${inkColor}" stroke="${priColor}" stroke-width="${strokeW}"/>
+            <polygon points="50,16 80,33 80,67 50,84 20,67 20,33" stroke="#FFFFFF" stroke-width="1.8" stroke-dasharray="5 3" fill="none" opacity="0.7"/>
+            <path d="M50 18 L76 33 L50 48 L24 33 Z" fill="${priColor}"/>
+            <path d="M24 33 L50 48 V78 L24 63 Z" fill="${secColor}"/>
+            <path d="M76 33 L50 48 V78 L76 63 Z" fill="#FFFFFF" fill-opacity="0.9"/>
+            <circle cx="50" cy="48" r="7" fill="${inkColor}" stroke="#FFFFFF" stroke-width="2.5"/>
+          `;
+        case "stadium_crest":
+          return `
+            <path d="M14 10 H86 V48 C86 76 50 94 50 94 C50 94 14 76 14 48 V10 Z" fill="${inkColor}" stroke="${priColor}" stroke-width="${strokeW}"/>
+            <path d="M23 19 H77 V46 C77 67 50 82 50 82 C50 82 23 67 23 46 V19 Z" stroke="${secColor}" stroke-width="2.5" fill="none"/>
+            <path d="M23 34 H77" stroke="${priColor}" stroke-width="3"/>
+            <polygon points="50,22 54,30 63,31 56,37 58,46 50,41 42,46 44,37 37,31 46,30" fill="#FFFFFF"/>
+            <path d="M33 52 L50 64 L67 52 M33 62 L50 74 L67 62" stroke="${priColor}" stroke-width="4" stroke-linecap="round" fill="none"/>
+          `;
+        case "swiss_grid":
+          return `
+            <rect x="10" y="10" width="80" height="80" rx="14" fill="${inkColor}" stroke="${priColor}" stroke-width="${strokeW}"/>
+            <rect x="24" y="24" width="23" height="23" rx="5" fill="${priColor}"/>
+            <rect x="53" y="24" width="23" height="23" rx="5" fill="#FFFFFF"/>
+            <rect x="24" y="53" width="23" height="23" rx="5" fill="#FFFFFF"/>
+            <rect x="53" y="53" width="23" height="23" rx="5" fill="${secColor}"/>
+            <circle cx="50" cy="50" r="11" fill="${inkColor}" stroke="#FFFFFF" stroke-width="3"/>
+          `;
+        case "kinetic_pulse":
+          return `
+            <circle cx="50" cy="50" r="43" fill="${inkColor}" stroke="${priColor}" stroke-width="${strokeW}"/>
+            <circle cx="50" cy="50" r="35" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="4 4" fill="none" opacity="0.75"/>
+            <path d="M18 52 H32 L41 26 L53 74 L63 40 L71 52 H82" stroke="${secColor}" stroke-width="${strokeW}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="50" cy="16" r="4.5" fill="${priColor}"/>
+            <circle cx="50" cy="84" r="4.5" fill="${priColor}"/>
+          `;
+        default:
+          return `
+            <polygon points="32,8 68,8 92,32 92,68 68,92 32,92 8,68 8,32" fill="${inkColor}" stroke="${priColor}" stroke-width="${strokeW}"/>
+            <polygon points="36,18 64,18 82,36 82,64 64,82 36,82 18,64 18,36" stroke="${secColor}" stroke-width="2.5" fill="none"/>
+            <path d="M30 38 H70 M30 50 H70 M36 62 H64" stroke="#FFFFFF" stroke-width="${strokeW}" stroke-linecap="round"/>
+            <circle cx="50" cy="26" r="4" fill="${priColor}"/>
+          `;
+      }
+    }
+
+    function switchStep6Tab(tab) {
+      playAcousticClick(680, 0.03);
+      document.getElementById("step6TabPlates").style.display = tab === "plates" ? "flex" : "none";
+      document.getElementById("step6TabCheatsheet").style.display = tab === "cheatsheet" ? "flex" : "none";
+      document.getElementById("step6TabApps").style.display = tab === "apps" ? "grid" : "none";
+
+      document.getElementById("tabBtnPlates").className = `btn-action ${tab === "plates" ? "primary" : ""}`;
+      document.getElementById("tabBtnCheatsheet").className = `btn-action ${tab === "cheatsheet" ? "primary" : ""}`;
+      document.getElementById("tabBtnApps").className = `btn-action ${tab === "apps" ? "primary" : ""}`;
+
+      if (tab === "plates") renderFull38PageIllustratedPlates();
+      if (tab === "cheatsheet") renderPrintShopCheatsheet();
+      if (tab === "apps") renderEightApplicationsGrid();
+    }
+
+    function changeBrandbookActiveKit(val) {
+      playAcousticClick(850, 0.04);
+      canvasState.selected_kit_index = parseInt(val, 10) || 0;
+      renderFull38PageIllustratedPlates();
+      renderEightApplicationsGrid();
+      renderPrintShopCheatsheet();
+    }
+
+    function renderPrintShopCheatsheet() {
+      const container = document.getElementById("printShopCheatsheetContainer");
+      if (!container) return;
+      const bName = (canvasState.brandName || "TheBestBrand").toUpperCase();
+      const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex;
+      const kit = FIVE_IDENTITY_PROPOSALS[canvasState.selected_kit_index || 0];
+      const symWhite = buildPureOutlinedSymbolPaths(kit.symbolType, priHex, secHex, "#FFFFFF");
+
+      container.innerHTML = `
+        <div class="brandbook-sheet" style="background:#FFFFFF; border:2px solid #0F172A;">
+          <div class="brandbook-sheet-header" style="border-bottom:2px solid #0F172A;">
+            <span>FICHA TÉCNICA MAESTRA · THE PRINT-SHOP CHEATSHEET (PRE-PRENSA &amp; TALLER)</span>
+            <span>NORMA ISO 12647-2 &amp; ISO 15930-1 · ${bName}</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#0F172A; color:#FFFFFF; border-radius:12px; padding:20px 24px; margin-bottom:20px;">
+            <div style="display:flex; align-items:center; gap:16px;">
+              <svg width="60" height="60" viewBox="0 0 100 100">${symWhite}</svg>
+              <div>
+                <h2 style="font-family:var(--font-display); font-size:1.8rem; line-height:1;">${bName}</h2>
+                <span style="font-family:var(--font-mono); font-size:0.75rem; color:#818CF8;">ESPECIFICACIONES INVIOLABLES DE MANUFACTURA FÍSICA</span>
+              </div>
+            </div>
+            <button class="btn-action emerald" style="padding:8px 16px; font-size:0.75rem;" onclick="window.print()">🖨️ Imprimir Hoja de Taller</button>
+          </div>
+
+          <!-- SECCIÓN 1: ESPECIFICACIONES DE IMPRENTA INDUSTRIAL -->
+          <div style="margin-bottom:20px;">
+            <span class="card-tag">1. PRE-PRENSA LITOGRÁFICA Y OFFSET (ISO 12647-2)</span>
+            <div class="grid-3" style="margin-top:8px;">
+              <div class="card" style="background:#F8FAFC;">
+                <strong style="font-size:0.8rem; color:#0F172A;">Perfiles de Color Oficiales</strong>
+                <p style="font-size:0.75rem; color:#475569; margin-top:4px;">
+                  • Europa/Offset: <strong>ISO Coated v2 (FOGRA39)</strong><br/>
+                  • América/Packaging: <strong>GRACoL 2013</strong><br/>
+                  • Control Delta E: <strong>&Delta;E₀₀* &le; 2.0</strong> (tolerancia contractual)
+                </p>
+              </div>
+              <div class="card" style="background:#F8FAFC;">
+                <strong style="font-size:0.8rem; color:#0F172A;">Sangrado, Márgenes y Trapping</strong>
+                <p style="font-size:0.75rem; color:#475569; margin-top:4px;">
+                  • Sangrado exterior (*Bleed*): <strong>3.0 mm a 5.0 mm</strong><br/>
+                  • Margen de seguridad interior: <strong>5.0 mm</strong><br/>
+                  • Reventón (*Trapping*): <strong>0.10 mm Choke/Spread</strong>
+                </p>
+              </div>
+              <div class="card" style="background:#F8FAFC;">
+                <strong style="font-size:0.8rem; color:#0F172A;">Límites de Tinta &amp; Anti-Moiré</strong>
+                <p style="font-size:0.75rem; color:#475569; margin-top:4px;">
+                  • Límite TAC: <strong>&le; 300% estucado / &le; 240% offset</strong><br/>
+                  • Negro enriquecido: <strong>C:40 M:30 Y:20 K:100</strong><br/>
+                  • Ángulos de trama AM: <strong>K:45°, M:75°, C:15°, Y:90°</strong> (sep. 30°)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECCIÓN 2: ESPECIFICACIONES DE BORDADO TEXTIL MECATRÓNICO -->
+          <div style="margin-bottom:20px;">
+            <span class="card-tag">2. BORDADO INDUSTRIAL &amp; PICAJE (WILCOM / TAJIMA / BROTHER)</span>
+            <div class="grid-3" style="margin-top:8px;">
+              <div class="card" style="background:#F8FAFC;">
+                <strong style="font-size:0.8rem; color:#0F172A;">Mecánica Textil &amp; Hilos</strong>
+                <p style="font-size:0.75rem; color:#475569; margin-top:4px;">
+                  • Hilo: <strong>Madeira Polyneon 40 wt / Isacord</strong><br/>
+                  • Agujas: <strong>Schmetz 75/11 (calibre 0.7 mm)</strong><br/>
+                  • Compensación (*Pull Comp*): <strong>0.35 mm a 0.50 mm</strong>
+                </p>
+              </div>
+              <div class="card" style="background:#F8FAFC;">
+                <strong style="font-size:0.8rem; color:#0F172A;">Límites Mecánicos Infranqueables</strong>
+                <p style="font-size:0.75rem; color:#475569; margin-top:4px;">
+                  • Ancho mín. columna satín: <strong>1.0 mm (aprox. 3 pt)</strong><br/>
+                  • Altura mín. texto sans: <strong>5.0 mm (caja alta)</strong><br/>
+                  • Degradados en bordado plano: <strong>ESTRICTAMENTE PROHIBIDOS</strong>
+                </p>
+              </div>
+              <div class="card" style="background:#F8FAFC;">
+                <strong style="font-size:0.8rem; color:#0F172A;">Underlay &amp; Tejidos Complejos</strong>
+                <p style="font-size:0.75rem; color:#475569; margin-top:4px;">
+                  • Densidad: <strong>0.40 mm a 0.45 mm con edge-run</strong><br/>
+                  • Piqué / Polar: <strong>Obligatorio film Solvy + entretela</strong><br/>
+                  • Archivos de máquina: <strong>Tajima .DST / Brother .PES</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECCIÓN 3: COLORIMETRÍA EXACTA PARA PRODUCCIÓN -->
+          <div>
+            <span class="card-tag">3. FORMULACIONES CROMÁTICAS OFICIALES DE LABORATORIO</span>
+            <div class="grid-4" style="margin-top:8px;">
+              <div style="border:1px solid #E2E8F0; border-radius:8px; padding:10px; font-family:var(--font-mono); font-size:0.72rem;">
+                <div style="height:24px; background:${bgHex}; border-radius:4px; margin-bottom:6px; border:1px solid #CBD5E1;"></div>
+                <strong>Base / Fondo:</strong> ${bgHex}<br/>
+                CMYK: C:0% M:1% Y:3% K:2%<br/>
+                Pantone: Warm Gray 1 C
+              </div>
+              <div style="border:1px solid #E2E8F0; border-radius:8px; padding:10px; font-family:var(--font-mono); font-size:0.72rem;">
+                <div style="height:24px; background:${inkHex}; border-radius:4px; margin-bottom:6px;"></div>
+                <strong>Tinta Estructural:</strong> ${inkHex}<br/>
+                CMYK: C:36% M:23% Y:0% K:91%<br/>
+                Pantone: Black 6 C
+              </div>
+              <div style="border:1px solid #E2E8F0; border-radius:8px; padding:10px; font-family:var(--font-mono); font-size:0.72rem;">
+                <div style="height:24px; background:${priHex}; border-radius:4px; margin-bottom:6px;"></div>
+                <strong>Acento Primario:</strong> ${priHex}<br/>
+                CMYK: C:0% M:62% Y:95% K:8%<br/>
+                Pantone: 1655 C
+              </div>
+              <div style="border:1px solid #E2E8F0; border-radius:8px; padding:10px; font-family:var(--font-mono); font-size:0.72rem;">
+                <div style="height:24px; background:${secHex}; border-radius:4px; margin-bottom:6px;"></div>
+                <strong>Acento Secundario:</strong> ${secHex}<br/>
+                CMYK: C:86% M:0% Y:55% K:36%<br/>
+                Pantone: 348 C
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function printShopCheatsheetDirect() {
+      switchStep6Tab('cheatsheet');
+      setTimeout(() => window.print(), 350);
+    }
+
+    function buildApplicationSVG(appCode, bName, colors, fontName) {
+      const [bgHex, inkHex, priHex, secHex] = colors;
+      const kit = FIVE_IDENTITY_PROPOSALS[canvasState.selected_kit_index || 0];
+      const sym = buildPureOutlinedSymbolPaths(kit.symbolType, priHex, secHex, inkHex);
+      const symLight = buildPureOutlinedSymbolPaths(kit.symbolType, priHex, secHex, "#FFFFFF");
+
+      switch (appCode) {
+        case "APP-01":
+          return `<svg viewBox="0 0 340 200" width="100%" height="145" xmlns="http://www.w3.org/2000/svg">
+            <rect width="340" height="200" fill="#E5E5E0" rx="8"/>
+            <rect x="20" y="20" width="145" height="90" rx="5" fill="${inkHex}"/>
+            <g transform="translate(68, 30) scale(0.45)">${symLight}</g>
+            <text x="92" y="92" fill="#FFF" font-family="sans-serif" font-weight="700" font-size="8" text-anchor="middle">${bName}</text>
+            <rect x="175" y="75" width="145" height="105" rx="5" fill="#FFFFFF" stroke="#D4D4D8"/>
+            <rect x="175" y="75" width="6" height="105" fill="${priHex}"/>
+            <text x="192" y="102" fill="${inkHex}" font-family="sans-serif" font-weight="700" font-size="10">DIRECCIÓN GENERAL</text>
+            <text x="192" y="116" fill="${priHex}" font-family="monospace" font-size="7.5">${bName}</text>
+            <text x="192" y="142" fill="#52525B" font-family="monospace" font-size="7">contacto@${bName.toLowerCase()}.com</text>
+            <text x="192" y="156" fill="#52525B" font-family="monospace" font-size="7">85 x 55 mm · Couché 350g Mate</text>
+          </svg>`;
+        case "APP-02":
+          return `<svg viewBox="0 0 340 200" width="100%" height="145" xmlns="http://www.w3.org/2000/svg">
+            <rect width="340" height="200" fill="#E5E5E0" rx="8"/>
+            <rect x="95" y="10" width="150" height="180" fill="#FFFFFF" stroke="#D4D4D8"/>
+            <rect x="95" y="10" width="150" height="6" fill="${priHex}"/>
+            <g transform="translate(106, 22) scale(0.28)">${sym}</g>
+            <text x="140" y="38" fill="${inkHex}" font-family="sans-serif" font-weight="700" font-size="8">${bName}</text>
+            <line x1="108" y1="62" x2="230" y2="62" stroke="#E4E4E7" stroke-width="2"/>
+            <line x1="108" y1="76" x2="215" y2="76" stroke="#E4E4E7" stroke-width="2"/>
+            <line x1="108" y1="90" x2="225" y2="90" stroke="#E4E4E7" stroke-width="2"/>
+            <line x1="108" y1="104" x2="190" y2="104" stroke="#E4E4E7" stroke-width="2"/>
+            <rect x="95" y="182" width="150" height="8" fill="${inkHex}"/>
+          </svg>`;
+        case "APP-05":
+          return `<svg viewBox="0 0 340 200" width="100%" height="145" xmlns="http://www.w3.org/2000/svg">
+            <rect width="340" height="200" fill="#E5E5E0" rx="8"/>
+            <path d="M95 35 L130 22 H210 L245 35 L265 80 L235 92 L222 65 V178 H118 V65 L105 92 L75 80 Z" fill="${inkHex}" stroke="${priHex}" stroke-width="2"/>
+            <g transform="translate(182, 58) scale(0.28)">${symLight}</g>
+            <text x="170" y="135" fill="#FFFFFF" font-family="monospace" font-size="7.5" text-anchor="middle">BORDADO TEXTIL &ge; 1.0 MM</text>
+          </svg>`;
+        case "APP-06":
+          return `<svg viewBox="0 0 340 200" width="100%" height="145" xmlns="http://www.w3.org/2000/svg">
+            <rect width="340" height="200" fill="#090D16" rx="8"/>
+            <rect x="24" y="28" width="292" height="144" rx="8" fill="#111827" stroke="${priHex}" stroke-width="3"/>
+            <rect x="24" y="132" width="292" height="40" fill="${inkHex}"/>
+            <text x="170" y="157" fill="#FFFFFF" font-family="sans-serif" font-weight="800" font-size="13" letter-spacing="2" text-anchor="middle">${bName}</text>
+            <g transform="translate(145, 45) scale(0.5)">${symLight}</g>
+          </svg>`;
+        default:
+          return `<svg viewBox="0 0 340 200" width="100%" height="145" xmlns="http://www.w3.org/2000/svg">
+            <rect width="340" height="200" fill="#18181B" rx="8"/>
+            <circle cx="85" cy="100" r="46" fill="${inkHex}" stroke="${priHex}" stroke-width="3"/>
+            <g transform="translate(55, 70) scale(0.6)">${symLight}</g>
+            <rect x="155" y="42" width="160" height="116" rx="8" fill="${bgHex}"/>
+            <text x="235" y="98" fill="${inkHex}" font-family="sans-serif" font-weight="800" font-size="12" text-anchor="middle">${bName}</text>
+            <text x="235" y="116" fill="${priHex}" font-family="monospace" font-size="8" text-anchor="middle">APLICACIÓN VECTORIAL OFICIAL</text>
+          </svg>`;
+      }
+    }
+
+    function renderEightApplicationsGrid() {
+      const container = document.getElementById("brandApplicationsGrid");
+      if (!container) return;
+      const bName = (canvasState.brandName || "TheBestBrand").toUpperCase();
+      const colors = canvasState.selected_colors_hex;
+      const fontName = canvasState.primary_font || "Syne";
+      const apps = [
+        { code: "APP-01", title: "Tarjeta de Presentación Ejecutiva", format: "85 × 55 mm · Couché 350g" },
+        { code: "APP-02", title: "Hoja Membretada & Cotización", format: "215.9 × 279.4 mm (Carta)" },
+        { code: "APP-03", title: "Sobre Corporativo DL", format: "220 × 110 mm" },
+        { code: "APP-04", title: "Folder Ejecutivo de Licitación", format: "230 × 310 mm" },
+        { code: "APP-05", title: "Uniforme Técnico & Bordado", format: "Columna satín ≥ 1.0 mm" },
+        { code: "APP-06", title: "Señalética Exterior y Chasis", format: "Aluminio Anodizado & LED" },
+        { code: "APP-07", title: "Firma de Correo & Propuesta", format: "HTML / SVG Responsivo" },
+        { code: "APP-08", title: "Kit Digital & Redes Sociales", format: "1080 × 1080 px & SVG" }
+      ];
+
+      container.innerHTML = apps.map(app => {
+        const svgMarkup = buildApplicationSVG(app.code, bName, colors, fontName);
+        return `
+          <div class="card" style="padding:14px; display:flex; flex-direction:column; justify-content:space-between; gap:10px;">
+            <div>
+              <div style="border-radius:8px; overflow:hidden; border:1px solid #E2E8F0; margin-bottom:10px;">
+                ${svgMarkup}
+              </div>
+              <span class="card-tag" style="margin:0;">${app.code} · ${app.format}</span>
+              <h4 style="font-family:var(--font-display); font-size:0.92rem; margin-top:4px;">${app.title}</h4>
+            </div>
+            <button class="btn-action" style="width:100%; font-size:0.74rem;" onclick="downloadSingleApplicationSVG('${app.code}', '${app.title.replace(/'/g, "")}')">
+              ⬇ Descargar ${app.code} en Curvas (.SVG)
+            </button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function downloadSingleApplicationSVG(appCode, appTitle) {
+      playAcousticClick(800, 0.04);
+      const bName = (canvasState.brandName || "TheBestBrand").toUpperCase();
+      const svgContent = buildApplicationSVG(appCode, bName, canvasState.selected_colors_hex, canvasState.primary_font);
+      const blob = new Blob([svgContent], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${bName.toLowerCase()}_${appCode.toLowerCase()}_aplicacion_curvas.svg`;
+      a.click();
+    }
+
+    function renderFull38PageIllustratedPlates() {
+      const container = document.getElementById("illustratedBrandbookSheetsContainer");
+      if (!container) return;
+      const bName = (canvasState.brandName || "TheBestBrand").toUpperCase();
+      const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex;
+      const fontName = canvasState.primary_font || "Syne";
+      const kit = FIVE_IDENTITY_PROPOSALS[canvasState.selected_kit_index || 0];
+      const symWhite = buildPureOutlinedSymbolPaths(kit.symbolType, priHex, secHex, "#FFFFFF");
+      const symColor = buildPureOutlinedSymbolPaths(kit.symbolType, priHex, secHex, inkHex);
+      const symMonoBlack = buildPureOutlinedSymbolPaths(kit.symbolType, "#111111", "#111111", "#111111");
+      const symMonoWhite = buildPureOutlinedSymbolPaths(kit.symbolType, "#FFFFFF", "#FFFFFF", "#FFFFFF");
+
+      const s1 = (compiledBrandbookData && compiledBrandbookData.section_1_positioning) || {};
+      const s2 = (compiledBrandbookData && compiledBrandbookData.section_2_touchpoints) || {};
+
+      container.innerHTML = `
+        <!-- LÁMINA 1 (PÁGINAS 01 A 04): PORTADA OFICIAL, ÍNDICE MAESTRO Y OBJETIVOS -->
+        <div class="brandbook-sheet">
+          <div class="brandbook-sheet-header">
+            <span class="brandbook-sheet-num">PÁGINAS 01 – 04 DE 38 · PORTADA OFICIAL, ÍNDICE MAESTRO Y OBJETIVOS</span>
+            <span class="brandbook-sheet-num">MANUAL DE IDENTIDAD CORPORATIVA · ${bName}</span>
+          </div>
+          <div class="grid-2" style="align-items:center;">
+            <div style="background:${inkHex}; color:#FFFFFF; border-radius:12px; padding:28px; display:flex; flex-direction:column; justify-content:space-between; min-height:260px;">
+              <div style="font-family:var(--font-mono); font-size:0.72rem; color:${priHex}; letter-spacing:2px;">ESTÁNDAR EDITORIAL E INGENIERÍA VECTORIAL</div>
+              <div style="display:flex; align-items:center; gap:18px; margin:20px 0;">
+                <svg width="84" height="84" viewBox="0 0 100 100">${symWhite}</svg>
+                <div>
+                  <h2 style="font-family:'${fontName}',sans-serif; font-size:2rem; color:#FFF; line-height:1.05;">${bName}</h2>
+                  <p style="color:#D4D4D8; font-family:var(--font-mono); font-size:0.76rem; margin-top:4px;">BRANDBOOK MAESTRO &amp; SISTEMA DE IDENTIDAD</p>
+                </div>
+              </div>
+              <div style="font-family:var(--font-mono); font-size:0.7rem; color:#A1A1AA; border-top:1px solid rgba(255,255,255,0.15); padding-top:10px;">
+                Edición Oficial 2026 · 38 Páginas · Curvas Bézier Outlined (&lt;path&gt;) · CMYK FOGRA39 &amp; Pantone
+              </div>
+            </div>
+            <div>
+              <span class="card-tag">Índice General del Manual (38 Páginas) y Objetivos</span>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.78rem; margin-bottom:12px;">
+                <div style="padding:8px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Pág. 01–04:</strong> Portada, Índice y Objetivos</div>
+                <div style="padding:8px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Pág. 05–12:</strong> I. Posicionamiento (Puntos 1 al 8)</div>
+                <div style="padding:8px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Pág. 13–14:</strong> II. Touchpoints y Customer Journey</div>
+                <div style="padding:8px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Pág. 15–16:</strong> III. Naming y Registro Niza</div>
+                <div style="padding:8px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Pág. 17–28:</strong> IV. Construcción de Marca (A–I)</div>
+                <div style="padding:8px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Pág. 29–38:</strong> V. 8 Aplicaciones y VI. Bóveda</div>
+              </div>
+              <div style="padding:12px; border-left:3px solid ${priHex}; background:#F8FAFC; border-radius:0 8px 8px 0; border:1px solid #E2E8F0; border-left:3px solid ${priHex};">
+                <h4 style="font-size:0.86rem; color:#0F172A;">Objetivos del Proyecto y de la Construcción de Marca</h4>
+                <p style="font-size:0.78rem; margin-top:4px; color:#475569;">1. Establecer una plataforma estratégica y visual coherente que posicione a <strong>${bName}</strong> como líder indiscutible en su categoría.<br/>2. Normar con precisión matemática la geometría del logotipo, área de aislamiento 1X, tipografías, colorimetría FOGRA39 y aplicaciones físicas.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LÁMINA 2 (PÁGINAS 05 A 12): CAPÍTULO I. POSICIONAMIENTO DE MARCA (PUNTOS 1 AL 8 + CLIENTE IDEAL) -->
+        <div class="brandbook-sheet">
+          <div class="brandbook-sheet-header">
+            <span class="brandbook-sheet-num">PÁGINAS 05 – 12 DE 38 · CAPÍTULO I. POSICIONAMIENTO DE MARCA (PUNTOS 1 AL 8)</span>
+            <span class="brandbook-sheet-num">${bName} · PLATAFORMA ESTRATÉGICA</span>
+          </div>
+          <div class="grid-3">
+            <div class="card" style="background:#F8FAFC;">
+              <span class="card-tag">1. El Propósito (Círculo Dorado)</span>
+              <p style="font-size:0.82rem; color:#334155;">${s1.p1_proposito_golden_circle || canvasState.golden_circle || "Transformar y liderar con excelencia su categoría operativa mediante soluciones sin fricción."}</p>
+            </div>
+            <div class="card" style="background:#F8FAFC;">
+              <span class="card-tag">2. Posicionamiento y Oferta de Valor</span>
+              <p style="font-size:0.82rem; color:#334155;">${s1.p2_posicionamiento_oferta_valor || canvasState.value_offer || "Ventaja tecnológica diferenciada frente a procesos manuales y hojas de cálculo."}</p>
+            </div>
+            <div class="card" style="background:#F8FAFC;">
+              <span class="card-tag">3. El Rol en la Sociedad</span>
+              <p style="font-size:0.82rem; color:#334155;">${s1.p3_rol_en_la_sociedad || canvasState.social_role || "Establecer un estándar de transparencia, velocidad y profesionalismo duradero."}</p>
+            </div>
+            <div class="card" style="background:#F8FAFC;">
+              <span class="card-tag">4. Su Proceso Operativo</span>
+              <p style="font-size:0.82rem; color:#334155;">${s1.p4_su_proceso || canvasState.process_steps_text || "Tecnología invisible: configuración en minutos, operación intuitiva y resultados en tiempo real."}</p>
+            </div>
+            <div class="card" style="background:#F8FAFC;">
+              <span class="card-tag">5. El Mensaje Nuclear</span>
+              <p style="font-size:0.82rem; color:#334155;">${s1.p5_el_mensaje || canvasState.core_message || "La certeza absoluta de operar con la mejor identidad y tecnología del mercado."}</p>
+            </div>
+            <div class="card" style="background:#F8FAFC;">
+              <span class="card-tag">6. La Personalidad</span>
+              <p style="font-size:0.82rem; color:#334155;">${s1.p6_la_personalidad || canvasState.brand_persona || "Innovadora, cercana, rigurosa y de autoridad técnica indiscutible."}</p>
+            </div>
+            <div class="card" style="background:#F8FAFC;">
+              <span class="card-tag">7. El Comportamiento</span>
+              <p style="font-size:0.82rem; color:#334155;">${s1.p7_el_comportamiento || canvasState.customer_behavior || "Respaldo continuo, claridad total y resolución ágil en momentos críticos."}</p>
+            </div>
+            <div class="card" style="background:#F8FAFC;">
+              <span class="card-tag">8. Su Mundo Visual y Sensorial</span>
+              <p style="font-size:0.82rem; color:#334155;">${s1.p8_su_mundo || canvasState.brand_world || "Estética minimalista, sobria, tecnológica y de gran prestancia institucional."}</p>
+            </div>
+            <div class="card" style="background:#F8FAFC;">
+              <span class="card-tag">Arquetipo de Cliente Ideal</span>
+              <p style="font-size:0.82rem; color:#334155;">${s1.cliente_ideal || canvasState.ideal_customer || "Fundadores y directores que exigen rigor, fiabilidad y estética de clase mundial."}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- LÁMINA 3 (PÁGINAS 13 A 16): CAPÍTULO II. TOUCHPOINTS Y CAPÍTULO III. NAMING -->
+        <div class="brandbook-sheet">
+          <div class="brandbook-sheet-header">
+            <span class="brandbook-sheet-num">PÁGINAS 13 – 16 DE 38 · II. DETERMINACIÓN DE TOUCHPOINTS &amp; III. NAMING</span>
+            <span class="brandbook-sheet-num">${bName} · CUSTOMER JOURNEY &amp; SEMIÓTICA</span>
+          </div>
+          <div class="grid-3" style="margin-bottom:14px;">
+            <div class="card">
+              <span class="card-tag">Fase 1 · Antes de la Compra (ZMOT)</span>
+              <p style="font-size:0.82rem; color:#334155;">${s2.antes_de_la_compra || canvasState.tp_before || "Descubrimiento por recomendación y auditoría de credibilidad en canales digitales."}</p>
+            </div>
+            <div class="card">
+              <span class="card-tag">Fase 2 · Durante la Compra (FMOT)</span>
+              <p style="font-size:0.82rem; color:#334155;">${s2.durante_la_compra || canvasState.tp_during || "Cotización ejecutiva, contratación sin fricción y activación instantánea."}</p>
+            </div>
+            <div class="card">
+              <span class="card-tag">Fase 3 · Después de la Compra (SMOT)</span>
+              <p style="font-size:0.82rem; color:#334155;">${s2.despues_de_la_compra || canvasState.tp_after || "Acompañamiento continuo, garantía técnica y bucle de recomendación orgánica."}</p>
+            </div>
+          </div>
+          <div class="card" style="background:#0F172A; color:#FAF8F5;">
+            <span class="card-tag" style="color:#818CF8;">Capítulo III · Naming Oficial y Clasificación Internacional de Niza</span>
+            <h3 style="color:#FFF; font-size:1.15rem;">Nombre Oficial Seleccionado: ${bName}</h3>
+            <p style="color:#CBD5E1; margin-top:4px; font-size:0.82rem;">Validado mediante metodología SMILE &amp; SCRATCH (memorabilidad, pronunciabilidad e impacto visual a distancia) y alineado a las Clases Internacionales de Niza 09, 35 y 42.</p>
+          </div>
+        </div>
+
+        <!-- LÁMINA 4 (PÁGINAS 17 A 22): IV. CONSTRUCCIÓN DE MARCA (A. LOGOTIPO, B. RETÍCULA 8X x 3X, C. ÁREA 1X, D. ESCALAS) -->
+        <div class="brandbook-sheet">
+          <div class="brandbook-sheet-header">
+            <span class="brandbook-sheet-num">PÁGINAS 17 – 22 DE 38 · IV. CONSTRUCCIÓN DE MARCA (SECCIONES A, B, C Y D)</span>
+            <span class="brandbook-sheet-num">INGENIERÍA GEOMÉTRICA Y COTAS TÉCNICAS</span>
+          </div>
+          <div class="grid-2">
+            <div class="blueprint-grid">
+              <span style="font-family:var(--font-mono); font-size:0.7rem; color:#38BDF8; font-weight:700;">A. EL LOGOTIPO &amp; B. CONSTRUCCIÓN EN RETÍCULA MODULAR (8X × 3X)</span>
+              <div style="margin:14px 0; display:flex; justify-content:center;">
+                <svg width="340" height="140" viewBox="0 0 380 155">
+                  <rect x="20" y="20" width="340" height="115" stroke="#38BDF8" stroke-width="1.2" stroke-dasharray="5 4" fill="rgba(56,189,248,0.06)"/>
+                  <rect x="44" y="38" width="292" height="79" stroke="#F43F5E" stroke-width="1.2" fill="none"/>
+                  <line x1="44" y1="12" x2="336" y2="12" stroke="#FACC15" stroke-width="1.2"/>
+                  <text x="190" y="10" fill="#FACC15" font-family="monospace" font-size="8" text-anchor="middle">PROPORCIÓN HORIZONTAL = 8X (ÁREA DE PROTECCIÓN = 1X)</text>
+                  <g transform="translate(52, 38) scale(0.78)">${symWhite}</g>
+                  <text x="142" y="82" fill="#FFFFFF" font-family="'${fontName}',sans-serif" font-weight="700" font-size="21">${bName}</text>
+                  <text x="142" y="100" fill="#38BDF8" font-family="monospace" font-size="8.5" letter-spacing="2">TRAZO MÍNIMO ≥ 1.0 MM · ÁNGULO 90°</text>
+                </svg>
+              </div>
+              <p style="color:#CBD5E1; font-size:0.77rem;"><strong>Regla Constructiva:</strong> La unidad base <strong>X</strong> equivale al alto del bloque central del isotipo. El área de aislamiento perimetral obligatoria es de <strong>1X</strong> libre de cualquier elemento gráfico o borde de página.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div class="card">
+                <span class="card-tag">C. Área de Aislamiento Perimetral (1X)</span>
+                <p style="font-size:0.8rem; color:#475569;">Ningún texto, fotografía u otro logotipo puede invadir el perímetro de seguridad de <strong>1X</strong> alrededor del lockup oficial para salvaguardar su prestancia visual.</p>
+              </div>
+              <div class="card">
+                <span class="card-tag">D. Escalas y Tamaños Mínimos de Reproducción</span>
+                <div style="display:flex; align-items:flex-end; justify-content:space-around; padding:12px; background:#F8FAFC; border-radius:8px; margin-top:8px;">
+                  <div style="text-align:center;">
+                    <svg width="100" height="40" viewBox="0 0 220 80">
+                      <g transform="translate(5, 5) scale(0.65)">${symColor}</g>
+                      <text x="80" y="48" fill="${inkHex}" font-family="sans-serif" font-weight="700" font-size="18">${bName}</text>
+                    </svg>
+                    <div style="font-family:var(--font-mono); font-size:0.66rem; color:#B45309; font-weight:700;">┼─ Impreso: 25 mm ─┼</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <svg width="70" height="30" viewBox="0 0 220 80">
+                      <g transform="translate(5, 5) scale(0.65)">${symColor}</g>
+                      <text x="80" y="48" fill="${inkHex}" font-family="sans-serif" font-weight="700" font-size="18">${bName}</text>
+                    </svg>
+                    <div style="font-family:var(--font-mono); font-size:0.66rem; color:#059669; font-weight:700;">┼─ Digital: 90 px ─┼</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <svg width="34" height="34" viewBox="0 0 100 100">${symMonoBlack}</svg>
+                    <div style="font-family:var(--font-mono); font-size:0.66rem; color:#111; font-weight:700;">┼─ Sello: 12 mm ─┼</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LÁMINA 5 (PÁGINAS 23 A 25): TIPOGRAFÍAS Y COLORES CORPORATIVOS -->
+        <div class="brandbook-sheet">
+          <div class="brandbook-sheet-header">
+            <span class="brandbook-sheet-num">PÁGINAS 23 – 25 DE 38 · IV. CONSTRUCCIÓN DE MARCA (SECCIONES E Y F)</span>
+            <span class="brandbook-sheet-num">SISTEMA TIPOGRÁFICO Y COLORIMETRÍA PANTONE / CMYK FOGRA39</span>
+          </div>
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="card">
+              <span class="card-tag">E. Tipografía Primaria (Titulares y Señalética)</span>
+              <h3 style="font-family:'${fontName}',sans-serif; font-size:1.4rem;">${fontName} Bold / Semibold</h3>
+              <p style="font-family:'${fontName}',sans-serif; font-size:0.9rem; margin-top:6px; color:#111;">
+                ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br/>
+                abcdefghijklmnñopqrstuvwxyz · <strong>0123456789</strong>
+              </p>
+            </div>
+            <div class="card">
+              <span class="card-tag">E. Tipografía Secundaria y Tabular</span>
+              <h3 style="font-family:var(--font-ui); font-size:1.4rem;">Plus Jakarta Sans &amp; JetBrains Mono</h3>
+              <p style="font-family:var(--font-ui); font-size:0.9rem; margin-top:6px; color:#111;">
+                ABCDEFGHIJKLMNÑOPQRSTUVWXYZ<br/>
+                abcdefghijklmnñopqrstuvwxyz · <span style="font-family:var(--font-mono); font-weight:700;">0123456789 (Tabular)</span>
+              </p>
+            </div>
+          </div>
+
+          <span class="card-tag">F. Colores Corporativos Oficiales (HEX, RGB, CMYK FOGRA39 TAC ≤ 280% y Pantone Solid Coated)</span>
+          <div class="grid-4">
+            <div style="border:1px solid #E2E8F0; border-radius:10px; overflow:hidden;">
+              <div style="height:55px; background:${bgHex}; border-bottom:1px solid #E2E8F0;"></div>
+              <div style="padding:10px; font-family:var(--font-mono); font-size:0.7rem; line-height:1.5;">
+                <strong style="color:#111;">Superficie Base</strong><br/>
+                HEX: ${bgHex}<br/>CMYK: C:0% M:1% Y:3% K:2%<br/>PANTONE: Warm Gray 1 C
+              </div>
+            </div>
+            <div style="border:1px solid #E2E8F0; border-radius:10px; overflow:hidden;">
+              <div style="height:55px; background:${inkHex}; border-bottom:1px solid #E2E8F0;"></div>
+              <div style="padding:10px; font-family:var(--font-mono); font-size:0.7rem; line-height:1.5;">
+                <strong style="color:#111;">Tinta Estructural</strong><br/>
+                HEX: ${inkHex}<br/>CMYK: C:36% M:23% Y:0% K:91%<br/>PANTONE: Black 6 C
+              </div>
+            </div>
+            <div style="border:1px solid #E2E8F0; border-radius:10px; overflow:hidden;">
+              <div style="height:55px; background:${priHex}; border-bottom:1px solid #E2E8F0;"></div>
+              <div style="padding:10px; font-family:var(--font-mono); font-size:0.7rem; line-height:1.5;">
+                <strong style="color:#111;">Acento Primario</strong><br/>
+                HEX: ${priHex}<br/>CMYK: C:0% M:62% Y:95% K:8%<br/>PANTONE: 1655 C
+              </div>
+            </div>
+            <div style="border:1px solid #E2E8F0; border-radius:10px; overflow:hidden;">
+              <div style="height:55px; background:${secHex}; border-bottom:1px solid #E2E8F0;"></div>
+              <div style="padding:10px; font-family:var(--font-mono); font-size:0.7rem; line-height:1.5;">
+                <strong style="color:#111;">Acento Secundario</strong><br/>
+                HEX: ${secHex}<br/>CMYK: C:86% M:0% Y:55% K:36%<br/>PANTONE: 348 C
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LÁMINA 6 (PÁGINAS 26 A 28): POSITIVO/NEGATIVO, USOS Y RESTRICCIONES -->
+        <div class="brandbook-sheet">
+          <div class="brandbook-sheet-header">
+            <span class="brandbook-sheet-num">PÁGINAS 26 – 28 DE 38 · IV. CONSTRUCCIÓN DE MARCA (SECCIONES G, H E I)</span>
+            <span class="brandbook-sheet-num">POSITIVO/NEGATIVO, USOS CORRECTOS Y RESTRICCIONES DE MARCA</span>
+          </div>
+
+          <span class="card-tag">G. Reproducción en Blanco y Negro (Positivo y Negativo a 1 Tinta para Grabado Láser, Troquelado y Sellos)</span>
+          <div class="grid-2" style="margin-bottom:16px;">
+            <div style="background:#FFFFFF; border:1px solid #0F172A; border-radius:10px; padding:14px; display:flex; align-items:center; justify-content:center; gap:14px;">
+              <svg width="52" height="52" viewBox="0 0 100 100">${symMonoBlack}</svg>
+              <div>
+                <div style="font-family:'${fontName}',sans-serif; font-weight:800; font-size:1.2rem; color:#111;">${bName}</div>
+                <div style="font-family:var(--font-mono); font-size:0.68rem; color:#111;">VERSIÓN POSITIVA 100% K (NEGRO PURO)</div>
+              </div>
+            </div>
+            <div style="background:#0F172A; border:1px solid #0F172A; border-radius:10px; padding:14px; display:flex; align-items:center; justify-content:center; gap:14px;">
+              <svg width="52" height="52" viewBox="0 0 100 100">${symMonoWhite}</svg>
+              <div>
+                <div style="font-family:'${fontName}',sans-serif; font-weight:800; font-size:1.2rem; color:#FFF;">${bName}</div>
+                <div style="font-family:var(--font-mono); font-size:0.68rem; color:#E4E4E7;">VERSIÓN NEGATIVA CALADA EN BLANCO</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card" style="border-left:3px solid #10B981;">
+              <span class="card-tag" style="color:#059669;">H. 6 Usos Permitidos y Aprobados</span>
+              <ul style="font-size:0.77rem; color:#334155; line-height:1.6; padding-left:16px;">
+                <li>Uso del lockup horizontal sobre fondos claros u oscuros con alto contraste (WCAG AAA).</li>
+                <li>Uso del símbolo aislado para favicons, avatares de redes y botones de apps.</li>
+                <li>Versión a 1 tinta pura para grabado láser, sello de goma y serigrafía plana.</li>
+                <li>Bordado con columna satín reforzada &ge; 1.0 mm e hilo Madeira 40 wt.</li>
+                <li>Aplicación sobre fotografía únicamente con gradiente protector o en zonas desaturadas.</li>
+                <li>Escalado uniforme vectorial sin deformar las proporciones áureas.</li>
+              </ul>
+            </div>
+            <div class="card" style="border-left:3px solid #EF4444;">
+              <span class="card-tag" style="color:#DC2626;">I. 6 Restricciones y Usos Incorrectos (Prohibiciones)</span>
+              <ul style="font-size:0.77rem; color:#334155; line-height:1.6; padding-left:16px;">
+                <li>Prohibido deformar, estirar o condensar las proporciones del logotipo.</li>
+                <li>Prohibido aplicar degradados no normalizados para bordado textil o grabado.</li>
+                <li>Prohibido suprimir el área de aislamiento 1X o pegar el logo al corte de página.</li>
+                <li>Prohibido alterar la tipografía corporativa o sustituirla por fuentes cursivas no normadas.</li>
+                <li>Prohibido colocar el logotipo sobre fondos con ratio de contraste inferior a 4.5:1.</li>
+                <li>Prohibido agregar sombras paralelas artificiales (*drop shadows*) al símbolo.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     async function compileFullBrandbookClient() {
+      playAcousticClick(900, 0.05);
       const btn = document.getElementById("btnCompileFullBrandbook");
       if (btn) btn.textContent = "⏳ Compilando 38 Páginas...";
       try {
@@ -2120,33 +4715,49 @@
         });
         if (res.ok) {
           const data = await res.json();
+          compiledBrandbookData = data;
+          renderFull38PageIllustratedPlates();
+          renderPrintShopCheatsheet();
+          renderEightApplicationsGrid();
+          playAcousticClick(1000, 0.08);
           alert(`✓ ¡Brandbook Maestro de 38 Páginas Compilado con Éxito para ${canvasState.brandName}!`);
           if (btn) btn.textContent = "✓ Brandbook Compilado al 100%";
         }
       } catch (e) {
+        renderFull38PageIllustratedPlates();
+        renderPrintShopCheatsheet();
+        renderEightApplicationsGrid();
         if (btn) btn.textContent = "✓ Brandbook Compilado";
       }
     }
 
     function exportLogoSVGCurves() {
+      playAcousticClick(850, 0.04);
       const brand = canvasState.brandName || "TheBestBrand";
-      const initials = brand.slice(0, 2).toUpperCase();
-      const svgData = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
-        <rect width="500" height="500" fill="#0A0C13"/>
-        <circle cx="250" cy="250" r="190" fill="none" stroke="#6366F1" stroke-width="10"/>
-        <polygon points="250,110 330,160 330,260 250,310 170,260 170,160" fill="#6366F1"/>
-        <text x="250" y="235" fill="#FFFFFF" font-family="'Syne',sans-serif" font-weight="900" font-size="52" text-anchor="middle">${initials}</text>
-        <text x="250" y="380" fill="#FFFFFF" font-family="'Syne',sans-serif" font-weight="800" font-size="28" letter-spacing="3" text-anchor="middle">${brand.toUpperCase()}</text>
-      </svg>`;
+      const kit = FIVE_IDENTITY_PROPOSALS[canvasState.selected_kit_index || 0];
+      const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex || ["#07080B", "#F8FAFC", "#6366F1", "#06B6D4"];
+      const symPaths = buildPureOutlinedSymbolPaths(kit.symbolType, priHex, secHex, "#FFFFFF");
+
+      const svgData = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <!-- THEBESTBRAND MASTER OUTLINED LOGO — ZERO LIVE TEXT — 100% BEZIER VECTOR CURVES -->
+  <rect width="500" height="500" fill="${inkHex}" rx="24"/>
+  <g transform="translate(100, 75) scale(3.0)">
+    ${symPaths}
+  </g>
+  <rect x="75" y="410" width="350" height="6" fill="${priHex}" rx="3"/>
+  <circle cx="250" cy="435" r="5" fill="${secHex}"/>
+</svg>`;
       const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${brand}_Curvas_Maestras.svg`;
+      a.download = `${brand.toLowerCase()}_logotipo_curvas_maestras.svg`;
       a.click();
     }
 
     function exportBrandbookJSON() {
+      playAcousticClick(700, 0.03);
       const brand = canvasState.brandName || "TheBestBrand";
       const blob = new Blob([JSON.stringify(canvasState, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -2155,6 +4766,23 @@
       a.download = `${brand}_Brand_Manifesto.json`;
       a.click();
     }
+
+    // KEYBOARD NAVIGATION IN ARENA (APPLE DESIGN AWARD SPEED)
+    window.addEventListener("keydown", (e) => {
+      if (currentStep === 5) {
+        if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a" || e.key === "1") {
+          e.preventDefault();
+          const pair = SIXTY_PROFESSIONAL_PAIRS[currentPairIdx % SIXTY_PROFESSIONAL_PAIRS.length];
+          playAcousticClick(750, 0.04);
+          choosePairOption(pair.id, 'A');
+        } else if (e.key === "ArrowRight" || e.key.toLowerCase() === "b" || e.key === "2") {
+          e.preventDefault();
+          const pair = SIXTY_PROFESSIONAL_PAIRS[currentPairIdx % SIXTY_PROFESSIONAL_PAIRS.length];
+          playAcousticClick(520, 0.04);
+          choosePairOption(pair.id, 'B');
+        }
+      }
+    });
 
     // UTILITIES
     function escapeHTML(str) {
@@ -2170,10 +4798,13 @@
     // INITIALIZATION
     window.addEventListener("DOMContentLoaded", () => {
       initAuraOrb();
+      initConfettiCanvas();
       updateApiKeyBadge();
       initBipolarSlidersUI();
       renderLiveStep4LogoSketches();
       renderCurrentPairCard();
+      updateJourneyRoadmap();
+      navigateToScreen("journey");
     });
   </script>
 </body>

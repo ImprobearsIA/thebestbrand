@@ -19,7 +19,7 @@ load_dotenv()
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../packages/brandbook-engine")))
 
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
@@ -107,6 +107,15 @@ def serve_web_app():
     html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/index.html"))
     with open(html_path, "r", encoding="utf-8") as f:
         return HTMLResponse(content=f.read())
+
+
+_FAVICON_SVG = """<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='#18181B'/><text x='50' y='64' font-family='sans-serif' font-weight='900' font-size='42' fill='#FFFFFF' text-anchor='middle'>TB</text></svg>"""
+
+@app.get("/favicon.ico")
+@app.get("/apple-touch-icon.png")
+@app.get("/apple-touch-icon-precomposed.png")
+def get_apple_touch_icon():
+    return Response(content=_FAVICON_SVG, media_type="image/svg+xml")
 
 
 @app.get("/api/health")

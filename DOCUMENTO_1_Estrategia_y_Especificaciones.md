@@ -351,3 +351,32 @@ Implementa íntegramente la metodología científica de evaluación sensorial, p
 ### 9.3. Veredicto del Jurado y Preparación para Replit
 - Documentación completa de los 7 ciclos, actas del jurado y planes de prueba registrada en [DOCUMENTO_5_Gauntlet_7_Ciclos_PMI_Craig_Federighi.md](file:///Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi%20unidad/_1%20IMPROBEARS/Proyectos%20Antigravity/TheBestBrand/DOCUMENTO_5_Gauntlet_7_Ciclos_PMI_Craig_Federighi.md).
 - **Calificación Global:** 99.4 / 100 — **REPLIT READY (Aprobado al 100% para migración y despliegue en Replit)**.
+
+---
+
+## 10. Arquitectura de Inferencia y Base de Conocimiento del Avatar ("The Brand Mentor Engine")
+
+### 10.1. Dictamen de Ingeniería y Consenso del Equipo Técnico
+Tras deliberación entre el Lead Architect, Craig Federighi (UX/Calidad), el Ingeniero de Audio/IA Conversacional y el Ingeniero de Pre-Prensa, se descartó el enfoque de *System Prompt Monolítico* (inyección de los 67KB en cada turno por exceso de latencia y costo) y el *Vector RAG Puro* (por riesgo de desconexión del tono empático). 
+
+Se aprueba formalmente la **Arquitectura Híbrida Jerárquica de 3 Capas**:
+1. **Capa 1: Kernel de Personalidad y Fórmula EAR (Prompt Caching en RAM, ~2,000 tokens):**
+   - Siempre activo a costo y latencia cero.
+   - Define el rol de Director Creativo y Mentor de élite ("Quiet Luxury"), el espacio seguro anti-juicio y la **Fórmula EAR**:
+     - **E (Empatía):** Validar la intención y emoción del usuario sin descalificarlo.
+     - **A (Autoridad y Tendencia):** Citar de forma natural a autores célebres (Simon Sinek, Paul Rand, Eva Heller, Robert Bringhurst, Clayton Christensen, Beatrice Warde) o estándares industriales (ISO 15930, WCAG 2.2, hilos Madeira 40 wt).
+     - **R (Reorientación Constructiva):** Conducir al usuario hacia soluciones viables técnica y comercialmente para el Brandbook Maestro.
+2. **Capa 2: Inyección Determinista por Estado del Pipeline (~800 tokens):**
+   - El orquestador inyecta automáticamente el módulo de conocimiento correspondiente según la etapa activa:
+     - *Paso 1 (Propósito/Persona):* Inyecta Golden Circle (Sinek), Hedgehog Concept (Collins) y Jobs-to-be-Done (Christensen).
+     - *Paso 2 (Touchpoints/Journey):* Inyecta Moments of Truth (Carlzon) y ZMOT (Google).
+     - *Paso 3 (Naming):* Inyecta Test SMILE & SCRATCH (Watkins), fonosemántica y reglas de dominio/marcas.
+     - *Paso 4 (Identidad Visual y Sliders):* Inyecta principios de Rand, Haviv y psicología tipográfica/cromática.
+     - *Paso 5 (Entrega y Brandbook):* Inyecta especificaciones técnicas de imprenta (FOGRA39), bordado textil (DST/PES) y el Print-Shop Cheatsheet.
+3. **Capa 3: Micro-RAG Quirúrgico por Industria (~400 tokens):**
+   - Se consulta de forma instantánea la ficha del sector correspondiente dentro de la **Matriz de las 100 Industrias** ([REPOSITORIO_CONOCIMIENTO_AVATAR_BRAND_MENTOR.md](file:///Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi%20unidad/_1%20IMPROBEARS/Proyectos%20Antigravity/TheBestBrand/REPOSITORIO_CONOCIMIENTO_AVATAR_BRAND_MENTOR.md)) en cuanto el usuario define su nicho, trayendo los clichés prohibidos y las mejores prácticas exactas sin saturar la ventana de contexto.
+
+### 10.2. Dialéctica Mayéutica y Aporía Socrática de Consecuencia Física
+- Fundamentado en la literatura científica de agentes socráticos (arXiv:2601.14798v1 y metodología Hisocra), el Avatar descarta las negativas autoritarias.
+- Ante requerimientos inviables del cliente (ej. degradados neón en cartón corrugado, serifas capilares de 0.2 mm en bordado de polos piqué o supresión de áreas de aislamiento), el Avatar formula **preguntas de consecuencia física y económica sobre el sustrato** (aporía socrática).
+- El cliente visualiza por sí mismo la falla mecánica en taller (costura rota, tinta empastada o falta de legibilidad a 16x16 px) y aprueba voluntariamente la solución técnica normada en el Brandbook Maestro.
