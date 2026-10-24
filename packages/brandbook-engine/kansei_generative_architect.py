@@ -636,6 +636,8 @@ class CorporateBackendAIHub:
             }
         }
 
+    _IMAGE_API_QUOTA_AVAILABLE: bool = True
+
     @classmethod
     def generate_nanobanana_brand_logos(
         cls,
@@ -663,11 +665,10 @@ class CorporateBackendAIHub:
         )
 
         generated_images: List[str] = []
-        status_msg = "Synthesized via Closed-Loop AVI (PCA + GA-BPNN + IP-Adapter + ACT-R/BDI) & Corporate NanoBanana Pipeline"
+        status_msg = "Synthesized via Closed-Loop AVI & Parametric Vector Studio"
 
-        if api_key:
-            # 1. Priorizar modelos nativos de imagen en Google AI Studio (gemini-2.5-flash-image / gemini-3.1-flash-image)
-            for img_model in ["gemini-2.5-flash-image", "gemini-3.1-flash-image", "gemini-3-pro-image"]:
+        if api_key and cls._IMAGE_API_QUOTA_AVAILABLE:
+            for img_model in ["gemini-2.5-flash-image"]:
                 try:
                     url = f"https://generativelanguage.googleapis.com/v1beta/models/{img_model}:generateContent?key={api_key}"
                     payload = {
@@ -680,7 +681,7 @@ class CorporateBackendAIHub:
                         headers={"Content-Type": "application/json"},
                         method="POST"
                     )
-                    with urllib.request.urlopen(req, timeout=22) as resp:
+                    with urllib.request.urlopen(req, timeout=6) as resp:
                         data = json.loads(resp.read().decode("utf-8"))
                         parts = data.get("candidates", [{}])[0].get("content", {}).get("parts", [])
                         for part in parts:
@@ -689,11 +690,14 @@ class CorporateBackendAIHub:
                                 b64 = part["inlineData"]["data"]
                                 generated_images.append(f"data:{mime};base64,{b64}")
                         if generated_images:
-                            status_msg = f"Synthesized Live via Google AI Studio ({img_model}) + Closed-Loop AVI"
+                            status_msg = f"Synthesized Live ({img_model})"
                             break
-                except Exception as e:
-                    status_msg = f"Closed-Loop AVI Mathematical Vector Synthesis Active (AI Studio fallback: {str(e)[:60]})"
-                    continue
+                except urllib.error.HTTPError as he:
+                    if he.code in (402, 403, 429):
+                        cls._IMAGE_API_QUOTA_AVAILABLE = False
+                    break
+                except Exception:
+                    break
 
         return {
             "brand_name": brand_name,

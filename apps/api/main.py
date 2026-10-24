@@ -85,10 +85,10 @@ class NamingCheckRequest(BaseModel):
 
 
 class Step4SynthesizeRequest(BaseModel):
-    pair_choices: List[Dict[str, str]] = []
+    pair_choices: List[Dict[str, Any]] = []
     bipolar_sliders: Optional[Dict[str, float]] = None
     canvas_state: Dict[str, Any] = {}
-    conversation_history: List[str] = []
+    conversation_history: List[Any] = []
     llm_api_key: str = ""
 
 
@@ -190,7 +190,7 @@ def run_closed_loop_avi_pipeline(req: Step4SynthesizeRequest):
         "serio_jugueton": -0.25,
         "convencional_rebelde": 0.30
     }
-    pairs_map = {p.get("pair_id", f"p{i}"): p.get("choice", "A") for i, p in enumerate(req.pair_choices)}
+    pairs_map = {str(p.get("pair_id", f"p{i}")): str(p.get("chosen") or p.get("choice", "A")) for i, p in enumerate(req.pair_choices)}
     brand_name = req.canvas_state.get("brandName", "TheBestBrand")
     closed_loop = AlgorithmicVisualIdentityClosedLoopProject.execute_full_closed_loop(
         brand_name=brand_name,
@@ -203,7 +203,7 @@ def run_closed_loop_avi_pipeline(req: Step4SynthesizeRequest):
 @app.post("/api/kansei/qt1-synthesis")
 def run_kansei_qtt1_synthesis(req: Step4SynthesizeRequest):
     sliders = req.bipolar_sliders or {}
-    pairs_map = {p.get("pair_id", f"p{i}"): p.get("choice", "A") for i, p in enumerate(req.pair_choices)}
+    pairs_map = {str(p.get("pair_id", f"p{i}")): str(p.get("chosen") or p.get("choice", "A")) for i, p in enumerate(req.pair_choices)}
     brand_name = req.canvas_state.get("brandName", "TheBestBrand")
     kansei_result = KanseiEngineeringQTT1Engine.compute_hayashi_qtt1_morphology(sliders, pairs_map, brand_name=brand_name)
     nanobanana_logos = CorporateBackendAIHub.generate_nanobanana_brand_logos(

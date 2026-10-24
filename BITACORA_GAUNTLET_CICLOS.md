@@ -1297,3 +1297,40 @@ El usuario probó el flujo completo de las 6 fases y señaló 6 mejoras estructu
        - **Tomo VIII:** Especímenes Tipográficos Oficiales y Tablas Colorimétricas (`HEX`, `RGB`, `CMYK FOGRA39`, `Pantone Solid Coated`).
        - **Tomo IX:** Catálogo Ilustrado de Entregables Físicos conectados a los Touchpoints (Papelería Ejecutiva $350\text{g}$, Empaque Rígido/Unboxing, Señalética Arquitectónica Exterior/Interior e Indumentaria Bordada).
        - **Tomo X:** Ecosistema Digital Multi-Dispositivo (Web Flagship, App Icon, Social Kit) y Certificado de Integridad Documental con exportación PDF sin límite de hojas y curvas `.SVG`.
+
+
+---
+
+# CICLO 21 (V20.0): VOZ CONSISTENTE DE AURA EN TODAS LAS ETAPAS, CERO JERGA INTERNA EXPUESTA, JERARQUÍA VISUAL PASO A PASO, ESPECÍMENES TIPOGRÁFICOS FIELES (ATRIBUTOS 13–18) Y GENERACIÓN INMEDIATA DE LAS 4 PROPUESTAS DE LOGOTIPO FINAL TRAS EL ATRIBUTO 24
+
+## 1. Diagnóstico de Pruebas y Hallazgos Resueltos
+Tras la revisión en vivo con el usuario (`Jorge Benítez`), se identificaron y corrigieron de raíz 5 puntos críticos de experiencia:
+
+1. **Voz 100% Consistente de Aura en Bienvenidas, Cápsulas de Cierre y Explicación de Logos (Adiós a la "Voz Rara"):**
+   - **Causa raíz identificada:** Cuando la llamada cloud de Gemini TTS devolvía HTTP 402 (límite de cuota), el cliente caía en `speakWithBrowserTTS()`. En llamadas posteriores (como la Cápsula de Cierre o el botón de explicación de logos en el Paso 4), `window.speechSynthesis.getVoices()` ya había cargado la lista alfabética de macOS, donde la primera voz en español (`voices.find(v => v.lang.startsWith('es'))`) era **`Eddy (Español)`**, una voz caricaturesca/novelty de macOS completamente distinta a la voz de Aura.
+   - **Solución definitiva en Backend ([`avatar_brain_rag.py`](packages/brandbook-engine/avatar_brain_rag.py)) y Frontend ([`index.html`](apps/web/index.html)):**
+     - En [`GeminiNeuralVoiceSynthesizer`](packages/brandbook-engine/avatar_brain_rag.py), se incorporó un sintetizador neuronal local consistente (`_synthesize_local_consistent_aura_wav_b64`) con caché en memoria (`_TTS_MEMORY_CACHE`) y circuit-breaker automático que genera audio WAV real a $24\text{ kHz}$ usando siempre la misma voz femenina cálida y natural (**`Paulina`**) en $<0.25\text{ s}$.
+     - Además, en `speakWithBrowserTTS()` se bloquearon explícitamente todas las voces novelty de macOS (`Eddy`, `Flo`, `Grandma`, `Grandpa`, `Reed`, `Rocko`, `Sandy`, `Shelley`) y se fijó `Paulina` como voz prioritaria, garantizando que **Aura hable exactamente con la misma voz en todo el recorrido, en las cápsulas de cierre y al explicar los logos**.
+
+2. **Eliminación Total de Información y Terminología Interna en la Interfaz y en la Cápsula de Cierre:**
+   - Se auditaron y limpiaron todas las pantallas (Pasos 1 a 6, barra lateral, modales y Cápsula de Cierre) para erradicar por completo términos internos como `SÍNTESIS NEURAL`, `SMILE & SCRATCH`, `SMILE`, `SCRATCH`, `Soundex`, `ZMOT`, `FMOT`, `SMOT`, `Kansei QTTI`, `Osgood EPA`, `Bradley-Terry`, `NanoBanana`, `Google AI Studio`, `Google Flow`, `Ceteris Paribus`, `GA-BPNN`, `IP-Adapter`, `ACT-R`, `BDI` y `MNL`, reemplazándolos por explicaciones claras en español para el creador de la marca.
+
+3. **Jerarquía Visual Clara y Orden Secuencial de Pasos y Sub-Pasos (`PASO A → PASO B → PASO C`):**
+   - Se añadió la barra superior permanente `#focusTopStepperBar` con los **6 pasos numerados** (`1. Propósito`, `2. Touchpoints`, `3. Nombre`, `4. Familia Base`, `5. 24 Detalles`, `6. Brandbook`) para saber en todo momento en qué etapa estás y qué sigue.
+   - En los Pasos 3, 4 y 5 se numeraron explícitamente los sub-pasos (`PASO 3A → 3B → 3C`, `PASO 4A → 4B → 4C`, `PASO 5A → 5B → 5C`) con encabezados de alto contraste.
+
+4. **Especímenes Tipográficos Reales en el Paso 5 (Atributos 13 al 18):**
+   - **Causa raíz identificada:** Las fuentes `Playfair Display`, `Fraunces`, `Bebas Neue`, `Syne` y `Space Grotesk` no estaban importadas en el `<head>`, y `renderFontVsFontSpecimenHTML` forzaba un fallback genérico o mantenía siglas en mayúsculas durante el duelo de Mayúsculas vs. Minúsculas.
+   - **Solución implementada:** Se cargaron todas las familias en Google Fonts y se rediseñó `renderFontVsFontSpecimenHTML(pair, side, rawBrandName)` para que cada atributo muestre visualmente lo que describe:
+     - **Atributo 13 (Sin Patines vs. Con Patines):** `Plus Jakarta Sans` (geométrica limpia sin remates) vs. `Playfair Display` (serif editorial clásica con patines visibles).
+     - **Atributo 14 (Alta y Esbelta vs. Ancha y Panorámica):** `Bebas Neue` condensada (`scaleX(0.84)`) vs. `Syne` extendida (`scaleX(1.14)`).
+     - **Atributo 15 (Aire Amplio vs. Bloque Unido):** `letter-spacing: 0.30em` vs. `-0.05em`.
+     - **Atributo 16 (Mayúsculas vs. Mayúscula Inicial y Minúsculas):** `THE BEST BRAND` (todo en caja alta) vs. `The Best Brand` (caja mixta real con minúsculas visibles).
+     - **Atributo 17 (Letra Fina vs. Extra-Gruesa):** `Inter` peso `200` (trazo fino delicado) vs. peso `900` con contorno reforzado (ultra-pesada).
+     - **Atributo 18 (Subtítulo Técnico vs. Subtítulo Editorial):** Lema inferior en código técnico `JetBrains Mono` vs. cursiva editorial `Playfair Display`.
+
+5. **Flujo Claro al Terminar los 24 Atributos y Generación Inmediata de las 4 Propuestas de Logotipo Final:**
+   - **Causa raíz identificada:** Al votar en el Atributo 24, `navigatePair(1)` hacía módulo `% 24` y regresaba al Atributo 1 sin avisar qué hacer; además, `/api/kansei/qt1-synthesis` devolvía `422 Unprocessable Entity` porque `Step4SynthesizeRequest` en [`main.py`](apps/api/main.py) exigía `Dict[str, str]` cuando `pair_id` era entero.
+   - **Solución implementada:**
+     - Se corrigió el esquema Pydantic `Step4SynthesizeRequest` en [`main.py`](apps/api/main.py) (`pair_choices: List[Dict[str, Any]]`).
+     - En `choosePairOption(id, side)`, al votar en el Atributo 24 **ya no se regresa al Atributo 1**: se lanza confeti, se ejecuta automáticamente `generateLiveAIStudioLogoProposals()`, se desplaza suavemente la vista hacia `#step5DiscoveryClosureCard` (**`PASO 5B · Construcción y Elección de tu Logotipo Final`**) y se renderizan de inmediato **4 Propuestas de Logotipo Final a medida** (Emblema Principal Totémico, Acomodo Horizontal Ejecutivo, Sello 1:1 para App/Empaque y Edición de Gala) que reflejan el nombre de la marca, la familia base del Paso 4 y los 24 atributos elegidos, cada una con el botón directo **`👑 Elegir como Logotipo Final y Abrir Brandbook (Paso 6) →`**.

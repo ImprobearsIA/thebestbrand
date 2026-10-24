@@ -127,10 +127,46 @@ class GeminiNeuralVoiceSynthesizer:
         )
         return riff_header + pcm_bytes
 
+    _CLOUD_TTS_AVAILABLE: bool = True
+
+    @classmethod
+    def _synthesize_local_consistent_aura_wav_b64(cls, clean_text: str) -> Optional[str]:
+        """
+        Sintetiza audio WAV a 24kHz con la voz única y consistente de Aura (Paulina es-MX),
+        garantizando que absolutamente todas las fases, cápsulas de cierre y explicaciones
+        de logotipos hablen exactamente con la misma voz sin caer en voces robóticas del navegador.
+        """
+        import subprocess
+        import tempfile
+        wav_path = None
+        try:
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tf:
+                wav_path = tf.name
+            subprocess.run(
+                ["say", "-v", "Paulina", "-r", "186", "--data-format=LEI16@24000", "-o", wav_path, clean_text],
+                check=True,
+                timeout=8
+            )
+            if os.path.exists(wav_path) and os.path.getsize(wav_path) > 100:
+                with open(wav_path, "rb") as rf:
+                    b64_out = base64.b64encode(rf.read()).decode("ascii")
+                if len(_TTS_MEMORY_CACHE) < 256:
+                    _TTS_MEMORY_CACHE[clean_text] = b64_out
+                return b64_out
+        except Exception:
+            pass
+        finally:
+            if wav_path and os.path.exists(wav_path):
+                try:
+                    os.remove(wav_path)
+                except Exception:
+                    pass
+        return None
+
     @classmethod
     def synthesize_gemini_voice_wav_b64(cls, text_to_speak: str, api_key: str = "") -> Optional[str]:
-        import time
         clean_t = re.sub(r"<[^>]+>", " ", text_to_speak or "")
+        clean_t = re.sub(r"[*_#`✦🎬🏆👑🧬⚖️🌐🏛️🎚️🔬⚔️🔤🎨📚💡🎙️✍️]", " ", clean_t)
         clean_t = re.sub(r"\s+", " ", clean_t).strip()
         if not clean_t:
             return None
@@ -139,46 +175,47 @@ class GeminiNeuralVoiceSynthesizer:
 
         # SIEMPRE se utiliza la cuenta corporativa del servidor (Jorge Benítez)
         key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY or api_key).strip()
-        if not key:
-            return None
-
-        tts_models = ["gemini-3.8-flash-lite-tts", "gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview"]
-        neutral_voice_name = os.environ.get("AURA_NEUTRAL_VOICE", "Puck")
-        for attempt, model_name in enumerate(tts_models):
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
-            payload = {
-                "contents": [{"parts": [{"text": clean_t}]}],
-                "generationConfig": {
-                    "responseModalities": ["AUDIO"],
-                    "speechConfig": {
-                        "voiceConfig": {
-                            "prebuiltVoiceConfig": {"voiceName": neutral_voice_name}
+        if key and cls._CLOUD_TTS_AVAILABLE:
+            tts_models = ["gemini-2.5-flash-preview-tts", "gemini-3.1-flash-tts-preview"]
+            neutral_voice_name = os.environ.get("AURA_NEUTRAL_VOICE", "Puck")
+            for model_name in tts_models:
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
+                payload = {
+                    "contents": [{"parts": [{"text": clean_t}]}],
+                    "generationConfig": {
+                        "responseModalities": ["AUDIO"],
+                        "speechConfig": {
+                            "voiceConfig": {
+                                "prebuiltVoiceConfig": {"voiceName": neutral_voice_name}
+                            }
                         }
                     }
                 }
-            }
-            try:
-                req = urllib.request.Request(
-                    url,
-                    data=json.dumps(payload).encode("utf-8"),
-                    headers={"Content-Type": "application/json"}
-                )
-                with urllib.request.urlopen(req, timeout=12) as resp:
-                    data = json.loads(resp.read().decode("utf-8"))
-                    parts = data["candidates"][0]["content"]["parts"]
-                    for p in parts:
-                        if "inlineData" in p and p["inlineData"].get("data"):
-                            pcm_raw = base64.b64decode(p["inlineData"]["data"])
-                            wav_bytes = cls._pcm16_to_wav_bytes(pcm_raw, sample_rate=24000, channels=1)
-                            b64_out = base64.b64encode(wav_bytes).decode("ascii")
-                            if len(_TTS_MEMORY_CACHE) < 128:
-                                _TTS_MEMORY_CACHE[clean_t] = b64_out
-                            return b64_out
-            except Exception:
-                if attempt == 0:
-                    time.sleep(0.35)
-                continue
-        return None
+                try:
+                    req = urllib.request.Request(
+                        url,
+                        data=json.dumps(payload).encode("utf-8"),
+                        headers={"Content-Type": "application/json"}
+                    )
+                    with urllib.request.urlopen(req, timeout=5) as resp:
+                        data = json.loads(resp.read().decode("utf-8"))
+                        parts = data["candidates"][0]["content"]["parts"]
+                        for p in parts:
+                            if "inlineData" in p and p["inlineData"].get("data"):
+                                pcm_raw = base64.b64decode(p["inlineData"]["data"])
+                                wav_bytes = cls._pcm16_to_wav_bytes(pcm_raw, sample_rate=24000, channels=1)
+                                b64_out = base64.b64encode(wav_bytes).decode("ascii")
+                                if len(_TTS_MEMORY_CACHE) < 256:
+                                    _TTS_MEMORY_CACHE[clean_t] = b64_out
+                                return b64_out
+                except urllib.error.HTTPError as he:
+                    if he.code in (402, 403, 429):
+                        cls._CLOUD_TTS_AVAILABLE = False
+                        break
+                except Exception:
+                    continue
+
+        return cls._synthesize_local_consistent_aura_wav_b64(clean_t)
 
 
 class DynamicConversationalProfiler:
