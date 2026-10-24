@@ -20,6 +20,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../p
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, Response
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
@@ -35,7 +36,11 @@ from avatar_brain_rag import (
 )
 from master_brandbook_compiler import MasterBrandbookCompiler
 from brand_sprint_bradley_terry import AlgorithmicIdentityDecisionEngine
-from kansei_generative_architect import KanseiEngineeringQTT1Engine, CorporateBackendAIHub
+from kansei_generative_architect import (
+    KanseiEngineeringQTT1Engine,
+    CorporateBackendAIHub,
+    AlgorithmicVisualIdentityClosedLoopProject
+)
 
 app = FastAPI(
     title="TheBestBrand Live Studio v15.0 (Lean Triad UI + Kansei QTTI + Corporate Backend AI + Neutral Futuristic Aura)",
@@ -48,6 +53,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+_ASSETS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/assets"))
+os.makedirs(_ASSETS_DIR, exist_ok=True)
+app.mount("/assets", StaticFiles(directory=_ASSETS_DIR), name="assets")
 
 
 class ChatTurnRequest(BaseModel):
@@ -153,12 +162,50 @@ def corporate_backend_status():
     return CorporateBackendAIHub.get_corporate_credentials_status()
 
 
+@app.get("/api/project-avi/team-and-methodology")
+def get_project_avi_governance():
+    """
+    Devuelve la estructura oficial del proyecto interno LAB-AVI liderado por el
+    Lead Generative Brand Architect & Kansei Engineer, el equipo contratado y la
+    matriz de diagnóstico de 50 años de Algorithmic_Visual_Identity.pdf.
+    """
+    return AlgorithmicVisualIdentityClosedLoopProject.PROJECT_METADATA
+
+
+@app.post("/api/kansei/closed-loop-avi")
+def run_closed_loop_avi_pipeline(req: Step4SynthesizeRequest):
+    """
+    Ejecuta el Flujo de Trabajo Profesional Definitivo (Closed-Loop System de 4 Fases):
+    1. CAPTURA (PCA sobre Diferenciales Semánticos)
+    2. MAPEO (GA-BPNN + SVR No Lineal + Hayashi QTTI)
+    3. SÍNTESIS (FLUX.1 / SDXL + IP-Adapter Decoupled Cross-Attention)
+    4. SIMULACIÓN (Agentes Cognitivos ACT-R + BDI + MNL + Retroalimentación Dinámica)
+    """
+    sliders = req.bipolar_sliders or {
+        "tradicional_innovador": 0.35,
+        "accesible_exclusivo": 0.40,
+        "humano_tecnologico": 0.25,
+        "organico_geometrico": 0.45,
+        "minimalista_complejo": -0.35,
+        "serio_jugueton": -0.25,
+        "convencional_rebelde": 0.30
+    }
+    pairs_map = {p.get("pair_id", f"p{i}"): p.get("choice", "A") for i, p in enumerate(req.pair_choices)}
+    brand_name = req.canvas_state.get("brandName", "TheBestBrand")
+    closed_loop = AlgorithmicVisualIdentityClosedLoopProject.execute_full_closed_loop(
+        brand_name=brand_name,
+        bipolar_sliders=sliders,
+        pair_selections=pairs_map
+    )
+    return closed_loop
+
+
 @app.post("/api/kansei/qt1-synthesis")
 def run_kansei_qtt1_synthesis(req: Step4SynthesizeRequest):
     sliders = req.bipolar_sliders or {}
     pairs_map = {p.get("pair_id", f"p{i}"): p.get("choice", "A") for i, p in enumerate(req.pair_choices)}
-    kansei_result = KanseiEngineeringQTT1Engine.compute_hayashi_qtt1_morphology(sliders, pairs_map)
     brand_name = req.canvas_state.get("brandName", "TheBestBrand")
+    kansei_result = KanseiEngineeringQTT1Engine.compute_hayashi_qtt1_morphology(sliders, pairs_map, brand_name=brand_name)
     nanobanana_logos = CorporateBackendAIHub.generate_nanobanana_brand_logos(
         brand_name=brand_name,
         industry="global_brand",
@@ -214,6 +261,23 @@ def process_avatar_chat_turn(req: ChatTurnRequest):
 
     signals = committee_turn["signals"]
 
+    # Puente Orgánico LAB-AVI: Destilación semántica en vivo desde la conversación con AURA
+    # hacia las 7 coordenadas de Osgood y el Sistema Closed-Loop (H-01 a H-04)
+    t_low = full_transcript.lower()
+    inferred_sliders = {
+        "tradicional_innovador": 0.68 if any(w in t_low for w in ["digital", "ia", "esports", "app", "futur", "tecnolog", "software", "innov"]) else (-0.35 if any(w in t_low for w in ["tradicion", "artesanal", "herencia", "clasic", "familiar"]) else 0.45),
+        "minimalista_complejo": 0.35 if any(w in t_low for w in ["liga", "club", "torneo", "deport", "escudo", "equipo", "heraldic"]) else -0.35,
+        "amigable_autoritario": 0.55 if any(w in t_low for w in ["profesional", "corporativ", "lider", "lujo", "exclusiv", "oficial", "federacion"]) else -0.25,
+        "humano_tecnologico": 0.65 if any(w in t_low for w in ["plataforma", "datos", "algoritm", "streaming", "esports", "juego", "tech"]) else -0.20,
+        "serio_jugueton": 0.48 if any(w in t_low for w in ["deport", "futbol", "esports", "liga", "entretenimiento", "competencia", "juego"]) else -0.30,
+        "convencional_rebelde": 0.52 if any(w in t_low for w in ["disruptiv", "nuevo", "revolucion", "unico", "diferente", "vanguardia"]) else 0.15,
+        "organico_geometrico": 0.68 if any(w in t_low for w in ["precision", "exact", "arquitectura", "ingenieria", "sistema", "profesional"]) else 0.40
+    }
+    closed_loop_live = AlgorithmicVisualIdentityClosedLoopProject.execute_full_closed_loop(
+        brand_name=committee_turn["updated_canvas"].get("brandName") or req.canvas_state.get("brandName", "TheBestBrand"),
+        bipolar_sliders=inferred_sliders
+    )
+
     return {
         "current_step": committee_turn["step"],
         "next_sub_step": committee_turn["sub_step"],
@@ -228,6 +292,8 @@ def process_avatar_chat_turn(req: ChatTurnRequest):
         "step_intro_video": committee_turn.get("step_intro_video"),
         "audio_wav_base64": committee_turn.get("audio_wav_base64"),
         "updated_canvas": committee_turn["updated_canvas"],
+        "inferred_kansei_sliders": inferred_sliders,
+        "kansei_closed_loop": closed_loop_live,
         "live_naming_proposals": committee_turn.get("live_naming_proposals", []),
         "committee_verdict": committee_turn["committee_verdict"],
         "entailment_score": brain_result.get("nli_entailment_score", 0.99),

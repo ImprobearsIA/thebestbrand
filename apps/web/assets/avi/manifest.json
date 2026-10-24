@@ -1,0 +1,44 @@
+[
+  {
+    "filename": "avi_phase1_pca_capture.png",
+    "status": "SUCCESS",
+    "model": "gemini-2.5-flash-image",
+    "bytes": 1053564,
+    "path": "/Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi unidad/_1 IMPROBEARS/Proyectos Antigravity/TheBestBrand/apps/web/assets/avi/avi_phase1_pca_capture.png"
+  },
+  {
+    "filename": "avi_phase2_gabpnn_mapping.png",
+    "status": "SUCCESS",
+    "model": "gemini-2.5-flash-image",
+    "bytes": 1392930,
+    "path": "/Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi unidad/_1 IMPROBEARS/Proyectos Antigravity/TheBestBrand/apps/web/assets/avi/avi_phase2_gabpnn_mapping.png"
+  },
+  {
+    "filename": "avi_hero_synthesis.png",
+    "status": "SUCCESS",
+    "model": "gemini-2.5-flash-image",
+    "bytes": 1480482,
+    "path": "/Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi unidad/_1 IMPROBEARS/Proyectos Antigravity/TheBestBrand/apps/web/assets/avi/avi_hero_synthesis.png"
+  },
+  {
+    "filename": "avi_phase3_ip_adapter_synthesis.png",
+    "status": "SUCCESS",
+    "model": "gemini-2.5-flash-image",
+    "bytes": 1483693,
+    "path": "/Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi unidad/_1 IMPROBEARS/Proyectos Antigravity/TheBestBrand/apps/web/assets/avi/avi_phase3_ip_adapter_synthesis.png"
+  },
+  {
+    "filename": "avi_origami_precision_blueprint.png",
+    "status": "SUCCESS",
+    "model": "gemini-2.5-flash-image",
+    "bytes": 1355948,
+    "path": "/Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi unidad/_1 IMPROBEARS/Proyectos Antigravity/TheBestBrand/apps/web/assets/avi/avi_origami_precision_blueprint.png"
+  },
+  {
+    "filename": "avi_phase4_actr_bdi_simulation.png",
+    "status": "SUCCESS",
+    "model": "gemini-2.5-flash-image",
+    "bytes": 1566267,
+    "path": "/Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi unidad/_1 IMPROBEARS/Proyectos Antigravity/TheBestBrand/apps/web/assets/avi/avi_phase4_actr_bdi_simulation.png"
+  }
+]

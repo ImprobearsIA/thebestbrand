@@ -64,14 +64,18 @@ Para construir e introducir al mercado global **TheBestBrand** en la cima de los
 * **Mandato Operativo en TheBestBrand:**
   * Validar automáticamente que no existan elementos distractores en el Modo Concentración, que el contraste tipográfico cumpla WCAG AAA, que el pop-up de bienvenida funcione al iniciar y que los motores Kansei/Bradley-Terry respondan en <200ms.
 
-### 3.6. Lead Generative Brand Architect & Kansei Engineer (Contratación Especial para Identidad Visual)
-* **Misión:** Liderar la captura cuantitativa de la percepción afectiva del usuario (sin sesgos) y traducir esos hallazgos psicológicos mediante modelado matemático e IA generativa controlada en identidades visuales de alta precisión predictiva.
+### 3.6. Lead Generative Brand Architect & Kansei Engineer (Director del Proyecto Interno `LAB-AVI` con Libertad de Contratación)
+* **Misión:** Liderar el **Proyecto Interno `LAB-AVI` (Algorithmic Visual Identity — Closed-Loop System)** basado en la auditoría de 50 años de evolución metodológica (`Algorithmic_Visual_Identity.pdf`), capturando sin sesgos la percepción afectiva del equipo y clientes y traduciéndola mediante modelado matemático no lineal, simulación cognitiva y difusión generativa controlada en identidades visuales de precisión algorítmica.
+* **Escuadrón Científico Contratado Directamente bajo su Mando (`LAB-AVI`):**
+  * **H-01. Principal Psychometrics & Multivariate PCA Scientist:** Destilación de entrevistas corporativas y escalas de Diferencial Semántico de Osgood (1–7) mediante Análisis de Componentes Principales (**PCA**).
+  * **H-02. Deep Non-Linear Affective Computing Engineer (`GA-BPNN` & `SVR`):** Modelado de la transición no lineal con Redes Neuronales optimizadas por Algoritmos Genéticos (`GA-BPNN`) y Vectores de Soporte (`SVR`), superando las limitaciones lineales de QTTI en acoplamientos complejos (*Morfología $\times$ Paleta Cromática $\times$ Textura $\times$ Proporción*).
+  * **H-03. Diffusion & Decoupled Cross-Attention Architect (`FLUX.1` / `SDXL` + `IP-Adapter`):** Síntesis visual generativa inyectando simultáneamente el *Flujo de Semántica* (Incrustaciones de Texto Kansei) y el *Flujo de Estructura* (Geometría base vía `CLIP` visual) en la `U-Net` / `DiT`, junto con el motor corporativo **NanoBanana** y **Google Flow**.
+  * **H-04. Cognitive Architecture & Discrete Choice Scientist (`ACT-R`, `BDI` & `MNL`):** Simulación de audiencia mediante Módulo de Percepción (`ACT-R`), Módulo Afectivo (`BDI`: Creencias, Deseos, Intenciones), Salida Probabilística (`Logit Multinomial MNL` + `Bradley-Terry`) y el motor de **Retroalimentación Dinámica (*Closed-Loop Auto-Tuning*)** sin encuestas manuales continuas.
 * **Dominio Técnico Implementado en el Motor (`packages/brandbook-engine/kansei_generative_architect.py`):**
-  1. **Ingeniería Kansei (Tipos I al V) & Diferencial Semántico de Osgood (EPA):** Captura de los vectores de Evaluación, Potencia y Actividad sin contaminar al usuario con sugerencias prefabricadas.
-  2. **Teoría de la Cuantificación Tipo I de Hayashi (QTTI):** Matriz de regresión categórica que traduce adjetivos emocionales y semánticos en parámetros geométricos exactos (radio de curvatura Bézier, proporción áurea, tensión axial, peso de trazo para bordado $\ge 1.2\text{ mm}$ y simetría).
-  3. **Modelos de Elección Discreta (Logit Multinomial MNL + Bradley-Terry) & PCA:** Estimación probabilística de preferencia de marca a partir del torneo visual de pares contrastantes.
-  4. **Arquitecturas Cognitivas Sintéticas (BDI — *Belief-Desire-Intention* & ACT-R):** Simulación de respuesta del mercado objetivo frente a la identidad generada.
-  5. **Pipeline de IA Generativa Controlada (NanoBanana + ControlNet + IP-Adapter + Flow):** Generación determinista de propuestas de logotipos e identidades visuales utilizando tensores de control estructural y curvas vectoriales puras.
+  1. **Fase 1 (Captura):** Diferencial Semántico de Osgood (EPA) + Reducción de Dimensionalidad por **PCA** (autovalores y varianza explicada $>92\%$).
+  2. **Fase 2 (Mapeo):** Teoría de la Cuantificación Tipo I de Hayashi (**QTTI**) como baseline lineal + Red Neuronal No Lineal **`GA-BPNN`** y **`SVR`** para acoplamientos cruzados color-forma-proporción.
+  3. **Fase 3 (Síntesis):** Atención Cruzada Desacoplada (**`IP-Adapter` / `U-Net` / `FLUX.1` / `NanoBanana`**) + Parametrización geométrica vectorial exacta ($\ge 1.2\text{ mm}$ para bordado industrial, ángulos $30^\circ/45^\circ/90^\circ$ y tensión Bézier).
+  4. **Fase 4 (Simulación & Closed-Loop):** Arquitecturas Cognitivas **`ACT-R`** + **`BDI`** + **`Logit Multinomial (MNL)`** con ajuste automático de coeficientes en lazo cerrado.
 
 ---
 

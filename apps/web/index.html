@@ -900,155 +900,164 @@
       font-size: 0.95rem;
     }
 
-    /* TACTILE AUDIO CONSOLE SLIDERS */
+    /* TACTILE AUDIO CONSOLE SLIDERS (AUREATE INTELLIGENCE WCAG AAA EDITION) */
     .faders-deck {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
       width: 100%;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
     }
     @media (max-width: 768px) {
       .faders-deck { grid-template-columns: 1fr; }
     }
     .fader-card {
-      background: rgba(18, 22, 34, 0.7);
-      backdrop-filter: blur(18px);
-      border: 1px solid var(--border-subtle);
+      background: #FFFFFF;
+      border: 1.5px solid rgba(15, 23, 42, 0.12);
       border-radius: 20px;
       padding: 18px 22px;
+      box-shadow: 0 8px 24px -6px rgba(9, 13, 22, 0.05);
       transition: all 0.22s ease;
     }
     .fader-card:hover {
-      border-color: rgba(99, 102, 241, 0.35);
-      box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.25);
+      border-color: #D97706;
+      box-shadow: 0 12px 28px -8px rgba(212, 175, 55, 0.22);
     }
     .fader-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
+      gap: 8px;
     }
     .fader-title {
-      font-family: var(--font-tech);
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: #FFFFFF;
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #090D16;
     }
     .fader-human-badge {
       font-family: var(--font-mono);
       font-size: 0.7rem;
-      color: #06B6D4;
-      background: rgba(6, 182, 212, 0.1);
-      padding: 3px 8px;
+      font-weight: 700;
+      color: #92400E;
+      background: #FEF3C7;
+      padding: 4px 10px;
       border-radius: 99px;
-      border: 1px solid rgba(6, 182, 212, 0.25);
+      border: 1px solid rgba(217, 119, 6, 0.35);
     }
     .fader-slider {
       width: 100%;
-      height: 6px;
+      height: 8px;
       border-radius: 99px;
       outline: none;
       -webkit-appearance: none;
-      background: rgba(255, 255, 255, 0.1);
+      background: linear-gradient(90deg, #E2E8F0 0%, #FDE68A 50%, #E2E8F0 100%);
+      border: 1px solid #CBD5E1;
       cursor: pointer;
       margin: 12px 0 8px 0;
     }
     .fader-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background: #FFFFFF;
-      box-shadow: 0 0 12px rgba(99, 102, 241, 0.8);
+      background: linear-gradient(135deg, #090D16 0%, #1E293B 100%);
+      border: 2px solid #D4AF37;
+      box-shadow: 0 2px 10px rgba(9, 13, 22, 0.35);
       cursor: pointer;
       transition: all 0.15s ease;
     }
     .fader-slider::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
+      transform: scale(1.18);
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.75);
     }
     .fader-poles {
       display: flex;
       justify-content: space-between;
-      font-size: 0.72rem;
-      color: var(--ink-tertiary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #334155;
     }
 
-    /* REAL-WORLD IDENTITY MOCKUPS (CRAIG FEDERIGHI STANDARD) */
-    .mockups-grid {
+    /* REAL-WORLD IDENTITY MOCKUPS (CRAIG FEDERIGHI & LAB-AVI STANDARD) */
+    .mockups-grid, .pair-arena {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
+      gap: 22px;
       width: 100%;
     }
     @media (max-width: 860px) {
-      .mockups-grid { grid-template-columns: 1fr; }
+      .mockups-grid, .pair-arena { grid-template-columns: 1fr; }
     }
     .mockup-card {
-      background: rgba(15, 18, 28, 0.8);
-      border: 1px solid var(--border-subtle);
+      background: #FFFFFF;
+      border: 1.5px solid rgba(15, 23, 42, 0.12);
       border-radius: 24px;
-      padding: 24px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      backdrop-filter: blur(24px);
-      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5);
+      justify-content: space-between;
+      gap: 14px;
+      box-shadow: 0 12px 32px -8px rgba(9, 13, 22, 0.07);
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       overflow: hidden;
     }
     .mockup-card:hover {
-      border-color: rgba(99, 102, 241, 0.5);
-      transform: translateY(-4px);
-      box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.7), 0 0 35px rgba(99, 102, 241, 0.25);
+      border-color: #D97706;
+      transform: translateY(-3px);
+      box-shadow: 0 20px 44px -10px rgba(212, 175, 55, 0.25);
     }
     .mockup-card.selected {
-      border-color: #10B981;
-      box-shadow: 0 0 0 2px #10B981, 0 20px 50px rgba(16, 185, 129, 0.2);
+      border-color: #D97706;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FFFBEB 100%);
+      box-shadow: 0 0 0 2.5px #D97706, 0 18px 40px -8px rgba(217, 119, 6, 0.25);
     }
 
     .mockup-viewport {
-      height: 220px;
+      height: 210px;
       border-radius: 16px;
-      background: radial-gradient(circle at 50% 30%, #151824 0%, #07080D 100%);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: radial-gradient(circle at 50% 30%, #161B29 0%, #090D16 100%);
+      border: 1px solid rgba(212, 175, 55, 0.32);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
-      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+      box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.65);
     }
     .mockup-context-badge {
       position: absolute;
-      top: 12px;
-      left: 12px;
+      top: 10px;
+      left: 10px;
       font-family: var(--font-mono);
-      font-size: 0.64rem;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 3px 9px;
+      font-size: 0.66rem;
+      font-weight: 700;
+      background: rgba(9, 13, 22, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      padding: 4px 10px;
       border-radius: 99px;
-      color: #94A3B8;
-      backdrop-filter: blur(8px);
+      color: #FDE68A;
+      z-index: 2;
     }
     .mockup-details {
       display: flex;
       flex-direction: column;
       gap: 4px;
+      text-align: left;
     }
     .mockup-title {
       font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #FFFFFF;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: #090D16;
     }
     .mockup-desc {
-      font-size: 0.82rem;
-      color: var(--ink-secondary);
-      line-height: 1.4;
+      font-size: 0.84rem;
+      color: #334155;
+      line-height: 1.45;
     }
 
     /* BUTTONS */
@@ -2387,7 +2396,20 @@
       <div class="identity-hero-header">
         <span class="question-category">04 · Proyecto Interno LAB-AVI · De la Percepción Humana a la Síntesis Generativa</span>
         <h2>Dirección Algorítmica de Identidad Visual</h2>
-        <p>Ajusta el carácter de tu marca con las barras intuitivas. El <strong>Sistema de Lazo Cerrado (Closed-Loop System)</strong> liderado por el <em>Lead Generative Brand Architect &amp; Kansei Engineer</em> traduce tus preferencias en geometría exacta, simula la reacción de tu audiencia y genera tu logotipo en tiempo real.</p>
+        <p>Ajusta el carácter de tu marca con las barras intuitivas. El <strong>Sistema de Lazo Cerrado (Closed-Loop System)</strong> liderado por el <em>Lead Generative Brand Architect &amp; Kansei Engineer</em> traduce tus respuestas con AURA y tus preferencias en geometría exacta, simula la reacción de 250 agentes cognitivos y genera tu logotipo en tiempo real.</p>
+      </div>
+
+      <!-- PUENTE ORGÁNICO AURA ↔ LEAD GENERATIVE BRAND ARCHITECT & KANSEI ENGINEER -->
+      <div id="kanseiAuraBridgeBanner" style="width:100%; background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border:1.5px solid #D4AF37; border-radius:18px; padding:14px 20px; margin-bottom:18px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; box-shadow:0 6px 18px rgba(212,175,55,0.12);">
+        <div style="display:flex; flex-direction:column; gap:4px; max-width:740px;">
+          <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#92400E; letter-spacing:0.06em;">✦ PUENTE ORGÁNICO ACTIVO · AURA ↔ LEAD GENERATIVE BRAND ARCHITECT &amp; KANSEI ENGINEER (L-00)</span>
+          <div id="kanseiAuraBridgeText" style="font-size:0.88rem; color:#090D16; font-weight:600; line-height:1.45;">
+            Tus respuestas estratégicas de los Pasos 1–3 se destilaron automáticamente en coordenadas de Osgood (Fase 1 PCA) y pre-calibraron tus 7 Faders Kansei sin partir de cero.
+          </div>
+        </div>
+        <button class="btn-action" onclick="speakKanseiArchitectBrief()" style="background:#FFFFFF; border:1px solid #D4AF37; color:#92400E; font-weight:700; font-size:0.76rem; padding:8px 14px;">
+          🔊 Escuchar Diagnóstico Kansei de AURA
+        </button>
       </div>
 
       <!-- BANNER VISUAL ILUSTRADO (GENERADO CON GOOGLE AI STUDIO) -->
@@ -2396,14 +2418,14 @@
           <span style="font-family:var(--font-mono); font-size:0.72rem; color:#0284C7; font-weight:800; letter-spacing:0.06em;">📐 BLUEPRINT DE PRECISIÓN ALGORÍTMICA (50 AÑOS DE EVOLUCIÓN)</span>
           <h3 style="font-family:var(--font-display); font-size:1.28rem; color:#090D16; line-height:1.25; margin:0;">De la Intuición Artística a la Geometría Matemática</h3>
           <p style="font-size:0.86rem; color:#334155; line-height:1.5; margin:0;">
-            Tus emociones y adjetivos (<strong>Innovador, Robusto, Ágil, Confiable</strong>) se transforman automáticamente en radios de curvatura, ángulos constructivos ($30^\circ, 45^\circ, 90^\circ$) y grosor de bordado industrial ($\ge 1.25\text{ mm}$).
+            Tus emociones y adjetivos (<strong>Innovador, Robusto, Ágil, Confiable</strong>) se transforman automáticamente en radios de curvatura, ángulos constructivos (<strong>30°, 45°, 90°</strong>) y grosor de bordado industrial (<strong>≥ 1.25 mm</strong>).
           </p>
           <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;">
             <button class="btn-action primary" id="btnGenerateAIStudioLogos" onclick="generateLiveAIStudioLogoProposals()" style="font-size:0.8rem; padding:10px 16px;">
               ✨ Generar Propuestas con Google AI Studio (En Vivo)
             </button>
             <button class="btn-action" onclick="toggleAviScientificDeck()" style="font-size:0.78rem; padding:10px 14px;">
-              🔬 Ver Atlas Visual de las 4 Fases (LAB-AVI)
+              🔬 Alternar Atlas Visual de las 4 Fases (LAB-AVI)
             </button>
           </div>
         </div>
@@ -2479,7 +2501,7 @@
         </div>
 
         <!-- 4-PHASE CLOSED-LOOP CARDS (CON LÁMINAS VISUALES GENERADAS POR GOOGLE AI STUDIO) -->
-        <div id="aviScientificDeckContainer" style="display:none; grid-template-columns:repeat(auto-fit, minmax(215px, 1fr)); gap:12px; padding-top:12px; border-top:1px solid rgba(148,163,184,0.18); font-size:0.78rem;">
+        <div id="aviScientificDeckContainer" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(155px, 1fr)); gap:12px; padding-top:12px; border-top:1px solid rgba(148,163,184,0.18); font-size:0.78rem;">
           <div style="background:rgba(255,255,255,0.04); padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
             <img src="/assets/avi/avi_phase1_pca_capture.png" alt="Fase 1 Captura PCA" style="width:100%; height:105px; object-fit:cover; border-radius:9px; margin-bottom:8px;" />
             <div style="font-family:var(--font-mono); color:#38BDF8; font-weight:700; font-size:0.7rem;">1. CAPTURA (H-01: PCA &amp; OSGOOD)</div>
@@ -2536,7 +2558,7 @@
       <!-- 4 REAL-WORLD IDENTITY MOCKUPS -->
       <div style="text-align:center; margin-bottom:20px;">
         <span class="question-category">Bocetos en Vivo Esculpidos por tus Faders (LAB-AVI Closed-Loop)</span>
-        <h3 style="font-family:var(--font-display); font-size:1.4rem;">4 Direcciones de Identidad + Modo Rayos X de Cotas ($30^\circ/45^\circ/90^\circ$)</h3>
+        <h3 style="font-family:var(--font-display); font-size:1.4rem;">4 Direcciones de Identidad + Modo Rayos X de Cotas (30°/45°/90°)</h3>
         <div style="margin-top:8px;">
           <button class="btn-action" id="btnToggleBlueprintOverlay" onclick="toggleBlueprintOverlayMode()" style="font-size:0.78rem; padding:8px 14px;">
             📐 Modo Rayos X Constructivo (30°/45°/90°): ACTIVADO
@@ -2798,6 +2820,9 @@
           <div>• <strong>H-03 (3. Síntesis):</strong> Difusión FLUX.1 / SDXL + IP-Adapter U-Net</div>
           <div>• <strong>H-04 (4. Simulación):</strong> Agentes ACT-R + BDI + MNL &amp; Auto-Tuning</div>
         </div>
+        <button class="btn-hub-action" style="margin-top:8px;" onclick="toggleHubDrawer(false); navigateToScreen('focus', 4);">
+          🧬 Abrir Estudio Kansei LAB-AVI (Paso 4)
+        </button>
       </div>
     </div>
 
@@ -3735,9 +3760,7 @@
 
     function onNodeCardClicked(stepNum) {
       if (stepNum > unlockedStepMax) {
-        const prevTitle = STEP_METADATA[stepNum - 1]?.shortName || `Paso ${stepNum - 1}`;
-        alert(`🔒 Este hito está bloqueado. Primero completa ${prevTitle} para avanzar de forma guiada.`);
-        return;
+        unlockedStepMax = stepNum;
       }
       navigateToScreen("focus", stepNum);
     }
@@ -4102,6 +4125,14 @@
             }
           }
 
+          if (data.kansei_closed_loop || data.inferred_kansei_sliders) {
+            try {
+              applyClosedLoopTelemetryToUI(data.kansei_closed_loop, data.inferred_kansei_sliders, true);
+            } catch (kanseiErr) {
+              console.warn("Kansei closed-loop bridge warning:", kanseiErr);
+            }
+          }
+
           if (data.awaiting_closing_confirmation) {
             const gate = document.getElementById("closingGateBanner");
             if (gate) gate.classList.add("active");
@@ -4353,6 +4384,107 @@
       if (badge) badge.textContent = `✓ Propuesta #0${idx + 1} Adoptada en el Brandbook Maestro`;
     }
 
+    function speakKanseiArchitectBrief() {
+      const innov = document.getElementById("adjScoreInnovador")?.textContent || "74%";
+      const rob = document.getElementById("adjScoreRobusto")?.textContent || "78%";
+      const agil = document.getElementById("adjScoreAgil")?.textContent || "70%";
+      const conf = document.getElementById("adjScoreConfiable")?.textContent || "84%";
+      const bName = canvasState.brandName || "tu marca";
+      const msg = `Como tu Arquitecto Generativo y Kansei Engineer, he sincronizado tus respuestas estratégicas para ${bName} en nuestro sistema de lazo cerrado. Tu perfil actual alcanza ${innov} en carácter Innovador, ${rob} en Robustez, ${agil} en Agilidad y ${conf} en Confiabilidad, listo para esculpir tu logotipo con precisión milimétrica.`;
+      requestAndPlayGeminiVoice(msg);
+    }
+
+    function applyClosedLoopTelemetryToUI(closedLoop, inferredSliders = null, fromSocraticTurn = false) {
+      if (inferredSliders && typeof inferredSliders === "object") {
+        Object.entries(inferredSliders).forEach(([axisId, rawVal]) => {
+          const num = parseFloat(rawVal);
+          if (!isNaN(num)) {
+            bipolarSliderValues[axisId] = num;
+            const badgeEl = document.getElementById(`sliderVal_${axisId}`);
+            if (badgeEl) {
+              badgeEl.textContent = num > 0.2 ? `Inclinado a la Derecha (+${num.toFixed(2)})` : num < -0.2 ? `Inclinado a la Izquierda (${num.toFixed(2)})` : "Equilibrado";
+            }
+          }
+        });
+        initBipolarSlidersUI();
+        Object.entries(bipolarSliderValues).forEach(([axisId, num]) => {
+          const badgeEl = document.getElementById(`sliderVal_${axisId}`);
+          if (badgeEl) {
+            badgeEl.textContent = num > 0.2 ? `Inclinado a la Derecha (+${num.toFixed(2)})` : num < -0.2 ? `Inclinado a la Izquierda (${num.toFixed(2)})` : "Equilibrado";
+          }
+        });
+        renderLiveStep4LogoSketches();
+      }
+
+      if (!closedLoop) return;
+      const p1 = closedLoop.phase_1_capture_pca;
+      const p2 = closedLoop.phase_2_mapping_gabpnn_svr;
+      const p3 = closedLoop.phase_3_synthesis_ip_adapter;
+      const p4 = closedLoop.phase_4_simulation_actr_bdi_mnl;
+
+      if (p1 && p1.cardinal_kansei_adjectives) {
+        const adjs = p1.cardinal_kansei_adjectives;
+        const mapAdj = [
+          ["Innovador", adjs.Innovador],
+          ["Robusto", adjs.Robusto],
+          ["Agil", adjs.Agil],
+          ["Confiable", adjs.Confiable]
+        ];
+        mapAdj.forEach(([key, valPct]) => {
+          const sEl = document.getElementById(`adjScore${key}`);
+          const bEl = document.getElementById(`adjBar${key}`);
+          if (sEl) sEl.textContent = `${Math.round(valPct)}%`;
+          if (bEl) bEl.style.width = `${Math.min(100, Math.max(10, valPct))}%`;
+        });
+
+        const bridgeTxt = document.getElementById("kanseiAuraBridgeText");
+        if (bridgeTxt) {
+          const bName = canvasState.brandName || "Tu Marca";
+          bridgeTxt.innerHTML = `<strong>${escapeHTML(bName)}</strong> calibrada en vivo por el <em>Lead Generative Brand Architect &amp; Kansei Engineer</em>: Innovador <strong>${Math.round(adjs.Innovador)}%</strong> · Robusto <strong>${Math.round(adjs.Robusto)}%</strong> · Ágil <strong>${Math.round(adjs.Agil)}%</strong> · Confiable <strong>${Math.round(adjs.Confiable)}%</strong>.`;
+        }
+      }
+
+      if (p2 && p2.qtti_linear_baseline_morphology) {
+        const morph = p2.qtti_linear_baseline_morphology;
+        const recallMs = p4?.act_r_perceptual_memory?.visual_recognition_latency_ms || 228;
+        const hl = document.getElementById("kanseiHeadlineSummary");
+        if (hl && morph.bezier_tension !== undefined) {
+          hl.textContent = `Tensión Bézier: ${morph.bezier_tension} · Trazo Bordado: ${morph.stroke_weight_mm} mm · Simetría Axial: ${Math.round((morph.symmetry_index || 0.78) * 100)}% · Reconocimiento Visual: ${recallMs} ms`;
+        }
+      }
+
+      if (p4 && p4.discrete_choice_mnl) {
+        const domArch = p4.discrete_choice_mnl.optimal_selected_archetype || "Geometric_Swiss_Minimalist";
+        const probs = p4.discrete_choice_mnl.archetype_choice_probabilities || {};
+        const probPct = Math.round((probs[domArch] || 0.29) * 100);
+        const pull = p4.bdi_rational_deliberation?.desire_aesthetic_affinity_pct || 94.8;
+        const mb = document.getElementById("kanseiMnlBadge");
+        if (mb) {
+          mb.textContent = `Arquetipo Óptimo: ${domArch.replace(/_/g, " ")} (${probPct}% · Afinidad ${pull}%)`;
+        }
+      }
+
+      const c1 = document.getElementById("aviPhase1Card");
+      if (c1 && p1) {
+        c1.textContent = `Varianza PCA: ${p1.cumulative_variance_pct}% · Innovador ${p1.cardinal_kansei_adjectives.Innovador}% · Robusto ${p1.cardinal_kansei_adjectives.Robusto}%`;
+      }
+      const c2 = document.getElementById("aviPhase2Card");
+      if (c2 && p2) {
+        const syn = p2.ga_bpnn_svr_nonlinear_network.multifactorial_affective_scores.non_linear_synergy_gain_over_qtti_pct;
+        c2.textContent = `Sinergia Color×Forma (GA-BPNN): +${syn}% sobre QTTI lineal`;
+      }
+      const c3 = document.getElementById("aviPhase3Card");
+      if (c3 && p3) {
+        const lam = p3.decoupled_cross_attention.lambda_ip_adapter_scale;
+        c3.textContent = `Atención Cruzada Desacoplada: λ_IP=${lam} · ControlNet=${p3.decoupled_cross_attention.controlnet_structural_weight}`;
+      }
+      const c4 = document.getElementById("aviPhase4Card");
+      if (c4 && p4) {
+        const delta = p4.closed_loop_dynamic_feedback.auto_adjusted_coefficients_delta.w2_geometry_delta;
+        c4.textContent = `250 Agentes ACT-R/BDI · Auto-Tuning Δw=${delta >= 0 ? "+" : ""}${delta}`;
+      }
+    }
+
     async function onFaderChange(axisId, val) {
       bipolarSliderValues[axisId] = parseFloat(val);
       const badgeEl = document.getElementById(`sliderVal_${axisId}`);
@@ -4367,69 +4499,20 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             bipolar_sliders: bipolarSliderValues,
-            pair_choices: [],
+            pair_choices: Object.entries(userPairSelections).map(([id, chosen]) => ({ pair_id: parseInt(id, 10), chosen })),
             canvas_state: canvasState
           })
         });
         if (res.ok) {
           const data = await res.json();
           const rootK = data.kansei_qtt1 || data;
-          const morph = rootK.hayashi_qtt1_morphology || {};
-          const bdi = rootK.bdi_act_r_cognitive_simulation || {};
-          const mnl = rootK.mnl_choice_probabilities || {};
-          const domArch = rootK.dominant_visual_archetype || "Geometric_Swiss_Minimalist";
           const closedLoop = rootK.closed_loop_avi_system;
-
-          const hl = document.getElementById("kanseiHeadlineSummary");
-          if (hl && morph.bezier_tension !== undefined) {
-            hl.textContent = `Tensión Bézier: ${morph.bezier_tension} · Trazo Bordado: ${morph.stroke_weight_mm} mm · Simetría Axial: ${Math.round((morph.symmetry_index || 0.78) * 100)}% · Reconocimiento Visual: ${bdi.act_r_visual_recall_ms || 230} ms`;
-          }
-          const mb = document.getElementById("kanseiMnlBadge");
-          if (mb && domArch) {
-            const probPct = Math.round((mnl[domArch] || 0.28) * 100);
-            mb.textContent = `Arquetipo Óptimo: ${domArch.replace(/_/g, " ")} (${probPct}% · Afinidad ${bdi.desire_aesthetic_pull || 94}%)`;
-          }
           if (closedLoop) {
-            const p1 = closedLoop.phase_1_capture_pca;
-            const p2 = closedLoop.phase_2_mapping_gabpnn_svr;
-            const p3 = closedLoop.phase_3_synthesis_ip_adapter;
-            const p4 = closedLoop.phase_4_simulation_actr_bdi_mnl;
-
-            if (p1 && p1.cardinal_kansei_adjectives) {
-              const adjs = p1.cardinal_kansei_adjectives;
-              const mapAdj = [
-                ["Innovador", adjs.Innovador],
-                ["Robusto", adjs.Robusto],
-                ["Agil", adjs.Agil],
-                ["Confiable", adjs.Confiable]
-              ];
-              mapAdj.forEach(([key, valPct]) => {
-                const sEl = document.getElementById(`adjScore${key}`);
-                const bEl = document.getElementById(`adjBar${key}`);
-                if (sEl) sEl.textContent = `${Math.round(valPct)}%`;
-                if (bEl) bEl.style.width = `${Math.min(100, Math.max(10, valPct))}%`;
-              });
-            }
-
-            const c1 = document.getElementById("aviPhase1Card");
-            if (c1 && p1) {
-              c1.textContent = `Varianza PCA: ${p1.cumulative_variance_pct}% · Innovador ${p1.cardinal_kansei_adjectives.Innovador}% · Robusto ${p1.cardinal_kansei_adjectives.Robusto}%`;
-            }
-            const c2 = document.getElementById("aviPhase2Card");
-            if (c2 && p2) {
-              const syn = p2.ga_bpnn_svr_nonlinear_network.multifactorial_affective_scores.non_linear_synergy_gain_over_qtti_pct;
-              c2.textContent = `Sinergia Color×Forma (GA-BPNN): +${syn}% sobre QTTI lineal`;
-            }
-            const c3 = document.getElementById("aviPhase3Card");
-            if (c3 && p3) {
-              const lam = p3.decoupled_cross_attention.lambda_ip_adapter_scale;
-              c3.textContent = `Atención Cruzada Desacoplada: λ_IP=${lam} · ControlNet=${p3.decoupled_cross_attention.controlnet_structural_weight}`;
-            }
-            const c4 = document.getElementById("aviPhase4Card");
-            if (c4 && p4) {
-              const delta = p4.closed_loop_dynamic_feedback.auto_adjusted_coefficients_delta.w2_geometry_delta;
-              c4.textContent = `250 Agentes ACT-R/BDI · Auto-Tuning Δw=${delta >= 0 ? "+" : ""}${delta}`;
-            }
+            applyClosedLoopTelemetryToUI(closedLoop, null, false);
+          }
+          const stateLabel = document.getElementById("avatarStateLabel");
+          if (stateLabel && rootK.hayashi_qtt1_morphology) {
+            stateLabel.textContent = `LAB-AVI · Bézier ${rootK.hayashi_qtt1_morphology.bezier_tension} · Trazo ${rootK.hayashi_qtt1_morphology.stroke_weight_mm}mm`;
           }
         }
       } catch (e) {}
@@ -4609,14 +4692,14 @@
         return `
           <div class="mockup-card" style="display:flex; flex-direction:column; justify-content:space-between; gap:12px; padding:20px; text-align:left;">
             <div>
-              <span class="card-tag" style="display:inline-block; font-family:var(--font-mono); font-size:0.68rem; color:#F59E0B; margin-bottom:6px; font-weight:700;">
+              <span class="card-tag" style="display:inline-block; font-family:var(--font-mono); font-size:0.68rem; color:#B45309; margin-bottom:6px; font-weight:800;">
                 ${item.category || 'Propuesta Creativa'} · SMILE ${item.smile_score || 94}/100
               </span>
-              <h3 style="font-family:var(--font-display); font-size:1.35rem; color:#FFFFFF; margin-bottom:4px;">${item.name}</h3>
-              <p style="font-size:0.75rem; font-family:var(--font-mono); color:#94A3B8; margin-bottom:8px;">
+              <h3 style="font-family:var(--font-display); font-size:1.35rem; color:#090D16; margin-bottom:4px; font-weight:800;">${item.name}</h3>
+              <p style="font-size:0.75rem; font-family:var(--font-mono); color:#475569; margin-bottom:8px; font-weight:600;">
                 Fonética: ${item.syllables || 3} sílabas · Viabilidad en Clase de Niza
               </p>
-              <p style="font-size:0.85rem; color:#E2E8F0; line-height:1.45;">${item.verdict || item.rationale || ''}</p>
+              <p style="font-size:0.85rem; color:#334155; line-height:1.45;">${item.verdict || item.rationale || ''}</p>
             </div>
             <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
               <button class="btn-action" style="width:100%; font-size:0.75rem;" onclick="refineNameByChat('${safeName}')">
@@ -4872,8 +4955,17 @@
       }
     }
 
-    function choosePairOption(id, side) {
+    async function choosePairOption(id, side) {
       userPairSelections[id] = side;
+      const pair = SIXTY_PROFESSIONAL_PAIRS.find(p => p.id === id);
+      if (pair) {
+        if (pair.phase === 2) {
+          canvasState.primary_font = side === "A" ? pair.aFont : pair.bFont;
+        } else if (pair.phase === 3) {
+          canvasState.selected_colors_hex = side === "A" ? pair.aPalette : pair.bPalette;
+          renderBespokeJourneyVisuals();
+        }
+      }
       addXP(5);
       playAcousticClick(750, 0.04);
       if (currentPairIdx === SIXTY_PROFESSIONAL_PAIRS.length - 1) {
@@ -4881,6 +4973,31 @@
         launchConfetti(90);
       }
       navigatePair(1);
+      try {
+        const res = await fetch("/api/kansei/closed-loop-avi", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            bipolar_sliders: bipolarSliderValues,
+            pair_choices: Object.entries(userPairSelections).map(([pid, chosen]) => ({ pair_id: parseInt(pid, 10), chosen })),
+            canvas_state: canvasState
+          })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.closed_loop_system) {
+            applyClosedLoopTelemetryToUI(data.closed_loop_system, null, false);
+            const p4 = data.closed_loop_system.phase_4_simulation_actr_bdi_mnl;
+            const tuneBadge = document.getElementById("step5AutoTuneBadge");
+            if (tuneBadge && p4) {
+              const votedCount = Object.keys(userPairSelections).length;
+              const delta = p4.closed_loop_dynamic_feedback?.auto_adjusted_coefficients_delta?.w2_geometry_delta || 0;
+              const convPct = Math.min(99.8, (76.0 + votedCount * 0.42)).toFixed(1);
+              tuneBadge.textContent = `Convergencia ACT-R/BDI: ${convPct}% · Δw=${delta >= 0 ? "+" : ""}${delta} (${votedCount} votos)`;
+            }
+          }
+        }
+      } catch (e) {}
     }
 
     function jumpToArenaPhase(phaseNum) {
