@@ -1214,3 +1214,21 @@ Utilizando la API corporativa activa de Google AI Studio (`GEMINI_API_KEY` en `.
   2. Verificación de endpoints FastAPI (`/api/project-avi/team-and-methodology`, `/api/kansei/closed-loop-avi`, `/api/kansei/qt1-synthesis`).
   3. Verificación sintáctica de JavaScript (`node -c`) en `apps/web/index.html` con **0 errores**.
 
+---
+
+# 🍏 RONDA GAUNTLET v18.0: LA AUDITORÍA IMPLACABLE DE STEVE JOBS (`C-00`) — "THINK DIFFERENT", AISLAMIENTO PURO DE 1 SOLO ATRIBUTO, REFERENTES REALES Y CIERRES EMOCIONALES DE DESCUBRIMIENTO (PASOS 3 → 4 → 5)
+
+## 1. Dictamen de Apertura de Steve Jobs (`C-00: Chief Visionary & Insanely Great Product Critic`)
+> *"El diseño no es solo cómo se ve, el diseño es cómo funciona. Miré los Pasos 3, 4 y 5 actuales y esto es lo que veo:*
+> *1. En el Paso 5 tenían 60 pares repetitivos con el mismo círculo y el mismo cuadrado, donde cambiaban el color de fondo y la figura al mismo tiempo, e incluso había una etiqueta `undefined` en el Par 13B. ¡Eso es inaceptable! Si cambias dos cosas a la vez, el usuario no sabe qué atributo está eligiendo. Debe compararse **UN SOLO ATRIBUTO A LA VEZ (Ceteris Paribus)** con contraste dramático.*
+> *2. En el Paso 4 tenían 4 dibujitos SVG genéricos que parecían iconos de plantilla, y en los sliders solo pusieron texto. Una persona visual necesita ver **ejemplos gráficos reales e icónicos en cada extremo del slider** (la Corona de Rolex frente a la Manzana de Apple, el Swoosh de Nike frente al Escudo de Porsche) y ver láminas de estudio de calidad de museo.*
+> *3. Los Pasos 3, 4 y 5 deben sentirse como una historia continua donde cada paso alimenta al siguiente, y al terminar cada etapa debe haber un **Cierre de Descubrimiento** que le muestre al fundador los rasgos que su marca acaba de ganar para que sienta emoción pura."*
+
+## 2. Resoluciones Ejecutadas por el Equipo Lean + Escuadrón `LAB-AVI`
+
+1. **Secuencia Conectada con Hilo Conductor y "Cierres de Descubrimiento" (`Pasos 3 → 4 → 5`):**
+   - **Paso 3 (Naming & Raíz Fonosemántica):** Recibe el Propósito Nuclear de los Pasos 1–2, corrige el contraste del campo de captura (`#FFFFFF` con texto `#090D16`), y al elegir o auditar el nombre despliega el **Cierre de Descubrimiento del Paso 3 (`#step3DiscoveryClosureCard`)**, celebrando la sonoridad, índice SMILE y Clase de Niza descubiertos y pasándolos al Paso 4.
+   - **Paso 4 (Calibración Kansei con Emblemas Reales en Extremos + 4 Arquetipos de Estudio):** Recibe el nombre y rasgos del Paso 3. Cada uno de los 7 sliders incorpora **tarjetas visuales en su Polo Izquierdo y Polo Derecho con emblemas vectoriales reales** validados por el Kansei Engineer (**Rolex** vs. **Apple**, **Nike** vs. **Porsche**, **Airbnb** vs. **TAG Heuer**, **Leica** vs. **Formula 1**, **IBM/CBS** vs. **Red Bull**, **Chanel** vs. **Nothing**, **Nautilus Áureo** vs. **Bauhaus**). Se eliminaron los 4 SVGs genéricos y se reemplazaron por **4 Láminas Maestras de Estudio generadas en Google AI Studio** (`step4_dir1_swiss_geometric.png`, `step4_dir2_modern_heraldic.png`, `step4_dir3_organic_golden_flow.png`, `step4_dir4_architectural_origami.png`) junto con el sello personalizado en vivo y el **Cierre de Descubrimiento del Paso 4 (`#step4DiscoveryClosureCard`)**.
+   - **Paso 5 (Diagnóstico de Aislamiento de 1 Solo Atributo a la Vez — *Ceteris Paribus*):** Recibe los rasgos calibrados del Paso 4. Se eliminaron por completo los gráficos repetitivos y se diseñaron **12 Duelos Científicos de 1 Solo Atributo Aislado**, donde **todo permanece idéntico entre A y B salvo el único atributo evaluado** (1. Geometría del Vértice, 2. Grosor del Trazo, 3. Contenedor Espacial, 4. Eje de Simetría, 5. Figura-Fondo Gestalt, 6. Disposición Espacial, 7. Familia Tipográfica Sans vs Serif, 8. Modulación Display vs Ejecutiva, 9. Tracking Tipográfico, 10. Polaridad Lumínica, 11. Temperatura Cromática, 12. Materialidad Física), respaldados por láminas de Google AI Studio (`step5_attr1` a `step5_attr8`), rastreador de rasgos en vivo y el **Cierre de Descubrimiento del Paso 5 (`#step5DiscoveryClosureCard`)**.
+
+

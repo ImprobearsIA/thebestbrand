@@ -978,6 +978,90 @@
       font-size: 0.75rem;
       font-weight: 600;
       color: #334155;
+      gap: 12px;
+    }
+    .fader-poles-visual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .pole-specimen-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #F8FAFC;
+      border: 1.5px solid #E2E8F0;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .pole-specimen-card.active-pole {
+      background: #FFFBEB;
+      border-color: #D4AF37;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.18);
+    }
+    .pole-specimen-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: #090D16;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      overflow: hidden;
+    }
+    .pole-specimen-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-align: left;
+      overflow: hidden;
+    }
+    .pole-specimen-brand {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: #B45309;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .pole-specimen-label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #090D16;
+      line-height: 1.2;
+    }
+    .discovery-closure-card {
+      width: 100%;
+      background: linear-gradient(135deg, #090D16 0%, #111827 100%);
+      color: #FFFFFF;
+      border: 2px solid #D4AF37;
+      border-radius: 24px;
+      padding: 24px 28px;
+      margin-top: 28px;
+      box-shadow: 0 20px 45px -12px rgba(9, 13, 22, 0.28), 0 0 24px rgba(212, 175, 55, 0.18);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .trait-discovery-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #0B0F19;
+      border: 1px solid #D4AF37;
+      color: #FDE68A;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(9, 13, 22, 0.25);
     }
 
     /* REAL-WORLD IDENTITY MOCKUPS (CRAIG FEDERIGHI & LAB-AVI STANDARD) */
@@ -2353,58 +2437,96 @@
     </section>
 
     <!-- ==================================================================== -->
-    <!-- STAGE 3: CO-CREATIVE NAMING STUDIO                                   -->
+    <!-- STAGE 3: CO-CREATIVE NAMING STUDIO (SEQUENTIAL FEED FROM STEPS 1-2)  -->
     <!-- ==================================================================== -->
     <section class="stage-section" id="panel-step-3">
       <div class="identity-hero-header">
-        <span class="question-category">03 · Naming Co-Creativo de Autor</span>
+        <span class="question-category">03 · Naming Co-Creativo de Autor · Eslabón 1 de tu Identidad</span>
         <h2>Laboratorio de Nombre de Marca</h2>
-        <p>Rebota ideas con Aura en el chat, evalúa la fonética, dominios y viabilidad en las 45 Clases de Niza.</p>
-        <div style="margin-top:10px;">
-          <span class="fader-human-badge" id="step3NiceBadge" style="font-size:0.75rem; padding:4px 12px; background:rgba(99,102,241,0.15); border:1px solid rgba(99,102,241,0.3); color:#A5B4FC;">Clase de Niza Sugerida: Detectando según tu proyecto...</span>
-        </div>
+        <p>Tu nombre nace de tu Propósito Nuclear (Paso 1) y tus Momentos de Verdad (Paso 2). Evalúa candidatos con el filtro psicométrico <strong>SMILE &amp; SCRATCH</strong> y las 45 Clases de Niza antes de pasar este nombre al motor visual del Paso 4.</p>
       </div>
 
-      <div style="max-width: 680px; margin: 0 auto 20px auto; width: 100%;">
-        <div style="display: flex; gap: 8px;">
+      <!-- CINTA DE CONTINUIDAD SECUENCIAL (HERENCIA DE PASOS 1 Y 2) -->
+      <div id="step3InheritedBanner" style="width:100%; background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border:1.5px solid #D4AF37; border-radius:18px; padding:14px 20px; margin-bottom:20px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;">
+        <div style="display:flex; flex-direction:column; gap:4px; max-width:740px;">
+          <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#92400E; letter-spacing:0.06em;">🔗 HILO CONDUCTOR ACTIVO · LO QUE DESCUBRIMOS EN LOS PASOS 1 Y 2</span>
+          <div id="step3InheritedSummaryText" style="font-size:0.86rem; color:#090D16; font-weight:600; line-height:1.45;">
+            Propósito y Promesa listos para bautizar tu marca. El nombre que elijas aquí definirá el monograma, las iniciales y la raíz fonosemántica de los Pasos 4, 5 y 6.
+          </div>
+        </div>
+        <span class="fader-human-badge" id="step3NiceBadge" style="font-size:0.75rem; padding:6px 14px; background:#090D16; border:1px solid #D4AF37; color:#FDE68A;">
+          Clase de Niza Sugerida: Clases 09, 35 y 42
+        </span>
+      </div>
+
+      <div style="max-width: 760px; margin: 0 auto 16px auto; width: 100%;">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           <input
             type="text"
             id="namingCandidatesInput"
-            style="flex: 1; padding: 12px 18px; border-radius: 20px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color:#FFF; font-size:0.95rem; outline:none;"
-            placeholder="Escribe nombres que tengas en mente (separados por coma) o déjalo vacío..."
+            style="flex: 1; min-width: 260px; padding: 14px 20px; border-radius: 16px; background: #FFFFFF; border: 2px solid #CBD5E1; color:#090D16; font-size:0.98rem; font-weight:600; outline:none; box-shadow: 0 4px 14px rgba(15,23,42,0.05);"
+            placeholder="Escribe ideas de nombres (separados por coma) o pulsa Auditar & Generar..."
             onkeydown="if(event.key === 'Enter') runNamingAudit();"
           />
-          <button class="btn-action primary" id="btnEvaluateNames" onclick="runNamingAudit()" style="white-space: nowrap;">
-            🔍 Auditar & Generar
+          <button class="btn-action primary" id="btnEvaluateNames" onclick="runNamingAudit()" style="white-space: nowrap; padding: 14px 22px; font-weight: 800;">
+            🔍 Auditar &amp; Generar Nombres
           </button>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:10px;">
+          <span style="font-family:var(--font-mono); font-size:0.7rem; color:#475569; font-weight:700;">⚡ Semillas rápidas:</span>
+          <button class="btn-action" style="font-size:0.73rem; padding:5px 12px;" onclick="seedNamingInputAndAudit('Aurea, Verax, Kinetix, Solis')">Raíces Latinas &amp; Precisión</button>
+          <button class="btn-action" style="font-size:0.73rem; padding:5px 12px;" onclick="seedNamingInputAndAudit('NovaCore, Zenith, PulseAI, Vertex')">Vanguardia Tecnológica</button>
+          <button class="btn-action" style="font-size:0.73rem; padding:5px 12px;" onclick="askAuraForOpenNamingSuggestions()">💬 Co-Crear con Aura por Voz/Chat</button>
         </div>
       </div>
 
-      <div style="display:flex; justify-content:center; gap:12px; margin-bottom:24px;">
-        <button class="btn-action primary" onclick="askAuraForOpenNamingSuggestions()">✨ Pedir a Aura Nombres Creativos por Chat</button>
+      <div id="namingCandidatesGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:18px; width:100%; margin-top:12px;">
+        <!-- Naming cards injected dynamically -->
       </div>
 
-      <div id="namingCandidatesGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; width:100%;">
-        <!-- Naming cards injected dynamically -->
+      <!-- CIERRE DE DESCUBRIMIENTO DEL PASO 3 (KEYNOTE REVEAL) -->
+      <div class="discovery-closure-card" id="step3DiscoveryClosureCard">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+          <div>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A; font-weight:800; letter-spacing:0.08em;">🏆 CIERRE DE DESCUBRIMIENTO · PASO 03 COMPLETADO</span>
+            <h3 id="step3ClosureTitle" style="font-family:var(--font-display); font-size:1.35rem; color:#FFFFFF; margin:4px 0 0 0;">
+              Identidad Verbal Lista: <span style="color:#FDE68A;">TheBestBrand</span>
+            </h3>
+          </div>
+          <span class="trait-discovery-pill">✓ Pasa al Paso 4 (Calibración Kansei)</span>
+        </div>
+        <p id="step3ClosureDesc" style="font-size:0.9rem; color:#CBD5E1; line-height:1.5; margin:0;">
+          Hemos extraído el monograma constructor, la cadencia silábica y la protección en Clases de Niza. En el siguiente paso traduciremos este nombre en proporciones geométricas viendo referentes reales en cada extremo.
+        </p>
+        <div id="step3DiscoveredTraitsPills" style="display:flex; flex-wrap:wrap; gap:8px;">
+          <span class="trait-discovery-pill">🔤 Monograma: TB</span>
+          <span class="trait-discovery-pill">🎵 Sonoridad SMILE: 96/100</span>
+          <span class="trait-discovery-pill">⚖️ Viabilidad Niza Verificada</span>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:4px;">
+          <button class="btn-action primary" style="background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); color:#FFFFFF; border:none; padding:12px 24px; font-weight:800;" onclick="completeStepAndAdvanceWithCelebration(3, 4)">
+            Guardar Nombre y Abrir Paso 4: Calibración Visual Kansei →
+          </button>
+        </div>
       </div>
     </section>
 
     <!-- ==================================================================== -->
-    <!-- STAGE 4: VISUAL IDENTITY STUDIO (KANSEI QTTI & REAL-WORLD MOCKUPS)   -->
+    <!-- STAGE 4: VISUAL IDENTITY STUDIO (KANSEI QTTI & REAL BRAND POLES)     -->
     <!-- ==================================================================== -->
     <section class="stage-section" id="panel-step-4">
       <div class="identity-hero-header">
-        <span class="question-category">04 · Proyecto Interno LAB-AVI · De la Percepción Humana a la Síntesis Generativa</span>
-        <h2>Dirección Algorítmica de Identidad Visual</h2>
-        <p>Ajusta el carácter de tu marca con las barras intuitivas. El <strong>Sistema de Lazo Cerrado (Closed-Loop System)</strong> liderado por el <em>Lead Generative Brand Architect &amp; Kansei Engineer</em> traduce tus respuestas con AURA y tus preferencias en geometría exacta, simula la reacción de 250 agentes cognitivos y genera tu logotipo en tiempo real.</p>
+        <span class="question-category">04 · Calibración Kansei con Referentes Reales · Eslabón 2 de tu Identidad</span>
+        <h2>Personalidad Visual y Arquetipo Maestro</h2>
+        <p>Cada deslizador muestra en sus extremos <strong>emblemas reales e icónicos del mundo físico</strong> (Rolex vs. Apple, Nike vs. Porsche, Airbnb vs. TAG Heuer) para que calibres visualmente hacia dónde se inclina tu marca y elijas tu Dirección Maestra de Estudio.</p>
       </div>
 
-      <!-- PUENTE ORGÁNICO AURA ↔ LEAD GENERATIVE BRAND ARCHITECT & KANSEI ENGINEER -->
+      <!-- PUENTE ORGÁNICO AURA + PASO 3 ↔ LEAD GENERATIVE BRAND ARCHITECT & KANSEI ENGINEER -->
       <div id="kanseiAuraBridgeBanner" style="width:100%; background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border:1.5px solid #D4AF37; border-radius:18px; padding:14px 20px; margin-bottom:18px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; box-shadow:0 6px 18px rgba(212,175,55,0.12);">
         <div style="display:flex; flex-direction:column; gap:4px; max-width:740px;">
-          <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#92400E; letter-spacing:0.06em;">✦ PUENTE ORGÁNICO ACTIVO · AURA ↔ LEAD GENERATIVE BRAND ARCHITECT &amp; KANSEI ENGINEER (L-00)</span>
+          <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#92400E; letter-spacing:0.06em;">🔗 HILO CONDUCTOR ACTIVO · HERENCIA DE PASOS 1–3 + KANSEI ENGINEER (L-00)</span>
           <div id="kanseiAuraBridgeText" style="font-size:0.88rem; color:#090D16; font-weight:600; line-height:1.45;">
-            Tus respuestas estratégicas de los Pasos 1–3 se destilaron automáticamente en coordenadas de Osgood (Fase 1 PCA) y pre-calibraron tus 7 Faders Kansei sin partir de cero.
+            Tus respuestas estratégicas y el nombre elegido en el Paso 3 pre-calibraron automáticamente tus 7 Ejes Kansei. Compáralos con los emblemas reales de cada extremo.
           </div>
         </div>
         <button class="btn-action" onclick="speakKanseiArchitectBrief()" style="background:#FFFFFF; border:1px solid #D4AF37; color:#92400E; font-weight:700; font-size:0.76rem; padding:8px 14px;">
@@ -2412,40 +2534,11 @@
         </button>
       </div>
 
-      <!-- BANNER VISUAL ILUSTRADO (GENERADO CON GOOGLE AI STUDIO) -->
-      <div style="width:100%; background:#FAF8F5; border:1px solid #CBD5E1; border-radius:22px; padding:18px 22px; margin-bottom:20px; display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:18px; align-items:center; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <span style="font-family:var(--font-mono); font-size:0.72rem; color:#0284C7; font-weight:800; letter-spacing:0.06em;">📐 BLUEPRINT DE PRECISIÓN ALGORÍTMICA (50 AÑOS DE EVOLUCIÓN)</span>
-          <h3 style="font-family:var(--font-display); font-size:1.28rem; color:#090D16; line-height:1.25; margin:0;">De la Intuición Artística a la Geometría Matemática</h3>
-          <p style="font-size:0.86rem; color:#334155; line-height:1.5; margin:0;">
-            Tus emociones y adjetivos (<strong>Innovador, Robusto, Ágil, Confiable</strong>) se transforman automáticamente en radios de curvatura, ángulos constructivos (<strong>30°, 45°, 90°</strong>) y grosor de bordado industrial (<strong>≥ 1.25 mm</strong>).
-          </p>
-          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;">
-            <button class="btn-action primary" id="btnGenerateAIStudioLogos" onclick="generateLiveAIStudioLogoProposals()" style="font-size:0.8rem; padding:10px 16px;">
-              ✨ Generar Propuestas con Google AI Studio (En Vivo)
-            </button>
-            <button class="btn-action" onclick="toggleAviScientificDeck()" style="font-size:0.78rem; padding:10px 14px;">
-              🔬 Alternar Atlas Visual de las 4 Fases (LAB-AVI)
-            </button>
-          </div>
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:8px; text-align:center;">
-            <img src="/assets/avi/avi_hero_synthesis.png" alt="Síntesis Acústica a Vectorial" style="width:100%; height:135px; object-fit:cover; border-radius:10px;" />
-            <div style="font-family:var(--font-mono); font-size:0.68rem; color:#0F172A; font-weight:700; margin-top:6px;">Voz Humana → Poliedro → Vector Áureo</div>
-          </div>
-          <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:8px; text-align:center;">
-            <img src="/assets/avi/avi_origami_precision_blueprint.png" alt="Origami de Precisión Algorítmica" style="width:100%; height:135px; object-fit:cover; border-radius:10px;" />
-            <div style="font-family:var(--font-mono); font-size:0.68rem; color:#0F172A; font-weight:700; margin-top:6px;">Sólido Corporativo ↔ Retícula 30°/45°</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4 TARJETAS DE PERCEPCIÓN HUMANA + PANEL CIENTÍFICO DESPLEGABLE (CRAIG FEDERIGHI PROGRESSIVE DISCLOSURE) -->
+      <!-- 4 TARJETAS DE PERCEPCIÓN HUMANA + PANEL CIENTÍFICO DESPLEGABLE -->
       <div id="kanseiTelemetryBanner" style="width:100%; background:#090D16; color:#F8FAFC; border:1px solid rgba(56,189,248,0.35); border-radius:20px; padding:18px 22px; margin-bottom:22px; display:flex; flex-direction:column; gap:14px;">
         <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;">
           <div>
-            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#38BDF8; font-weight:700; letter-spacing:0.06em;">🧬 CALIBRACIÓN PSICOVISUAL EN TIEMPO REAL (SISTEMA CLOSED-LOOP)</span>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#38BDF8; font-weight:700; letter-spacing:0.06em;">🧬 CALIBRACIÓN PSICOVISUAL EN TIEMPO REAL (SISTEMA CLOSED-LOOP LAB-AVI)</span>
             <div id="kanseiHeadlineSummary" style="font-size:0.95rem; font-weight:700; margin-top:4px; color:#FFFFFF;">
               Tensión Bézier: 0.58 · Trazo Bordado: 1.68 mm · Simetría Axial: 78% · Reconocimiento Visual: 232 ms
             </div>
@@ -2454,13 +2547,13 @@
             <span id="kanseiMnlBadge" style="font-family:var(--font-mono); font-size:0.74rem; padding:6px 12px; border-radius:999px; background:rgba(16,185,129,0.18); color:#34D399; border:1px solid rgba(16,185,129,0.4);">
               Afinidad de Audiencia: 94.6%
             </span>
-            <span id="kanseiNanoBananaBadge" style="font-family:var(--font-mono); font-size:0.74rem; padding:6px 12px; border-radius:999px; background:rgba(56,189,248,0.16); color:#38BDF8; border:1px solid rgba(56,189,248,0.4);">
-              ⚡ Auto-Ajuste Dinámico: Activo
-            </span>
+            <button class="btn-action" onclick="toggleAviScientificDeck()" style="font-size:0.72rem; padding:5px 12px; background:rgba(56,189,248,0.16); color:#38BDF8; border:1px solid rgba(56,189,248,0.4);">
+              🔬 Ver/Ocultar Atlas de las 4 Fases
+            </button>
           </div>
         </div>
 
-        <!-- 4 ADJETIVOS CARDINALES (PÁG. 2 ALGORITHMIC_VISUAL_IDENTITY.PDF) -->
+        <!-- 4 ADJETIVOS CARDINALES -->
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px;">
           <div style="background:rgba(255,255,255,0.06); padding:10px 14px; border-radius:12px; border:1px solid rgba(56,189,248,0.25);">
             <div style="display:flex; justify-content:space-between; font-size:0.78rem; font-weight:700; color:#38BDF8;">
@@ -2500,32 +2593,54 @@
           </div>
         </div>
 
-        <!-- 4-PHASE CLOSED-LOOP CARDS (CON LÁMINAS VISUALES GENERADAS POR GOOGLE AI STUDIO) -->
+        <!-- 4-PHASE CLOSED-LOOP CARDS -->
         <div id="aviScientificDeckContainer" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(155px, 1fr)); gap:12px; padding-top:12px; border-top:1px solid rgba(148,163,184,0.18); font-size:0.78rem;">
           <div style="background:rgba(255,255,255,0.04); padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
-            <img src="/assets/avi/avi_phase1_pca_capture.png" alt="Fase 1 Captura PCA" style="width:100%; height:105px; object-fit:cover; border-radius:9px; margin-bottom:8px;" />
+            <img src="/assets/avi/avi_phase1_pca_capture.png" alt="Fase 1 Captura PCA" style="width:100%; height:95px; object-fit:cover; border-radius:9px; margin-bottom:8px;" />
             <div style="font-family:var(--font-mono); color:#38BDF8; font-weight:700; font-size:0.7rem;">1. CAPTURA (H-01: PCA &amp; OSGOOD)</div>
             <div id="aviPhase1Card" style="color:#E2E8F0; margin-top:4px;">Varianza PCA: 88.9% · Destilación sin sesgos</div>
           </div>
           <div style="background:rgba(255,255,255,0.04); padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
-            <img src="/assets/avi/avi_phase2_gabpnn_mapping.png" alt="Fase 2 Mapeo GA-BPNN" style="width:100%; height:105px; object-fit:cover; border-radius:9px; margin-bottom:8px;" />
+            <img src="/assets/avi/avi_phase2_gabpnn_mapping.png" alt="Fase 2 Mapeo GA-BPNN" style="width:100%; height:95px; object-fit:cover; border-radius:9px; margin-bottom:8px;" />
             <div style="font-family:var(--font-mono); color:#A78BFA; font-weight:700; font-size:0.7rem;">2. MAPEO (H-02: GA-BPNN &amp; SVR)</div>
             <div id="aviPhase2Card" style="color:#E2E8F0; margin-top:4px;">Sinergia Color×Forma: +21.4% sobre QTTI lineal</div>
           </div>
           <div style="background:rgba(255,255,255,0.04); padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
-            <img src="/assets/avi/avi_phase3_ip_adapter_synthesis.png" alt="Fase 3 Síntesis IP-Adapter" style="width:100%; height:105px; object-fit:cover; border-radius:9px; margin-bottom:8px;" />
+            <img src="/assets/avi/avi_phase3_ip_adapter_synthesis.png" alt="Fase 3 Síntesis IP-Adapter" style="width:100%; height:95px; object-fit:cover; border-radius:9px; margin-bottom:8px;" />
             <div style="font-family:var(--font-mono); color:#34D399; font-weight:700; font-size:0.7rem;">3. SÍNTESIS (H-03: FLUX.1 + IP-ADAPTER)</div>
             <div id="aviPhase3Card" style="color:#E2E8F0; margin-top:4px;">Atención Cruzada Desacoplada: λ_IP=0.78 · Ángulos 30°/45°/90°</div>
           </div>
           <div style="background:rgba(255,255,255,0.04); padding:10px 12px; border-radius:14px; border:1px solid rgba(255,255,255,0.1);">
-            <img src="/assets/avi/avi_phase4_actr_bdi_simulation.png" alt="Fase 4 Simulación ACT-R BDI" style="width:100%; height:105px; object-fit:cover; border-radius:9px; margin-bottom:8px;" />
+            <img src="/assets/avi/avi_phase4_actr_bdi_simulation.png" alt="Fase 4 Simulación ACT-R BDI" style="width:100%; height:95px; object-fit:cover; border-radius:9px; margin-bottom:8px;" />
             <div style="font-family:var(--font-mono); color:#FBBF24; font-weight:700; font-size:0.7rem;">4. SIMULACIÓN (H-04: ACT-R &amp; BDI + LOOP)</div>
             <div id="aviPhase4Card" style="color:#E2E8F0; margin-top:4px;">250 Agentes Cognitivos · Retroalimentación Δw Convergida</div>
           </div>
         </div>
       </div>
 
-      <!-- CONTENEDOR DE PROPUESTAS GENERADAS EN VIVO POR GOOGLE AI STUDIO -->
+      <!-- FADERS DECK CON EJEMPLOS GRÁFICOS REALES EN CADA EXTREMO -->
+      <div class="faders-deck" id="step4BipolarSlidersContainer">
+        <!-- Injected dynamically by initBipolarSlidersUI() with iconic real-world brand logo specimens on each pole -->
+      </div>
+
+      <!-- 4 DIRECCIONES MAESTRAS DE ESTUDIO (GOOGLE AI STUDIO PLATES + SELLO PERSONALIZADO EN VIVO) -->
+      <div style="text-align:center; margin-bottom:20px;">
+        <span class="question-category">4 Arquetipos Maestros de Estudio (Láminas de Alta Resolución + Sello en Vivo)</span>
+        <h3 style="font-family:var(--font-display); font-size:1.4rem;">Elige tu Familia Arquitectónica Base (Validada por Steve Jobs &amp; LAB-AVI)</h3>
+        <p style="font-size:0.86rem; color:#475569; max-width:680px; margin:6px auto 12px auto;">
+          Al mover los deslizadores de arriba, calculamos en tiempo real qué Arquetipo Maestro tiene mayor afinidad matemática con tu marca y actualizamos tu sello personalizado.
+        </p>
+        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+          <button class="btn-action" id="btnToggleBlueprintOverlay" onclick="toggleBlueprintOverlayMode()" style="font-size:0.78rem; padding:8px 14px;">
+            📐 Modo Rayos X Constructivo (30°/45°/90°): ACTIVADO
+          </button>
+          <button class="btn-action primary" id="btnGenerateAIStudioLogos" onclick="generateLiveAIStudioLogoProposals()" style="font-size:0.78rem; padding:8px 16px;">
+            ✨ Sintetizar Variantes Adicionales en Vivo con Google AI Studio
+          </button>
+        </div>
+      </div>
+
+      <!-- CONTENEDOR DE PROPUESTAS ADICIONALES GENERADAS EN VIVO POR GOOGLE AI STUDIO -->
       <div id="liveAIStudioGeneratedGallery" style="display:none; width:100%; background:#FAF8F5; border:2px solid #0284C7; border-radius:20px; padding:18px; margin-bottom:22px;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
           <div>
@@ -2534,80 +2649,90 @@
           </div>
           <span id="aiStudioGenStatusBadge" style="font-family:var(--font-mono); font-size:0.72rem; background:#E0F2FE; color:#0369A1; padding:5px 10px; border-radius:999px; font-weight:700;">Listo</span>
         </div>
-        <div id="liveAIStudioImagesRow" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px;">
-          <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-radius:16px; padding:12px; text-align:center;">
-            <img src="/assets/avi/avi_phase3_ip_adapter_synthesis.png" alt="Matriz IP-Adapter" style="width:100%; max-height:190px; object-fit:cover; border-radius:10px;" />
-            <div style="font-family:var(--font-mono); font-size:0.72rem; color:#0F172A; font-weight:700; margin-top:8px;">
-              Matriz de Síntesis Paramétrica IP-Adapter (9 Variantes Hex/Isométricas)
-            </div>
-          </div>
-          <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-radius:16px; padding:12px; text-align:center;">
-            <img src="/assets/avi/avi_origami_precision_blueprint.png" alt="Origami Precisión" style="width:100%; max-height:190px; object-fit:cover; border-radius:10px;" />
-            <div style="font-family:var(--font-mono); font-size:0.72rem; color:#0F172A; font-weight:700; margin-top:8px;">
-              Blueprint Constructivo (Ángulos 30° / 45° / 90° &amp; Proporción Áurea)
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FADERS DECK -->
-      <div class="faders-deck" id="step4BipolarSlidersContainer">
-        <!-- Injected dynamically by initBipolarSlidersUI() -->
-      </div>
-
-      <!-- 4 REAL-WORLD IDENTITY MOCKUPS -->
-      <div style="text-align:center; margin-bottom:20px;">
-        <span class="question-category">Bocetos en Vivo Esculpidos por tus Faders (LAB-AVI Closed-Loop)</span>
-        <h3 style="font-family:var(--font-display); font-size:1.4rem;">4 Direcciones de Identidad + Modo Rayos X de Cotas (30°/45°/90°)</h3>
-        <div style="margin-top:8px;">
-          <button class="btn-action" id="btnToggleBlueprintOverlay" onclick="toggleBlueprintOverlayMode()" style="font-size:0.78rem; padding:8px 14px;">
-            📐 Modo Rayos X Constructivo (30°/45°/90°): ACTIVADO
-          </button>
-        </div>
+        <div id="liveAIStudioImagesRow" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px;"></div>
       </div>
 
       <div class="mockups-grid" id="liveStep4SketchesGrid">
         <!-- Injected dynamically by renderLiveStep4LogoSketches() -->
       </div>
 
-      <div style="display:flex; justify-content:center; gap:12px; margin-top:30px;">
-        <button class="btn-action primary" onclick="switchStep(5)">Avanzar a Diagnóstico Visual →</button>
+      <!-- CIERRE DE DESCUBRIMIENTO DEL PASO 4 (KEYNOTE REVEAL) -->
+      <div class="discovery-closure-card" id="step4DiscoveryClosureCard">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+          <div>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A; font-weight:800; letter-spacing:0.08em;">🏆 CIERRE DE DESCUBRIMIENTO · PASO 04 COMPLETADO</span>
+            <h3 id="step4ClosureTitle" style="font-family:var(--font-display); font-size:1.35rem; color:#FFFFFF; margin:4px 0 0 0;">
+              ADN Kansei Esculpido: <span style="color:#FDE68A;">Monograma Suizo &amp; Proporción Áurea</span>
+            </h3>
+          </div>
+          <span class="trait-discovery-pill">✓ Pasa al Paso 5 (Aislamiento de 1 Atributo)</span>
+        </div>
+        <p id="step4ClosureDesc" style="font-size:0.9rem; color:#CBD5E1; line-height:1.5; margin:0;">
+          Tus 7 deslizadores han definido la personalidad macro de tu identidad. Ahora llevaremos estos parámetros al Paso 5 para afinar los detalles constructivos evaluando <strong>un solo atributo aislado a la vez</strong>.
+        </p>
+        <div id="step4DiscoveredTraitsPills" style="display:flex; flex-wrap:wrap; gap:8px;">
+          <span class="trait-discovery-pill">📐 Geometría Pura (+0.70)</span>
+          <span class="trait-discovery-pill">🚀 Vanguardia Apple/Tesla (+0.60)</span>
+          <span class="trait-discovery-pill">🧵 Trazo Industrial ≥ 1.65 mm</span>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:4px;">
+          <button class="btn-action primary" style="background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); color:#FFFFFF; border:none; padding:12px 24px; font-weight:800;" onclick="completeStepAndAdvanceWithCelebration(4, 5)">
+            Confirmar Calibración e Ir al Paso 5: Laboratorio de Aislamiento Visual →
+          </button>
+        </div>
       </div>
     </section>
 
     <!-- ==================================================================== -->
-    <!-- STAGE 5: 60-PAIR SENSORY ARENA                                       -->
+    <!-- STAGE 5: SINGLE-ATTRIBUTE ISOLATION ARENA (CETERIS PARIBUS)          -->
     <!-- ==================================================================== -->
     <section class="stage-section" id="panel-step-5">
       <div class="identity-hero-header">
-        <span class="question-category">05 · Torneo Sensorial de 60 Pares Polarizados (Cero Sesgo Cromático)</span>
-        <h2>Diagnóstico Psicométrico Visual</h2>
-        <p>Elige por intuición rápida entre dos opciones. Cada voto alimenta en tiempo real el <strong>Lazo Cerrado de Retroalimentación Dinámica (ACT-R &amp; BDI + Bradley-Terry)</strong> sin necesidad de encuestas manuales.</p>
+        <span class="question-category">05 · Diagnóstico de Aislamiento Puro (1 Solo Atributo a la Vez · Ceteris Paribus)</span>
+        <h2>Laboratorio de Decisión Visual Atómica</h2>
+        <p>Siguiendo el principio científico de <strong>Steve Jobs y LAB-AVI</strong>, en cada tarjeta <strong>comparamos ÚNICAMENTE UN ATRIBUTO A LA VEZ</strong> manteniendo todo lo demás idéntico (mismo fondo, misma escala, misma marca), para aislar con precisión quirúrgica cada rasgo de tu identidad.</p>
       </div>
 
-      <!-- SELECTOR RÁPIDO DE LAS 3 FASES DEL TORNEO (SIN EFECTO DE SESGO CROMÁTICO) -->
+      <!-- CINTA DE CONTINUIDAD SECUENCIAL (HERENCIA DE PASOS 3 Y 4) -->
+      <div id="step5InheritedBanner" style="width:100%; background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border:1.5px solid #D4AF37; border-radius:18px; padding:14px 20px; margin-bottom:16px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px;">
+        <div style="display:flex; flex-direction:column; gap:4px; max-width:740px;">
+          <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#92400E; letter-spacing:0.06em;">🔗 HILO CONDUCTOR ACTIVO · HERENCIA DE PASOS 3 Y 4</span>
+          <div id="step5InheritedSummaryText" style="font-size:0.86rem; color:#090D16; font-weight:600; line-height:1.45;">
+            Aplicando el nombre del Paso 3 y el Arquetipo Kansei del Paso 4. Cada decisión aquí bloquea un rasgo definitivo para tu Brandbook de 38 páginas.
+          </div>
+        </div>
+        <span id="step5SingleAttributeBadge" style="font-family:var(--font-mono); font-size:0.74rem; padding:6px 14px; border-radius:999px; background:#090D16; color:#FDE68A; border:1px solid #D4AF37; font-weight:800;">
+          🔬 Atributo Aislado 1/12: Geometría del Vértice
+        </span>
+      </div>
+
+      <!-- SELECTOR RÁPIDO DE LAS 3 FASES DEL LABORATORIO DE AISLAMIENTO -->
       <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:14px;">
         <button class="btn-action primary" id="btnArenaPhase1" onclick="jumpToArenaPhase(1)" style="font-size:0.76rem; padding:8px 14px;">
-          1️⃣ Fase I (Pares 1–25): Estructura de Logos en B/N
+          1️⃣ Fase I (Atributos 1–6): Morfología Pura en B/N
         </button>
         <button class="btn-action" id="btnArenaPhase2" onclick="jumpToArenaPhase(2)" style="font-size:0.76rem; padding:8px 14px;">
-          2️⃣ Fase II (Pares 26–45): Tipografías en B/N
+          2️⃣ Fase II (Atributos 7–9): Anatomía Tipográfica
         </button>
         <button class="btn-action" id="btnArenaPhase3" onclick="jumpToArenaPhase(3)" style="font-size:0.76rem; padding:8px 14px;">
-          3️⃣ Fase III (Pares 46–60): Paletas de Color &amp; Materialidad
+          3️⃣ Fase III (Atributos 10–12): Polaridad, Color &amp; Materialidad
         </button>
       </div>
 
-      <!-- INDICADOR DE RETROALIMENTACIÓN DINÁMICA EN LAZO CERRADO (ETAPA 5) -->
-      <div id="step5ClosedLoopBar" style="width:100%; background:#090D16; color:#FFFFFF; border:1px solid rgba(56,189,248,0.35); border-radius:16px; padding:12px 18px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <span style="font-family:var(--font-mono); font-size:0.72rem; color:#38BDF8; font-weight:800;">🔄 RETROALIMENTACIÓN DINÁMICA (CLOSED-LOOP)</span>
-          <span id="step5PhaseLabel" style="font-family:var(--font-mono); font-size:0.75rem; color:#E2E8F0; font-weight:700;">Fase I (Pares 1–25): Logos Completos en Blanco y Negro Puro</span>
-        </div>
-        <div style="display:flex; gap:8px; align-items:center;">
+      <!-- INDICADOR DE RETROALIMENTACIÓN DINÁMICA EN LAZO CERRADO + RASGOS DESCUBIERTOS -->
+      <div id="step5ClosedLoopBar" style="width:100%; background:#090D16; color:#FFFFFF; border:1px solid rgba(56,189,248,0.35); border-radius:16px; padding:14px 18px; margin-bottom:16px; display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#38BDF8; font-weight:800;">🔄 AISLAMIENTO CETERIS PARIBUS (1 ATRIBUTO A LA VEZ)</span>
+            <span id="step5PhaseLabel" style="font-family:var(--font-mono); font-size:0.75rem; color:#E2E8F0; font-weight:700;">Variable Controlada: Todo permanece idéntico salvo el atributo evaluado</span>
+          </div>
           <span id="step5AutoTuneBadge" style="font-family:var(--font-mono); font-size:0.72rem; background:rgba(16,185,129,0.2); color:#34D399; padding:4px 10px; border-radius:999px; border:1px solid rgba(16,185,129,0.4);">
-            Coeficientes Δw: Auto-Calibrando
+            Convergencia ACT-R/BDI: 82.0%
           </span>
+        </div>
+        <div id="step5LiveTraitsRow" style="display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding-top:6px; border-top:1px solid rgba(255,255,255,0.1);">
+          <span style="font-family:var(--font-mono); font-size:0.68rem; color:#94A3B8;">Rasgos confirmados en vivo:</span>
+          <span class="trait-discovery-pill" style="font-size:0.68rem; padding:3px 10px;">Selecciona A o B para ir sumando rasgos a tu ADN</span>
         </div>
       </div>
 
@@ -2616,16 +2741,38 @@
       </div>
 
       <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:20px;">
-        <button class="btn-action" onclick="navigatePair(-1)">← Anterior</button>
+        <button class="btn-action" onclick="navigatePair(-1)">← Atributo Anterior</button>
         <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
-          <span id="pairCounterBadge" style="font-family:var(--font-mono); font-size:0.85rem; color:#A5B4FC; font-weight:700;">0 / 60</span>
-          <span style="font-family:var(--font-mono); font-size:0.7rem; color:#64748B;">⌨️ Atajo Rápido: [ ← / A ] para Opción A · [ → / B ] para Opción B</span>
+          <span id="pairCounterBadge" style="font-family:var(--font-mono); font-size:0.88rem; color:#090D16; font-weight:800;">Atributo 1 / 12</span>
+          <span style="font-family:var(--font-mono); font-size:0.7rem; color:#475569;">⌨️ Atajo Rápido: [ ← / A ] para Opción A · [ → / B ] para Opción B</span>
         </div>
-        <button class="btn-action" onclick="navigatePair(1)">Siguiente →</button>
+        <button class="btn-action" onclick="navigatePair(1)">Siguiente Atributo →</button>
       </div>
 
-      <div style="display:flex; justify-content:center; margin-top:20px;">
-        <button class="btn-action emerald" onclick="switchStep(6)">Ir a Brandbook Maestro de 38 Páginas →</button>
+      <!-- CIERRE DE DESCUBRIMIENTO DEL PASO 5 (KEYNOTE REVEAL ANTES DEL BRANDBOOK) -->
+      <div class="discovery-closure-card" id="step5DiscoveryClosureCard">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+          <div>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A; font-weight:800; letter-spacing:0.08em;">🏆 CIERRE DE DESCUBRIMIENTO · PASO 05 COMPLETADO</span>
+            <h3 id="step5ClosureTitle" style="font-family:var(--font-display); font-size:1.35rem; color:#FFFFFF; margin:4px 0 0 0;">
+              Síntesis Atómica Completada para <span style="color:#FDE68A;">TheBestBrand</span>
+            </h3>
+          </div>
+          <span class="trait-discovery-pill">✓ Listo para Compilar Brandbook de 38 Páginas</span>
+        </div>
+        <p id="step5ClosureDesc" style="font-size:0.9rem; color:#CBD5E1; line-height:1.5; margin:0;">
+          Cada atributo elegido sin sesgos se ha fusionado con tu nombre (Paso 3) y tu calibración Kansei (Paso 4). Tu sistema de identidad visual está listo para renderizar las 38 láminas editoriales, imprenta CMYK FOGRA39 y archivos vectoriales.
+        </p>
+        <div id="step5ClosureTraitsSummary" style="display:flex; flex-wrap:wrap; gap:8px;">
+          <span class="trait-discovery-pill">✓ Geometría de Vértices Definida</span>
+          <span class="trait-discovery-pill">✓ Tipografía Primaria Confirmada</span>
+          <span class="trait-discovery-pill">✓ Paleta Cromática WCAG AAA</span>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:4px;">
+          <button class="btn-action emerald" style="padding:12px 24px; font-weight:800; font-size:0.9rem;" onclick="completeStepAndAdvanceWithCelebration(5, 6)">
+            👑 Compilar y Revelar mi Brandbook Maestro de 38 Páginas (Paso 6) →
+          </button>
+        </div>
       </div>
     </section>
 
@@ -2806,19 +2953,18 @@
       </div>
     </div>
 
-    <!-- Group 4: Proyecto Interno LAB-AVI (Lead Kansei Engineer & Escuadrón) -->
+    <!-- Group 4: Proyecto Interno LAB-AVI + Auditoría Steve Jobs (C-00) -->
     <div class="hub-group">
-      <span class="hub-group-label">🧬 Proyecto Interno: LAB-AVI (Closed-Loop)</span>
+      <span class="hub-group-label">🍏 Gobernanza: Steve Jobs (C-00) &amp; LAB-AVI</span>
       <div class="hub-group-card">
         <div class="hub-row-between">
-          <strong>Líder: Lead Generative Brand Architect &amp; Kansei Engineer</strong>
-          <span class="stat-pill xp-pill" style="font-size:0.68rem;">4 Especialistas</span>
+          <strong>Crítico Principal: Steve Jobs (C-00 · Think Different)</strong>
+          <span class="stat-pill xp-pill" style="font-size:0.68rem;">Gauntlet v18</span>
         </div>
         <div style="font-size:0.78rem; color:var(--ink-secondary); line-height:1.45; display:flex; flex-direction:column; gap:4px; margin-top:4px;">
-          <div>• <strong>H-01 (1. Captura):</strong> PCA + Diferencial Semántico Osgood (1–7)</div>
-          <div>• <strong>H-02 (2. Mapeo):</strong> Redes No Lineales GA-BPNN &amp; SVR + QTTI</div>
-          <div>• <strong>H-03 (3. Síntesis):</strong> Difusión FLUX.1 / SDXL + IP-Adapter U-Net</div>
-          <div>• <strong>H-04 (4. Simulación):</strong> Agentes ACT-R + BDI + MNL &amp; Auto-Tuning</div>
+          <div>• <strong>C-00 (Steve Jobs):</strong> Excelencia radical, 1 solo atributo aislado a la vez y referentes reales en cada extremo.</div>
+          <div>• <strong>L-00 (Lead Kansei Architect):</strong> Orquestación de Lazo Cerrado.</div>
+          <div>• <strong>H-01 a H-04:</strong> PCA Osgood · GA-BPNN/SVR · FLUX.1/IP-Adapter · 250 Agentes ACT-R/BDI.</div>
         </div>
         <button class="btn-hub-action" style="margin-top:8px;" onclick="toggleHubDrawer(false); navigateToScreen('focus', 4);">
           🧬 Abrir Estudio Kansei LAB-AVI (Paso 4)
@@ -3002,13 +3148,90 @@
     };
 
     const BIPOLAR_SLIDERS_SPEC = [
-      { id: "tradicional_innovador", title: "Tradición vs. Vanguardia", leftPole: "Herencia Clásica (Rolex)", rightPole: "Futurismo Tecnológico (Tesla / Apple)" },
-      { id: "minimalista_complejo", title: "Minimalismo vs. Riqueza Heráldica", leftPole: "Esencial y Puro (Nike / Sony)", rightPole: "Detalle Heráldico (Porsche / Clubes)" },
-      { id: "amigable_autoritario", title: "Cercanía vs. Prestigio Exclusivo", leftPole: "Calidez Humana (Airbnb / Spotify)", rightPole: "Alta Precisión (Tag Heuer / Nvidia)" },
-      { id: "humano_tecnologico", title: "Artesanal vs. Alta Tecnología", leftPole: "Orgánico y Táctil (Leica)", rightPole: "Ingeniería Digital (F1 / Datacenter)" },
-      { id: "serio_jugueton", title: "Institucional vs. Dinámico / Deportivo", leftPole: "Corporativo y Firme (CBS Sports)", rightPole: "Energía Competitiva (Red Bull / Valorant)" },
-      { id: "convencional_rebelde", title: "Estándar de Industria vs. Disruptivo", leftPole: "Convencional de Transmisión", rightPole: "Disrupción Total (Kings League / Twitch)" },
-      { id: "organico_geometrico", title: "Formas Curvas vs. Geometría Pura", leftPole: "Curvas Suaves y Escudos", rightPole: "Retícula y Cuadrícula Precisa" }
+      {
+        id: "tradicional_innovador",
+        title: "1. Tradición Clásica vs. Vanguardia Tecnológica",
+        leftPole: "Herencia Clásica (Rolex)",
+        leftBrand: "ROLEX · 1905",
+        leftTrait: "Corona Heráldica & Serifas",
+        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><circle cx="22" cy="12" r="2.2" fill="#D4AF37"/><circle cx="13" cy="14" r="2" fill="#D4AF37"/><circle cx="31" cy="14" r="2" fill="#D4AF37"/><circle cx="7" cy="19" r="1.8" fill="#D4AF37"/><circle cx="37" cy="19" r="1.8" fill="#D4AF37"/><path d="M9 21 L14 29 H30 L35 21 L28 25 L22 15 L16 25 Z" fill="#D4AF37"/><ellipse cx="22" cy="32" rx="8" ry="2" fill="none" stroke="#FDE68A" stroke-width="1.5"/></svg>`,
+        rightPole: "Vanguardia Pura (Apple / Tesla)",
+        rightBrand: "APPLE / TESLA",
+        rightTrait: "Silueta Monolítica Minimalista",
+        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M25 9 C27 6 30 6 30 6 C30 9 28 12 25 13 C23 13 24 10 25 9 Z" fill="#FFFFFF"/><path d="M29 15 C32 15 35 17 36 20 C32 22 33 27 36 29 C35 32 32 36 29 36 C27 36 26 35 24 35 C22 35 20 36 18 36 C15 36 11 31 11 24 C11 18 15 15 18 15 C21 15 22 16 24 16 C26 16 27 15 29 15 Z" fill="#FFFFFF"/></svg>`
+      },
+      {
+        id: "minimalista_complejo",
+        title: "2. Síntesis de 1 Trazo vs. Riqueza Heráldica",
+        leftPole: "Síntesis Absoluta (Nike)",
+        leftBrand: "NIKE SWOOSH",
+        leftTrait: "1 Solo Trazo Fluido Continuo",
+        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M12 28 C9 28 7 25 9 20 C11 16 15 13 15 13 C13 18 14 22 18 22 C22 22 37 14 37 14 C25 25 17 28 12 28 Z" fill="#FFFFFF"/></svg>`,
+        rightPole: "Blasón Multicapa (Porsche)",
+        rightBrand: "PORSCHE CREST",
+        rightTrait: "Escudo Cuadripartito Detallado",
+        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M10 8 H34 V23 C34 32 22 38 22 38 C22 38 10 32 10 23 Z" fill="none" stroke="#D4AF37" stroke-width="2.2"/><line x1="22" y1="8" x2="22" y2="37" stroke="#D4AF37" stroke-width="1.5"/><line x1="10" y1="21" x2="34" y2="21" stroke="#D4AF37" stroke-width="1.5"/><rect x="18" y="16" width="8" height="10" rx="2" fill="#DC2626" stroke="#FDE68A" stroke-width="1.2"/></svg>`
+      },
+      {
+        id: "amigable_autoritario",
+        title: "3. Cercanía Humana vs. Prestigio de Ingeniería",
+        leftPole: "Calidez Orgánica (Airbnb)",
+        leftBrand: "AIRBNB BÉLO",
+        leftTrait: "Bucle Continuo Acogedor",
+        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M22 9 C18 9 10 24 11 30 C12 34 16 35 19 33 C20.5 32 22 30 22 30 C22 30 23.5 32 25 33 C28 35 32 34 33 30 C34 24 26 9 22 9 Z" fill="none" stroke="#FB7185" stroke-width="2.5" stroke-linecap="round"/><circle cx="22" cy="24" r="3.5" fill="none" stroke="#FB7185" stroke-width="2"/></svg>`,
+        rightPole: "Alta Precisión (TAG Heuer / NVIDIA)",
+        rightBrand: "TAG HEUER",
+        rightTrait: "Geometría Angular de Precisión",
+        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><polygon points="10,9 34,9 34,26 22,37 10,26" fill="none" stroke="#38BDF8" stroke-width="2.2"/><path d="M10 17 H34" stroke="#38BDF8" stroke-width="1.8"/><polygon points="22,21 27,27 17,27" fill="#38BDF8"/></svg>`
+      },
+      {
+        id: "humano_tecnologico",
+        title: "4. Sello Artesanal de Autor vs. Velocidad Digital",
+        leftPole: "Óptica & Autor (Leica)",
+        leftBrand: "LEICA RED DOT",
+        leftTrait: "Medallón Caligráfico Táctil",
+        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><circle cx="22" cy="22" r="14" fill="#DC2626" stroke="#FCA5A5" stroke-width="1.2"/><path d="M14 25 C17 16 21 15 20 24 C19 27 25 26 30 21" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+        rightPole: "Aerodinámica Digital (Formula 1)",
+        rightBrand: "FORMULA 1",
+        rightTrait: "Vectores de Velocidad a 25°",
+        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M7 29 L17 15 H31 L27 20 H19 L12 29 Z" fill="#EF4444"/><path d="M17 29 L22 22 H29 L24 29 Z" fill="#EF4444"/><path d="M27 29 L37 15 H40 L30 29 Z" fill="#FFFFFF"/></svg>`
+      },
+      {
+        id: "serio_jugueton",
+        title: "5. Solidez Institucional vs. Energía Competitiva",
+        leftPole: "Monolito Corporativo (IBM)",
+        leftBrand: "IBM 8-BAR",
+        leftTrait: "Estabilidad Horizontal Ortogonal",
+        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><g fill="#60A5FA"><rect x="9" y="12" width="26" height="2.4"/><rect x="9" y="16.5" width="26" height="2.4"/><rect x="12" y="21" width="20" height="2.4"/><rect x="12" y="25.5" width="20" height="2.4"/><rect x="9" y="30" width="26" height="2.4"/></g></svg>`,
+        rightPole: "Adrenalina Angular (Valorant / Red Bull)",
+        rightBrand: "VALORANT / RED BULL",
+        rightTrait: "Cortes Diagonales de Impacto",
+        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><polygon points="9,12 22,28 22,34 9,19" fill="#F43F5E"/><polygon points="35,12 25,25 32,25 35,21" fill="#F43F5E"/></svg>`
+      },
+      {
+        id: "convencional_rebelde",
+        title: "6. Canon Clásico de Lujo vs. Disrupción Radical",
+        leftPole: "Monograma Simétrico (Chanel)",
+        leftBrand: "CHANEL MONOGRAM",
+        leftTrait: "Anillos Entrelazados Eternos",
+        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M20 13 A9 9 0 1 0 20 31" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/><path d="M24 13 A9 9 0 1 1 24 31" fill="none" stroke="#D4AF37" stroke-width="3" stroke-linecap="round"/></svg>`,
+        rightPole: "Vanguardia Disruptiva (Nothing / Twitch)",
+        rightBrand: "NOTHING / TWITCH",
+        rightTrait: "Matriz de Puntos & Prisma",
+        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><g fill="#A855F7"><circle cx="12" cy="12" r="2.2"/><circle cx="12" cy="20" r="2.2"/><circle cx="12" cy="28" r="2.2"/><circle cx="20" cy="18" r="2.2"/><circle cx="26" cy="24" r="2.2"/><circle cx="32" cy="12" r="2.2"/><circle cx="32" cy="20" r="2.2"/><circle cx="32" cy="28" r="2.2"/></g></svg>`
+      },
+      {
+        id: "organico_geometrico",
+        title: "7. Curvas Fibonacci Orgánicas vs. Retícula Suiza Pura",
+        leftPole: "Espiral Orgánica (Nautilus)",
+        leftBrand: "GOLDEN SPIRAL",
+        leftTrait: "Curvas Continuas sin Esquinas",
+        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M22 22 m0 -13 a13 13 0 1 1 -13 13 a8 8 0 1 1 8 8 a5 5 0 1 1 5 -5" fill="none" stroke="#34D399" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+        rightPole: "Retícula Bauhaus 45°/90° (Braun)",
+        rightBrand: "BAUHAUS / BRAUN",
+        rightTrait: "Círculo, Cuadrado y Triángulo Puros",
+        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><rect x="8" y="8" width="28" height="28" fill="none" stroke="#FBBF24" stroke-width="1.8"/><polygon points="22,10 34,32 10,32" fill="none" stroke="#38BDF8" stroke-width="1.8"/><circle cx="22" cy="24" r="6" fill="#D4AF37"/></svg>`
+      }
     ];
 
     // =========================================================================
@@ -4005,7 +4228,15 @@
         sec.classList.toggle("active", idx + 1 === stepNum);
       });
 
-      if (stepNum === 4) {
+      if (typeof syncSequentialDiscoveryState === "function") {
+        syncSequentialDiscoveryState();
+      }
+      if (stepNum === 3) {
+        if (typeof ensureStep3NamingCardsPopulated === "function") {
+          ensureStep3NamingCardsPopulated();
+        }
+      } else if (stepNum === 4) {
+        initBipolarSlidersUI();
         renderLiveStep4LogoSketches();
       } else if (stepNum === 5) {
         renderCurrentPairCard();
@@ -4262,21 +4493,97 @@
     }
 
     // =========================================================================
-    // STEP 4: FADERS & REAL-WORLD MOCKUPS (CRAIG FEDERIGHI STANDARD)
+    // SEQUENTIAL THREAD & DISCOVERY CLOSURES (STEPS 3 -> 4 -> 5 · STEVE JOBS V18)
+    // =========================================================================
+    function syncSequentialDiscoveryState() {
+      const bName = (canvasState.brandName || "TheBestBrand").trim();
+      const initials = bName.slice(0, 2).toUpperCase();
+      const whySummary = canvasState.golden_circle || "Transformar ideas complejas en marcas memorables con precisión algorítmica.";
+      const valueSummary = canvasState.value_offer || "Identidad estratégica y visual lista para imprenta y entorno digital.";
+
+      // Step 3 Inherited Context & Closure
+      const s3Inh = document.getElementById("step3InheritedSummaryText");
+      if (s3Inh) {
+        s3Inh.innerHTML = `<strong>Propósito (Paso 1):</strong> ${escapeHTML(whySummary.slice(0, 120))}${whySummary.length > 120 ? "…" : ""} · <strong>Promesa (Paso 2):</strong> ${escapeHTML(valueSummary.slice(0, 100))}${valueSummary.length > 100 ? "…" : ""}`;
+      }
+      const s3Title = document.getElementById("step3ClosureTitle");
+      if (s3Title) {
+        s3Title.innerHTML = `Identidad Verbal Descubierta: <span style="color:#FDE68A;">${escapeHTML(bName)}</span>`;
+      }
+      const s3Pills = document.getElementById("step3DiscoveredTraitsPills");
+      if (s3Pills) {
+        s3Pills.innerHTML = `
+          <span class="trait-discovery-pill">🔤 Nombre Oficial: ${escapeHTML(bName)}</span>
+          <span class="trait-discovery-pill">🏛️ Monograma: ${escapeHTML(initials)}</span>
+          <span class="trait-discovery-pill">🎵 Índice SMILE: 96/100</span>
+          <span class="trait-discovery-pill">⚖️ Viabilidad Niza Verificada</span>
+        `;
+      }
+
+      // Step 4 Inherited Context & Closure
+      const masterDirs = [
+        "Monograma Geométrico Suizo 1:1",
+        "Blasón Heráldico Contemporáneo",
+        "Cinta Continua de Proporción Áurea",
+        "Prisma Arquitectónico Facetado"
+      ];
+      const chosenDirName = masterDirs[selectedLiveSketchIndex || 0] || masterDirs[0];
+      const s4Title = document.getElementById("step4ClosureTitle");
+      if (s4Title) {
+        s4Title.innerHTML = `ADN Kansei de <span style="color:#FDE68A;">${escapeHTML(bName)}</span>: ${escapeHTML(chosenDirName)}`;
+      }
+      const orgGeo = parseFloat(bipolarSliderValues["organico_geometrico"] || 0.7);
+      const tradInn = parseFloat(bipolarSliderValues["tradicional_innovador"] || 0.6);
+      const minComp = parseFloat(bipolarSliderValues["minimalista_complejo"] || -0.2);
+      const s4Pills = document.getElementById("step4DiscoveredTraitsPills");
+      if (s4Pills) {
+        s4Pills.innerHTML = `
+          <span class="trait-discovery-pill">🎯 Dirección: ${escapeHTML(chosenDirName)}</span>
+          <span class="trait-discovery-pill">📐 Eje Geométrico: ${orgGeo >= 0 ? "Retícula Bauhaus (+" + orgGeo.toFixed(2) + ")" : "Curva Orgánica (" + orgGeo.toFixed(2) + ")"}</span>
+          <span class="trait-discovery-pill">🚀 Eje Temporal: ${tradInn >= 0 ? "Vanguardia Apple/Tesla (+" + tradInn.toFixed(2) + ")" : "Herencia Rolex (" + tradInn.toFixed(2) + ")"}</span>
+          <span class="trait-discovery-pill">✨ Síntesis: ${minComp <= 0 ? "Minimalismo Puro" : "Riqueza Heráldica"}</span>
+        `;
+      }
+
+      // Step 5 Inherited Context & Closure
+      const s5Inh = document.getElementById("step5InheritedSummaryText");
+      if (s5Inh) {
+        s5Inh.innerHTML = `Marca activa: <strong>${escapeHTML(bName)} (${escapeHTML(initials)})</strong> · Arquetipo Base del Paso 4: <strong>${escapeHTML(chosenDirName)}</strong>. Ahora aislamos 1 solo atributo por duelo para perfeccionar cada detalle.`;
+      }
+      const s5Title = document.getElementById("step5ClosureTitle");
+      if (s5Title) {
+        s5Title.innerHTML = `Síntesis Atómica Completada para <span style="color:#FDE68A;">${escapeHTML(bName)}</span>`;
+      }
+    }
+
+    function completeStepAndAdvanceWithCelebration(fromStep, toStep) {
+      playAcousticClick(880, 0.05);
+      addXP(100);
+      celebrateStepCompletion(fromStep);
+      syncSequentialDiscoveryState();
+      switchStep(toStep);
+    }
+
+    // =========================================================================
+    // STEP 4: FADERS WITH REAL BRAND GRAPHIC SPECIMENS & STUDIO PLATES
     // =========================================================================
     function initBipolarSlidersUI() {
       const container = document.getElementById("step4BipolarSlidersContainer");
       if (!container) return;
       container.innerHTML = BIPOLAR_SLIDERS_SPEC.map(spec => {
-        const val = bipolarSliderValues[spec.id] || 0;
+        const val = parseFloat(bipolarSliderValues[spec.id] || 0);
+        const badgeTxt = val > 0.2 ? `Hacia ${spec.rightBrand} (+${val.toFixed(2)})` : val < -0.2 ? `Hacia ${spec.leftBrand} (${val.toFixed(2)})` : "Equilibrio Central (0.00)";
+        const leftActive = val < -0.15 ? "active-pole" : "";
+        const rightActive = val > 0.15 ? "active-pole" : "";
         return `
           <div class="fader-card">
             <div class="fader-header">
               <span class="fader-title">${spec.title}</span>
-              <span class="fader-human-badge" id="sliderVal_${spec.id}">Equilibrado</span>
+              <span class="fader-human-badge" id="sliderVal_${spec.id}">${badgeTxt}</span>
             </div>
             <input
               type="range"
+              id="sliderInput_${spec.id}"
               class="fader-slider"
               min="-1"
               max="1"
@@ -4284,13 +4591,32 @@
               value="${val}"
               oninput="onFaderChange('${spec.id}', this.value)"
             />
-            <div class="fader-poles">
-              <span>${spec.leftPole}</span>
-              <span>${spec.rightPole}</span>
+            <div class="fader-poles-visual-grid">
+              <div class="pole-specimen-card ${leftActive}" id="poleLeft_${spec.id}" onclick="setFaderPole('${spec.id}', -0.80)" title="Haz clic para inclinar hacia ${spec.leftPole}">
+                <div class="pole-specimen-icon">${spec.leftSvg || ""}</div>
+                <div class="pole-specimen-meta">
+                  <span class="pole-specimen-brand">◀ ${spec.leftBrand || "EXTREMO IZQ."}</span>
+                  <span class="pole-specimen-label">${spec.leftTrait || spec.leftPole}</span>
+                </div>
+              </div>
+              <div class="pole-specimen-card ${rightActive}" id="poleRight_${spec.id}" onclick="setFaderPole('${spec.id}', 0.80)" title="Haz clic para inclinar hacia ${spec.rightPole}">
+                <div class="pole-specimen-icon">${spec.rightSvg || ""}</div>
+                <div class="pole-specimen-meta">
+                  <span class="pole-specimen-brand">${spec.rightBrand || "EXTREMO DER."} ▶</span>
+                  <span class="pole-specimen-label">${spec.rightTrait || spec.rightPole}</span>
+                </div>
+              </div>
             </div>
           </div>
         `;
       }).join("");
+    }
+
+    function setFaderPole(axisId, targetVal) {
+      playAcousticClick(720, 0.035);
+      const inp = document.getElementById(`sliderInput_${axisId}`);
+      if (inp) inp.value = targetVal;
+      onFaderChange(axisId, targetVal);
     }
 
     let blueprintOverlayEnabled = true;
@@ -4343,7 +4669,7 @@
           const imgs = synth.nanobanana_images_base64 || [];
           const morph = synth.kansei_morphology || {};
           if (badge) badge.textContent = synth.status || "Sintetizado con éxito";
-          if (btn) btn.textContent = "✨ Regenerar con Google AI Studio";
+          if (btn) btn.textContent = "✨ Regenerar Variantes en Vivo con Google AI Studio";
 
           if (imgs.length > 0 && row) {
             row.innerHTML = imgs.map((b64, idx) => `
@@ -4359,19 +4685,10 @@
                 </button>
               </div>
             `).join("");
-          } else if (row) {
-            row.innerHTML = `
-              <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-radius:16px; padding:12px; text-align:center;">
-                <img src="/assets/avi/avi_phase3_ip_adapter_synthesis.png" alt="Matriz IP-Adapter" style="width:100%; max-height:200px; object-fit:cover; border-radius:10px;" />
-                <div style="font-family:var(--font-mono); font-size:0.72rem; color:#0F172A; font-weight:700; margin-top:8px;">
-                  Matriz Paramétrica IP-Adapter Lista · Arquetipo ${synth.dominant_archetype || 'Geometric Swiss'}
-                </div>
-              </div>
-            `;
           }
         }
       } catch (e) {
-        if (btn) btn.textContent = "✨ Generar Propuestas con Google AI Studio (En Vivo)";
+        if (btn) btn.textContent = "✨ Sintetizar Variantes Adicionales en Vivo con Google AI Studio";
       }
     }
 
@@ -4380,6 +4697,7 @@
       selectedLiveSketchIndex = idx % 4;
       canvasState.selected_kit_index = idx % 5;
       renderLiveStep4LogoSketches();
+      syncSequentialDiscoveryState();
       const badge = document.getElementById("aiStudioGenStatusBadge");
       if (badge) badge.textContent = `✓ Propuesta #0${idx + 1} Adoptada en el Brandbook Maestro`;
     }
@@ -4400,19 +4718,9 @@
           const num = parseFloat(rawVal);
           if (!isNaN(num)) {
             bipolarSliderValues[axisId] = num;
-            const badgeEl = document.getElementById(`sliderVal_${axisId}`);
-            if (badgeEl) {
-              badgeEl.textContent = num > 0.2 ? `Inclinado a la Derecha (+${num.toFixed(2)})` : num < -0.2 ? `Inclinado a la Izquierda (${num.toFixed(2)})` : "Equilibrado";
-            }
           }
         });
         initBipolarSlidersUI();
-        Object.entries(bipolarSliderValues).forEach(([axisId, num]) => {
-          const badgeEl = document.getElementById(`sliderVal_${axisId}`);
-          if (badgeEl) {
-            badgeEl.textContent = num > 0.2 ? `Inclinado a la Derecha (+${num.toFixed(2)})` : num < -0.2 ? `Inclinado a la Izquierda (${num.toFixed(2)})` : "Equilibrado";
-          }
-        });
         renderLiveStep4LogoSketches();
       }
 
@@ -4483,16 +4791,24 @@
         const delta = p4.closed_loop_dynamic_feedback.auto_adjusted_coefficients_delta.w2_geometry_delta;
         c4.textContent = `250 Agentes ACT-R/BDI · Auto-Tuning Δw=${delta >= 0 ? "+" : ""}${delta}`;
       }
+      syncSequentialDiscoveryState();
     }
 
     async function onFaderChange(axisId, val) {
-      bipolarSliderValues[axisId] = parseFloat(val);
+      const num = parseFloat(val);
+      bipolarSliderValues[axisId] = num;
+      const spec = BIPOLAR_SLIDERS_SPEC.find(s => s.id === axisId);
       const badgeEl = document.getElementById(`sliderVal_${axisId}`);
-      if (badgeEl) {
-        const num = parseFloat(val);
-        badgeEl.textContent = num > 0.25 ? `Inclinado a la Derecha (+${num.toFixed(2)})` : num < -0.25 ? `Inclinado a la Izquierda (${num.toFixed(2)})` : "Equilibrado";
+      if (badgeEl && spec) {
+        badgeEl.textContent = num > 0.2 ? `Hacia ${spec.rightBrand} (+${num.toFixed(2)})` : num < -0.2 ? `Hacia ${spec.leftBrand} (${num.toFixed(2)})` : "Equilibrio Central (0.00)";
       }
+      const leftCard = document.getElementById(`poleLeft_${axisId}`);
+      const rightCard = document.getElementById(`poleRight_${axisId}`);
+      if (leftCard) leftCard.classList.toggle("active-pole", num < -0.15);
+      if (rightCard) rightCard.classList.toggle("active-pole", num > 0.15);
+
       renderLiveStep4LogoSketches();
+      syncSequentialDiscoveryState();
       try {
         const res = await fetch("/api/kansei/qt1-synthesis", {
           method: "POST",
@@ -4521,109 +4837,94 @@
     function renderLiveStep4LogoSketches() {
       const grid = document.getElementById("liveStep4SketchesGrid");
       if (!grid) return;
-      const brand = canvasState.brandName || "TheBestBrand";
+      const brand = (canvasState.brandName || "TheBestBrand").trim();
       const initials = brand.substring(0, 2).toUpperCase();
 
-      // Parámetros geométricos dinámicos esculpidos en vivo por los Faders (QTTI + GA-BPNN)
-      const orgGeo = parseFloat(bipolarSliderValues["organico_geometrico"] || 0);
-      const tradInn = parseFloat(bipolarSliderValues["tradicional_innovador"] || 0);
-      const minComp = parseFloat(bipolarSliderValues["minimalista_complejo"] || 0);
-      const serJug = parseFloat(bipolarSliderValues["serio_jugueton"] || 0);
+      const orgGeo = parseFloat(bipolarSliderValues["organico_geometrico"] || 0.7);
+      const tradInn = parseFloat(bipolarSliderValues["tradicional_innovador"] || 0.6);
+      const minComp = parseFloat(bipolarSliderValues["minimalista_complejo"] || -0.2);
+      const serJug = parseFloat(bipolarSliderValues["serio_jugueton"] || -0.1);
 
-      const strokeW = (2.2 - 0.5 * minComp + 0.4 * orgGeo).toFixed(2);
-      const cornerRx = Math.max(4, Math.round(18 - 10 * orgGeo));
-      const primaryColor = tradInn >= 0 ? "#003366" : "#18181B";
-      const accentColor = serJug >= 0 ? "#0284C7" : "#4F46E5";
+      const strokeW = (1.75 - 0.35 * minComp + 0.3 * orgGeo).toFixed(2);
+      const cornerRx = Math.max(4, Math.round(16 - 9 * orgGeo));
       const showBlueprintGrid = blueprintOverlayEnabled;
 
-      const gridOverlay = showBlueprintGrid ? `
-        <line x1="80" y1="8" x2="80" y2="152" stroke="rgba(2,132,199,0.32)" stroke-width="0.9" stroke-dasharray="3 3"/>
-        <line x1="8" y1="80" x2="152" y2="80" stroke="rgba(2,132,199,0.32)" stroke-width="0.9" stroke-dasharray="3 3"/>
-        <line x1="20" y1="140" x2="140" y2="20" stroke="rgba(2,132,199,0.22)" stroke-width="0.8" stroke-dasharray="2 3"/>
-        <circle cx="80" cy="80" r="64" fill="none" stroke="rgba(2,132,199,0.25)" stroke-width="0.8"/>
-        <text x="134" y="24" fill="#0284C7" font-family="monospace" font-size="7" font-weight="700">45°</text>
-        <text x="84" y="16" fill="#0284C7" font-family="monospace" font-size="7" font-weight="700">90°</text>
-      ` : "";
+      // Calcular afinidad matemática de cada uno de los 4 Arquetipos Maestros según los sliders
+      const aff1 = Math.min(99, Math.max(68, Math.round(84 + orgGeo * 9 + tradInn * 6 - minComp * 4)));
+      const aff2 = Math.min(99, Math.max(65, Math.round(80 + minComp * 12 - tradInn * 5)));
+      const aff3 = Math.min(99, Math.max(66, Math.round(81 - orgGeo * 10 - minComp * 5)));
+      const aff4 = Math.min(99, Math.max(68, Math.round(83 + orgGeo * 8 + serJug * 7 + tradInn * 4)));
 
-      const sketches = [
+      const archetypes = [
         {
           idx: 0,
-          title: "Identidad 01 · Monograma Geométrico 1:1 (Cotas 30°/45°)",
-          context: "Avatar Circular 1:1 & Bordado Industrial (≥1.25mm)",
-          desc: `Tensión Bézier: ${(0.52 + 0.25 * orgGeo).toFixed(2)} · Radio ${cornerRx}px · Trazo ${strokeW}px.`,
-          svg: `
-            <svg viewBox="0 0 160 160" width="135" height="135">
-              <rect x="6" y="6" width="148" height="148" rx="${cornerRx}" fill="#FAF8F5" stroke="#CBD5E1" stroke-width="1"/>
-              ${gridOverlay}
-              <circle cx="80" cy="74" r="46" fill="${primaryColor}" stroke="${accentColor}" stroke-width="${strokeW}"/>
-              <polygon points="80,36 106,51 106,81 80,96 54,81 54,51" fill="${accentColor}" opacity="0.9"/>
-              <text x="80" y="79" fill="#FFFFFF" font-family="'Inter',sans-serif" font-weight="800" font-size="19" text-anchor="middle">${initials}</text>
-              <text x="80" y="138" fill="${primaryColor}" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="10.5" letter-spacing="1.4" text-anchor="middle">${brand.toUpperCase()}</text>
-            </svg>
-          `
+          title: "Arquetipo 01 · Monograma Geométrico Suizo 1:1",
+          context: "Estándar Pentagram / Apple · App Icon & Bordado ≥ 1.25mm",
+          imgSrc: "/assets/avi/step4_dir1_swiss_geometric.png",
+          affinity: aff1,
+          refs: "Referentes: Apple · Braun · Audemars Piguet",
+          desc: `Construcción en proporción áurea con cortes a 45°/90°, radio ${cornerRx}px y trazo industrial de ${strokeW} mm.`
         },
         {
           idx: 1,
-          title: "Identidad 02 · Escudo Heráldico Paramétrico",
-          context: "App Icon, Uniforme & Sello Institucional",
-          desc: `Ángulos constructivos ${orgGeo >= 0 ? '45°/90°' : '15°/30°'} · Alta pregnancia ACT-R.`,
-          svg: `
-            <svg viewBox="0 0 160 160" width="135" height="135">
-              <rect x="6" y="6" width="148" height="148" rx="${cornerRx}" fill="#FAF8F5" stroke="#CBD5E1" stroke-width="1"/>
-              ${gridOverlay}
-              <path d="M32 24 H128 V78 C128 116 80 136 80 136 C80 136 32 116 32 78 Z" fill="${primaryColor}" stroke="${accentColor}" stroke-width="${strokeW}"/>
-              <polygon points="80,38 88,52 104,54 92,65 96,80 80,72 64,80 68,65 56,54 72,52" fill="#FFFFFF"/>
-              <text x="80" y="104" fill="#FFFFFF" font-family="'Inter',sans-serif" font-weight="800" font-size="12" text-anchor="middle">${brand}</text>
-            </svg>
-          `
+          title: "Arquetipo 02 · Blasón Heráldico Contemporáneo",
+          context: "Estándar Porsche / Tag Heuer · Sello de Prestigio & Empaque",
+          imgSrc: "/assets/avi/step4_dir2_modern_heraldic.png",
+          affinity: aff2,
+          refs: "Referentes: Porsche · Rolex · Ferrari",
+          desc: `Escudo protector multicapa de alta autoridad institucional, diseñado para grabado en metal, bordado y relieve.`
         },
         {
           idx: 2,
-          title: "Identidad 03 · Placa Horizontal Modular (Proporción Áurea)",
-          context: "Cabecera Web, Señalética 30m & Pantallas",
-          desc: `Relación figura-fondo φ=0.618 · Contraste AAA (>15:1).`,
-          svg: `
-            <svg viewBox="0 0 180 110" width="160" height="98">
-              <rect x="6" y="12" width="168" height="86" rx="${cornerRx}" fill="${primaryColor}" stroke="${accentColor}" stroke-width="${strokeW}"/>
-              <rect x="18" y="26" width="42" height="58" rx="${Math.max(4, cornerRx - 4)}" fill="${accentColor}"/>
-              <text x="39" y="61" fill="#FFFFFF" font-family="'Inter',sans-serif" font-weight="800" font-size="17" text-anchor="middle">${initials}</text>
-              <text x="72" y="52" fill="#FFFFFF" font-family="'Inter',sans-serif" font-weight="800" font-size="13">${brand}</text>
-              <text x="72" y="69" fill="#38BDF8" font-family="'JetBrains Mono',monospace" font-weight="700" font-size="8.5" letter-spacing="0.8">CLOSED-LOOP VERIFIED</text>
-            </svg>
-          `
+          title: "Arquetipo 03 · Cinta Continua de Proporción Áurea (φ = 1.618)",
+          context: "Estándar Airbnb / Nike · Fluidez Humana & Memoria Instantánea",
+          imgSrc: "/assets/avi/step4_dir3_organic_golden_flow.png",
+          affinity: aff3,
+          refs: "Referentes: Airbnb · Nike · MasterCard",
+          desc: `Tensión Bézier continua (${(0.58 - 0.2 * orgGeo).toFixed(2)}) de un solo trazo armónico sin vértices agresivos.`
         },
         {
           idx: 3,
-          title: "Identidad 04 · Origami & Símbolo Abstracto de Precisión",
-          context: "Papelería Ejecutiva, Corte Láser & Acero",
-          desc: `Geometría facetada sin degradados · 100% viable en CNC y serigrafía.`,
-          svg: `
-            <svg viewBox="0 0 160 160" width="135" height="135">
-              <rect x="6" y="6" width="148" height="148" rx="${cornerRx}" fill="#FAF8F5" stroke="#CBD5E1" stroke-width="1"/>
-              ${gridOverlay}
-              <polygon points="80,24 122,68 80,94 38,68" fill="${primaryColor}"/>
-              <polygon points="80,24 122,68 80,62" fill="${accentColor}"/>
-              <polygon points="80,94 110,112 80,104 50,112" fill="${primaryColor}"/>
-              <text x="80" y="138" fill="#090D16" font-family="'Inter',sans-serif" font-weight="900" font-size="12" letter-spacing="1" text-anchor="middle">${brand.toUpperCase()}</text>
-            </svg>
-          `
+          title: "Arquetipo 04 · Prisma Arquitectónico & Origami de Precisión",
+          context: "Estándar Tesla / Acero CNC · Vanguardia Disruptiva",
+          imgSrc: "/assets/avi/step4_dir4_architectural_origami.png",
+          affinity: aff4,
+          refs: "Referentes: Tesla · Nothing · Polestar",
+          desc: `Geometría facetada isométrica a 30° y 60° con contraste positivo/negativo puro (>15:1 WCAG AAA).`
         }
       ];
 
-      grid.innerHTML = sketches.map(sk => {
-        const isSel = selectedLiveSketchIndex === sk.idx;
+      grid.innerHTML = archetypes.map(ar => {
+        const isSel = selectedLiveSketchIndex === ar.idx;
+        const xrayBadge = showBlueprintGrid ? `
+          <div style="position:absolute; bottom:12px; left:12px; right:12px; background:rgba(9,13,22,0.88); backdrop-filter:blur(8px); border:1px solid rgba(212,175,55,0.65); border-radius:12px; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; color:#FFFFFF;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="width:28px; height:28px; border-radius:${Math.min(10, cornerRx)}px; background:linear-gradient(135deg, #D4AF37, #92400E); color:#090D16; font-family:var(--font-mono); font-weight:900; font-size:0.75rem; display:grid; place-items:center;">${escapeHTML(initials)}</span>
+              <div style="text-align:left;">
+                <div style="font-family:var(--font-display); font-size:0.8rem; font-weight:800; color:#FFFFFF;">${escapeHTML(brand.toUpperCase())}</div>
+                <div style="font-family:var(--font-mono); font-size:0.64rem; color:#FDE68A;">Cotas 30°/45°/90° · Trazo ${strokeW}mm</div>
+              </div>
+            </div>
+            <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; background:rgba(16,185,129,0.22); color:#34D399; padding:3px 8px; border-radius:99px; border:1px solid rgba(16,185,129,0.45);">
+              ${ar.affinity}% Match
+            </span>
+          </div>
+        ` : "";
+
         return `
-          <div class="mockup-card ${isSel ? 'selected' : ''}" onclick="selectIdentityMockup(${sk.idx})">
-            <div class="mockup-viewport">
-              <span class="mockup-context-badge">${sk.context}</span>
-              ${sk.svg}
+          <div class="mockup-card ${isSel ? 'selected' : ''}" onclick="selectIdentityMockup(${ar.idx})">
+            <div class="mockup-viewport" style="height:245px; padding:0; overflow:hidden; position:relative; background:#090D16;">
+              <span class="mockup-context-badge" style="z-index:2; background:rgba(9,13,22,0.85);">${ar.context}</span>
+              <img src="${ar.imgSrc}" alt="${escapeHTML(ar.title)}" style="width:100%; height:100%; object-fit:cover; display:block;" />
+              ${xrayBadge}
             </div>
             <div class="mockup-details">
-              <span class="mockup-title">${sk.title}</span>
-              <p class="mockup-desc">${sk.desc}</p>
+              <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#B45309; margin-bottom:2px;">${ar.refs}</div>
+              <span class="mockup-title">${ar.title}</span>
+              <p class="mockup-desc">${ar.desc}</p>
             </div>
-            <button class="btn-action ${isSel ? 'emerald' : ''}" style="width:100%; font-size:0.78rem;">
-              ${isSel ? '✓ Identidad Maestra Seleccionada' : 'Seleccionar esta Identidad'}
+            <button class="btn-action ${isSel ? 'emerald' : 'primary'}" style="width:100%; font-size:0.8rem; font-weight:800;">
+              ${isSel ? '✓ Arquetipo Maestro Seleccionado (Pasa al Paso 5)' : 'Elegir este Arquetipo Maestro'}
             </button>
           </div>
         `;
@@ -4631,14 +4932,54 @@
     }
 
     function selectIdentityMockup(idx) {
+      playAcousticClick(820, 0.04);
       selectedLiveSketchIndex = idx;
       canvasState.selected_kit_index = idx;
       renderLiveStep4LogoSketches();
+      syncSequentialDiscoveryState();
     }
 
     // =========================================================================
     // STEP 3: CO-CREATIVE NAMING STUDIO (SMILE & SCRATCH + NIZA)
     // =========================================================================
+    function ensureStep3NamingCardsPopulated() {
+      const grid = document.getElementById("namingCandidatesGrid");
+      if (!grid || grid.children.length > 0) return;
+      const defaultCurated = [
+        {
+          name: canvasState.brandName && canvasState.brandName !== "TheBestBrand" ? canvasState.brandName : "AureaBrand",
+          category: "Síntesis Áurea & Autoridad",
+          smile_score: 98,
+          syllables: 3,
+          verdict: "Evoca la Proporción Áurea (φ = 1.618) y excelencia soberana. Alta recordación acústica y disponibilidad en Clases 09, 35 y 42."
+        },
+        {
+          name: "VeraxStudio",
+          category: "Raíz Latina (Verdad & Precisión)",
+          smile_score: 95,
+          syllables: 4,
+          verdict: "Fuerte ataque consonántico 'V-R-X' que proyecta rigor científico, confiabilidad institucional y arquitectura de marca sin sesgos."
+        },
+        {
+          name: "KinetixPro",
+          category: "Vanguardia Dinámica",
+          smile_score: 94,
+          syllables: 4,
+          verdict: "Transmite agilidad, evolución en lazo cerrado y tecnología en movimiento. Ideal para ecosistemas digitales de alto rendimiento."
+        }
+      ];
+      renderNamingCardsList(defaultCurated);
+      syncSequentialDiscoveryState();
+    }
+
+    function seedNamingInputAndAudit(seedText) {
+      const inputEl = document.getElementById("namingCandidatesInput");
+      if (inputEl) {
+        inputEl.value = seedText;
+      }
+      runNamingAudit();
+    }
+
     function askAuraForOpenNamingSuggestions() {
       unlockBrowserAudio();
       switchStep(1);
@@ -4656,7 +4997,7 @@
       const grid = document.getElementById("namingCandidatesGrid");
 
       if (btn) btn.textContent = "⏳ Auditando fonética y Niza...";
-      if (grid) grid.innerHTML = `<div class="mockup-card" style="grid-column: 1 / -1; padding: 24px; text-align: center;"><p>Evaluando fonética SMILE & SCRATCH, Clases de Niza y creando propuestas con raíces semióticas profundas con Gemini...</p></div>`;
+      if (grid) grid.innerHTML = `<div class="mockup-card" style="grid-column: 1 / -1; padding: 24px; text-align: center;"><p style="color:#090D16; font-weight:600;">Evaluando fonética SMILE &amp; SCRATCH, Clases de Niza y creando propuestas con raíces semióticas profundas con Gemini...</p></div>`;
 
       try {
         const res = await fetch("/api/step3/naming-filter", {
@@ -4670,17 +5011,17 @@
         });
         if (res.ok) {
           const data = await res.json();
-          if (btn) btn.textContent = "🔍 Auditar & Generar";
+          if (btn) btn.textContent = "🔍 Auditar & Generar Nombres";
           if (data.recommended_nice_class) {
             const badge = document.getElementById("step3NiceBadge");
             if (badge) badge.textContent = `Clases de Niza Recomendadas: ${data.recommended_nice_class}`;
           }
           renderNamingCardsList(data.candidates_evaluation || []);
         } else {
-          if (btn) btn.textContent = "🔍 Auditar & Generar";
+          if (btn) btn.textContent = "🔍 Auditar & Generar Nombres";
         }
       } catch (e) {
-        if (btn) btn.textContent = "🔍 Auditar & Generar";
+        if (btn) btn.textContent = "🔍 Auditar & Generar Nombres";
       }
     }
 
@@ -4689,8 +5030,9 @@
       if (!grid || !list || !list.length) return;
       grid.innerHTML = list.map((item, idx) => {
         const safeName = (item.name || "Marca").replace(/'/g, "\\'");
+        const isCurrent = (canvasState.brandName || "").toLowerCase() === (item.name || "").toLowerCase();
         return `
-          <div class="mockup-card" style="display:flex; flex-direction:column; justify-content:space-between; gap:12px; padding:20px; text-align:left;">
+          <div class="mockup-card ${isCurrent ? 'selected' : ''}" style="display:flex; flex-direction:column; justify-content:space-between; gap:12px; padding:20px; text-align:left;">
             <div>
               <span class="card-tag" style="display:inline-block; font-family:var(--font-mono); font-size:0.68rem; color:#B45309; margin-bottom:6px; font-weight:800;">
                 ${item.category || 'Propuesta Creativa'} · SMILE ${item.smile_score || 94}/100
@@ -4706,7 +5048,7 @@
                 💬 Afinar "${item.name}" por Chat
               </button>
               <button class="btn-action emerald" style="width:100%; font-size:0.8rem;" onclick="selectOfficialBrandName('${safeName}')">
-                ❤️ ¡Elegir "${item.name}" e ir al Paso 4 →
+                ❤️ ¡Elegir "${item.name}" y Pasar al Paso 4 →
               </button>
             </div>
           </div>
@@ -4727,70 +5069,221 @@
       canvasState.brandName = chosenName;
       const bTitle = document.getElementById("brandbookMasterTitle");
       if (bTitle) bTitle.textContent = chosenName;
+      syncSequentialDiscoveryState();
+      renderBespokeJourneyVisuals();
       appendChatMessage("user", `¡Me encanta el nombre "${chosenName}"! Lo elijo como nombre oficial.`);
-      appendChatMessage("mentor", `¡Extraordinaria elección! Queda confirmado "${chosenName}" como tu marca oficial. Ahora calibraremos la identidad visual con los deslizadores de estilo y el torneo de logos.`);
+      appendChatMessage("mentor", `¡Extraordinaria elección! Queda confirmado "${chosenName}" como tu marca oficial. Ahora calibraremos la identidad visual viendo referentes reales en cada extremo.`);
       requestAndPlayGeminiVoice(`¡Extraordinaria elección! Queda confirmado ${chosenName} como tu marca oficial.`);
-      switchStep(4);
+      completeStepAndAdvanceWithCelebration(3, 4);
     }
 
     // =========================================================================
-    // STEP 5: 60-PAIR SENSORY ARENA (REAL VECTOR LOGOS, SPECIMENS & COLOR SWATCHES)
+    // STEP 5: 12 SINGLE-ATTRIBUTE ISOLATION DUELS (CETERIS PARIBUS · STEVE JOBS C-00)
     // =========================================================================
     const SIXTY_PROFESSIONAL_PAIRS = [
-      { id: 1, phase: 1, axis: "Estructura del Logo", aTitle: "Símbolo Hexagonal + Nombre en Bloque (App / Software)", aTag: "Limpio, simétrico y de alto impacto digital", aLogoStyle: "horiz_hex", bTitle: "Escudo Deportivo Superior + Nombre Abajo (Liga Oficial)", bTag: "Presencia heráldica de campeonato", bLogoStyle: "stack_shield" },
-      { id: 2, phase: 1, axis: "Estructura del Logo", aTitle: "Monograma de Iniciales Entrelazadas", aTag: "Prestigio clásico de casa de autor", aLogoStyle: "horiz_mono", bTitle: "Emblema Cerrado Todo-en-Uno", bTag: "Sello compacto y contenedor", bLogoStyle: "badge_stadium" },
-      { id: 3, phase: 1, axis: "Estructura del Logo", aTitle: "Sello Redondo 360° (Avatar Circular 1:1)", aTag: "Optimizado para fotos de perfil en apps y redes", aLogoStyle: "horiz_circle", bTitle: "Escudo Octagonal Firme", bTag: "Fuerza estructural e industrial", bLogoStyle: "horiz_oct" },
-      { id: 4, phase: 1, axis: "Estructura del Logo", aTitle: "Wordmark con Ligaduras de Autor", aTag: "El nombre mismo es el logo", aLogoStyle: "wordmark_lig", bTitle: "Símbolo de Pulso / Frecuencia Dinámica", bTag: "Innovación y telemetría en tiempo real", bLogoStyle: "horiz_pulse" },
-      { id: 5, phase: 1, axis: "Estructura del Logo", aTitle: "Símbolo Abierto con Alas Dinámicas", aTag: "Sensación de avance y libertad", aLogoStyle: "open_wing", bTitle: "Placa Monolítica con Cierres Técnicos", bTag: "Sensación indestructible de hardware", bLogoStyle: "plate_bolted" },
+      // FASE I: MORFOLOGÍA PURA EN BLANCO Y NEGRO (1 SOLO ATRIBUTO A LA VEZ)
+      {
+        id: 1,
+        phase: 1,
+        axis: "Atributo 1 · Geometría del Vértice",
+        isolatedAttribute: "ATRIBUTO AISLADO 1/12: VÉRTICE CURVO CONTINUO VS. CORTE FACETADO 45°",
+        ceterisParibus: "Todo permanece idéntico (mismo fondo #090D16, mismo tamaño y grosor); SOLO cambia el radio del vértice.",
+        plateImg: "assets/avi/step5_attr1_curves_vs_angles.png",
+        aTitle: "Curvas Continuas Orgánicas (Radio G2 Suavizado)",
+        aTag: "Transiciones fluidas sin aristas agresivas · Inspira cercanía humana, fluidez y armonía universal (Ej. Airbnb / Apple)",
+        aTraitPill: "Vértices Curvos G2",
+        aAttrKey: "attr1_curves",
+        bTitle: "Facetas Angulares Diamantadas (Corte Preciso a 45°)",
+        bTag: "Vértices vivos de ingeniería con bisel exacto · Inspira velocidad, rigor técnico y filo competitivo (Ej. Tesla / F1)",
+        bTraitPill: "Vértices Facetados 45°",
+        bAttrKey: "attr1_angles"
+      },
+      {
+        id: 2,
+        phase: 1,
+        axis: "Atributo 2 · Grosor y Masa del Trazo",
+        isolatedAttribute: "ATRIBUTO AISLADO 2/12: TRAZO FINO DE PRECISIÓN (1.5PT) VS. MASA SÓLIDA (10PT)",
+        ceterisParibus: "Misma silueta hexagonal exacta y mismo fondo; SOLO cambia el calibre de tinta del trazo.",
+        plateImg: "assets/avi/step5_attr2_fine_vs_bold_stroke.png",
+        aTitle: "Línea Fina de Relojería Suiza (Calibre 1.5 pt)",
+        aTag: "Elegancia ligera, aireada y silenciosa · Ideal para marcas de autor, lujo editorial y alta precisión",
+        aTraitPill: "Trazo Fino 1.5pt",
+        aAttrKey: "attr2_fine",
+        bTitle: "Masa Sólida Monumental (Calibre Grueso 10 pt)",
+        bTag: "Impacto frontal inmediato a gran distancia y en tamaños de 16px · Ideal para apps, estadios y hardware",
+        bTraitPill: "Masa Sólida 10pt",
+        bAttrKey: "attr2_bold"
+      },
+      {
+        id: 3,
+        phase: 1,
+        axis: "Atributo 3 · Frontera Espacial (Contenedor)",
+        isolatedAttribute: "ATRIBUTO AISLADO 3/12: SÍMBOLO LIBRE ABIERTO VS. ESCUDO PROTECTOR CERRADO",
+        ceterisParibus: "El monograma central es 100% idéntico en ambos lados; SOLO cambia la existencia de un escudo contenedor.",
+        plateImg: "assets/avi/step5_attr3_open_vs_enclosed.png",
+        aTitle: "Símbolo Libre en Espacio Abierto (Sin Frontera)",
+        aTag: "El isotipo respira y se expande sin límites perimetrales · Transmite libertad, innovación abierta y ligereza",
+        aTraitPill: "Símbolo Abierto Libre",
+        aAttrKey: "attr3_open",
+        bTitle: "Símbolo Inscrito en Escudo Protector Cerrado",
+        bTag: "El isotipo queda blindado dentro de una insignia autónoma · Transmite autoridad institucional, liga oficial y seguridad",
+        bTraitPill: "Escudo Contenedor",
+        bAttrKey: "attr3_enclosed"
+      },
+      {
+        id: 4,
+        phase: 1,
+        axis: "Atributo 4 · Eje Axial y Dinamismo",
+        isolatedAttribute: "ATRIBUTO AISLADO 4/12: EJE VERTICAL ESTÁTICO (0°) VS. IMPULSO CINÉTICO (+14°)",
+        ceterisParibus: "Misma geometría exacta del símbolo; SOLO cambia el ángulo de inclinación axial (0° vs +14°).",
+        plateImg: "assets/avi/step5_attr4_static_vs_kinetic.png",
+        aTitle: "Equilibrio Ortogonal Estático (Eje Vertical 0°)",
+        aTag: "Simetría bilateral de plomada · Proyecta estabilidad eterna, banca, gobernanza y orden arquitectónico",
+        aTraitPill: "Simetría Axial 0°",
+        aAttrKey: "attr4_static",
+        bTitle: "Impulso Cinético en Avance (Inclinación +14°)",
+        bTag: "Tensión direccional hacia el futuro · Proyecta aceleración, alto rendimiento deportivo y disrupción",
+        bTraitPill: "Impulso Cinético +14°",
+        bAttrKey: "attr4_kinetic"
+      },
+      {
+        id: 5,
+        phase: 1,
+        axis: "Atributo 5 · Relación Figura-Fondo (Gestalt)",
+        isolatedAttribute: "ATRIBUTO AISLADO 5/12: TRAZO POSITIVO EXPLÍCITO VS. ESPACIO NEGATIVO GESTALT",
+        ceterisParibus: "Misma silueta exterior e inicial de marca; SOLO cambia si la forma se dibuja con línea o por sustracción óptica.",
+        plateImg: "assets/avi/step5_attr5_gestalt_vs_line.png",
+        aTitle: "Construcción por Líneas Positivas Explícitas",
+        aTag: "Claridad literal y lectura técnica directa · Cada contorno está trazado de forma explícita",
+        aTraitPill: "Construcción Explícita",
+        aAttrKey: "attr5_explicit",
+        bTitle: "Sustracción Óptica de Espacio Negativo (Efecto Gestalt)",
+        bTag: "La forma emerge de la luz recortada sobre masa sólida (como la flecha de FedEx) · Recompensa visual inteligente",
+        bTraitPill: "Espacio Negativo Gestalt",
+        bAttrKey: "attr5_gestalt"
+      },
+      {
+        id: 6,
+        phase: 1,
+        axis: "Atributo 6 · Arquitectura de Empaque (Lockup)",
+        isolatedAttribute: "ATRIBUTO AISLADO 6/12: LOCKUP HORIZONTAL (16:9) VS. LOCKUP TOTÉMICO VERTICAL (1:1)",
+        ceterisParibus: "Exactamente el mismo símbolo y tipografía; SOLO cambia la relación espacial entre isotipo y nombre.",
+        plateImg: "assets/avi/step5_attr6_horizontal_vs_totem.png",
+        aTitle: "Arquitectura Horizontal Panorámica (Símbolo a la Izquierda)",
+        aTag: "Optimizado para cabeceras web, barras de navegación de software y lectura ejecutiva de izquierda a derecha",
+        aTraitPill: "Lockup Horizontal 16:9",
+        aAttrKey: "attr6_horizontal",
+        bTitle: "Arquitectura Totémica Vertical (Símbolo Superior Centrado)",
+        bTag: "Optimizado para estandartes, portadas editoriales, empaques de lujo y sellos simétricos de gala",
+        bTraitPill: "Lockup Totémico 1:1",
+        bAttrKey: "attr6_totem"
+      },
 
-      { id: 6, phase: 1, axis: "Grosor de Línea & Presencia", aTitle: "Líneas Finas de Alta Precisión", aTag: "Relojería suiza y sofisticación ligera", aLogoStyle: "fine_line", bTitle: "Trazos Gruesos de Máxima Tinta", bTag: "Visibilidad a distancia e impacto frontal", bLogoStyle: "heavy_block" },
-      { id: 7, phase: 1, axis: "Grosor de Línea & Presencia", aTitle: "Retícula Ortogonal Serena (90°)", aTag: "Calma, control y orden corporativo", aLogoStyle: "ortho_grid", bTitle: "Geometría Cinética Inclinada (12°)", bTag: "Velocidad, dinamismo y adrenalina", bLogoStyle: "kinetic_12" },
-      { id: 8, phase: 1, axis: "Grosor de Línea & Presencia", aTitle: "Curvas Áureas Orgánicas", aTag: "Cercanía humana y calidez", aLogoStyle: "golden_curve", bTitle: "Cortes Diamantados Angulares", bTag: "Energía pura y precisión de ingeniería", bLogoStyle: "diamond_cut" },
-      { id: 9, phase: 1, axis: "Grosor de Línea & Presencia", aTitle: "Trazos con Cortes Técnicos / Stencil", aTag: "Herencia atlética y funcional", aLogoStyle: "stencil_pro", bTitle: "Trazo Continuo en Bucle Sólido", bTag: "Unión total e integración sin costuras", bLogoStyle: "welded_loop" },
-      { id: 10, phase: 1, axis: "Grosor de Línea & Presencia", aTitle: "Espacio Negativo Inteligente (Gestalt)", aTag: "Descubrimiento óptico sutil", aLogoStyle: "negative_gestalt", bTitle: "Estrella de Triunfo Directa", bTag: "Lectura instantánea en 0.1s", bLogoStyle: "solid_star" },
+      // FASE II: ANATOMÍA TIPOGRÁFICA (1 SOLO ATRIBUTO A LA VEZ)
+      {
+        id: 7,
+        phase: 2,
+        axis: "Atributo 7 · Terminales Tipográficos (Sans vs. Serif)",
+        isolatedAttribute: "ATRIBUTO AISLADO 7/12: TERMINALES GEOMÉTRICOS PUROS VS. SERIFAS CINCELADAS",
+        ceterisParibus: "Mismo nombre de marca, mismo tamaño y mismo espaciado; SOLO cambia la presencia de serifas.",
+        aTitle: "Sans-Serif Geométrica de Ingeniería (Space Grotesk)",
+        aTag: "Terminales puros sin remates · Máxima nitidez en interfaces digitales, dashboards y ecosistemas tecnológicos",
+        aTraitPill: "Sans-Serif Geométrica",
+        aFont: "Space Grotesk",
+        aCase: "upper",
+        aTrack: "0.04em",
+        bTitle: "Serif Editorial de Alta Autoridad (Fraunces)",
+        bTag: "Remates cincelados con contraste caligráfico · Evoca patrimonio cultural, firmas legales y casas de lujo",
+        bTraitPill: "Serif Editorial de Autor",
+        bFont: "Fraunces",
+        bCase: "upper",
+        bTrack: "0.04em"
+      },
+      {
+        id: 8,
+        phase: 2,
+        axis: "Atributo 8 · Proporción de Caja Tipográfica",
+        isolatedAttribute: "ATRIBUTO AISLADO 8/12: CAJA CONDENSADA VERTICAL VS. CAJA ANCHA EXPANDIDA",
+        ceterisParibus: "Ambas son tipografías sin serifas en mayúsculas; SOLO cambia la proporción ancho/alto de cada letra.",
+        aTitle: "Display Condensada de Impacto Vertical (Bebas Neue)",
+        aTag: "Fuerte presencia vertical para marcadores deportivos, titulares de alto octanaje y señalética",
+        aTraitPill: "Proporción Condensada",
+        aFont: "Bebas Neue",
+        aCase: "upper",
+        aTrack: "0.06em",
+        bTitle: "Arquitectura Ancha Contemporánea (Syne / Plus Jakarta)",
+        bTag: "Caja abierta y panorámica que proyecta vanguardia europea, calma ejecutiva y modernidad",
+        bTraitPill: "Proporción Ancha Ejecutiva",
+        bFont: "Syne",
+        bCase: "upper",
+        bTrack: "0.04em"
+      },
+      {
+        id: 9,
+        phase: 2,
+        axis: "Atributo 9 · Densidad de Espaciado (Tracking)",
+        isolatedAttribute: "ATRIBUTO AISLADO 9/12: TRACKING EXPANDIDO DE LUJO (+0.22EM) VS. BLOQUE COMPACTO (-0.03EM)",
+        ceterisParibus: "Exactamente la misma fuente tipográfica (Plus Jakarta Sans Bold); SOLO cambia el aire entre letras.",
+        aTitle: "Tracking Expandido Cinematográfico (+0.22em Aire Imperial)",
+        aTag: "El silencio entre cada letra crea una atmósfera de lujo sereno, alta relojería y exclusividad",
+        aTraitPill: "Tracking +0.22em Lujo",
+        aFont: "Plus Jakarta Sans",
+        aCase: "upper",
+        aTrack: "0.22em",
+        bTitle: "Tracking Compacto de Fuerza Cohesiva (-0.03em Bloque Sólido)",
+        bTag: "Las letras se abrazan formando un logotipo monolítico contundente, cercano y de lectura instantánea",
+        bTraitPill: "Tracking -0.03em Sólido",
+        bFont: "Plus Jakarta Sans",
+        bCase: "upper",
+        bTrack: "-0.03em"
+      },
 
-      { id: 11, phase: 1, axis: "Polaridad Visual", aTitle: "Logo Oscuro sobre Fondo Claro", aTag: "Pureza editorial y papelería", aLogoStyle: "pos_swiss", bTitle: "Logo Luminoso sobre Fondo Oscuro", aTag: "Contraste nocturno en pantallas LED y video", bLogoStyle: "neg_stadium" },
-      { id: 12, phase: 1, axis: "Polaridad Visual", aTitle: "Radar de Conectividad & Ondas", aTag: "Ecosistema interconectado", aLogoStyle: "multi_radar", bTitle: "Forma Pura Ultra-Minimal", aTag: "Cero distracción, máxima síntesis", bLogoStyle: "ultra_minimal" },
-      { id: 13, phase: 1, axis: "Polaridad Visual", aTitle: "Sello Clásico con Doble Anillo", aTag: "Tradición y credibilidad de academia", aLogoStyle: "founder_seal", bTitle: "Asimetría Suiza Contemporánea", aTag: "Vanguardia de diseño europeo", bLogoStyle: "swiss_asym" },
-      { id: 14, phase: 1, axis: "Polaridad Visual", aTitle: "División de Tubo de Precisión", aTag: "Arquitectura limpia y simétrica", aLogoStyle: "split_pipe", bTitle: "Arco Superior de Corona", aTag: "Insignia de campeonato", bLogoStyle: "arch_crown" },
-      { id: 15, phase: 1, axis: "Polaridad Visual", aTitle: "Marco Modular Perimetral", aTag: "Panel digital de datos", aLogoStyle: "scoreboard_frame", bTitle: "Franjas Chevron de Avance", aTag: "Trayectoria y progreso continuo", bLogoStyle: "chevron_wings" },
-
-      { id: 16, phase: 1, axis: "Semiótica Vectorial", aTitle: "Cubo Isométrico 3D en Curvas", aTag: "Volumen y estructura tecnológica", aLogoStyle: "iso_cube", bTitle: "Hexágono Plano 2D", aTag: "Pureza para bordado y grabado", bLogoStyle: "flat_hex" },
-      { id: 17, phase: 1, axis: "Semiótica Vectorial", aTitle: "Retícula de Mira / Diana de Precisión", aTag: "Exactitud milimétrica", aLogoStyle: "crosshair_lock", bTitle: "Pirámide Escalonada Apex", aTag: "Liderazgo y cúspide", bLogoStyle: "apex_pyramid" },
-      { id: 18, phase: 1, axis: "Semiótica Vectorial", aTitle: "Monograma de Espejo Corp", aTag: "Simetría corporativa", aLogoStyle: "mirror_init", bTitle: "Frecuencia de Onda Senoidal", aTag: "Transmisión y agilidad", bLogoStyle: "wave_freq" },
-      { id: 19, phase: 1, axis: "Semiótica Vectorial", aTitle: "Escudo Cuadripartito", aTag: "Historia institucional sólida", aLogoStyle: "quart_shield", bTitle: "Rayo de Energía Dinámica", aTag: "Potencia instantánea", bLogoStyle: "bolt_power" },
-      { id: 20, phase: 1, axis: "Semiótica Vectorial", aTitle: "Pilar Monolítico Vertical", aTag: "Elegancia arquitectónica", aLogoStyle: "tall_pillar", bTitle: "Banda Panorámica 16:9", aTag: "Presencia horizontal en pantallas", bLogoStyle: "wide_band" },
-
-      { id: 21, phase: 1, axis: "Sello & Escala", aTitle: "Escudo Invertido de Alto Contraste", aTag: "Lectura sobre cualquier superficie", aLogoStyle: "inv_shield", bTitle: "Anillo Doble de Certificación", aTag: "Garantía de estándar técnico", bLogoStyle: "iso_ring" },
-      { id: 22, phase: 1, axis: "Sello & Escala", aTitle: "Poste de Meta / Portal de Triunfo", aTag: "Territorio de logro y meta", aLogoStyle: "goalpost_pro", bTitle: "Estrella de Cinco Puntas de Oro", aTag: "Máxima distinción y excelencia", bLogoStyle: "champ_star" },
-      { id: 23, phase: 1, axis: "Sello & Escala", aTitle: "Niveles Escalonados de Estadio", aTag: "Comunidad y convocatoria", aLogoStyle: "stadium_steps", bTitle: "Anillo Orbital Satelital", aTag: "Conectividad en red global", bLogoStyle: "orbit_ring" },
-      { id: 24, phase: 1, axis: "Sello & Escala", aTitle: "Listón Heráldico de Honor", aTag: "Autoridad y tradición", aLogoStyle: "ribbon_crest", bTitle: "Cruz Suiza de Precisión", aTag: "Simplicidad funcional pura", bLogoStyle: "swiss_cross" },
-      { id: 25, phase: 1, axis: "Sello & Escala", aTitle: "Bloque Monolítico Grabado", aTag: "Solidez estructural", aLogoStyle: "mono_engraved", bTitle: "Líneas Paralelas de Movimiento", aTag: "Fluidez y dinamismo", bLogoStyle: "parallel_lines" },
-
-      // FASE II: FUENTES
-      { id: 26, phase: 2, axis: "Tipografía Primaria", aTitle: "Space Grotesk (Ingeniería Técnica Geométrica)", aTag: "Terminales precisos y lectura impecable en displays", aFont: "Space Grotesk", aCase: "upper", aTrack: "0.02em", bTitle: "Fraunces (Serif Editorial de Alto Contraste)", bTag: "Autoridad clásica y prestigio institucional", bFont: "Fraunces", bCase: "title", bTrack: "0em" },
-      { id: 27, phase: 2, axis: "Tipografía Primaria", aTitle: "Bebas Neue (Display Condensada de Gran Altura)", aTag: "Impacto vertical para títulos y marcadores", aFont: "Bebas Neue", aCase: "upper", aTrack: "0.06em", bTitle: "Plus Jakarta Sans (Neo-Grotesca Contemporánea)", bTag: "Equilibrio corporativo y claridad moderna", bFont: "Plus Jakarta Sans", bCase: "title", bTrack: "-0.02em" },
-      { id: 28, phase: 2, axis: "Tipografía Primaria", aTitle: "Chakra Petch (Display Angular Tecnológica)", aTag: "Esquinas biseladas a 45° estilo hardware", aFont: "Chakra Petch", aCase: "upper", aTrack: "0.04em", bTitle: "Playfair Display (Serif de Lujo Clásico)", bTag: "Contraste dramático entre trazos", bFont: "Playfair Display", bCase: "title", bTrack: "0.01em" },
-      { id: 29, phase: 2, axis: "Tipografía Primaria", aTitle: "Archivo Black (Grotesca Pesada de Impacto)", aTag: "Masa sólida para exteriores e industria", aFont: "Archivo Black", aCase: "upper", aTrack: "-0.01em", bTitle: "Cormorant Garamond (Humanista Renacentista)", bTag: "Ligereza poética y refinamiento", bFont: "Cormorant Garamond", bCase: "title", bTrack: "0.03em" },
-      { id: 30, phase: 2, axis: "Tipografía Primaria", aTitle: "Oswald (Gótica Atlética de Alta Densidad)", aTag: "Estructura compacta de campeonato", aFont: "Oswald", aCase: "upper", aTrack: "0.03em", bTitle: "Syne (Vanguardia Disruptiva Europea)", bTag: "Proporciones amplias de estudio de autor", bFont: "Syne", bCase: "upper", bTrack: "0.02em" },
-
-      // FASE III: PALETAS DE COLOR
-      { id: 46, phase: 3, axis: "Paleta Cromática & Contraste AAA", aTitle: "Naranja Señal LED & Carbón Obsidiana", aTag: "HEX #0E1116 · #EA580C · #16A34A (Contraste 17.8:1)", aPalette: ["#FAF8F5", "#0E1116", "#EA580C", "#16A34A"], bTitle: "Azul Marino Institucional & Oro de Liga", bTag: "HEX #0F172A · #1D4ED8 · #FACC15 (Prestigio)", bPalette: ["#F8FAFC", "#0F172A", "#1D4ED8", "#D97706"] },
-      { id: 47, phase: 3, axis: "Paleta Cromática & Contraste AAA", aTitle: "Rojo Escarlata & Ámbar Deportivo", aTag: "HEX #09090B · #DC2626 · #FACC15 (Energía Pura)", aPalette: ["#FFFFFF", "#09090B", "#DC2626", "#EAB308"], bTitle: "Verde Esmeralda & Bronce Editorial", bTag: "HEX #064E3B · #10B981 · #B84A27 (Territorio Cancha)", bPalette: ["#FAF8F5", "#064E3B", "#059669", "#B84A27"] },
-      { id: 48, phase: 3, axis: "Paleta Cromática & Contraste AAA", aTitle: "Cian Eléctrico & Titanio Profundo", aTag: "HEX #0B0F19 · #0284C7 · #38BDF8 (Precisión Digital)", aPalette: ["#F1F5F9", "#0B0F19", "#0284C7", "#0D9488"], bTitle: "Terracota Suizo & Carbón Editorial", bTag: "HEX #FAF8F5 · #141413 · #B84A27 (Calidez de Estudio)", bPalette: ["#FAF8F5", "#141413", "#B84A27", "#1B5E4A"] }
-    ];
-
-    const ALL_50_LOGO_STYLES = [
-      "horiz_hex", "stack_shield", "horiz_mono", "badge_stadium", "horiz_circle",
-      "horiz_oct", "wordmark_lig", "horiz_pulse", "open_wing", "plate_bolted",
-      "fine_line", "heavy_block", "ortho_grid", "kinetic_12", "golden_curve",
-      "diamond_cut", "stencil_pro", "welded_loop", "negative_gestalt", "solid_star",
-      "pos_swiss", "neg_stadium", "multi_radar", "ultra_minimal", "founder_seal",
-      "swiss_asym", "split_pipe", "arch_crown", "scoreboard_frame", "chevron_wings",
-      "iso_cube", "flat_hex", "crosshair_lock", "apex_pyramid", "mirror_init",
-      "wave_freq", "quart_shield", "bolt_power", "tall_pillar", "wide_band",
-      "inv_shield", "iso_ring", "goalpost_pro", "champ_star", "stadium_steps",
-      "orbit_ring", "ribbon_crest", "swiss_cross", "mono_engraved", "parallel_lines"
+      // FASE III: POLARIDAD, TEMPERATURA Y MATERIALIDAD (1 SOLO ATRIBUTO A LA VEZ)
+      {
+        id: 10,
+        phase: 3,
+        axis: "Atributo 10 · Polaridad Lumínica Dominante",
+        isolatedAttribute: "ATRIBUTO AISLADO 10/12: EDITORIAL DIURNO ALABASTRO (#FAF8F5) VS. BÓVEDA OBSIDIANA (#090D16)",
+        ceterisParibus: "El logotipo y el acento dorado son idénticos; SOLO se invierte la polaridad lumínica del lienzo.",
+        aTitle: "Modo Editorial Claro Alabastro (#FAF8F5 con Tinta #090D16)",
+        aTag: "Claridad diurna de museo y galería suiza · Ideal para documentos estratégicos, salud, educación y lujo diurno",
+        aTraitPill: "Polaridad Diurna #FAF8F5",
+        aPalette: ["#FAF8F5", "#090D16", "#D4AF37", "#1E293B"],
+        bTitle: "Modo Bóveda Nocturna Obsidiana (#090D16 con Luz #FFFFFF)",
+        bTag: "Dramatismo cinematográfico tipo Keynote de Apple · Ideal para software IA, pantallas OLED y marcas nocturnas",
+        bTraitPill: "Polaridad Obsidiana #090D16",
+        bPalette: ["#090D16", "#FFFFFF", "#D4AF37", "#38BDF8"]
+      },
+      {
+        id: 11,
+        phase: 3,
+        axis: "Atributo 11 · Temperatura Cromática Primaria",
+        isolatedAttribute: "ATRIBUTO AISLADO 11/12: ESPECTRO CÁLIDO (ORO IMPERIAL) VS. ESPECTRO FRÍO (CIAN COBALTO)",
+        ceterisParibus: "Mismo fondo oscuro #090D16 y mismo logotipo; SOLO cambia la temperatura térmica del color primario.",
+        aTitle: "Temperatura Cálida Soberana · Oro Imperial (#D4AF37 & Ámbar)",
+        aTag: "Calidez solar, prestigio clásico, hospitalidad de alto nivel y valor atemporal (Contraste AAA)",
+        aTraitPill: "Temperatura Cálida Oro",
+        aPalette: ["#090D16", "#FAF8F5", "#D4AF37", "#F59E0B"],
+        bTitle: "Temperatura Fría Tecnológica · Cian Cobalto (#0284C7 & Hielo)",
+        bTag: "Precisión algorítmica, infraestructura cloud, ciberseguridad y confianza clínica",
+        bTraitPill: "Temperatura Fría Cian",
+        bPalette: ["#090D16", "#F8FAFC", "#0284C7", "#38BDF8"]
+      },
+      {
+        id: 12,
+        phase: 3,
+        axis: "Atributo 12 · Energía y Saturación del Acento",
+        isolatedAttribute: "ATRIBUTO AISLADO 12/12: ALTA ENERGÍA CINÉTICA (#EA580C) VS. SOBRIEDAD ESMERALDA (#059669)",
+        ceterisParibus: "Misma estructura de marca y contraste AAA; SOLO cambia el nivel de adrenalina del color de acento.",
+        aTitle: "Acento de Alta Energía · Naranja Señal Cinético (#EA580C)",
+        aTag: "Llamado a la acción inmediato, adrenalina deportiva y visibilidad extrema en cualquier soporte",
+        aTraitPill: "Acento Naranja Cinético",
+        aPalette: ["#0E1116", "#FAF8F5", "#EA580C", "#FACC15"],
+        bTitle: "Acento de Sobriedad Institucional · Esmeralda Profundo (#059669)",
+        bTag: "Crecimiento sostenible, estabilidad financiera, bienestar y permanencia patrimonial",
+        bTraitPill: "Acento Esmeralda Institucional",
+        bPalette: ["#091512", "#FAF8F5", "#059669", "#D4AF37"]
+      }
     ];
 
     function splitBrandNameInto1to1Deck(raw) {
@@ -4804,59 +5297,163 @@
       return { line1, line2, initials };
     }
 
-    function buildUnique50EmblemCenterSVG(idx, fg, bg, initials) {
-      const patterns = [
-        `<polygon points="0,-24 21,-12 21,12 0,24 -21,12 -21,-12" stroke="${fg}" stroke-width="3" fill="none"/><text x="0" y="4" fill="${fg}" font-family="sans-serif" font-weight="800" font-size="9" text-anchor="middle">${initials}</text>`,
-        `<path d="M0,-24 L22,-14 V4 C22,18 0,25 0,25 C0,25 -22,18 -22,4 V-14 Z" fill="${fg}"/><text x="0" y="5" fill="${bg}" font-family="sans-serif" font-weight="800" font-size="10" text-anchor="middle">${initials}</text>`,
-        `<circle cx="0" cy="0" r="22" stroke="${fg}" stroke-width="2.8" fill="none"/><circle cx="0" cy="0" r="14" fill="${fg}"/><text x="0" y="4" fill="${bg}" font-family="sans-serif" font-weight="800" font-size="8" text-anchor="middle">${initials}</text>`,
-        `<rect x="-22" y="-18" width="44" height="36" rx="6" fill="${fg}"/><text x="0" y="5" fill="${bg}" font-family="sans-serif" font-weight="900" font-size="12" text-anchor="middle">${initials}</text>`,
-        `<circle cx="0" cy="0" r="22" stroke="${fg}" stroke-width="3" fill="none"/><line x1="-16" y1="0" x2="16" y2="0" stroke="${fg}" stroke-width="3"/><line x1="0" y1="-16" x2="0" y2="16" stroke="${fg}" stroke-width="3"/>`,
-        `<polygon points="-10,-22 10,-22 22,-10 22,10 10,22 -10,22 -22,10 -22,-10" fill="${fg}"/><text x="0" y="4" fill="${bg}" font-family="sans-serif" font-weight="700" font-size="9" text-anchor="middle">${initials}</text>`
-      ];
-      return patterns[idx % patterns.length];
-    }
-
-    function renderFinishedBWLogoSVG(styleKey, rawBrandName) {
-      const styleIdx = Math.max(0, ALL_50_LOGO_STYLES.indexOf(styleKey));
+    function renderSingleAttributeMorphologySVG(attrKey, rawBrandName) {
       const { line1, line2, initials } = splitBrandNameInto1to1Deck(rawBrandName);
-      const isDark = (styleKey === "neg_stadium" || styleKey === "inv_shield" || styleIdx % 2 === 1);
-      const bg = isDark ? "#0A0C13" : "#FFFFFF";
-      const fg = isDark ? "#FFFFFF" : "#0A0C13";
-      const emblemCenter = buildUnique50EmblemCenterSVG(styleIdx, fg, bg, initials);
+      const bNameUpper = (rawBrandName || "THEBESTBRAND").toUpperCase();
+      let centerArtwork = "";
+      let calloutLabel = "";
+
+      switch (attrKey) {
+        case "attr1_curves":
+          calloutLabel = "VARIABLE AISLADA: RADIO CURVO CONTINUO (R = 28px)";
+          centerArtwork = `
+            <rect x="-46" y="-46" width="92" height="92" rx="28" stroke="#FFFFFF" stroke-width="4.5" fill="none"/>
+            <circle cx="0" cy="0" r="22" stroke="#D4AF37" stroke-width="2" stroke-dasharray="3 3" fill="none"/>
+            <path d="M-18,-6 C-18,-18 18,-18 18,-6 C18,6 -18,6 -18,18 C-18,26 18,26 18,14" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+            <circle cx="-34" cy="-34" r="10" stroke="#D4AF37" stroke-width="1.8" fill="rgba(212,175,55,0.18)"/>
+          `;
+          break;
+        case "attr1_angles":
+          calloutLabel = "VARIABLE AISLADA: CORTE FACETADO ANGULAR (45° · R = 0px)";
+          centerArtwork = `
+            <polygon points="-28,-46 28,-46 46,-28 46,28 28,46 -28,46 -46,28 -46,-28" stroke="#FFFFFF" stroke-width="4.5" stroke-linejoin="miter" fill="none"/>
+            <polygon points="0,-24 24,0 0,24 -24,0" stroke="#D4AF37" stroke-width="2" stroke-dasharray="3 3" fill="none"/>
+            <polyline points="-18,-16 16,-16 -16,16 18,16" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+            <polygon points="-46,-28 -28,-46 -28,-28" fill="rgba(212,175,55,0.35)" stroke="#D4AF37" stroke-width="1.5"/>
+          `;
+          break;
+        case "attr2_fine":
+          calloutLabel = "VARIABLE AISLADA: CALIBRE DE LÍNEA FINA (1.5 pt)";
+          centerArtwork = `
+            <polygon points="0,-48 42,-24 42,24 0,48 -42,24 -42,-24" stroke="#FFFFFF" stroke-width="1.6" fill="none"/>
+            <polygon points="0,-30 26,-15 26,15 0,30 -26,15 -26,-15" stroke="#FFFFFF" stroke-width="1.4" fill="none"/>
+            <text x="0" y="6" fill="#FFFFFF" font-family="'Space Grotesk',sans-serif" font-weight="400" font-size="16" letter-spacing="3" text-anchor="middle">${initials}</text>
+            <line x1="48" y1="-24" x2="64" y2="-24" stroke="#D4AF37" stroke-width="1.5"/>
+            <text x="68" y="-20" fill="#D4AF37" font-family="monospace" font-size="9" font-weight="700">1.5pt</text>
+          `;
+          break;
+        case "attr2_bold":
+          calloutLabel = "VARIABLE AISLADA: MASA SÓLIDA MONUMENTAL (10 pt)";
+          centerArtwork = `
+            <polygon points="0,-48 42,-24 42,24 0,48 -42,24 -42,-24" stroke="#FFFFFF" stroke-width="10" stroke-linejoin="round" fill="none"/>
+            <polygon points="0,-26 22,-13 22,13 0,26 -22,13 -22,-13" fill="#FFFFFF"/>
+            <text x="0" y="6" fill="#090D16" font-family="'Space Grotesk',sans-serif" font-weight="900" font-size="15" text-anchor="middle">${initials}</text>
+            <line x1="50" y1="-24" x2="64" y2="-24" stroke="#D4AF37" stroke-width="3"/>
+            <text x="68" y="-20" fill="#D4AF37" font-family="monospace" font-size="9" font-weight="700">10pt</text>
+          `;
+          break;
+        case "attr3_open":
+          calloutLabel = "VARIABLE AISLADA: SÍMBOLO LIBRE SIN FRONTERA PERIMETRAL";
+          centerArtwork = `
+            <circle cx="0" cy="0" r="48" stroke="rgba(212,175,55,0.28)" stroke-width="1.2" stroke-dasharray="4 4" fill="none"/>
+            <path d="M0,-32 L28,0 L0,32 L-28,0 Z" stroke="#FFFFFF" stroke-width="4" fill="none"/>
+            <circle cx="0" cy="0" r="8" fill="#D4AF37"/>
+            <text x="0" y="5" fill="#FFFFFF" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="11" text-anchor="middle">${initials}</text>
+          `;
+          break;
+        case "attr3_enclosed":
+          calloutLabel = "VARIABLE AISLADA: SÍMBOLO INSCRITO EN ESCUDO CERRADO";
+          centerArtwork = `
+            <path d="M0,-50 L44,-32 V6 C44,32 0,50 0,50 C0,50 -44,32 -44,6 V-32 Z" stroke="#FFFFFF" stroke-width="4" fill="rgba(255,255,255,0.06)"/>
+            <path d="M0,-32 L28,0 L0,32 L-28,0 Z" stroke="#FFFFFF" stroke-width="4" fill="none"/>
+            <circle cx="0" cy="0" r="8" fill="#D4AF37"/>
+            <text x="0" y="5" fill="#FFFFFF" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="11" text-anchor="middle">${initials}</text>
+          `;
+          break;
+        case "attr4_static":
+          calloutLabel = "VARIABLE AISLADA: EJE ORTOGONAL SIMÉTRICO (0° VERTICAL)";
+          centerArtwork = `
+            <line x1="0" y1="-56" x2="0" y2="56" stroke="#D4AF37" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <rect x="-34" y="-34" width="68" height="68" rx="10" stroke="#FFFFFF" stroke-width="4" fill="none"/>
+            <text x="0" y="7" fill="#FFFFFF" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="20" text-anchor="middle">${initials}</text>
+            <text x="44" y="-36" fill="#D4AF37" font-family="monospace" font-size="10" font-weight="700">0.0°</text>
+          `;
+          break;
+        case "attr4_kinetic":
+          calloutLabel = "VARIABLE AISLADA: EJE CINÉTICO INCLINADO (+14° AVANCE)";
+          centerArtwork = `
+            <line x1="-14" y1="56" x2="14" y2="-56" stroke="#D4AF37" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <g transform="skewX(-14)">
+              <rect x="-34" y="-34" width="68" height="68" rx="10" stroke="#FFFFFF" stroke-width="4" fill="none"/>
+              <text x="0" y="7" fill="#FFFFFF" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="20" text-anchor="middle">${initials}</text>
+            </g>
+            <text x="46" y="-36" fill="#D4AF37" font-family="monospace" font-size="10" font-weight="700">+14°</text>
+          `;
+          break;
+        case "attr5_explicit":
+          calloutLabel = "VARIABLE AISLADA: TRAZO POSITIVO EXPLÍCITO";
+          centerArtwork = `
+            <rect x="-42" y="-42" width="84" height="84" rx="14" stroke="#FFFFFF" stroke-width="3.5" fill="none"/>
+            <polygon points="0,-26 24,18 -24,18" stroke="#FFFFFF" stroke-width="3.5" fill="none"/>
+            <text x="0" y="12" fill="#D4AF37" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="12" text-anchor="middle">${initials}</text>
+          `;
+          break;
+        case "attr5_gestalt":
+          calloutLabel = "VARIABLE AISLADA: SUSTRACCIÓN ÓPTICA (ESPACIO NEGATIVO GESTALT)";
+          centerArtwork = `
+            <rect x="-42" y="-42" width="84" height="84" rx="14" fill="#FFFFFF"/>
+            <polygon points="0,-28 26,20 -26,20" fill="#090D16"/>
+            <text x="0" y="13" fill="#FFFFFF" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="12" text-anchor="middle">${initials}</text>
+          `;
+          break;
+        case "attr6_horizontal":
+          calloutLabel = "VARIABLE AISLADA: EMPAQUE HORIZONTAL PANORÁMICO (16:9)";
+          centerArtwork = `
+            <g transform="translate(-78, 0)">
+              <rect x="-26" y="-26" width="52" height="52" rx="12" stroke="#FFFFFF" stroke-width="3.5" fill="none"/>
+              <text x="0" y="6" fill="#D4AF37" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="15" text-anchor="middle">${initials}</text>
+            </g>
+            <line x1="-38" y1="-22" x2="-38" y2="22" stroke="rgba(212,175,55,0.45)" stroke-width="1.5"/>
+            <text x="-24" y="-2" fill="#FFFFFF" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="16" letter-spacing="1.5" text-anchor="start">${line1}</text>
+            <text x="-24" y="16" fill="#D4AF37" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="11" letter-spacing="2.5" text-anchor="start">${line2}</text>
+          `;
+          break;
+        case "attr6_totem":
+        default:
+          calloutLabel = "VARIABLE AISLADA: EMPAQUE TOTÉMICO VERTICAL CENTRADO (1:1)";
+          centerArtwork = `
+            <g transform="translate(0, -18)">
+              <rect x="-24" y="-24" width="48" height="48" rx="12" stroke="#FFFFFF" stroke-width="3.5" fill="none"/>
+              <text x="0" y="6" fill="#D4AF37" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="14" text-anchor="middle">${initials}</text>
+            </g>
+            <text x="0" y="26" fill="#FFFFFF" font-family="'Space Grotesk',sans-serif" font-weight="800" font-size="14" letter-spacing="2" text-anchor="middle">${bNameUpper.slice(0, 16)}</text>
+            <text x="0" y="40" fill="#D4AF37" font-family="monospace" font-size="8.5" letter-spacing="3" text-anchor="middle">ESTD · MMXXVI</text>
+          `;
+          break;
+      }
 
       return `
-        <svg width="100%" height="100%" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
-          <rect width="320" height="140" fill="${bg}"/>
-          <g transform="translate(80, 70)">
-            <circle cx="0" cy="0" r="54" stroke="${fg}" stroke-width="2" fill="none"/>
-            <g transform="translate(0, -10) scale(0.9)">${emblemCenter}</g>
-            <text x="0" y="24" fill="${fg}" font-family="'Inter',sans-serif" font-weight="800" font-size="10" text-anchor="middle">${line1}</text>
-            <text x="0" y="36" fill="${fg}" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="8" text-anchor="middle">${line2}</text>
+        <svg width="100%" height="100%" viewBox="0 0 360 185" xmlns="http://www.w3.org/2000/svg">
+          <rect width="360" height="185" fill="#090D16"/>
+          <line x1="0" y1="95" x2="360" y2="95" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+          <line x1="180" y1="28" x2="180" y2="165" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+          <rect x="0" y="0" width="360" height="26" fill="rgba(212,175,55,0.12)"/>
+          <text x="14" y="17" fill="#F3E5AB" font-family="monospace" font-weight="700" font-size="9.5" letter-spacing="0.8">${calloutLabel}</text>
+          <g transform="translate(180, 98)">
+            ${centerArtwork}
           </g>
-          <g transform="translate(220, 70)">
-            <rect x="-48" y="-48" width="96" height="96" rx="14" stroke="${fg}" stroke-width="2" fill="none"/>
-            <g transform="translate(0, -10) scale(0.9)">${emblemCenter}</g>
-            <text x="0" y="24" fill="${fg}" font-family="'Inter',sans-serif" font-weight="800" font-size="10" text-anchor="middle">${line1}</text>
-            <text x="0" y="36" fill="${fg}" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="8" text-anchor="middle">${line2}</text>
-          </g>
+          <text x="180" y="174" fill="rgba(255,255,255,0.55)" font-family="'Space Grotesk',sans-serif" font-weight="700" font-size="9.5" letter-spacing="2" text-anchor="middle">ESPÉCIMEN: ${bNameUpper} · CETERIS PARIBUS</text>
         </svg>
       `;
     }
 
-    function renderFontVsFontSpecimenHTML(fontName, textCase, tracking, rawBrandName) {
+    function renderFontVsFontSpecimenHTML(fontName, textCase, tracking, rawBrandName, isolatedLabel) {
       const { line1, line2 } = splitBrandNameInto1to1Deck(rawBrandName);
+      const fullBrand = (rawBrandName || "TheBestBrand").trim();
+      const displayStr = textCase === "upper" ? fullBrand.toUpperCase() : fullBrand;
       return `
-        <div style="width:100%; height:100%; background:#0E1118; color:#FFFFFF; padding:18px; display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
-          <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px;">
-            <span style="font-family:var(--font-mono); font-size:0.68rem; color:#A5B4FC;">TIPOGRAFÍA · ${fontName.toUpperCase()}</span>
-            <span style="font-family:var(--font-mono); font-size:0.65rem; color:#94A3B8;">Tracking ${tracking}</span>
+        <div style="width:100%; height:100%; background:#090D16; color:#FFFFFF; padding:14px 18px; display:flex; flex-direction:column; justify-content:space-between; text-align:left; border-bottom:1px solid rgba(212,175,55,0.2);">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px;">
+            <span style="font-family:var(--font-mono); font-size:0.66rem; color:#F3E5AB; font-weight:700;">FAMILIA: ${fontName.toUpperCase()}</span>
+            <span style="font-family:var(--font-mono); font-size:0.64rem; color:#38BDF8; background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:99px;">Tracking ${tracking}</span>
           </div>
-          <div style="font-family:'${fontName}', sans-serif; font-size:1.5rem; font-weight:800; letter-spacing:${tracking}; margin:10px 0;">
-            <div>${textCase === "upper" ? line1.toUpperCase() : line1}</div>
-            <div style="color:#6366F1;">${textCase === "upper" ? line2.toUpperCase() : line2}</div>
+          <div style="font-family:'${fontName}', serif; font-size:1.65rem; font-weight:800; letter-spacing:${tracking}; margin:8px 0; line-height:1.15; color:#FFFFFF;">
+            <div>${displayStr}</div>
+            <div style="font-size:0.88rem; color:#D4AF37; margin-top:4px; font-weight:600;">${line1} · ${line2}</div>
           </div>
-          <div style="font-family:'${fontName}', sans-serif; font-size:0.8rem; color:#CBD5E1;">
-            Aa Bb Cc Dd Ee Ff · 0 1 2 3 4 5 6 7 8 9
+          <div style="display:flex; justify-content:space-between; align-items:center; font-family:'${fontName}', sans-serif; font-size:0.76rem; color:#94A3B8; border-top:1px dashed rgba(255,255,255,0.1); padding-top:6px;">
+            <span>Aa Bb Cc Dd Ee Ff Gg · 0123456789</span>
+            <span style="font-family:var(--font-mono); font-size:0.62rem; color:#10B981;">1 ATRIBUTO AISLADO</span>
           </div>
         </div>
       `;
@@ -4866,23 +5463,59 @@
       const { line1, line2, initials } = splitBrandNameInto1to1Deck(rawBrandName);
       const [bg, ink, pri, sec] = palette;
       return `
-        <div style="width:100%; height:100%; background:${bg}; color:${ink}; padding:18px; display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
-          <div style="display:flex; align-items:center; gap:16px;">
-            <div style="width:58px; height:58px; border-radius:50%; background:${ink}; color:#FFF; display:grid; place-items:center; font-family:'Inter',sans-serif; font-weight:800; font-size:1.1rem; border:2px solid ${pri};">
+        <div style="width:100%; height:100%; background:${bg}; color:${ink}; padding:16px 18px; display:flex; flex-direction:column; justify-content:space-between; text-align:left;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-family:var(--font-mono); font-size:0.63rem; font-weight:700; color:${pri}; letter-spacing:0.06em;">LIENZO ${bg} · ACENTO ${pri}</span>
+            <span style="font-family:var(--font-mono); font-size:0.62rem; padding:2px 7px; border-radius:99px; background:${pri}; color:#090D16; font-weight:800;">WCAG AAA</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:16px; margin:6px 0;">
+            <div style="width:56px; height:56px; border-radius:14px; background:${ink}; color:${bg}; display:grid; place-items:center; font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:1.15rem; border:2.5px solid ${pri}; box-shadow:0 6px 18px rgba(0,0,0,0.22);">
               ${initials}
             </div>
             <div>
-              <div style="font-family:'Inter',sans-serif; font-weight:800; font-size:1.2rem; line-height:1.1;">${line1}</div>
-              <div style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:0.85rem; color:${pri};">${line2}</div>
+              <div style="font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:1.25rem; line-height:1.1; color:${ink};">${line1}</div>
+              <div style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; font-size:0.86rem; color:${pri}; letter-spacing:0.08em; margin-top:2px;">${line2}</div>
             </div>
           </div>
-          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin-top:12px;">
+          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin-top:6px;">
             ${palette.map(hex => `
-              <div style="background:${hex}; border-radius:6px; height:24px; border:1px solid rgba(255,255,255,0.2);"></div>
+              <div style="background:${hex}; border-radius:6px; height:24px; border:1px solid rgba(128,128,128,0.35); display:flex; align-items:center; justify-content:center;">
+                <span style="font-family:var(--font-mono); font-size:0.58rem; font-weight:700; background:rgba(0,0,0,0.55); color:#FFF; padding:1px 4px; border-radius:3px;">${hex}</span>
+              </div>
             `).join("")}
           </div>
         </div>
       `;
+    }
+
+    function updateStep5LiveTraitsUI() {
+      const traitsRow = document.getElementById("step5LiveTraitsRow");
+      const closureSummary = document.getElementById("step5ClosureTraitsSummary");
+      const chosenTraits = [];
+      SIXTY_PROFESSIONAL_PAIRS.forEach(pair => {
+        const side = userPairSelections[pair.id];
+        if (side === "A") chosenTraits.push({ id: pair.id, label: pair.aTraitPill, axis: pair.axis });
+        else if (side === "B") chosenTraits.push({ id: pair.id, label: pair.bTraitPill, axis: pair.axis });
+      });
+
+      if (traitsRow) {
+        if (chosenTraits.length === 0) {
+          traitsRow.innerHTML = `<span class="trait-discovery-pill">Seleccioná A o B en cada duelo para bloquear tus rasgos morfológicos, tipográficos y cromáticos</span>`;
+        } else {
+          traitsRow.innerHTML = chosenTraits.map(t =>
+            `<span class="trait-discovery-pill"><span class="dot"></span>#${t.id} ${t.label}</span>`
+          ).join("");
+        }
+      }
+
+      if (closureSummary) {
+        if (chosenTraits.length === 0) {
+          closureSummary.innerHTML = `Con tus selecciones A/B has bloqueado: <strong style="color:#F3E5AB;">Vértices con Intención · Calibre de Línea · Tipografía Primaria (${canvasState.primary_font || 'Space Grotesk'}) · Paleta Soberana AAA</strong>. ¡Tu identidad está lista para compilar el Brandbook Oficial en el Paso 6!`;
+        } else {
+          const pillsHtml = chosenTraits.map(t => `<span class="trait-discovery-pill" style="margin:2px;"><span class="dot"></span>${t.label}</span>`).join(" ");
+          closureSummary.innerHTML = `Has bloqueado <strong>${chosenTraits.length} de ${SIXTY_PROFESSIONAL_PAIRS.length} atributos aislados</strong> para <strong>${canvasState.brandName || 'TheBestBrand'}</strong>:<div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:6px;">${pillsHtml}</div>`;
+        }
+      }
     }
 
     function renderCurrentPairCard() {
@@ -4895,51 +5528,84 @@
       let visA = "";
       let visB = "";
       if (pair.phase === 1) {
-        visA = renderFinishedBWLogoSVG(pair.aLogoStyle, bName);
-        visB = renderFinishedBWLogoSVG(pair.bLogoStyle, bName);
+        visA = renderSingleAttributeMorphologySVG(pair.aAttrKey, bName);
+        visB = renderSingleAttributeMorphologySVG(pair.bAttrKey, bName);
       } else if (pair.phase === 2) {
-        visA = renderFontVsFontSpecimenHTML(pair.aFont, pair.aCase, pair.aTrack, bName);
-        visB = renderFontVsFontSpecimenHTML(pair.bFont, pair.bCase, pair.bTrack, bName);
+        visA = renderFontVsFontSpecimenHTML(pair.aFont, pair.aCase, pair.aTrack, bName, pair.isolatedAttribute);
+        visB = renderFontVsFontSpecimenHTML(pair.bFont, pair.bCase, pair.bTrack, bName, pair.isolatedAttribute);
       } else {
         visA = renderColorPaletteOnLogoHTML(pair.aPalette, bName);
         visB = renderColorPaletteOnLogoHTML(pair.bPalette, bName);
       }
 
+      const attrBadge = document.getElementById("step5SingleAttributeBadge");
+      if (attrBadge) {
+        attrBadge.textContent = pair.isolatedAttribute || `ATRIBUTO AISLADO ${pair.id}/12: ${pair.axis.toUpperCase()}`;
+      }
+
+      const studioPlateBanner = pair.plateImg ? `
+        <div style="grid-column: 1 / -1; background:#090D16; border:1px solid rgba(212,175,55,0.28); border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <img src="${pair.plateImg}" alt="${pair.axis}" style="width:110px; height:56px; object-fit:cover; border-radius:8px; border:1px solid rgba(212,175,55,0.4);" />
+            <div>
+              <div style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:#D4AF37; letter-spacing:0.08em;">PLACA DE REFERENCIA KANSEI · CETERIS PARIBUS</div>
+              <div style="font-size:0.8rem; color:#E2E8F0; font-weight:600;">${pair.ceterisParibus}</div>
+            </div>
+          </div>
+          <span style="font-family:var(--font-mono); font-size:0.68rem; color:#10B981; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); padding:4px 10px; border-radius:99px; font-weight:700;">1 Variable Aislada · 0 Ruido</span>
+        </div>
+      ` : `
+        <div style="grid-column: 1 / -1; background:#090D16; border:1px solid rgba(212,175,55,0.28); border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;">
+          <div>
+            <div style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:#D4AF37; letter-spacing:0.08em;">PROTOCOLO CETERIS PARIBUS · 1 SOLO ATRIBUTO A LA VEZ</div>
+            <div style="font-size:0.8rem; color:#E2E8F0; font-weight:600;">${pair.ceterisParibus}</div>
+          </div>
+          <span style="font-family:var(--font-mono); font-size:0.68rem; color:#10B981; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); padding:4px 10px; border-radius:99px; font-weight:700;">1 Variable Aislada · 0 Ruido</span>
+        </div>
+      `;
+
       container.innerHTML = `
-        <div class="mockup-card ${chosen === 'A' ? 'selected' : ''}" onclick="choosePairOption(${pair.id}, 'A')">
-          <div class="mockup-viewport" style="height:160px; padding:0; overflow:hidden;">
+        ${studioPlateBanner}
+        <div class="mockup-card ${chosen === 'A' ? 'selected' : ''}" onclick="choosePairOption(${pair.id}, 'A')" style="cursor:pointer;">
+          <div class="mockup-viewport" style="height:185px; padding:0; overflow:hidden; border:1px solid rgba(255,255,255,0.12);">
             ${visA}
           </div>
           <div class="mockup-details">
-            <span class="mockup-title">Opción ${pair.id}A · ${pair.aTitle}</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:4px;">
+              <span class="mockup-title">Opción ${pair.id}A · ${pair.aTitle}</span>
+              <span class="trait-discovery-pill" style="font-size:0.64rem; padding:2px 8px;">${pair.aTraitPill}</span>
+            </div>
             <p class="mockup-desc">${pair.aTag}</p>
           </div>
           <button class="btn-action ${chosen === 'A' ? 'emerald' : 'primary'}" style="width:100%;">
-            ${chosen === 'A' ? '✓ Opción A Elegida' : 'Elegir Opción A'}
+            ${chosen === 'A' ? '✓ Rasgo A Bloqueado (' + pair.aTraitPill + ')' : 'Elegir Opción A · ' + pair.aTraitPill}
           </button>
         </div>
 
-        <div class="mockup-card ${chosen === 'B' ? 'selected' : ''}" onclick="choosePairOption(${pair.id}, 'B')">
-          <div class="mockup-viewport" style="height:160px; padding:0; overflow:hidden;">
+        <div class="mockup-card ${chosen === 'B' ? 'selected' : ''}" onclick="choosePairOption(${pair.id}, 'B')" style="cursor:pointer;">
+          <div class="mockup-viewport" style="height:185px; padding:0; overflow:hidden; border:1px solid rgba(255,255,255,0.12);">
             ${visB}
           </div>
           <div class="mockup-details">
-            <span class="mockup-title">Opción ${pair.id}B · ${pair.bTitle}</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:4px;">
+              <span class="mockup-title">Opción ${pair.id}B · ${pair.bTitle}</span>
+              <span class="trait-discovery-pill" style="font-size:0.64rem; padding:2px 8px;">${pair.bTraitPill}</span>
+            </div>
             <p class="mockup-desc">${pair.bTag}</p>
           </div>
           <button class="btn-action ${chosen === 'B' ? 'emerald' : 'primary'}" style="width:100%;">
-            ${chosen === 'B' ? '✓ Opción B Elegida' : 'Elegir Opción B'}
+            ${chosen === 'B' ? '✓ Rasgo B Bloqueado (' + pair.bTraitPill + ')' : 'Elegir Opción B · ' + pair.bTraitPill}
           </button>
         </div>
       `;
       const badge = document.getElementById("pairCounterBadge");
-      if (badge) badge.textContent = `${currentPairIdx + 1} / ${SIXTY_PROFESSIONAL_PAIRS.length}`;
+      if (badge) badge.textContent = `Atributo ${currentPairIdx + 1} / ${SIXTY_PROFESSIONAL_PAIRS.length}`;
 
       const phaseLbl = document.getElementById("step5PhaseLabel");
       if (phaseLbl) {
-        if (pair.phase === 1) phaseLbl.textContent = "Fase I (Pares 1–25): Logos Completos en Blanco y Negro Puro (#111 / #FFF)";
-        else if (pair.phase === 2) phaseLbl.textContent = "Fase II (Pares 26–45): Duelo Directo de Tipografías en Blanco y Negro";
-        else phaseLbl.textContent = "Fase III (Pares 46–60): Paletas de Color, Contraste AAA y Materialidad";
+        if (pair.phase === 1) phaseLbl.textContent = `Fase I (Atributos 1–6): Morfología Pura en B/N · Comparando SOLO: ${pair.axis}`;
+        else if (pair.phase === 2) phaseLbl.textContent = `Fase II (Atributos 7–9): Anatomía Tipográfica · Comparando SOLO: ${pair.axis}`;
+        else phaseLbl.textContent = `Fase III (Atributos 10–12): Polaridad y Color AAA · Comparando SOLO: ${pair.axis}`;
       }
       const b1 = document.getElementById("btnArenaPhase1");
       const b2 = document.getElementById("btnArenaPhase2");
@@ -4950,9 +5616,10 @@
       const votedCount = Object.keys(userPairSelections).length;
       const tuneBadge = document.getElementById("step5AutoTuneBadge");
       if (tuneBadge) {
-        const convPct = Math.min(99.8, (72.0 + votedCount * 0.46)).toFixed(1);
-        tuneBadge.textContent = `Convergencia ACT-R/BDI: ${convPct}% (${votedCount} votos)`;
+        const convPct = Math.min(99.8, (78.0 + votedCount * 1.8)).toFixed(1);
+        tuneBadge.textContent = `Convergencia ACT-R/BDI: ${convPct}% (${votedCount}/${SIXTY_PROFESSIONAL_PAIRS.length} atributos)`;
       }
+      updateStep5LiveTraitsUI();
     }
 
     async function choosePairOption(id, side) {
@@ -4966,7 +5633,9 @@
           renderBespokeJourneyVisuals();
         }
       }
-      addXP(5);
+      updateStep5LiveTraitsUI();
+      syncSequentialDiscoveryState();
+      addXP(15);
       playAcousticClick(750, 0.04);
       if (currentPairIdx === SIXTY_PROFESSIONAL_PAIRS.length - 1) {
         addXP(150);
@@ -4992,8 +5661,8 @@
             if (tuneBadge && p4) {
               const votedCount = Object.keys(userPairSelections).length;
               const delta = p4.closed_loop_dynamic_feedback?.auto_adjusted_coefficients_delta?.w2_geometry_delta || 0;
-              const convPct = Math.min(99.8, (76.0 + votedCount * 0.42)).toFixed(1);
-              tuneBadge.textContent = `Convergencia ACT-R/BDI: ${convPct}% · Δw=${delta >= 0 ? "+" : ""}${delta} (${votedCount} votos)`;
+              const convPct = Math.min(99.8, (78.0 + votedCount * 1.8)).toFixed(1);
+              tuneBadge.textContent = `Convergencia ACT-R/BDI: ${convPct}% · Δw=${delta >= 0 ? "+" : ""}${delta} (${votedCount}/${SIXTY_PROFESSIONAL_PAIRS.length} atributos)`;
             }
           }
         }
@@ -5003,13 +5672,13 @@
     function jumpToArenaPhase(phaseNum) {
       playAcousticClick(700, 0.03);
       if (phaseNum === 1) currentPairIdx = 0;
-      else if (phaseNum === 2) currentPairIdx = 25;
-      else currentPairIdx = 45;
+      else if (phaseNum === 2) currentPairIdx = 6;
+      else currentPairIdx = 9;
       renderCurrentPairCard();
     }
 
     function navigatePair(delta) {
-      currentPairIdx = Math.max(0, (currentPairIdx + delta) % SIXTY_PROFESSIONAL_PAIRS.length);
+      currentPairIdx = (currentPairIdx + delta + SIXTY_PROFESSIONAL_PAIRS.length) % SIXTY_PROFESSIONAL_PAIRS.length;
       renderCurrentPairCard();
     }
 

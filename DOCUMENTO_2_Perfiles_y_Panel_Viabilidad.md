@@ -87,3 +87,14 @@ Para construir e introducir al mercado global **TheBestBrand** en la cima de los
 | **2. Conversación y Venta de Visión** | Día 4 (30 min) | Alineación con la filosofía Lean y visión del Atelier de Lujo | Evaluación de pragmatismo extremo, desapego emocional y obsesión por la simplicidad para el usuario. |
 | **3. Prueba Práctica en Vivo** | Días 5 al 8 (90 min) | Ejecución sobre retos reales de TheBestBrand | *Pair Programming* (60fps mobile UI, modelo Hayashi QTTI en Python, arquitectura Neon/NanoBanana/Flow). |
 | **4. Oferta y Incorporación** | Días 9 al 12 | Cierre ágil y entrega de *Ownership* | Propiedad directa de su módulo y despliegue inmediato en el ciclo Gauntlet v15.0. |
+
+---
+
+## 6. Incorporación Estelar al Panel de Críticos: Steve Jobs (`C-00 · Chief Visionary & Insanely Great Product Critic`)
+
+Siguiendo la instrucción ejecutiva del fundador, se incorpora de manera permanente al Comité de Críticos del Gauntlet la figura de **Steve Jobs (`C-00`)**, modelada con rigor histórico y psicológico a partir de su biografía oficial (*Steve Jobs* por Walter Isaacson, *Becoming Steve Jobs* de Brent Schlender) y sus retratos cinematográficos (*Steve Jobs* de Aaron Sorkin / Danny Boyle):
+
+| Código | Rol en el Comité Crítico | Filosofía Central (*Think Different*) | Criterios de Auditoría Implacables (Cero Tolerancia a "Bozos") |
+| :--- | :--- | :--- | :--- |
+| **`C-00`** | **Steve Jobs — Chief Visionary & Product Excellence Critic** | *"Design is not just what it looks like and feels like. Design is how it works."* Intersección entre las Artes Liberales y la Tecnología. | **1. Cero Gráficos Genéricos:** Prohibición absoluta de SVGs repetitivos o de plantilla en los Pasos 4 y 5.<br>**2. Aislamiento Puro de 1 Solo Atributo (*One Thing at a Time*):** En el diagnóstico visual (Paso 5), jamás mezclar múltiples variables a la vez; comparar un único atributo aislado (*Ceteris Paribus*) con contraste dramático.<br>**3. Referentes Reales para Mentes Visuales:** En cada extremo de los sliders de calibración (Paso 4), mostrar emblemas reales e icónicos del mundo físico (**Rolex** vs. **Apple**, **Nike** vs. **Porsche**, **Airbnb** vs. **TAG Heuer**).<br>**4. Secuencia Narrativa (Pasos 3 → 4 → 5) con "Cierres de Descubrimiento" (*Keynote Reveals*):** Cada paso debe alimentar al siguiente y concluir con un cierre emocional que celebre los rasgos descubiertos de la marca para mantener al usuario entusiasmado. |
+
