@@ -189,13 +189,13 @@ class CorporateBackendAIHub:
                 },
                 "nanobanana_logo_engine": {
                     "connected": bool(nanobanana_key),
-                    "model": os.environ.get("NANOBANANA_MODEL", "imagen-3.0-generate-002 / gemini-2.0-flash-exp-image-generation"),
-                    "dedicated_key_configured": bool(os.environ.get("NANOBANANA_API_KEY", "").strip())
+                    "model": os.environ.get("NANOBANANA_MODEL", "gemini-3.1-flash-image / gemini-3-pro-image"),
+                    "dedicated_key_configured": bool(os.environ.get("NANOBANANA_API_KEY", "").strip() or gemini_key)
                 },
                 "flow_chapter_video_engine": {
                     "connected": bool(flow_key),
-                    "model": os.environ.get("FLOW_VIDEO_MODEL", "veo-2.0-generate-001"),
-                    "dedicated_key_configured": bool(os.environ.get("FLOW_API_KEY", "").strip())
+                    "model": os.environ.get("FLOW_VIDEO_MODEL", "gemini-omni-1.1-flash"),
+                    "dedicated_key_configured": bool(os.environ.get("FLOW_API_KEY", "").strip() or gemini_key)
                 },
                 "notebook_rag_repository": {
                     "connected": True,
@@ -237,10 +237,10 @@ class CorporateBackendAIHub:
 
         if api_key and api_key.startswith("AIza"):
             try:
-                url = f"https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key={api_key}"
+                model_id = os.environ.get("NANOBANANA_MODEL", "gemini-3.1-flash-image")
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_id}:generateContent?key={api_key}"
                 payload = {
-                    "instances": [{"prompt": prompt}],
-                    "parameters": {"sampleCount": 2, "aspectRatio": "1:1"}
+                    "contents": [{"parts": [{"text": prompt}]}]
                 }
                 req = urllib.request.Request(
                     url,
@@ -248,13 +248,14 @@ class CorporateBackendAIHub:
                     headers={"Content-Type": "application/json"},
                     method="POST"
                 )
-                with urllib.request.urlopen(req, timeout=12) as resp:
+                with urllib.request.urlopen(req, timeout=14) as resp:
                     data = json.loads(resp.read().decode("utf-8"))
-                    preds = data.get("predictions", [])
-                    for p in preds:
-                        b64 = p.get("bytesBase64Encoded")
-                        if b64:
-                            generated_images.append(f"data:image/png;base64,{b64}")
+                    for cand in data.get("candidates", []):
+                        for part in cand.get("content", {}).get("parts", []):
+                            inline = part.get("inlineData", {})
+                            if inline.get("data"):
+                                mime = inline.get("mimeType", "image/png")
+                                generated_images.append(f"data:{mime};base64,{inline['data']}")
             except Exception as e:
                 status_msg = f"Kansei SVG Mathematical Synthesis Active (NanoBanana API standby: {str(e)[:80]})"
 
