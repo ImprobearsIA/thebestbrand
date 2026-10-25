@@ -6,38 +6,255 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@500;700&family=Playfair+Display:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F1F5F9; color: #0F172A; margin: 0; padding: 32px; }
-    .sheet { max-width: 1120px; margin: 0 auto 28px auto; background: #FFFFFF; border: 1.5px solid #CBD5E1; border-radius: 20px; padding: 32px 36px; box-shadow: 0 12px 32px rgba(15,23,42,0.06); page-break-after: always; }
-    .sheet-header { display: flex; justify-content: space-between; border-bottom: 2px solid #0F172A; padding-bottom: 10px; margin-bottom: 22px; font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; font-weight: 700; color: #475569; text-transform: uppercase; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F1F5F9; color: #0F172A; margin: 0; padding: 24px; }
+    .sheet { max-width: 1120px; margin: 0 auto 24px auto; background: #FFFFFF; border: 1.5px solid #CBD5E1; border-radius: 20px; padding: 28px 32px; box-shadow: 0 12px 32px rgba(15,23,42,0.06); page-break-after: always; }
+    .sheet-header { display: flex; justify-content: space-between; border-bottom: 2px solid #0F172A; padding-bottom: 10px; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; font-weight: 700; color: #475569; text-transform: uppercase; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-    .card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 16px 18px; }
-    .tag { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 800; color: #92400E; text-transform: uppercase; display: block; margin-bottom: 6px; }
+    .card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; }
+    .tag { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 800; color: #92400E; text-transform: uppercase; display: block; margin-bottom: 6px; }
     h1, h2, h3 { margin: 0 0 8px 0; font-family: 'Playfair Display', sans-serif; }
-    p, li { font-size: 0.92rem; line-height: 1.55; color: #1E293B; }
-    @media print { body { background: #FFF; padding: 0; } .sheet { box-shadow: none; border: 1px solid #000; margin-bottom: 16px; } }
+    p, li { font-size: 0.88rem; line-height: 1.5; color: #1E293B; }
+    @media print { body { background: #FFF; padding: 0; } .sheet { box-shadow: none; border: 1px solid #CBD5E1; margin-bottom: 12px; page-break-after: always; } .no-print { display: none !important; } }
   </style>
 </head>
 <body>
   <div class="sheet">
     <div class="sheet-header">
-      <span>TOMO I · PORTADA OFICIAL Y PLATAFORMA ESTRATÉGICA DE 8 PILARES</span>
+      <span>TOMO I · PORTADA OFICIAL, SISTEMA DE LOGOTIPO DE ESTUDIO Y PLATAFORMA ESTRATÉGICA (8 PILARES)</span>
       <span>SECTOR: 8. Mueblería en un Pueblo (Artesanía en Madera y Tradición Familiar)</span>
     </div>
     
-    <div style="background:#090D16;color:#FFFFFF;border-radius:18px;padding:32px;display:flex;justify-content:space-between;align-items:center;gap:24px;border:2.5px solid #92400E;margin-bottom:24px;">
+    <div style="background:#090D16;color:#FFFFFF;border-radius:18px;padding:26px 30px;display:flex;justify-content:space-between;align-items:center;gap:24px;border:2.5px solid #92400E;margin-bottom:22px;">
       <div style="display:flex;align-items:center;gap:22px;">
-        <div style="width:88px;height:88px;border-radius:20px;background:#92400E;color:#090D16;display:grid;place-items:center;font-family:'Playfair Display',sans-serif;font-weight:900;font-size:2.1rem;border:3px solid #FFFFFF;">
-          ME
+        <div style="width:104px;height:104px;border-radius:22px;background:#FFFFFF;display:grid;place-items:center;border:3px solid #92400E;flex-shrink:0;">
+          <svg viewBox="-52 -52 104 104" width="88" height="88" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="studioGrad_hero_0" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#92400E"/>
+            <stop offset="100%" stop-color="#065F46"/>
+          </linearGradient>
+          <filter id="studioGlow_hero_0" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_hero_0)">
+              <!-- Escudo Octagonal de Taller Maestro -->
+              <polygon points="-16,-38 16,-38 38,-16 38,16 16,38 -16,38 -38,16 -38,-16" fill="#090D16"/>
+              <polygon points="-13,-32 13,-32 32,-13 32,13 13,32 -13,32 -32,13 -32,-13" fill="none" stroke="#92400E" stroke-width="1.6"/>
+              <!-- Hoja de Roble Estilizada en Geometría Simétrica -->
+              <path d="M0,-24 C8,-24 12,-18 10,-12 C18,-12 22,-4 15,2 C20,8 14,16 6,16 L0,22 L-6,16 C-14,16 -20,8 -15,2 C-22,-4 -18,-12 -10,-12 C-12,-18 -8,-24 0,-24 Z" fill="#92400E"/>
+              <!-- Nervadura Central y Ensamble de Madera en Espacio Negativo -->
+              <path d="M0,-16 V26 M0,-4 L7,-10 M0,4 L-8,-2 M0,10 L7,4" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Base de Cola de Milano -->
+              <polygon points="-12,26 12,26 8,19 -8,19" fill="#065F46"/>
+            </g>
+            </svg>
         </div>
         <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#FDE68A;font-weight:700;">PERFIL FUNDADOR: Don Hilario y su hijo Adrián Mendoza (Mueblería tradicional en pueblo mágico/cabecera municipal en transición generacional)</div>
-          <h1 style="font-size:2.4rem;color:#FFFFFF;margin:4px 0;">Mueblería El Roble</h1>
-          <div style="font-size:1.05rem;color:#E2E8F0;font-style:italic;">“Muebles de madera verdadera hechos para durar generaciones”</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.74rem;color:#FDE68A;font-weight:700;">PERFIL FUNDADOR: Don Hilario y su hijo Adrián Mendoza (Mueblería tradicional en pueblo mágico/cabecera municipal en transición generacional)</div>
+          <h1 style="font-size:2.3rem;color:#FFFFFF;margin:4px 0;">Mueblería El Roble</h1>
+          <div style="font-size:1.02rem;color:#E2E8F0;font-style:italic;">“Muebles de madera verdadera hechos para durar generaciones”</div>
         </div>
       </div>
-      <button onclick="window.print()" style="background:#92400E;color:#FFFFFF;border:none;border-radius:99px;padding:12px 22px;font-weight:800;cursor:pointer;">🖨️ Imprimir PDF</button>
+      <button class="no-print" onclick="window.print()" style="background:#92400E;color:#FFFFFF;border:none;border-radius:99px;padding:12px 22px;font-weight:800;cursor:pointer;">🖨️ Imprimir / Guardar PDF</button>
+    </div>
+
+    <span class="tag">LÁMINA MAGISTRAL DE IDENTIDAD VISUAL · RENDER DE ESTUDIO GEMINI + APLICACIÓN FÍSICA REAL</span>
+    <div style="margin-bottom:20px;border-radius:16px;overflow:hidden;border:2px solid #92400E;background:#090D16;">
+      <img src="../apps/web/assets/logos/brand_08_muebleria_el_roble_logo.jpg" alt="Logo Oficial Mueblería El Roble" style="width:100%;max-height:390px;object-fit:cover;display:block;" />
+    </div>
+
+    <span class="tag">SISTEMA DE IDENTIDAD VISUAL DE ESTUDIO (4 ARQUITECTURAS DE LOCKUP EN CURVAS BÉZIER)</span>
+    <div class="grid-2" style="margin-bottom:22px;">
+      <div style="border:1.5px solid #CBD5E1;border-radius:14px;padding:12px;background:#F8FAFC;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;color:#92400E;margin-bottom:4px;">PROP-01 · SISTEMA VECTORIAL EN CURVAS</div>
+          <div style="font-weight:800;font-size:0.9rem;color:#0F172A;margin-bottom:6px;">Mueblería El Roble · Lockup Totémico Principal</div>
+          <div style="height:175px;border-radius:10px;overflow:hidden;border:1px solid #E2E8F0;background:#FFF;"><svg viewBox="0 0 420 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="250" rx="14" fill="#FAF5EE"/>
+          <rect x="8" y="8" width="404" height="234" rx="10" fill="none" stroke="#271810" stroke-opacity="0.08" stroke-width="1"/>
+          
+            <g opacity="0.22" stroke="#92400E" stroke-width="0.6">
+              <line x1="0" y1="110" x2="420" y2="110"/>
+              <line x1="210" y1="0" x2="210" y2="240"/>
+              <circle cx="210" cy="84" r="46" fill="none"/>
+              <circle cx="210" cy="84" r="28.4" fill="none"/>
+            </g>
+            
+          <g transform="translate(210, 84) scale(1.08)">
+            
+        <defs>
+          <linearGradient id="studioGrad_p1_0" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#92400E"/>
+            <stop offset="100%" stop-color="#065F46"/>
+          </linearGradient>
+          <filter id="studioGlow_p1_0" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_p1_0)">
+              <!-- Escudo Octagonal de Taller Maestro -->
+              <polygon points="-16,-38 16,-38 38,-16 38,16 16,38 -16,38 -38,16 -38,-16" fill="#271810"/>
+              <polygon points="-13,-32 13,-32 32,-13 32,13 13,32 -13,32 -32,13 -32,-13" fill="none" stroke="#92400E" stroke-width="1.6"/>
+              <!-- Hoja de Roble Estilizada en Geometría Simétrica -->
+              <path d="M0,-24 C8,-24 12,-18 10,-12 C18,-12 22,-4 15,2 C20,8 14,16 6,16 L0,22 L-6,16 C-14,16 -20,8 -15,2 C-22,-4 -18,-12 -10,-12 C-12,-18 -8,-24 0,-24 Z" fill="#92400E"/>
+              <!-- Nervadura Central y Ensamble de Madera en Espacio Negativo -->
+              <path d="M0,-16 V26 M0,-4 L7,-10 M0,4 L-8,-2 M0,10 L7,4" stroke="#FAF5EE" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Base de Cola de Milano -->
+              <polygon points="-12,26 12,26 8,19 -8,19" fill="#065F46"/>
+            </g>
+            
+          </g>
+          <text x="210" y="168" text-anchor="middle" fill="#271810" font-family="'Playfair Display', sans-serif" font-weight="800" font-size="21" letter-spacing="3.5">MUEBLERÍA EL</text>
+          <text x="210" y="191" text-anchor="middle" fill="#92400E" font-family="&#39;Playfair Display&#39;, sans-serif" font-weight="700" font-size="14.5" letter-spacing="5.5">ROBLE</text>
+          <line x1="155" y1="204" x2="265" y2="204" stroke="#92400E" stroke-width="1.2" opacity="0.65"/>
+          <text x="210" y="220" text-anchor="middle" fill="#271810" fill-opacity="0.65" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="8.5" letter-spacing="3.2">MUEBLES DE MADERA VERDADERA HECHOS P</text>
+        </svg></div>
+          <div style="font-size:0.76rem;color:#475569;margin-top:6px;">Símbolo de Autor en Proporción Áurea + Logotipo con Tracking Óptico</div>
+        </div><div style="border:1.5px solid #CBD5E1;border-radius:14px;padding:12px;background:#F8FAFC;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;color:#92400E;margin-bottom:4px;">PROP-02 · SISTEMA VECTORIAL EN CURVAS</div>
+          <div style="font-weight:800;font-size:0.9rem;color:#0F172A;margin-bottom:6px;">Mueblería El Roble · Lockup Horizontal Arquitectónico</div>
+          <div style="height:175px;border-radius:10px;overflow:hidden;border:1px solid #E2E8F0;background:#FFF;"><svg viewBox="0 0 420 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="250" rx="14" fill="#090D16"/>
+          <rect x="8" y="8" width="404" height="234" rx="10" fill="none" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="1"/>
+          <g transform="translate(96, 125) scale(1.05)">
+            
+        <defs>
+          <linearGradient id="studioGrad_p2_1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#92400E"/>
+            <stop offset="100%" stop-color="#065F46"/>
+          </linearGradient>
+          <filter id="studioGlow_p2_1" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_p2_1)">
+              <!-- Escudo Octagonal de Taller Maestro -->
+              <polygon points="-16,-38 16,-38 38,-16 38,16 16,38 -16,38 -38,16 -38,-16" fill="#0F172A"/>
+              <polygon points="-13,-32 13,-32 32,-13 32,13 13,32 -13,32 -32,13 -32,-13" fill="none" stroke="#92400E" stroke-width="1.6"/>
+              <!-- Hoja de Roble Estilizada en Geometría Simétrica -->
+              <path d="M0,-24 C8,-24 12,-18 10,-12 C18,-12 22,-4 15,2 C20,8 14,16 6,16 L0,22 L-6,16 C-14,16 -20,8 -15,2 C-22,-4 -18,-12 -10,-12 C-12,-18 -8,-24 0,-24 Z" fill="#92400E"/>
+              <!-- Nervadura Central y Ensamble de Madera en Espacio Negativo -->
+              <path d="M0,-16 V26 M0,-4 L7,-10 M0,4 L-8,-2 M0,10 L7,4" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Base de Cola de Milano -->
+              <polygon points="-12,26 12,26 8,19 -8,19" fill="#065F46"/>
+            </g>
+            
+          </g>
+          <line x1="158" y1="76" x2="158" y2="174" stroke="#92400E" stroke-width="1.5" opacity="0.65"/>
+          <text x="176" y="115" text-anchor="start" fill="#FFFFFF" font-family="'Playfair Display', sans-serif" font-weight="800" font-size="22" letter-spacing="2.8">MUEBLERÍA EL</text>
+          <text x="176" y="140" text-anchor="start" fill="#92400E" font-family="&#39;Playfair Display&#39;, sans-serif" font-weight="700" font-size="15.5" letter-spacing="4.5">ROBLE</text>
+          <text x="176" y="164" text-anchor="start" fill="#94A3B8" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="8.5" letter-spacing="2.6">MUEBLES DE MADERA VERDADERA HECHOS P</text>
+        </svg></div>
+          <div style="font-size:0.76rem;color:#475569;margin-top:6px;">Composición Corporativa para Fachadas, Flota Vehicular, Cabeceras Web y Licitaciones</div>
+        </div><div style="border:1.5px solid #CBD5E1;border-radius:14px;padding:12px;background:#F8FAFC;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;color:#92400E;margin-bottom:4px;">PROP-03 · SISTEMA VECTORIAL EN CURVAS</div>
+          <div style="font-weight:800;font-size:0.9rem;color:#0F172A;margin-bottom:6px;">Mueblería El Roble · Sello Institucional & Bordado</div>
+          <div style="height:175px;border-radius:10px;overflow:hidden;border:1px solid #E2E8F0;background:#FFF;"><svg viewBox="0 0 420 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="250" rx="14" fill="#FAF5EE"/>
+          <circle cx="210" cy="112" r="78" fill="#271810"/>
+          <circle cx="210" cy="112" r="71" fill="none" stroke="#92400E" stroke-width="1.8"/>
+          <circle cx="210" cy="112" r="54" fill="#FAF5EE"/>
+          <g transform="translate(210, 112) scale(0.84)">
+            
+        <defs>
+          <linearGradient id="studioGrad_p3_2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#92400E"/>
+            <stop offset="100%" stop-color="#065F46"/>
+          </linearGradient>
+          <filter id="studioGlow_p3_2" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_p3_2)">
+              <!-- Escudo Octagonal de Taller Maestro -->
+              <polygon points="-16,-38 16,-38 38,-16 38,16 16,38 -16,38 -38,16 -38,-16" fill="#271810"/>
+              <polygon points="-13,-32 13,-32 32,-13 32,13 13,32 -13,32 -32,13 -32,-13" fill="none" stroke="#92400E" stroke-width="1.6"/>
+              <!-- Hoja de Roble Estilizada en Geometría Simétrica -->
+              <path d="M0,-24 C8,-24 12,-18 10,-12 C18,-12 22,-4 15,2 C20,8 14,16 6,16 L0,22 L-6,16 C-14,16 -20,8 -15,2 C-22,-4 -18,-12 -10,-12 C-12,-18 -8,-24 0,-24 Z" fill="#92400E"/>
+              <!-- Nervadura Central y Ensamble de Madera en Espacio Negativo -->
+              <path d="M0,-16 V26 M0,-4 L7,-10 M0,4 L-8,-2 M0,10 L7,4" stroke="#FAF5EE" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Base de Cola de Milano -->
+              <polygon points="-12,26 12,26 8,19 -8,19" fill="#065F46"/>
+            </g>
+            
+          </g>
+          <circle cx="148" cy="112" r="3" fill="#92400E"/>
+          <circle cx="272" cy="112" r="3" fill="#92400E"/>
+          <text x="210" y="216" text-anchor="middle" fill="#271810" font-family="'Playfair Display', sans-serif" font-weight="800" font-size="15" letter-spacing="4.2">MUEBLERÍA EL ROBLE</text>
+          <text x="210" y="233" text-anchor="middle" fill="#92400E" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="8.2" letter-spacing="2.8">SELLO OFICIAL · TRAZO ≥ 1.2MM APTO BORDADO Y LÁSER</text>
+        </svg></div>
+          <div style="font-size:0.76rem;color:#475569;margin-top:6px;">Emblema Circular de Alta Solidez Calibrado a ≥ 1.2 mm para Bordado, Cuño y Láser</div>
+        </div><div style="border:1.5px solid #CBD5E1;border-radius:14px;padding:12px;background:#F8FAFC;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;color:#92400E;margin-bottom:4px;">PROP-04 · SISTEMA VECTORIAL EN CURVAS</div>
+          <div style="font-weight:800;font-size:0.9rem;color:#0F172A;margin-bottom:6px;">Mueblería El Roble · Sistema Iconográfico 1:1 (Positivo / Negativo)</div>
+          <div style="height:175px;border-radius:10px;overflow:hidden;border:1px solid #E2E8F0;background:#FFF;"><svg viewBox="0 0 420 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="250" rx="14" fill="#F1F5F9"/>
+          <!-- App Icon Dark 1:1 -->
+          <rect x="48" y="34" width="142" height="142" rx="32" fill="#271810"/>
+          <g transform="translate(119, 105) scale(1.12)">
+            
+        <defs>
+          <linearGradient id="studioGrad_p2_1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#92400E"/>
+            <stop offset="100%" stop-color="#065F46"/>
+          </linearGradient>
+          <filter id="studioGlow_p2_1" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_p2_1)">
+              <!-- Escudo Octagonal de Taller Maestro -->
+              <polygon points="-16,-38 16,-38 38,-16 38,16 16,38 -16,38 -38,16 -38,-16" fill="#0F172A"/>
+              <polygon points="-13,-32 13,-32 32,-13 32,13 13,32 -13,32 -32,13 -32,-13" fill="none" stroke="#92400E" stroke-width="1.6"/>
+              <!-- Hoja de Roble Estilizada en Geometría Simétrica -->
+              <path d="M0,-24 C8,-24 12,-18 10,-12 C18,-12 22,-4 15,2 C20,8 14,16 6,16 L0,22 L-6,16 C-14,16 -20,8 -15,2 C-22,-4 -18,-12 -10,-12 C-12,-18 -8,-24 0,-24 Z" fill="#92400E"/>
+              <!-- Nervadura Central y Ensamble de Madera en Espacio Negativo -->
+              <path d="M0,-16 V26 M0,-4 L7,-10 M0,4 L-8,-2 M0,10 L7,4" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Base de Cola de Milano -->
+              <polygon points="-12,26 12,26 8,19 -8,19" fill="#065F46"/>
+            </g>
+            
+          </g>
+          <text x="119" y="198" text-anchor="middle" fill="#0F172A" font-family="'Playfair Display', sans-serif" font-weight="800" font-size="11" letter-spacing="1.5">VERSIÓN NOCTURNA 1:1</text>
+          <!-- App Icon Light 1:1 -->
+          <rect x="230" y="34" width="142" height="142" rx="32" fill="#FAF5EE" stroke="#CBD5E1" stroke-width="1.5"/>
+          <g transform="translate(301, 105) scale(1.12)">
+            
+        <defs>
+          <linearGradient id="studioGrad_p4_3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#92400E"/>
+            <stop offset="100%" stop-color="#065F46"/>
+          </linearGradient>
+          <filter id="studioGlow_p4_3" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_p4_3)">
+              <!-- Escudo Octagonal de Taller Maestro -->
+              <polygon points="-16,-38 16,-38 38,-16 38,16 16,38 -16,38 -38,16 -38,-16" fill="#271810"/>
+              <polygon points="-13,-32 13,-32 32,-13 32,13 13,32 -13,32 -32,13 -32,-13" fill="none" stroke="#92400E" stroke-width="1.6"/>
+              <!-- Hoja de Roble Estilizada en Geometría Simétrica -->
+              <path d="M0,-24 C8,-24 12,-18 10,-12 C18,-12 22,-4 15,2 C20,8 14,16 6,16 L0,22 L-6,16 C-14,16 -20,8 -15,2 C-22,-4 -18,-12 -10,-12 C-12,-18 -8,-24 0,-24 Z" fill="#92400E"/>
+              <!-- Nervadura Central y Ensamble de Madera en Espacio Negativo -->
+              <path d="M0,-16 V26 M0,-4 L7,-10 M0,4 L-8,-2 M0,10 L7,4" stroke="#FAF5EE" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Base de Cola de Milano -->
+              <polygon points="-12,26 12,26 8,19 -8,19" fill="#065F46"/>
+            </g>
+            
+          </g>
+          <text x="301" y="198" text-anchor="middle" fill="#0F172A" font-family="'Playfair Display', sans-serif" font-weight="800" font-size="11" letter-spacing="1.5">VERSIÓN EDITORIAL 1:1</text>
+          <text x="210" y="228" text-anchor="middle" fill="#475569" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9" letter-spacing="2.4">MUEBLERÍA EL ROBLE · SISTEMA ICONOGRÁFICO MULTIESCALA</text>
+        </svg></div>
+          <div style="font-size:0.76rem;color:#475569;margin-top:6px;">Símbolo Autónomo de Espacio Negativo para App Icon, Avatar Social y Señalética a 30m</div>
+        </div>
     </div>
 
     <div class="grid-3">
@@ -55,35 +272,355 @@
 
   <div class="sheet">
     <div class="sheet-header">
-      <span>TOMO II · RECORRIDO DE TOUCHPOINTS (FASE 2) + ESTUDIO DE NAMING, NIZA Y DOMINIOS (FASE 3)</span>
-      <span>Mueblería El Roble</span>
+      <span>TOMO II · EXPEDIENTE DE INGENIERÍA DE TOUCHPOINTS (SUSTRATOS, MEDIDAS, IMPRESIÓN Y CONTROL DE CALIDAD)</span>
+      <span>Mueblería El Roble · 11 FICHAS TÉCNICAS DE TOUCHPOINTS</span>
     </div>
-    <div class="grid-3" style="margin-bottom:22px;">
-      <div class="card" style="border-top:4px solid #0284C7;"><span class="tag" style="color:#0284C7;">1. Antes de Comprar (Atracción)</span><p>Fachada acogedora en la calle principal del pueblo con un gran mueble en exhibición · Catálogo fácil por WhatsApp con precios claros · Videos cortos mostrando cómo se ensambla la madera real</p></div>
-      <div class="card" style="border-top:4px solid #92400E;"><span class="tag">2. Durante la Compra (Cierre)</span><p>Etiquetas colgantes grandes en cada mueble (tipo de madera, medidas, precio de contado y apartado) · Nota de venta clara · Café de olla mientras eligen telas y tonos</p></div>
-      <div class="card" style="border-top:4px solid #059669;"><span class="tag" style="color:#059669;">3. Después de Comprar (Fidelización)</span><p>Camioneta de reparto bien rotulada que recorre el pueblo y carreteras · Sello pirograbado con calor debajo de cada mesa · Frasco de cera nutritiva con el logo para cuidar el mueble</p></div>
-    </div>
-    <div class="grid-3">
-      <div class="card"><span class="tag">Top 4 Finalistas en Bóveda Evolutiva</span><p>Mueblería El Roble · Casa Mendoza Ebanistería · Raíz de Pueblo · Madera Viva San Miguel</p></div>
-      <div class="card"><span class="tag">Clases Internacionales de Niza</span><p>Clase 20 (Muebles de madera, comedores, recámaras y ebanistería), Clase 35 (Exhibición y venta minorista/mayorista de muebles), Clase 39 (Flete y entrega a domicilio protegida)</p></div>
-      <div class="card"><span class="tag">Dominios Web Verificados</span><p style="font-family:monospace;font-weight:700;color:#059669;">🟢 muebleriaelroble.mx<br/>🟢 elroblesanmiguel.com<br/>🟢 catalogo.muebleriaelroble.mx</p></div>
-    </div>
+    <h3 style="color:#0284C7;margin-bottom:10px;">MOMENTO 1 · ANTES DE COMPRAR (DESCUBRIMIENTO Y ATRACCIÓN)</h3>
+    <div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #0284C7;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-ANT-01 · ANTES DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#0284C7;font-weight:800;">Arquitectura & Señalética Exterior</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Fachada acogedora en la calle principal del pueblo con un gran mueble en exhibición</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Identificación inmediata a 30 metros de distancia diurna y nocturna, proyectando solidez.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Acero corten oxidado / Aluminio anodizado cepillado calibre 12 (2.5 mm) montado con separadores de 25 mm.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Corte láser CNC de precisión con retroiluminación halo LED cálida (3000K, IP67 intemperie).<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Ancho total 1,800 × 650 mm; símbolo de 520 mm de altura; trazo mínimo estructural de 18 mm.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Legibilidad garantizada de 5 m a 45 m bajo sol directo o lluvia nocturna.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Prohibido usar lona impresa tensada o cajas de luz acrílicas con tubos fluorescentes expuestos.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#271810"/>
+          <circle cx="55" cy="46" r="16" fill="#92400E"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#92400E" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#92400E" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Fachada acogedora en la call</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-ANT-01 · ANTES DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Mueblería El Roble</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #0284C7;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-ANT-02 · ANTES DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#0284C7;font-weight:800;">Ecosistema Digital, Web & Redes Sociales</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Catálogo fácil por WhatsApp con precios claros</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Captar prospectos calificados en los primeros 3 segundos con autoridad visual y carga instantánea.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Interfaz Web Responsiva HTML5/CSS3 + SVG nativo en curvas y Favicon 1:1 adaptativo.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Renderizado vectorial SVG inline con contraste WCAG AAA (≥ 7.0:1) y modo claro/obscuro.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Navbar: altura mínima 36 px (escritorio) y 28 px (móvil); Avatar social: 1080 × 1080 px con margen seguro circular.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Pantallas OLED/Retina desde 320 px hasta monitores ultrawide 4K.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Nunca exportar el logotipo del encabezado en JPG con compresión o fondo blanco pegado.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#271810"/>
+          <circle cx="55" cy="46" r="16" fill="#92400E"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#92400E" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#92400E" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Catálogo fácil por WhatsApp </text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-ANT-02 · ANTES DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Mueblería El Roble</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #0284C7;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-ANT-03 · ANTES DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#0284C7;font-weight:800;">Ecosistema Digital, Web & Redes Sociales</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Videos cortos mostrando cómo se ensambla la madera real</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Captar prospectos calificados en los primeros 3 segundos con autoridad visual y carga instantánea.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Interfaz Web Responsiva HTML5/CSS3 + SVG nativo en curvas y Favicon 1:1 adaptativo.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Renderizado vectorial SVG inline con contraste WCAG AAA (≥ 7.0:1) y modo claro/obscuro.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Navbar: altura mínima 36 px (escritorio) y 28 px (móvil); Avatar social: 1080 × 1080 px con margen seguro circular.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Pantallas OLED/Retina desde 320 px hasta monitores ultrawide 4K.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Nunca exportar el logotipo del encabezado en JPG con compresión o fondo blanco pegado.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#271810"/>
+          <circle cx="55" cy="46" r="16" fill="#92400E"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#92400E" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#92400E" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Videos cortos mostrando cómo</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-ANT-03 · ANTES DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Mueblería El Roble</text>
+        </svg></div>
+            </div>
+    <h3 style="color:#92400E;margin:18px 0 10px 0;">MOMENTO 2 · DURANTE LA COMPRA (EVALUACIÓN, COTIZACIÓN Y CIERRE)</h3>
+    <div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #92400E;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DUR-01 · DURANTE LA COMPRA</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#92400E;font-weight:800;">Packaging, Unboxing & Entrega Post-Venta</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Etiquetas colgantes grandes en cada mueble (tipo de madera</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Transformar la recepción del producto en un ritual memorable que dispare la recompra y recomendación.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Cartón Kraft rígido flauta E de 450 g/m² con papel seda interior de 28 g/m² y etiqueta de seguridad.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Serigrafía a 2 tintas directas Pantone + Sello de caucho artesanal o lacre en el cierre.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Símbolo central ocupando el 28% del frente de la caja, respetando área de aislamiento 2X.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Experiencia táctil en manos del cliente (30–60 cm) y fotografía para redes sociales.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Prohibido colocar cintas adhesivas comerciales sobre el logotipo principal.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#271810"/>
+          <circle cx="55" cy="46" r="16" fill="#92400E"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#92400E" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#92400E" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Etiquetas colgantes grandes </text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DUR-01 · DURANTE LA COMPRA</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Mueblería El Roble</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #92400E;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DUR-02 · DURANTE LA COMPRA</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#92400E;font-weight:800;">Ecosistema Digital, Web & Redes Sociales</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">medidas</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Captar prospectos calificados en los primeros 3 segundos con autoridad visual y carga instantánea.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Interfaz Web Responsiva HTML5/CSS3 + SVG nativo en curvas y Favicon 1:1 adaptativo.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Renderizado vectorial SVG inline con contraste WCAG AAA (≥ 7.0:1) y modo claro/obscuro.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Navbar: altura mínima 36 px (escritorio) y 28 px (móvil); Avatar social: 1080 × 1080 px con margen seguro circular.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Pantallas OLED/Retina desde 320 px hasta monitores ultrawide 4K.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Nunca exportar el logotipo del encabezado en JPG con compresión o fondo blanco pegado.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#271810"/>
+          <circle cx="55" cy="46" r="16" fill="#92400E"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#92400E" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#92400E" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">medidas</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DUR-02 · DURANTE LA COMPRA</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Mueblería El Roble</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #92400E;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DUR-03 · DURANTE LA COMPRA</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#92400E;font-weight:800;">Ecosistema Digital, Web & Redes Sociales</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">precio de contado y apartado)</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Captar prospectos calificados en los primeros 3 segundos con autoridad visual y carga instantánea.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Interfaz Web Responsiva HTML5/CSS3 + SVG nativo en curvas y Favicon 1:1 adaptativo.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Renderizado vectorial SVG inline con contraste WCAG AAA (≥ 7.0:1) y modo claro/obscuro.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Navbar: altura mínima 36 px (escritorio) y 28 px (móvil); Avatar social: 1080 × 1080 px con margen seguro circular.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Pantallas OLED/Retina desde 320 px hasta monitores ultrawide 4K.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Nunca exportar el logotipo del encabezado en JPG con compresión o fondo blanco pegado.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#271810"/>
+          <circle cx="55" cy="46" r="16" fill="#92400E"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#92400E" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#92400E" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">precio de contado y apartado</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DUR-03 · DURANTE LA COMPRA</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Mueblería El Roble</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #92400E;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DUR-04 · DURANTE LA COMPRA</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#92400E;font-weight:800;">Ecosistema Digital, Web & Redes Sociales</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Nota de venta clara</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Captar prospectos calificados en los primeros 3 segundos con autoridad visual y carga instantánea.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Interfaz Web Responsiva HTML5/CSS3 + SVG nativo en curvas y Favicon 1:1 adaptativo.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Renderizado vectorial SVG inline con contraste WCAG AAA (≥ 7.0:1) y modo claro/obscuro.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Navbar: altura mínima 36 px (escritorio) y 28 px (móvil); Avatar social: 1080 × 1080 px con margen seguro circular.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Pantallas OLED/Retina desde 320 px hasta monitores ultrawide 4K.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Nunca exportar el logotipo del encabezado en JPG con compresión o fondo blanco pegado.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#271810"/>
+          <circle cx="55" cy="46" r="16" fill="#92400E"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#92400E" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#92400E" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Nota de venta clara</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DUR-04 · DURANTE LA COMPRA</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Mueblería El Roble</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #92400E;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DUR-05 · DURANTE LA COMPRA</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#92400E;font-weight:800;">Ecosistema Digital, Web & Redes Sociales</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Café de olla mientras eligen telas y tonos</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Captar prospectos calificados en los primeros 3 segundos con autoridad visual y carga instantánea.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Interfaz Web Responsiva HTML5/CSS3 + SVG nativo en curvas y Favicon 1:1 adaptativo.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Renderizado vectorial SVG inline con contraste WCAG AAA (≥ 7.0:1) y modo claro/obscuro.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Navbar: altura mínima 36 px (escritorio) y 28 px (móvil); Avatar social: 1080 × 1080 px con margen seguro circular.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Pantallas OLED/Retina desde 320 px hasta monitores ultrawide 4K.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Nunca exportar el logotipo del encabezado en JPG con compresión o fondo blanco pegado.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#271810"/>
+          <circle cx="55" cy="46" r="16" fill="#92400E"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#92400E" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#92400E" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Café de olla mientras eligen</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DUR-05 · DURANTE LA COMPRA</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Mueblería El Roble</text>
+        </svg></div>
+            </div>
+    <h3 style="color:#059669;margin:18px 0 10px 0;">MOMENTO 3 · DESPUÉS DE COMPRAR (ENTREGA, USO CONTINUO Y FIDELIZACIÓN)</h3>
+    <div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #059669;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DES-01 · DESPUÉS DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#059669;font-weight:800;">Flota Vehicular, Transporte & Logística</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Camioneta de reparto bien rotulada que recorre el pueblo y carreteras</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Convertir cada vehículo o unidad móvil en un espectacular rodante de alta seguridad vial.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Vinil fundido 3M Controltac IJ180C con laminado UV + Cintas reflejantes prismáticas Grado Ingeniería.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Impresión látex de alta durabilidad exterior (7 años) + recorte de vinil reflejante en emblema.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Puertas laterales: 550 × 240 mm; Caja trasera/lateral: 1,400 × 500 mm con código de unidad en monoespaciada.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Lectura en movimiento a 25–40 metros a 80 km/h de día y bajo faros de automóvil de noche.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Respetar franjas de alta visibilidad DOT-C2 y nunca cortar el símbolo sobre bisagras o manijas.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#271810"/>
+          <circle cx="55" cy="46" r="16" fill="#92400E"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#92400E" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#92400E" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Camioneta de reparto bien ro</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DES-01 · DESPUÉS DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Mueblería El Roble</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #059669;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DES-02 · DESPUÉS DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#059669;font-weight:800;">Packaging, Unboxing & Entrega Post-Venta</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Sello pirograbado con calor debajo de cada mesa</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Transformar la recepción del producto en un ritual memorable que dispare la recompra y recomendación.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Cartón Kraft rígido flauta E de 450 g/m² con papel seda interior de 28 g/m² y etiqueta de seguridad.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Serigrafía a 2 tintas directas Pantone + Sello de caucho artesanal o lacre en el cierre.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Símbolo central ocupando el 28% del frente de la caja, respetando área de aislamiento 2X.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Experiencia táctil en manos del cliente (30–60 cm) y fotografía para redes sociales.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Prohibido colocar cintas adhesivas comerciales sobre el logotipo principal.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#271810"/>
+          <circle cx="55" cy="46" r="16" fill="#92400E"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#92400E" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#92400E" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Sello pirograbado con calor </text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DES-02 · DESPUÉS DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Mueblería El Roble</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #059669;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DES-03 · DESPUÉS DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#059669;font-weight:800;">Ecosistema Digital, Web & Redes Sociales</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Frasco de cera nutritiva con el logo para cuidar el mueble</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Captar prospectos calificados en los primeros 3 segundos con autoridad visual y carga instantánea.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Interfaz Web Responsiva HTML5/CSS3 + SVG nativo en curvas y Favicon 1:1 adaptativo.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Renderizado vectorial SVG inline con contraste WCAG AAA (≥ 7.0:1) y modo claro/obscuro.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Navbar: altura mínima 36 px (escritorio) y 28 px (móvil); Avatar social: 1080 × 1080 px con margen seguro circular.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Pantallas OLED/Retina desde 320 px hasta monitores ultrawide 4K.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Nunca exportar el logotipo del encabezado en JPG con compresión o fondo blanco pegado.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#271810"/>
+          <circle cx="55" cy="46" r="16" fill="#92400E"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#92400E" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#92400E" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Frasco de cera nutritiva con</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DES-03 · DESPUÉS DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Mueblería El Roble</text>
+        </svg></div>
+            </div>
   </div>
 
   <div class="sheet">
     <div class="sheet-header">
-      <span>TOMO III · CALIBRACIÓN VISUAL (FASE 4), LOS 24 ATRIBUTOS AISLADOS (FASE 5) Y PRE-PRENSA (FASE 6)</span>
+      <span>TOMO III · NAMING, NIZA, DOMINIOS, LOS 24 ATRIBUTOS AISLADOS Y ESPECIFICACIÓN DE PRE-PRENSA</span>
       <span>FAMILIA BASE: Familia 02 · Sello de Taller Ebanista (Apto para Pirograbado en Madera con Hierro Caliente)</span>
     </div>
+    <div class="grid-3" style="margin-bottom:18px;">
+      <div class="card"><span class="tag">Top 4 Finalistas en Bóveda Evolutiva</span><p>Mueblería El Roble · Casa Mendoza Ebanistería · Raíz de Pueblo · Madera Viva San Miguel</p></div>
+      <div class="card"><span class="tag">Clases Internacionales de Niza</span><p>Clase 20 (Muebles de madera, comedores, recámaras y ebanistería), Clase 35 (Exhibición y venta minorista/mayorista de muebles), Clase 39 (Flete y entrega a domicilio protegida)</p></div>
+      <div class="card"><span class="tag">Dominios Web Verificados</span><p style="font-family:monospace;font-weight:700;color:#059669;">🟢 muebleriaelroble.mx<br/>🟢 elroblesanmiguel.com<br/>🟢 catalogo.muebleriaelroble.mx</p></div>
+    </div>
     <p><strong>Tipografía Oficial Titulares:</strong> Playfair Display · <strong>Tipografía Secundaria y Tabular:</strong> Plus Jakarta Sans</p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 22px 0;">
-      <div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 1A: Vértices Curvos Suaves</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 2B: Trazo Grueso 10pt (Indispensable para que el sello quemador en madera no se empaste)</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 3B: Sello Oval/Circular de Taller</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 4A: Equilibrio Firme 0°</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 5B: Hoja de Roble y Veta en Espacio Negativo</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 6B: Acomodo Vertical de Sello Artesanal</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 7A: Anillo Circular de Sello</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 8A: Trazo Continuo Noble</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 9B: Doble Anillo Tradicional ('Desde 1984')</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 10A: Diseño Plano 2D (100% reproducible en sello de bronce caliente y esténcil)</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 11A: Terminales Redondeados</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 12A: Núcleo Concentrado</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 13B: Tipografía con Patines Clásicos (Tradición y Confianza)</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 14B: Letra Ancha Legible en el Rótulo de la Calle</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 15A: Espaciado Claro</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 16B: Caja Mixta Cercana ('Mueblería El Roble')</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 17B: Peso Fuerte</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 18B: Subtítulo Tradicional ('Artesanos de la Madera · San Miguel')</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 19A: Fondo Crema / Papel Kraft</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 20A: Tonos Cálidos Nogal y Miel</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 21B: Acento Verde Pino / Bosque</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 22B: Madera Nogal, Miel y Verde Bosque</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 23A: Acabado Natural en Papel Kraft y Pirograbado en Madera</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 24A: Tinta Sólida 1 Tinta para Sellos y Cajas</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 20px 0;">
+      <div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 1A: Vértices Curvos Suaves</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 2B: Trazo Grueso 10pt (Indispensable para que el sello quemador en madera no se empaste)</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 3B: Sello Oval/Circular de Taller</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 4A: Equilibrio Firme 0°</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 5B: Hoja de Roble y Veta en Espacio Negativo</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 6B: Acomodo Vertical de Sello Artesanal</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 7A: Anillo Circular de Sello</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 8A: Trazo Continuo Noble</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 9B: Doble Anillo Tradicional ('Desde 1984')</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 10A: Diseño Plano 2D (100% reproducible en sello de bronce caliente y esténcil)</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 11A: Terminales Redondeados</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 12A: Núcleo Concentrado</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 13B: Tipografía con Patines Clásicos (Tradición y Confianza)</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 14B: Letra Ancha Legible en el Rótulo de la Calle</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 15A: Espaciado Claro</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 16B: Caja Mixta Cercana ('Mueblería El Roble')</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 17B: Peso Fuerte</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 18B: Subtítulo Tradicional ('Artesanos de la Madera · San Miguel')</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 19A: Fondo Crema / Papel Kraft</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 20A: Tonos Cálidos Nogal y Miel</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 21B: Acento Verde Pino / Bosque</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 22B: Madera Nogal, Miel y Verde Bosque</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 23A: Acabado Natural en Papel Kraft y Pirograbado en Madera</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 24A: Tinta Sólida 1 Tinta para Sellos y Cajas</div>
     </div>
     <span class="tag">Paleta Cromática Oficial (HEX, CMYK FOGRA39, Pantone Solid Coated y Contraste WCAG)</span>
     <div class="grid-4" style="margin-top:8px;margin-bottom:20px;">
       <div style="border:1px solid #CBD5E1;border-radius:12px;overflow:hidden;background:#FFF;">
-          <div style="height:68px;background:#FAF5EE;border-bottom:1px solid #CBD5E1;"></div>
-          <div style="padding:12px;font-family:monospace;font-size:0.8rem;line-height:1.5;">
+          <div style="height:64px;background:#FAF5EE;border-bottom:1px solid #CBD5E1;"></div>
+          <div style="padding:12px;font-family:monospace;font-size:0.78rem;line-height:1.5;">
             <strong>Superficie Base</strong><br/>
             HEX: #FAF5EE<br/>
             CMYK: C:0% M:2% Y:5% K:2%<br/>
@@ -91,8 +628,8 @@
             Contraste: 15.81:1 (AAA Nativo)
           </div>
         </div><div style="border:1px solid #CBD5E1;border-radius:12px;overflow:hidden;background:#FFF;">
-          <div style="height:68px;background:#271810;border-bottom:1px solid #CBD5E1;"></div>
-          <div style="padding:12px;font-family:monospace;font-size:0.8rem;line-height:1.5;">
+          <div style="height:64px;background:#271810;border-bottom:1px solid #CBD5E1;"></div>
+          <div style="padding:12px;font-family:monospace;font-size:0.78rem;line-height:1.5;">
             <strong>Tinta Estructural</strong><br/>
             HEX: #271810<br/>
             CMYK: C:0% M:38% Y:59% K:85%<br/>
@@ -100,8 +637,8 @@
             Contraste: 15.81:1 (AAA Nativo)
           </div>
         </div><div style="border:1px solid #CBD5E1;border-radius:12px;overflow:hidden;background:#FFF;">
-          <div style="height:68px;background:#92400E;border-bottom:1px solid #CBD5E1;"></div>
-          <div style="padding:12px;font-family:monospace;font-size:0.8rem;line-height:1.5;">
+          <div style="height:64px;background:#92400E;border-bottom:1px solid #CBD5E1;"></div>
+          <div style="padding:12px;font-family:monospace;font-size:0.78rem;line-height:1.5;">
             <strong>Acento Primario</strong><br/>
             HEX: #92400E<br/>
             CMYK: C:0% M:56% Y:90% K:43%<br/>
@@ -109,8 +646,8 @@
             Contraste: 7.13:1 (AAA Auto-Healed)
           </div>
         </div><div style="border:1px solid #CBD5E1;border-radius:12px;overflow:hidden;background:#FFF;">
-          <div style="height:68px;background:#065F46;border-bottom:1px solid #CBD5E1;"></div>
-          <div style="padding:12px;font-family:monospace;font-size:0.8rem;line-height:1.5;">
+          <div style="height:64px;background:#065F46;border-bottom:1px solid #CBD5E1;"></div>
+          <div style="padding:12px;font-family:monospace;font-size:0.78rem;line-height:1.5;">
             <strong>Acento Secundario</strong><br/>
             HEX: #065F46<br/>
             CMYK: C:94% M:0% Y:26% K:63%<br/>

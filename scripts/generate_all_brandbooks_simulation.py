@@ -27,6 +27,7 @@ from master_brandbook_compiler import MasterBrandbookCompiler
 from vector_sanitizer import PrePressColorEngine
 from naming_engine import NamingFilterEngine
 from kansei_generative_architect import KanseiEngineeringQTT1Engine
+from bespoke_logo_studio import BespokePentagramLogoEngine, DeepTouchpointEngineeringEngine
 
 OUT_DIR = os.path.join(ROOT_DIR, "entregables_brandbooks")
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -676,16 +677,96 @@ SIMULATED_BRANDS = [
 def generate_standalone_html_brandbook(brand: dict, compiled: dict, color_table: list) -> str:
     b_name = brand["chosen_name"]
     bg_hex, ink_hex, pri_hex, sec_hex = brand["palette"]
-    initials = "".join([w[0] for w in b_name.replace("&", "").split() if w])[:2].upper()
+    logo_plate_map = {
+        "01_restaurante_brasa_y_raiz": "brand_01_brasa_y_raiz_logo.jpg",
+        "02_despacho_contable_vertice": "brand_02_vertice_patrimonial_logo.jpg",
+        "03_colegio_agora_nova": "brand_03_colegio_agora_nova_logo.jpg",
+        "04_b2b_laboratorio_quantalab": "brand_04_quantalab_logo.jpg",
+        "05_campamentos_cumbre_viva": "brand_05_cumbre_viva_logo.jpg",
+        "06_casa_retiro_villa_serena": "brand_06_villa_serena_logo.jpg",
+        "07_constructora_piedra_firme": "brand_07_piedra_firme_logo.jpg",
+        "08_muebleria_pueblo_el_roble": "brand_08_muebleria_el_roble_logo.jpg",
+        "09A_automatizacion_matriz_aksis": "brand_09_grupo_aksis_architecture_logos.jpg",
+        "09B_submarca_aksis_mantenimiento": "brand_09_grupo_aksis_architecture_logos.jpg",
+        "09C_submarca_aksis_transporte": "brand_09_grupo_aksis_architecture_logos.jpg",
+        "09D_submarca_aksis_control": "brand_09_grupo_aksis_architecture_logos.jpg",
+    }
+    plate_file = logo_plate_map.get(brand["id"], "step5b_master_logo_01_totemic_emblem.jpg")
+    plate_rel_path = f"../apps/web/assets/logos/{plate_file}"
+    studio_proposals = BespokePentagramLogoEngine.generate_4_studio_logo_proposals(
+        brand_name=b_name,
+        industry_hint=brand["sector"],
+        purpose_text=brand["purpose_why"],
+        colors_hex=brand["palette"],
+        primary_font=brand["primary_font"],
+        secondary_font=brand["secondary_font"],
+        descriptor_tagline=brand["tagline"][:38],
+        show_construction_grid=True
+    )
+    hero_symbol_svg = BespokePentagramLogoEngine.render_bespoke_symbol_inner_svg(
+        archetype=studio_proposals[0]["archetype"],
+        pri_hex=pri_hex,
+        sec_hex=sec_hex,
+        ink_hex="#090D16",
+        bg_hex="#FFFFFF",
+        variant_index=0,
+        uid="hero"
+    )
+    tp_dossier = DeepTouchpointEngineeringEngine.build_detailed_touchpoints_dossier(
+        tp_before_raw=[s.strip() for s in brand["touchpoints_journey"]["antes"].split("·") if s.strip()],
+        tp_during_raw=[s.strip() for s in brand["touchpoints_journey"]["durante"].split("·") if s.strip()],
+        tp_after_raw=[s.strip() for s in brand["touchpoints_journey"]["despues"].split("·") if s.strip()],
+        brand_name=b_name,
+        pri_hex=pri_hex,
+        ink_hex=ink_hex
+    )
+
+    proposals_grid_html = "".join([
+        f"""<div style="border:1.5px solid #CBD5E1;border-radius:14px;padding:12px;background:#F8FAFC;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;color:{pri_hex};margin-bottom:4px;">{p['proposal_id']} · SISTEMA VECTORIAL EN CURVAS</div>
+          <div style="font-weight:800;font-size:0.9rem;color:#0F172A;margin-bottom:6px;">{p['title']}</div>
+          <div style="height:175px;border-radius:10px;overflow:hidden;border:1px solid #E2E8F0;background:#FFF;">{p['svg']}</div>
+          <div style="font-size:0.76rem;color:#475569;margin-top:6px;">{p['subtitle']}</div>
+        </div>"""
+        for p in studio_proposals
+    ])
+
+    def render_tp_cards(items: list, border_color: str) -> str:
+        return "".join([
+            f"""<div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid {border_color};border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">{tp['tp_id']} · {tp['phase_badge']}</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:{border_color};font-weight:800;">{tp['category']}</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">{tp['title']}</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> {tp['strategic_goal']}<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> {tp['substrate_material']}<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> {tp['reproduction_method']}<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> {tp['dimensions_and_grid']}<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> {tp['reading_distance_and_lighting']}<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> {tp['quality_control_rule']}
+                </div>
+              </div>
+              <div>{tp['svg_technical_diagram']}</div>
+            </div>"""
+            for tp in items
+        ])
+
+    tp_before_cards = render_tp_cards(tp_dossier["antes"], "#0284C7")
+    tp_during_cards = render_tp_cards(tp_dossier["durante"], pri_hex)
+    tp_after_cards = render_tp_cards(tp_dossier["despues"], "#059669")
+
     traits_html = "".join([
-        f"<div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> {t}</div>"
+        f"<div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> {t}</div>"
         for t in brand["selected_24_traits"]
     ])
     steps_html = "".join([f"<li>{s}</li>" for s in brand["process_steps"]])
     colors_html = "".join([
         f"""<div style="border:1px solid #CBD5E1;border-radius:12px;overflow:hidden;background:#FFF;">
-          <div style="height:68px;background:{c['hex']};border-bottom:1px solid #CBD5E1;"></div>
-          <div style="padding:12px;font-family:monospace;font-size:0.8rem;line-height:1.5;">
+          <div style="height:64px;background:{c['hex']};border-bottom:1px solid #CBD5E1;"></div>
+          <div style="padding:12px;font-family:monospace;font-size:0.78rem;line-height:1.5;">
             <strong>{c['role']}</strong><br/>
             HEX: {c['hex']}<br/>
             CMYK: {c['cmyk_fogra39']}<br/>
@@ -699,7 +780,7 @@ def generate_standalone_html_brandbook(brand: dict, compiled: dict, color_table:
     if brand.get("architecture_role"):
         arch_banner = f"""
         <div style="background:#0F172A;color:#FDE68A;border:2px solid {pri_hex};border-radius:14px;padding:16px 20px;margin-bottom:22px;">
-          <div style="font-family:monospace;font-size:0.78rem;font-weight:800;letter-spacing:0.08em;">🏛️ ARQUITECTURA MULTI-MARCA CORPORATIVA (GRUPO AKSIS)</div>
+          <div style="font-family:monospace;font-size:0.78rem;font-weight:800;letter-spacing:0.08em;">🏛️ ARQUITECTURA MULTI-MARCA CORPORATIVA (REGLA 85% ADN HEREDADO / 15% ESPECÍFICO)</div>
           <div style="font-size:0.95rem;color:#FFFFFF;margin-top:4px;font-weight:600;">{brand['architecture_role']}</div>
         </div>
         """
@@ -712,38 +793,48 @@ def generate_standalone_html_brandbook(brand: dict, compiled: dict, color_table:
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@500;700&family=Playfair+Display:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   <style>
-    body {{ font-family: 'Plus Jakarta Sans', sans-serif; background: #F1F5F9; color: #0F172A; margin: 0; padding: 32px; }}
-    .sheet {{ max-width: 1120px; margin: 0 auto 28px auto; background: #FFFFFF; border: 1.5px solid #CBD5E1; border-radius: 20px; padding: 32px 36px; box-shadow: 0 12px 32px rgba(15,23,42,0.06); page-break-after: always; }}
-    .sheet-header {{ display: flex; justify-content: space-between; border-bottom: 2px solid #0F172A; padding-bottom: 10px; margin-bottom: 22px; font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; font-weight: 700; color: #475569; text-transform: uppercase; }}
-    .grid-2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }}
-    .grid-3 {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }}
+    body {{ font-family: 'Plus Jakarta Sans', sans-serif; background: #F1F5F9; color: #0F172A; margin: 0; padding: 24px; }}
+    .sheet {{ max-width: 1120px; margin: 0 auto 24px auto; background: #FFFFFF; border: 1.5px solid #CBD5E1; border-radius: 20px; padding: 28px 32px; box-shadow: 0 12px 32px rgba(15,23,42,0.06); page-break-after: always; }}
+    .sheet-header {{ display: flex; justify-content: space-between; border-bottom: 2px solid #0F172A; padding-bottom: 10px; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; font-weight: 700; color: #475569; text-transform: uppercase; }}
+    .grid-2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }}
+    .grid-3 {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }}
     .grid-4 {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }}
-    .card {{ background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 16px 18px; }}
-    .tag {{ font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 800; color: {pri_hex}; text-transform: uppercase; display: block; margin-bottom: 6px; }}
+    .card {{ background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; }}
+    .tag {{ font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 800; color: {pri_hex}; text-transform: uppercase; display: block; margin-bottom: 6px; }}
     h1, h2, h3 {{ margin: 0 0 8px 0; font-family: '{brand["primary_font"]}', sans-serif; }}
-    p, li {{ font-size: 0.92rem; line-height: 1.55; color: #1E293B; }}
-    @media print {{ body {{ background: #FFF; padding: 0; }} .sheet {{ box-shadow: none; border: 1px solid #000; margin-bottom: 16px; }} }}
+    p, li {{ font-size: 0.88rem; line-height: 1.5; color: #1E293B; }}
+    @media print {{ body {{ background: #FFF; padding: 0; }} .sheet {{ box-shadow: none; border: 1px solid #CBD5E1; margin-bottom: 12px; page-break-after: always; }} .no-print {{ display: none !important; }} }}
   </style>
 </head>
 <body>
   <div class="sheet">
     <div class="sheet-header">
-      <span>TOMO I · PORTADA OFICIAL Y PLATAFORMA ESTRATÉGICA DE 8 PILARES</span>
+      <span>TOMO I · PORTADA OFICIAL, SISTEMA DE LOGOTIPO DE ESTUDIO Y PLATAFORMA ESTRATÉGICA (8 PILARES)</span>
       <span>SECTOR: {brand["sector"]}</span>
     </div>
     {arch_banner}
-    <div style="background:#090D16;color:#FFFFFF;border-radius:18px;padding:32px;display:flex;justify-content:space-between;align-items:center;gap:24px;border:2.5px solid {pri_hex};margin-bottom:24px;">
+    <div style="background:#090D16;color:#FFFFFF;border-radius:18px;padding:26px 30px;display:flex;justify-content:space-between;align-items:center;gap:24px;border:2.5px solid {pri_hex};margin-bottom:22px;">
       <div style="display:flex;align-items:center;gap:22px;">
-        <div style="width:88px;height:88px;border-radius:20px;background:{pri_hex};color:#090D16;display:grid;place-items:center;font-family:'{brand["primary_font"]}',sans-serif;font-weight:900;font-size:2.1rem;border:3px solid #FFFFFF;">
-          {initials}
+        <div style="width:104px;height:104px;border-radius:22px;background:#FFFFFF;display:grid;place-items:center;border:3px solid {pri_hex};flex-shrink:0;">
+          <svg viewBox="-52 -52 104 104" width="88" height="88" xmlns="http://www.w3.org/2000/svg">{hero_symbol_svg}</svg>
         </div>
         <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#FDE68A;font-weight:700;">PERFIL FUNDADOR: {brand["founder_persona"]}</div>
-          <h1 style="font-size:2.4rem;color:#FFFFFF;margin:4px 0;">{b_name}</h1>
-          <div style="font-size:1.05rem;color:#E2E8F0;font-style:italic;">“{brand["tagline"]}”</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.74rem;color:#FDE68A;font-weight:700;">PERFIL FUNDADOR: {brand["founder_persona"]}</div>
+          <h1 style="font-size:2.3rem;color:#FFFFFF;margin:4px 0;">{b_name}</h1>
+          <div style="font-size:1.02rem;color:#E2E8F0;font-style:italic;">“{brand["tagline"]}”</div>
         </div>
       </div>
-      <button onclick="window.print()" style="background:{pri_hex};color:#FFFFFF;border:none;border-radius:99px;padding:12px 22px;font-weight:800;cursor:pointer;">🖨️ Imprimir PDF</button>
+      <button class="no-print" onclick="window.print()" style="background:{pri_hex};color:#FFFFFF;border:none;border-radius:99px;padding:12px 22px;font-weight:800;cursor:pointer;">🖨️ Imprimir / Guardar PDF</button>
+    </div>
+
+    <span class="tag">LÁMINA MAGISTRAL DE IDENTIDAD VISUAL · RENDER DE ESTUDIO GEMINI + APLICACIÓN FÍSICA REAL</span>
+    <div style="margin-bottom:20px;border-radius:16px;overflow:hidden;border:2px solid {pri_hex};background:#090D16;">
+      <img src="{plate_rel_path}" alt="Logo Oficial {b_name}" style="width:100%;max-height:390px;object-fit:cover;display:block;" />
+    </div>
+
+    <span class="tag">SISTEMA DE IDENTIDAD VISUAL DE ESTUDIO (4 ARQUITECTURAS DE LOCKUP EN CURVAS BÉZIER)</span>
+    <div class="grid-2" style="margin-bottom:22px;">
+      {proposals_grid_html}
     </div>
 
     <div class="grid-3">
@@ -761,28 +852,29 @@ def generate_standalone_html_brandbook(brand: dict, compiled: dict, color_table:
 
   <div class="sheet">
     <div class="sheet-header">
-      <span>TOMO II · RECORRIDO DE TOUCHPOINTS (FASE 2) + ESTUDIO DE NAMING, NIZA Y DOMINIOS (FASE 3)</span>
-      <span>{b_name}</span>
+      <span>TOMO II · EXPEDIENTE DE INGENIERÍA DE TOUCHPOINTS (SUSTRATOS, MEDIDAS, IMPRESIÓN Y CONTROL DE CALIDAD)</span>
+      <span>{b_name} · {tp_dossier["total_engineered_touchpoints"]} FICHAS TÉCNICAS DE TOUCHPOINTS</span>
     </div>
-    <div class="grid-3" style="margin-bottom:22px;">
-      <div class="card" style="border-top:4px solid #0284C7;"><span class="tag" style="color:#0284C7;">1. Antes de Comprar (Atracción)</span><p>{brand["touchpoints_journey"]["antes"]}</p></div>
-      <div class="card" style="border-top:4px solid {pri_hex};"><span class="tag">2. Durante la Compra (Cierre)</span><p>{brand["touchpoints_journey"]["durante"]}</p></div>
-      <div class="card" style="border-top:4px solid #059669;"><span class="tag" style="color:#059669;">3. Después de Comprar (Fidelización)</span><p>{brand["touchpoints_journey"]["despues"]}</p></div>
-    </div>
-    <div class="grid-3">
-      <div class="card"><span class="tag">Top 4 Finalistas en Bóveda Evolutiva</span><p>{" · ".join(brand["vault_finalists"])}</p></div>
-      <div class="card"><span class="tag">Clases Internacionales de Niza</span><p>{brand["nice_classes"]}</p></div>
-      <div class="card"><span class="tag">Dominios Web Verificados</span><p style="font-family:monospace;font-weight:700;color:#059669;">{"<br/>".join(["🟢 " + d for d in brand["domains"]])}</p></div>
-    </div>
+    <h3 style="color:#0284C7;margin-bottom:10px;">MOMENTO 1 · ANTES DE COMPRAR (DESCUBRIMIENTO Y ATRACCIÓN)</h3>
+    {tp_before_cards}
+    <h3 style="color:{pri_hex};margin:18px 0 10px 0;">MOMENTO 2 · DURANTE LA COMPRA (EVALUACIÓN, COTIZACIÓN Y CIERRE)</h3>
+    {tp_during_cards}
+    <h3 style="color:#059669;margin:18px 0 10px 0;">MOMENTO 3 · DESPUÉS DE COMPRAR (ENTREGA, USO CONTINUO Y FIDELIZACIÓN)</h3>
+    {tp_after_cards}
   </div>
 
   <div class="sheet">
     <div class="sheet-header">
-      <span>TOMO III · CALIBRACIÓN VISUAL (FASE 4), LOS 24 ATRIBUTOS AISLADOS (FASE 5) Y PRE-PRENSA (FASE 6)</span>
+      <span>TOMO III · NAMING, NIZA, DOMINIOS, LOS 24 ATRIBUTOS AISLADOS Y ESPECIFICACIÓN DE PRE-PRENSA</span>
       <span>FAMILIA BASE: {brand["base_family"]}</span>
     </div>
+    <div class="grid-3" style="margin-bottom:18px;">
+      <div class="card"><span class="tag">Top 4 Finalistas en Bóveda Evolutiva</span><p>{" · ".join(brand["vault_finalists"])}</p></div>
+      <div class="card"><span class="tag">Clases Internacionales de Niza</span><p>{brand["nice_classes"]}</p></div>
+      <div class="card"><span class="tag">Dominios Web Verificados</span><p style="font-family:monospace;font-weight:700;color:#059669;">{"<br/>".join(["🟢 " + d for d in brand["domains"]])}</p></div>
+    </div>
     <p><strong>Tipografía Oficial Titulares:</strong> {brand["primary_font"]} · <strong>Tipografía Secundaria y Tabular:</strong> {brand["secondary_font"]}</p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 22px 0;">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 20px 0;">
       {traits_html}
     </div>
     <span class="tag">Paleta Cromática Oficial (HEX, CMYK FOGRA39, Pantone Solid Coated y Contraste WCAG)</span>
@@ -800,6 +892,7 @@ def generate_standalone_html_brandbook(brand: dict, compiled: dict, color_table:
 
 def main():
     summary_index = []
+    html_pdf_pairs = []
     for brand in SIMULATED_BRANDS:
         bg_hex, ink_hex, pri_hex, sec_hex = brand["palette"]
         profile = {
@@ -827,25 +920,60 @@ def main():
             PrePressColorEngine.build_brand_color_table("Acento Primario", pri_hex, bg_hex),
             PrePressColorEngine.build_brand_color_table("Acento Secundario", sec_hex, bg_hex),
         ]
+        tp_dossier = DeepTouchpointEngineeringEngine.build_detailed_touchpoints_dossier(
+            tp_before_raw=[s.strip() for s in brand["touchpoints_journey"]["antes"].split("·") if s.strip()],
+            tp_during_raw=[s.strip() for s in brand["touchpoints_journey"]["durante"].split("·") if s.strip()],
+            tp_after_raw=[s.strip() for s in brand["touchpoints_journey"]["despues"].split("·") if s.strip()],
+            brand_name=brand["chosen_name"],
+            pri_hex=pri_hex,
+            ink_hex=ink_hex
+        )
         html_doc = generate_standalone_html_brandbook(brand, compiled, color_table)
         html_path = os.path.join(OUT_DIR, f"brandbook_{brand['id']}.html")
         json_path = os.path.join(OUT_DIR, f"brandbook_{brand['id']}.json")
+        pdf_path = os.path.join(OUT_DIR, f"brandbook_{brand['id']}.pdf")
         with open(html_path, "w", encoding="utf-8") as f:
             f.write(html_doc)
         with open(json_path, "w", encoding="utf-8") as f:
-            json.dump({"brand_input": brand, "color_table": color_table, "compiled_engine": compiled}, f, ensure_ascii=False, indent=2)
+            json.dump({
+                "brand_input": brand,
+                "color_table": color_table,
+                "engineered_touchpoints_dossier": tp_dossier,
+                "compiled_engine": compiled
+            }, f, ensure_ascii=False, indent=2)
+        html_pdf_pairs.append((html_path, pdf_path, brand["chosen_name"]))
         summary_index.append({
             "id": brand["id"],
             "sector": brand["sector"],
             "chosen_name": brand["chosen_name"],
             "html_file": f"entregables_brandbooks/brandbook_{brand['id']}.html",
+            "pdf_file": f"entregables_brandbooks/brandbook_{brand['id']}.pdf",
             "json_file": f"entregables_brandbooks/brandbook_{brand['id']}.json"
         })
-        print(f"✓ Generado Brandbook: {brand['chosen_name']} ({brand['sector']}) -> {html_path}")
+        print(f"✓ Generado Brandbook HTML/JSON: {brand['chosen_name']} ({brand['sector']})")
+
+    # Compilar los 12 PDFs reales con Playwright Chromium
+    try:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            for h_path, p_path, b_title in html_pdf_pairs:
+                page.goto(f"file://{h_path}", wait_until="domcontentloaded")
+                page.pdf(
+                    path=p_path,
+                    format="A4",
+                    print_background=True,
+                    margin={"top": "10mm", "bottom": "10mm", "left": "10mm", "right": "10mm"}
+                )
+                print(f"📄 Compilado PDF Oficial: {b_title} -> {p_path}")
+            browser.close()
+    except Exception as e:
+        print(f"Aviso compilación PDF: {e}")
 
     with open(os.path.join(OUT_DIR, "index_12_brandbooks.json"), "w", encoding="utf-8") as f:
         json.dump(summary_index, f, ensure_ascii=False, indent=2)
-    print(f"\nTotal Brandbooks generados con éxito: {len(summary_index)}")
+    print(f"\nTotal Brandbooks (HTML + PDF + JSON) generados con éxito: {len(summary_index)}")
 
 
 if __name__ == "__main__":

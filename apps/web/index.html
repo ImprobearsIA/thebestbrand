@@ -1302,12 +1302,26 @@
     }
 
     @media print {
-      body { background: #FFFFFF !important; color: #000000 !important; }
-      .top-dock, .aura-presence-stage, .downloads-vault-bar, #step6SubTabs, button { display: none !important; }
+      @page { size: A4 landscape; margin: 8mm; }
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      html, body, .app-shell, .screen-view, #screen-focus, .stage-section, #panel-step-6 {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+        position: static !important;
+      }
+      .top-dock, #focusTopStepperBar, #multiBrandArchitectureBar, #subBrandClonerDrawer, #screen-journey, .aura-presence-stage, .downloads-vault-bar, #step6SubTabs, button {
+        display: none !important;
+      }
       .stage-section { display: none !important; }
+      #screen-focus { display: block !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
       #panel-step-6 { display: block !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
-      .brandbook-magazine-hero { box-shadow: none !important; border: none !important; }
-      .brandbook-sheet { page-break-after: always; break-inside: avoid; border: 1px solid #CCC !important; box-shadow: none !important; margin-bottom: 20px !important; }
+      #step6TabPlates { display: flex !important; flex-direction: column !important; gap: 14px !important; }
+      .brandbook-magazine-hero { box-shadow: none !important; border: none !important; overflow: visible !important; }
+      .brandbook-sheet { page-break-after: always; break-inside: avoid; border: 1.5px solid #090D16 !important; box-shadow: none !important; margin-bottom: 16px !important; overflow: visible !important; }
     }
   
     /* ==========================================================================
@@ -2272,7 +2286,7 @@
       </header>
 
       <!-- BARRA HORIZONTAL DE ORDEN DE LOS 6 PASOS (JERARQUÍA VISUAL SIEMPRE VISIBLE) -->
-      <nav id="focusTopStepperBar" aria-label="Orden de los 6 pasos" style="width:100%; display:grid; grid-template-columns:repeat(6, 1fr); gap:6px; margin-bottom:14px; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:16px; padding:8px;">
+      <nav id="focusTopStepperBar" aria-label="Orden de los 6 pasos" style="width:100%; display:grid; grid-template-columns:repeat(6, 1fr); gap:6px; margin-bottom:8px; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:16px; padding:8px;">
         <button type="button" id="topStepBtn_1" onclick="switchStep(1)" style="border:none; border-radius:10px; padding:7px 6px; font-family:var(--font-ui); font-size:0.74rem; font-weight:800; cursor:pointer; background:#090D16; color:#FDE68A;">1. Propósito</button>
         <button type="button" id="topStepBtn_2" onclick="switchStep(2)" style="border:none; border-radius:10px; padding:7px 6px; font-family:var(--font-ui); font-size:0.74rem; font-weight:700; cursor:pointer; background:#F1F5F9; color:#334155;">2. Touchpoints</button>
         <button type="button" id="topStepBtn_3" onclick="switchStep(3)" style="border:none; border-radius:10px; padding:7px 6px; font-family:var(--font-ui); font-size:0.74rem; font-weight:700; cursor:pointer; background:#F1F5F9; color:#334155;">3. Nombre</button>
@@ -2280,6 +2294,61 @@
         <button type="button" id="topStepBtn_5" onclick="switchStep(5)" style="border:none; border-radius:10px; padding:7px 6px; font-family:var(--font-ui); font-size:0.74rem; font-weight:700; cursor:pointer; background:#F1F5F9; color:#334155;">5. 24 Detalles</button>
         <button type="button" id="topStepBtn_6" onclick="switchStep(6)" style="border:none; border-radius:10px; padding:7px 6px; font-family:var(--font-ui); font-size:0.74rem; font-weight:700; cursor:pointer; background:#F1F5F9; color:#334155;">6. Brandbook</button>
       </nav>
+
+      <!-- BARRA DE PORTAFOLIO MULTIMARCA, 12 CASOS REALES Y CLONADOR DE SUB-MARCAS (ADN 85%/15%) -->
+      <div id="multiBrandArchitectureBar" style="width:100%; background:#090D16; color:#FFFFFF; border:1.5px solid #D4AF37; border-radius:14px; padding:8px 14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <span style="font-family:var(--font-mono); font-size:0.7rem; color:#FDE68A; font-weight:800;">🏛️ PORTAFOLIO &amp; CASOS REALES:</span>
+          <select id="presetBrandSelector" onchange="loadSimulatedBrandPreset(this.value)" style="background:#1E293B; color:#FFFFFF; border:1px solid #D4AF37; border-radius:8px; padding:5px 10px; font-size:0.76rem; font-weight:700; cursor:pointer;">
+            <option value="">✨ Mi Marca en Vivo (Personalizada)</option>
+            <option value="01_restaurante_brasa_y_raiz">1. Restaurante — Brasa &amp; Raíz</option>
+            <option value="02_despacho_contable_vertice">2. Despacho Contable — Vértice Patrimonial</option>
+            <option value="03_colegio_agora_nova">3. Colegio K-12 — Colegio Ágora Nova</option>
+            <option value="04_b2b_laboratorio_quantalab">4. Laboratorio B2B — QuantaLab Científica</option>
+            <option value="05_campamentos_cumbre_viva">5. Campamentos — Cumbre Viva</option>
+            <option value="06_casa_retiro_villa_serena">6. Casa de Retiro — Villa Serena</option>
+            <option value="07_constructora_piedra_firme">7. Constructora — Piedra Firme Residencial</option>
+            <option value="08_muebleria_pueblo_el_roble">8. Mueblería — Mueblería El Roble</option>
+            <option value="09A_automatizacion_matriz_aksis">9A. [Matriz] Automatización — Aksis Automation</option>
+            <option value="09B_submarca_aksis_mantenimiento">9B. [Sub-Marca 1] Mantenimiento — Aksis Mantenimiento</option>
+            <option value="09C_submarca_aksis_transporte">9C. [Sub-Marca 2] Transporte — Aksis Transporte</option>
+            <option value="09D_submarca_aksis_control">9D. [Sub-Marca 3] Software IIoT — Aksis Control</option>
+          </select>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <button type="button" onclick="openSubBrandClonerBar()" style="background:rgba(212,175,55,0.16); color:#FDE68A; border:1px solid #D4AF37; border-radius:8px; padding:5px 12px; font-size:0.74rem; font-weight:800; cursor:pointer;">
+            🧬 Clonar Sub-Marca (ADN 85% Heredado / 15% Específico)
+          </button>
+          <button type="button" onclick="downloadFullBrandbookPDFDirect()" style="background:#10B981; color:#FFFFFF; border:none; border-radius:8px; padding:5px 12px; font-size:0.74rem; font-weight:800; cursor:pointer;">
+            ⬇️ Descargar Brandbook (.PDF Directo)
+          </button>
+        </div>
+      </div>
+
+      <!-- PANEL DESPLEGABLE DE CLONACIÓN MULTIMARCA (85% HEREDADO / 15% ESPECÍFICO) -->
+      <div id="subBrandClonerDrawer" style="display:none; width:100%; background:#FFFBEB; border:2px solid #D4AF37; border-radius:16px; padding:14px 18px; margin-bottom:14px; color:#090D16;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <div>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#B45309; font-weight:800;">🧬 MOTOR DE ARQUITECTURA MULTIMARCA · REGLA 85% ADN HEREDADO / 15% DIVISIÓN</span>
+            <h4 style="margin:2px 0 0 0; font-size:1.02rem;">Expande tu Grupo Empresarial sin repetir los 6 pasos desde cero</h4>
+          </div>
+          <button type="button" onclick="document.getElementById('subBrandClonerDrawer').style.display='none'" style="background:#090D16; color:#FFF; border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:0.75rem;">Cerrar ✕</button>
+        </div>
+        <p style="font-size:0.82rem; color:#334155; margin:0 0 10px 0;">
+          Bloquea el <strong>85% del ADN de tu Marca Matriz</strong> (chasis geométrico, retícula 8X×3X, tipografías y atributos 1–17) y personaliza únicamente el <strong>15% operativo de la nueva división</strong> (Descriptor, Color Semántico, Clase Niza y Touchpoints específicos):
+        </p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+          <button type="button" class="btn-action" style="background:#10B981; color:#FFF; border:none; padding:8px 14px; font-size:0.78rem; font-weight:800;" onclick="cloneActiveBrandDivision('mantenimiento')">
+            🔧 Crear División Mantenimiento (#10B981 · Clase 37)
+          </button>
+          <button type="button" class="btn-action" style="background:#F59E0B; color:#090D16; border:none; padding:8px 14px; font-size:0.78rem; font-weight:800;" onclick="cloneActiveBrandDivision('transporte')">
+            🚛 Crear División Transporte &amp; Rigging (#F59E0B · Clase 39)
+          </button>
+          <button type="button" class="btn-action" style="background:#06B6D4; color:#090D16; border:none; padding:8px 14px; font-size:0.78rem; font-weight:800;" onclick="cloneActiveBrandDivision('control')">
+            📡 Crear División Control &amp; Software IIoT (#06B6D4 · Clase 42)
+          </button>
+        </div>
+      </div>
 
       <!-- THE LIVING AURA CORE (3D VOLUMETRIC GOLDEN-IRIDESCENT SIRI SPHERE) -->
       <div class="aura-presence-stage" id="focusAuraStage">
@@ -2491,33 +2560,66 @@
       </div>
 
       <!-- HISTORIAL DE EXTRACCIÓN SOCRÁTICA CON AURA EN PASO 2 -->
-      <div id="tpAuraDialogueStream" class="socratic-stream" style="width:100%; max-height:210px; overflow-y:auto; margin-bottom:16px;"></div>
+      <div id="tpAuraDialogueStream" class="socratic-stream" style="width:100%; max-height:210px; overflow-y:auto; margin-bottom:14px;"></div>
 
-      <!-- MAPA EN VIVO DE LOS 3 MOMENTOS DE VERDAD (ACTUALIZADO POR AURA) -->
-      <div class="manifesto-grid" style="width:100%;">
+      <!-- CONSTRUCTOR RÁPIDO DE FICHA TÉCNICA DE TOUCHPOINT (SUSTRATO, IMPRESIÓN, MEDIDAS Y USO) -->
+      <div style="width:100%; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:14px 16px; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <span style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#090D16;">
+            🛠️ ESPECIFICACIÓN TÉCNICA PROFUNDA DE TOUCHPOINT (SUSTRATO · IMPRESIÓN · MEDIDAS · DISTANCIA DE LECTURA)
+          </span>
+          <span id="tpTotalExtractedBadge" style="font-family:var(--font-mono); font-size:0.68rem; background:#090D16; color:#FDE68A; padding:3px 10px; border-radius:99px; font-weight:800;">
+            Cada Touchpoint incluye Ficha de Ingeniería Completa
+          </span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:8px; align-items:end;">
+          <div>
+            <label style="font-size:0.7rem; font-weight:800; color:#334155; display:block; margin-bottom:3px;">Nombre del Touchpoint</label>
+            <input id="customTpTitle" type="text" placeholder="Ej: Menú en Piel / Uniforme" style="width:100%; padding:7px 10px; border:1px solid #CBD5E1; border-radius:8px; font-size:0.78rem;" />
+          </div>
+          <div>
+            <label style="font-size:0.7rem; font-weight:800; color:#334155; display:block; margin-bottom:3px;">Sustrato / Material Exacto</label>
+            <input id="customTpSubstrate" type="text" placeholder="Ej: Papel Algodón 320g / Acero" style="width:100%; padding:7px 10px; border:1px solid #CBD5E1; border-radius:8px; font-size:0.78rem;" />
+          </div>
+          <div>
+            <label style="font-size:0.7rem; font-weight:800; color:#334155; display:block; margin-bottom:3px;">Método de Impresión / Técnica</label>
+            <input id="customTpMethod" type="text" placeholder="Ej: Bordado ≥1.2mm / Láser / Offset" style="width:100%; padding:7px 10px; border:1px solid #CBD5E1; border-radius:8px; font-size:0.78rem;" />
+          </div>
+          <div>
+            <label style="font-size:0.7rem; font-weight:800; color:#334155; display:block; margin-bottom:3px;">Medidas y Escala Mínima</label>
+            <input id="customTpDims" type="text" placeholder="Ej: 85×55 mm · Logo mín. 18 mm" style="width:100%; padding:7px 10px; border:1px solid #CBD5E1; border-radius:8px; font-size:0.78rem;" />
+          </div>
+          <button type="button" class="btn-action primary" onclick="addCustomDetailedTouchpoint()" style="padding:8px 14px; font-size:0.78rem; font-weight:800; white-space:nowrap;">
+            ➕ Guardar Touchpoint Detallado
+          </button>
+        </div>
+      </div>
+
+      <!-- MAPA EN VIVO DE LOS 3 MOMENTOS DE VERDAD (CON FICHAS TÉCNICAS DETALLADAS) -->
+      <div class="manifesto-grid" style="width:100%; grid-template-columns:1fr;">
         <div class="manifesto-plaque" style="border-top:4px solid #6366F1;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span class="plaque-num">2.1 · ANTES DE COMPRAR (DESCUBRIMIENTO)</span>
-            <span id="tpCountBeforeBadge" style="font-family:var(--font-mono); font-size:0.68rem; background:#EEF2FF; color:#4338CA; padding:2px 8px; border-radius:99px; font-weight:800;">Activo</span>
+            <span class="plaque-num">2.1 · ANTES DE COMPRAR (DESCUBRIMIENTO · FICHAS TÉCNICAS DE PRODUCCIÓN)</span>
+            <span id="tpBeforeCount" style="font-family:var(--font-mono); font-size:0.68rem; background:#EEF2FF; color:#4338CA; padding:2px 8px; border-radius:99px; font-weight:800;">Activo</span>
           </div>
-          <div class="plaque-title">Descubrimiento, Atracción &amp; Confianza</div>
-          <p class="plaque-text" id="tpBeforeText" style="white-space:pre-line;">Redes sociales, sitio web ejecutivo, recomendaciones boca a boca, catálogo digital y presencia en eventos...</p>
+          <div class="plaque-title">Descubrimiento, Atracción &amp; Especificación de Materiales</div>
+          <div class="plaque-text" id="tpBeforeText" style="margin-top:8px;"></div>
         </div>
         <div class="manifesto-plaque" style="border-top:4px solid #F59E0B;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span class="plaque-num">2.2 · DURANTE LA COMPRA (COTIZACIÓN Y CIERRE)</span>
-            <span id="tpCountDuringBadge" style="font-family:var(--font-mono); font-size:0.68rem; background:#FEF3C7; color:#92400E; padding:2px 8px; border-radius:99px; font-weight:800;">Activo</span>
+            <span class="plaque-num">2.2 · DURANTE LA COMPRA (EVALUACIÓN Y CIERRE · FICHAS TÉCNICAS DE PRODUCCIÓN)</span>
+            <span id="tpDuringCount" style="font-family:var(--font-mono); font-size:0.68rem; background:#FEF3C7; color:#92400E; padding:2px 8px; border-radius:99px; font-weight:800;">Activo</span>
           </div>
-          <div class="plaque-title">Cotización, Demostración &amp; Cierre</div>
-          <p class="plaque-text" id="tpDuringText" style="white-space:pre-line;">Propuesta ejecutiva en PDF membretado, presentación comercial, uniforme del equipo, contrato de servicio y pasarela de pago...</p>
+          <div class="plaque-title">Cotización, Demostración, Indumentaria &amp; Cierre</div>
+          <div class="plaque-text" id="tpDuringText" style="margin-top:8px;"></div>
         </div>
         <div class="manifesto-plaque" style="border-top:4px solid #10B981;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span class="plaque-num">2.3 · DESPUÉS DE COMPRAR (ENTREGA Y RECOMPRA)</span>
-            <span id="tpCountAfterBadge" style="font-family:var(--font-mono); font-size:0.68rem; background:#ECFDF5; color:#047857; padding:2px 8px; border-radius:99px; font-weight:800;">Activo</span>
+            <span class="plaque-num">2.3 · DESPUÉS DE COMPRAR (ENTREGA, EMPAQUE Y LEALTAD · FICHAS TÉCNICAS DE PRODUCCIÓN)</span>
+            <span id="tpAfterCount" style="font-family:var(--font-mono); font-size:0.68rem; background:#ECFDF5; color:#047857; padding:2px 8px; border-radius:99px; font-weight:800;">Activo</span>
           </div>
-          <div class="plaque-title">Empaque, Entrega, Uso &amp; Fidelización</div>
-          <p class="plaque-text" id="tpAfterText" style="white-space:pre-line;">Empaque de entrega / unboxing con sello, manual de bienvenida, certificado de garantía, seguimiento por WhatsApp y programa de referidos...</p>
+          <div class="plaque-title">Empaque, Unboxing, Flota, Garantía &amp; Fidelización</div>
+          <div class="plaque-text" id="tpAfterText" style="margin-top:8px;"></div>
         </div>
       </div>
 
@@ -2959,21 +3061,49 @@
             <p style="color:#CBD5E1; font-size:0.9rem; margin-top:4px;">Compilación Editorial Completa con Fotografía de Estudio, Planos Técnicos, Touchpoints, Dominios y 24 Atributos</p>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn-action primary" id="btnDownloadMasterPDFHero" onclick="downloadFullBrandbookPDFDirect()" style="background:linear-gradient(135deg, #10B981 0%, #047857 100%); border:none; color:#FFF; font-weight:800; padding:12px 20px;">
+              ⬇️ Descargar Brandbook Completo (.PDF Directo)
+            </button>
             <button class="btn-action primary" id="btnSynthesizeBrandbookVisuals" onclick="generateLiveAIStudioLogoProposals()" style="background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); border:none; color:#FFF; font-weight:800;">
-              🎨 Generar Nuevas Ilustraciones IA para el Brandbook
+              🎨 Actualizar Logos de Estudio IA
             </button>
             <button class="btn-action emerald" id="btnCompileFullBrandbook" onclick="compileFullBrandbookClient()">
-              ⚡ Actualizar y Compilar Expediente Completo
+              ⚡ Compilar Expediente Completo
             </button>
           </div>
         </div>
 
         <div class="magazine-body">
           <div class="downloads-vault-bar">
-            <button class="btn-action primary" onclick="exportLogoSVGCurves()">Descargar Logotipo en Curvas (.SVG)</button>
-            <button class="btn-action" onclick="exportBrandbookJSON()">Exportar Expediente Completo (.JSON)</button>
-            <button class="btn-action emerald" onclick="printShopCheatsheetDirect()">🖨️ Imprimir Print-Shop Cheatsheet</button>
-            <button class="btn-action" onclick="window.print()">📄 Imprimir / Guardar Brandbook Completo en PDF (Sin Límite de Hojas)</button>
+            <button class="btn-action emerald" id="btnDownloadDirectPDFBar" onclick="downloadFullBrandbookPDFDirect()" style="font-weight:800;">⬇️ Descargar Brandbook Completo (.PDF Directo)</button>
+            <button class="btn-action primary" onclick="exportLogoSVGCurves()">📐 Descargar Logotipo en Curvas (.SVG)</button>
+            <button class="btn-action" onclick="exportBrandbookJSON()">📦 Exportar Expediente (.JSON)</button>
+            <button class="btn-action" onclick="printShopCheatsheetDirect()">🖨️ Imprimir Print-Shop Cheatsheet</button>
+            <button class="btn-action" onclick="window.print()">🖨️ Vista de Impresión Navegador</button>
+          </div>
+
+          <!-- BÓVEDA DE DESCARGA DIRECTA DE LOS 12 BRANDBOOKS SIMULADOS (.PDF / .HTML) -->
+          <div style="background:#FFFBEB; border:1.5px solid #D4AF37; border-radius:14px; padding:12px 16px; margin-top:10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+              <span style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#92400E;">
+                📚 DESCARGA DIRECTA EN .PDF DE LOS 12 BRANDBOOKS MAESTROS (8 EMPRESAS + 4 DE ARQUITECTURA GRUPO AKSIS):
+              </span>
+              <span id="pdfDownloadStatusLabel" style="font-family:var(--font-mono); font-size:0.68rem; color:#047857; font-weight:800;">✓ 12 PDFs Compilados Listos</span>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              <a href="/brandbooks/brandbook_01_restaurante_brasa_y_raiz.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none;">⬇️ 01. Brasa &amp; Raíz (.PDF)</a>
+              <a href="/brandbooks/brandbook_02_despacho_contable_vertice.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none;">⬇️ 02. Vértice Patrimonial (.PDF)</a>
+              <a href="/brandbooks/brandbook_03_colegio_agora_nova.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none;">⬇️ 03. Colegio Ágora Nova (.PDF)</a>
+              <a href="/brandbooks/brandbook_04_b2b_laboratorio_quantalab.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none;">⬇️ 04. QuantaLab B2B (.PDF)</a>
+              <a href="/brandbooks/brandbook_05_campamentos_cumbre_viva.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none;">⬇️ 05. Cumbre Viva (.PDF)</a>
+              <a href="/brandbooks/brandbook_06_casa_retiro_villa_serena.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none;">⬇️ 06. Villa Serena (.PDF)</a>
+              <a href="/brandbooks/brandbook_07_constructora_piedra_firme.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none;">⬇️ 07. Piedra Firme (.PDF)</a>
+              <a href="/brandbooks/brandbook_08_muebleria_pueblo_el_roble.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none;">⬇️ 08. Mueblería El Roble (.PDF)</a>
+              <a href="/brandbooks/brandbook_09A_automatizacion_matriz_aksis.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none; border-color:#EA580C; color:#EA580C;">⬇️ 09A. Aksis Automation (.PDF)</a>
+              <a href="/brandbooks/brandbook_09B_submarca_aksis_mantenimiento.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none; border-color:#10B981; color:#047857;">⬇️ 09B. Aksis Mantenimiento (.PDF)</a>
+              <a href="/brandbooks/brandbook_09C_submarca_aksis_transporte.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none; border-color:#D97706; color:#B45309;">⬇️ 09C. Aksis Transporte (.PDF)</a>
+              <a href="/brandbooks/brandbook_09D_submarca_aksis_control.pdf" download class="btn-action" style="padding:5px 10px; font-size:0.72rem; text-decoration:none; border-color:#0284C7; color:#0369A1;">⬇️ 09D. Aksis Control (.PDF)</a>
+            </div>
           </div>
 
           <!-- SELECTOR DE SISTEMA VISUAL Y SUB-TABS -->
@@ -4214,30 +4344,169 @@
       }
     }
 
+    // Diccionario de Fichas Técnicas de Ingeniería de Touchpoints (Paso 2 y Paso 6)
+    window.customTpEngineeringSpecs = window.customTpEngineeringSpecs || {};
+
+    function enrichTouchpointEngineeringSpec(rawItem, phaseKey, index) {
+      const cleanTitle = String(rawItem || "Punto de Contacto").trim();
+      if (window.customTpEngineeringSpecs[cleanTitle]) {
+        return {
+          ...window.customTpEngineeringSpecs[cleanTitle],
+          tp_id: `${phaseKey === 'before' ? 'TP-ANT' : (phaseKey === 'during' ? 'TP-DUR' : 'TP-DES')}-0${index + 1}`
+        };
+      }
+      const lower = cleanTitle.toLowerCase();
+      const prefix = phaseKey === "before" ? "TP-ANT" : (phaseKey === "during" ? "TP-DUR" : "TP-DES");
+      const tpId = `${prefix}-0${index + 1}`;
+      let spec = {
+        tp_id: tpId,
+        title: cleanTitle,
+        category: "Corporativo / Impreso & Digital",
+        strategic_goal: "Transmitir autoridad, claridad y confianza inmediata en este momento clave de contacto.",
+        substrate_material: "Papel Algodón 100% de 320 g/m² libre de ácido + Versión Digital Responsiva PDF/X-4.",
+        reproduction_method: "Impresión Offset CMYK (ISO Coated v2 FOGRA39) + Tinta Directa Pantone + Cuño Seco.",
+        dimensions_and_grid: "Formato Ejecutivo 215.9 × 279.4 mm (Carta) o 90 × 55 mm · Retícula 12 col · Área libre 1X.",
+        reading_distance_and_lighting: "Lectura a 35–45 cm · Iluminación de oficina (4000K) · Contraste WCAG AAA ≥ 10:1.",
+        quality_control_rule: "Escala mínima del logotipo ≥ 22 mm en impreso (90 px en digital). Tolerancia ΔE₀₀* ≤ 1.8."
+      };
+
+      if (/(fachada|tótem|letrero|exterior|lona|arquitect|acceso|valla|obra|señal)/.test(lower)) {
+        spec.category = "Señalética Arquitectónica y Exterior";
+        spec.strategic_goal = "Captar miradas a distancia y proyectar solidez institucional las 24 horas.";
+        spec.substrate_material = "Aluminio Anodizado Calibre 12 (2.5 mm) con Acero Inoxidable 304 Cepillado y Acrílico Opalino.";
+        spec.reproduction_method = "Corte Láser de Fibra Óptica CNC + Pintura Electrostática Poliuretano UV + LED Cálido 3000K IP67.";
+        spec.dimensions_and_grid = "Tótem 2400 × 900 mm / Fachada 1800 × 600 mm · Alto de letra ≥ 150 mm · Aislamiento 1.5X.";
+        spec.reading_distance_and_lighting = "Lectura de 5 m a 45 m (diurna solar directa y nocturna retroiluminada 3000K).";
+        spec.quality_control_rule = "Cero tornillería expuesta al frente; espesor mínimo de trazo calado ≥ 8.0 mm.";
+      } else if (/(uniforme|camisa|bata|chaleco|casco|gafete|bordado|mandil|playera|gorra)/.test(lower)) {
+        spec.category = "Indumentaria Textil y Bordado Mecatrónico";
+        spec.strategic_goal = "Identificar al equipo con pulcritud ejecutiva, orgullo institucional y resistencia al lavado.";
+        spec.substrate_material = "Gabardina Peinada 100% Algodón 260 g/m² / Piqué Técnico + Entretela Tear-Away 60 g/m².";
+        spec.reproduction_method = "Bordado Mecatrónico Tajima/Wilcom · Hilo Madeira Polyneon 40 wt · Aguja 75/11 · Densidad 0.42 mm.";
+        spec.dimensions_and_grid = "Pecho izquierdo: 85 × 32 mm · Manga: 55 × 22 mm · Trazo mínimo columna satín ≥ 1.25 mm.";
+        spec.reading_distance_and_lighting = "Lectura interpersonal de 0.8 m a 3.5 m en interiores o campo.";
+        spec.quality_control_rule = "PROHIBIDO usar degradados o textos menores a 5.0 mm de altura en bordado textil.";
+      } else if (/(vehículo|camioneta|flota|tractocamión|transporte|unidad|remolque|pipa)/.test(lower)) {
+        spec.category = "Flotilla Vehicular y Logística";
+        spec.strategic_goal = "Transformar cada unidad en una valla móvil de alta visibilidad diurna y nocturna.";
+        spec.substrate_material = "Vinil Fundido 3M Controltac IJ180Cv3 + Laminado UV 3M 8518 + Cintas Reflejantes DOT-C2.";
+        spec.reproduction_method = "Impresión Latex/UV de Gran Formato (1200 dpi) + Corte en Plotter de Contorno.";
+        spec.dimensions_and_grid = "Puertas: 650 × 320 mm · Caja lateral: 2200 × 850 mm · Número económico en techo y frente.";
+        spec.reading_distance_and_lighting = "Lectura en movimiento de 10 m a 80 m a 80 km/h; reflectividad nocturna a 120 m.";
+        spec.quality_control_rule = "No invadir manijas, bisagras ni gomas; contraste mínimo 8:1 contra la pintura base.";
+      } else if (/(caja|empaque|unboxing|bolsa|sello|etiqueta|frasco|envase|placa|certificado|garantía)/.test(lower)) {
+        spec.category = "Packaging, Sello de Entrega y Garantía";
+        spec.strategic_goal = "Convertir la entrega en un ritual memorable que confirme la calidad superior de la marca.";
+        spec.substrate_material = "Cartón Rígido Forrado en Papel Texturizado 140 g/m² (FSC) / Placa de Acero Inoxidable 304.";
+        spec.reproduction_method = "Hot-Stamping Metálico (Foil Kurz) + Golpe en Seco (Bajo Relieve) / Grabado Láser permanente.";
+        spec.dimensions_and_grid = "Sello frontal centrado al 28% del ancho de cara principal · Código QR ≥ 18 × 18 mm.";
+        spec.reading_distance_and_lighting = "Lectura táctil y visual de 25 cm a 60 cm al momento de abrir o inspeccionar.";
+        spec.quality_control_rule = "Alineación del cuño con tolerancia ≤ 0.3 mm; el código QR debe incluir zona muda de 4 módulos.";
+      } else if (/(web|google|instagram|tiktok|linkedin|whatsapp|video|correo|digital|portal|app|qr)/.test(lower)) {
+        spec.category = "Ecosistema Digital, Social y Conversión";
+        spec.strategic_goal = "Generar conversión rápida, respuesta inmediata y confianza verificable en pantallas móviles y desktop.";
+        spec.substrate_material = "Interfaz Digital Retina / OLED (Espacio de color sRGB / Display P3) · Activos en SVG y WebP.";
+        spec.reproduction_method = "Renderizado Vectorial SVG en código + Plantillas UI en Figma con variables de diseño.",
+        spec.dimensions_and_grid = "Avatar circular: 1080 × 1080 px (símbolo 1:1 centrado al 68%) · Web Hero: 1440 × 900 px.";
+        spec.reading_distance_and_lighting = "Lectura en smartphone a 30 cm y monitor a 60 cm (Modo Claro y Modo Oscuro).";
+        spec.quality_control_rule = "En avatares menores a 64 × 64 px usar exclusivamente el Símbolo 1:1 sin eslogan.";
+      } else if (/(menú|carta|mesa|vajilla|servilleta|reserva|comensal|degustación|maridaje)/.test(lower)) {
+        spec.category = "Hospitalidad, Gastronomía y Experiencia en Mesa";
+        spec.strategic_goal = "Despertar los sentidos a través del tacto y guiar la elección con claridad editorial.";
+        spec.substrate_material = "Papel Algodón Gmund 350 g/m² con tratamiento hidrofóbico antimanchas y cubierta en piel.";
+        spec.reproduction_method = "Tipografía en Letterpress (Impresión Tipográfica con presión) + Folio Metálico Mate.";
+        spec.dimensions_and_grid = "Carta Principal: 220 × 320 mm · Carta de Vinos: 160 × 320 mm · Cuerpo mínimo 10.5 pt.";
+        spec.reading_distance_and_lighting = "Lectura en mesa a 40 cm bajo iluminación cálida tenue de restaurante (2400K–2700K).";
+        spec.quality_control_rule = "Contraste ultra-alto en papel marfil para lectura perfecta bajo luz de vela.";
+      }
+      return spec;
+    }
+
+    function renderStep2DetailedTouchpointItem(rawItem, phaseKey, idx, accentColor) {
+      const spec = enrichTouchpointEngineeringSpec(rawItem, phaseKey, idx);
+      return `
+        <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid ${accentColor}; border-radius:10px; padding:10px 12px; margin-bottom:8px; box-shadow:0 2px 5px rgba(15,23,42,0.04);">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:4px;">
+            <span style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:#FFFFFF; background:#090D16; padding:2px 7px; border-radius:5px;">${escapeHTML(spec.tp_id)}</span>
+            <span style="font-family:var(--font-mono); font-size:0.64rem; font-weight:700; color:${accentColor};">${escapeHTML(spec.category)}</span>
+          </div>
+          <div style="font-weight:800; font-size:0.84rem; color:#090D16; margin-bottom:5px;">${escapeHTML(spec.title)}</div>
+          <div style="display:grid; gap:3px; font-size:0.73rem; color:#334155; line-height:1.38; background:#F8FAFC; padding:7px 9px; border-radius:7px; border:1px solid #E2E8F0;">
+            <div><strong>🧱 Sustrato/Material:</strong> ${escapeHTML(spec.substrate_material)}</div>
+            <div><strong>🖨️ Impresión/Técnica:</strong> ${escapeHTML(spec.reproduction_method)}</div>
+            <div><strong>📐 Medidas y Escala:</strong> ${escapeHTML(spec.dimensions_and_grid)}</div>
+            <div><strong>🛡️ Regla de Calidad:</strong> <span style="color:#065F46; font-weight:700;">${escapeHTML(spec.quality_control_rule)}</span></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function addCustomDetailedTouchpoint() {
+      const phaseSel = document.getElementById("customTpPhase");
+      const titleInput = document.getElementById("customTpTitle");
+      const subInput = document.getElementById("customTpSubstrate");
+      const methodInput = document.getElementById("customTpMethod");
+      const dimsInput = document.getElementById("customTpDims");
+      if (!titleInput || !titleInput.value.trim()) return;
+
+      const phase = (phaseSel && phaseSel.value) || "before";
+      const title = titleInput.value.trim();
+      const substrate = (subInput && subInput.value.trim()) || "Papel Algodón 320 g/m² / Soporte Corporativo Homologado";
+      const method = (methodInput && methodInput.value.trim()) || "Offset CMYK FOGRA39 + Acabado de Taller";
+      const dims = (dimsInput && dimsInput.value.trim()) || "Formato a medida · Área de protección 1X · Escala mín. 22 mm";
+
+      window.customTpEngineeringSpecs[title] = {
+        title,
+        category: "Touchpoint Personalizado de Ingeniería",
+        strategic_goal: `Punto de contacto diseñado a medida para ${canvasState.brandName || 'la marca'} en la etapa ${phase === 'before' ? 'Antes de Comprar' : (phase === 'during' ? 'Durante la Compra' : 'Después de Comprar')}.`,
+        substrate_material: substrate,
+        reproduction_method: method,
+        dimensions_and_grid: dims,
+        reading_distance_and_lighting: "Calibrado para máxima legibilidad y contraste WCAG AAA ≥ 7:1.",
+        quality_control_rule: "Verificar pruebas de color y proporción 1:1 antes de tiraje o instalación."
+      };
+
+      if (!tpExtractedItems[phase].includes(title)) {
+        tpExtractedItems[phase].push(title);
+      }
+      titleInput.value = "";
+      if (subInput) subInput.value = "";
+      if (methodInput) methodInput.value = "";
+      if (dimsInput) dimsInput.value = "";
+      playAcousticClick(820, 0.05);
+      addXP(45);
+      syncTouchpointCardsUI();
+    }
+
     function syncTouchpointCardsUI() {
       const formatBullets = (arr) => arr.map((it, i) => `${i + 1}. ${it}`).join(" · ");
       canvasState.tp_before = formatBullets(tpExtractedItems.before);
       canvasState.tp_during = formatBullets(tpExtractedItems.during);
       canvasState.tp_after = formatBullets(tpExtractedItems.after);
       canvasState.tp_extracted_lists = JSON.parse(JSON.stringify(tpExtractedItems));
+      canvasState.tp_detailed_engineering = {
+        before: tpExtractedItems.before.map((x, i) => enrichTouchpointEngineeringSpec(x, "before", i)),
+        during: tpExtractedItems.during.map((x, i) => enrichTouchpointEngineeringSpec(x, "during", i)),
+        after: tpExtractedItems.after.map((x, i) => enrichTouchpointEngineeringSpec(x, "after", i))
+      };
 
       const elBefore = document.getElementById("tpBeforeText");
       const elDuring = document.getElementById("tpDuringText");
       const elAfter = document.getElementById("tpAfterText");
-      if (elBefore) elBefore.innerHTML = tpExtractedItems.before.map(x => `<div style="margin-bottom:4px;">• <strong>${escapeHTML(x)}</strong></div>`).join("");
-      if (elDuring) elDuring.innerHTML = tpExtractedItems.during.map(x => `<div style="margin-bottom:4px;">• <strong>${escapeHTML(x)}</strong></div>`).join("");
-      if (elAfter) elAfter.innerHTML = tpExtractedItems.after.map(x => `<div style="margin-bottom:4px;">• <strong>${escapeHTML(x)}</strong></div>`).join("");
+      if (elBefore) elBefore.innerHTML = tpExtractedItems.before.map((x, i) => renderStep2DetailedTouchpointItem(x, "before", i, "#0284C7")).join("");
+      if (elDuring) elDuring.innerHTML = tpExtractedItems.during.map((x, i) => renderStep2DetailedTouchpointItem(x, "during", i, "#D97706")).join("");
+      if (elAfter) elAfter.innerHTML = tpExtractedItems.after.map((x, i) => renderStep2DetailedTouchpointItem(x, "after", i, "#059669")).join("");
 
       const cBefore = document.getElementById("tpBeforeCount");
       const cDuring = document.getElementById("tpDuringCount");
       const cAfter = document.getElementById("tpAfterCount");
-      if (cBefore) cBefore.textContent = `${tpExtractedItems.before.length} touchpoints activos`;
-      if (cDuring) cDuring.textContent = `${tpExtractedItems.during.length} touchpoints activos`;
-      if (cAfter) cAfter.textContent = `${tpExtractedItems.after.length} touchpoints activos`;
+      if (cBefore) cBefore.textContent = `${tpExtractedItems.before.length} fichas técnicas`;
+      if (cDuring) cDuring.textContent = `${tpExtractedItems.during.length} fichas técnicas`;
+      if (cAfter) cAfter.textContent = `${tpExtractedItems.after.length} fichas técnicas`;
 
       const total = tpExtractedItems.before.length + tpExtractedItems.during.length + tpExtractedItems.after.length;
       const totalBadge = document.getElementById("tpTotalExtractedBadge");
-      if (totalBadge) totalBadge.textContent = `Touchpoints extraídos: ${total} puntos de contacto`;
+      if (totalBadge) totalBadge.textContent = `Touchpoints con Ficha Técnica: ${total} puntos de contacto`;
 
       const pillsEl = document.getElementById("step2DiscoveredTraitsPills");
       if (pillsEl) {
@@ -5304,6 +5573,131 @@
       deck.style.display = deck.style.display === "none" ? "grid" : "none";
     }
 
+    function detectBrandStudioIndustryKey(brandName = "") {
+      const b = String(brandName || canvasState.brandName || "").toLowerCase();
+      const ctx = `${b} ${canvasState.golden_circle || ""} ${canvasState.value_offer || ""}`.toLowerCase();
+      if (canvasState.industry_symbol_key) return canvasState.industry_symbol_key;
+      if (/(brasa|raíz|raiz|restaurante|fuego|cocina|gastronom)/.test(ctx)) return "restaurante_fuego_raiz";
+      if (/(vértice|vertice|contable|fiscal|patrimonial|auditor|finanz)/.test(ctx)) return "despacho_contable_vertice";
+      if (/(ágora|agora|colegio|escuela|educa|academia|preparatoria)/.test(ctx)) return "colegio_agora_nova";
+      if (/(quanta|laboratorio|cromatograf|espectrometr|científic|b2b)/.test(ctx)) return "b2b_laboratorio_quantalab";
+      if (/(cumbre|campamento|expedici|montaña|outdoor|liderazgo)/.test(ctx)) return "campamentos_cumbre_viva";
+      if (/(serena|villa|retiro|adultos mayores|geriátr|estancia)/.test(ctx)) return "casa_retiro_villa_serena";
+      if (/(piedra|firme|constructora|inmobiliaria|residencial|arquitect)/.test(ctx)) return "constructora_piedra_firme";
+      if (/(roble|muebler|carpinter|madera|ebanister)/.test(ctx)) return "muebleria_el_roble";
+      if (/(mantenimiento|predictivo|mtto)/.test(ctx)) return "aksis_mantenimiento";
+      if (/(transporte|logística|flota|tractocamión)/.test(ctx)) return "aksis_transporte";
+      if (/(control|scada|telemetría|visión)/.test(ctx)) return "aksis_control";
+      if (/(aksis|automatizaci|robótica|plc|industrial)/.test(ctx)) return "aksis_automation";
+      return "pentagram_modernist";
+    }
+
+    function getBrandStudioGeminiPlateUrl(idx = 0) {
+      const indKey = detectBrandStudioIndustryKey();
+      const brandSpecificPlateMap = {
+        restaurante_fuego_raiz: "/assets/logos/brand_01_brasa_y_raiz_logo.jpg",
+        despacho_contable_vertice: "/assets/logos/brand_02_vertice_patrimonial_logo.jpg",
+        colegio_agora_nova: "/assets/logos/brand_03_colegio_agora_nova_logo.jpg",
+        b2b_laboratorio_quantalab: "/assets/logos/brand_04_quantalab_logo.jpg",
+        campamentos_cumbre_viva: "/assets/logos/brand_05_cumbre_viva_logo.jpg",
+        casa_retiro_villa_serena: "/assets/logos/brand_06_villa_serena_logo.jpg",
+        constructora_piedra_firme: "/assets/logos/brand_07_piedra_firme_logo.jpg",
+        muebleria_el_roble: "/assets/logos/brand_08_muebleria_el_roble_logo.jpg",
+        aksis_automation: "/assets/logos/brand_09_grupo_aksis_architecture_logos.jpg",
+        aksis_mantenimiento: "/assets/logos/brand_09_grupo_aksis_architecture_logos.jpg",
+        aksis_transporte: "/assets/logos/brand_09_grupo_aksis_architecture_logos.jpg",
+        aksis_control: "/assets/logos/brand_09_grupo_aksis_architecture_logos.jpg"
+      };
+      const studioPlates = [
+        brandSpecificPlateMap[indKey] || "/assets/logos/step5b_master_logo_01_totemic_emblem.jpg",
+        "/assets/logos/step5b_master_logo_02_architectural_lockup.jpg",
+        "/assets/logos/step5b_master_logo_03_institutional_seal.jpg",
+        "/assets/logos/step5b_master_logo_04_kinetic_isometric_mark.jpg"
+      ];
+      return studioPlates[idx % 4];
+    }
+
+    function buildBespokePentagramSymbolPaths(industryKey, priColor, secColor, inkColor, onDark = true) {
+      const fg = onDark ? "#FFFFFF" : inkColor;
+      const bgCut = onDark ? "#090D16" : "#FAF8F5";
+      switch (industryKey) {
+        case "restaurante_fuego_raiz":
+          return `
+            <circle cx="50" cy="50" r="44" fill="none" stroke="${priColor}" stroke-width="2.5"/>
+            <path d="M50 12 C67 28 74 44 65 62 C59 73 41 73 35 62 C26 44 33 28 50 12 Z" fill="${priColor}"/>
+            <path d="M50 28 C58 39 60 49 54 59 C50 65 44 61 46 53 C48 46 44 38 50 28 Z" fill="${bgCut}"/>
+            <path d="M24 72 C36 65 64 65 76 72" fill="none" stroke="${secColor}" stroke-width="4" stroke-linecap="round"/>
+            <path d="M32 82 C42 76 58 76 68 82" fill="none" stroke="${fg}" stroke-width="3" stroke-linecap="round"/>
+          `;
+        case "despacho_contable_vertice":
+          return `
+            <path d="M50 8 L88 29 V71 L50 92 L12 71 V29 Z" fill="none" stroke="${priColor}" stroke-width="3"/>
+            <path d="M50 8 L88 29 L50 50 L12 29 Z" fill="${priColor}"/>
+            <path d="M12 29 L50 50 V92 L12 71 Z" fill="${secColor}" fill-opacity="0.88"/>
+            <path d="M88 29 L50 50 V92 L88 71 Z" fill="${fg}" fill-opacity="0.18"/>
+            <path d="M33 40 L50 68 L67 40" fill="none" stroke="${bgCut}" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+          `;
+        case "colegio_agora_nova":
+          return `
+            <path d="M18 14 H82 V50 C82 74 50 92 50 92 C50 92 18 74 18 50 V14 Z" fill="none" stroke="${priColor}" stroke-width="3.2"/>
+            <path d="M28 56 C38 49 46 52 50 58 C54 52 62 49 72 56 V70 C62 64 54 66 50 72 C46 66 38 64 28 70 Z" fill="${secColor}"/>
+            <path d="M50 20 L54 31 L66 35 L54 39 L50 50 L46 39 L34 35 L46 31 Z" fill="${priColor}"/>
+          `;
+        case "b2b_laboratorio_quantalab":
+          return `
+            <ellipse cx="50" cy="50" rx="42" ry="18" transform="rotate(30 50 50)" fill="none" stroke="${priColor}" stroke-width="3.2"/>
+            <ellipse cx="50" cy="50" rx="42" ry="18" transform="rotate(-30 50 50)" fill="none" stroke="${secColor}" stroke-width="3.2"/>
+            <ellipse cx="50" cy="50" rx="42" ry="18" transform="rotate(90 50 50)" fill="none" stroke="${fg}" stroke-width="2.2" stroke-opacity="0.75"/>
+            <circle cx="50" cy="50" r="9.5" fill="${priColor}"/>
+            <circle cx="50" cy="50" r="4" fill="${bgCut}"/>
+          `;
+        case "campamentos_cumbre_viva":
+          return `
+            <circle cx="50" cy="50" r="43" fill="none" stroke="${priColor}" stroke-width="3.2"/>
+            <path d="M16 72 L41 30 L56 54 L67 37 L84 72 Z" fill="${priColor}"/>
+            <path d="M41 30 L50 45 L33 52 Z" fill="${fg}"/>
+            <circle cx="67" cy="24" r="6" fill="${secColor}"/>
+          `;
+        case "casa_retiro_villa_serena":
+          return `
+            <path d="M20 84 V46 C20 26 33 14 50 14 C67 14 80 26 80 46 V84" fill="none" stroke="${priColor}" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="50" cy="42" r="14" fill="${secColor}"/>
+            <path d="M24 70 C38 58 62 58 76 70" fill="none" stroke="${fg}" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M32 82 C44 73 56 73 68 82" fill="none" stroke="${priColor}" stroke-width="3" stroke-linecap="round"/>
+          `;
+        case "constructora_piedra_firme":
+          return `
+            <path d="M16 78 V28 L50 12 L84 28 V78 H64 V46 L50 38 L36 46 V78 Z" fill="${priColor}"/>
+            <path d="M50 12 L84 28 V78 H64 V46 L50 38 Z" fill="${secColor}" fill-opacity="0.82"/>
+            <rect x="12" y="82" width="76" height="6" rx="2" fill="${fg}"/>
+          `;
+        case "muebleria_el_roble":
+          return `
+            <rect x="14" y="14" width="72" height="72" rx="14" fill="none" stroke="${priColor}" stroke-width="3.5"/>
+            <path d="M26 30 H58 C67 30 72 36 72 44 C72 52 67 57 58 57 H42 L68 74 H50 L28 57 V74 H26 Z" fill="${priColor}"/>
+            <path d="M36 22 C46 18 54 18 64 22" fill="none" stroke="${secColor}" stroke-width="3" stroke-linecap="round"/>
+          `;
+        case "aksis_automation":
+        case "aksis_mantenimiento":
+        case "aksis_transporte":
+        case "aksis_control":
+          return `
+            <path d="M50 8 L87 29 V71 L50 92 L13 71 V29 Z" fill="none" stroke="${priColor}" stroke-width="3.8"/>
+            <path d="M50 18 L77 34 L50 50 L23 34 Z" fill="${priColor}"/>
+            <path d="M23 34 L50 50 V82 L23 66 Z" fill="${secColor}"/>
+            <path d="M77 34 L50 50 V82 L77 66 Z" fill="${fg}" fill-opacity="0.88"/>
+            <circle cx="50" cy="50" r="8.5" fill="${bgCut}" stroke="${priColor}" stroke-width="3"/>
+          `;
+        default:
+          return `
+            <path d="M50 8 L88 28 V72 L50 92 L12 72 V28 Z" fill="none" stroke="${priColor}" stroke-width="3.2"/>
+            <path d="M50 18 C68 18 82 32 82 50 C82 68 68 82 50 82 C32 82 18 68 18 50 C18 32 32 18 50 18 Z" fill="none" stroke="${secColor}" stroke-width="2.5"/>
+            <path d="M50 22 L76 66 H24 Z" fill="${priColor}"/>
+            <circle cx="50" cy="52" r="9" fill="${bgCut}"/>
+          `;
+      }
+    }
+
     function renderSynthesizedFinalLogoProposalsGrid(customMorph = null, apiImages = []) {
       const gallery = document.getElementById("liveAIStudioGeneratedGallery");
       const row = document.getElementById("liveAIStudioImagesRow");
@@ -5317,139 +5711,121 @@
       const votedCount = Object.keys(userPairSelections || {}).length;
       const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex || ["#090D16", "#FAF8F5", "#D4AF37", "#38BDF8"];
       const fontName = canvasState.primary_font || "Plus Jakarta Sans";
+      const indKey = detectBrandStudioIndustryKey(rawBrand);
 
-      // Extraer las decisiones reales de los 24 atributos aislados (con defaults inteligentes)
       const useCurves = (userPairSelections[1] || "A") === "A";
       const useBoldStroke = (userPairSelections[2] || "B") === "B";
-      const useShield = (userPairSelections[3] || "B") === "B";
       const useKinetic = (userPairSelections[4] || "A") === "B";
-      const useNegativeSpace = (userPairSelections[5] || "A") === "B";
-      const useHexagon = (userPairSelections[7] || "B") === "B";
-      const useDetailedRing = (userPairSelections[9] || "B") === "B";
-      const useIso3D = (userPairSelections[10] || "A") === "B";
-      const useRoundCap = (userPairSelections[11] || "A") === "A";
       const useMixedCase = (userPairSelections[16] || "A") === "B";
       const useWideTracking = (userPairSelections[15] || "A") === "A";
 
       const displayBrand = useMixedCase
         ? rawBrand.replace(/([a-z])([A-Z])/g, "$1 $2").split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ")
         : rawBrand.toUpperCase();
-      const strokeW = customMorph?.stroke_weight_mm || (useBoldStroke ? "2.40" : "1.45");
-      const svgStroke = useBoldStroke ? 5.2 : 2.4;
-      const lineCap = useRoundCap ? "round" : "square";
-      const rxCorner = useCurves ? 22 : 3;
-      const skewTransform = useKinetic ? "skewX(-10)" : "";
-      const letterTrack = useWideTracking ? "3.2" : "0.6";
+      const strokeW = customMorph?.stroke_weight_mm || (useBoldStroke ? "2.40" : "1.65");
+      const skewTransform = useKinetic ? "skewX(-6)" : "";
+      const letterTrack = useWideTracking ? "2.8" : "0.8";
+
+      const symDark = buildBespokePentagramSymbolPaths(indKey, priHex, secHex || "#D4AF37", inkHex, true);
+      const symLight = buildBespokePentagramSymbolPaths(indKey, priHex, secHex || "#B45309", "#090D16", false);
+      const symMono = buildBespokePentagramSymbolPaths(indKey, "#FDE68A", "#FFFFFF", "#FFFFFF", true);
 
       const familyNames = [
-        "Familia 01 · Monograma Geométrico",
-        "Familia 02 · Escudo de Autoridad",
-        "Familia 03 · Símbolo Fluido Continuo",
-        "Familia 04 · Prisma Tridimensional"
+        "Arquitectura 01 · Emblema Totémico Pentagram",
+        "Arquitectura 02 · Lockup Horizontal Corporativo",
+        "Arquitectura 03 · Sello Institucional 1:1 & Bordado",
+        "Arquitectura 04 · Monograma Isométrico de Autoridad"
       ];
       const activeFamilyIdx = selectedLiveSketchIndex || 0;
 
       if (badge) {
-        badge.textContent = `✓ 4 Propuestas Finales Generadas (${Math.max(votedCount, 24)}/24 atributos integrados + ${familyNames[activeFamilyIdx]})`;
+        badge.textContent = `✓ 4 Logotipos de Estudio Generados (Láminas Gemini AI + Geometría Áurea Bézier · ${Math.max(votedCount, 24)}/24 Atributos)`;
       }
       if (btn) {
-        btn.textContent = "✨ Regenerar mis 4 Propuestas de Logotipo Final (Pasos 1–5 Integrados)";
+        btn.textContent = "✨ Regenerar mis 4 Propuestas de Logotipo de Estudio (Gemini AI + Vector Bézier)";
       }
 
-      // Construir 4 propuestas vectoriales maestras de alta precisión basadas en todas las elecciones del usuario
       const proposals = [
         {
           idx: 0,
-          tag: "PROPUESTA FINAL #01 · EMBLEMA PRINCIPAL TOTÉMICO",
-          title: `${displayBrand} · Versión Principal de Gala`,
-          desc: `Integra tu ${familyNames[activeFamilyIdx]} con esquinas ${useCurves ? 'curvas suaves' : 'angulares 45°'}, trazo de ${strokeW} mm y tipografía ${fontName}.`,
+          tag: "PROPUESTA DE ESTUDIO #01 · EMBLEMA TOTÉMICO PRINCIPAL",
+          title: `${displayBrand} · Lockup Totémico de Gala`,
+          desc: `Símbolo de proporción áurea con espacio negativo real, trazo calibrado a ${strokeW} mm y tipografía ${fontName}. Cero clip-art.`,
+          studioImg: apiImages[0] || getBrandStudioGeminiPlateUrl(0),
           canvasBg: "#090D16",
           svg: `
-            <svg viewBox="0 0 360 220" width="100%" height="205" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="goldGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="${priHex}" />
-                  <stop offset="100%" stop-color="${secHex || '#FDE68A'}" />
-                </linearGradient>
-              </defs>
-              <rect width="360" height="220" rx="12" fill="#090D16"/>
-              <circle cx="180" cy="86" r="64" stroke="rgba(212,175,55,0.14)" stroke-width="1" stroke-dasharray="4 3" fill="none"/>
-              <g transform="translate(180, 82) ${skewTransform}">
-                ${useShield
-                  ? `<path d="M0,-50 L44,-32 V6 C44,34 0,52 0,52 C0,52 -44,34 -44,6 V-32 Z" fill="${useNegativeSpace ? 'url(#goldGrad1)' : 'rgba(255,255,255,0.04)'}" stroke="url(#goldGrad1)" stroke-width="${svgStroke}" stroke-linejoin="${useCurves ? 'round' : 'miter'}"/>`
-                  : (useHexagon
-                      ? `<polygon points="0,-50 44,-25 44,25 0,50 -44,25 -44,-25" fill="${useNegativeSpace ? 'url(#goldGrad1)' : 'rgba(255,255,255,0.04)'}" stroke="url(#goldGrad1)" stroke-width="${svgStroke}" stroke-linejoin="${useCurves ? 'round' : 'miter'}"/>`
-                      : `<rect x="-44" y="-44" width="88" height="88" rx="${rxCorner}" fill="${useNegativeSpace ? 'url(#goldGrad1)' : 'rgba(255,255,255,0.04)'}" stroke="url(#goldGrad1)" stroke-width="${svgStroke}"/>`)
-                }
-                ${useDetailedRing ? `<circle cx="0" cy="0" r="31" stroke="#FFFFFF" stroke-width="1.3" stroke-dasharray="3 2" fill="none" opacity="0.65"/>` : ``}
-                <text x="0" y="9" fill="${useNegativeSpace ? '#090D16' : '#FFFFFF'}" font-family="'${fontName}', sans-serif" font-weight="800" font-size="25" text-anchor="middle">${escapeHTML(initials)}</text>
+            <svg viewBox="0 0 360 210" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+              <rect width="360" height="210" rx="12" fill="#090D16"/>
+              <g transform="translate(132, 16) scale(0.96) ${skewTransform}">
+                ${symDark}
               </g>
-              <text x="180" y="168" fill="#FFFFFF" font-family="'${fontName}', sans-serif" font-weight="800" font-size="20" letter-spacing="${letterTrack}" text-anchor="middle">${escapeHTML(displayBrand.slice(0, 22))}</text>
-              <text x="180" y="188" fill="${priHex}" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="9" letter-spacing="2.5" text-anchor="middle">ARQUITECTURA DE MARCA · ${strokeW} MM</text>
+              <text x="180" y="144" fill="#FFFFFF" font-family="'${fontName}', sans-serif" font-weight="800" font-size="20" letter-spacing="${letterTrack}" text-anchor="middle">${escapeHTML(displayBrand.slice(0, 22))}</text>
+              <line x1="125" y1="158" x2="235" y2="158" stroke="${priHex}" stroke-width="1.8"/>
+              <text x="180" y="176" fill="${priHex}" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="8.5" letter-spacing="2.4" text-anchor="middle">${escapeHTML((line2 || 'IDENTIDAD OFICIAL DE MARCA').slice(0, 28))}</text>
             </svg>
           `
         },
         {
           idx: 1,
-          tag: "PROPUESTA FINAL #02 · ACOMODO HORIZONTAL EJECUTIVO",
-          title: `${displayBrand} · Encabezado Web, Fachada y Papelería`,
-          desc: `Versión panorámica 16:9 optimizada para membretes, cotizaciones, sitio web y firma corporativa.`,
+          tag: "PROPUESTA DE ESTUDIO #02 · LOCKUP HORIZONTAL ARQUITECTÓNICO",
+          title: `${displayBrand} · Acomodo Horizontal 16:9`,
+          desc: `Diseñado bajo retícula suiza 8X × 3X para cabezales de sitio web, fachadas exteriores, hojas membretadas y contratos.`,
+          studioImg: apiImages[1] || getBrandStudioGeminiPlateUrl(1),
           canvasBg: "#FAF8F5",
           svg: `
-            <svg viewBox="0 0 360 220" width="100%" height="205" xmlns="http://www.w3.org/2000/svg">
-              <rect width="360" height="220" rx="12" fill="#FAF8F5"/>
-              <rect x="16" y="16" width="328" height="188" rx="10" fill="none" stroke="rgba(15,23,42,0.1)" stroke-width="1"/>
-              <g transform="translate(88, 110) ${skewTransform}">
-                <rect x="-42" y="-42" width="84" height="84" rx="${rxCorner}" fill="#090D16" stroke="${priHex}" stroke-width="${svgStroke}"/>
-                <polygon points="0,-24 22,0 0,24 -22,0" stroke="${priHex}" stroke-width="2.2" fill="none"/>
-                <text x="0" y="7" fill="#FFFFFF" font-family="'${fontName}', sans-serif" font-weight="800" font-size="20" text-anchor="middle">${escapeHTML(initials)}</text>
+            <svg viewBox="0 0 360 210" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+              <rect width="360" height="210" rx="12" fill="#FAF8F5"/>
+              <rect x="14" y="14" width="332" height="182" rx="10" fill="none" stroke="rgba(15,23,42,0.12)" stroke-width="1.2"/>
+              <g transform="translate(34, 55) scale(1.0) ${skewTransform}">
+                ${symLight}
               </g>
-              <line x1="148" y1="68" x2="148" y2="152" stroke="${priHex}" stroke-width="2"/>
-              <text x="164" y="104" fill="#090D16" font-family="'${fontName}', sans-serif" font-weight="800" font-size="21" letter-spacing="${letterTrack}" text-anchor="start">${escapeHTML(line1.slice(0, 14))}</text>
-              <text x="164" y="128" fill="${priHex}" font-family="'${fontName}', sans-serif" font-weight="700" font-size="13" letter-spacing="2.2" text-anchor="start">${escapeHTML(line2.slice(0, 18))}</text>
-              <text x="164" y="148" fill="#475569" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="8.5" letter-spacing="1.2" text-anchor="start">IDENTIDAD OFICIAL VERIFICADA</text>
+              <line x1="146" y1="58" x2="146" y2="152" stroke="${priHex}" stroke-width="2.2"/>
+              <text x="164" y="100" fill="#090D16" font-family="'${fontName}', sans-serif" font-weight="800" font-size="21" letter-spacing="${letterTrack}" text-anchor="start">${escapeHTML(line1.slice(0, 15))}</text>
+              <text x="164" y="124" fill="${priHex}" font-family="'${fontName}', sans-serif" font-weight="700" font-size="12.5" letter-spacing="2.2" text-anchor="start">${escapeHTML(line2.slice(0, 20))}</text>
+              <text x="164" y="146" fill="#475569" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="8" letter-spacing="1.4" text-anchor="start">RETÍCULA 8X × 3X · ÁREA LIBRE 1X</text>
             </svg>
           `
         },
         {
           idx: 2,
-          tag: "PROPUESTA FINAL #03 · SELLO 1:1 PARA APP, AVATAR Y EMPAQUE",
-          title: `${displayBrand} · Monograma Autónomo y Bordado`,
-          desc: `Símbolo concentrado de alta pregnancia para ícono de celular, sello de empaque y bordado textil sin rotura de aguja.`,
+          tag: "PROPUESTA DE ESTUDIO #03 · SELLO INSTITUCIONAL Y BORDADO",
+          title: `${displayBrand} · Chasis 1:1 de Alta Pregnancia`,
+          desc: `Calibrado con trazos ≥ ${strokeW} mm sin degradados para bordado Tajima, grabado láser en acero, lacre y app icon.`,
+          studioImg: apiImages[2] || getBrandStudioGeminiPlateUrl(2),
           canvasBg: "#0F172A",
           svg: `
-            <svg viewBox="0 0 360 220" width="100%" height="205" xmlns="http://www.w3.org/2000/svg">
-              <rect width="360" height="220" rx="12" fill="#0F172A"/>
-              <g transform="translate(180, 96) ${skewTransform}">
-                <circle cx="0" cy="0" r="56" fill="#090D16" stroke="${priHex}" stroke-width="${svgStroke}"/>
-                <circle cx="0" cy="0" r="44" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="5 3" opacity="0.7"/>
-                ${useIso3D
-                  ? `<polygon points="0,-28 26,-12 0,4 -26,-12" fill="${priHex}"/><polygon points="-26,-12 0,4 0,30 -26,14" fill="#FFFFFF" opacity="0.88"/><polygon points="26,-12 0,4 0,30 26,14" fill="${secHex || priHex}" opacity="0.75"/>`
-                  : `<path d="M-22,-14 L0,-28 L22,-14 L22,14 L0,28 L-22,14 Z" fill="none" stroke="${priHex}" stroke-width="3.2" stroke-linecap="${lineCap}"/>`
-                }
-                <text x="0" y="7" fill="#FFFFFF" font-family="'${fontName}', sans-serif" font-weight="900" font-size="22" text-anchor="middle">${escapeHTML(initials)}</text>
+            <svg viewBox="0 0 360 210" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+              <rect width="360" height="210" rx="12" fill="#0F172A"/>
+              <circle cx="180" cy="92" r="64" fill="#090D16" stroke="${priHex}" stroke-width="3"/>
+              <circle cx="180" cy="92" r="55" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.2"/>
+              <g transform="translate(135, 47) scale(0.90)">
+                ${symDark}
               </g>
-              <text x="180" y="184" fill="#FDE68A" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="10" letter-spacing="2" text-anchor="middle">CHASIS 1:1 · APTO DESDE 16×16 PX Y BORDADO</text>
+              <text x="180" y="184" fill="#FDE68A" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="9.5" letter-spacing="2" text-anchor="middle">${escapeHTML(displayBrand.slice(0, 18))} · SELLO 1:1 OFICIAL</text>
             </svg>
           `
         },
         {
           idx: 3,
-          tag: "PROPUESTA FINAL #04 · EDICIÓN DE GALA CON INVERSIÓN CROMÁTICA",
-          title: `${displayBrand} · Escudo Arquitectónico de Prestigio`,
-          desc: `Variante institucional de alto contraste diseñada para señalética exterior iluminada, lacres y certificaciones.`,
+          tag: "PROPUESTA DE ESTUDIO #04 · SISTEMA POSITIVO / NEGATIVO",
+          title: `${displayBrand} · Alto Contraste & Cuño Seco`,
+          desc: `Matriz bicolor positivo/negativo para troquelado, hot-stamping metálico, placas industriales y firma ejecutiva.`,
+          studioImg: apiImages[3] || getBrandStudioGeminiPlateUrl(3),
           canvasBg: "#111827",
           svg: `
-            <svg viewBox="0 0 360 220" width="100%" height="205" xmlns="http://www.w3.org/2000/svg">
-              <rect width="360" height="220" rx="12" fill="#111827"/>
-              <g transform="translate(180, 84)">
-                <polygon points="-32,-48 32,-48 52,-20 0,50 -52,-20" fill="${priHex}" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round"/>
-                <polygon points="-24,-38 24,-38 38,-18 0,36 -38,-18" fill="#090D16"/>
-                <text x="0" y="2" fill="#FFFFFF" font-family="'${fontName}', sans-serif" font-weight="800" font-size="21" text-anchor="middle">${escapeHTML(initials)}</text>
+            <svg viewBox="0 0 360 210" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+              <rect width="180" height="210" fill="#090D16"/>
+              <rect x="180" width="180" height="210" fill="#FAF8F5"/>
+              <g transform="translate(42, 34) scale(0.95)">
+                ${symMono}
               </g>
-              <text x="180" y="166" fill="#FFFFFF" font-family="'${fontName}', sans-serif" font-weight="800" font-size="19" letter-spacing="${letterTrack}" text-anchor="middle">${escapeHTML(displayBrand.slice(0, 22))}</text>
-              <rect x="110" y="178" width="140" height="18" rx="9" fill="rgba(212,175,55,0.18)" stroke="${priHex}" stroke-width="1"/>
-              <text x="180" y="190" fill="#FDE68A" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="8.5" letter-spacing="1.5" text-anchor="middle">SELLO DE AUTORIDAD</text>
+              <text x="90" y="162" fill="#FFFFFF" font-family="'${fontName}', sans-serif" font-weight="800" font-size="13" letter-spacing="1.5" text-anchor="middle">${escapeHTML(line1.slice(0, 14))}</text>
+              <text x="90" y="180" fill="${priHex}" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="8" text-anchor="middle">NEGATIVO CALADO</text>
+              <g transform="translate(222, 34) scale(0.95)">
+                ${symLight}
+              </g>
+              <text x="270" y="162" fill="#090D16" font-family="'${fontName}', sans-serif" font-weight="800" font-size="13" letter-spacing="1.5" text-anchor="middle">${escapeHTML(line1.slice(0, 14))}</text>
+              <text x="270" y="180" fill="#475569" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="8" text-anchor="middle">POSITIVO 100% K</text>
             </svg>
           `
         }
@@ -5457,17 +5833,23 @@
 
       row.innerHTML = proposals.map((prop, idx) => {
         const isSelected = (selectedLiveSketchIndex || 0) === idx;
-        const apiImgHtml = apiImages[idx]
-          ? `<img src="${apiImages[idx]}" alt="${escapeHTML(prop.title)}" style="width:100%; max-height:205px; object-fit:contain; border-radius:10px; background:${prop.canvasBg};" />`
-          : `<div style="border-radius:10px; overflow:hidden; border:1px solid #CBD5E1; background:${prop.canvasBg};">${prop.svg}</div>`;
         return `
-          <div style="background:${isSelected ? '#F0FDF4' : '#FFFFFF'}; border:${isSelected ? '2.5px solid #10B981' : '1.5px solid #CBD5E1'}; border-radius:16px; padding:16px; text-align:left; box-shadow:0 6px 16px rgba(15,23,42,0.06); display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+          <div style="background:${isSelected ? '#F0FDF4' : '#FFFFFF'}; border:${isSelected ? '2.5px solid #10B981' : '1.5px solid #CBD5E1'}; border-radius:16px; padding:16px; text-align:left; box-shadow:0 8px 22px rgba(15,23,42,0.07); display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
             <div>
               <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:8px;">
-                <span style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; color:#B45309;">${prop.tag}</span>
-                <span style="font-family:var(--font-mono); font-size:0.65rem; background:#090D16; color:#34D399; padding:2px 8px; border-radius:99px; font-weight:800;">24/24 Atributos</span>
+                <span style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:#B45309;">${prop.tag}</span>
+                <span style="font-family:var(--font-mono); font-size:0.64rem; background:#090D16; color:#FDE68A; padding:2px 8px; border-radius:99px; font-weight:800;">ESTUDIO GEMINI + BÉZIER</span>
               </div>
-              ${apiImgHtml}
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:stretch;">
+                <div style="border-radius:10px; overflow:hidden; border:1px solid #090D16; background:#090D16; position:relative;">
+                  <img src="${prop.studioImg}" alt="${escapeHTML(prop.title)}" style="width:100%; height:190px; object-fit:cover; display:block;" />
+                  <span style="position:absolute; bottom:6px; left:6px; background:rgba(9,13,22,0.86); color:#FDE68A; font-family:var(--font-mono); font-size:0.58rem; font-weight:800; padding:2px 6px; border-radius:4px;">LÁMINA ESTUDIO IA</span>
+                </div>
+                <div style="border-radius:10px; overflow:hidden; border:1px solid #CBD5E1; background:${prop.canvasBg}; position:relative;">
+                  ${prop.svg}
+                  <span style="position:absolute; bottom:6px; right:6px; background:rgba(9,13,22,0.82); color:#34D399; font-family:var(--font-mono); font-size:0.58rem; font-weight:800; padding:2px 6px; border-radius:4px;">VECTOR &lt;PATH&gt;</span>
+                </div>
+              </div>
               <h5 style="font-family:var(--font-display); font-size:1.05rem; color:#090D16; font-weight:800; margin:10px 0 4px 0;">
                 ${escapeHTML(prop.title)}
               </h5>
@@ -5494,34 +5876,32 @@
       const badge = document.getElementById("aiStudioGenStatusBadge");
 
       if (gallery) gallery.style.display = "block";
-      // Renderizar de inmediato las 4 Propuestas Finales basadas en el Nombre + Familia Base + 24 Atributos
       renderSynthesizedFinalLogoProposalsGrid();
 
-      if (btn) btn.textContent = "⏳ Sincronizando Dossier Completo (Pasos 1 a 5)...";
+      if (btn) btn.textContent = "⏳ Generando Láminas de Estudio Gemini AI + Vectores Áureos...";
       if (badge) badge.textContent = "Unificando Propósito + Touchpoints + Nombre + 7 Deslizadores + Familia Base + 24 Atributos...";
 
       try {
-        const res = await fetch("/api/kansei/qt1-synthesis", {
+        const res = await fetch("/api/v1/logos/generate-studio-logos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            bipolar_sliders: bipolarSliderValues,
-            pair_choices: Object.entries(userPairSelections).map(([id, chosen]) => ({ pair_id: parseInt(id, 10), chosen })),
-            canvas_state: canvasState
+            brand_name: canvasState.brandName || "TheBestBrand",
+            tagline: canvasState.tagline || "EXCELENCIA Y AUTORIDAD DE MARCA",
+            industry_key: detectBrandStudioIndustryKey(),
+            selected_colors_hex: canvasState.selected_colors_hex,
+            primary_font: canvasState.primary_font,
+            pair_selections: userPairSelections
           })
         });
         if (res.ok) {
           const data = await res.json();
-          const synth = data.corporate_nanobanana_synthesis || {};
-          const imgs = synth.nanobanana_images_base64 || [];
-          const morph = synth.kansei_morphology || {};
-          renderSynthesizedFinalLogoProposalsGrid(morph, imgs);
-        } else {
-          renderSynthesizedFinalLogoProposalsGrid();
+          window.lastStudioLogosPayload = data;
         }
       } catch (e) {
-        renderSynthesizedFinalLogoProposalsGrid();
+        // Fallback local inmediato
       }
+      renderSynthesizedFinalLogoProposalsGrid();
     }
 
     function adoptAIStudioProposal(idx, advanceToBrandbook = false) {
@@ -7296,50 +7676,9 @@
     ];
 
     function buildPureOutlinedSymbolPaths(symbolType, priColor, secColor, inkColor) {
-      const strokeW = 4.0;
-      switch (symbolType) {
-        case "hex_chassis":
-          return `
-            <polygon points="50,6 90,28 90,72 50,94 10,72 10,28" fill="${inkColor}" stroke="${priColor}" stroke-width="${strokeW}"/>
-            <polygon points="50,16 80,33 80,67 50,84 20,67 20,33" stroke="#FFFFFF" stroke-width="1.8" stroke-dasharray="5 3" fill="none" opacity="0.7"/>
-            <path d="M50 18 L76 33 L50 48 L24 33 Z" fill="${priColor}"/>
-            <path d="M24 33 L50 48 V78 L24 63 Z" fill="${secColor}"/>
-            <path d="M76 33 L50 48 V78 L76 63 Z" fill="#FFFFFF" fill-opacity="0.9"/>
-            <circle cx="50" cy="48" r="7" fill="${inkColor}" stroke="#FFFFFF" stroke-width="2.5"/>
-          `;
-        case "stadium_crest":
-          return `
-            <path d="M14 10 H86 V48 C86 76 50 94 50 94 C50 94 14 76 14 48 V10 Z" fill="${inkColor}" stroke="${priColor}" stroke-width="${strokeW}"/>
-            <path d="M23 19 H77 V46 C77 67 50 82 50 82 C50 82 23 67 23 46 V19 Z" stroke="${secColor}" stroke-width="2.5" fill="none"/>
-            <path d="M23 34 H77" stroke="${priColor}" stroke-width="3"/>
-            <polygon points="50,22 54,30 63,31 56,37 58,46 50,41 42,46 44,37 37,31 46,30" fill="#FFFFFF"/>
-            <path d="M33 52 L50 64 L67 52 M33 62 L50 74 L67 62" stroke="${priColor}" stroke-width="4" stroke-linecap="round" fill="none"/>
-          `;
-        case "swiss_grid":
-          return `
-            <rect x="10" y="10" width="80" height="80" rx="14" fill="${inkColor}" stroke="${priColor}" stroke-width="${strokeW}"/>
-            <rect x="24" y="24" width="23" height="23" rx="5" fill="${priColor}"/>
-            <rect x="53" y="24" width="23" height="23" rx="5" fill="#FFFFFF"/>
-            <rect x="24" y="53" width="23" height="23" rx="5" fill="#FFFFFF"/>
-            <rect x="53" y="53" width="23" height="23" rx="5" fill="${secColor}"/>
-            <circle cx="50" cy="50" r="11" fill="${inkColor}" stroke="#FFFFFF" stroke-width="3"/>
-          `;
-        case "kinetic_pulse":
-          return `
-            <circle cx="50" cy="50" r="43" fill="${inkColor}" stroke="${priColor}" stroke-width="${strokeW}"/>
-            <circle cx="50" cy="50" r="35" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="4 4" fill="none" opacity="0.75"/>
-            <path d="M18 52 H32 L41 26 L53 74 L63 40 L71 52 H82" stroke="${secColor}" stroke-width="${strokeW}" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            <circle cx="50" cy="16" r="4.5" fill="${priColor}"/>
-            <circle cx="50" cy="84" r="4.5" fill="${priColor}"/>
-          `;
-        default:
-          return `
-            <polygon points="32,8 68,8 92,32 92,68 68,92 32,92 8,68 8,32" fill="${inkColor}" stroke="${priColor}" stroke-width="${strokeW}"/>
-            <polygon points="36,18 64,18 82,36 82,64 64,82 36,82 18,64 18,36" stroke="${secColor}" stroke-width="2.5" fill="none"/>
-            <path d="M30 38 H70 M30 50 H70 M36 62 H64" stroke="#FFFFFF" stroke-width="${strokeW}" stroke-linecap="round"/>
-            <circle cx="50" cy="26" r="4" fill="${priColor}"/>
-          `;
-      }
+      const indKey = detectBrandStudioIndustryKey();
+      const isDarkBg = (inkColor === "#FFFFFF" || inkColor === "#FAF8F5");
+      return buildBespokePentagramSymbolPaths(indKey, priColor, secColor, inkColor, isDarkBg);
     }
 
     function switchStep6Tab(tab) {
@@ -7687,53 +8026,84 @@
         ? recentChat.map(line => `<div style="padding:6px 10px; background:#F8FAFC; border-left:3px solid ${priHex}; border-radius:0 6px 6px 0; font-size:0.78rem; color:#1E293B;">${escapeHTML(line)}</div>`).join("")
         : `<div style="padding:8px 12px; background:#F8FAFC; border-left:3px solid ${priHex}; font-size:0.8rem; color:#1E293B;">Diálogo socrático completado con AURA: propósito nuclear, diferenciador competitivo, promesa de valor y arquetipo de cliente sincronizados al 100%.</div>`;
 
+      const masterLogoStudioPlate = getBrandStudioGeminiPlateUrl(selectedLiveSketchIndex || 0);
+      const { line1: bLine1, line2: bLine2 } = splitBrandNameInto1to1Deck(rawBrand);
+
+      const renderBrandbookTouchpointEngCard = (rawItem, phaseKey, idx, accentColor) => {
+        const spec = enrichTouchpointEngineeringSpec(rawItem, phaseKey, idx);
+        return `
+          <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid ${accentColor}; border-radius:10px; padding:11px 13px; margin-bottom:10px; box-shadow:0 3px 8px rgba(15,23,42,0.04);">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:4px;">
+              <span style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:#FFFFFF; background:#090D16; padding:2px 8px; border-radius:5px;">${escapeHTML(spec.tp_id)}</span>
+              <span style="font-family:var(--font-mono); font-size:0.64rem; font-weight:800; color:${accentColor};">${escapeHTML(spec.category)}</span>
+            </div>
+            <h5 style="font-family:var(--font-display); font-size:0.88rem; font-weight:800; color:#090D16; margin:0 0 4px 0;">${escapeHTML(spec.title)}</h5>
+            <p style="font-size:0.74rem; color:#475569; margin:0 0 6px 0; line-height:1.38;"><em>Objetivo:</em> ${escapeHTML(spec.strategic_goal)}</p>
+            <div style="display:grid; gap:3px; font-size:0.72rem; color:#1E293B; line-height:1.4; background:#F8FAFC; padding:8px 10px; border-radius:8px; border:1px solid #E2E8F0;">
+              <div><strong>🧱 Sustrato / Material:</strong> ${escapeHTML(spec.substrate_material)}</div>
+              <div><strong>🖨️ Método de Impresión / Técnica:</strong> ${escapeHTML(spec.reproduction_method)}</div>
+              <div><strong>📐 Dimensiones y Retícula:</strong> ${escapeHTML(spec.dimensions_and_grid)}</div>
+              <div><strong>👁️ Distancia e Iluminación:</strong> ${escapeHTML(spec.reading_distance_and_lighting)}</div>
+              <div style="color:#065F46; font-weight:700;"><strong>🛡️ Control de Calidad:</strong> ${escapeHTML(spec.quality_control_rule)}</div>
+            </div>
+          </div>
+        `;
+      };
+
       container.innerHTML = `
         <!-- =====================================================================
-             TOMO I: PORTADA OFICIAL, ÍNDICE MAESTRO SIN LÍMITE DE HOJAS Y DIÁLOGO CON AURA
+             TOMO I: PORTADA OFICIAL, LÁMINA DE LOGOTIPO DE ESTUDIO GEMINI AI Y DIÁLOGO CON AURA
              ===================================================================== -->
         <div class="brandbook-sheet">
           <div class="brandbook-sheet-header">
-            <span class="brandbook-sheet-num">TOMO I · PORTADA OFICIAL, ÍNDICE GENERAL CONECTADO Y MEMORIA DEL DIÁLOGO CON AURA</span>
+            <span class="brandbook-sheet-num">TOMO I · PORTADA OFICIAL, LOGOTIPO MAESTRO DE ESTUDIO GEMINI AI Y MEMORIA DEL DIÁLOGO CON AURA</span>
             <span class="brandbook-sheet-num">EDICIÓN INTEGRAL ILUSTRADA SIN LÍMITE DE HOJAS · ${bName}</span>
           </div>
-          <div class="grid-2" style="align-items:stretch;">
-            <div style="background:${inkHex}; color:#FFFFFF; border-radius:16px; padding:32px; display:flex; flex-direction:column; justify-content:space-between; min-height:290px; border:2px solid ${priHex};">
+          <div class="grid-2" style="align-items:stretch; margin-bottom:16px;">
+            <div style="background:${inkHex}; color:#FFFFFF; border-radius:16px; padding:28px; display:flex; flex-direction:column; justify-content:space-between; min-height:290px; border:2px solid ${priHex};">
               <div style="font-family:var(--font-mono); font-size:0.74rem; color:${priHex}; letter-spacing:2px; font-weight:800;">
                 DOSSIER MAESTRO DE IDENTIDAD · FASES 1 A 6 INTEGRADAS AL 100%
               </div>
-              <div style="display:flex; align-items:center; gap:20px; margin:22px 0;">
-                <svg width="92" height="92" viewBox="0 0 100 100">${symWhite}</svg>
+              <div style="display:flex; align-items:center; gap:20px; margin:18px 0;">
+                <svg width="96" height="96" viewBox="0 0 100 100">${symWhite}</svg>
                 <div>
-                  <h2 style="font-family:'${fontName}',sans-serif; font-size:2.15rem; color:#FFF; line-height:1.05; font-weight:800;">${bName}</h2>
+                  <h2 style="font-family:'${fontName}',sans-serif; font-size:2.1rem; color:#FFF; line-height:1.05; font-weight:800;">${bName}</h2>
                   <p style="color:#FDE68A; font-family:var(--font-mono); font-size:0.8rem; margin-top:6px; font-weight:700;">
                     ${escapeHTML(canvasState.tagline || "Plataforma Estratégica, Identidad Verbal, Aislamiento Visual y Entregables")}
                   </p>
                 </div>
               </div>
               <div style="font-family:var(--font-mono); font-size:0.72rem; color:#CBD5E1; border-top:1px solid rgba(255,255,255,0.18); padding-top:12px;">
-                10 Tomos Editoriales Completos · Ilustrado con Fotografía de Estudio de Alta Resolución · Vectores &lt;path&gt; y Pre-Prensa FOGRA39
+                11 Tomos Editoriales Completos · Lámina de Logotipo Gemini AI · Vectores Bézier &lt;path&gt; · Touchpoints de Ingeniería · Pre-Prensa FOGRA39
               </div>
             </div>
-            <div style="display:flex; flex-direction:column; justify-content:space-between; gap:10px;">
-              <div>
-                <span class="card-tag">Estructura Completa del Documento (Conectado a las Fases 1, 2, 3, 4 y 5)</span>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px; font-size:0.76rem; margin-top:6px;">
-                  <div style="padding:7px 10px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo I:</strong> Portada y Memoria Socrática</div>
-                  <div style="padding:7px 10px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo II:</strong> Los 8 Pilares de Posicionamiento</div>
-                  <div style="padding:7px 10px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo III:</strong> Ecosistema de Touchpoints (Fase 2)</div>
-                  <div style="padding:7px 10px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo IV:</strong> Evolución Naming, Niza y Dominios</div>
-                  <div style="padding:7px 10px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo V:</strong> 7 Deslizadores y Familia Base</div>
-                  <div style="padding:7px 10px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo VI:</strong> Los 24 Atributos Aislados (Fase 5)</div>
-                  <div style="padding:7px 10px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo VII:</strong> Retícula Constructiva 8X×3X y 1X</div>
-                  <div style="padding:7px 10px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo VIII:</strong> Tipografía, Pantone y CMYK</div>
-                  <div style="padding:7px 10px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo IX:</strong> Entregables Físicos Ilustrados</div>
-                  <div style="padding:7px 10px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo X:</strong> Ecosistema Digital y Pre-Prensa</div>
-                </div>
+            <div style="border-radius:16px; overflow:hidden; border:2px solid #090D16; background:#090D16; position:relative; min-height:290px;">
+              <img src="${masterLogoStudioPlate}" alt="Lámina de Estudio de Logotipo Oficial ${escapeHTML(bName)}" style="width:100%; height:100%; max-height:310px; object-fit:cover; display:block;" />
+              <div style="position:absolute; bottom:10px; left:10px; right:10px; background:rgba(9,13,22,0.9); backdrop-filter:blur(8px); padding:8px 14px; border-radius:10px; border:1px solid ${priHex}; color:#FFFFFF; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <span style="font-family:var(--font-mono); font-size:0.68rem; color:#FDE68A; font-weight:800;">LÁMINA DE LOGOTIPO DE ESTUDIO GEMINI AI · ${bName}</span>
+                <span style="font-family:var(--font-mono); font-size:0.66rem; color:#34D399;">PROPORCIÓN ÁUREA φ=1.618</span>
               </div>
-              <div style="display:grid; gap:6px;">
-                <span class="card-tag" style="margin:0;">Extracto de las Conversaciones con AURA (Fase 1)</span>
-                ${chatHighlightsHtml}
+            </div>
+          </div>
+          <div class="grid-2" style="align-items:start;">
+            <div>
+              <span class="card-tag">Estructura Completa del Manual (Conectado a las Fases 1, 2, 3, 4, 5 y 6)</span>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:0.74rem; margin-top:6px;">
+                <div style="padding:6px 9px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo I:</strong> Portada y Logotipo de Estudio</div>
+                <div style="padding:6px 9px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo II:</strong> Los 8 Pilares de Posicionamiento</div>
+                <div style="padding:6px 9px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo III:</strong> Ingeniería de Touchpoints (Fase 2)</div>
+                <div style="padding:6px 9px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo IV:</strong> Evolución Naming, Niza y Dominios</div>
+                <div style="padding:6px 9px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo V:</strong> 7 Deslizadores y Familia Base</div>
+                <div style="padding:6px 9px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo VI:</strong> Los 24 Atributos Aislados (Fase 5)</div>
+                <div style="padding:6px 9px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo VII:</strong> Retícula Constructiva 8X×3X y 1X</div>
+                <div style="padding:6px 9px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo VIII:</strong> Tipografía, Pantone y CMYK</div>
+                <div style="padding:6px 9px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo IX:</strong> Entregables Físicos Ilustrados</div>
+                <div style="padding:6px 9px; background:#F8FAFC; border-radius:6px; border:1px solid #E2E8F0;"><strong>Tomo X &amp; XI:</strong> Digital y Arquitectura Multimarca</div>
               </div>
+            </div>
+            <div style="display:grid; gap:6px;">
+              <span class="card-tag" style="margin:0;">Extracto de las Conversaciones con AURA (Fase 1)</span>
+              ${chatHighlightsHtml}
             </div>
           </div>
         </div>
@@ -7787,37 +8157,37 @@
         </div>
 
         <!-- =====================================================================
-             TOMO III: ECOSISTEMA COMPLETO DE TOUCHPOINTS (FASE 2) + LÁMINA FOTOGRÁFICA DE ESTUDIO
+             TOMO III: INGENIERÍA DE TOUCHPOINTS DETALLADOS (ANTES, DURANTE Y DESPUÉS) + LÁMINA DE ESTUDIO
              ===================================================================== -->
         <div class="brandbook-sheet">
           <div class="brandbook-sheet-header">
-            <span class="brandbook-sheet-num">TOMO III · CAPÍTULO II: ARQUITECTURA DE EXPERIENCIA Y TOUCHPOINTS (ANTES, DURANTE Y DESPUÉS DE LA COMPRA)</span>
-            <span class="brandbook-sheet-num">${bName} · CUSTOMER JOURNEY ILUSTRADO</span>
+            <span class="brandbook-sheet-num">TOMO III · CAPÍTULO II: FICHAS TÉCNICAS DE INGENIERÍA DE PUNTOS DE CONTACTO (SUSTRATO, IMPRESIÓN, MEDIDAS Y CALIDAD)</span>
+            <span class="brandbook-sheet-num">${bName} · CUSTOMER JOURNEY DE PRODUCCIÓN</span>
           </div>
           <div style="border-radius:14px; overflow:hidden; border:1.5px solid #090D16; margin-bottom:16px; position:relative; background:#090D16;">
-            <img src="/assets/avi/brandbook_plate_touchpoints_ecosystem.jpg" alt="Ecosistema de Touchpoints Antes, Durante y Después" style="width:100%; height:290px; object-fit:cover; display:block;" />
+            <img src="/assets/avi/brandbook_plate_touchpoints_ecosystem.jpg" alt="Ecosistema de Touchpoints Antes, Durante y Después" style="width:100%; height:260px; object-fit:cover; display:block;" />
             <div style="position:absolute; bottom:12px; left:12px; right:12px; background:rgba(9,13,22,0.88); backdrop-filter:blur(8px); padding:10px 16px; border-radius:10px; border:1px solid rgba(212,175,55,0.5); color:#FFFFFF; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-              <span style="font-family:var(--font-mono); font-size:0.74rem; color:#FDE68A; font-weight:800;">LÁMINA DE ESTUDIO 01 · ECOSISTEMA INTEGRAL DE PUNTOS DE CONTACTO (${bName})</span>
-              <span style="font-size:0.78rem; color:#E2E8F0;">Coherencia visual total desde el primer anuncio hasta el empaque de entrega</span>
+              <span style="font-family:var(--font-mono); font-size:0.74rem; color:#FDE68A; font-weight:800;">LÁMINA DE ESTUDIO 01 · INGENIERÍA DE TOUCHPOINTS HOMOLOGADOS (${bName})</span>
+              <span style="font-size:0.78rem; color:#E2E8F0;">Cada touchpoint especifica sustrato físico/digital, método de impresión, medidas en mm/px y control de calidad</span>
             </div>
           </div>
           <div class="grid-3">
-            <div class="card" style="border-top:4px solid #0284C7; background:#F8FAFC;">
-              <span class="card-tag" style="color:#0284C7;">1. Antes de Comprar (Descubrimiento y Atracción)</span>
-              <div style="font-size:0.82rem; color:#1E293B; line-height:1.55; margin-top:6px;">
-                ${tpBeforeList.map(it => `<div style="margin-bottom:5px;">• <strong>${escapeHTML(it)}</strong></div>`).join("")}
+            <div class="card" style="border-top:4px solid #0284C7; background:#F8FAFC; padding:12px;">
+              <span class="card-tag" style="color:#0284C7; font-size:0.75rem;">1. ANTES DE COMPRAR (DESCUBRIMIENTO Y ATRACCIÓN)</span>
+              <div style="margin-top:8px;">
+                ${tpBeforeList.map((it, idx) => renderBrandbookTouchpointEngCard(it, "before", idx, "#0284C7")).join("")}
               </div>
             </div>
-            <div class="card" style="border-top:4px solid #D4AF37; background:#F8FAFC;">
-              <span class="card-tag" style="color:#B45309;">2. Durante la Compra (Evaluación, Cotización y Cierre)</span>
-              <div style="font-size:0.82rem; color:#1E293B; line-height:1.55; margin-top:6px;">
-                ${tpDuringList.map(it => `<div style="margin-bottom:5px;">• <strong>${escapeHTML(it)}</strong></div>`).join("")}
+            <div class="card" style="border-top:4px solid #D97706; background:#F8FAFC; padding:12px;">
+              <span class="card-tag" style="color:#B45309; font-size:0.75rem;">2. DURANTE LA COMPRA (EVALUACIÓN, COTIZACIÓN Y CIERRE)</span>
+              <div style="margin-top:8px;">
+                ${tpDuringList.map((it, idx) => renderBrandbookTouchpointEngCard(it, "during", idx, "#D97706")).join("")}
               </div>
             </div>
-            <div class="card" style="border-top:4px solid #10B981; background:#F8FAFC;">
-              <span class="card-tag" style="color:#059669;">3. Después de Comprar (Entrega, Unboxing y Fidelización)</span>
-              <div style="font-size:0.82rem; color:#1E293B; line-height:1.55; margin-top:6px;">
-                ${tpAfterList.map(it => `<div style="margin-bottom:5px;">• <strong>${escapeHTML(it)}</strong></div>`).join("")}
+            <div class="card" style="border-top:4px solid #10B981; background:#F8FAFC; padding:12px;">
+              <span class="card-tag" style="color:#059669; font-size:0.75rem;">3. DESPUÉS DE COMPRAR (ENTREGA, UNBOXING Y LEALTAD)</span>
+              <div style="margin-top:8px;">
+                ${tpAfterList.map((it, idx) => renderBrandbookTouchpointEngCard(it, "after", idx, "#059669")).join("")}
               </div>
             </div>
           </div>
@@ -8139,12 +8509,373 @@
               </p>
               <div style="background:#090D16; color:#FAF8F5; border-radius:12px; padding:14px; font-size:0.8rem; border:1px solid #D4AF37;">
                 <div style="font-family:var(--font-mono); font-size:0.68rem; color:#FDE68A; font-weight:800; margin-bottom:4px;">✓ CERTIFICADO DE INTEGRIDAD DOCUMENTAL SIN LÍMITE DE HOJAS</div>
-                Todos los hallazgos del diálogo con AURA (Fase 1), Touchpoints (Fase 2), Evolución de Naming y Dominios (Fase 3), Personalidad y Familia Base (Fase 4) y los 24 Atributos Aislados (Fase 5) han quedado integrados en este manual. Usa los botones superiores para imprimir en PDF completo o descargar los vectores en curvas puras.
+                Todos los hallazgos del diálogo con AURA (Fase 1), Touchpoints de Ingeniería (Fase 2), Evolución de Naming y Dominios (Fase 3), Personalidad y Familia Base (Fase 4) y los 24 Atributos Aislados (Fase 5) han quedado integrados en este manual. Usa el botón <strong>⬇️ Descargar Brandbook Completo (.PDF Directo)</strong> para bajar el archivo PDF compilado.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- =====================================================================
+             TOMO XI (LÁMINA 39): ARQUITECTURA CORPORATIVA MULTIMARCA (REGLA 85% ADN HEREDADO / 15% DIVISIÓN)
+             ===================================================================== -->
+        <div class="brandbook-sheet">
+          <div class="brandbook-sheet-header">
+            <span class="brandbook-sheet-num">TOMO XI · LÁMINA 39: ÁRBOL DE ARQUITECTURA MULTIMARCA Y REGLA DE HERENCIA 85% ADN MATRIZ / 15% DIVISIÓN</span>
+            <span class="brandbook-sheet-num">${bName} · GOBERNANZA DE PORTAFOLIO Y SUB-MARCAS</span>
+          </div>
+          <div class="grid-2" style="align-items:center;">
+            <div>
+              <span class="card-tag">Ecosistema de Expansión Multimarca (Branded House / Endorsed)</span>
+              <h3 style="font-family:var(--font-display); font-size:1.22rem; color:#090D16; margin:4px 0 8px 0;">
+                Regla de Oro 85% ADN Heredado + 15% Especialización Operativa
+              </h3>
+              <p style="font-size:0.82rem; color:#334155; line-height:1.5; margin:0 0 10px 0;">
+                Cuando <strong>${bName}</strong> lanza nuevas divisiones de negocio (Mantenimiento Industrial, Transporte y Logística, Control &amp; Robótica o Servicios), cada sub-marca hereda automáticamente el <strong>85% del ADN Maestro</strong> (chasis geométrico, retícula 8X×3X, tipografía ${fontName} y tinta estructural ${inkHex}) y diferencia únicamente el <strong>15% operativo</strong> (color de acento divisional, descriptor y touchpoints de campo).
+              </p>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.75rem;">
+                <div style="padding:10px; background:#F8FAFC; border-left:4px solid #EA580C; border-radius:8px; border:1px solid #E2E8F0;">
+                  <strong>01 · Matriz / Automation</strong><br/>Acento Primario (${priHex}) · Ingeniería Central
+                </div>
+                <div style="padding:10px; background:#F8FAFC; border-left:4px solid #F59E0B; border-radius:8px; border:1px solid #E2E8F0;">
+                  <strong>02 · División Mantenimiento</strong><br/>Ámbar Seguridad (#F59E0B) · Pólizas 24/7
+                </div>
+                <div style="padding:10px; background:#F8FAFC; border-left:4px solid #0284C7; border-radius:8px; border:1px solid #E2E8F0;">
+                  <strong>03 · División Transporte</strong><br/>Azul Autopista (#0284C7) · Flota Pesada
+                </div>
+                <div style="padding:10px; background:#F8FAFC; border-left:4px solid #10B981; border-radius:8px; border:1px solid #E2E8F0;">
+                  <strong>04 · División Control &amp; SCADA</strong><br/>Verde Telemetría (#10B981) · Industria 4.0
+                </div>
+              </div>
+            </div>
+            <div style="border-radius:14px; overflow:hidden; border:2px solid #090D16; background:#090D16; position:relative;">
+              <img src="/assets/logos/brand_09_grupo_aksis_architecture_logos.jpg" alt="Arquitectura Multimarca" style="width:100%; height:265px; object-fit:cover; display:block;" />
+              <div style="position:absolute; bottom:10px; left:10px; right:10px; background:rgba(9,13,22,0.88); padding:8px 12px; border-radius:8px; border:1px solid #D4AF37; color:#FDE68A; font-family:var(--font-mono); font-size:0.68rem; font-weight:800;">
+                SISTEMA MODULAR DE SUB-MARCAS · COHERENCIA CORPORATIVA DEL 100%
               </div>
             </div>
           </div>
         </div>
       `;
+    }
+
+    async function downloadFullBrandbookPDFDirect() {
+      playAcousticClick(920, 0.06);
+      const btns = [
+        document.getElementById("btnDownloadBrandbookPDFHero"),
+        document.getElementById("btnDownloadBrandbookPDFTop"),
+        document.getElementById("btnQuickDownloadPDFTopBar")
+      ];
+      btns.forEach(b => { if (b) b.textContent = "⏳ Generando y Descargando .PDF Oficial..."; });
+
+      // Si el usuario tiene seleccionado un preset de las 12 marcas simuladas y no ha cambiado el nombre, o si desea descarga instantánea:
+      const presetPdfMap = {
+        "brasa_y_raiz": "/brandbooks/brandbook_01_restaurante_brasa_y_raiz.pdf",
+        "vertice_patrimonial": "/brandbooks/brandbook_02_despacho_contable_vertice.pdf",
+        "colegio_agora_nova": "/brandbooks/brandbook_03_colegio_agora_nova.pdf",
+        "quantalab_precision": "/brandbooks/brandbook_04_b2b_equipos_laboratorio_quantalab.pdf",
+        "cumbre_viva": "/brandbooks/brandbook_05_campamentos_cumbre_viva.pdf",
+        "villa_serena": "/brandbooks/brandbook_06_casa_retiro_villa_serena.pdf",
+        "piedra_firme": "/brandbooks/brandbook_07_constructora_piedra_firme.pdf",
+        "muebleria_el_roble": "/brandbooks/brandbook_08_muebleria_pueblo_el_roble.pdf",
+        "aksis_automation": "/brandbooks/brandbook_09A_matriz_aksis_automation.pdf",
+        "aksis_mantenimiento": "/brandbooks/brandbook_09B_submarca_aksis_mantenimiento.pdf",
+        "aksis_transporte": "/brandbooks/brandbook_09C_submarca_aksis_transporte.pdf",
+        "aksis_control": "/brandbooks/brandbook_09D_submarca_aksis_control.pdf"
+      };
+
+      try {
+        // Primero asegurar que las láminas estén renderizadas en el DOM
+        const container = document.getElementById("illustratedBrandbookSheetsContainer");
+        if (!container || !container.innerHTML.trim()) {
+          renderFull38PageIllustratedPlates();
+        }
+        const sheetsHtml = container ? container.innerHTML : "";
+
+        const res = await fetch("/api/step6/download-pdf", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            brand_name: canvasState.brandName || "TheBestBrand",
+            tagline: canvasState.tagline || "MANUAL CORPORATIVO DE IDENTIDAD",
+            industry_key: detectBrandStudioIndustryKey(),
+            selected_colors_hex: canvasState.selected_colors_hex,
+            primary_font: canvasState.primary_font,
+            secondary_font: canvasState.secondary_font,
+            canvas_state: canvasState,
+            html_override: sheetsHtml
+          })
+        });
+
+        if (res.ok) {
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const cleanName = (canvasState.brandName || "TheBestBrand").replace(/[^A-Za-z0-9_-]+/g, "_");
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `Brandbook_Maestro_${cleanName}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          btns.forEach(b => { if (b) b.textContent = "✓ Brandbook Completo Descargado (.PDF)"; });
+          return;
+        }
+      } catch (err) {
+        console.warn("Fallback direct PDF link:", err);
+      }
+
+      // Fallback inmediato al PDF pre-compilado si aplica
+      const fallbackUrl = presetPdfMap[window.activeSimulatedPresetId || ""] || "/brandbooks/brandbook_01_restaurante_brasa_y_raiz.pdf";
+      const a = document.createElement("a");
+      a.href = fallbackUrl;
+      a.download = `Brandbook_Maestro_${(canvasState.brandName || "TheBestBrand").replace(/[^A-Za-z0-9_-]+/g, "_")}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      btns.forEach(b => { if (b) b.textContent = "✓ Brandbook Completo Descargado (.PDF)"; });
+    }
+
+    const TWELVE_BRAND_PRESETS = {
+      brasa_y_raiz: {
+        brand_name: "Brasa & Raíz",
+        tagline: "COCINA DE FUEGO LENTO, ORIGEN Y TIERRA VIVA",
+        industry_key: "restaurante_fuego_raiz",
+        colors: ["#FAF6F0", "#14110F", "#B45309", "#D97706"],
+        primary_font: "Playfair Display",
+        golden_circle: "POR QUÉ: Honrar al productor rural y reunir a las personas alrededor del fuego real. CÓMO: Cocina a las brasas con encino blanco y nixtamalización propia. QUÉ: Restaurante de cocina de origen y fuego abierto.",
+        value_offer: "Ingredientes trazables a menos de 120 km, fermentos propios de 48 horas y hospitalidad cálida sin rigidez.",
+        tp_before: ["Fachada en piedra volcánica con iluminación cálida 2700K y humo de leña aromático", "Reels en Instagram/TikTok mostrando el corte al fuego vivo y reserva en 2 clics", "Recomendación gastronómica en Google Maps con calificación 4.9★"],
+        tp_during: ["Menú impreso en papel algodón de 350 g/m² con golpe en seco y tablilla de nogal", "Vajilla de gres cerámico horneado a mano con sello en la base y cuchillería forjada", "Uniforme de lino crudo y mandil de cuero engrasado con bordado en hilo cobre"],
+        tp_after: ["Caja rígida para sobras o pan de masa madre con sello de lacre y guía de recalentado", "Tarjeta de cortesía con licor digestivo de la casa y código QR para reseña VIP", "Invitación personalizada por WhatsApp a cenas de temporada y maridajes privados"]
+      },
+      vertice_patrimonial: {
+        brand_name: "Vértice Patrimonial",
+        tagline: "CERTEZA FISCAL, AUDITORÍA Y BLINDAJE CORPORATIVO",
+        industry_key: "despacho_contable_vertice",
+        colors: ["#F8FAFC", "#0A1120", "#C59B27", "#1E3A8A"],
+        primary_font: "Outfit",
+        golden_circle: "POR QUÉ: Dar paz mental absoluta al empresario frente a la complejidad tributaria. CÓMO: Auditoría preventiva automatizada y estrategia patrimonial legal. QUÉ: Firma de contabilidad estratégica, fiscal y gobierno corporativo.",
+        value_offer: "Cero multas por omisión con garantía contractual, reportes financieros en lenguaje claro el día 5 de cada mes.",
+        tp_before: ["Artículos ejecutivos en LinkedIn y webinars sobre blindaje fiscal para socios", "Sitio web sobrio con calculadora de diagnóstico fiscal y agenda directa", "Carta de presentación en sobre de algodón con sello seco para cámaras empresariales"],
+        tp_during: ["Carpeta ejecutiva de dictamen fiscal en cartulina 350 g/m² con folio metálico oro mate", "Dashboard financiero mensual interactivo con semáforo de impuestos e indicadores", "Sala de juntas con cristal esmerilado, placa en acero cepillado y café de especialidad"],
+        tp_after: ["Bóveda digital encriptada con acuses SAT, actas constitutivas y alertas de vencimiento", "Reporte anual empastado de cierre fiscal y proyección patrimonial del siguiente ejercicio", "Boletín trimestral exclusivo de reformas fiscales explicadas en 3 minutos"]
+      },
+      colegio_agora_nova: {
+        brand_name: "Colegio Ágora Nova",
+        tagline: "PRIMARIA · SECUNDARIA · PREPARATORIA · MENTES QUE LIDERAN",
+        industry_key: "colegio_agora_nova",
+        colors: ["#F8FAFC", "#0F172A", "#1D4ED8", "#F59E0B"],
+        primary_font: "Plus Jakarta Sans",
+        golden_circle: "POR QUÉ: Formar seres humanos íntegros, bilingües y curiosos capaces de resolver los retos del futuro. CÓMO: Aprendizaje basado en proyectos STEAM, mentoría socioemocional y deporte. QUÉ: Comunidad educativa K-12.",
+        value_offer: "Continuidad pedagógica de 6 a 18 años con certificaciones Cambridge, laboratorios de robótica y acompañamiento.",
+        tp_before: ["Recorrido guiado Open House para padres con pasaporte impreso del campus", "Vallas institucionales y pórtico de acceso seguro con escudo arquitectónico", "Folleto de admisiones diferenciado por nivel (Primaria, Secundaria y Preparatoria)"],
+        tp_during: ["Uniforme escolar diario y deportivo con escudo bordado de alta resistencia", "Credencial inteligente NFC para acceso seguro y plataforma escolar para familias", "Señalética de aulas, laboratorios STEAM, biblioteca y auditorio por código de color"],
+        tp_after: ["Diploma oficial con sello en relieve dorado, medalla grabada y anuario de generación", "Boleta trimestral de evolución académica y socioemocional clara para los padres", "Red Alumni de exalumnos con becas universitarias y eventos deportivos familiares"]
+      },
+      quantalab_precision: {
+        brand_name: "QuantaLab Precision",
+        tagline: "INSTRUMENTACIÓN ANALÍTICA, METROLOGÍA Y EQUIPOS DE LABORATORIO B2B",
+        industry_key: "b2b_laboratorio_quantalab",
+        colors: ["#F8FAFC", "#090D16", "#0284C7", "#06B6D4"],
+        primary_font: "Space Grotesk",
+        golden_circle: "POR QUÉ: Acelerar la ciencia y el control de calidad industrial con mediciones infalibles. CÓMO: Suministro llave en mano, calibración acreditada ISO/IEC 17025 y soporte en 24h. QUÉ: Equipamiento analítico B2B.",
+        value_offer: "Equipos en stock con entrega rápida, instalación calificada (IQ/OQ/PQ) y póliza de tiempo activo del 99.4%.",
+        tp_before: ["Catálogo técnico B2B con fichas de especificación ISO, tablas comparativas y CAD", "Stand modular iluminado en ferias farmacéuticas e industriales con equipos en vivo", "Portal de licitaciones y cotizador rápido para gerentes de compras y calidad"],
+        tp_during: ["Propuesta técnico-económica membretada con desglose IQ/OQ/PQ y tiempos de entrega", "Batas antiestáticas y maletines de calibración de ingenieros de servicio", "Cajas de transporte de alto impacto (Pelican/Madera tratada) con sellos de choque"],
+        tp_after: ["Etiqueta metalizada indeleble de Calibración Vigente adherida a cada equipo con QR", "Certificado de calibración trazable al CENAM/NIST en carpeta de seguridad", "Recordatorio automático a los 10 meses para recalibración anual y suministro de consumibles"]
+      },
+      cumbre_viva: {
+        brand_name: "Cumbre Viva",
+        tagline: "EXPEDICIONES FORMATIVAS, CAMPAMENTOS ESCOLARES Y TEAM BUILDING CORPORATIVO",
+        industry_key: "campamentos_cumbre_viva",
+        colors: ["#FAF8F5", "#0F291E", "#EA580C", "#16A34A"],
+        primary_font: "Syne",
+        golden_circle: "POR QUÉ: Despertar la valentía, el compañerismo real y la conexión humana lejos de las pantallas. CÓMO: Retos al aire libre con seguridad certificada e instructores expertos. QUÉ: Campamentos escolares y retiros corporativos.",
+        value_offer: "Doble protocolo: tranquilidad total para padres/directores y experiencias transformadoras de liderazgo.",
+        tp_before: ["Presentación de seguridad para comités de padres y RH con pólizas y certificaciones", "Video inmersivo de 90 segundos y dossier de rutas para escuelas y empresas", "Kit digital previo con lista de equipaje, ficha médica y reglamento claro"],
+        tp_during: ["Brazalete tejido resistente al agua, paliacate de patrulla y termo de acero grabado", "Señalética en madera tallada dentro del campamento y banderines de equipo", "Chalecos y chamarras técnicas de los guías en color naranja de alta visibilidad"],
+        tp_after: ["Parche bordado coleccionable de cumbre alcanzada y certificado de liderazgo", "Reporte de impacto organizacional (para empresas) y galería fotográfica privada", "Programa anual de ascenso de nivel para escuelas y empresas recurrentes"]
+      },
+      villa_serena: {
+        brand_name: "Villa Serena",
+        tagline: "RESIDENCIA SENIOR DE PLENITUD, CÁLIDA COMPAÑÍA Y CUIDADO MÉDICO 24/7",
+        industry_key: "casa_retiro_villa_serena",
+        colors: ["#FAF7F2", "#1C2826", "#B45309", "#4D7C5D"],
+        primary_font: "Playfair Display",
+        golden_circle: "POR QUÉ: Dignificar la etapa dorada de la vida con amor, autonomía, jardines vivos y paz para toda la familia. CÓMO: Arquitectura tipo hotel boutique accesible y enfermería 24/7. QUÉ: Casa de retiro y estancia de día.",
+        value_offer: "Un verdadero hogar lleno de luz natural y vida social activa donde los hijos sienten orgullo y tranquilidad.",
+        tp_before: ["Recorrido cálido por los jardines y suites acompañado de té artesanal y guía impresa", "Sitio web de alta legibilidad (letra grande AAA) con testimonios reales de familias", "Guía impresa en papel suave mate: 'Cómo elegir el mejor hogar para tus padres sin culpa'"],
+        tp_during: ["Señalética interior en madera y latón mate con tipografía grande y alto contraste", "Indumentaria cálida del equipo médico y de hospitalidad (filipinas color salvia y lino)", "Menú diario de nutrición gourmet con letra de 16 pt y carpeta de bienvenida familiar"],
+        tp_after: ["Bitácora digital familiar en tiempo real con fotos de talleres, signos vitales y comidas", "Libro conmemorativo de historias de vida del residente impreso para sus nietos", "Eventos dominicales de puertas abiertas en el jardín para convivir con toda la familia"]
+      },
+      piedra_firme: {
+        brand_name: "Piedra Firme",
+        tagline: "ARQUITECTURA RESIDENCIAL, CONSTRUCCIÓN PATRIMONIAL Y OBRA CON CERTEZA",
+        industry_key: "constructora_piedra_firme",
+        colors: ["#F8FAFC", "#111827", "#C2410C", "#475569"],
+        primary_font: "Outfit",
+        golden_circle: "POR QUÉ: Construir hogares indestructibles sin sobrecostos sorpresa ni retrasos. CÓMO: Presupuesto a precio alzado cerrado por contrato y bitácora semanal con dron. QUÉ: Constructora de casas residenciales.",
+        value_offer: "Garantía estructural por escrito de 10 años, entrega en fecha pactada y transparencia peso por peso.",
+        tp_before: ["Lona monumental de obra limpia, ordenada y acotada con render y QR de avance", "Portafolio impreso de residencias entregadas con costos y tiempos reales", "Recorrido en obra negra limpia con cascos blancos personalizados para los clientes"],
+        tp_during: ["Contrato y presupuesto maestro en carpeta rígida con planos arquitectónicos doblados", "Cascos, chalecos reflejantes y camionetas pick-up rotuladas con sobriedad geométrica", "Reporte dominical en PDF y video de 1 minuto mostrando el avance físico real"],
+        tp_after: ["Caja de madera de parota para entrega de llaves en latón macizo y planos As-Built", "Placa metálica discreta empotrada en el acceso con el año de construcción", "Póliza de garantía con visitas programadas de revisión a los 3, 6 y 12 meses"]
+      },
+      muebleria_el_roble: {
+        brand_name: "Mueblería El Roble",
+        tagline: "CARPINTERÍA DE OFICIO, MADERA MACIZA Y MUEBLES PARA TRES GENERACIONES",
+        industry_key: "muebleria_el_roble",
+        colors: ["#FAF5EE", "#1F1610", "#9A3412", "#D97706"],
+        primary_font: "Playfair Display",
+        golden_circle: "POR QUÉ: Preservar el orgullo mueblero de nuestro pueblo creando piezas de madera maciza que se heredan de padres a hijos. CÓMO: Ensambles tradicionales y maderas estufadas. QUÉ: Mueblería regional con envío nacional.",
+        value_offer: "Madera sólida 100% real (cero aglomerado), personalización de medidas y telas, y entrega cuidadosa hasta dentro de tu sala.",
+        tp_before: ["Fachada de galería cálida en la avenida principal del pueblo con olor a cedro y café", "Catálogo digital por WhatsApp Business con medidas exactas, precios claros y videos", "Anuncios carreteros y presencia en ferias regionales con comedor en exhibición"],
+        tp_during: ["Muestrario táctil de maderas (parota, encino, tzalam, roble) y linos antimanchas", "Etiqueta colgante en cartulina kraft gruesa con cordón de cáñamo e historia del artesano", "Camión de reparto cerrado impecablemente rotulado y equipo con fajas y uniforme"],
+        tp_after: ["Sello pirograbado a fuego debajo de cada mesa o silla certificando madera maciza", "Frasco de cera natural de abeja y linaza con paño de algodón para nutrir el mueble", "Certificado de garantía de 15 años en estructura y bono para amueblar otra habitación"]
+      },
+      aksis_automation: {
+        brand_name: "Aksis Automation",
+        tagline: "GRUPO INDUSTRIAL AKSIS · DIVISIÓN 01: INGENIERÍA E INTEGRACIÓN DE LÍNEAS AUTOMATIZADAS",
+        industry_key: "aksis_automation",
+        colors: ["#F8FAFC", "#090D16", "#EA580C", "#38BDF8"],
+        primary_font: "Space Grotesk",
+        golden_circle: "POR QUÉ: Multiplicar la productividad y competitividad de la manufactura nacional sin paros no programados. CÓMO: Celdas robóticas llave en mano, PLC/SCADA y arquitectura modular. QUÉ: Marca matriz de automatización industrial.",
+        value_offer: "Retorno de inversión (ROI) en menos de 14 meses, integración multimarca (Siemens, Fanuc, Allen-Bradley) y ecosistema integral con Mantenimiento, Transporte y Control.",
+        tp_before: ["Dossier corporativo del Grupo Aksis mostrando sus 4 divisiones integradas", "Simulación 3D (Gemelo Digital) de la línea de producción antes de fabricar", "Presencia en Expo Manufactura con celda robótica operativa en vivo"],
+        tp_during: ["Gabinetes eléctricos NEMA en acero inoxidable con placa grabada en láser de fibra", "Ingenieros en planta con camisola ignífuga, casco dieléctrico y tablet de comisionamiento", "Protocolos FAT y SAT encuadernados con diagramas unifilares y neumáticos"],
+        tp_after: ["Placa de identificación metálica remachada en la línea con código QR de manuales", "Dashboard OEE en pantalla industrial de 55 pulgadas instalada sobre la línea", "Transición directa sin fricción a la Póliza de Aksis Mantenimiento y logística con Aksis Transporte"]
+      },
+      aksis_mantenimiento: {
+        brand_name: "Aksis Mantenimiento",
+        tagline: "GRUPO INDUSTRIAL AKSIS · DIVISIÓN 02: MANTENIMIENTO PREDICTIVO, RETROFIT Y SOPORTE 24/7",
+        industry_key: "aksis_mantenimiento",
+        colors: ["#F8FAFC", "#090D16", "#F59E0B", "#10B981"],
+        primary_font: "Space Grotesk",
+        golden_circle: "POR QUÉ: Garantizar que ninguna planta industrial se detenga jamás por una falla previsible. CÓMO: Termografía infrarroja, análisis de vibraciones y cuadrillas 24/7. QUÉ: Sub-marca de mantenimiento industrial.",
+        value_offer: "Tiempo de respuesta en sitio menor a 2 horas en emergencias y reducción del 78% en paros no planeados.",
+        tp_before: ["Auditoría diagnóstica de termografía y ultrasonido sin detener la línea de producción", "Ficha técnica de Pólizas Anuales (Bronce, Plata, Oro 24/7) con tiempos SLA por contrato", "Candados y etiquetas LOTO (Lockout/Tagout) personalizados con el emblema Aksis Mantenimiento"],
+        tp_during: ["Unidades móviles taller (Vans equipadas) con franja Ámbar Seguridad y torreta", "Uniforme de alta visibilidad con reflejantes 3M y bordado ignífugo Aksis Mantenimiento", "Bitácora digital en tablet firmada en planta al concluir cada intervención preventiva"],
+        tp_after: ["Sello holográfico de Maquinaria Certificada y Semáforo de Salud de Activos", "Reporte mensual ejecutivo de horas de paro evitadas y ahorro económico logrado", "Alerta predictiva automática para reemplazo de rodamientos o servomotores antes de falla"]
+      },
+      aksis_transporte: {
+        brand_name: "Aksis Transporte",
+        tagline: "GRUPO INDUSTRIAL AKSIS · DIVISIÓN 03: LOGÍSTICA PESADA, LOWBOY Y TRASLADO DE MAQUINARIA",
+        industry_key: "aksis_transporte",
+        colors: ["#F8FAFC", "#090D16", "#0284C7", "#38BDF8"],
+        primary_font: "Space Grotesk",
+        golden_circle: "POR QUÉ: Mover líneas de producción y maquinaria de alto tonelaje con precisión quirúrgica y cero daños. CÓMO: Flota propia con suspensión neumática y maniobras de grúa. QUÉ: Sub-marca de transporte especializado.",
+        value_offer: "Seguro puerta-a-puerta al 100% del valor de la maquinaria, rastreo satelital compartido en vivo y operadores certificados.",
+        tp_before: ["Cotización de ruta crítica, permisos de carga sobredimensionada y plan de izaje", "Catálogo de flota (Lowboy, Plataforma, Caja Seca Air-Ride, Grúas Titán)", "Enlace de rastreo GPS en vivo enviado al gerente de planta antes del embarque"],
+        tp_during: ["Tractocamiones y remolques con cromática Azul Autopista y emblema Aksis en gran formato", "Eslingas, cadenas certificadas, lonas de protección impermeable y sellos de plomo", "Operadores con uniforme ejecutivo de carretera, EPP completo y carpeta de Carta Porte"],
+        tp_after: ["Acta de entrega-recepción con evidencia fotográfica 360° sin vibración excesiva", "Facturación automática con complemento Carta Porte y reporte de huella logística", "Coordinación inmediata con Aksis Automation para el anclaje y nivelación en planta"]
+      },
+      aksis_control: {
+        brand_name: "Aksis Control",
+        tagline: "GRUPO INDUSTRIAL AKSIS · DIVISIÓN 04: VISIÓN ARTIFICIAL, TELEMETRÍA SCADA E INDUSTRIA 4.0",
+        industry_key: "aksis_control",
+        colors: ["#F8FAFC", "#090D16", "#10B981", "#06B6D4"],
+        primary_font: "Space Grotesk",
+        golden_circle: "POR QUÉ: Convertir los datos invisibles de piso de planta en decisiones rentables en tiempo real. CÓMO: Sensores IIoT, cámaras de visión artificial y tableros SCADA. QUÉ: Sub-marca de software industrial.",
+        value_offer: "Detección del 99.9% de defectos en línea mediante visión artificial y conexión de máquinas antiguas a la nube en 1 semana.",
+        tp_before: ["Demo en vivo con cámara de visión artificial detectando piezas defectuosas en milisegundos", "Whitepaper ejecutivo: 'Cómo digitalizar tu planta actual sin comprar maquinaria nueva'", "Calculadora de desperdicio oculto (merma y micro-paros) en línea"],
+        tp_during: ["Interfaz oscura Dark-UI de alta legibilidad para salas de control y pantallas HMI", "Gateways industriales IIoT en gabinete de aluminio negro anodizado con LED esmeralda", "Manual de arquitectura de red OT/IT y ciberseguridad industrial"],
+        tp_after: ["App móvil ejecutiva para que el Director de Planta consulte el OEE desde cualquier lugar", "Alertas inteligentes por WhatsApp/Telegram ante desviaciones de temperatura o ciclo", "Actualizaciones remotas de algoritmos de visión y reporte trimestral de eficiencia"]
+      }
+    };
+
+    function loadSimulatedBrandPreset(presetId) {
+      if (!presetId || !TWELVE_BRAND_PRESETS[presetId]) return;
+      playAcousticClick(840, 0.05);
+      window.activeSimulatedPresetId = presetId;
+      const p = TWELVE_BRAND_PRESETS[presetId];
+      canvasState.brandName = p.brand_name;
+      canvasState.tagline = p.tagline;
+      canvasState.industry_symbol_key = p.industry_key;
+      canvasState.selected_colors_hex = [...p.colors];
+      canvasState.primary_font = p.primary_font;
+      canvasState.golden_circle = p.golden_circle;
+      canvasState.value_offer = p.value_offer;
+
+      tpExtractedItems.before = [...p.tp_before];
+      tpExtractedItems.during = [...p.tp_during];
+      tpExtractedItems.after = [...p.tp_after];
+
+      const nameInput = document.getElementById("customBrandNameInput");
+      if (nameInput) nameInput.value = p.brand_name;
+      const activeBadge = document.getElementById("step3ActiveBrandNameBadge");
+      if (activeBadge) activeBadge.textContent = p.brand_name;
+
+      syncTouchpointCardsUI();
+      renderLiveStep4LogoSketches();
+      renderSynthesizedFinalLogoProposalsGrid();
+      renderFull38PageIllustratedPlates();
+      renderPrintShopCheatsheet();
+      renderEightApplicationsGrid();
+    }
+
+    function openSubBrandClonerBar() {
+      playAcousticClick(780, 0.04);
+      const drawer = document.getElementById("subBrandClonerDrawer");
+      if (!drawer) return;
+      drawer.style.display = drawer.style.display === "none" ? "block" : "none";
+    }
+
+    async function cloneActiveBrandDivision(divisionType) {
+      playAcousticClick(940, 0.06);
+      const rawParent = (canvasState.brandName || "Aksis").split(/\s+/)[0];
+      const divSpecs = {
+        mantenimiento: {
+          suffix: "Mantenimiento",
+          tagline: `GRUPO ${rawParent.toUpperCase()} · DIVISIÓN MANTENIMIENTO PREDICTIVO Y SOPORTE 24/7`,
+          pri: "#F59E0B",
+          sec: "#10B981",
+          indKey: "aksis_mantenimiento",
+          tp_before: ["Auditoría diagnóstica de termografía infrarroja y vibraciones sin paro de línea", "Catálogo de Pólizas SLA 24/7 con tiempos de respuesta menores a 2 horas", "Candados y etiquetas LOTO personalizados para bloqueo seguro de energía"],
+          tp_during: ["Unidades móviles taller con franja Ámbar Seguridad #F59E0B y torreta", "Uniforme ignífugo de alta visibilidad con bordado ≥ 1.25 mm", "Bitácora digital en tablet firmada en sitio al concluir mantenimiento"],
+          tp_after: ["Sello holográfico de Maquinaria Certificada con QR de historial", "Reporte mensual de horas de paro evitadas y ahorro financiero", "Alerta predictiva automática para reemplazo preventivo de componentes"]
+        },
+        transporte: {
+          suffix: "Transporte",
+          tagline: `GRUPO ${rawParent.toUpperCase()} · DIVISIÓN LOGÍSTICA PESADA, LOWBOY Y TRASLADO INDUSTRIAL`,
+          pri: "#0284C7",
+          sec: "#38BDF8",
+          indKey: "aksis_transporte",
+          tp_before: ["Plan de ruta crítica, permisos de carga sobredimensionada y maniobra de izaje", "Ficha técnica de flota Lowboy, Plataforma Air-Ride y Grúas Titán", "Enlace de rastreo satelital GPS en vivo compartido antes del embarque"],
+          tp_during: ["Tractocamiones y remolques con cromática Azul Autopista #0284C7 y cintas DOT-C2", "Eslingas certificadas, lonas impermeables y sellos de alta seguridad", "Operadores con uniforme de carretera, EPP completo y carpeta Carta Porte"],
+          tp_after: ["Acta de entrega-recepción con evidencia fotográfica 360° sin daño", "Facturación automática con complemento Carta Porte y telemetría de viaje", "Coordinación directa con ingeniería para montaje y nivelación en planta"]
+        },
+        control: {
+          suffix: "Control",
+          tagline: `GRUPO ${rawParent.toUpperCase()} · DIVISIÓN VISIÓN ARTIFICIAL, TELEMETRÍA SCADA E INDUSTRIA 4.0`,
+          pri: "#10B981",
+          sec: "#06B6D4",
+          indKey: "aksis_control",
+          tp_before: ["Demostración en vivo de visión artificial detectando defectos en milisegundos", "Guía ejecutiva de digitalización IIoT para plantas industriales", "Diagnóstico de merma oculta y micro-paros en línea"],
+          tp_during: ["Interfaz Dark-UI para salas de control SCADA y pantallas HMI en piso", "Gateways industriales IIoT en aluminio negro anodizado con LED esmeralda #10B981", "Manual de ciberseguridad OT/IT y arquitectura de red"],
+          tp_after: ["App móvil ejecutiva con indicadores OEE en tiempo real", "Alertas automáticas por WhatsApp/Telegram ante desviaciones de proceso", "Actualización remota de modelos de visión y reporte trimestral"]
+        }
+      };
+
+      const cfg = divSpecs[divisionType] || divSpecs.mantenimiento;
+      const baseColors = canvasState.selected_colors_hex || ["#F8FAFC", "#090D16", "#EA580C", "#38BDF8"];
+      canvasState.brandName = `${rawParent} ${cfg.suffix}`;
+      canvasState.tagline = cfg.tagline;
+      canvasState.industry_symbol_key = cfg.indKey;
+      canvasState.selected_colors_hex = [baseColors[0], baseColors[1], cfg.pri, cfg.sec];
+
+      tpExtractedItems.before = [...cfg.tp_before];
+      tpExtractedItems.during = [...cfg.tp_during];
+      tpExtractedItems.after = [...cfg.tp_after];
+
+      syncTouchpointCardsUI();
+      renderLiveStep4LogoSketches();
+      renderSynthesizedFinalLogoProposalsGrid();
+      renderFull38PageIllustratedPlates();
+      renderPrintShopCheatsheet();
+      renderEightApplicationsGrid();
+
+      const statusEl = document.getElementById("subBrandCloneStatus");
+      if (statusEl) {
+        statusEl.textContent = `✓ Sub-marca clonada con éxito: ${canvasState.brandName} (85% ADN heredado de ${rawParent} + 15% acento divisional ${cfg.pri} y touchpoints especializados).`;
+      }
     }
 
     async function compileFullBrandbookClient() {
@@ -8250,9 +8981,11 @@
       initAuraOrb();
       initConfettiCanvas();
       updateApiKeyBadge();
+      syncTouchpointCardsUI();
       initBipolarSlidersUI();
       renderLiveStep4LogoSketches();
       renderCurrentPairCard();
+      renderSynthesizedFinalLogoProposalsGrid();
       updateJourneyRoadmap();
       navigateToScreen("journey");
     });

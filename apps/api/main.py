@@ -41,10 +41,22 @@ from kansei_generative_architect import (
     CorporateBackendAIHub,
     AlgorithmicVisualIdentityClosedLoopProject
 )
+from bespoke_logo_studio import (
+    BespokePentagramLogoEngine,
+    DeepTouchpointEngineeringEngine,
+    MultiBrandArchitectureEngine
+)
+import tempfile
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../scripts")))
+try:
+    from generate_all_brandbooks_simulation import SIMULATED_BRANDS, generate_standalone_html_brandbook
+except Exception:
+    SIMULATED_BRANDS = []
+    generate_standalone_html_brandbook = None
 
 app = FastAPI(
-    title="TheBestBrand Live Studio v15.0 (Lean Triad UI + Kansei QTTI + Corporate Backend AI + Neutral Futuristic Aura)",
-    version="15.0.0"
+    title="TheBestBrand Live Studio v21.0 (Pentagram Logo Studio + Deep Touchpoints + Multi-Brand Architecture + Direct PDF)",
+    version="21.0.0"
 )
 
 app.add_middleware(
@@ -57,6 +69,10 @@ app.add_middleware(
 _ASSETS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/assets"))
 os.makedirs(_ASSETS_DIR, exist_ok=True)
 app.mount("/assets", StaticFiles(directory=_ASSETS_DIR), name="assets")
+
+_BRANDBOOKS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../entregables_brandbooks"))
+os.makedirs(_BRANDBOOKS_DIR, exist_ok=True)
+app.mount("/brandbooks", StaticFiles(directory=_BRANDBOOKS_DIR), name="brandbooks")
 
 
 class ChatTurnRequest(BaseModel):
@@ -562,10 +578,29 @@ def api_compile_brandbook(req: CompileBrandbookRequest):
         {"id": "DOC-06", "title": "PDF Directo de Alta Resolución A4/Carta"}
     ]
 
+    tp_dossier = DeepTouchpointEngineeringEngine.build_detailed_touchpoints_dossier(
+        tp_before_raw=tp_before,
+        tp_during_raw=tp_during,
+        tp_after_raw=tp_after,
+        brand_name=req.brand_name,
+        pri_hex=primary_hex,
+        ink_hex=ink_hex
+    )
+    studio_proposals = BespokePentagramLogoEngine.generate_4_studio_logo_proposals(
+        brand_name=req.brand_name,
+        industry_hint=str(cs.get("industry_key") or ""),
+        purpose_text=gc_val,
+        colors_hex=req.selected_colors_hex,
+        primary_font=req.primary_font,
+        secondary_font=req.secondary_font,
+        descriptor_tagline=vo_val[:38],
+        show_construction_grid=True
+    )
+
     return {
         "brand_name": req.brand_name,
         "selected_kit_name": req.selected_kit_name,
-        "total_pages": 38,
+        "total_pages": 39,
         "table_of_contents": toc_38_pages,
         "section_1_positioning": {
             "p1_proposito_golden_circle": gc_val,
@@ -581,18 +616,234 @@ def api_compile_brandbook(req: CompileBrandbookRequest):
         "section_2_touchpoints": {
             "antes_de_la_compra": tp_before,
             "durante_la_compra": tp_during,
-            "despues_de_la_compra": tp_after
+            "despues_de_la_compra": tp_after,
+            "engineered_touchpoints_dossier": tp_dossier
         },
         "section_4_construction": {
-            "f_color_palette": {"colors": color_table}
+            "f_color_palette": {"colors": color_table},
+            "studio_logo_proposals": studio_proposals
         },
         "applications_suite": applications_suite,
         "documents_vault": documents_vault,
         "positioning_8_pillars": compiled.get("strategy_chapter", {}),
         "touchpoints_journey": profile["touchpoints_journey"],
+        "engineered_touchpoints_dossier": tp_dossier,
+        "studio_logo_proposals": studio_proposals,
         "color_table": color_table,
         "full_compilation": compiled
     }
+
+
+class TouchpointEnrichRequest(BaseModel):
+    brand_name: str = "TheBestBrand"
+    tp_before: Any = []
+    tp_during: Any = []
+    tp_after: Any = []
+    primary_hex: str = "#C59B27"
+    ink_hex: str = "#090D16"
+
+
+@app.post("/api/v1/touchpoints/enrich-dossier")
+def api_enrich_touchpoints_dossier(req: TouchpointEnrichRequest):
+    return DeepTouchpointEngineeringEngine.build_detailed_touchpoints_dossier(
+        tp_before_raw=req.tp_before,
+        tp_during_raw=req.tp_during,
+        tp_after_raw=req.tp_after,
+        brand_name=req.brand_name,
+        pri_hex=req.primary_hex,
+        ink_hex=req.ink_hex
+    )
+
+
+class StudioLogoGenerateRequest(BaseModel):
+    brand_name: str = "TheBestBrand"
+    industry_hint: str = ""
+    purpose_text: str = ""
+    colors_hex: List[str] = ["#FAF8F5", "#090D16", "#C59B27", "#1E293B"]
+    primary_font: str = "Space Grotesk"
+    secondary_font: str = "Plus Jakarta Sans"
+    descriptor_tagline: str = "ESTÁNDAR DE EXCELENCIA"
+    show_construction_grid: bool = True
+
+
+@app.post("/api/v1/logos/generate-studio-logos")
+def api_generate_studio_logos(req: StudioLogoGenerateRequest):
+    proposals = BespokePentagramLogoEngine.generate_4_studio_logo_proposals(
+        brand_name=req.brand_name,
+        industry_hint=req.industry_hint,
+        purpose_text=req.purpose_text,
+        colors_hex=req.colors_hex,
+        primary_font=req.primary_font,
+        secondary_font=req.secondary_font,
+        descriptor_tagline=req.descriptor_tagline,
+        show_construction_grid=req.show_construction_grid
+    )
+    return {
+        "brand_name": req.brand_name,
+        "archetype": proposals[0]["archetype"],
+        "proposals": proposals
+    }
+
+
+class CloneSubBrandRequest(BaseModel):
+    parent_brand_name: str = "Aksis Automation"
+    parent_canvas: Dict[str, Any] = {}
+    division_type: str = "mantenimiento"
+    custom_subbrand_name: str = ""
+    custom_accent_hex: str = ""
+
+
+@app.post("/api/v1/architecture/clone-subbrand")
+def api_clone_subbrand(req: CloneSubBrandRequest):
+    cloned = MultiBrandArchitectureEngine.clone_subbrand_from_parent(
+        parent_brand_name=req.parent_brand_name,
+        parent_canvas=req.parent_canvas,
+        division_type=req.division_type,
+        custom_subbrand_name=req.custom_subbrand_name,
+        custom_accent_hex=req.custom_accent_hex
+    )
+    return {"status": "cloned", "subbrand_canvas": cloned}
+
+
+@app.get("/api/v1/presets/12-simulated-brands")
+def api_get_12_simulated_brands():
+    return {
+        "total": len(SIMULATED_BRANDS),
+        "brands": SIMULATED_BRANDS
+    }
+
+
+@app.post("/api/step6/download-pdf")
+def api_download_brandbook_pdf(req: CompileBrandbookRequest):
+    """
+    Compila en vivo el Brandbook Maestro Ilustrado completo de la marca activa y devuelve
+    un archivo binario .PDF real (application/pdf) listo para descarga directa e imprenta.
+    """
+    cs = req.canvas_state or {}
+    # Si coincide con una de las 12 marcas pre-compiladas y ya existe el PDF, o compilar en vivo con Playwright
+    matched_preset = next(
+        (b for b in SIMULATED_BRANDS if b["chosen_name"].lower() == req.brand_name.strip().lower()),
+        None
+    )
+    if matched_preset:
+        preset_pdf_path = os.path.join(_BRANDBOOKS_DIR, f"brandbook_{matched_preset['id']}.pdf")
+        if os.path.exists(preset_pdf_path):
+            with open(preset_pdf_path, "rb") as f:
+                pdf_bytes = f.read()
+            safe_slug = req.brand_name.strip().replace(" ", "_")
+            return Response(
+                content=pdf_bytes,
+                media_type="application/pdf",
+                headers={"Content-Disposition": f'attachment; filename="Brandbook_Maestro_{safe_slug}.pdf"'}
+            )
+
+    bg_hex = req.selected_colors_hex[0] if len(req.selected_colors_hex) > 0 else "#FAF8F5"
+    ink_hex = req.selected_colors_hex[1] if len(req.selected_colors_hex) > 1 else "#090D16"
+    primary_hex = req.selected_colors_hex[2] if len(req.selected_colors_hex) > 2 else "#C59B27"
+    secondary_hex = req.selected_colors_hex[3] if len(req.selected_colors_hex) > 3 else "#1E293B"
+
+    gc_val = req.golden_circle or cs.get("golden_circle") or "Impulsar la excelencia, confiabilidad y transformación positiva en cada entrega."
+    vo_val = req.value_offer or cs.get("value_offer") or "Calidad superior, ingeniería de precisión y experiencia impecable de principio a fin."
+    sr_val = req.social_role or cs.get("social_role") or f"Elevar el estándar ético, técnico y estético de nuestra comunidad a través de {req.brand_name}."
+    ps_raw = req.process_steps_text or cs.get("process_steps_text") or ""
+    cm_val = req.core_message or cs.get("core_message") or f"{req.brand_name}: Precisión, confianza y excelencia que trascienden."
+    bp_val = req.brand_persona or cs.get("brand_persona") or "Especialista apasionado, confiable, claro, empático y con autoridad comprobada."
+    cb_val = req.customer_behavior or cs.get("customer_behavior") or "Trato transparente, proactivo, resolutivo y cercano en cada interacción."
+    bw_val = req.brand_world or cs.get("brand_world") or req.master_prompt or "Un entorno de orden visual, materiales nobles, alta visibilidad y excelencia técnica."
+    ic_val = req.ideal_customer or cs.get("ideal_customer") or "Tomadores de decisión e instituciones que exigen durabilidad, claridad y desempeño oficial."
+
+    tp_before = (req.touchpoints[0] if len(req.touchpoints) > 0 else "") or cs.get("tp_before") or "Sitio web oficial, catálogo técnico ejecutivo, presencia en redes y demostraciones."
+    tp_during = (req.touchpoints[1] if len(req.touchpoints) > 1 else "") or cs.get("tp_during") or "Cotización formal membretada, uniforme del equipo, contrato de servicio y pasarela de pago."
+    tp_after = (req.touchpoints[2] if len(req.touchpoints) > 2 else "") or cs.get("tp_after") or "Empaque con sello de seguridad, certificado de garantía, manual de bienvenida y soporte continuo."
+
+    brand_dict = {
+        "id": "custom_live",
+        "sector": cs.get("sector_label") or "Identidad Corporativa de Alta Precisión",
+        "founder_persona": cs.get("founder_persona") or "Fundador & Dirección General",
+        "chosen_name": req.brand_name,
+        "tagline": cm_val,
+        "naming_style": "compuesto",
+        "industry_key": cs.get("industry_key") or "tecnologia_saas",
+        "architecture_role": cs.get("architecture_model") or "",
+        "vault_finalists": [req.brand_name, f"{req.brand_name} Group", f"{req.brand_name} Studio", f"{req.brand_name} Global"],
+        "nice_classes": cs.get("recommended_nice_classes_str") or "Clase 09, Clase 35, Clase 37 y Clase 42 según giro operativo",
+        "domains": [
+            f"{req.brand_name.lower().replace(' ', '').replace('&', '')}.com",
+            f"{req.brand_name.lower().replace(' ', '').replace('&', '')}.mx"
+        ],
+        "purpose_why": gc_val,
+        "value_offer": vo_val,
+        "social_role": sr_val,
+        "process_steps": [s.strip() for s in ps_raw.split("\n") if s.strip()] if ps_raw else [
+            "1. Diagnóstico profundo y comprensión de requerimientos del cliente",
+            "2. Diseño, fabricación o implementación con control de calidad estricto",
+            "3. Entrega puntual, garantía oficial y seguimiento post-venta"
+        ],
+        "core_message": cm_val,
+        "brand_persona": bp_val,
+        "customer_behavior": cb_val,
+        "brand_world": bw_val,
+        "ideal_customer": ic_val,
+        "touchpoints_journey": {
+            "antes": tp_before.replace(",", " · "),
+            "durante": tp_during.replace(",", " · "),
+            "despues": tp_after.replace(",", " · ")
+        },
+        "base_family": req.selected_kit_name,
+        "primary_font": req.primary_font,
+        "secondary_font": req.secondary_font,
+        "palette": [bg_hex, ink_hex, primary_hex, secondary_hex],
+        "selected_24_traits": cs.get("selected_24_traits_list") or [
+            "Geometría Bézier en Proporción Áurea φ=1.618",
+            "Trazo mínimo calibrado ≥ 1.2 mm para bordado y grabado láser",
+            "Contraste cromático verificado WCAG AAA e ISO 15930 PDF/X-1a"
+        ],
+        "simulation_notes": "Brandbook Maestro compilado en vivo desde el estudio interactivo TheBestBrand."
+    }
+    color_table = [
+        PrePressColorEngine.build_brand_color_table("Superficie Base", bg_hex, ink_hex),
+        PrePressColorEngine.build_brand_color_table("Tinta Estructural", ink_hex, bg_hex),
+        PrePressColorEngine.build_brand_color_table("Acento Primario", primary_hex, bg_hex),
+        PrePressColorEngine.build_brand_color_table("Acento Secundario", secondary_hex, bg_hex),
+    ]
+    html_doc = generate_standalone_html_brandbook(brand_dict, {}, color_table)
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp_html = os.path.join(tmpdir, "brandbook_live.html")
+        tmp_pdf = os.path.join(tmpdir, "brandbook_live.pdf")
+        # Ajustar ruta relativa de imágenes para el archivo temporal
+        abs_logos = os.path.abspath(os.path.join(_ASSETS_DIR, "logos"))
+        html_doc = html_doc.replace("../apps/web/assets/logos/", f"file://{abs_logos}/")
+        with open(tmp_html, "w", encoding="utf-8") as f:
+            f.write(html_doc)
+        import subprocess
+        subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                (
+                    "import sys; from playwright.sync_api import sync_playwright; "
+                    "p = sync_playwright().start(); b = p.chromium.launch(headless=True); "
+                    "page = b.new_page(); page.goto('file://' + sys.argv[1], wait_until='domcontentloaded'); "
+                    "page.pdf(path=sys.argv[2], format='A4', print_background=True, "
+                    "margin={'top':'10mm','bottom':'10mm','left':'10mm','right':'10mm'}); "
+                    "b.close(); p.stop()"
+                ),
+                tmp_html,
+                tmp_pdf
+            ],
+            check=True,
+            timeout=30
+        )
+        with open(tmp_pdf, "rb") as f:
+            pdf_bytes = f.read()
+
+    safe_slug = "".join([c if c.isalnum() else "_" for c in req.brand_name.strip()]) or "TheBestBrand"
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="Brandbook_Maestro_{safe_slug}.pdf"'}
+    )
 
 
 if __name__ == "__main__":

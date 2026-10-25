@@ -6,38 +6,261 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@500;700&family=Playfair+Display:ital,wght@0,700;1,600&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F1F5F9; color: #0F172A; margin: 0; padding: 32px; }
-    .sheet { max-width: 1120px; margin: 0 auto 28px auto; background: #FFFFFF; border: 1.5px solid #CBD5E1; border-radius: 20px; padding: 32px 36px; box-shadow: 0 12px 32px rgba(15,23,42,0.06); page-break-after: always; }
-    .sheet-header { display: flex; justify-content: space-between; border-bottom: 2px solid #0F172A; padding-bottom: 10px; margin-bottom: 22px; font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; font-weight: 700; color: #475569; text-transform: uppercase; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F1F5F9; color: #0F172A; margin: 0; padding: 24px; }
+    .sheet { max-width: 1120px; margin: 0 auto 24px auto; background: #FFFFFF; border: 1.5px solid #CBD5E1; border-radius: 20px; padding: 28px 32px; box-shadow: 0 12px 32px rgba(15,23,42,0.06); page-break-after: always; }
+    .sheet-header { display: flex; justify-content: space-between; border-bottom: 2px solid #0F172A; padding-bottom: 10px; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; font-weight: 700; color: #475569; text-transform: uppercase; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-    .card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 16px 18px; }
-    .tag { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 800; color: #B45309; text-transform: uppercase; display: block; margin-bottom: 6px; }
+    .card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; }
+    .tag { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 800; color: #B45309; text-transform: uppercase; display: block; margin-bottom: 6px; }
     h1, h2, h3 { margin: 0 0 8px 0; font-family: 'Space Grotesk', sans-serif; }
-    p, li { font-size: 0.92rem; line-height: 1.55; color: #1E293B; }
-    @media print { body { background: #FFF; padding: 0; } .sheet { box-shadow: none; border: 1px solid #000; margin-bottom: 16px; } }
+    p, li { font-size: 0.88rem; line-height: 1.5; color: #1E293B; }
+    @media print { body { background: #FFF; padding: 0; } .sheet { box-shadow: none; border: 1px solid #CBD5E1; margin-bottom: 12px; page-break-after: always; } .no-print { display: none !important; } }
   </style>
 </head>
 <body>
   <div class="sheet">
     <div class="sheet-header">
-      <span>TOMO I · PORTADA OFICIAL Y PLATAFORMA ESTRATÉGICA DE 8 PILARES</span>
+      <span>TOMO I · PORTADA OFICIAL, SISTEMA DE LOGOTIPO DE ESTUDIO Y PLATAFORMA ESTRATÉGICA (8 PILARES)</span>
       <span>SECTOR: 7. Empresa de Construcción de Casas y Desarrollos Residenciales</span>
     </div>
     
-    <div style="background:#090D16;color:#FFFFFF;border-radius:18px;padding:32px;display:flex;justify-content:space-between;align-items:center;gap:24px;border:2.5px solid #B45309;margin-bottom:24px;">
+    <div style="background:#090D16;color:#FFFFFF;border-radius:18px;padding:26px 30px;display:flex;justify-content:space-between;align-items:center;gap:24px;border:2.5px solid #B45309;margin-bottom:22px;">
       <div style="display:flex;align-items:center;gap:22px;">
-        <div style="width:88px;height:88px;border-radius:20px;background:#B45309;color:#090D16;display:grid;place-items:center;font-family:'Space Grotesk',sans-serif;font-weight:900;font-size:2.1rem;border:3px solid #FFFFFF;">
-          PF
+        <div style="width:104px;height:104px;border-radius:22px;background:#FFFFFF;display:grid;place-items:center;border:3px solid #B45309;flex-shrink:0;">
+          <svg viewBox="-52 -52 104 104" width="88" height="88" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="studioGrad_hero_0" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#B45309"/>
+            <stop offset="100%" stop-color="#52525B"/>
+          </linearGradient>
+          <filter id="studioGlow_hero_0" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_hero_0)">
+              <!-- Arco de Hospitalidad Senior -->
+              <path d="M-34,36 V-4 C-34,-24 -19,-38 0,-38 C19,-38 34,-24 34,-4 V36 H-34 Z" fill="#B45309"/>
+              <!-- Sol Naciente en Proporción Áurea -->
+              <circle cx="0" cy="-4" r="16" fill="#52525B"/>
+              <!-- Ondas de Serenidad y Jardín -->
+              <path d="M-34,14 Q-16,4 0,14 T34,14 V36 H-34 Z" fill="#090D16"/>
+              <path d="M-34,24 Q-16,14 0,24 T34,24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Hojas de Olivo Ascendentes -->
+              <path d="M-12,-6 C-18,-14 -12,-24 -2,-20 C-4,-12 -8,-8 -12,-6 Z" fill="#FFFFFF"/>
+              <path d="M12,-6 C18,-14 12,-24 2,-20 C4,-12 8,-8 12,-6 Z" fill="#FFFFFF"/>
+            </g>
+            </svg>
         </div>
         <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#FDE68A;font-weight:700;">PERFIL FUNDADOR: Arq. e Ing. Javier Castellanos (Director de constructora residencial de viviendas personalizadas y privadas)</div>
-          <h1 style="font-size:2.4rem;color:#FFFFFF;margin:4px 0;">Piedra Firme Residencial</h1>
-          <div style="font-size:1.05rem;color:#E2E8F0;font-style:italic;">“Casas construidas con rigor estructural, a tiempo y a precio cerrado”</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.74rem;color:#FDE68A;font-weight:700;">PERFIL FUNDADOR: Arq. e Ing. Javier Castellanos (Director de constructora residencial de viviendas personalizadas y privadas)</div>
+          <h1 style="font-size:2.3rem;color:#FFFFFF;margin:4px 0;">Piedra Firme Residencial</h1>
+          <div style="font-size:1.02rem;color:#E2E8F0;font-style:italic;">“Casas construidas con rigor estructural, a tiempo y a precio cerrado”</div>
         </div>
       </div>
-      <button onclick="window.print()" style="background:#B45309;color:#FFFFFF;border:none;border-radius:99px;padding:12px 22px;font-weight:800;cursor:pointer;">🖨️ Imprimir PDF</button>
+      <button class="no-print" onclick="window.print()" style="background:#B45309;color:#FFFFFF;border:none;border-radius:99px;padding:12px 22px;font-weight:800;cursor:pointer;">🖨️ Imprimir / Guardar PDF</button>
+    </div>
+
+    <span class="tag">LÁMINA MAGISTRAL DE IDENTIDAD VISUAL · RENDER DE ESTUDIO GEMINI + APLICACIÓN FÍSICA REAL</span>
+    <div style="margin-bottom:20px;border-radius:16px;overflow:hidden;border:2px solid #B45309;background:#090D16;">
+      <img src="../apps/web/assets/logos/brand_07_piedra_firme_logo.jpg" alt="Logo Oficial Piedra Firme Residencial" style="width:100%;max-height:390px;object-fit:cover;display:block;" />
+    </div>
+
+    <span class="tag">SISTEMA DE IDENTIDAD VISUAL DE ESTUDIO (4 ARQUITECTURAS DE LOCKUP EN CURVAS BÉZIER)</span>
+    <div class="grid-2" style="margin-bottom:22px;">
+      <div style="border:1.5px solid #CBD5E1;border-radius:14px;padding:12px;background:#F8FAFC;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;color:#B45309;margin-bottom:4px;">PROP-01 · SISTEMA VECTORIAL EN CURVAS</div>
+          <div style="font-weight:800;font-size:0.9rem;color:#0F172A;margin-bottom:6px;">Piedra Firme Residencial · Lockup Totémico Principal</div>
+          <div style="height:175px;border-radius:10px;overflow:hidden;border:1px solid #E2E8F0;background:#FFF;"><svg viewBox="0 0 420 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="250" rx="14" fill="#F5F3EF"/>
+          <rect x="8" y="8" width="404" height="234" rx="10" fill="none" stroke="#18181B" stroke-opacity="0.08" stroke-width="1"/>
+          
+            <g opacity="0.22" stroke="#B45309" stroke-width="0.6">
+              <line x1="0" y1="110" x2="420" y2="110"/>
+              <line x1="210" y1="0" x2="210" y2="240"/>
+              <circle cx="210" cy="84" r="46" fill="none"/>
+              <circle cx="210" cy="84" r="28.4" fill="none"/>
+            </g>
+            
+          <g transform="translate(210, 84) scale(1.08)">
+            
+        <defs>
+          <linearGradient id="studioGrad_p1_0" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#B45309"/>
+            <stop offset="100%" stop-color="#52525B"/>
+          </linearGradient>
+          <filter id="studioGlow_p1_0" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_p1_0)">
+              <!-- Arco de Hospitalidad Senior -->
+              <path d="M-34,36 V-4 C-34,-24 -19,-38 0,-38 C19,-38 34,-24 34,-4 V36 H-34 Z" fill="#B45309"/>
+              <!-- Sol Naciente en Proporción Áurea -->
+              <circle cx="0" cy="-4" r="16" fill="#52525B"/>
+              <!-- Ondas de Serenidad y Jardín -->
+              <path d="M-34,14 Q-16,4 0,14 T34,14 V36 H-34 Z" fill="#18181B"/>
+              <path d="M-34,24 Q-16,14 0,24 T34,24" fill="none" stroke="#F5F3EF" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Hojas de Olivo Ascendentes -->
+              <path d="M-12,-6 C-18,-14 -12,-24 -2,-20 C-4,-12 -8,-8 -12,-6 Z" fill="#F5F3EF"/>
+              <path d="M12,-6 C18,-14 12,-24 2,-20 C4,-12 8,-8 12,-6 Z" fill="#F5F3EF"/>
+            </g>
+            
+          </g>
+          <text x="210" y="168" text-anchor="middle" fill="#18181B" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="21" letter-spacing="3.5">PIEDRA FIRME</text>
+          <text x="210" y="191" text-anchor="middle" fill="#B45309" font-family="&#39;Space Grotesk&#39;, sans-serif" font-weight="700" font-size="14.5" letter-spacing="5.5">RESIDENCIAL</text>
+          <line x1="155" y1="204" x2="265" y2="204" stroke="#B45309" stroke-width="1.2" opacity="0.65"/>
+          <text x="210" y="220" text-anchor="middle" fill="#18181B" fill-opacity="0.65" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="8.5" letter-spacing="3.2">CASAS CONSTRUIDAS CON RIGOR ESTRUCTU</text>
+        </svg></div>
+          <div style="font-size:0.76rem;color:#475569;margin-top:6px;">Símbolo de Autor en Proporción Áurea + Logotipo con Tracking Óptico</div>
+        </div><div style="border:1.5px solid #CBD5E1;border-radius:14px;padding:12px;background:#F8FAFC;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;color:#B45309;margin-bottom:4px;">PROP-02 · SISTEMA VECTORIAL EN CURVAS</div>
+          <div style="font-weight:800;font-size:0.9rem;color:#0F172A;margin-bottom:6px;">Piedra Firme Residencial · Lockup Horizontal Arquitectónico</div>
+          <div style="height:175px;border-radius:10px;overflow:hidden;border:1px solid #E2E8F0;background:#FFF;"><svg viewBox="0 0 420 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="250" rx="14" fill="#090D16"/>
+          <rect x="8" y="8" width="404" height="234" rx="10" fill="none" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="1"/>
+          <g transform="translate(96, 125) scale(1.05)">
+            
+        <defs>
+          <linearGradient id="studioGrad_p2_1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#B45309"/>
+            <stop offset="100%" stop-color="#52525B"/>
+          </linearGradient>
+          <filter id="studioGlow_p2_1" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_p2_1)">
+              <!-- Arco de Hospitalidad Senior -->
+              <path d="M-34,36 V-4 C-34,-24 -19,-38 0,-38 C19,-38 34,-24 34,-4 V36 H-34 Z" fill="#B45309"/>
+              <!-- Sol Naciente en Proporción Áurea -->
+              <circle cx="0" cy="-4" r="16" fill="#52525B"/>
+              <!-- Ondas de Serenidad y Jardín -->
+              <path d="M-34,14 Q-16,4 0,14 T34,14 V36 H-34 Z" fill="#0F172A"/>
+              <path d="M-34,24 Q-16,14 0,24 T34,24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Hojas de Olivo Ascendentes -->
+              <path d="M-12,-6 C-18,-14 -12,-24 -2,-20 C-4,-12 -8,-8 -12,-6 Z" fill="#FFFFFF"/>
+              <path d="M12,-6 C18,-14 12,-24 2,-20 C4,-12 8,-8 12,-6 Z" fill="#FFFFFF"/>
+            </g>
+            
+          </g>
+          <line x1="158" y1="76" x2="158" y2="174" stroke="#B45309" stroke-width="1.5" opacity="0.65"/>
+          <text x="176" y="115" text-anchor="start" fill="#FFFFFF" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="22" letter-spacing="2.8">PIEDRA FIRME</text>
+          <text x="176" y="140" text-anchor="start" fill="#B45309" font-family="&#39;Space Grotesk&#39;, sans-serif" font-weight="700" font-size="15.5" letter-spacing="4.5">RESIDENCIAL</text>
+          <text x="176" y="164" text-anchor="start" fill="#94A3B8" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="8.5" letter-spacing="2.6">CASAS CONSTRUIDAS CON RIGOR ESTRUCTU</text>
+        </svg></div>
+          <div style="font-size:0.76rem;color:#475569;margin-top:6px;">Composición Corporativa para Fachadas, Flota Vehicular, Cabeceras Web y Licitaciones</div>
+        </div><div style="border:1.5px solid #CBD5E1;border-radius:14px;padding:12px;background:#F8FAFC;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;color:#B45309;margin-bottom:4px;">PROP-03 · SISTEMA VECTORIAL EN CURVAS</div>
+          <div style="font-weight:800;font-size:0.9rem;color:#0F172A;margin-bottom:6px;">Piedra Firme Residencial · Sello Institucional & Bordado</div>
+          <div style="height:175px;border-radius:10px;overflow:hidden;border:1px solid #E2E8F0;background:#FFF;"><svg viewBox="0 0 420 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="250" rx="14" fill="#F5F3EF"/>
+          <circle cx="210" cy="112" r="78" fill="#18181B"/>
+          <circle cx="210" cy="112" r="71" fill="none" stroke="#B45309" stroke-width="1.8"/>
+          <circle cx="210" cy="112" r="54" fill="#F5F3EF"/>
+          <g transform="translate(210, 112) scale(0.84)">
+            
+        <defs>
+          <linearGradient id="studioGrad_p3_2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#B45309"/>
+            <stop offset="100%" stop-color="#52525B"/>
+          </linearGradient>
+          <filter id="studioGlow_p3_2" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_p3_2)">
+              <!-- Arco de Hospitalidad Senior -->
+              <path d="M-34,36 V-4 C-34,-24 -19,-38 0,-38 C19,-38 34,-24 34,-4 V36 H-34 Z" fill="#B45309"/>
+              <!-- Sol Naciente en Proporción Áurea -->
+              <circle cx="0" cy="-4" r="16" fill="#52525B"/>
+              <!-- Ondas de Serenidad y Jardín -->
+              <path d="M-34,14 Q-16,4 0,14 T34,14 V36 H-34 Z" fill="#18181B"/>
+              <path d="M-34,24 Q-16,14 0,24 T34,24" fill="none" stroke="#F5F3EF" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Hojas de Olivo Ascendentes -->
+              <path d="M-12,-6 C-18,-14 -12,-24 -2,-20 C-4,-12 -8,-8 -12,-6 Z" fill="#F5F3EF"/>
+              <path d="M12,-6 C18,-14 12,-24 2,-20 C4,-12 8,-8 12,-6 Z" fill="#F5F3EF"/>
+            </g>
+            
+          </g>
+          <circle cx="148" cy="112" r="3" fill="#B45309"/>
+          <circle cx="272" cy="112" r="3" fill="#B45309"/>
+          <text x="210" y="216" text-anchor="middle" fill="#18181B" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="15" letter-spacing="4.2">PIEDRA FIRME RESIDENCIAL</text>
+          <text x="210" y="233" text-anchor="middle" fill="#B45309" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="8.2" letter-spacing="2.8">SELLO OFICIAL · TRAZO ≥ 1.2MM APTO BORDADO Y LÁSER</text>
+        </svg></div>
+          <div style="font-size:0.76rem;color:#475569;margin-top:6px;">Emblema Circular de Alta Solidez Calibrado a ≥ 1.2 mm para Bordado, Cuño y Láser</div>
+        </div><div style="border:1.5px solid #CBD5E1;border-radius:14px;padding:12px;background:#F8FAFC;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;color:#B45309;margin-bottom:4px;">PROP-04 · SISTEMA VECTORIAL EN CURVAS</div>
+          <div style="font-weight:800;font-size:0.9rem;color:#0F172A;margin-bottom:6px;">Piedra Firme Residencial · Sistema Iconográfico 1:1 (Positivo / Negativo)</div>
+          <div style="height:175px;border-radius:10px;overflow:hidden;border:1px solid #E2E8F0;background:#FFF;"><svg viewBox="0 0 420 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="250" rx="14" fill="#F1F5F9"/>
+          <!-- App Icon Dark 1:1 -->
+          <rect x="48" y="34" width="142" height="142" rx="32" fill="#18181B"/>
+          <g transform="translate(119, 105) scale(1.12)">
+            
+        <defs>
+          <linearGradient id="studioGrad_p2_1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#B45309"/>
+            <stop offset="100%" stop-color="#52525B"/>
+          </linearGradient>
+          <filter id="studioGlow_p2_1" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_p2_1)">
+              <!-- Arco de Hospitalidad Senior -->
+              <path d="M-34,36 V-4 C-34,-24 -19,-38 0,-38 C19,-38 34,-24 34,-4 V36 H-34 Z" fill="#B45309"/>
+              <!-- Sol Naciente en Proporción Áurea -->
+              <circle cx="0" cy="-4" r="16" fill="#52525B"/>
+              <!-- Ondas de Serenidad y Jardín -->
+              <path d="M-34,14 Q-16,4 0,14 T34,14 V36 H-34 Z" fill="#0F172A"/>
+              <path d="M-34,24 Q-16,14 0,24 T34,24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Hojas de Olivo Ascendentes -->
+              <path d="M-12,-6 C-18,-14 -12,-24 -2,-20 C-4,-12 -8,-8 -12,-6 Z" fill="#FFFFFF"/>
+              <path d="M12,-6 C18,-14 12,-24 2,-20 C4,-12 8,-8 12,-6 Z" fill="#FFFFFF"/>
+            </g>
+            
+          </g>
+          <text x="119" y="198" text-anchor="middle" fill="#0F172A" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" letter-spacing="1.5">VERSIÓN NOCTURNA 1:1</text>
+          <!-- App Icon Light 1:1 -->
+          <rect x="230" y="34" width="142" height="142" rx="32" fill="#F5F3EF" stroke="#CBD5E1" stroke-width="1.5"/>
+          <g transform="translate(301, 105) scale(1.12)">
+            
+        <defs>
+          <linearGradient id="studioGrad_p4_3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#B45309"/>
+            <stop offset="100%" stop-color="#52525B"/>
+          </linearGradient>
+          <filter id="studioGlow_p4_3" x="-15%" y="-15%" width="130%" height="130%">
+            <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000000" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+        
+            <g filter="url(#studioGlow_p4_3)">
+              <!-- Arco de Hospitalidad Senior -->
+              <path d="M-34,36 V-4 C-34,-24 -19,-38 0,-38 C19,-38 34,-24 34,-4 V36 H-34 Z" fill="#B45309"/>
+              <!-- Sol Naciente en Proporción Áurea -->
+              <circle cx="0" cy="-4" r="16" fill="#52525B"/>
+              <!-- Ondas de Serenidad y Jardín -->
+              <path d="M-34,14 Q-16,4 0,14 T34,14 V36 H-34 Z" fill="#18181B"/>
+              <path d="M-34,24 Q-16,14 0,24 T34,24" fill="none" stroke="#F5F3EF" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Hojas de Olivo Ascendentes -->
+              <path d="M-12,-6 C-18,-14 -12,-24 -2,-20 C-4,-12 -8,-8 -12,-6 Z" fill="#F5F3EF"/>
+              <path d="M12,-6 C18,-14 12,-24 2,-20 C4,-12 8,-8 12,-6 Z" fill="#F5F3EF"/>
+            </g>
+            
+          </g>
+          <text x="301" y="198" text-anchor="middle" fill="#0F172A" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="11" letter-spacing="1.5">VERSIÓN EDITORIAL 1:1</text>
+          <text x="210" y="228" text-anchor="middle" fill="#475569" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9" letter-spacing="2.4">PIEDRA FIRME RESIDENCIAL · SISTEMA ICONOGRÁFICO MULTIESCALA</text>
+        </svg></div>
+          <div style="font-size:0.76rem;color:#475569;margin-top:6px;">Símbolo Autónomo de Espacio Negativo para App Icon, Avatar Social y Señalética a 30m</div>
+        </div>
     </div>
 
     <div class="grid-3">
@@ -55,35 +278,326 @@
 
   <div class="sheet">
     <div class="sheet-header">
-      <span>TOMO II · RECORRIDO DE TOUCHPOINTS (FASE 2) + ESTUDIO DE NAMING, NIZA Y DOMINIOS (FASE 3)</span>
-      <span>Piedra Firme Residencial</span>
+      <span>TOMO II · EXPEDIENTE DE INGENIERÍA DE TOUCHPOINTS (SUSTRATOS, MEDIDAS, IMPRESIÓN Y CONTROL DE CALIDAD)</span>
+      <span>Piedra Firme Residencial · 10 FICHAS TÉCNICAS DE TOUCHPOINTS</span>
     </div>
-    <div class="grid-3" style="margin-bottom:22px;">
-      <div class="card" style="border-top:4px solid #0284C7;"><span class="tag" style="color:#0284C7;">1. Antes de Comprar (Atracción)</span><p>Lonas perimetrales y tótems en obras activas (el mejor anuncio) · Recorridos en video de casas entregadas · Guía de costos reales de construcción por m²</p></div>
-      <div class="card" style="border-top:4px solid #B45309;"><span class="tag">2. Durante la Compra (Cierre)</span><p>Carpeta de Proyecto Ejecutivo y catálogo de acabados físicos · Cascos blancos personalizados para la visita de la familia a su obra · Reporte semanal en vivo</p></div>
-      <div class="card" style="border-top:4px solid #059669;"><span class="tag" style="color:#059669;">3. Después de Comprar (Fidelización)</span><p>Caja de madera con llaves, planos hidráulicos/eléctricos As-Built y Póliza de Garantía · Placa metálica discreta en el acceso de la residencia · Visita de cortesía al mes 6</p></div>
-    </div>
-    <div class="grid-3">
-      <div class="card"><span class="tag">Top 4 Finalistas en Bóveda Evolutiva</span><p>Piedra Firme Residencial · Cimiento Noble · Domus Vértice · Arkitekton Hogar</p></div>
-      <div class="card"><span class="tag">Clases Internacionales de Niza</span><p>Clase 37 (Construcción de casas, supervisión de obra civil y urbanización), Clase 42 (Diseño arquitectónico, cálculo estructural y renderizado BIM), Clase 36 (Comercialización inmobiliaria)</p></div>
-      <div class="card"><span class="tag">Dominios Web Verificados</span><p style="font-family:monospace;font-weight:700;color:#059669;">🟢 piedrafirme.mx<br/>🟢 piedrafirmeresidencial.com<br/>🟢 miobra.piedrafirme.mx</p></div>
-    </div>
+    <h3 style="color:#0284C7;margin-bottom:10px;">MOMENTO 1 · ANTES DE COMPRAR (DESCUBRIMIENTO Y ATRACCIÓN)</h3>
+    <div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #0284C7;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-ANT-01 · ANTES DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#0284C7;font-weight:800;">Arquitectura & Señalética Exterior</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Lonas perimetrales y tótems en obras activas (el mejor anuncio)</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Identificación inmediata a 30 metros de distancia diurna y nocturna, proyectando solidez.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Acero corten oxidado / Aluminio anodizado cepillado calibre 12 (2.5 mm) montado con separadores de 25 mm.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Corte láser CNC de precisión con retroiluminación halo LED cálida (3000K, IP67 intemperie).<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Ancho total 1,800 × 650 mm; símbolo de 520 mm de altura; trazo mínimo estructural de 18 mm.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Legibilidad garantizada de 5 m a 45 m bajo sol directo o lluvia nocturna.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Prohibido usar lona impresa tensada o cajas de luz acrílicas con tubos fluorescentes expuestos.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#18181B"/>
+          <circle cx="55" cy="46" r="16" fill="#B45309"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#B45309" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#B45309" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Lonas perimetrales y tótems </text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-ANT-01 · ANTES DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Piedra Firme Residenci</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #0284C7;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-ANT-02 · ANTES DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#0284C7;font-weight:800;">Ecosistema Digital, Web & Redes Sociales</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Recorridos en video de casas entregadas</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Captar prospectos calificados en los primeros 3 segundos con autoridad visual y carga instantánea.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Interfaz Web Responsiva HTML5/CSS3 + SVG nativo en curvas y Favicon 1:1 adaptativo.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Renderizado vectorial SVG inline con contraste WCAG AAA (≥ 7.0:1) y modo claro/obscuro.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Navbar: altura mínima 36 px (escritorio) y 28 px (móvil); Avatar social: 1080 × 1080 px con margen seguro circular.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Pantallas OLED/Retina desde 320 px hasta monitores ultrawide 4K.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Nunca exportar el logotipo del encabezado en JPG con compresión o fondo blanco pegado.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#18181B"/>
+          <circle cx="55" cy="46" r="16" fill="#B45309"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#B45309" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#B45309" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Recorridos en video de casas</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-ANT-02 · ANTES DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Piedra Firme Residenci</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #0284C7;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-ANT-03 · ANTES DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#0284C7;font-weight:800;">Ecosistema Digital, Web & Redes Sociales</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Guía de costos reales de construcción por m²</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Captar prospectos calificados en los primeros 3 segundos con autoridad visual y carga instantánea.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Interfaz Web Responsiva HTML5/CSS3 + SVG nativo en curvas y Favicon 1:1 adaptativo.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Renderizado vectorial SVG inline con contraste WCAG AAA (≥ 7.0:1) y modo claro/obscuro.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Navbar: altura mínima 36 px (escritorio) y 28 px (móvil); Avatar social: 1080 × 1080 px con margen seguro circular.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Pantallas OLED/Retina desde 320 px hasta monitores ultrawide 4K.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Nunca exportar el logotipo del encabezado en JPG con compresión o fondo blanco pegado.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#18181B"/>
+          <circle cx="55" cy="46" r="16" fill="#B45309"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#B45309" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#B45309" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Guía de costos reales de con</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-ANT-03 · ANTES DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Piedra Firme Residenci</text>
+        </svg></div>
+            </div>
+    <h3 style="color:#B45309;margin:18px 0 10px 0;">MOMENTO 2 · DURANTE LA COMPRA (EVALUACIÓN, COTIZACIÓN Y CIERRE)</h3>
+    <div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #B45309;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DUR-01 · DURANTE LA COMPRA</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#B45309;font-weight:800;">Documentación Comercial & Cierre B2B/B2C</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Carpeta de Proyecto Ejecutivo y catálogo de acabados físicos</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Sustentar el valor económico de la propuesta y facilitar la aprobación del comité o cliente.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> PDF Interactivo de Alta Resolución (RGB/sRGB) + Impresión en Papel Bond Algodón 120 g/m².<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Generación vectorial nativa con tipografías incrustadas, tablas tabulares y sello criptográfico/QR.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Formato Carta (215.9 × 279.4 mm); margen suizo de 20 mm; logo en esquina superior izquierda a 38 mm.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Lectura en monitor 4K/laptop, pantalla móvil de 6 pulgadas e impresión láser de oficina.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Toda tabla de precios debe usar fuente monoespaciada tabular para alinear cifras al centavo.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#18181B"/>
+          <circle cx="55" cy="46" r="16" fill="#B45309"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#B45309" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#B45309" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Carpeta de Proyecto Ejecutiv</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DUR-01 · DURANTE LA COMPRA</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Piedra Firme Residenci</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #B45309;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DUR-02 · DURANTE LA COMPRA</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#B45309;font-weight:800;">Textil, Indumentaria & Bordado Industrial</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Cascos blancos personalizados para la visita de la familia a su obra</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Generar confianza inmediata, higiene y autoridad técnica ante el cliente.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Gabardina peinada 100% algodón de 260 g/m² (o tela ignífuga NFPA 2112 en planta industrial).<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Bordado industrial Tajima/Barudan con hilo Madeira Polyneon calibre 40 (densidad 4.2 pts/mm).<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Pecho izquierdo: Lockup horizontal de 75 × 28 mm; grosor mínimo de trazo de 1.4 mm sin degradados.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Distancia interpersonal de 1.0 a 3.5 metros en interiores o planta.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Prohibido bordar textos menores a 5.5 mm de altura de cápita (usar descriptor simplificado).
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#18181B"/>
+          <circle cx="55" cy="46" r="16" fill="#B45309"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#B45309" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#B45309" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Cascos blancos personalizado</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DUR-02 · DURANTE LA COMPRA</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Piedra Firme Residenci</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #B45309;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DUR-03 · DURANTE LA COMPRA</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#B45309;font-weight:800;">Ecosistema Digital, Web & Redes Sociales</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Reporte semanal en vivo</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Captar prospectos calificados en los primeros 3 segundos con autoridad visual y carga instantánea.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Interfaz Web Responsiva HTML5/CSS3 + SVG nativo en curvas y Favicon 1:1 adaptativo.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Renderizado vectorial SVG inline con contraste WCAG AAA (≥ 7.0:1) y modo claro/obscuro.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Navbar: altura mínima 36 px (escritorio) y 28 px (móvil); Avatar social: 1080 × 1080 px con margen seguro circular.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Pantallas OLED/Retina desde 320 px hasta monitores ultrawide 4K.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Nunca exportar el logotipo del encabezado en JPG con compresión o fondo blanco pegado.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#18181B"/>
+          <circle cx="55" cy="46" r="16" fill="#B45309"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#B45309" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#B45309" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Reporte semanal en vivo</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DUR-03 · DURANTE LA COMPRA</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Piedra Firme Residenci</text>
+        </svg></div>
+            </div>
+    <h3 style="color:#059669;margin:18px 0 10px 0;">MOMENTO 3 · DESPUÉS DE COMPRAR (ENTREGA, USO CONTINUO Y FIDELIZACIÓN)</h3>
+    <div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #059669;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DES-01 · DESPUÉS DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#059669;font-weight:800;">Packaging, Unboxing & Entrega Post-Venta</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Caja de madera con llaves</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Transformar la recepción del producto en un ritual memorable que dispare la recompra y recomendación.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Cartón Kraft rígido flauta E de 450 g/m² con papel seda interior de 28 g/m² y etiqueta de seguridad.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Serigrafía a 2 tintas directas Pantone + Sello de caucho artesanal o lacre en el cierre.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Símbolo central ocupando el 28% del frente de la caja, respetando área de aislamiento 2X.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Experiencia táctil en manos del cliente (30–60 cm) y fotografía para redes sociales.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Prohibido colocar cintas adhesivas comerciales sobre el logotipo principal.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#18181B"/>
+          <circle cx="55" cy="46" r="16" fill="#B45309"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#B45309" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#B45309" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Caja de madera con llaves</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DES-01 · DESPUÉS DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Piedra Firme Residenci</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #059669;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DES-02 · DESPUÉS DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#059669;font-weight:800;">Packaging, Unboxing & Entrega Post-Venta</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">planos hidráulicos/eléctricos As-Built y Póliza de Garantía</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Transformar la recepción del producto en un ritual memorable que dispare la recompra y recomendación.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Cartón Kraft rígido flauta E de 450 g/m² con papel seda interior de 28 g/m² y etiqueta de seguridad.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Serigrafía a 2 tintas directas Pantone + Sello de caucho artesanal o lacre en el cierre.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Símbolo central ocupando el 28% del frente de la caja, respetando área de aislamiento 2X.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Experiencia táctil en manos del cliente (30–60 cm) y fotografía para redes sociales.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Prohibido colocar cintas adhesivas comerciales sobre el logotipo principal.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#18181B"/>
+          <circle cx="55" cy="46" r="16" fill="#B45309"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#B45309" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#B45309" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">planos hidráulicos/eléctrico</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DES-02 · DESPUÉS DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Piedra Firme Residenci</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #059669;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DES-03 · DESPUÉS DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#059669;font-weight:800;">Packaging, Unboxing & Entrega Post-Venta</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Placa metálica discreta en el acceso de la residencia</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Transformar la recepción del producto en un ritual memorable que dispare la recompra y recomendación.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Cartón Kraft rígido flauta E de 450 g/m² con papel seda interior de 28 g/m² y etiqueta de seguridad.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Serigrafía a 2 tintas directas Pantone + Sello de caucho artesanal o lacre en el cierre.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Símbolo central ocupando el 28% del frente de la caja, respetando área de aislamiento 2X.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Experiencia táctil en manos del cliente (30–60 cm) y fotografía para redes sociales.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Prohibido colocar cintas adhesivas comerciales sobre el logotipo principal.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#18181B"/>
+          <circle cx="55" cy="46" r="16" fill="#B45309"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#B45309" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#B45309" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Placa metálica discreta en e</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DES-03 · DESPUÉS DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Piedra Firme Residenci</text>
+        </svg></div>
+            </div><div style="background:#FFFFFF;border:1.5px solid #CBD5E1;border-left:5px solid #059669;border-radius:12px;padding:14px 16px;margin-bottom:12px;display:grid;grid-template-columns:1.8fr 1fr;gap:14px;align-items:center;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;background:#0F172A;color:#FDE68A;padding:2px 8px;border-radius:99px;font-weight:800;">TP-DES-04 · DESPUÉS DE COMPRAR</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#059669;font-weight:800;">Ecosistema Digital, Web & Redes Sociales</span>
+                </div>
+                <div style="font-size:0.96rem;font-weight:800;color:#0F172A;margin-bottom:6px;">Visita de cortesía al mes 6</div>
+                <div style="font-size:0.78rem;color:#1E293B;line-height:1.45;">
+                  <strong>• Objetivo Estratégico:</strong> Captar prospectos calificados en los primeros 3 segundos con autoridad visual y carga instantánea.<br/>
+                  <strong>• Sustrato / Material Físico o Digital:</strong> Interfaz Web Responsiva HTML5/CSS3 + SVG nativo en curvas y Favicon 1:1 adaptativo.<br/>
+                  <strong>• Método de Impresión / Reproducción:</strong> Renderizado vectorial SVG inline con contraste WCAG AAA (≥ 7.0:1) y modo claro/obscuro.<br/>
+                  <strong>• Dimensiones, Retícula y Escala Mínima:</strong> Navbar: altura mínima 36 px (escritorio) y 28 px (móvil); Avatar social: 1080 × 1080 px con margen seguro circular.<br/>
+                  <strong>• Distancia de Lectura e Iluminación:</strong> Pantallas OLED/Retina desde 320 px hasta monitores ultrawide 4K.<br/>
+                  <strong style="color:#B45309;">• Regla de Control de Calidad:</strong> Nunca exportar el logotipo del encabezado en JPG con compresión o fondo blanco pegado.
+                </div>
+              </div>
+              <div><svg viewBox="0 0 260 110" width="100%" height="96" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="110" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+          <rect x="14" y="14" width="82" height="82" rx="6" fill="#18181B"/>
+          <circle cx="55" cy="46" r="16" fill="#B45309"/>
+          <rect x="33" y="70" width="44" height="5" rx="2.5" fill="#FFFFFF"/>
+          <line x1="12" y1="8" x2="98" y2="8" stroke="#B45309" stroke-width="1"/>
+          <text x="55" y="6" text-anchor="middle" fill="#B45309" font-family="monospace" font-size="6.5">ÁREA RESERVA 2X</text>
+          <text x="110" y="28" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.5">Visita de cortesía al mes 6</text>
+          <text x="110" y="44" fill="#475569" font-family="monospace" font-size="7.5">ID: TP-DES-04 · DESPUÉS DE COMPRAR</text>
+          <text x="110" y="60" fill="#0F172A" font-family="sans-serif" font-size="7.8">Escala Mínima: ≥ 12 mm / AAA</text>
+          <text x="110" y="75" fill="#059669" font-family="monospace" font-weight="700" font-size="7.5">✓ Trazo Vectorial en Curvas</text>
+          <text x="110" y="90" fill="#64748B" font-family="sans-serif" font-size="7.2">Marca: Piedra Firme Residenci</text>
+        </svg></div>
+            </div>
   </div>
 
   <div class="sheet">
     <div class="sheet-header">
-      <span>TOMO III · CALIBRACIÓN VISUAL (FASE 4), LOS 24 ATRIBUTOS AISLADOS (FASE 5) Y PRE-PRENSA (FASE 6)</span>
+      <span>TOMO III · NAMING, NIZA, DOMINIOS, LOS 24 ATRIBUTOS AISLADOS Y ESPECIFICACIÓN DE PRE-PRENSA</span>
       <span>FAMILIA BASE: Familia 04 · Símbolo Arquitectónico Isométrico (Estructura de Casa y Viga Maestra)</span>
     </div>
+    <div class="grid-3" style="margin-bottom:18px;">
+      <div class="card"><span class="tag">Top 4 Finalistas en Bóveda Evolutiva</span><p>Piedra Firme Residencial · Cimiento Noble · Domus Vértice · Arkitekton Hogar</p></div>
+      <div class="card"><span class="tag">Clases Internacionales de Niza</span><p>Clase 37 (Construcción de casas, supervisión de obra civil y urbanización), Clase 42 (Diseño arquitectónico, cálculo estructural y renderizado BIM), Clase 36 (Comercialización inmobiliaria)</p></div>
+      <div class="card"><span class="tag">Dominios Web Verificados</span><p style="font-family:monospace;font-weight:700;color:#059669;">🟢 piedrafirme.mx<br/>🟢 piedrafirmeresidencial.com<br/>🟢 miobra.piedrafirme.mx</p></div>
+    </div>
     <p><strong>Tipografía Oficial Titulares:</strong> Space Grotesk · <strong>Tipografía Secundaria y Tabular:</strong> Plus Jakarta Sans</p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 22px 0;">
-      <div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 1B: Vértices Angulares a 45° y 90° (Escuadra de albañilería e ingeniería)</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 2B: Masa Sólida 10pt (Visible a 50m en lonas de obra)</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 3B: Marco Estructural Cuadrado</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 4A: Plomada Vertical Perfecta 0°</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 5B: Silueta de Techo/Columna en Espacio Negativo</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 6A: Acomodo Horizontal para Lonas y Camionetas</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 7B: Chasis Poligonal Estructural</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 8B: Bloques Modulares</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 9A: Síntesis Minimalista Fuerte</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 10B: Volumen Isométrico Arquitectónico</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 11B: Terminales Rectos a Escuadra 90°</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 12A: Núcleo de Cimiento Sólido</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 13A: Tipografía Moderna Geométrica</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 14B: Letra Ancha de Gran Aplomo</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 15A: Espaciado Amplio Arquitectónico</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 16A: Mayúsculas de Autoridad</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 17B: Peso Extra-Bold Monumental</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 18A: Subtítulo Técnico en Planos ('[ ARQUITECTURA & INGENIERÍA RESIDENCIAL ]')</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 19A: Fondo Piedra Caliza / Concreto Claro</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 20A: Acento Cobre / Terracota Arquitectónico</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 21A: Acento Ámbar Seguridad</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 22A: Sobriedad Acero, Concreto y Cobre</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 23A: Acabado Mate Mineral y Placa de Latón Cepillado en Fachada</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.84rem;'><strong>✓</strong> 24A: Tinta Sólida para Vinil de Maquinaria y Cascos</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 20px 0;">
+      <div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 1B: Vértices Angulares a 45° y 90° (Escuadra de albañilería e ingeniería)</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 2B: Masa Sólida 10pt (Visible a 50m en lonas de obra)</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 3B: Marco Estructural Cuadrado</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 4A: Plomada Vertical Perfecta 0°</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 5B: Silueta de Techo/Columna en Espacio Negativo</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 6A: Acomodo Horizontal para Lonas y Camionetas</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 7B: Chasis Poligonal Estructural</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 8B: Bloques Modulares</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 9A: Síntesis Minimalista Fuerte</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 10B: Volumen Isométrico Arquitectónico</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 11B: Terminales Rectos a Escuadra 90°</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 12A: Núcleo de Cimiento Sólido</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 13A: Tipografía Moderna Geométrica</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 14B: Letra Ancha de Gran Aplomo</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 15A: Espaciado Amplio Arquitectónico</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 16A: Mayúsculas de Autoridad</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 17B: Peso Extra-Bold Monumental</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 18A: Subtítulo Técnico en Planos ('[ ARQUITECTURA & INGENIERÍA RESIDENCIAL ]')</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 19A: Fondo Piedra Caliza / Concreto Claro</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 20A: Acento Cobre / Terracota Arquitectónico</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 21A: Acento Ámbar Seguridad</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 22A: Sobriedad Acero, Concreto y Cobre</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 23A: Acabado Mate Mineral y Placa de Latón Cepillado en Fachada</div><div style='background:#F8FAFC;border:1px solid #CBD5E1;border-radius:8px;padding:8px 12px;font-size:0.82rem;'><strong>✓</strong> 24A: Tinta Sólida para Vinil de Maquinaria y Cascos</div>
     </div>
     <span class="tag">Paleta Cromática Oficial (HEX, CMYK FOGRA39, Pantone Solid Coated y Contraste WCAG)</span>
     <div class="grid-4" style="margin-top:8px;margin-bottom:20px;">
       <div style="border:1px solid #CBD5E1;border-radius:12px;overflow:hidden;background:#FFF;">
-          <div style="height:68px;background:#F5F3EF;border-bottom:1px solid #CBD5E1;"></div>
-          <div style="padding:12px;font-family:monospace;font-size:0.8rem;line-height:1.5;">
+          <div style="height:64px;background:#F5F3EF;border-bottom:1px solid #CBD5E1;"></div>
+          <div style="padding:12px;font-family:monospace;font-size:0.78rem;line-height:1.5;">
             <strong>Superficie Base</strong><br/>
             HEX: #F5F3EF<br/>
             CMYK: C:0% M:1% Y:2% K:4%<br/>
@@ -91,8 +605,8 @@
             Contraste: 15.99:1 (AAA Nativo)
           </div>
         </div><div style="border:1px solid #CBD5E1;border-radius:12px;overflow:hidden;background:#FFF;">
-          <div style="height:68px;background:#18181B;border-bottom:1px solid #CBD5E1;"></div>
-          <div style="padding:12px;font-family:monospace;font-size:0.8rem;line-height:1.5;">
+          <div style="height:64px;background:#18181B;border-bottom:1px solid #CBD5E1;"></div>
+          <div style="padding:12px;font-family:monospace;font-size:0.78rem;line-height:1.5;">
             <strong>Tinta Estructural</strong><br/>
             HEX: #18181B<br/>
             CMYK: C:11% M:11% Y:0% K:89%<br/>
@@ -100,8 +614,8 @@
             Contraste: 15.99:1 (AAA Nativo)
           </div>
         </div><div style="border:1px solid #CBD5E1;border-radius:12px;overflow:hidden;background:#FFF;">
-          <div style="height:68px;background:#B45309;border-bottom:1px solid #CBD5E1;"></div>
-          <div style="padding:12px;font-family:monospace;font-size:0.8rem;line-height:1.5;">
+          <div style="height:64px;background:#B45309;border-bottom:1px solid #CBD5E1;"></div>
+          <div style="padding:12px;font-family:monospace;font-size:0.78rem;line-height:1.5;">
             <strong>Acento Primario</strong><br/>
             HEX: #B45309<br/>
             CMYK: C:0% M:54% Y:95% K:29%<br/>
@@ -109,8 +623,8 @@
             Contraste: 7.1:1 (AAA Auto-Healed)
           </div>
         </div><div style="border:1px solid #CBD5E1;border-radius:12px;overflow:hidden;background:#FFF;">
-          <div style="height:68px;background:#52525B;border-bottom:1px solid #CBD5E1;"></div>
-          <div style="padding:12px;font-family:monospace;font-size:0.8rem;line-height:1.5;">
+          <div style="height:64px;background:#52525B;border-bottom:1px solid #CBD5E1;"></div>
+          <div style="padding:12px;font-family:monospace;font-size:0.78rem;line-height:1.5;">
             <strong>Acento Secundario</strong><br/>
             HEX: #52525B<br/>
             CMYK: C:10% M:10% Y:0% K:64%<br/>
