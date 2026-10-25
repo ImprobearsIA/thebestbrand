@@ -2499,66 +2499,130 @@
     </section>
 
     <!-- ==================================================================== -->
-    <!-- STAGE 2: TOUCHPOINTS & CUSTOMER JOURNEY (CRAIG FEDERIGHI BENTO UI)   -->
+    <!-- STAGE 2: CONVERSATIONAL & MULTISENSORY TOUCHPOINTS STUDIO WITH AURA  -->
     <!-- ==================================================================== -->
     <section class="stage-section" id="panel-step-2">
-      <div class="question-billboard" style="margin-bottom:16px; text-align:center; max-width:820px; margin-left:auto; margin-right:auto;">
-        <span class="question-category">02 · Arquitectura de Experiencia y Puntos de Contacto (Bento Studio)</span>
-        <h1 class="question-text" id="tpActiveQuestionHeading" style="font-size:1.65rem; margin-top:6px;">
-          1. Antes de Comprar: ¿Dónde descubre tu cliente tu marca por primera vez?
+      <div class="question-billboard" style="margin-bottom:14px; text-align:center; max-width:860px; margin-left:auto; margin-right:auto;">
+        <span class="question-category">02 · Arquitectura de Touchpoints, 5 Sentidos &amp; Service Blueprint con Aura</span>
+        <h1 class="question-text" id="tpActiveQuestionHeading" style="font-size:1.6rem; margin-top:6px;">
+          1. Antes de Comprar: ¿Qué siente, ve, escucha o vive tu cliente cuando descubre tu marca?
         </h1>
-        <p id="tpAuraSubPrompt" style="font-size:0.95rem; color:#475569; margin-top:6px; font-weight:500;">
-          Toca las tarjetas visuales para activarlas o desactivarlas en un clic (cada una ya incluye su ingeniería de materiales e impresión lista para el Brandbook), o díctale a Aura tus propios puntos de contacto.
+        <p id="tpAuraSubPrompt" style="font-size:0.93rem; color:#475569; margin-top:6px; font-weight:500;">
+          Un Touchpoint no es solo papelería: es lo que se huele, se toca, se escucha, se prueba y se siente. Platícale a Aura uno por uno o inspírate con los ejemplos reales de tu sector.
         </p>
       </div>
 
-      <!-- CONTROL SEGMENTADO TIPO APPLE iPadOS / macOS (UN SOLO LUGAR PARA NAVEGAR EL VIAJE) -->
-      <div style="width:100%; max-width:920px; margin:0 auto 20px auto; background:#E2E8F0; padding:6px; border-radius:18px; display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; box-shadow:inset 0 2px 4px rgba(15,23,42,0.06);">
+      <!-- TARJETA DEL LÍDER DE PROYECTO DE TOUCHPOINTS + SELECTOR DE SECTOR PRINCIPAL -->
+      <div style="width:100%; max-width:920px; margin:0 auto 16px auto; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FFFFFF; border-radius:20px; padding:16px 20px; border:1.5px solid #D4AF37; box-shadow:0 12px 28px rgba(9,13,22,0.14);">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:260px;">
+            <div style="width:46px; height:46px; border-radius:14px; background:rgba(212,175,55,0.2); border:1.5px solid #D4AF37; display:flex; align-items:center; justify-content:center; font-size:1.35rem; flex-shrink:0;">
+              🧭
+            </div>
+            <div>
+              <div style="font-family:var(--font-mono); font-size:0.68rem; color:#FDE68A; font-weight:800; letter-spacing:0.05em;">
+                LÍDER DE PROYECTO DE TOUCHPOINTS &amp; CX MULTISECTORIAL · CON AURA
+              </div>
+              <div style="font-family:var(--font-display); font-size:1rem; font-weight:800; color:#FFFFFF;">
+                Mateo Valdés-Keller · Service Blueprint &amp; Estrategia «Surprise and Delight»
+              </div>
+              <div id="tpLeaderDynamicAdvice" style="font-size:0.8rem; color:#CBD5E1; margin-top:2px;">
+                Meta recomendada: <strong>3 a 4 touchpoints por etapa</strong> (combinando sentidos: 👁️ Vista, 👃 Olfato, ✋ Tacto, 👂 Oído, 👅 Gusto y 🤝 Sorpresa Emocional).
+              </div>
+            </div>
+          </div>
+
+          <div style="min-width:255px;">
+            <label style="font-family:var(--font-mono); font-size:0.66rem; color:#FDE68A; font-weight:800; display:block; margin-bottom:4px;">
+              🎯 EJEMPLOS ADAPTADOS A TU ACTIVIDAD:
+            </label>
+            <select id="tpSectorSelector" onchange="changeTouchpointSectorGuide(this.value)" style="width:100%; padding:9px 12px; border-radius:12px; border:1.5px solid #D4AF37; background:#0F172A; color:#FFFFFF; font-family:var(--font-ui); font-size:0.82rem; font-weight:700; cursor:pointer;">
+              <option value="restaurante_hospitalidad">🍽️ Restaurante, Gastronomía y Hospitalidad</option>
+              <option value="servicios_profesionales_b2b">💼 Despacho Contable, Legal y Consultoría B2B</option>
+              <option value="educacion_colegio_campamentos">🎓 Colegio (Primaria-Prepa) y Campamentos</option>
+              <option value="salud_retiro_laboratorio">🩺 Casa de Retiro Senior, Salud y Laboratorio B2B</option>
+              <option value="constructora_muebleria_oficio">🏡 Constructora Residencial y Mueblería de Oficio</option>
+              <option value="industrial_automatizacion_flota">⚙️ Automatización Industrial, Mantenimiento y Transporte</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTROL SEGMENTADO TIPO APPLE (1. ANTES | 2. DURANTE | 3. DESPUÉS | ✦ MAPA COMPLETO) -->
+      <div style="width:100%; max-width:920px; margin:0 auto 16px auto; background:#E2E8F0; padding:6px; border-radius:18px; display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; box-shadow:inset 0 2px 4px rgba(15,23,42,0.06);">
         <button type="button" id="btnTpPhaseBefore" onclick="selectTouchpointPhase('before')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:#090D16; color:#FFFFFF; box-shadow:0 4px 12px rgba(9,13,22,0.18); display:flex; flex-direction:column; align-items:center; gap:3px;">
           <span>1. Antes de Comprar</span>
-          <span id="tpBeforeCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#FDE68A; font-weight:700;">3 activos</span>
+          <span id="tpBeforeCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#FDE68A; font-weight:700;">3 de 3 sugeridos</span>
         </button>
         <button type="button" id="btnTpPhaseDuring" onclick="selectTouchpointPhase('during')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:transparent; color:#334155; display:flex; flex-direction:column; align-items:center; gap:3px;">
           <span>2. Durante la Compra</span>
-          <span id="tpDuringCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#64748B; font-weight:700;">3 activos</span>
+          <span id="tpDuringCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#64748B; font-weight:700;">3 de 3 sugeridos</span>
         </button>
         <button type="button" id="btnTpPhaseAfter" onclick="selectTouchpointPhase('after')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:transparent; color:#334155; display:flex; flex-direction:column; align-items:center; gap:3px;">
           <span>3. Después de Comprar</span>
-          <span id="tpAfterCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#64748B; font-weight:700;">3 activos</span>
+          <span id="tpAfterCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#64748B; font-weight:700;">3 de 3 sugeridos</span>
         </button>
         <button type="button" id="btnTpPhaseAll" onclick="selectTouchpointPhase('all')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:transparent; color:#334155; display:flex; flex-direction:column; align-items:center; gap:3px;">
           <span>✦ Mapa Completo</span>
-          <span id="tpTotalExtractedBadge" style="font-family:var(--font-mono); font-size:0.68rem; color:#B45309; font-weight:700;">9 fichas listas</span>
+          <span id="tpTotalExtractedBadge" style="font-family:var(--font-mono); font-size:0.68rem; color:#B45309; font-weight:700;">9 registrados</span>
         </button>
       </div>
 
-      <!-- GALERÍA BENTO DE TARJETAS VISUALES TÁCTILES (REEMPLAZA LAS OPCIONES PEQUEÑAS) -->
+      <!-- DIÁLOGO SOCRÁTICO CON AURA ARRIBA (PROTAGONISTA PARA REGISTRAR UNO POR UNO) -->
+      <div style="width:100%; max-width:920px; margin:0 auto 16px auto; background:#FFFFFF; border:2px solid #090D16; border-radius:22px; padding:18px 20px; box-shadow:0 12px 30px rgba(15,23,42,0.07);">
+        <div id="tpAuraDialogueStream" style="margin-bottom:14px;">
+          <div style="background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:16px; padding:14px 18px; font-size:0.9rem; color:#78350F; line-height:1.5;">
+            <div style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#B45309; margin-bottom:4px;">
+              ✦ AURA &amp; LÍDER DE TOUCHPOINTS · GUÍA CONVERSACIONAL PASO A PASO
+            </div>
+            <div id="tpAuraLiveQuestionText">
+              ¡Hola! Vamos a construir tus Touchpoints uno por uno con total libertad creativa. En <strong>1. Antes de Comprar</strong>, piensa en los sentidos: ¿qué ve, qué huele, qué escucha o qué prueba tu cliente antes de decidir comprarte? Cuéntamelo abajo con tus palabras o toca uno de los ejemplos de tu giro para sumarlo.
+            </div>
+          </div>
+        </div>
+
+        <div class="input-dock" style="margin:0; align-items:center; gap:10px; padding:10px 14px; width:100%; border-radius:16px; background:#F8FAFC; border:1.5px solid #CBD5E1;">
+          <button class="btn-action" id="tpMicBtn" onclick="toggleContinuousVoice('tpChatInput')" style="border-radius:999px; padding:10px 16px; font-weight:800; font-size:0.84rem; background:#FFFFFF; border:1.5px solid #CBD5E1; color:#090D16; white-space:nowrap;">
+            🎙️ Hablar con Aura
+          </button>
+          <textarea
+            id="tpChatInput"
+            class="input-textarea"
+            rows="1"
+            placeholder="Cuéntale a Aura un touchpoint sensorial o emocional (ej: 'El olor a leña y café al entrar, o una llamada cálida a los 3 días')..."
+          ></textarea>
+          <button class="btn-action primary" id="tpSendBtn" onclick="sendTouchpointMessageToAura()" style="border-radius:999px; padding:11px 20px; font-weight:800; font-size:0.85rem; white-space:nowrap; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; border:1.5px solid #D4AF37;">
+            Registrar con Aura ↑
+          </button>
+        </div>
+      </div>
+
+      <!-- INSPIRACIÓN SENSORIAL Y «SURPRISE & DELIGHT» POR SECTOR (TARJETAS BENTO CREATIVAS) -->
       <div id="tpBentoGallerySection" style="width:100%; max-width:920px; margin:0 auto 20px auto;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px; padding:0 4px;">
-          <span style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#090D16; letter-spacing:0.04em;">
-            ✦ GALERÍA BENTO DE PUNTOS DE CONTACTO (TOCA UNA TARJETA GRANDE PARA INCLUIRLA O QUITARLA)
+          <span style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#090D16; letter-spacing:0.03em;">
+            ✦ IDEAS SENSORIALES Y «SURPRISE &amp; DELIGHT» PARA TU SECTOR (TOCA UNA PARA SUMARLA A TU RECORRIDO)
           </span>
-          <button type="button" class="btn-action" onclick="toggleCustomTpDrawer()" style="padding:7px 14px; font-size:0.76rem; font-weight:800; border-radius:999px; background:#FFFBEB; border:1.5px solid #D4AF37; color:#92400E;">
-            ➕ Crear Touchpoint a Medida (Material / Medidas)
+          <button type="button" class="btn-action" onclick="toggleCustomTpDrawer()" style="padding:6px 14px; font-size:0.75rem; font-weight:800; border-radius:999px; background:#F8FAFC; border:1.5px solid #CBD5E1; color:#334155;">
+            ✨ + Personalizar Sentidos / Service Blueprint Manual
           </button>
         </div>
 
-        <!-- Grid Bento de 2 Columnas Amplias con Tarjetas Estéticas -->
         <div id="tpQuickChipsRow" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:12px;">
           <!-- Injected dynamically by renderTouchpointQuickChips() -->
         </div>
       </div>
 
-      <!-- INSPECTOR / CREADOR DESPLEGABLE BAJO DEMANDA (PROGRESSIVE DISCLOSURE DE CRAIG FEDERIGHI) -->
+      <!-- INSPECTOR CREATIVO DESPLEGABLE BAJO DEMANDA (SENTIDOS + SURPRISE & DELIGHT + BLUEPRINT) -->
       <div id="customTpCollapsibleDrawer" style="display:none; width:100%; max-width:920px; margin:0 auto 20px auto; background:#FFFFFF; border:2px solid #D4AF37; border-radius:20px; padding:18px 22px; box-shadow:0 16px 36px rgba(9,13,22,0.10);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <div>
-            <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#B45309;">🛠️ INSPECTOR DE INGENIERÍA DE TOUCHPOINT A MEDIDA</span>
-            <h4 style="font-family:var(--font-display); font-size:1.05rem; color:#090D16; margin:2px 0 0 0;">Configura o personaliza el sustrato, método de impresión y medidas</h4>
+            <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#B45309;">✨ DISEÑADOR DE EXPERIENCIA SENSORIAL Y SERVICE BLUEPRINT</span>
+            <h4 style="font-family:var(--font-display); font-size:1.05rem; color:#090D16; margin:2px 0 0 0;">Personaliza cómo se siente, qué sorpresa genera y cómo opera tras bambalinas</h4>
           </div>
           <button type="button" class="btn-action" onclick="toggleCustomTpDrawer(false)" style="padding:5px 12px; font-size:0.75rem;">Cerrar ✕</button>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:12px; align-items:end;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(195px, 1fr)); gap:12px; align-items:end;">
           <div>
             <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Momento del Viaje</label>
             <select id="customTpPhase" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem; font-weight:700; background:#F8FAFC;">
@@ -2568,56 +2632,37 @@
             </select>
           </div>
           <div>
-            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Nombre del Touchpoint</label>
-            <input id="customTpTitle" type="text" placeholder="Ej: Menú en Piel / Placa Acero" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
+            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Experiencia / Touchpoint</label>
+            <input id="customTpTitle" type="text" placeholder="Ej: Aroma a pino y pan tibio al llegar" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
           </div>
           <div>
-            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Sustrato / Material Exacto</label>
-            <input id="customTpSubstrate" type="text" placeholder="Ej: Papel Algodón 320g / Acero 304" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
+            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Sentidos y Emoción (5 Sentidos)</label>
+            <input id="customTpSubstrate" type="text" placeholder="Ej: 👃 Olfato + ✋ Tacto cálido + Paz" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
           </div>
           <div>
-            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Impresión / Reproducción</label>
-            <input id="customTpMethod" type="text" placeholder="Ej: Bordado ≥1.25mm / Láser / Offset" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
+            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Gesto «Surprise &amp; Delight»</label>
+            <input id="customTpMethod" type="text" placeholder="Ej: Nota escrita a mano / Degustación" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
           </div>
           <div>
-            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Medidas y Escala Mínima</label>
-            <input id="customTpDims" type="text" placeholder="Ej: 85×55 mm · Logo mín. 18 mm" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
+            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Service Blueprint (Onstage / Backstage)</label>
+            <input id="customTpDims" type="text" placeholder="Ej: Anfitrión recibe por nombre · CRM" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
           </div>
           <button type="button" class="btn-action primary" onclick="addCustomDetailedTouchpoint()" style="padding:11px 18px; font-size:0.84rem; font-weight:800; border-radius:12px;">
-            ✓ Guardar en mi Marca
+            ✓ Registrar en mi Viaje
           </button>
         </div>
       </div>
 
-      <!-- DOCK LIMPIO DE CONVERSACIÓN CON AURA (VOZ O TEXTO EN UN SOLO LUGAR) -->
-      <div class="input-dock" style="max-width:920px; margin:0 auto 18px auto; align-items:center; gap:10px; padding:12px 16px; width:100%; border-radius:20px;">
-        <button class="btn-action" id="tpMicBtn" onclick="toggleContinuousVoice('tpChatInput')" style="border-radius:999px; padding:11px 18px; font-weight:800; font-size:0.84rem; background:#F8FAFC; border:1.5px solid #CBD5E1; color:#090D16; white-space:nowrap;">
-          🎙️ Dictar a Aura
-        </button>
-        <textarea
-          id="tpChatInput"
-          class="input-textarea"
-          rows="1"
-          placeholder="O cuéntale a Aura con tus palabras (ej: 'Entregamos en cajas de madera con sello pirograbado y mandiles de cuero')..."
-        ></textarea>
-        <button class="btn-action primary" id="tpSendBtn" onclick="sendTouchpointMessageToAura()" style="border-radius:999px; padding:12px 22px; font-weight:800; font-size:0.86rem; white-space:nowrap; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; border:1.5px solid #D4AF37;">
-          Agregar con Aura ↑
-        </button>
-      </div>
-
-      <!-- RESPUESTA CONTEXTUAL DE AURA -->
-      <div id="tpAuraDialogueStream" class="socratic-stream" style="width:100%; max-width:920px; margin:0 auto 16px auto;"></div>
-
-      <!-- BÓVEDA DE TOUCHPOINTS ACTIVOS (CON REVELACIÓN PROGRESIVA DE INGENIERÍA) -->
+      <!-- BÓVEDA DE TOUCHPOINTS REGISTRADOS PASO A PASO (CON SERVICE BLUEPRINT DESPLEGABLE) -->
       <div id="tpActiveStageColumnsGrid" style="width:100%; max-width:920px; margin:0 auto; display:grid; grid-template-columns:1fr; gap:16px;">
         <div class="manifesto-plaque" id="tpStageCardBefore" style="border-top:4px solid #0284C7; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
             <div>
-              <span class="plaque-num" style="color:#0284C7; font-size:0.72rem;">ETAPA 2.1 · ANTES DE COMPRAR (DESCUBRIMIENTO Y ATRACCIÓN)</span>
-              <div class="plaque-title" style="font-size:1.1rem; margin:2px 0 0 0;">Tus Puntos de Contacto Seleccionados (Toque «🔍 Ingeniería» para ver o editar materiales)</div>
+              <span class="plaque-num" style="color:#0284C7; font-size:0.72rem;">ETAPA 2.1 · ANTES DE COMPRAR (PRE-COMPRA, DESCUBRIMIENTO Y ATRACCIÓN SENSORIAL)</span>
+              <div class="plaque-title" style="font-size:1.08rem; margin:2px 0 0 0;">Touchpoints Registrados con Aura (Toca «✨ Experiencia y Blueprint» para ver el detalle completo)</div>
             </div>
-            <button type="button" class="btn-action" onclick="selectTouchpointPhase('during')" style="padding:7px 14px; font-size:0.76rem; font-weight:800;">
-              Siguiente: 2. Durante la Compra →
+            <button type="button" class="btn-action" onclick="selectTouchpointPhase('during')" style="padding:7px 14px; font-size:0.76rem; font-weight:800; background:#090D16; color:#FDE68A;">
+              Pasar a 2. Durante la Compra →
             </button>
           </div>
           <div class="plaque-text" id="tpBeforeText" style="margin-top:8px;"></div>
@@ -2626,11 +2671,11 @@
         <div class="manifesto-plaque" id="tpStageCardDuring" style="display:none; border-top:4px solid #D97706; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
             <div>
-              <span class="plaque-num" style="color:#B45309; font-size:0.72rem;">ETAPA 2.2 · DURANTE LA COMPRA (COTIZACIÓN, DEMOSTRACIÓN Y CIERRE)</span>
-              <div class="plaque-title" style="font-size:1.1rem; margin:2px 0 0 0;">Tus Puntos de Contacto Seleccionados (Toque «🔍 Ingeniería» para ver o editar materiales)</div>
+              <span class="plaque-num" style="color:#B45309; font-size:0.72rem;">ETAPA 2.2 · DURANTE LA COMPRA (EXPERIENCIA EN VIVO, SERVICESCAPE Y CIERRE SIN FRICCIÓN)</span>
+              <div class="plaque-title" style="font-size:1.08rem; margin:2px 0 0 0;">Touchpoints Registrados con Aura (Toca «✨ Experiencia y Blueprint» para ver el detalle completo)</div>
             </div>
-            <button type="button" class="btn-action" onclick="selectTouchpointPhase('after')" style="padding:7px 14px; font-size:0.76rem; font-weight:800;">
-              Siguiente: 3. Después de Comprar →
+            <button type="button" class="btn-action" onclick="selectTouchpointPhase('after')" style="padding:7px 14px; font-size:0.76rem; font-weight:800; background:#090D16; color:#FDE68A;">
+              Pasar a 3. Después de Comprar →
             </button>
           </div>
           <div class="plaque-text" id="tpDuringText" style="margin-top:8px;"></div>
@@ -2639,10 +2684,10 @@
         <div class="manifesto-plaque" id="tpStageCardAfter" style="display:none; border-top:4px solid #10B981; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
             <div>
-              <span class="plaque-num" style="color:#059669; font-size:0.72rem;">ETAPA 2.3 · DESPUÉS DE COMPRAR (EMPAQUE, ENTREGA Y FIDELIZACIÓN)</span>
-              <div class="plaque-title" style="font-size:1.1rem; margin:2px 0 0 0;">Tus Puntos de Contacto Seleccionados (Toque «🔍 Ingeniería» para ver o editar materiales)</div>
+              <span class="plaque-num" style="color:#059669; font-size:0.72rem;">ETAPA 2.3 · DESPUÉS DE COMPRAR (POST-COMPRA, RITUAL DE ENTREGA Y DELEITE SORPRESIVO)</span>
+              <div class="plaque-title" style="font-size:1.08rem; margin:2px 0 0 0;">Touchpoints Registrados con Aura (Toca «✨ Experiencia y Blueprint» para ver el detalle completo)</div>
             </div>
-            <button type="button" class="btn-action" onclick="selectTouchpointPhase('all')" style="padding:7px 14px; font-size:0.76rem; font-weight:800;">
+            <button type="button" class="btn-action" onclick="selectTouchpointPhase('all')" style="padding:7px 14px; font-size:0.76rem; font-weight:800; background:#090D16; color:#FDE68A;">
               ✦ Ver Mapa Completo (3 Etapas) →
             </button>
           </div>
@@ -2654,15 +2699,15 @@
       <div class="discovery-closure-card" id="step2DiscoveryClosureCard" style="max-width:920px; margin:20px auto 0 auto;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
           <div>
-            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A; font-weight:800; letter-spacing:0.08em;">🏆 PASO 2 COMPLETADO · ARQUITECTURA DE EXPERIENCIA LISTA</span>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A; font-weight:800; letter-spacing:0.08em;">🏆 PASO 2 COMPLETADO · ARQUITECTURA DE EXPERIENCIA Y SERVICE BLUEPRINT LISTOS</span>
             <h3 style="font-family:var(--font-display); font-size:1.35rem; color:#FFFFFF; margin:4px 0 0 0;">
-              Tus Puntos de Contacto e Ingeniería de Materiales están listos
+              Tus Touchpoints Sensoriales, Emocionales y Operativos están listos
             </h3>
           </div>
           <span class="trait-discovery-pill">🎬 Incluye Resumen con Voz de Aura</span>
         </div>
         <p id="step2ClosureDesc" style="font-size:0.9rem; color:#CBD5E1; line-height:1.5; margin:0;">
-          Cada punto de contacto seleccionado quedará documentado con su ficha completa de sustrato, impresión, medidas y control de calidad en el Tomo III de tu Brandbook Maestro.
+          Cada punto de contacto quedará documentado en el Tomo III de tu Brandbook con su experiencia multisensorial, clasificación Lemon &amp; Verhoef, estrategia Surprise &amp; Delight, Service Blueprint (Onstage/Backstage) y materialidad física o digital.
         </p>
         <div style="display:flex; justify-content:flex-end; margin-top:4px;">
           <button class="btn-action primary" style="background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); color:#FFFFFF; border:none; padding:12px 24px; font-weight:800;" onclick="completeStepAndAdvanceWithCelebration(2, 3)">
@@ -4242,77 +4287,216 @@
     }
 
     // =========================================================================
-    // FASE 2: EXTRACCIÓN SOCRÁTICA INTERACTIVA DE TOUCHPOINTS (ANTES, DURANTE, DESPUÉS)
+    // FASE 2: ARQUITECTURA DE TOUCHPOINTS SENSORIALES Y SERVICE BLUEPRINT CON AURA
+    // Liderado por Mateo Valdés-Keller (Líder de Proyecto de Touchpoints Multisectorial)
     // =========================================================================
-    let currentTpPhase = "before"; // "before" | "during" | "after"
+    let currentTpPhase = "before"; // "before" | "during" | "after" | "all"
+    let currentTpSectorKey = "restaurante_hospitalidad";
     const tpExtractedItems = {
       before: [
-        "Recomendación boca a boca y casos de éxito",
-        "Presencia digital impecable en Instagram / LinkedIn / Web",
-        "Artículos o videos demostrativos de autoridad"
+        "Aroma a leña de encino y humo cálido desde la banqueta (Servicescape Olfativo)",
+        "Confirmación de reserva por WhatsApp con audio cálido y playlist de la noche",
+        "Reseñas vivas e historias de comensales recomendando el plato insignia"
       ],
       during: [
-        "Propuesta comercial / cotización ejecutiva interactiva",
-        "Atención consultiva inmediata por WhatsApp / Videollamada",
-        "Proceso de pago y contratación transparente en 1 clic"
+        "Ritual de bienvenida con toalla húmeda tibia con romero y pan recién horneado",
+        "Carta táctil en papel algodón y piel con relato corto de los productores",
+        "Acústica envolvente que permite conversar sin gritar y cocina abierta"
       ],
       after: [
-        "Empaque de entrega (Unboxing memorable con sello de marca)",
-        "Seguimiento personalizado post-venta y garantía escrita",
-        "Programa de referidos y membresía para clientes frecuentes"
+        "Entrega de la cuenta en caja artesanal con infusión digestiva y semilla plantable",
+        "Hogaza o salsa de la casa etiquetada con el nombre del cliente para su desayuno",
+        "Mensaje personal al día siguiente compartiendo la playlist que escuchó esa noche"
       ]
     };
 
-    const TP_PHASE_CONFIG = {
-      before: {
-        badge: "MOMENTO ACTIVO: 1. ANTES DE COMPRAR (DESCUBRIMIENTO & ATRACCIÓN)",
-        question: "1. Antes de Comprar: ¿Dónde descubre tu cliente tu marca por primera vez?",
-        bentoCards: [
-          { icon: "📱", label: "Instagram, TikTok y Reels de Autoridad", sub: "Retina sRGB · Avatar 1:1 a 1080×1080 px", tag: "Digital & Social" },
-          { icon: "🌐", label: "Sitio Web Flagship y Landing de Conversión", sub: "UI Responsiva · SVG en curvas y WebP", tag: "Web & SEO" },
-          { icon: "🏛️", label: "Fachada Arquitectónica y Tótem Exterior", sub: "Aluminio Anodizado + LED Cálido 3000K", tag: "Arquitectura" },
-          { icon: "🤝", label: "Recomendación Boca a Boca y Casos de Éxito", sub: "Dossier Ejecutivo en Papel Algodón 320g", tag: "Prestigio" },
-          { icon: "📍", label: "Ficha en Google Maps y Buscador con Reseñas 5★", sub: "Fotografía de Estudio + Horarios y Contacto", tag: "Localización" },
-          { icon: "🎤", label: "Stand en Ferias, Exposiciones y Congresos", sub: "Estructura Modular Iluminada · Visibilidad 30m", tag: "Eventos B2B" }
-        ]
+    const TP_SECTOR_GUIDES = {
+      restaurante_hospitalidad: {
+        label: "🍽️ Restaurante, Gastronomía y Hospitalidad",
+        leaderAdvice: "En gastronomía, los mejores touchpoints entran por el olfato, la temperatura, el oído y el gusto antes que por el papel.",
+        beforeQuestion: "1. Antes de Comprar: ¿Qué huele, escucha o siente el comensal antes de cruzar tu puerta?",
+        duringQuestion: "2. Durante la Compra: Cuando se sienta a tu mesa, ¿qué toca, qué prueba y qué gesto inesperado lo enamora?",
+        afterQuestion: "3. Después de Comprar: ¿Cómo conviertes la sobremesa y el día siguiente en un recuerdo inolvidable?",
+        cards: {
+          before: [
+            { icon: "🔥", label: "Aroma a leña de encino y humo cálido desde la banqueta (Servicescape Olfativo)", sub: "👃 Olfato + 👁️ Luz cálida 2400K · Brand-Owned · Atrae peatones sin letreros agresivos", tag: "Olfato & Ambiente" },
+            { icon: "🎙️", label: "Confirmación de reserva por WhatsApp con audio cálido y playlist de la noche", sub: "👂 Oído + 🤝 Calidez Humana · Pregunta si celebran aniversario o alergias", tag: "Voz & Cero Fricción" },
+            { icon: "🍲", label: "Degustación de caldo o bocado tibio en taza de barro mientras esperan mesa", sub: "👅 Gusto + ✋ Temperatura · Surprise & Delight en puerta · Cero ansiedad de espera", tag: "Gusto & Deleite" },
+            { icon: "🗣️", label: "Reseñas vivas e historias de comensales recomendando el plato insignia", sub: "🤝 Social / External · Iluminación cenital pensada para fotos orgánicas sin flash", tag: "Confianza Social" }
+          ],
+          during: [
+            { icon: "🍵", label: "Ritual de bienvenida con toalla húmeda tibia con romero y pan recién horneado", sub: "✋ Tacto a 48°C + 👃 Romero + 👅 Pan del día en los primeros 90 segundos", tag: "Ritual Táctil" },
+            { icon: "📖", label: "Carta táctil en papel algodón y piel con relato corto de los productores", sub: "✋ Textura natural + 🤝 Autonomía del mesero para dar media porción de prueba", tag: "Tacto & Historia" },
+            { icon: "🎶", label: "Acústica envolvente que permite conversar sin gritar y cocina abierta", sub: "👂 < 68 dB + Vajilla de gres pesado que no tintinea · Conversación placentera", tag: "Oído & Servicescape" },
+            { icon: "🍷", label: "Maridaje guiado sin guiones rígidos con prueba en copa antes de elegir botella", sub: "👅 Gusto + 🤝 Empatía humana (Estilo Zappos / Ritz-Carlton)", tag: "Experiencia Viva" }
+          ],
+          after: [
+            { icon: "💌", label: "Entrega de la cuenta en caja artesanal con infusión digestiva y semilla plantable", sub: "👅 Digestivo tibio + ✋ Papel con semillas · Cobro en mesa en < 45 segundos", tag: "Cierre Memorable" },
+            { icon: "🥖", label: "Hogaza o salsa de la casa etiquetada con el nombre del cliente para su desayuno", sub: "🎁 Surprise & Delight ·Extiende la experiencia a la mañana siguiente en su hogar", tag: "Surprise & Delight" },
+            { icon: "🎵", label: "Mensaje personal al día siguiente compartiendo la playlist que escuchó esa noche", sub: "👂 Vínculo emocional estilo Spotify Wrapped · Cero spam promocional", tag: "Retención & LTV" },
+            { icon: "👑", label: "Reconocimiento silencioso de mesa y bebida favorita a partir de su 3ª visita", sub: "🧠 Memoria CRM + CEM sincronizada · Hospitalidad personalizada", tag: "Lealtad Orgánica" }
+          ]
+        }
       },
-      during: {
-        badge: "MOMENTO ACTIVO: 2. DURANTE LA COMPRA (EVALUACIÓN, COTIZACIÓN Y CIERRE)",
-        question: "2. Durante la Compra: ¿Qué elementos le dan confianza total a tu cliente al evaluar y pagar?",
-        bentoCards: [
-          { icon: "📋", label: "Cotización Ejecutiva y Carpeta Membretada", sub: "Papel Algodón 320 g/m² · Offset FOGRA39 + Cuño", tag: "Papelería" },
-          { icon: "👔", label: "Uniforme Ejecutivo, Mandil o Bata con Bordado", sub: "Gabardina 260g · Bordado Tajima ≥ 1.25 mm", tag: "Indumentaria" },
-          { icon: "💬", label: "Atención Consultiva por WhatsApp Business y Video", sub: "Catálogo Interactivo + Respuesta en < 5 min", tag: "Conversión" },
-          { icon: "📖", label: "Menú Impreso, Catálogo Táctil o Muestrario Físico", sub: "Papel Gmund 350g Antimanchas / Muestras Reales", tag: "Experiencia" },
-          { icon: "📝", label: "Contrato Clarificado sin Letra Chica y Carpeta", sub: "Formato Carta 215×279 mm · Folio Metálico", tag: "Certeza Legal" },
-          { icon: "💳", label: "Terminal de Pago, Checkout Web y Facturación", sub: "Interfaz Limpia en 1 Clic · Recibo Digital", tag: "Transacción" }
-        ]
+      servicios_profesionales_b2b: {
+        label: "💼 Despacho Contable, Legal y Consultoría B2B",
+        leaderAdvice: "En despachos y consultoría, el cliente busca paz mental y cero esfuerzo cognitivo (bajo CES): la voz calmada, el silencio y la claridad valen oro.",
+        beforeQuestion: "1. Antes de Contratarte: ¿Qué prueba de claridad y confianza ve o escucha tu prospecto antes de decidirse?",
+        duringQuestion: "2. Durante la Contratación: ¿Qué respira en tu oficina o videollamada y cómo eliminas el miedo a la letra chica?",
+        afterQuestion: "3. Después de Contratar: ¿Qué gesto proactivo recibe para dormir tranquilo sabiendo que cuidas su patrimonio?",
+        cards: {
+          before: [
+            { icon: "📊", label: "Diagnóstico ejecutivo en 1 sola página con semáforo claro (cero jerga confusa)", sub: "👁️ Claridad Visual + 🧠 Alivio Cognitivo · Entrega valor antes de cobrar", tag: "Claridad & Valor" },
+            { icon: "🎥", label: "Video personalizado de 90 segundos del socio explicando los 3 hallazgos clave", sub: "👂 Voz de autoridad y empatía · Humaniza el despacho antes de la cita", tag: "Voz & Empatía" },
+            { icon: "🤝", label: "Casos de éxito auditados y referencias directas de empresarios del mismo sector", sub: "🤝 Social / External + Brand-Owned · Transparencia radical (Ryan Buell)", tag: "Certeza Social" },
+            { icon: "🏛️", label: "Acceso arquitectónico sobrio con aroma a madera de cedro y recepción sin espera", sub: "👃 Olfato + 👁️ Orden Suizo · Puntualidad británica desde el minuto uno", tag: "Servicescape" }
+          ],
+          during: [
+            { icon: "☕", label: "Sala de juntas con silencio acústico, café de especialidad en cerámica y luz natural", sub: "👂 Privacidad acústica total + 👅 Café recién molido + ✋ Mesa de nogal", tag: "Hospitalidad B2B" },
+            { icon: "📝", label: "Contrato en lenguaje llano con resumen de 5 puntos y firma digital en 1 clic", sub: "🧠 Bajo Esfuerzo (CES) · Sin cláusulas ocultas ni formularios interminables", tag: "Cero Fricción" },
+            { icon: "💬", label: "Línea directa de WhatsApp Ejecutivo con respuesta humana en menos de 10 minutos", sub: "🤝 Contacto Humano Directo · Prohibidos los bots rígidos en temas delicados", tag: "Respuesta Humana" },
+            { icon: "📁", label: "Carpeta patrimonial en papel algodón con pestañas claras y código QR a bóveda", sub: "✋ Tacto de alta autoridad + 🖥️ Respaldo en nube encriptada", tag: "Evidencia Física" }
+          ],
+          after: [
+            { icon: "🎙️", label: "Audio preventivo de 1 minuto cuando cambia una ley antes de que salga en noticias", sub: "👂 Proactividad Surprise & Delight · El cliente se siente protegido siempre", tag: "Paz Mental" },
+            { icon: "🎁", label: "Caja de bienvenida con pluma metálica grabada y calendario ejecutivo de hitos", sub: "✋ Tacto metálico frío + Ritual de incorporación (Onboarding)", tag: "Onboarding VIP" },
+            { icon: "📈", label: "Revisión trimestral de 15 minutos con 3 indicadores visuales de ahorro logrado", sub: "👁️ Atribución clara de ROI · Refuerza el valor año con año (LTV)", tag: "Retención & ROI" },
+            { icon: "💐", label: "Detalle escrito a mano en aniversarios de la empresa del cliente (Estilo Chewy)", sub: "🤝 Vínculo relacional genuino más allá de las facturas", tag: "Surprise & Delight" }
+          ]
+        }
       },
-      after: {
-        badge: "MOMENTO ACTIVO: 3. DESPUÉS DE COMPRAR (ENTREGA, EMPAQUE Y LEALTAD)",
-        question: "3. Después de Comprar: ¿Cómo conviertes la entrega en un recuerdo inolvidable que genere recompra?",
-        bentoCards: [
-          { icon: "🎁", label: "Caja de Empaque Rígido y Ritual de Unboxing", sub: "Cartón FSC Forrado + Sello en Hot-Stamping", tag: "Packaging" },
-          { icon: "🛡️", label: "Certificado de Garantía y Placa de Autenticidad", sub: "Placa de Acero Inoxidable 304 / Papel Seguridad", tag: "Garantía" },
-          { icon: "🚚", label: "Flotilla Vehicular de Entrega y Logística", sub: "Vinil Fundido 3M Controltac + Reflejante DOT", tag: "Flota Móvil" },
-          { icon: "💌", label: "Tarjeta de Bienvenida y Manual de Cuidado", sub: "Cartulina Algodón 350g + Código QR de Soporte", tag: "Onboarding" },
-          { icon: "📲", label: "Seguimiento Post-Venta a los 7 Días por WhatsApp", sub: "Bitácora de Satisfacción y Recordatorio Anual", tag: "Fidelización" },
-          { icon: "👑", label: "Membresía VIP y Programa de Clientes Referidos", sub: "Tarjeta Metálica / Pase Digital Apple Wallet", tag: "Comunidad" }
-        ]
+      educacion_colegio_campamentos: {
+        label: "🎓 Colegio (Primaria-Prepa) y Campamentos",
+        leaderAdvice: "En educación y campamentos hay dos clientes: los padres (que buscan seguridad y orgullo) y los alumnos (que viven la emoción, el olor a pino o el sentido de pertenencia).",
+        beforeQuestion: "1. Antes de Inscribirse: ¿Qué viven las familias o empresas al conocer el campus o campamento por primera vez?",
+        duringQuestion: "2. Durante la Estancia / Ciclo: ¿Qué tocan, visten y sienten los participantes cada día?",
+        afterQuestion: "3. Después del Ciclo / Campamento: ¿Qué recuerdo físico y emocional conservan para toda la vida?",
+        cards: {
+          before: [
+            { icon: "🌲", label: "Recorrido vivencial donde las familias huelen los jardines/pinos y escuchan a los alumnos", sub: "👃 Naturaleza viva + 👂 Risas y debate real en aulas abiertas", tag: "Recorrido Sensorial" },
+            { icon: "🎒", label: "Kit de explorador o pasaporte de bienvenida entregado al niño por su nombre", sub: "✋ Tacto + 🤝 Protagonismo del alumno desde la primera visita", tag: "Surprise & Delight" },
+            { icon: "🛡️", label: "Presentación transparente de protocolos médicos, seguridad y certificaciones", sub: "🧠 Paz mental absoluta para padres y directores de RRHH", tag: "Seguridad & Confianza" },
+            { icon: "🎬", label: "Testimoniales en video de familias y exalumnos contando cómo les cambió la vida", sub: "🤝 Social / External · Historias reales de transformación", tag: "Comunidad Viva" }
+          ],
+          during: [
+            { icon: "🏕️", label: "Ritual de fogata / asamblea matutina con aroma a leña, cacao caliente y canto de tribu", sub: "👃 Leña y cacao + 🔥 Calor + 👂 Identidad colectiva inolvidable", tag: "Ritual Multisensorial" },
+            { icon: "🧥", label: "Prendas, parches bordados y termos de acero que los alumnos usan con orgullo", sub: "✋ Textil de alta resistencia + Bordado táctil coleccionable por logro", tag: "Pertenencia" },
+            { icon: "📲", label: "Bitácora fotográfica diaria privada para que los padres vean a sus hijos felices", sub: "👁️ Tranquilidad en tiempo real · Cero ansiedad parental", tag: "Vínculo Familiar" },
+            { icon: "🧭", label: "Guías y docentes capacitados para transformar cualquier tropiezo en aprendizaje", sub: "🤝 Autonomía empática Onstage (Estilo Ritz-Carlton)", tag: "Calidez Humana" }
+          ],
+          after: [
+            { icon: "🏅", label: "Insignia metálica o madera grabada con la virtud demostrada por cada participante", sub: "✋ Objeto físico que conservan en su escritorio por años (Customer-Owned)", tag: "Recuerdo Eterno" },
+            { icon: "📔", label: "Anuario o cápsula digital personalizada estilo Spotify Wrapped con sus mejores momentos", sub: "👁️ + 👂 Emoción compartible en familia y redes sociales", tag: "Surprise & Delight" },
+            { icon: "💌", label: "Carta escrita a mano por su mentor o consejero destacando su talento único", sub: "🤝 Conexión emocional profunda que garantiza reinscripción", tag: "Empatía Pura" },
+            { icon: "🌳", label: "Árbol plantado por su generación o invitación anual de exalumnos (Alumni)", sub: "🌱 Raíz física permanente con la institución", tag: "Lealtad Longitudinal" }
+          ]
+        }
       },
-      all: {
-        badge: "MAPA PANORÁMICO COMPLETO DE LOS 3 MOMENTOS DE VERDAD",
-        question: "Vista Panorámica: Revisa las 3 etapas conectadas de tu Arquitectura de Puntos de Contacto",
-        bentoCards: []
+      salud_retiro_laboratorio: {
+        label: "🩺 Casa de Retiro Senior, Salud y Laboratorio B2B",
+        leaderAdvice: "En salud, cuidado de adultos mayores y ciencia, la empatía en momentos vulnerables (estilo Chewy) y la precisión impecable construyen confianza inquebrantable.",
+        beforeQuestion: "1. Antes de Elegirte: ¿Cómo transmites dignidad, calidez de hogar o rigor científico desde el primer contacto?",
+        duringQuestion: "2. Durante la Atención / Estancia: ¿Cómo cuidas los sentidos (luz, aroma, trato humano) y la certeza técnica?",
+        afterQuestion: "3. Después del Servicio: ¿Cómo acompañas a la familia o al laboratorio para que jamás se sientan solos?",
+        cards: {
+          before: [
+            { icon: "🌿", label: "Jardines soleados con aroma a lavanda y pan recién horneado (cero olor a hospital)", sub: "👃 Lavanda y hogar + ☀️ Luz natural cálida · Rompe el estigma clínico", tag: "Servicescape Cálido" },
+            { icon: "🔬", label: "Demostración científica en vivo con muestra real del cliente y certificado trazable", sub: "👁️ Evidencia empírica inmediata + 🧠 Certeza metrológica", tag: "Rigor & Prueba" },
+            { icon: "🍵", label: "Charla de escucha empática sin prisa con té caliente para entender a la familia", sub: "👂 Escucha sin guiones (Estilo Zappos) + 👅 Infusión reconfortante", tag: "Empatía Profunda" },
+            { icon: "📋", label: "Guía clara y honesta de cuidados o especificaciones técnicas sin letra pequeña", sub: "👁️ Tipografía grande y legible + Transparencia total", tag: "Cero Esfuerzo" }
+          ],
+          during: [
+            { icon: "🏡", label: "Personalización de la habitación o equipo con los objetos, música y gustos del residente", sub: "👂 Su música favorita + ✋ Sus texturas familiares (Co-creación S-D Logic)", tag: "Hogar Propio" },
+            { icon: "🤍", label: "Personal de cuidado o ingeniería con trato cálido por nombre y autonomía de deleite", sub: "🤝 Interacción humana Onstage de máxima dignidad y respeto", tag: "Calidez Humana" },
+            { icon: "🍽️", label: "Gastronomía saludable servida en vajilla de cerámica cálida con aromas apetitosos", sub: "👅 Gusto + 👃 Olfato + 👁️ Presentación digna de restaurante", tag: "Deleite Diario" },
+            { icon: "📦", label: "Embalaje termocontrolado o instalación certificada con sello holográfico de calibración", sub: "✋ Seguridad física + Trazabilidad en tiempo real", tag: "Precisión B2B" }
+          ],
+          after: [
+            { icon: "📱", label: "Mensaje dominical con foto o video cálido del abuelo disfrutando su actividad favorita", sub: "👁️ + 🤝 Paz mental y alegría para los hijos y nietos", tag: "Vínculo Familiar" },
+            { icon: "💐", label: "Protocolo de empatía humana con cartas escritas a mano y flores en fechas sensibles", sub: "🤝 Inspirado en el caso Chewy · Lealtad humana que trasciende lo comercial", tag: "Surprise & Delight" },
+            { icon: "🛡️", label: "Visita o llamada preventiva antes de que venza la calibración o tratamiento", sub: "🧠 Cero fricción · El cliente nunca tiene que preocuparse por recordar fechas", tag: "Backstage Proactivo" },
+            { icon: "🥂", label: "Comunidad de familias con encuentros estacionales de música y convivencia", sub: "🤝 Social / External · Transforma clientes en embajadores de vida", tag: "Comunidad" }
+          ]
+        }
+      },
+      constructora_muebleria_oficio: {
+        label: "🏡 Constructora Residencial y Mueblería de Oficio",
+        leaderAdvice: "En casas y muebles para toda la vida, el tacto de la madera maciza o la piedra, el olor a taller limpio y la certeza en tiempos eliminan cualquier temor.",
+        beforeQuestion: "1. Antes de Comprar: ¿Qué toca y huele el cliente en tu galería u obra para sentir que construyes para tres generaciones?",
+        duringQuestion: "2. Durante la Obra o Fabricación: ¿Cómo le das paz mental cada semana mientras su casa o mueble toma forma?",
+        afterQuestion: "3. Después de Entregar: ¿Cómo es el ritual de entrega de llaves o muebles y cómo envejecen con orgullo?",
+        cards: {
+          before: [
+            { icon: "🪵", label: "Galería o taller con aroma a cedro, café de olla y muestrario táctil de maderas y piedras", sub: "👃 Cedro y café + ✋ Tocar vetas reales de parota, roble y cantera", tag: "Tacto & Oficio" },
+            { icon: "👷", label: "Recorrido en obra limpia y ordenada con cascos blancos personalizados con el nombre del cliente", sub: "👁️ Orden constructivo + 🤝 Sentido de propiedad desde el cimiento", tag: "Transparencia" },
+            { icon: "📐", label: "Presupuesto transparente a precio fijo explicado partida por partida sin sorpresas", sub: "🧠 Elimina el mayor miedo del sector (sobrecostos ocultos)", tag: "Certeza Total" },
+            { icon: "🏡", label: "Portafolio de casas y comedores entregados hace 5 o 10 años que siguen impecables", sub: "👁️ Prueba real de durabilidad intergeneracional", tag: "Prestigio" }
+          ],
+          during: [
+            { icon: "📹", label: "Video semanal de 1 minuto todos los viernes mostrando el avance físico real de su obra o mueble", sub: "👁️ + 👂 El cliente nunca tiene que llamar con ansiedad para preguntar cómo va", tag: "Paz Mental Semanal" },
+            { icon: "🏷️", label: "Etiqueta en cartulina kraft y cáñamo firmada por el maestro ebanista o residente de obra", sub: "✋ Autoría humana orgullosa (Recursos Operantes S-D Logic)", tag: "Orgullo Artesanal" },
+            { icon: "🚚", label: "Entrega de guante blanco con protección de pisos, mudanza cuidadosa y limpieza total", sub: "👁️ Pulcritud Onstage · Dejan tu sala impecable y lista para disfrutarse", tag: "Cero Esfuerzo" },
+            { icon: "🧱", label: "Invitación a colocar la primera piedra o sellar a fuego el reverso de su comedor familiar", sub: "🔥 Ritual emocional inolvidable para toda la familia", tag: "Surprise & Delight" }
+          ],
+          after: [
+            { icon: "🗝️", label: "Caja de madera de parota con llaves en latón macizo, planos As-Built y botella de brindis", sub: "✋ Peso del latón + 👃 Madera noble + 🥂 Celebración del hito familiar", tag: "Ritual de Entrega" },
+            { icon: "🐝", label: "Frasco de cera natural de abeja y linaza con paño de algodón para nutrir la madera en casa", sub: "👃 Aroma a miel y linaza + Customer-Owned touchpoint de cuidado anual", tag: "Cuidado Sensorial" },
+            { icon: "🔩", label: "Placa discreta en acero o pirograbado con el año de creación y garantía de 10-15 años", sub: "✋ Sello permanente de herencia patrimonial", tag: "Legado" },
+            { icon: "🛠️", label: "Visita programada a los 6 meses sin costo para ajuste de puertas, herrajes o hidratación", sub: "🤝 Sorpresa post-venta que dispara las recomendaciones familiares (NPS)", tag: "Surprise & Delight" }
+          ]
+        }
+      },
+      industrial_automatizacion_flota: {
+        label: "⚙️ Automatización Industrial, Mantenimiento y Transporte",
+        leaderAdvice: "En industria pesada y grupos multimarca (Automatización, Mantenimiento, Transporte y Control), la precisión visual, la seguridad vial/planta y la respuesta 24/7 definen el liderazgo.",
+        beforeQuestion: "1. Antes de Licitación / Compra: ¿Cómo demuestra tu ingeniería que garantiza retorno de inversión y cero paros?",
+        duringQuestion: "2. Durante la Integración / Traslado: ¿Cómo se ve y actúa tu equipo, tu flota y tus tableros en piso de planta?",
+        afterQuestion: "3. Después de la Puesta en Marcha: ¿Cómo conectas el soporte 24/7 y el crecimiento hacia tus otras divisiones?",
+        cards: {
+          before: [
+            { icon: "🤖", label: "Simulación 3D (Gemelo Digital) y demostración en vivo de celda robótica o visión artificial", sub: "👁️ Prueba funcional en tiempo real + Cálculo exacto de ROI en < 14 meses", tag: "Ingeniería Viva" },
+            { icon: "🌡️", label: "Auditoría diagnóstica de termografía y vibraciones en planta sin detener la producción", sub: "🧠 Valor inmediato sin fricción operativa · Puerta de entrada al grupo", tag: "Diagnóstico Cero Paro" },
+            { icon: "🗺️", label: "Estudio de ruta crítica, izaje con grúas y seguro al 100% antes de mover una máquina", sub: "🛡️ Certeza logística total para el Director de Planta", tag: "Certeza Logística" },
+            { icon: "📘", label: "Dossier de Arquitectura Corporativa mostrando las 4 divisiones integradas en un solo proveedor", sub: "🤝 Elimina silos entre fabricación, transporte, mantenimiento y software", tag: "Ecosistema B2B" }
+          ],
+          during: [
+            { icon: "⚡", label: "Gabinetes NEMA en acero inoxidable con iluminación LED de estado y placa grabada en láser", sub: "👁️ Orden eléctrico impecable + ✋ Acero 316 resistente a solventes", tag: "Evidencia en Planta" },
+            { icon: "🚛", label: "Flota Lowboy y unidades taller móviles con cromática de alta visibilidad y rastreo GPS vivo", sub: "👁️ Presencia imponente en carretera + Enlace satelital compartido al cliente", tag: "Flota & Telemetría" },
+            { icon: "🦺", label: "Ingenieros en sitio con uniforme ignífugo, candados LOTO personalizados y tablet FAT/SAT", sub: "🤝 Seguridad industrial de clase mundial y profesionalismo Onstage", tag: "Protocolo en Sitio" },
+            { icon: "🖥️", label: "Pantallas HMI / SCADA en modo oscuro de alto contraste para lectura rápida sin fatiga visual", sub: "👁️ Ergonomía cognitiva para operadores de turno nocturno", tag: "UX Industrial" }
+          ],
+          after: [
+            { icon: "📲", label: "Alertas predictivas al móvil del gerente antes de que un rodamiento o sensor falle", sub: "🧠 Surprise & Delight industrial: evitar el paro antes de que ocurra", tag: "Mantenimiento Predictivo" },
+            { icon: "🏷️", label: "Placa metálica remachada con código QR directo a planos, refacciones y soporte 24/7 en 1 clic", sub: "✋ Acceso en 5 segundos desde piso de planta (Bajo CES)", tag: "Soporte Instantáneo" },
+            { icon: "📊", label: "Reporte mensual ejecutivo de horas de paro evitadas, OEE ganado y ahorro en dólares", sub: "📈 Atribución financiera directa que blinda la renovación anual (LTV)", tag: "ROI Demostrado" },
+            { icon: "🔄", label: "Activación cruzada sin fricción entre Automatización, Mantenimiento, Transporte y Control", sub: "🏛️ El cliente tiene un solo equipo multidisciplinario que ya conoce su planta", tag: "Sinergia Multimarca" }
+          ]
+        }
       }
     };
 
     window.expandedTpIds = window.expandedTpIds || {};
 
+    function changeTouchpointSectorGuide(sectorKey) {
+      playAcousticClick(820, 0.04);
+      currentTpSectorKey = TP_SECTOR_GUIDES[sectorKey] ? sectorKey : "restaurante_hospitalidad";
+      const guide = TP_SECTOR_GUIDES[currentTpSectorKey];
+      const adviceEl = document.getElementById("tpLeaderDynamicAdvice");
+      if (adviceEl && guide) {
+        adviceEl.innerHTML = `<strong>Consejo de Mateo (Líder de Touchpoints):</strong> ${escapeHTML(guide.leaderAdvice)}`;
+      }
+      selectTouchpointPhase(currentTpPhase);
+      const auraText = document.getElementById("tpAuraLiveQuestionText");
+      if (auraText && guide) {
+        const q = currentTpPhase === "before" ? guide.beforeQuestion : (currentTpPhase === "during" ? guide.duringQuestion : guide.afterQuestion);
+        auraText.innerHTML = `He adaptado los ejemplos a <strong>${escapeHTML(guide.label)}</strong>. ${escapeHTML(q)} Cuéntamelo con tus palabras o toca las tarjetas de abajo para ir registrándolos uno por uno.`;
+      }
+    }
+
     function selectTouchpointPhase(phaseKey) {
       playAcousticClick(760, 0.035);
       currentTpPhase = phaseKey || "before";
-      const cfg = TP_PHASE_CONFIG[currentTpPhase] || TP_PHASE_CONFIG.before;
+      const guide = TP_SECTOR_GUIDES[currentTpSectorKey] || TP_SECTOR_GUIDES.restaurante_hospitalidad;
 
       const tabs = [
         { id: "btnTpPhaseBefore", key: "before", countId: "tpBeforeCount" },
@@ -4335,7 +4519,12 @@
       });
 
       const qEl = document.getElementById("tpActiveQuestionHeading");
-      if (qEl) qEl.textContent = cfg.question;
+      if (qEl) {
+        if (currentTpPhase === "before") qEl.textContent = guide.beforeQuestion;
+        else if (currentTpPhase === "during") qEl.textContent = guide.duringQuestion;
+        else if (currentTpPhase === "after") qEl.textContent = guide.afterQuestion;
+        else qEl.textContent = "Vista Panorámica: Tu Arquitectura Completa de Touchpoints (Antes, Durante y Después)";
+      }
 
       const phaseSelect = document.getElementById("customTpPhase");
       if (phaseSelect && currentTpPhase !== "all") {
@@ -4373,14 +4562,15 @@
       const row = document.getElementById("tpQuickChipsRow");
       if (!row) return;
       const targetPhase = currentTpPhase === "all" ? "before" : currentTpPhase;
-      const cfg = TP_PHASE_CONFIG[targetPhase] || TP_PHASE_CONFIG.before;
+      const guide = TP_SECTOR_GUIDES[currentTpSectorKey] || TP_SECTOR_GUIDES.restaurante_hospitalidad;
+      const cards = (guide.cards && guide.cards[targetPhase]) || [];
       const activeList = tpExtractedItems[targetPhase] || [];
 
-      row.innerHTML = (cfg.bentoCards || []).map(card => {
+      row.innerHTML = cards.map(card => {
         const cleanLabel = card.label.trim();
         const alreadyAdded = activeList.some(item =>
-          item.toLowerCase().includes(cleanLabel.toLowerCase().slice(0, 14)) ||
-          cleanLabel.toLowerCase().includes(item.toLowerCase().slice(0, 14))
+          item.toLowerCase().includes(cleanLabel.toLowerCase().slice(0, 16)) ||
+          cleanLabel.toLowerCase().includes(item.toLowerCase().slice(0, 16))
         );
         return `
           <div
@@ -4394,13 +4584,13 @@
               <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:3px;">
                 <span style="font-family:var(--font-mono); font-size:0.64rem; font-weight:800; color:${alreadyAdded ? '#FDE68A' : '#B45309'}; text-transform:uppercase;">${escapeHTML(card.tag)}</span>
                 <span style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:2px 8px; border-radius:99px; background:${alreadyAdded ? '#059669' : '#F1F5F9'}; color:${alreadyAdded ? '#FFFFFF' : '#475569'};">
-                  ${alreadyAdded ? '✓ Activo' : '+ Incluir'}
+                  ${alreadyAdded ? '✓ En tu Viaje' : '+ Sumar con Aura'}
                 </span>
               </div>
-              <div style="font-family:var(--font-display); font-weight:800; font-size:0.92rem; line-height:1.25; margin-bottom:4px;">
+              <div style="font-family:var(--font-display); font-weight:800; font-size:0.9rem; line-height:1.25; margin-bottom:4px;">
                 ${escapeHTML(card.label)}
               </div>
-              <div style="font-size:0.75rem; color:${alreadyAdded ? '#CBD5E1' : '#64748B'}; line-height:1.3;">
+              <div style="font-size:0.75rem; color:${alreadyAdded ? '#CBD5E1' : '#64748B'}; line-height:1.35;">
                 ${escapeHTML(card.sub)}
               </div>
             </div>
@@ -4415,29 +4605,38 @@
       const list = tpExtractedItems[targetPhase];
       const existingIdx = list.findIndex(x =>
         x.toLowerCase() === chipLabel.toLowerCase() ||
-        x.toLowerCase().includes(chipLabel.toLowerCase().slice(0, 14))
+        x.toLowerCase().includes(chipLabel.toLowerCase().slice(0, 16))
       );
 
       let actionMsg = "";
       if (existingIdx === -1) {
         list.push(chipLabel);
-        addXP(20);
-        actionMsg = `He activado <strong>"${escapeHTML(chipLabel)}"</strong> con su ficha técnica de sustrato e impresión lista.`;
+        addXP(25);
+        actionMsg = `He registrado <strong>"${escapeHTML(chipLabel)}"</strong> y estructurado sus sentidos, su gesto Surprise &amp; Delight y su Service Blueprint (Onstage y Backstage).`;
       } else if (list.length > 1) {
         list.splice(existingIdx, 1);
         actionMsg = `He retirado <strong>"${escapeHTML(chipLabel)}"</strong> de esta etapa.`;
       } else {
-        actionMsg = `Conservamos al menos un punto de contacto activo en esta etapa.`;
+        actionMsg = `Mantenemos al menos un touchpoint activo en esta etapa para tu recorrido.`;
       }
       syncTouchpointCardsUI();
       renderTouchpointQuickChips();
 
       const stream = document.getElementById("tpAuraDialogueStream");
       if (stream) {
-        const momentName = targetPhase === "before" ? "Antes de Comprar" : (targetPhase === "during" ? "Durante la Compra" : "Después de Comprar");
+        const countNow = list.length;
+        const momentName = targetPhase === "before" ? "1. Antes de Comprar" : (targetPhase === "during" ? "2. Durante la Compra" : "3. Después de Comprar");
+        const nextCoach = countNow >= 3
+          ? (targetPhase === "before"
+              ? "¡Llevas una cantidad ideal (3+) en Pre-compra! Cuando quieras, pasemos a <strong>2. Durante la Compra</strong>."
+              : (targetPhase === "during"
+                  ? "¡Excelente equilibrio en la etapa de Compra! Pasemos a <strong>3. Después de Comprar</strong> para diseñar la fidelización."
+                  : "¡Tus 3 etapas tienen una riqueza sensorial extraordinaria! Puedes ver el Mapa Completo o avanzar al Paso 3."))
+          : `Llevas <strong>${countNow} de 3 recomendados</strong> en ${momentName}. ¿Qué otro estímulo sensorial o gesto humano quieres sumar?`;
         stream.innerHTML = `
-          <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:14px; padding:10px 16px; font-size:0.84rem; color:#92400E;">
-            <strong>✦ AURA · Bento Studio (${momentName}):</strong> ${actionMsg} Puedes pulsar <strong>«🔍 Ingeniería»</strong> abajo para ver o personalizar sus materiales.
+          <div style="background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:16px; padding:12px 16px; font-size:0.86rem; color:#78350F; line-height:1.45;">
+            <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#B45309; margin-bottom:3px;">✦ AURA &amp; MATEO (LÍDER DE TOUCHPOINTS) · ${momentName.toUpperCase()}</div>
+            ${actionMsg} ${nextCoach}
           </div>
         `;
       }
@@ -4474,9 +4673,9 @@
       const dimsInput = document.getElementById("customTpDims");
       if (phaseSel) phaseSel.value = phaseKey;
       if (titleInput) titleInput.value = spec.title;
-      if (subInput) subInput.value = spec.substrate_material;
-      if (methodInput) methodInput.value = spec.reproduction_method;
-      if (dimsInput) dimsInput.value = spec.dimensions_and_grid;
+      if (subInput) subInput.value = spec.sensory_dimensions || spec.substrate_material;
+      if (methodInput) methodInput.value = spec.surprise_and_delight || spec.reproduction_method;
+      if (dimsInput) dimsInput.value = spec.blueprint_onstage || spec.dimensions_and_grid;
       const drawer = document.getElementById("customTpCollapsibleDrawer");
       if (drawer) drawer.scrollIntoView({ behavior: "smooth", block: "center" });
     }
@@ -4490,80 +4689,99 @@
       renderTouchpointQuickChips();
     }
 
-    // Diccionario de Fichas Técnicas de Ingeniería de Touchpoints (Paso 2 y Paso 6)
+    // Diccionario de Fichas de Experiencia Sensorial + Service Blueprint + Ingeniería (Paso 2 y Paso 6)
     window.customTpEngineeringSpecs = window.customTpEngineeringSpecs || {};
 
     function enrichTouchpointEngineeringSpec(rawItem, phaseKey, index) {
       const cleanTitle = String(rawItem || "Punto de Contacto").trim();
+      const prefix = phaseKey === "before" ? "TP-ANT" : (phaseKey === "during" ? "TP-DUR" : "TP-DES");
+      const tpId = `${prefix}-0${index + 1}`;
       if (window.customTpEngineeringSpecs[cleanTitle]) {
         return {
           ...window.customTpEngineeringSpecs[cleanTitle],
-          tp_id: `${phaseKey === 'before' ? 'TP-ANT' : (phaseKey === 'during' ? 'TP-DUR' : 'TP-DES')}-0${index + 1}`
+          tp_id: tpId
         };
       }
       const lower = cleanTitle.toLowerCase();
-      const prefix = phaseKey === "before" ? "TP-ANT" : (phaseKey === "during" ? "TP-DUR" : "TP-DES");
-      const tpId = `${prefix}-0${index + 1}`;
+
       let spec = {
         tp_id: tpId,
         title: cleanTitle,
-        category: "Corporativo / Impreso & Digital",
-        strategic_goal: "Transmitir autoridad, claridad y confianza inmediata en este momento clave de contacto.",
-        substrate_material: "Papel Algodón 100% de 320 g/m² libre de ácido + Versión Digital Responsiva PDF/X-4.",
-        reproduction_method: "Impresión Offset CMYK (ISO Coated v2 FOGRA39) + Tinta Directa Pantone + Cuño Seco.",
-        dimensions_and_grid: "Formato Ejecutivo 215.9 × 279.4 mm (Carta) o 90 × 55 mm · Retícula 12 col · Área libre 1X.",
-        reading_distance_and_lighting: "Lectura a 35–45 cm · Iluminación de oficina (4000K) · Contraste WCAG AAA ≥ 10:1.",
-        quality_control_rule: "Escala mínima del logotipo ≥ 22 mm en impreso (90 px en digital). Tolerancia ΔE₀₀* ≤ 1.8."
+        category: "Experiencia Relacional & Evidencia de Marca",
+        sensory_dimensions: "👁️ Vista + 🤝 Calidez Humana + 🧠 Confianza",
+        governance_lemon_verhoef: "Brand-Owned (Control Directo de la Marca)",
+        interaction_nature: "Humana Directa + Evidencia Física/Digital",
+        surprise_and_delight: "Atención personalizada sin guiones rígidos que reduce el esfuerzo del cliente (bajo CES) y genera deleite inesperado.",
+        blueprint_onstage: "El equipo o interfaz recibe al cliente con claridad, empatía y autonomía para resolver en el acto.",
+        blueprint_backstage: "Sincronización interna CRM + CEM sin silos departamentales para recordar preferencias del cliente.",
+        metrics_and_attribution: "CSAT Transaccional · CES (Bajo Esfuerzo) · NPS 3.0 · LTV Multicanal",
+        strategic_goal: "Transformar un contacto funcional en un momento de verdad memorable que construya lealtad.",
+        substrate_material: "Soporte físico en materiales nobles (Papel Algodón 320g / Madera / Textil) + Interfaz Digital Retina.",
+        reproduction_method: "Acabado táctil de autor (Cuño seco / Grabado / SVG Vectorial) + Protocolo sensorial.",
+        dimensions_and_grid: "Proporción armónica con área libre 1X y máxima legibilidad sin saturación visual.",
+        reading_distance_and_lighting: "Iluminación cálida confortable y contraste WCAG AAA ≥ 7:1.",
+        quality_control_rule: "Cero fricción cognitiva; coherencia total entre la promesa de pre-compra y la entrega post-compra."
       };
 
-      if (/(fachada|tótem|letrero|exterior|lona|arquitect|acceso|valla|obra|señal)/.test(lower)) {
-        spec.category = "Señalética Arquitectónica y Exterior";
-        spec.strategic_goal = "Captar miradas a distancia y proyectar solidez institucional las 24 horas.";
-        spec.substrate_material = "Aluminio Anodizado Calibre 12 (2.5 mm) con Acero Inoxidable 304 Cepillado y Acrílico Opalino.";
-        spec.reproduction_method = "Corte Láser de Fibra Óptica CNC + Pintura Electrostática Poliuretano UV + LED Cálido 3000K IP67.";
-        spec.dimensions_and_grid = "Tótem 2400 × 900 mm / Fachada 1800 × 600 mm · Alto de letra ≥ 150 mm · Aislamiento 1.5X.";
-        spec.reading_distance_and_lighting = "Lectura de 5 m a 45 m (diurna solar directa y nocturna retroiluminada 3000K).";
-        spec.quality_control_rule = "Cero tornillería expuesta al frente; espesor mínimo de trazo calado ≥ 8.0 mm.";
-      } else if (/(uniforme|camisa|bata|chaleco|casco|gafete|bordado|mandil|playera|gorra)/.test(lower)) {
-        spec.category = "Indumentaria Textil y Bordado Mecatrónico";
-        spec.strategic_goal = "Identificar al equipo con pulcritud ejecutiva, orgullo institucional y resistencia al lavado.";
-        spec.substrate_material = "Gabardina Peinada 100% Algodón 260 g/m² / Piqué Técnico + Entretela Tear-Away 60 g/m².";
-        spec.reproduction_method = "Bordado Mecatrónico Tajima/Wilcom · Hilo Madeira Polyneon 40 wt · Aguja 75/11 · Densidad 0.42 mm.";
-        spec.dimensions_and_grid = "Pecho izquierdo: 85 × 32 mm · Manga: 55 × 22 mm · Trazo mínimo columna satín ≥ 1.25 mm.";
-        spec.reading_distance_and_lighting = "Lectura interpersonal de 0.8 m a 3.5 m en interiores o campo.";
-        spec.quality_control_rule = "PROHIBIDO usar degradados o textos menores a 5.0 mm de altura en bordado textil.";
-      } else if (/(vehículo|camioneta|flota|tractocamión|transporte|unidad|remolque|pipa)/.test(lower)) {
-        spec.category = "Flotilla Vehicular y Logística";
-        spec.strategic_goal = "Transformar cada unidad en una valla móvil de alta visibilidad diurna y nocturna.";
-        spec.substrate_material = "Vinil Fundido 3M Controltac IJ180Cv3 + Laminado UV 3M 8518 + Cintas Reflejantes DOT-C2.";
-        spec.reproduction_method = "Impresión Latex/UV de Gran Formato (1200 dpi) + Corte en Plotter de Contorno.";
-        spec.dimensions_and_grid = "Puertas: 650 × 320 mm · Caja lateral: 2200 × 850 mm · Número económico en techo y frente.";
-        spec.reading_distance_and_lighting = "Lectura en movimiento de 10 m a 80 m a 80 km/h; reflectividad nocturna a 120 m.";
-        spec.quality_control_rule = "No invadir manijas, bisagras ni gomas; contraste mínimo 8:1 contra la pintura base.";
-      } else if (/(caja|empaque|unboxing|bolsa|sello|etiqueta|frasco|envase|placa|certificado|garantía)/.test(lower)) {
-        spec.category = "Packaging, Sello de Entrega y Garantía";
-        spec.strategic_goal = "Convertir la entrega en un ritual memorable que confirme la calidad superior de la marca.";
-        spec.substrate_material = "Cartón Rígido Forrado en Papel Texturizado 140 g/m² (FSC) / Placa de Acero Inoxidable 304.";
-        spec.reproduction_method = "Hot-Stamping Metálico (Foil Kurz) + Golpe en Seco (Bajo Relieve) / Grabado Láser permanente.";
-        spec.dimensions_and_grid = "Sello frontal centrado al 28% del ancho de cara principal · Código QR ≥ 18 × 18 mm.";
-        spec.reading_distance_and_lighting = "Lectura táctil y visual de 25 cm a 60 cm al momento de abrir o inspeccionar.";
-        spec.quality_control_rule = "Alineación del cuño con tolerancia ≤ 0.3 mm; el código QR debe incluir zona muda de 4 módulos.";
-      } else if (/(web|google|instagram|tiktok|linkedin|whatsapp|video|correo|digital|portal|app|qr)/.test(lower)) {
-        spec.category = "Ecosistema Digital, Social y Conversión";
-        spec.strategic_goal = "Generar conversión rápida, respuesta inmediata y confianza verificable en pantallas móviles y desktop.";
-        spec.substrate_material = "Interfaz Digital Retina / OLED (Espacio de color sRGB / Display P3) · Activos en SVG y WebP.";
-        spec.reproduction_method = "Renderizado Vectorial SVG en código + Plantillas UI en Figma con variables de diseño.",
-        spec.dimensions_and_grid = "Avatar circular: 1080 × 1080 px (símbolo 1:1 centrado al 68%) · Web Hero: 1440 × 900 px.";
-        spec.reading_distance_and_lighting = "Lectura en smartphone a 30 cm y monitor a 60 cm (Modo Claro y Modo Oscuro).";
-        spec.quality_control_rule = "En avatares menores a 64 × 64 px usar exclusivamente el Símbolo 1:1 sin eslogan.";
-      } else if (/(menú|carta|mesa|vajilla|servilleta|reserva|comensal|degustación|maridaje)/.test(lower)) {
-        spec.category = "Hospitalidad, Gastronomía y Experiencia en Mesa";
-        spec.strategic_goal = "Despertar los sentidos a través del tacto y guiar la elección con claridad editorial.";
-        spec.substrate_material = "Papel Algodón Gmund 350 g/m² con tratamiento hidrofóbico antimanchas y cubierta en piel.";
-        spec.reproduction_method = "Tipografía en Letterpress (Impresión Tipográfica con presión) + Folio Metálico Mate.";
-        spec.dimensions_and_grid = "Carta Principal: 220 × 320 mm · Carta de Vinos: 160 × 320 mm · Cuerpo mínimo 10.5 pt.";
-        spec.reading_distance_and_lighting = "Lectura en mesa a 40 cm bajo iluminación cálida tenue de restaurante (2400K–2700K).";
-        spec.quality_control_rule = "Contraste ultra-alto en papel marfil para lectura perfecta bajo luz de vela.";
+      if (/(aroma|olor|leña|humo|café|pino|cera|romero|lavanda|perfume|fragancia|ambient)/.test(lower)) {
+        spec.category = "Servicescape Sensorial (Olfato, Temperatura y Atmósfera)";
+        spec.sensory_dimensions = "👃 Olfato (Memoria Límbica) + 🌡️ Temperatura + 👁️ Luz Cálida 2400K";
+        spec.interaction_nature = "Ambiental / Física (Servicescape)";
+        spec.surprise_and_delight = "Huella olfativa auténtica que despierta apetito o serenidad desde antes de cruzar la puerta.";
+        spec.blueprint_onstage = "Recepción cálida y hospitalaria acompañada de degustación o bienvenida sensorial.";
+        spec.blueprint_backstage = "Preparación de brasas, infusiones o difusores orgánicos 60 min antes de abrir y control acústico.";
+        spec.substrate_material = "Maderas naturales estufadas, esencias botánicas reales, barro/cerámica térmica e iluminación 2400K.";
+        spec.reproduction_method = "Arquitectura de interiores (Servicescape) con identidad grabada a fuego o bajo relieve discreto.";
+      } else if (/(toalla|pan|caldo|degust|infusión|bocado|hogaza|salsa|vino|cacao|té|maridaje|mesa|platillo)/.test(lower)) {
+        spec.category = "Ritual Gastronómico & Hospitalidad Sensorial";
+        spec.sensory_dimensions = "👅 Gusto + ✋ Tacto (Temperatura 48°C) + 👃 Olfato";
+        spec.interaction_nature = "Humana Directa + Sensorial Viva";
+        spec.surprise_and_delight = "Gesto de cortesía inesperado en los primeros 90 segundos o al cierre que enamora al comensal.";
+        spec.blueprint_onstage = "Anfitrión entrega el detalle explicando su origen artesanal y llamando al cliente por su nombre.";
+        spec.blueprint_backstage = "Producción fresca por tandas en cocina y registro de gustos/alergias en CEM.";
+        spec.substrate_material = "Cerámica de gres artesanal, textiles de lino/algodón 100%, madera maciza y papel con semillas.";
+        spec.reproduction_method = "Sello en bajo relieve en cerámica, etiqueta en papel algodón con tipografía clara ≥ 11pt.";
+      } else if (/(música|acústic|silencio|audio|voz|llamada|playlist|sonido|canto)/.test(lower)) {
+        spec.category = "Identidad Acústica, Voz Empática & Cero Guiones";
+        spec.sensory_dimensions = "👂 Oído (Paisaje Sonoro < 68 dB) + 🤝 Empatía Humana";
+        spec.interaction_nature = "Humana por Voz + Ambiental Acústica";
+        spec.surprise_and_delight = "Conversación genuina sin bots ni guiones mecánicos (Filosofía Zappos) o playlist curada estilo Spotify.";
+        spec.blueprint_onstage = "Respuesta cálida por voz o mensaje personalizado con solución en el primer contacto.";
+        spec.blueprint_backstage = "Aislamiento acústico arquitectónico, curaduría musical por horario y alertas proactivas en CRM.";
+        spec.substrate_material = "Paneles acústicos ocultos en madera/fieltro + Audio digital de alta fidelidad y mensajería directa.";
+      } else if (/(reseña|boca a boca|recomend|historia|exalumno|comunidad|social|maps)/.test(lower)) {
+        spec.category = "Prueba Social, Comunidad & Recomendación Orgánica";
+        spec.sensory_dimensions = "👁️ Vista + 🤝 Confianza entre Pares (Social Proof)";
+        spec.governance_lemon_verhoef = "Social / External + Customer-Owned";
+        spec.interaction_nature = "Comunidad entre Pares (Co-creación S-D Logic)";
+        spec.surprise_and_delight = "Diseñar momentos tan memorables (estilo el juguete de Ritz-Carlton) que el cliente quiera contarlos sin que se lo pidan.";
+        spec.blueprint_onstage = "Escenarios fotogénicos con luz natural y agradecimientos escritos por humanos a cada testimonio.";
+        spec.blueprint_backstage = "Monitoreo de sentimiento CEM y atribución multicanal de referidos (NPS 3.0).";
+      } else if (/(fachada|tótem|letrero|exterior|lona|arquitect|acceso|valla|obra|señal|jardín)/.test(lower)) {
+        spec.category = "Arquitectura Exterior, Orden Visual & Servicescape";
+        spec.sensory_dimensions = "👁️ Vista a Distancia + ✋ Materiales Nobles + 👃 Entorno Limpio";
+        spec.surprise_and_delight = "Orden arquitectónico impecable e iluminación cálida que proyecta certeza día y noche.";
+        spec.blueprint_onstage = "Acceso claro sin obstáculos, cascos o equipo limpio para visitantes y señalética intuitiva.";
+        spec.blueprint_backstage = "Mantenimiento diario 5S e iluminación automática crepuscular 3000K.";
+        spec.substrate_material = "Aluminio Anodizado Calibre 12 / Acero Corten / Madera Tratada + Iluminación LED 3000K IP67.";
+        spec.reproduction_method = "Corte Láser CNC + Pintura Electrostática UV sin tornillería visible.";
+      } else if (/(uniforme|camisa|bata|chaleco|casco|gafete|bordado|mandil|playera|parche|prenda)/.test(lower)) {
+        spec.category = "Presencia del Equipo Onstage & Indumentaria Táctil";
+        spec.sensory_dimensions = "👁️ Pulcritud Visual + ✋ Textil Natural + 🤝 Orgullo del Equipo";
+        spec.surprise_and_delight = "Personal empoderado (estilo Ritz-Carlton) que porta su uniforme o mandil con orgullo y calidez.";
+        spec.blueprint_onstage = "Presentación por nombre, trato de guante blanco y resolución inmediata en sitio.";
+        spec.blueprint_backstage = "Dotación textil de alta durabilidad y capacitación en empatía relacional.";
+        spec.substrate_material = "Gabardina Peinada 100% Algodón 260 g/m² / Cuero / Tela Ignífuga + Bordado ≥ 1.25 mm.";
+        spec.reproduction_method = "Bordado Tajima con hilo Madeira Polyneon calibre 40 sin degradados.";
+      } else if (/(caja|empaque|unboxing|bolsa|sello|etiqueta|frasco|placa|certificado|garantía|llave|carta a mano|flores)/.test(lower)) {
+        spec.category = "Ritual de Unboxing, Legado Físico & Surprise and Delight";
+        spec.sensory_dimensions = "✋ Tacto (Peso, Textura y Relieve) + 👃 Olor a Madera/Papel + 🤝 Emoción";
+        spec.governance_lemon_verhoef = "Brand-Owned → Customer-Owned (Conservado por el cliente)";
+        spec.surprise_and_delight = "Detalle inesperado escrito a mano, sello pirograbado o placa metálica que convierte la entrega en un hito emocional (estilo Chewy).";
+        spec.blueprint_onstage = "Entrega ceremonial explicando el cuidado de la pieza y activando la garantía sin trámites.";
+        spec.blueprint_backstage = "Control de calidad previo al cierre, trazabilidad por lote/serie y agenda de seguimiento a los 15 días.";
+        spec.substrate_material = "Madera maciza de parota/roble, Latón/Acero Inoxidable 304 o Cartón Rígido FSC con Papel Algodón.";
+        spec.reproduction_method = "Pirograbado a fuego / Grabado Láser de Fibra / Hot-Stamping y Cuño Seco.";
       }
       return spec;
     }
@@ -4571,8 +4789,6 @@
     function renderStep2DetailedTouchpointItem(rawItem, phaseKey, idx, accentColor) {
       const spec = enrichTouchpointEngineeringSpec(rawItem, phaseKey, idx);
       const isExpanded = !!window.expandedTpIds[spec.tp_id];
-      const shortSubstrate = spec.substrate_material.split("+")[0].split("(")[0].trim().slice(0, 38);
-      const shortMethod = spec.reproduction_method.split("+")[0].split("·")[0].trim().slice(0, 34);
 
       return `
         <div style="background:#F8FAFC; border:1.5px solid #E2E8F0; border-left:5px solid ${accentColor}; border-radius:16px; padding:14px 16px; margin-bottom:10px; transition:all 0.2s ease;">
@@ -4580,18 +4796,18 @@
             <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:210px;">
               <span style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#FDE68A; background:#090D16; padding:4px 9px; border-radius:8px; flex-shrink:0;">${escapeHTML(spec.tp_id)}</span>
               <div>
-                <div style="font-family:var(--font-display); font-weight:800; font-size:0.96rem; color:#090D16; line-height:1.25;">${escapeHTML(spec.title)}</div>
+                <div style="font-family:var(--font-display); font-weight:800; font-size:0.95rem; color:#090D16; line-height:1.28;">${escapeHTML(spec.title)}</div>
                 <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:5px;">
-                  <span style="font-size:0.72rem; background:#FFFFFF; border:1px solid #CBD5E1; color:#334155; padding:2px 8px; border-radius:99px; font-weight:600;">🧱 ${escapeHTML(shortSubstrate)}</span>
-                  <span style="font-size:0.72rem; background:#FFFFFF; border:1px solid #CBD5E1; color:#334155; padding:2px 8px; border-radius:99px; font-weight:600;">🖨️ ${escapeHTML(shortMethod)}</span>
+                  <span style="font-size:0.72rem; background:#FFFBEB; border:1px solid #FDE68A; color:#92400E; padding:2px 9px; border-radius:99px; font-weight:700;">${escapeHTML(spec.sensory_dimensions)}</span>
+                  <span style="font-size:0.71rem; background:#FFFFFF; border:1px solid #CBD5E1; color:#334155; padding:2px 9px; border-radius:99px; font-weight:600;">🏛️ ${escapeHTML(spec.governance_lemon_verhoef)}</span>
                 </div>
               </div>
             </div>
             <div style="display:flex; align-items:center; gap:6px;">
               <button type="button" class="btn-action" onclick="toggleTpEngineeringAccordion('${spec.tp_id}')" style="padding:6px 12px; font-size:0.74rem; font-weight:800; border-radius:10px; background:${isExpanded ? '#090D16' : '#FFFFFF'}; color:${isExpanded ? '#FDE68A' : '#090D16'};">
-                ${isExpanded ? '▴ Ocultar Ficha' : '🔍 Ingeniería'}
+                ${isExpanded ? '▴ Ocultar Detalle' : '✨ Experiencia y Blueprint'}
               </button>
-              <button type="button" class="btn-action" onclick="openEditTpEngineeringInspector('${phaseKey}', ${idx})" title="Personalizar material, impresión o medidas" style="padding:6px 10px; font-size:0.74rem; border-radius:10px;">
+              <button type="button" class="btn-action" onclick="openEditTpEngineeringInspector('${phaseKey}', ${idx})" title="Personalizar sentidos, sorpresa o blueprint" style="padding:6px 10px; font-size:0.74rem; border-radius:10px;">
                 ✏️
               </button>
               <button type="button" class="btn-action" onclick="removeTouchpointItem('${phaseKey}', ${idx})" title="Quitar este punto de contacto" style="padding:6px 10px; font-size:0.74rem; border-radius:10px; color:#DC2626;">
@@ -4600,11 +4816,24 @@
             </div>
           </div>
 
-          <div style="display:${isExpanded ? 'grid' : 'none'}; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:8px; margin-top:12px; padding:12px 14px; background:#FFFFFF; border-radius:12px; border:1px solid #CBD5E1; font-size:0.78rem; color:#1E293B; line-height:1.45;">
-            <div><strong>🎯 Objetivo Estratégico:</strong><br/>${escapeHTML(spec.strategic_goal)}</div>
-            <div><strong>🧱 Sustrato / Material Exacto:</strong><br/>${escapeHTML(spec.substrate_material)}</div>
-            <div><strong>🖨️ Impresión / Reproducción:</strong><br/>${escapeHTML(spec.reproduction_method)}</div>
-            <div><strong>📐 Medidas, Retícula y Calidad:</strong><br/>${escapeHTML(spec.dimensions_and_grid)}<br/><span style="color:#065F46; font-weight:700;">🛡️ ${escapeHTML(spec.quality_control_rule)}</span></div>
+          <div style="display:${isExpanded ? 'grid' : 'none'}; grid-template-columns:repeat(auto-fit, minmax(225px, 1fr)); gap:10px; margin-top:12px; padding:14px 16px; background:#FFFFFF; border-radius:12px; border:1px solid #CBD5E1; font-size:0.78rem; color:#1E293B; line-height:1.45;">
+            <div>
+              <strong style="color:#B45309;">✨ Estrategia «Surprise &amp; Delight»:</strong><br/>
+              ${escapeHTML(spec.surprise_and_delight)}
+            </div>
+            <div>
+              <strong style="color:#0284C7;">🎭 Service Blueprint (Onstage Visible):</strong><br/>
+              ${escapeHTML(spec.blueprint_onstage)}
+            </div>
+            <div>
+              <strong style="color:#475569;">⚙️ Backstage &amp; Procesos de Soporte:</strong><br/>
+              ${escapeHTML(spec.blueprint_backstage)}
+            </div>
+            <div>
+              <strong style="color:#059669;">🧱 Evidencia Física / Sensorial y Métricas:</strong><br/>
+              ${escapeHTML(spec.substrate_material)}<br/>
+              <span style="color:#065F46; font-weight:700;">📊 ${escapeHTML(spec.metrics_and_attribution)}</span>
+            </div>
           </div>
         </div>
       `;
@@ -4620,19 +4849,26 @@
 
       const phase = (phaseSel && phaseSel.value) || "before";
       const title = titleInput.value.trim();
-      const substrate = (subInput && subInput.value.trim()) || "Papel Algodón 320 g/m² / Soporte Corporativo Homologado";
-      const method = (methodInput && methodInput.value.trim()) || "Offset CMYK FOGRA39 + Acabado de Taller";
-      const dims = (dimsInput && dimsInput.value.trim()) || "Formato a medida · Área de protección 1X · Escala mín. 22 mm";
+      const sensory = (subInput && subInput.value.trim()) || "👃 Olfato + ✋ Tacto + 🤝 Calidez Humana";
+      const surprise = (methodInput && methodInput.value.trim()) || "Gesto inesperado de hospitalidad y empatía que supera la expectativa funcional.";
+      const blueprint = (dimsInput && dimsInput.value.trim()) || "Onstage: Atención por nombre sin esperas · Backstage: Registro en CRM/CEM.";
 
       window.customTpEngineeringSpecs[title] = {
         title,
-        category: "Touchpoint Personalizado de Ingeniería",
-        strategic_goal: `Punto de contacto diseñado a medida para ${canvasState.brandName || 'la marca'} en la etapa ${phase === 'before' ? 'Antes de Comprar' : (phase === 'during' ? 'Durante la Compra' : 'Después de Comprar')}.`,
-        substrate_material: substrate,
-        reproduction_method: method,
-        dimensions_and_grid: dims,
-        reading_distance_and_lighting: "Calibrado para máxima legibilidad y contraste WCAG AAA ≥ 7:1.",
-        quality_control_rule: "Verificar pruebas de color y proporción 1:1 antes de tiraje o instalación."
+        category: "Touchpoint Sensorial & Service Blueprint a Medida",
+        sensory_dimensions: sensory,
+        governance_lemon_verhoef: "Brand-Owned (Diseñado con Aura)",
+        interaction_nature: "Multisensorial + Humana Directa",
+        surprise_and_delight: surprise,
+        blueprint_onstage: blueprint,
+        blueprint_backstage: "Coordinación transversal entre Marketing, Operaciones y Atención al Cliente sin silos.",
+        metrics_and_attribution: "CSAT · CES (Cero Fricción) · NPS 3.0 · LTV",
+        strategic_goal: `Experiencia distintiva creada para ${canvasState.brandName || 'la marca'} en ${phase === 'before' ? 'Pre-compra' : (phase === 'during' ? 'Compra' : 'Post-compra')}.`,
+        substrate_material: `${sensory} · Materiales nobles coherentes con la identidad`,
+        reproduction_method: surprise,
+        dimensions_and_grid: blueprint,
+        reading_distance_and_lighting: "Atmósfera sensorial cuidada en cada detalle.",
+        quality_control_rule: "Cumplir siempre la promesa emocional y operativa sin fricción."
       };
 
       if (!tpExtractedItems[phase].includes(title)) {
@@ -4670,13 +4906,13 @@
       const cBefore = document.getElementById("tpBeforeCount");
       const cDuring = document.getElementById("tpDuringCount");
       const cAfter = document.getElementById("tpAfterCount");
-      if (cBefore) cBefore.textContent = `${tpExtractedItems.before.length} activos`;
-      if (cDuring) cDuring.textContent = `${tpExtractedItems.during.length} activos`;
-      if (cAfter) cAfter.textContent = `${tpExtractedItems.after.length} activos`;
+      if (cBefore) cBefore.textContent = `${tpExtractedItems.before.length} de 3+ sugeridos`;
+      if (cDuring) cDuring.textContent = `${tpExtractedItems.during.length} de 3+ sugeridos`;
+      if (cAfter) cAfter.textContent = `${tpExtractedItems.after.length} de 3+ sugeridos`;
 
       const total = tpExtractedItems.before.length + tpExtractedItems.during.length + tpExtractedItems.after.length;
       const totalBadge = document.getElementById("tpTotalExtractedBadge");
-      if (totalBadge) totalBadge.textContent = `${total} fichas listas`;
+      if (totalBadge) totalBadge.textContent = `${total} registrados`;
 
       const pillsEl = document.getElementById("step2DiscoveredTraitsPills");
       if (pillsEl) {
@@ -4697,31 +4933,39 @@
       const text = input.value.trim();
       if (!text) return;
 
-      // Extraer touchpoints separados por coma o agregar la frase completa al momento actual
+      const targetPhase = currentTpPhase === "all" ? "before" : currentTpPhase;
       const parts = text.split(/[,\n;]+/).map(s => s.trim()).filter(s => s.length > 2);
       parts.forEach(p => {
-        if (!tpExtractedItems[currentTpPhase].includes(p)) {
-          tpExtractedItems[currentTpPhase].push(p);
+        if (!tpExtractedItems[targetPhase].includes(p)) {
+          tpExtractedItems[targetPhase].push(p);
         }
       });
       input.value = "";
-      addXP(35);
+      addXP(40);
       syncTouchpointCardsUI();
       renderTouchpointQuickChips();
 
-      const momentLabel = currentTpPhase === "before" ? "Antes de Comprar" : (currentTpPhase === "during" ? "Durante la Compra" : "Después de Comprar");
+      const spec = enrichTouchpointEngineeringSpec(parts[0] || text, targetPhase, tpExtractedItems[targetPhase].length - 1);
+      const countNow = tpExtractedItems[targetPhase].length;
+      const momentLabel = targetPhase === "before" ? "1. Antes de Comprar" : (targetPhase === "during" ? "2. Durante la Compra" : "3. Después de Comprar");
+      const nextStepPrompt = countNow >= 3
+        ? (targetPhase === "before"
+            ? `Ya tienes <strong>${countNow} touchpoints</strong> en Pre-compra (la meta óptima es de 3 a 4). ¿Quieres sumar otro o pasamos a <button type="button" onclick="selectTouchpointPhase('during')" style="background:#090D16; color:#FDE68A; border:none; border-radius:8px; padding:3px 10px; font-weight:800; cursor:pointer;">2. Durante la Compra →</button>?`
+            : (targetPhase === "during"
+                ? `Ya tienes <strong>${countNow} touchpoints</strong> en Compra. ¿Pasamos a <button type="button" onclick="selectTouchpointPhase('after')" style="background:#090D16; color:#FDE68A; border:none; border-radius:8px; padding:3px 10px; font-weight:800; cursor:pointer;">3. Después de Comprar →</button> para definir el ritual de entrega y lealtad?`
+                : `¡Excelente! Tienes <strong>${countNow} touchpoints</strong> en Post-compra y tu viaje está completo. Puedes revisar el <button type="button" onclick="selectTouchpointPhase('all')" style="background:#090D16; color:#FDE68A; border:none; border-radius:8px; padding:3px 10px; font-weight:800; cursor:pointer;">✦ Mapa Completo</button> o pasar al Paso 3.`))
+        : `Llevamos <strong>${countNow} de 3 sugeridos</strong> en ${momentLabel}. Cuéntame uno más: ¿hay algún aroma, sonido, degustación o gesto sorpresa que ocurra en esta etapa?`;
+
       const stream = document.getElementById("tpAuraDialogueStream");
       if (stream) {
         stream.innerHTML = `
-          <div style="background:#090D16; color:#FAF8F5; border:1px solid #D4AF37; border-radius:12px; padding:12px 16px; font-size:0.86rem; line-height:1.5;">
-            <div style="font-family:var(--font-mono); font-size:0.7rem; color:#FDE68A; font-weight:800; margin-bottom:4px;">✦ AURA · ANÁLISIS DE EXPERIENCIA (${momentLabel.toUpperCase()})</div>
-            He registrado <strong>"${escapeHTML(text)}"</strong> dentro de los momentos de verdad de tu marca. Esto significa que en el Brandbook Maestro diseñaremos piezas específicas para este canal. ${
-              currentTpPhase === "before"
-                ? "Ahora te sugiero hacer clic en el botón '2. Durante la Compra' para definir cómo cierras tus ventas."
-                : currentTpPhase === "during"
-                ? "Excelente. Haz clic en '3. Después de Comprar' para diseñar tu empaque, entrega y fidelización."
-                : "¡Tienes los 3 momentos de verdad cubiertos con gran riqueza! Cuando gustes, haz clic en el botón inferior para ver la Cápsula de Cierre en Video y pasar al Estudio de Naming."
-            }
+          <div style="background:#090D16; color:#FAF8F5; border:1.5px solid #D4AF37; border-radius:16px; padding:14px 18px; font-size:0.86rem; line-height:1.5;">
+            <div style="font-family:var(--font-mono); font-size:0.7rem; color:#FDE68A; font-weight:800; margin-bottom:4px;">
+              ✦ AURA &amp; MATEO (LÍDER DE TOUCHPOINTS) · REGISTRADO EN ${momentLabel.toUpperCase()}
+            </div>
+            He sumado <strong>"${escapeHTML(text)}"</strong> como un touchpoint <strong>${escapeHTML(spec.sensory_dimensions)}</strong> (${escapeHTML(spec.governance_lemon_verhoef)}).<br/>
+            <span style="color:#CBD5E1; font-size:0.82rem;">• <strong>Surprise &amp; Delight:</strong> ${escapeHTML(spec.surprise_and_delight)}</span><br/>
+            <div style="margin-top:6px; color:#FDE68A;">${nextStepPrompt}</div>
           </div>
         `;
       }
@@ -4730,7 +4974,7 @@
       try {
         const res = await fetchChatTurnWithRetry({
           step: 2,
-          sub_step: currentTpPhase === "before" ? 1 : (currentTpPhase === "during" ? 2 : 3),
+          sub_step: targetPhase === "before" ? 1 : (targetPhase === "during" ? 2 : 3),
           user_message: `[Touchpoints ${momentLabel}]: ${text}`,
           conversation_history: collectChatHistory(),
           canvas_state: canvasState,
@@ -8210,11 +8454,12 @@
             <h5 style="font-family:var(--font-display); font-size:0.88rem; font-weight:800; color:#090D16; margin:0 0 4px 0;">${escapeHTML(spec.title)}</h5>
             <p style="font-size:0.74rem; color:#475569; margin:0 0 6px 0; line-height:1.38;"><em>Objetivo:</em> ${escapeHTML(spec.strategic_goal)}</p>
             <div style="display:grid; gap:3px; font-size:0.72rem; color:#1E293B; line-height:1.4; background:#F8FAFC; padding:8px 10px; border-radius:8px; border:1px solid #E2E8F0;">
-              <div><strong>🧱 Sustrato / Material:</strong> ${escapeHTML(spec.substrate_material)}</div>
-              <div><strong>🖨️ Método de Impresión / Técnica:</strong> ${escapeHTML(spec.reproduction_method)}</div>
-              <div><strong>📐 Dimensiones y Retícula:</strong> ${escapeHTML(spec.dimensions_and_grid)}</div>
-              <div><strong>👁️ Distancia e Iluminación:</strong> ${escapeHTML(spec.reading_distance_and_lighting)}</div>
-              <div style="color:#065F46; font-weight:700;"><strong>🛡️ Control de Calidad:</strong> ${escapeHTML(spec.quality_control_rule)}</div>
+              <div><strong>✨ Sentidos &amp; Emoción:</strong> ${escapeHTML(spec.sensory_dimensions || '👁️ Vista + 🤝 Confianza')}</div>
+              <div><strong>🏛️ Gobernanza (Lemon &amp; Verhoef):</strong> ${escapeHTML(spec.governance_lemon_verhoef || 'Brand-Owned')}</div>
+              <div><strong>🎁 Gesto «Surprise &amp; Delight»:</strong> ${escapeHTML(spec.surprise_and_delight || spec.strategic_goal)}</div>
+              <div><strong>🎭 Service Blueprint (Onstage / Backstage):</strong> ${escapeHTML(spec.blueprint_onstage || '')} · ${escapeHTML(spec.blueprint_backstage || '')}</div>
+              <div><strong>🧱 Evidencia Física / Materialidad:</strong> ${escapeHTML(spec.substrate_material)} (${escapeHTML(spec.reproduction_method)})</div>
+              <div style="color:#065F46; font-weight:700;"><strong>📊 Métrica y Calidad:</strong> ${escapeHTML(spec.metrics_and_attribution || 'CSAT · CES · NPS · LTV')} · ${escapeHTML(spec.quality_control_rule)}</div>
             </div>
           </div>
         `;
@@ -8973,7 +9218,28 @@
       const activeBadge = document.getElementById("step3ActiveBrandNameBadge");
       if (activeBadge) activeBadge.textContent = p.brand_name;
 
+      const sectorMapByPreset = {
+        brasa_y_raiz: "restaurante_hospitalidad",
+        vertice_patrimonial: "servicios_profesionales_b2b",
+        colegio_agora_nova: "educacion_colegio_campamentos",
+        cumbre_viva: "educacion_colegio_campamentos",
+        quantalab_scientific: "salud_retiro_laboratorio",
+        villa_serena: "salud_retiro_laboratorio",
+        piedra_firme: "constructora_muebleria_oficio",
+        muebleria_el_roble: "constructora_muebleria_oficio",
+        aksis_automation: "industrial_automatizacion_flota",
+        aksis_mantenimiento: "industrial_automatizacion_flota",
+        aksis_transporte: "industrial_automatizacion_flota",
+        aksis_control: "industrial_automatizacion_flota"
+      };
+      if (sectorMapByPreset[presetId]) {
+        currentTpSectorKey = sectorMapByPreset[presetId];
+        const secSel = document.getElementById("tpSectorSelector");
+        if (secSel) secSel.value = currentTpSectorKey;
+      }
+
       syncTouchpointCardsUI();
+      renderTouchpointQuickChips();
       renderLiveStep4LogoSketches();
       renderSynthesizedFinalLogoProposalsGrid();
       renderFull38PageIllustratedPlates();
@@ -9035,7 +9301,28 @@
       tpExtractedItems.during = [...cfg.tp_during];
       tpExtractedItems.after = [...cfg.tp_after];
 
+      const sectorMapByPreset = {
+        brasa_y_raiz: "restaurante_hospitalidad",
+        vertice_patrimonial: "servicios_profesionales_b2b",
+        colegio_agora_nova: "educacion_colegio_campamentos",
+        cumbre_viva: "educacion_colegio_campamentos",
+        quantalab_scientific: "salud_retiro_laboratorio",
+        villa_serena: "salud_retiro_laboratorio",
+        piedra_firme: "constructora_muebleria_oficio",
+        muebleria_el_roble: "constructora_muebleria_oficio",
+        aksis_automation: "industrial_automatizacion_flota",
+        aksis_mantenimiento: "industrial_automatizacion_flota",
+        aksis_transporte: "industrial_automatizacion_flota",
+        aksis_control: "industrial_automatizacion_flota"
+      };
+      if (sectorMapByPreset[presetId]) {
+        currentTpSectorKey = sectorMapByPreset[presetId];
+        const secSel = document.getElementById("tpSectorSelector");
+        if (secSel) secSel.value = currentTpSectorKey;
+      }
+
       syncTouchpointCardsUI();
+      renderTouchpointQuickChips();
       renderLiveStep4LogoSketches();
       renderSynthesizedFinalLogoProposalsGrid();
       renderFull38PageIllustratedPlates();

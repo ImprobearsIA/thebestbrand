@@ -655,6 +655,19 @@ def api_enrich_touchpoints_dossier(req: TouchpointEnrichRequest):
     )
 
 
+@app.get("/api/v1/touchpoints/project-lead-and-sectors")
+def api_get_touchpoints_project_lead():
+    """
+    Devuelve el perfil del Líder de Proyecto de Touchpoints & CX Multisectorial
+    (Mateo Valdés-Keller) y los recorridos guiados por sector con ejemplos sensoriales,
+    Service Blueprinting de 5 capas y estrategias Surprise & Delight.
+    """
+    return {
+        "project_leader": DeepTouchpointEngineeringEngine.PROJECT_LEADER_PROFILE,
+        "sector_guided_journeys": DeepTouchpointEngineeringEngine.SECTOR_GUIDED_JOURNEYS
+    }
+
+
 class StudioLogoGenerateRequest(BaseModel):
     brand_name: str = "TheBestBrand"
     industry_hint: str = ""
