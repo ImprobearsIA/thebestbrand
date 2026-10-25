@@ -2499,143 +2499,170 @@
     </section>
 
     <!-- ==================================================================== -->
-    <!-- STAGE 2: TOUCHPOINTS & CUSTOMER JOURNEY (INTERACTIVE WITH AURA)      -->
+    <!-- STAGE 2: TOUCHPOINTS & CUSTOMER JOURNEY (CRAIG FEDERIGHI BENTO UI)   -->
     <!-- ==================================================================== -->
     <section class="stage-section" id="panel-step-2">
-      <div class="question-billboard" style="margin-bottom:14px;">
-        <span class="question-category">02 · Extracción Profunda de Touchpoints con Aura (Antes, Durante y Después)</span>
-        <h1 class="question-text" id="tpActiveQuestionHeading" style="font-size:1.55rem;">
-          1. ANTES DE COMPRAR: ¿Por qué medios te descubre hoy tu cliente ideal y qué materiales ve antes de pedirte una cotización?
+      <div class="question-billboard" style="margin-bottom:16px; text-align:center; max-width:820px; margin-left:auto; margin-right:auto;">
+        <span class="question-category">02 · Arquitectura de Experiencia y Puntos de Contacto (Bento Studio)</span>
+        <h1 class="question-text" id="tpActiveQuestionHeading" style="font-size:1.65rem; margin-top:6px;">
+          1. Antes de Comprar: ¿Dónde descubre tu cliente tu marca por primera vez?
         </h1>
-        <p id="tpAuraSubPrompt" style="font-size:0.96rem; color:#475569; margin-top:6px; font-weight:500;">
-          Conversa con Aura por voz o texto (o haz clic en las etiquetas rápidas) para descubrir todos los puntos de contacto donde vivirá tu marca.
+        <p id="tpAuraSubPrompt" style="font-size:0.95rem; color:#475569; margin-top:6px; font-weight:500;">
+          Toca las tarjetas visuales para activarlas o desactivarlas en un clic (cada una ya incluye su ingeniería de materiales e impresión lista para el Brandbook), o díctale a Aura tus propios puntos de contacto.
         </p>
       </div>
 
-      <!-- SELECTOR DE LOS 3 MOMENTOS DE VERDAD PARA CONVERSAR CON AURA -->
-      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:14px;">
-        <button class="btn-action primary" id="btnTpPhaseBefore" onclick="selectTouchpointPhase('before')" style="padding:10px 18px; font-weight:800;">
-          1️⃣ Momento 1: Antes de Comprar (Descubrimiento)
+      <!-- CONTROL SEGMENTADO TIPO APPLE iPadOS / macOS (UN SOLO LUGAR PARA NAVEGAR EL VIAJE) -->
+      <div style="width:100%; max-width:920px; margin:0 auto 20px auto; background:#E2E8F0; padding:6px; border-radius:18px; display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; box-shadow:inset 0 2px 4px rgba(15,23,42,0.06);">
+        <button type="button" id="btnTpPhaseBefore" onclick="selectTouchpointPhase('before')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:#090D16; color:#FFFFFF; box-shadow:0 4px 12px rgba(9,13,22,0.18); display:flex; flex-direction:column; align-items:center; gap:3px;">
+          <span>1. Antes de Comprar</span>
+          <span id="tpBeforeCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#FDE68A; font-weight:700;">3 activos</span>
         </button>
-        <button class="btn-action" id="btnTpPhaseDuring" onclick="selectTouchpointPhase('during')" style="padding:10px 18px; font-weight:800;">
-          2️⃣ Momento 2: Durante la Compra (Cierre y Pago)
+        <button type="button" id="btnTpPhaseDuring" onclick="selectTouchpointPhase('during')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:transparent; color:#334155; display:flex; flex-direction:column; align-items:center; gap:3px;">
+          <span>2. Durante la Compra</span>
+          <span id="tpDuringCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#64748B; font-weight:700;">3 activos</span>
         </button>
-        <button class="btn-action" id="btnTpPhaseAfter" onclick="selectTouchpointPhase('after')" style="padding:10px 18px; font-weight:800;">
-          3️⃣ Momento 3: Después de Comprar (Entrega y Lealtad)
+        <button type="button" id="btnTpPhaseAfter" onclick="selectTouchpointPhase('after')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:transparent; color:#334155; display:flex; flex-direction:column; align-items:center; gap:3px;">
+          <span>3. Después de Comprar</span>
+          <span id="tpAfterCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#64748B; font-weight:700;">3 activos</span>
+        </button>
+        <button type="button" id="btnTpPhaseAll" onclick="selectTouchpointPhase('all')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:transparent; color:#334155; display:flex; flex-direction:column; align-items:center; gap:3px;">
+          <span>✦ Mapa Completo</span>
+          <span id="tpTotalExtractedBadge" style="font-family:var(--font-mono); font-size:0.68rem; color:#B45309; font-weight:700;">9 fichas listas</span>
         </button>
       </div>
 
-      <!-- ETIQUETAS RÁPIDAS PARA DISPARAR LA MEMORIA DEL USUARIO -->
-      <div style="width:100%; background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:16px; padding:12px 16px; margin-bottom:14px;">
-        <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#475569; margin-bottom:8px;">
-          ⚡ TOCA LOS PUNTOS DE CONTACTO QUE USA TU NEGOCIO (O DÍCTALOS ABAJO CON TUS PROPIAS PALABRAS):
+      <!-- GALERÍA BENTO DE TARJETAS VISUALES TÁCTILES (REEMPLAZA LAS OPCIONES PEQUEÑAS) -->
+      <div id="tpBentoGallerySection" style="width:100%; max-width:920px; margin:0 auto 20px auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px; padding:0 4px;">
+          <span style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#090D16; letter-spacing:0.04em;">
+            ✦ GALERÍA BENTO DE PUNTOS DE CONTACTO (TOCA UNA TARJETA GRANDE PARA INCLUIRLA O QUITARLA)
+          </span>
+          <button type="button" class="btn-action" onclick="toggleCustomTpDrawer()" style="padding:7px 14px; font-size:0.76rem; font-weight:800; border-radius:999px; background:#FFFBEB; border:1.5px solid #D4AF37; color:#92400E;">
+            ➕ Crear Touchpoint a Medida (Material / Medidas)
+          </button>
         </div>
-        <div id="tpQuickChipsRow" style="display:flex; flex-wrap:wrap; gap:8px;">
+
+        <!-- Grid Bento de 2 Columnas Amplias con Tarjetas Estéticas -->
+        <div id="tpQuickChipsRow" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:12px;">
           <!-- Injected dynamically by renderTouchpointQuickChips() -->
         </div>
       </div>
 
-      <!-- INSTRUCCIÓN DE VOZ Y TEXTO SIN CORTE POR PAUSAS (PASO 2) -->
-      <div style="width:100%; background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border:1.5px solid #D4AF37; border-radius:16px; padding:10px 16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-        <span style="font-size:0.84rem; color:#090D16; font-weight:600;">
-          🎙️ <strong>Dictado Continuo sin Corte por Pausas o Escritura:</strong> Habla o escribe con calma todos tus touchpoints y presiona únicamente <strong>«Enviar a Aura ↑»</strong>.
-        </span>
-        <span style="font-family:var(--font-mono); font-size:0.68rem; background:#090D16; color:#FDE68A; padding:3px 10px; border-radius:999px; font-weight:700;">Envío Manual Seguro</span>
-      </div>
-
-      <!-- DOCK INTERACTIVO CON AURA PARA EXTRAER TOUCHPOINTS -->
-      <div class="input-dock" style="margin-bottom:16px; align-items:center; gap:10px; padding:10px 14px; width:100%;">
-        <button class="btn-action" id="tpMicBtn" onclick="toggleContinuousVoice('tpChatInput')" style="border-radius:999px; padding:10px 16px; font-weight:800; font-size:0.82rem; background:#F8FAFC; border:1.5px solid #CBD5E1; color:#090D16; white-space:nowrap;">
-          🎙️ Dictar Touchpoints
-        </button>
-        <textarea
-          id="tpChatInput"
-          class="input-textarea"
-          rows="2"
-          placeholder="Ej: Nos conocen por Instagram y recomendaciones, enviamos cotizaciones en PDF por WhatsApp, visitamos al cliente con uniforme y entregamos en cajas personalizadas..."
-        ></textarea>
-        <button class="btn-action primary" id="tpSendBtn" onclick="sendTouchpointMessageToAura()" style="border-radius:999px; padding:12px 20px; font-weight:800; font-size:0.86rem; white-space:nowrap; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; border:1.5px solid #D4AF37;">
-          Enviar a Aura ↑
-        </button>
-      </div>
-
-      <!-- HISTORIAL DE EXTRACCIÓN SOCRÁTICA CON AURA EN PASO 2 -->
-      <div id="tpAuraDialogueStream" class="socratic-stream" style="width:100%; max-height:210px; overflow-y:auto; margin-bottom:14px;"></div>
-
-      <!-- CONSTRUCTOR RÁPIDO DE FICHA TÉCNICA DE TOUCHPOINT (SUSTRATO, IMPRESIÓN, MEDIDAS Y USO) -->
-      <div style="width:100%; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:14px 16px; margin-bottom:16px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-          <span style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#090D16;">
-            🛠️ ESPECIFICACIÓN TÉCNICA PROFUNDA DE TOUCHPOINT (SUSTRATO · IMPRESIÓN · MEDIDAS · DISTANCIA DE LECTURA)
-          </span>
-          <span id="tpTotalExtractedBadge" style="font-family:var(--font-mono); font-size:0.68rem; background:#090D16; color:#FDE68A; padding:3px 10px; border-radius:99px; font-weight:800;">
-            Cada Touchpoint incluye Ficha de Ingeniería Completa
-          </span>
+      <!-- INSPECTOR / CREADOR DESPLEGABLE BAJO DEMANDA (PROGRESSIVE DISCLOSURE DE CRAIG FEDERIGHI) -->
+      <div id="customTpCollapsibleDrawer" style="display:none; width:100%; max-width:920px; margin:0 auto 20px auto; background:#FFFFFF; border:2px solid #D4AF37; border-radius:20px; padding:18px 22px; box-shadow:0 16px 36px rgba(9,13,22,0.10);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#B45309;">🛠️ INSPECTOR DE INGENIERÍA DE TOUCHPOINT A MEDIDA</span>
+            <h4 style="font-family:var(--font-display); font-size:1.05rem; color:#090D16; margin:2px 0 0 0;">Configura o personaliza el sustrato, método de impresión y medidas</h4>
+          </div>
+          <button type="button" class="btn-action" onclick="toggleCustomTpDrawer(false)" style="padding:5px 12px; font-size:0.75rem;">Cerrar ✕</button>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:8px; align-items:end;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:12px; align-items:end;">
           <div>
-            <label style="font-size:0.7rem; font-weight:800; color:#334155; display:block; margin-bottom:3px;">Nombre del Touchpoint</label>
-            <input id="customTpTitle" type="text" placeholder="Ej: Menú en Piel / Uniforme" style="width:100%; padding:7px 10px; border:1px solid #CBD5E1; border-radius:8px; font-size:0.78rem;" />
+            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Momento del Viaje</label>
+            <select id="customTpPhase" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem; font-weight:700; background:#F8FAFC;">
+              <option value="before">1. Antes de Comprar</option>
+              <option value="during">2. Durante la Compra</option>
+              <option value="after">3. Después de Comprar</option>
+            </select>
           </div>
           <div>
-            <label style="font-size:0.7rem; font-weight:800; color:#334155; display:block; margin-bottom:3px;">Sustrato / Material Exacto</label>
-            <input id="customTpSubstrate" type="text" placeholder="Ej: Papel Algodón 320g / Acero" style="width:100%; padding:7px 10px; border:1px solid #CBD5E1; border-radius:8px; font-size:0.78rem;" />
+            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Nombre del Touchpoint</label>
+            <input id="customTpTitle" type="text" placeholder="Ej: Menú en Piel / Placa Acero" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
           </div>
           <div>
-            <label style="font-size:0.7rem; font-weight:800; color:#334155; display:block; margin-bottom:3px;">Método de Impresión / Técnica</label>
-            <input id="customTpMethod" type="text" placeholder="Ej: Bordado ≥1.2mm / Láser / Offset" style="width:100%; padding:7px 10px; border:1px solid #CBD5E1; border-radius:8px; font-size:0.78rem;" />
+            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Sustrato / Material Exacto</label>
+            <input id="customTpSubstrate" type="text" placeholder="Ej: Papel Algodón 320g / Acero 304" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
           </div>
           <div>
-            <label style="font-size:0.7rem; font-weight:800; color:#334155; display:block; margin-bottom:3px;">Medidas y Escala Mínima</label>
-            <input id="customTpDims" type="text" placeholder="Ej: 85×55 mm · Logo mín. 18 mm" style="width:100%; padding:7px 10px; border:1px solid #CBD5E1; border-radius:8px; font-size:0.78rem;" />
+            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Impresión / Reproducción</label>
+            <input id="customTpMethod" type="text" placeholder="Ej: Bordado ≥1.25mm / Láser / Offset" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
           </div>
-          <button type="button" class="btn-action primary" onclick="addCustomDetailedTouchpoint()" style="padding:8px 14px; font-size:0.78rem; font-weight:800; white-space:nowrap;">
-            ➕ Guardar Touchpoint Detallado
+          <div>
+            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Medidas y Escala Mínima</label>
+            <input id="customTpDims" type="text" placeholder="Ej: 85×55 mm · Logo mín. 18 mm" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
+          </div>
+          <button type="button" class="btn-action primary" onclick="addCustomDetailedTouchpoint()" style="padding:11px 18px; font-size:0.84rem; font-weight:800; border-radius:12px;">
+            ✓ Guardar en mi Marca
           </button>
         </div>
       </div>
 
-      <!-- MAPA EN VIVO DE LOS 3 MOMENTOS DE VERDAD (CON FICHAS TÉCNICAS DETALLADAS) -->
-      <div class="manifesto-grid" style="width:100%; grid-template-columns:1fr;">
-        <div class="manifesto-plaque" style="border-top:4px solid #6366F1;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span class="plaque-num">2.1 · ANTES DE COMPRAR (DESCUBRIMIENTO · FICHAS TÉCNICAS DE PRODUCCIÓN)</span>
-            <span id="tpBeforeCount" style="font-family:var(--font-mono); font-size:0.68rem; background:#EEF2FF; color:#4338CA; padding:2px 8px; border-radius:99px; font-weight:800;">Activo</span>
+      <!-- DOCK LIMPIO DE CONVERSACIÓN CON AURA (VOZ O TEXTO EN UN SOLO LUGAR) -->
+      <div class="input-dock" style="max-width:920px; margin:0 auto 18px auto; align-items:center; gap:10px; padding:12px 16px; width:100%; border-radius:20px;">
+        <button class="btn-action" id="tpMicBtn" onclick="toggleContinuousVoice('tpChatInput')" style="border-radius:999px; padding:11px 18px; font-weight:800; font-size:0.84rem; background:#F8FAFC; border:1.5px solid #CBD5E1; color:#090D16; white-space:nowrap;">
+          🎙️ Dictar a Aura
+        </button>
+        <textarea
+          id="tpChatInput"
+          class="input-textarea"
+          rows="1"
+          placeholder="O cuéntale a Aura con tus palabras (ej: 'Entregamos en cajas de madera con sello pirograbado y mandiles de cuero')..."
+        ></textarea>
+        <button class="btn-action primary" id="tpSendBtn" onclick="sendTouchpointMessageToAura()" style="border-radius:999px; padding:12px 22px; font-weight:800; font-size:0.86rem; white-space:nowrap; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; border:1.5px solid #D4AF37;">
+          Agregar con Aura ↑
+        </button>
+      </div>
+
+      <!-- RESPUESTA CONTEXTUAL DE AURA -->
+      <div id="tpAuraDialogueStream" class="socratic-stream" style="width:100%; max-width:920px; margin:0 auto 16px auto;"></div>
+
+      <!-- BÓVEDA DE TOUCHPOINTS ACTIVOS (CON REVELACIÓN PROGRESIVA DE INGENIERÍA) -->
+      <div id="tpActiveStageColumnsGrid" style="width:100%; max-width:920px; margin:0 auto; display:grid; grid-template-columns:1fr; gap:16px;">
+        <div class="manifesto-plaque" id="tpStageCardBefore" style="border-top:4px solid #0284C7; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+            <div>
+              <span class="plaque-num" style="color:#0284C7; font-size:0.72rem;">ETAPA 2.1 · ANTES DE COMPRAR (DESCUBRIMIENTO Y ATRACCIÓN)</span>
+              <div class="plaque-title" style="font-size:1.1rem; margin:2px 0 0 0;">Tus Puntos de Contacto Seleccionados (Toque «🔍 Ingeniería» para ver o editar materiales)</div>
+            </div>
+            <button type="button" class="btn-action" onclick="selectTouchpointPhase('during')" style="padding:7px 14px; font-size:0.76rem; font-weight:800;">
+              Siguiente: 2. Durante la Compra →
+            </button>
           </div>
-          <div class="plaque-title">Descubrimiento, Atracción &amp; Especificación de Materiales</div>
           <div class="plaque-text" id="tpBeforeText" style="margin-top:8px;"></div>
         </div>
-        <div class="manifesto-plaque" style="border-top:4px solid #F59E0B;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span class="plaque-num">2.2 · DURANTE LA COMPRA (EVALUACIÓN Y CIERRE · FICHAS TÉCNICAS DE PRODUCCIÓN)</span>
-            <span id="tpDuringCount" style="font-family:var(--font-mono); font-size:0.68rem; background:#FEF3C7; color:#92400E; padding:2px 8px; border-radius:99px; font-weight:800;">Activo</span>
+
+        <div class="manifesto-plaque" id="tpStageCardDuring" style="display:none; border-top:4px solid #D97706; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+            <div>
+              <span class="plaque-num" style="color:#B45309; font-size:0.72rem;">ETAPA 2.2 · DURANTE LA COMPRA (COTIZACIÓN, DEMOSTRACIÓN Y CIERRE)</span>
+              <div class="plaque-title" style="font-size:1.1rem; margin:2px 0 0 0;">Tus Puntos de Contacto Seleccionados (Toque «🔍 Ingeniería» para ver o editar materiales)</div>
+            </div>
+            <button type="button" class="btn-action" onclick="selectTouchpointPhase('after')" style="padding:7px 14px; font-size:0.76rem; font-weight:800;">
+              Siguiente: 3. Después de Comprar →
+            </button>
           </div>
-          <div class="plaque-title">Cotización, Demostración, Indumentaria &amp; Cierre</div>
           <div class="plaque-text" id="tpDuringText" style="margin-top:8px;"></div>
         </div>
-        <div class="manifesto-plaque" style="border-top:4px solid #10B981;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span class="plaque-num">2.3 · DESPUÉS DE COMPRAR (ENTREGA, EMPAQUE Y LEALTAD · FICHAS TÉCNICAS DE PRODUCCIÓN)</span>
-            <span id="tpAfterCount" style="font-family:var(--font-mono); font-size:0.68rem; background:#ECFDF5; color:#047857; padding:2px 8px; border-radius:99px; font-weight:800;">Activo</span>
+
+        <div class="manifesto-plaque" id="tpStageCardAfter" style="display:none; border-top:4px solid #10B981; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+            <div>
+              <span class="plaque-num" style="color:#059669; font-size:0.72rem;">ETAPA 2.3 · DESPUÉS DE COMPRAR (EMPAQUE, ENTREGA Y FIDELIZACIÓN)</span>
+              <div class="plaque-title" style="font-size:1.1rem; margin:2px 0 0 0;">Tus Puntos de Contacto Seleccionados (Toque «🔍 Ingeniería» para ver o editar materiales)</div>
+            </div>
+            <button type="button" class="btn-action" onclick="selectTouchpointPhase('all')" style="padding:7px 14px; font-size:0.76rem; font-weight:800;">
+              ✦ Ver Mapa Completo (3 Etapas) →
+            </button>
           </div>
-          <div class="plaque-title">Empaque, Unboxing, Flota, Garantía &amp; Fidelización</div>
           <div class="plaque-text" id="tpAfterText" style="margin-top:8px;"></div>
         </div>
       </div>
 
       <!-- CIERRE DE DESCUBRIMIENTO DEL PASO 2 + CÁPSULA DE VIDEO -->
-      <div class="discovery-closure-card" id="step2DiscoveryClosureCard">
+      <div class="discovery-closure-card" id="step2DiscoveryClosureCard" style="max-width:920px; margin:20px auto 0 auto;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
           <div>
-            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A; font-weight:800; letter-spacing:0.08em;">🏆 PASO 2C · CIERRE DE PUNTOS DE CONTACTO</span>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A; font-weight:800; letter-spacing:0.08em;">🏆 PASO 2 COMPLETADO · ARQUITECTURA DE EXPERIENCIA LISTA</span>
             <h3 style="font-family:var(--font-display); font-size:1.35rem; color:#FFFFFF; margin:4px 0 0 0;">
-              Ecosistema de Puntos de Contacto Mapeado con Aura
+              Tus Puntos de Contacto e Ingeniería de Materiales están listos
             </h3>
           </div>
           <span class="trait-discovery-pill">🎬 Incluye Resumen con Voz de Aura</span>
         </div>
         <p id="step2ClosureDesc" style="font-size:0.9rem; color:#CBD5E1; line-height:1.5; margin:0;">
-          Todos estos puntos de contacto (Antes, Durante y Después) determinarán en qué categorías registrar tu marca, qué dominios web buscar y qué piezas físicas y digitales ilustraremos en tu Brandbook Maestro.
+          Cada punto de contacto seleccionado quedará documentado con su ficha completa de sustrato, impresión, medidas y control de calidad en el Tomo III de tu Brandbook Maestro.
         </p>
         <div style="display:flex; justify-content:flex-end; margin-top:4px;">
           <button class="btn-action primary" style="background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); color:#FFFFFF; border:none; padding:12px 24px; font-weight:800;" onclick="completeStepAndAdvanceWithCelebration(2, 3)">
@@ -4239,64 +4266,104 @@
     const TP_PHASE_CONFIG = {
       before: {
         badge: "MOMENTO ACTIVO: 1. ANTES DE COMPRAR (DESCUBRIMIENTO & ATRACCIÓN)",
-        question: "¿Por qué medios te descubre hoy tu cliente ideal antes de comprarte (redes sociales, buscador, recomendación, fachada física, eventos, folletos) y qué primera impresión visual necesita llevarse?",
-        chips: [
-          "📱 Instagram / TikTok / Reels",
-          "🌐 Sitio Web & Landing Page",
-          "🤝 Recomendación Boca a Boca",
-          "🏢 Fachada Física / Escaparate",
-          "📄 Brochure / Presentación PDF",
-          "🔍 Búsqueda en Google / Maps",
-          "🎤 Eventos / Ferias Comerciales",
-          "💼 LinkedIn & Networking B2B"
+        question: "1. Antes de Comprar: ¿Dónde descubre tu cliente tu marca por primera vez?",
+        bentoCards: [
+          { icon: "📱", label: "Instagram, TikTok y Reels de Autoridad", sub: "Retina sRGB · Avatar 1:1 a 1080×1080 px", tag: "Digital & Social" },
+          { icon: "🌐", label: "Sitio Web Flagship y Landing de Conversión", sub: "UI Responsiva · SVG en curvas y WebP", tag: "Web & SEO" },
+          { icon: "🏛️", label: "Fachada Arquitectónica y Tótem Exterior", sub: "Aluminio Anodizado + LED Cálido 3000K", tag: "Arquitectura" },
+          { icon: "🤝", label: "Recomendación Boca a Boca y Casos de Éxito", sub: "Dossier Ejecutivo en Papel Algodón 320g", tag: "Prestigio" },
+          { icon: "📍", label: "Ficha en Google Maps y Buscador con Reseñas 5★", sub: "Fotografía de Estudio + Horarios y Contacto", tag: "Localización" },
+          { icon: "🎤", label: "Stand en Ferias, Exposiciones y Congresos", sub: "Estructura Modular Iluminada · Visibilidad 30m", tag: "Eventos B2B" }
         ]
       },
       during: {
         badge: "MOMENTO ACTIVO: 2. DURANTE LA COMPRA (EVALUACIÓN, COTIZACIÓN Y CIERRE)",
-        question: "Cuando el cliente ya está cotizando o decidiendo comprarte: ¿qué documentos, muestras, uniformes, contratos o pantallas ve que le hacen sentir total confianza para pagar?",
-        chips: [
-          "📋 Cotización Ejecutiva Membretada",
-          "💬 Atención por WhatsApp Business",
-          "👔 Uniforme / Gafete del Equipo",
-          "💻 Demo en Vivo / Videollamada",
-          "📦 Muestra Física / Catálogo Táctil",
-          "💳 Checkout / Pasarela de Pago Segura",
-          "📝 Contrato Clarificado sin Letra Chica",
-          "🏷️ Etiqueta de Producto / Menú de Precios"
+        question: "2. Durante la Compra: ¿Qué elementos le dan confianza total a tu cliente al evaluar y pagar?",
+        bentoCards: [
+          { icon: "📋", label: "Cotización Ejecutiva y Carpeta Membretada", sub: "Papel Algodón 320 g/m² · Offset FOGRA39 + Cuño", tag: "Papelería" },
+          { icon: "👔", label: "Uniforme Ejecutivo, Mandil o Bata con Bordado", sub: "Gabardina 260g · Bordado Tajima ≥ 1.25 mm", tag: "Indumentaria" },
+          { icon: "💬", label: "Atención Consultiva por WhatsApp Business y Video", sub: "Catálogo Interactivo + Respuesta en < 5 min", tag: "Conversión" },
+          { icon: "📖", label: "Menú Impreso, Catálogo Táctil o Muestrario Físico", sub: "Papel Gmund 350g Antimanchas / Muestras Reales", tag: "Experiencia" },
+          { icon: "📝", label: "Contrato Clarificado sin Letra Chica y Carpeta", sub: "Formato Carta 215×279 mm · Folio Metálico", tag: "Certeza Legal" },
+          { icon: "💳", label: "Terminal de Pago, Checkout Web y Facturación", sub: "Interfaz Limpia en 1 Clic · Recibo Digital", tag: "Transacción" }
         ]
       },
       after: {
-        badge: "MOMENTO ACTIVO: 3. DESPUÉS DE COMPRAR (ENTREGA, EMPAQUE Y RECOMPRA)",
-        question: "Una vez que el cliente pagó y recibe tu producto o servicio: ¿cómo es el empaque, la entrega, la factura, el manual de bienvenida o el seguimiento para que vuelva a comprarte y te recomiende?",
-        chips: [
-          "🎁 Caja de Empaque & Unboxing de Lujo",
-          "💌 Tarjeta de Agradecimiento Firmada",
-          "📘 Manual de Bienvenida / Onboarding",
-          "🧾 Factura y Certificado de Garantía",
-          "📲 Mensaje de Seguimiento a los 7 Días",
-          "🌟 Invitación a Reseña / Club VIP",
-          "🛍️ Bolsa Corporativa Reutilizable",
-          "🛠️ Soporte Técnico Prioritario"
+        badge: "MOMENTO ACTIVO: 3. DESPUÉS DE COMPRAR (ENTREGA, EMPAQUE Y LEALTAD)",
+        question: "3. Después de Comprar: ¿Cómo conviertes la entrega en un recuerdo inolvidable que genere recompra?",
+        bentoCards: [
+          { icon: "🎁", label: "Caja de Empaque Rígido y Ritual de Unboxing", sub: "Cartón FSC Forrado + Sello en Hot-Stamping", tag: "Packaging" },
+          { icon: "🛡️", label: "Certificado de Garantía y Placa de Autenticidad", sub: "Placa de Acero Inoxidable 304 / Papel Seguridad", tag: "Garantía" },
+          { icon: "🚚", label: "Flotilla Vehicular de Entrega y Logística", sub: "Vinil Fundido 3M Controltac + Reflejante DOT", tag: "Flota Móvil" },
+          { icon: "💌", label: "Tarjeta de Bienvenida y Manual de Cuidado", sub: "Cartulina Algodón 350g + Código QR de Soporte", tag: "Onboarding" },
+          { icon: "📲", label: "Seguimiento Post-Venta a los 7 Días por WhatsApp", sub: "Bitácora de Satisfacción y Recordatorio Anual", tag: "Fidelización" },
+          { icon: "👑", label: "Membresía VIP y Programa de Clientes Referidos", sub: "Tarjeta Metálica / Pase Digital Apple Wallet", tag: "Comunidad" }
         ]
+      },
+      all: {
+        badge: "MAPA PANORÁMICO COMPLETO DE LOS 3 MOMENTOS DE VERDAD",
+        question: "Vista Panorámica: Revisa las 3 etapas conectadas de tu Arquitectura de Puntos de Contacto",
+        bentoCards: []
       }
     };
+
+    window.expandedTpIds = window.expandedTpIds || {};
 
     function selectTouchpointPhase(phaseKey) {
       playAcousticClick(760, 0.035);
       currentTpPhase = phaseKey || "before";
       const cfg = TP_PHASE_CONFIG[currentTpPhase] || TP_PHASE_CONFIG.before;
 
-      const bBefore = document.getElementById("btnTpPhaseBefore");
-      const bDuring = document.getElementById("btnTpPhaseDuring");
-      const bAfter = document.getElementById("btnTpPhaseAfter");
-      if (bBefore) bBefore.className = `btn-action ${currentTpPhase === "before" ? "primary" : ""}`;
-      if (bDuring) bDuring.className = `btn-action ${currentTpPhase === "during" ? "primary" : ""}`;
-      if (bAfter) bAfter.className = `btn-action ${currentTpPhase === "after" ? "primary" : ""}`;
+      const tabs = [
+        { id: "btnTpPhaseBefore", key: "before", countId: "tpBeforeCount" },
+        { id: "btnTpPhaseDuring", key: "during", countId: "tpDuringCount" },
+        { id: "btnTpPhaseAfter", key: "after", countId: "tpAfterCount" },
+        { id: "btnTpPhaseAll", key: "all", countId: "tpTotalExtractedBadge" }
+      ];
+      tabs.forEach(t => {
+        const btn = document.getElementById(t.id);
+        const cnt = document.getElementById(t.countId);
+        const isActive = currentTpPhase === t.key;
+        if (btn) {
+          btn.style.background = isActive ? "#090D16" : "transparent";
+          btn.style.color = isActive ? "#FFFFFF" : "#334155";
+          btn.style.boxShadow = isActive ? "0 4px 12px rgba(9,13,22,0.18)" : "none";
+        }
+        if (cnt) {
+          cnt.style.color = isActive ? "#FDE68A" : (t.key === "all" ? "#B45309" : "#64748B");
+        }
+      });
 
-      const badgeEl = document.getElementById("tpActiveMomentBadge");
-      if (badgeEl) badgeEl.textContent = cfg.badge;
-      const qEl = document.getElementById("tpAuraQuestionHeading");
+      const qEl = document.getElementById("tpActiveQuestionHeading");
       if (qEl) qEl.textContent = cfg.question;
+
+      const phaseSelect = document.getElementById("customTpPhase");
+      if (phaseSelect && currentTpPhase !== "all") {
+        phaseSelect.value = currentTpPhase;
+      }
+
+      const bentoSection = document.getElementById("tpBentoGallerySection");
+      if (bentoSection) {
+        bentoSection.style.display = currentTpPhase === "all" ? "none" : "block";
+      }
+
+      const grid = document.getElementById("tpActiveStageColumnsGrid");
+      const cBefore = document.getElementById("tpStageCardBefore");
+      const cDuring = document.getElementById("tpStageCardDuring");
+      const cAfter = document.getElementById("tpStageCardAfter");
+      if (grid && cBefore && cDuring && cAfter) {
+        if (currentTpPhase === "all") {
+          grid.style.gridTemplateColumns = "repeat(auto-fit, minmax(275px, 1fr))";
+          cBefore.style.display = "block";
+          cDuring.style.display = "block";
+          cAfter.style.display = "block";
+        } else {
+          grid.style.gridTemplateColumns = "1fr";
+          cBefore.style.display = currentTpPhase === "before" ? "block" : "none";
+          cDuring.style.display = currentTpPhase === "during" ? "block" : "none";
+          cAfter.style.display = currentTpPhase === "after" ? "block" : "none";
+        }
+      }
 
       renderTouchpointQuickChips();
       syncTouchpointCardsUI();
@@ -4305,43 +4372,122 @@
     function renderTouchpointQuickChips() {
       const row = document.getElementById("tpQuickChipsRow");
       if (!row) return;
-      const cfg = TP_PHASE_CONFIG[currentTpPhase] || TP_PHASE_CONFIG.before;
-      const activeList = tpExtractedItems[currentTpPhase] || [];
-      row.innerHTML = cfg.chips.map(chip => {
-        const cleanChip = chip.replace(/^[^\wÁÉÍÓÚáéíóúÑñ]+\s*/, "").trim();
-        const alreadyAdded = activeList.some(item => item.toLowerCase().includes(cleanChip.toLowerCase()));
+      const targetPhase = currentTpPhase === "all" ? "before" : currentTpPhase;
+      const cfg = TP_PHASE_CONFIG[targetPhase] || TP_PHASE_CONFIG.before;
+      const activeList = tpExtractedItems[targetPhase] || [];
+
+      row.innerHTML = (cfg.bentoCards || []).map(card => {
+        const cleanLabel = card.label.trim();
+        const alreadyAdded = activeList.some(item =>
+          item.toLowerCase().includes(cleanLabel.toLowerCase().slice(0, 14)) ||
+          cleanLabel.toLowerCase().includes(item.toLowerCase().slice(0, 14))
+        );
         return `
-          <button
-            type="button"
-            class="suggestion-chip"
-            style="${alreadyAdded ? 'background:#090D16; color:#FDE68A; border-color:#D4AF37;' : ''}"
-            onclick="addQuickTouchpointChip('${escapeHTML(cleanChip)}')"
+          <div
+            onclick="addQuickTouchpointChip('${escapeHTML(cleanLabel)}')"
+            style="cursor:pointer; border-radius:18px; padding:14px 16px; background:${alreadyAdded ? 'linear-gradient(135deg, #090D16 0%, #1E293B 100%)' : '#FFFFFF'}; color:${alreadyAdded ? '#FFFFFF' : '#090D16'}; border:${alreadyAdded ? '2px solid #D4AF37' : '1.5px solid #CBD5E1'}; box-shadow:${alreadyAdded ? '0 10px 24px rgba(9,13,22,0.16)' : '0 4px 10px rgba(15,23,42,0.04)'}; display:flex; align-items:flex-start; gap:12px; transition:all 0.2s ease; text-align:left;"
           >
-            ${alreadyAdded ? '✓ ' : '+ '}${escapeHTML(chip)}
-          </button>
+            <div style="width:44px; height:44px; border-radius:12px; background:${alreadyAdded ? 'rgba(212,175,55,0.18)' : '#F1F5F9'}; border:1px solid ${alreadyAdded ? '#D4AF37' : '#E2E8F0'}; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0;">
+              ${card.icon}
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:3px;">
+                <span style="font-family:var(--font-mono); font-size:0.64rem; font-weight:800; color:${alreadyAdded ? '#FDE68A' : '#B45309'}; text-transform:uppercase;">${escapeHTML(card.tag)}</span>
+                <span style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:2px 8px; border-radius:99px; background:${alreadyAdded ? '#059669' : '#F1F5F9'}; color:${alreadyAdded ? '#FFFFFF' : '#475569'};">
+                  ${alreadyAdded ? '✓ Activo' : '+ Incluir'}
+                </span>
+              </div>
+              <div style="font-family:var(--font-display); font-weight:800; font-size:0.92rem; line-height:1.25; margin-bottom:4px;">
+                ${escapeHTML(card.label)}
+              </div>
+              <div style="font-size:0.75rem; color:${alreadyAdded ? '#CBD5E1' : '#64748B'}; line-height:1.3;">
+                ${escapeHTML(card.sub)}
+              </div>
+            </div>
+          </div>
         `;
       }).join("");
     }
 
     function addQuickTouchpointChip(chipLabel) {
       playAcousticClick(840, 0.04);
-      const list = tpExtractedItems[currentTpPhase];
-      if (!list.some(x => x.toLowerCase() === chipLabel.toLowerCase())) {
+      const targetPhase = currentTpPhase === "all" ? "before" : currentTpPhase;
+      const list = tpExtractedItems[targetPhase];
+      const existingIdx = list.findIndex(x =>
+        x.toLowerCase() === chipLabel.toLowerCase() ||
+        x.toLowerCase().includes(chipLabel.toLowerCase().slice(0, 14))
+      );
+
+      let actionMsg = "";
+      if (existingIdx === -1) {
         list.push(chipLabel);
         addXP(20);
+        actionMsg = `He activado <strong>"${escapeHTML(chipLabel)}"</strong> con su ficha técnica de sustrato e impresión lista.`;
+      } else if (list.length > 1) {
+        list.splice(existingIdx, 1);
+        actionMsg = `He retirado <strong>"${escapeHTML(chipLabel)}"</strong> de esta etapa.`;
+      } else {
+        actionMsg = `Conservamos al menos un punto de contacto activo en esta etapa.`;
       }
       syncTouchpointCardsUI();
       renderTouchpointQuickChips();
 
       const stream = document.getElementById("tpAuraDialogueStream");
       if (stream) {
-        const momentName = currentTpPhase === "before" ? "Antes de la Compra" : (currentTpPhase === "during" ? "Durante la Compra" : "Después de la Compra");
+        const momentName = targetPhase === "before" ? "Antes de Comprar" : (targetPhase === "during" ? "Durante la Compra" : "Después de Comprar");
         stream.innerHTML = `
-          <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:12px; padding:10px 14px; font-size:0.84rem; color:#92400E;">
-            <strong>✦ AURA · Touchpoint Registrado (${momentName}):</strong> Excelente, he integrado <strong>"${escapeHTML(chipLabel)}"</strong> al mapa de experiencia de <strong>${escapeHTML(canvasState.brandName || 'tu marca')}</strong>. ¿Qué detalle especial o acabado te gustaría que tuviera este punto de contacto para sorprender a tu cliente?
+          <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:14px; padding:10px 16px; font-size:0.84rem; color:#92400E;">
+            <strong>✦ AURA · Bento Studio (${momentName}):</strong> ${actionMsg} Puedes pulsar <strong>«🔍 Ingeniería»</strong> abajo para ver o personalizar sus materiales.
           </div>
         `;
       }
+    }
+
+    function toggleCustomTpDrawer(forceState = null) {
+      playAcousticClick(780, 0.04);
+      const drawer = document.getElementById("customTpCollapsibleDrawer");
+      if (!drawer) return;
+      const nextOpen = forceState !== null ? forceState : (drawer.style.display === "none");
+      drawer.style.display = nextOpen ? "block" : "none";
+      if (nextOpen) {
+        const titleInput = document.getElementById("customTpTitle");
+        if (titleInput) titleInput.focus();
+      }
+    }
+
+    function toggleTpEngineeringAccordion(tpId) {
+      playAcousticClick(740, 0.03);
+      window.expandedTpIds[tpId] = !window.expandedTpIds[tpId];
+      syncTouchpointCardsUI();
+    }
+
+    function openEditTpEngineeringInspector(phaseKey, idx) {
+      playAcousticClick(820, 0.04);
+      const rawItem = (tpExtractedItems[phaseKey] || [])[idx];
+      if (!rawItem) return;
+      const spec = enrichTouchpointEngineeringSpec(rawItem, phaseKey, idx);
+      toggleCustomTpDrawer(true);
+      const phaseSel = document.getElementById("customTpPhase");
+      const titleInput = document.getElementById("customTpTitle");
+      const subInput = document.getElementById("customTpSubstrate");
+      const methodInput = document.getElementById("customTpMethod");
+      const dimsInput = document.getElementById("customTpDims");
+      if (phaseSel) phaseSel.value = phaseKey;
+      if (titleInput) titleInput.value = spec.title;
+      if (subInput) subInput.value = spec.substrate_material;
+      if (methodInput) methodInput.value = spec.reproduction_method;
+      if (dimsInput) dimsInput.value = spec.dimensions_and_grid;
+      const drawer = document.getElementById("customTpCollapsibleDrawer");
+      if (drawer) drawer.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function removeTouchpointItem(phaseKey, idx) {
+      playAcousticClick(640, 0.03);
+      const list = tpExtractedItems[phaseKey] || [];
+      if (list.length <= 1) return;
+      list.splice(idx, 1);
+      syncTouchpointCardsUI();
+      renderTouchpointQuickChips();
     }
 
     // Diccionario de Fichas Técnicas de Ingeniería de Touchpoints (Paso 2 y Paso 6)
@@ -4424,18 +4570,41 @@
 
     function renderStep2DetailedTouchpointItem(rawItem, phaseKey, idx, accentColor) {
       const spec = enrichTouchpointEngineeringSpec(rawItem, phaseKey, idx);
+      const isExpanded = !!window.expandedTpIds[spec.tp_id];
+      const shortSubstrate = spec.substrate_material.split("+")[0].split("(")[0].trim().slice(0, 38);
+      const shortMethod = spec.reproduction_method.split("+")[0].split("·")[0].trim().slice(0, 34);
+
       return `
-        <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:4px solid ${accentColor}; border-radius:10px; padding:10px 12px; margin-bottom:8px; box-shadow:0 2px 5px rgba(15,23,42,0.04);">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:4px;">
-            <span style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:#FFFFFF; background:#090D16; padding:2px 7px; border-radius:5px;">${escapeHTML(spec.tp_id)}</span>
-            <span style="font-family:var(--font-mono); font-size:0.64rem; font-weight:700; color:${accentColor};">${escapeHTML(spec.category)}</span>
+        <div style="background:#F8FAFC; border:1.5px solid #E2E8F0; border-left:5px solid ${accentColor}; border-radius:16px; padding:14px 16px; margin-bottom:10px; transition:all 0.2s ease;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:210px;">
+              <span style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#FDE68A; background:#090D16; padding:4px 9px; border-radius:8px; flex-shrink:0;">${escapeHTML(spec.tp_id)}</span>
+              <div>
+                <div style="font-family:var(--font-display); font-weight:800; font-size:0.96rem; color:#090D16; line-height:1.25;">${escapeHTML(spec.title)}</div>
+                <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:5px;">
+                  <span style="font-size:0.72rem; background:#FFFFFF; border:1px solid #CBD5E1; color:#334155; padding:2px 8px; border-radius:99px; font-weight:600;">🧱 ${escapeHTML(shortSubstrate)}</span>
+                  <span style="font-size:0.72rem; background:#FFFFFF; border:1px solid #CBD5E1; color:#334155; padding:2px 8px; border-radius:99px; font-weight:600;">🖨️ ${escapeHTML(shortMethod)}</span>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <button type="button" class="btn-action" onclick="toggleTpEngineeringAccordion('${spec.tp_id}')" style="padding:6px 12px; font-size:0.74rem; font-weight:800; border-radius:10px; background:${isExpanded ? '#090D16' : '#FFFFFF'}; color:${isExpanded ? '#FDE68A' : '#090D16'};">
+                ${isExpanded ? '▴ Ocultar Ficha' : '🔍 Ingeniería'}
+              </button>
+              <button type="button" class="btn-action" onclick="openEditTpEngineeringInspector('${phaseKey}', ${idx})" title="Personalizar material, impresión o medidas" style="padding:6px 10px; font-size:0.74rem; border-radius:10px;">
+                ✏️
+              </button>
+              <button type="button" class="btn-action" onclick="removeTouchpointItem('${phaseKey}', ${idx})" title="Quitar este punto de contacto" style="padding:6px 10px; font-size:0.74rem; border-radius:10px; color:#DC2626;">
+                ✕
+              </button>
+            </div>
           </div>
-          <div style="font-weight:800; font-size:0.84rem; color:#090D16; margin-bottom:5px;">${escapeHTML(spec.title)}</div>
-          <div style="display:grid; gap:3px; font-size:0.73rem; color:#334155; line-height:1.38; background:#F8FAFC; padding:7px 9px; border-radius:7px; border:1px solid #E2E8F0;">
-            <div><strong>🧱 Sustrato/Material:</strong> ${escapeHTML(spec.substrate_material)}</div>
-            <div><strong>🖨️ Impresión/Técnica:</strong> ${escapeHTML(spec.reproduction_method)}</div>
-            <div><strong>📐 Medidas y Escala:</strong> ${escapeHTML(spec.dimensions_and_grid)}</div>
-            <div><strong>🛡️ Regla de Calidad:</strong> <span style="color:#065F46; font-weight:700;">${escapeHTML(spec.quality_control_rule)}</span></div>
+
+          <div style="display:${isExpanded ? 'grid' : 'none'}; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:8px; margin-top:12px; padding:12px 14px; background:#FFFFFF; border-radius:12px; border:1px solid #CBD5E1; font-size:0.78rem; color:#1E293B; line-height:1.45;">
+            <div><strong>🎯 Objetivo Estratégico:</strong><br/>${escapeHTML(spec.strategic_goal)}</div>
+            <div><strong>🧱 Sustrato / Material Exacto:</strong><br/>${escapeHTML(spec.substrate_material)}</div>
+            <div><strong>🖨️ Impresión / Reproducción:</strong><br/>${escapeHTML(spec.reproduction_method)}</div>
+            <div><strong>📐 Medidas, Retícula y Calidad:</strong><br/>${escapeHTML(spec.dimensions_and_grid)}<br/><span style="color:#065F46; font-weight:700;">🛡️ ${escapeHTML(spec.quality_control_rule)}</span></div>
           </div>
         </div>
       `;
@@ -4473,9 +4642,10 @@
       if (subInput) subInput.value = "";
       if (methodInput) methodInput.value = "";
       if (dimsInput) dimsInput.value = "";
+      toggleCustomTpDrawer(false);
       playAcousticClick(820, 0.05);
       addXP(45);
-      syncTouchpointCardsUI();
+      selectTouchpointPhase(phase);
     }
 
     function syncTouchpointCardsUI() {
@@ -4500,13 +4670,13 @@
       const cBefore = document.getElementById("tpBeforeCount");
       const cDuring = document.getElementById("tpDuringCount");
       const cAfter = document.getElementById("tpAfterCount");
-      if (cBefore) cBefore.textContent = `${tpExtractedItems.before.length} fichas técnicas`;
-      if (cDuring) cDuring.textContent = `${tpExtractedItems.during.length} fichas técnicas`;
-      if (cAfter) cAfter.textContent = `${tpExtractedItems.after.length} fichas técnicas`;
+      if (cBefore) cBefore.textContent = `${tpExtractedItems.before.length} activos`;
+      if (cDuring) cDuring.textContent = `${tpExtractedItems.during.length} activos`;
+      if (cAfter) cAfter.textContent = `${tpExtractedItems.after.length} activos`;
 
       const total = tpExtractedItems.before.length + tpExtractedItems.during.length + tpExtractedItems.after.length;
       const totalBadge = document.getElementById("tpTotalExtractedBadge");
-      if (totalBadge) totalBadge.textContent = `Touchpoints con Ficha Técnica: ${total} puntos de contacto`;
+      if (totalBadge) totalBadge.textContent = `${total} fichas listas`;
 
       const pillsEl = document.getElementById("step2DiscoveredTraitsPills");
       if (pillsEl) {
