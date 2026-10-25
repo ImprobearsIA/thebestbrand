@@ -1,0 +1,309 @@
+{
+  "brand_input": {
+    "id": "09A_automatizacion_matriz_aksis",
+    "sector": "9A. [MARCA MATRIZ] Implementación de Automatizaciones en Líneas Industriales",
+    "founder_persona": "Ing. Mecatrónico Alejandro Villarreal (CEO de Grupo Industrial en expansión hacia 4 unidades de negocio)",
+    "chosen_name": "Aksis Automation",
+    "tagline": "Ingeniería robótica y líneas autónomas de manufactura sin paros",
+    "naming_style": "neologismo_portmanteau",
+    "industry_key": "tecnologia_saas",
+    "architecture_role": "MARCA MATRIZ (HOUSE OF BRANDS / BRANDED HOUSE MONOLÍTICA CON ENDOSO CROMÁTICO)",
+    "sibling_brands": [
+      "Aksis Mantenimiento (División Mantenimiento Industrial)",
+      "Aksis Transporte (División Logística Pesada y Rigging)",
+      "Aksis Control (División Software IIoT y Tableros)"
+    ],
+    "vault_finalists": [
+      "Aksis Automation",
+      "Kinetix Industrial",
+      "Vektor PLC",
+      "AutomaTek Group"
+    ],
+    "nice_classes": "Clase 07 (Robots industriales, transportadores y máquinas automatizadas), Clase 09 (PLC, sensores, visión artificial y tableros de control), Clase 42 (Ingeniería de automatización industrial)",
+    "domains": [
+      "aksis.industrial",
+      "aksisautomation.com",
+      "grupoaksis.mx"
+    ],
+    "purpose_why": "Multiplicar la productividad, seguridad y precisión de las fábricas mediante celdas robóticas y líneas automatizadas llave en mano que operan 24/7 con cero defectos.",
+    "value_offer": "Diseño mecánico, integración de robots (FANUC/KUKA/ABB), programación PLC/SCADA y puesta en marcha (FAT/SAT) garantizando el retorno de inversión (ROI) y el OEE comprometido por contrato.",
+    "social_role": "Modernizar la planta productiva nacional liberando a los operadores humanos de tareas peligrosas o ergonómicamente lesivas y elevando sus puestos a supervisión técnica.",
+    "process_steps": [
+      "1. Levantamiento láser 3D en planta, simulación de tiempos de ciclo y propuesta técnica con ROI calculado",
+      "2. Fabricación de celda, armado de tableros UL508A y pruebas de aceptación en fábrica (FAT)",
+      "3. Instalación en ventana de paro programado, pruebas en sitio (SAT) y transferencia a Aksis Mantenimiento"
+    ],
+    "core_message": "Ingeniería en movimiento. Producción sin límites.",
+    "brand_persona": "Ingeniero jefe de planta: exacto, impecable en normas de seguridad, innovador y orientado a métricas OEE.",
+    "customer_behavior": "Cumplir ventanas críticas de instalación sin retrasar un minuto el arranque de línea del cliente; tableros eléctricos peinados con estándar internacional.",
+    "brand_world": "Gris grafito anodizado, naranja robótico de alta energía, aluminio extruido, placas de identificación grabadas en láser y pantallas HMI en modo oscuro.",
+    "ideal_customer": "Directores de Operaciones, Gerentes de Ingeniería de Planta y Compras Corporativas en industrias automotriz (Tier 1/2), alimentos y bebidas, metalmecánica y empaque.",
+    "touchpoints_journey": {
+      "antes": "Videos en cámara rápida (timelapse) de líneas instaladas en LinkedIn · Participación en exposiciones industriales (FABTECH / Automate) · Dossier técnico de capacidades",
+      "durante": "Propuesta de ingeniería con layout 3D y simulación de ciclo · Invitación a pruebas FAT en nave propia · Protocolo de seguridad EHS y fianzas de cumplimiento",
+      "despues": "Placa de acero inoxidable remachada en la celda robótica con QR de diagramas eléctricos · Pantalla de inicio en el HMI con el logo de Aksis · Póliza directa con Aksis Mantenimiento"
+    },
+    "sliders": {
+      "tradicional_innovador": 0.85,
+      "minimalista_complejo": -0.55,
+      "amigable_autoritario": 0.65,
+      "humano_tecnologico": 0.9,
+      "serio_jugueton": -0.7,
+      "convencional_rebelde": 0.4,
+      "organico_geometrico": 0.95
+    },
+    "base_family": "Familia 01 · Monograma Hexagonal Isométrico 'AK' (Chasis Rector compartido por las 4 marcas del Grupo)",
+    "primary_font": "Space Grotesk",
+    "secondary_font": "JetBrains Mono",
+    "palette": [
+      "#090D16",
+      "#F8FAFC",
+      "#EA580C",
+      "#38BDF8"
+    ],
+    "selected_24_traits": [
+      "1B: Vértices Facetados a 45° (Chaflán mecánico CNC)",
+      "2B: Masa Sólida 10pt",
+      "3A: Chasis Hexagonal Abierto",
+      "4B: Inclinación Cinética +14° (Velocidad de línea)",
+      "5B: Eje Robótico en Espacio Negativo",
+      "6A: Acomodo Horizontal Modular (Permite intercambiar el descriptor de las 3 sub-marcas)",
+      "7B: Geometría Hexagonal de Ingeniería",
+      "8B: Módulos Constructivos (1 módulo por división del grupo)",
+      "9A: Síntesis Minimalista Industrial",
+      "10B: Volumen Isométrico 3D",
+      "11B: Terminales Rectos a 90°",
+      "12A: Núcleo de Torque",
+      "13A: Tipografía Moderna Sans (Space Grotesk)",
+      "14B: Letra Ancha Industrial",
+      "15B: Espaciado Compacto Sólido",
+      "16A: Mayúsculas Industriales ('AKSIS')",
+      "17B: Peso Extra-Bold 900",
+      "18A: Subtítulo Técnico en JetBrains Mono ('[ AUTOMATION · INDUSTRIAL LINES ]')",
+      "19B: Fondo Nocturno Obsidiana (Para pantallas HMI y gabinetes)",
+      "20A: Naranja Robótico de Alta Energía (#EA580C)",
+      "21A: Acento Naranja Cinético",
+      "22B: Contraste Grafito, Naranja Robótico y Cian Telemetría",
+      "23B: Placa de Acero Inoxidable Grabada con Láser de Fibra",
+      "24A: Tinta Sólida Pantone + Versión OLED para Pantallas HMI"
+    ],
+    "simulation_notes": "Al crear la marca matriz, el CEO pidió no tener que repetir los 6 pasos desde cero para sus otras 3 empresas (Mantenimiento, Transporte y Control). Aquí nació la práctica de 'Arquitectura Multi-Marca con Herencia de ADN'."
+  },
+  "color_table": [
+    {
+      "role": "Superficie Base",
+      "hex": "#090D16",
+      "rgb": "rgb(9, 13, 22)",
+      "cmyk_fogra39": "C:59% M:41% Y:0% K:91%",
+      "total_area_coverage_tac": "191% TAC",
+      "pantone_solid_coated": "PMS Black 6 C",
+      "wcag_contrast_ratio": 18.57,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Tinta Estructural",
+      "hex": "#F8FAFC",
+      "rgb": "rgb(248, 250, 252)",
+      "cmyk_fogra39": "C:2% M:1% Y:0% K:1%",
+      "total_area_coverage_tac": "4% TAC",
+      "pantone_solid_coated": "PMS 7527 C",
+      "wcag_contrast_ratio": 18.57,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Acento Primario",
+      "hex": "#EA580C",
+      "rgb": "rgb(234, 88, 12)",
+      "cmyk_fogra39": "C:0% M:62% Y:95% K:8%",
+      "total_area_coverage_tac": "165% TAC",
+      "pantone_solid_coated": "PMS 186 C",
+      "wcag_contrast_ratio": 1.05,
+      "wcag_level": "AAA Auto-Healed"
+    },
+    {
+      "role": "Acento Secundario",
+      "hex": "#38BDF8",
+      "rgb": "rgb(56, 189, 248)",
+      "cmyk_fogra39": "C:77% M:24% Y:0% K:3%",
+      "total_area_coverage_tac": "104% TAC",
+      "pantone_solid_coated": "PMS 7527 C",
+      "wcag_contrast_ratio": 9.07,
+      "wcag_level": "AAA Nativo"
+    }
+  ],
+  "compiled_engine": {
+    "brand_name": "Aksis Automation",
+    "total_pages": 38,
+    "avatar_cognitive_audit": {
+      "nli_entailment_score": 0.99,
+      "zero_hallucinations_verified": true,
+      "selection_mode": "Ultra_Agile_Delta_Socratic_Explorer_v10"
+    },
+    "strategy_chapter": {
+      "01_proposito_golden_circle": "Multiplicar la productividad, seguridad y precisión de las fábricas mediante celdas robóticas y líneas automatizadas llave en mano que operan 24/7 con cero defectos.",
+      "02_posicionamiento_oferta": "Diseño mecánico, integración de robots (FANUC/KUKA/ABB), programación PLC/SCADA y puesta en marcha (FAT/SAT) garantizando el retorno de inversión (ROI) y el OEE comprometido por contrato.",
+      "03_rol_en_la_sociedad": "Modernizar la planta productiva nacional liberando a los operadores humanos de tareas peligrosas o ergonómicamente lesivas y elevando sus puestos a supervisión técnica.",
+      "04_su_proceso_operativo": [
+        "1. Levantamiento láser 3D en planta, simulación de tiempos de ciclo y propuesta técnica con ROI calculado",
+        "2. Fabricación de celda, armado de tableros UL508A y pruebas de aceptación en fábrica (FAT)",
+        "3. Instalación en ventana de paro programado, pruebas en sitio (SAT) y transferencia a Aksis Mantenimiento"
+      ],
+      "05_mensaje_nuclear": "Ingeniería en movimiento. Producción sin límites.",
+      "06_personalidad_humana": "Ingeniero jefe de planta: exacto, impecable en normas de seguridad, innovador y orientado a métricas OEE.",
+      "07_comportamiento_con_clientes": "Cumplir ventanas críticas de instalación sin retrasar un minuto el arranque de línea del cliente; tableros eléctricos peinados con estándar internacional.",
+      "08_su_mundo_imaginario": "Gris grafito anodizado, naranja robótico de alta energía, aluminio extruido, placas de identificación grabadas en láser y pantallas HMI en modo oscuro."
+    },
+    "touchpoints_chapter": {
+      "dimensiones_deducidas_sin_menus": {
+        "delivery_channel": "Ecosistema Híbrido",
+        "economic_ticket": "Escalable",
+        "payment_ritual": "Cotización Ejecutiva / Orden de Compra y Pasarela Digital"
+      },
+      "videos_ia_generados_al_vuelo": [
+        {
+          "step": 1,
+          "title": "Cápsula Explicativa IA Paso 1"
+        },
+        {
+          "step": 2,
+          "title": "Cápsula Explicativa IA Paso 2"
+        },
+        {
+          "step": 3,
+          "title": "Cápsula Explicativa IA Paso 3"
+        },
+        {
+          "step": 4,
+          "title": "Cápsula Explicativa IA Paso 4"
+        },
+        {
+          "step": 5,
+          "title": "Cápsula Explicativa IA Paso 5"
+        },
+        {
+          "step": 6,
+          "title": "Cápsula Explicativa IA Paso 6"
+        }
+      ],
+      "mapa_recorrido_cliente": {
+        "antes": "Videos en cámara rápida (timelapse) de líneas instaladas en LinkedIn · Participación en exposiciones industriales (FABTECH / Automate) · Dossier técnico de capacidades",
+        "durante": "Propuesta de ingeniería con layout 3D y simulación de ciclo · Invitación a pruebas FAT en nave propia · Protocolo de seguridad EHS y fianzas de cumplimiento",
+        "despues": "Placa de acero inoxidable remachada en la celda robótica con QR de diagramas eléctricos · Pantalla de inicio en el HMI con el logo de Aksis · Póliza directa con Aksis Mantenimiento"
+      }
+    },
+    "naming_certification": {
+      "candidate": "Aksis Automation",
+      "style": "neologismo_portmanteau",
+      "character_length": 16,
+      "estimated_syllables": 8,
+      "nice_class": 35,
+      "nice_description": "Servicios generales de negocios y comercio.",
+      "smile_evaluation": {
+        "Suggestive": true,
+        "Memorable": false,
+        "Imagery": false,
+        "Legs": true,
+        "Emotional": true
+      },
+      "scratch_risk_flags": {
+        "Spelling_Challenged": false,
+        "Copycat": false,
+        "Restrictive": false,
+        "Annoying": false,
+        "Tame": false,
+        "Curse_of_Knowledge": false,
+        "Hard_to_Pronounce": true
+      },
+      "approved_for_brandbook": false
+    },
+    "visual_insights": {
+      "preferencias_extraidas": "1B: Vértices Facetados a 45° (Chaflán mecánico CNC), 2B: Masa Sólida 10pt, 3A: Chasis Hexagonal Abierto, 4B: Inclinación Cinética +14° (Velocidad de línea), 5B: Eje Robótico en Espacio Negativo, 6A: Acomodo Horizontal Modular (Permite intercambiar el descriptor de las 3 sub-marcas)",
+      "voiceover_emotional_support": true
+    },
+    "color_system": [
+      {
+        "nombre": "Color Primario Institucional (Certificado WCAG AAA)",
+        "original_requested_hex": "#EA580C",
+        "final_certified_hex": "#9A3A07",
+        "auto_healed": true,
+        "rgb": [
+          154,
+          58,
+          7
+        ],
+        "cmyk_fogra39": {
+          "C": 0,
+          "M": 62,
+          "Y": 95,
+          "K": 40
+        },
+        "pantone": "PMS 7621 C",
+        "wcag_sobre_blanco": {
+          "ratio": 7.04,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      },
+      {
+        "nombre": "Color Secundario de Acento (Certificado WCAG AAA)",
+        "original_requested_hex": "#38BDF8",
+        "final_certified_hex": "#1C5E7C",
+        "auto_healed": true,
+        "rgb": [
+          28,
+          94,
+          124
+        ],
+        "cmyk_fogra39": {
+          "C": 77,
+          "M": 24,
+          "Y": 0,
+          "K": 51
+        },
+        "pantone": "PMS 541 C",
+        "wcag_sobre_blanco": {
+          "ratio": 7.14,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      }
+    ],
+    "vector_and_embroidery_audit": {
+      "outlined_in_curves": true,
+      "valid_bezier_paths": true,
+      "min_embroidery_stroke_mm": 1.6,
+      "embroidery_1_ink_ready": true,
+      "plotter_vinyl_cut_ready": true
+    },
+    "master_38_pages_index": [
+      "Pág. 01-02: Portada Editorial & Tabla de Contenido Interactiva",
+      "Pág. 03-04: Objetivos del Manual e Inducción al Equipo",
+      "Pág. 05-08: I. Posicionamiento (1. El Propósito, 2. Posicionamiento, 3. Rol en la Sociedad, 4. Su Proceso)",
+      "Pág. 09-12: I. Identidad Verbal (5. Mensaje, 6. Personalidad Humana, 7. Comportamiento, 8. Su Mundo)",
+      "Pág. 13-16: II. Touchpoints & Customer Journey Map (Protocolos Antes, Durante y Post-Venta)",
+      "Pág. 17-18: III. Naming Estratégico, Semiótica y Certificación Clase de Niza",
+      "Pág. 19-22: IV. Construcción de Marca (A. Logotipo en Curvas, B. Símbolo/Sello, C. Relación Logo/Símbolo)",
+      "Pág. 23-26: IV. Normativa Geométrica (D. Área de Seguridad, F. Usos Correctos, G. Restricciones, H. Reducción y Prueba 5m/15m/30m)",
+      "Pág. 27-30: V. Sistema Cromático y Tipográfico (E. Color Pantone/CMYK/RGB/HEX Auto-Healed, I. Tipografía Primaria, Secundaria y Fallback)",
+      "Pág. 31-34: VI. Estilo Visual, Dirección Fotográfica y Jerarquías Gráficas",
+      "Pág. 35-36: VII. Casos de Aplicación Real + Checklist 'Tu Kit de Apertura Física (Las 4 Primeras Compras)'",
+      "Pág. 37: Anexo A — The Daily Brand Playbook (Guía de Bolsillo de 1 Página + QR de Audio-Inducción de 3 Minutos para Empleados)",
+      "Pág. 38: Anexo B — The Print-Shop Cheatsheet (Hoja Técnica para el Impresor y Bordador + Código QR Live Brand Portal)"
+    ],
+    "complete_deliverables_vault": [
+      "01_Aksis_Automation_Brandbook_Master_38p_Interactive_sRGB.pdf",
+      "02_Aksis_Automation_Brandbook_Master_38p_PrePress_PDFX1a_300DPI_FOGRA39.pdf",
+      "03_Aksis_Automation_Main_Logo_Outlined_Curves.svg",
+      "04_Aksis_Automation_Independent_Seal_Embroidery_1Ink.eps",
+      "05_Aksis_Automation_Official_Typography_Bundle_OTF_TTF.zip",
+      "06_Aksis_Automation_Daily_Employee_Playbook_1Pager_Plus_3Min_Audio.pdf",
+      "07_Aksis_Automation_PrintShop_And_Tailor_Cheatsheet.pdf",
+      "08_Aksis_Automation_Editable_Letterhead_And_Email_Signature.docx",
+      "09_Aksis_Automation_Digital_Kit_Zoom_Background_LinkedIn_Banner.zip",
+      "10_Aksis_Automation_Photo_Protection_Watermark_35pct_Opacity.png",
+      "11_Aksis_Automation_Google_Reviews_QR_Sticker_And_Table_Tent.pdf"
+    ]
+  }
+}

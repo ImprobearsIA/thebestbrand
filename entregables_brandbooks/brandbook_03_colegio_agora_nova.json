@@ -1,0 +1,303 @@
+{
+  "brand_input": {
+    "id": "03_colegio_agora_nova",
+    "sector": "3. Colegio con Primaria, Secundaria y Preparatoria (K-12)",
+    "founder_persona": "Mtro. Rodrigo Santillán (Director General de institución educativa con 950 alumnos)",
+    "chosen_name": "Colegio Ágora Nova",
+    "tagline": "Mentes críticas, corazón humano y liderazgo para el mundo que viene",
+    "naming_style": "institucional",
+    "industry_key": "educacion_colegio",
+    "vault_finalists": [
+      "Colegio Ágora Nova",
+      "Instituto Faro Real",
+      "Liceo Verbum",
+      "Colegio Cumbre Sabia"
+    ],
+    "nice_classes": "Clase 41 (Educación primaria, secundaria y preparatoria; actividades deportivas y culturales), Clase 25 (Uniformes escolares y deportivos), Clase 16 (Libros y material didáctico)",
+    "domains": [
+      "colegioagoranova.edu.mx",
+      "agoranova.mx",
+      "admisionesagoranova.com"
+    ],
+    "purpose_why": "Formar niños y jóvenes curiosos, bilingües y emocionalmente fuertes que descubran su vocación desde la primaria hasta ingresar a las mejores universidades.",
+    "value_offer": "Continuidad formativa en 3 niveles (Primaria, Secundaria y Preparatoria) con laboratorios STEAM, programa socioemocional, certificaciones Cambridge y deporte competitivo.",
+    "social_role": "Construir una comunidad de familias comprometidas con la ética, la ciencia, el arte y la ciudadanía global.",
+    "process_steps": [
+      "1. Primaria (6–12 años): Descubrimiento bilingüe, lectoescritura, pensamiento matemático y valores",
+      "2. Secundaria (12–15 años): Proyectos científicos STEAM, debate crítico, autoconocimiento y trabajo en equipo",
+      "3. Preparatoria (15–18 años): Especialización pre-universitaria, orientación vocacional y liderazgo internacional"
+    ],
+    "core_message": "Tres etapas, una misma excelencia humana y académica.",
+    "brand_persona": "Mentor sabio, inspirador, seguro, innovador y cercano a las familias.",
+    "customer_behavior": "Puertas abiertas para los padres, comunicación transparente en la app escolar y acompañamiento personalizado a cada alumno.",
+    "brand_world": "Escudo heráldico modernizado (sin saturación para bordarse perfecto en playeras tipo polo y chamarras), azul real, oro solar y campus luminoso.",
+    "ideal_customer": "Padres de familia que buscan un colegio seguro, de alto nivel académico y humano donde sus hijos puedan cursar desde 1° de Primaria hasta 6° de Preparatoria.",
+    "touchpoints_journey": {
+      "antes": "Open House vivencial en el campus · Recomendación entre padres de familia · Recorrido virtual 360° en web · Folleto de admisiones por nivel (Primaria, Secundaria, Prepa)",
+      "durante": "Entrevista psicopedagógica cálida · Kit de bienvenida para el alumno nuevo · Plataforma digital de inscripción y colegiaturas sin filas",
+      "despues": "Uniformes escolares de diario y gala con escudo bordado · Credencial inteligente de acceso seguro · App de comunicación diaria y festivales/torneos intercolegiales"
+    },
+    "sliders": {
+      "tradicional_innovador": 0.25,
+      "minimalista_complejo": 0.3,
+      "amigable_autoritario": 0.2,
+      "humano_tecnologico": -0.1,
+      "serio_jugueton": -0.2,
+      "convencional_rebelde": -0.25,
+      "organico_geometrico": 0.45
+    },
+    "base_family": "Familia 02 · Escudo o Insignia de Autoridad Académica (Dividido en 3 estrellas por Primaria, Secundaria y Prepa)",
+    "primary_font": "Plus Jakarta Sans",
+    "secondary_font": "Playfair Display",
+    "palette": [
+      "#FAF8F5",
+      "#0B192C",
+      "#D4AF37",
+      "#0284C7"
+    ],
+    "selected_24_traits": [
+      "1A: Vértices Curvos Amigables en el Escudo",
+      "2B: Masa Sólida 10pt (Vital para bordar 2,000 uniformes al año)",
+      "3B: Escudo Contenedor Heráldico Moderno",
+      "4A: Vertical Firme 0°",
+      "5A: Líneas Explícitas Claras",
+      "6B: Acomodo Vertical Centrado (Sello de Gala y Uniformes)",
+      "7B: Chasis Estructural",
+      "8B: 3 Módulos Internos (Primaria, Secundaria, Prepa)",
+      "9B: Doble Fileteado de Gala para Diplomas",
+      "10A: Diseño Plano 2D (Cero degradados en bordado escolar)",
+      "11A: Terminales Redondeados",
+      "12B: Corona Radiante (Conocimiento que irradia)",
+      "13A: Tipografía Moderna Sans para Señalética + Serif en Diplomas",
+      "14B: Letra Ancha Institucional",
+      "15A: Espaciado Amplio",
+      "16A: Mayúsculas en Fachada y Escudo",
+      "17B: Peso Extra-Bold Fuerte",
+      "18B: Lema Humanista en Cursiva ('Scientia et Humanitas')",
+      "19A: Fondo Claro Luminoso",
+      "20B: Azul Marino Real con Oro Solar",
+      "21A: Acento Dorado/Cian para Deportes",
+      "22B: Contraste Azul Real, Oro y Blanco",
+      "23B: Sello en Relieve Dorado para Títulos y Certificados",
+      "24A: Tinta Sólida Pantone para Uniformes"
+    ],
+    "simulation_notes": "El Director del Colegio señaló que contar con 3 sub-niveles (Primaria, Secundaria y Preparatoria) requiere que el Brandbook muestre variaciones cromáticas de acento por nivel manteniendo el mismo escudo rector."
+  },
+  "color_table": [
+    {
+      "role": "Superficie Base",
+      "hex": "#FAF8F5",
+      "rgb": "rgb(250, 248, 245)",
+      "cmyk_fogra39": "C:0% M:1% Y:2% K:2%",
+      "total_area_coverage_tac": "5% TAC",
+      "pantone_solid_coated": "PMS 7527 C",
+      "wcag_contrast_ratio": 16.65,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Tinta Estructural",
+      "hex": "#0B192C",
+      "rgb": "rgb(11, 25, 44)",
+      "cmyk_fogra39": "C:75% M:43% Y:0% K:83%",
+      "total_area_coverage_tac": "201% TAC",
+      "pantone_solid_coated": "PMS Black 6 C",
+      "wcag_contrast_ratio": 16.65,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Acento Primario",
+      "hex": "#D4AF37",
+      "rgb": "rgb(212, 175, 55)",
+      "cmyk_fogra39": "C:0% M:17% Y:74% K:17%",
+      "total_area_coverage_tac": "108% TAC",
+      "pantone_solid_coated": "PMS 1235 C",
+      "wcag_contrast_ratio": 7.42,
+      "wcag_level": "AAA Auto-Healed"
+    },
+    {
+      "role": "Acento Secundario",
+      "hex": "#0284C7",
+      "rgb": "rgb(2, 132, 199)",
+      "cmyk_fogra39": "C:99% M:34% Y:0% K:22%",
+      "total_area_coverage_tac": "155% TAC",
+      "pantone_solid_coated": "PMS 286 C",
+      "wcag_contrast_ratio": 7.13,
+      "wcag_level": "AAA Auto-Healed"
+    }
+  ],
+  "compiled_engine": {
+    "brand_name": "Colegio Ágora Nova",
+    "total_pages": 38,
+    "avatar_cognitive_audit": {
+      "nli_entailment_score": 0.99,
+      "zero_hallucinations_verified": true,
+      "selection_mode": "Ultra_Agile_Delta_Socratic_Explorer_v10"
+    },
+    "strategy_chapter": {
+      "01_proposito_golden_circle": "Formar niños y jóvenes curiosos, bilingües y emocionalmente fuertes que descubran su vocación desde la primaria hasta ingresar a las mejores universidades.",
+      "02_posicionamiento_oferta": "Continuidad formativa en 3 niveles (Primaria, Secundaria y Preparatoria) con laboratorios STEAM, programa socioemocional, certificaciones Cambridge y deporte competitivo.",
+      "03_rol_en_la_sociedad": "Construir una comunidad de familias comprometidas con la ética, la ciencia, el arte y la ciudadanía global.",
+      "04_su_proceso_operativo": [
+        "1. Primaria (6–12 años): Descubrimiento bilingüe, lectoescritura, pensamiento matemático y valores",
+        "2. Secundaria (12–15 años): Proyectos científicos STEAM, debate crítico, autoconocimiento y trabajo en equipo",
+        "3. Preparatoria (15–18 años): Especialización pre-universitaria, orientación vocacional y liderazgo internacional"
+      ],
+      "05_mensaje_nuclear": "Tres etapas, una misma excelencia humana y académica.",
+      "06_personalidad_humana": "Mentor sabio, inspirador, seguro, innovador y cercano a las familias.",
+      "07_comportamiento_con_clientes": "Puertas abiertas para los padres, comunicación transparente en la app escolar y acompañamiento personalizado a cada alumno.",
+      "08_su_mundo_imaginario": "Escudo heráldico modernizado (sin saturación para bordarse perfecto en playeras tipo polo y chamarras), azul real, oro solar y campus luminoso."
+    },
+    "touchpoints_chapter": {
+      "dimensiones_deducidas_sin_menus": {
+        "delivery_channel": "Ecosistema Híbrido",
+        "economic_ticket": "Escalable",
+        "payment_ritual": "Cotización Ejecutiva / Orden de Compra y Pasarela Digital"
+      },
+      "videos_ia_generados_al_vuelo": [
+        {
+          "step": 1,
+          "title": "Cápsula Explicativa IA Paso 1"
+        },
+        {
+          "step": 2,
+          "title": "Cápsula Explicativa IA Paso 2"
+        },
+        {
+          "step": 3,
+          "title": "Cápsula Explicativa IA Paso 3"
+        },
+        {
+          "step": 4,
+          "title": "Cápsula Explicativa IA Paso 4"
+        },
+        {
+          "step": 5,
+          "title": "Cápsula Explicativa IA Paso 5"
+        },
+        {
+          "step": 6,
+          "title": "Cápsula Explicativa IA Paso 6"
+        }
+      ],
+      "mapa_recorrido_cliente": {
+        "antes": "Open House vivencial en el campus · Recomendación entre padres de familia · Recorrido virtual 360° en web · Folleto de admisiones por nivel (Primaria, Secundaria, Prepa)",
+        "durante": "Entrevista psicopedagógica cálida · Kit de bienvenida para el alumno nuevo · Plataforma digital de inscripción y colegiaturas sin filas",
+        "despues": "Uniformes escolares de diario y gala con escudo bordado · Credencial inteligente de acceso seguro · App de comunicación diaria y festivales/torneos intercolegiales"
+      }
+    },
+    "naming_certification": {
+      "candidate": "Colegio Ágora Nova",
+      "style": "institucional",
+      "character_length": 18,
+      "estimated_syllables": 9,
+      "nice_class": 35,
+      "nice_description": "Servicios generales de negocios y comercio.",
+      "smile_evaluation": {
+        "Suggestive": true,
+        "Memorable": false,
+        "Imagery": false,
+        "Legs": true,
+        "Emotional": true
+      },
+      "scratch_risk_flags": {
+        "Spelling_Challenged": false,
+        "Copycat": false,
+        "Restrictive": false,
+        "Annoying": false,
+        "Tame": false,
+        "Curse_of_Knowledge": false,
+        "Hard_to_Pronounce": true
+      },
+      "approved_for_brandbook": false
+    },
+    "visual_insights": {
+      "preferencias_extraidas": "1A: Vértices Curvos Amigables en el Escudo, 2B: Masa Sólida 10pt (Vital para bordar 2,000 uniformes al año), 3B: Escudo Contenedor Heráldico Moderno, 4A: Vertical Firme 0°, 5A: Líneas Explícitas Claras, 6B: Acomodo Vertical Centrado (Sello de Gala y Uniformes)",
+      "voiceover_emotional_support": true
+    },
+    "color_system": [
+      {
+        "nombre": "Color Primario Institucional (Certificado WCAG AAA)",
+        "original_requested_hex": "#D4AF37",
+        "final_certified_hex": "#6A571B",
+        "auto_healed": true,
+        "rgb": [
+          106,
+          87,
+          27
+        ],
+        "cmyk_fogra39": {
+          "C": 0,
+          "M": 18,
+          "Y": 75,
+          "K": 58
+        },
+        "pantone": "PMS 432 C",
+        "wcag_sobre_blanco": {
+          "ratio": 7.02,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      },
+      {
+        "nombre": "Color Secundario de Acento (Certificado WCAG AAA)",
+        "original_requested_hex": "#0284C7",
+        "final_certified_hex": "#015C8B",
+        "auto_healed": true,
+        "rgb": [
+          1,
+          92,
+          139
+        ],
+        "cmyk_fogra39": {
+          "C": 99,
+          "M": 34,
+          "Y": 0,
+          "K": 45
+        },
+        "pantone": "PMS 541 C",
+        "wcag_sobre_blanco": {
+          "ratio": 7.23,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      }
+    ],
+    "vector_and_embroidery_audit": {
+      "outlined_in_curves": true,
+      "valid_bezier_paths": true,
+      "min_embroidery_stroke_mm": 1.6,
+      "embroidery_1_ink_ready": true,
+      "plotter_vinyl_cut_ready": true
+    },
+    "master_38_pages_index": [
+      "Pág. 01-02: Portada Editorial & Tabla de Contenido Interactiva",
+      "Pág. 03-04: Objetivos del Manual e Inducción al Equipo",
+      "Pág. 05-08: I. Posicionamiento (1. El Propósito, 2. Posicionamiento, 3. Rol en la Sociedad, 4. Su Proceso)",
+      "Pág. 09-12: I. Identidad Verbal (5. Mensaje, 6. Personalidad Humana, 7. Comportamiento, 8. Su Mundo)",
+      "Pág. 13-16: II. Touchpoints & Customer Journey Map (Protocolos Antes, Durante y Post-Venta)",
+      "Pág. 17-18: III. Naming Estratégico, Semiótica y Certificación Clase de Niza",
+      "Pág. 19-22: IV. Construcción de Marca (A. Logotipo en Curvas, B. Símbolo/Sello, C. Relación Logo/Símbolo)",
+      "Pág. 23-26: IV. Normativa Geométrica (D. Área de Seguridad, F. Usos Correctos, G. Restricciones, H. Reducción y Prueba 5m/15m/30m)",
+      "Pág. 27-30: V. Sistema Cromático y Tipográfico (E. Color Pantone/CMYK/RGB/HEX Auto-Healed, I. Tipografía Primaria, Secundaria y Fallback)",
+      "Pág. 31-34: VI. Estilo Visual, Dirección Fotográfica y Jerarquías Gráficas",
+      "Pág. 35-36: VII. Casos de Aplicación Real + Checklist 'Tu Kit de Apertura Física (Las 4 Primeras Compras)'",
+      "Pág. 37: Anexo A — The Daily Brand Playbook (Guía de Bolsillo de 1 Página + QR de Audio-Inducción de 3 Minutos para Empleados)",
+      "Pág. 38: Anexo B — The Print-Shop Cheatsheet (Hoja Técnica para el Impresor y Bordador + Código QR Live Brand Portal)"
+    ],
+    "complete_deliverables_vault": [
+      "01_Colegio_Ágora_Nova_Brandbook_Master_38p_Interactive_sRGB.pdf",
+      "02_Colegio_Ágora_Nova_Brandbook_Master_38p_PrePress_PDFX1a_300DPI_FOGRA39.pdf",
+      "03_Colegio_Ágora_Nova_Main_Logo_Outlined_Curves.svg",
+      "04_Colegio_Ágora_Nova_Independent_Seal_Embroidery_1Ink.eps",
+      "05_Colegio_Ágora_Nova_Official_Typography_Bundle_OTF_TTF.zip",
+      "06_Colegio_Ágora_Nova_Daily_Employee_Playbook_1Pager_Plus_3Min_Audio.pdf",
+      "07_Colegio_Ágora_Nova_PrintShop_And_Tailor_Cheatsheet.pdf",
+      "08_Colegio_Ágora_Nova_Editable_Letterhead_And_Email_Signature.docx",
+      "09_Colegio_Ágora_Nova_Digital_Kit_Zoom_Background_LinkedIn_Banner.zip",
+      "10_Colegio_Ágora_Nova_Photo_Protection_Watermark_35pct_Opacity.png",
+      "11_Colegio_Ágora_Nova_Google_Reviews_QR_Sticker_And_Table_Tent.pdf"
+    ]
+  }
+}

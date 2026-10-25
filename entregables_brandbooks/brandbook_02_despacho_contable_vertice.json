@@ -1,0 +1,303 @@
+{
+  "brand_input": {
+    "id": "02_despacho_contable_vertice",
+    "sector": "2. Despacho Contable, Fiscal y Patrimonial",
+    "founder_persona": "C.P.C. Elena Mondragón (49 años, Socia Directora de firma con 85 empresas clientes)",
+    "chosen_name": "Vértice Patrimonial",
+    "tagline": "Certeza fiscal, blindaje contable y paz financiera para tu empresa",
+    "naming_style": "institucional",
+    "industry_key": "consultoria_b2b",
+    "vault_finalists": [
+      "Vértice Patrimonial",
+      "Verax Contadores",
+      "Grupo Fiducia",
+      "Ábaco Soberano"
+    ],
+    "nice_classes": "Clase 35 (Contabilidad, auditoría fiscal y nóminas), Clase 36 (Consultoría financiera y patrimonial), Clase 45 (Cumplimiento legal y normativo)",
+    "domains": [
+      "verticepatrimonial.com",
+      "verticefiscal.mx",
+      "portalvertice.com"
+    ],
+    "purpose_why": "Eliminar el miedo y la incertidumbre fiscal del empresario, transformando la contabilidad en una brújula estratégica que protege su patrimonio familiar y corporativo.",
+    "value_offer": "Cierres contables antes del día 5 de cada mes, auditoría preventiva ante el SAT sin multas y tablero financiero en lenguaje claro para toma de decisiones.",
+    "social_role": "Fomentar una cultura empresarial formal, ética, rentable y libre de contingencias fiscales.",
+    "process_steps": [
+      "1. Radiografía Fiscal 360° y detección de riesgos u oportunidades de deducción",
+      "2. Automatización contable mensual con conciliación bancaria y blindaje de CFDI",
+      "3. Junta mensual de Consejo con reporte ejecutivo de utilidades, flujo e impuestos"
+    ],
+    "core_message": "Tus números en orden absoluto. Tu patrimonio seguro.",
+    "brand_persona": "Estratega incorruptible, claro, puntual, discreto y riguroso.",
+    "customer_behavior": "Explicar leyes complejas sin tecnicismos confusos, anticiparse 15 días a cualquier vencimiento y responder urgencias en menos de 2 horas.",
+    "brand_world": "Azul noche institucional, papel seguridad con marca de agua, gráficas limpias en verde esmeralda y tipografía suiza de alta legibilidad.",
+    "ideal_customer": "Dueños de empresas PyME, médicos y directores generales que facturan entre $5M y $200M MXN y buscan dormir tranquilos.",
+    "touchpoints_journey": {
+      "antes": "Conferencias de reformas fiscales · Perfil corporativo en LinkedIn · Recomendación de banqueros y abogados · Sitio web con calculadora fiscal",
+      "durante": "Carpeta ejecutiva de diagnóstico confidencial · Propuesta de honorarios transparente en PDF interactivo · Contrato con cláusula de confidencialidad y garantía",
+      "despues": "Reporte mensual ejecutivo en 1 sola hoja ('Semáforo Fiscal') · Alertas preventivas por WhatsApp · Reunión trimestral de planeación patrimonial"
+    },
+    "sliders": {
+      "tradicional_innovador": 0.15,
+      "minimalista_complejo": -0.45,
+      "amigable_autoritario": 0.65,
+      "humano_tecnologico": 0.25,
+      "serio_jugueton": -0.8,
+      "convencional_rebelde": -0.5,
+      "organico_geometrico": 0.75
+    },
+    "base_family": "Familia 01 · Monograma Geométrico de Precisión (VP)",
+    "primary_font": "Plus Jakarta Sans",
+    "secondary_font": "JetBrains Mono",
+    "palette": [
+      "#F8FAFC",
+      "#0F172A",
+      "#059669",
+      "#C59B27"
+    ],
+    "selected_24_traits": [
+      "1B: Vértices Facetados 45° (Exactitud contable)",
+      "2B: Masa Sólida 10pt",
+      "3B: Escudo Contenedor Sobrio",
+      "4A: Equilibrio Vertical Firme 0°",
+      "5A: Líneas Explícitas Directas",
+      "6A: Acomodo Horizontal Ejecutivo (Ideal para hojas membretadas)",
+      "7B: Geometría Hexagonal Estructural",
+      "8B: Módulos Constructivos",
+      "9A: Síntesis Minimalista Limpia",
+      "10A: Diseño Plano 2D",
+      "11B: Terminales Rectos 90°",
+      "12A: Núcleo Concentrado",
+      "13A: Tipografía Moderna Sans",
+      "14B: Letra Ancha Ejecutiva",
+      "15A: Espaciado Amplio +0.30em",
+      "16A: Mayúsculas de Autoridad",
+      "17B: Peso Extra-Bold Fuerte",
+      "18A: Subtítulo Técnico Tabular Mono",
+      "19A: Fondo Claro Papel Seguridad",
+      "20B: Color Frío Azul/Esmeralda Institucional",
+      "21B: Acento Verde Esmeralda (Estabilidad)",
+      "22A: Sobriedad Obsidiana & Esmeralda",
+      "23B: Estampado Metálico en Carpetas Fiscales",
+      "24A: Tinta Sólida Pantone"
+    ],
+    "simulation_notes": "La socia del despacho destacó que los 7 deslizadores con ejemplos de marcas reales le permitieron definir 'Autoridad sin verse anticuados'. Sugirió añadir plantillas de Firma de Correo y Portada de Dictamen Fiscal en el Paso 6."
+  },
+  "color_table": [
+    {
+      "role": "Superficie Base",
+      "hex": "#F8FAFC",
+      "rgb": "rgb(248, 250, 252)",
+      "cmyk_fogra39": "C:2% M:1% Y:0% K:1%",
+      "total_area_coverage_tac": "4% TAC",
+      "pantone_solid_coated": "PMS 7527 C",
+      "wcag_contrast_ratio": 17.06,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Tinta Estructural",
+      "hex": "#0F172A",
+      "rgb": "rgb(15, 23, 42)",
+      "cmyk_fogra39": "C:64% M:45% Y:0% K:84%",
+      "total_area_coverage_tac": "193% TAC",
+      "pantone_solid_coated": "PMS Black 6 C",
+      "wcag_contrast_ratio": 17.06,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Acento Primario",
+      "hex": "#059669",
+      "rgb": "rgb(5, 150, 105)",
+      "cmyk_fogra39": "C:97% M:0% Y:30% K:41%",
+      "total_area_coverage_tac": "168% TAC",
+      "pantone_solid_coated": "PMS 349 C",
+      "wcag_contrast_ratio": 7.08,
+      "wcag_level": "AAA Auto-Healed"
+    },
+    {
+      "role": "Acento Secundario",
+      "hex": "#C59B27",
+      "rgb": "rgb(197, 155, 39)",
+      "cmyk_fogra39": "C:0% M:21% Y:80% K:23%",
+      "total_area_coverage_tac": "124% TAC",
+      "pantone_solid_coated": "PMS 1235 C",
+      "wcag_contrast_ratio": 7.02,
+      "wcag_level": "AAA Auto-Healed"
+    }
+  ],
+  "compiled_engine": {
+    "brand_name": "Vértice Patrimonial",
+    "total_pages": 38,
+    "avatar_cognitive_audit": {
+      "nli_entailment_score": 0.99,
+      "zero_hallucinations_verified": true,
+      "selection_mode": "Ultra_Agile_Delta_Socratic_Explorer_v10"
+    },
+    "strategy_chapter": {
+      "01_proposito_golden_circle": "Eliminar el miedo y la incertidumbre fiscal del empresario, transformando la contabilidad en una brújula estratégica que protege su patrimonio familiar y corporativo.",
+      "02_posicionamiento_oferta": "Cierres contables antes del día 5 de cada mes, auditoría preventiva ante el SAT sin multas y tablero financiero en lenguaje claro para toma de decisiones.",
+      "03_rol_en_la_sociedad": "Fomentar una cultura empresarial formal, ética, rentable y libre de contingencias fiscales.",
+      "04_su_proceso_operativo": [
+        "1. Radiografía Fiscal 360° y detección de riesgos u oportunidades de deducción",
+        "2. Automatización contable mensual con conciliación bancaria y blindaje de CFDI",
+        "3. Junta mensual de Consejo con reporte ejecutivo de utilidades, flujo e impuestos"
+      ],
+      "05_mensaje_nuclear": "Tus números en orden absoluto. Tu patrimonio seguro.",
+      "06_personalidad_humana": "Estratega incorruptible, claro, puntual, discreto y riguroso.",
+      "07_comportamiento_con_clientes": "Explicar leyes complejas sin tecnicismos confusos, anticiparse 15 días a cualquier vencimiento y responder urgencias en menos de 2 horas.",
+      "08_su_mundo_imaginario": "Azul noche institucional, papel seguridad con marca de agua, gráficas limpias en verde esmeralda y tipografía suiza de alta legibilidad."
+    },
+    "touchpoints_chapter": {
+      "dimensiones_deducidas_sin_menus": {
+        "delivery_channel": "Ecosistema Híbrido",
+        "economic_ticket": "Alto Valor / B2B & Institucional",
+        "payment_ritual": "Cotización Ejecutiva / Orden de Compra y Pasarela Digital"
+      },
+      "videos_ia_generados_al_vuelo": [
+        {
+          "step": 1,
+          "title": "Cápsula Explicativa IA Paso 1"
+        },
+        {
+          "step": 2,
+          "title": "Cápsula Explicativa IA Paso 2"
+        },
+        {
+          "step": 3,
+          "title": "Cápsula Explicativa IA Paso 3"
+        },
+        {
+          "step": 4,
+          "title": "Cápsula Explicativa IA Paso 4"
+        },
+        {
+          "step": 5,
+          "title": "Cápsula Explicativa IA Paso 5"
+        },
+        {
+          "step": 6,
+          "title": "Cápsula Explicativa IA Paso 6"
+        }
+      ],
+      "mapa_recorrido_cliente": {
+        "antes": "Conferencias de reformas fiscales · Perfil corporativo en LinkedIn · Recomendación de banqueros y abogados · Sitio web con calculadora fiscal",
+        "durante": "Carpeta ejecutiva de diagnóstico confidencial · Propuesta de honorarios transparente en PDF interactivo · Contrato con cláusula de confidencialidad y garantía",
+        "despues": "Reporte mensual ejecutivo en 1 sola hoja ('Semáforo Fiscal') · Alertas preventivas por WhatsApp · Reunión trimestral de planeación patrimonial"
+      }
+    },
+    "naming_certification": {
+      "candidate": "Vértice Patrimonial",
+      "style": "institucional",
+      "character_length": 19,
+      "estimated_syllables": 8,
+      "nice_class": 35,
+      "nice_description": "Gestión de negocios comerciales, consultoría empresarial y marketing.",
+      "smile_evaluation": {
+        "Suggestive": true,
+        "Memorable": false,
+        "Imagery": false,
+        "Legs": true,
+        "Emotional": true
+      },
+      "scratch_risk_flags": {
+        "Spelling_Challenged": false,
+        "Copycat": false,
+        "Restrictive": false,
+        "Annoying": false,
+        "Tame": false,
+        "Curse_of_Knowledge": false,
+        "Hard_to_Pronounce": true
+      },
+      "approved_for_brandbook": false
+    },
+    "visual_insights": {
+      "preferencias_extraidas": "1B: Vértices Facetados 45° (Exactitud contable), 2B: Masa Sólida 10pt, 3B: Escudo Contenedor Sobrio, 4A: Equilibrio Vertical Firme 0°, 5A: Líneas Explícitas Directas, 6A: Acomodo Horizontal Ejecutivo (Ideal para hojas membretadas)",
+      "voiceover_emotional_support": true
+    },
+    "color_system": [
+      {
+        "nombre": "Color Primario Institucional (Certificado WCAG AAA)",
+        "original_requested_hex": "#059669",
+        "final_certified_hex": "#036547",
+        "auto_healed": true,
+        "rgb": [
+          3,
+          101,
+          71
+        ],
+        "cmyk_fogra39": {
+          "C": 97,
+          "M": 0,
+          "Y": 30,
+          "K": 60
+        },
+        "pantone": "PMS 349 C",
+        "wcag_sobre_blanco": {
+          "ratio": 7.1,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      },
+      {
+        "nombre": "Color Secundario de Acento (Certificado WCAG AAA)",
+        "original_requested_hex": "#C59B27",
+        "final_certified_hex": "#6A5315",
+        "auto_healed": true,
+        "rgb": [
+          106,
+          83,
+          21
+        ],
+        "cmyk_fogra39": {
+          "C": 0,
+          "M": 22,
+          "Y": 80,
+          "K": 58
+        },
+        "pantone": "PMS 432 C",
+        "wcag_sobre_blanco": {
+          "ratio": 7.34,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      }
+    ],
+    "vector_and_embroidery_audit": {
+      "outlined_in_curves": true,
+      "valid_bezier_paths": true,
+      "min_embroidery_stroke_mm": 1.6,
+      "embroidery_1_ink_ready": true,
+      "plotter_vinyl_cut_ready": true
+    },
+    "master_38_pages_index": [
+      "Pág. 01-02: Portada Editorial & Tabla de Contenido Interactiva",
+      "Pág. 03-04: Objetivos del Manual e Inducción al Equipo",
+      "Pág. 05-08: I. Posicionamiento (1. El Propósito, 2. Posicionamiento, 3. Rol en la Sociedad, 4. Su Proceso)",
+      "Pág. 09-12: I. Identidad Verbal (5. Mensaje, 6. Personalidad Humana, 7. Comportamiento, 8. Su Mundo)",
+      "Pág. 13-16: II. Touchpoints & Customer Journey Map (Protocolos Antes, Durante y Post-Venta)",
+      "Pág. 17-18: III. Naming Estratégico, Semiótica y Certificación Clase de Niza",
+      "Pág. 19-22: IV. Construcción de Marca (A. Logotipo en Curvas, B. Símbolo/Sello, C. Relación Logo/Símbolo)",
+      "Pág. 23-26: IV. Normativa Geométrica (D. Área de Seguridad, F. Usos Correctos, G. Restricciones, H. Reducción y Prueba 5m/15m/30m)",
+      "Pág. 27-30: V. Sistema Cromático y Tipográfico (E. Color Pantone/CMYK/RGB/HEX Auto-Healed, I. Tipografía Primaria, Secundaria y Fallback)",
+      "Pág. 31-34: VI. Estilo Visual, Dirección Fotográfica y Jerarquías Gráficas",
+      "Pág. 35-36: VII. Casos de Aplicación Real + Checklist 'Tu Kit de Apertura Física (Las 4 Primeras Compras)'",
+      "Pág. 37: Anexo A — The Daily Brand Playbook (Guía de Bolsillo de 1 Página + QR de Audio-Inducción de 3 Minutos para Empleados)",
+      "Pág. 38: Anexo B — The Print-Shop Cheatsheet (Hoja Técnica para el Impresor y Bordador + Código QR Live Brand Portal)"
+    ],
+    "complete_deliverables_vault": [
+      "01_Vértice_Patrimonial_Brandbook_Master_38p_Interactive_sRGB.pdf",
+      "02_Vértice_Patrimonial_Brandbook_Master_38p_PrePress_PDFX1a_300DPI_FOGRA39.pdf",
+      "03_Vértice_Patrimonial_Main_Logo_Outlined_Curves.svg",
+      "04_Vértice_Patrimonial_Independent_Seal_Embroidery_1Ink.eps",
+      "05_Vértice_Patrimonial_Official_Typography_Bundle_OTF_TTF.zip",
+      "06_Vértice_Patrimonial_Daily_Employee_Playbook_1Pager_Plus_3Min_Audio.pdf",
+      "07_Vértice_Patrimonial_PrintShop_And_Tailor_Cheatsheet.pdf",
+      "08_Vértice_Patrimonial_Editable_Letterhead_And_Email_Signature.docx",
+      "09_Vértice_Patrimonial_Digital_Kit_Zoom_Background_LinkedIn_Banner.zip",
+      "10_Vértice_Patrimonial_Photo_Protection_Watermark_35pct_Opacity.png",
+      "11_Vértice_Patrimonial_Google_Reviews_QR_Sticker_And_Table_Tent.pdf"
+    ]
+  }
+}

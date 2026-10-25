@@ -1,0 +1,283 @@
+{
+  "brand_input": {
+    "id": "09B_submarca_aksis_mantenimiento",
+    "sector": "9B. [SUB-MARCA 1 DE ARQUITECTURA] Mantenimiento Industrial 24/7",
+    "founder_persona": "Ing. Alejandro Villarreal + Gerente de Servicio Post-Venta",
+    "chosen_name": "Aksis Mantenimiento",
+    "tagline": "Continuidad operativa 24/7 y mantenimiento predictivo cero paros",
+    "naming_style": "compuesto",
+    "industry_key": "tecnologia_saas",
+    "architecture_role": "SUB-MARCA ENDOSADA #01 (Hereda el 85% del ADN geométrico y tipográfico de Aksis Automation; cambia acento cromático a Verde Esmeralda Operativo #10B981 y descriptor modular)",
+    "vault_finalists": [
+      "Aksis Mantenimiento",
+      "Aksis Care 24/7",
+      "Aksis Uptime",
+      "Aksis Service"
+    ],
+    "nice_classes": "Clase 37 (Mantenimiento preventivo, predictivo y correctivo de maquinaria industrial y líneas de producción)",
+    "domains": [
+      "mantenimiento.aksis.industrial",
+      "aksiscare.com",
+      "sos.aksis.mx"
+    ],
+    "purpose_why": "Asegurar que ninguna línea industrial se detenga de forma imprevista, respondiendo en minutos y anticipando fallas mecánicas o eléctricas mediante termografía y vibraciones.",
+    "value_offer": "Pólizas de mantenimiento industrial 24/7 con SLA de llegada en menos de 2 horas, análisis predictivo de vibración/termografía y stock crítico de refacciones en consignación.",
+    "social_role": "Proteger la continuidad de las fuentes de trabajo industriales y prevenir accidentes en planta por falta de mantenimiento.",
+    "process_steps": [
+      "1. Auditoría de criticidad de activos e instalación de etiquetas QR de historial en cada máquina",
+      "2. Rutinas programadas de mantenimiento preventivo y diagnóstico predictivo sin detener producción",
+      "3. Escuadrón de respuesta de emergencia 24/7 y reporte mensual de disponibilidad (MTBF / MTTR)"
+    ],
+    "core_message": "Tu planta siempre en verde. Cero paros no programados.",
+    "brand_persona": "Especialista de respuesta rápida: confiable, prevenido, disponible 24/7 y metódico.",
+    "customer_behavior": "Camionetas taller impecables, técnicos certificados con EPP completo y semáforo verde de estatus de máquina.",
+    "brand_world": "Hereda el chasis hexagonal 'AK' de Aksis, pero sustituye el Naranja Robótico por Verde Esmeralda de 'Línea Operativa Activa' (#10B981) en uniformes antimanchas, cajas de herramientas y etiquetas LOTO.",
+    "ideal_customer": "Gerentes de Mantenimiento y Jefes de Planta que pierden miles de dólares por cada hora de paro de línea.",
+    "touchpoints_journey": {
+      "antes": "Diagnóstico termográfico gratuito de un tablero crítico · Venta cruzada directa desde cada proyecto de Aksis Automation",
+      "durante": "Póliza anual con niveles de servicio (SLA) claros · Etiquetado QR de cada activo en la planta del cliente",
+      "despues": "Unidades móviles taller rotuladas · Candados de bloqueo LOTO personalizados · Bitácora digital de salud de máquina"
+    },
+    "sliders": {
+      "tradicional_innovador": 0.7,
+      "minimalista_complejo": -0.55,
+      "amigable_autoritario": 0.6,
+      "humano_tecnologico": 0.75,
+      "serio_jugueton": -0.75,
+      "convencional_rebelde": 0.2,
+      "organico_geometrico": 0.95
+    },
+    "base_family": "Familia 01 · Monograma Hexagonal Isométrico 'AK' (Heredado de Marca Matriz + Código Cromático Verde Uptime)",
+    "primary_font": "Space Grotesk",
+    "secondary_font": "JetBrains Mono",
+    "palette": [
+      "#090D16",
+      "#F8FAFC",
+      "#10B981",
+      "#059669"
+    ],
+    "selected_24_traits": [
+      "Hereda los atributos estructurales 1 al 18 de la Marca Matriz (Aksis) para mantener unidad de grupo",
+      "Cambia Atributo 18A: Subtítulo Técnico '[ MANTENIMIENTO INDUSTRIAL 24/7 ]'",
+      "Cambia Atributos 20 y 21: Color Primario Verde Esmeralda Operativo (#10B981, código universal de máquina funcionando en planta)"
+    ],
+    "simulation_notes": "PRÁCTICA MULTI-MARCA: En lugar de responder todo desde cero, al activar 'Crear Sub-Marca desde Matriz', el tiempo de creación bajó de 25 minutos a 3 minutos conservando coherencia total."
+  },
+  "color_table": [
+    {
+      "role": "Superficie Base",
+      "hex": "#090D16",
+      "rgb": "rgb(9, 13, 22)",
+      "cmyk_fogra39": "C:59% M:41% Y:0% K:91%",
+      "total_area_coverage_tac": "191% TAC",
+      "pantone_solid_coated": "PMS Black 6 C",
+      "wcag_contrast_ratio": 18.57,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Tinta Estructural",
+      "hex": "#F8FAFC",
+      "rgb": "rgb(248, 250, 252)",
+      "cmyk_fogra39": "C:2% M:1% Y:0% K:1%",
+      "total_area_coverage_tac": "4% TAC",
+      "pantone_solid_coated": "PMS 7527 C",
+      "wcag_contrast_ratio": 18.57,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Acento Primario",
+      "hex": "#10B981",
+      "rgb": "rgb(16, 185, 129)",
+      "cmyk_fogra39": "C:91% M:0% Y:30% K:27%",
+      "total_area_coverage_tac": "148% TAC",
+      "pantone_solid_coated": "PMS 349 C",
+      "wcag_contrast_ratio": 7.66,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Acento Secundario",
+      "hex": "#059669",
+      "rgb": "rgb(5, 150, 105)",
+      "cmyk_fogra39": "C:97% M:0% Y:30% K:41%",
+      "total_area_coverage_tac": "168% TAC",
+      "pantone_solid_coated": "PMS 349 C",
+      "wcag_contrast_ratio": 1.05,
+      "wcag_level": "AAA Auto-Healed"
+    }
+  ],
+  "compiled_engine": {
+    "brand_name": "Aksis Mantenimiento",
+    "total_pages": 38,
+    "avatar_cognitive_audit": {
+      "nli_entailment_score": 0.99,
+      "zero_hallucinations_verified": true,
+      "selection_mode": "Ultra_Agile_Delta_Socratic_Explorer_v10"
+    },
+    "strategy_chapter": {
+      "01_proposito_golden_circle": "Asegurar que ninguna línea industrial se detenga de forma imprevista, respondiendo en minutos y anticipando fallas mecánicas o eléctricas mediante termografía y vibraciones.",
+      "02_posicionamiento_oferta": "Pólizas de mantenimiento industrial 24/7 con SLA de llegada en menos de 2 horas, análisis predictivo de vibración/termografía y stock crítico de refacciones en consignación.",
+      "03_rol_en_la_sociedad": "Proteger la continuidad de las fuentes de trabajo industriales y prevenir accidentes en planta por falta de mantenimiento.",
+      "04_su_proceso_operativo": [
+        "1. Auditoría de criticidad de activos e instalación de etiquetas QR de historial en cada máquina",
+        "2. Rutinas programadas de mantenimiento preventivo y diagnóstico predictivo sin detener producción",
+        "3. Escuadrón de respuesta de emergencia 24/7 y reporte mensual de disponibilidad (MTBF / MTTR)"
+      ],
+      "05_mensaje_nuclear": "Tu planta siempre en verde. Cero paros no programados.",
+      "06_personalidad_humana": "Especialista de respuesta rápida: confiable, prevenido, disponible 24/7 y metódico.",
+      "07_comportamiento_con_clientes": "Camionetas taller impecables, técnicos certificados con EPP completo y semáforo verde de estatus de máquina.",
+      "08_su_mundo_imaginario": "Hereda el chasis hexagonal 'AK' de Aksis, pero sustituye el Naranja Robótico por Verde Esmeralda de 'Línea Operativa Activa' (#10B981) en uniformes antimanchas, cajas de herramientas y etiquetas LOTO."
+    },
+    "touchpoints_chapter": {
+      "dimensiones_deducidas_sin_menus": {
+        "delivery_channel": "Ecosistema Híbrido",
+        "economic_ticket": "Escalable",
+        "payment_ritual": "Cotización Ejecutiva / Orden de Compra y Pasarela Digital"
+      },
+      "videos_ia_generados_al_vuelo": [
+        {
+          "step": 1,
+          "title": "Cápsula Explicativa IA Paso 1"
+        },
+        {
+          "step": 2,
+          "title": "Cápsula Explicativa IA Paso 2"
+        },
+        {
+          "step": 3,
+          "title": "Cápsula Explicativa IA Paso 3"
+        },
+        {
+          "step": 4,
+          "title": "Cápsula Explicativa IA Paso 4"
+        },
+        {
+          "step": 5,
+          "title": "Cápsula Explicativa IA Paso 5"
+        },
+        {
+          "step": 6,
+          "title": "Cápsula Explicativa IA Paso 6"
+        }
+      ],
+      "mapa_recorrido_cliente": {
+        "antes": "Diagnóstico termográfico gratuito de un tablero crítico · Venta cruzada directa desde cada proyecto de Aksis Automation",
+        "durante": "Póliza anual con niveles de servicio (SLA) claros · Etiquetado QR de cada activo en la planta del cliente",
+        "despues": "Unidades móviles taller rotuladas · Candados de bloqueo LOTO personalizados · Bitácora digital de salud de máquina"
+      }
+    },
+    "naming_certification": {
+      "candidate": "Aksis Mantenimiento",
+      "style": "compuesto",
+      "character_length": 19,
+      "estimated_syllables": 8,
+      "nice_class": 35,
+      "nice_description": "Servicios generales de negocios y comercio.",
+      "smile_evaluation": {
+        "Suggestive": true,
+        "Memorable": false,
+        "Imagery": true,
+        "Legs": true,
+        "Emotional": true
+      },
+      "scratch_risk_flags": {
+        "Spelling_Challenged": false,
+        "Copycat": false,
+        "Restrictive": false,
+        "Annoying": false,
+        "Tame": false,
+        "Curse_of_Knowledge": false,
+        "Hard_to_Pronounce": true
+      },
+      "approved_for_brandbook": false
+    },
+    "visual_insights": {
+      "preferencias_extraidas": "Hereda los atributos estructurales 1 al 18 de la Marca Matriz (Aksis) para mantener unidad de grupo, Cambia Atributo 18A: Subtítulo Técnico '[ MANTENIMIENTO INDUSTRIAL 24/7 ]', Cambia Atributos 20 y 21: Color Primario Verde Esmeralda Operativo (#10B981, código universal de máquina funcionando en planta)",
+      "voiceover_emotional_support": true
+    },
+    "color_system": [
+      {
+        "nombre": "Color Primario Institucional (Certificado WCAG AAA)",
+        "original_requested_hex": "#10B981",
+        "final_certified_hex": "#086345",
+        "auto_healed": true,
+        "rgb": [
+          8,
+          99,
+          69
+        ],
+        "cmyk_fogra39": {
+          "C": 92,
+          "M": 0,
+          "Y": 30,
+          "K": 61
+        },
+        "pantone": "PMS 349 C",
+        "wcag_sobre_blanco": {
+          "ratio": 7.29,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      },
+      {
+        "nombre": "Color Secundario de Acento (Certificado WCAG AAA)",
+        "original_requested_hex": "#059669",
+        "final_certified_hex": "#036547",
+        "auto_healed": true,
+        "rgb": [
+          3,
+          101,
+          71
+        ],
+        "cmyk_fogra39": {
+          "C": 97,
+          "M": 0,
+          "Y": 30,
+          "K": 60
+        },
+        "pantone": "PMS 349 C",
+        "wcag_sobre_blanco": {
+          "ratio": 7.1,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      }
+    ],
+    "vector_and_embroidery_audit": {
+      "outlined_in_curves": true,
+      "valid_bezier_paths": true,
+      "min_embroidery_stroke_mm": 1.6,
+      "embroidery_1_ink_ready": true,
+      "plotter_vinyl_cut_ready": true
+    },
+    "master_38_pages_index": [
+      "Pág. 01-02: Portada Editorial & Tabla de Contenido Interactiva",
+      "Pág. 03-04: Objetivos del Manual e Inducción al Equipo",
+      "Pág. 05-08: I. Posicionamiento (1. El Propósito, 2. Posicionamiento, 3. Rol en la Sociedad, 4. Su Proceso)",
+      "Pág. 09-12: I. Identidad Verbal (5. Mensaje, 6. Personalidad Humana, 7. Comportamiento, 8. Su Mundo)",
+      "Pág. 13-16: II. Touchpoints & Customer Journey Map (Protocolos Antes, Durante y Post-Venta)",
+      "Pág. 17-18: III. Naming Estratégico, Semiótica y Certificación Clase de Niza",
+      "Pág. 19-22: IV. Construcción de Marca (A. Logotipo en Curvas, B. Símbolo/Sello, C. Relación Logo/Símbolo)",
+      "Pág. 23-26: IV. Normativa Geométrica (D. Área de Seguridad, F. Usos Correctos, G. Restricciones, H. Reducción y Prueba 5m/15m/30m)",
+      "Pág. 27-30: V. Sistema Cromático y Tipográfico (E. Color Pantone/CMYK/RGB/HEX Auto-Healed, I. Tipografía Primaria, Secundaria y Fallback)",
+      "Pág. 31-34: VI. Estilo Visual, Dirección Fotográfica y Jerarquías Gráficas",
+      "Pág. 35-36: VII. Casos de Aplicación Real + Checklist 'Tu Kit de Apertura Física (Las 4 Primeras Compras)'",
+      "Pág. 37: Anexo A — The Daily Brand Playbook (Guía de Bolsillo de 1 Página + QR de Audio-Inducción de 3 Minutos para Empleados)",
+      "Pág. 38: Anexo B — The Print-Shop Cheatsheet (Hoja Técnica para el Impresor y Bordador + Código QR Live Brand Portal)"
+    ],
+    "complete_deliverables_vault": [
+      "01_Aksis_Mantenimiento_Brandbook_Master_38p_Interactive_sRGB.pdf",
+      "02_Aksis_Mantenimiento_Brandbook_Master_38p_PrePress_PDFX1a_300DPI_FOGRA39.pdf",
+      "03_Aksis_Mantenimiento_Main_Logo_Outlined_Curves.svg",
+      "04_Aksis_Mantenimiento_Independent_Seal_Embroidery_1Ink.eps",
+      "05_Aksis_Mantenimiento_Official_Typography_Bundle_OTF_TTF.zip",
+      "06_Aksis_Mantenimiento_Daily_Employee_Playbook_1Pager_Plus_3Min_Audio.pdf",
+      "07_Aksis_Mantenimiento_PrintShop_And_Tailor_Cheatsheet.pdf",
+      "08_Aksis_Mantenimiento_Editable_Letterhead_And_Email_Signature.docx",
+      "09_Aksis_Mantenimiento_Digital_Kit_Zoom_Background_LinkedIn_Banner.zip",
+      "10_Aksis_Mantenimiento_Photo_Protection_Watermark_35pct_Opacity.png",
+      "11_Aksis_Mantenimiento_Google_Reviews_QR_Sticker_And_Table_Tent.pdf"
+    ]
+  }
+}

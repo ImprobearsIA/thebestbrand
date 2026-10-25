@@ -1,0 +1,303 @@
+{
+  "brand_input": {
+    "id": "04_b2b_laboratorio_quantalab",
+    "sector": "4. Empresa B2B de Equipos de Laboratorio e Instrumentación",
+    "founder_persona": "Ing. Quím. Ricardo Kuri (Director Comercial B2B para industria farmacéutica, alimentos y centros de investigación)",
+    "chosen_name": "QuantaLab Científica",
+    "tagline": "Precisión analítica certificada para laboratorios que no pueden fallar",
+    "naming_style": "neologismo_portmanteau",
+    "industry_key": "tecnologia_saas",
+    "vault_finalists": [
+      "QuantaLab Científica",
+      "Metrixa Bio",
+      "VeriSpectra",
+      "KronoLab Systems"
+    ],
+    "nice_classes": "Clase 09 (Aparatos e instrumentos científicos, ópticos, de pesaje y medición de laboratorio), Clase 37 (Instalación y mantenimiento de equipo científico), Clase 42 (Calibración metrológica ISO/IEC 17025)",
+    "domains": [
+      "quantalab.com.mx",
+      "quantalabcientifica.com",
+      "soporte.quantalab.io"
+    ],
+    "purpose_why": "Garantizar que cada medición en un laboratorio farmacéutico, clínico o industrial tenga exactitud trazable internacionalmente, protegiendo la salud humana y la calidad industrial.",
+    "value_offer": "Suministro llave en mano de espectrómetros, cromatógrafos y balanzas analíticas con instalación, calificación IQ/OQ/PQ y soporte técnico en sitio en menos de 24 horas.",
+    "social_role": "Impulsar la ciencia y el control de calidad en el país mediante equipamiento confiable y metrología certificada.",
+    "process_steps": [
+      "1. Ingeniería de aplicación y dimensionamiento técnico según norma USP / FDA / COFEPRIS",
+      "2. Importación ágil, instalación limpia y calificación operativa (IQ/OQ/PQ) en laboratorio",
+      "3. Póliza de calibración acreditada EMA / ISO 17025 y suministro continuo de consumibles"
+    ],
+    "core_message": "Exactitud sub-micrónica. Respaldo técnico inmediato.",
+    "brand_persona": "Científico experto, preciso, metódico, confiable y resolutivo.",
+    "customer_behavior": "Documentación técnica impecable en cada entrega, trazabilidad de número de serie con código QR de calibración pegado en el chasis del equipo.",
+    "brand_world": "Acero inoxidable grado médico, blanco clínico puro, azul cobalto óptico y etiquetas de calibración metalizadas de alta durabilidad a solventes.",
+    "ideal_customer": "Directores de Control de Calidad, Gerentes de Planta Farmacéutica, Compradores Industriales B2B y Jefes de Laboratorio Universitario.",
+    "touchpoints_journey": {
+      "antes": "Catálogo técnico digital con hojas de datos (Datasheets) · Stands en congresos químicos/farma · Licitaciones técnicas y demostraciones con muestras reales",
+      "durante": "Cotización B2B desglosada con tiempos de entrega Incoterms · Matriz de cumplimiento normativo (URS) · Orden de compra y financiamiento de arrendamiento puro",
+      "despues": "Cajas de transporte anti-impacto con sellos de seguridad · Etiqueta metálica en el equipo con QR de certificado de calibración · Portal de tickets de servicio y consumibles"
+    },
+    "sliders": {
+      "tradicional_innovador": 0.8,
+      "minimalista_complejo": -0.6,
+      "amigable_autoritario": 0.55,
+      "humano_tecnologico": 0.85,
+      "serio_jugueton": -0.75,
+      "convencional_rebelde": 0.25,
+      "organico_geometrico": 0.9
+    },
+    "base_family": "Familia 04 · Símbolo Tridimensional o Prisma Óptico de Precisión",
+    "primary_font": "Space Grotesk",
+    "secondary_font": "JetBrains Mono",
+    "palette": [
+      "#F8FAFC",
+      "#090D16",
+      "#0284C7",
+      "#06B6D4"
+    ],
+    "selected_24_traits": [
+      "1B: Vértices Facetados 45°",
+      "2B: Trazo Sólido Técnico",
+      "3A: Símbolo Libre Abierto",
+      "4A: Equilibrio Ortogonal 0°",
+      "5A: Líneas de Ingeniería Explícitas",
+      "6A: Acomodo Horizontal para Chasis de Equipos",
+      "7B: Chasis Hexagonal Molecular",
+      "8B: Ensamble Modular",
+      "9A: Síntesis Minimalista Limpia",
+      "10B: Prisma Isométrico 3D",
+      "11B: Terminales Rectos 90°",
+      "12A: Núcleo de Precisión",
+      "13A: Tipografía Moderna Sans (Space Grotesk)",
+      "14B: Letra Ancha Técnica",
+      "15B: Espaciado Compacto de Ingeniería",
+      "16A: Mayúsculas Técnicas",
+      "17B: Peso Extra-Bold",
+      "18A: Subtítulo Técnico en JetBrains Mono ('[ ISO/IEC 17025 CERTIFIED ]')",
+      "19A: Fondo Blanco Clínico de Laboratorio",
+      "20B: Azul Cobalto Científico",
+      "21B: Acento Cian Óptico",
+      "22A: Sobriedad Titanio, Blanco y Cobalto",
+      "23B: Placa de Aluminio Anodizado Grabada en Láser",
+      "24A: Tinta Sólida Resistente a Solventes"
+    ],
+    "simulation_notes": "Para B2B de laboratorio, la ficha técnica de grabado láser en placas de acero inoxidable y etiquetas resistentes a alcohol isopropílico fue decisiva."
+  },
+  "color_table": [
+    {
+      "role": "Superficie Base",
+      "hex": "#F8FAFC",
+      "rgb": "rgb(248, 250, 252)",
+      "cmyk_fogra39": "C:2% M:1% Y:0% K:1%",
+      "total_area_coverage_tac": "4% TAC",
+      "pantone_solid_coated": "PMS 7527 C",
+      "wcag_contrast_ratio": 18.57,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Tinta Estructural",
+      "hex": "#090D16",
+      "rgb": "rgb(9, 13, 22)",
+      "cmyk_fogra39": "C:59% M:41% Y:0% K:91%",
+      "total_area_coverage_tac": "191% TAC",
+      "pantone_solid_coated": "PMS Black 6 C",
+      "wcag_contrast_ratio": 18.57,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Acento Primario",
+      "hex": "#0284C7",
+      "rgb": "rgb(2, 132, 199)",
+      "cmyk_fogra39": "C:99% M:34% Y:0% K:22%",
+      "total_area_coverage_tac": "155% TAC",
+      "pantone_solid_coated": "PMS 286 C",
+      "wcag_contrast_ratio": 7.22,
+      "wcag_level": "AAA Auto-Healed"
+    },
+    {
+      "role": "Acento Secundario",
+      "hex": "#06B6D4",
+      "rgb": "rgb(6, 182, 212)",
+      "cmyk_fogra39": "C:97% M:14% Y:0% K:17%",
+      "total_area_coverage_tac": "128% TAC",
+      "pantone_solid_coated": "PMS 286 C",
+      "wcag_contrast_ratio": 7.09,
+      "wcag_level": "AAA Auto-Healed"
+    }
+  ],
+  "compiled_engine": {
+    "brand_name": "QuantaLab Científica",
+    "total_pages": 38,
+    "avatar_cognitive_audit": {
+      "nli_entailment_score": 0.99,
+      "zero_hallucinations_verified": true,
+      "selection_mode": "Ultra_Agile_Delta_Socratic_Explorer_v10"
+    },
+    "strategy_chapter": {
+      "01_proposito_golden_circle": "Garantizar que cada medición en un laboratorio farmacéutico, clínico o industrial tenga exactitud trazable internacionalmente, protegiendo la salud humana y la calidad industrial.",
+      "02_posicionamiento_oferta": "Suministro llave en mano de espectrómetros, cromatógrafos y balanzas analíticas con instalación, calificación IQ/OQ/PQ y soporte técnico en sitio en menos de 24 horas.",
+      "03_rol_en_la_sociedad": "Impulsar la ciencia y el control de calidad en el país mediante equipamiento confiable y metrología certificada.",
+      "04_su_proceso_operativo": [
+        "1. Ingeniería de aplicación y dimensionamiento técnico según norma USP / FDA / COFEPRIS",
+        "2. Importación ágil, instalación limpia y calificación operativa (IQ/OQ/PQ) en laboratorio",
+        "3. Póliza de calibración acreditada EMA / ISO 17025 y suministro continuo de consumibles"
+      ],
+      "05_mensaje_nuclear": "Exactitud sub-micrónica. Respaldo técnico inmediato.",
+      "06_personalidad_humana": "Científico experto, preciso, metódico, confiable y resolutivo.",
+      "07_comportamiento_con_clientes": "Documentación técnica impecable en cada entrega, trazabilidad de número de serie con código QR de calibración pegado en el chasis del equipo.",
+      "08_su_mundo_imaginario": "Acero inoxidable grado médico, blanco clínico puro, azul cobalto óptico y etiquetas de calibración metalizadas de alta durabilidad a solventes."
+    },
+    "touchpoints_chapter": {
+      "dimensiones_deducidas_sin_menus": {
+        "delivery_channel": "Ecosistema Híbrido",
+        "economic_ticket": "Escalable",
+        "payment_ritual": "Cotización Ejecutiva / Orden de Compra y Pasarela Digital"
+      },
+      "videos_ia_generados_al_vuelo": [
+        {
+          "step": 1,
+          "title": "Cápsula Explicativa IA Paso 1"
+        },
+        {
+          "step": 2,
+          "title": "Cápsula Explicativa IA Paso 2"
+        },
+        {
+          "step": 3,
+          "title": "Cápsula Explicativa IA Paso 3"
+        },
+        {
+          "step": 4,
+          "title": "Cápsula Explicativa IA Paso 4"
+        },
+        {
+          "step": 5,
+          "title": "Cápsula Explicativa IA Paso 5"
+        },
+        {
+          "step": 6,
+          "title": "Cápsula Explicativa IA Paso 6"
+        }
+      ],
+      "mapa_recorrido_cliente": {
+        "antes": "Catálogo técnico digital con hojas de datos (Datasheets) · Stands en congresos químicos/farma · Licitaciones técnicas y demostraciones con muestras reales",
+        "durante": "Cotización B2B desglosada con tiempos de entrega Incoterms · Matriz de cumplimiento normativo (URS) · Orden de compra y financiamiento de arrendamiento puro",
+        "despues": "Cajas de transporte anti-impacto con sellos de seguridad · Etiqueta metálica en el equipo con QR de certificado de calibración · Portal de tickets de servicio y consumibles"
+      }
+    },
+    "naming_certification": {
+      "candidate": "QuantaLab Científica",
+      "style": "neologismo_portmanteau",
+      "character_length": 20,
+      "estimated_syllables": 9,
+      "nice_class": 35,
+      "nice_description": "Servicios generales de negocios y comercio.",
+      "smile_evaluation": {
+        "Suggestive": true,
+        "Memorable": false,
+        "Imagery": false,
+        "Legs": true,
+        "Emotional": true
+      },
+      "scratch_risk_flags": {
+        "Spelling_Challenged": false,
+        "Copycat": false,
+        "Restrictive": false,
+        "Annoying": false,
+        "Tame": false,
+        "Curse_of_Knowledge": false,
+        "Hard_to_Pronounce": true
+      },
+      "approved_for_brandbook": false
+    },
+    "visual_insights": {
+      "preferencias_extraidas": "1B: Vértices Facetados 45°, 2B: Trazo Sólido Técnico, 3A: Símbolo Libre Abierto, 4A: Equilibrio Ortogonal 0°, 5A: Líneas de Ingeniería Explícitas, 6A: Acomodo Horizontal para Chasis de Equipos",
+      "voiceover_emotional_support": true
+    },
+    "color_system": [
+      {
+        "nombre": "Color Primario Institucional (Certificado WCAG AAA)",
+        "original_requested_hex": "#0284C7",
+        "final_certified_hex": "#015C8B",
+        "auto_healed": true,
+        "rgb": [
+          1,
+          92,
+          139
+        ],
+        "cmyk_fogra39": {
+          "C": 99,
+          "M": 34,
+          "Y": 0,
+          "K": 45
+        },
+        "pantone": "PMS 541 C",
+        "wcag_sobre_blanco": {
+          "ratio": 7.23,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      },
+      {
+        "nombre": "Color Secundario de Acento (Certificado WCAG AAA)",
+        "original_requested_hex": "#06B6D4",
+        "final_certified_hex": "#036272",
+        "auto_healed": true,
+        "rgb": [
+          3,
+          98,
+          114
+        ],
+        "cmyk_fogra39": {
+          "C": 97,
+          "M": 14,
+          "Y": 0,
+          "K": 55
+        },
+        "pantone": "PMS 541 C",
+        "wcag_sobre_blanco": {
+          "ratio": 7.01,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      }
+    ],
+    "vector_and_embroidery_audit": {
+      "outlined_in_curves": true,
+      "valid_bezier_paths": true,
+      "min_embroidery_stroke_mm": 1.6,
+      "embroidery_1_ink_ready": true,
+      "plotter_vinyl_cut_ready": true
+    },
+    "master_38_pages_index": [
+      "Pág. 01-02: Portada Editorial & Tabla de Contenido Interactiva",
+      "Pág. 03-04: Objetivos del Manual e Inducción al Equipo",
+      "Pág. 05-08: I. Posicionamiento (1. El Propósito, 2. Posicionamiento, 3. Rol en la Sociedad, 4. Su Proceso)",
+      "Pág. 09-12: I. Identidad Verbal (5. Mensaje, 6. Personalidad Humana, 7. Comportamiento, 8. Su Mundo)",
+      "Pág. 13-16: II. Touchpoints & Customer Journey Map (Protocolos Antes, Durante y Post-Venta)",
+      "Pág. 17-18: III. Naming Estratégico, Semiótica y Certificación Clase de Niza",
+      "Pág. 19-22: IV. Construcción de Marca (A. Logotipo en Curvas, B. Símbolo/Sello, C. Relación Logo/Símbolo)",
+      "Pág. 23-26: IV. Normativa Geométrica (D. Área de Seguridad, F. Usos Correctos, G. Restricciones, H. Reducción y Prueba 5m/15m/30m)",
+      "Pág. 27-30: V. Sistema Cromático y Tipográfico (E. Color Pantone/CMYK/RGB/HEX Auto-Healed, I. Tipografía Primaria, Secundaria y Fallback)",
+      "Pág. 31-34: VI. Estilo Visual, Dirección Fotográfica y Jerarquías Gráficas",
+      "Pág. 35-36: VII. Casos de Aplicación Real + Checklist 'Tu Kit de Apertura Física (Las 4 Primeras Compras)'",
+      "Pág. 37: Anexo A — The Daily Brand Playbook (Guía de Bolsillo de 1 Página + QR de Audio-Inducción de 3 Minutos para Empleados)",
+      "Pág. 38: Anexo B — The Print-Shop Cheatsheet (Hoja Técnica para el Impresor y Bordador + Código QR Live Brand Portal)"
+    ],
+    "complete_deliverables_vault": [
+      "01_QuantaLab_Científica_Brandbook_Master_38p_Interactive_sRGB.pdf",
+      "02_QuantaLab_Científica_Brandbook_Master_38p_PrePress_PDFX1a_300DPI_FOGRA39.pdf",
+      "03_QuantaLab_Científica_Main_Logo_Outlined_Curves.svg",
+      "04_QuantaLab_Científica_Independent_Seal_Embroidery_1Ink.eps",
+      "05_QuantaLab_Científica_Official_Typography_Bundle_OTF_TTF.zip",
+      "06_QuantaLab_Científica_Daily_Employee_Playbook_1Pager_Plus_3Min_Audio.pdf",
+      "07_QuantaLab_Científica_PrintShop_And_Tailor_Cheatsheet.pdf",
+      "08_QuantaLab_Científica_Editable_Letterhead_And_Email_Signature.docx",
+      "09_QuantaLab_Científica_Digital_Kit_Zoom_Background_LinkedIn_Banner.zip",
+      "10_QuantaLab_Científica_Photo_Protection_Watermark_35pct_Opacity.png",
+      "11_QuantaLab_Científica_Google_Reviews_QR_Sticker_And_Table_Tent.pdf"
+    ]
+  }
+}

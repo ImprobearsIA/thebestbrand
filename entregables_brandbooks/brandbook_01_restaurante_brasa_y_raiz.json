@@ -1,0 +1,303 @@
+{
+  "brand_input": {
+    "id": "01_restaurante_brasa_y_raiz",
+    "sector": "1. Dueño de Restaurante (Cocina de Leña y Hospitalidad)",
+    "founder_persona": "Chef Mateo Valdés (42 años, dueño de restaurante de 140 comensales)",
+    "chosen_name": "Brasa & Raíz",
+    "tagline": "Cocina de origen al fuego lento y hospitalidad que abraza",
+    "naming_style": "compuesto",
+    "industry_key": "restaurante_gastronomia",
+    "vault_finalists": [
+      "Brasa & Raíz",
+      "Lumbre Noble",
+      "Casa Tizón",
+      "Fogonero de Origen"
+    ],
+    "nice_classes": "Clase 43 (Servicios de restauración y hospitalidad), Clase 29/30 (Salsas y conservas de la casa), Clase 35 (Franquicias)",
+    "domains": [
+      "brasayraiz.com",
+      "brasayraiz.mx",
+      "reservasbrasayraiz.com"
+    ],
+    "purpose_why": "Rescatar los ingredientes del campo local y la ceremonia del fuego de leña para que cada comida familiar o de negocios se sienta como volver a casa.",
+    "value_offer": "Cortes, vegetales a la brasa y pan de masa madre horneado al momento, servidos en menos de 18 minutos con hospitalidad cálida y acústica confortable.",
+    "social_role": "Comercio justo directo con 18 productores agrícolas locales y cero desperdicio orgánico.",
+    "process_steps": [
+      "1. Selección diaria de ingredientes frescos de productores regionales a las 6:00 AM",
+      "2. Cocción lenta en parrilla de encino blanco y horno de piedra a la vista del comensal",
+      "3. Servicio de mesa sincronizado con maridaje y café de especialidad de despedida"
+    ],
+    "core_message": "Donde el fuego lento y la tierra se encuentran en tu mesa.",
+    "brand_persona": "Anfitrión cálido, artesano del sabor, detallista, generoso y auténtico.",
+    "customer_behavior": "Recibir por su nombre al cliente habitual, ofrecer degustación de pan recién horneado al sentarse y jamás apresurar la sobremesa.",
+    "brand_world": "Madera de nogal carbonizada, latón envejecido, barro bruñido, luz cálida 2700K y aroma a leña de encino.",
+    "ideal_customer": "Familias, parejas y ejecutivos que buscan ingredientes reales, trato humano sin pretensiones y un lugar memorable para celebrar.",
+    "touchpoints_journey": {
+      "antes": "Reels con sonido real de la brasa en Instagram · Reseñas 4.9★ en Google Maps · Menú interactivo y reserva en 2 clics por WhatsApp · Fachada con aroma a pan de leña",
+      "durante": "Recepción cálida en atril de madera · Carta impresa en papel algodón antimanchas · Vajilla de cerámica artesanal con sello en la base · Portacuentas en cuero",
+      "despues": "Caja térmica de autor para llevar con sello lacrado · Tarjeta con receta secreta de mantequilla ahumada · Mensaje de agradecimiento y club de comensales frecuentes"
+    },
+    "sliders": {
+      "tradicional_innovador": -0.35,
+      "minimalista_complejo": 0.15,
+      "amigable_autoritario": -0.55,
+      "humano_tecnologico": -0.65,
+      "serio_jugueton": -0.15,
+      "convencional_rebelde": 0.1,
+      "organico_geometrico": -0.45
+    },
+    "base_family": "Familia 02 · Escudo o Sello Artesanal de Origen",
+    "primary_font": "Playfair Display",
+    "secondary_font": "Plus Jakarta Sans",
+    "palette": [
+      "#FAF6F0",
+      "#1C1412",
+      "#B45309",
+      "#78350F"
+    ],
+    "selected_24_traits": [
+      "1A: Vértices Curvos Suaves",
+      "2B: Masa Sólida 10pt (Para pirograbado en madera y mandil)",
+      "3B: Sello Protector Circular",
+      "4A: Vertical Firme 0°",
+      "5B: Llama/Raíz en Espacio Negativo",
+      "6B: Acomodo Vertical tipo Sello",
+      "7A: Geometría Circular Solar",
+      "8A: Trazo Único Continuo",
+      "9B: Doble Fileteado de Gala",
+      "10A: Diseño Plano 2D (Para sellos de tinta y bordado)",
+      "11A: Terminales Redondeados",
+      "12A: Núcleo Concentrado",
+      "13B: Tipografía Clásica Serif (Playfair Display)",
+      "14B: Letra Ancha Panorámica",
+      "15A: Espaciado Amplio +0.30em",
+      "16B: Caja Mixta Cercana (Brasa & Raíz)",
+      "17B: Peso Fuerte Legible",
+      "18B: Subtítulo Editorial Cursiva",
+      "19A: Fondo Claro Crema/Alabastro",
+      "20A: Color Cálido Ámbar/Brasa",
+      "21A: Acento Terracota/Cobre",
+      "22B: Contraste Tierra & Oro Viejo",
+      "23A: Acabado Mate Papel Algodón",
+      "24A: Tinta Sólida Pantone"
+    ],
+    "simulation_notes": "El dueño del restaurante amó que las pausas de voz no le cortaran sus ideas mientras recordaba los platillos. Pidió que en los Touchpoints existiera una plantilla específica para Menú QR + Carta Física + Empaque Delivery."
+  },
+  "color_table": [
+    {
+      "role": "Superficie Base",
+      "hex": "#FAF6F0",
+      "rgb": "rgb(250, 246, 240)",
+      "cmyk_fogra39": "C:0% M:2% Y:4% K:2%",
+      "total_area_coverage_tac": "8% TAC",
+      "pantone_solid_coated": "PMS 7527 C",
+      "wcag_contrast_ratio": 16.84,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Tinta Estructural",
+      "hex": "#1C1412",
+      "rgb": "rgb(28, 20, 18)",
+      "cmyk_fogra39": "C:0% M:29% Y:36% K:89%",
+      "total_area_coverage_tac": "154% TAC",
+      "pantone_solid_coated": "PMS Black 6 C",
+      "wcag_contrast_ratio": 16.84,
+      "wcag_level": "AAA Nativo"
+    },
+    {
+      "role": "Acento Primario",
+      "hex": "#B45309",
+      "rgb": "rgb(180, 83, 9)",
+      "cmyk_fogra39": "C:0% M:54% Y:95% K:29%",
+      "total_area_coverage_tac": "178% TAC",
+      "pantone_solid_coated": "PMS 7621 C",
+      "wcag_contrast_ratio": 7.07,
+      "wcag_level": "AAA Auto-Healed"
+    },
+    {
+      "role": "Acento Secundario",
+      "hex": "#78350F",
+      "rgb": "rgb(120, 53, 15)",
+      "cmyk_fogra39": "C:0% M:56% Y:88% K:53%",
+      "total_area_coverage_tac": "197% TAC",
+      "pantone_solid_coated": "PMS 7621 C",
+      "wcag_contrast_ratio": 8.43,
+      "wcag_level": "AAA Nativo"
+    }
+  ],
+  "compiled_engine": {
+    "brand_name": "Brasa & Raíz",
+    "total_pages": 38,
+    "avatar_cognitive_audit": {
+      "nli_entailment_score": 0.99,
+      "zero_hallucinations_verified": true,
+      "selection_mode": "Ultra_Agile_Delta_Socratic_Explorer_v10"
+    },
+    "strategy_chapter": {
+      "01_proposito_golden_circle": "Rescatar los ingredientes del campo local y la ceremonia del fuego de leña para que cada comida familiar o de negocios se sienta como volver a casa.",
+      "02_posicionamiento_oferta": "Cortes, vegetales a la brasa y pan de masa madre horneado al momento, servidos en menos de 18 minutos con hospitalidad cálida y acústica confortable.",
+      "03_rol_en_la_sociedad": "Comercio justo directo con 18 productores agrícolas locales y cero desperdicio orgánico.",
+      "04_su_proceso_operativo": [
+        "1. Selección diaria de ingredientes frescos de productores regionales a las 6:00 AM",
+        "2. Cocción lenta en parrilla de encino blanco y horno de piedra a la vista del comensal",
+        "3. Servicio de mesa sincronizado con maridaje y café de especialidad de despedida"
+      ],
+      "05_mensaje_nuclear": "Donde el fuego lento y la tierra se encuentran en tu mesa.",
+      "06_personalidad_humana": "Anfitrión cálido, artesano del sabor, detallista, generoso y auténtico.",
+      "07_comportamiento_con_clientes": "Recibir por su nombre al cliente habitual, ofrecer degustación de pan recién horneado al sentarse y jamás apresurar la sobremesa.",
+      "08_su_mundo_imaginario": "Madera de nogal carbonizada, latón envejecido, barro bruñido, luz cálida 2700K y aroma a leña de encino."
+    },
+    "touchpoints_chapter": {
+      "dimensiones_deducidas_sin_menus": {
+        "delivery_channel": "Físico / Industrial + Digital",
+        "economic_ticket": "Escalable",
+        "payment_ritual": "Cotización Ejecutiva / Orden de Compra y Pasarela Digital"
+      },
+      "videos_ia_generados_al_vuelo": [
+        {
+          "step": 1,
+          "title": "Cápsula Explicativa IA Paso 1"
+        },
+        {
+          "step": 2,
+          "title": "Cápsula Explicativa IA Paso 2"
+        },
+        {
+          "step": 3,
+          "title": "Cápsula Explicativa IA Paso 3"
+        },
+        {
+          "step": 4,
+          "title": "Cápsula Explicativa IA Paso 4"
+        },
+        {
+          "step": 5,
+          "title": "Cápsula Explicativa IA Paso 5"
+        },
+        {
+          "step": 6,
+          "title": "Cápsula Explicativa IA Paso 6"
+        }
+      ],
+      "mapa_recorrido_cliente": {
+        "antes": "Reels con sonido real de la brasa en Instagram · Reseñas 4.9★ en Google Maps · Menú interactivo y reserva en 2 clics por WhatsApp · Fachada con aroma a pan de leña",
+        "durante": "Recepción cálida en atril de madera · Carta impresa en papel algodón antimanchas · Vajilla de cerámica artesanal con sello en la base · Portacuentas en cuero",
+        "despues": "Caja térmica de autor para llevar con sello lacrado · Tarjeta con receta secreta de mantequilla ahumada · Mensaje de agradecimiento y club de comensales frecuentes"
+      }
+    },
+    "naming_certification": {
+      "candidate": "Brasa & Raíz",
+      "style": "compuesto",
+      "character_length": 12,
+      "estimated_syllables": 4,
+      "nice_class": 35,
+      "nice_description": "Servicios generales de negocios y comercio.",
+      "smile_evaluation": {
+        "Suggestive": true,
+        "Memorable": true,
+        "Imagery": true,
+        "Legs": true,
+        "Emotional": true
+      },
+      "scratch_risk_flags": {
+        "Spelling_Challenged": false,
+        "Copycat": false,
+        "Restrictive": false,
+        "Annoying": false,
+        "Tame": false,
+        "Curse_of_Knowledge": false,
+        "Hard_to_Pronounce": false
+      },
+      "approved_for_brandbook": true
+    },
+    "visual_insights": {
+      "preferencias_extraidas": "1A: Vértices Curvos Suaves, 2B: Masa Sólida 10pt (Para pirograbado en madera y mandil), 3B: Sello Protector Circular, 4A: Vertical Firme 0°, 5B: Llama/Raíz en Espacio Negativo, 6B: Acomodo Vertical tipo Sello",
+      "voiceover_emotional_support": true
+    },
+    "color_system": [
+      {
+        "nombre": "Color Primario Institucional (Certificado WCAG AAA)",
+        "original_requested_hex": "#B45309",
+        "final_certified_hex": "#904207",
+        "auto_healed": true,
+        "rgb": [
+          144,
+          66,
+          7
+        ],
+        "cmyk_fogra39": {
+          "C": 0,
+          "M": 54,
+          "Y": 95,
+          "K": 44
+        },
+        "pantone": "PMS 7621 C",
+        "wcag_sobre_blanco": {
+          "ratio": 7.07,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      },
+      {
+        "nombre": "Color Secundario de Acento (Certificado WCAG AAA)",
+        "original_requested_hex": "#78350F",
+        "final_certified_hex": "#78350F",
+        "auto_healed": false,
+        "rgb": [
+          120,
+          53,
+          15
+        ],
+        "cmyk_fogra39": {
+          "C": 0,
+          "M": 56,
+          "Y": 88,
+          "K": 53
+        },
+        "pantone": "PMS 7621 C",
+        "wcag_sobre_blanco": {
+          "ratio": 9.07,
+          "wcag_aa_pass": true,
+          "wcag_aaa_pass": true,
+          "senior_care_approved": true
+        }
+      }
+    ],
+    "vector_and_embroidery_audit": {
+      "outlined_in_curves": true,
+      "valid_bezier_paths": true,
+      "min_embroidery_stroke_mm": 1.6,
+      "embroidery_1_ink_ready": true,
+      "plotter_vinyl_cut_ready": true
+    },
+    "master_38_pages_index": [
+      "Pág. 01-02: Portada Editorial & Tabla de Contenido Interactiva",
+      "Pág. 03-04: Objetivos del Manual e Inducción al Equipo",
+      "Pág. 05-08: I. Posicionamiento (1. El Propósito, 2. Posicionamiento, 3. Rol en la Sociedad, 4. Su Proceso)",
+      "Pág. 09-12: I. Identidad Verbal (5. Mensaje, 6. Personalidad Humana, 7. Comportamiento, 8. Su Mundo)",
+      "Pág. 13-16: II. Touchpoints & Customer Journey Map (Protocolos Antes, Durante y Post-Venta)",
+      "Pág. 17-18: III. Naming Estratégico, Semiótica y Certificación Clase de Niza",
+      "Pág. 19-22: IV. Construcción de Marca (A. Logotipo en Curvas, B. Símbolo/Sello, C. Relación Logo/Símbolo)",
+      "Pág. 23-26: IV. Normativa Geométrica (D. Área de Seguridad, F. Usos Correctos, G. Restricciones, H. Reducción y Prueba 5m/15m/30m)",
+      "Pág. 27-30: V. Sistema Cromático y Tipográfico (E. Color Pantone/CMYK/RGB/HEX Auto-Healed, I. Tipografía Primaria, Secundaria y Fallback)",
+      "Pág. 31-34: VI. Estilo Visual, Dirección Fotográfica y Jerarquías Gráficas",
+      "Pág. 35-36: VII. Casos de Aplicación Real + Checklist 'Tu Kit de Apertura Física (Las 4 Primeras Compras)'",
+      "Pág. 37: Anexo A — The Daily Brand Playbook (Guía de Bolsillo de 1 Página + QR de Audio-Inducción de 3 Minutos para Empleados)",
+      "Pág. 38: Anexo B — The Print-Shop Cheatsheet (Hoja Técnica para el Impresor y Bordador + Código QR Live Brand Portal)"
+    ],
+    "complete_deliverables_vault": [
+      "01_Brasa_&_Raíz_Brandbook_Master_38p_Interactive_sRGB.pdf",
+      "02_Brasa_&_Raíz_Brandbook_Master_38p_PrePress_PDFX1a_300DPI_FOGRA39.pdf",
+      "03_Brasa_&_Raíz_Main_Logo_Outlined_Curves.svg",
+      "04_Brasa_&_Raíz_Independent_Seal_Embroidery_1Ink.eps",
+      "05_Brasa_&_Raíz_Official_Typography_Bundle_OTF_TTF.zip",
+      "06_Brasa_&_Raíz_Daily_Employee_Playbook_1Pager_Plus_3Min_Audio.pdf",
+      "07_Brasa_&_Raíz_PrintShop_And_Tailor_Cheatsheet.pdf",
+      "08_Brasa_&_Raíz_Editable_Letterhead_And_Email_Signature.docx",
+      "09_Brasa_&_Raíz_Digital_Kit_Zoom_Background_LinkedIn_Banner.zip",
+      "10_Brasa_&_Raíz_Photo_Protection_Watermark_35pct_Opacity.png",
+      "11_Brasa_&_Raíz_Google_Reviews_QR_Sticker_And_Table_Tent.pdf"
+    ]
+  }
+}
