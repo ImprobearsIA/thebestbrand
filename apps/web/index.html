@@ -2108,6 +2108,100 @@
         line-height: 1.38 !important;
       }
     }
+
+    /* ==========================================================================
+       STEP 2 MOBILE-FIRST ERGONOMICS (HIGH LEGIBILITY & LOW DENSITY ON PHONE)
+       ========================================================================== */
+    .tp-segmented-grid {
+      width: 100%;
+      max-width: 920px;
+      margin: 0 auto 18px auto;
+      background: #E2E8F0;
+      padding: 6px;
+      border-radius: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.06);
+    }
+    .tp-seg-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 12px;
+      font-family: var(--font-ui);
+      font-size: 0.96rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-height: 58px;
+    }
+    .tp-seg-count {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+    .tp-bento-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .tp-aura-dock {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      width: 100%;
+      border-radius: 18px;
+      background: #F8FAFC;
+      border: 2px solid #CBD5E1;
+    }
+    @media (max-width: 720px) {
+      .tp-segmented-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        padding: 8px;
+      }
+      .tp-seg-btn {
+        font-size: 0.98rem;
+        padding: 14px 10px;
+        min-height: 62px;
+      }
+      .tp-seg-count {
+        font-size: 0.82rem;
+      }
+      .tp-bento-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .tp-aura-dock {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px;
+        gap: 10px;
+      }
+      .tp-aura-dock button,
+      .tp-aura-dock textarea {
+        width: 100% !important;
+        font-size: 1.02rem !important;
+      }
+      .tp-item-actions-row {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 6px;
+      }
+      .tp-item-actions-row .btn-expand-tp {
+        flex: 1;
+        justify-content: center;
+        padding: 11px 14px !important;
+        font-size: 0.92rem !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2503,40 +2597,37 @@
     <!-- ==================================================================== -->
     <section class="stage-section" id="panel-step-2">
       <div class="question-billboard" style="margin-bottom:14px; text-align:center; max-width:860px; margin-left:auto; margin-right:auto;">
-        <span class="question-category">02 · Arquitectura de Touchpoints, 5 Sentidos &amp; Service Blueprint con Aura</span>
-        <h1 class="question-text" id="tpActiveQuestionHeading" style="font-size:1.6rem; margin-top:6px;">
-          1. Antes de Comprar: ¿Qué siente, ve, escucha o vive tu cliente cuando descubre tu marca?
+        <span class="question-category" style="font-size:0.84rem; padding:6px 14px;">02 · Puntos de Contacto Sensoriales con Aura</span>
+        <h1 class="question-text" id="tpActiveQuestionHeading" style="font-size:1.75rem; line-height:1.25; margin-top:8px;">
+          1. Antes de Comprar: ¿Qué siente, ve o escucha tu cliente al descubrir tu marca?
         </h1>
-        <p id="tpAuraSubPrompt" style="font-size:0.93rem; color:#475569; margin-top:6px; font-weight:500;">
-          Un Touchpoint no es solo papelería: es lo que se huele, se toca, se escucha, se prueba y se siente. Platícale a Aura uno por uno o inspírate con los ejemplos reales de tu sector.
+        <p id="tpAuraSubPrompt" style="font-size:1.05rem; color:#334155; margin-top:8px; font-weight:500; line-height:1.45;">
+          Piensa en los sentidos: lo que se huele, se toca, se escucha y se siente. Platícale a Aura o toca las ideas de abajo.
         </p>
       </div>
 
-      <!-- TARJETA DEL LÍDER DE PROYECTO DE TOUCHPOINTS + SELECTOR DE SECTOR PRINCIPAL -->
-      <div style="width:100%; max-width:920px; margin:0 auto 16px auto; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FFFFFF; border-radius:20px; padding:16px 20px; border:1.5px solid #D4AF37; box-shadow:0 12px 28px rgba(9,13,22,0.14);">
+      <!-- SELECTOR COMPACTO DE ACTIVIDAD PRINCIPAL + LÍDER DE TOUCHPOINTS (MOBILE-FIRST) -->
+      <div style="width:100%; max-width:920px; margin:0 auto 16px auto; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FFFFFF; border-radius:20px; padding:16px 18px; border:1.5px solid #D4AF37; box-shadow:0 10px 24px rgba(9,13,22,0.12);">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-          <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:260px;">
-            <div style="width:46px; height:46px; border-radius:14px; background:rgba(212,175,55,0.2); border:1.5px solid #D4AF37; display:flex; align-items:center; justify-content:center; font-size:1.35rem; flex-shrink:0;">
+          <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:240px;">
+            <div style="width:48px; height:48px; border-radius:14px; background:rgba(212,175,55,0.2); border:1.5px solid #D4AF37; display:flex; align-items:center; justify-content:center; font-size:1.45rem; flex-shrink:0;">
               🧭
             </div>
             <div>
-              <div style="font-family:var(--font-mono); font-size:0.68rem; color:#FDE68A; font-weight:800; letter-spacing:0.05em;">
-                LÍDER DE PROYECTO DE TOUCHPOINTS &amp; CX MULTISECTORIAL · CON AURA
+              <div style="font-family:var(--font-display); font-size:1.06rem; font-weight:800; color:#FFFFFF; line-height:1.25;">
+                Mateo Valdés-Keller · Líder de Touchpoints
               </div>
-              <div style="font-family:var(--font-display); font-size:1rem; font-weight:800; color:#FFFFFF;">
-                Mateo Valdés-Keller · Service Blueprint &amp; Estrategia «Surprise and Delight»
-              </div>
-              <div id="tpLeaderDynamicAdvice" style="font-size:0.8rem; color:#CBD5E1; margin-top:2px;">
-                Meta recomendada: <strong>3 a 4 touchpoints por etapa</strong> (combinando sentidos: 👁️ Vista, 👃 Olfato, ✋ Tacto, 👂 Oído, 👅 Gusto y 🤝 Sorpresa Emocional).
+              <div id="tpLeaderDynamicAdvice" style="font-size:0.94rem; color:#FDE68A; margin-top:3px; line-height:1.35; font-weight:600;">
+                Meta ideal: <strong>3 a 4 touchpoints por etapa</strong> (combinando vista, olfato, tacto, oído y emoción).
               </div>
             </div>
           </div>
 
-          <div style="min-width:255px;">
-            <label style="font-family:var(--font-mono); font-size:0.66rem; color:#FDE68A; font-weight:800; display:block; margin-bottom:4px;">
-              🎯 EJEMPLOS ADAPTADOS A TU ACTIVIDAD:
+          <div style="flex:1; min-width:260px;">
+            <label style="font-family:var(--font-ui); font-size:0.86rem; color:#E2E8F0; font-weight:800; display:block; margin-bottom:6px;">
+              🎯 Elige tu giro para ver ejemplos reales:
             </label>
-            <select id="tpSectorSelector" onchange="changeTouchpointSectorGuide(this.value)" style="width:100%; padding:9px 12px; border-radius:12px; border:1.5px solid #D4AF37; background:#0F172A; color:#FFFFFF; font-family:var(--font-ui); font-size:0.82rem; font-weight:700; cursor:pointer;">
+            <select id="tpSectorSelector" onchange="changeTouchpointSectorGuide(this.value)" style="width:100%; padding:13px 14px; border-radius:14px; border:2px solid #D4AF37; background:#0F172A; color:#FFFFFF; font-family:var(--font-ui); font-size:1rem; font-weight:700; cursor:pointer;">
               <option value="restaurante_hospitalidad">🍽️ Restaurante, Gastronomía y Hospitalidad</option>
               <option value="servicios_profesionales_b2b">💼 Despacho Contable, Legal y Consultoría B2B</option>
               <option value="educacion_colegio_campamentos">🎓 Colegio (Primaria-Prepa) y Campamentos</option>
@@ -2548,147 +2639,148 @@
         </div>
       </div>
 
-      <!-- CONTROL SEGMENTADO TIPO APPLE (1. ANTES | 2. DURANTE | 3. DESPUÉS | ✦ MAPA COMPLETO) -->
-      <div style="width:100%; max-width:920px; margin:0 auto 16px auto; background:#E2E8F0; padding:6px; border-radius:18px; display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; box-shadow:inset 0 2px 4px rgba(15,23,42,0.06);">
-        <button type="button" id="btnTpPhaseBefore" onclick="selectTouchpointPhase('before')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:#090D16; color:#FFFFFF; box-shadow:0 4px 12px rgba(9,13,22,0.18); display:flex; flex-direction:column; align-items:center; gap:3px;">
-          <span>1. Antes de Comprar</span>
-          <span id="tpBeforeCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#FDE68A; font-weight:700;">3 de 3 sugeridos</span>
+      <!-- CONTROL SEGMENTADO GRANDE (2x2 EN CELULAR / 4 EN DESKTOP) -->
+      <div class="tp-segmented-grid">
+        <button type="button" id="btnTpPhaseBefore" class="tp-seg-btn" onclick="selectTouchpointPhase('before')" style="background:#090D16; color:#FFFFFF; box-shadow:0 4px 12px rgba(9,13,22,0.18);">
+          <span>1. Antes</span>
+          <span id="tpBeforeCount" class="tp-seg-count" style="color:#FDE68A;">3 de 3 listos</span>
         </button>
-        <button type="button" id="btnTpPhaseDuring" onclick="selectTouchpointPhase('during')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:transparent; color:#334155; display:flex; flex-direction:column; align-items:center; gap:3px;">
-          <span>2. Durante la Compra</span>
-          <span id="tpDuringCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#64748B; font-weight:700;">3 de 3 sugeridos</span>
+        <button type="button" id="btnTpPhaseDuring" class="tp-seg-btn" onclick="selectTouchpointPhase('during')" style="background:transparent; color:#1E293B;">
+          <span>2. Durante</span>
+          <span id="tpDuringCount" class="tp-seg-count" style="color:#475569;">3 de 3 listos</span>
         </button>
-        <button type="button" id="btnTpPhaseAfter" onclick="selectTouchpointPhase('after')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:transparent; color:#334155; display:flex; flex-direction:column; align-items:center; gap:3px;">
-          <span>3. Después de Comprar</span>
-          <span id="tpAfterCount" style="font-family:var(--font-mono); font-size:0.68rem; color:#64748B; font-weight:700;">3 de 3 sugeridos</span>
+        <button type="button" id="btnTpPhaseAfter" class="tp-seg-btn" onclick="selectTouchpointPhase('after')" style="background:transparent; color:#1E293B;">
+          <span>3. Después</span>
+          <span id="tpAfterCount" class="tp-seg-count" style="color:#475569;">3 de 3 listos</span>
         </button>
-        <button type="button" id="btnTpPhaseAll" onclick="selectTouchpointPhase('all')" style="border:none; border-radius:13px; padding:12px 10px; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; transition:all 0.22s ease; background:transparent; color:#334155; display:flex; flex-direction:column; align-items:center; gap:3px;">
-          <span>✦ Mapa Completo</span>
-          <span id="tpTotalExtractedBadge" style="font-family:var(--font-mono); font-size:0.68rem; color:#B45309; font-weight:700;">9 registrados</span>
+        <button type="button" id="btnTpPhaseAll" class="tp-seg-btn" onclick="selectTouchpointPhase('all')" style="background:transparent; color:#1E293B;">
+          <span>✦ Ver Todo</span>
+          <span id="tpTotalExtractedBadge" class="tp-seg-count" style="color:#B45309;">9 totales</span>
         </button>
       </div>
 
-      <!-- DIÁLOGO SOCRÁTICO CON AURA ARRIBA (PROTAGONISTA PARA REGISTRAR UNO POR UNO) -->
-      <div style="width:100%; max-width:920px; margin:0 auto 16px auto; background:#FFFFFF; border:2px solid #090D16; border-radius:22px; padding:18px 20px; box-shadow:0 12px 30px rgba(15,23,42,0.07);">
+      <!-- DIÁLOGO CON AURA CON LETRA GRANDE Y CÓMODA PARA CELULAR -->
+      <div style="width:100%; max-width:920px; margin:0 auto 18px auto; background:#FFFFFF; border:2px solid #090D16; border-radius:22px; padding:18px; box-shadow:0 12px 30px rgba(15,23,42,0.07);">
         <div id="tpAuraDialogueStream" style="margin-bottom:14px;">
-          <div style="background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:16px; padding:14px 18px; font-size:0.9rem; color:#78350F; line-height:1.5;">
-            <div style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#B45309; margin-bottom:4px;">
-              ✦ AURA &amp; LÍDER DE TOUCHPOINTS · GUÍA CONVERSACIONAL PASO A PASO
+          <div style="background:#FFFBEB; border:2px solid #FDE68A; border-radius:16px; padding:16px 18px; font-size:1.05rem; color:#78350F; line-height:1.5;">
+            <div style="font-family:var(--font-mono); font-size:0.82rem; font-weight:800; color:#B45309; margin-bottom:6px;">
+              ✦ AURA · GUÍA PASO A PASO
             </div>
-            <div id="tpAuraLiveQuestionText">
-              ¡Hola! Vamos a construir tus Touchpoints uno por uno con total libertad creativa. En <strong>1. Antes de Comprar</strong>, piensa en los sentidos: ¿qué ve, qué huele, qué escucha o qué prueba tu cliente antes de decidir comprarte? Cuéntamelo abajo con tus palabras o toca uno de los ejemplos de tu giro para sumarlo.
+            <div id="tpAuraLiveQuestionText" style="font-size:1.06rem; font-weight:600; color:#451A03;">
+              En <strong>1. Antes de Comprar</strong>: ¿qué huele, ve, escucha o prueba tu cliente antes de decidir comprarte? Cuéntamelo abajo o toca una tarjeta para sumarla.
             </div>
           </div>
         </div>
 
-        <div class="input-dock" style="margin:0; align-items:center; gap:10px; padding:10px 14px; width:100%; border-radius:16px; background:#F8FAFC; border:1.5px solid #CBD5E1;">
-          <button class="btn-action" id="tpMicBtn" onclick="toggleContinuousVoice('tpChatInput')" style="border-radius:999px; padding:10px 16px; font-weight:800; font-size:0.84rem; background:#FFFFFF; border:1.5px solid #CBD5E1; color:#090D16; white-space:nowrap;">
-            🎙️ Hablar con Aura
+        <div class="tp-aura-dock">
+          <button class="btn-action" id="tpMicBtn" onclick="toggleContinuousVoice('tpChatInput')" style="border-radius:14px; padding:13px 18px; font-weight:800; font-size:0.98rem; background:#FFFFFF; border:2px solid #CBD5E1; color:#090D16; white-space:nowrap;">
+            🎙️ Dictar con Voz
           </button>
           <textarea
             id="tpChatInput"
             class="input-textarea"
-            rows="1"
-            placeholder="Cuéntale a Aura un touchpoint sensorial o emocional (ej: 'El olor a leña y café al entrar, o una llamada cálida a los 3 días')..."
+            rows="2"
+            style="font-size:1.02rem; line-height:1.4; padding:10px 12px;"
+            placeholder="Escribe o dicta aquí tu touchpoint (ej: 'Olor a leña y café al entrar' o 'Llamada a los 3 días')..."
           ></textarea>
-          <button class="btn-action primary" id="tpSendBtn" onclick="sendTouchpointMessageToAura()" style="border-radius:999px; padding:11px 20px; font-weight:800; font-size:0.85rem; white-space:nowrap; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; border:1.5px solid #D4AF37;">
+          <button class="btn-action primary" id="tpSendBtn" onclick="sendTouchpointMessageToAura()" style="border-radius:14px; padding:14px 22px; font-weight:800; font-size:1rem; white-space:nowrap; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; border:2px solid #D4AF37;">
             Registrar con Aura ↑
           </button>
         </div>
       </div>
 
-      <!-- INSPIRACIÓN SENSORIAL Y «SURPRISE & DELIGHT» POR SECTOR (TARJETAS BENTO CREATIVAS) -->
+      <!-- TARJETAS DE INSPIRACIÓN GRANDES Y CLARAS (1 COLUMNA EN CELULAR, 2 EN DESKTOP) -->
       <div id="tpBentoGallerySection" style="width:100%; max-width:920px; margin:0 auto 20px auto;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px; padding:0 4px;">
-          <span style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#090D16; letter-spacing:0.03em;">
-            ✦ IDEAS SENSORIALES Y «SURPRISE &amp; DELIGHT» PARA TU SECTOR (TOCA UNA PARA SUMARLA A TU RECORRIDO)
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; padding:0 4px;">
+          <span style="font-family:var(--font-ui); font-size:0.98rem; font-weight:800; color:#090D16;">
+            ✦ Ideas sugeridas para tu giro (toca cualquiera para sumarla):
           </span>
-          <button type="button" class="btn-action" onclick="toggleCustomTpDrawer()" style="padding:6px 14px; font-size:0.75rem; font-weight:800; border-radius:999px; background:#F8FAFC; border:1.5px solid #CBD5E1; color:#334155;">
-            ✨ + Personalizar Sentidos / Service Blueprint Manual
+          <button type="button" class="btn-action" onclick="toggleCustomTpDrawer()" style="padding:10px 16px; font-size:0.9rem; font-weight:800; border-radius:12px; background:#F8FAFC; border:1.5px solid #CBD5E1; color:#090D16;">
+            ✨ + Crear Touchpoint Manual
           </button>
         </div>
 
-        <div id="tpQuickChipsRow" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:12px;">
+        <div id="tpQuickChipsRow" class="tp-bento-grid">
           <!-- Injected dynamically by renderTouchpointQuickChips() -->
         </div>
       </div>
 
-      <!-- INSPECTOR CREATIVO DESPLEGABLE BAJO DEMANDA (SENTIDOS + SURPRISE & DELIGHT + BLUEPRINT) -->
-      <div id="customTpCollapsibleDrawer" style="display:none; width:100%; max-width:920px; margin:0 auto 20px auto; background:#FFFFFF; border:2px solid #D4AF37; border-radius:20px; padding:18px 22px; box-shadow:0 16px 36px rgba(9,13,22,0.10);">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <!-- INSPECTOR CREATIVO DESPLEGABLE BAJO DEMANDA -->
+      <div id="customTpCollapsibleDrawer" style="display:none; width:100%; max-width:920px; margin:0 auto 20px auto; background:#FFFFFF; border:2px solid #D4AF37; border-radius:20px; padding:20px; box-shadow:0 16px 36px rgba(9,13,22,0.10);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
           <div>
-            <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#B45309;">✨ DISEÑADOR DE EXPERIENCIA SENSORIAL Y SERVICE BLUEPRINT</span>
-            <h4 style="font-family:var(--font-display); font-size:1.05rem; color:#090D16; margin:2px 0 0 0;">Personaliza cómo se siente, qué sorpresa genera y cómo opera tras bambalinas</h4>
+            <span style="font-family:var(--font-mono); font-size:0.82rem; font-weight:800; color:#B45309;">✨ PERSONALIZAR TOUCHPOINT</span>
+            <h4 style="font-family:var(--font-display); font-size:1.2rem; color:#090D16; margin:4px 0 0 0;">Define cómo se siente y qué sorpresa genera</h4>
           </div>
-          <button type="button" class="btn-action" onclick="toggleCustomTpDrawer(false)" style="padding:5px 12px; font-size:0.75rem;">Cerrar ✕</button>
+          <button type="button" class="btn-action" onclick="toggleCustomTpDrawer(false)" style="padding:8px 14px; font-size:0.9rem; font-weight:800;">Cerrar ✕</button>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(195px, 1fr)); gap:12px; align-items:end;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; align-items:end;">
           <div>
-            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Momento del Viaje</label>
-            <select id="customTpPhase" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem; font-weight:700; background:#F8FAFC;">
+            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Momento del Viaje</label>
+            <select id="customTpPhase" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem; font-weight:700; background:#F8FAFC;">
               <option value="before">1. Antes de Comprar</option>
               <option value="during">2. Durante la Compra</option>
               <option value="after">3. Después de Comprar</option>
             </select>
           </div>
           <div>
-            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Experiencia / Touchpoint</label>
-            <input id="customTpTitle" type="text" placeholder="Ej: Aroma a pino y pan tibio al llegar" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
+            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Experiencia / Touchpoint</label>
+            <input id="customTpTitle" type="text" placeholder="Ej: Aroma a pino y pan tibio al llegar" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
           </div>
           <div>
-            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Sentidos y Emoción (5 Sentidos)</label>
-            <input id="customTpSubstrate" type="text" placeholder="Ej: 👃 Olfato + ✋ Tacto cálido + Paz" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
+            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Sentidos que activa</label>
+            <input id="customTpSubstrate" type="text" placeholder="Ej: 👃 Olfato + ✋ Tacto cálido" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
           </div>
           <div>
-            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Gesto «Surprise &amp; Delight»</label>
-            <input id="customTpMethod" type="text" placeholder="Ej: Nota escrita a mano / Degustación" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
+            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Detalle sorpresa (Surprise &amp; Delight)</label>
+            <input id="customTpMethod" type="text" placeholder="Ej: Nota escrita a mano / Degustación" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
           </div>
           <div>
-            <label style="font-size:0.74rem; font-weight:800; color:#334155; display:block; margin-bottom:4px;">Service Blueprint (Onstage / Backstage)</label>
-            <input id="customTpDims" type="text" placeholder="Ej: Anfitrión recibe por nombre · CRM" style="width:100%; padding:10px 12px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.84rem;" />
+            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Cómo opera tu equipo</label>
+            <input id="customTpDims" type="text" placeholder="Ej: Anfitrión recibe por nombre" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
           </div>
-          <button type="button" class="btn-action primary" onclick="addCustomDetailedTouchpoint()" style="padding:11px 18px; font-size:0.84rem; font-weight:800; border-radius:12px;">
-            ✓ Registrar en mi Viaje
+          <button type="button" class="btn-action primary" onclick="addCustomDetailedTouchpoint()" style="padding:14px 20px; font-size:1rem; font-weight:800; border-radius:12px;">
+            ✓ Guardar Touchpoint
           </button>
         </div>
       </div>
 
-      <!-- BÓVEDA DE TOUCHPOINTS REGISTRADOS PASO A PASO (CON SERVICE BLUEPRINT DESPLEGABLE) -->
+      <!-- LISTA DE TOUCHPOINTS REGISTRADOS CON LETRA GRANDE Y BAJA DENSIDAD -->
       <div id="tpActiveStageColumnsGrid" style="width:100%; max-width:920px; margin:0 auto; display:grid; grid-template-columns:1fr; gap:16px;">
-        <div class="manifesto-plaque" id="tpStageCardBefore" style="border-top:4px solid #0284C7; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+        <div class="manifesto-plaque" id="tpStageCardBefore" style="border-top:5px solid #0284C7; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
             <div>
-              <span class="plaque-num" style="color:#0284C7; font-size:0.72rem;">ETAPA 2.1 · ANTES DE COMPRAR (PRE-COMPRA, DESCUBRIMIENTO Y ATRACCIÓN SENSORIAL)</span>
-              <div class="plaque-title" style="font-size:1.08rem; margin:2px 0 0 0;">Touchpoints Registrados con Aura (Toca «✨ Experiencia y Blueprint» para ver el detalle completo)</div>
+              <span class="plaque-num" style="color:#0284C7; font-size:0.84rem; font-weight:800;">ETAPA 1 · ANTES DE COMPRAR</span>
+              <div class="plaque-title" style="font-size:1.25rem; margin:2px 0 0 0;">Tus Touchpoints Registrados</div>
             </div>
-            <button type="button" class="btn-action" onclick="selectTouchpointPhase('during')" style="padding:7px 14px; font-size:0.76rem; font-weight:800; background:#090D16; color:#FDE68A;">
-              Pasar a 2. Durante la Compra →
+            <button type="button" class="btn-action" onclick="selectTouchpointPhase('during')" style="padding:11px 18px; font-size:0.94rem; font-weight:800; background:#090D16; color:#FDE68A; border-radius:12px;">
+              Siguiente: 2. Durante →
             </button>
           </div>
           <div class="plaque-text" id="tpBeforeText" style="margin-top:8px;"></div>
         </div>
 
-        <div class="manifesto-plaque" id="tpStageCardDuring" style="display:none; border-top:4px solid #D97706; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+        <div class="manifesto-plaque" id="tpStageCardDuring" style="display:none; border-top:5px solid #D97706; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
             <div>
-              <span class="plaque-num" style="color:#B45309; font-size:0.72rem;">ETAPA 2.2 · DURANTE LA COMPRA (EXPERIENCIA EN VIVO, SERVICESCAPE Y CIERRE SIN FRICCIÓN)</span>
-              <div class="plaque-title" style="font-size:1.08rem; margin:2px 0 0 0;">Touchpoints Registrados con Aura (Toca «✨ Experiencia y Blueprint» para ver el detalle completo)</div>
+              <span class="plaque-num" style="color:#B45309; font-size:0.84rem; font-weight:800;">ETAPA 2 · DURANTE LA COMPRA</span>
+              <div class="plaque-title" style="font-size:1.25rem; margin:2px 0 0 0;">Tus Touchpoints Registrados</div>
             </div>
-            <button type="button" class="btn-action" onclick="selectTouchpointPhase('after')" style="padding:7px 14px; font-size:0.76rem; font-weight:800; background:#090D16; color:#FDE68A;">
-              Pasar a 3. Después de Comprar →
+            <button type="button" class="btn-action" onclick="selectTouchpointPhase('after')" style="padding:11px 18px; font-size:0.94rem; font-weight:800; background:#090D16; color:#FDE68A; border-radius:12px;">
+              Siguiente: 3. Después →
             </button>
           </div>
           <div class="plaque-text" id="tpDuringText" style="margin-top:8px;"></div>
         </div>
 
-        <div class="manifesto-plaque" id="tpStageCardAfter" style="display:none; border-top:4px solid #10B981; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+        <div class="manifesto-plaque" id="tpStageCardAfter" style="display:none; border-top:5px solid #10B981; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
             <div>
-              <span class="plaque-num" style="color:#059669; font-size:0.72rem;">ETAPA 2.3 · DESPUÉS DE COMPRAR (POST-COMPRA, RITUAL DE ENTREGA Y DELEITE SORPRESIVO)</span>
-              <div class="plaque-title" style="font-size:1.08rem; margin:2px 0 0 0;">Touchpoints Registrados con Aura (Toca «✨ Experiencia y Blueprint» para ver el detalle completo)</div>
+              <span class="plaque-num" style="color:#059669; font-size:0.84rem; font-weight:800;">ETAPA 3 · DESPUÉS DE COMPRAR</span>
+              <div class="plaque-title" style="font-size:1.25rem; margin:2px 0 0 0;">Tus Touchpoints Registrados</div>
             </div>
-            <button type="button" class="btn-action" onclick="selectTouchpointPhase('all')" style="padding:7px 14px; font-size:0.76rem; font-weight:800; background:#090D16; color:#FDE68A;">
-              ✦ Ver Mapa Completo (3 Etapas) →
+            <button type="button" class="btn-action" onclick="selectTouchpointPhase('all')" style="padding:11px 18px; font-size:0.94rem; font-weight:800; background:#090D16; color:#FDE68A; border-radius:12px;">
+              ✦ Ver Todo el Viaje →
             </button>
           </div>
           <div class="plaque-text" id="tpAfterText" style="margin-top:8px;"></div>
@@ -2696,22 +2788,22 @@
       </div>
 
       <!-- CIERRE DE DESCUBRIMIENTO DEL PASO 2 + CÁPSULA DE VIDEO -->
-      <div class="discovery-closure-card" id="step2DiscoveryClosureCard" style="max-width:920px; margin:20px auto 0 auto;">
+      <div class="discovery-closure-card" id="step2DiscoveryClosureCard" style="max-width:920px; margin:20px auto 0 auto; padding:22px;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
           <div>
-            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A; font-weight:800; letter-spacing:0.08em;">🏆 PASO 2 COMPLETADO · ARQUITECTURA DE EXPERIENCIA Y SERVICE BLUEPRINT LISTOS</span>
-            <h3 style="font-family:var(--font-display); font-size:1.35rem; color:#FFFFFF; margin:4px 0 0 0;">
-              Tus Touchpoints Sensoriales, Emocionales y Operativos están listos
+            <span style="font-family:var(--font-mono); font-size:0.82rem; color:#FDE68A; font-weight:800; letter-spacing:0.06em;">🏆 PASO 2 LISTO</span>
+            <h3 style="font-family:var(--font-display); font-size:1.45rem; color:#FFFFFF; margin:4px 0 0 0;">
+              Tus Touchpoints Sensoriales están listos
             </h3>
           </div>
-          <span class="trait-discovery-pill">🎬 Incluye Resumen con Voz de Aura</span>
+          <span class="trait-discovery-pill" style="font-size:0.84rem; padding:6px 12px;">🎬 Incluye Resumen con Voz de Aura</span>
         </div>
-        <p id="step2ClosureDesc" style="font-size:0.9rem; color:#CBD5E1; line-height:1.5; margin:0;">
-          Cada punto de contacto quedará documentado en el Tomo III de tu Brandbook con su experiencia multisensorial, clasificación Lemon &amp; Verhoef, estrategia Surprise &amp; Delight, Service Blueprint (Onstage/Backstage) y materialidad física o digital.
+        <p id="step2ClosureDesc" style="font-size:1rem; color:#E2E8F0; line-height:1.5; margin:6px 0;">
+          Todo tu recorrido quedará documentado con su experiencia sensorial, Surprise &amp; Delight y Service Blueprint en el Tomo III de tu Brandbook.
         </p>
-        <div style="display:flex; justify-content:flex-end; margin-top:4px;">
-          <button class="btn-action primary" style="background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); color:#FFFFFF; border:none; padding:12px 24px; font-weight:800;" onclick="completeStepAndAdvanceWithCelebration(2, 3)">
-            🎬 Ver Resumen de Touchpoints y Pasar al Nombre de Marca (Paso 3) →
+        <div style="display:flex; justify-content:flex-end; margin-top:8px;">
+          <button class="btn-action primary" style="width:100%; justify-content:center; background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); color:#FFFFFF; border:none; padding:16px 24px; font-size:1.05rem; font-weight:800; border-radius:14px;" onclick="completeStepAndAdvanceWithCelebration(2, 3)">
+            🎬 Pasar al Nombre de Marca (Paso 3) →
           </button>
         </div>
       </div>
@@ -4575,22 +4667,22 @@
         return `
           <div
             onclick="addQuickTouchpointChip('${escapeHTML(cleanLabel)}')"
-            style="cursor:pointer; border-radius:18px; padding:14px 16px; background:${alreadyAdded ? 'linear-gradient(135deg, #090D16 0%, #1E293B 100%)' : '#FFFFFF'}; color:${alreadyAdded ? '#FFFFFF' : '#090D16'}; border:${alreadyAdded ? '2px solid #D4AF37' : '1.5px solid #CBD5E1'}; box-shadow:${alreadyAdded ? '0 10px 24px rgba(9,13,22,0.16)' : '0 4px 10px rgba(15,23,42,0.04)'}; display:flex; align-items:flex-start; gap:12px; transition:all 0.2s ease; text-align:left;"
+            style="cursor:pointer; border-radius:20px; padding:18px; background:${alreadyAdded ? 'linear-gradient(135deg, #090D16 0%, #1E293B 100%)' : '#FFFFFF'}; color:${alreadyAdded ? '#FFFFFF' : '#090D16'}; border:${alreadyAdded ? '2.5px solid #D4AF37' : '2px solid #CBD5E1'}; box-shadow:${alreadyAdded ? '0 10px 24px rgba(9,13,22,0.16)' : '0 4px 12px rgba(15,23,42,0.05)'}; display:flex; align-items:flex-start; gap:14px; transition:all 0.2s ease; text-align:left;"
           >
-            <div style="width:44px; height:44px; border-radius:12px; background:${alreadyAdded ? 'rgba(212,175,55,0.18)' : '#F1F5F9'}; border:1px solid ${alreadyAdded ? '#D4AF37' : '#E2E8F0'}; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0;">
+            <div style="width:52px; height:52px; border-radius:14px; background:${alreadyAdded ? 'rgba(212,175,55,0.2)' : '#F1F5F9'}; border:1.5px solid ${alreadyAdded ? '#D4AF37' : '#CBD5E1'}; display:flex; align-items:center; justify-content:center; font-size:1.6rem; flex-shrink:0;">
               ${card.icon}
             </div>
             <div style="flex:1; min-width:0;">
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:3px;">
-                <span style="font-family:var(--font-mono); font-size:0.64rem; font-weight:800; color:${alreadyAdded ? '#FDE68A' : '#B45309'}; text-transform:uppercase;">${escapeHTML(card.tag)}</span>
-                <span style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:2px 8px; border-radius:99px; background:${alreadyAdded ? '#059669' : '#F1F5F9'}; color:${alreadyAdded ? '#FFFFFF' : '#475569'};">
-                  ${alreadyAdded ? '✓ En tu Viaje' : '+ Sumar con Aura'}
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+                <span style="font-size:0.84rem; font-weight:800; color:${alreadyAdded ? '#FDE68A' : '#B45309'};">${escapeHTML(card.tag)}</span>
+                <span style="font-size:0.82rem; font-weight:800; padding:4px 12px; border-radius:99px; background:${alreadyAdded ? '#059669' : '#F1F5F9'}; color:${alreadyAdded ? '#FFFFFF' : '#090D16'};">
+                  ${alreadyAdded ? '✓ Agregado' : '+ Tocar para sumar'}
                 </span>
               </div>
-              <div style="font-family:var(--font-display); font-weight:800; font-size:0.9rem; line-height:1.25; margin-bottom:4px;">
+              <div style="font-family:var(--font-display); font-weight:800; font-size:1.08rem; line-height:1.32; margin-bottom:6px;">
                 ${escapeHTML(card.label)}
               </div>
-              <div style="font-size:0.75rem; color:${alreadyAdded ? '#CBD5E1' : '#64748B'}; line-height:1.35;">
+              <div style="font-size:0.94rem; color:${alreadyAdded ? '#E2E8F0' : '#475569'}; line-height:1.42;">
                 ${escapeHTML(card.sub)}
               </div>
             </div>
@@ -4612,12 +4704,12 @@
       if (existingIdx === -1) {
         list.push(chipLabel);
         addXP(25);
-        actionMsg = `He registrado <strong>"${escapeHTML(chipLabel)}"</strong> y estructurado sus sentidos, su gesto Surprise &amp; Delight y su Service Blueprint (Onstage y Backstage).`;
+        actionMsg = `Sumé <strong>"${escapeHTML(chipLabel)}"</strong> con sus sentidos y su plan operativo.`;
       } else if (list.length > 1) {
         list.splice(existingIdx, 1);
-        actionMsg = `He retirado <strong>"${escapeHTML(chipLabel)}"</strong> de esta etapa.`;
+        actionMsg = `Quité <strong>"${escapeHTML(chipLabel)}"</strong> de esta etapa.`;
       } else {
-        actionMsg = `Mantenemos al menos un touchpoint activo en esta etapa para tu recorrido.`;
+        actionMsg = `Mantenemos al menos 1 touchpoint activo en esta etapa.`;
       }
       syncTouchpointCardsUI();
       renderTouchpointQuickChips();
@@ -4625,17 +4717,17 @@
       const stream = document.getElementById("tpAuraDialogueStream");
       if (stream) {
         const countNow = list.length;
-        const momentName = targetPhase === "before" ? "1. Antes de Comprar" : (targetPhase === "during" ? "2. Durante la Compra" : "3. Después de Comprar");
+        const momentName = targetPhase === "before" ? "1. Antes" : (targetPhase === "during" ? "2. Durante" : "3. Después");
         const nextCoach = countNow >= 3
           ? (targetPhase === "before"
-              ? "¡Llevas una cantidad ideal (3+) en Pre-compra! Cuando quieras, pasemos a <strong>2. Durante la Compra</strong>."
+              ? "¡Tienes 3+ listos! Toca arriba <strong>2. Durante</strong> para continuar."
               : (targetPhase === "during"
-                  ? "¡Excelente equilibrio en la etapa de Compra! Pasemos a <strong>3. Después de Comprar</strong> para diseñar la fidelización."
-                  : "¡Tus 3 etapas tienen una riqueza sensorial extraordinaria! Puedes ver el Mapa Completo o avanzar al Paso 3."))
-          : `Llevas <strong>${countNow} de 3 recomendados</strong> en ${momentName}. ¿Qué otro estímulo sensorial o gesto humano quieres sumar?`;
+                  ? "¡Excelente! Ahora toca <strong>3. Después</strong> para cerrar el viaje."
+                  : "¡Tus 3 etapas están completas! Puedes avanzar al Paso 3."))
+          : `Llevas <strong>${countNow} de 3 recomendados</strong> en ${momentName}.`;
         stream.innerHTML = `
-          <div style="background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:16px; padding:12px 16px; font-size:0.86rem; color:#78350F; line-height:1.45;">
-            <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#B45309; margin-bottom:3px;">✦ AURA &amp; MATEO (LÍDER DE TOUCHPOINTS) · ${momentName.toUpperCase()}</div>
+          <div style="background:#FFFBEB; border:2px solid #FDE68A; border-radius:18px; padding:16px 18px; font-size:0.98rem; color:#78350F; line-height:1.48;">
+            <div style="font-size:0.84rem; font-weight:800; color:#B45309; margin-bottom:4px;">✦ AURA · ${momentName.toUpperCase()}</div>
             ${actionMsg} ${nextCoach}
           </div>
         `;
@@ -4791,48 +4883,45 @@
       const isExpanded = !!window.expandedTpIds[spec.tp_id];
 
       return `
-        <div style="background:#F8FAFC; border:1.5px solid #E2E8F0; border-left:5px solid ${accentColor}; border-radius:16px; padding:14px 16px; margin-bottom:10px; transition:all 0.2s ease;">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-            <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:210px;">
-              <span style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#FDE68A; background:#090D16; padding:4px 9px; border-radius:8px; flex-shrink:0;">${escapeHTML(spec.tp_id)}</span>
-              <div>
-                <div style="font-family:var(--font-display); font-weight:800; font-size:0.95rem; color:#090D16; line-height:1.28;">${escapeHTML(spec.title)}</div>
-                <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:5px;">
-                  <span style="font-size:0.72rem; background:#FFFBEB; border:1px solid #FDE68A; color:#92400E; padding:2px 9px; border-radius:99px; font-weight:700;">${escapeHTML(spec.sensory_dimensions)}</span>
-                  <span style="font-size:0.71rem; background:#FFFFFF; border:1px solid #CBD5E1; color:#334155; padding:2px 9px; border-radius:99px; font-weight:600;">🏛️ ${escapeHTML(spec.governance_lemon_verhoef)}</span>
-                </div>
+        <div style="background:#F8FAFC; border:2px solid #E2E8F0; border-left:6px solid ${accentColor}; border-radius:18px; padding:16px 18px; margin-bottom:12px; transition:all 0.2s ease;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div style="flex:1; min-width:220px;">
+              <div style="font-family:var(--font-display); font-weight:800; font-size:1.08rem; color:#090D16; line-height:1.34; margin-bottom:8px;">
+                ${idx + 1}. ${escapeHTML(spec.title)}
+              </div>
+              <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                <span style="font-size:0.88rem; background:#FFFBEB; border:1.5px solid #FDE68A; color:#92400E; padding:4px 12px; border-radius:99px; font-weight:700;">${escapeHTML(spec.sensory_dimensions)}</span>
               </div>
             </div>
-            <div style="display:flex; align-items:center; gap:6px;">
-              <button type="button" class="btn-action" onclick="toggleTpEngineeringAccordion('${spec.tp_id}')" style="padding:6px 12px; font-size:0.74rem; font-weight:800; border-radius:10px; background:${isExpanded ? '#090D16' : '#FFFFFF'}; color:${isExpanded ? '#FDE68A' : '#090D16'};">
-                ${isExpanded ? '▴ Ocultar Detalle' : '✨ Experiencia y Blueprint'}
+            <div class="tp-item-actions-row">
+              <button type="button" class="btn-action" onclick="toggleTpEngineeringAccordion('${spec.tp_id}')" style="padding:10px 14px; font-size:0.9rem; font-weight:800; border-radius:12px; background:${isExpanded ? '#090D16' : '#FFFFFF'}; color:${isExpanded ? '#FDE68A' : '#090D16'}; border:1.5px solid #090D16;">
+                ${isExpanded ? '▴ Ocultar' : '✨ Ver Detalle'}
               </button>
-              <button type="button" class="btn-action" onclick="openEditTpEngineeringInspector('${phaseKey}', ${idx})" title="Personalizar sentidos, sorpresa o blueprint" style="padding:6px 10px; font-size:0.74rem; border-radius:10px;">
+              <button type="button" class="btn-action" onclick="openEditTpEngineeringInspector('${phaseKey}', ${idx})" title="Editar detalle" style="padding:10px 12px; font-size:0.92rem; border-radius:12px;">
                 ✏️
               </button>
-              <button type="button" class="btn-action" onclick="removeTouchpointItem('${phaseKey}', ${idx})" title="Quitar este punto de contacto" style="padding:6px 10px; font-size:0.74rem; border-radius:10px; color:#DC2626;">
+              <button type="button" class="btn-action" onclick="removeTouchpointItem('${phaseKey}', ${idx})" title="Quitar" style="padding:10px 12px; font-size:0.92rem; border-radius:12px; color:#DC2626;">
                 ✕
               </button>
             </div>
           </div>
 
-          <div style="display:${isExpanded ? 'grid' : 'none'}; grid-template-columns:repeat(auto-fit, minmax(225px, 1fr)); gap:10px; margin-top:12px; padding:14px 16px; background:#FFFFFF; border-radius:12px; border:1px solid #CBD5E1; font-size:0.78rem; color:#1E293B; line-height:1.45;">
+          <div style="display:${isExpanded ? 'grid' : 'none'}; grid-template-columns:1fr; gap:12px; margin-top:14px; padding:16px; background:#FFFFFF; border-radius:14px; border:1.5px solid #CBD5E1; font-size:0.95rem; color:#1E293B; line-height:1.5;">
             <div>
-              <strong style="color:#B45309;">✨ Estrategia «Surprise &amp; Delight»:</strong><br/>
+              <strong style="color:#B45309; font-size:0.96rem;">✨ Sorpresa y Deleite (Surprise &amp; Delight):</strong><br/>
               ${escapeHTML(spec.surprise_and_delight)}
             </div>
             <div>
-              <strong style="color:#0284C7;">🎭 Service Blueprint (Onstage Visible):</strong><br/>
+              <strong style="color:#0284C7; font-size:0.96rem;">🎭 Lo que vive el cliente (Onstage):</strong><br/>
               ${escapeHTML(spec.blueprint_onstage)}
             </div>
             <div>
-              <strong style="color:#475569;">⚙️ Backstage &amp; Procesos de Soporte:</strong><br/>
+              <strong style="color:#475569; font-size:0.96rem;">⚙️ Lo que prepara tu equipo (Backstage):</strong><br/>
               ${escapeHTML(spec.blueprint_backstage)}
             </div>
             <div>
-              <strong style="color:#059669;">🧱 Evidencia Física / Sensorial y Métricas:</strong><br/>
-              ${escapeHTML(spec.substrate_material)}<br/>
-              <span style="color:#065F46; font-weight:700;">📊 ${escapeHTML(spec.metrics_and_attribution)}</span>
+              <strong style="color:#059669; font-size:0.96rem;">🧱 Materiales, Control y Métricas:</strong><br/>
+              ${escapeHTML(spec.substrate_material)} · <span style="color:#065F46; font-weight:700;">${escapeHTML(spec.governance_lemon_verhoef)} (${escapeHTML(spec.metrics_and_attribution)})</span>
             </div>
           </div>
         </div>
@@ -4906,13 +4995,13 @@
       const cBefore = document.getElementById("tpBeforeCount");
       const cDuring = document.getElementById("tpDuringCount");
       const cAfter = document.getElementById("tpAfterCount");
-      if (cBefore) cBefore.textContent = `${tpExtractedItems.before.length} de 3+ sugeridos`;
-      if (cDuring) cDuring.textContent = `${tpExtractedItems.during.length} de 3+ sugeridos`;
-      if (cAfter) cAfter.textContent = `${tpExtractedItems.after.length} de 3+ sugeridos`;
+      if (cBefore) cBefore.textContent = `${tpExtractedItems.before.length} listos`;
+      if (cDuring) cDuring.textContent = `${tpExtractedItems.during.length} listos`;
+      if (cAfter) cAfter.textContent = `${tpExtractedItems.after.length} listos`;
 
       const total = tpExtractedItems.before.length + tpExtractedItems.during.length + tpExtractedItems.after.length;
       const totalBadge = document.getElementById("tpTotalExtractedBadge");
-      if (totalBadge) totalBadge.textContent = `${total} registrados`;
+      if (totalBadge) totalBadge.textContent = `${total} totales`;
 
       const pillsEl = document.getElementById("step2DiscoveredTraitsPills");
       if (pillsEl) {
@@ -4959,13 +5048,13 @@
       const stream = document.getElementById("tpAuraDialogueStream");
       if (stream) {
         stream.innerHTML = `
-          <div style="background:#090D16; color:#FAF8F5; border:1.5px solid #D4AF37; border-radius:16px; padding:14px 18px; font-size:0.86rem; line-height:1.5;">
-            <div style="font-family:var(--font-mono); font-size:0.7rem; color:#FDE68A; font-weight:800; margin-bottom:4px;">
-              ✦ AURA &amp; MATEO (LÍDER DE TOUCHPOINTS) · REGISTRADO EN ${momentLabel.toUpperCase()}
+          <div style="background:#090D16; color:#FAF8F5; border:2px solid #D4AF37; border-radius:18px; padding:16px 20px; font-size:0.98rem; line-height:1.52;">
+            <div style="font-size:0.84rem; color:#FDE68A; font-weight:800; margin-bottom:6px;">
+              ✦ AURA · REGISTRADO EN ${momentLabel.toUpperCase()}
             </div>
-            He sumado <strong>"${escapeHTML(text)}"</strong> como un touchpoint <strong>${escapeHTML(spec.sensory_dimensions)}</strong> (${escapeHTML(spec.governance_lemon_verhoef)}).<br/>
-            <span style="color:#CBD5E1; font-size:0.82rem;">• <strong>Surprise &amp; Delight:</strong> ${escapeHTML(spec.surprise_and_delight)}</span><br/>
-            <div style="margin-top:6px; color:#FDE68A;">${nextStepPrompt}</div>
+            Sumé <strong>"${escapeHTML(text)}"</strong> (${escapeHTML(spec.sensory_dimensions)}).<br/>
+            <span style="color:#CBD5E1; font-size:0.94rem;">• <strong>Surprise &amp; Delight:</strong> ${escapeHTML(spec.surprise_and_delight)}</span><br/>
+            <div style="margin-top:8px; color:#FDE68A;">${nextStepPrompt}</div>
           </div>
         `;
       }
