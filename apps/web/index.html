@@ -2852,9 +2852,16 @@
         <div class="aura-orb-halo" id="avatarOrb" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para escuchar la voz de AURA">
           <canvas id="avatarCanvas" width="304" height="304" class="aura-canvas"></canvas>
         </div>
-        <div class="aura-presence-badge" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para activar audio">
+        <div class="aura-presence-badge" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para escuchar a Aura">
           <span class="aura-pulse-dot"></span>
-          <span id="avatarStateLabel">AURA · Inteligencia Áurea (Clic para escuchar)</span>
+          <span id="avatarStateLabel">AURA · Hablando en voz alta (Voz Activa)</span>
+        </div>
+        <!-- OPCIÓN BREVE FLOTANTE PARA CAMBIAR A INTERACCIÓN BASADA SOLO EN TEXTO -->
+        <div id="auraQuickTextOnlyBanner" style="display:none; margin:8px auto 0 auto; max-width:96%; width:fit-content; background:#090D16; color:#FAF8F5; border:1.5px solid #D4AF37; border-radius:999px; padding:5px 8px 5px 14px; font-size:0.75rem; font-weight:700; align-items:center; justify-content:center; gap:8px; flex-direction:row; flex-wrap:nowrap; box-shadow:0 8px 20px rgba(9,13,22,0.2); transition:opacity 0.35s ease;">
+          <span style="display:inline-flex; align-items:center; gap:5px; color:#FDE68A; white-space:nowrap;">🔊 Aura habla por defecto</span>
+          <button type="button" id="btnQuickSwitchToTextOnly" onclick="activateTextOnlyMode()" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA; border-radius:999px; padding:4px 10px; font-size:0.72rem; font-weight:800; cursor:pointer; white-space:nowrap;">
+            🔇 Solo Texto
+          </button>
         </div>
       </div>
 
@@ -2878,11 +2885,6 @@
             </h1>
           </div>
 
-          <!-- PÍLDORA SUTIL Y CENTRADA DE PAUSAS LIBRES (CERO CAJA GIGANTE QUE ESTORBE) -->
-          <div id="voiceTextInstructionBanner" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; background:#FFFBEB; border:1px solid #FDE68A; border-radius:999px; padding:6px 16px; margin:0 auto 12px auto; font-size:0.78rem; color:#92400E; font-weight:700; text-align:center;">
-            <span>⏸️ Pausas Libres: habla o escribe con calma · Solo se envía al pulsar «Enviar Respuesta ↑»</span>
-          </div>
-
           <!-- FLOATING INPUT DOCK DIRECTLY BELOW QUESTION (CENTERED, ZERO OVERFLOW) -->
           <div class="input-dock" style="margin-bottom: 14px; align-items:center; gap:10px; padding:10px 14px;">
             <button class="btn-action" id="micBtn" onclick="toggleContinuousVoice('chatInput')" title="Activar o pausar dictado por voz sin límite de pausas" style="border-radius:999px; padding:10px 16px; font-weight:800; font-size:0.82rem; display:inline-flex; align-items:center; gap:6px; background:#F8FAFC; border:1.5px solid #CBD5E1; color:#090D16; white-space:nowrap;">
@@ -2901,9 +2903,14 @@
             </button>
           </div>
 
-          <!-- PÍLDORA CENTRADA DE ESTADO DE LOS 6 PILARES -->
-          <div id="step1MobileCanvasStatusPill" onclick="openCanvasModal()" style="display:inline-flex; justify-content:center; align-items:center; gap:8px; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:999px; padding:8px 18px; margin:0 auto 14px auto; cursor:pointer; font-size:0.82rem; font-weight:700; color:#334155;">
-            📋 Manifiesto: 0/6 pilares listos (Ver)
+          <!-- PÍLDORAS CENTRADAS DE ESTADO DE LOS 6 PILARES + AYUDA POP-UP -->
+          <div style="display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap; margin:0 auto 14px auto;">
+            <div id="step1MobileCanvasStatusPill" onclick="openCanvasModal()" style="display:inline-flex; justify-content:center; align-items:center; gap:8px; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:999px; padding:8px 18px; cursor:pointer; font-size:0.82rem; font-weight:700; color:#334155;">
+              📋 Manifiesto: 0/6 pilares listos (Ver)
+            </div>
+            <button type="button" id="btnReopenAuraInteractionGuide" onclick="openAuraInteractionGuideModal()" style="display:inline-flex; justify-content:center; align-items:center; gap:6px; background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:999px; padding:8px 14px; cursor:pointer; font-size:0.78rem; font-weight:800; color:#92400E;">
+              💡 ¿Cómo contestarle a Aura?
+            </button>
           </div>
 
           <!-- CLOSING CONFIRMATION GATE -->
@@ -4130,6 +4137,68 @@
     </div>
   </div>
 
+  <!-- POP-UP EXCLUSIVO DE INSTRUCCIÓN PARA INTERACTUAR Y CONTESTARLE A AURA -->
+  <div class="welcome-modal-overlay" id="auraInteractionGuideModal" style="z-index: 9998;" onclick="if(event.target===this) closeAuraInteractionGuideModal(false)">
+    <div class="welcome-modal-card" style="max-width: 560px; width: 94%; max-height: 94vh; overflow-y: auto; background: linear-gradient(145deg, #090D16 0%, #111827 100%); border: 2px solid #D4AF37; box-shadow: 0 28px 90px rgba(0,0,0,0.85); color: #FFFFFF; padding: 16px 18px; text-align: center;" onclick="event.stopPropagation()">
+      <span class="welcome-modal-badge" style="background:rgba(212,175,55,0.2); color:#FDE68A; border:1px solid rgba(212,175,55,0.55); font-size:0.66rem; padding:3px 10px;">
+        🎙️ + ✍️ GUÍA RÁPIDA · ¿CÓMO INTERACTUAR CON AURA?
+      </span>
+      <h2 style="font-family:var(--font-display); font-size:clamp(1.12rem, 2.8vw, 1.45rem); font-weight:800; color:#FFFFFF; margin:6px 0 4px 0; line-height:1.2;">
+        Así puedes contestarle a Aura con total calma
+      </h2>
+      <p style="font-size:0.8rem; color:#CBD5E1; margin:0 auto 10px auto; line-height:1.36; max-width:520px;">
+        Por defecto, <strong style="color:#FDE68A;">Aura empieza a hablar sola en voz alta</strong> para guiarte paso a paso. Para contestarle, usa cualquiera de estas dos formas:
+      </p>
+
+      <div style="display:grid; gap:6px; text-align:left; margin-bottom:10px;">
+        <div style="background:rgba(255,255,255,0.05); border:1.5px solid rgba(212,175,55,0.45); border-radius:11px; padding:8px 11px; display:flex; align-items:flex-start; gap:9px;">
+          <div style="font-size:1.1rem; line-height:1; flex-shrink:0; margin-top:2px;">🎙️</div>
+          <div>
+            <div style="font-family:var(--font-display); font-weight:800; font-size:0.84rem; color:#FDE68A; margin-bottom:1px;">
+              1. Contestar por Voz (Con Pausas Libres)
+            </div>
+            <div style="font-size:0.76rem; color:#E2E8F0; line-height:1.32;">
+              Pulsa <strong style="color:#FFFFFF;">«🎙️ Dictar por Voz»</strong> y habla con calma. Puedes hacer pausas largas para pensar: nunca se cortará ni se enviará solo.
+            </div>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); border:1.5px solid rgba(56,189,248,0.4); border-radius:11px; padding:8px 11px; display:flex; align-items:flex-start; gap:9px;">
+          <div style="font-size:1.1rem; line-height:1; flex-shrink:0; margin-top:2px;">✍️</div>
+          <div>
+            <div style="font-family:var(--font-display); font-weight:800; font-size:0.84rem; color:#7DD3FC; margin-bottom:1px;">
+              2. Contestar por Texto (O Combinar Ambos)
+            </div>
+            <div style="font-size:0.76rem; color:#E2E8F0; line-height:1.32;">
+              Escribe directamente en el recuadro central o corrige con el teclado lo que dictaste por voz.
+            </div>
+          </div>
+        </div>
+
+        <div style="background:rgba(16,185,129,0.1); border:1.5px solid rgba(52,211,153,0.45); border-radius:11px; padding:8px 11px; display:flex; align-items:flex-start; gap:9px;">
+          <div style="font-size:1.1rem; line-height:1; flex-shrink:0; margin-top:2px;">⏹️</div>
+          <div>
+            <div style="font-family:var(--font-display); font-weight:800; font-size:0.84rem; color:#6EE7B7; margin-bottom:1px;">
+              3. Envío Manual al Terminar tu Idea
+            </div>
+            <div style="font-size:0.76rem; color:#E2E8F0; line-height:1.32;">
+              Tu respuesta solo se envía (y apaga el micrófono) cuando pulsas <strong style="color:#FDE68A;">«Enviar Respuesta ↑»</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:7px;">
+        <button type="button" id="btnStartWithAuraVoice" onclick="closeAuraInteractionGuideModal(false)" style="width:100%; border-radius:11px; padding:11px 14px; font-family:var(--font-display); font-weight:800; font-size:0.86rem; cursor:pointer; background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); color:#090D16; border:none; box-shadow:0 8px 20px rgba(212,175,55,0.3);">
+          🔊 Entendido · Escuchar a Aura y Comenzar (Por Defecto) →
+        </button>
+        <button type="button" id="btnStartTextOnlyFromPopup" onclick="closeAuraInteractionGuideModal(true)" style="width:100%; border-radius:10px; padding:8px 12px; font-weight:700; font-size:0.77rem; cursor:pointer; background:rgba(255,255,255,0.06); color:#CBD5E1; border:1px solid rgba(255,255,255,0.2);">
+          🔇 Prefiero interactuar solo basado en Texto (Silenciar a Aura)
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- CLOSING & TRANSITION VIDEO CAPSULE MODAL (PLAYS WHILE GENERATING PHASE SUMMARY REPORT) -->
   <div class="welcome-modal-overlay" id="phaseTransitionVideoModal" style="z-index: 9999;">
     <div class="welcome-modal-card" style="max-width: 760px; width: 94%; background: linear-gradient(145deg, #090D16 0%, #111827 100%); border: 2px solid #D4AF37; box-shadow: 0 28px 90px rgba(0,0,0,0.85); color: #FFFFFF; padding: 28px;" onclick="event.stopPropagation()">
@@ -4818,9 +4887,104 @@
     }
     document.addEventListener("click", unlockBrowserAudio, { once: true });
 
+    let briefTextOnlyToastTimer = null;
+
+    function showBriefTextOnlyOptionToast(durationMs = 9000) {
+      if (voiceMuted) return;
+      const banner = document.getElementById("auraQuickTextOnlyBanner");
+      if (!banner) return;
+      banner.style.display = "inline-flex";
+      banner.style.opacity = "1";
+      if (briefTextOnlyToastTimer) clearTimeout(briefTextOnlyToastTimer);
+      briefTextOnlyToastTimer = setTimeout(() => {
+        if (banner) {
+          banner.style.opacity = "0";
+          setTimeout(() => {
+            if (banner && banner.style.opacity === "0") {
+              banner.style.display = "none";
+            }
+          }, 350);
+        }
+      }, durationMs);
+    }
+
+    function hideBriefTextOnlyOptionToast() {
+      if (briefTextOnlyToastTimer) {
+        clearTimeout(briefTextOnlyToastTimer);
+        briefTextOnlyToastTimer = null;
+      }
+      const banner = document.getElementById("auraQuickTextOnlyBanner");
+      if (banner) {
+        banner.style.opacity = "0";
+        banner.style.display = "none";
+      }
+    }
+
+    function activateTextOnlyMode() {
+      playAcousticClick(680, 0.04);
+      voiceMuted = true;
+      isSpeakingLive = false;
+      try {
+        if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      } catch (e) {}
+      if (currentAudioObj) {
+        try { currentAudioObj.pause(); } catch (e) {}
+      }
+      const canvas = document.getElementById("avatarCanvas");
+      if (canvas) canvas.classList.remove("speaking");
+      const badge = document.getElementById("voiceToggleBadge");
+      if (badge) {
+        badge.textContent = "🔇 Solo Texto";
+        badge.style.color = "#DC2626";
+      }
+      const stateLabel = document.getElementById("avatarStateLabel");
+      if (stateLabel) {
+        stateLabel.textContent = "AURA · Modo Solo Texto Activo (Clic para activar voz)";
+      }
+      hideBriefTextOnlyOptionToast();
+    }
+
+    function openAuraInteractionGuideModal() {
+      playAcousticClick(840, 0.04);
+      const modal = document.getElementById("auraInteractionGuideModal");
+      if (modal) modal.classList.add("open");
+    }
+
+    function closeAuraInteractionGuideModal(preferTextOnly = false) {
+      unlockBrowserAudio();
+      playAcousticClick(preferTextOnly ? 680 : 920, 0.05);
+      const modal = document.getElementById("auraInteractionGuideModal");
+      if (modal) modal.classList.remove("open");
+
+      if (preferTextOnly) {
+        activateTextOnlyMode();
+      } else {
+        voiceMuted = false;
+        const badge = document.getElementById("voiceToggleBadge");
+        if (badge) {
+          badge.textContent = "🔊 Voz Aura";
+          badge.style.color = "#090D16";
+        }
+        const stateLabel = document.getElementById("avatarStateLabel");
+        if (stateLabel) {
+          stateLabel.textContent = "AURA · Hablando en voz alta (Voz Activa)";
+        }
+        showBriefTextOnlyOptionToast(9000);
+        if (!isSpeakingLive) {
+          playAuraInitialGreeting();
+        }
+      }
+
+      if (currentStep === 1) {
+        const input = document.getElementById("chatInput");
+        if (input) setTimeout(() => input.focus(), 120);
+      }
+    }
+
     function playGeminiWavBase64(wavB64) {
       if (voiceMuted || !wavB64) return;
       unlockBrowserAudio();
+      showBriefTextOnlyOptionToast(9000);
       try {
         if (currentAudioObj) {
           currentAudioObj.pause();
@@ -4832,11 +4996,15 @@
           isSpeakingLive = true;
           const canvas = document.getElementById("avatarCanvas");
           if (canvas) canvas.classList.add("speaking");
+          const stateLabel = document.getElementById("avatarStateLabel");
+          if (stateLabel) stateLabel.textContent = "🔊 AURA · Hablando en voz alta...";
         };
         currentAudioObj.onended = () => {
           isSpeakingLive = false;
           const canvas = document.getElementById("avatarCanvas");
           if (canvas) canvas.classList.remove("speaking");
+          const stateLabel = document.getElementById("avatarStateLabel");
+          if (stateLabel && !voiceMuted) stateLabel.textContent = "AURA · Voz Activa (Lista para escucharte)";
         };
         currentAudioObj.onerror = () => {
           isSpeakingLive = false;
@@ -4851,6 +5019,7 @@
 
     function speakWithBrowserTTS(text) {
       if (voiceMuted || !('speechSynthesis' in window)) return;
+      showBriefTextOnlyOptionToast(9000);
       try {
         window.speechSynthesis.cancel();
         const clean = text.replace(/<[^>]+>/g, " ").replace(/[*_#`]/g, "").trim();
@@ -4871,11 +5040,15 @@
           isSpeakingLive = true;
           const canvas = document.getElementById("avatarCanvas");
           if (canvas) canvas.classList.add("speaking");
+          const stateLabel = document.getElementById("avatarStateLabel");
+          if (stateLabel) stateLabel.textContent = "🔊 AURA · Hablando en voz alta...";
         };
         u.onend = () => {
           isSpeakingLive = false;
           const canvas = document.getElementById("avatarCanvas");
           if (canvas) canvas.classList.remove("speaking");
+          const stateLabel = document.getElementById("avatarStateLabel");
+          if (stateLabel && !voiceMuted) stateLabel.textContent = "AURA · Voz Activa (Lista para escucharte)";
         };
         u.onerror = () => {
           isSpeakingLive = false;
@@ -4890,6 +5063,12 @@
 
     async function requestAndPlayGeminiVoice(textToSpeak) {
       if (voiceMuted || !textToSpeak) return;
+      showBriefTextOnlyOptionToast(9000);
+      isSpeakingLive = true;
+      const canvas = document.getElementById("avatarCanvas");
+      if (canvas) canvas.classList.add("speaking");
+      const stateLabel = document.getElementById("avatarStateLabel");
+      if (stateLabel) stateLabel.textContent = "🔊 AURA · Hablando en voz alta...";
       try {
         const res = await fetch("/api/tts/gemini", {
           method: "POST",
@@ -4914,22 +5093,39 @@
 
     function playAuraInitialGreeting() {
       unlockBrowserAudio();
-      const initialText = "¡Hola! Te damos la bienvenida a TheBestBrand. Cuéntame con total confianza sobre tu proyecto: ¿qué producto o servicio vas a ofrecer y qué problema real resuelves para tus clientes?";
+      if (voiceMuted) {
+        voiceMuted = false;
+        const badge = document.getElementById("voiceToggleBadge");
+        if (badge) {
+          badge.textContent = "🔊 Voz Aura";
+          badge.style.color = "#090D16";
+        }
+      }
+      showBriefTextOnlyOptionToast(9000);
+      const activeQ = document.getElementById("activeQuestionHeading");
+      const qText = activeQ && activeQ.textContent.trim()
+        ? activeQ.textContent.trim()
+        : "¿Qué problema real le resuelves a tus clientes que nadie más en tu industria ha sido capaz de solucionar?";
+      const initialText = `¡Hola! Te doy la bienvenida a tu estudio de marca. Empecemos con nuestra primera pregunta: ${qText}`;
       requestAndPlayGeminiVoice(initialText);
     }
 
     function toggleVoiceMute() {
       unlockBrowserAudio();
-      voiceMuted = !voiceMuted;
-      const badge = document.getElementById("voiceToggleBadge");
-      if (voiceMuted) {
-        badge.textContent = "🔇 Silenciada";
-        badge.style.color = "#DC2626";
-        if (currentAudioObj) currentAudioObj.pause();
-        isSpeakingLive = false;
+      if (!voiceMuted) {
+        activateTextOnlyMode();
       } else {
-        badge.textContent = "🔊 Voz Aura";
-        badge.style.color = "#090D16";
+        voiceMuted = false;
+        const badge = document.getElementById("voiceToggleBadge");
+        if (badge) {
+          badge.textContent = "🔊 Voz Aura";
+          badge.style.color = "#090D16";
+        }
+        const stateLabel = document.getElementById("avatarStateLabel");
+        if (stateLabel) {
+          stateLabel.textContent = "AURA · Hablando en voz alta (Voz Activa)";
+        }
+        playAuraInitialGreeting();
       }
     }
 
@@ -11224,7 +11420,17 @@
       if (targetScreen === "journey") {
         navigateToScreen("journey");
       } else {
+        unlockBrowserAudio();
+        voiceMuted = false;
+        const badge = document.getElementById("voiceToggleBadge");
+        if (badge) {
+          badge.textContent = "🔊 Voz Aura";
+          badge.style.color = "#090D16";
+        }
         navigateToScreen("focus", 1);
+        openAuraInteractionGuideModal();
+        playAuraInitialGreeting();
+        showBriefTextOnlyOptionToast(9000);
       }
     }
 
