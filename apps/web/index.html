@@ -2161,6 +2161,13 @@
       background: #F8FAFC;
       border: 2px solid #CBD5E1;
     }
+    .tp-item-actions-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
     @media (max-width: 720px) {
       .tp-segmented-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -2192,12 +2199,16 @@
       }
       .tp-item-actions-row {
         width: 100%;
-        justify-content: space-between;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
         margin-top: 6px;
       }
-      .tp-item-actions-row .btn-expand-tp {
-        flex: 1;
+      .tp-item-actions-row button {
+        flex: 1 1 auto;
         justify-content: center;
+      }
         padding: 11px 14px !important;
         font-size: 0.92rem !important;
       }
@@ -2496,8 +2507,9 @@
               id="chatInput"
               class="input-textarea"
               rows="2"
-              placeholder="Habla pulsando «🎙️ Dictar por Voz» o escribe aquí tu respuesta... (Haz todas las pausas que necesites; solo se envía al pulsar Enviar Respuesta)"
+              placeholder="Habla pulsando «🎙️ Dictar por Voz» o escribe aquí tu respuesta... (Al pulsar Enviar se manda y se apaga el micrófono)"
               oninput="onChatInputChanged(this.value)"
+              onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); sendUserMessage(); }"
             ></textarea>
             <button class="btn-action primary" id="sendBtn" onclick="sendUserMessage()" title="Enviar respuesta cuando hayas terminado" style="border-radius:999px; padding:12px 20px; font-weight:800; font-size:0.86rem; white-space:nowrap; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; border:1.5px solid #D4AF37;">
               Enviar Respuesta ↑
@@ -2682,6 +2694,7 @@
             rows="2"
             style="font-size:1.02rem; line-height:1.4; padding:10px 12px;"
             placeholder="Escribe o dicta aquí tu touchpoint (ej: 'Olor a leña y café al entrar' o 'Llamada a los 3 días')..."
+            onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); sendTouchpointMessageToAura(); }"
           ></textarea>
           <button class="btn-action primary" id="tpSendBtn" onclick="sendTouchpointMessageToAura()" style="border-radius:14px; padding:14px 22px; font-weight:800; font-size:1rem; white-space:nowrap; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; border:2px solid #D4AF37;">
             Registrar con Aura ↑
@@ -2689,15 +2702,20 @@
         </div>
       </div>
 
-      <!-- TARJETAS DE INSPIRACIÓN GRANDES Y CLARAS (1 COLUMNA EN CELULAR, 2 EN DESKTOP) -->
+      <!-- TARJETAS DE INSPIRACIÓN GRANDES Y CLARAS + OPCIÓN "NINGUNO DE LOS ANTERIORES, QUIERO CREAR EL MÍO" -->
       <div id="tpBentoGallerySection" style="width:100%; max-width:920px; margin:0 auto 20px auto;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; padding:0 4px;">
           <span style="font-family:var(--font-ui); font-size:0.98rem; font-weight:800; color:#090D16;">
-            ✦ Ideas sugeridas para tu giro (toca cualquiera para sumarla):
+            ✦ Ejemplos opcionales para inspirarte (o elige «Ninguno, quiero crear el mío»):
           </span>
-          <button type="button" class="btn-action" onclick="toggleCustomTpDrawer()" style="padding:10px 16px; font-size:0.9rem; font-weight:800; border-radius:12px; background:#F8FAFC; border:1.5px solid #CBD5E1; color:#090D16;">
-            ✨ + Crear Touchpoint Manual
-          </button>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <button type="button" class="btn-action" onclick="chooseNoneAndCreateCustomTouchpoint(false)" style="padding:10px 16px; font-size:0.92rem; font-weight:800; border-radius:12px; background:#090D16; border:1.5px solid #D4AF37; color:#FDE68A;">
+              ✨ Ninguno · Quiero crear el mío
+            </button>
+            <button type="button" class="btn-action" onclick="clearAllPreloadedTouchpoints()" style="padding:10px 14px; font-size:0.9rem; font-weight:800; border-radius:12px; background:#FEF2F2; border:1.5px solid #FECACA; color:#DC2626;">
+              🗑️ Limpiar todos los cargados
+            </button>
+          </div>
         </div>
 
         <div id="tpQuickChipsRow" class="tp-bento-grid">
@@ -2706,11 +2724,11 @@
       </div>
 
       <!-- INSPECTOR CREATIVO DESPLEGABLE BAJO DEMANDA -->
-      <div id="customTpCollapsibleDrawer" style="display:none; width:100%; max-width:920px; margin:0 auto 20px auto; background:#FFFFFF; border:2px solid #D4AF37; border-radius:20px; padding:20px; box-shadow:0 16px 36px rgba(9,13,22,0.10);">
+      <div id="customTpCollapsibleDrawer" style="display:none; width:100%; max-width:920px; margin:0 auto 20px auto; background:#FFFFFF; border:2.5px solid #D4AF37; border-radius:20px; padding:20px; box-shadow:0 16px 36px rgba(9,13,22,0.12);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
           <div>
-            <span style="font-family:var(--font-mono); font-size:0.82rem; font-weight:800; color:#B45309;">✨ PERSONALIZAR TOUCHPOINT</span>
-            <h4 style="font-family:var(--font-display); font-size:1.2rem; color:#090D16; margin:4px 0 0 0;">Define cómo se siente y qué sorpresa genera</h4>
+            <span id="customTpDrawerBadge" style="font-family:var(--font-mono); font-size:0.82rem; font-weight:800; color:#B45309;">✨ CREAR O EDITAR MI PROPIO TOUCHPOINT</span>
+            <h4 id="customTpDrawerHeading" style="font-family:var(--font-display); font-size:1.2rem; color:#090D16; margin:4px 0 0 0;">Diseña tu punto de contacto a la medida de tu negocio</h4>
           </div>
           <button type="button" class="btn-action" onclick="toggleCustomTpDrawer(false)" style="padding:8px 14px; font-size:0.9rem; font-weight:800;">Cerrar ✕</button>
         </div>
@@ -2724,28 +2742,28 @@
             </select>
           </div>
           <div>
-            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Experiencia / Touchpoint</label>
-            <input id="customTpTitle" type="text" placeholder="Ej: Aroma a pino y pan tibio al llegar" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
+            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Tu Touchpoint (¿Qué ocurre?)</label>
+            <input id="customTpTitle" type="text" placeholder="Escribe aquí tu propio touchpoint..." style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
           </div>
           <div>
-            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Sentidos que activa</label>
-            <input id="customTpSubstrate" type="text" placeholder="Ej: 👃 Olfato + ✋ Tacto cálido" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
+            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Sentidos que activa (Opcional)</label>
+            <input id="customTpSubstrate" type="text" placeholder="Ej: 👃 Olfato + ✋ Tacto + 🤝 Confianza" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
           </div>
           <div>
-            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Detalle sorpresa (Surprise &amp; Delight)</label>
-            <input id="customTpMethod" type="text" placeholder="Ej: Nota escrita a mano / Degustación" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
+            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Detalle sorpresa (Opcional)</label>
+            <input id="customTpMethod" type="text" placeholder="Ej: Nota escrita a mano / Demostración" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
           </div>
           <div>
-            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Cómo opera tu equipo</label>
-            <input id="customTpDims" type="text" placeholder="Ej: Anfitrión recibe por nombre" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
+            <label style="font-size:0.9rem; font-weight:800; color:#1E293B; display:block; margin-bottom:6px;">Cómo lo hace tu equipo (Opcional)</label>
+            <input id="customTpDims" type="text" placeholder="Ej: Atención directa sin esperas" style="width:100%; padding:12px 14px; border:1.5px solid #CBD5E1; border-radius:12px; font-size:0.98rem;" />
           </div>
-          <button type="button" class="btn-action primary" onclick="addCustomDetailedTouchpoint()" style="padding:14px 20px; font-size:1rem; font-weight:800; border-radius:12px;">
-            ✓ Guardar Touchpoint
+          <button type="button" id="customTpSaveBtn" class="btn-action primary" onclick="addCustomDetailedTouchpoint()" style="padding:14px 20px; font-size:1rem; font-weight:800; border-radius:12px;">
+            ✓ Guardar Mi Touchpoint
           </button>
         </div>
       </div>
 
-      <!-- LISTA DE TOUCHPOINTS REGISTRADOS CON LETRA GRANDE Y BAJA DENSIDAD -->
+      <!-- LISTA DE TOUCHPOINTS REGISTRADOS CON OPCIÓN CLARA DE BORRAR INDIVIDUAL O POR ETAPA -->
       <div id="tpActiveStageColumnsGrid" style="width:100%; max-width:920px; margin:0 auto; display:grid; grid-template-columns:1fr; gap:16px;">
         <div class="manifesto-plaque" id="tpStageCardBefore" style="border-top:5px solid #0284C7; padding:20px; border-radius:20px; background:#FFFFFF; box-shadow:0 8px 24px rgba(15,23,42,0.05);">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
@@ -2753,9 +2771,14 @@
               <span class="plaque-num" style="color:#0284C7; font-size:0.84rem; font-weight:800;">ETAPA 1 · ANTES DE COMPRAR</span>
               <div class="plaque-title" style="font-size:1.25rem; margin:2px 0 0 0;">Tus Touchpoints Registrados</div>
             </div>
-            <button type="button" class="btn-action" onclick="selectTouchpointPhase('during')" style="padding:11px 18px; font-size:0.94rem; font-weight:800; background:#090D16; color:#FDE68A; border-radius:12px;">
-              Siguiente: 2. Durante →
-            </button>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <button type="button" class="btn-action" onclick="clearPhaseTouchpoints('before')" style="padding:10px 14px; font-size:0.88rem; font-weight:800; background:#FEF2F2; color:#DC2626; border:1.5px solid #FECACA; border-radius:12px;">
+                🗑️ Vaciar Etapa 1
+              </button>
+              <button type="button" class="btn-action" onclick="selectTouchpointPhase('during')" style="padding:11px 18px; font-size:0.94rem; font-weight:800; background:#090D16; color:#FDE68A; border-radius:12px;">
+                Siguiente: 2. Durante →
+              </button>
+            </div>
           </div>
           <div class="plaque-text" id="tpBeforeText" style="margin-top:8px;"></div>
         </div>
@@ -2766,9 +2789,14 @@
               <span class="plaque-num" style="color:#B45309; font-size:0.84rem; font-weight:800;">ETAPA 2 · DURANTE LA COMPRA</span>
               <div class="plaque-title" style="font-size:1.25rem; margin:2px 0 0 0;">Tus Touchpoints Registrados</div>
             </div>
-            <button type="button" class="btn-action" onclick="selectTouchpointPhase('after')" style="padding:11px 18px; font-size:0.94rem; font-weight:800; background:#090D16; color:#FDE68A; border-radius:12px;">
-              Siguiente: 3. Después →
-            </button>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <button type="button" class="btn-action" onclick="clearPhaseTouchpoints('during')" style="padding:10px 14px; font-size:0.88rem; font-weight:800; background:#FEF2F2; color:#DC2626; border:1.5px solid #FECACA; border-radius:12px;">
+                🗑️ Vaciar Etapa 2
+              </button>
+              <button type="button" class="btn-action" onclick="selectTouchpointPhase('after')" style="padding:11px 18px; font-size:0.94rem; font-weight:800; background:#090D16; color:#FDE68A; border-radius:12px;">
+                Siguiente: 3. Después →
+              </button>
+            </div>
           </div>
           <div class="plaque-text" id="tpDuringText" style="margin-top:8px;"></div>
         </div>
@@ -2779,9 +2807,14 @@
               <span class="plaque-num" style="color:#059669; font-size:0.84rem; font-weight:800;">ETAPA 3 · DESPUÉS DE COMPRAR</span>
               <div class="plaque-title" style="font-size:1.25rem; margin:2px 0 0 0;">Tus Touchpoints Registrados</div>
             </div>
-            <button type="button" class="btn-action" onclick="selectTouchpointPhase('all')" style="padding:11px 18px; font-size:0.94rem; font-weight:800; background:#090D16; color:#FDE68A; border-radius:12px;">
-              ✦ Ver Todo el Viaje →
-            </button>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <button type="button" class="btn-action" onclick="clearPhaseTouchpoints('after')" style="padding:10px 14px; font-size:0.88rem; font-weight:800; background:#FEF2F2; color:#DC2626; border:1.5px solid #FECACA; border-radius:12px;">
+                🗑️ Vaciar Etapa 3
+              </button>
+              <button type="button" class="btn-action" onclick="selectTouchpointPhase('all')" style="padding:11px 18px; font-size:0.94rem; font-weight:800; background:#090D16; color:#FDE68A; border-radius:12px;">
+                ✦ Ver Todo el Viaje →
+              </button>
+            </div>
           </div>
           <div class="plaque-text" id="tpAfterText" style="margin-top:8px;"></div>
         </div>
@@ -4263,7 +4296,7 @@
     }
 
     // =========================================================================
-    // VOICE RECOGNITION (DICTADO POR VOZ SIN CORTE EN PAUSAS · ENVÍO MANUAL)
+    // VOICE RECOGNITION (DICTADO POR VOZ CON PARO INMEDIATO AL ENVIAR)
     // =========================================================================
     let recognition = null;
     let isListening = false;
@@ -4292,6 +4325,10 @@
         alert("Tu navegador no soporta dictado por voz directo. Puedes escribir libremente en el recuadro y pulsar Enviar.");
         return;
       }
+      // Si había una sesión previa abierta, detenerla limpiamente antes de iniciar otra
+      if (isListening || recognition) {
+        stopContinuousVoice();
+      }
       if (currentAudioObj) currentAudioObj.pause();
       isSpeakingLive = false;
       activeVoiceInputId = targetInputId || (currentStep === 2 ? "tpChatInput" : "chatInput");
@@ -4309,15 +4346,24 @@
       [micBtn, tpMicBtn].forEach(b => {
         if (b) {
           b.classList.add("recording");
-          b.innerHTML = `<span style="font-size:1.1rem;">🔴</span> <span>Escuchando (Pausa sin corte · Pulsa Enviar al terminar)</span>`;
+          b.innerHTML = `<span style="font-size:1.1rem;">🔴</span> <span>Grabando (Pulsa Enviar para mandar y parar)</span>`;
         }
       });
+      const sendBtn = document.getElementById("sendBtn");
+      if (sendBtn && activeVoiceInputId === "chatInput") {
+        sendBtn.innerHTML = `⏹️ Enviar y Parar Audio ↑`;
+      }
+      const tpSendBtn = document.getElementById("tpSendBtn");
+      if (tpSendBtn && activeVoiceInputId === "tpChatInput") {
+        tpSendBtn.innerHTML = `⏹️ Registrar y Parar Audio ↑`;
+      }
       const orb = document.getElementById("avatarOrb");
       if (orb) orb.classList.add("listening");
       const stateLabel = document.getElementById("avatarStateLabel");
-      if (stateLabel) stateLabel.textContent = "🎙️ Escuchando sin límite de pausas (Pulsa Enviar al terminar)...";
+      if (stateLabel) stateLabel.textContent = "🎙️ Grabando voz (Al pulsar Enviar se manda y se apaga el micrófono)...";
 
       recognition.onresult = (event) => {
+        if (!isListening) return;
         let interim = "";
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
@@ -4327,24 +4373,20 @@
           }
         }
         const cleaned = cleanSpokenFillersClient(accumulatedTranscript + interim);
-        if (targetInputEl) {
+        if (targetInputEl && isListening) {
           targetInputEl.value = cleaned;
           if (activeVoiceInputId === "chatInput") onChatInputChanged(cleaned);
         }
-        // IMPORTANTE: Cero auto-envío en pausas. El usuario puede pensar todo el tiempo que necesite
-        // y solo se envía cuando presiona explícitamente el botón "Enviar Respuesta ↑".
       };
 
       recognition.onerror = (ev) => {
-        // Si es "no-speech" por una pausa larga para pensar, mantenemos vivo el micrófono
         if (ev && ev.error === "no-speech" && isListening) {
           return;
         }
         stopContinuousVoice();
       };
       recognition.onend = () => {
-        // Reiniciar automáticamente si el usuario sigue en modo dictado haciendo una pausa reflexiva
-        if (isListening) {
+        if (isListening && recognition) {
           try { recognition.start(); } catch (e) {}
         }
       };
@@ -4358,9 +4400,19 @@
 
     function stopContinuousVoice() {
       isListening = false;
+      accumulatedTranscript = "";
       if (recognition) {
-        try { recognition.stop(); } catch (e) {}
+        const recRef = recognition;
         recognition = null;
+        try {
+          recRef.onresult = null;
+          recRef.onerror = null;
+          recRef.onend = null;
+          recRef.abort();
+        } catch (e) {}
+        try {
+          recRef.stop();
+        } catch (e) {}
       }
       const micBtn = document.getElementById("micBtn");
       if (micBtn) {
@@ -4370,7 +4422,15 @@
       const tpMicBtn = document.getElementById("tpMicBtn");
       if (tpMicBtn) {
         tpMicBtn.classList.remove("recording");
-        tpMicBtn.innerHTML = `🎙️ Dictar por Voz`;
+        tpMicBtn.innerHTML = `🎙️ Dictar con Voz`;
+      }
+      const sendBtn = document.getElementById("sendBtn");
+      if (sendBtn) {
+        sendBtn.innerHTML = `Enviar Respuesta ↑`;
+      }
+      const tpSendBtn = document.getElementById("tpSendBtn");
+      if (tpSendBtn) {
+        tpSendBtn.innerHTML = `Registrar con Aura ↑`;
       }
       const orb = document.getElementById("avatarOrb");
       if (orb) orb.classList.remove("listening");
@@ -4658,7 +4718,7 @@
       const cards = (guide.cards && guide.cards[targetPhase]) || [];
       const activeList = tpExtractedItems[targetPhase] || [];
 
-      row.innerHTML = cards.map(card => {
+      const cardsHtml = cards.map(card => {
         const cleanLabel = card.label.trim();
         const alreadyAdded = activeList.some(item =>
           item.toLowerCase().includes(cleanLabel.toLowerCase().slice(0, 16)) ||
@@ -4676,7 +4736,7 @@
               <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
                 <span style="font-size:0.84rem; font-weight:800; color:${alreadyAdded ? '#FDE68A' : '#B45309'};">${escapeHTML(card.tag)}</span>
                 <span style="font-size:0.82rem; font-weight:800; padding:4px 12px; border-radius:99px; background:${alreadyAdded ? '#059669' : '#F1F5F9'}; color:${alreadyAdded ? '#FFFFFF' : '#090D16'};">
-                  ${alreadyAdded ? '✓ Agregado' : '+ Tocar para sumar'}
+                  ${alreadyAdded ? '✓ Agregado (Toca para quitar)' : '+ Tocar para sumar'}
                 </span>
               </div>
               <div style="font-family:var(--font-display); font-weight:800; font-size:1.08rem; line-height:1.32; margin-bottom:6px;">
@@ -4689,6 +4749,118 @@
           </div>
         `;
       }).join("");
+
+      const noneOfTheAboveCard = `
+        <div
+          style="grid-column: 1 / -1; border-radius:20px; padding:20px; background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); color:#090D16; border:2.5px dashed #D97706; box-shadow:0 6px 18px rgba(180,83,9,0.08); display:flex; flex-direction:column; gap:12px; text-align:left;"
+        >
+          <div style="display:flex; align-items:flex-start; gap:14px;">
+            <div style="width:52px; height:52px; border-radius:14px; background:#090D16; color:#FDE68A; border:1.5px solid #D4AF37; display:flex; align-items:center; justify-content:center; font-size:1.55rem; flex-shrink:0;">
+              ✨
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:0.84rem; font-weight:800; color:#B45309; text-transform:uppercase; margin-bottom:4px;">
+                Opción Libre a tu Medida
+              </div>
+              <div style="font-family:var(--font-display); font-weight:800; font-size:1.14rem; color:#090D16; line-height:1.3; margin-bottom:4px;">
+                Ninguno de los anteriores · Quiero crear el mío propio
+              </div>
+              <div style="font-size:0.95rem; color:#451A03; line-height:1.45;">
+                Si los ejemplos de arriba no coinciden con la realidad de tu negocio, crea los tuyos con total libertad o limpia los ejemplos precargados para empezar desde cero.
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:2px;">
+            <button type="button" class="btn-action primary" onclick="chooseNoneAndCreateCustomTouchpoint(false)" style="padding:12px 18px; font-size:0.95rem; font-weight:800; border-radius:12px; background:#090D16; color:#FDE68A; border:1.5px solid #D4AF37;">
+              ✍️ + Crear el mío propio ahora
+            </button>
+            <button type="button" class="btn-action" onclick="chooseNoneAndCreateCustomTouchpoint(true)" style="padding:12px 18px; font-size:0.94rem; font-weight:800; border-radius:12px; background:#FFFFFF; color:#DC2626; border:1.5px solid #FCA5A5;">
+              🧹 Borrar ejemplos de esta etapa y crear el mío
+            </button>
+          </div>
+        </div>
+      `;
+
+      row.innerHTML = cardsHtml + noneOfTheAboveCard;
+    }
+
+    function chooseNoneAndCreateCustomTouchpoint(clearStageFirst = false) {
+      playAcousticClick(840, 0.04);
+      const targetPhase = currentTpPhase === "all" ? "before" : currentTpPhase;
+      if (clearStageFirst) {
+        tpExtractedItems[targetPhase] = [];
+        syncTouchpointCardsUI();
+        renderTouchpointQuickChips();
+      }
+      window.editingTpRef = null;
+      const badgeEl = document.getElementById("customTpDrawerBadge");
+      const headingEl = document.getElementById("customTpDrawerHeading");
+      const saveBtn = document.getElementById("customTpSaveBtn");
+      if (badgeEl) badgeEl.textContent = "✨ NINGUNO DE LOS ANTERIORES · CREA TU PROPIO TOUCHPOINT";
+      if (headingEl) headingEl.textContent = "Describe con tus palabras qué vive, siente o escucha tu cliente";
+      if (saveBtn) saveBtn.textContent = "✓ Guardar Mi Touchpoint";
+
+      const phaseSel = document.getElementById("customTpPhase");
+      const titleInput = document.getElementById("customTpTitle");
+      const subInput = document.getElementById("customTpSubstrate");
+      const methodInput = document.getElementById("customTpMethod");
+      const dimsInput = document.getElementById("customTpDims");
+      if (phaseSel) phaseSel.value = targetPhase;
+      if (titleInput) titleInput.value = "";
+      if (subInput) subInput.value = "";
+      if (methodInput) methodInput.value = "";
+      if (dimsInput) dimsInput.value = "";
+
+      toggleCustomTpDrawer(true);
+      const drawer = document.getElementById("customTpCollapsibleDrawer");
+      if (drawer) drawer.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      const stream = document.getElementById("tpAuraDialogueStream");
+      if (stream) {
+        const momentName = targetPhase === "before" ? "1. Antes de Comprar" : (targetPhase === "during" ? "2. Durante la Compra" : "3. Después de Comprar");
+        stream.innerHTML = `
+          <div style="background:#FFFBEB; border:2px solid #D4AF37; border-radius:18px; padding:16px 18px; font-size:0.98rem; color:#78350F; line-height:1.48;">
+            <div style="font-size:0.84rem; font-weight:800; color:#B45309; margin-bottom:4px;">✦ AURA · MODO LIBRE PERSONALIZADO (${momentName.toUpperCase()})</div>
+            ${clearStageFirst ? 'He limpiado los ejemplos precargados de esta etapa. ' : ''}Puedes escribir tu propio touchpoint en el recuadro de arriba (o dictármelo por voz) o llenarlo en el formulario desplegable de abajo.
+          </div>
+        `;
+      }
+    }
+
+    function clearPhaseTouchpoints(phaseKey) {
+      playAcousticClick(640, 0.04);
+      const target = phaseKey || (currentTpPhase === "all" ? "before" : currentTpPhase);
+      tpExtractedItems[target] = [];
+      syncTouchpointCardsUI();
+      renderTouchpointQuickChips();
+      const stream = document.getElementById("tpAuraDialogueStream");
+      if (stream) {
+        const momentName = target === "before" ? "1. Antes de Comprar" : (target === "during" ? "2. Durante la Compra" : "3. Después de Comprar");
+        stream.innerHTML = `
+          <div style="background:#FEF2F2; border:2px solid #FECACA; border-radius:18px; padding:16px 18px; font-size:0.98rem; color:#7F1D1D; line-height:1.48;">
+            <div style="font-size:0.84rem; font-weight:800; color:#DC2626; margin-bottom:4px;">🗑️ ETAPA LIMPIA · ${momentName.toUpperCase()}</div>
+            He borrado todos los touchpoints de <strong>${momentName}</strong>. Ahora puedes dictar o escribir únicamente los tuyos.
+          </div>
+        `;
+      }
+    }
+
+    function clearAllPreloadedTouchpoints() {
+      playAcousticClick(620, 0.05);
+      tpExtractedItems.before = [];
+      tpExtractedItems.during = [];
+      tpExtractedItems.after = [];
+      syncTouchpointCardsUI();
+      renderTouchpointQuickChips();
+      const stream = document.getElementById("tpAuraDialogueStream");
+      if (stream) {
+        stream.innerHTML = `
+          <div style="background:#FEF2F2; border:2px solid #FECACA; border-radius:18px; padding:16px 18px; font-size:0.98rem; color:#7F1D1D; line-height:1.48;">
+            <div style="font-size:0.84rem; font-weight:800; color:#DC2626; margin-bottom:4px;">🧹 LIENZO EN BLANCO LISTO</div>
+            He borrado todos los ejemplos cargados en las 3 etapas (Antes, Durante y Después). Cuéntame o escribe tus propios puntos de contacto desde cero.
+          </div>
+        `;
+      }
     }
 
     function addQuickTouchpointChip(chipLabel) {
@@ -4705,11 +4877,9 @@
         list.push(chipLabel);
         addXP(25);
         actionMsg = `Sumé <strong>"${escapeHTML(chipLabel)}"</strong> con sus sentidos y su plan operativo.`;
-      } else if (list.length > 1) {
+      } else {
         list.splice(existingIdx, 1);
         actionMsg = `Quité <strong>"${escapeHTML(chipLabel)}"</strong> de esta etapa.`;
-      } else {
-        actionMsg = `Mantenemos al menos 1 touchpoint activo en esta etapa.`;
       }
       syncTouchpointCardsUI();
       renderTouchpointQuickChips();
@@ -4740,6 +4910,9 @@
       if (!drawer) return;
       const nextOpen = forceState !== null ? forceState : (drawer.style.display === "none");
       drawer.style.display = nextOpen ? "block" : "none";
+      if (!nextOpen) {
+        window.editingTpRef = null;
+      }
       if (nextOpen) {
         const titleInput = document.getElementById("customTpTitle");
         if (titleInput) titleInput.focus();
@@ -4756,7 +4929,15 @@
       playAcousticClick(820, 0.04);
       const rawItem = (tpExtractedItems[phaseKey] || [])[idx];
       if (!rawItem) return;
+      window.editingTpRef = { phaseKey, idx, oldTitle: rawItem };
       const spec = enrichTouchpointEngineeringSpec(rawItem, phaseKey, idx);
+      const badgeEl = document.getElementById("customTpDrawerBadge");
+      const headingEl = document.getElementById("customTpDrawerHeading");
+      const saveBtn = document.getElementById("customTpSaveBtn");
+      if (badgeEl) badgeEl.textContent = `✏️ EDITANDO TOUCHPOINT #${idx + 1}`;
+      if (headingEl) headingEl.textContent = "Modifica el texto o personaliza sus sentidos y operación";
+      if (saveBtn) saveBtn.textContent = "✓ Actualizar Touchpoint";
+
       toggleCustomTpDrawer(true);
       const phaseSel = document.getElementById("customTpPhase");
       const titleInput = document.getElementById("customTpTitle");
@@ -4775,10 +4956,20 @@
     function removeTouchpointItem(phaseKey, idx) {
       playAcousticClick(640, 0.03);
       const list = tpExtractedItems[phaseKey] || [];
-      if (list.length <= 1) return;
+      if (idx < 0 || idx >= list.length) return;
+      const removedTitle = list[idx];
       list.splice(idx, 1);
       syncTouchpointCardsUI();
       renderTouchpointQuickChips();
+
+      const stream = document.getElementById("tpAuraDialogueStream");
+      if (stream) {
+        stream.innerHTML = `
+          <div style="background:#FEF2F2; border:2px solid #FECACA; border-radius:18px; padding:14px 18px; font-size:0.95rem; color:#7F1D1D; line-height:1.45;">
+            🗑️ Borré <strong>"${escapeHTML(removedTitle)}"</strong>. Quedan <strong>${list.length}</strong> touchpoints en esta etapa.
+          </div>
+        `;
+      }
     }
 
     // Diccionario de Fichas de Experiencia Sensorial + Service Blueprint + Ingeniería (Paso 2 y Paso 6)
@@ -4897,11 +5088,11 @@
               <button type="button" class="btn-action" onclick="toggleTpEngineeringAccordion('${spec.tp_id}')" style="padding:10px 14px; font-size:0.9rem; font-weight:800; border-radius:12px; background:${isExpanded ? '#090D16' : '#FFFFFF'}; color:${isExpanded ? '#FDE68A' : '#090D16'}; border:1.5px solid #090D16;">
                 ${isExpanded ? '▴ Ocultar' : '✨ Ver Detalle'}
               </button>
-              <button type="button" class="btn-action" onclick="openEditTpEngineeringInspector('${phaseKey}', ${idx})" title="Editar detalle" style="padding:10px 12px; font-size:0.92rem; border-radius:12px;">
-                ✏️
+              <button type="button" class="btn-action" onclick="openEditTpEngineeringInspector('${phaseKey}', ${idx})" title="Editar este touchpoint" style="padding:10px 14px; font-size:0.9rem; font-weight:800; border-radius:12px; background:#FFFFFF; border:1.5px solid #CBD5E1; color:#090D16;">
+                ✏️ Editar
               </button>
-              <button type="button" class="btn-action" onclick="removeTouchpointItem('${phaseKey}', ${idx})" title="Quitar" style="padding:10px 12px; font-size:0.92rem; border-radius:12px; color:#DC2626;">
-                ✕
+              <button type="button" class="btn-action" onclick="removeTouchpointItem('${phaseKey}', ${idx})" title="Borrar este punto de contacto" style="padding:10px 14px; font-size:0.9rem; font-weight:800; border-radius:12px; background:#FEF2F2; border:1.5px solid #FECACA; color:#DC2626;">
+                🗑️ Borrar
               </button>
             </div>
           </div>
@@ -4960,9 +5151,12 @@
         quality_control_rule: "Cumplir siempre la promesa emocional y operativa sin fricción."
       };
 
-      if (!tpExtractedItems[phase].includes(title)) {
+      if (window.editingTpRef && window.editingTpRef.phaseKey === phase && typeof window.editingTpRef.idx === "number") {
+        tpExtractedItems[phase][window.editingTpRef.idx] = title;
+      } else if (!tpExtractedItems[phase].includes(title)) {
         tpExtractedItems[phase].push(title);
       }
+      window.editingTpRef = null;
       titleInput.value = "";
       if (subInput) subInput.value = "";
       if (methodInput) methodInput.value = "";
@@ -4971,6 +5165,23 @@
       playAcousticClick(820, 0.05);
       addXP(45);
       selectTouchpointPhase(phase);
+    }
+
+    function renderEmptyTouchpointStagePlaceholder(phaseKey) {
+      const label = phaseKey === "before" ? "1. Antes de Comprar" : (phaseKey === "during" ? "2. Durante la Compra" : "3. Después de Comprar");
+      return `
+        <div style="background:#FFFBEB; border:2px dashed #D97706; border-radius:18px; padding:22px; text-align:center; color:#78350F;">
+          <div style="font-family:var(--font-display); font-size:1.1rem; font-weight:800; color:#090D16; margin-bottom:6px;">
+            Esta etapa (${label}) está vacía y lista para tus ideas
+          </div>
+          <p style="font-size:0.96rem; margin:0 0 14px 0; line-height:1.45;">
+            Escribe o dicta tu propio touchpoint arriba en el cuadro de Aura, o créalo con el botón de abajo.
+          </p>
+          <button type="button" class="btn-action primary" onclick="chooseNoneAndCreateCustomTouchpoint(false)" style="padding:12px 20px; font-size:0.96rem; font-weight:800; border-radius:12px; background:#090D16; color:#FDE68A; border:1.5px solid #D4AF37;">
+            ✨ + Crear mi propio Touchpoint aquí
+          </button>
+        </div>
+      `;
     }
 
     function syncTouchpointCardsUI() {
@@ -4988,9 +5199,21 @@
       const elBefore = document.getElementById("tpBeforeText");
       const elDuring = document.getElementById("tpDuringText");
       const elAfter = document.getElementById("tpAfterText");
-      if (elBefore) elBefore.innerHTML = tpExtractedItems.before.map((x, i) => renderStep2DetailedTouchpointItem(x, "before", i, "#0284C7")).join("");
-      if (elDuring) elDuring.innerHTML = tpExtractedItems.during.map((x, i) => renderStep2DetailedTouchpointItem(x, "during", i, "#D97706")).join("");
-      if (elAfter) elAfter.innerHTML = tpExtractedItems.after.map((x, i) => renderStep2DetailedTouchpointItem(x, "after", i, "#059669")).join("");
+      if (elBefore) {
+        elBefore.innerHTML = tpExtractedItems.before.length > 0
+          ? tpExtractedItems.before.map((x, i) => renderStep2DetailedTouchpointItem(x, "before", i, "#0284C7")).join("")
+          : renderEmptyTouchpointStagePlaceholder("before");
+      }
+      if (elDuring) {
+        elDuring.innerHTML = tpExtractedItems.during.length > 0
+          ? tpExtractedItems.during.map((x, i) => renderStep2DetailedTouchpointItem(x, "during", i, "#D97706")).join("")
+          : renderEmptyTouchpointStagePlaceholder("during");
+      }
+      if (elAfter) {
+        elAfter.innerHTML = tpExtractedItems.after.length > 0
+          ? tpExtractedItems.after.map((x, i) => renderStep2DetailedTouchpointItem(x, "after", i, "#059669")).join("")
+          : renderEmptyTouchpointStagePlaceholder("after");
+      }
 
       const cBefore = document.getElementById("tpBeforeCount");
       const cDuring = document.getElementById("tpDuringCount");
@@ -5016,11 +5239,11 @@
 
     async function sendTouchpointMessageToAura() {
       unlockBrowserAudio();
-      if (isListening) stopContinuousVoice();
       const input = document.getElementById("tpChatInput");
-      if (!input) return;
-      const text = input.value.trim();
-      if (!text) return;
+      const text = input ? input.value.trim() : "";
+      // Siempre detener la grabadora de voz inmediatamente al presionar Registrar/Enviar
+      stopContinuousVoice();
+      if (!input || !text) return;
 
       const targetPhase = currentTpPhase === "all" ? "before" : currentTpPhase;
       const parts = text.split(/[,\n;]+/).map(s => s.trim()).filter(s => s.length > 2);
@@ -5160,6 +5383,7 @@
     };
 
     function navigateToScreen(screenId, targetStep = null) {
+      stopContinuousVoice();
       currentScreen = screenId;
       const screenJourney = document.getElementById("screen-journey");
       const screenFocus = document.getElementById("screen-focus");
@@ -5529,7 +5753,9 @@
     async function sendUserMessage() {
       unlockBrowserAudio();
       const input = document.getElementById("chatInput");
-      const text = input.value.trim();
+      const text = input ? input.value.trim() : "";
+      // Siempre detener la grabadora de voz inmediatamente al presionar Enviar
+      stopContinuousVoice();
       if (!text) return;
 
       appendChatMessage("user", text);
