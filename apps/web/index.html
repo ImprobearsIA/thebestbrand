@@ -667,20 +667,24 @@
     }
     .dialogue-turn.user {
       background: var(--brand-primary);
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      border: 1.5px solid #D4AF37;
       color: #FFFFFF;
-      align-self: flex-end;
-      max-width: 85%;
-      border-bottom-right-radius: 6px;
+      align-self: center;
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+      border-radius: 20px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
     .dialogue-turn.mentor {
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
       color: var(--ink-primary);
-      align-self: flex-start;
-      max-width: 90%;
-      border-bottom-left-radius: 6px;
+      align-self: center;
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+      border-radius: 20px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
     }
     .mentor-pill-tag {
@@ -2476,7 +2480,7 @@
       <!-- BIENVENIDA CENTRADA DE AURA -->
       <div style="width:100%; background:linear-gradient(145deg, #090D16 0%, #1E293B 100%); color:#FAF8F5; border:2px solid #D4AF37; border-radius:26px; padding:24px 22px; text-align:center; margin-bottom:18px; box-shadow:0 18px 40px rgba(9,13,22,0.16);">
         <span style="display:inline-block; background:rgba(212,175,55,0.2); color:#FDE68A; border:1px solid #D4AF37; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; padding:4px 12px; border-radius:999px; margin-bottom:10px;">
-          ✦ PASO 0 · BIENVENIDA Y CONFIGURACIÓN INICIAL
+          ✦ PASO 0 · BIENVENIDA E INTERPRETACIÓN IA (v24.5)
         </span>
         <h1 style="font-family:var(--font-display); font-size:clamp(1.45rem, 3.8vw, 1.95rem); font-weight:800; color:#FFFFFF; line-height:1.22; margin-bottom:8px;">
           Te damos la bienvenida a tu Taller de Marca con Aura
@@ -5535,32 +5539,26 @@
     function updateCustomBusinessTouchpointGuide(customBizText) {
       const clean = (customBizText || "").trim();
       if (!clean) return;
+      const interp = typeof interpretStep0BusinessExplanation === "function"
+        ? interpretStep0BusinessExplanation(clean)
+        : null;
       const g = TP_SECTOR_GUIDES.custom_negocio_propio;
-      g.label = `✨ ${clean}`;
-      g.leaderAdvice = `Para tu negocio de «${clean}», diseñemos de 3 a 4 touchpoints por etapa que hagan sentir a tu cliente que nadie más cuida los detalles como tú.`;
-      g.beforeQuestion = `1. Antes de Comprar en tu negocio (${clean}): ¿Qué ve, siente o escucha tu cliente al descubrirte por primera vez?`;
-      g.duringQuestion = `2. Durante la experiencia en «${clean}»: ¿Qué toca, vive y percibe tu cliente en el momento clave?`;
-      g.afterQuestion = `3. Después de elegir «${clean}»: ¿Qué empaque, detalle o seguimiento recibe para volver siempre?`;
-      g.cards = {
-        before: [
-          { icon: "✨", label: `Experiencia o muestra inicial de «${clean}» que demuestra tu calidad desde el primer contacto`, sub: "👁️ Impacto visual + 🧠 Confianza inmediata antes de la compra", tag: "Primera Impresión" },
-          { icon: "📲", label: `Descubrimiento ágil de «${clean}» con atención humana cálida y clara en menos de 5 minutos`, sub: "👂 Respuesta cercana sin fricción · El cliente se siente comprendido al instante", tag: "Atención Ágil" },
-          { icon: "🌿", label: `Ambiente, aroma o presentación distintiva que identifica de inmediato a «${clean}»`, sub: "👃 Sello sensorial + ✋ Cuidado en cada detalle físico y digital", tag: "Identidad Sensorial" },
-          { icon: "🌟", label: `Recomendaciones y casos reales de clientes encantados con «${clean}»`, sub: "🤝 Prueba social auténtica que elimina cualquier duda previa", tag: "Confianza" }
-        ],
-        during: [
-          { icon: "🤝", label: `Recibimiento personalizado por nombre y asesoría experta en «${clean}»`, sub: "👂 Escucha activa + 🤝 Trato humano diseñado a la medida del cliente", tag: "Trato a Medida" },
-          { icon: "🎁", label: `Detalle sorpresa (Surprise & Delight) exclusivo de «${clean}» durante la atención o compra`, sub: "✨ Gesto inesperado que convierte un servicio normal en un recuerdo inolvidable", tag: "Surprise & Delight" },
-          { icon: "⚡", label: `Proceso de pago, reserva o entrega en «${clean}» claro, rápido y sin letra chica`, sub: "🧠 Cero esfuerzo para el cliente (Low CES)", tag: "Cero Fricción" },
-          { icon: "🏷️", label: `Presentación física, indumentaria y materiales con el sello visual de «${clean}»`, sub: "👁️ + ✋ Coherencia total de marca en el momento de la verdad", tag: "Sello de Marca" }
-        ],
-        after: [
-          { icon: "📦", label: `Entrega o empaque insignia de «${clean}» con tarjeta de agradecimiento personalizada`, sub: "✋ Textura memorable + 🤝 Emoción al recibir y conservar tu marca", tag: "Ritual de Entrega" },
-          { icon: "💬", label: `Mensaje proactivo de «${clean}» días después para confirmar que todo fue extraordinario`, sub: "🤝 Cuidado post-venta que fideliza y genera recomendaciones espontáneas", tag: "Post-Venta Cálida" },
-          { icon: "🏅", label: `Programa de reconocimiento o beneficio especial para clientes frecuentes de «${clean}»`, sub: "🌟 Comunidad leal y recompra recurrente (LTV)", tag: "Lealtad VIP" },
-          { icon: "📘", label: `Guía o recomendación personalizada de «${clean}» para que el cliente aproveche al máximo su compra`, sub: "👁️ Acompañamiento experto que sigue presente en su día a día", tag: "Valor Continuo" }
-        ]
-      };
+      if (interp && interp.step2Guide) {
+        g.label = interp.step2Guide.label;
+        g.leaderAdvice = interp.step2Guide.leaderAdvice;
+        g.beforeQuestion = interp.step2Guide.beforeQuestion;
+        g.duringQuestion = interp.step2Guide.duringQuestion;
+        g.afterQuestion = interp.step2Guide.afterQuestion;
+        if (interp.step2Guide.cards) {
+          g.cards = interp.step2Guide.cards;
+        }
+        return;
+      }
+      g.label = "✨ Propuesta Especializada a Medida";
+      g.leaderAdvice = "Diseñemos de 3 a 4 puntos de contacto por etapa que demuestren tu nivel de cuidado y eliminen cualquier duda de tus clientes.";
+      g.beforeQuestion = "1. Antes de Elegirte (Descubrimiento): ¿Qué necesita percibir, ver o probar tu cliente potencial en su primer contacto para confiar plenamente en tu propuesta?";
+      g.duringQuestion = "2. En el Momento Clave (Experiencia Activa): ¿Qué detalle sensorial o de trato humano hace que tu cliente sienta que tomó la mejor decisión?";
+      g.afterQuestion = "3. Después de la Entrega (Lealtad y Recomendación): ¿Qué empaque, seguimiento o gesto mantiene vivo el vínculo para que regrese y te recomiende?";
     }
 
     window.expandedTpIds = window.expandedTpIds || {};
@@ -6735,9 +6733,17 @@
       clean = clean.replace(/(?:sobre|con|en torno a)\s+["«][^"»]{14,}["»]/gi, "en esa dirección estratégica");
       const qIndex = clean.lastIndexOf("¿");
       if (qIndex > 18) {
+        // Cortar en el punto final de la oración previa a "¿" para que la cláusula introductoria de la pregunta permanezca unida a la pregunta
+        const beforeQ = clean.slice(0, qIndex);
+        const lastPeriod = Math.max(beforeQ.lastIndexOf(". "), beforeQ.lastIndexOf("! "), beforeQ.lastIndexOf(": "));
+        const splitPos = lastPeriod > 10 ? lastPeriod + 1 : qIndex;
+        let qPart = clean.slice(splitPos).trim();
+        if (qPart.startsWith("¿") && qPart.length > 2) {
+          qPart = "¿" + qPart.charAt(1).toUpperCase() + qPart.slice(2);
+        }
         return {
-          insight: clean.slice(0, qIndex).trim(),
-          question: clean.slice(qIndex).trim()
+          insight: clean.slice(0, splitPos).trim(),
+          question: qPart
         };
       }
       return {
@@ -6830,7 +6836,22 @@
 
           if (data.updated_canvas) {
             try {
+              const coreKeys = ["golden_circle", "value_offer", "social_role", "process_steps_text", "core_message", "ideal_customer"];
+              let latestSynthesizedStatement = "";
+              for (const k of coreKeys) {
+                const newVal = (data.updated_canvas[k] || "").trim();
+                const oldVal = (canvasState[k] || "").trim();
+                if (newVal && newVal !== oldVal) {
+                  latestSynthesizedStatement = newVal;
+                }
+              }
               updateManifestoCanvas(data.updated_canvas);
+              if (latestSynthesizedStatement) {
+                const lastUserTurn = document.querySelector("#chatHistory .dialogue-turn.user:last-child");
+                if (lastUserTurn) {
+                  lastUserTurn.innerHTML = `<span style="display:block; font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#D4AF37; margin-bottom:4px; letter-spacing:0.04em;">✓ SÍNTESIS INTERPRETADA INTEGRADA AL MANIFIESTO (+25 XP)</span><p>${escapeHTML(latestSynthesizedStatement)}</p>`;
+                }
+              }
               renderBespokeJourneyVisuals();
             } catch (canvasErr) {
               console.warn("Canvas update warning:", canvasErr);
@@ -6957,6 +6978,9 @@
       const calcPct = Math.max(canvasObj.last_pct || 0, Math.round((filled / coreKeys.length) * 100));
       const pctEl = document.getElementById("committeePct");
       if (pctEl) pctEl.textContent = `${calcPct}% Completitud`;
+      if (typeof updateStep1MobilePillarStatus === "function") {
+        updateStep1MobilePillarStatus();
+      }
 
       if (canvasObj.brandName && canvasObj.brandName !== "TheBestBrand") {
         canvasState.brandName = canvasObj.brandName;
@@ -11459,121 +11483,268 @@
       interpretedProfile: null
     };
 
+    let _step0AiInterpDebounceTimer = null;
+
     function interpretStep0BusinessExplanation(rawText) {
       const clean = (rawText || "").trim();
       if (!clean) return null;
       const t = clean.toLowerCase();
 
-      // Extraer palabras raíz significativas del texto del fundador para Naming y Touchpoints
-      const stopWords = new Set(["para", "como", "con", "sin", "por", "una", "uno", "unos", "unas", "los", "las", "del", "que", "donde", "negocio", "empresa", "marca", "servicio", "servicios", "producto", "productos", "venta", "dedica", "dedicara", "hacemos", "ofrecemos", "somos", "tipo", "giro", "especialidad"]);
-      const roots = clean
+      // Extraer raíces conceptuales sin copiar la frase literal del fundador
+      const stopWords = new Set(["para", "como", "con", "sin", "por", "una", "uno", "unos", "unas", "los", "las", "del", "que", "donde", "negocio", "empresa", "marca", "servicio", "servicios", "producto", "productos", "venta", "vendo", "vendemos", "dedica", "dedicara", "hacemos", "ofrecemos", "somos", "tengo", "quiero", "poner", "abrir", "crear", "hacer", "tipo", "giro", "especialidad", "clientes", "personas", "gente"]);
+      const extractedWords = clean
         .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, " ")
         .split(/\s+/)
         .filter(w => w.length >= 4 && !stopWords.has(w.toLowerCase()))
-        .slice(0, 4);
-      const primaryKeyword = roots[0] ? (roots[0].charAt(0).toUpperCase() + roots[0].slice(1).toLowerCase()) : "Origen";
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
 
-      let domainLabel = "Negocio Especializado a Medida";
-      let inferredAudience = "clientes que buscan calidad, confianza y una experiencia superior sin fricción";
-      let coreChallenge = "diferenciarse de las opciones genéricas y transmitir confianza inmediata desde el primer contacto";
-      let sensoryFocus = "atención humana personalizada, identidad visual coherente y un detalle sorpresa memorable";
-      let step1Question = `Retomando tu explicación sobre «${clean}»: cuando tus clientes buscan este tipo de solución y terminan frustrados con las opciones tradicionales, ¿cuál es ese problema o necesidad real que tú sí les resuelves de raíz?`;
-      let step2BeforeQ = `1. Antes de Elegirte: Pensando en quienes buscan «${clean}», ¿qué necesitan ver, sentir o probar en su primer contacto para confiar en ti de inmediato?`;
-      let step2DuringQ = `2. Durante la Experiencia: Cuando el cliente ya está viviendo tu propuesta de «${clean}», ¿qué detalle sensorial o de trato humano hace que se sienta en el lugar correcto?`;
-      let step2AfterQ = `3. Después de Comprar: Una vez que recibieron el valor de «${clean}», ¿cómo mantienes el vínculo para que vuelvan y te recomienden?`;
+      let domainLabel = "✦ Propuesta Especializada de Alto Valor";
+      let paraphrasedEssence = "una solución especializada diseñada para resolver con excelencia, cercanía y método propio las necesidades reales de su mercado";
+      let inferredAudience = "clientes exigentes que valoran la certeza, la atención personalizada y un resultado superior sin complicaciones";
+      let coreChallenge = "la falta de opciones confiables que cumplan lo que prometen con atención al detalle y trato humano";
+      let sensoryFocus = "la primera impresión de profesionalismo, la claridad durante todo el servicio y el cuidado en los detalles de entrega";
+      let baseRoots = ["Origen", "Nexo", "Valor", "Cima"];
+      let step1QuestionsMap = {
+        golden_circle: "Cuando los clientes buscan soluciones en tu sector, a menudo se topan con opciones genéricas que no entienden a fondo lo que realmente necesitan. ¿Cuál fue esa necesidad mal atendida que viste en el mercado y que hoy da sentido a lo que haces?",
+        value_offer: "Cuando alguien compara tu propuesta con otras alternativas disponibles, ¿cuál es ese sello propio en tu calidad, método o trato que inclina la balanza a tu favor?",
+        social_role: "Mirando a los próximos 3 a 5 años, ¿qué cambio positivo quieres generar en la vida de tus clientes o en el estándar de tu industria?",
+        process_steps_text: "Para que tu cliente viva una experiencia ágil y confiable, ¿cuáles son los 3 pasos clave desde el primer contacto hasta que recibe el valor completo de lo que ofreces?",
+        core_message: "Si cada cliente se quedara con una sola idea clara sobre por qué vale la pena elegirte, ¿cuál sería esa promesa central?",
+        ideal_customer: "¿Cómo describirías al cliente ideal que más valora tu trabajo: qué necesidad tiene y qué es lo que más cuida al tomar su decisión de compra?"
+      };
 
-      if (/restauran|caf[eé]|panader|gastronom|bar|hotel|comida|bebida|reposter|tostadur|cocina|alimento/i.test(t)) {
-        domainLabel = "🍽️ Gastronomía, Café & Hospitalidad Sensorial";
-        inferredAudience = "comensales y amantes del buen gusto que valoran ingredientes honestos, atmósfera acogedora y sabor memorable";
-        coreChallenge = "lograr que el cliente no solo vaya por comida o bebida, sino por un ritual sensorial al que quiera volver cada semana";
-        sensoryFocus = "el aroma desde la entrada, la textura de la vajilla/empaque, la calidez acústica y la hospitalidad en mesa";
-        step1Question = `Partiendo de tu concepto de «${clean}»: más allá de saciar el hambre o la sed, ¿qué experiencia, emoción o problema real le resuelves a tus comensales que otros lugares de tu giro han descuidado?`;
-        step2BeforeQ = `1. Antes de Entrar o Pedir: En tu concepto de «${clean}», ¿qué aroma, fachada o historia en redes despierta el antojo y la curiosidad antes de probar el primer bocado?`;
-        step2DuringQ = `2. En la Mesa o Barra: Durante la experiencia en «${clean}», ¿cómo consientes sus 5 sentidos (aroma, música, vajilla, cortesía sorpresa) mientras disfrutan tu producto?`;
-        step2AfterQ = `3. Al Despedirse o Llevar a Casa: ¿Qué empaque, aroma o detalle se lleva el cliente de «${clean}» para recordarte y regresar con sus amigos?`;
-      } else if (/salud|cl[ií]nica|m[eé]dic|dental|odont|pedi[aá]tr|retiro|laboratorio|spa|bienestar|veterinar|psicolog|fisio|pilates|terapia|nutrici/i.test(t)) {
-        domainLabel = "🩺 Salud, Bienestar & Cuidado Humano";
-        inferredAudience = "pacientes y familias que buscan certeza profesional, trato cálido y cero ansiedad o dolor";
-        coreChallenge = "eliminar el miedo o frialdad clínica tradicional y reemplazarlo por paz mental, empatía y resultados comprobables";
-        sensoryFocus = "ambiente luminoso y relajante (cero olor a hospital frío), explicación clara sin tecnicismos y seguimiento post-consulta";
-        step1Question = `Tomando como base tu proyecto de «${clean}»: sabemos que en salud y bienestar las personas suelen llegar con dudas o temor; ¿qué tranquilidad o solución real les das tú que no encuentran en clínicas convencionales?`;
-        step2BeforeQ = `1. Antes de Agendar: Cuando un paciente o familia busca «${clean}», ¿cómo le transmites confianza científica y calidez humana desde el primer mensaje o visita?`;
-        step2DuringQ = `2. Durante la Consulta o Atención: En «${clean}», ¿cómo cuidas el ambiente (luz, aroma, trato por nombre, cero dolor/estrés) para que el paciente se sienta seguro y acompañado?`;
-        step2AfterQ = `3. Después del Tratamiento: ¿Qué mensaje proactivo o guía de cuidado recibe el paciente de «${clean}» en casa para saber que genuinamente te importa su bienestar?`;
-      } else if (/despacho|contab|abogad|legal|jur[ií]dic|consultor|agencia|marketing|finanz|b2b|asesor|corporativ|auditor/i.test(t)) {
-        domainLabel = "💼 Servicios Profesionales, Consultoría & B2B";
-        inferredAudience = "empresarios, directivos y clientes que exigen certeza técnica, claridad ejecutiva y retorno de inversión sin letra chica";
-        coreChallenge = "traducir temas complejos en decisiones claras y demostrar autoridad real desde el primer diagnóstico";
-        sensoryFocus = "diagnóstico visual en 1 página, puntualidad absoluta, contratos sin jerga confusa y reportes proactivos de resultados";
-        step1Question = `Retomando la explicación de tu firma («${clean}»): cuando tus clientes contratan este servicio, en el fondo buscan dormir tranquilos o hacer crecer su negocio; ¿qué problema crítico les resuelves que otras firmas suelen complicar?`;
-        step2BeforeQ = `1. Antes de Contratarte: En «${clean}», ¿qué diagnóstico inicial o prueba de autoridad le muestras a tu prospecto para que confíe en tu criterio antes de firmar?`;
-        step2DuringQ = `2. Durante el Servicio: ¿Cómo haces que trabajar con «${clean}» sea ágil, transparente y libre de burocracia o tecnicismos confusos?`;
-        step2AfterQ = `3. Después de Entregar Resultados: ¿Qué reporte ejecutivo o alerta preventiva le entregas a tu cliente en «${clean}» para blindar su lealtad año tras año?`;
-      } else if (/colegio|escuela|educac|academ|curso|campamento|universid|capacitac|formaci[oó]n|taller|enseñ/i.test(t)) {
-        domainLabel = "🎓 Educación, Academia & Formación";
-        inferredAudience = "alumnos y familias/empresas que buscan aprendizaje práctico, seguridad, pertenencia y transformación real";
-        coreChallenge = "pasar de la enseñanza teórica pasiva a una experiencia formativa viva que despierte orgullo y resultados visibles";
-        sensoryFocus = "espacios o plataformas inspiradoras, insignias de logro coleccionables y comunicación cercana con la comunidad";
-        step1Question = `Partiendo de tu propuesta educativa («${clean}»): ¿qué habilidad, transformación o confianza real logran desarrollar tus alumnos que los métodos tradicionales no les están dando?`;
-        step2BeforeQ = `1. Antes de Inscribirse: Cuando alguien conoce «${clean}» por primera vez, ¿qué clase muestra, recorrido o historia real lo convence de que aquí sí aprenderá de verdad?`;
-        step2DuringQ = `2. Durante las Clases o Programa: ¿Qué ritual diario, material o acompañamiento hace que los participantes de «${clean}» se sientan motivados y orgullosos de pertenecer?`;
-        step2AfterQ = `3. Al Concluir Ciclo o Nivel: ¿Qué insignia física, certificado o comunidad conserva el egresado de «${clean}» como símbolo de su logro?`;
-      } else if (/arquitect|construct|inmobiliar|muebler|diseñ|interior|carpinter|obra|decorac|hogar/i.test(t)) {
-        domainLabel = "🏡 Arquitectura, Construcción, Mobiliario & Espacios";
-        inferredAudience = "familias e inversionistas que buscan durabilidad patrimonial, estética atemporal y certeza absoluta en presupuesto y entrega";
-        coreChallenge = "eliminar la incertidumbre de tiempos y sobrecostos, haciendo tangible la calidad de los materiales desde el primer boceto";
-        sensoryFocus = "muestrario táctil de materiales nobles (madera, piedra, textiles), reportes visuales semanales de avance y entrega de guante blanco";
-        step1Question = `Retomando tu proyecto de «${clean}»: al crear o transformar un espacio o pieza física, ¿qué temor le quitas a tu cliente y qué valor duradero le entregas frente a la competencia?`;
-        step2BeforeQ = `1. Antes de Comprar o Iniciar Proyecto: En «${clean}», ¿qué muestras físicas, visualización o transparencia de presupuesto le das al cliente para ganar su confianza total?`;
-        step2DuringQ = `2. Durante la Fabricación u Obra: ¿Cómo le das paz mental cada semana a tu cliente en «${clean}» mientras su proyecto toma forma?`;
-        step2AfterQ = `3. En la Entrega Final: ¿Cómo es el ritual de entrega de «${clean}» y qué guía o kit de cuidado le dejas para que perdure por años?`;
-      } else if (/industr|manufactur|automatiz|log[ií]st|transporte|flota|ingenier|maquinar|planta|mantenim/i.test(t)) {
-        domainLabel = "⚙️ Ingeniería, Industria, Logística & Operaciones";
-        inferredAudience = "directores de operaciones, compras e ingeniería que requieren continuidad 24/7, precisión técnica y seguridad";
-        coreChallenge = "garantizar cero paros no programados, trazabilidad total y respuesta técnica inmediata en campo";
-        sensoryFocus = "orden visual industrial, telemetría en tiempo real, uniformes y unidades impecables, y soporte directo por código QR";
-        step1Question = `En torno a tu operación de «${clean}»: en tu industria cada minuto y cada estándar técnico cuentan; ¿qué riesgo operativo o cuello de botella eliminas para tus clientes mejor que nadie?`;
-        step2BeforeQ = `1. Antes de la Licitación o Orden: ¿Qué demostración técnica, auditoría o cálculo de retorno (ROI) presenta «${clean}» para demostrar superioridad operativa?`;
-        step2DuringQ = `2. Durante la Ejecución o Traslado: ¿Cómo proyectan orden, seguridad y control en tiempo real tus equipos o sistemas de «${clean}»?`;
-        step2AfterQ = `3. Post-Puesta en Marcha: ¿Cómo asegura «${clean}» el mantenimiento preventivo y la continuidad sin fricciones para el cliente?`;
-      } else if (/tienda|boutique|ropa|moda|calzado|joyer|cosm[eé]t|belleza|perfum|ecommerce|marca de|accesorio|mascota|regalo/i.test(t)) {
-        domainLabel = "🛍️ Comercio, Retail, Moda & Marca de Producto";
-        inferredAudience = "compradores que buscan identidad propia, calidad tangible en cada pieza y una experiencia de compra y empaque digna de compartirse";
-        coreChallenge = "convertir una compra transaccional en un objeto de deseo con identidad propia y alta recompra";
-        sensoryFocus = "textura del producto, aroma y diseño del empaque (unboxing), asesoría de estilo y club de clientes frecuentes";
-        step1Question = `Partiendo de tu marca de «${clean}»: en un mercado lleno de productos genéricos, ¿qué hace que tus piezas o productos sean especiales y qué le hacen sentir a quien los usa o compra?`;
-        step2BeforeQ = `1. Antes de Comprar: Cuando alguien descubre «${clean}» en redes o vitrina, ¿qué detalle visual o historia hace que se detenga y quiera conocer tus productos?`;
-        step2DuringQ = `2. Al Elegir y Comprar: ¿Cómo haces que probarse, elegir o pedir en «${clean}» sea sumamente fácil, cálido y personalizado?`;
-        step2AfterQ = `3. El Ritual de Unboxing y Recompra: Cuando el cliente abre su paquete o bolsa de «${clean}», ¿qué aroma, textura o nota sorpresa descubre adentro?`;
-      } else if (/software|app|saas|ia|inteligencia artificial|plataforma|digital|tecnolog|startup|web|datos|automat/i.test(t)) {
-        domainLabel = "💻 Tecnología, Software, SaaS & Innovación Digital";
-        inferredAudience = "usuarios y empresas que buscan ahorrar horas de trabajo con una herramienta intuitiva, rápida y confiable";
-        coreChallenge = "lograr que el usuario obtenga su primer resultado valioso en minutos sin curvas de aprendizaje complicadas";
-        sensoryFocus = "interfaz limpia de cero fricción, onboarding guiado en 3 clics, notificaciones inteligentes y soporte humano ágil";
-        step1Question = `Tomando tu solución tecnológica («${clean}»): ¿qué tarea tediosa, lenta o costosa le ahorras a tus usuarios para que sientan alivio desde el primer día que la usan?`;
-        step2BeforeQ = `1. Antes de Registrarse: Cuando un usuario descubre «${clean}», ¿qué demo interactiva o resultado inmediato le muestras en menos de 60 segundos?`;
-        step2DuringQ = `2. Durante la Activación (Onboarding): ¿Cómo logras que configurar y usar «${clean}» sea tan intuitivo que no necesite manuales?`;
-        step2AfterQ = `3. Retención y Hábito: ¿Qué resumen de impacto, métrica de ahorro o mejora continua recibe el usuario de «${clean}» cada semana?`;
+      if (/mascota|perro|gato|veterinar|canin|felin|croquet|pet/i.test(t)) {
+        domainLabel = "🐾 Bienestar, Nutrición & Cuidado de Mascotas";
+        paraphrasedEssence = "brindar cuidado integral, nutrición saludable y bienestar emocional para los animales de compañía";
+        inferredAudience = "dueños de mascotas conscientes que consideran a sus perros o gatos parte central de su familia";
+        coreChallenge = "vencer la desconfianza hacia productos industriales genéricos o servicios impersonales que estresan a su mascota";
+        sensoryFocus = "ingredientes o insumos seguros y transparentes, trato libre de estrés animal y empaques prácticos para el dueño";
+        baseRoots = ["Vínculo", "Noble", "Vital", "Huella", "Natura"];
+        step1QuestionsMap = {
+          golden_circle: "En el mundo del cuidado y bienestar para mascotas, muchas familias sienten desconfianza hacia las opciones industriales o impersonales. ¿Cuál fue esa inquietud o carencia que detectaste en el mercado y que te impulsó a crear una alternativa mucho más sana y confiable para los animales y sus dueños?",
+          value_offer: "Cuando el dueño de una mascota compara distintas opciones para consentir, alimentar o cuidar a su compañero, ¿qué ingrediente, estándar de calidad o experiencia concreta hace que tu propuesta sea visiblemente superior a lo comercial?",
+          social_role: "Mirando a los próximos 3 a 5 años, ¿cómo te gustaría que tu marca mejore la calidad de vida y la longevidad de las mascotas en tu comunidad?",
+          process_steps_text: "Para que tanto el dueño como su mascota vivan una experiencia sin estrés, ¿cuáles son los 3 momentos clave desde que te conocen y eligen el producto o servicio hasta que ven a su mascota feliz?",
+          core_message: "Si los dueños de mascotas pudieran recordar una sola promesa de confianza cada vez que ven tu marca, ¿qué te gustaría que sintieran?",
+          ideal_customer: "Pensando en esas familias que buscan siempre lo mejor para sus animales de compañía, ¿cómo es el estilo de vida de tu cliente ideal y qué es lo que más valora al elegirte?"
+        };
+      } else if (/restauran|caf[eé]|panader|gastronom|bar|hotel|comida|bebida|reposter|pastel|postre|tostadur|cocina|alimento|taco|pizza|marisc|helad|chocolat/i.test(t)) {
+        domainLabel = "🍽️ Gastronomía, Hospitalidad & Experiencia Culinaria";
+        paraphrasedEssence = "una propuesta gastronómica con identidad propia donde el sabor, la frescura de los insumos y la calidez del ritual conquistan al comensal";
+        inferredAudience = "comensales y amantes del buen comer que buscan sabores auténticos, ingredientes honestos y un lugar o producto digno de recomendarse";
+        coreChallenge = "superar la saturación de opciones estandarizadas con insumos artificiales y servicio frío sin alma";
+        sensoryFocus = "el aroma que despierta el apetito al instante, la presentación visual del platillo o empaque y la hospitalidad genuina";
+        baseRoots = ["Origen", "Brasa", "Trigo", "Ritual", "Alba"];
+        step1QuestionsMap = {
+          golden_circle: "En gastronomía, las personas no solo buscan quitarse el hambre o el antojo: buscan un momento de disfrute, salud o convivencia que los lugares comerciales han vuelto frío y genérico. ¿Qué vacío culinario o emocional descubriste en los comensales que tu cocina o producto viene a resolver de verdad?",
+          value_offer: "Frente a otras opciones gastronómicas, ¿cuál es el secreto de tu receta, la selección de tus ingredientes o el detalle en la preparación que hace que quien te prueba por primera vez note la diferencia de inmediato?",
+          social_role: "Pensando en el impacto de tu propuesta culinaria a mediano plazo, ¿cómo quieres transformar la cultura del buen comer o el bienestar de tus clientes en los próximos años?",
+          process_steps_text: "Desde que a una persona se le despierta el antojo y hace su pedido o llega a tu espacio, hasta que disfruta el último bocado, ¿cuáles son los 3 pasos que cuidan que todo salga perfecto?",
+          core_message: "Cuando un comensal le recomienda tu propuesta a sus amigos o familia, ¿cuál es esa frase o sensación memorable que quieres que diga sobre lo que ofreces?",
+          ideal_customer: "Describe al comensal o comprador ideal que más disfruta tu propuesta: ¿en qué momento del día o de la semana te busca y qué es lo que más aprecia de tu sazón y servicio?"
+        };
+      } else if (/salud|cl[ií]nica|m[eé]dic|dental|odont|pedi[aá]tr|retiro|laboratorio|spa|bienestar|psicolog|fisio|pilates|terapia|nutrici|[oó]ptica|farmac/i.test(t)) {
+        domainLabel = "🩺 Salud, Bienestar Clínico & Cuidado Humano";
+        paraphrasedEssence = "un ecosistema de salud y bienestar que combina rigor profesional con empatía, prevención y paz mental para el paciente";
+        inferredAudience = "pacientes y familias que valoran un diagnóstico certero, un trato humano sin prisas y resultados clínicos confiables";
+        coreChallenge = "eliminar el temor, la incertidumbre o la frialdad hospitalaria donde el paciente se siente como un expediente más";
+        sensoryFocus = "la atmósfera serena que reduce la ansiedad, la claridad al explicar cada diagnóstico y el acompañamiento post-atención";
+        baseRoots = ["Vita", "Serena", "Lumen", "Aurea", "Sana"];
+        step1QuestionsMap = {
+          golden_circle: "Cuando una persona o familia busca atención en salud o bienestar, suele llegar con dudas, estrés o malas experiencias previas por tratos fríos y apresurados. ¿Qué tranquilidad, certeza o transformación humana decidiste brindar que los servicios tradicionales suelen pasar por alto?",
+          value_offer: "Al momento de atender o cuidar a cada persona, ¿qué combinación de tecnología, metodología clínica o calidez en el trato hace que confíen plenamente en tus manos?",
+          social_role: "¿Cómo visualizas que tu práctica o centro de bienestar eleve la calidad de vida y la cultura de prevención de tu comunidad en los próximos 5 años?",
+          process_steps_text: "Para eliminar cualquier incertidumbre o miedo en el paciente, ¿cuáles son las 3 etapas clave de tu atención (desde que agenda y recibe su valoración, hasta su recuperación o seguimiento en casa)?",
+          core_message: "Si tus pacientes pudieran resumir en una sola idea la paz mental y el bienestar que encuentran contigo, ¿cuál sería esa promesa central?",
+          ideal_customer: "¿Cómo es el perfil del paciente o familia que más se beneficia de tu cuidado profesional y qué es lo que más valora cuando acude a ti?"
+        };
+      } else if (/despacho|contab|abogad|legal|jur[ií]dic|consultor|agencia|marketing|publicidad|finanz|b2b|asesor|corporativ|auditor|invers|seguro/i.test(t)) {
+        domainLabel = "💼 Firma de Consultoría, Estrategia & Servicios B2B";
+        paraphrasedEssence = "una firma de alto nivel que convierte la complejidad técnica, financiera o estratégica en decisiones claras y crecimiento medible";
+        inferredAudience = "directivos, fundadores y tomadores de decisión que exigen certeza técnica, velocidad de respuesta y retorno de inversión";
+        coreChallenge = "superar a los proveedores que hablan con tecnicismos confusos, entregan tarde o no se comprometen con resultados tangibles";
+        sensoryFocus = "diagnósticos ejecutivos claros en una sola página, puntualidad impecable y comunicación proactiva sin letra chica";
+        baseRoots = ["Vértice", "Axioma", "Nexo", "Valor", "Faro"];
+        step1QuestionsMap = {
+          golden_circle: "En los servicios profesionales y de consultoría, los clientes suelen estar cansados de despachos o agencias que prometen mucho pero entregan procesos lentos y confusos. ¿Cuál es el riesgo crítico o dolor de negocio que tú les quitas de encima para que puedan crecer con tranquilidad?",
+          value_offer: "Cuando un directivo o cliente evalúa distintas firmas, ¿cuál es tu metodología propia, velocidad de ejecución o garantía de criterio que demuestra tu autoridad desde la primera reunión?",
+          social_role: "En los próximos años, ¿cómo quieres que tu firma eleve el estándar de profesionalismo, ética y resultados dentro de tu industria?",
+          process_steps_text: "Para que trabajar contigo sea ágil y libre de burocracia, ¿cuáles son los 3 pasos claros de tu método (desde el diagnóstico inicial hasta la entrega y medición de resultados)?",
+          core_message: "¿Cuál es la promesa ejecutiva de valor que quieres que cada cliente asocie inmediatamente con el prestigio de tu firma?",
+          ideal_customer: "Pensando en los clientes o empresas con los que logras tus mejores casos de éxito, ¿qué perfil tienen y qué buscan resolver con urgencia cuando te contactan?"
+        };
+      } else if (/colegio|escuela|educac|academ|curso|campamento|universid|capacitac|formaci[oó]n|taller|enseñ|idiom|ingl[eé]s|infantil/i.test(t)) {
+        domainLabel = "🎓 Educación, Desarrollo de Talento & Aprendizaje Vivo";
+        paraphrasedEssence = "un modelo formativo que despierta el potencial real de las personas mediante aprendizaje práctico, acompañamiento cercano y sentido de logro";
+        inferredAudience = "estudiantes, profesionales o familias que buscan herramientas reales para el futuro y no solo teoría pasiva";
+        coreChallenge = "reemplazar la enseñanza tradicional aburrida y desconectada de la vida real por experiencias formativas que sí transformen al alumno";
+        sensoryFocus = "entornos dinámicos que inspiran curiosidad, retos prácticos desde el primer día y reconocimiento visible de cada avance";
+        baseRoots = ["Mentis", "Aula", "Impulso", "Senda", "Faro"];
+        step1QuestionsMap = {
+          golden_circle: "Los métodos de enseñanza tradicionales suelen enfocarse en memorizar teoría y dejan de lado la confianza y la aplicación práctica. ¿Qué transformación real en la vida o capacidades de tus alumnos te motivó a diseñar esta propuesta formativa?",
+          value_offer: "¿Qué tiene tu método de enseñanza, tus dinámicas o el acompañamiento de tus mentores que logra que las personas aprendan más rápido y con verdadero entusiasmo?",
+          social_role: "¿Qué huella quieres dejar en la próxima generación de alumnos o profesionales que se formen contigo en los próximos 3 a 5 años?",
+          process_steps_text: "¿Cómo es el camino de aprendizaje en 3 etapas sencillas desde que el alumno inicia su primer día hasta que domina la habilidad y celebra su logro?",
+          core_message: "Si un egresado o familia resumiera en una frase cómo cambió su futuro gracias a tu formación, ¿cuál sería ese mensaje central?",
+          ideal_customer: "¿Quién es el alumno, profesional o familia ideal para tu programa y qué meta personal o profesional sueña con alcanzar al inscribirse?"
+        };
+      } else if (/arquitect|construct|inmobiliar|muebler|diseñ|interior|carpinter|obra|decorac|hogar|remodel|casa|espacio/i.test(t)) {
+        domainLabel = "🏡 Arquitectura, Espacios, Mobiliario & Hábitat";
+        paraphrasedEssence = "la creación de espacios y piezas que combinan estética atemporal, nobleza de materiales y certeza absoluta en ejecución";
+        inferredAudience = "familias, clientes patrimoniales e inversionistas que buscan diseño funcional, durabilidad y cero sorpresas en tiempos o costos";
+        coreChallenge = "erradicar la informalidad en tiempos de entrega, los presupuestos ocultos y los materiales que se deterioran rápido";
+        sensoryFocus = "el tacto de materiales nobles, la visualización clara antes de fabricar o construir y un ritual de entrega impecable";
+        baseRoots = ["Trazo", "Materia", "Pórtico", "Domus", "Piedra"];
+        step1QuestionsMap = {
+          golden_circle: "Al construir, remodelar o amueblar un espacio, las personas suelen temer retrasos, sobrecostos o acabados que no cumplen lo prometido. ¿Cómo transforma tu propuesta esa experiencia para darle a tu cliente certeza total y orgullo por su espacio?",
+          value_offer: "¿Qué distingue a la calidad de tus materiales, tu diseño funcional o tu precisión técnica frente a otras opciones del mercado?",
+          social_role: "¿Cómo te gustaría que tus obras, espacios o piezas mejoren la forma en que las personas habitan y disfrutan su entorno en los próximos años?",
+          process_steps_text: "¿Cuáles son las 3 etapas claras que vive tu cliente desde que visualiza la propuesta y el presupuesto hasta que recibe su espacio o pieza terminada?",
+          core_message: "Cuando alguien entra a un espacio o toca una pieza creada por tu marca, ¿qué promesa de valor y estilo quieres que perciba al instante?",
+          ideal_customer: "¿Cómo es el cliente o inversionista que más valora el nivel de detalle de tu trabajo y qué busca crear en su vida o patrimonio?"
+        };
+      } else if (/industr|manufactur|automatiz|log[ií]st|transporte|flota|ingenier|maquinar|planta|mantenim|reciclaj|energ|solar|agro|campo/i.test(t)) {
+        domainLabel = "⚙️ Ingeniería, Operaciones Industriales & Eficiencia Técnica";
+        paraphrasedEssence = "soluciones de ingeniería, operación y suministro diseñadas para maximizar la continuidad operativa, la seguridad y la rentabilidad técnica";
+        inferredAudience = "directores de operaciones, compras e ingeniería que requieren fiabilidad 24/7, trazabilidad y cumplimiento normativo estricto";
+        coreChallenge = "evitar paros operativos no programados, mermas costosas y proveedores sin capacidad de respuesta técnica inmediata";
+        sensoryFocus = "precisión técnica verificable, orden visual en campo, telemetría o reportes claros y respuesta inmediata ante contingencias";
+        baseRoots = ["Vectra", "Forja", "Tracción", "Núcleo", "Kinetix"];
+        step1QuestionsMap = {
+          golden_circle: "En las operaciones industriales y técnicas, un fallo o retraso del proveedor detiene toda la cadena y cuesta mucho dinero. ¿Cuál es el cuello de botella operativo o problema técnico que tu empresa resuelve de raíz para garantizar continuidad y eficiencia?",
+          value_offer: "¿Qué capacidad instalada, tecnología, estándar de seguridad o velocidad de respuesta te da una ventaja contundente frente a otros proveedores del sector?",
+          social_role: "De cara al futuro de la industria, ¿cómo contribuye tu operación a una cadena productiva más eficiente, segura o sustentable?",
+          process_steps_text: "¿Cuáles son las 3 fases de tu protocolo operativo (desde el levantamiento técnico o pedido, pasando por la ejecución/logística, hasta la entrega y soporte continuo)?",
+          core_message: "¿Cuál es la promesa de fiabilidad e ingeniería por la que quieres ser reconocido como el socio técnico número uno de tu sector?",
+          ideal_customer: "¿Qué tipo de empresas, plantas o líderes operativos son tus clientes ideales y qué estándar de desempeño exigen al contratarte?"
+        };
+      } else if (/tienda|boutique|ropa|moda|calzado|joyer|cosm[eé]t|belleza|perfum|ecommerce|accesorio|regalo|textil|piel|bolsa|reloj/i.test(t)) {
+        domainLabel = "🛍️ Moda, Diseño de Producto & Estilo de Vida";
+        paraphrasedEssence = "una marca de producto y estilo de vida que celebra la identidad personal a través del diseño cuidado, la calidad táctil y una experiencia de compra memorable";
+        inferredAudience = "compradores que buscan piezas con carácter propio, durabilidad real y una marca con la que se sientan orgullosos de identificarse";
+        coreChallenge = "superar el consumo desechable de productos masivos sin identidad que pierden su calidad o encanto al poco tiempo";
+        sensoryFocus = "la textura y caída de los materiales, la estética visual en vitrina o pantalla y el ritual de abrir el empaque (unboxing)";
+        baseRoots = ["Aura", "Velo", "Loom", "Seda", "Ícono"];
+        step1QuestionsMap = {
+          golden_circle: "En un mercado lleno de productos masivos y desechables, las personas buscan piezas que realmente reflejen quiénes son y duren en el tiempo. ¿Qué emoción, seguridad personal o estilo de vida quieres despertar en cada persona que usa o adquiere tus productos?",
+          value_offer: "¿Qué detalle en el diseño, la selección de materiales o el acabado artesanal hace que tus piezas destaquen al instante frente a las marcas comerciales?",
+          social_role: "¿Cómo quieres que tu marca inspire una forma más auténtica, consciente o estética de consumir y expresarse en los próximos años?",
+          process_steps_text: "¿Cómo es el viaje de tu comprador en 3 momentos: desde que descubre tus piezas y elige su favorita, hasta que abre su empaque y la estrena?",
+          core_message: "¿Cuál es la esencia o declaración de estilo que quieres que tu marca represente en la mente de tus clientes?",
+          ideal_customer: "Describe a la persona que se enamora de tu marca a primera vista: ¿qué estilo de vida lleva y qué valora más al elegir una pieza tuya?"
+        };
+      } else if (/software|app|saas|ia|inteligencia artificial|plataforma|digital|tecnolog|startup|web|datos|automat|sistema|cloud/i.test(t)) {
+        domainLabel = "💻 Tecnología, Plataformas Digitales & Soluciones Inteligentes";
+        paraphrasedEssence = "tecnología diseñada para simplificar procesos complejos, ahorrar horas operativas y potenciar decisiones con una experiencia intuitiva";
+        inferredAudience = "usuarios y organizaciones que buscan agilidad digital inmediata sin curvas de aprendizaje complicadas ni fricciones técnicas";
+        coreChallenge = "reemplazar el software rígido y difícil de usar, o los procesos manuales que hacen perder tiempo y dinero";
+        sensoryFocus = "una interfaz limpia que entrega valor en los primeros minutos, automatización invisible y soporte experto siempre disponible";
+        baseRoots = ["Nexo", "Pulso", "Flujo", "Lógica", "Nova"];
+        step1QuestionsMap = {
+          golden_circle: "Muchas empresas y personas siguen perdiendo horas valiosas en tareas manuales o usando sistemas complicados que nadie quiere abrir. ¿Cuál es esa fricción tecnológica u operativa que decidiste eliminar para devolverles tiempo y control a tus usuarios?",
+          value_offer: "¿Qué hace que tu solución tecnológica sea más intuitiva, rápida o inteligente que las herramientas tradicionales que existen hoy?",
+          social_role: "¿Cómo imaginas que tu tecnología transforme la productividad y la forma de trabajar de tus usuarios en los próximos 3 a 5 años?",
+          process_steps_text: "¿Cuáles son los 3 pasos simples desde que un usuario descubre e implementa tu solución hasta que ve el primer resultado medible?",
+          core_message: "Si tus usuarios describieran en una frase el alivio y poder que les da tu tecnología todos los días, ¿cuál sería esa promesa?",
+          ideal_customer: "¿Quién es el usuario o empresa que obtiene el mayor impacto con tu tecnología y qué problema urgente busca automatizar o resolver?"
+        };
       }
 
-      const synthesisText = `Entendemos que tu negocio se enfoca en <strong>«${escapeHTML(clean)}»</strong>, dirigido a ${inferredAudience}, donde la clave estratégica es ${coreChallenge}.`;
-      const expansionPreview = `<strong>Cómo ampliaremos tu explicación en cada etapa:</strong><br/>• <strong>Paso 1 (Propósito):</strong> Adaptaremos las 6 preguntas socráticas a los retos reales de <em>${escapeHTML(clean)}</em>.<br/>• <strong>Paso 2 (Touchpoints):</strong> Diseñaremos momentos enfocados en ${sensoryFocus}.<br/>• <strong>Paso 3 a 6 (Nombre, Logo y Brandbook):</strong> Usaremos raíces semánticas (${roots.length ? roots.join(", ") : primaryKeyword}) y personalidad visual calibrada a tu giro.`;
+      const finalRoots = [];
+      for (const r of [...baseRoots, ...extractedWords.slice(0, 3)]) {
+        if (r && !finalRoots.includes(r)) finalRoots.push(r);
+      }
+      const rootsSlice = finalRoots.slice(0, 5);
+
+      const step2Guide = {
+        label: domainLabel,
+        leaderAdvice: `Para posicionar una propuesta enfocada en ${paraphrasedEssence}, diseñemos puntos de contacto centrados en ${sensoryFocus}.`,
+        beforeQuestion: `1. Antes de Elegirte (Descubrimiento): Pensando en ${inferredAudience}, ¿qué necesitan percibir, ver o probar en su primer acercamiento para confiar en tu propuesta?`,
+        duringQuestion: `2. En el Momento Clave (Experiencia Activa): Mientras el cliente vive tu experiencia, ¿cómo haces presente tu cuidado por ${sensoryFocus}?`,
+        afterQuestion: `3. Después de la Entrega (Lealtad y Recomendación): Una vez resuelta su necesidad, ¿qué detalle o seguimiento mantiene vivo el vínculo para que regrese y te recomiende?`,
+        cards: {
+          before: [
+            { icon: "✨", label: `Muestra tangible o demostración visual que transmite confianza inmediata a ${inferredAudience}`, sub: "👁️ Impacto visual + 🧠 Elimina dudas desde el primer segundo", tag: "Primera Impresión" },
+            { icon: "📲", label: "Atención inicial cálida, orientadora y sin tecnicismos en menos de 5 minutos", sub: "👂 Escucha empática · El prospecto siente que entendiste su necesidad real", tag: "Respuesta Ágil" },
+            { icon: "🌿", label: `Identidad sensorial coherente enfocada en ${sensoryFocus}`, sub: "👃 + ✋ Cuidado perceptible en cada detalle físico y digital", tag: "Sello Sensorial" },
+            { icon: "🌟", label: "Historias reales de transformación y resultados comprobables de otros clientes", sub: "🤝 Prueba social auténtica que vence la desconfianza del mercado", tag: "Certeza" }
+          ],
+          during: [
+            { icon: "🤝", label: "Bienvenida personalizada y acompañamiento experto adaptado al perfil de cada cliente", sub: "👂 Trato humano que hace sentir único a quien te elige", tag: "Trato a Medida" },
+            { icon: "🎁", label: "Gesto inesperado de cortesía (Surprise & Delight) en el punto cumbre de la experiencia", sub: "✨ Detalle memorable que supera lo que ofrece cualquier competidor", tag: "Surprise & Delight" },
+            { icon: "⚡", label: "Proceso de contratación, compra o atención fluido, transparente y sin fricciones", sub: "🧠 Cero esfuerzo y total claridad en tiempos y alcances", tag: "Cero Fricción" },
+            { icon: "🏷️", label: "Presentación impecable de materiales, espacio o plataforma con carácter propio", sub: "👁️ + ✋ Coherencia estética en el momento de la verdad", tag: "Excelencia Visual" }
+          ],
+          after: [
+            { icon: "📦", label: "Ritual de cierre o empaque insignia que prolonga la experiencia en casa u oficina", sub: "✋ Calidad tangible que invita a conservar y compartir la marca", tag: "Ritual de Entrega" },
+            { icon: "💬", label: "Seguimiento proactivo días después para asegurar que el resultado superó expectativas", sub: "🤝 Interés genuino post-venta que consolida la confianza", tag: "Post-Venta Cálida" },
+            { icon: "🏅", label: "Beneficio o reconocimiento exclusivo para clientes recurrentes y embajadores de la marca", sub: "🌟 Comunidad leal que impulsa la recompra y recomendación orgánica", tag: "Lealtad VIP" },
+            { icon: "📘", label: "Guía práctica de aprovechamiento o cuidado continuo pensada para el día a día del cliente", sub: "👁️ Valor agregado que mantiene a tu marca presente en su mente", tag: "Valor Continuo" }
+          ]
+        }
+      };
+
+      const synthesisText = `Interpretamos un modelo de negocio orientado a <strong>${escapeHTML(paraphrasedEssence)}</strong>, pensado para <strong>${escapeHTML(inferredAudience)}</strong>, donde la gran oportunidad estratégica consiste en <em>${escapeHTML(coreChallenge)}</em>.`;
+      const expansionPreview = `<strong>Cómo hemos adaptado tu ruta estratégica a partir de esta interpretación:</strong><br/>• <strong>Paso 1 (6 Pilares Socráticos):</strong> Preguntas enfocadas en cómo logras <em>${escapeHTML(coreChallenge)}</em> y enamoras a ${escapeHTML(inferredAudience)}.<br/>• <strong>Paso 2 (Viaje Sensorial):</strong> Escenarios de Pre-compra, Experiencia y Post-venta centrados en ${escapeHTML(sensoryFocus)}.<br/>• <strong>Paso 3 y 4 (Naming e Identidad):</strong> Raíces conceptuales sugeridas (<em>${escapeHTML(rootsSlice.join(", "))}</em>) y personalidad visual calibrada.`;
 
       return {
         raw: clean,
         domainLabel,
+        paraphrasedEssence,
         inferredAudience,
         coreChallenge,
         sensoryFocus,
-        roots: roots.length ? roots : [primaryKeyword],
-        synthesisPlain: `Tu negocio se enfoca en «${clean}», dirigido a ${inferredAudience}, con el objetivo de ${coreChallenge}.`,
+        roots: rootsSlice,
+        synthesisPlain: `Modelo enfocado en ${paraphrasedEssence}, dirigido a ${inferredAudience}, con el reto estratégico de ${coreChallenge}.`,
         synthesisHtml: synthesisText,
         expansionHtml: expansionPreview,
-        step1Question,
-        step2BeforeQ,
-        step2DuringQ,
-        step2AfterQ
+        step1Question: step1QuestionsMap.golden_circle,
+        step1QuestionsMap,
+        step2BeforeQ: step2Guide.beforeQuestion,
+        step2DuringQ: step2Guide.duringQuestion,
+        step2AfterQ: step2Guide.afterQuestion,
+        step2Guide
       };
+    }
+
+    async function fetchStep0BackendAiInterpretation(cleanVal) {
+      if (!cleanVal || cleanVal.length < 4) return null;
+      try {
+        const res = await fetch("/api/step0/interpret-business", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            business_explanation: cleanVal,
+            goal: window.step0State.goal || "first",
+            assets: window.step0State.assets || "none",
+            llm_api_key: getActiveApiKey()
+          })
+        });
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (!data || !data.paraphrased_essence) return null;
+        const merged = {
+          raw: cleanVal,
+          domainLabel: data.concept_title || "✦ Propuesta Especializada de Alto Valor",
+          paraphrasedEssence: data.paraphrased_essence,
+          inferredAudience: data.buyer_actor,
+          coreChallenge: data.market_pain,
+          sensoryFocus: data.sensory_focus,
+          roots: Array.isArray(data.naming_roots) && data.naming_roots.length ? data.naming_roots : ["Origen", "Nexo", "Valor"],
+          synthesisPlain: data.synthesis_plain,
+          synthesisHtml: data.synthesis_html,
+          expansionHtml: data.expansion_html,
+          step1Question: (data.step1_questions && data.step1_questions.golden_circle) || "",
+          step1QuestionsMap: data.step1_questions || {},
+          step2BeforeQ: (data.step2_guide && data.step2_guide.beforeQuestion) || "",
+          step2DuringQ: (data.step2_guide && data.step2_guide.duringQuestion) || "",
+          step2AfterQ: (data.step2_guide && data.step2_guide.afterQuestion) || "",
+          step2Guide: data.step2_guide || null
+        };
+        return merged;
+      } catch (e) {
+        return null;
+      }
     }
 
     function renderStep0LiveBusinessInterpretation(interp) {
@@ -11597,34 +11768,38 @@
       window.step0State.interpretedProfile = interp;
       canvasState.custom_business_type = interp.raw;
       canvasState.step0_business_interpretation = interp.synthesisPlain;
+      canvasState.step0_adapted_questions = interp.step1QuestionsMap || {};
 
-      // 1. Adaptar Paso 1 (Insight de interpretación inicial + Primera Pregunta Socrática adaptada)
+      // 1. Adaptar Paso 1 (Insight de interpretación conceptual + Primera Pregunta Socrática ampliada sin repetir texto literal)
       const qCat = document.getElementById("questionCategory");
       const qLead = document.getElementById("auraInsightLead");
       const qHead = document.getElementById("activeQuestionHeading");
       if (qCat) qCat.textContent = `01 · Propósito Nuclear · ${interp.domainLabel.replace(/^[^\s]+\s/, "")}`;
       if (qLead) {
-        qLead.innerHTML = `<strong style="color:#92400E; font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.05em; text-transform:uppercase; display:block; margin-bottom:4px;">✦ Interpretación de tu Negocio (Retomando tu Paso 0)</strong>${interp.synthesisHtml}`;
+        qLead.innerHTML = `<strong style="color:#92400E; font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.05em; text-transform:uppercase; display:block; margin-bottom:4px;">✦ Interpretación Estratégica de tu Giro (${escapeHTML(interp.domainLabel)})</strong>${interp.synthesisHtml}`;
         qLead.style.display = "block";
       }
-      if (qHead) {
+      if (qHead && interp.step1Question) {
         qHead.textContent = interp.step1Question;
       }
 
-      // 2. Adaptar Paso 2 (Preguntas Antes, Durante y Después + Tarjetas de Touchpoints)
-      updateCustomBusinessTouchpointGuide(interp.raw);
+      // 2. Adaptar Paso 2 (Preguntas Antes, Durante y Después + Tarjetas de Touchpoints sin citas textuales)
       const g = TP_SECTOR_GUIDES.custom_negocio_propio;
-      if (g) {
-        g.beforeQuestion = interp.step2BeforeQ;
-        g.duringQuestion = interp.step2DuringQ;
-        g.afterQuestion = interp.step2AfterQ;
-        g.leaderAdvice = `Retomando tu explicación («${interp.raw}»), enfoquemos tus puntos de contacto en ${interp.sensoryFocus}.`;
+      if (g && interp.step2Guide) {
+        g.label = interp.step2Guide.label;
+        g.leaderAdvice = interp.step2Guide.leaderAdvice;
+        g.beforeQuestion = interp.step2Guide.beforeQuestion;
+        g.duringQuestion = interp.step2Guide.duringQuestion;
+        g.afterQuestion = interp.step2Guide.afterQuestion;
+        if (interp.step2Guide.cards) {
+          g.cards = interp.step2Guide.cards;
+        }
       }
       const tpInp = document.getElementById("tpCustomBusinessInput");
       if (tpInp) tpInp.value = interp.raw;
       changeTouchpointSectorGuide("custom_negocio_propio");
 
-      // 3. Adaptar Paso 3 (Pre-sembrar raíces de Naming extraídas de la explicación del negocio)
+      // 3. Adaptar Paso 3 (Pre-sembrar raíces conceptuales de Naming)
       const namingInp = document.getElementById("namingCandidatesInput");
       if (namingInp && interp.roots && interp.roots.length > 0) {
         namingInp.value = interp.roots.join(", ");
@@ -11665,6 +11840,11 @@
       const tpInp = document.getElementById("tpCustomBusinessInput");
       if (tpInp && tpInp.value !== rawVal) tpInp.value = rawVal;
 
+      if (_step0AiInterpDebounceTimer) {
+        clearTimeout(_step0AiInterpDebounceTimer);
+        _step0AiInterpDebounceTimer = null;
+      }
+
       if (cleanVal.length > 2) {
         const interp = interpretStep0BusinessExplanation(cleanVal);
         renderStep0LiveBusinessInterpretation(interp);
@@ -11672,6 +11852,15 @@
         window.step0State.sector = "custom_negocio_propio";
         const hiddenSel = document.getElementById("step0SectorSelector");
         if (hiddenSel) hiddenSel.value = "custom_negocio_propio";
+
+        // Enriquecer asíncronamente con el motor IA del backend (Gemini + NLP conceptual)
+        _step0AiInterpDebounceTimer = setTimeout(async () => {
+          const aiInterp = await fetchStep0BackendAiInterpretation(cleanVal);
+          if (aiInterp && window.step0State.customBusinessType === cleanVal) {
+            renderStep0LiveBusinessInterpretation(aiInterp);
+            applyStep0InterpretationAcrossAllSteps(aiInterp);
+          }
+        }, 420);
       } else {
         renderStep0LiveBusinessInterpretation(null);
       }
@@ -11734,9 +11923,11 @@
       const typedCustomBiz = customInp && customInp.value.trim() ? customInp.value.trim() : "";
 
       if (typedCustomBiz) {
-        const interp = interpretStep0BusinessExplanation(typedCustomBiz);
-        renderStep0LiveBusinessInterpretation(interp);
-        applyStep0InterpretationAcrossAllSteps(interp);
+        const existingInterp = (window.step0State.interpretedProfile && window.step0State.interpretedProfile.raw === typedCustomBiz)
+          ? window.step0State.interpretedProfile
+          : interpretStep0BusinessExplanation(typedCustomBiz);
+        renderStep0LiveBusinessInterpretation(existingInterp);
+        applyStep0InterpretationAcrossAllSteps(existingInterp);
       } else {
         const secSel = document.getElementById("step0SectorSelector");
         if (secSel && secSel.value) {

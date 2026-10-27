@@ -128,11 +128,35 @@ class CompileBrandbookRequest(BaseModel):
     secondary_font: str = "Plus Jakarta Sans"
 
 
+class Step0InterpretRequest(BaseModel):
+    business_explanation: str
+    goal: str = "first"
+    assets: str = "none"
+    llm_api_key: str = ""
+
+
 @app.get("/", response_class=HTMLResponse)
 def serve_web_app():
     html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/index.html"))
     with open(html_path, "r", encoding="utf-8") as f:
-        return HTMLResponse(content=f.read())
+        return HTMLResponse(
+            content=f.read(),
+            headers={
+                "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+                "Pragma": "no-cache",
+                "Expires": "0"
+            }
+        )
+
+
+@app.post("/api/step0/interpret-business")
+def interpret_step0_business(req: Step0InterpretRequest):
+    return LiveGeminiSocraticBrain.interpret_step0_business_with_ai(
+        raw_text=req.business_explanation,
+        goal=req.goal,
+        assets=req.assets,
+        api_key=req.llm_api_key
+    )
 
 
 _FAVICON_SVG = """<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='#18181B'/><text x='50' y='64' font-family='sans-serif' font-weight='900' font-size='42' fill='#FFFFFF' text-anchor='middle'>TB</text></svg>"""
