@@ -2578,20 +2578,42 @@
         </div>
       </div>
 
-      <!-- PREGUNTA 3: SECTOR O GIRO PRINCIPAL -->
+      <!-- PREGUNTA 3: SECTOR O GIRO PRINCIPAL (LIBERTAD TOTAL PARA TECLEAR + CHIPS DE APOYO) -->
       <div style="width:100%; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:22px; padding:20px; margin-bottom:18px; text-align:center; box-shadow:0 8px 24px rgba(15,23,42,0.04);">
-        <span style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#059669; letter-spacing:0.05em;">3 DE 3 · GIRO O INDUSTRIA</span>
-        <h2 style="font-family:var(--font-display); font-size:1.2rem; font-weight:800; color:#090D16; margin:4px 0 10px 0;">
-          ¿A qué giro pertenece tu negocio?
+        <span style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#059669; letter-spacing:0.05em;">3 DE 3 · TU NEGOCIO O GIRO ESPECÍFICO</span>
+        <h2 style="font-family:var(--font-display); font-size:1.2rem; font-weight:800; color:#090D16; margin:4px 0 6px 0;">
+          ¿A qué se dedica o se dedicará tu negocio?
         </h2>
-        <select id="step0SectorSelector" onchange="changeTouchpointSectorGuide(this.value)" style="width:100%; max-width:520px; padding:13px 16px; border-radius:14px; border:2px solid #090D16; background:#F8FAFC; color:#090D16; font-family:var(--font-ui); font-size:0.98rem; font-weight:700; cursor:pointer; text-align:center;">
-          <option value="restaurante_hospitalidad">🍽️ Restaurante, Gastronomía, Cafetería u Hospitalidad</option>
-          <option value="servicios_profesionales_b2b">💼 Servicios Profesionales, Despacho, Agencia o Consultoría</option>
-          <option value="educacion_colegio_campamentos">🎓 Educación, Colegio, Academia o Campamentos</option>
-          <option value="salud_retiro_laboratorio">🩺 Salud, Clínica, Bienestar, Casa de Retiro o Laboratorio</option>
-          <option value="constructora_muebleria_oficio">🏡 Arquitectura, Constructora, Inmobiliaria, Mueblería o Diseño</option>
-          <option value="industrial_automatizacion_flota">⚙️ Industria, Manufactura, Automatización, Logística o Tecnología</option>
-        </select>
+        <p style="font-size:0.86rem; color:#475569; margin:0 auto 12px auto; max-width:560px; line-height:1.4;">
+          Escribe libremente tu tipo de negocio para personalizar toda tu experiencia con Aura, o toca una categoría rápida abajo:
+        </p>
+
+        <!-- CAMPO LIBRE PRINCIPAL PARA TECLEAR EL GIRO O ESPECIE DE NEGOCIO -->
+        <div style="max-width:580px; margin:0 auto 12px auto; position:relative;">
+          <textarea
+            id="step0CustomBusinessInput"
+            rows="2"
+            oninput="onStep0CustomBusinessTyped(this.value)"
+            placeholder="✍️ Escribe libremente tu giro o especie de negocio (ej. Cafetería de especialidad, Clínica dental pediátrica, Boutique deportiva, Software B2B...)"
+            style="width:100%; padding:12px 14px; border-radius:14px; border:2px solid #090D16; background:#F8FAFC; color:#090D16; font-family:var(--font-ui); font-size:0.94rem; font-weight:700; text-align:center; resize:none; line-height:1.35; box-shadow:0 4px 12px rgba(15,23,42,0.05);"
+          ></textarea>
+        </div>
+
+        <!-- ETIQUETAS RÁPIDAS OPCIONALES EN CUADRÍCULA COMPACTA 2x4 (SIN MENÚ DESPLEGABLE) -->
+        <div style="font-size:0.75rem; font-weight:700; color:#64748B; margin-bottom:8px;">
+          💡 O toca una idea base y personalízala arriba como tú quieras:
+        </div>
+        <div id="step0SectorQuickPills" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(145px, 1fr)); gap:7px; max-width:620px; margin:0 auto;">
+          <button type="button" class="step0-sector-pill" data-sector="restaurante_hospitalidad" onclick="selectStep0QuickSector('restaurante_hospitalidad', 'Restaurante, Cafetería o Gastronomía')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">🍽️ Restaurante / Café</button>
+          <button type="button" class="step0-sector-pill" data-sector="servicios_profesionales_b2b" onclick="selectStep0QuickSector('servicios_profesionales_b2b', 'Despacho, Agencia o Consultoría')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">💼 Servicios / Agencia</button>
+          <button type="button" class="step0-sector-pill" data-sector="salud_retiro_laboratorio" onclick="selectStep0QuickSector('salud_retiro_laboratorio', 'Clínica de Salud, Bienestar o Laboratorio')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">🩺 Salud / Bienestar</button>
+          <button type="button" class="step0-sector-pill" data-sector="educacion_colegio_campamentos" onclick="selectStep0QuickSector('educacion_colegio_campamentos', 'Educación, Academia o Cursos')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">🎓 Educación / Cursos</button>
+          <button type="button" class="step0-sector-pill" data-sector="constructora_muebleria_oficio" onclick="selectStep0QuickSector('constructora_muebleria_oficio', 'Arquitectura, Inmobiliaria o Interiorismo')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">🏡 Arquitectura / Diseño</button>
+          <button type="button" class="step0-sector-pill" data-sector="industrial_automatizacion_flota" onclick="selectStep0QuickSector('industrial_automatizacion_flota', 'Industria, Logística o Manufactura')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">⚙️ Industria / Logística</button>
+          <button type="button" class="step0-sector-pill" data-sector="custom_negocio_propio" onclick="selectStep0QuickSector('custom_negocio_propio', 'Comercio, Boutique o Marca de Producto')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">🛍️ Comercio / Retail</button>
+          <button type="button" class="step0-sector-pill" data-sector="custom_negocio_propio" onclick="focusStep0CustomBusinessInput()" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:800; border:1.5px dashed #D97706; background:#FFFBEB; color:#92400E; cursor:pointer;">✨ Otro (Escribir el mío)</button>
+        </div>
+        <input type="hidden" id="step0SectorSelector" value="restaurante_hospitalidad" />
       </div>
 
       <!-- BOTONES DE ENTRADA CENTRADOS -->
@@ -3051,10 +3073,18 @@
           </div>
 
           <div style="flex:1; min-width:260px;">
-            <label style="font-family:var(--font-ui); font-size:0.86rem; color:#E2E8F0; font-weight:800; display:block; margin-bottom:6px;">
-              🎯 Elige tu giro para ver ejemplos reales:
+            <label style="font-family:var(--font-ui); font-size:0.84rem; color:#E2E8F0; font-weight:800; display:block; margin-bottom:6px;">
+              ✍️ Tu giro específico (escribe libremente o elige ejemplo):
             </label>
-            <select id="tpSectorSelector" onchange="changeTouchpointSectorGuide(this.value)" style="width:100%; padding:13px 14px; border-radius:14px; border:2px solid #D4AF37; background:#0F172A; color:#FFFFFF; font-family:var(--font-ui); font-size:1rem; font-weight:700; cursor:pointer;">
+            <input
+              type="text"
+              id="tpCustomBusinessInput"
+              oninput="onStep0CustomBusinessTyped(this.value)"
+              placeholder="Ej: Cafetería de especialidad, Clínica dental, Boutique..."
+              style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid #D4AF37; background:#1E293B; color:#FFFFFF; font-family:var(--font-ui); font-size:0.9rem; font-weight:700; margin-bottom:8px;"
+            />
+            <select id="tpSectorSelector" onchange="changeTouchpointSectorGuide(this.value)" style="width:100%; padding:10px 12px; border-radius:12px; border:1.5px solid rgba(212,175,55,0.55); background:#0F172A; color:#FDE68A; font-family:var(--font-ui); font-size:0.86rem; font-weight:700; cursor:pointer;">
+              <option value="custom_negocio_propio">✨ Giro Personalizado a tu Medida (Según lo que escribiste)</option>
               <option value="restaurante_hospitalidad">🍽️ Restaurante, Gastronomía y Hospitalidad</option>
               <option value="servicios_profesionales_b2b">💼 Despacho Contable, Legal y Consultoría B2B</option>
               <option value="educacion_colegio_campamentos">🎓 Colegio (Primaria-Prepa) y Campamentos</option>
@@ -5458,14 +5488,76 @@
             { icon: "🔄", label: "Activación cruzada sin fricción entre Automatización, Mantenimiento, Transporte y Control", sub: "🏛️ El cliente tiene un solo equipo multidisciplinario que ya conoce su planta", tag: "Sinergia Multimarca" }
           ]
         }
+      },
+      custom_negocio_propio: {
+        label: "✨ Giro Personalizado a tu Medida",
+        leaderAdvice: "En un giro especializado como el tuyo, la clave es que cada punto de contacto (Antes, Durante y Después) refleje la esencia única de tu negocio y sorprenda a tus clientes.",
+        beforeQuestion: "1. Antes de Comprar: ¿Cómo te descubre tu cliente ideal y qué primera impresión sensorial o digital se lleva de tu negocio?",
+        duringQuestion: "2. Durante la Compra o Servicio: ¿Qué ve, toca, escucha o siente tu cliente mientras vive la experiencia contigo?",
+        afterQuestion: "3. Después de Comprar: ¿Qué detalle, empaque o seguimiento recibe para convertirse en embajador de tu marca?",
+        cards: {
+          before: [
+            { icon: "✨", label: "Muestra, diagnóstico o demostración inicial personalizada que enamora desde el primer minuto", sub: "👁️ Impacto visual + 🧠 Valor inmediato sin fricción antes de comprar", tag: "Primera Impresión" },
+            { icon: "📱", label: "Presencia digital impecable y respuesta cálida en menos de 5 minutos con voz propia", sub: "👂 Atención humana cercana · Cero respuestas genéricas o robots fríos", tag: "Descubrimiento" },
+            { icon: "🌿", label: "Atmósfera física o empaque de presentación con aroma, textura y estética distintiva de tu giro", sub: "👃 Identidad olfativa + ✋ Materiales que comunican calidad superior", tag: "Sello Sensorial" },
+            { icon: "🌟", label: "Historias reales y casos de clientes felices que validan tu especialidad", sub: "🤝 Confianza social inmediata y prueba real de resultados", tag: "Confianza" }
+          ],
+          during: [
+            { icon: "🤝", label: "Bienvenida por su nombre y atención personalizada adaptada a su gusto o necesidad exacta", sub: "👂 Escucha activa + 🤝 Trato humano memorable en cada interacción", tag: "Trato a Medida" },
+            { icon: "🎁", label: "Ritual o gesto sorpresa (Surprise & Delight) a mitad del servicio o entrega del producto", sub: "✨ El momento exacto que el cliente presume y recomienda a sus amigos", tag: "Surprise & Delight" },
+            { icon: "⚡", label: "Proceso de compra o contratación transparente, ágil y en 1 solo paso sin letra pequeña", sub: "🧠 Bajo Esfuerzo del Cliente (CES) · Cero fricción operativa", tag: "Cero Fricción" },
+            { icon: "🏷️", label: "Presentación, uniforme o herramienta de trabajo con los colores y el símbolo de tu marca", sub: "👁️ Coherencia visual absoluta en el momento de la verdad", tag: "Evidencia de Marca" }
+          ],
+          after: [
+            { icon: "📦", label: "Empaque o kit de entrega coleccionable con nota de agradecimiento firmada y sello de la casa", sub: "✋ Tacto premium + 🤝 Emoción al abrir o recibir tu producto/servicio", tag: "Ritual de Entrega" },
+            { icon: "💬", label: "Mensaje de seguimiento proactivo para asegurarse de que todo superó sus expectativas", sub: "🤝 Cuidado post-venta genuino que multiplica la recompra (LTV)", tag: "Seguimiento Cálido" },
+            { icon: "🏅", label: "Beneficio exclusivo o invitación VIP para clientes frecuentes y quienes te recomiendan", sub: "🌟 Transforma compradores satisfechos en una comunidad leal", tag: "Comunidad & Lealtad" },
+            { icon: "📘", label: "Guía práctica de cuidado, uso o aprovechamiento máximo diseñada con tu identidad visual", sub: "👁️ Customer-Owned touchpoint que permanece con el cliente", tag: "Valor Continuo" }
+          ]
+        }
       }
     };
+
+    function updateCustomBusinessTouchpointGuide(customBizText) {
+      const clean = (customBizText || "").trim();
+      if (!clean) return;
+      const g = TP_SECTOR_GUIDES.custom_negocio_propio;
+      g.label = `✨ ${clean}`;
+      g.leaderAdvice = `Para tu negocio de «${clean}», diseñemos de 3 a 4 touchpoints por etapa que hagan sentir a tu cliente que nadie más cuida los detalles como tú.`;
+      g.beforeQuestion = `1. Antes de Comprar en tu negocio (${clean}): ¿Qué ve, siente o escucha tu cliente al descubrirte por primera vez?`;
+      g.duringQuestion = `2. Durante la experiencia en «${clean}»: ¿Qué toca, vive y percibe tu cliente en el momento clave?`;
+      g.afterQuestion = `3. Después de elegir «${clean}»: ¿Qué empaque, detalle o seguimiento recibe para volver siempre?`;
+      g.cards = {
+        before: [
+          { icon: "✨", label: `Experiencia o muestra inicial de «${clean}» que demuestra tu calidad desde el primer contacto`, sub: "👁️ Impacto visual + 🧠 Confianza inmediata antes de la compra", tag: "Primera Impresión" },
+          { icon: "📲", label: `Descubrimiento ágil de «${clean}» con atención humana cálida y clara en menos de 5 minutos`, sub: "👂 Respuesta cercana sin fricción · El cliente se siente comprendido al instante", tag: "Atención Ágil" },
+          { icon: "🌿", label: `Ambiente, aroma o presentación distintiva que identifica de inmediato a «${clean}»`, sub: "👃 Sello sensorial + ✋ Cuidado en cada detalle físico y digital", tag: "Identidad Sensorial" },
+          { icon: "🌟", label: `Recomendaciones y casos reales de clientes encantados con «${clean}»`, sub: "🤝 Prueba social auténtica que elimina cualquier duda previa", tag: "Confianza" }
+        ],
+        during: [
+          { icon: "🤝", label: `Recibimiento personalizado por nombre y asesoría experta en «${clean}»`, sub: "👂 Escucha activa + 🤝 Trato humano diseñado a la medida del cliente", tag: "Trato a Medida" },
+          { icon: "🎁", label: `Detalle sorpresa (Surprise & Delight) exclusivo de «${clean}» durante la atención o compra`, sub: "✨ Gesto inesperado que convierte un servicio normal en un recuerdo inolvidable", tag: "Surprise & Delight" },
+          { icon: "⚡", label: `Proceso de pago, reserva o entrega en «${clean}» claro, rápido y sin letra chica`, sub: "🧠 Cero esfuerzo para el cliente (Low CES)", tag: "Cero Fricción" },
+          { icon: "🏷️", label: `Presentación física, indumentaria y materiales con el sello visual de «${clean}»`, sub: "👁️ + ✋ Coherencia total de marca en el momento de la verdad", tag: "Sello de Marca" }
+        ],
+        after: [
+          { icon: "📦", label: `Entrega o empaque insignia de «${clean}» con tarjeta de agradecimiento personalizada`, sub: "✋ Textura memorable + 🤝 Emoción al recibir y conservar tu marca", tag: "Ritual de Entrega" },
+          { icon: "💬", label: `Mensaje proactivo de «${clean}» días después para confirmar que todo fue extraordinario`, sub: "🤝 Cuidado post-venta que fideliza y genera recomendaciones espontáneas", tag: "Post-Venta Cálida" },
+          { icon: "🏅", label: `Programa de reconocimiento o beneficio especial para clientes frecuentes de «${clean}»`, sub: "🌟 Comunidad leal y recompra recurrente (LTV)", tag: "Lealtad VIP" },
+          { icon: "📘", label: `Guía o recomendación personalizada de «${clean}» para que el cliente aproveche al máximo su compra`, sub: "👁️ Acompañamiento experto que sigue presente en su día a día", tag: "Valor Continuo" }
+        ]
+      };
+    }
 
     window.expandedTpIds = window.expandedTpIds || {};
 
     function changeTouchpointSectorGuide(sectorKey) {
       playAcousticClick(820, 0.04);
       currentTpSectorKey = TP_SECTOR_GUIDES[sectorKey] ? sectorKey : "restaurante_hospitalidad";
+      const tpSel = document.getElementById("tpSectorSelector");
+      if (tpSel && tpSel.value !== currentTpSectorKey) {
+        tpSel.value = currentTpSectorKey;
+      }
       const guide = TP_SECTOR_GUIDES[currentTpSectorKey];
       const adviceEl = document.getElementById("tpLeaderDynamicAdvice");
       if (adviceEl && guide) {
@@ -11348,8 +11440,74 @@
     window.step0State = {
       goal: "first",    // 'first' | 'evolve' | 'second' | 'demo'
       assets: "none",   // 'none' | 'has_name' | 'has_both'
-      sector: "restaurante_hospitalidad"
+      sector: "restaurante_hospitalidad",
+      customBusinessType: ""
     };
+
+    function inferBaseSectorFromCustomText(text) {
+      const t = (text || "").toLowerCase();
+      if (/restauran|caf[eé]|panader|gastronom|bar|hotel|comida|bebida|reposter/i.test(t)) return "restaurante_hospitalidad";
+      if (/despacho|contab|abogad|legal|consultor|agencia|marketing|finanz|b2b|asesor/i.test(t)) return "servicios_profesionales_b2b";
+      if (/colegio|escuela|educac|academ|curso|campamento|universid|capacitac/i.test(t)) return "educacion_colegio_campamentos";
+      if (/salud|cl[ií]nica|m[eé]dic|dental|retiro|laboratorio|spa|bienestar|veterinar|psicolog|fisio|pilates/i.test(t)) return "salud_retiro_laboratorio";
+      if (/arquitect|construct|inmobiliar|muebler|diseñ|interior|carpinter|obra/i.test(t)) return "constructora_muebleria_oficio";
+      if (/industr|manufactur|automatiz|log[ií]st|transporte|flota|ingenier|maquinar/i.test(t)) return "industrial_automatizacion_flota";
+      return "custom_negocio_propio";
+    }
+
+    function onStep0CustomBusinessTyped(rawVal) {
+      const cleanVal = (rawVal || "").trim();
+      window.step0State.customBusinessType = cleanVal;
+      canvasState.custom_business_type = cleanVal;
+
+      const s0Inp = document.getElementById("step0CustomBusinessInput");
+      if (s0Inp && s0Inp.value !== rawVal) s0Inp.value = rawVal;
+      const tpInp = document.getElementById("tpCustomBusinessInput");
+      if (tpInp && tpInp.value !== rawVal) tpInp.value = rawVal;
+
+      if (cleanVal.length > 1) {
+        updateCustomBusinessTouchpointGuide(cleanVal);
+        window.step0State.sector = "custom_negocio_propio";
+        const hiddenSel = document.getElementById("step0SectorSelector");
+        if (hiddenSel) hiddenSel.value = "custom_negocio_propio";
+        changeTouchpointSectorGuide("custom_negocio_propio");
+      }
+    }
+
+    function selectStep0QuickSector(sectorKey, suggestedLabel) {
+      playAcousticClick(820, 0.04);
+      const inp = document.getElementById("step0CustomBusinessInput");
+      if (inp) {
+        inp.value = suggestedLabel || "";
+      }
+      document.querySelectorAll("#step0SectorQuickPills .step0-sector-pill").forEach(btn => {
+        const isMatch = btn.textContent && suggestedLabel && btn.getAttribute("onclick")?.includes(suggestedLabel);
+        btn.style.background = isMatch ? "#090D16" : "#F8FAFC";
+        btn.style.color = isMatch ? "#FDE68A" : "#1E293B";
+        btn.style.borderColor = isMatch ? "#D4AF37" : "#CBD5E1";
+      });
+      window.step0State.customBusinessType = suggestedLabel || "";
+      canvasState.custom_business_type = suggestedLabel || "";
+      if (sectorKey === "custom_negocio_propio" || suggestedLabel) {
+        updateCustomBusinessTouchpointGuide(suggestedLabel);
+      }
+      const targetKey = TP_SECTOR_GUIDES[sectorKey] ? sectorKey : "custom_negocio_propio";
+      window.step0State.sector = targetKey;
+      const hiddenSel = document.getElementById("step0SectorSelector");
+      if (hiddenSel) hiddenSel.value = targetKey;
+      const tpInp = document.getElementById("tpCustomBusinessInput");
+      if (tpInp) tpInp.value = suggestedLabel || "";
+      changeTouchpointSectorGuide(targetKey);
+    }
+
+    function focusStep0CustomBusinessInput() {
+      playAcousticClick(860, 0.04);
+      const inp = document.getElementById("step0CustomBusinessInput");
+      if (inp) {
+        inp.value = "";
+        inp.focus();
+      }
+    }
 
     function selectStep0Goal(goalKey) {
       playAcousticClick(820, 0.04);
@@ -11379,10 +11537,30 @@
 
     function completeStep0AndStartExperience(targetScreen = "focus") {
       playAcousticClick(940, 0.06);
-      const secSel = document.getElementById("step0SectorSelector");
-      if (secSel && secSel.value) {
-        window.step0State.sector = secSel.value;
-        changeTouchpointSectorGuide(secSel.value);
+      const customInp = document.getElementById("step0CustomBusinessInput");
+      const typedCustomBiz = customInp && customInp.value.trim() ? customInp.value.trim() : "";
+
+      if (typedCustomBiz) {
+        window.step0State.customBusinessType = typedCustomBiz;
+        canvasState.custom_business_type = typedCustomBiz;
+        updateCustomBusinessTouchpointGuide(typedCustomBiz);
+        const tpInp = document.getElementById("tpCustomBusinessInput");
+        if (tpInp) tpInp.value = typedCustomBiz;
+        changeTouchpointSectorGuide("custom_negocio_propio");
+
+        // Personalizar la primera pregunta de Aura en el Paso 1 con el giro exacto escrito por el usuario
+        const qCat = document.getElementById("questionCategory");
+        const qHead = document.getElementById("activeQuestionHeading");
+        if (qCat) qCat.textContent = `01 · Propósito Nuclear · ${typedCustomBiz}`;
+        if (qHead) {
+          qHead.textContent = `Para tu negocio de «${typedCustomBiz}», ¿qué problema real le resuelves a tus clientes que nadie más ha sido capaz de solucionar?`;
+        }
+      } else {
+        const secSel = document.getElementById("step0SectorSelector");
+        if (secSel && secSel.value) {
+          window.step0State.sector = secSel.value;
+          changeTouchpointSectorGuide(secSel.value);
+        }
       }
 
       if (window.step0State.goal === "first") {
