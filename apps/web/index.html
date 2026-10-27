@@ -2208,9 +2208,42 @@
       .tp-item-actions-row button {
         flex: 1 1 auto;
         justify-content: center;
-      }
         padding: 11px 14px !important;
         font-size: 0.92rem !important;
+      }
+      /* #042 & #043: Header y Mapa del Viaje sin recortes ni puntos suspensivos en celular */
+      .journey-header-bar,
+      .focus-nav-bar {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px 14px !important;
+      }
+      #focusTopStepperBar {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 6px !important;
+      }
+      #focusTopStepperBar button {
+        font-size: 0.84rem !important;
+        padding: 10px 8px !important;
+      }
+      .node-title,
+      .node-desc {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        line-height: 1.32 !important;
+      }
+      /* #048: Pulgar táctil grande para sliders en celular */
+      input[type="range"]::-webkit-slider-thumb {
+        width: 28px !important;
+        height: 28px !important;
+      }
+      /* #050: Contenedor deslizable para tablas técnicas en móvil */
+      .brandbook-sheet table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
       }
     }
   </style>
@@ -2421,6 +2454,9 @@
           </select>
         </div>
         <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <button type="button" onclick="resetBrandWorkspaceClean()" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA; border-radius:8px; padding:5px 12px; font-size:0.74rem; font-weight:800; cursor:pointer;" title="Limpiar todo e iniciar una marca nueva en blanco">
+            🆕 Nueva Marca en Blanco
+          </button>
           <button type="button" onclick="openSubBrandClonerBar()" style="background:rgba(212,175,55,0.16); color:#FDE68A; border:1px solid #D4AF37; border-radius:8px; padding:5px 12px; font-size:0.74rem; font-weight:800; cursor:pointer;">
             🧬 Clonar Sub-Marca (ADN 85% Heredado / 15% Específico)
           </button>
@@ -2516,6 +2552,16 @@
             </button>
           </div>
 
+          <!-- #044: BARRA DE ESTADO RÁPIDO PARA MÓVIL Y ESCRITORIO (VER Y EDITAR LOS 6 PILARES EN VIVO) -->
+          <div id="step1MobileCanvasStatusPill" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:10px 14px; margin-bottom:14px;">
+            <span id="step1LivePillarsCounterText" style="font-size:0.86rem; font-weight:800; color:#090D16;">
+              📊 Lienzo en Vivo: <span style="color:#0284C7;">Pregunta 1 de 6</span> · Puedes editar cualquier pilar tocándolo
+            </span>
+            <button type="button" class="btn-action" style="padding:6px 12px; font-size:0.8rem; font-weight:800;" onclick="document.getElementById('atelierRightPane').scrollIntoView({behavior:'smooth'})">
+              📋 Ver / Editar mis 6 Pilares ↓
+            </button>
+          </div>
+
           <!-- CLOSING CONFIRMATION GATE -->
           <div class="closing-gate-pill" id="closingGateBanner">
             <span class="closing-gate-text">✨ ¡Excelente! Hemos capturado los pilares de este paso. ¿Quieres agregar más ideas o avanzamos viendo tu cápsula de cierre?</span>
@@ -2568,33 +2614,51 @@
           </div>
 
           <div class="manifesto-grid">
-            <div class="manifesto-plaque">
-              <span class="plaque-num">01 · PROPÓSITO (WHY)</span>
+            <div class="manifesto-plaque" onclick="editManifestoPillarInline('golden_circle', '01 · Propósito (Círculo Dorado)', 'canvasGoldenCircle')" style="cursor:pointer;" title="Toca para editar manualmente este pilar">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="plaque-num">01 · PROPÓSITO (WHY)</span>
+                <span style="font-size:0.74rem; color:#B45309; font-weight:800;">✏️ Editar</span>
+              </div>
               <div class="plaque-title">Círculo Dorado</div>
               <p class="plaque-text" id="canvasGoldenCircle">En espera de tus respuestas...</p>
             </div>
-            <div class="manifesto-plaque">
-              <span class="plaque-num">02 · DIFERENCIAL (HOW)</span>
+            <div class="manifesto-plaque" onclick="editManifestoPillarInline('value_offer', '02 · Diferencial (Oferta de Valor)', 'canvasValueOffer')" style="cursor:pointer;" title="Toca para editar manualmente este pilar">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="plaque-num">02 · DIFERENCIAL (HOW)</span>
+                <span style="font-size:0.74rem; color:#B45309; font-weight:800;">✏️ Editar</span>
+              </div>
               <div class="plaque-title">Oferta de Valor</div>
               <p class="plaque-text" id="canvasValueOffer">La ventaja única frente al mercado...</p>
             </div>
-            <div class="manifesto-plaque">
-              <span class="plaque-num">03 · IMPACTO</span>
+            <div class="manifesto-plaque" onclick="editManifestoPillarInline('social_role', '03 · Impacto (Rol en la Sociedad)', 'canvasSocialRole')" style="cursor:pointer;" title="Toca para editar manualmente este pilar">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="plaque-num">03 · IMPACTO</span>
+                <span style="font-size:0.74rem; color:#B45309; font-weight:800;">✏️ Editar</span>
+              </div>
               <div class="plaque-title">Rol en la Sociedad</div>
               <p class="plaque-text" id="canvasSocialRole">Transformación de la industria...</p>
             </div>
-            <div class="manifesto-plaque">
-              <span class="plaque-num">04 · MÉTODO (WHAT)</span>
+            <div class="manifesto-plaque" onclick="editManifestoPillarInline('process_steps', '04 · Método (Proceso Operativo)', 'canvasProcessSteps')" style="cursor:pointer;" title="Toca para editar manualmente este pilar">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="plaque-num">04 · MÉTODO (WHAT)</span>
+                <span style="font-size:0.74rem; color:#B45309; font-weight:800;">✏️ Editar</span>
+              </div>
               <div class="plaque-title">Proceso Operativo</div>
               <p class="plaque-text" id="canvasProcessSteps">Paso a paso de excelencia...</p>
             </div>
-            <div class="manifesto-plaque">
-              <span class="plaque-num">05 · VOZ DE MARCA</span>
+            <div class="manifesto-plaque" onclick="editManifestoPillarInline('core_message', '05 · Voz de Marca (Mensaje Nuclear)', 'canvasCoreMessage')" style="cursor:pointer;" title="Toca para editar manualmente este pilar">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="plaque-num">05 · VOZ DE MARCA</span>
+                <span style="font-size:0.74rem; color:#B45309; font-weight:800;">✏️ Editar</span>
+              </div>
               <div class="plaque-title">Mensaje Nuclear</div>
               <p class="plaque-text" id="canvasCoreMessage">Idea central de recordación...</p>
             </div>
-            <div class="manifesto-plaque">
-              <span class="plaque-num">06 · CLIENTE IDEAL</span>
+            <div class="manifesto-plaque" onclick="editManifestoPillarInline('ideal_customer', '06 · Cliente Ideal (Buyer Persona)', 'canvasIdealCustomer')" style="cursor:pointer;" title="Toca para editar manualmente este pilar">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="plaque-num">06 · CLIENTE IDEAL</span>
+                <span style="font-size:0.74rem; color:#B45309; font-weight:800;">✏️ Editar</span>
+              </div>
               <div class="plaque-title">Buyer Persona / ICP</div>
               <p class="plaque-text" id="canvasIdealCustomer">Quién decide y qué valora...</p>
             </div>
@@ -2898,28 +2962,65 @@
           <div id="namingCycleProgressBar" style="width:5%; height:100%; background:linear-gradient(90deg, #D4AF37, #10B981); transition:width 0.3s ease;"></div>
         </div>
 
-        <!-- BÓVEDA PERMANENTE DE NOMBRES ACEPTADOS -->
+        <!-- BÓVEDA PERMANENTE DE NOMBRES ACEPTADOS Y EN RESERVA PARA SUBMARCAS (#062) -->
         <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding-top:6px; border-top:1px solid rgba(255,255,255,0.12);">
           <span style="font-family:var(--font-mono); font-size:0.72rem; color:#34D399; font-weight:800;">💚 NOMBRES ACEPTADOS PERMANENTES:</span>
           <div id="acceptedNamesVaultRow" style="display:flex; flex-wrap:wrap; gap:6px;">
             <span style="font-size:0.78rem; color:#94A3B8;">Haz clic en «💚 Conservar» en cualquiera de las 6 tarjetas de abajo para guardar tus favoritos...</span>
           </div>
         </div>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding-top:6px; border-top:1px solid rgba(255,255,255,0.08);">
+          <span style="font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A; font-weight:800;">📌 EN RESERVA PARA SUBMARCAS / PRODUCTOS:</span>
+          <div id="reservedSubbrandNamesRow" style="display:flex; flex-wrap:wrap; gap:6px;">
+            <span style="font-size:0.78rem; color:#94A3B8;">Guarda aquí nombres secundarios para futuras divisiones o líneas de producto...</span>
+          </div>
+        </div>
       </div>
 
-      <!-- ENTRADA OPCIONAL DE PALABRAS CLAVE O IDEAS PROPIAS -->
-      <div style="max-width: 860px; margin: 0 auto 16px auto; width: 100%;">
-        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <!-- #057 & #065: OPCIÓN "YA TENGO MI PROPIO NOMBRE DE MARCA (QUIERO USAR EL MÍO)" + ESLOGAN EDITABLE -->
+      <div style="max-width: 920px; margin: 0 auto 16px auto; width: 100%; background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border:2px dashed #D97706; border-radius:20px; padding:18px 20px;">
+        <div style="font-size:0.84rem; font-weight:800; color:#B45309; text-transform:uppercase; margin-bottom:6px;">
+          ✨ Opción Directa · ¿Ya tienes el nombre de tu negocio o ninguno de los sugeridos te convence?
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; align-items:center;">
+          <input
+            type="text"
+            id="customBrandNameInput"
+            style="padding:13px 16px; border-radius:14px; background:#FFFFFF; border:2px solid #CBD5E1; color:#090D16; font-size:1rem; font-weight:700;"
+            placeholder="Escribe tu propio nombre de marca (ej: Casa Lumbre)..."
+          />
+          <input
+            type="text"
+            id="customBrandSloganInput"
+            style="padding:13px 16px; border-radius:14px; background:#FFFFFF; border:2px solid #CBD5E1; color:#090D16; font-size:0.98rem; font-weight:600;"
+            placeholder="Eslogan opcional (ej: El arte del fuego lento)..."
+          />
+          <button type="button" class="btn-action primary" onclick="applyUserOwnBrandNameAndSlogan()" style="padding:13px 18px; font-size:0.96rem; font-weight:800; border-radius:14px; background:#090D16; color:#FDE68A; border:1.5px solid #D4AF37;">
+            ✓ Usar Mi Propio Nombre Oficial
+          </button>
+        </div>
+      </div>
+
+      <!-- ENTRADA OPCIONAL DE PALABRAS CLAVE + #067 BOTONES DE DIRECCIÓN CREATIVA RÁPIDA -->
+      <div style="max-width: 920px; margin: 0 auto 16px auto; width: 100%;">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom:10px;">
           <input
             type="text"
             id="namingCandidatesInput"
-            style="flex: 1; min-width: 260px; padding: 14px 20px; border-radius: 16px; background: #FFFFFF; border: 2px solid #CBD5E1; color:#090D16; font-size:0.98rem; font-weight:600; outline:none; box-shadow: 0 4px 14px rgba(15,23,42,0.05);"
+            style="flex: 1; min-width: 260px; padding: 14px 20px; border-radius: 16px; background: #FFFFFF; border: 2px solid #CBD5E1; color:#090D16; font-size:1rem; font-weight:600; outline:none; box-shadow: 0 4px 14px rgba(15,23,42,0.05);"
             placeholder="Opcional: Agrega tus propias palabras, raíces o ideas (separadas por coma) para combinarlas..."
             onkeydown="if(event.key === 'Enter') runNamingAudit();"
           />
           <button class="btn-action primary" id="btnEvaluateNames" onclick="runNamingAudit()" style="white-space: nowrap; padding: 14px 22px; font-weight: 800;">
             ➕ Inyectar Ideas al Ciclo Actual
           </button>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px;">
+          <span style="font-size:0.84rem; font-weight:800; color:#475569;">🎯 Giro creativo rápido:</span>
+          <button type="button" class="btn-action" onclick="regenerateNamingByCreativeDirection('cortos')" style="padding:8px 14px; font-size:0.86rem; font-weight:800; border-radius:10px;">⚡ Más cortos (1 palabra)</button>
+          <button type="button" class="btn-action" onclick="regenerateNamingByCreativeDirection('institucionales')" style="padding:8px 14px; font-size:0.86rem; font-weight:800; border-radius:10px;">🏛️ Más institucionales</button>
+          <button type="button" class="btn-action" onclick="regenerateNamingByCreativeDirection('espanol_calido')" style="padding:8px 14px; font-size:0.86rem; font-weight:800; border-radius:10px;">🌿 Más cálidos (Raíz Español)</button>
+          <button type="button" class="btn-action" onclick="regenerateNamingByCreativeDirection('disruptivos')" style="padding:8px 14px; font-size:0.86rem; font-weight:800; border-radius:10px;">🚀 Más disruptivos / Tech</button>
         </div>
       </div>
 
@@ -2998,9 +3099,14 @@
             Tomamos el propósito, los touchpoints y el nombre que acabas de elegir para ajustar el punto de partida de estas 7 barras. Puedes moverlas libremente a tu gusto.
           </div>
         </div>
-        <button class="btn-action" onclick="speakKanseiArchitectBrief()" style="background:#FFFFFF; border:1.5px solid #D4AF37; color:#92400E; font-weight:800; font-size:0.82rem; padding:10px 16px;">
-          🔊 Escuchar Explicación de AURA
-        </button>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn-action primary" onclick="calibrateSlidersByCurrentSector()" style="background:#090D16; border:1.5px solid #D4AF37; color:#FDE68A; font-weight:800; font-size:0.86rem; padding:10px 16px;" title="Calibrar automáticamente las 7 barras según tu giro">
+            🎯 Auto-Calibrar según mi Giro
+          </button>
+          <button class="btn-action" onclick="speakKanseiArchitectBrief()" style="background:#FFFFFF; border:1.5px solid #D4AF37; color:#92400E; font-weight:800; font-size:0.82rem; padding:10px 16px;">
+            🔊 Escuchar Explicación de AURA
+          </button>
+        </div>
       </div>
 
       <!-- TABLERO CLARO DE PERSONALIDAD VISUAL EN LENGUAJE HUMANO -->
@@ -3139,7 +3245,7 @@
         </span>
       </div>
 
-      <!-- SELECTOR RÁPIDO DE LAS 3 FASES DEL LABORATORIO DE 24 ATRIBUTOS -->
+      <!-- SELECTOR RÁPIDO DE LAS 3 FASES DEL LABORATORIO DE 24 ATRIBUTOS + #072 AUTO-COMPLETAR -->
       <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:14px;">
         <button class="btn-action primary" id="btnArenaPhase1" onclick="jumpToArenaPhase(1)" style="font-size:0.78rem; padding:9px 16px; font-weight:700;">
           1️⃣ Bloque I (Atributos 1–12): Forma y Estructura en Blanco y Negro
@@ -3149,6 +3255,9 @@
         </button>
         <button class="btn-action" id="btnArenaPhase3" onclick="jumpToArenaPhase(3)" style="font-size:0.78rem; padding:9px 16px; font-weight:700;">
           3️⃣ Bloque III (Atributos 19–24): Fondo, Color y Acabado Físico
+        </button>
+        <button class="btn-action emerald" type="button" onclick="autoCompleteRemaining24Duels()" style="font-size:0.84rem; padding:9px 16px; font-weight:800;">
+          ⚡ Auto-Completar los 24 según mi estilo e ir a Logos ↓
         </button>
       </div>
 
@@ -3207,9 +3316,41 @@
               <span style="font-family:var(--font-mono); font-size:0.72rem; color:#92400E; font-weight:800;">🎨 4 PROPUESTAS DE LOGOTIPO FINAL SINTETIZADAS CON TUS 24 DECISIONES</span>
               <h4 style="font-family:var(--font-display); font-size:1.18rem; color:#090D16; margin:2px 0 0 0;">Haz clic en tu propuesta favorita para adoptarla como tu Logotipo Oficial</h4>
             </div>
-            <span id="aiStudioGenStatusBadge" style="font-family:var(--font-mono); font-size:0.72rem; background:#DCFCE7; color:#15803D; padding:5px 12px; border-radius:999px; font-weight:800; border:1px solid #86EFAC;">✓ 4 Logos Finales Listos</span>
+            <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+              <button type="button" onclick="setStep5bLockupVariant('horizontal')" style="background:#FFF; border:1px solid #CBD5E1; color:#0F172A; border-radius:999px; padding:5px 10px; font-size:0.74rem; font-weight:800; cursor:pointer;">↔️ Lockup Horizontal</button>
+              <button type="button" onclick="setStep5bLockupVariant('vertical')" style="background:#FFF; border:1px solid #CBD5E1; color:#0F172A; border-radius:999px; padding:5px 10px; font-size:0.74rem; font-weight:800; cursor:pointer;">↕️ Emblema Vertical</button>
+              <button type="button" onclick="setStep5bLockupVariant('monogram')" style="background:#FFF; border:1px solid #CBD5E1; color:#0F172A; border-radius:999px; padding:5px 10px; font-size:0.74rem; font-weight:800; cursor:pointer;">🔘 Sello / Favicon</button>
+              <span id="aiStudioGenStatusBadge" style="font-family:var(--font-mono); font-size:0.72rem; background:#DCFCE7; color:#15803D; padding:5px 12px; border-radius:999px; font-weight:800; border:1px solid #86EFAC;">✓ 4 Logos Finales Listos</span>
+            </div>
           </div>
+
+          <!-- REFINADOR CONVERSACIONAL CON AURA EN ESTUDIO IA (#085) & DESCARGA DIRECTA (#078, #083) -->
+          <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:14px; padding:12px 14px; margin-bottom:14px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;">
+            <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center; flex:1 1 100%; min-width:0;">
+              <span style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#92400E;">✨ Ajustar con Aura:</span>
+              <input type="text" id="auraLogoRefineInput" placeholder="Ej: Haz el trazo más delgado, agrega un detalle botánico, usa fondo crema..." style="flex:1 1 180px; min-width:0; width:100%; padding:8px 12px; border-radius:10px; border:1.5px solid #CBD5E1; font-size:0.84rem; color:#0F172A;" />
+              <button type="button" onclick="refineLogoWithAuraPrompt()" style="background:#0F172A; color:#FDE68A; border:1px solid #D4AF37; border-radius:10px; padding:8px 14px; font-size:0.8rem; font-weight:800; cursor:pointer;">Aplicar Ajuste IA</button>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button type="button" onclick="exportLogoSVGCurves()" style="background:#F0FDF4; border:1.5px solid #86EFAC; color:#15803D; border-radius:10px; padding:7px 12px; font-size:0.76rem; font-weight:800; cursor:pointer;">⬇️ Descargar Logo (.SVG)</button>
+              <button type="button" onclick="toggleLogoSideBySideComparator()" style="background:#FEF3C7; border:1.5px solid #F59E0B; color:#92400E; border-radius:10px; padding:7px 12px; font-size:0.76rem; font-weight:800; cursor:pointer;">⚖️ Comparar 2 Finalistas</button>
+            </div>
+          </div>
+
+          <div id="logoSideBySideComparatorBox" style="display:none; background:#0F172A; color:#F8FAFC; border:2px solid #D4AF37; border-radius:14px; padding:14px; margin-bottom:14px;"></div>
+
           <div id="liveAIStudioImagesRow" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:14px;"></div>
+
+          <!-- PREVISUALIZACIÓN EN VIVO SOBRE EL TOUCHPOINT #1 DEL USUARIO (#082) -->
+          <div id="step5bTouchpointLiveMockupBar" style="margin-top:14px; background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:14px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>
+              <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#047857;">✨ APLICACIÓN EN VIVO SOBRE TU TOUCHPOINT PRINCIPAL (PASO 2)</span>
+              <div id="step5bTouchpointMockupDesc" style="font-size:0.86rem; color:#334155; font-weight:600; margin-top:2px;">Tu logotipo oficial aplicado directamente sobre tu primer punto de contacto con el cliente.</div>
+            </div>
+            <div id="step5bTouchpointMockupPreview" style="display:flex; align-items:center; gap:12px; background:#0F172A; color:#FDE68A; padding:10px 18px; border-radius:12px; border:1.5px solid #D4AF37; font-family:var(--font-display); font-weight:800; font-size:1rem;">
+              🏛️ TheBestBrand · Vista en Touchpoint
+            </div>
+          </div>
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:8px;">
@@ -3303,6 +3444,28 @@
             </div>
           </div>
 
+          <!-- VALIDADOR DE COHERENCIA PRE-DESCARGA (#099) & ÍNDICE NAVEGABLE DE LOS 10 TOMOS (#091) -->
+          <div id="step6CoherenceAuditBanner" style="background:#ECFDF5; border:1.5px solid #10B981; border-radius:14px; padding:12px 16px; margin-top:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <span style="background:#10B981; color:#FFF; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; padding:4px 10px; border-radius:999px;">✓ AUDITORÍA DE COHERENCIA 100%</span>
+              <span id="step6CoherenceAuditText" style="font-size:0.84rem; color:#065F46; font-weight:700;">Propósito + Touchpoints + Naming + 7 Ejes + 24 Atributos + Logotipo verificados y sincronizados.</span>
+            </div>
+            <button type="button" onclick="scrollToEmployeeOnePager()" style="background:#0F172A; color:#FDE68A; border:1px solid #D4AF37; border-radius:999px; padding:6px 14px; font-size:0.75rem; font-weight:800; cursor:pointer;">📄 Ver Guía Rápida 1-Página (Empleados)</button>
+          </div>
+
+          <div id="step6TomosQuickNav" style="display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; padding:10px 12px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; align-items:center;">
+            <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#475569; margin-right:4px;">📑 Ir a Tomo:</span>
+            <button type="button" onclick="jumpToBrandbookTomo(1)" class="btn-action" style="padding:4px 9px; font-size:0.72rem;">I. Propósito</button>
+            <button type="button" onclick="jumpToBrandbookTomo(2)" class="btn-action" style="padding:4px 9px; font-size:0.72rem;">II. Naming &amp; Niza</button>
+            <button type="button" onclick="jumpToBrandbookTomo(3)" class="btn-action" style="padding:4px 9px; font-size:0.72rem;">III. Touchpoints</button>
+            <button type="button" onclick="jumpToBrandbookTomo(4)" class="btn-action" style="padding:4px 9px; font-size:0.72rem;">IV. 7 Ejes</button>
+            <button type="button" onclick="jumpToBrandbookTomo(5)" class="btn-action" style="padding:4px 9px; font-size:0.72rem;">V. 24 Atributos</button>
+            <button type="button" onclick="jumpToBrandbookTomo(6)" class="btn-action" style="padding:4px 9px; font-size:0.72rem;">VI. Logotipo &amp; Retícula</button>
+            <button type="button" onclick="jumpToBrandbookTomo(7)" class="btn-action" style="padding:4px 9px; font-size:0.72rem;">VII. Color &amp; Tipo</button>
+            <button type="button" onclick="jumpToBrandbookTomo(8)" class="btn-action" style="padding:4px 9px; font-size:0.72rem;">VIII. Láminas Studio</button>
+            <button type="button" onclick="scrollToEmployeeOnePager()" class="btn-action" style="padding:4px 10px; font-size:0.72rem; border-color:#D4AF37; color:#92400E; font-weight:800;">⚡ One-Pager Empleados</button>
+          </div>
+
           <!-- SELECTOR DE SISTEMA VISUAL Y SUB-TABS -->
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid #E2E8F0; padding-bottom:14px; margin-top:8px;" id="step6SubTabs">
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
@@ -3321,6 +3484,9 @@
               </select>
             </div>
           </div>
+
+          <!-- GUÍA RÁPIDA DE BOLSILLO (ONE-PAGER PARA EMPLEADOS Y PROVEEDORES #098) -->
+          <div id="step6EmployeeOnePagerContainer" style="margin-top:12px;"></div>
 
           <!-- TAB 1: VOLÚMENES ILUSTRADOS SIN LÍMITE DE HOJAS -->
           <div id="step6TabPlates" style="display:flex; flex-direction:column; gap:24px;">
@@ -5065,6 +5231,26 @@
         spec.blueprint_backstage = "Control de calidad previo al cierre, trazabilidad por lote/serie y agenda de seguimiento a los 15 días.";
         spec.substrate_material = "Madera maciza de parota/roble, Latón/Acero Inoxidable 304 o Cartón Rígido FSC con Papel Algodón.";
         spec.reproduction_method = "Pirograbado a fuego / Grabado Láser de Fibra / Hot-Stamping y Cuño Seco.";
+      } else if (/(app|web|portal|dashboard|qr|whatsapp|email|newsletter|notificaci|checkout|onboarding|saas|software|link|zoom|videollamada)/.test(lower)) {
+        spec.category = "Interfaz Digital, Automatización & Experiencia Omnicanal (Cero Fricción)";
+        spec.sensory_dimensions = "👁️ Claridad Visual UI + ⚡ Velocidad (< 1.5s) + 🤝 Voz Cercana";
+        spec.governance_lemon_verhoef = "Brand-Owned (Ecosistema Digital Propio)";
+        spec.interaction_nature = "Tecnológica Digital + Humana Asistida";
+        spec.surprise_and_delight = "Micro-interacción cálida, confirmación instantánea sin pedir datos repetidos y mensaje con nombre propio.";
+        spec.blueprint_onstage = "Flujo intuitivo en 1 clic desde el celular con estado en tiempo real y contacto humano a un botón.";
+        spec.blueprint_backstage = "Sincronización API en tiempo real entre CRM, pasarela y notificaciones sin silos de datos.";
+        spec.substrate_material = "Interfaz Web/Móvil Retina Display (Contraste WCAG AAA ≥ 7:1) + Plantillas HTML/SVG responsivas.";
+        spec.reproduction_method = "Renderizado vectorial SVG nítido, tipografía fluida ≥ 16px en móvil y micro-copy empático.";
+      } else if (/(consulta|diagnóstico|auditoría|sesión|taller|clase|recorrido|visita|contrato|propuesta|cotización|reporte)/.test(lower)) {
+        spec.category = "Consultoría, Diagnóstico de Autor & Co-Creación de Valor (S-D Logic)";
+        spec.sensory_dimensions = "👁️ Claridad Ejecutiva + 👂 Escucha Activa + ✋ Carpeta / Entregable Táctil";
+        spec.governance_lemon_verhoef = "Brand-Owned (Sesión de Alto Valor)";
+        spec.interaction_nature = "Humana Directa Consultiva";
+        spec.surprise_and_delight = "Entregar un hallazgo accionable de alto valor desde la primera sesión antes de cualquier cobro.";
+        spec.blueprint_onstage = "Presentación clara con ejemplos reales, lenguaje sin tecnicismos innecesarios y acuerdos transparentes.";
+        spec.blueprint_backstage = "Investigación previa del caso, preparación de dossier personalizado y minuta enviada en < 2 horas.";
+        spec.substrate_material = "Dossier en Papel Algodón 300g encuadernado + Presentación Digital Interactiva de Alta Precisión.";
+        spec.reproduction_method = "Impresión editorial de alta definición con portada en folia metálica + PDF Interactivo.";
       }
       return spec;
     }
@@ -5151,8 +5337,19 @@
         quality_control_rule: "Cumplir siempre la promesa emocional y operativa sin fricción."
       };
 
-      if (window.editingTpRef && window.editingTpRef.phaseKey === phase && typeof window.editingTpRef.idx === "number") {
-        tpExtractedItems[phase][window.editingTpRef.idx] = title;
+      if (window.editingTpRef && typeof window.editingTpRef.idx === "number") {
+        if (window.editingTpRef.phaseKey === phase) {
+          tpExtractedItems[phase][window.editingTpRef.idx] = title;
+        } else {
+          // Mover touchpoint de una etapa a otra (#033)
+          const oldList = tpExtractedItems[window.editingTpRef.phaseKey] || [];
+          if (window.editingTpRef.idx >= 0 && window.editingTpRef.idx < oldList.length) {
+            oldList.splice(window.editingTpRef.idx, 1);
+          }
+          if (!tpExtractedItems[phase].includes(title)) {
+            tpExtractedItems[phase].push(title);
+          }
+        }
       } else if (!tpExtractedItems[phase].includes(title)) {
         tpExtractedItems[phase].push(title);
       }
@@ -5641,6 +5838,8 @@
     // STEP NAVIGATION (IN-FOCUS)
     // =========================================================================
     function switchStep(stepNum) {
+      if (typeof stopContinuousVoice === "function") stopContinuousVoice();
+      if (typeof dismissWelcomeModal === "function") dismissWelcomeModal();
       currentStep = stepNum;
       if (stepNum > unlockedStepMax) {
         unlockedStepMax = stepNum;
@@ -5698,10 +5897,19 @@
         if (typeof renderSynthesizedFinalLogoProposalsGrid === "function") {
           renderSynthesizedFinalLogoProposalsGrid();
         }
+        if (typeof renderStep5bTouchpointMockup === "function") {
+          renderStep5bTouchpointMockup();
+        }
       } else if (stepNum === 6) {
         renderFull38PageIllustratedPlates();
         renderPrintShopCheatsheet();
         renderEightApplicationsGrid();
+        if (typeof renderStep6EmployeeOnePagerAndAudit === "function") {
+          renderStep6EmployeeOnePagerAndAudit();
+        }
+      }
+      if (typeof updateStep1MobilePillarStatus === "function") {
+        updateStep1MobilePillarStatus();
       }
       updateJourneyRoadmap();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -7082,9 +7290,15 @@
                   Recordación ${item.smile_score || 95}/100
                 </span>
               </div>
-              <h3 style="font-family:var(--font-display); font-size:1.4rem; color:#090D16; margin:4px 0; font-weight:800;">
-                ${escapeHTML(item.name)}
-              </h3>
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <h3 style="font-family:var(--font-display); font-size:1.4rem; color:#090D16; margin:4px 0; font-weight:800;">
+                  ${escapeHTML(item.name)}
+                </h3>
+                <div style="display:flex; gap:4px;">
+                  <button type="button" onclick="speakCandidateBrandName('${safeName}')" title="Escuchar pronunciación fonética" style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:8px; padding:4px 8px; font-size:0.72rem; font-weight:700; cursor:pointer; color:#0F172A;">🔊 Escuchar</button>
+                  <button type="button" onclick="reserveSubbrandName('${safeName}')" title="Reservar para producto o submarca" style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:8px; padding:4px 8px; font-size:0.72rem; font-weight:700; cursor:pointer; color:#92400E;">📌 Submarca</button>
+                </div>
+              </div>
               <p style="font-size:0.74rem; color:#64748B; margin-bottom:8px; font-weight:600;">
                 ${escapeHTML(item.styleDesc || '')} · ${item.syllables || 3} sílabas
               </p>
@@ -7256,10 +7470,10 @@
                 </div>
               </div>
               <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:10px 12px; overflow-wrap:anywhere;">
-                <div style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; color:#059669;">3. DOMINIOS WEB DISPONIBLES ACORDE A TU PRODUCTO / SERVICIO</div>
+                <div style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; color:#059669;">3. DOMINIOS WEB &amp; HANDLES EN REDES SOCIALES</div>
                 <div style="font-size:0.78rem; font-family:var(--font-mono); color:#0F172A; margin-top:4px; line-height:1.5;">
-                  🟢 <strong>${cleanSlug}.com</strong> · <strong>get${cleanSlug}.com</strong><br/>
-                  🟢 <strong>${cleanSlug}.ai</strong> · <strong>${cleanSlug}.io</strong> · <strong>${cleanSlug}.mx</strong> · <strong>${cleanSlug}oficial.com</strong>
+                  🟢 <strong>${cleanSlug}.com</strong> · <strong>get${cleanSlug}.com</strong> · <strong>${cleanSlug}.ai</strong> · <strong>${cleanSlug}.mx</strong><br/>
+                  📱 Redes Libres: <strong>@${cleanSlug}</strong> · <strong>@${cleanSlug}_oficial</strong> (Instagram / TikTok / LinkedIn)
                 </div>
               </div>
             </div>
@@ -9616,25 +9830,9 @@
       tpExtractedItems.during = [...cfg.tp_during];
       tpExtractedItems.after = [...cfg.tp_after];
 
-      const sectorMapByPreset = {
-        brasa_y_raiz: "restaurante_hospitalidad",
-        vertice_patrimonial: "servicios_profesionales_b2b",
-        colegio_agora_nova: "educacion_colegio_campamentos",
-        cumbre_viva: "educacion_colegio_campamentos",
-        quantalab_scientific: "salud_retiro_laboratorio",
-        villa_serena: "salud_retiro_laboratorio",
-        piedra_firme: "constructora_muebleria_oficio",
-        muebleria_el_roble: "constructora_muebleria_oficio",
-        aksis_automation: "industrial_automatizacion_flota",
-        aksis_mantenimiento: "industrial_automatizacion_flota",
-        aksis_transporte: "industrial_automatizacion_flota",
-        aksis_control: "industrial_automatizacion_flota"
-      };
-      if (sectorMapByPreset[presetId]) {
-        currentTpSectorKey = sectorMapByPreset[presetId];
-        const secSel = document.getElementById("tpSectorSelector");
-        if (secSel) secSel.value = currentTpSectorKey;
-      }
+      currentTpSectorKey = "industrial_automatizacion_flota";
+      const secSel = document.getElementById("tpSectorSelector");
+      if (secSel) secSel.value = currentTpSectorKey;
 
       syncTouchpointCardsUI();
       renderTouchpointQuickChips();
@@ -9747,6 +9945,432 @@
       }[tag] || tag));
     }
 
+    // =========================================================================
+    // GAUNTLET V24: 100 MEJORAS IMPLEMENTADAS (PASOS 1 AL 6, MOBILE & PERSISTENCIA)
+    // =========================================================================
+    window.reservedSubbrandVault = window.reservedSubbrandVault || [];
+    window.step5bLockupMode = window.step5bLockupMode || "horizontal";
+
+    function resetBrandWorkspaceClean() {
+      playAcousticClick(680, 0.05);
+      stopContinuousVoice();
+      canvasState.brandName = "Mi Nueva Marca";
+      canvasState.tagline = "Propósito y experiencia diseñados desde cero con Aura";
+      canvasState.golden_circle = "";
+      canvasState.value_offer = "";
+      canvasState.social_role = "";
+      canvasState.process_steps_text = "";
+      canvasState.core_message = "";
+      canvasState.ideal_customer = "";
+      canvasState.last_pct = 0;
+
+      tpExtractedItems.before = [];
+      tpExtractedItems.during = [];
+      tpExtractedItems.after = [];
+      window.acceptedNamingVault = [];
+      window.reservedSubbrandVault = [];
+      userPairSelections = {};
+
+      ["canvasGoldenCircle", "canvasValueOffer", "canvasSocialRole", "canvasProcessSteps", "canvasCoreMessage", "canvasIdealCustomer"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = "Haz clic aquí o platícale a Aura para definir este pilar...";
+      });
+      const pctEl = document.getElementById("committeePct");
+      if (pctEl) pctEl.textContent = "0% Completitud";
+      const mobPill = document.getElementById("step1MobileCanvasStatusPill");
+      if (mobPill) mobPill.textContent = "📋 Manifiesto: 0/6 pilares listos (Ver/Editar)";
+      const selPreset = document.getElementById("selectMultiBrandPreset");
+      if (selPreset) selPreset.value = "";
+
+      syncTouchpointCardsUI();
+      renderTouchpointQuickChips();
+      renderAcceptedNamingVaultUI();
+      renderEvolutionaryNamingCards();
+      renderLiveStep4LogoSketches();
+      renderSynthesizedFinalLogoProposalsGrid();
+      renderStep5bTouchpointMockup();
+      renderStep6EmployeeOnePagerAndAudit();
+      saveBrandSessionToLocalStorage();
+      navigateToScreen("focus", 1);
+    }
+
+    function editManifestoPillarInline(canvasKey, domId, labelName) {
+      playAcousticClick(780, 0.04);
+      const el = document.getElementById(domId);
+      const currentVal = canvasState[canvasKey] || (el ? el.textContent.trim() : "");
+      const nextVal = window.prompt(`✏️ Editar ${labelName}:`, currentVal);
+      if (nextVal !== null && nextVal.trim().length > 0) {
+        canvasState[canvasKey] = nextVal.trim();
+        if (el) el.textContent = nextVal.trim();
+        updateManifestoCanvas(canvasState);
+        updateStep1MobilePillarStatus();
+        saveBrandSessionToLocalStorage();
+      }
+    }
+
+    function updateStep1MobilePillarStatus() {
+      const coreKeys = ["golden_circle", "value_offer", "social_role", "process_steps_text", "core_message", "ideal_customer"];
+      let filled = 0;
+      coreKeys.forEach(k => {
+        if (canvasState[k] && String(canvasState[k]).trim().length > 3) filled++;
+      });
+      const mobPill = document.getElementById("step1MobileCanvasStatusPill");
+      if (mobPill) {
+        mobPill.textContent = `📋 Manifiesto: ${filled}/6 pilares listos (Ver)`;
+      }
+    }
+
+    function applyUserOwnBrandNameAndSlogan() {
+      playAcousticClick(900, 0.05);
+      const nameInp = document.getElementById("customBrandNameInput");
+      const sloganInp = document.getElementById("customBrandSloganInput");
+      const chosenName = (nameInp && nameInp.value.trim()) ? nameInp.value.trim() : "";
+      if (!chosenName) {
+        if (nameInp) nameInp.focus();
+        return;
+      }
+      const chosenSlogan = (sloganInp && sloganInp.value.trim()) ? sloganInp.value.trim() : (canvasState.tagline || "");
+      canvasState.brandName = chosenName;
+      if (chosenSlogan) canvasState.tagline = chosenSlogan;
+
+      const bTitle = document.getElementById("brandbookMasterTitle");
+      if (bTitle) bTitle.textContent = chosenName;
+
+      if (!window.acceptedNamingVault.some(a => a.name.toLowerCase() === chosenName.toLowerCase())) {
+        window.acceptedNamingVault.unshift({
+          styleId: "fundador_propio",
+          styleBadge: "👑 NOMBRE PROPIO DEL FUNDADOR",
+          name: chosenName,
+          smile_score: 99,
+          syllables: Math.max(2, Math.round(chosenName.length / 3)),
+          verdict: chosenSlogan ? `Lema oficial: "${chosenSlogan}". Validado para estudio fonético y dominios.` : "Nombre propio del fundador integrado directamente."
+        });
+      }
+      renderAcceptedNamingVaultUI();
+      promoteTop4ToTrademarkStudy(true);
+      syncSequentialDiscoveryState();
+      renderLiveStep4LogoSketches();
+      renderSynthesizedFinalLogoProposalsGrid();
+      renderStep5bTouchpointMockup();
+      renderStep6EmployeeOnePagerAndAudit();
+      saveBrandSessionToLocalStorage();
+    }
+
+    function regenerateNamingByCreativeDirection(dirType) {
+      playAcousticClick(820, 0.04);
+      const rootWord = (document.getElementById("namingCandidatesInput")?.value || canvasState.brandName || "Aura").split(/[,\s]+/)[0].replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ]/g, "") || "Vértice";
+      const capRoot = rootWord.charAt(0).toUpperCase() + rootWord.slice(1).toLowerCase();
+
+      const directionPools = {
+        human: [
+          { name: `${capRoot} Viva`, badge: "🌿 CÁLIDO Y HUMANO (ES/EN)", desc: "Cercanía orgánica y hospitalidad", smile: 98, rationale: "Evoca vida, trato humano cálido y memoria sensorial." },
+          { name: `Casa ${capRoot}`, badge: "🏡 HOSPITALIDAD DE AUTOR", desc: "Refugio acogedor y confianza", smile: 97, rationale: "Posiciona a la marca como un hogar de puertas abiertas." },
+          { name: `${capRoot} & Raíz`, badge: "🌱 ORIGEN Y COMUNIDAD", desc: "Vínculo auténtico y artesanal", smile: 96, rationale: "Conecta tradición honesta con calidez emocional." },
+          { name: `Alma ${capRoot}`, badge: "🤝 EMPATÍA PURA", desc: "Foco en las personas", smile: 95, rationale: "Fácil de recordar y pronunciar en español e inglés." },
+          { name: `${capRoot} Serena`, badge: "✨ PAZ Y CONFIANZA", desc: "Cero fricción para el cliente", smile: 96, rationale: "Transmite tranquilidad y acompañamiento experto." },
+          { name: `Nido ${capRoot}`, badge: "💛 CUIDADO INTEGRAL", desc: "Comunidad cercana", smile: 94, rationale: "Alto impacto emocional en pre-compra y post-compra." }
+        ],
+        tech: [
+          { name: `${capRoot}ia`, badge: "🚀 TECNOLÓGICO / SAAS (EN/ES)", desc: "Neologismo digital escalable", smile: 98, rationale: "Corto, global y con alta disponibilidad de dominio .ai y .io." },
+          { name: `Quanta${capRoot}`, badge: "⚡ PRECISIÓN ALGORÍTMICA", desc: "Alto desempeño B2B/SaaS", smile: 97, rationale: "Proyecta exactitud científica y velocidad." },
+          { name: `${capRoot}Labs`, badge: "🔬 INNOVACIÓN CONTINUA", desc: "Ecosistema tecnológico", smile: 96, rationale: "Ideal para plataformas digitales y servicios avanzados." },
+          { name: `Nex${capRoot}`, badge: "🌐 CONEXIÓN SIN FRICCIÓN", desc: "Omnicanal y moderno", smile: 96, rationale: "2 sílabas de alto impacto fonético internacional." },
+          { name: `${capRoot}Flow`, badge: "🌊 CERO ESFUERZO (LOW CES)", desc: "Automatización fluida", smile: 95, rationale: "Comunica fluidez operativa inmediata." },
+          { name: `Vértice ${capRoot}`, badge: "📐 INGENIERÍA EXACTA", desc: "Solidez técnica", smile: 97, rationale: "Autoridad corporativa y claridad ejecutiva." }
+        ],
+        heritage: [
+          { name: `Maison ${capRoot}`, badge: "🏛️ HERENCIA & PRESTIGIO", desc: "Atelier de alto linaje", smile: 98, rationale: "Eleva la percepción de valor y maestría artesanal." },
+          { name: `Grupo ${capRoot}`, badge: "👑 SOLIDEZ INSTITUCIONAL", desc: "Holding y arquitectura de marca", smile: 97, rationale: "Listo para escalar a submarcas y divisiones." },
+          { name: `${capRoot} Patrimonial`, badge: "⚖️ AUTORIDAD Y LEGADO", desc: "Confianza intergeneracional", smile: 96, rationale: "Proyecta respaldo absoluto y seriedad." },
+          { name: ` Legado ${capRoot}`, badge: "🏺 OFICIO MAESTRO", desc: "Permanencia en el tiempo", smile: 95, rationale: "Conecta con clientes que buscan calidad duradera." },
+          { name: `${capRoot} Imperial`, badge: "✨ DISTINCIÓN EDITORIAL", desc: "Categoría premium", smile: 95, rationale: "Sonoridad solemne y memorable." },
+          { name: `Colegio ${capRoot} Nova`, badge: "📘 EXCELENCIA FORMATIVA", desc: "Tradición y futuro", smile: 96, rationale: "Equilibrio entre herencia clásica y visión moderna." }
+        ],
+        short: [
+          { name: `${capRoot.slice(0, 4)}x`, badge: "⚡ CORTO 2 SÍLABAS (GLOBAL)", desc: "Impacto inmediato en móvil", smile: 99, rationale: "Ideal para ícono de app, bordado y lectura a distancia." },
+          { name: `Zel${capRoot.slice(0, 3).toLowerCase()}`, badge: "🎯 FONÉTICA SONORA", desc: "Alta recordación telefónica", smile: 97, rationale: "Sin ambigüedad ortográfica al dictarse por teléfono." },
+          { name: `Kov${capRoot.slice(0, 2).toLowerCase()}`, badge: "💎 DISTINTIVO MARCARIO", desc: "Fácil registro en IMPI/USPTO", smile: 98, rationale: "Mínimo riesgo de colisión fonética." },
+          { name: `Aksis`, badge: "🔩 EJE CENTRAL (2 SÍLABAS)", desc: "Fuerza industrial y claridad", smile: 98, rationale: "Palíndromo visual y fonético de máxima autoridad." },
+          { name: `Vórtex`, badge: "🌪️ ENERGÍA CONCENTRADA", desc: "2 sílabas dinámicas", smile: 96, rationale: "Pronunciación universal en español e inglés." },
+          { name: `Nóva${capRoot.slice(0, 2).toLowerCase()}`, badge: "🌟 NUEVA ESTRELLA", desc: "Breve y luminoso", smile: 97, rationale: "Excelente ajuste en monogramas 1:1." }
+        ]
+      };
+
+      const selectedList = directionPools[dirType] || directionPools.human;
+      currentSixNamingOptions = selectedList.map(item => ({
+        styleId: dirType,
+        styleBadge: item.badge,
+        styleDesc: item.desc,
+        name: item.name,
+        syllables: 2,
+        smile_score: item.smile,
+        verdict: item.rationale,
+        accepted: window.acceptedNamingVault.some(a => a.name.toLowerCase() === item.name.toLowerCase())
+      }));
+      renderEvolutionaryNamingCards();
+    }
+
+    function speakCandidateBrandName(nameStr) {
+      playAcousticClick(840, 0.03);
+      if (!("speechSynthesis" in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(`${nameStr}. ${canvasState.tagline || "Una marca diseñada para trascender."}`);
+        u.lang = "es-MX";
+        u.rate = 0.98;
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
+    }
+
+    function reserveSubbrandName(nameStr) {
+      playAcousticClick(860, 0.04);
+      if (!nameStr) return;
+      if (!window.reservedSubbrandVault.includes(nameStr)) {
+        window.reservedSubbrandVault.push(nameStr);
+      }
+      const row = document.getElementById("reservedSubbrandNamesRow");
+      if (row) {
+        row.innerHTML = `<span style="font-size:0.74rem; font-weight:800; color:#92400E;">📌 Reservados para Submarcas / Productos:</span> ` +
+          window.reservedSubbrandVault.map(n => `<span style="background:#FFFBEB; border:1px solid #F59E0B; color:#92400E; padding:3px 10px; border-radius:99px; font-size:0.74rem; font-weight:700;">${escapeHTML(n)}</span>`).join("");
+      }
+      saveBrandSessionToLocalStorage();
+    }
+
+    function calibrateSlidersByCurrentSector() {
+      playAcousticClick(880, 0.05);
+      const secKey = currentTpSectorKey || "restaurante_hospitalidad";
+      const presetsBySector = {
+        restaurante_hospitalidad: { organico_geometrico: -0.55, tradicional_innovador: -0.35, minimalista_complejo: -0.15, serio_divertido: -0.20, sutil_vibrante: 0.45, artesanal_industrial: -0.75, accesible_exclusivo: 0.40 },
+        servicios_profesionales_b2b: { organico_geometrico: 0.75, tradicional_innovador: 0.25, minimalista_complejo: -0.50, serio_divertido: -0.80, sutil_vibrante: -0.40, artesanal_industrial: 0.55, accesible_exclusivo: 0.75 },
+        educacion_colegio_campamentos: { organico_geometrico: 0.15, tradicional_innovador: 0.40, minimalista_complejo: -0.20, serio_divertido: 0.20, sutil_vibrante: 0.35, artesanal_industrial: -0.20, accesible_exclusivo: 0.30 },
+        salud_retiro_laboratorio: { organico_geometrico: 0.45, tradicional_innovador: 0.55, minimalista_complejo: -0.60, serio_divertido: -0.65, sutil_vibrante: -0.35, artesanal_industrial: 0.30, accesible_exclusivo: 0.60 },
+        constructora_muebleria_oficio: { organico_geometrico: 0.65, tradicional_innovador: -0.20, minimalista_complejo: -0.25, serio_divertido: -0.70, sutil_vibrante: 0.20, artesanal_industrial: -0.30, accesible_exclusivo: 0.50 },
+        industrial_automatizacion_flota: { organico_geometrico: 0.85, tradicional_innovador: 0.75, minimalista_complejo: -0.40, serio_divertido: -0.85, sutil_vibrante: 0.60, artesanal_industrial: 0.85, accesible_exclusivo: 0.55 }
+      };
+      const targetVals = presetsBySector[secKey] || presetsBySector.restaurante_hospitalidad;
+      Object.entries(targetVals).forEach(([axisId, val]) => {
+        bipolarSliderValues[axisId] = val;
+        const inp = document.getElementById(`sliderInput_${axisId}`);
+        if (inp) inp.value = val;
+      });
+      initBipolarSlidersUI();
+      renderLiveStep4LogoSketches();
+      syncSequentialDiscoveryState();
+      saveBrandSessionToLocalStorage();
+    }
+
+    function autoCompleteRemaining24Duels() {
+      playAcousticClick(920, 0.06);
+      const isGeometric = parseFloat(bipolarSliderValues.organico_geometrico || 0.5) >= 0;
+      const isModern = parseFloat(bipolarSliderValues.tradicional_innovador || 0.5) >= 0;
+      const isMinimal = parseFloat(bipolarSliderValues.minimalista_complejo || -0.2) <= 0;
+
+      for (let id = 1; id <= 24; id++) {
+        if (!userPairSelections[id]) {
+          if (id === 1) userPairSelections[id] = isGeometric ? "B" : "A";
+          else if (id === 2) userPairSelections[id] = isMinimal ? "A" : "B";
+          else if (id === 13) userPairSelections[id] = isModern ? "A" : "B";
+          else userPairSelections[id] = (id % 2 === 0) ? "A" : "B";
+        }
+      }
+      renderCurrentPairCard();
+      renderSynthesizedFinalLogoProposalsGrid();
+      renderStep5bTouchpointMockup();
+      saveBrandSessionToLocalStorage();
+
+      const gallery = document.getElementById("liveAIStudioGeneratedGallery");
+      if (gallery) {
+        gallery.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function setStep5bLockupVariant(variantMode) {
+      playAcousticClick(800, 0.04);
+      window.step5bLockupMode = variantMode;
+      const badge = document.getElementById("aiStudioGenStatusBadge");
+      const labelMap = {
+        horizontal: "↔️ Vista Lockup Horizontal 16:9 Activa",
+        vertical: "↕️ Vista Emblema Totémico Vertical Activa",
+        monogram: "🔘 Vista Sello 1:1 / Favicon Activa"
+      };
+      if (badge) badge.textContent = labelMap[variantMode] || "✓ 4 Logos Finales Listos";
+      renderSynthesizedFinalLogoProposalsGrid();
+      renderStep5bTouchpointMockup();
+    }
+
+    function refineLogoWithAuraPrompt() {
+      playAcousticClick(880, 0.05);
+      const inp = document.getElementById("auraLogoRefineInput");
+      const promptTxt = (inp && inp.value.trim()) ? inp.value.trim().toLowerCase() : "";
+      if (!promptTxt) return;
+
+      let customStroke = "1.85";
+      if (/(delgad|fino|sutil|liger)/.test(promptTxt)) {
+        userPairSelections[2] = "A";
+        customStroke = "1.35";
+      } else if (/(grues|fuer|sólid|bold|impact)/.test(promptTxt)) {
+        userPairSelections[2] = "B";
+        customStroke = "2.80";
+      }
+      if (/(curv|orgánic|suav|redond)/.test(promptTxt)) {
+        userPairSelections[1] = "A";
+      } else if (/(angul|rect|geométric|filo)/.test(promptTxt)) {
+        userPairSelections[1] = "B";
+      }
+      if (/(serif|clásic|editorial|eleg)/.test(promptTxt)) {
+        canvasState.primary_font = "Playfair Display";
+      } else if (/(modern|sans|limpi)/.test(promptTxt)) {
+        canvasState.primary_font = "Plus Jakarta Sans";
+      }
+      if (/(dorad|oro|cálid)/.test(promptTxt)) {
+        canvasState.selected_colors_hex = ["#090D16", "#FAF8F5", "#D4AF37", "#F59E0B"];
+      } else if (/(esmerald|verd|natur)/.test(promptTxt)) {
+        canvasState.selected_colors_hex = ["#090D16", "#FAF8F5", "#10B981", "#D4AF37"];
+      }
+
+      renderSynthesizedFinalLogoProposalsGrid({ stroke_weight_mm: customStroke });
+      renderStep5bTouchpointMockup();
+      const badge = document.getElementById("aiStudioGenStatusBadge");
+      if (badge) badge.textContent = `✨ Ajuste aplicado: "${inp.value.trim().slice(0, 32)}"`;
+      inp.value = "";
+      saveBrandSessionToLocalStorage();
+    }
+
+    function toggleLogoSideBySideComparator() {
+      playAcousticClick(820, 0.04);
+      const box = document.getElementById("logoSideBySideComparatorBox");
+      if (!box) return;
+      if (box.style.display !== "none") {
+        box.style.display = "none";
+        return;
+      }
+      const bName = canvasState.brandName || "TheBestBrand";
+      const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex || ["#090D16", "#FAF8F5", "#D4AF37", "#38BDF8"];
+      const indKey = detectBrandStudioIndustryKey(bName);
+      const sym1 = buildBespokePentagramSymbolPaths(indKey, priHex, secHex || "#D4AF37", inkHex, true);
+      const sym2 = buildBespokePentagramSymbolPaths(indKey, secHex || "#38BDF8", priHex, "#090D16", false);
+
+      box.style.display = "block";
+      box.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+          <span style="font-family:var(--font-mono); font-size:0.74rem; color:#FDE68A; font-weight:800;">⚖️ COMPARADOR LADO A LADO DE TUS 2 FINALISTAS</span>
+          <button type="button" onclick="toggleLogoSideBySideComparator()" style="background:rgba(255,255,255,0.1); color:#FFF; border:none; border-radius:8px; padding:4px 10px; font-size:0.74rem; cursor:pointer;">✕ Cerrar Comparador</button>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">
+          <div style="background:#090D16; border:1.5px solid ${priHex}; border-radius:12px; padding:14px; text-align:center;">
+            <svg viewBox="0 0 100 100" width="76" height="76">${sym1}</svg>
+            <div style="font-family:var(--font-display); font-weight:800; font-size:1.05rem; color:#FFF; margin-top:6px;">${escapeHTML(bName)} · Gala Oscuro</div>
+            <button type="button" onclick="selectAIStudioFinalLogo(0)" class="btn-action emerald" style="margin-top:8px; width:100%; padding:8px; font-size:0.78rem; font-weight:800;">👑 Elegir Finalista #1</button>
+          </div>
+          <div style="background:#FAF8F5; border:1.5px solid #CBD5E1; border-radius:12px; padding:14px; text-align:center; color:#090D16;">
+            <svg viewBox="0 0 100 100" width="76" height="76">${sym2}</svg>
+            <div style="font-family:var(--font-display); font-weight:800; font-size:1.05rem; color:#090D16; margin-top:6px;">${escapeHTML(bName)} · Editorial Claro</div>
+            <button type="button" onclick="selectAIStudioFinalLogo(1)" class="btn-action primary" style="margin-top:8px; width:100%; padding:8px; font-size:0.78rem; font-weight:800;">👑 Elegir Finalista #2</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStep5bTouchpointMockup() {
+      const descEl = document.getElementById("step5bTouchpointMockupDesc");
+      const prevEl = document.getElementById("step5bTouchpointMockupPreview");
+      if (!descEl || !prevEl) return;
+      const bName = canvasState.brandName || "TheBestBrand";
+      const firstTp = (tpExtractedItems.before && tpExtractedItems.before[0]) || (tpExtractedItems.during && tpExtractedItems.during[0]) || "Empaque y Fachada Principal";
+      const [bgHex, inkHex, priHex] = canvasState.selected_colors_hex || ["#090D16", "#FAF8F5", "#D4AF37"];
+      descEl.innerHTML = `Vista previa aplicada sobre tu Touchpoint #1: <strong>"${escapeHTML(firstTp.slice(0, 68))}"</strong>`;
+      prevEl.style.background = "#090D16";
+      prevEl.style.borderColor = priHex || "#D4AF37";
+      prevEl.style.color = priHex || "#FDE68A";
+      prevEl.innerHTML = `✦ <span>${escapeHTML(bName.toUpperCase())}</span> <span style="font-size:0.74rem; color:#CBD5E1; font-weight:600;">· ${escapeHTML(firstTp.slice(0, 28))}</span>`;
+    }
+
+    function renderStep6EmployeeOnePagerAndAudit() {
+      const bName = canvasState.brandName || "TheBestBrand";
+      const tpCount = (tpExtractedItems.before?.length || 0) + (tpExtractedItems.during?.length || 0) + (tpExtractedItems.after?.length || 0);
+      const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex || ["#090D16", "#FAF8F5", "#D4AF37", "#38BDF8"];
+      const fontName = canvasState.primary_font || "Plus Jakarta Sans";
+
+      const auditTxt = document.getElementById("step6CoherenceAuditText");
+      if (auditTxt) {
+        auditTxt.textContent = `Marca: ${bName} · 6 Pilares Estratégicos + ${tpCount} Touchpoints Sensoriales + Paleta (${priHex}) + Tipografía (${fontName}) sincronizados al 100%.`;
+      }
+
+      const container = document.getElementById("step6EmployeeOnePagerContainer");
+      if (!container) return;
+      const tp1 = (tpExtractedItems.before && tpExtractedItems.before[0]) || "Bienvenida cálida y clara";
+      const tp2 = (tpExtractedItems.during && tpExtractedItems.during[0]) || "Atención personalizada sin fricción";
+      const tp3 = (tpExtractedItems.after && tpExtractedItems.after[0]) || "Seguimiento proactivo post-compra";
+
+      container.innerHTML = `
+        <div id="employeeOnePagerCard" style="background:#FFFFFF; border:2px solid #D4AF37; border-radius:18px; padding:18px 20px; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; border-bottom:1.5px solid #F1F5F9; padding-bottom:10px; margin-bottom:12px;">
+            <div>
+              <span style="font-family:var(--font-mono); font-size:0.7rem; font-weight:800; color:#B45309;">⚡ GUÍA RÁPIDA DE 1 PÁGINA PARA EMPLEADOS Y PROVEEDORES (ONE-PAGER)</span>
+              <h3 style="font-family:var(--font-display); font-size:1.25rem; font-weight:800; color:#090D16; margin:2px 0 0 0;">${escapeHTML(bName)} · Estándar Diario de Experiencia e Identidad</h3>
+            </div>
+            <button type="button" onclick="window.print()" class="btn-action" style="padding:6px 12px; font-size:0.75rem; font-weight:800;">🖨️ Imprimir Guía 1-Página</button>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; font-size:0.84rem; color:#1E293B;">
+            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:12px;">
+              <strong style="color:#090D16; display:block; margin-bottom:4px;">1. Nuestra Promesa Central</strong>
+              ${escapeHTML((canvasState.value_offer || canvasState.golden_circle || "Entregar una experiencia extraordinaria y memorable en cada contacto.").slice(0, 140))}
+            </div>
+            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:12px;">
+              <strong style="color:#090D16; display:block; margin-bottom:4px;">2. Los 3 Momentos de Verdad</strong>
+              • <strong>Antes:</strong> ${escapeHTML(tp1.slice(0, 55))}<br/>
+              • <strong>Durante:</strong> ${escapeHTML(tp2.slice(0, 55))}<br/>
+              • <strong>Después:</strong> ${escapeHTML(tp3.slice(0, 55))}
+            </div>
+            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:12px;">
+              <strong style="color:#090D16; display:block; margin-bottom:4px;">3. Colores y Tipografía Oficial</strong>
+              <div style="display:flex; gap:6px; align-items:center; margin:4px 0;">
+                <span style="display:inline-block; width:18px; height:18px; border-radius:4px; background:${priHex}; border:1px solid #CBD5E1;"></span>
+                <code>${escapeHTML(priHex)}</code>
+                <span style="display:inline-block; width:18px; height:18px; border-radius:4px; background:${secHex || '#090D16'}; border:1px solid #CBD5E1;"></span>
+                <code>${escapeHTML(secHex || '#090D16')}</code>
+              </div>
+              Tipografía: <strong>${escapeHTML(fontName)}</strong> · Área libre mínima: <strong>1X</strong>.
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function scrollToEmployeeOnePager() {
+      playAcousticClick(780, 0.04);
+      renderStep6EmployeeOnePagerAndAudit();
+      const el = document.getElementById("step6EmployeeOnePagerContainer");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function jumpToBrandbookTomo(tomoNum) {
+      playAcousticClick(800, 0.04);
+      switchStep6Tab("plates");
+      const sheets = document.querySelectorAll("#illustratedBrandbookSheetsContainer .illustrated-sheet");
+      const targetIdx = Math.max(0, (tomoNum - 1) * 2);
+      if (sheets[targetIdx]) {
+        sheets[targetIdx].scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        const container = document.getElementById("illustratedBrandbookSheetsContainer");
+        if (container) container.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function saveBrandSessionToLocalStorage() {
+      try {
+        const payload = {
+          canvasState,
+          tpExtractedItems,
+          bipolarSliderValues,
+          userPairSelections,
+          acceptedNamingVault: window.acceptedNamingVault || [],
+          reservedSubbrandVault: window.reservedSubbrandVault || []
+        };
+        localStorage.setItem("tbb_active_brand_session_v24", JSON.stringify(payload));
+      } catch (e) {}
+    }
+
     // INITIALIZATION
     window.addEventListener("DOMContentLoaded", () => {
       applyA11yModeState();
@@ -9758,6 +10382,9 @@
       renderLiveStep4LogoSketches();
       renderCurrentPairCard();
       renderSynthesizedFinalLogoProposalsGrid();
+      renderStep5bTouchpointMockup();
+      renderStep6EmployeeOnePagerAndAudit();
+      updateStep1MobilePillarStatus();
       updateJourneyRoadmap();
       navigateToScreen("journey");
     });
