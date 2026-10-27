@@ -569,17 +569,90 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         return templates.get(pillar_key, core_exec)
 
     @classmethod
+    def build_contextual_pillar_question(
+        cls,
+        pillar_key: str,
+        custom_biz: str,
+        step0_interp: str,
+        last_user_msg: str
+    ) -> str:
+        biz_clean = (custom_biz or "").strip()
+        biz_ref = f"en tu proyecto de {biz_clean}" if biz_clean else "en tu negocio"
+        t_all = f"{biz_clean} {step0_interp} {last_user_msg}".lower()
+
+        is_food = any(w in t_all for w in ["restauran", "café", "cafe", "panader", "reposter", "comida", "gastronom", "bebida", "bar", "tostadur"])
+        is_health = any(w in t_all for w in ["salud", "clínica", "clinica", "médic", "medic", "dental", "paciente", "terapia", "spa", "bienestar", "veterinar", "retiro", "laboratorio"])
+        is_retail = any(w in t_all for w in ["tienda", "boutique", "ropa", "moda", "producto", "ecommerce", "marca de", "calzado", "joyer", "cosmét"])
+        is_edu = any(w in t_all for w in ["colegio", "escuela", "educac", "academia", "curso", "campamento", "formación", "alumno"])
+        is_arch = any(w in t_all for w in ["arquitect", "construct", "inmobiliar", "muebler", "interiorismo", "obra", "diseño"])
+
+        if pillar_key == "value_offer":
+            if is_food:
+                ex = "el origen de tus ingredientes, la técnica artesanal o el ritual en mesa"
+            elif is_health:
+                ex = "el diagnóstico empático sin prisa, la tecnología indolora o el acompañamiento cercano"
+            elif is_retail:
+                ex = "la curaduría de materiales, el diseño exclusivo o la experiencia de unboxing"
+            elif is_edu:
+                ex = "la metodología práctica, la mentoría personalizada o la comunidad de aprendizaje"
+            elif is_arch:
+                ex = "la nobleza de los materiales, la certeza en tiempos de entrega o el diseño atemporal"
+            else:
+                ex = "tu metodología propia, la rapidez de respuesta o la atención hiper-personalizada"
+            return (
+                f"Retomando lo que me contaste sobre {biz_ref}: cuando un cliente compara tus servicios o productos con otras opciones del mercado, "
+                f"¿cuál es ese diferencial único (por ejemplo, {ex}) que hace que te elijan a ti sin dudarlo?"
+            )
+
+        if pillar_key == "social_role":
+            return (
+                f"Ampliando la visión de {biz_ref} hacia el futuro: como plantea Jim Collins sobre las marcas que dejan huella, "
+                f"¿cómo te gustaría que tu negocio mejore la vida diaria de tus clientes o eleve el estándar de tu sector en los próximos 3 a 5 años?"
+            )
+
+        if pillar_key == "process_steps_text":
+            if is_food or is_retail:
+                ex_steps = "desde que el cliente entra o hace su pedido, cómo se prepara o empaca, hasta que lo disfruta"
+            elif is_health:
+                ex_steps = "desde que el paciente agenda su valoración, vive su consulta o tratamiento, hasta su seguimiento en casa"
+            else:
+                ex_steps = "desde el primer diagnóstico o contacto, la ejecución del servicio/producto, hasta la entrega del resultado"
+            return (
+                f"Para llevar esa promesa de {biz_ref} a la práctica sin fricciones: "
+                f"¿cuáles son los 3 pasos sencillos que vive tu cliente contigo ({ex_steps})?"
+            )
+
+        if pillar_key == "core_message":
+            return (
+                f"Integrando todo lo que hace especial a {biz_ref}: como enseña Marty Neumeier, "
+                f"si pudieras grabar una sola frase breve o promesa central en la mente de cada cliente que te conoce, ¿qué te gustaría que recuerden de ti?"
+            )
+
+        if pillar_key == "ideal_customer":
+            return (
+                f"Para cerrar los 6 pilares estratégicos de {biz_ref}: pensando en las personas que más valoran lo que haces, "
+                f"¿quién es tu cliente ideal (qué estilo de vida o necesidad tiene y qué es lo que más valora cuando te busca)?"
+            )
+
+        guide = cls.WORLD_CLASS_CONSULTANT_PILLAR_GUIDE.get(pillar_key)
+        if guide:
+            return guide["question"]
+        return f"Pensando en el siguiente paso de {biz_ref}, ¿qué otro detalle consideras clave para que tus clientes vivan una experiencia inolvidable?"
+
+    @classmethod
     def build_non_repeating_consultant_response(
         cls,
         step: int,
         sub_step: int,
         user_msg: str,
-        next_pillar_key: str
+        next_pillar_key: str,
+        custom_biz: str = "",
+        step0_interp: str = ""
     ) -> str:
-        natural_theme = cls.distill_natural_theme_label(user_msg)
-        guide = cls.WORLD_CLASS_CONSULTANT_PILLAR_GUIDE.get(next_pillar_key)
-        if guide:
-            return f"Tiene muchísimo sentido tu enfoque en {natural_theme}. {guide['question']}"
+        natural_theme = cls.distill_natural_theme_label(f"{custom_biz} {user_msg}")
+        if next_pillar_key:
+            tailored_q = cls.build_contextual_pillar_question(next_pillar_key, custom_biz, step0_interp, user_msg)
+            return f"Tiene muchísimo sentido tu enfoque en {natural_theme}. {tailored_q}"
         if step == 3:
             return (
                 f"Me parece muy acertada esa dirección enfocada en {natural_theme}. Como aconseja Alexandra Watkins en el test SMILE & SCRATCH, "
@@ -820,6 +893,9 @@ Devuelve SIEMPRE JSON válido:
             else "Todos los pilares base ya tienen contenido; haz una pregunta socrática de valor real y pregunta si desea pasar al siguiente paso o agregar más."
         )
 
+        custom_biz = str(updated_canvas.get("custom_business_type", "")).strip()
+        step0_interp = str(updated_canvas.get("step0_business_interpretation", "")).strip()
+
         if step == 3:
             step3_instruction = (
                 "MODO PASO 3 (NAMING INTERACTIVO POR CHAT): El usuario está rebotando ideas para el nombre de su marca. "
@@ -832,12 +908,14 @@ Devuelve SIEMPRE JSON válido:
             step3_instruction = (
                 f"MODO PASO {step} (REBOTE ESTRATÉGICO): "
                 f"OBLIGATORIO: En este turno concéntrate EXCLUSIVAMENTE en indagar sobre el pilar: '{target_pillar_hint}'. "
-                f"Formula una pregunta MUY FÁCIL DE CONTESTAR usando un ejemplo práctico de su industria. "
+                f"Retoma y amplía la explicación inicial de su negocio ('{custom_biz or 'su proyecto'}' / '{step0_interp}') y formula una pregunta MUY FÁCIL DE CONTESTAR usando un ejemplo práctico de su giro específico. "
                 f"JAMÁS vuelvas a preguntar sobre temas ya cubiertos."
             )
 
         prompt = (
             f"PASO {step} (Turno #{sub_step}).\n"
+            f"GIRO EXPLICADO EN PASO 0: {custom_biz or 'No especificado'}\n"
+            f"INTERPRETACIÓN DEL NEGOCIO (PASO 0): {step0_interp or 'No especificada'}\n"
             f"{step3_instruction}\n"
             f"PILAR A ENRIQUECER EN updated_pillar_key Y updated_pillar_synthesis: {target_pillar_hint}\n"
             f"PILARES AÚN VACÍOS ({len(missing_pillars)} de {len(dims)}): {', '.join([m.split(' ')[0] for m in missing_pillars]) or 'Ninguno (Fase completa)'}\n"
@@ -902,7 +980,9 @@ Devuelve SIEMPRE JSON válido:
                 step=step,
                 sub_step=sub_step,
                 user_msg=cleaned_message,
-                next_pillar_key=next_target_key
+                next_pillar_key=next_target_key,
+                custom_biz=custom_biz,
+                step0_interp=step0_interp
             )
         else:
             avatar_reply = raw_avatar_reply
