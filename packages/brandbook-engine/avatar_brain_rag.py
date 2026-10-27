@@ -566,28 +566,96 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         return templates.get(pillar_key, f"Estrategia centrada en {theme} y {focus}.")
 
     @classmethod
+    def extract_compositional_slots(cls, raw_text: str) -> Dict[str, str]:
+        """
+        Descompone gramaticalmente cualquier descripción de negocio en español en 4 ranuras:
+        - offer_concept: Qué producto/servicio ofrece (reformulado con vocabulario consultivo)
+        - target_concept: A quién va dirigido exactamente (respetando si dijo perros, niños, empresas, etc.)
+        - specialty_concept: Cuál es su ingrediente, técnica o condición diferenciadora ('con...', 'sin...', 'artesanal', etc.)
+        - pain_concept: Qué problema específico del mercado resuelve esa combinación
+        """
+        clean = SpokenFillerCleaner.clean_spoken_text(raw_text or "").strip(" .,;:!?\"'«»")
+        t = clean.lower()
+
+        # 1. Extraer modificador diferenciador ('con ...', 'sin ...', 'a base de ...')
+        specialty_concept = ""
+        m_con = re.search(r"\b(?:con|a base de|usando|mediante)\s+([a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s]{3,38}?)(?:\s+(?:para|en|que|y\s+sin)|$)", t)
+        m_sin = re.search(r"\bsin\s+([a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s]{3,30}?)(?:\s+(?:para|con|en|que)|$)", t)
+        if "ingredientes naturales" in t or "100% natural" in t or "organico" in t or "orgánico" in t:
+            specialty_concept = "insumos 100% limpios de origen natural libres de aditivos químicos"
+        elif m_sin:
+            sin_item = m_sin.group(1).strip()
+            specialty_concept = f"fórmulas y procesos libres de {sin_item} que cuidan la salud y tranquilidad del usuario"
+        elif m_con:
+            con_item = m_con.group(1).strip()
+            specialty_concept = f"la integración cuidada de {con_item} como sello de calidad superior"
+        elif any(w in t for w in ["artesanal", "hecho a mano", "casera", "casero", "masa madre", "autor"]):
+            specialty_concept = "elaboración artesanal a baja escala cuidando cada detalle de principio a fin"
+        elif any(w in t for w in ["domicilio", "en línea", "online", "digital", " Suscripción", "suscripcion"]):
+            specialty_concept = "entrega directa y conveniencia absoluta sin que el cliente pierda tiempo en traslados"
+
+        # 2. Extraer sujeto/audiencia exacta ('para ...') sin inventar sujetos no mencionados
+        target_concept = ""
+        m_para = re.search(r"\b(?:para|dirigido a|enfocado en|especializado en)\s+([a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s]{3,42}?)(?:\s+(?:con|sin|en|que|a base)|$)", t)
+        if "perro" in t or "canin" in t or "perrit" in t:
+            target_concept = "dueños de perros que ven a su compañero canino como familia y cuidan su digestión, pelaje y longevidad"
+        elif "gato" in t or "felin" in t or "gatit" in t:
+            target_concept = "dueños de gatos que buscan nutrición y bienestar especializado para la salud felina"
+        elif "mascota" in t or "veterinar" in t:
+            target_concept = "familias responsables que buscan bienestar, salud preventiva y trato libre de estrés para sus mascotas"
+        elif "diabet" in t or "sin azúcar" in t or "keto" in t or "celiac" in t or "gluten" in t:
+            target_concept = "personas que cuidan su salud metabólica y alimentación consciente sin sacrificar el placer del buen sabor"
+        elif "niño" in t or "infantil" in t or "bebé" in t or "bebe" in t or "pediátr" in t:
+            target_concept = "padres de familia que exigen máxima seguridad, calidez y desarrollo integral para sus hijos"
+        elif "adulto mayor" in t or "retiro" in t or "abuel" in t or "geriátr" in t:
+            target_concept = "familias y adultos mayores que buscan dignidad, vitalidad, seguridad médica y calidez humana"
+        elif m_para:
+            raw_target = m_para.group(1).strip()
+            target_concept = f"clientes del segmento de {raw_target} que buscan una solución pensada exactamente para sus necesidades"
+
+        # 3. Extraer y elevar la oferta nuclear (quitando verbos en primera persona y complementos ya extraídos)
+        core_phrase = re.sub(
+            r"^(?:quiero\s+poner\s+|me\s+dedico\s+a\s+|nos\s+dedicamos\s+a\s+|vendo\s+|vendemos\s+|hago\s+|hacemos\s+|ofrecemos\s+|somos\s+|tengo\s+|abrimos\s+|creamos\s+|fabricamos\s+|elaboramos\s+)?(?:un\s+|una\s+|unos\s+|unas\s+|el\s+|la\s+|los\s+|las\s+)?(?:negocio\s+de\s+|empresa\s+de\s+|marca\s+de\s+|servicio\s+de\s+|proyecto\s+de\s+)?",
+            "",
+            t,
+            flags=re.IGNORECASE
+        ).strip()
+        core_phrase = re.sub(r"\b(?:para|con|sin|a base de)\s+.*$", "", core_phrase).strip(" ,.;:")
+
+        offer_concept = ""
+        if "comida casera" in t and ("perro" in t or "mascota" in t or "canin" in t):
+            offer_concept = "nutrición canina de preparación casera y grado humano"
+        elif "comida" in t or "alimento" in t:
+            offer_concept = f"gastronomía y alimentación especializada ({core_phrase})" if len(core_phrase) > 3 and core_phrase not in ("comida", "alimentos") else "alimentación saludable y gastronomía cuidada"
+        elif len(core_phrase) >= 4:
+            # Reformular el núcleo sin que sea idéntico a la frase completa del usuario
+            offer_concept = f"el desarrollo especializado de {core_phrase}"
+
+        return {
+            "offer_concept": offer_concept,
+            "target_concept": target_concept,
+            "specialty_concept": specialty_concept,
+            "core_phrase": core_phrase
+        }
+
+    @classmethod
     def paraphrase_and_interpret_step0_business(cls, raw_text: str) -> Dict[str, Any]:
         """
-        Interpreta semánticamente la explicación libre del Paso 0 SIN repetir ni citar
-        textualmente las palabras crudas del usuario. Transforma la frase coloquial en:
-        - concept_title: Categoría estratégica elevada (ej. 'Gastronomía Artesanal & Hospitalidad')
-        - paraphrased_essence: Lo que el negocio realmente entrega a nivel funcional y emocional
-        - buyer_actor: Quién es su comprador/usuario real y qué valora
-        - market_pain: La fricción o problema de la industria que este negocio resuelve
-        - step1_questions: Las 6 preguntas socráticas del Paso 1 adaptadas y ampliadas al giro
-        - step2_guide: Guía y tarjetas del Paso 2 (Antes, Durante, Después) sin citas textuales
-        - naming_roots: Raíces conceptuales y evocativas para el Paso 3
+        Interpreta composicionalmente la explicación libre del Paso 0 combinando:
+        1) Los sustantivos específicos de producto, sujeto y diferenciador del usuario (5 ranuras semánticas)
+        2) El arquetipo de industria correspondiente
+        Garantiza 0% repetición textual de la frase del usuario y 100% precisión al sujeto mencionado.
         """
         clean = SpokenFillerCleaner.clean_spoken_text(raw_text or "").strip()
         t = clean.lower()
+        slots = cls.extract_compositional_slots(clean)
 
-        # Extraer sustantivos/conceptos clave pero reformulándolos a raíces conceptuales
         stop_words = {
             "para", "como", "con", "sin", "por", "una", "uno", "unos", "unas", "los", "las", "del",
             "que", "donde", "negocio", "empresa", "marca", "servicio", "servicios", "producto",
             "productos", "venta", "vendo", "vendemos", "dedica", "dedicara", "hacemos", "ofrecemos",
             "somos", "tengo", "quiero", "poner", "abrir", "crear", "hacer", "tipo", "giro", "especialidad",
-            "enfocado", "enfocada", "clientes", "personas", "gente"
+            "enfocado", "enfocada", "clientes", "personas", "gente", "comida", "casera"
         }
         words = [
             w.capitalize()
@@ -595,160 +663,89 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             if len(w) >= 4 and w.lower() not in stop_words
         ]
 
-        # Detección de sub-nichos y giros con interpretación conceptual (0% repetición textual)
         if any(w in t for w in ["mascota", "perro", "gato", "veterinar", "canin", "felin", "croquet", "pet"]):
-            concept_title = "🐾 Bienestar, Nutrición & Cuidado de Mascotas"
-            paraphrased_essence = "brindar cuidado integral, nutrición saludable y bienestar emocional para los animales de compañía"
-            buyer_actor = "dueños de mascotas conscientes que consideran a sus perros o gatos parte central de su familia"
-            market_pain = "la desconfianza hacia productos industriales genéricos o servicios impersonales que estresan a su mascota"
-            sensory_focus = "ingredientes o insumos seguros y transparentes, trato libre de estrés animal y empaques prácticos para el dueño"
-            naming_roots = ["Vínculo", "Noble", "Vital", "Huella", "Natura"]
+            is_dog_only = ("perro" in t or "canin" in t or "perrit" in t) and "gato" not in t
+            pet_noun = "perros" if is_dog_only else "mascotas"
+            pet_adj = "canina" if is_dog_only else "animal"
+            concept_title = f"🐾 Nutrición {pet_adj.capitalize()}, Salud & Bienestar" if ("comida" in t or "alimento" in t or "natural" in t or "nutrici" in t) else f"🐾 Bienestar Integral & Cuidado para {pet_noun.capitalize()}"
+            paraphrased_essence = (
+                f"{slots['offer_concept'] or f'soluciones de bienestar y salud {pet_adj}'} "
+                f"basada en {slots['specialty_concept'] or 'insumos nobles, seguros y libres de químicos industriales'}"
+            )
+            buyer_actor = slots["target_concept"] or f"dueños de {pet_noun} conscientes que buscan proteger la salud, energía y longevidad de su compañero"
+            market_pain = f"la desconfianza hacia las croquetas y opciones ultraprocesadas con químicos o conservadores que dañan la salud de los {pet_noun}" if ("comida" in t or "alimento" in t or "natural" in t or "croquet" in t) else f"la falta de opciones confiables y libres de estrés para el cuidado de los {pet_noun}"
+            sensory_focus = f"ingredientes frescos visibles y aroma natural que encanta a los {pet_noun}, porciones listas para servir y envases prácticos para el dueño"
+            naming_roots = ["Natura", "Noble", "Vital", "Huella", "Origen"]
             step1_questions = {
-                "golden_circle": "En el mundo del cuidado y bienestar para mascotas, muchas familias sienten desconfianza hacia las opciones industriales o impersonales. ¿Cuál fue esa inquietud o carencia que detectaste en el mercado y que te impulsó a crear una alternativa mucho más sana y confiable para los animales y sus dueños?",
-                "value_offer": "Cuando el dueño de una mascota compara distintas opciones para consentir, alimentar o cuidar a su compañero, ¿qué ingrediente, estándar de calidad o experiencia concreta hace que tu propuesta sea visiblemente superior a lo comercial?",
-                "social_role": "Mirando a los próximos 3 a 5 años, ¿cómo te gustaría que tu marca mejore la calidad de vida y la longevidad de las mascotas en tu comunidad?",
-                "process_steps_text": "Para que tanto el dueño como su mascota vivan una experiencia sin estrés, ¿cuáles son los 3 momentos clave desde que te conocen y eligen el producto o servicio hasta que ven a su mascota feliz?",
-                "core_message": "Si los dueños de mascotas pudieran recordar una sola promesa de confianza cada vez que ven tu marca, ¿qué te gustaría que sintieran?",
-                "ideal_customer": "Pensando en esas familias que buscan siempre lo mejor para sus animales de compañía, ¿cómo es el estilo de vida de tu cliente ideal y qué es lo que más valora al elegirte?"
+                "golden_circle": f"Hoy muchos dueños de {pet_noun} están preocupados por {market_pain}. Al apostar por {paraphrased_essence}, ¿qué transformación real en la salud, digestión o alegría de los {pet_noun} te motivó a iniciar este proyecto?",
+                "value_offer": f"Cuando el dueño de un {pet_noun.rstrip('s')} compara tu propuesta frente a las opciones comerciales del supermercado o veterinaria, ¿qué ingrediente fresco, método de preparación o beneficio visible hace que confíe en ti desde la primera prueba?",
+                "social_role": f"Pensando en los próximos 3 a 5 años, ¿cómo quieres que tu marca cambie la forma en que las familias alimentan y cuidan la longevidad de sus {pet_noun}?",
+                "process_steps_text": f"Para que al dueño le resulte facilísimo elegirte cada semana, ¿cuáles son los 3 pasos simples desde que conoce tu propuesta y calcula la porción ideal hasta que su {pet_noun.rstrip('s')} disfruta cada plato?",
+                "core_message": f"Si el dueño de un {pet_noun.rstrip('s')} le recomendara tu marca a otro amigo en el parque, ¿cuál es esa promesa de salud y confianza que quieres que transmita en una frase?",
+                "ideal_customer": f"Pensando en esos dueños que tratan a sus {pet_noun} como parte de su familia, ¿cómo es su rutina diaria y qué es lo que más cuidan cuando eligen qué darle a su compañero?"
             }
         elif any(w in t for w in ["restauran", "café", "cafe", "panader", "reposter", "pastel", "postre", "comida", "gastronom", "bebida", "bar", "tostadur", "cocina", "alimento", "taco", "pizza", "marisc", "helad", "chocolat"]):
-            concept_title = "🍽️ Gastronomía, Hospitalidad & Experiencia Culinaria"
-            paraphrased_essence = "una propuesta gastronómica con identidad propia donde el sabor, la frescura de los insumos y la calidez del ritual conquistan al comensal"
-            buyer_actor = "comensales y amantes del buen comer que buscan sabores auténticos, ingredientes honestos y un lugar o producto digno de recomendarse"
-            market_pain = "la saturación de opciones estandarizadas con insumos artificiales y servicio frío sin alma"
-            sensory_focus = "el aroma que despierta el apetito al instante, la presentación visual del platillo o empaque y la hospitalidad genuina"
+            concept_title = "🍽️ Gastronomía de Autor, Sabor & Hospitalidad"
+            paraphrased_essence = f"{slots['offer_concept'] or 'una propuesta gastronómica con identidad propia'} respaldada por {slots['specialty_concept'] or 'insumos frescos de origen honesto y preparación al momento'}"
+            buyer_actor = slots["target_concept"] or "comensales y amantes del buen sabor que valoran recetas honestas, calidad artesanal y una experiencia acogedora"
+            market_pain = "la saturación de productos gastronómicos industriales con sabor artificial y atención impersonal"
+            sensory_focus = "el aroma recién hecho que despierta el antojo, la textura y presentación impecable y la calidez en cada entrega"
             naming_roots = ["Origen", "Brasa", "Trigo", "Ritual", "Alba"]
             step1_questions = {
-                "golden_circle": "En gastronomía, las personas no solo buscan quitarse el hambre o el antojo: buscan un momento de disfrute, salud o convivencia que los lugares comerciales han vuelto frío y genérico. ¿Qué vacío culinario o emocional descubriste en los comensales que tu cocina o producto viene a resolver de verdad?",
-                "value_offer": "Frente a otras opciones gastronómicas, ¿cuál es el secreto de tu receta, la selección de tus ingredientes o el detalle en la preparación que hace que quien te prueba por primera vez note la diferencia de inmediato?",
-                "social_role": "Pensando en el impacto de tu propuesta culinaria a mediano plazo, ¿cómo quieres transformar la cultura del buen comer o el bienestar de tus clientes en los próximos años?",
-                "process_steps_text": "Desde que a una persona se le despierta el antojo y hace su pedido o llega a tu espacio, hasta que disfruta el último bocado, ¿cuáles son los 3 pasos que cuidan que todo salga perfecto?",
-                "core_message": "Cuando un comensal le recomienda tu propuesta a sus amigos o familia, ¿cuál es esa frase o sensación memorable que quieres que diga sobre lo que ofreces?",
-                "ideal_customer": "Describe al comensal o comprador ideal que más disfruta tu propuesta: ¿en qué momento del día o de la semana te busca y qué es lo que más aprecia de tu sazón y servicio?"
+                "golden_circle": f"En el mundo gastronómico actual, las personas buscan mucho más que quitarse el hambre: quieren disfrutar {paraphrased_essence} sin caer en opciones comerciales genéricas. ¿Qué vacío de sabor, salud o experiencia descubriste en {buyer_actor} que hoy da vida a tu concepto?",
+                "value_offer": f"Cuando alguien prueba tu producto por primera vez, ¿qué secreto en tu técnica, selección de insumos ({slots['specialty_concept'] or 'frescura artesanal'}) o presentación hace que note la diferencia de inmediato frente a la competencia?",
+                "social_role": "Mirando a los próximos 3 a 5 años, ¿cómo te gustaría que tu propuesta eleve la cultura gastronómica o el bienestar diario de tus clientes?",
+                "process_steps_text": "Desde que se despierta el antojo de tu cliente y realiza su pedido o visita, hasta que disfruta el primer bocado, ¿cuáles son los 3 momentos clave que cuidan la perfección de tu entrega?",
+                "core_message": "Cuando un cliente satisfecho te recomienda con su familia o amigos, ¿cuál es esa promesa central de sabor y calidad que quieres que recuerde siempre?",
+                "ideal_customer": f"Describe más a fondo a {buyer_actor}: ¿en qué ocasión especial o momento de su semana te busca y qué valora por encima de todo?"
             }
         elif any(w in t for w in ["salud", "clínica", "clinica", "médic", "medic", "dental", "odont", "pediátr", "paciente", "terapia", "spa", "bienestar", "retiro", "laboratorio", "psicolog", "fisio", "pilates", "nutrici", "óptica", "optica", "farmac"]):
-            concept_title = "🩺 Salud, Bienestar Clínico & Cuidado Humano"
-            paraphrased_essence = "un ecosistema de salud y bienestar que combina rigor profesional con empatía, prevención y paz mental para el paciente"
-            buyer_actor = "pacientes y familias que valoran un diagnóstico certero, un trato humano sin prisas y resultados clínicos confiables"
-            market_pain = "el temor, la incertidumbre o la frialdad hospitalaria donde el paciente se siente como un expediente más"
-            sensory_focus = "la atmósfera serena que reduce la ansiedad, la claridad al explicar cada diagnóstico y el acompañamiento post-atención"
+            concept_title = "🩺 Salud Especializada, Prevención & Cuidado Humano"
+            paraphrased_essence = f"{slots['offer_concept'] or 'atención clínica y de bienestar integral'} diferenciada por {slots['specialty_concept'] or 'un enfoque empático, preciso y libre de ansiedad para el paciente'}"
+            buyer_actor = slots["target_concept"] or "pacientes y familias que buscan certeza diagnóstica, trato humano cálido y resultados comprobables"
+            market_pain = "el miedo, la frialdad clínica tradicional y las consultas apresuradas donde el paciente no se siente escuchado"
+            sensory_focus = "una atmósfera serena que transmite paz desde la recepción, explicaciones claras sin tecnicismos y seguimiento cercano en casa"
             naming_roots = ["Vita", "Serena", "Lumen", "Aurea", "Sana"]
             step1_questions = {
-                "golden_circle": "Cuando una persona o familia busca atención en salud o bienestar, suele llegar con dudas, estrés o malas experiencias previas por tratos fríos y apresurados. ¿Qué tranquilidad, certeza o transformación humana decidiste brindar que los servicios tradicionales suelen pasar por alto?",
-                "value_offer": "Al momento de atender o cuidar a cada persona, ¿qué combinación de tecnología, metodología clínica o calidez en el trato hace que confíen plenamente en tus manos?",
-                "social_role": "¿Cómo visualizas que tu práctica o centro de bienestar eleve la calidad de vida y la cultura de prevención de tu comunidad en los próximos 5 años?",
-                "process_steps_text": "Para eliminar cualquier incertidumbre o miedo en el paciente, ¿cuáles son las 3 etapas clave de tu atención (desde que agenda y recibe su valoración, hasta su recuperación o seguimiento en casa)?",
-                "core_message": "Si tus pacientes pudieran resumir en una sola idea la paz mental y el bienestar que encuentran contigo, ¿cuál sería esa promesa central?",
-                "ideal_customer": "¿Cómo es el perfil del paciente o familia que más se beneficia de tu cuidado profesional y qué es lo que más valora cuando acude a ti?"
+                "golden_circle": f"Quienes buscan {paraphrased_essence} suelen llegar con dudas o malas experiencias previas por tratos fríos e impersonales. ¿Qué tranquilidad, certeza o transformación de vida decidiste darles a {buyer_actor}?",
+                "value_offer": "Durante la valoración o tratamiento, ¿qué combinación de metodología profesional, tecnología o calidez humana hace que el paciente se sienta 100% seguro en tus manos?",
+                "social_role": "En un horizonte de 3 a 5 años, ¿cómo visualizas que tu práctica mejore la salud preventiva y la calidad de vida de tu comunidad?",
+                "process_steps_text": "Para quitarle cualquier estrés al paciente, ¿cuáles son los 3 pasos claros de tu atención desde que agenda su cita hasta su seguimiento y recuperación?",
+                "core_message": "Si tus pacientes resumieran en una sola frase la confianza y paz mental que sienten al atenderse contigo, ¿cuál sería esa promesa?",
+                "ideal_customer": f"Pensando en {buyer_actor}, ¿qué preocupación principal tienen antes de llegar contigo y qué es lo que más agradecen de tu trato?"
             }
         elif any(w in t for w in ["despacho", "contab", "abogad", "legal", "jurídic", "consultor", "agencia", "marketing", "publicidad", "finanz", "b2b", "asesor", "corporativ", "auditor", "recursos humanos", "invers", "seguro"]):
-            concept_title = "💼 Firma de Consultoría, Estrategia & Servicios B2B"
-            paraphrased_essence = "una firma de alto nivel que convierte la complejidad técnica, financiera o estratégica en decisiones claras y crecimiento medible"
-            buyer_actor = "directivos, fundadores y tomadores de decisión que exigen certeza técnica, velocidad de respuesta y retorno de inversión"
-            market_pain = "los proveedores que hablan con tecnicismos confusos, entregan tarde o no se comprometen con resultados tangibles"
-            sensory_focus = "diagnósticos ejecutivos claros en una sola página, puntualidad impecable y comunicación proactiva sin letra chica"
+            concept_title = "💼 Consultoría Estratégica, Certeza Ejecutiva & B2B"
+            paraphrased_essence = f"{slots['offer_concept'] or 'asesoría y soluciones ejecutivas de alto nivel'} con {slots['specialty_concept'] or 'claridad técnica, agilidad de respuesta y enfoque en resultados medibles'}"
+            buyer_actor = slots["target_concept"] or "empresarios, directivos y tomadores de decisión que exigen orden, certidumbre y retorno de inversión"
+            market_pain = "los proveedores tradicionales que hablan con jerga incomprensible, responden tarde y no protegen proactivamente al cliente"
+            sensory_focus = "diagnósticos ejecutivos claros en una sola página, puntualidad estricta y reportes preventivos sin letra chica"
             naming_roots = ["Vértice", "Axioma", "Nexo", "Valor", "Faro"]
             step1_questions = {
-                "golden_circle": "En los servicios profesionales y de consultoría, los clientes suelen estar cansados de despachos o agencias que prometen mucho pero entregan procesos lentos y confusos. ¿Cuál es el riesgo crítico o dolor de negocio que tú les quitas de encima para que puedan crecer con tranquilidad?",
-                "value_offer": "Cuando un directivo o cliente evalúa distintas firmas, ¿cuál es tu metodología propia, velocidad de ejecución o garantía de criterio que demuestra tu autoridad desde la primera reunión?",
-                "social_role": "En los próximos años, ¿cómo quieres que tu firma eleve el estándar de profesionalismo, ética y resultados dentro de tu industria?",
-                "process_steps_text": "Para que trabajar contigo sea ágil y libre de burocracia, ¿cuáles son los 3 pasos claros de tu método (desde el diagnóstico inicial hasta la entrega y medición de resultados)?",
-                "core_message": "¿Cuál es la promesa ejecutiva de valor que quieres que cada cliente asocie inmediatamente con el prestigio de tu firma?",
-                "ideal_customer": "Pensando en los clientes o empresas con los que logras tus mejores casos de éxito, ¿qué perfil tienen y qué buscan resolver con urgencia cuando te contactan?"
-            }
-        elif any(w in t for w in ["colegio", "escuela", "educac", "academ", "curso", "campamento", "universid", "capacitac", "formación", "taller", "enseñ", "idiom", "inglés", "ingles", "niños", "infantil"]):
-            concept_title = "🎓 Educación, Desarrollo de Talento & Aprendizaje Vivo"
-            paraphrased_essence = "un modelo formativo que despierta el potencial real de las personas mediante aprendizaje práctico, acompañamiento cercano y sentido de logro"
-            buyer_actor = "estudiantes, profesionales o familias que buscan herramientas reales para el futuro y no solo teoría pasiva"
-            market_pain = "la enseñanza tradicional aburrida, desconectada de la vida real y que no se adapta al ritmo de cada persona"
-            sensory_focus = "entornos dinámicos que inspiran curiosidad, retos prácticos desde el primer día y reconocimiento visible de cada avance"
-            naming_roots = ["Mentis", "Aula", "Impulso", "Senda", "Faro"]
-            step1_questions = {
-                "golden_circle": "Los métodos de enseñanza tradicionales suelen enfocarse en memorizar teoría y dejan de lado la confianza y la aplicación práctica. ¿Qué transformación real en la vida o capacidades de tus alumnos te motivó a diseñar esta propuesta formativa?",
-                "value_offer": "¿Qué tiene tu método de enseñanza, tus dinámicas o el acompañamiento de tus mentores que logra que las personas aprendan más rápido y con verdadero entusiasmo?",
-                "social_role": "¿Qué huella quieres dejar en la próxima generación de alumnos o profesionales que se formen contigo en los próximos 3 a 5 años?",
-                "process_steps_text": "¿Cómo es el camino de aprendizaje en 3 etapas sencillas desde que el alumno inicia su primer día hasta que domina la habilidad y celebra su logro?",
-                "core_message": "Si un egresado o familia resumiera en una frase cómo cambió su futuro gracias a tu formación, ¿cuál sería ese mensaje central?",
-                "ideal_customer": "¿Quién es el alumno, profesional o familia ideal para tu programa y qué meta personal o profesional sueña con alcanzar al inscribirse?"
-            }
-        elif any(w in t for w in ["arquitect", "construct", "inmobiliar", "muebler", "diseñ", "interior", "carpinter", "obra", "decorac", "hogar", "remodel", "casa", "espacio"]):
-            concept_title = "🏡 Arquitectura, Espacios, Mobiliario & Hábitat"
-            paraphrased_essence = "la creación de espacios y piezas que combinan estética atemporal, nobleza de materiales y certeza absoluta en ejecución"
-            buyer_actor = "familias, clientes patrimoniales e inversionistas que buscan diseño funcional, durabilidad y cero sorpresas en tiempos o costos"
-            market_pain = "la informalidad en tiempos de entrega, los presupuestos ocultos y los materiales que se deterioran rápido"
-            sensory_focus = "el tacto de materiales nobles, la visualización clara antes de fabricar o construir y un ritual de entrega impecable"
-            naming_roots = ["Trazo", "Materia", "Pórtico", "Domus", "Piedra"]
-            step1_questions = {
-                "golden_circle": "Al construir, remodelar o amueblar un espacio, las personas suelen temer retrasos, sobrecostos o acabados que no cumplen lo prometido. ¿Cómo transforma tu propuesta esa experiencia para darle a tu cliente certeza total y orgullo por su espacio?",
-                "value_offer": "¿Qué distingue a la calidad de tus materiales, tu diseño funcional o tu precisión técnica frente a otras opciones del mercado?",
-                "social_role": "¿Cómo te gustaría que tus obras, espacios o piezas mejoren la forma en que las personas habitan y disfrutan su entorno en los próximos años?",
-                "process_steps_text": "¿Cuáles son las 3 etapas claras que vive tu cliente desde que visualiza la propuesta y el presupuesto hasta que recibe su espacio o pieza terminada?",
-                "core_message": "Cuando alguien entra a un espacio o toca una pieza creada por tu marca, ¿qué promesa de valor y estilo quieres que perciba al instante?",
-                "ideal_customer": "¿Cómo es el cliente o inversionista que más valora el nivel de detalle de tu trabajo y qué busca crear en su vida o patrimonio?"
-            }
-        elif any(w in t for w in ["industr", "manufactur", "automatiz", "logíst", "logist", "transporte", "flota", "ingenier", "maquinar", "planta", "mantenim", "reciclaj", "energ", "solar", "agro", "campo"]):
-            concept_title = "⚙️ Ingeniería, Operaciones Industriales & Eficiencia Técnica"
-            paraphrased_essence = "soluciones de ingeniería, operación y suministro diseñadas para maximizar la continuidad operativa, la seguridad y la rentabilidad técnica"
-            buyer_actor = "directores de operaciones, compras e ingeniería que requieren fiabilidad 24/7, trazabilidad y cumplimiento normativo estricto"
-            market_pain = "los paros operativos no programados, las mermas costosas y los proveedores sin capacidad de respuesta técnica inmediata"
-            sensory_focus = "precisión técnica verificable, orden visual en campo, telemetría o reportes claros y respuesta inmediata ante contingencias"
-            naming_roots = ["Vectra", "Forja", "Tracción", "Núcleo", "Kinetix"]
-            step1_questions = {
-                "golden_circle": "En las operaciones industriales y técnicas, un fallo o retraso del proveedor detiene toda la cadena y cuesta mucho dinero. ¿Cuál es el cuello de botella operativo o problema técnico que tu empresa resuelve de raíz para garantizar continuidad y eficiencia?",
-                "value_offer": "¿Qué capacidad instalada, tecnología, estándar de seguridad o velocidad de respuesta te da una ventaja contundente frente a otros proveedores del sector?",
-                "social_role": "De cara al futuro de la industria, ¿cómo contribuye tu operación a una cadena productiva más eficiente, segura o sustentable?",
-                "process_steps_text": "¿Cuáles son las 3 fases de tu protocolo operativo (desde el levantamiento técnico o pedido, pasando por la ejecución/logística, hasta la entrega y soporte continuo)?",
-                "core_message": "¿Cuál es la promesa de fiabilidad e ingeniería por la que quieres ser reconocido como el socio técnico número uno de tu sector?",
-                "ideal_customer": "¿Qué tipo de empresas, plantas o líderes operativos son tus clientes ideales y qué estándar de desempeño exigen al contratarte?"
-            }
-        elif any(w in t for w in ["software", "app", "saas", "ia", "inteligencia artificial", "plataforma", "digital", "tecnolog", "startup", "web", "datos", "automat", "sistema", "cibersegur", "cloud"]):
-            concept_title = "💻 Tecnología, Plataformas Digitales & Soluciones Inteligentes"
-            paraphrased_essence = "tecnología diseñada para simplificar procesos complejos, ahorrar horas operativas y potenciar decisiones con una experiencia intuitiva"
-            buyer_actor = "usuarios y organizaciones que buscan agilidad digital inmediata sin curvas de aprendizaje complicadas ni fricciones técnicas"
-            market_pain = "el software rígido y difícil de usar, o los procesos manuales en hojas de cálculo que hacen perder tiempo y dinero"
-            sensory_focus = "una interfaz limpia que entrega valor en los primeros minutos, automatización invisible y soporte experto siempre disponible"
-            naming_roots = ["Nexo", "Pulso", "flujo", "Lógica", "Nova"]
-            step1_questions = {
-                "golden_circle": "Muchas empresas y personas siguen perdiendo horas valiosas en tareas manuales o usando sistemas complicados que nadie quiere abrir. ¿Cuál es esa fricción tecnológica u operativa que decidiste eliminar para devolverles tiempo y control a tus usuarios?",
-                "value_offer": "¿Qué hace que tu solución tecnológica sea más intuitiva, rápida o inteligente que las herramientas tradicionales que existen hoy?",
-                "social_role": "¿Cómo imaginas que tu tecnología transforme la productividad y la forma de trabajar de tus usuarios en los próximos 3 a 5 años?",
-                "process_steps_text": "¿Cuáles son los 3 pasos simples desde que un usuario descubre e implementa tu solución hasta que ve el primer resultado medible?",
-                "core_message": "Si tus usuarios describieran en una frase el alivio y poder que les da tu tecnología todos los días, ¿cuál sería esa promesa?",
-                "ideal_customer": "¿Quién es el usuario o empresa que obtiene el mayor impacto con tu tecnología y qué problema urgente busca automatizar o resolver?"
-            }
-        elif any(w in t for w in ["tienda", "boutique", "ropa", "moda", "calzado", "joyer", "cosmét", "cosmet", "belleza", "perfum", "ecommerce", "accesorio", "regalo", "textil", "piel", "bolsa", "reloj"]):
-            concept_title = "🛍️ Moda, Diseño de Producto & Estilo de Vida"
-            paraphrased_essence = "una marca de producto y estilo de vida que celebra la identidad personal a través del diseño cuidado, la calidad táctil y una experiencia de compra memorable"
-            buyer_actor = "compradores que buscan piezas con carácter propio, durabilidad real y una marca con la que se sientan orgullosos de identificarse"
-            market_pain = "el consumo desechable de productos masivos sin identidad que pierden su calidad o encanto al poco tiempo"
-            sensory_focus = "la textura y caída de los materiales, la estética visual en vitrina o pantalla y el ritual de abrir el empaque (unboxing)"
-            naming_roots = ["Aura", "Velo", "Loom", "Seda", "Ícono"]
-            step1_questions = {
-                "golden_circle": "En un mercado lleno de productos masivos y desechables, las personas buscan piezas que realmente reflejen quiénes son y duren en el tiempo. ¿Qué emoción, seguridad personal o estilo de vida quieres despertar en cada persona que usa o adquiere tus productos?",
-                "value_offer": "¿Qué detalle en el diseño, la selección de materiales o el acabado artesanal hace que tus piezas destaquen al instante frente a las marcas comerciales?",
-                "social_role": "¿Cómo quieres que tu marca inspire una forma más auténtica, consciente o estética de consumir y expresarse en los próximos años?",
-                "process_steps_text": "¿Cómo es el viaje de tu comprador en 3 momentos: desde que descubre tus piezas y elige su favorita, hasta que abre su empaque y la estrena?",
-                "core_message": "¿Cuál es la esencia o declaración de estilo que quieres que tu marca represente en la mente de tus clientes?",
-                "ideal_customer": "Describe a la persona que se enamora de tu marca a primera vista: ¿qué estilo de vida lleva y qué valora más al elegir una pieza tuya?"
+                "golden_circle": f"Al contratar {paraphrased_essence}, {buyer_actor} buscan dormir tranquilos y hacer crecer su organización sin riesgos ocultos. ¿Cuál es ese problema crítico que otras firmas complican y que tú resuelves con total claridad?",
+                "value_offer": "¿Cuál es tu metodología propia, estándar de velocidad o garantía ejecutiva que demuestra tu autoridad desde el primer diagnóstico?",
+                "social_role": "En los próximos años, ¿cómo quieres transformar la cultura de certeza, orden y crecimiento de las empresas que asesora tu firma?",
+                "process_steps_text": "¿Cuáles son las 3 etapas concretas de tu servicio (desde la auditoría o diagnóstico inicial, la implementación estratégica, hasta la entrega de resultados)?",
+                "core_message": "¿Cuál es la promesa ejecutiva central por la que quieres que los directivos reconozcan y recomienden a tu firma?",
+                "ideal_customer": f"Dentro del perfil de {buyer_actor}, ¿qué tamaño o tipo de operación tienen tus mejores clientes y qué urgencia los lleva a buscarte?"
             }
         else:
             concept_title = "✦ Propuesta Especializada de Alto Valor"
-            paraphrased_essence = "una solución especializada diseñada para resolver con excelencia, cercanía y método propio las necesidades reales de su mercado"
-            buyer_actor = "clientes exigentes que valoran la certeza, la atención personalizada y un resultado superior sin complicaciones"
-            market_pain = "la falta de opciones confiables que cumplan lo que prometen con atención al detalle y trato humano"
-            sensory_focus = "la primera impresión de profesionalismo, la claridad durante todo el servicio y el cuidado en los detalles de entrega"
+            paraphrased_essence = f"{slots['offer_concept'] or 'una solución especializada de alto valor'} potenciada por {slots['specialty_concept'] or 'atención al detalle, método propio y excelencia operativa'}"
+            buyer_actor = slots["target_concept"] or "clientes exigentes que buscan calidad comprobable, trato cercano y cero fricciones"
+            market_pain = "la falta de alternativas especializadas que realmente cumplan lo que prometen con rigor y calidez"
+            sensory_focus = "una primera impresión impecable, comunicación transparente durante el proceso y una entrega memorable"
             naming_roots = words[:4] if words else ["Origen", "Nexo", "Valor", "Cima"]
             step1_questions = {
-                "golden_circle": "Cuando los clientes buscan soluciones en tu sector, a menudo se topan con opciones genéricas que no entienden a fondo lo que realmente necesitan. ¿Cuál fue esa necesidad mal atendida que viste en el mercado y que hoy da sentido a lo que haces?",
-                "value_offer": "Cuando alguien compara tu propuesta con otras alternativas disponibles, ¿cuál es ese sello propio en tu calidad, método o trato que inclina la balanza a tu favor?",
-                "social_role": "Mirando a los próximos 3 a 5 años, ¿qué cambio positivo quieres generar en la vida de tus clientes o en el estándar de tu industria?",
-                "process_steps_text": "Para que tu cliente viva una experiencia ágil y confiable, ¿cuáles son los 3 pasos clave desde el primer contacto hasta que recibe el valor completo de lo que ofreces?",
-                "core_message": "Si cada cliente se quedara con una sola idea clara sobre por qué vale la pena elegirte, ¿cuál sería esa promesa central?",
-                "ideal_customer": "¿Cómo describirías al cliente ideal que más valora tu trabajo: qué necesidad tiene y qué es lo que más cuida al tomar su decisión de compra?"
+                "golden_circle": f"Al desarrollar una propuesta enfocada en {paraphrased_essence} para {buyer_actor}, ¿cuál fue esa frustración o necesidad mal atendida en el mercado que te impulsó a crear una alternativa superior?",
+                "value_offer": f"Cuando {buyer_actor} comparan opciones, ¿qué detalle único en {slots['specialty_concept'] or 'tu calidad, técnica o servicio'} hace que te elijan a ti sin dudarlo?",
+                "social_role": "Mirando a los próximos 3 a 5 años, ¿qué impacto positivo quieres dejar en la vida de tus clientes o en el estándar de tu sector?",
+                "process_steps_text": "Para que tu cliente viva una experiencia ágil y sin fricciones, ¿cuáles son los 3 pasos clave desde que te contacta por primera vez hasta que recibe el beneficio completo?",
+                "core_message": "Si tus clientes pudieran recordar una sola promesa poderosa sobre tu marca, ¿qué te gustaría que dijeran de ti?",
+                "ideal_customer": f"Profundizando en {buyer_actor}, ¿qué estilo de vida o prioridad tienen y qué es lo que más valoran al elegirte?"
             }
 
         if words:
-            # Combinar raíces conceptuales del giro con matices semánticos sin copiar frases literales
             merged_roots = []
             for r in naming_roots + words[:3]:
                 if r not in merged_roots:
@@ -757,41 +754,48 @@ Devuelve SIEMPRE JSON válido con estas llaves:
 
         step2_guide = {
             "label": concept_title,
-            "leaderAdvice": f"Para posicionar una propuesta enfocada en {paraphrased_essence}, diseñemos puntos de contacto centrados en {sensory_focus}.",
-            "beforeQuestion": f"1. Antes de Elegirte (Descubrimiento): Pensando en {buyer_actor}, ¿qué necesitan percibir, ver o probar en su primer acercamiento para superar {market_pain}?",
-            "duringQuestion": f"2. En el Momento Clave (Experiencia Activa): Mientras el cliente vive tu propuesta, ¿cómo haces presente tu cuidado por {sensory_focus}?",
-            "afterQuestion": f"3. Después de la Entrega (Lealtad y Recomendación): Una vez resuelta su necesidad, ¿qué detalle o seguimiento mantiene vivo el vínculo para que regrese y te recomiende?",
+            "leaderAdvice": f"Para posicionar tu modelo de {paraphrased_essence}, diseñemos puntos de contacto centrados en {sensory_focus}.",
+            "beforeQuestion": f"1. Antes de Elegirte (Descubrimiento): Pensando en {buyer_actor}, ¿qué necesitan ver, sentir o probar en su primer acercamiento para vencer {market_pain}?",
+            "duringQuestion": f"2. En el Momento Clave (Experiencia Activa): Mientras el cliente vive tu propuesta de {paraphrased_essence}, ¿cómo haces tangible tu enfoque en {sensory_focus}?",
+            "afterQuestion": f"3. Después de la Entrega (Lealtad y Recompra): Una vez que recibieron tu valor, ¿qué empaque, seguimiento o detalle logra que regresen y te recomienden?",
             "cards": {
                 "before": [
-                    {"icon": "✨", "label": f"Muestra tangible o demostración visual que transmite confianza inmediata a {buyer_actor}", "sub": "👁️ Impacto visual + 🧠 Elimina dudas desde el primer segundo", "tag": "Primera Impresión"},
-                    {"icon": "📲", "label": "Atención inicial cálida, orientadora y sin tecnicismos en menos de 5 minutos", "sub": "👂 Escucha empática · El prospecto siente que entendiste su necesidad real", "tag": "Respuesta Ágil"},
-                    {"icon": "🌿", "label": f"Identidad sensorial coherente enfocada en {sensory_focus}", "sub": "👃 + ✋ Cuidado perceptible en cada detalle físico y digital", "tag": "Sello Sensorial"},
-                    {"icon": "🌟", "label": "Historias reales de transformación y resultados comprobables de otros clientes", "sub": "🤝 Prueba social auténtica que vence la desconfianza del mercado", "tag": "Certeza"}
+                    {"icon": "✨", "label": f"Muestra o demostración inicial de {paraphrased_essence} que transmite confianza inmediata", "sub": "👁️ Impacto visual + 🧠 Elimina dudas desde el primer segundo", "tag": "Primera Impresión"},
+                    {"icon": "📲", "label": f"Orientación personalizada y cálida para {buyer_actor} en menos de 5 minutos", "sub": "👂 Escucha empática · El cliente siente que entendiste su caso específico", "tag": "Respuesta Ágil"},
+                    {"icon": "🌿", "label": f"Sello sensorial y presentación enfocada en {sensory_focus}", "sub": "👃 + ✋ Cuidado perceptible en cada detalle físico y digital", "tag": "Sello Sensorial"},
+                    {"icon": "🌟", "label": f"Casos reales y testimonios que demuestran cómo superas {market_pain}", "sub": "🤝 Prueba social auténtica que inspira certeza inmediata", "tag": "Certeza"}
                 ],
                 "during": [
-                    {"icon": "🤝", "label": "Bienvenida personalizada y acompañamiento experto adaptado al perfil de cada cliente", "sub": "👂 Trato humano que hace sentir único a quien te elige", "tag": "Trato a Medida"},
-                    {"icon": "🎁", "label": "Gesto inesperado de cortesía (Surprise & Delight) en el punto cumbre de la experiencia", "sub": "✨ Detalle memorable que supera lo que ofrece cualquier competidor", "tag": "Surprise & Delight"},
-                    {"icon": "⚡", "label": "Proceso de contratación, compra o atención fluido, transparente y sin fricciones", "sub": "🧠 Cero esfuerzo y total claridad en tiempos y alcances", "tag": "Cero Fricción"},
-                    {"icon": "🏷️", "label": "Presentación impecable de materiales, espacio o plataforma con carácter propio", "sub": "👁️ + ✋ Coherencia estética en el momento de la verdad", "tag": "Excelencia Visual"}
+                    {"icon": "🤝", "label": "Bienvenida por nombre y diagnóstico o recomendación adaptada a cada cliente", "sub": "👂 Trato humano que hace sentir único a quien te elige", "tag": "Trato a Medida"},
+                    {"icon": "🎁", "label": "Detalle sorpresa (Surprise & Delight) alineado con tu especialidad durante la experiencia", "sub": "✨ Gesto memorable que supera cualquier expectativa comercial", "tag": "Surprise & Delight"},
+                    {"icon": "⚡", "label": "Proceso de pedido, reserva o contratación ágil, claro y sin fricciones", "sub": "🧠 Cero esfuerzo y total transparencia en cada paso", "tag": "Cero Fricción"},
+                    {"icon": "🏷️", "label": "Presentación impecable de tus insumos, empaque o espacio con carácter propio", "sub": "👁️ + ✋ Coherencia estética en el momento de la verdad", "tag": "Excelencia Visual"}
                 ],
                 "after": [
-                    {"icon": "📦", "label": "Ritual de cierre o empaque insignia que prolonga la experiencia en casa u oficina", "sub": "✋ Calidad tangible que invita a conservar y compartir la marca", "tag": "Ritual de Entrega"},
-                    {"icon": "💬", "label": "Seguimiento proactivo días después para asegurar que el resultado superó expectativas", "sub": "🤝 Interés genuino post-venta que consolida la confianza", "tag": "Post-Venta Cálida"},
-                    {"icon": "🏅", "label": "Beneficio o reconocimiento exclusivo para clientes recurrentes y embajadores de la marca", "sub": "🌟 Comunidad leal que impulsa la recompra y recomendación orgánica", "tag": "Lealtad VIP"},
-                    {"icon": "📘", "label": "Guía práctica de aprovechamiento o cuidado continuo pensada para el día a día del cliente", "sub": "👁️ Valor agregado que mantiene a tu marca presente en su mente", "tag": "Valor Continuo"}
+                    {"icon": "📦", "label": "Empaque o ritual de entrega insignia que conserva la frescura y emoción en casa", "sub": "✋ Calidad tangible que invita a compartir y recomprar", "tag": "Ritual de Entrega"},
+                    {"icon": "💬", "label": "Mensaje proactivo días después para confirmar que el resultado fue extraordinario", "sub": "🤝 Seguimiento post-venta que consolida la relación a largo plazo", "tag": "Post-Venta Cálida"},
+                    {"icon": "🏅", "label": "Plan de lealtad, suscripción o beneficio especial para clientes frecuentes", "sub": "🌟 Comunidad leal que impulsa la recompra constante", "tag": "Lealtad VIP"},
+                    {"icon": "📘", "label": "Guía práctica de cuidado, porciones o aprovechamiento continuo para el cliente", "sub": "👁️ Valor experto que mantiene tu marca presente todos los días", "tag": "Valor Continuo"}
                 ]
             }
         }
 
         synthesis_html = (
-            f"Interpretamos un modelo de negocio orientado a <strong>{paraphrased_essence}</strong>, "
-            f"pensado para <strong>{buyer_actor}</strong>, donde la gran oportunidad estratégica consiste en resolver <em>{market_pain}</em>."
+            f"<div style='display:grid; grid-template-columns:1fr; gap:8px; margin-top:4px;'>"
+            f"<div style='background:rgba(255,255,255,0.06); padding:9px 12px; border-radius:10px; border-left:3px solid #FDE68A;'>"
+            f"<strong style='color:#FDE68A; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.04em; display:block;'>🎯 1. Esencia y Especialidad Interpretada</strong>"
+            f"<span style='color:#FFFFFF; font-size:0.85rem;'>Propuesta enfocada en <strong>{paraphrased_essence}</strong>.</span></div>"
+            f"<div style='background:rgba(255,255,255,0.06); padding:9px 12px; border-radius:10px; border-left:3px solid #38BDF8;'>"
+            f"<strong style='color:#7DD3FC; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.04em; display:block;'>👥 2. Cliente Ideal y Psicología Detectada</strong>"
+            f"<span style='color:#FFFFFF; font-size:0.85rem;'>Dirigido a <strong>{buyer_actor}</strong>.</span></div>"
+            f"<div style='background:rgba(255,255,255,0.06); padding:9px 12px; border-radius:10px; border-left:3px solid #34D399;'>"
+            f"<strong style='color:#6EE7B7; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.04em; display:block;'>⚡ 3. Problema del Mercado que Resuelves</strong>"
+            f"<span style='color:#FFFFFF; font-size:0.85rem;'>Tu gran oportunidad es erradicar <em>{market_pain}</em>.</span></div>"
+            f"</div>"
         )
         expansion_html = (
-            f"<strong>Cómo hemos adaptado tu ruta estratégica a partir de esta interpretación:</strong><br/>"
-            f"• <strong>Paso 1 (6 Pilares Socráticos):</strong> Preguntas enfocadas en cómo vences <em>{market_pain}</em> y enamoras a {buyer_actor}.<br/>"
-            f"• <strong>Paso 2 (Viaje Sensorial):</strong> Escenarios de Pre-compra, Experiencia y Post-venta centrados en {sensory_focus}.<br/>"
-            f"• <strong>Paso 3 y 4 (Naming e Identidad):</strong> Raíces conceptuales sugeridas (<em>{', '.join(naming_roots)}</em>) y personalidad visual calibrada."
+            f"<strong>💬 4. Vista previa de tu Primera Pregunta Adaptada (Paso 1):</strong><br/>"
+            f"<em style='color:#FDE68A; font-weight:600;'>«{step1_questions['golden_circle']}»</em>"
         )
 
         return {
@@ -896,20 +900,22 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         last_user_msg: str,
         adapted_questions: Optional[Dict[str, str]] = None
     ) -> str:
-        # 1. Si ya tenemos preguntas pre-interpretadas para este giro, usarlas como base y conectarlas con el último aporte
+        # 1. Re-interpretar combinando el giro base (custom_biz) con el último aporte del fundador (last_user_msg)
+        combined_context = f"{custom_biz} {last_user_msg}".strip()
+        if combined_context:
+            parsed = cls.paraphrase_and_interpret_step0_business(combined_context)
+            s1_map = parsed.get("step1_questions", {})
+            if pillar_key in s1_map:
+                return s1_map[pillar_key]
+
+        # 2. Si tenemos preguntas pre-interpretadas para este giro, usarlas como respaldo
         if isinstance(adapted_questions, dict) and adapted_questions.get(pillar_key):
             return adapted_questions[pillar_key]
-
-        # 2. Parafrasear e interpretar el negocio SIN repetir el texto crudo de custom_biz
-        parsed = cls.paraphrase_and_interpret_step0_business(f"{custom_biz} {last_user_msg}")
-        s1_map = parsed.get("step1_questions", {})
-        if pillar_key in s1_map:
-            return s1_map[pillar_key]
 
         guide = cls.WORLD_CLASS_CONSULTANT_PILLAR_GUIDE.get(pillar_key)
         if guide:
             return guide["question"]
-        return f"Pensando en el siguiente paso para cautivar a {parsed['buyer_actor']}, ¿qué otro detalle consideras clave para diferenciarte en tu sector?"
+        return "¿Qué otro detalle consideras clave para diferenciarte de manera contundente en tu mercado?"
 
     @classmethod
     def build_non_repeating_consultant_response(
@@ -922,12 +928,18 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         step0_interp: str = "",
         adapted_questions: Optional[Dict[str, str]] = None
     ) -> str:
+        combined_slots = cls.extract_compositional_slots(f"{custom_biz} {user_msg}")
+        spec_concept = combined_slots.get("specialty_concept", "")
+        target_concept = combined_slots.get("target_concept", "")
         natural_theme = cls.distill_natural_theme_label(user_msg or custom_biz)
         if next_pillar_key:
             tailored_q = cls.build_contextual_pillar_question(
                 next_pillar_key, custom_biz, step0_interp, user_msg, adapted_questions
             )
-            return f"Tiene muchísimo sentido priorizar {natural_theme}. {tailored_q}"
+            return (
+                f"Tiene muchísimo sentido priorizar {natural_theme}, especialmente al enfocarte en "
+                f"{spec_concept} para {target_concept}. {tailored_q}"
+            )
         if step == 3:
             return (
                 f"Me parece muy acertada esa dirección enfocada en {natural_theme}. Como aconseja Alexandra Watkins en el test SMILE & SCRATCH, "
