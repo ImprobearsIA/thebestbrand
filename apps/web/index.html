@@ -2480,7 +2480,7 @@
       <!-- BIENVENIDA CENTRADA DE AURA -->
       <div style="width:100%; background:linear-gradient(145deg, #090D16 0%, #1E293B 100%); color:#FAF8F5; border:2px solid #D4AF37; border-radius:26px; padding:24px 22px; text-align:center; margin-bottom:18px; box-shadow:0 18px 40px rgba(9,13,22,0.16);">
         <span style="display:inline-block; background:rgba(212,175,55,0.2); color:#FDE68A; border:1px solid #D4AF37; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; padding:4px 12px; border-radius:999px; margin-bottom:10px;">
-          ✦ PASO 0 · BIENVENIDA E INTERPRETACIÓN IA (v25.0)
+          ✦ PASO 0 · BIENVENIDA E INTERPRETACIÓN IA (v25.1)
         </span>
         <h1 style="font-family:var(--font-display); font-size:clamp(1.45rem, 3.8vw, 1.95rem); font-weight:800; color:#FFFFFF; line-height:1.22; margin-bottom:8px;">
           Te damos la bienvenida a tu Taller de Marca con Aura
@@ -11650,6 +11650,69 @@
       };
     }
 
+    function buildShortEssenceMax6Words(rawText) {
+      const clean = (rawText || "").trim();
+      const t = clean.toLowerCase();
+      let phrase = "solución especializada de alto valor";
+
+      if (/mascota|perro|gato|veterinar|canin|felin|croquet|pet/i.test(t)) {
+        const isDog = /perro|canin|lomito/i.test(t) && !/gato|felin/i.test(t);
+        const isCat = /gato|felin|michi/i.test(t) && !/perro|canin/i.test(t);
+        if (/comida|alimento|nutrici|croquet|dieta|snack|pastel/i.test(t)) {
+          if (isDog) phrase = (/caser|natural/i.test(t)) ? "nutrición canina casera y natural" : "nutrición canina saludable de calidad";
+          else if (isCat) phrase = "nutrición felina saludable y natural";
+          else phrase = "alimentación natural saludable para mascotas";
+        } else {
+          if (isDog) phrase = "cuidado y bienestar integral canino";
+          else if (isCat) phrase = "cuidado y bienestar integral felino";
+          else phrase = "bienestar y salud para mascotas";
+        }
+      } else if (/caf[eé]|cafeter|panader|reposter|pastel|postre/i.test(t)) {
+        if (/pan|masa madre/i.test(t)) phrase = "cafetería y panadería artesanal fresca";
+        else if (/postre|pastel|reposter/i.test(t)) phrase = "repostería artesanal de autor";
+        else phrase = "cafetería de especialidad y autor";
+      } else if (/restauran|gastronom|comida|bebida|bar|cocina|alimento|taco|pizza|marisc|helad|chocolat/i.test(t)) {
+        if (/saludable|natural|org[aá]nic|sin az[uú]car/i.test(t)) phrase = "gastronomía saludable con ingredientes naturales";
+        else if (/caser|artesanal/i.test(t)) phrase = "cocina artesanal de sazón auténtico";
+        else phrase = "gastronomía de autor y hospitalidad";
+      } else if (/dental|odont/i.test(t)) {
+        phrase = "odontología integral cálida y estética";
+      } else if (/salud|cl[ií]nica|m[eé]dic|pedi[aá]tr|paciente|terapia|spa|bienestar|retiro|laboratorio|psicolog|fisio|pilates|nutrici|[oó]ptica|farmac/i.test(t)) {
+        phrase = "salud preventiva y bienestar integral";
+      } else if (/contab|fiscal|finanz|auditor|invers/i.test(t)) {
+        phrase = "estrategia financiera y certeza fiscal";
+      } else if (/abogad|legal|jur[ií]dic/i.test(t)) {
+        phrase = "blindaje jurídico y asesoría legal";
+      } else if (/despacho|consultor|agencia|marketing|publicidad|b2b|asesor|corporativ/i.test(t)) {
+        phrase = "consultoría estratégica y crecimiento empresarial";
+      } else if (/colegio|escuela|educac|academ|curso|campamento|universid|capacitac|formaci[oó]n|taller|enseñ|idiom|ingl[eé]s|infantil/i.test(t)) {
+        phrase = "formación práctica y aprendizaje activo";
+      } else if (/arquitect|construct|inmobiliar|muebler|diseñ|interior|carpinter|obra|decorac|hogar|remodel|casa|espacio/i.test(t)) {
+        phrase = "arquitectura y espacios a medida";
+      } else if (/industr|manufactur|automatiz|log[ií]st|transporte|flota|ingenier|maquinar|planta|mantenim|energ|solar|agro/i.test(t)) {
+        phrase = "ingeniería y eficiencia operativa industrial";
+      } else if (/tienda|boutique|ropa|moda|calzado|joyer|cosm[eé]t|belleza|perfum|ecommerce|accesorio|regalo|textil|piel|bolsa|reloj/i.test(t)) {
+        phrase = "diseño de producto con identidad";
+      } else if (/software|app|saas|inteligencia artificial|plataforma|digital|tecnolog|startup|web|datos|sistema|cloud/i.test(t)) {
+        phrase = "tecnología digital y automatización ágil";
+      } else {
+        const stripped = t
+          .replace(/^(?:quiero\s+poner\s+|me\s+dedico\s+a\s+|nos\s+dedicamos\s+a\s+|vendo\s+|vendemos\s+|hago\s+|hacemos\s+|ofrecemos\s+|somos\s+|tengo\s+|abrimos\s+|creamos\s+|fabricamos\s+|elaboramos\s+|doy\s+|damos\s+)?(?:un\s+|una\s+|unos\s+|unas\s+|el\s+|la\s+|los\s+|las\s+)?(?:negocio\s+de\s+|empresa\s+de\s+|marca\s+de\s+|servicio\s+de\s+|proyecto\s+de\s+|tienda\s+de\s+)?/i, "")
+          .trim();
+        const tokens = stripped.split(/\s+/).filter(Boolean);
+        if (tokens.length >= 2) {
+          phrase = tokens.slice(0, 6).join(" ");
+        }
+      }
+
+      const trailing = new Set(["de", "con", "para", "sin", "en", "a", "y", "o", "por", "del", "al", "el", "la", "los", "las", "un", "una"]);
+      const finalWords = phrase.split(/\s+/).slice(0, 6);
+      while (finalWords.length > 2 && trailing.has(finalWords[finalWords.length - 1].toLowerCase())) {
+        finalWords.pop();
+      }
+      return finalWords.join(" ");
+    }
+
     function interpretStep0BusinessExplanation(rawText) {
       const clean = (rawText || "").trim();
       if (!clean) return null;
@@ -11663,20 +11726,21 @@
         .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
 
       const slots = extractCompositionalSlotsJS(clean);
+      const shortEssence = buildShortEssenceMax6Words(clean);
       const domainLabel = slots.domainLabel;
       const paraphrasedEssence = slots.offerConcept;
       const inferredAudience = slots.targetConcept;
       const coreChallenge = slots.marketPain;
       const sensoryFocus = slots.sensoryFocus;
-      const specialtyConcept = slots.specialtyConcept;
 
+      // REGLA v25.1: En las preguntas siguientes se utiliza exclusivamente el resumen de MÁXIMO 6 PALABRAS (shortEssence)
       const step1QuestionsMap = {
-        golden_circle: `Pensando en ${inferredAudience}, hoy es muy común que enfrenten ${coreChallenge}. ¿Qué viste o viviste tú personalmente que te impulsó a ofrecer ${paraphrasedEssence} como una alternativa mucho más honesta y superior?`,
-        value_offer: `Cuando ${inferredAudience} comparan tu propuesta frente a las opciones comerciales habituales, ¿qué detalle específico dentro de tu enfoque en ${specialtyConcept} les demuestra de inmediato que están tomando la mejor decisión?`,
-        social_role: `Mirando a los próximos 3 a 5 años, ¿cómo te gustaría que tu propuesta de ${paraphrasedEssence} transforme el bienestar o la vida diaria de ${inferredAudience}?`,
-        process_steps_text: `Para que ${inferredAudience} disfruten de ${paraphrasedEssence} con total confianza y cero fricciones, ¿cuáles son los 3 pasos clave desde su primer contacto o pedido hasta la entrega final?`,
-        core_message: `Si ${inferredAudience} pudieran recordar una sola promesa poderosa sobre el valor de tu ${specialtyConcept}, ¿cuál te gustaría que fuera ese mensaje central?`,
-        ideal_customer: `Dentro del grupo de ${inferredAudience}, ¿cómo describirías al cliente ideal que más valora tu ${specialtyConcept} y con qué frecuencia te busca o te necesita?`
+        golden_circle: `Al ofrecer ${shortEssence}, ¿qué necesidad mal atendida viste en el mercado que te impulsó a crear algo mejor?`,
+        value_offer: `Dentro de tu ${shortEssence}, ¿qué ingrediente, método o detalle único hace que tus clientes te elijan frente a la competencia?`,
+        social_role: `Con tu ${shortEssence}, ¿qué cambio positivo quieres lograr en la vida de tus clientes en los próximos 3 a 5 años?`,
+        process_steps_text: `Para entregar tu ${shortEssence} sin fricciones, ¿cuáles son los 3 pasos simples desde el primer contacto hasta la entrega final?`,
+        core_message: `Si tus clientes recordaran una sola promesa sobre tu ${shortEssence}, ¿cuál te gustaría que fuera ese mensaje central?`,
+        ideal_customer: `¿Cómo es el cliente ideal que más valora tu ${shortEssence} y qué es lo que más cuida al elegirte?`
       };
 
       const finalRoots = [];
@@ -11687,15 +11751,15 @@
 
       const step2Guide = {
         label: domainLabel,
-        leaderAdvice: `Para posicionar una propuesta enfocada en ${paraphrasedEssence}, diseñemos puntos de contacto centrados en ${sensoryFocus}.`,
-        beforeQuestion: `1. Antes de Elegirte (Descubrimiento): Pensando en ${inferredAudience}, ¿qué necesitan percibir, ver o probar en su primer acercamiento para confiar en tu propuesta?`,
-        duringQuestion: `2. En el Momento Clave (Experiencia Activa): Mientras el cliente vive tu experiencia, ¿cómo haces presente tu cuidado por ${sensoryFocus}?`,
-        afterQuestion: `3. Después de la Entrega (Lealtad y Recomendación): Una vez resuelta su necesidad, ¿qué detalle o seguimiento mantiene vivo el vínculo para que regrese y te recomiende?`,
+        leaderAdvice: `Para tu propuesta de ${shortEssence}, diseñemos puntos de contacto memorables antes, durante y después de la compra.`,
+        beforeQuestion: `1. Antes de Elegirte: Para confiar en tu ${shortEssence}, ¿qué necesita ver o probar el cliente en su primer contacto?`,
+        duringQuestion: `2. En el Momento Clave: Al vivir tu ${shortEssence}, ¿qué detalle de atención o calidad marca la diferencia?`,
+        afterQuestion: `3. Después de la Entrega: Tras recibir tu ${shortEssence}, ¿qué empaque o seguimiento logra que el cliente regrese?`,
         cards: {
           before: [
-            { icon: "✨", label: `Muestra tangible o demostración visual que transmite confianza inmediata a ${inferredAudience}`, sub: "👁️ Impacto visual + 🧠 Elimina dudas desde el primer segundo", tag: "Primera Impresión" },
+            { icon: "✨", label: `Muestra o demostración inicial de tu ${shortEssence} que transmite confianza inmediata`, sub: "👁️ Impacto visual + 🧠 Elimina dudas desde el primer segundo", tag: "Primera Impresión" },
             { icon: "📲", label: "Atención inicial cálida, orientadora y sin tecnicismos en menos de 5 minutos", sub: "👂 Escucha empática · El prospecto siente que entendiste su necesidad real", tag: "Respuesta Ágil" },
-            { icon: "🌿", label: `Identidad sensorial coherente enfocada en ${sensoryFocus}`, sub: "👃 + ✋ Cuidado perceptible en cada detalle físico y digital", tag: "Sello Sensorial" },
+            { icon: "🌿", label: `Presentación e identidad sensorial alineada con tu ${shortEssence}`, sub: "👃 + ✋ Cuidado perceptible en cada detalle físico y digital", tag: "Sello Sensorial" },
             { icon: "🌟", label: "Historias reales de transformación y resultados comprobables de otros clientes", sub: "🤝 Prueba social auténtica que vence la desconfianza del mercado", tag: "Certeza" }
           ],
           during: [
@@ -11717,7 +11781,8 @@
         `<div style="display:grid; grid-template-columns:1fr; gap:6px; margin-top:4px;">` +
         `<div style="background:rgba(255,255,255,0.06); border:1px solid rgba(212,175,55,0.35); border-radius:10px; padding:8px 10px;">` +
         `<span style="color:#FDE68A; font-weight:800; font-size:0.74rem; display:block;">🎯 1. ESENCIA Y ESPECIALIDAD INTERPRETADA</span>` +
-        `<span style="color:#FFFFFF; font-size:0.83rem;">Ofreces <strong>${escapeHTML(paraphrasedEssence)}</strong>.</span></div>` +
+        `<span style="color:#FFFFFF; font-size:0.83rem;">Ofreces <strong>${escapeHTML(paraphrasedEssence)}</strong>.</span>` +
+        `<span style="display:block; margin-top:4px; font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A;">⚡ Resumen para preguntas (≤ 6 palabras): «${escapeHTML(shortEssence)}»</span></div>` +
         `<div style="background:rgba(255,255,255,0.06); border:1px solid rgba(52,211,153,0.35); border-radius:10px; padding:8px 10px;">` +
         `<span style="color:#6EE7B7; font-weight:800; font-size:0.74rem; display:block;">👥 2. CLIENTE IDEAL Y PSICOLOGÍA DETECTADA</span>` +
         `<span style="color:#FFFFFF; font-size:0.83rem;">Enfocado en <strong>${escapeHTML(inferredAudience)}</strong>.</span></div>` +
@@ -11727,22 +11792,23 @@
         `</div>`
       );
       const expansionPreview = (
-        `<strong>💬 4. Vista previa de tu Primera Pregunta Adaptada (Paso 1):</strong><br/>` +
+        `<strong>💬 4. Vista previa de tu Primera Pregunta Adaptada (con resumen ≤ 6 palabras):</strong><br/>` +
         `<em style="color:#FDE68A;">"${escapeHTML(step1QuestionsMap.golden_circle)}"</em><br/>` +
         `<span style="font-size:0.73rem; color:#94A3B8; display:block; margin-top:4px;">` +
-        `✓ Además adaptamos tus 12 Touchpoints del Paso 2 (centrados en ${escapeHTML(sensoryFocus)}) y sembramos las raíces de Naming: <strong>${escapeHTML(rootsSlice.join(", "))}</strong>.` +
+        `✓ Además adaptamos tus 12 Touchpoints del Paso 2 y sembramos las raíces de Naming: <strong>${escapeHTML(rootsSlice.join(", "))}</strong>.` +
         `</span>`
       );
 
       return {
         raw: clean,
+        shortEssence,
         domainLabel,
         paraphrasedEssence,
         inferredAudience,
         coreChallenge,
         sensoryFocus,
         roots: rootsSlice,
-        synthesisPlain: `Modelo enfocado en ${paraphrasedEssence}, dirigido a ${inferredAudience}, con el reto estratégico de ${coreChallenge}.`,
+        synthesisPlain: shortEssence,
         synthesisHtml: synthesisText,
         expansionHtml: expansionPreview,
         step1Question: step1QuestionsMap.golden_circle,
@@ -11770,15 +11836,17 @@
         if (!res.ok) return null;
         const data = await res.json();
         if (!data || !data.paraphrased_essence) return null;
+        const shortEss = data.short_essence || buildShortEssenceMax6Words(cleanVal);
         const merged = {
           raw: cleanVal,
+          shortEssence: shortEss,
           domainLabel: data.concept_title || "✦ Propuesta Especializada de Alto Valor",
           paraphrasedEssence: data.paraphrased_essence,
           inferredAudience: data.buyer_actor,
           coreChallenge: data.market_pain,
           sensoryFocus: data.sensory_focus,
           roots: Array.isArray(data.naming_roots) && data.naming_roots.length ? data.naming_roots : ["Origen", "Nexo", "Valor"],
-          synthesisPlain: data.synthesis_plain,
+          synthesisPlain: shortEss,
           synthesisHtml: data.synthesis_html,
           expansionHtml: data.expansion_html,
           step1Question: (data.step1_questions && data.step1_questions.golden_circle) || "",
@@ -11812,18 +11880,19 @@
 
     function applyStep0InterpretationAcrossAllSteps(interp) {
       if (!interp) return;
+      const shortEss = interp.shortEssence || buildShortEssenceMax6Words(interp.raw || "");
       window.step0State.interpretedProfile = interp;
       canvasState.custom_business_type = interp.raw;
-      canvasState.step0_business_interpretation = interp.synthesisPlain;
+      canvasState.step0_business_interpretation = shortEss;
       canvasState.step0_adapted_questions = interp.step1QuestionsMap || {};
 
-      // 1. Adaptar Paso 1 (Insight de interpretación conceptual + Primera Pregunta Socrática ampliada sin repetir texto literal)
+      // 1. Adaptar Paso 1 con el resumen de MÁXIMO 6 PALABRAS (shortEssence) para no saturar la pantalla ni la voz de Aura
       const qCat = document.getElementById("questionCategory");
       const qLead = document.getElementById("auraInsightLead");
       const qHead = document.getElementById("activeQuestionHeading");
       if (qCat) qCat.textContent = `01 · Propósito Nuclear · ${interp.domainLabel.replace(/^[^\s]+\s/, "")}`;
       if (qLead) {
-        qLead.innerHTML = `<strong style="color:#92400E; font-family:var(--font-mono); font-size:0.74rem; letter-spacing:0.05em; text-transform:uppercase; display:block; margin-bottom:4px;">✦ Interpretación Estratégica de tu Giro (${escapeHTML(interp.domainLabel)})</strong><span style="color:#090D16; font-size:0.88rem; line-height:1.42;">Propuesta enfocada en <strong>${escapeHTML(interp.paraphrasedEssence)}</strong>, dirigida a <strong>${escapeHTML(interp.inferredAudience)}</strong>, resolviendo <em>${escapeHTML(interp.coreChallenge)}</em>.</span>`;
+        qLead.innerHTML = `<span style="font-family:var(--font-mono); font-size:0.75rem; font-weight:800; color:#92400E;">✦ GIRO ACTIVO (≤ 6 PALABRAS):</span> <strong style="color:#090D16; font-size:0.9rem;">${escapeHTML(shortEss.charAt(0).toUpperCase() + shortEss.slice(1))}</strong>`;
         qLead.style.display = "block";
       }
       if (qHead && interp.step1Question) {
