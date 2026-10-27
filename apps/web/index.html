@@ -1355,13 +1355,16 @@
     .welcome-modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(9, 13, 22, 0.62);
+      background: rgba(9, 13, 22, 0.72);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       z-index: 1200;
       display: none;
       place-items: center;
-      padding: 20px;
+      padding: 12px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
       animation: fadeInTurn 0.25s ease;
     }
     .welcome-modal-overlay.open {
@@ -1370,16 +1373,19 @@
     .welcome-modal-card {
       width: 100%;
       max-width: 520px;
+      max-height: calc(100dvh - 24px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       background: #FFFFFF;
-      border-radius: 28px;
+      border-radius: 24px;
       border: 1px solid var(--border-subtle);
-      padding: 28px 26px;
+      padding: 22px 20px;
       box-shadow: 0 24px 60px rgba(9, 13, 22, 0.28);
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 16px;
+      gap: 14px;
       animation: popIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .welcome-modal-badge {
@@ -2480,7 +2486,7 @@
       <!-- BIENVENIDA CENTRADA DE AURA -->
       <div style="width:100%; background:linear-gradient(145deg, #090D16 0%, #1E293B 100%); color:#FAF8F5; border:2px solid #D4AF37; border-radius:26px; padding:24px 22px; text-align:center; margin-bottom:18px; box-shadow:0 18px 40px rgba(9,13,22,0.16);">
         <span style="display:inline-block; background:rgba(212,175,55,0.2); color:#FDE68A; border:1px solid #D4AF37; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; padding:4px 12px; border-radius:999px; margin-bottom:10px;">
-          ✦ PASO 0 · BIENVENIDA E INTERPRETACIÓN IA (v25.2)
+          ✦ PASO 0 · BIENVENIDA E INTERPRETACIÓN IA (v25.3)
         </span>
         <h1 style="font-family:var(--font-display); font-size:clamp(1.45rem, 3.8vw, 1.95rem); font-weight:800; color:#FFFFFF; line-height:1.22; margin-bottom:8px;">
           Te damos la bienvenida a tu Taller de Marca con Aura
@@ -2653,16 +2659,9 @@
             </span>
           </div>
           <div id="step0InterpSynthesisText" style="font-size:0.86rem; color:#FFFFFF; line-height:1.42; font-weight:600; margin-bottom:10px;"></div>
-          <div id="step0InterpExpansionPreview" style="font-size:0.78rem; color:#CBD5E1; line-height:1.38; background:rgba(255,255,255,0.05); border-left:3px solid #D4AF37; padding:8px 10px; border-radius:6px; margin-bottom:12px;"></div>
-          <!-- BOTONES DE CONFIRMACIÓN DIRECTA DENTRO DE LA TARJETA DE INTERPRETACIÓN -->
-          <div style="display:flex; flex-direction:column; gap:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.12);">
-            <button
-              type="button"
-              onclick="completeStep0AndStartExperience('focus')"
-              style="width:100%; padding:12px 16px; border-radius:12px; border:1.5px solid #FDE68A; background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); color:#090D16; font-family:var(--font-ui); font-size:0.9rem; font-weight:900; cursor:pointer; text-align:center; box-shadow:0 6px 16px rgba(212,175,55,0.3);"
-            >
-              ✓ ¡Exacto! Iniciar Entrevista con estas Preguntas Adaptadas →
-            </button>
+          <div id="step0InterpExpansionPreview" style="font-size:0.78rem; color:#CBD5E1; line-height:1.38; background:rgba(255,255,255,0.05); border-left:3px solid #D4AF37; padding:8px 10px; border-radius:6px; margin-bottom:10px;"></div>
+          <!-- ACCIÓN SECUNDARIA DE EDICIÓN (EL BOTÓN PRINCIPAL DE INICIO ES ÚNICO ABAJO PARA NO REPETIRSE) -->
+          <div style="display:flex; justify-content:center; padding-top:6px; border-top:1px solid rgba(255,255,255,0.12);">
             <button
               type="button"
               onclick="focusStep0CustomBusinessInput(true)"
@@ -2674,9 +2673,9 @@
         </div>
       </div>
 
-      <!-- BOTONES DE ENTRADA CENTRADOS -->
-      <div style="width:100%; display:flex; flex-direction:column; align-items:center; gap:10px;">
-        <button type="button" id="btnCompleteStep0Start" onclick="completeStep0AndStartExperience('focus')" style="width:100%; max-width:520px; padding:16px 24px; border-radius:999px; border:2px solid #D4AF37; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; font-family:var(--font-ui); font-size:1.05rem; font-weight:800; cursor:pointer; box-shadow:0 12px 28px rgba(9,13,22,0.22);">
+      <!-- BOTÓN ÚNICO DE ENTRADA CENTRADO (SIN DUPLICADOS) -->
+      <div style="width:100%; display:flex; flex-direction:column; align-items:center; gap:10px; padding-bottom:28px;">
+        <button type="button" id="btnCompleteStep0Start" onclick="completeStep0AndStartExperience('focus')" style="width:100%; max-width:540px; padding:16px 24px; border-radius:999px; border:2px solid #D4AF37; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; font-family:var(--font-ui); font-size:1.02rem; font-weight:800; cursor:pointer; box-shadow:0 12px 28px rgba(9,13,22,0.22);">
           ✨ Comenzar Mi Experiencia con Aura (Paso 1) →
         </button>
         <button type="button" onclick="completeStep0AndStartExperience('journey')" style="background:transparent; border:none; color:#475569; font-family:var(--font-ui); font-size:0.88rem; font-weight:700; cursor:pointer; text-decoration:underline; padding:6px;">
@@ -4288,53 +4287,51 @@
   </div>
 
   <!-- CLOSING & TRANSITION VIDEO CAPSULE MODAL (PLAYS WHILE GENERATING PHASE SUMMARY REPORT) -->
-  <div class="welcome-modal-overlay" id="phaseTransitionVideoModal" style="z-index: 9999;">
-    <div class="welcome-modal-card" style="max-width: 760px; width: 94%; background: linear-gradient(145deg, #090D16 0%, #111827 100%); border: 2px solid #D4AF37; box-shadow: 0 28px 90px rgba(0,0,0,0.85); color: #FFFFFF; padding: 28px;" onclick="event.stopPropagation()">
-      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:10px;">
-        <span class="welcome-modal-badge" id="transitionVideoBadge" style="background:rgba(212,175,55,0.2); color:#FDE68A; border:1px solid rgba(212,175,55,0.5);">🎬 CÁPSULA DE CIERRE CON VOZ DE AURA</span>
-        <span id="transitionVideoStatusPill" style="font-family:var(--font-mono); font-size:0.74rem; color:#34D399; background:rgba(16,185,129,0.16); padding:4px 12px; border-radius:99px; border:1px solid rgba(16,185,129,0.4); font-weight:800;">⚡ Preparando Resumen de tus Decisiones...</span>
+  <div class="welcome-modal-overlay" id="phaseTransitionVideoModal" style="z-index: 9999; padding: 10px; overflow-y: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
+    <div class="welcome-modal-card" style="max-width: 640px; width: 96%; max-height: calc(100dvh - 20px); overflow-y: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y; overscroll-behavior: contain; background: linear-gradient(145deg, #090D16 0%, #111827 100%); border: 2px solid #D4AF37; box-shadow: 0 28px 90px rgba(0,0,0,0.85); color: #FFFFFF; padding: 14px 14px 12px 14px; display: block; text-align: left;" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:6px;">
+        <span class="welcome-modal-badge" id="transitionVideoBadge" style="background:rgba(212,175,55,0.2); color:#FDE68A; border:1px solid rgba(212,175,55,0.5); font-size:0.64rem; padding:3px 9px;">🎬 CÁPSULA DE CIERRE CON AURA</span>
+        <span id="transitionVideoStatusPill" style="font-family:var(--font-mono); font-size:0.64rem; color:#34D399; background:rgba(16,185,129,0.16); padding:3px 9px; border-radius:99px; border:1px solid rgba(16,185,129,0.4); font-weight:800;">✓ Avance al 100%</span>
       </div>
-      <h2 id="transitionVideoTitle" style="font-family:var(--font-display); font-size:1.55rem; font-weight:800; color:#FFFFFF; margin:0 0 6px 0; line-height:1.2;">
+      <h2 id="transitionVideoTitle" style="font-family:var(--font-display); font-size:clamp(1.08rem, 3.8vw, 1.38rem); font-weight:800; color:#FFFFFF; margin:0 0 3px 0; line-height:1.18; text-align:center;">
         Cierre de Fase Completado · Resumen de Avance con Aura
       </h2>
-      <p id="transitionVideoSubtitle" style="font-size:0.95rem; color:#CBD5E1; margin:0 0 14px 0; line-height:1.5;">
-        Mientras guardamos el avance de esta etapa en tu Brandbook, escucha a Aura y revisa lo que acabas de construir:
+      <p id="transitionVideoSubtitle" style="font-size:0.78rem; color:#CBD5E1; margin:0 0 8px 0; line-height:1.32; text-align:center;">
+        Revisa lo que acabas de construir con Aura antes de pasar a la siguiente etapa:
       </p>
 
-      <!-- REPRODUCTOR DE VIDEO GENERATIVO EN VIVO (CANVAS CINEMATOGRÁFICO + SUBTÍTULOS DE AURA) -->
-      <div style="position:relative; border-radius:16px; overflow:hidden; border:1.5px solid rgba(212,175,55,0.55); background:#05070B; margin-bottom:16px; box-shadow:0 12px 32px rgba(0,0,0,0.5);">
-        <canvas id="transitionVideoCanvas" width="700" height="210" style="width:100%; height:210px; display:block;"></canvas>
-        <div style="position:absolute; top:12px; left:14px; display:flex; align-items:center; gap:8px; background:rgba(9,13,22,0.82); backdrop-filter:blur(6px); padding:4px 10px; border-radius:99px; border:1px solid rgba(212,175,55,0.4);">
-          <span style="width:8px; height:8px; border-radius:50%; background:#10B981; display:inline-block;"></span>
-          <span id="transitionVideoChapterTag" style="font-family:var(--font-mono); font-size:0.68rem; color:#FDE68A; font-weight:800;">CÁPSULA DE CIERRE · VOZ DE AURA</span>
-        </div>
-        <div style="position:absolute; bottom:14px; left:16px; right:16px; background:rgba(9,13,22,0.88); backdrop-filter:blur(8px); padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.15);">
-          <div id="transitionVideoCaptionText" style="font-size:0.88rem; color:#FAF8F5; font-weight:600; line-height:1.4;">
+      <!-- REPRODUCTOR DE ONDA DE VOZ DE AURA (COMPACTO Y SIN ETIQUETAS ENCIMADAS NI REPETIDAS) -->
+      <div style="position:relative; border-radius:12px; overflow:hidden; border:1.5px solid rgba(212,175,55,0.5); background:#05070B; margin-bottom:10px; box-shadow:0 6px 18px rgba(0,0,0,0.4);">
+        <canvas id="transitionVideoCanvas" width="380" height="82" style="width:100%; height:82px; display:block;"></canvas>
+        <span id="transitionVideoChapterTag" style="display:none;"></span>
+        <div style="position:absolute; inset:8px 10px 8px 10px; display:flex; align-items:center; justify-content:center; background:rgba(9,13,22,0.78); backdrop-filter:blur(6px); padding:6px 10px; border-radius:9px; border:1px solid rgba(255,255,255,0.14); text-align:center;">
+          <div id="transitionVideoCaptionText" style="font-size:0.76rem; color:#FAF8F5; font-weight:600; line-height:1.28;">
             "Cada detalle que defines hace tu marca más única, tangible e irrepetible..."
           </div>
         </div>
-        <div style="position:absolute; bottom:0; left:0; right:0; height:5px; background:rgba(255,255,255,0.12);">
+        <div style="position:absolute; bottom:0; left:0; right:0; height:3px; background:rgba(255,255,255,0.12);">
           <div id="transitionVideoProgressBar" style="width:25%; height:100%; background:linear-gradient(90deg, #D4AF37, #10B981, #38BDF8); transition:width 0.35s ease;"></div>
         </div>
       </div>
 
-      <!-- RESEÑA DE DESCUBRIMIENTOS DEL USUARIO -->
-      <div id="transitionVideoReviewCard" style="background:rgba(255,255,255,0.05); border:1px solid rgba(212,175,55,0.35); border-radius:14px; padding:14px 18px; margin-bottom:18px; text-align:left;">
-        <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#FDE68A; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;">
-          ✨ RESEÑA DE LO QUE HAS CONSTRUIDO HASTA AHORA (¡SIGUE SIENDO ASÍ DE ESPECÍFICO!)
+      <!-- RESEÑA DE DESCUBRIMIENTOS DEL USUARIO (CABE COMPLETA EN PANTALLA Y PERMITE SCROLL SI ES EXTENSA) -->
+      <div id="transitionVideoReviewCard" style="background:rgba(255,255,255,0.05); border:1px solid rgba(212,175,55,0.35); border-radius:12px; padding:10px 12px; margin-bottom:10px; text-align:left;">
+        <div style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; color:#FDE68A; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">
+          ✨ RESEÑA DE LO QUE HAS CONSTRUIDO HASTA AHORA:
         </div>
-        <div id="transitionVideoDiscoveriesList" style="font-size:0.88rem; color:#E2E8F0; line-height:1.55; display:grid; gap:6px;">
+        <div id="transitionVideoDiscoveriesList" style="font-size:0.78rem; color:#E2E8F0; line-height:1.36; display:grid; gap:5px;">
           <!-- Dinámico según la fase completada -->
         </div>
       </div>
 
-      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
-        <span id="transitionVideoNextHint" style="font-size:0.82rem; color:#94A3B8; font-weight:600;">
-          ✓ Avance guardado automáticamente en tu Brandbook Maestro
-        </span>
-        <button class="btn-welcome-start" id="btnFinishTransitionVideo" onclick="finishTransitionVideoAndEnterNextStep()" style="width:auto; padding:12px 26px; font-size:0.95rem;">
+      <!-- BARRA INFERIOR STICKY PARA QUE EL BOTÓN DE CONTINUAR SIEMPRE SEA VISIBLE EN MÓVIL -->
+      <div style="position:sticky; bottom:-12px; background:linear-gradient(180deg, rgba(9,13,22,0.94) 0%, #090D16 25%); padding:8px 0 2px 0; border-top:1px solid rgba(212,175,55,0.35); display:flex; flex-direction:column; align-items:center; gap:4px; z-index:10;">
+        <button class="btn-welcome-start" id="btnFinishTransitionVideo" onclick="finishTransitionVideoAndEnterNextStep()" style="width:100%; padding:11px 16px; font-size:0.88rem; font-weight:900; border-radius:11px; background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); color:#090D16; border:1.5px solid #FDE68A; box-shadow:0 6px 18px rgba(212,175,55,0.35);">
           <span id="btnFinishTransitionVideoText">Continuar al Siguiente Paso →</span>
         </button>
+        <span id="transitionVideoNextHint" style="font-size:0.68rem; color:#94A3B8; font-weight:600; text-align:center;">
+          ✓ Avance guardado automáticamente en tu Brandbook Maestro
+        </span>
       </div>
     </div>
   </div>
@@ -7129,10 +7126,9 @@
           caption: `"Has definido el alma estratégica de ${bName}. Ahora llevaremos esta esencia a cada punto de contacto real con tu cliente..."`,
           voiceText: `¡Excelente trabajo! Hemos sintetizado el propósito nuclear y la promesa de valor de ${bName}. Mientras generamos tu reporte de este paso, prepárate para ser aún más específico en los puntos de contacto Antes, Durante y Después de la compra.`,
           bullets: [
-            `🎯 <strong>Propósito Nuclear (Círculo Dorado):</strong> ${escapeHTML((canvasState.golden_circle || "Transformar la categoría con excelencia e innovación sin fricción.").slice(0, 160))}`,
-            `💎 <strong>Oferta de Valor Diferenciada:</strong> ${escapeHTML((canvasState.value_offer || "Sistema integral de alto impacto y confiabilidad comprobada.").slice(0, 150))}`,
-            `🗣️ <strong>Mensaje Central y Cliente Ideal:</strong> ${escapeHTML((canvasState.core_message || "Claridad, prestigio y resultados tangibles para clientes exigentes.").slice(0, 150))}`,
-            `🚀 <strong>Impulso para el Paso 2:</strong> Cuanto más específico seas ahora al describir tus empaques, cotizaciones y canales de venta, más rico será tu Brandbook final.`
+            `🎯 <strong>Propósito Nuclear (Círculo Dorado):</strong> ${escapeHTML((canvasState.golden_circle || "Transformar la categoría con excelencia e innovación sin fricción.").slice(0, 145))}`,
+            `💎 <strong>Oferta de Valor Diferenciada:</strong> ${escapeHTML((canvasState.value_offer || "Sistema integral de alto impacto y confiabilidad comprobada.").slice(0, 140))}`,
+            `🗣️ <strong>Mensaje Central y Cliente Ideal:</strong> ${escapeHTML((canvasState.core_message || canvasState.ideal_customer || "Claridad, prestigio y resultados tangibles para clientes exigentes.").slice(0, 140))}`
           ],
           ctaLabel: "Ir al Paso 2: Touchpoints (Antes, Durante y Después) →"
         },
@@ -7293,13 +7289,7 @@
         ctx.stroke();
       }
 
-      // Nodos de conexión de pasos (1 -> 6)
-      const bName = (canvasState.brandName || "TheBestBrand").toUpperCase();
-      ctx.fillStyle = "rgba(253, 230, 138, 0.92)";
-      ctx.font = "800 16px 'Space Grotesk', sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(`RESUMEN DE AVANCE CON AURA · ${bName} · PASO 0${fromStep} → PASO 0${toStep}`, w / 2, 58);
-
+      // Animación limpia de ondas de voz sin texto encimado en el canvas
       transitionVideoAnimId = requestAnimationFrame(() => renderTransitionVideoLoop(fromStep, toStep));
     }
 
@@ -11579,7 +11569,7 @@
       }
 
       const specialtyConcept = specParts.length > 0
-        ? specParts.join(" y ")
+        ? specParts[0]
         : "un método propio enfocado en calidad superior, honestidad y atención al detalle";
       const sensoryFocus = sensoryParts.length > 0
         ? sensoryParts.slice(0, 2).join(", junto con ")
@@ -11791,8 +11781,7 @@
         `<div style="display:grid; grid-template-columns:1fr; gap:6px; margin-top:4px;">` +
         `<div style="background:rgba(255,255,255,0.06); border:1px solid rgba(212,175,55,0.35); border-radius:10px; padding:8px 10px;">` +
         `<span style="color:#FDE68A; font-weight:800; font-size:0.74rem; display:block;">🎯 1. ESENCIA Y ESPECIALIDAD INTERPRETADA</span>` +
-        `<span style="color:#FFFFFF; font-size:0.83rem;">Ofreces <strong>${escapeHTML(paraphrasedEssence)}</strong>.</span>` +
-        `<span style="display:block; margin-top:4px; font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A;">⚡ Resumen para preguntas (≤ 6 palabras): «${escapeHTML(shortEssence)}»</span></div>` +
+        `<span style="color:#FFFFFF; font-size:0.83rem;">Ofreces <strong>${escapeHTML(paraphrasedEssence)}</strong>.</span></div>` +
         `<div style="background:rgba(255,255,255,0.06); border:1px solid rgba(52,211,153,0.35); border-radius:10px; padding:8px 10px;">` +
         `<span style="color:#6EE7B7; font-weight:800; font-size:0.74rem; display:block;">👥 2. CLIENTE IDEAL Y PSICOLOGÍA DETECTADA</span>` +
         `<span style="color:#FFFFFF; font-size:0.83rem;">Enfocado en <strong>${escapeHTML(inferredAudience)}</strong>.</span></div>` +
@@ -11802,10 +11791,10 @@
         `</div>`
       );
       const expansionPreview = (
-        `<strong>💬 4. Vista previa de tu Primera Pregunta Adaptada (con resumen ≤ 6 palabras):</strong><br/>` +
+        `<strong>💬 4. Primera Pregunta Adaptada (síntesis activa: «${escapeHTML(shortEssence)}»):</strong><br/>` +
         `<em style="color:#FDE68A;">"${escapeHTML(step1QuestionsMap.golden_circle)}"</em><br/>` +
         `<span style="font-size:0.73rem; color:#94A3B8; display:block; margin-top:4px;">` +
-        `✓ Además adaptamos tus 12 Touchpoints del Paso 2 y sembramos las raíces de Naming: <strong>${escapeHTML(rootsSlice.join(", "))}</strong>.` +
+        `✓ Touchpoints del Paso 2 adaptados · Raíces de Naming: <strong>${escapeHTML(rootsSlice.join(", "))}</strong>.` +
         `</span>`
       );
 
@@ -11877,15 +11866,26 @@
       const badge = document.getElementById("step0InterpDomainBadge");
       const synEl = document.getElementById("step0InterpSynthesisText");
       const expEl = document.getElementById("step0InterpExpansionPreview");
+      const startBtn = document.getElementById("btnCompleteStep0Start");
       if (!card) return;
       if (!interp) {
         card.style.display = "none";
+        if (startBtn) {
+          startBtn.innerHTML = "✨ Comenzar Mi Experiencia con Aura (Paso 1) →";
+          startBtn.style.background = "linear-gradient(135deg, #090D16 0%, #1E293B 100%)";
+          startBtn.style.color = "#FDE68A";
+        }
         return;
       }
       card.style.display = "block";
       if (badge) badge.textContent = interp.domainLabel;
       if (synEl) synEl.innerHTML = interp.synthesisHtml;
       if (expEl) expEl.innerHTML = interp.expansionHtml;
+      if (startBtn) {
+        startBtn.innerHTML = "✓ ¡Exacto! Iniciar Entrevista con Preguntas Adaptadas (Paso 1) →";
+        startBtn.style.background = "linear-gradient(135deg, #D4AF37 0%, #B45309 100%)";
+        startBtn.style.color = "#090D16";
+      }
     }
 
     function applyStep0InterpretationAcrossAllSteps(interp) {

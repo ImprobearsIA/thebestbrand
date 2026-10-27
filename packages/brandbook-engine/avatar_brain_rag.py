@@ -895,8 +895,7 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             f"<div style='display:grid; grid-template-columns:1fr; gap:8px; margin-top:4px;'>"
             f"<div style='background:rgba(255,255,255,0.06); padding:9px 12px; border-radius:10px; border-left:3px solid #FDE68A;'>"
             f"<strong style='color:#FDE68A; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.04em; display:block;'>🎯 1. Esencia y Especialidad Interpretada</strong>"
-            f"<span style='color:#FFFFFF; font-size:0.85rem;'>Propuesta enfocada en <strong>{paraphrased_essence}</strong>.</span>"
-            f"<span style='display:block; margin-top:4px; font-family:var(--font-mono); font-size:0.73rem; color:#FDE68A;'>⚡ Síntesis para preguntas (≤ 6 palabras): «{short_essence}»</span></div>"
+            f"<span style='color:#FFFFFF; font-size:0.85rem;'>Propuesta enfocada en <strong>{paraphrased_essence}</strong>.</span></div>"
             f"<div style='background:rgba(255,255,255,0.06); padding:9px 12px; border-radius:10px; border-left:3px solid #38BDF8;'>"
             f"<strong style='color:#7DD3FC; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.04em; display:block;'>👥 2. Cliente Ideal y Psicología Detectada</strong>"
             f"<span style='color:#FFFFFF; font-size:0.85rem;'>Dirigido a <strong>{buyer_actor}</strong>.</span></div>"
@@ -906,8 +905,11 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             f"</div>"
         )
         expansion_html = (
-            f"<strong>💬 4. Vista previa de tu Primera Pregunta Adaptada (con resumen ≤ 6 palabras):</strong><br/>"
-            f"<em style='color:#FDE68A; font-weight:600;'>«{step1_questions['golden_circle']}»</em>"
+            f"<strong>💬 4. Primera Pregunta Adaptada (síntesis activa: «{short_essence}»):</strong><br/>"
+            f"<em style='color:#FDE68A; font-weight:600;'>«{step1_questions['golden_circle']}»</em><br/>"
+            f"<span style='font-size:0.73rem; color:#94A3B8; display:block; margin-top:4px;'>"
+            f"✓ Touchpoints del Paso 2 adaptados · Raíces de Naming: <strong>{', '.join(naming_roots)}</strong>."
+            f"</span>"
         )
 
         return {
@@ -935,8 +937,8 @@ Devuelve SIEMPRE JSON válido con estas llaves:
     ) -> Dict[str, Any]:
         """
         Interpreta profundamente la explicación del negocio del Paso 0 combinando el motor
-        semántico conceptual y Gemini, garantizando 0% repetición textual de la frase del usuario
-        y adaptando las 6 preguntas del Paso 1 y las 3 etapas del Paso 2.
+        semántico conceptual y Gemini, garantizando 0% repetición textual de la frase del usuario,
+        manteniendo la estructura limpia de 4 tarjetas y el resumen de máximo 6 palabras (short_essence).
         """
         base = cls.paraphrase_and_interpret_step0_business(raw_text)
         clean = (raw_text or "").strip()
@@ -951,28 +953,25 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             "Eres el Director de Estrategia de Marca de TheBestBrand. "
             "Tu tarea es INTERPRETAR la breve explicación del negocio que escribió el fundador en el Paso 0 y ADAPTAR las preguntas de los siguientes pasos.\n"
             "REGLA ESTRICTA E INQUEBRANTABLE: PROHIBIDO repetir, copiar o citar entre comillas la frase textual que escribió el usuario. "
-            "Debes parafrasear su idea con lenguaje estratégico de consultor, deducir quién es su cliente real, qué dolor oculto existe en ese giro específico, "
-            "y redactar preguntas que amplíen su explicación con situaciones y ejemplos propios de esa actividad económica.\n"
+            "PROHIBIDO mencionar 'pacientes' a menos que el usuario haya dicho explícitamente que es médico, clínica o dentista. "
+            "En las preguntas de step1_questions usa un resumen de máximo 6 palabras para referirte al giro.\n"
             "Devuelve ÚNICAMENTE un objeto JSON válido con las llaves: "
             "concept_title (string corto con emoji), paraphrased_essence (string sin comillas ni copia textual), "
-            "buyer_actor (string), market_pain (string), sensory_focus (string), naming_roots (array de 5 palabras raíz evocativas), "
-            "step1_questions (objeto con llaves golden_circle, value_offer, social_role, process_steps_text, core_message, ideal_customer), "
-            "step2_questions (objeto con llaves beforeQuestion, duringQuestion, afterQuestion, leaderAdvice)."
+            "buyer_actor (string), market_pain (string), sensory_focus (string), naming_roots (array de 5 palabras raíz evocativas)."
         )
         user_prompt = (
             f"EXPLICACIÓN ESCRITA POR EL FUNDADOR EN EL PASO 0: \"{clean}\"\n"
             f"OBJETIVO: {goal} | ACTIVOS PREVIOS: {assets}\n"
-            "Genera la interpretación conceptual profunda y las preguntas adaptadas para Paso 1 y Paso 2 SIN repetir la frase textual del fundador."
+            "Genera la interpretación conceptual profunda SIN repetir la frase textual del fundador."
         )
         ai_out = cls._call_gemini_json(user_prompt, sys_inst, active_key)
         if isinstance(ai_out, dict) and ai_out.get("paraphrased_essence"):
-            # Asegurar que Gemini no haya incluido la cadena literal entre comillas
             pe = str(ai_out.get("paraphrased_essence", "")).replace(f'"{clean}"', "").replace(f"«{clean}»", "").strip()
             ba = str(ai_out.get("buyer_actor", "")).strip() or base["buyer_actor"]
             mp = str(ai_out.get("market_pain", "")).strip() or base["market_pain"]
             sf = str(ai_out.get("sensory_focus", "")).strip() or base["sensory_focus"]
             ct = str(ai_out.get("concept_title", "")).strip() or base["concept_title"]
-            if pe:
+            if pe and "paciente" not in (pe + " " + ba).lower():
                 base["concept_title"] = ct
                 base["paraphrased_essence"] = pe
                 base["buyer_actor"] = ba
@@ -980,27 +979,27 @@ Devuelve SIEMPRE JSON válido con estas llaves:
                 base["sensory_focus"] = sf
                 if isinstance(ai_out.get("naming_roots"), list) and len(ai_out["naming_roots"]) >= 3:
                     base["naming_roots"] = [str(r) for r in ai_out["naming_roots"][:5]]
-                if isinstance(ai_out.get("step1_questions"), dict):
-                    for k in ("golden_circle", "value_offer", "social_role", "process_steps_text", "core_message", "ideal_customer"):
-                        q_val = str(ai_out["step1_questions"].get(k, "")).strip()
-                        if q_val and clean.lower() not in q_val.lower():
-                            base["step1_questions"][k] = q_val
-                if isinstance(ai_out.get("step2_questions"), dict):
-                    s2 = ai_out["step2_questions"]
-                    for k in ("beforeQuestion", "duringQuestion", "afterQuestion", "leaderAdvice"):
-                        v = str(s2.get(k, "")).strip()
-                        if v and clean.lower() not in v.lower():
-                            base["step2_guide"][k] = v
-                base["synthesis_plain"] = f"Modelo enfocado en {pe}, dirigido a {ba}, resolviendo {mp}."
+                short_essence = base["short_essence"]
+                base["synthesis_plain"] = short_essence
                 base["synthesis_html"] = (
-                    f"Interpretamos un modelo de negocio orientado a <strong>{pe}</strong>, "
-                    f"pensado para <strong>{ba}</strong>, donde la oportunidad estratégica consiste en resolver <em>{mp}</em>."
+                    f"<div style='display:grid; grid-template-columns:1fr; gap:8px; margin-top:4px;'>"
+                    f"<div style='background:rgba(255,255,255,0.06); padding:9px 12px; border-radius:10px; border-left:3px solid #FDE68A;'>"
+                    f"<strong style='color:#FDE68A; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.04em; display:block;'>🎯 1. Esencia y Especialidad Interpretada</strong>"
+                    f"<span style='color:#FFFFFF; font-size:0.85rem;'>Propuesta enfocada en <strong>{pe}</strong>.</span></div>"
+                    f"<div style='background:rgba(255,255,255,0.06); padding:9px 12px; border-radius:10px; border-left:3px solid #38BDF8;'>"
+                    f"<strong style='color:#7DD3FC; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.04em; display:block;'>👥 2. Cliente Ideal y Psicología Detectada</strong>"
+                    f"<span style='color:#FFFFFF; font-size:0.85rem;'>Dirigido a <strong>{ba}</strong>.</span></div>"
+                    f"<div style='background:rgba(255,255,255,0.06); padding:9px 12px; border-radius:10px; border-left:3px solid #34D399;'>"
+                    f"<strong style='color:#6EE7B7; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.04em; display:block;'>⚡ 3. Problema del Mercado que Resuelves</strong>"
+                    f"<span style='color:#FFFFFF; font-size:0.85rem;'>Tu gran oportunidad es erradicar <em>{mp}</em>.</span></div>"
+                    f"</div>"
                 )
                 base["expansion_html"] = (
-                    f"<strong>Cómo hemos adaptado tu ruta estratégica a partir de esta interpretación:</strong><br/>"
-                    f"• <strong>Paso 1 (6 Pilares Socráticos):</strong> Preguntas enfocadas en cómo vences <em>{mp}</em> y cautivas a {ba}.<br/>"
-                    f"• <strong>Paso 2 (Viaje Sensorial):</strong> Escenarios de Pre-compra, Experiencia y Post-venta centrados en {sf}.<br/>"
-                    f"• <strong>Paso 3 y 4 (Naming e Identidad):</strong> Raíces conceptuales sugeridas (<em>{', '.join(base['naming_roots'])}</em>) y personalidad visual calibrada."
+                    f"<strong>💬 4. Primera Pregunta Adaptada (síntesis activa: «{short_essence}»):</strong><br/>"
+                    f"<em style='color:#FDE68A; font-weight:600;'>«{base['step1_questions']['golden_circle']}»</em><br/>"
+                    f"<span style='font-size:0.73rem; color:#94A3B8; display:block; margin-top:4px;'>"
+                    f"✓ Touchpoints del Paso 2 adaptados · Raíces de Naming: <strong>{', '.join(base['naming_roots'])}</strong>."
+                    f"</span>"
                 )
         return base
 
