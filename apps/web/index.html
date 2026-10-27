@@ -1701,7 +1701,7 @@
 
     .roadmap-milestone-card {
       width: 100%;
-      max-width: 560px;
+      max-width: 640px;
       background: #FFFFFF;
       border: 1.5px solid rgba(15, 23, 42, 0.10);
       border-radius: 24px;
@@ -1781,18 +1781,16 @@
       font-size: 1.02rem;
       font-weight: 700;
       color: var(--ink-primary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal;
+      line-height: 1.28;
     }
 
     .milestone-summary {
       font-family: var(--font-ui);
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       color: var(--ink-secondary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal;
+      line-height: 1.38;
     }
 
     .milestone-status-chip {
@@ -2424,6 +2422,22 @@
               <span class="milestone-summary" style="color:#CBD5E1;">Tu Propósito, Touchpoints, Dominio, Colores y Logo convertidos en tu sitio web en 1 clic</span>
             </div>
             <span class="milestone-status-chip" style="background:#FEF3C7; color:#92400E; border:1.5px solid #F59E0B; font-weight:800;">🚀 Próximamente</span>
+          </div>
+          <div class="roadmap-connector-bar" style="background:repeating-linear-gradient(to bottom, #38BDF8 0, #38BDF8 4px, transparent 4px, transparent 8px); opacity:0.75;"></div>
+        </div>
+
+        <!-- Node Bonus 2 (Próximamente): Estrategia Digital y Creación Automatizada de Publicaciones en Redes Sociales -->
+        <div class="roadmap-node-row">
+          <div class="roadmap-milestone-card" id="node-card-8-coming-soon-social" onclick="openComingSoonSocialStrategyModal()" style="border:2px dashed #38BDF8; background:linear-gradient(135deg, #090D16 0%, #0F172A 55%, #1E1B4B 100%); color:#FAF8F5; cursor:pointer;">
+            <div class="milestone-icon-bubble" style="background:rgba(56,189,248,0.16); border:1.5px solid #38BDF8; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">
+              📱
+            </div>
+            <div class="milestone-content">
+              <span class="milestone-step-index" style="color:#7DD3FC; font-weight:800;">✦ Planta de 6 Agentes IA · Suite TheBest</span>
+              <h3 class="milestone-name" style="color:#FFFFFF;">Estrategia Digital y Creación de Publicaciones en Redes Sociales</h3>
+              <span class="milestone-summary" style="color:#CBD5E1;">Ángulos ganadores, guiones de Reels (Hook 0–3s), posts en capas con tu logo y campañas Follow-Me Ads</span>
+            </div>
+            <span class="milestone-status-chip" style="background:#E0F2FE; color:#075985; border:1.5px solid #38BDF8; font-weight:800;">🚀 Próximamente</span>
           </div>
         </div>
       </div>
@@ -3455,6 +3469,9 @@
             <button class="btn-action" onclick="openComingSoonWebsiteBuilderModal()" style="background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; border:1.5px dashed #D4AF37; font-weight:800;">
               🌐 Próximamente: Crear y Publicar mi Página Web →
             </button>
+            <button class="btn-action" onclick="openComingSoonSocialStrategyModal()" style="background:linear-gradient(135deg, #090D16 0%, #1E1B4B 100%); color:#7DD3FC; border:1.5px dashed #38BDF8; font-weight:800;">
+              📱 Próximamente: Estrategia Digital y Redes Sociales →
+            </button>
           </div>
 
           <!-- MÓDULO COMPLEMENTARIO AL TÉRMINO DE LA EXPERIENCIA: GENERADOR DE SITIO WEB FUNCIONAL (PRÓXIMAMENTE) -->
@@ -3477,6 +3494,30 @@
               </button>
               <span id="comingSoonWebInlineBadge" style="font-family:var(--font-mono); font-size:0.68rem; color:#94A3B8; text-align:center;">
                 Incluirá Hosting + Dominio + WhatsApp / Checkout
+              </span>
+            </div>
+          </div>
+
+          <!-- MÓDULO COMPLEMENTARIO 2 AL TÉRMINO DE LA EXPERIENCIA: ESTRATEGIA DIGITAL Y CREACIÓN AUTOMATIZADA DE PUBLICACIONES EN REDES SOCIALES (PRÓXIMAMENTE) -->
+          <div id="step6ComingSoonSocialBanner" style="background:linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E1B4B 100%); color:#FAF8F5; border:2px dashed #38BDF8; border-radius:18px; padding:18px 20px; margin-top:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+            <div style="flex:1 1 320px; min-width:0;">
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px;">
+                <span style="background:#E0F2FE; color:#075985; border:1px solid #38BDF8; font-family:var(--font-mono); font-size:0.7rem; font-weight:800; padding:3px 10px; border-radius:999px;">🚀 PRÓXIMAMENTE · PLANTA DE 6 AGENTES IA</span>
+                <span style="font-family:var(--font-mono); font-size:0.72rem; color:#7DD3FC; font-weight:700;">CONECTADO A TU BRANDBOOK Y COMANDO WHATSAPP</span>
+              </div>
+              <h3 style="font-family:var(--font-display); font-size:1.25rem; font-weight:800; color:#FFFFFF; margin:0 0 6px 0;">
+                📱 Estrategia Digital y Creación Automatizada de Publicaciones en Redes Sociales
+              </h3>
+              <p style="font-size:0.88rem; color:#CBD5E1; margin:0; line-height:1.48;">
+                Activa una planta de <strong>6 Empleados IA Especializados</strong> (Ideadora de Ángulos Ganadores, Guionista de Reels con <em>Hook 0–3s</em>, Analista de Biblioteca de Anuncios, Estratega <em>Follow-Me Ads</em>, Diseñador en Capas con tu Paleta/Logo y Directora CMO) alimentada directamente con los datos de tu Brandbook.
+              </p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; align-items:stretch; min-width:230px;">
+              <button type="button" onclick="openComingSoonSocialStrategyModal()" style="background:linear-gradient(135deg, #0284C7 0%, #4F46E5 100%); color:#FFFFFF; border:none; border-radius:12px; padding:12px 18px; font-family:var(--font-ui); font-size:0.86rem; font-weight:800; cursor:pointer; box-shadow:0 6px 18px rgba(56,189,248,0.28);">
+                ✨ Ver Mi Estrategia Digital y Guiones IA (Próximamente)
+              </button>
+              <span id="comingSoonSocialInlineBadge" style="font-family:var(--font-mono); font-size:0.68rem; color:#94A3B8; text-align:center;">
+                Reels 0–3s Hook + Posts en Capas + Meta Follow-Me Ads
               </span>
             </div>
           </div>
@@ -3573,7 +3614,7 @@
 
   <!-- MODAL "PRÓXIMAMENTE": DISEÑO Y PUBLICACIÓN INMEDIATA DE PÁGINA WEB FUNCIONAL -->
   <div class="welcome-modal-overlay" id="comingSoonWebModal" style="z-index:10050;" onclick="if(event.target.id==='comingSoonWebModal') closeComingSoonWebsiteBuilderModal()">
-    <div class="welcome-modal-card" style="max-width:680px; width:94%; background:#090D16; color:#FAF8F5; border:2px solid #D4AF37; padding:24px; max-height:90vh; overflow-y:auto; text-align:left;">
+    <div class="welcome-modal-card" style="max-width:780px !important; width:94% !important; background:#090D16; color:#FAF8F5; border:2px solid #D4AF37; padding:24px; max-height:90vh; overflow-y:auto; text-align:left; align-items:stretch !important;">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:12px;">
         <div>
           <span style="background:#FEF3C7; color:#92400E; border:1px solid #F59E0B; font-family:var(--font-mono); font-size:0.7rem; font-weight:800; padding:4px 10px; border-radius:999px; display:inline-block; margin-bottom:6px;">
@@ -3601,6 +3642,42 @@
           🔔 Quiero Acceso Prioritario cuando se active para mi Marca
         </button>
         <button type="button" onclick="closeComingSoonWebsiteBuilderModal()" style="background:rgba(255,255,255,0.08); color:#E2E8F0; border:1px solid #475569; border-radius:12px; padding:13px 16px; font-size:0.86rem; font-weight:700; cursor:pointer;">
+          Volver a mi Brandbook
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL "PRÓXIMAMENTE": ESTRATEGIA DIGITAL Y CREACIÓN AUTOMATIZADA DE PUBLICACIONES EN REDES SOCIALES -->
+  <div class="welcome-modal-overlay" id="comingSoonSocialModal" style="z-index:10052;" onclick="if(event.target.id==='comingSoonSocialModal') closeComingSoonSocialStrategyModal()">
+    <div class="welcome-modal-card" style="max-width:860px !important; width:95% !important; background:#090D16; color:#FAF8F5; border:2px solid #38BDF8; padding:18px 22px; max-height:94vh; overflow-y:auto; text-align:left; align-items:stretch !important;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:8px;">
+        <div>
+          <span style="background:#E0F2FE; color:#075985; border:1px solid #38BDF8; font-family:var(--font-mono); font-size:0.68rem; font-weight:800; padding:3px 10px; border-radius:999px; display:inline-block; margin-bottom:4px;">
+            🚀 PRÓXIMAMENTE · FÁBRICA DE CONTENIDO Y ESTRATEGIA DIGITAL (6 AGENTES IA)
+          </span>
+          <h2 style="font-family:var(--font-display); font-size:1.32rem; font-weight:800; color:#FFFFFF; margin:0; line-height:1.22;">
+            📱 De tu Brandbook a tu Estrategia Digital y Publicaciones en Redes Sociales
+          </h2>
+        </div>
+        <button type="button" onclick="closeComingSoonSocialStrategyModal()" style="background:rgba(255,255,255,0.1); color:#FFF; border:1px solid rgba(255,255,255,0.2); border-radius:10px; padding:6px 11px; font-weight:800; cursor:pointer;">✕</button>
+      </div>
+
+      <p style="font-size:0.84rem; color:#CBD5E1; line-height:1.42; margin:0 0 10px 0;">
+        Al terminar tu identidad en <strong>TheBestBrand</strong>, tu Propósito, Oferta de Valor, Touchpoints, Paleta y Logotipo alimentan de inmediato una <strong>Planta Automatizada de 6 Empleados IA Especializados</strong> (operable incluso desde tu WhatsApp) para diseñar tu estrategia digital, redactar guiones de alta retención y producir tus publicaciones listas para publicar o pautar:
+      </p>
+
+      <!-- PLANTA DE 6 AGENTES IA CONECTADOS A LOS DATOS DE LA MARCA -->
+      <div id="comingSoonSocialAgentsGrid" style="background:#111827; border:1.5px solid #334155; border-radius:12px; padding:10px 14px; margin-bottom:10px;"></div>
+
+      <!-- PREVISUALIZACIÓN EN VIVO: GUION REEL 0-3s HOOK + POST EN CAPAS CON IDENTIDAD DE LA MARCA -->
+      <div id="comingSoonSocialLivePreviewBox" style="background:#FAF8F5; color:#090D16; border:2px solid #38BDF8; border-radius:12px; padding:10px 14px; margin-bottom:12px;"></div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; align-items:center;">
+        <button type="button" id="btnActivateSocialWaitlist" onclick="activateSocialStrategyPriorityWaitlist()" style="flex:1 1 260px; background:linear-gradient(135deg, #0284C7 0%, #4F46E5 100%); color:#FFFFFF; border:none; border-radius:12px; padding:11px 16px; font-family:var(--font-ui); font-size:0.88rem; font-weight:800; cursor:pointer;">
+          🔔 Quiero Acceso Prioritario a la Fábrica de Redes Sociales para mi Marca
+        </button>
+        <button type="button" onclick="closeComingSoonSocialStrategyModal()" style="background:rgba(255,255,255,0.08); color:#E2E8F0; border:1px solid #475569; border-radius:12px; padding:11px 16px; font-size:0.84rem; font-weight:700; cursor:pointer;">
           Volver a mi Brandbook
         </button>
       </div>
@@ -10636,6 +10713,134 @@
       }
       try {
         localStorage.setItem("tbb_coming_soon_web_priority", bName);
+      } catch (e) {}
+    }
+
+    function openComingSoonSocialStrategyModal() {
+      playAcousticClick(880, 0.05);
+      const modal = document.getElementById("comingSoonSocialModal");
+      const agentsGrid = document.getElementById("comingSoonSocialAgentsGrid");
+      const previewBox = document.getElementById("comingSoonSocialLivePreviewBox");
+      if (!modal) return;
+
+      const bName = (canvasState.brandName || "TheBestBrand").trim();
+      const handle = "@" + (bName.toLowerCase().replace(/[^a-z0-9]/g, "") || "mimarca");
+      const purpose = canvasState.golden_circle || "Elevar el estándar de nuestra categoría con excelencia comprobable.";
+      const offer = canvasState.value_offer || canvasState.core_message || "Metodología propia con resultados medibles y atención personalizada sin fricción.";
+      const audience = canvasState.ideal_customer || "Clientes exigentes que valoran calidad, certeza y resultados reales.";
+      const tpDuring = (tpExtractedItems.during && tpExtractedItems.during[0]) || "Experiencia insignia de atención y entrega";
+      const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex || ["#090D16", "#FAF8F5", "#D4AF37", "#38BDF8"];
+      const fontName = canvasState.primary_font || "Plus Jakarta Sans";
+      const indKey = detectBrandStudioIndustryKey(bName);
+      const symSvg = buildBespokePentagramSymbolPaths(indKey, priHex, secHex || "#38BDF8", "#FFFFFF", true);
+      const firstWordCTA = (bName.split(/\s+/)[0] || "MARCA").toUpperCase().replace(/[^A-Z0-9]/g, "");
+      const keywordCTA = firstWordCTA.length >= 3 && firstWordCTA.length <= 12 ? firstWordCTA : "DIAGNOSTICO";
+
+      if (agentsGrid) {
+        agentsGrid.innerHTML = `
+          <div style="font-family:var(--font-mono); font-size:0.7rem; color:#7DD3FC; font-weight:800; margin-bottom:6px;">
+            ✓ PLANTA DE 6 EMPLEADOS IA DE MARKETING CONECTADOS A LOS DATOS DE ${escapeHTML(bName.toUpperCase())}:
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(195px, 1fr)); gap:6px;">
+            <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; border-radius:9px; padding:7px 9px;">
+              <strong style="color:#FDE68A; font-size:0.72rem; display:block;">1. 🧠 Ideadora de Ángulos Ganadores</strong>
+              <span style="color:#E2E8F0; font-size:0.72rem; line-height:1.3;">Detecta dolores reales de tu cliente ideal y ángulos sin saturación.</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; border-radius:9px; padding:7px 9px;">
+              <strong style="color:#38BDF8; font-size:0.72rem; display:block;">2. 🎬 Guionista de Retención (0–3s)</strong>
+              <span style="color:#E2E8F0; font-size:0.72rem; line-height:1.3;">Redacta Reels/TikToks con <em>Hook 0–3s, Problema, Mecanismo y CTA</em>.</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; border-radius:9px; padding:7px 9px;">
+              <strong style="color:#34D399; font-size:0.72rem; display:block;">3. 📊 Analista Ad Library &amp; Trazabilidad</strong>
+              <span style="color:#E2E8F0; font-size:0.72rem; line-height:1.3;">Audita anuncios y rastrea qué pieza trae compradores reales.</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; border-radius:9px; padding:7px 9px;">
+              <strong style="color:#F472B6; font-size:0.72rem; display:block;">4. 🎯 Estratega Follow-Me Ads (Meta)</strong>
+              <span style="color:#E2E8F0; font-size:0.72rem; line-height:1.3;">Amplifica tus mejores orgánicos en campañas de conversión por DM.</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; border-radius:9px; padding:7px 9px;">
+              <strong style="color:#A78BFA; font-size:0.72rem; display:block;">5. 🎨 Diseñador en Capas &amp; Video IA</strong>
+              <span style="color:#E2E8F0; font-size:0.72rem; line-height:1.3;">Posts en capas con fuente <strong>${escapeHTML(fontName)}</strong>, color <strong>${escapeHTML(priHex)}</strong> y logo.</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; border-radius:9px; padding:7px 9px;">
+              <strong style="color:#FBBF24; font-size:0.72rem; display:block;">6. 📲 Directora CMO en tu WhatsApp</strong>
+              <span style="color:#E2E8F0; font-size:0.72rem; line-height:1.3;">Aprobación en 3 pasos desde tu celular antes de publicar o pautar.</span>
+            </div>
+          </div>
+        `;
+      }
+
+      if (previewBox) {
+        previewBox.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#090D16; color:#FFFFFF; padding:7px 12px; border-radius:9px 9px 0 0; font-family:var(--font-mono); font-size:0.69rem; flex-wrap:wrap; gap:6px;">
+            <span style="color:#7DD3FC; font-weight:800;">⚡ SIMULACIÓN AUTOMÁTICA DE CONTENIDO PARA ${escapeHTML(bName.toUpperCase())} (${escapeHTML(handle)})</span>
+            <span style="background:#0284C7; color:#FFF; padding:2px 8px; border-radius:999px; font-weight:800;">GUION + POST EN CAPAS</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:10px; background:#0F172A; color:#FFFFFF; padding:12px; border-radius:0 0 9px 9px; border:1px solid #CBD5E1; border-top:none;">
+            <!-- COLUMNA 1: GUION DE REEL CON TIMECODES -->
+            <div style="background:#1E293B; border:1px solid #334155; border-radius:9px; padding:10px; font-size:0.76rem; line-height:1.38;">
+              <div style="font-family:var(--font-mono); font-size:0.66rem; color:#FDE68A; font-weight:800; margin-bottom:5px;">
+                🎬 GUION REEL / TIKTOK DE ALTA RETENCIÓN
+              </div>
+              <div style="margin-bottom:4px;"><strong style="color:#38BDF8;">[00:00–00:03 · HOOK]:</strong> "¿Por qué el 80% falla al buscar resultados reales sin sacrificar calidad?"</div>
+              <div style="margin-bottom:4px;"><strong style="color:#F472B6;">[00:03–00:10 · PROBLEMA RAÍZ]:</strong> "La mayoría improvisa sin estándar técnico. En <strong>${escapeHTML(bName)}</strong> nacimos para ${escapeHTML(purpose)}"</div>
+              <div style="margin-bottom:4px;"><strong style="color:#34D399;">[00:10–00:22 · MECANISMO ÚNICO]:</strong> "${escapeHTML(offer)} (Touchpoint insignia: ${escapeHTML(tpDuring)})."</div>
+              <div><strong style="color:#FDE68A;">[00:22–00:30 · CTA POR DM]:</strong> "Comenta la palabra <strong>${escapeHTML(keywordCTA)}</strong> y recibe nuestro diagnóstico directo por DM."</div>
+            </div>
+
+            <!-- COLUMNA 2: POST EN CAPAS CON IDENTIDAD DEL BRANDBOOK -->
+            <div style="background:linear-gradient(145deg, #090D16 0%, #1E293B 100%); border:2px solid ${priHex}; border-radius:9px; padding:10px; display:flex; flex-direction:column; justify-content:space-between;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <div style="display:flex; align-items:center; gap:7px;">
+                  <svg viewBox="0 0 100 100" width="24" height="24">${symSvg}</svg>
+                  <div>
+                    <div style="font-family:'${escapeHTML(fontName)}', sans-serif; font-weight:800; font-size:0.82rem; color:#FFFFFF;">${escapeHTML(bName)}</div>
+                    <div style="font-family:var(--font-mono); font-size:0.62rem; color:#94A3B8;">${escapeHTML(handle)} · Patrocinado (Follow-Me Ad)</div>
+                  </div>
+                </div>
+                <span style="background:rgba(255,255,255,0.1); color:#FDE68A; font-family:var(--font-mono); font-size:0.6rem; padding:2px 6px; border-radius:6px;">CAPAS SVG</span>
+              </div>
+              <div style="padding:6px 0;">
+                <div style="font-family:'${escapeHTML(fontName)}', sans-serif; font-size:0.94rem; font-weight:800; color:#FFFFFF; line-height:1.24; margin-bottom:5px;">
+                  ${escapeHTML(canvasState.tagline || offer)}
+                </div>
+                <div style="font-size:0.73rem; color:#CBD5E1;">
+                  ✓ ${escapeHTML(tpDuring)}
+                </div>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.12); padding-top:6px; margin-top:4px;">
+                <span style="font-family:var(--font-mono); font-size:0.63rem; color:#7DD3FC;">Paleta ${escapeHTML(priHex)} · ${escapeHTML(fontName)}</span>
+                <span style="background:${priHex}; color:#090D16; font-weight:800; font-size:0.66rem; padding:3px 9px; border-radius:999px;">Enviar DM "${escapeHTML(keywordCTA)}" →</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      modal.classList.add("open");
+    }
+
+    function closeComingSoonSocialStrategyModal() {
+      playAcousticClick(680, 0.03);
+      const modal = document.getElementById("comingSoonSocialModal");
+      if (modal) modal.classList.remove("open");
+    }
+
+    function activateSocialStrategyPriorityWaitlist() {
+      playAcousticClick(980, 0.06);
+      const bName = (canvasState.brandName || "TheBestBrand").trim();
+      const btn = document.getElementById("btnActivateSocialWaitlist");
+      const badge = document.getElementById("comingSoonSocialInlineBadge");
+      if (btn) {
+        btn.style.background = "#059669";
+        btn.textContent = `✓ ¡Listo! ${bName} tiene Prioridad #1 para su Estrategia Digital y Redes Sociales`;
+      }
+      if (badge) {
+        badge.style.color = "#34D399";
+        badge.textContent = `✓ Prioridad activada para la Fábrica de Redes Sociales de ${bName}`;
+      }
+      try {
+        localStorage.setItem("tbb_coming_soon_social_priority", bName);
       } catch (e) {}
     }
 
