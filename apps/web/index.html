@@ -2486,7 +2486,7 @@
       <!-- BIENVENIDA CENTRADA DE AURA -->
       <div style="width:100%; background:linear-gradient(145deg, #090D16 0%, #1E293B 100%); color:#FAF8F5; border:2px solid #D4AF37; border-radius:26px; padding:24px 22px; text-align:center; margin-bottom:18px; box-shadow:0 18px 40px rgba(9,13,22,0.16);">
         <span style="display:inline-block; background:rgba(212,175,55,0.2); color:#FDE68A; border:1px solid #D4AF37; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; padding:4px 12px; border-radius:999px; margin-bottom:10px;">
-          ✦ PASO 0 · BIENVENIDA E INTERPRETACIÓN IA (v25.3)
+          ✦ PASO 0 · BIENVENIDA E INTERPRETACIÓN IA (v25.4)
         </span>
         <h1 style="font-family:var(--font-display); font-size:clamp(1.45rem, 3.8vw, 1.95rem); font-weight:800; color:#FFFFFF; line-height:1.22; margin-bottom:8px;">
           Te damos la bienvenida a tu Taller de Marca con Aura
@@ -2588,34 +2588,34 @@
         </div>
       </div>
 
-      <!-- PREGUNTA 3: SECTOR O GIRO PRINCIPAL (LIBERTAD TOTAL PARA TECLEAR + BOTÓN INTUITIVO DE ENVÍO/INTERPRETACIÓN + CHIPS DE APOYO) -->
-      <div style="width:100%; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:22px; padding:20px; margin-bottom:18px; text-align:center; box-shadow:0 8px 24px rgba(15,23,42,0.04);">
+      <!-- PREGUNTA 3: SECTOR O GIRO PRINCIPAL (INTERFAZ 100% LIMPIA: CAMPO + VOZ + INTERPRETAR) -->
+      <div style="width:100%; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:22px; padding:20px; margin-bottom:24px; text-align:center; box-shadow:0 8px 24px rgba(15,23,42,0.04);">
         <span style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#059669; letter-spacing:0.05em;">3 DE 3 · TU NEGOCIO O GIRO ESPECÍFICO</span>
         <h2 style="font-family:var(--font-display); font-size:1.2rem; font-weight:800; color:#090D16; margin:4px 0 6px 0;">
           ¿A qué se dedica o se dedicará tu negocio?
         </h2>
-        <p style="font-size:0.86rem; color:#475569; margin:0 auto 12px auto; max-width:560px; line-height:1.4;">
-          Escribe o dicta qué vendes, para quién y qué tiene de especial (o elige una idea base abajo y adáptala):
+        <p style="font-size:0.86rem; color:#475569; margin:0 auto 12px auto; max-width:540px; line-height:1.4;">
+          Escribe o dicta qué vendes, para quién y qué tiene de especial:
         </p>
 
         <!-- CAMPO LIBRE PRINCIPAL PARA TECLEAR EL GIRO O ESPECIE DE NEGOCIO -->
-        <div style="max-width:580px; margin:0 auto 10px auto; position:relative;">
+        <div style="max-width:580px; margin:0 auto 12px auto; position:relative;">
           <textarea
             id="step0CustomBusinessInput"
             rows="3"
             oninput="onStep0CustomBusinessTyped(this.value)"
             onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); triggerStep0BusinessInterpretation(true); }"
             placeholder="✍️ Ej: Vendo comida casera para perros con ingredientes naturales a domicilio..."
-            style="width:100%; min-height:84px; padding:12px 14px; border-radius:14px; border:2px solid #090D16; background:#F8FAFC; color:#090D16; font-family:var(--font-ui); font-size:0.92rem; font-weight:700; text-align:center; resize:vertical; line-height:1.4; box-shadow:0 4px 12px rgba(15,23,42,0.05);"
+            style="width:100%; min-height:88px; padding:12px 14px; border-radius:14px; border:2px solid #090D16; background:#F8FAFC; color:#090D16; font-family:var(--font-ui); font-size:0.92rem; font-weight:700; text-align:center; resize:vertical; line-height:1.4; box-shadow:0 4px 12px rgba(15,23,42,0.05);"
           ></textarea>
         </div>
 
-        <!-- BARRA DE ACCIÓN INTUITIVA: DICTAR POR VOZ + BOTÓN EXPLÍCITO DE ENVIAR / INTERPRETAR CON AURA -->
-        <div id="step0BusinessActionDock" style="max-width:580px; margin:0 auto 12px auto; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center;">
+        <!-- BARRA DE ACCIÓN LIMPIA: DICTAR POR VOZ + BOTÓN DE INTERPRETAR -->
+        <div id="step0BusinessActionDock" style="max-width:580px; margin:0 auto; display:flex; flex-direction:column; gap:10px; justify-content:center; align-items:center;">
           <button
             type="button"
             onclick="toggleContinuousVoice('step0CustomBusinessInput')"
-            style="padding:10px 14px; border-radius:12px; border:1.5px solid #CBD5E1; background:#F1F5F9; color:#0F172A; font-family:var(--font-ui); font-size:0.82rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;"
+            style="padding:10px 16px; border-radius:12px; border:1.5px solid #CBD5E1; background:#F1F5F9; color:#0F172A; font-family:var(--font-ui); font-size:0.84rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;"
           >
             🎙️ Dictar por Voz
           </button>
@@ -2623,64 +2623,45 @@
             type="button"
             id="btnStep0InterpretBusiness"
             onclick="triggerStep0BusinessInterpretation(true)"
-            style="flex:1; min-width:220px; padding:11px 18px; border-radius:12px; border:2px solid #059669; background:linear-gradient(135deg, #059669 0%, #047857 100%); color:#FFFFFF; font-family:var(--font-ui); font-size:0.88rem; font-weight:800; cursor:pointer; box-shadow:0 6px 16px rgba(5,150,105,0.25); transition:all 0.2s ease;"
+            style="width:100%; padding:13px 18px; border-radius:14px; border:2px solid #059669; background:linear-gradient(135deg, #059669 0%, #047857 100%); color:#FFFFFF; font-family:var(--font-ui); font-size:0.92rem; font-weight:800; cursor:pointer; box-shadow:0 6px 16px rgba(5,150,105,0.25); transition:all 0.2s ease;"
           >
             ✨ Interpretar mi Negocio y Adaptar Preguntas →
           </button>
         </div>
-        <div id="step0InputStatusHint" style="font-size:0.76rem; font-weight:700; color:#047857; margin:0 auto 12px auto; max-width:540px;">
-          👆 Escribe tu giro o toca una categoría abajo y presiona <strong>«Interpretar mi Negocio»</strong> para ver cómo Aura adapta tu entrevista.
-        </div>
+        <div id="step0InputStatusHint" style="display:none; font-size:0.78rem; font-weight:700; color:#B45309; margin:10px auto 0 auto; max-width:540px;"></div>
+        <input type="hidden" id="step0SectorSelector" value="custom_negocio_propio" />
 
-        <!-- ETIQUETAS RÁPIDAS OPCIONALES EN CUADRÍCULA COMPACTA 2x4 (SIN MENÚ DESPLEGABLE) -->
-        <div style="font-size:0.75rem; font-weight:700; color:#64748B; margin-bottom:8px;">
-          💡 O toca un ejemplo base para rellenar el campo y personalizarlo a tu gusto:
-        </div>
-        <div id="step0SectorQuickPills" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(145px, 1fr)); gap:7px; max-width:620px; margin:0 auto 14px auto;">
-          <button type="button" class="step0-sector-pill" data-sector="restaurante_hospitalidad" onclick="selectStep0QuickSector('restaurante_hospitalidad', 'Cafetería de especialidad y panadería artesanal con ingredientes naturales')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">🍽️ Restaurante / Café</button>
-          <button type="button" class="step0-sector-pill" data-sector="servicios_profesionales_b2b" onclick="selectStep0QuickSector('servicios_profesionales_b2b', 'Despacho de consultoría estratégica y asesoría financiera para empresas')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">💼 Servicios / Agencia</button>
-          <button type="button" class="step0-sector-pill" data-sector="salud_retiro_laboratorio" onclick="selectStep0QuickSector('salud_retiro_laboratorio', 'Clínica de salud integral, odontología estética y bienestar preventivo')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">🩺 Salud / Bienestar</button>
-          <button type="button" class="step0-sector-pill" data-sector="educacion_colegio_campamentos" onclick="selectStep0QuickSector('educacion_colegio_campamentos', 'Academia de formación práctica y cursos especializados con mentoría en vivo')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">🎓 Educación / Cursos</button>
-          <button type="button" class="step0-sector-pill" data-sector="constructora_muebleria_oficio" onclick="selectStep0QuickSector('constructora_muebleria_oficio', 'Estudio de arquitectura, diseño de interiores y mobiliario de autor a medida')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">🏡 Arquitectura / Diseño</button>
-          <button type="button" class="step0-sector-pill" data-sector="industrial_automatizacion_flota" onclick="selectStep0QuickSector('industrial_automatizacion_flota', 'Ingeniería industrial, mantenimiento preventivo y logística para plantas')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">⚙️ Industria / Logística</button>
-          <button type="button" class="step0-sector-pill" data-sector="custom_negocio_propio" onclick="selectStep0QuickSector('custom_negocio_propio', 'Marca de productos artesanales y tienda en línea con envíos a domicilio')" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:700; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#1E293B; cursor:pointer;">🛍️ Comercio / Retail</button>
-          <button type="button" class="step0-sector-pill" data-sector="custom_negocio_propio" onclick="focusStep0CustomBusinessInput()" style="border-radius:12px; padding:8px 8px; font-size:0.76rem; font-weight:800; border:1.5px dashed #D97706; background:#FFFBEB; color:#92400E; cursor:pointer;">✨ Otro (Escribir el mío)</button>
-        </div>
-        <input type="hidden" id="step0SectorSelector" value="restaurante_hospitalidad" />
-
-        <!-- TARJETA EN VIVO DE INTERPRETACIÓN DE LA APP Y CONFIRMACIÓN INTUITIVA -->
-        <div id="step0BusinessInterpretationCard" style="display:none; max-width:580px; margin:0 auto 4px auto; background:linear-gradient(145deg, #090D16 0%, #1E293B 100%); color:#FAF8F5; border:2px solid #D4AF37; border-radius:18px; padding:16px 16px; text-align:left; box-shadow:0 14px 32px rgba(9,13,22,0.24);">
+        <!-- TARJETA EN VIVO DE INTERPRETACIÓN DE LA APP Y CONFIRMACIÓN ÚNICA (OCULTA HASTA INTERPRETAR) -->
+        <div id="step0BusinessInterpretationCard" style="display:none; max-width:580px; margin:14px auto 4px auto; background:linear-gradient(145deg, #090D16 0%, #1E293B 100%); color:#FAF8F5; border:2px solid #D4AF37; border-radius:18px; padding:16px 16px; text-align:left; box-shadow:0 14px 32px rgba(9,13,22,0.24);">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
             <span style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#FDE68A; letter-spacing:0.05em;">
-              ✦ INTERPRETACIÓN COMPOSICIONAL DE AURA · 4 DIMENSIONES
+              ✦ INTERPRETACIÓN DE AURA · 4 DIMENSIONES
             </span>
             <span id="step0InterpDomainBadge" style="font-family:var(--font-mono); font-size:0.65rem; background:rgba(16,185,129,0.22); color:#6EE7B7; border:1px solid rgba(52,211,153,0.5); padding:3px 9px; border-radius:999px; font-weight:800;">
               ✓ Preguntas 1–6 Adaptadas
             </span>
           </div>
           <div id="step0InterpSynthesisText" style="font-size:0.86rem; color:#FFFFFF; line-height:1.42; font-weight:600; margin-bottom:10px;"></div>
-          <div id="step0InterpExpansionPreview" style="font-size:0.78rem; color:#CBD5E1; line-height:1.38; background:rgba(255,255,255,0.05); border-left:3px solid #D4AF37; padding:8px 10px; border-radius:6px; margin-bottom:10px;"></div>
-          <!-- ACCIÓN SECUNDARIA DE EDICIÓN (EL BOTÓN PRINCIPAL DE INICIO ES ÚNICO ABAJO PARA NO REPETIRSE) -->
-          <div style="display:flex; justify-content:center; padding-top:6px; border-top:1px solid rgba(255,255,255,0.12);">
+          <div id="step0InterpExpansionPreview" style="font-size:0.78rem; color:#CBD5E1; line-height:1.38; background:rgba(255,255,255,0.05); border-left:3px solid #D4AF37; padding:8px 10px; border-radius:6px; margin-bottom:12px;"></div>
+          <!-- BOTÓN ÚNICO PARA AVANZAR AL PASO 1 UNA VEZ INTERPRETADO EL NEGOCIO -->
+          <div style="display:flex; flex-direction:column; gap:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.12);">
+            <button
+              type="button"
+              id="btnCompleteStep0Start"
+              onclick="completeStep0AndStartExperience('focus')"
+              style="width:100%; padding:13px 18px; border-radius:12px; border:1.5px solid #FDE68A; background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); color:#090D16; font-family:var(--font-ui); font-size:0.94rem; font-weight:900; cursor:pointer; text-align:center; box-shadow:0 6px 16px rgba(212,175,55,0.3);"
+            >
+              ✓ ¡Exacto! Comenzar Mi Experiencia con Aura (Paso 1) →
+            </button>
             <button
               type="button"
               onclick="focusStep0CustomBusinessInput(true)"
               style="width:100%; padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.22); background:rgba(255,255,255,0.06); color:#E2E8F0; font-family:var(--font-ui); font-size:0.78rem; font-weight:700; cursor:pointer; text-align:center;"
             >
-              ✏️ Editar o detallar más mi explicación arriba
+              ✏️ Editar mi explicación arriba
             </button>
           </div>
         </div>
-      </div>
-
-      <!-- BOTÓN ÚNICO DE ENTRADA CENTRADO (SIN DUPLICADOS) -->
-      <div style="width:100%; display:flex; flex-direction:column; align-items:center; gap:10px; padding-bottom:28px;">
-        <button type="button" id="btnCompleteStep0Start" onclick="completeStep0AndStartExperience('focus')" style="width:100%; max-width:540px; padding:16px 24px; border-radius:999px; border:2px solid #D4AF37; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; font-family:var(--font-ui); font-size:1.02rem; font-weight:800; cursor:pointer; box-shadow:0 12px 28px rgba(9,13,22,0.22);">
-          ✨ Comenzar Mi Experiencia con Aura (Paso 1) →
-        </button>
-        <button type="button" onclick="completeStep0AndStartExperience('journey')" style="background:transparent; border:none; color:#475569; font-family:var(--font-ui); font-size:0.88rem; font-weight:700; cursor:pointer; text-decoration:underline; padding:6px;">
-          Ver primero el Mapa General de los 6 Pasos
-        </button>
       </div>
     </div>
   </div>
@@ -11982,7 +11963,7 @@
           btnInterp.style.borderColor = "#10B981";
         }
         if (hintEl) {
-          hintEl.innerHTML = "✓ Giro detectado. Presiona <strong>«Interpretar mi Negocio»</strong> o revisa abajo la adaptación en vivo de Aura ↓";
+          hintEl.style.display = "none";
         }
         const interp = interpretStep0BusinessExplanation(cleanVal);
         renderStep0LiveBusinessInterpretation(interp);
@@ -12001,7 +11982,7 @@
         }, 380);
       } else {
         if (hintEl) {
-          hintEl.innerHTML = "👆 Escribe tu giro o toca una categoría abajo y presiona <strong>«Interpretar mi Negocio»</strong> para ver cómo Aura adapta tu entrevista.";
+          hintEl.style.display = "none";
         }
         renderStep0LiveBusinessInterpretation(null);
       }
@@ -12016,13 +11997,15 @@
 
       if (!cleanVal || cleanVal.length < 3) {
         if (hintEl) {
-          hintEl.innerHTML = "⚠️ Escribe al menos unas palabras sobre tu negocio (o toca una de las 8 ideas base abajo) antes de interpretar.";
+          hintEl.style.display = "block";
+          hintEl.innerHTML = "⚠️ Escribe o dicta brevemente a qué se dedica tu negocio antes de presionar «Interpretar mi Negocio».";
           hintEl.style.color = "#B45309";
         }
         if (inp) inp.focus();
         return;
       }
 
+      if (hintEl) hintEl.style.display = "none";
       if (btnInterp) {
         btnInterp.innerHTML = "⏳ Aura está interpretando tu giro...";
       }
@@ -12038,14 +12021,10 @@
       }
 
       if (btnInterp) {
-        btnInterp.innerHTML = "✓ ¡Giro Interpretado! Revisa tus 4 Dimensiones Abajo ↓";
+        btnInterp.innerHTML = "✓ ¡Giro Interpretado! Revisa abajo ↓";
         btnInterp.style.background = "linear-gradient(135deg, #090D16 0%, #1E293B 100%)";
         btnInterp.style.borderColor = "#D4AF37";
         btnInterp.style.color = "#FDE68A";
-      }
-      if (hintEl) {
-        hintEl.style.color = "#047857";
-        hintEl.innerHTML = "✓ <strong>¡Interpretación completada!</strong> Confirma abajo con el botón dorado para iniciar tu entrevista adaptada.";
       }
 
       if (scrollToCard) {
