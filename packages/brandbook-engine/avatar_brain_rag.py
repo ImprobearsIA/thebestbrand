@@ -497,24 +497,24 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         evitando por completo citar frases textuales crudas del usuario entre comillas.
         """
         t = (user_msg or "").lower()
-        if any(w in t for w in ["perro", "gato", "mascota", "croquet", "veterinar", "animal", "canin", "químic", "quimic", "natural", "nutrici"]):
+        if re.search(r"\b(aplicaci[oó]n|aplicaciones|app|apps|software|plataforma|sistema|automatiz\w*|inteligencia artificial|datos|digital\w*|sitio web|tecnolog\w*|saas|cloud)\b", t):
+            return "la simplicidad tecnológica, la experiencia intuitiva del usuario y la eliminación de fricciones"
+        if re.search(r"\b(perros?|gatos?|mascotas?|croquetas?|veterinar\w*|canin\w*|felin\w*)\b", t):
             return "la salud natural, la nutrición limpia y el bienestar real de quienes confían en ti"
-        if any(w in t for w in ["restaurante", "comida", "cocina", "pan", "café", "cafe", "sabor", "platillo", "brasa", "ingrediente", "mesa", "gastronom", "postre", "pastel"]):
+        if re.search(r"\b(restaurantes?|comida|cocina|panader\w*|caf[eé]\w*|sabor|platillos?|brasa|ingredientes?|gastronom\w*|postres?|pasteles?)\b", t):
             return "la autenticidad gastronómica y la experiencia sensorial en cada detalle"
-        if any(w in t for w in ["salud", "clínica", "clinica", "médic", "medic", "paciente", "cuidado", "retiro", "bienestar", "terapia", "laboratorio", "enferm"]):
-            return "la confianza clínica, la prevención y el cuidado integral"
-        if any(w in t for w in ["escuela", "colegio", "educaci", "alumno", "campamento", "enseñ", "formación", "aprendiz"]):
+        if re.search(r"\b(cl[ií]nicas?|m[eé]dic[oa]s?|doctore?s?|odont\w*|dental\w*|pacientes?|hospital\w*|consultorios?|terapias?|laboratorios?)\b", t):
+            return "la confianza profesional, la prevención y el cuidado humano integral"
+        if re.search(r"\b(escuelas?|colegios?|educaci\w*|alumnos?|campamentos?|enseñ\w*|formaci[oó]n|aprendiz\w*)\b", t):
             return "la formación con propósito y el desarrollo de capacidades reales"
-        if any(w in t for w in ["construc", "obra", "arquitect", "inmobiliaria", "casa", "edificio", "ingenier", "proyecto"]):
+        if re.search(r"\b(construcci\w*|constructora|obras?|arquitect\w*|inmobiliaria|edificios?|ingenier\w*)\b", t):
             return "la solidez estructural, el cumplimiento exacto y la certeza patrimonial"
-        if any(w in t for w in ["muebl", "madera", "artesan", "taller", "hecho a mano", "diseño", "calidad", "durad"]):
-            return "la maestría artesanal y la creación de piezas hechas para perdurar"
-        if any(w in t for w in ["contab", "fiscal", "finanz", "despacho", "legal", "asesor", "consultor", "empresa", "b2b"]):
+        if re.search(r"\b(muebles?|muebler\w*|madera|artesan\w*|hecho a mano|diseño|durader\w*)\b", t):
+            return "la maestría en el diseño y la creación de soluciones hechas para perdurar"
+        if re.search(r"\b(contab\w*|fiscal\w*|finanz\w*|despachos?|legal\w*|abogad\w*|asesor\w*|consultor\w*|empresas?|b2b)\b", t):
             return "el respaldo estratégico y la tranquilidad ejecutiva para tus clientes"
-        if any(w in t for w in ["software", "aplicación", "plataforma", "sistema", "automatiz", "inteligencia artificial", "datos", "digital", "sitio web", "tecnolog", "saas"]):
-            return "la simplicidad tecnológica y la eliminación de fricciones operativas"
         if any(w in t for w in ["rápid", "rapid", "tiempo", "entrega", "domicilio", "fácil", "facil", "ágil", "agil", "inmediat"]):
-            return "la agilidad de respuesta y el respeto absoluto por el tiempo de tu cliente"
+            return "la agilidad de respuesta y el respeto absoluto por el tiempo de tu cliente o usuario"
         if any(w in t for w in ["precio", "justo", "accesible", "ahorro", "costo", "valor"]):
             return "entregar un valor superior y transparente que supere toda expectativa"
         if any(w in t for w in ["familia", "comunidad", "confianza", "trato", "humano", "cercan", "honest", "servicio"]):
@@ -574,9 +574,17 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         clean = SpokenFillerCleaner.clean_spoken_text(raw_text or "").strip(" .,;:!?\"'«»")
         t = clean.lower()
 
-        if any(w in t for w in ["mascota", "perro", "gato", "veterinar", "canin", "felin", "croquet", "pet"]):
-            is_dog = ("perro" in t or "canin" in t or "lomito" in t) and "gato" not in t
-            is_cat = ("gato" in t or "felin" in t or "michi" in t) and "perro" not in t
+        is_tech_app = bool(re.search(r"\b(aplicaci[oó]n|aplicaciones|app|apps|software|saas|plataforma|digital\w*|tecnolog\w*|startup|web|datos|sistema|cloud|inteligencia artificial)\b", t))
+        is_strict_medical = bool(re.search(r"\b(cl[ií]nicas?|doctore?s?|m[eé]dic[oa]s?|medicina|consultorios?|hospital\w*|odont\w*|dental\w*|dentistas?|pediatras?|cirujan\w*|psic[oó]log\w*|psiquiat\w*|fisioterap\w*|[oó]pticas?|farmacias?|laboratorios?)\b", t))
+
+        if is_tech_app and not is_strict_medical:
+            if re.search(r"\b(aplicaci[oó]n|aplicaciones|app|apps)\b", t):
+                phrase = "aplicación digital intuitiva y ágil"
+            else:
+                phrase = "plataforma digital y tecnología ágil"
+        elif re.search(r"\b(mascotas?|perros?|gatos?|veterinar\w*|canin\w*|felin\w*|croquetas?|pet|petshop)\b", t):
+            is_dog = bool(re.search(r"\b(perros?|canin\w*|lomitos?|cachorros?)\b", t)) and not bool(re.search(r"\b(gatos?|felin\w*)\b", t))
+            is_cat = bool(re.search(r"\b(gatos?|felin\w*|michis?)\b", t)) and not bool(re.search(r"\b(perros?|canin\w*)\b", t))
             if any(w in t for w in ["comida", "alimento", "nutrici", "croquet", "dieta", "snack", "pastel"]):
                 if is_dog:
                     phrase = "nutrición canina casera y natural" if ("caser" in t or "natural" in t) else "nutrición canina saludable de calidad"
@@ -591,40 +599,38 @@ Devuelve SIEMPRE JSON válido con estas llaves:
                     phrase = "cuidado y bienestar integral felino"
                 else:
                     phrase = "bienestar y salud para mascotas"
-        elif any(w in t for w in ["café", "cafe", "cafeter", "panader", "reposter", "pastel", "postre"]):
+        elif re.search(r"\b(caf[eé]s?|cafeter\w*|panader\w*|reposter\w*|pasteles?|pastel\w*|postres?)\b", t):
             if "pan" in t or "masa madre" in t:
                 phrase = "cafetería y panadería artesanal fresca"
             elif "postre" in t or "pastel" in t or "reposter" in t:
                 phrase = "repostería artesanal de autor"
             else:
                 phrase = "cafetería de especialidad y autor"
-        elif any(w in t for w in ["restauran", "gastronom", "comida", "bebida", "bar", "cocina", "alimento", "taco", "pizza", "marisc", "helad", "chocolat"]):
+        elif re.search(r"\b(restauran\w*|gastronom\w*|comida|bebidas?|bar|bares|cocina|alimentos?|tacos?|pizzas?|mariscos?|helados?|chocolat\w*)\b", t):
             if "saludable" in t or "natural" in t or "orgánic" in t or "sin azúcar" in t:
                 phrase = "gastronomía saludable con ingredientes naturales"
             elif "caser" in t or "artesanal" in t:
                 phrase = "cocina artesanal de sazón auténtico"
             else:
                 phrase = "gastronomía de autor y hospitalidad"
-        elif any(w in t for w in ["dental", "odont"]):
+        elif re.search(r"\b(dental\w*|odont\w*|dentistas?)\b", t):
             phrase = "odontología integral cálida y estética"
-        elif any(w in t for w in ["salud", "clínica", "clinica", "médic", "medic", "pediátr", "paciente", "terapia", "spa", "bienestar", "retiro", "laboratorio", "psicolog", "fisio", "pilates", "nutrici", "óptica", "optica", "farmac"]):
+        elif is_strict_medical or re.search(r"\b(spa|pilates|retiro|terapia)\b", t):
             phrase = "salud preventiva y bienestar integral"
-        elif any(w in t for w in ["contab", "fiscal", "finanz", "auditor", "invers"]):
+        elif re.search(r"\b(contab\w*|fiscal\w*|finanz\w*|auditor\w*|inversi\w*)\b", t):
             phrase = "estrategia financiera y certeza fiscal"
-        elif any(w in t for w in ["abogad", "legal", "jurídic"]):
+        elif re.search(r"\b(abogad\w*|legal\w*|jur[ií]dic\w*)\b", t):
             phrase = "blindaje jurídico y asesoría legal"
-        elif any(w in t for w in ["despacho", "consultor", "agencia", "marketing", "publicidad", "b2b", "asesor", "corporativ"]):
+        elif re.search(r"\b(despachos?|consultor\w*|agencias?|marketing|publicidad|b2b|asesor\w*|corporativ\w*)\b", t):
             phrase = "consultoría estratégica y crecimiento empresarial"
-        elif any(w in t for w in ["colegio", "escuela", "educac", "academ", "curso", "campamento", "universid", "capacitac", "formación", "taller", "enseñ", "idiom", "inglés", "infantil"]):
+        elif re.search(r"\b(colegios?|escuelas?|educac\w*|academ\w*|cursos?|campamentos?|universid\w*|capacitac\w*|formaci[oó]n|talleres?|idiomas?|ingl[eé]s)\b", t):
             phrase = "formación práctica y aprendizaje activo"
-        elif any(w in t for w in ["arquitect", "construct", "inmobiliar", "muebler", "diseñ", "interior", "carpinter", "obra", "decorac", "hogar", "remodel", "casa", "espacio"]):
+        elif re.search(r"\b(arquitect\w*|construct\w*|inmobiliar\w*|muebler\w*|muebles|interiorismo|carpinter\w*|obras?|decorac\w*|remodel\w*)\b", t):
             phrase = "arquitectura y espacios a medida"
-        elif any(w in t for w in ["industr", "manufactur", "automatiz", "logíst", "transporte", "flota", "ingenier", "maquinar", "planta", "mantenim", "energ", "solar", "agro"]):
+        elif re.search(r"\b(industr\w*|manufactur\w*|automatiz\w*|log[ií]st\w*|transporte|flotas?|ingenier\w*|maquinar\w*|plantas?|mantenim\w*|energ\w*|solar|agro\w*)\b", t):
             phrase = "ingeniería y eficiencia operativa industrial"
-        elif any(w in t for w in ["tienda", "boutique", "ropa", "moda", "calzado", "joyer", "cosmét", "belleza", "perfum", "ecommerce", "accesorio", "regalo", "textil", "piel", "bolsa", "reloj"]):
+        elif re.search(r"\b(tiendas?|boutiques?|ropa|moda|calzado|joyer\w*|cosm[eé]t\w*|belleza|perfum\w*|ecommerce|accesorios?|regalos?|textil\w*|bolsas?|relojes?)\b", t):
             phrase = "diseño de producto con identidad"
-        elif any(w in t for w in ["software", "app", "saas", "inteligencia artificial", "plataforma", "digital", "tecnolog", "startup", "web", "datos", "sistema", "cloud"]):
-            phrase = "tecnología digital y automatización ágil"
         else:
             # Limpiar verbos en primera persona y sintetizar en <= 6 palabras
             stripped = re.sub(
@@ -651,7 +657,7 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         """
         Descompone gramaticalmente cualquier descripción de negocio en español en 4 ranuras:
         - offer_concept: Qué producto/servicio ofrece (reformulado con vocabulario consultivo)
-        - target_concept: A quién va dirigido exactamente (respetando si dijo perros, niños, empresas, etc.)
+        - target_concept: A quién va dirigido exactamente (respetando si dijo perros, niños, empresas, usuarios, etc.)
         - specialty_concept: Cuál es su ingrediente, técnica o condición diferenciadora ('con...', 'sin...', 'artesanal', etc.)
         - pain_concept: Qué problema específico del mercado resuelve esa combinación
         """
@@ -666,30 +672,34 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             specialty_concept = "insumos 100% limpios de origen natural libres de aditivos químicos"
         elif m_sin:
             sin_item = m_sin.group(1).strip()
-            specialty_concept = f"fórmulas y procesos libres de {sin_item} que cuidan la salud y tranquilidad del usuario"
+            specialty_concept = f"fórmulas y procesos libres de {sin_item} que cuidan la tranquilidad del usuario"
         elif m_con:
             con_item = m_con.group(1).strip()
             specialty_concept = f"la integración cuidada de {con_item} como sello de calidad superior"
         elif any(w in t for w in ["artesanal", "hecho a mano", "casera", "casero", "masa madre", "autor"]):
             specialty_concept = "elaboración artesanal a baja escala cuidando cada detalle de principio a fin"
-        elif any(w in t for w in ["domicilio", "en línea", "online", "digital", " Suscripción", "suscripcion"]):
+        elif re.search(r"\b(aplicaci[oó]n|app|software|digital\w*|automatiz\w*|inteligencia artificial|plataforma)\b", t):
+            specialty_concept = "una experiencia digital intuitiva, rápida y libre de fricciones técnicas"
+        elif any(w in t for w in ["domicilio", "en línea", "online", "suscripción", "suscripcion"]):
             specialty_concept = "entrega directa y conveniencia absoluta sin que el cliente pierda tiempo en traslados"
 
         # 2. Extraer sujeto/audiencia exacta ('para ...') sin inventar sujetos no mencionados
         target_concept = ""
         m_para = re.search(r"\b(?:para|dirigido a|enfocado en|especializado en)\s+([a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s]{3,42}?)(?:\s+(?:con|sin|en|que|a base)|$)", t)
-        if "perro" in t or "canin" in t or "perrit" in t:
+        if re.search(r"\b(perros?|canin\w*|perrit\w*)\b", t):
             target_concept = "dueños de perros que ven a su compañero canino como familia y cuidan su digestión, pelaje y longevidad"
-        elif "gato" in t or "felin" in t or "gatit" in t:
+        elif re.search(r"\b(gatos?|felin\w*|gatit\w*)\b", t):
             target_concept = "dueños de gatos que buscan nutrición y bienestar especializado para la salud felina"
-        elif "mascota" in t or "veterinar" in t:
+        elif re.search(r"\b(mascotas?|veterinar\w*)\b", t):
             target_concept = "familias responsables que buscan bienestar, salud preventiva y trato libre de estrés para sus mascotas"
+        elif re.search(r"\b(aplicaci[oó]n|aplicaciones|app|apps|software|plataforma|saas|usuarios?)\b", t):
+            target_concept = "usuarios y clientes digitales que buscan resolver sus necesidades desde su teléfono o computadora con agilidad y cero fricciones"
         elif "diabet" in t or "sin azúcar" in t or "keto" in t or "celiac" in t or "gluten" in t:
-            target_concept = "personas que cuidan su salud metabólica y alimentación consciente sin sacrificar el placer del buen sabor"
-        elif "niño" in t or "infantil" in t or "bebé" in t or "bebe" in t or "pediátr" in t:
+            target_concept = "personas que cuidan su alimentación consciente sin sacrificar el placer del buen sabor"
+        elif re.search(r"\b(niños?|infantil\w*|beb[eé]s?|pedi[aá]tr\w*)\b", t):
             target_concept = "padres de familia que exigen máxima seguridad, calidez y desarrollo integral para sus hijos"
-        elif "adulto mayor" in t or "retiro" in t or "abuel" in t or "geriátr" in t:
-            target_concept = "familias y adultos mayores que buscan dignidad, vitalidad, seguridad médica y calidez humana"
+        elif re.search(r"\b(adultos? mayores?|retiro|abuel\w*|geri[aá]tr\w*)\b", t):
+            target_concept = "familias y adultos mayores que buscan dignidad, vitalidad y calidez humana"
         elif m_para:
             raw_target = m_para.group(1).strip()
             target_concept = f"clientes del segmento de {raw_target} que buscan una solución pensada exactamente para sus necesidades"
@@ -704,12 +714,13 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         core_phrase = re.sub(r"\b(?:para|con|sin|a base de)\s+.*$", "", core_phrase).strip(" ,.;:")
 
         offer_concept = ""
-        if "comida casera" in t and ("perro" in t or "mascota" in t or "canin" in t):
+        if "comida casera" in t and re.search(r"\b(perros?|mascotas?|canin\w*)\b", t):
             offer_concept = "nutrición canina de preparación casera y grado humano"
+        elif re.search(r"\b(aplicaci[oó]n|aplicaciones|app|apps|software|plataforma|saas)\b", t):
+            offer_concept = f"una aplicación y plataforma digital ({core_phrase})" if len(core_phrase) > 3 and core_phrase not in ("aplicacion", "aplicación", "app", "software") else "una aplicación y solución tecnológica intuitiva"
         elif "comida" in t or "alimento" in t:
             offer_concept = f"gastronomía y alimentación especializada ({core_phrase})" if len(core_phrase) > 3 and core_phrase not in ("comida", "alimentos") else "alimentación saludable y gastronomía cuidada"
         elif len(core_phrase) >= 4:
-            # Reformular el núcleo sin que sea idéntico a la frase completa del usuario
             offer_concept = f"el desarrollo especializado de {core_phrase}"
 
         return {
@@ -724,8 +735,8 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         """
         Interpreta composicionalmente la explicación libre del Paso 0 combinando:
         1) Los sustantivos específicos de producto, sujeto y diferenciador del usuario (5 ranuras semánticas)
-        2) El arquetipo de industria correspondiente
-        Garantiza 0% repetición textual de la frase del usuario y 100% precisión al sujeto mencionado.
+        2) El arquetipo de industria correspondiente (con prioridad explícita para Apps/Software y fronteras de palabra \b)
+        Garantiza 0% repetición textual de la frase del usuario y 0% falsos positivos médicos ('pacientes').
         """
         clean = SpokenFillerCleaner.clean_spoken_text(raw_text or "").strip()
         t = clean.lower()
@@ -745,8 +756,26 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             if len(w) >= 4 and w.lower() not in stop_words
         ]
 
-        if any(w in t for w in ["mascota", "perro", "gato", "veterinar", "canin", "felin", "croquet", "pet"]):
-            is_dog_only = ("perro" in t or "canin" in t or "perrit" in t) and "gato" not in t
+        is_tech_app = bool(re.search(r"\b(aplicaci[oó]n|aplicaciones|app|apps|software|saas|plataforma|digital\w*|tecnolog\w*|startup|web|datos|sistema|cloud|inteligencia artificial)\b", t))
+        is_strict_medical = bool(re.search(r"\b(cl[ií]nicas?|doctore?s?|m[eé]dic[oa]s?|medicina|consultorios?|hospital\w*|odont\w*|dental\w*|dentistas?|pediatras?|cirujan\w*|psic[oó]log\w*|psiquiat\w*|fisioterap\w*)\b", t))
+
+        if is_tech_app and not is_strict_medical:
+            concept_title = "💻 Aplicación, Producto Digital & Tecnología"
+            paraphrased_essence = f"{slots['offer_concept'] or 'una aplicación y solución tecnológica'} potenciada por {slots['specialty_concept'] or 'una experiencia de usuario intuitiva, veloz y sin fricciones'}"
+            buyer_actor = slots["target_concept"] or "usuarios y clientes digitales que buscan resolver un problema real en segundos sin curvas de aprendizaje complicadas"
+            market_pain = "la pérdida de tiempo en procesos manuales o plataformas confusas y lentas que frustran al usuario"
+            sensory_focus = "una interfaz limpia que entrega valor desde el primer minuto, fluidez visual y soporte inmediato"
+            naming_roots = ["Nexo", "Pulso", "Flujo", "Lógica", "Nova"]
+            step1_questions = {
+                "golden_circle": f"Al crear tu {short_essence}, ¿qué fricción o pérdida de tiempo viste en los usuarios que te impulsó a desarrollar una mejor solución?",
+                "value_offer": f"Dentro de tu {short_essence}, ¿qué función, simplicidad o ventaja hace que el usuario la prefiera frente a otras opciones?",
+                "social_role": f"Con tu {short_essence}, ¿cómo quieres transformar la vida diaria o productividad de tus usuarios en los próximos 3 a 5 años?",
+                "process_steps_text": f"Para usar tu {short_essence} sin fricciones, ¿cuáles son los 3 pasos simples desde que el usuario entra hasta que obtiene el resultado?",
+                "core_message": f"Si tus usuarios describieran en una sola frase el valor que les da tu {short_essence}, ¿cuál sería esa promesa?",
+                "ideal_customer": f"¿Cómo es el usuario o cliente ideal que más aprovecha tu {short_essence} y qué problema busca resolver?"
+            }
+        elif re.search(r"\b(mascotas?|perros?|gatos?|veterinar\w*|canin\w*|felin\w*|croquetas?|pet|petshop)\b", t):
+            is_dog_only = bool(re.search(r"\b(perros?|canin\w*|perrit\w*)\b", t)) and not bool(re.search(r"\b(gatos?|felin\w*)\b", t))
             pet_noun = "perros" if is_dog_only else "mascotas"
             pet_adj = "canina" if is_dog_only else "animal"
             concept_title = f"🐾 Nutrición {pet_adj.capitalize()}, Salud & Bienestar" if ("comida" in t or "alimento" in t or "natural" in t or "nutrici" in t) else f"🐾 Bienestar Integral & Cuidado para {pet_noun.capitalize()}"
@@ -766,7 +795,7 @@ Devuelve SIEMPRE JSON válido con estas llaves:
                 "core_message": f"Si un cliente recomendara tu {short_essence} en el parque, ¿qué promesa de confianza te gustaría que dijera en una frase?",
                 "ideal_customer": f"¿Cómo es el dueño ideal que más valora tu {short_essence} y qué es lo que más cuida al elegirte?"
             }
-        elif any(w in t for w in ["restauran", "café", "cafe", "panader", "reposter", "pastel", "postre", "comida", "gastronom", "bebida", "bar", "tostadur", "cocina", "alimento", "taco", "pizza", "marisc", "helad", "chocolat"]):
+        elif re.search(r"\b(restauran\w*|caf[eé]s?|cafeter\w*|panader\w*|reposter\w*|pasteles?|postres?|comida|gastronom\w*|bebidas?|bar|bares|tostadur\w*|cocina|alimentos?|tacos?|pizzas?|mariscos?|helados?|chocolat\w*)\b", t):
             concept_title = "🍽️ Gastronomía de Autor, Sabor & Hospitalidad"
             paraphrased_essence = f"{slots['offer_concept'] or 'una propuesta gastronómica con identidad propia'} respaldada por {slots['specialty_concept'] or 'insumos frescos de origen honesto y preparación al momento'}"
             buyer_actor = slots["target_concept"] or "comensales y amantes del buen sabor que valoran recetas honestas, calidad artesanal y una experiencia acogedora"
@@ -781,22 +810,22 @@ Devuelve SIEMPRE JSON válido con estas llaves:
                 "core_message": f"Cuando alguien recomiende tu {short_essence}, ¿qué promesa de sabor y calidad quieres que recuerde siempre?",
                 "ideal_customer": f"¿Cómo es el comensal ideal que más disfruta tu {short_essence} y en qué momento te busca?"
             }
-        elif any(w in t for w in ["salud", "clínica", "clinica", "médic", "medic", "dental", "odont", "pediátr", "paciente", "terapia", "spa", "bienestar", "retiro", "laboratorio", "psicolog", "fisio", "pilates", "nutrici", "óptica", "optica", "farmac"]):
-            concept_title = "🩺 Salud Especializada, Prevención & Cuidado Humano"
-            paraphrased_essence = f"{slots['offer_concept'] or 'atención clínica y de bienestar integral'} diferenciada por {slots['specialty_concept'] or 'un enfoque empático, preciso y libre de ansiedad para el paciente'}"
+        elif is_strict_medical:
+            concept_title = "🩺 Salud Especializada, Prevención & Cuidado Clínico"
+            paraphrased_essence = f"{slots['offer_concept'] or 'atención clínica y de salud integral'} diferenciada por {slots['specialty_concept'] or 'un enfoque empático, preciso y libre de ansiedad'}"
             buyer_actor = slots["target_concept"] or "pacientes y familias que buscan certeza diagnóstica, trato humano cálido y resultados comprobables"
-            market_pain = "el miedo, la frialdad clínica tradicional y las consultas apresuradas donde el paciente no se siente escuchado"
-            sensory_focus = "una atmósfera serena que transmite paz desde la recepción, explicaciones claras sin tecnicismos y seguimiento cercano en casa"
+            market_pain = "el miedo, la frialdad clínica tradicional y las consultas apresuradas donde la persona no se siente escuchada"
+            sensory_focus = "una atmósfera serena que transmite paz desde la recepción, explicaciones claras sin tecnicismos y seguimiento cercano"
             naming_roots = ["Vita", "Serena", "Lumen", "Aurea", "Sana"]
             step1_questions = {
                 "golden_circle": f"Al brindar {short_essence}, ¿qué temor o trato frío de los servicios tradicionales decidiste transformar en tranquilidad?",
-                "value_offer": f"Dentro de tu {short_essence}, ¿qué combinación de método profesional y calidez hace que el paciente confíe en tus manos?",
+                "value_offer": f"Dentro de tu {short_essence}, ¿qué combinación de método profesional y calidez hace que confíen plenamente en tus manos?",
                 "social_role": f"Con tu {short_essence}, ¿cómo visualizas mejorar la salud y calidad de vida de tu comunidad en 3 a 5 años?",
-                "process_steps_text": f"En tu {short_essence}, ¿cuáles son los 3 pasos simples desde que el paciente agenda su cita hasta su seguimiento?",
-                "core_message": f"Si tus pacientes resumieran en una frase la paz que les da tu {short_essence}, ¿cuál sería esa promesa?",
-                "ideal_customer": f"¿Cómo es el paciente o familia que más valora tu {short_essence} y qué busca resolver al acudir a ti?"
+                "process_steps_text": f"En tu {short_essence}, ¿cuáles son los 3 pasos simples desde que agendan su cita hasta su seguimiento?",
+                "core_message": f"Si quienes atiendes resumieran en una frase la confianza que les da tu {short_essence}, ¿cuál sería esa promesa?",
+                "ideal_customer": f"¿Cómo es la persona o familia que más valora tu {short_essence} y qué busca resolver al acudir a ti?"
             }
-        elif any(w in t for w in ["despacho", "contab", "abogad", "legal", "jurídic", "consultor", "agencia", "marketing", "publicidad", "finanz", "b2b", "asesor", "corporativ", "auditor", "recursos humanos", "invers", "seguro"]):
+        elif re.search(r"\b(despachos?|contab\w*|abogad\w*|legal\w*|jur[ií]dic\w*|consultor\w*|agencias?|marketing|publicidad|finanz\w*|b2b|asesor\w*|corporativ\w*|auditor\w*|recursos humanos|inversi\w*|seguros?)\b", t):
             concept_title = "💼 Consultoría Estratégica, Certeza Ejecutiva & B2B"
             paraphrased_essence = f"{slots['offer_concept'] or 'asesoría y soluciones ejecutivas de alto nivel'} con {slots['specialty_concept'] or 'claridad técnica, agilidad de respuesta y enfoque en resultados medibles'}"
             buyer_actor = slots["target_concept"] or "empresarios, directivos y tomadores de decisión que exigen orden, certidumbre y retorno de inversión"
@@ -984,17 +1013,17 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         last_user_msg: str,
         adapted_questions: Optional[Dict[str, str]] = None
     ) -> str:
-        # 1. Re-interpretar combinando el giro base (custom_biz) con el último aporte del fundador (last_user_msg)
-        combined_context = f"{custom_biz} {last_user_msg}".strip()
-        if combined_context:
-            parsed = cls.paraphrase_and_interpret_step0_business(combined_context)
+        # 1. Priorizar siempre las preguntas pre-interpretadas del giro definido en el Paso 0 (evita que palabras sueltas cambien de sector)
+        if isinstance(adapted_questions, dict) and adapted_questions.get(pillar_key):
+            return adapted_questions[pillar_key]
+
+        # 2. Si no hay mapa previo, interpretar prioritariamente desde custom_biz (y solo usar last_user_msg si custom_biz está vacío)
+        base_source = (custom_biz or "").strip() or (last_user_msg or "").strip()
+        if base_source:
+            parsed = cls.paraphrase_and_interpret_step0_business(base_source)
             s1_map = parsed.get("step1_questions", {})
             if pillar_key in s1_map:
                 return s1_map[pillar_key]
-
-        # 2. Si tenemos preguntas pre-interpretadas para este giro, usarlas como respaldo
-        if isinstance(adapted_questions, dict) and adapted_questions.get(pillar_key):
-            return adapted_questions[pillar_key]
 
         guide = cls.WORLD_CLASS_CONSULTANT_PILLAR_GUIDE.get(pillar_key)
         if guide:

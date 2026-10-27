@@ -2480,7 +2480,7 @@
       <!-- BIENVENIDA CENTRADA DE AURA -->
       <div style="width:100%; background:linear-gradient(145deg, #090D16 0%, #1E293B 100%); color:#FAF8F5; border:2px solid #D4AF37; border-radius:26px; padding:24px 22px; text-align:center; margin-bottom:18px; box-shadow:0 18px 40px rgba(9,13,22,0.16);">
         <span style="display:inline-block; background:rgba(212,175,55,0.2); color:#FDE68A; border:1px solid #D4AF37; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; padding:4px 12px; border-radius:999px; margin-bottom:10px;">
-          ✦ PASO 0 · BIENVENIDA E INTERPRETACIÓN IA (v25.1)
+          ✦ PASO 0 · BIENVENIDA E INTERPRETACIÓN IA (v25.2)
         </span>
         <h1 style="font-family:var(--font-display); font-size:clamp(1.45rem, 3.8vw, 1.95rem); font-weight:800; color:#FFFFFF; line-height:1.22; margin-bottom:8px;">
           Te damos la bienvenida a tu Taller de Marca con Aura
@@ -11529,29 +11529,38 @@
       const clean = (rawText || "").trim();
       const t = clean.toLowerCase();
 
-      // 1. Target Audience exacto (nunca mezclar perros y gatos si el usuario especificó uno)
+      const isTechApp = /\b(aplicaci[oó]n|aplicaciones|app|apps|software|saas|plataforma|digital\w*|tecnolog\w*|startup|web|datos|sistema|cloud|inteligencia artificial)\b/i.test(t);
+      const isStrictMedical = /\b(cl[ií]nicas?|doctore?s?|m[eé]dic[oa]s?|medicina|consultorios?|hospital\w*|odont\w*|dental\w*|dentistas?|pediatras?|cirujan\w*|psic[oó]log\w*|psiquiat\w*|fisioterap\w*)\b/i.test(t);
+
+      // 1. Target Audience exacto (nunca mezclar perros y gatos ni asumir 'pacientes' si es una app)
       let targetConcept = "clientes exigentes que valoran calidad real, atención personalizada y confianza";
-      if (/perro|canin|lomito|cachorro/i.test(t) && !/gato|felin|michi/i.test(t)) {
+      if (isTechApp && !isStrictMedical) {
+        targetConcept = "usuarios y clientes digitales que buscan resolver sus necesidades con agilidad, simplicidad y cero fricciones";
+      } else if (/\b(perros?|canin\w*|lomitos?|cachorros?)\b/i.test(t) && !/\b(gatos?|felin\w*|michis?)\b/i.test(t)) {
         targetConcept = "dueños de perros que consideran a su compañero canino parte de su familia y cuidan su salud y longevidad";
-      } else if (/gato|felin|michi/i.test(t) && !/perro|canin/i.test(t)) {
+      } else if (/\b(gatos?|felin\w*|michis?)\b/i.test(t) && !/\b(perros?|canin\w*)\b/i.test(t)) {
         targetConcept = "dueños de gatos que buscan nutrición y bienestar especializado libre de estrés para sus felinos";
-      } else if (/mascota|veterinar|pet/i.test(t)) {
+      } else if (/\b(mascotas?|veterinar\w*|pet|petshop)\b/i.test(t)) {
         targetConcept = "familias responsables que buscan el mayor bienestar y salud para sus animales de compañía";
-      } else if (/niñ|beb[eé]|infantil|mam[aá]|pap[aá]|familia|escolar/i.test(t)) {
+      } else if (/\b(niños?|beb[eé]s?|infantil\w*|mam[aá]s?|pap[aá]s?|escolar\w*)\b/i.test(t)) {
         targetConcept = "padres de familia que priorizan la seguridad, el desarrollo integral y el bienestar de sus hijos";
-      } else if (/empresa|corporativ|b2b|pyme|industrial|planta|f[aá]brica|negocio/i.test(t)) {
+      } else if (/\b(empresas?|corporativ\w*|b2b|pymes?|industrial\w*|plantas?|f[aá]bricas?)\b/i.test(t)) {
         targetConcept = "directivos, fundadores y líderes operativos que exigen certidumbre técnica, puntualidad y retorno de inversión";
-      } else if (/paciente|adulto mayor|tercera edad|rehabilit|cl[ií]nic|dental/i.test(t)) {
-        targetConcept = "pacientes y familias que buscan certeza clínica, trato humano empático y tranquilidad absoluta";
-      } else if (/mujer|novia|ejecutiv|deportist|gamer|arquitect|diseñador/i.test(t)) {
+      } else if (isStrictMedical || /\b(pacientes?|adultos? mayores?|tercera edad|rehabilit\w*)\b/i.test(t)) {
+        targetConcept = "personas y familias que buscan certeza profesional, trato humano empático y tranquilidad absoluta";
+      } else if (/\b(mujer\w*|novias?|ejecutiv\w*|deportist\w*|gamers?|arquitect\w*|diseñador\w*)\b/i.test(t)) {
         targetConcept = "personas con un estilo de vida definido que buscan piezas o experiencias con identidad propia y calidad superior";
-      } else if (/comensal|amante del caf[eé]|gourmet|familia/i.test(t)) {
+      } else if (/\b(comensal\w*|gourmet|restauran\w*|caf[eé]s?)\b/i.test(t)) {
         targetConcept = "comensales y amantes del buen comer que aprecian los ingredientes honestos y el sabor auténtico";
       }
 
       // 2. Especialidad / Diferenciador detectado
       const specParts = [];
       let sensoryParts = [];
+      if (isTechApp) {
+        specParts.push("experiencia digital intuitiva, rápida y libre de fricciones técnicas");
+        sensoryParts.push("una interfaz clara que entrega valor desde el primer minuto y velocidad de respuesta");
+      }
       if (/caser[oa]|artesanal|hech[oa] a mano|de autor|hornead|tradicional|fresc[oa]/i.test(t)) {
         specParts.push("elaboración artesanal y cuidado casero en cada lote");
         sensoryParts.push("la frescura recién hecha, el aroma auténtico y la textura artesanal");
@@ -11560,17 +11569,13 @@
         specParts.push("formulación limpia con ingredientes 100% naturales y transparentes");
         sensoryParts.push("la pureza visible de los ingredientes y un empaque limpio que inspira salud");
       }
-      if (/domicilio|suscripci[oó]n|online|en l[ií]nea|entrega|r[aá]pid|express|app/i.test(t)) {
-        specParts.push("entrega práctica y puntual directamente en la puerta del cliente");
-        sensoryParts.push("la facilidad de pedir en segundos y el ritual de abrir el empaque al recibirlo");
+      if (/domicilio|suscripci[oó]n|online|en l[ií]nea|entrega|r[aá]pid|express/i.test(t)) {
+        specParts.push("entrega práctica y puntual directamente al cliente");
+        sensoryParts.push("la facilidad de pedir en segundos y el ritual de recibirlo sin esperas");
       }
       if (/medida|personalizad|exclusiv|premium|lujo|boutique|vip/i.test(t)) {
         specParts.push("diseño personalizado a la medida de cada cliente");
         sensoryParts.push("la atención uno a uno y los acabados de alta gama");
-      }
-      if (/tecnolog[ií]a|inteligencia artificial|automatiz|digital|datos|precisi[oó]n/i.test(t)) {
-        specParts.push("precisión tecnológica y optimización inteligente de procesos");
-        sensoryParts.push("una interfaz clara, reportes ejecutivos simples y velocidad de respuesta");
       }
 
       const specialtyConcept = specParts.length > 0
@@ -11580,63 +11585,63 @@
         ? sensoryParts.slice(0, 2).join(", junto con ")
         : "la primera impresión de confianza, la claridad durante el servicio y la excelencia en la entrega";
 
-      // 3. Oferta principal + Dolor del mercado
+      // 3. Oferta principal + Dolor del mercado (evaluando Apps y Tecnología PRIMERO)
       let domainLabel = "✦ Propuesta Especializada de Alto Valor";
       let offerConcept = `una propuesta especializada con ${specialtyConcept}`;
       let marketPain = "la frustración de encontrar opciones genéricas e impersonales que no cuidan los detalles ni cumplen lo que prometen";
       let baseRoots = ["Origen", "Nexo", "Valor", "Cima"];
 
-      if ((/comida|alimento|nutrici|croquet|dieta|premio|snack|pastel|reposter|men[uú]/i.test(t)) && (/perro|canin|gato|felin|mascota|pet/i.test(t))) {
-        const animalWord = (/perro|canin/i.test(t) && !/gato/i.test(t)) ? "canina" : "para mascotas";
+      if (isTechApp && !isStrictMedical) {
+        domainLabel = "💻 Aplicación, Producto Digital & Tecnología";
+        offerConcept = `una aplicación y solución digital con ${specialtyConcept}`;
+        marketPain = "la pérdida de tiempo en procesos manuales o plataformas complicadas y lentas que frustran al usuario";
+        baseRoots = ["Nexo", "Pulso", "Flujo", "Lógica", "Nova"];
+      } else if ((/comida|alimento|nutrici|croquet|dieta|premio|snack|pastel|reposter|men[uú]/i.test(t)) && (/\b(perros?|canin\w*|gatos?|felin\w*|mascotas?|pet|petshop)\b/i.test(t))) {
+        const animalWord = (/\b(perros?|canin\w*)\b/i.test(t) && !/\bgatos?\b/i.test(t)) ? "canina" : "para mascotas";
         domainLabel = "🐾 Nutrición Natural & Alimentación Saludable para Mascotas";
         offerConcept = `nutrición ${animalWord} de preparación cuidada con ${specialtyConcept}`;
         marketPain = "la desconfianza hacia las croquetas ultraprocesadas llenas de químicos, harinas artificiales y conservadores que afectan la digestión y salud de su compañero";
         baseRoots = ["Natura", "Noble", "Vital", "Huella", "Origen"];
-      } else if (/mascota|perro|gato|veterinar|canin|felin|pet/i.test(t)) {
+      } else if (/\b(mascotas?|perros?|gatos?|veterinar\w*|canin\w*|felin\w*|pet|petshop)\b/i.test(t)) {
         domainLabel = "🐾 Bienestar, Salud & Cuidado Especializado de Mascotas";
         offerConcept = `cuidado y bienestar integral para animales de compañía con ${specialtyConcept}`;
         marketPain = "el temor a servicios impersonales o productos industriales que generan estrés o descuidan la salud real del animal";
         baseRoots = ["Vínculo", "Noble", "Vital", "Huella", "Natura"];
-      } else if (/restauran|caf[eé]|panader|gastronom|bar|hotel|comida|bebida|reposter|pastel|postre|tostadur|cocina|alimento|taco|pizza|marisc|helad|chocolat/i.test(t)) {
+      } else if (/\b(restauran\w*|caf[eé]s?|cafeter\w*|panader\w*|gastronom\w*|bar|bares|hotel\w*|comida|bebidas?|reposter\w*|pasteles?|postres?|tostadur\w*|cocina|alimentos?|tacos?|pizzas?|mariscos?|helados?|chocolat\w*)\b/i.test(t)) {
         domainLabel = "🍽️ Gastronomía, Hospitalidad & Experiencia Culinaria";
         offerConcept = `una experiencia gastronómica y culinaria distinguida por ${specialtyConcept}`;
         marketPain = "la saturación de comida comercial estandarizada, con insumos artificiales y sin calidez en el servicio";
         baseRoots = ["Origen", "Brasa", "Trigo", "Ritual", "Alba"];
-      } else if (/salud|cl[ií]nica|m[eé]dic|dental|odont|pedi[aá]tr|retiro|laboratorio|spa|bienestar|psicolog|fisio|pilates|terapia|nutrici|[oó]ptica|farmac/i.test(t)) {
-        domainLabel = "🩺 Salud, Bienestar Clínico & Cuidado Humano";
+      } else if (isStrictMedical || /\b(spa|pilates|retiro|terapia)\b/i.test(t)) {
+        domainLabel = "🩺 Salud, Bienestar & Cuidado Humano";
         offerConcept = `atención en salud y bienestar integral respaldada por ${specialtyConcept}`;
-        marketPain = "la frialdad clínica, la falta de seguimiento y la incertidumbre cuando el paciente no se siente escuchado";
+        marketPain = "la frialdad tradicional, la falta de seguimiento y la incertidumbre cuando la persona no se siente escuchada";
         baseRoots = ["Vita", "Serena", "Lumen", "Aurea", "Sana"];
-      } else if (/despacho|contab|abogad|legal|jur[ií]dic|consultor|agencia|marketing|publicidad|finanz|b2b|asesor|corporativ|auditor|invers|seguro/i.test(t)) {
+      } else if (/\b(despachos?|contab\w*|abogad\w*|legal\w*|jur[ií]dic\w*|consultor\w*|agencias?|marketing|publicidad|finanz\w*|b2b|asesor\w*|corporativ\w*|auditor\w*|inversi\w*|seguros?)\b/i.test(t)) {
         domainLabel = "💼 Firma de Consultoría, Estrategia & Servicios B2B";
         offerConcept = `consultoría y soluciones profesionales basadas en ${specialtyConcept}`;
         marketPain = "los proveedores lentos que hablan con tecnicismos confusos y no se comprometen con resultados medibles";
         baseRoots = ["Vértice", "Axioma", "Nexo", "Valor", "Faro"];
-      } else if (/colegio|escuela|educac|academ|curso|campamento|universid|capacitac|formaci[oó]n|taller|enseñ|idiom|ingl[eé]s|infantil/i.test(t)) {
+      } else if (/\b(colegios?|escuelas?|educac\w*|academ\w*|cursos?|campamentos?|universid\w*|capacitac\w*|formaci[oó]n|talleres?|idiomas?|ingl[eé]s)\b/i.test(t)) {
         domainLabel = "🎓 Educación, Desarrollo de Talento & Aprendizaje Vivo";
         offerConcept = `formación y desarrollo de habilidades con ${specialtyConcept}`;
         marketPain = "la enseñanza teórica y pasiva que no despierta motivación ni prepara para retos reales";
         baseRoots = ["Mentis", "Aula", "Impulso", "Senda", "Faro"];
-      } else if (/arquitect|construct|inmobiliar|muebler|diseñ|interior|carpinter|obra|decorac|hogar|remodel|casa|espacio/i.test(t)) {
+      } else if (/\b(arquitect\w*|construct\w*|inmobiliar\w*|muebler\w*|muebles|interiorismo|carpinter\w*|obras?|decorac\w*|remodel\w*)\b/i.test(t)) {
         domainLabel = "🏡 Arquitectura, Espacios, Mobiliario & Hábitat";
         offerConcept = `creación de espacios, arquitectura o mobiliario con ${specialtyConcept}`;
         marketPain = "los retrasos de entrega, presupuestos poco claros y materiales que se desgastan prematuramente";
         baseRoots = ["Trazo", "Materia", "Pórtico", "Domus", "Piedra"];
-      } else if (/industr|manufactur|automatiz|log[ií]st|transporte|flota|ingenier|maquinar|planta|mantenim|reciclaj|energ|solar|agro|campo/i.test(t)) {
+      } else if (/\b(industr\w*|manufactur\w*|automatiz\w*|log[ií]st\w*|transporte|flotas?|ingenier\w*|maquinar\w*|plantas?|mantenim\w*|reciclaj\w*|energ\w*|solar|agro\w*)\b/i.test(t)) {
         domainLabel = "⚙️ Ingeniería, Operaciones Industriales & Eficiencia Técnica";
         offerConcept = `ingeniería, suministro y operación técnica con ${specialtyConcept}`;
         marketPain = "los paros operativos, mermas costosas y falta de respuesta técnica inmediata";
         baseRoots = ["Vectra", "Forja", "Tracción", "Núcleo", "Kinetix"];
-      } else if (/tienda|boutique|ropa|moda|calzado|joyer|cosm[eé]t|belleza|perfum|ecommerce|accesorio|regalo|textil|piel|bolsa|reloj/i.test(t)) {
+      } else if (/\b(tiendas?|boutiques?|ropa|moda|calzado|joyer\w*|cosm[eé]t\w*|belleza|perfum\w*|ecommerce|accesorios?|regalos?|textil\w*|bolsas?|relojes?)\b/i.test(t)) {
         domainLabel = "🛍️ Moda, Diseño de Producto & Estilo de Vida";
         offerConcept = `una marca de producto y estilo de vida con ${specialtyConcept}`;
         marketPain = "el consumo masivo de artículos sin carácter propio que pierden su calidad rápidamente";
         baseRoots = ["Aura", "Velo", "Loom", "Seda", "Ícono"];
-      } else if (/software|app|saas|inteligencia artificial|plataforma|digital|tecnolog|startup|web|datos|automat|sistema|cloud/i.test(t)) {
-        domainLabel = "💻 Tecnología, Plataformas Digitales & Soluciones Inteligentes";
-        offerConcept = `tecnología y soluciones digitales con ${specialtyConcept}`;
-        marketPain = "la pérdida de horas operativas en procesos manuales o plataformas difíciles de usar";
-        baseRoots = ["Nexo", "Pulso", "Flujo", "Lógica", "Nova"];
       }
 
       return {
@@ -11655,9 +11660,16 @@
       const t = clean.toLowerCase();
       let phrase = "solución especializada de alto valor";
 
-      if (/mascota|perro|gato|veterinar|canin|felin|croquet|pet/i.test(t)) {
-        const isDog = /perro|canin|lomito/i.test(t) && !/gato|felin/i.test(t);
-        const isCat = /gato|felin|michi/i.test(t) && !/perro|canin/i.test(t);
+      const isTechApp = /\b(aplicaci[oó]n|aplicaciones|app|apps|software|saas|plataforma|digital\w*|tecnolog\w*|startup|web|datos|sistema|cloud|inteligencia artificial)\b/i.test(t);
+      const isStrictMedical = /\b(cl[ií]nicas?|doctore?s?|m[eé]dic[oa]s?|medicina|consultorios?|hospital\w*|odont\w*|dental\w*|dentistas?|pediatras?|cirujan\w*|psic[oó]log\w*|psiquiat\w*|fisioterap\w*)\b/i.test(t);
+
+      if (isTechApp && !isStrictMedical) {
+        phrase = /\b(aplicaci[oó]n|aplicaciones|app|apps)\b/i.test(t)
+          ? "aplicación digital intuitiva y ágil"
+          : "plataforma digital y tecnología ágil";
+      } else if (/\b(mascotas?|perros?|gatos?|veterinar\w*|canin\w*|felin\w*|croquetas?|pet|petshop)\b/i.test(t)) {
+        const isDog = /\b(perros?|canin\w*|lomitos?)\b/i.test(t) && !/\b(gatos?|felin\w*)\b/i.test(t);
+        const isCat = /\b(gatos?|felin\w*|michis?)\b/i.test(t) && !/\b(perros?|canin\w*)\b/i.test(t);
         if (/comida|alimento|nutrici|croquet|dieta|snack|pastel/i.test(t)) {
           if (isDog) phrase = (/caser|natural/i.test(t)) ? "nutrición canina casera y natural" : "nutrición canina saludable de calidad";
           else if (isCat) phrase = "nutrición felina saludable y natural";
@@ -11667,34 +11679,32 @@
           else if (isCat) phrase = "cuidado y bienestar integral felino";
           else phrase = "bienestar y salud para mascotas";
         }
-      } else if (/caf[eé]|cafeter|panader|reposter|pastel|postre/i.test(t)) {
+      } else if (/\b(caf[eé]s?|cafeter\w*|panader\w*|reposter\w*|pasteles?|postres?)\b/i.test(t)) {
         if (/pan|masa madre/i.test(t)) phrase = "cafetería y panadería artesanal fresca";
         else if (/postre|pastel|reposter/i.test(t)) phrase = "repostería artesanal de autor";
         else phrase = "cafetería de especialidad y autor";
-      } else if (/restauran|gastronom|comida|bebida|bar|cocina|alimento|taco|pizza|marisc|helad|chocolat/i.test(t)) {
+      } else if (/\b(restauran\w*|gastronom\w*|comida|bebidas?|bar|bares|cocina|alimentos?|tacos?|pizzas?|mariscos?|helados?|chocolat\w*)\b/i.test(t)) {
         if (/saludable|natural|org[aá]nic|sin az[uú]car/i.test(t)) phrase = "gastronomía saludable con ingredientes naturales";
         else if (/caser|artesanal/i.test(t)) phrase = "cocina artesanal de sazón auténtico";
         else phrase = "gastronomía de autor y hospitalidad";
-      } else if (/dental|odont/i.test(t)) {
+      } else if (/\b(dental\w*|odont\w*|dentistas?)\b/i.test(t)) {
         phrase = "odontología integral cálida y estética";
-      } else if (/salud|cl[ií]nica|m[eé]dic|pedi[aá]tr|paciente|terapia|spa|bienestar|retiro|laboratorio|psicolog|fisio|pilates|nutrici|[oó]ptica|farmac/i.test(t)) {
+      } else if (isStrictMedical || /\b(spa|pilates|retiro|terapia)\b/i.test(t)) {
         phrase = "salud preventiva y bienestar integral";
-      } else if (/contab|fiscal|finanz|auditor|invers/i.test(t)) {
+      } else if (/\b(contab\w*|fiscal\w*|finanz\w*|auditor\w*|inversi\w*)\b/i.test(t)) {
         phrase = "estrategia financiera y certeza fiscal";
-      } else if (/abogad|legal|jur[ií]dic/i.test(t)) {
+      } else if (/\b(abogad\w*|legal\w*|jur[ií]dic\w*)\b/i.test(t)) {
         phrase = "blindaje jurídico y asesoría legal";
-      } else if (/despacho|consultor|agencia|marketing|publicidad|b2b|asesor|corporativ/i.test(t)) {
+      } else if (/\b(despachos?|consultor\w*|agencias?|marketing|publicidad|b2b|asesor\w*|corporativ\w*)\b/i.test(t)) {
         phrase = "consultoría estratégica y crecimiento empresarial";
-      } else if (/colegio|escuela|educac|academ|curso|campamento|universid|capacitac|formaci[oó]n|taller|enseñ|idiom|ingl[eé]s|infantil/i.test(t)) {
+      } else if (/\b(colegios?|escuelas?|educac\w*|academ\w*|cursos?|campamentos?|universid\w*|capacitac\w*|formaci[oó]n|talleres?|idiomas?|ingl[eé]s)\b/i.test(t)) {
         phrase = "formación práctica y aprendizaje activo";
-      } else if (/arquitect|construct|inmobiliar|muebler|diseñ|interior|carpinter|obra|decorac|hogar|remodel|casa|espacio/i.test(t)) {
+      } else if (/\b(arquitect\w*|construct\w*|inmobiliar\w*|muebler\w*|muebles|interiorismo|carpinter\w*|obras?|decorac\w*|remodel\w*)\b/i.test(t)) {
         phrase = "arquitectura y espacios a medida";
-      } else if (/industr|manufactur|automatiz|log[ií]st|transporte|flota|ingenier|maquinar|planta|mantenim|energ|solar|agro/i.test(t)) {
+      } else if (/\b(industr\w*|manufactur\w*|automatiz\w*|log[ií]st\w*|transporte|flotas?|ingenier\w*|maquinar\w*|plantas?|mantenim\w*|energ\w*|solar|agro\w*)\b/i.test(t)) {
         phrase = "ingeniería y eficiencia operativa industrial";
-      } else if (/tienda|boutique|ropa|moda|calzado|joyer|cosm[eé]t|belleza|perfum|ecommerce|accesorio|regalo|textil|piel|bolsa|reloj/i.test(t)) {
+      } else if (/\b(tiendas?|boutiques?|ropa|moda|calzado|joyer\w*|cosm[eé]t\w*|belleza|perfum\w*|ecommerce|accesorios?|regalos?|textil\w*|bolsas?|relojes?)\b/i.test(t)) {
         phrase = "diseño de producto con identidad";
-      } else if (/software|app|saas|inteligencia artificial|plataforma|digital|tecnolog|startup|web|datos|sistema|cloud/i.test(t)) {
-        phrase = "tecnología digital y automatización ágil";
       } else {
         const stripped = t
           .replace(/^(?:quiero\s+poner\s+|me\s+dedico\s+a\s+|nos\s+dedicamos\s+a\s+|vendo\s+|vendemos\s+|hago\s+|hacemos\s+|ofrecemos\s+|somos\s+|tengo\s+|abrimos\s+|creamos\s+|fabricamos\s+|elaboramos\s+|doy\s+|damos\s+)?(?:un\s+|una\s+|unos\s+|unas\s+|el\s+|la\s+|los\s+|las\s+)?(?:negocio\s+de\s+|empresa\s+de\s+|marca\s+de\s+|servicio\s+de\s+|proyecto\s+de\s+|tienda\s+de\s+)?/i, "")
@@ -11937,12 +11947,13 @@
 
     function inferBaseSectorFromCustomText(text) {
       const t = (text || "").toLowerCase();
-      if (/restauran|caf[eé]|panader|gastronom|bar|hotel|comida|bebida|reposter/i.test(t)) return "restaurante_hospitalidad";
-      if (/despacho|contab|abogad|legal|consultor|agencia|marketing|finanz|b2b|asesor/i.test(t)) return "servicios_profesionales_b2b";
-      if (/colegio|escuela|educac|academ|curso|campamento|universid|capacitac/i.test(t)) return "educacion_colegio_campamentos";
-      if (/salud|cl[ií]nica|m[eé]dic|dental|retiro|laboratorio|spa|bienestar|veterinar|psicolog|fisio|pilates/i.test(t)) return "salud_retiro_laboratorio";
-      if (/arquitect|construct|inmobiliar|muebler|diseñ|interior|carpinter|obra/i.test(t)) return "constructora_muebleria_oficio";
-      if (/industr|manufactur|automatiz|log[ií]st|transporte|flota|ingenier|maquinar/i.test(t)) return "industrial_automatizacion_flota";
+      if (/\b(aplicaci[oó]n|aplicaciones|app|apps|software|saas|plataforma|digital\w*|tecnolog\w*)\b/i.test(t)) return "servicios_profesionales_b2b";
+      if (/\b(restauran\w*|caf[eé]s?|panader\w*|gastronom\w*|bar|bares|hotel\w*|comida|bebidas?|reposter\w*)\b/i.test(t)) return "restaurante_hospitalidad";
+      if (/\b(despachos?|contab\w*|abogad\w*|legal\w*|consultor\w*|agencias?|marketing|finanz\w*|b2b|asesor\w*)\b/i.test(t)) return "servicios_profesionales_b2b";
+      if (/\b(colegios?|escuelas?|educac\w*|academ\w*|cursos?|campamentos?|universid\w*|capacitac\w*)\b/i.test(t)) return "educacion_colegio_campamentos";
+      if (/\b(cl[ií]nicas?|doctore?s?|m[eé]dic[oa]s?|dental\w*|retiro|laboratorios?|spa|veterinar\w*|psic[oó]log\w*|fisioterap\w*|pilates)\b/i.test(t)) return "salud_retiro_laboratorio";
+      if (/\b(arquitect\w*|construct\w*|inmobiliar\w*|muebler\w*|interiorismo|carpinter\w*|obras?)\b/i.test(t)) return "constructora_muebleria_oficio";
+      if (/\b(industr\w*|manufactur\w*|automatiz\w*|log[ií]st\w*|transporte|flotas?|ingenier\w*|maquinar\w*)\b/i.test(t)) return "industrial_automatizacion_flota";
       return "custom_negocio_propio";
     }
 
