@@ -2227,11 +2227,29 @@
         padding: 10px 8px !important;
       }
       .node-title,
-      .node-desc {
+      .node-desc,
+      .milestone-name,
+      .milestone-summary {
         white-space: normal !important;
         overflow: visible !important;
         text-overflow: clip !important;
         line-height: 1.32 !important;
+      }
+      .roadmap-milestone-card {
+        display: grid !important;
+        grid-template-columns: 64px 1fr !important;
+        gap: 12px !important;
+        align-items: start !important;
+        padding: 16px !important;
+      }
+      .roadmap-milestone-card .milestone-icon-bubble {
+        width: 64px !important;
+        height: 64px !important;
+      }
+      .roadmap-milestone-card .milestone-status-chip {
+        grid-column: 1 / -1 !important;
+        justify-self: start !important;
+        margin-top: 2px !important;
       }
       /* #048: Pulgar táctil grande para sliders en celular */
       input[type="range"]::-webkit-slider-thumb {
@@ -2390,6 +2408,22 @@
               <span class="milestone-summary">Manual completo sin límite de hojas con aplicaciones e imprenta</span>
             </div>
             <span class="milestone-status-chip" id="node-badge-6">Bloqueado</span>
+          </div>
+          <div class="roadmap-connector-bar" style="background:repeating-linear-gradient(to bottom, #D4AF37 0, #D4AF37 4px, transparent 4px, transparent 8px); opacity:0.75;"></div>
+        </div>
+
+        <!-- Node Bonus (Próximamente): Publicación Inmediata de Página Web Funcional -->
+        <div class="roadmap-node-row">
+          <div class="roadmap-milestone-card" id="node-card-7-coming-soon" onclick="openComingSoonWebsiteBuilderModal()" style="border:2px dashed #D4AF37; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FAF8F5; cursor:pointer;">
+            <div class="milestone-icon-bubble" style="background:rgba(212,175,55,0.16); border:1.5px solid #D4AF37; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">
+              🌐
+            </div>
+            <div class="milestone-content">
+              <span class="milestone-step-index" style="color:#FDE68A; font-weight:800;">✦ Siguiente Evolución al Terminar · Suite TheBest</span>
+              <h3 class="milestone-name" style="color:#FFFFFF;">Diseñar y Publicar tu Página Web Funcional</h3>
+              <span class="milestone-summary" style="color:#CBD5E1;">Tu Propósito, Touchpoints, Dominio, Colores y Logo convertidos en tu sitio web en 1 clic</span>
+            </div>
+            <span class="milestone-status-chip" style="background:#FEF3C7; color:#92400E; border:1.5px solid #F59E0B; font-weight:800;">🚀 Próximamente</span>
           </div>
         </div>
       </div>
@@ -3418,6 +3452,33 @@
             <button class="btn-action" onclick="exportBrandbookJSON()">📦 Exportar Expediente (.JSON)</button>
             <button class="btn-action" onclick="printShopCheatsheetDirect()">🖨️ Imprimir Print-Shop Cheatsheet</button>
             <button class="btn-action" onclick="window.print()">🖨️ Vista de Impresión Navegador</button>
+            <button class="btn-action" onclick="openComingSoonWebsiteBuilderModal()" style="background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; border:1.5px dashed #D4AF37; font-weight:800;">
+              🌐 Próximamente: Crear y Publicar mi Página Web →
+            </button>
+          </div>
+
+          <!-- MÓDULO COMPLEMENTARIO AL TÉRMINO DE LA EXPERIENCIA: GENERADOR DE SITIO WEB FUNCIONAL (PRÓXIMAMENTE) -->
+          <div id="step6ComingSoonWebBanner" style="background:linear-gradient(135deg, #090D16 0%, #172033 100%); color:#FAF8F5; border:2px dashed #D4AF37; border-radius:18px; padding:18px 20px; margin-top:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+            <div style="flex:1 1 320px; min-width:0;">
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px;">
+                <span style="background:#FEF3C7; color:#92400E; border:1px solid #F59E0B; font-family:var(--font-mono); font-size:0.7rem; font-weight:800; padding:3px 10px; border-radius:999px;">🚀 PRÓXIMAMENTE · INTEGRACIÓN INMEDIATA</span>
+                <span style="font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A; font-weight:700;">100% DE TUS DATOS YA ESTÁN LISTOS</span>
+              </div>
+              <h3 style="font-family:var(--font-display); font-size:1.25rem; font-weight:800; color:#FFFFFF; margin:0 0 6px 0;">
+                🌐 Diseña y Publica de Inmediato tu Página Web Funcional con lo que acabas de construir
+              </h3>
+              <p style="font-size:0.88rem; color:#CBD5E1; margin:0; line-height:1.48;">
+                Ya contamos con tu <strong>Propósito y Promesa (Paso 1)</strong>, tus <strong>Touchpoints de conversión y contacto (Paso 2)</strong>, tu <strong>Nombre y Dominio disponible (Paso 3)</strong>, y tu <strong>Paleta, Tipografía y Logotipo en curvas (Pasos 4 y 5)</strong> para ensamblar y publicar tu sitio web sin escribir una sola línea de código.
+              </p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; align-items:stretch; min-width:230px;">
+              <button type="button" onclick="openComingSoonWebsiteBuilderModal()" style="background:linear-gradient(135deg, #D4AF37 0%, #B45309 100%); color:#FFFFFF; border:none; border-radius:12px; padding:12px 18px; font-family:var(--font-ui); font-size:0.86rem; font-weight:800; cursor:pointer; box-shadow:0 6px 18px rgba(212,175,55,0.28);">
+                ✨ Ver Cómo se Construirá mi Web (Próximamente)
+              </button>
+              <span id="comingSoonWebInlineBadge" style="font-family:var(--font-mono); font-size:0.68rem; color:#94A3B8; text-align:center;">
+                Incluirá Hosting + Dominio + WhatsApp / Checkout
+              </span>
+            </div>
           </div>
 
           <!-- BÓVEDA DE DESCARGA DIRECTA DE LOS 12 BRANDBOOKS SIMULADOS (.PDF / .HTML) -->
@@ -3509,6 +3570,42 @@
       </main>
     </div><!-- /.focus-wrapper -->
   </div><!-- /#screen-focus -->
+
+  <!-- MODAL "PRÓXIMAMENTE": DISEÑO Y PUBLICACIÓN INMEDIATA DE PÁGINA WEB FUNCIONAL -->
+  <div class="welcome-modal-overlay" id="comingSoonWebModal" style="z-index:10050;" onclick="if(event.target.id==='comingSoonWebModal') closeComingSoonWebsiteBuilderModal()">
+    <div class="welcome-modal-card" style="max-width:680px; width:94%; background:#090D16; color:#FAF8F5; border:2px solid #D4AF37; padding:24px; max-height:90vh; overflow-y:auto; text-align:left;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:12px;">
+        <div>
+          <span style="background:#FEF3C7; color:#92400E; border:1px solid #F59E0B; font-family:var(--font-mono); font-size:0.7rem; font-weight:800; padding:4px 10px; border-radius:999px; display:inline-block; margin-bottom:6px;">
+            🚀 PRÓXIMAMENTE · EXPANSIÓN AL TÉRMINO DE LA EXPERIENCIA
+          </span>
+          <h2 style="font-family:var(--font-display); font-size:1.45rem; font-weight:800; color:#FFFFFF; margin:0; line-height:1.25;">
+            🌐 De tu Brandbook a tu Página Web Funcional en 1 Clic
+          </h2>
+        </div>
+        <button type="button" onclick="closeComingSoonWebsiteBuilderModal()" style="background:rgba(255,255,255,0.1); color:#FFF; border:1px solid rgba(255,255,255,0.2); border-radius:10px; padding:8px 12px; font-weight:800; cursor:pointer;">✕</button>
+      </div>
+
+      <p style="font-size:0.94rem; color:#CBD5E1; line-height:1.5; margin:0 0 14px 0;">
+        Al concluir los 6 pasos en <strong>TheBestBrand</strong>, ya habrás definido absolutamente toda la arquitectura estratégica, verbal, sensorial y visual necesaria para ensamblar y publicar tu sitio web sin empezar de cero:
+      </p>
+
+      <!-- MAPEO EN VIVO DE LOS DATOS DE LA MARCA ACTUAL HACIA LA FUTURA WEB -->
+      <div id="comingSoonWebLiveBlueprintBox" style="background:#111827; border:1.5px solid #334155; border-radius:14px; padding:14px 16px; margin-bottom:14px; display:grid; grid-template-columns:1fr; gap:10px; font-size:0.86rem;"></div>
+
+      <!-- PREVISUALIZACIÓN ESQUEMÁTICA DEL SITIO WEB DE LA MARCA -->
+      <div id="comingSoonWebMockupWireframe" style="background:#FAF8F5; color:#090D16; border:2px solid #D4AF37; border-radius:14px; padding:14px 16px; margin-bottom:16px;"></div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; align-items:center;">
+        <button type="button" id="btnActivateWebWaitlist" onclick="activateWebsitePriorityWaitlist()" style="flex:1 1 240px; background:linear-gradient(135deg, #10B981 0%, #047857 100%); color:#FFFFFF; border:none; border-radius:12px; padding:13px 18px; font-family:var(--font-ui); font-size:0.92rem; font-weight:800; cursor:pointer;">
+          🔔 Quiero Acceso Prioritario cuando se active para mi Marca
+        </button>
+        <button type="button" onclick="closeComingSoonWebsiteBuilderModal()" style="background:rgba(255,255,255,0.08); color:#E2E8F0; border:1px solid #475569; border-radius:12px; padding:13px 16px; font-size:0.86rem; font-weight:700; cursor:pointer;">
+          Volver a mi Brandbook
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ==================================================================== -->
   <!-- INTERFACE 3: CONSOLA DE ADMINISTRACIÓN (SLIDE-OVER HUB DRAWER)       -->
@@ -10437,6 +10534,108 @@
           reservedSubbrandVault: window.reservedSubbrandVault || []
         };
         localStorage.setItem("tbb_active_brand_session_v24", JSON.stringify(payload));
+      } catch (e) {}
+    }
+
+    function openComingSoonWebsiteBuilderModal() {
+      playAcousticClick(860, 0.05);
+      const modal = document.getElementById("comingSoonWebModal");
+      const blueprintBox = document.getElementById("comingSoonWebLiveBlueprintBox");
+      const wireframeBox = document.getElementById("comingSoonWebMockupWireframe");
+      if (!modal) return;
+
+      const bName = (canvasState.brandName || "TheBestBrand").trim();
+      const slug = bName.toLowerCase().replace(/[^a-z0-9]/g, "") || "mimarca";
+      const promise = canvasState.core_message || canvasState.value_offer || canvasState.golden_circle || "Transformamos la experiencia de nuestros clientes con excelencia y calidez en cada detalle.";
+      const tpBefore = (tpExtractedItems.before && tpExtractedItems.before[0]) || "Descubrimiento y contacto inmediato";
+      const tpDuring = (tpExtractedItems.during && tpExtractedItems.during[0]) || "Atención personalizada sin fricción";
+      const tpAfter = (tpExtractedItems.after && tpExtractedItems.after[0]) || "Seguimiento y garantía post-compra";
+      const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex || ["#090D16", "#FAF8F5", "#D4AF37", "#38BDF8"];
+      const fontName = canvasState.primary_font || "Plus Jakarta Sans";
+      const indKey = detectBrandStudioIndustryKey(bName);
+      const symSvg = buildBespokePentagramSymbolPaths(indKey, priHex, secHex || "#D4AF37", "#FFFFFF", true);
+
+      if (blueprintBox) {
+        blueprintBox.innerHTML = `
+          <div style="font-family:var(--font-mono); font-size:0.72rem; color:#FDE68A; font-weight:800; margin-bottom:2px;">
+            ✓ DATOS DE TU MARCA YA CONECTADOS PARA COMPILAR TU WEB:
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:8px;">
+            <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; border-radius:10px; padding:10px;">
+              <strong style="color:#FDE68A; font-size:0.76rem; display:block;">1. Copywriting &amp; Hero (Paso 1)</strong>
+              <span style="color:#E2E8F0; font-size:0.8rem;">${escapeHTML(promise.slice(0, 95))}${promise.length > 95 ? "…" : ""}</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; border-radius:10px; padding:10px;">
+              <strong style="color:#38BDF8; font-size:0.76rem; display:block;">2. Conversión &amp; Viaje (Paso 2)</strong>
+              <span style="color:#E2E8F0; font-size:0.8rem;">Secciones: ${escapeHTML(tpBefore.slice(0, 38))} · ${escapeHTML(tpDuring.slice(0, 38))}</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; border-radius:10px; padding:10px;">
+              <strong style="color:#34D399; font-size:0.76rem; display:block;">3. Dominio &amp; SEO (Paso 3)</strong>
+              <span style="color:#E2E8F0; font-size:0.8rem; font-family:var(--font-mono);">https://www.${escapeHTML(slug)}.com</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.04); border:1px solid #334155; border-radius:10px; padding:10px;">
+              <strong style="color:#F472B6; font-size:0.76rem; display:block;">4. Sistema Visual (Pasos 4 y 5)</strong>
+              <span style="color:#E2E8F0; font-size:0.8rem;">Fuente ${escapeHTML(fontName)} · Color ${escapeHTML(priHex)} · Logo SVG</span>
+            </div>
+          </div>
+        `;
+      }
+
+      if (wireframeBox) {
+        wireframeBox.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#090D16; color:#FFFFFF; padding:8px 12px; border-radius:10px 10px 0 0; font-family:var(--font-mono); font-size:0.72rem;">
+            <span style="display:flex; align-items:center; gap:6px;">
+              <span style="width:8px; height:8px; border-radius:50%; background:#EF4444;"></span>
+              <span style="width:8px; height:8px; border-radius:50%; background:#F59E0B;"></span>
+              <span style="width:8px; height:8px; border-radius:50%; background:#10B981;"></span>
+              <strong style="color:#FDE68A; margin-left:4px;">🔒 https://${escapeHTML(slug)}.com</strong>
+            </span>
+            <span style="color:#34D399; font-weight:800;">VISTA PREVIA AUTOMÁTICA</span>
+          </div>
+          <div style="background:#0F172A; color:#FFFFFF; padding:16px; border-radius:0 0 10px 10px; border:1px solid #CBD5E1; border-top:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <svg viewBox="0 0 100 100" width="28" height="28">${symSvg}</svg>
+                <span style="font-family:'${escapeHTML(fontName)}', sans-serif; font-weight:800; font-size:0.98rem;">${escapeHTML(bName)}</span>
+              </div>
+              <span style="background:${priHex}; color:#090D16; font-weight:800; font-size:0.72rem; padding:4px 10px; border-radius:999px;">Contacto / Reservar →</span>
+            </div>
+            <div style="padding:6px 0 10px 0;">
+              <div style="font-family:'${escapeHTML(fontName)}', sans-serif; font-size:1.15rem; font-weight:800; color:#FFFFFF; line-height:1.28; margin-bottom:6px;">
+                ${escapeHTML(canvasState.tagline || promise.slice(0, 85))}
+              </div>
+              <div style="font-size:0.8rem; color:#CBD5E1; margin-bottom:10px;">
+                ✓ ${escapeHTML(tpBefore.slice(0, 48))} · ✓ ${escapeHTML(tpDuring.slice(0, 48))} · ✓ ${escapeHTML(tpAfter.slice(0, 48))}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      modal.classList.add("open");
+    }
+
+    function closeComingSoonWebsiteBuilderModal() {
+      playAcousticClick(680, 0.03);
+      const modal = document.getElementById("comingSoonWebModal");
+      if (modal) modal.classList.remove("open");
+    }
+
+    function activateWebsitePriorityWaitlist() {
+      playAcousticClick(960, 0.06);
+      const bName = (canvasState.brandName || "TheBestBrand").trim();
+      const btn = document.getElementById("btnActivateWebWaitlist");
+      const badge = document.getElementById("comingSoonWebInlineBadge");
+      if (btn) {
+        btn.style.background = "#059669";
+        btn.textContent = `✓ ¡Listo! ${bName} quedó registrada con Prioridad #1 para su Sitio Web`;
+      }
+      if (badge) {
+        badge.style.color = "#34D399";
+        badge.textContent = `✓ Prioridad activada para publicar la web de ${bName}`;
+      }
+      try {
+        localStorage.setItem("tbb_coming_soon_web_priority", bName);
       } catch (e) {}
     }
 
