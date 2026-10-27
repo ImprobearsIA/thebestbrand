@@ -2262,6 +2262,189 @@
         -webkit-overflow-scrolling: touch;
       }
     }
+
+    /* ==========================================================================
+       CENTRADO ABSOLUTO DE INTERFAZ Y PASO 0 (CERO DESBORDAMIENTO EN MÓVIL/WEB)
+       ========================================================================== */
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden !important;
+      margin: 0 auto;
+    }
+    .hub-drawer:not(.open) {
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .app-screen {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      align-items: center;
+    }
+    .step0-wrapper,
+    .journey-wrapper,
+    .focus-wrapper {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto !important;
+      padding: 16px 16px 90px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    .atelier-container {
+      width: 100% !important;
+      max-width: 720px !important;
+      margin: 0 auto !important;
+      padding: 0 !important;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    .stage-section {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    .stage-section.active {
+      display: flex;
+    }
+    #panel-step-6 {
+      max-width: 100% !important;
+    }
+    .unified-workbench-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      width: 100% !important;
+      max-width: 680px !important;
+      margin: 8px auto 32px auto !important;
+      box-sizing: border-box;
+    }
+    .workbench-dialogue-pane {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100% !important;
+      max-width: 680px !important;
+      margin: 0 auto !important;
+      box-sizing: border-box;
+    }
+    .question-billboard {
+      width: 100%;
+      max-width: 660px;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      text-align: center !important;
+    }
+    .input-dock {
+      width: 100% !important;
+      max-width: 660px !important;
+      margin: 0 auto 14px auto !important;
+      box-sizing: border-box;
+      justify-content: center;
+    }
+    @media (max-width: 720px) {
+      .step0-wrapper,
+      .journey-wrapper,
+      .focus-wrapper {
+        padding: 12px 14px 90px 14px !important;
+      }
+      .focus-nav-bar {
+        justify-content: space-between !important;
+      }
+      .focus-step-title-pill {
+        display: none !important;
+      }
+      .input-dock {
+        flex-wrap: wrap !important;
+        border-radius: 22px !important;
+        padding: 12px !important;
+        gap: 10px !important;
+      }
+      .input-dock .input-textarea {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        order: 1;
+        text-align: center;
+        min-height: 52px;
+        padding: 6px 8px;
+      }
+      .input-dock #micBtn,
+      .input-dock #sendBtn {
+        flex: 1 1 44% !important;
+        order: 2;
+        justify-content: center !important;
+        padding: 11px 12px !important;
+        font-size: 0.84rem !important;
+      }
+      #step0GoalGrid,
+      #step0AssetsGrid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* Tarjetas interactivas del Paso 0 */
+    .step0-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+    #step0GoalGrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .step0-choice-card {
+      background: #FFFFFF;
+      border: 2px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 14px 16px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .step0-choice-card:hover {
+      border-color: #D4AF37;
+      background: #FFFBEB;
+      transform: translateY(-1px);
+    }
+    .step0-choice-card.selected {
+      background: linear-gradient(135deg, #090D16 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-color: #D4AF37;
+      box-shadow: 0 10px 24px rgba(9, 13, 22, 0.16);
+    }
+    .step0-choice-card.selected .step0-choice-title {
+      color: #FDE68A;
+    }
+    .step0-choice-card.selected .step0-choice-desc {
+      color: #CBD5E1;
+    }
+    .step0-choice-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #090D16;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .step0-choice-desc {
+      font-size: 0.8rem;
+      color: #475569;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
@@ -2269,9 +2452,164 @@
   <canvas id="confettiCanvas"></canvas>
 
   <!-- ==================================================================== -->
+  <!-- INTERFACE 0: PASO 0 · BIENVENIDA Y PUNTO DE PARTIDA DE TU MARCA      -->
+  <!-- ==================================================================== -->
+  <div id="screen-step0" class="app-screen active">
+    <div class="step0-wrapper">
+      <header class="journey-header-bar" style="margin-bottom:18px;">
+        <div class="brand-mark" onclick="navigateToScreen('step0')">
+          <div class="brand-mark-seal" style="background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); border:1.5px solid #D4AF37;">
+            <svg width="20" height="20" viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="16" stroke="#D4AF37" stroke-width="2.2"/>
+              <path d="M20 4 A16 16 0 0 1 36 20 A10 10 0 0 1 26 30 A6 6 0 0 1 20 24 A4 4 0 0 1 24 20" stroke="#FDE68A" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="22" cy="20" r="2.5" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <span class="brand-mark-text">TheBestBrand</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button class="btn-hub-menu" onclick="toggleA11yLargeText()" title="Aumentar tamaño de letra (A+)">👁️ A+</button>
+          <button class="btn-hub-menu" onclick="navigateToScreen('journey')" title="Ir al Mapa de los 6 Pasos">🗺️ Mapa</button>
+        </div>
+      </header>
+
+      <!-- BIENVENIDA CENTRADA DE AURA -->
+      <div style="width:100%; background:linear-gradient(145deg, #090D16 0%, #1E293B 100%); color:#FAF8F5; border:2px solid #D4AF37; border-radius:26px; padding:24px 22px; text-align:center; margin-bottom:18px; box-shadow:0 18px 40px rgba(9,13,22,0.16);">
+        <span style="display:inline-block; background:rgba(212,175,55,0.2); color:#FDE68A; border:1px solid #D4AF37; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; padding:4px 12px; border-radius:999px; margin-bottom:10px;">
+          ✦ PASO 0 · BIENVENIDA Y CONFIGURACIÓN INICIAL
+        </span>
+        <h1 style="font-family:var(--font-display); font-size:clamp(1.45rem, 3.8vw, 1.95rem); font-weight:800; color:#FFFFFF; line-height:1.22; margin-bottom:8px;">
+          Te damos la bienvenida a tu Taller de Marca con Aura
+        </h1>
+        <p style="font-size:0.95rem; color:#CBD5E1; max-width:600px; margin:0 auto; line-height:1.5;">
+          Antes de entrar a la primera pantalla, cuéntanos tu punto de partida en 3 breves elecciones. Así personalizamos tu recorrido y mantenemos tu estudio <strong>100% limpio y centrado</strong> sin preguntas que estorben.
+        </p>
+      </div>
+
+      <!-- PREGUNTA 1: OBJETIVO DE LA MARCA (PRIMERA MARCA / EVOLUCIÓN / SEGUNDA MARCA / DEMO) -->
+      <div style="width:100%; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:22px; padding:20px; margin-bottom:14px; text-align:center; box-shadow:0 8px 24px rgba(15,23,42,0.04);">
+        <span style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#B45309; letter-spacing:0.05em;">1 DE 3 · TU OBJETIVO PRINCIPAL</span>
+        <h2 style="font-family:var(--font-display); font-size:1.2rem; font-weight:800; color:#090D16; margin:4px 0 12px 0;">
+          ¿Cuál es tu objetivo al crear tu marca hoy?
+        </h2>
+        <div class="step0-card-grid" id="step0GoalGrid">
+          <div class="step0-choice-card selected" id="step0Goal_first" onclick="selectStep0Goal('first')">
+            <div class="step0-choice-title">🚀 Es mi Primera Marca</div>
+            <div class="step0-choice-desc">Apenas voy empezando y quiero construir mi marca desde cero paso a paso.</div>
+          </div>
+          <div class="step0-choice-card" id="step0Goal_evolve" onclick="selectStep0Goal('evolve')">
+            <div class="step0-choice-title">✨ Evolucionar mi Marca Actual</div>
+            <div class="step0-choice-desc">Ya tengo un negocio en marcha y quiero profesionalizar su identidad y manual.</div>
+          </div>
+          <div class="step0-choice-card" id="step0Goal_second" onclick="selectStep0Goal('second')">
+            <div class="step0-choice-title">🧬 Es una Segunda Marca / Sub-Marca</div>
+            <div class="step0-choice-desc">Quiero expandir mi grupo heredando el 85% del ADN y adaptando el 15% a una nueva división.</div>
+          </div>
+          <div class="step0-choice-card" id="step0Goal_demo" onclick="selectStep0Goal('demo')">
+            <div class="step0-choice-title">🏛️ Explorar un Caso Real Terminado</div>
+            <div class="step0-choice-desc">Quiero cargar una de las 12 empresas del portafolio para ver el resultado completo.</div>
+          </div>
+        </div>
+
+        <!-- OPCIONES CONDICIONALES SI ELIGE SUB-MARCA O PORTAFOLIO DEMO -->
+        <div id="step0SubBrandPanel" style="display:none; margin-top:12px; background:#FFFBEB; border:1.5px solid #D4AF37; border-radius:14px; padding:14px; text-align:center;">
+          <div style="font-size:0.86rem; font-weight:800; color:#92400E; margin-bottom:8px;">
+            🧬 Elige el tipo de Sub-Marca / División a crear (Regla 85% ADN Heredado / 15% Específico):
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px; justify-content:center;">
+            <button type="button" class="btn-action" style="background:#10B981; color:#FFF; border:none; font-weight:800;" onclick="cloneActiveBrandDivision('mantenimiento')">🔧 División Servicios / Mantenimiento</button>
+            <button type="button" class="btn-action" style="background:#F59E0B; color:#090D16; border:none; font-weight:800;" onclick="cloneActiveBrandDivision('transporte')">🚛 División Logística / Transporte</button>
+            <button type="button" class="btn-action" style="background:#0284C7; color:#FFF; border:none; font-weight:800;" onclick="cloneActiveBrandDivision('control')">📡 División Tecnología / Software</button>
+          </div>
+        </div>
+
+        <div id="step0DemoPresetPanel" style="display:none; margin-top:12px; background:#090D16; color:#FFFFFF; border:1.5px solid #D4AF37; border-radius:14px; padding:14px; text-align:center;">
+          <label for="step0PresetSelector" style="font-size:0.84rem; font-weight:800; color:#FDE68A; display:block; margin-bottom:8px;">
+            🏛️ Selecciona uno de los 12 Casos Reales para cargarlo completo:
+          </label>
+          <select id="step0PresetSelector" onchange="loadSimulatedBrandPreset(this.value)" style="width:100%; max-width:460px; background:#1E293B; color:#FFFFFF; border:1.5px solid #D4AF37; border-radius:10px; padding:10px 12px; font-size:0.9rem; font-weight:700; cursor:pointer;">
+            <option value="">✨ Selecciona una empresa del portafolio...</option>
+            <option value="01_restaurante_brasa_y_raiz">1. Restaurante — Brasa &amp; Raíz</option>
+            <option value="02_despacho_contable_vertice">2. Despacho Contable — Vértice Patrimonial</option>
+            <option value="03_colegio_agora_nova">3. Colegio K-12 — Colegio Ágora Nova</option>
+            <option value="04_b2b_laboratorio_quantalab">4. Laboratorio B2B — QuantaLab Científica</option>
+            <option value="05_campamentos_cumbre_viva">5. Campamentos — Cumbre Viva</option>
+            <option value="06_casa_retiro_villa_serena">6. Casa de Retiro — Villa Serena</option>
+            <option value="07_constructora_piedra_firme">7. Constructora — Piedra Firme Residencial</option>
+            <option value="08_muebleria_pueblo_el_roble">8. Mueblería — Mueblería El Roble</option>
+            <option value="09A_automatizacion_matriz_aksis">9A. [Matriz] Automatización — Aksis Automation</option>
+            <option value="09B_submarca_aksis_mantenimiento">9B. [Sub-Marca 1] Mantenimiento — Aksis Mantenimiento</option>
+            <option value="09C_submarca_aksis_transporte">9C. [Sub-Marca 2] Transporte — Aksis Transporte</option>
+            <option value="09D_submarca_aksis_control">9D. [Sub-Marca 3] Software IIoT — Aksis Control</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- PREGUNTA 2: ESTADO ACTUAL DE NOMBRE Y LOGOTIPO -->
+      <div style="width:100%; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:22px; padding:20px; margin-bottom:14px; text-align:center; box-shadow:0 8px 24px rgba(15,23,42,0.04);">
+        <span style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#0284C7; letter-spacing:0.05em;">2 DE 3 · NOMBRE Y LOGOTIPO ACTUAL</span>
+        <h2 style="font-family:var(--font-display); font-size:1.2rem; font-weight:800; color:#090D16; margin:4px 0 12px 0;">
+          ¿Ya cuentas con un nombre o un logotipo para tu marca?
+        </h2>
+        <div class="step0-card-grid" id="step0AssetsGrid">
+          <div class="step0-choice-card selected" id="step0Asset_none" onclick="selectStep0Assets('none')">
+            <div class="step0-choice-title">🌱 Apenas voy empezando</div>
+            <div class="step0-choice-desc">No tengo nombre ni logotipo todavía; quiero crearlos durante el recorrido.</div>
+          </div>
+          <div class="step0-choice-card" id="step0Asset_has_name" onclick="selectStep0Assets('has_name')">
+            <div class="step0-choice-title">🏷️ Ya tengo Nombre</div>
+            <div class="step0-choice-desc">Ya sé cómo se llama mi marca, pero necesito diseñar su logotipo y su Brandbook.</div>
+          </div>
+          <div class="step0-choice-card" id="step0Asset_has_both" onclick="selectStep0Assets('has_both')">
+            <div class="step0-choice-title">🎨 Ya tengo Nombre y Logotipo</div>
+            <div class="step0-choice-desc">Quiero definir mi estrategia, touchpoints y armar mi Brandbook Maestro oficial.</div>
+          </div>
+        </div>
+
+        <!-- CAMPO CONDICIONAL SI YA TIENE NOMBRE -->
+        <div id="step0ExistingNameBox" style="display:none; margin-top:12px; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:14px; text-align:center;">
+          <div style="font-size:0.84rem; font-weight:800; color:#090D16; margin-bottom:8px;">
+            ✍️ Escribe el nombre actual de tu marca (y tu eslogan si ya tienes uno):
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:10px; max-width:560px; margin:0 auto;">
+            <input type="text" id="step0BrandNameInput" placeholder="Nombre de tu marca (ej: Casa Lumbre)" style="padding:11px 14px; border-radius:12px; border:1.5px solid #CBD5E1; font-size:0.95rem; font-weight:700; text-align:center;" />
+            <input type="text" id="step0BrandSloganInput" placeholder="Eslogan opcional" style="padding:11px 14px; border-radius:12px; border:1.5px solid #CBD5E1; font-size:0.92rem; text-align:center;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- PREGUNTA 3: SECTOR O GIRO PRINCIPAL -->
+      <div style="width:100%; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:22px; padding:20px; margin-bottom:18px; text-align:center; box-shadow:0 8px 24px rgba(15,23,42,0.04);">
+        <span style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#059669; letter-spacing:0.05em;">3 DE 3 · GIRO O INDUSTRIA</span>
+        <h2 style="font-family:var(--font-display); font-size:1.2rem; font-weight:800; color:#090D16; margin:4px 0 10px 0;">
+          ¿A qué giro pertenece tu negocio?
+        </h2>
+        <select id="step0SectorSelector" onchange="changeTouchpointSectorGuide(this.value)" style="width:100%; max-width:520px; padding:13px 16px; border-radius:14px; border:2px solid #090D16; background:#F8FAFC; color:#090D16; font-family:var(--font-ui); font-size:0.98rem; font-weight:700; cursor:pointer; text-align:center;">
+          <option value="restaurante_hospitalidad">🍽️ Restaurante, Gastronomía, Cafetería u Hospitalidad</option>
+          <option value="servicios_profesionales_b2b">💼 Servicios Profesionales, Despacho, Agencia o Consultoría</option>
+          <option value="educacion_colegio_campamentos">🎓 Educación, Colegio, Academia o Campamentos</option>
+          <option value="salud_retiro_laboratorio">🩺 Salud, Clínica, Bienestar, Casa de Retiro o Laboratorio</option>
+          <option value="constructora_muebleria_oficio">🏡 Arquitectura, Constructora, Inmobiliaria, Mueblería o Diseño</option>
+          <option value="industrial_automatizacion_flota">⚙️ Industria, Manufactura, Automatización, Logística o Tecnología</option>
+        </select>
+      </div>
+
+      <!-- BOTONES DE ENTRADA CENTRADOS -->
+      <div style="width:100%; display:flex; flex-direction:column; align-items:center; gap:10px;">
+        <button type="button" id="btnCompleteStep0Start" onclick="completeStep0AndStartExperience('focus')" style="width:100%; max-width:520px; padding:16px 24px; border-radius:999px; border:2px solid #D4AF37; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; font-family:var(--font-ui); font-size:1.05rem; font-weight:800; cursor:pointer; box-shadow:0 12px 28px rgba(9,13,22,0.22);">
+          ✨ Comenzar Mi Experiencia con Aura (Paso 1) →
+        </button>
+        <button type="button" onclick="completeStep0AndStartExperience('journey')" style="background:transparent; border:none; color:#475569; font-family:var(--font-ui); font-size:0.88rem; font-weight:700; cursor:pointer; text-decoration:underline; padding:6px;">
+          Ver primero el Mapa General de los 6 Pasos
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================== -->
   <!-- INTERFACE 1: EL RECORRIDO (JOURNEY MAP / ROADMAP DUOLINGO-STYLE)     -->
   <!-- ==================================================================== -->
-  <div id="screen-journey" class="app-screen active">
+  <div id="screen-journey" class="app-screen">
     <div class="journey-wrapper">
       <!-- Journey Top Bar -->
       <header class="journey-header-bar">
@@ -2286,6 +2624,9 @@
           <span class="brand-mark-text" id="journeyHeaderBrandTitle">TheBestBrand</span>
         </div>
         <div class="gamified-stats-dock">
+          <button type="button" class="btn-hub-menu" onclick="navigateToScreen('step0')" title="Volver al Paso 0 · Punto de Partida" style="font-size:0.75rem; padding:6px 12px;">
+            ⚙️ Paso 0 · Punto de Partida
+          </button>
           <button type="button" class="btn-hub-menu" onclick="loadOfficialTheBestBrandIdentity()" title="Explorar el Brandbook Oficial de 38 Páginas de TheBestBrand" style="background:linear-gradient(135deg,#FFFBEB 0%,#FEF3C7 100%); border:1px solid rgba(217,119,6,0.38); color:#92400E; font-size:0.75rem; padding:6px 12px;">
             ✦ Brandbook Oficial TheBestBrand
           </button>
@@ -2451,9 +2792,14 @@
     <div class="focus-wrapper">
       <!-- Minimalist Focus Header -->
       <header class="focus-nav-bar">
-        <button class="btn-return-roadmap" onclick="navigateToScreen('journey')" title="Volver al Recorrido">
-          ← <span>Mapa</span>
-        </button>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button class="btn-return-roadmap" onclick="navigateToScreen('step0')" title="Ir al Paso 0 · Punto de Partida">
+            ⚙️ <span>Paso 0</span>
+          </button>
+          <button class="btn-return-roadmap" onclick="navigateToScreen('journey')" title="Volver al Recorrido">
+            🗺️ <span>Mapa</span>
+          </button>
+        </div>
         <div class="focus-step-title-pill" id="focusStepIndicator">
           ✦ Paso 01 · Propósito Nuclear
         </div>
@@ -2471,8 +2817,8 @@
         </div>
       </header>
 
-      <!-- BARRA HORIZONTAL DE ORDEN DE LOS 6 PASOS (JERARQUÍA VISUAL SIEMPRE VISIBLE) -->
-      <nav id="focusTopStepperBar" aria-label="Orden de los 6 pasos" style="width:100%; display:grid; grid-template-columns:repeat(6, 1fr); gap:6px; margin-bottom:8px; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:16px; padding:8px;">
+      <!-- BARRA HORIZONTAL DE ORDEN DE LOS 6 PASOS (JERARQUÍA VISUAL SIEMPRE VISIBLE Y CENTRADA) -->
+      <nav id="focusTopStepperBar" aria-label="Orden de los 6 pasos" style="width:100%; display:grid; grid-template-columns:repeat(6, 1fr); gap:6px; margin-bottom:14px; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:16px; padding:8px;">
         <button type="button" id="topStepBtn_1" onclick="switchStep(1)" style="border:none; border-radius:10px; padding:7px 6px; font-family:var(--font-ui); font-size:0.74rem; font-weight:800; cursor:pointer; background:#090D16; color:#FDE68A;">1. Propósito</button>
         <button type="button" id="topStepBtn_2" onclick="switchStep(2)" style="border:none; border-radius:10px; padding:7px 6px; font-family:var(--font-ui); font-size:0.74rem; font-weight:700; cursor:pointer; background:#F1F5F9; color:#334155;">2. Touchpoints</button>
         <button type="button" id="topStepBtn_3" onclick="switchStep(3)" style="border:none; border-radius:10px; padding:7px 6px; font-family:var(--font-ui); font-size:0.74rem; font-weight:700; cursor:pointer; background:#F1F5F9; color:#334155;">3. Nombre</button>
@@ -2481,66 +2827,28 @@
         <button type="button" id="topStepBtn_6" onclick="switchStep(6)" style="border:none; border-radius:10px; padding:7px 6px; font-family:var(--font-ui); font-size:0.74rem; font-weight:700; cursor:pointer; background:#F1F5F9; color:#334155;">6. Brandbook</button>
       </nav>
 
-      <!-- BARRA DE PORTAFOLIO MULTIMARCA, 12 CASOS REALES Y CLONADOR DE SUB-MARCAS (ADN 85%/15%) -->
-      <div id="multiBrandArchitectureBar" style="width:100%; background:#090D16; color:#FFFFFF; border:1.5px solid #D4AF37; border-radius:14px; padding:8px 14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-          <span style="font-family:var(--font-mono); font-size:0.7rem; color:#FDE68A; font-weight:800;">🏛️ PORTAFOLIO &amp; CASOS REALES:</span>
-          <select id="presetBrandSelector" onchange="loadSimulatedBrandPreset(this.value)" style="background:#1E293B; color:#FFFFFF; border:1px solid #D4AF37; border-radius:8px; padding:5px 10px; font-size:0.76rem; font-weight:700; cursor:pointer;">
-            <option value="">✨ Mi Marca en Vivo (Personalizada)</option>
-            <option value="01_restaurante_brasa_y_raiz">1. Restaurante — Brasa &amp; Raíz</option>
-            <option value="02_despacho_contable_vertice">2. Despacho Contable — Vértice Patrimonial</option>
-            <option value="03_colegio_agora_nova">3. Colegio K-12 — Colegio Ágora Nova</option>
-            <option value="04_b2b_laboratorio_quantalab">4. Laboratorio B2B — QuantaLab Científica</option>
-            <option value="05_campamentos_cumbre_viva">5. Campamentos — Cumbre Viva</option>
-            <option value="06_casa_retiro_villa_serena">6. Casa de Retiro — Villa Serena</option>
-            <option value="07_constructora_piedra_firme">7. Constructora — Piedra Firme Residencial</option>
-            <option value="08_muebleria_pueblo_el_roble">8. Mueblería — Mueblería El Roble</option>
-            <option value="09A_automatizacion_matriz_aksis">9A. [Matriz] Automatización — Aksis Automation</option>
-            <option value="09B_submarca_aksis_mantenimiento">9B. [Sub-Marca 1] Mantenimiento — Aksis Mantenimiento</option>
-            <option value="09C_submarca_aksis_transporte">9C. [Sub-Marca 2] Transporte — Aksis Transporte</option>
-            <option value="09D_submarca_aksis_control">9D. [Sub-Marca 3] Software IIoT — Aksis Control</option>
-          </select>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-          <button type="button" onclick="resetBrandWorkspaceClean()" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA; border-radius:8px; padding:5px 12px; font-size:0.74rem; font-weight:800; cursor:pointer;" title="Limpiar todo e iniciar una marca nueva en blanco">
-            🆕 Nueva Marca en Blanco
-          </button>
-          <button type="button" onclick="openSubBrandClonerBar()" style="background:rgba(212,175,55,0.16); color:#FDE68A; border:1px solid #D4AF37; border-radius:8px; padding:5px 12px; font-size:0.74rem; font-weight:800; cursor:pointer;">
-            🧬 Clonar Sub-Marca (ADN 85% Heredado / 15% Específico)
-          </button>
-          <button type="button" onclick="downloadFullBrandbookPDFDirect()" style="background:#10B981; color:#FFFFFF; border:none; border-radius:8px; padding:5px 12px; font-size:0.74rem; font-weight:800; cursor:pointer;">
-            ⬇️ Descargar Brandbook (.PDF Directo)
-          </button>
-        </div>
+      <!-- BARRA MULTIMARCA REUBICADA AL PASO 0 Y MENÚ (OCULTA EN EL TALLER PRINCIPAL PARA NO ESTORBAR) -->
+      <div id="multiBrandArchitectureBar" style="display:none !important;">
+        <select id="presetBrandSelector" onchange="loadSimulatedBrandPreset(this.value)">
+          <option value="">✨ Mi Marca en Vivo (Personalizada)</option>
+          <option value="01_restaurante_brasa_y_raiz">1. Restaurante — Brasa &amp; Raíz</option>
+          <option value="02_despacho_contable_vertice">2. Despacho Contable — Vértice Patrimonial</option>
+          <option value="03_colegio_agora_nova">3. Colegio K-12 — Colegio Ágora Nova</option>
+          <option value="04_b2b_laboratorio_quantalab">4. Laboratorio B2B — QuantaLab Científica</option>
+          <option value="05_campamentos_cumbre_viva">5. Campamentos — Cumbre Viva</option>
+          <option value="06_casa_retiro_villa_serena">6. Casa de Retiro — Villa Serena</option>
+          <option value="07_constructora_piedra_firme">7. Constructora — Piedra Firme Residencial</option>
+          <option value="08_muebleria_pueblo_el_roble">8. Mueblería — Mueblería El Roble</option>
+          <option value="09A_automatizacion_matriz_aksis">9A. [Matriz] Automatización — Aksis Automation</option>
+          <option value="09B_submarca_aksis_mantenimiento">9B. [Sub-Marca 1] Mantenimiento — Aksis Mantenimiento</option>
+          <option value="09C_submarca_aksis_transporte">9C. [Sub-Marca 2] Transporte — Aksis Transporte</option>
+          <option value="09D_submarca_aksis_control">9D. [Sub-Marca 3] Software IIoT — Aksis Control</option>
+        </select>
       </div>
-
-      <!-- PANEL DESPLEGABLE DE CLONACIÓN MULTIMARCA (85% HEREDADO / 15% ESPECÍFICO) -->
-      <div id="subBrandClonerDrawer" style="display:none; width:100%; background:#FFFBEB; border:2px solid #D4AF37; border-radius:16px; padding:14px 18px; margin-bottom:14px; color:#090D16;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-          <div>
-            <span style="font-family:var(--font-mono); font-size:0.72rem; color:#B45309; font-weight:800;">🧬 MOTOR DE ARQUITECTURA MULTIMARCA · REGLA 85% ADN HEREDADO / 15% DIVISIÓN</span>
-            <h4 style="margin:2px 0 0 0; font-size:1.02rem;">Expande tu Grupo Empresarial sin repetir los 6 pasos desde cero</h4>
-          </div>
-          <button type="button" onclick="document.getElementById('subBrandClonerDrawer').style.display='none'" style="background:#090D16; color:#FFF; border:none; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:0.75rem;">Cerrar ✕</button>
-        </div>
-        <p style="font-size:0.82rem; color:#334155; margin:0 0 10px 0;">
-          Bloquea el <strong>85% del ADN de tu Marca Matriz</strong> (chasis geométrico, retícula 8X×3X, tipografías y atributos 1–17) y personaliza únicamente el <strong>15% operativo de la nueva división</strong> (Descriptor, Color Semántico, Clase Niza y Touchpoints específicos):
-        </p>
-        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-          <button type="button" class="btn-action" style="background:#10B981; color:#FFF; border:none; padding:8px 14px; font-size:0.78rem; font-weight:800;" onclick="cloneActiveBrandDivision('mantenimiento')">
-            🔧 Crear División Mantenimiento (#10B981 · Clase 37)
-          </button>
-          <button type="button" class="btn-action" style="background:#F59E0B; color:#090D16; border:none; padding:8px 14px; font-size:0.78rem; font-weight:800;" onclick="cloneActiveBrandDivision('transporte')">
-            🚛 Crear División Transporte &amp; Rigging (#F59E0B · Clase 39)
-          </button>
-          <button type="button" class="btn-action" style="background:#06B6D4; color:#090D16; border:none; padding:8px 14px; font-size:0.78rem; font-weight:800;" onclick="cloneActiveBrandDivision('control')">
-            📡 Crear División Control &amp; Software IIoT (#06B6D4 · Clase 42)
-          </button>
-        </div>
-      </div>
+      <div id="subBrandClonerDrawer" style="display:none !important;"></div>
 
       <!-- THE LIVING AURA CORE (3D VOLUMETRIC GOLDEN-IRIDESCENT SIRI SPHERE) -->
-      <div class="aura-presence-stage" id="focusAuraStage">
+      <div class="aura-presence-stage" id="focusAuraStage" style="margin-left:auto; margin-right:auto; text-align:center;">
         <div class="aura-orb-halo" id="avatarOrb" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para escuchar la voz de AURA">
           <canvas id="avatarCanvas" width="304" height="304" class="aura-canvas"></canvas>
         </div>
@@ -2551,7 +2859,7 @@
       </div>
 
       <!-- MAIN ATELIER STAGE -->
-      <main class="atelier-container" style="max-width:100%; padding:0; margin:0;">
+      <main class="atelier-container">
 
     <!-- ==================================================================== -->
     <!-- STAGE 1 & 2: THE DIALOGUE (PURE CONCENTRATION SANCTUARY)             -->
@@ -2562,28 +2870,21 @@
 
         <!-- CENTERED FOCUS COLUMN: AURA SOCRATIC DIALOGUE & DIRECT INPUT -->
         <div class="workbench-dialogue-pane" id="atelierLeftPane">
-          <div class="question-billboard" style="margin-bottom: 18px;">
-            <span class="question-category" id="questionCategory">01 · Propósito Nuclear & Círculo Dorado</span>
+          <div class="question-billboard" style="margin-bottom: 14px;">
+            <span class="question-category" id="questionCategory">01 · Propósito Nuclear &amp; Círculo Dorado</span>
             <div class="aura-insight-lead" id="auraInsightLead"></div>
             <h1 class="question-text" id="activeQuestionHeading">
               ¿Qué problema real le resuelves a tus clientes que nadie más en tu industria ha sido capaz de solucionar?
             </h1>
           </div>
 
-          <!-- INSTRUCCIÓN EVIDENTE DE VOZ Y TEXTO (SIN CORTE POR PAUSAS · ENVÍO MANUAL EXCLUSIVO) -->
-          <div id="voiceTextInstructionBanner" style="width:100%; background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border:1.5px solid #D4AF37; border-radius:16px; padding:12px 16px; margin-bottom:12px; display:flex; flex-direction:column; gap:4px; box-shadow:0 4px 12px rgba(212,175,55,0.10);">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-              <span style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#92400E;">💡 ¿CÓMO RESPONDER A AURA? (ELIGE VOZ O TEXTO)</span>
-              <span style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; background:#090D16; color:#FDE68A; padding:3px 10px; border-radius:999px;">⏸️ Pausas Libres: Cero Corte Automático</span>
-            </div>
-            <p style="font-size:0.86rem; color:#090D16; font-weight:600; line-height:1.45; margin:0;">
-              <strong>Opción 1 (Voz):</strong> Pulsa <strong>«🎙️ Dictar»</strong> y habla con calma; puedes hacer pausas largas para pensar y <strong>nunca se cortará ni se enviará solo</strong>. <br/>
-              <strong>Opción 2 (Texto):</strong> Escribe directamente en el recuadro. Cuando termines de pensar y revisar tu idea, presiona únicamente el botón <strong>«Enviar Respuesta ↑»</strong>.
-            </p>
+          <!-- PÍLDORA SUTIL Y CENTRADA DE PAUSAS LIBRES (CERO CAJA GIGANTE QUE ESTORBE) -->
+          <div id="voiceTextInstructionBanner" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; background:#FFFBEB; border:1px solid #FDE68A; border-radius:999px; padding:6px 16px; margin:0 auto 12px auto; font-size:0.78rem; color:#92400E; font-weight:700; text-align:center;">
+            <span>⏸️ Pausas Libres: habla o escribe con calma · Solo se envía al pulsar «Enviar Respuesta ↑»</span>
           </div>
 
-          <!-- FLOATING INPUT DOCK DIRECTLY BELOW QUESTION (ZERO BIAS, MANUAL SEND ONLY) -->
-          <div class="input-dock" style="margin-bottom: 16px; align-items:center; gap:10px; padding:10px 14px;">
+          <!-- FLOATING INPUT DOCK DIRECTLY BELOW QUESTION (CENTERED, ZERO OVERFLOW) -->
+          <div class="input-dock" style="margin-bottom: 14px; align-items:center; gap:10px; padding:10px 14px;">
             <button class="btn-action" id="micBtn" onclick="toggleContinuousVoice('chatInput')" title="Activar o pausar dictado por voz sin límite de pausas" style="border-radius:999px; padding:10px 16px; font-weight:800; font-size:0.82rem; display:inline-flex; align-items:center; gap:6px; background:#F8FAFC; border:1.5px solid #CBD5E1; color:#090D16; white-space:nowrap;">
               🎙️ Dictar por Voz
             </button>
@@ -2591,7 +2892,7 @@
               id="chatInput"
               class="input-textarea"
               rows="2"
-              placeholder="Habla pulsando «🎙️ Dictar por Voz» o escribe aquí tu respuesta... (Al pulsar Enviar se manda y se apaga el micrófono)"
+              placeholder="Habla pulsando «🎙️ Dictar por Voz» o escribe aquí tu respuesta..."
               oninput="onChatInputChanged(this.value)"
               onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); sendUserMessage(); }"
             ></textarea>
@@ -2600,14 +2901,9 @@
             </button>
           </div>
 
-          <!-- #044: BARRA DE ESTADO RÁPIDO PARA MÓVIL Y ESCRITORIO (VER Y EDITAR LOS 6 PILARES EN VIVO) -->
-          <div id="step1MobileCanvasStatusPill" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:10px 14px; margin-bottom:14px;">
-            <span id="step1LivePillarsCounterText" style="font-size:0.86rem; font-weight:800; color:#090D16;">
-              📊 Lienzo en Vivo: <span style="color:#0284C7;">Pregunta 1 de 6</span> · Puedes editar cualquier pilar tocándolo
-            </span>
-            <button type="button" class="btn-action" style="padding:6px 12px; font-size:0.8rem; font-weight:800;" onclick="document.getElementById('atelierRightPane').scrollIntoView({behavior:'smooth'})">
-              📋 Ver / Editar mis 6 Pilares ↓
-            </button>
+          <!-- PÍLDORA CENTRADA DE ESTADO DE LOS 6 PILARES -->
+          <div id="step1MobileCanvasStatusPill" onclick="openCanvasModal()" style="display:inline-flex; justify-content:center; align-items:center; gap:8px; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:999px; padding:8px 18px; margin:0 auto 14px auto; cursor:pointer; font-size:0.82rem; font-weight:700; color:#334155;">
+            📋 Manifiesto: 0/6 pilares listos (Ver)
           </div>
 
           <!-- CLOSING CONFIRMATION GATE -->
@@ -3025,27 +3321,29 @@
         </div>
       </div>
 
-      <!-- #057 & #065: OPCIÓN "YA TENGO MI PROPIO NOMBRE DE MARCA (QUIERO USAR EL MÍO)" + ESLOGAN EDITABLE -->
-      <div style="max-width: 920px; margin: 0 auto 16px auto; width: 100%; background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border:2px dashed #D97706; border-radius:20px; padding:18px 20px;">
-        <div style="font-size:0.84rem; font-weight:800; color:#B45309; text-transform:uppercase; margin-bottom:6px;">
-          ✨ Opción Directa · ¿Ya tienes el nombre de tu negocio o ninguno de los sugeridos te convence?
-        </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; align-items:center;">
-          <input
-            type="text"
-            id="customBrandNameInput"
-            style="padding:13px 16px; border-radius:14px; background:#FFFFFF; border:2px solid #CBD5E1; color:#090D16; font-size:1rem; font-weight:700;"
-            placeholder="Escribe tu propio nombre de marca (ej: Casa Lumbre)..."
-          />
-          <input
-            type="text"
-            id="customBrandSloganInput"
-            style="padding:13px 16px; border-radius:14px; background:#FFFFFF; border:2px solid #CBD5E1; color:#090D16; font-size:0.98rem; font-weight:600;"
-            placeholder="Eslogan opcional (ej: El arte del fuego lento)..."
-          />
-          <button type="button" class="btn-action primary" onclick="applyUserOwnBrandNameAndSlogan()" style="padding:13px 18px; font-size:0.96rem; font-weight:800; border-radius:14px; background:#090D16; color:#FDE68A; border:1.5px solid #D4AF37;">
-            ✓ Usar Mi Propio Nombre Oficial
-          </button>
+      <!-- #057 & #065: OPCIÓN COLAPSADA DE NOMBRE PROPIO (YA CONFIGURADA EN PASO 0, DISPONIBLE BAJO DEMANDA) -->
+      <div style="max-width: 920px; margin: 0 auto 12px auto; width: 100%; text-align: center;">
+        <button type="button" class="btn-action" onclick="const b=document.getElementById('step3ManualNameBox'); if(b) b.style.display=b.style.display==='none'?'block':'none';" style="font-size:0.82rem; padding:8px 16px; border-radius:999px;">
+          🏷️ ¿Prefieres escribir o cambiar tu propio nombre manualmente?
+        </button>
+        <div id="step3ManualNameBox" style="display:none; margin-top:10px; background:linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border:2px dashed #D97706; border-radius:20px; padding:18px 20px;">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; align-items:center;">
+            <input
+              type="text"
+              id="customBrandNameInput"
+              style="padding:13px 16px; border-radius:14px; background:#FFFFFF; border:2px solid #CBD5E1; color:#090D16; font-size:1rem; font-weight:700;"
+              placeholder="Escribe tu propio nombre de marca (ej: Casa Lumbre)..."
+            />
+            <input
+              type="text"
+              id="customBrandSloganInput"
+              style="padding:13px 16px; border-radius:14px; background:#FFFFFF; border:2px solid #CBD5E1; color:#090D16; font-size:0.98rem; font-weight:600;"
+              placeholder="Eslogan opcional (ej: El arte del fuego lento)..."
+            />
+            <button type="button" class="btn-action primary" onclick="applyUserOwnBrandNameAndSlogan()" style="padding:13px 18px; font-size:0.96rem; font-weight:800; border-radius:14px; background:#090D16; color:#FDE68A; border:1.5px solid #D4AF37;">
+              ✓ Usar Mi Propio Nombre Oficial
+            </button>
+          </div>
         </div>
       </div>
 
@@ -5789,23 +6087,27 @@
     function navigateToScreen(screenId, targetStep = null) {
       stopContinuousVoice();
       currentScreen = screenId;
+      const screenStep0 = document.getElementById("screen-step0");
       const screenJourney = document.getElementById("screen-journey");
       const screenFocus = document.getElementById("screen-focus");
 
-      if (screenId === "journey") {
+      if (screenId === "step0") {
+        if (screenStep0) screenStep0.classList.add("active");
+        if (screenJourney) screenJourney.classList.remove("active");
+        if (screenFocus) screenFocus.classList.remove("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (screenId === "journey") {
+        if (screenStep0) screenStep0.classList.remove("active");
         if (screenJourney) screenJourney.classList.add("active");
         if (screenFocus) screenFocus.classList.remove("active");
         updateJourneyRoadmap();
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else if (screenId === "focus") {
+        if (screenStep0) screenStep0.classList.remove("active");
         if (screenJourney) screenJourney.classList.remove("active");
         if (screenFocus) screenFocus.classList.add("active");
         const stepToGo = targetStep || currentStep || 1;
         switchStep(stepToGo);
-        if (!shownWelcomeSteps[stepToGo]) {
-          shownWelcomeSteps[stepToGo] = true;
-          openWelcomeModalForStep(stepToGo);
-        }
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
@@ -10844,6 +11146,88 @@
       } catch (e) {}
     }
 
+    // =========================================================================
+    // PASO 0: CONFIGURACIÓN DE BIENVENIDA Y PUNTO DE PARTIDA DE LA MARCA
+    // =========================================================================
+    window.step0State = {
+      goal: "first",    // 'first' | 'evolve' | 'second' | 'demo'
+      assets: "none",   // 'none' | 'has_name' | 'has_both'
+      sector: "restaurante_hospitalidad"
+    };
+
+    function selectStep0Goal(goalKey) {
+      playAcousticClick(820, 0.04);
+      window.step0State.goal = goalKey;
+      ["first", "evolve", "second", "demo"].forEach(k => {
+        const el = document.getElementById(`step0Goal_${k}`);
+        if (el) el.classList.toggle("selected", k === goalKey);
+      });
+      const subPanel = document.getElementById("step0SubBrandPanel");
+      const demoPanel = document.getElementById("step0DemoPresetPanel");
+      if (subPanel) subPanel.style.display = goalKey === "second" ? "block" : "none";
+      if (demoPanel) demoPanel.style.display = goalKey === "demo" ? "block" : "none";
+    }
+
+    function selectStep0Assets(assetKey) {
+      playAcousticClick(840, 0.04);
+      window.step0State.assets = assetKey;
+      ["none", "has_name", "has_both"].forEach(k => {
+        const el = document.getElementById(`step0Asset_${k}`);
+        if (el) el.classList.toggle("selected", k === assetKey);
+      });
+      const nameBox = document.getElementById("step0ExistingNameBox");
+      if (nameBox) {
+        nameBox.style.display = (assetKey === "has_name" || assetKey === "has_both") ? "block" : "none";
+      }
+    }
+
+    function completeStep0AndStartExperience(targetScreen = "focus") {
+      playAcousticClick(940, 0.06);
+      const secSel = document.getElementById("step0SectorSelector");
+      if (secSel && secSel.value) {
+        window.step0State.sector = secSel.value;
+        changeTouchpointSectorGuide(secSel.value);
+      }
+
+      if (window.step0State.goal === "first") {
+        // Si empieza desde cero y no tiene nombre propio, aseguramos lienzo limpio de nueva marca
+        if (window.step0State.assets === "none" && (!canvasState.brandName || canvasState.brandName === "TheBestBrand")) {
+          canvasState.brandName = "Mi Nueva Marca";
+          canvasState.tagline = "Propósito y experiencia diseñados con Aura";
+        }
+      }
+
+      if (window.step0State.assets === "has_name" || window.step0State.assets === "has_both") {
+        const inpName = document.getElementById("step0BrandNameInput");
+        const inpSlogan = document.getElementById("step0BrandSloganInput");
+        const typedName = inpName && inpName.value.trim() ? inpName.value.trim() : "";
+        const typedSlogan = inpSlogan && inpSlogan.value.trim() ? inpSlogan.value.trim() : "";
+        if (typedName) {
+          canvasState.brandName = typedName;
+          const step3Inp = document.getElementById("customBrandNameInput");
+          if (step3Inp) step3Inp.value = typedName;
+          if (typedSlogan) {
+            canvasState.tagline = typedSlogan;
+            const step3Slogan = document.getElementById("customBrandSloganInput");
+            if (step3Slogan) step3Slogan.value = typedSlogan;
+          }
+          applyUserOwnBrandNameAndSlogan();
+        }
+      }
+
+      canvasState.onboarding_goal = window.step0State.goal;
+      canvasState.onboarding_assets = window.step0State.assets;
+      shownWelcomeSteps[1] = true;
+      saveBrandSessionToLocalStorage();
+      updateJourneyRoadmap();
+
+      if (targetScreen === "journey") {
+        navigateToScreen("journey");
+      } else {
+        navigateToScreen("focus", 1);
+      }
+    }
+
     // INITIALIZATION
     window.addEventListener("DOMContentLoaded", () => {
       applyA11yModeState();
@@ -10859,7 +11243,7 @@
       renderStep6EmployeeOnePagerAndAudit();
       updateStep1MobilePillarStatus();
       updateJourneyRoadmap();
-      navigateToScreen("journey");
+      navigateToScreen("step0");
     });
   </script>
 </body>
