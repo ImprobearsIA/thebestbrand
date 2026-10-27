@@ -368,7 +368,7 @@ TU ADN COMO INTELIGENCIA ESTRATÉGICA FUTURISTA:
      c) REORIENTACIÓN/PREGUNTA (MAYÉUTICA Y CONSECUENCIA FÍSICA):
         * Formula UNA pregunta MUY FÁCIL DE CONTESTAR sobre el siguiente ángulo estratégico usando un EJEMPLO DEL MUNDO REAL adaptado a su caso que despierte su mente.
         * GESTIÓN DE INVIABILIDAD TÉCNICA (APORÍA SOCRÁTICA): Si el usuario insiste en algo inviable (ej. degradados neón en cartón kraft, serifas capilares de 0.2 mm en bordado de polos piqué, o sellos hipercomplejos para favicons/apps), JAMÁS des una negativa autoritaria; formula una pregunta socrática de consecuencia física sobre el sustrato o la resolución retiniana para que el usuario visualice la falla mecánica en taller y valide la solución técnica del Brandbook.
-   - PROHIBIDO CICLARSE O ASUMIR INDUSTRIAS AJENAS: Jamás menciones herramientas o temas no dichos por el usuario a menos que él los mencione explícitamente. Cita sus palabras exactas y avanza de forma socrática.
+   - PROHIBIDO CICLARSE, ASUMIR INDUSTRIAS AJENAS O REPETIR FRASES LITERALES ENTRE COMILLAS: Jamás menciones herramientas o temas no dichos por el usuario, y JAMÁS tomes una frase textual cruda del usuario entre comillas como si fuera un tema (prohibido decir 'Qué gran punto sobre "frase textual del usuario"'). En su lugar, destila la idea central con naturalidad ejecutiva y calidez humana, y redacta `updated_pillar_synthesis` como un enunciado estratégico pulido y natural, nunca como copia literal de lo hablado.
 2. CUANDO SE LLENAN TODOS LOS PILARES DE LA FASE 1 O FASE 2:
    - NO cortes la conversación de golpe. Pregúntale si desea agregar más información sobre el tema o rebotar otra idea, o si prefiere pasar al siguiente paso.
 3. EN LA FASE 3 (NAMING CO-CREATIVO POR CHAT):
@@ -453,11 +453,13 @@ Devuelve SIEMPRE JSON válido con estas llaves:
     @classmethod
     def _call_gemini_json(cls, prompt: str, system_inst: str, api_key: str = "") -> Optional[Dict[str, Any]]:
         key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY or api_key).strip()
-        # Cascada de ultra-baja latencia (<1.7s por turno con thinkingBudget=0 y Nivel 1 activo)
+        if not key:
+            return None
+        # Cascada de ultra-baja latencia con modelos oficiales estables
         models_to_try = [
-            "gemini-3.1-flash-lite",
-            "gemini-3.6-flash",
-            "gemini-3.8-flash",
+            "gemini-2.5-flash",
+            "gemini-2.5-flash-lite",
+            "gemini-2.0-flash",
             "gemini-flash-lite-latest"
         ]
         for model_name in models_to_try:
@@ -489,6 +491,84 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         return None
 
     @classmethod
+    def distill_natural_theme_label(cls, user_msg: str) -> str:
+        """
+        Extrae el concepto o tema de negocio de forma natural y humana,
+        evitando por completo citar frases textuales crudas del usuario entre comillas.
+        """
+        t = (user_msg or "").lower()
+        if any(w in t for w in ["restaurante", "comida", "cocina", "pan", "café", "cafe", "sabor", "platillo", "brasa", "ingrediente", "mesa", "gastronom"]):
+            return "la autenticidad gastronómica y la experiencia sensorial en cada detalle"
+        if any(w in t for w in ["software", "app", "plataforma", "sistema", "automatiz", "ia", "datos", "digital", "web", "tecnolog"]):
+            return "la simplicidad tecnológica y la eliminación de fricciones operativas"
+        if any(w in t for w in ["salud", "clínica", "clinica", "médic", "medic", "paciente", "cuidado", "retiro", "bienestar", "terapia", "laboratorio"]):
+            return "la confianza clínica, la calidez humana y el cuidado integral de las personas"
+        if any(w in t for w in ["escuela", "colegio", "educaci", "alumno", "campamento", "enseñ", "formación", "aprendiz"]):
+            return "la formación con propósito y el desarrollo de capacidades reales"
+        if any(w in t for w in ["construc", "obra", "arquitect", "inmobiliaria", "casa", "edificio", "ingenier", "proyecto"]):
+            return "la solidez estructural, el cumplimiento exacto y la certeza patrimonial"
+        if any(w in t for w in ["muebl", "madera", "artesan", "taller", "hecho a mano", "diseño", "calidad", "durad"]):
+            return "la maestría artesanal y la creación de piezas hechas para perdurar"
+        if any(w in t for w in ["contab", "fiscal", "finanz", "despacho", "legal", "asesor", "consultor", "empresa", "b2b"]):
+            return "el respaldo estratégico y la tranquilidad ejecutiva para tus clientes"
+        if any(w in t for w in ["rápid", "rapid", "tiempo", "entrega", "domicilio", "fácil", "facil", "ágil", "agil", "inmediat"]):
+            return "la agilidad de respuesta y el respeto absoluto por el tiempo de tu cliente"
+        if any(w in t for w in ["precio", "justo", "accesible", "ahorro", "costo", "valor"]):
+            return "entregar un valor superior y transparente que supere toda expectativa"
+        if any(w in t for w in ["familia", "comunidad", "confianza", "trato", "humano", "cercan", "honest", "servicio"]):
+            return "la cercanía humana y la construcción de relaciones de confianza a largo plazo"
+        return "esa visión tan clara para diferenciar tu propuesta y generar valor real"
+
+    @classmethod
+    def sanitize_colloquial_to_executive_phrase(cls, raw_text: str) -> str:
+        """
+        Limpia muletillas e inicios coloquiales ('pues yo quiero', 'es que nosotros', 'mira lo que pasa es que')
+        para que el texto rescatado en el Manifiesto se lea como una frase ejecutiva natural.
+        """
+        cleaned = SpokenFillerCleaner.clean_spoken_text(raw_text or "")
+        colloquial_prefixes = [
+            r"^(?:pues\s+|mira\s+|bueno\s+|fíjate\s+que\s+|fijate\s+que\s+|la\s+verdad\s+es\s+que\s+|lo\s+que\s+pasa\s+es\s+que\s+|es\s+que\s+|yo\s+creo\s+que\s+|creo\s+que\s+|pienso\s+que\s+|siento\s+que\s+|a\s+mí\s+me\s+gustaría\s+que\s+|me\s+gustaría\s+que\s+|me\s+gusta\s+que\s+)+",
+            r"^(?:nosotros\s+queremos\s+|yo\s+quiero\s+|queremos\s+|quiero\s+|buscamos\s+|tratamos\s+de\s+|intentamos\s+)+"
+        ]
+        for pat in colloquial_prefixes:
+            cleaned = re.sub(pat, "", cleaned, flags=re.IGNORECASE).strip(" ,.:;-")
+        if not cleaned:
+            cleaned = SpokenFillerCleaner.clean_spoken_text(raw_text or "")
+        if cleaned:
+            cleaned = cleaned[0].upper() + cleaned[1:]
+            if not cleaned.endswith((".", "!", "?")):
+                cleaned += "."
+        return cleaned
+
+    @classmethod
+    def synthesize_executive_pillar_statement(cls, pillar_key: str, raw_user_msg: str) -> str:
+        """
+        Transforma el aporte conversacional del fundador en una declaración estratégica
+        bien redactada para el Lienzo del Manifiesto (Paso 1 y Paso 2), evitando pegar texto crudo.
+        """
+        core = cls.sanitize_colloquial_to_executive_phrase(raw_user_msg)
+        if not core:
+            return ""
+        # Convertir primera persona coloquial a redacción ejecutiva natural
+        core_exec = re.sub(r"\b(?:nuestro\s+negocio\s+es|mi\s+negocio\s+es|somos\s+una\s+empresa\s+que)\b", "", core, flags=re.IGNORECASE).strip(" ,.-")
+        if core_exec:
+            core_exec = core_exec[0].upper() + core_exec[1:]
+            if not core_exec.endswith("."):
+                core_exec += "."
+        else:
+            core_exec = core
+
+        templates = {
+            "golden_circle": f"Propósito y Origen: {core_exec}",
+            "value_offer": f"Propuesta de Valor Diferenciada: {core_exec}",
+            "social_role": f"Impacto y Trascendencia: {core_exec}",
+            "process_steps_text": f"Experiencia Operativa sin Fricción: {core_exec}",
+            "core_message": f"Promesa Central de Marca: {core_exec}",
+            "ideal_customer": f"Perfil de Cliente Objetivo: {core_exec}"
+        }
+        return templates.get(pillar_key, core_exec)
+
+    @classmethod
     def build_non_repeating_consultant_response(
         cls,
         step: int,
@@ -496,27 +576,25 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         user_msg: str,
         next_pillar_key: str
     ) -> str:
-        snippet = user_msg.strip()
-        if len(snippet) > 75:
-            snippet = snippet[:72].rsplit(" ", 1)[0] + "..."
+        natural_theme = cls.distill_natural_theme_label(user_msg)
         guide = cls.WORLD_CLASS_CONSULTANT_PILLAR_GUIDE.get(next_pillar_key)
         if guide:
-            return f"¡Qué gran punto sobre \"{snippet}\"! {guide['question']}"
+            return f"Tiene muchísimo sentido tu enfoque en {natural_theme}. {guide['question']}"
         if step == 3:
             return (
-                f"¡Fascinante dirección con \"{snippet}\"! Como aconseja Alexandra Watkins en el test SMILE & SCRATCH, "
-                f"un gran nombre debe generar una imagen mental instantánea y pasar la prueba de pronunciabilidad sin deletreo forzado. "
-                f"¿Qué sensación te gustaría que despierte tu nombre en los primeros 3 segundos: autoridad tecnológica o calidez cercana?"
+                f"Me parece muy acertada esa dirección enfocada en {natural_theme}. Como aconseja Alexandra Watkins en el test SMILE & SCRATCH, "
+                f"un gran nombre debe despertar una imagen mental inmediata y pronunciarse con total naturalidad. "
+                f"¿Qué sensación te gustaría que transmita tu nombre en los primeros 3 segundos: autoridad ejecutiva o calidez cercana?"
             )
         if step == 4:
             return (
-                f"¡Excelente criterio visual sobre \"{snippet}\"! Como demostraron Paul Rand y Sagi Haviv, "
-                f"un gran sistema visual debe ser apropiado, memorable y funcional a escala reducida. "
-                f"Con tus elecciones en los 60 pares polarizados, tu identidad está quedando blindada contra sesgos cromáticos prematuros."
+                f"Excelente criterio al priorizar {natural_theme}. Como demostraron Paul Rand y Sagi Haviv, "
+                f"un gran sistema visual debe ser apropiado, memorable y funcional a cualquier escala. "
+                f"Con tu calibración visual, la identidad está quedando perfectamente alineada a la esencia de tu negocio."
             )
         return (
-            f"¡Excelente enfoque con \"{snippet}\"! Desde la arquitectura estratégica se observa muchísimo potencial ahí. "
-            f"¿Deseas agregar algún otro ejemplo o detalle práctico de esta etapa, o avanzamos al Paso {step + 1}?"
+            f"Queda perfectamente integrado tu enfoque en {natural_theme}; le da una solidez enorme a la estrategia de tu marca. "
+            f"¿Te gustaría sumar algún otro detalle práctico de esta etapa, o avanzamos al Paso {step + 1}?"
         )
 
     @classmethod
@@ -788,24 +866,36 @@ Devuelve SIEMPRE JSON válido:
             "ideal_customer", "tp_before", "tp_during", "tp_after"
         })
         if p_key in valid_keys and p_val:
-            updated_canvas[p_key] = str(p_val).strip()
+            updated_canvas[p_key] = cls.sanitize_colloquial_to_executive_phrase(str(p_val))
 
         s_key = gemini_out.get("secondary_pillar_key", "")
         s_val = gemini_out.get("secondary_pillar_synthesis", "")
         if s_key in valid_keys and s_val:
-            updated_canvas[s_key] = str(s_val).strip()
+            updated_canvas[s_key] = cls.sanitize_colloquial_to_executive_phrase(str(s_val))
 
-        # Garantizar que el primer pilar vacío se llene obligatoriamente en este turno
+        # Garantizar que el primer pilar vacío se llene con redacción ejecutiva natural (nunca texto coloquial crudo)
         if missing_before and step in (1, 2):
             first_missing_key = missing_before[0]
             if not str(updated_canvas.get(first_missing_key, "")).strip():
-                updated_canvas[first_missing_key] = str(p_val or cleaned_message).strip()
+                updated_canvas[first_missing_key] = cls.synthesize_executive_pillar_statement(
+                    first_missing_key,
+                    str(p_val or cleaned_message)
+                )
 
         remaining_after = [k for k, _ in dims if not str(updated_canvas.get(k, "")).strip()]
         filled_after = len(dims) - len(remaining_after)
         next_target_key = remaining_after[0] if remaining_after else ""
 
         raw_avatar_reply = (gemini_out.get("avatar_response") or "").strip()
+        # Si la respuesta contiene una cita textual antinatural entre comillas ("..."), reemplazarla por el tema natural
+        if raw_avatar_reply and re.search(r'(?:sobre|con|decir)\s+["«][^"»]{15,}["»]', raw_avatar_reply, flags=re.IGNORECASE):
+            natural_theme = cls.distill_natural_theme_label(cleaned_message)
+            raw_avatar_reply = re.sub(
+                r'(?:sobre|con|decir)\s+["«][^"»]{15,}["»]',
+                f"en {natural_theme}",
+                raw_avatar_reply,
+                flags=re.IGNORECASE
+            )
         last_reply_prev = str(updated_canvas.get("last_avatar_reply", "")).strip()
         if not raw_avatar_reply or raw_avatar_reply == last_reply_prev:
             avatar_reply = cls.build_non_repeating_consultant_response(

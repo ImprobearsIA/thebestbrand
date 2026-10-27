@@ -5434,6 +5434,37 @@
       }
     }
 
+    function distillNaturalTouchpointFromSpeech(rawPiece) {
+      let s = String(rawPiece || "").trim();
+      // Limpiar prefijos coloquiales hablados o escritos ("pues fíjate que", "yo creo que", "lo que hacemos es que", etc.)
+      const prefixPatterns = [
+        /^(?:pues|mira|bueno|este|eh+|mmm+|o sea|digamos|fíjate que|fijate que|la verdad es que|lo que pasa es que|es que|yo creo que|creo que|pienso que|siento que)\b[,\s]*/i,
+        /^(?:normalmente|generalmente|casi siempre|por lo general|a veces)\b[,\s]*/i,
+        /^(?:antes de comprar|durante la compra|después de comprar|despues de comprar|en la pre-compra|en la post-compra)\b[,\s]*/i,
+        /^(?:nosotros|en mi negocio|en la empresa|en la tienda|aquí|aqui)\s+(?:lo que hacemos es que|hacemos que|les damos|damos|ofrecemos|tenemos|mandamos|enviamos|ponemos)\b[,\s]*/i,
+        /^(?:me gustaría que|me gustaria que|quiero que|queremos que|buscamos que|la idea es que)\b[,\s]*/i,
+        /^(?:cuando el cliente llega y|cuando llegan y|cuando entran y)\b[,\s]*/i
+      ];
+      for (let pass = 0; pass < 3; pass++) {
+        prefixPatterns.forEach(rx => {
+          s = s.replace(rx, "").trim();
+        });
+      }
+      // Convertir frases verbales coloquiales ("cuando llegan a la tienda les damos un café" -> "Cortesía de café al llegar a la tienda")
+      const arrivalMatch = s.match(/^cuando\s+(?:llegan|entran|vienen|el\s+cliente\s+llega)\s*(?:a\s+la\s+tienda|al\s+local|a\s+la\s+oficina|al\s+lugar)?\s+(?:les\s+damos|le\s+damos|ofrecemos|regalamos|damos)\s+(?:un|una|unos|unas)?\s*(.+)$/i);
+      if (arrivalMatch && arrivalMatch[1]) {
+        s = `Cortesía de ${arrivalMatch[1].trim()} al recibir al cliente`;
+      }
+      // Convertir primera persona coloquial al inicio ("les damos un café" -> "Cortesía de café")
+      s = s.replace(/^(?:les\s+damos|le\s+damos|regalamos|damos)\s+(?:un|una|unos|unas)?\s*/i, "Cortesía y entrega de ");
+      s = s.replace(/^(?:les\s+mandamos|le\s+mandamos|enviamos|mandamos)\s+(?:un|una)?\s*/i, "Envío personalizado de ");
+      s = s.replace(/^(?:nos\s+ven\s+en|nos\s+encuentran\s+en|nos\s+buscan\s+en)\s+/i, "Presencia y descubrimiento en ");
+      s = s.replace(/^(?:huele\s+a|que\s+huela\s+a|tiene\s+olor\s+a)\s+/i, "Aroma ambiental a ");
+      s = s.replace(/^[,\.\-:\s]+|[,\.\-:\s]+$/g, "");
+      if (!s) s = String(rawPiece || "").trim();
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
     async function sendTouchpointMessageToAura() {
       unlockBrowserAudio();
       const input = document.getElementById("tpChatInput");
@@ -5443,8 +5474,9 @@
       if (!input || !text) return;
 
       const targetPhase = currentTpPhase === "all" ? "before" : currentTpPhase;
-      const parts = text.split(/[,\n;]+/).map(s => s.trim()).filter(s => s.length > 2);
-      parts.forEach(p => {
+      const rawParts = text.split(/[,\n;]+/).map(s => s.trim()).filter(s => s.length > 2);
+      const distilledParts = rawParts.map(p => distillNaturalTouchpointFromSpeech(p)).filter(Boolean);
+      distilledParts.forEach(p => {
         if (!tpExtractedItems[targetPhase].includes(p)) {
           tpExtractedItems[targetPhase].push(p);
         }
@@ -5454,7 +5486,8 @@
       syncTouchpointCardsUI();
       renderTouchpointQuickChips();
 
-      const spec = enrichTouchpointEngineeringSpec(parts[0] || text, targetPhase, tpExtractedItems[targetPhase].length - 1);
+      const mainTitle = distilledParts[0] || distillNaturalTouchpointFromSpeech(text);
+      const spec = enrichTouchpointEngineeringSpec(mainTitle, targetPhase, tpExtractedItems[targetPhase].length - 1);
       const countNow = tpExtractedItems[targetPhase].length;
       const momentLabel = targetPhase === "before" ? "1. Antes de Comprar" : (targetPhase === "during" ? "2. Durante la Compra" : "3. Después de Comprar");
       const nextStepPrompt = countNow >= 3
@@ -5470,21 +5503,21 @@
         stream.innerHTML = `
           <div style="background:#090D16; color:#FAF8F5; border:2px solid #D4AF37; border-radius:18px; padding:16px 20px; font-size:0.98rem; line-height:1.52;">
             <div style="font-size:0.84rem; color:#FDE68A; font-weight:800; margin-bottom:6px;">
-              ✦ AURA · REGISTRADO EN ${momentLabel.toUpperCase()}
+              ✦ AURA · SÍNTESIS INTEGRADA EN ${momentLabel.toUpperCase()}
             </div>
-            Sumé <strong>"${escapeHTML(text)}"</strong> (${escapeHTML(spec.sensory_dimensions)}).<br/>
+            Integré a tu mapa el punto de contacto <strong>${escapeHTML(mainTitle)}</strong> (${escapeHTML(spec.sensory_dimensions)}).<br/>
             <span style="color:#CBD5E1; font-size:0.94rem;">• <strong>Surprise &amp; Delight:</strong> ${escapeHTML(spec.surprise_and_delight)}</span><br/>
             <div style="margin-top:8px; color:#FDE68A;">${nextStepPrompt}</div>
           </div>
         `;
       }
 
-      // También sincronizar con el backend socrático en segundo plano
+      // También sincronizar con el backend socrático en segundo plano enviando el título limpio
       try {
         const res = await fetchChatTurnWithRetry({
           step: 2,
           sub_step: targetPhase === "before" ? 1 : (targetPhase === "during" ? 2 : 3),
-          user_message: `[Touchpoints ${momentLabel}]: ${text}`,
+          user_message: mainTitle,
           conversation_history: collectChatHistory(),
           canvas_state: canvasState,
           llm_api_key: ""
@@ -5919,7 +5952,9 @@
     // CHAT & SOCRATIC EXPLORER (ULTRA-LOW LATENCY + SPLIT INSIGHT/QUESTION)
     // =========================================================================
     function splitAuraInsightAndQuestion(fullText) {
-      const clean = (fullText || "").trim();
+      let clean = (fullText || "").trim();
+      // Evitar que Aura cite frases textuales largas entre comillas como si fueran un tema
+      clean = clean.replace(/(?:sobre|con|en torno a)\s+["«][^"»]{14,}["»]/gi, "en esa dirección estratégica");
       const qIndex = clean.lastIndexOf("¿");
       if (qIndex > 18) {
         return {
@@ -7156,9 +7191,41 @@
       }
     ];
 
+    function extractCleanNamingRoots(rawInput) {
+      const stopWords = new Set([
+        "quiero", "queremos", "busco", "buscamos", "algo", "como", "que", "suene", "hable",
+        "sobre", "para", "una", "uno", "unos", "unas", "los", "las", "del", "por", "con",
+        "sin", "pero", "mas", "más", "muy", "poco", "este", "esta", "estos", "estas",
+        "marca", "nombre", "negocio", "empresa", "proyecto", "tienda", "local", "servicio",
+        "tenga", "tener", "ver", "relacionado", "enfocado", "inspirado", "gusta", "gustaria",
+        "gustaría", "idea", "ideas", "palabra", "palabras", "estilo", "tipo", "sea", "sean",
+        "nosotros", "somos", "hacemos", "vendemos", "Pues", "pues", "mira", "bueno"
+      ]);
+      const raw = String(rawInput || "").trim();
+      if (!raw) return [];
+      // Si viene separado por comas y cada segmento es corto (1-2 palabras), limpiarlo por segmento
+      const commaParts = raw.split(/[,;]+/).map(s => s.trim()).filter(Boolean);
+      const roots = [];
+      commaParts.forEach(part => {
+        const words = part
+          .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, " ")
+          .split(/\s+/)
+          .map(w => w.trim())
+          .filter(w => w.length >= 3 && !stopWords.has(w.toLowerCase()));
+        if (words.length === 1) {
+          roots.push(words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase());
+        } else if (words.length >= 2) {
+          words.slice(0, 3).forEach(w => {
+            roots.push(w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+          });
+        }
+      });
+      return [...new Set(roots)];
+    }
+
     function buildSixCandidatesForCurrentCycle() {
       const customRaw = (document.getElementById("namingCandidatesInput")?.value || "").trim();
-      const customRoots = customRaw.split(",").map(s => s.trim()).filter(Boolean);
+      const customRoots = extractCleanNamingRoots(customRaw);
 
       // Mantener primero las opciones que el usuario ya aceptó ("Conservar") para que sigan visibles y permanentes
       const acceptedList = window.acceptedNamingVault.slice(0, 6);
@@ -10058,7 +10125,9 @@
 
     function regenerateNamingByCreativeDirection(dirType) {
       playAcousticClick(820, 0.04);
-      const rootWord = (document.getElementById("namingCandidatesInput")?.value || canvasState.brandName || "Aura").split(/[,\s]+/)[0].replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ]/g, "") || "Vértice";
+      const rawCand = document.getElementById("namingCandidatesInput")?.value || canvasState.brandName || "Vértice";
+      const extracted = extractCleanNamingRoots(rawCand);
+      const rootWord = extracted[0] || "Vértice";
       const capRoot = rootWord.charAt(0).toUpperCase() + rootWord.slice(1).toLowerCase();
 
       const directionPools = {
