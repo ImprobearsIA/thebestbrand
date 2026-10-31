@@ -1,11 +1,11 @@
 modules = ["python-3.11"]
-run = "python3 -m pip install -r requirements.txt && python3 apps/api/main.py"
+run = "rm -rf apps/api/__pycache__ packages/brandbook-engine/__pycache__ && python3 -m pip install -q -r requirements.txt && python3 apps/api/main.py"
 
 [nix]
 channel = "stable-24_05"
 
 [deployment]
-run = ["sh", "-c", "python3 -m pip install -r requirements.txt && python3 apps/api/main.py"]
+run = ["sh", "-c", "rm -rf apps/api/__pycache__ packages/brandbook-engine/__pycache__ && python3 -m pip install -q -r requirements.txt && python3 apps/api/main.py"]
 deploymentTarget = "cloudrun"
 
 [[ports]]

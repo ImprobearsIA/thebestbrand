@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TheBestBrand — Laboratorio 3D del Orbe AURA &amp; Benchmark de Motores de Logos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <script src="./assets/rea_telemetry_guard.js"></script>
+  <style>
+    :root {
+      --bg-dark: #070A12;
+      --bg-panel: rgba(15, 23, 42, 0.86);
+      --border-gold: rgba(212, 175, 55, 0.36);
+      --gold-pri: #D4AF37;
+      --gold-light: #FDE68A;
+      --text-main: #FAF8F5;
+      --text-muted: #94A3B8;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Plus Jakarta Sans', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden; /* LEY I ZERO-SCROLL CERTIFICADA */
+      background: radial-gradient(circle at 50% 18%, #131B2E 0%, #070A12 72%);
+      color: var(--text-main);
+      font-family: var(--font-ui);
+      -webkit-font-smoothing: antialiased;
+    }
+    .lab-shell {
+      display: grid;
+      grid-template-rows: 58px 1fr 44px;
+      height: 100vh;
+      width: 100vw;
+      padding: 0 20px;
+    }
+    .lab-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .brand-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, #D4AF37, #F59E0B);
+      color: #070A12;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+    .tab-switcher {
+      display: flex;
+      gap: 8px;
+      background: rgba(9, 13, 22, 0.9);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--border-gold);
+    }
+    .tab-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, #D4AF37, #B45309);
+      color: #070A12;
+    }
+    .telemetry-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.74rem;
+      color: var(--gold-light);
+      font-family: monospace;
+    }
+    .lab-main {
+      display: grid;
+      grid-template-columns: 340px 1fr 360px;
+      gap: 16px;
+      padding: 14px 0;
+      height: calc(100vh - 102px);
+      overflow: hidden;
+    }
+    .panel-card {
+      background: var(--bg-panel);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+    .panel-title {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-light);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .arch-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .arch-btn {
+      text-align: left;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 12px;
+      padding: 9px 12px;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .arch-btn:hover {
+      border-color: rgba(253, 230, 138, 0.5);
+      transform: translateX(2px);
+    }
+    .arch-btn.active {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.22), rgba(15, 23, 42, 0.95));
+      border: 1.5px solid var(--gold-pri);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.18);
+    }
+    .arch-btn-title {
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: #FFF;
+      display: flex;
+      justify-content: space-between;
+    }
+    .arch-btn-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+    .center-stage {
+      position: relative;
+      background: radial-gradient(circle at 50% 45%, rgba(212, 175, 55, 0.11) 0%, rgba(7, 10, 18, 0.96) 74%);
+      border: 1px solid var(--border-gold);
+      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .orb-viewport {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .orb-viewport:active { cursor: grabbing; transform: scale(0.97); }
+    #labOrbCanvas {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+    }
+    .stage-caption {
+      margin-top: 14px;
+      text-align: center;
+      max-width: 88%;
+    }
+    .stage-caption h2 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .stage-caption p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .state-pills {
+      display: flex;
+      gap: 7px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .state-pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .state-pill.active {
+      background: var(--gold-pri);
+      color: #070A12;
+      border-color: var(--gold-light);
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.73rem;
+      color: #E2E8F0;
+      font-weight: 600;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--gold-pri);
+      cursor: pointer;
+    }
+    .palette-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .swatch-btn {
+      height: 28px;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+    .swatch-btn.active { border-color: #FFFFFF; transform: scale(1.06); }
+    .cta-apply {
+      background: linear-gradient(135deg, #FDE68A 0%, #D4AF37 50%, #B45309 100%);
+      color: #070A12;
+      border: none;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 10px 24px rgba(212, 175, 55, 0.3);
+    }
+    /* VISTA 2: BENCHMARK DE MOTORES DE LOGOS */
+    .logo-lab-grid {
+      display: none;
+      grid-template-columns: 350px 1fr;
+      gap: 16px;
+      padding: 14px 0;
+      height: calc(100vh - 102px);
+      overflow: hidden;
+    }
+    .engine-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 12px;
+      height: 100%;
+    }
+    .engine-card {
+      background: var(--bg-panel);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .engine-card.winner {
+      border: 1.5px solid var(--gold-pri);
+      box-shadow: 0 0 28px rgba(212, 175, 55, 0.14);
+    }
+    .svg-preview-box {
+      flex: 1;
+      background: #090D16;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .lab-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="lab-shell">
+    <!-- HEADER -->
+    <header class="lab-header">
+      <div class="brand-pill">
+        <span>✦ THEBESTBRAND</span>
+        <span class="brand-badge">MAX TECH LEAD · LAB 3D &amp; LOGOS</span>
+      </div>
+      <div class="tab-switcher">
+        <button class="tab-btn active" id="tabBtnOrb" onclick="switchLabTab('orb')">🔮 1. Laboratorio 3D del Orbe AURA (5 Arquitecturas)</button>
+        <button class="tab-btn" id="tabBtnLogos" onclick="switchLabTab('logos')">✒️ 2. Benchmark: Las 4 Mejores Herramientas de Logos</button>
+      </div>
+      <div class="telemetry-bar">
+        <span id="fpsBadge">60.0 FPS · 16.6ms</span>
+        <span>|</span>
+        <span id="zeroScrollBadge" style="color:#34D399;">LEY I ZERO-SCROLL: OK</span>
+      </div>
+    </header>
+
+    <!-- TAB 1: LABORATORIO 3D DEL ORBE DE AURA -->
+    <main class="lab-main" id="viewOrbLab">
+      <!-- COLUMNA IZQUIERDA: 5 ARQUITECTURAS 3D -->
+      <section class="panel-card">
+        <div>
+          <div class="panel-title">
+            <span>1. Arquitectura 3D del Orbe</span>
+            <span style="font-size:0.68rem; color:#34D399;">Spline / WebGL Ready</span>
+          </div>
+          <div class="arch-list" id="archButtonsList">
+            <button class="arch-btn active" onclick="selectOrbArch(0)" id="archBtn_0">
+              <div class="arch-btn-title"><span>01 · Torus Cuántico &amp; Cristal Líquido</span><span>⭐ Spline 3D</span></div>
+              <div class="arch-btn-desc">Núcleo icosaédrico 3D con anillos áureos (φ=1.618), paralaje de ratón y refracción especular.</div>
+            </button>
+            <button class="arch-btn" onclick="selectOrbArch(1)" id="archBtn_1">
+              <div class="arch-btn-title"><span>02 · visionOS Siri Liquid Lobes</span><span>Apple Style</span></div>
+              <div class="arch-btn-desc">6 lóbulos volumétricos translúcidos ordenados en eje Z con cintas de seda cáusticas.</div>
+            </button>
+            <button class="arch-btn" onclick="selectOrbArch(2)" id="archBtn_2">
+              <div class="arch-btn-title"><span>03 · Constelación Kansei Fibonacci</span><span>LAB-AVI</span></div>
+              <div class="arch-btn-desc">Esfera 3D de 180 nodos sinápticos que conectan axiomas Osgood EPA en tiempo real.</div>
+            </button>
+            <button class="arch-btn" onclick="selectOrbArch(3)" id="archBtn_3">
+              <div class="arch-btn-title"><span>04 · Cimática Acústica Chladni 3D</span><span>24kHz Voice</span></div>
+              <div class="arch-btn-desc">Ondas estacionarias armónicas (n,m) que esculpen partículas de oro al hablar AURA.</div>
+            </button>
+            <button class="arch-btn" onclick="selectOrbArch(4)" id="archBtn_4">
+              <div class="arch-btn-title"><span>05 · Monolito Relojero Suizo</span><span>Steve Jobs C-00</span></div>
+              <div class="arch-btn-desc">Anillo eclipse ultra-minimalista estilo Braun/Rolex con micro-corona acústica táctil.</div>
+            </button>
+          </div>
+        </div>
+        <div style="font-size:0.71rem; color:var(--text-muted); border-top:1px solid rgba(255,255,255,0.08); padding-top:8px;">
+          💡 <strong>Tip Interactivo (Superpoder 2):</strong> Mueve el cursor sobre el orbe para rotar la cámara 3D y haz clic para escuchar el pulso armónico de 24kHz.
+        </div>
+      </section>
+
+      <!-- COLUMNA CENTRAL: ESCENARIO 3D INTERACTIVO -->
+      <section class="center-stage">
+        <div class="orb-viewport" id="orbViewport" onclick="triggerOrbVoiceDemo()">
+          <canvas id="labOrbCanvas" width="640" height="640"></canvas>
+        </div>
+        <div class="stage-caption">
+          <h2 id="activeArchHeading">01 · Torus Cuántico &amp; Cristal Líquido (Spline 3D / WebGL)</h2>
+          <p id="activeArchSub">Geometría sagrada neutra sin género · Reacciona en milisegundos al timbre de AURA y al cursor.</p>
+        </div>
+        <div class="state-pills">
+          <button class="state-pill active" id="stateBtn_idle" onclick="setOrbState('idle')">🌙 Reposo Sereno</button>
+          <button class="state-pill" id="stateBtn_listening" onclick="setOrbState('listening')">🎙️ Escuchando al Usuario</button>
+          <button class="state-pill" id="stateBtn_speaking" onclick="setOrbState('speaking')">🔊 Hablando (24kHz Activo)</button>
+          <button class="state-pill" id="stateBtn_kansei" onclick="setOrbState('kansei')">🧬 Síntesis Kansei LAB-AVI</button>
+        </div>
+      </section>
+
+      <!-- COLUMNA DERECHA: CALIBRACIÓN FÍSICA, AUDIO Y APLICACIÓN -->
+      <section class="panel-card">
+        <div class="control-group">
+          <div class="panel-title">
+            <span>2. Calibración Física &amp; Kansei</span>
+            <span id="soundStatusBadge" style="font-size:0.68rem; color:var(--gold-light);">🔊 Audio Táctil ON</span>
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-label"><span>Velocidad Orbital 3D</span><span id="lblSpeed">1.0x</span></div>
+            <input type="range" min="0.2" max="3.0" step="0.1" value="1.0" oninput="updateParam('speed', this.value)">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-label"><span>Densidad Áurea (φ = 1.618)</span><span id="lblDensity">100%</span></div>
+            <input type="range" min="0.4" max="1.8" step="0.1" value="1.0" oninput="updateParam('density', this.value)">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-label"><span>Reactividad Acústica (24kHz)</span><span id="lblAudio">1.3x</span></div>
+            <input type="range" min="0.5" max="2.5" step="0.1" value="1.3" oninput="updateParam('audioBoost', this.value)">
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-label"><span>Profundidad de Campo Z (FOV)</span><span id="lblFov">320px</span></div>
+            <input type="range" min="180" max="520" step="10" value="320" oninput="updateParam('fov', this.value)">
+          </div>
+
+          <div style="margin-top:6px;">
+            <div class="slider-label" style="margin-bottom:5px;"><span>Paleta Cromática del Núcleo</span><span id="lblPalette">Oro Imperial</span></div>
+            <div class="palette-row">
+              <button class="swatch-btn active" style="background:linear-gradient(135deg,#FDE68A,#D4AF37,#090D16);" onclick="selectPalette(0, 'Oro Imperial')" title="Oro Imperial"></button>
+              <button class="swatch-btn" style="background:linear-gradient(135deg,#38BDF8,#818CF8,#0F172A);" onclick="selectPalette(1, 'Cian Cuántico')" title="Cian Cuántico"></button>
+              <button class="swatch-btn" style="background:linear-gradient(135deg,#34D399,#10B981,#064E3B);" onclick="selectPalette(2, 'Esmeralda Biotec')" title="Esmeralda Biotec"></button>
+              <button class="swatch-btn" style="background:linear-gradient(135deg,#FB7185,#E11D48,#1E1B4B);" onclick="selectPalette(3, 'Carmesí Broadcast')" title="Carmesí Broadcast"></button>
+              <button class="swatch-btn" style="background:linear-gradient(135deg,#FFFFFF,#CBD5E1,#334155);" onclick="selectPalette(4, 'Platino Suizo')" title="Platino Suizo"></button>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:rgba(9,13,22,0.85); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:10px; font-size:0.72rem; color:#CBD5E1; line-height:1.4;">
+          <strong>Dictamen Craig Federighi &amp; Steve Jobs:</strong><br>
+          <span id="auditorNoteText">El Torus Cuántico proyecta inteligencia sin antropomorfizar a AURA. Corre a 60fps estables con presupuesto &lt;4.2ms por cuadro.</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button class="cta-apply" onclick="applySelectedOrbToMainStudio()">
+            ✨ Aplicar este Orbe en TheBestBrand Studio
+          </button>
+          <div id="applyConfirmMsg" style="font-size:0.71rem; color:#34D399; text-align:center; min-height:16px;"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- TAB 2: BENCHMARK DE LAS 4 MEJORES HERRAMIENTAS DE CREACIÓN DE LOGOS -->
+    <main class="logo-lab-grid" id="viewLogoBenchmark">
+      <!-- PANEL IZQUIERDO: DICTAMEN DE MAX Y CONTROLES DE PRUEBA -->
+      <section class="panel-card">
+        <div>
+          <div class="panel-title">
+            <span>Dictamen Técnico: Creación de Logos</span>
+            <span style="color:#34D399; font-size:0.68rem;">LAB-AVI + Max</span>
+          </div>
+          <p style="font-size:0.74rem; color:#CBD5E1; line-height:1.45; margin-bottom:10px;">
+            Tras evaluar el mercado global 2026, ninguna herramienta aislada basta: los modelos de difusión puros entregan mapas de bits (PNG) que no sirven para bordado ni láser, mientras que los motores paramétricos puros requieren dirección semántica. <strong>La arquitectura ganadora para TheBestBrand combina estos 4 motores:</strong>
+          </p>
+          <div class="arch-list" id="logoEngineButtonsList">
+            <button type="button" class="arch-btn active" id="logoEngBtn_0" onclick="selectLogoEngine(0)">
+              <div class="arch-btn-title"><span>🏆 #1. Recraft V3 Native SVG</span><span style="color:#34D399;">Vector Real</span></div>
+              <div class="arch-btn-desc">Único modelo IA del mundo que genera curvas Bézier <code>.SVG</code> nativas (cero píxeles) con bloqueo exacto de paleta HEX.</div>
+            </button>
+            <button type="button" class="arch-btn" id="logoEngBtn_1" onclick="selectLogoEngine(1)">
+              <div class="arch-btn-title"><span>🥈 #2. Ideogram 3.0 + vtracer</span><span style="color:#FDE68A;">Tipografía &amp; Escudos</span></div>
+              <div class="arch-btn-desc">Imbatible en monogramas con ligaduras, texto exacto y escudos deportivos (TheBestLeague), vectorizado en Rust.</div>
+            </button>
+            <button type="button" class="arch-btn" id="logoEngBtn_2" onclick="selectLogoEngine(2)">
+              <div class="arch-btn-title"><span>🥉 #3. Gemini 3.1 SVG Architect</span><span style="color:#38BDF8;">Costo Marginal $0</span></div>
+              <div class="arch-btn-desc">Usa tu cuenta corporativa Google para escribir geometría <code>&lt;path&gt;</code> en proporción áurea (φ=1.618) + mockups NanoBanana.</div>
+            </button>
+            <button type="button" class="arch-btn" id="logoEngBtn_3" onclick="selectLogoEngine(3)">
+              <div class="arch-btn-title"><span>⚡ #4. Motor Kansei LAB-AVI</span><span style="color:#A78BFA;">&lt;5ms (60fps)</span></div>
+              <div class="arch-btn-desc">Redibuja en tiempo real al mover los sliders del Paso 4/5 y certifica trazo mínimo ≥ 1.2mm para bordado industrial.</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="control-group" style="border-top:1px solid rgba(255,255,255,0.08); padding-top:8px;">
+          <div class="slider-label"><span>Perfil de Entrevista (Pasos 0–5):</span><span id="lblBrandDemo" style="color:var(--gold-light);">AURA QUANTUM (AQ)</span></div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:2px;">
+            <button type="button" class="state-pill" id="demoBrandBtn_app" onclick="loadLiveAppSessionIntoLab()" style="border-color:#10B981; color:#34D399;">🔄 Mi Marca del App</button>
+            <button type="button" class="state-pill active" id="demoBrandBtn_tech" onclick="setLogoDemoBrand('AURA QUANTUM', 'AQ', 'tech')">💻 Tech / IA</button>
+            <button type="button" class="state-pill" id="demoBrandBtn_sports" onclick="setLogoDemoBrand('CIMARRONES PRO', 'CP', 'sports')">🏆 TheBestLeague</button>
+            <button type="button" class="state-pill" id="demoBrandBtn_gastro" onclick="setLogoDemoBrand('BRASA & RAÍZ', 'BR', 'gastro')">🔥 Hospitalidad</button>
+          </div>
+          <div class="slider-row" style="margin-top:4px;">
+            <div class="slider-label"><span>Slider Paso 4 (Orgánico ↔ Geométrico)</span><span id="lblKanseiGeo">75% Geom.</span></div>
+            <input type="range" id="rngKanseiGeo" min="0" max="100" value="75" oninput="onLabKanseiSliderChange()">
+          </div>
+          <div class="slider-row">
+            <div class="slider-label"><span>Slider Paso 5 (Grosor Trazo / Bordado)</span><span id="lblKanseiStroke">2.2mm</span></div>
+            <input type="range" id="rngKanseiStroke" min="12" max="36" value="22" oninput="onLabKanseiSliderChange()">
+          </div>
+          <div style="display:flex; gap:6px; margin-top:4px;">
+            <input type="text" id="customLogoBrandInput" placeholder="Nombre de marca..." oninput="onCustomLogoBrandInput(this.value)" style="flex:1; background:rgba(9,13,22,0.9); border:1px solid rgba(255,255,255,0.16); color:#FFF; border-radius:8px; padding:5px 8px; font-size:0.72rem;" />
+            <button type="button" onclick="toggleLabMasterScriptModal()" style="background:rgba(56,189,248,0.16); border:1px solid #38BDF8; color:#38BDF8; border-radius:8px; padding:5px 8px; font-size:0.7rem; font-weight:800; cursor:pointer; white-space:nowrap;" title="Ver el Script / Prompt Maestro compilado de las preguntas y sliders">📜 Ver Script</button>
+            <button type="button" onclick="downloadSelectedEngineSvg()" style="background:rgba(212,175,55,0.18); border:1px solid var(--gold-pri); color:var(--gold-light); border-radius:8px; padding:5px 8px; font-size:0.7rem; font-weight:700; cursor:pointer; white-space:nowrap;">⬇ .SVG</button>
+          </div>
+          <label style="display:flex; align-items:center; gap:8px; font-size:0.7rem; margin-top:2px; cursor:pointer;">
+            <input type="checkbox" id="chkGoldenGrid" checked onchange="renderLogoComparisonCards()">
+            <span>Retícula Áurea (φ = 1.618) y Cota ≥ 1.2mm</span>
+          </label>
+          <a href="/?step=5" style="display:block; text-align:center; text-decoration:none; margin-top:4px; padding:8px 10px;" class="cta-apply">
+            🚀 Ver Funcionamiento Directo en el App (Paso 5B) →
+          </a>
+        </div>
+      </section>
+
+      <!-- PANEL DERECHO: COMPARATIVA VISUAL EN VIVO DE LOS 4 MOTORES -->
+      <section class="engine-cards-grid" id="logoCardsContainer"></section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="lab-footer">
+      <span>Arquitectura certificada por <strong>Max (`max-lider-tecnico-antigravity`)</strong> · Integrada con `multi_engine_logo_synthesizer.py` y `bespoke_logo_studio.py`</span>
+      <span>Presiona cualquier parte del Orbe para probar la síntesis acústica reactiva</span>
+    </footer>
+  </div>
+
+  <script>
+    // =========================================================================
+    // MOTOR 3D MULTIMODAL DEL ORBE DE AURA (5 ARQUITECTURAS + AUDIO TÁCTIL)
+    // =========================================================================
+    const canvas = document.getElementById("labOrbCanvas");
+    const ctx = canvas.getContext("2d");
+    const PHI = 1.61803398875;
+
+    let currentArch = parseInt(localStorage.getItem("tbb_aura_orb_architecture") || "0", 10);
+    let orbState = "idle"; // idle | listening | speaking | kansei
+    let orbSpeed = 1.0;
+    let orbDensity = 1.0;
+    let orbAudioBoost = 1.3;
+    let orbFov = 320;
+    let t = 0;
+    let mouseX = 0, mouseY = 0;
+    let targetMouseX = 0, targetMouseY = 0;
+
+    const PALETTES = [
+      { name: "Oro Imperial", pri: [253, 230, 138], sec: [212, 175, 55], deep: [180, 83, 9], bg: "#080B14" },
+      { name: "Cian Cuántico", pri: [186, 230, 253], sec: [56, 189, 248], deep: [29, 78, 216], bg: "#060D1A" },
+      { name: "Esmeralda Biotec", pri: [167, 243, 208], sec: [16, 185, 129], deep: [4, 120, 87], bg: "#051410" },
+      { name: "Carmesí Broadcast", pri: [254, 205, 211], sec: [244, 63, 94], deep: [159, 18, 57], bg: "#16070C" },
+      { name: "Platino Suizo", pri: [255, 255, 255], sec: [203, 213, 225], deep: [71, 85, 105], bg: "#090D16" }
+    ];
+    let activePalette = PALETTES[0];
+
+    const ARCH_META = [
+      {
+        title: "01 · Torus Cuántico & Cristal Líquido (Spline 3D / WebGL)",
+        sub: "Núcleo icosaédrico con anillos de proporción áurea (φ=1.618), paralaje 3D y refracción especular.",
+        audit: "El Torus Cuántico proyecta inteligencia sin antropomorfizar a AURA. Corre a 60fps estables con presupuesto <4.2ms por cuadro."
+      },
+      {
+        title: "02 · visionOS Siri Volumetric Liquid Lobes",
+        sub: "6 lóbulos translúcidos ordenados por profundidad Z con cintas de seda cáusticas en tiempo real.",
+        audit: "Inspirado en Apple Intelligence: fluidez orgánica que transmite empatía y cero fricción cognitiva."
+      },
+      {
+        title: "03 · Constelación Kansei Fibonacci (LAB-AVI)",
+        sub: "Red esférica de nodos sinápticos 3D que se iluminan al destilar el Diferencial Semántico de Osgood.",
+        audit: "Ideal para los Pasos 1, 4 y 5: visualiza cómo el motor matemático PCA + Hayashi QTTI conecta cada respuesta."
+      },
+      {
+        title: "04 · Cimática Acústica Chladni 3D (24kHz Voice)",
+        sub: "Anillos de resonancia armónica (n, m) donde las partículas doradas vibran con la voz de AURA.",
+        audit: "Convierte el timbre neutral de AURA en geometría física visible al instante."
+      },
+      {
+        title: "05 · Monolito Relojero Suizo (Steve Jobs C-00 / Braun)",
+        sub: "Anillo eclipse de precisión micrométrica con 72 marcas de cronógrafo y halo especular.",
+        audit: "Favorito para el Modo Concentración: máxima sobriedad editorial estilo Rolex / Dieter Rams."
+      }
+    ];
+
+    // Nodos Fibonacci 3D precalculados
+    const fibNodes = [];
+    for (let i = 0; i < 160; i++) {
+      const y = 1 - (i / 159) * 2;
+      const radius = Math.sqrt(1 - y * y);
+      const theta = PHI * Math.PI * 2 * i;
+      fibNodes.push({ x: Math.cos(theta) * radius, y, z: Math.sin(theta) * radius, phase: i * 0.13 });
+    }
+
+    // Interacción con ratón (Paralaje 3D estilo Spline)
+    const viewportEl = document.getElementById("orbViewport");
+    viewportEl.addEventListener("mousemove", (e) => {
+      const rect = viewportEl.getBoundingClientRect();
+      targetMouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 1.4;
+      targetMouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 1.4;
+    });
+    viewportEl.addEventListener("mouseleave", () => {
+      targetMouseX = 0;
+      targetMouseY = 0;
+    });
+
+    // Audio Táctil Sintetizado (Spline Sound Effect con Web Audio API)
+    let audioCtx = null;
+    function playHarmonicChime(freqBase = 528) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioCtx.currentTime;
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc1.type = "sine";
+        osc2.type = "triangle";
+        osc1.frequency.setValueAtTime(freqBase, now);
+        osc1.frequency.exponentialRampToValueAtTime(freqBase * PHI, now + 0.28);
+        osc2.frequency.setValueAtTime(freqBase * 0.5, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.42);
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.42);
+        osc2.stop(now + 0.42);
+      } catch (e) {}
+    }
+
+    function selectOrbArch(idx) {
+      currentArch = idx;
+      for (let i = 0; i < 5; i++) {
+        document.getElementById("archBtn_" + i).classList.toggle("active", i === idx);
+      }
+      document.getElementById("activeArchHeading").textContent = ARCH_META[idx].title;
+      document.getElementById("activeArchSub").textContent = ARCH_META[idx].sub;
+      document.getElementById("auditorNoteText").textContent = ARCH_META[idx].audit;
+      playHarmonicChime(440 + idx * 66);
+    }
+
+    function setOrbState(st) {
+      orbState = st;
+      ["idle", "listening", "speaking", "kansei"].forEach(k => {
+        document.getElementById("stateBtn_" + k).classList.toggle("active", k === st);
+      });
+      playHarmonicChime(st === "speaking" ? 660 : (st === "kansei" ? 740 : 480));
+    }
+
+    function triggerOrbVoiceDemo() {
+      setOrbState(orbState === "speaking" ? "idle" : "speaking");
+    }
+
+    function updateParam(name, val) {
+      const v = parseFloat(val);
+      if (name === "speed") { orbSpeed = v; document.getElementById("lblSpeed").textContent = v.toFixed(1) + "x"; }
+      if (name === "density") { orbDensity = v; document.getElementById("lblDensity").textContent = Math.round(v * 100) + "%"; }
+      if (name === "audioBoost") { orbAudioBoost = v; document.getElementById("lblAudio").textContent = v.toFixed(1) + "x"; }
+      if (name === "fov") { orbFov = v; document.getElementById("lblFov").textContent = Math.round(v) + "px"; }
+    }
+
+    function selectPalette(idx, label) {
+      activePalette = PALETTES[idx];
+      document.getElementById("lblPalette").textContent = label;
+      const btns = document.querySelectorAll(".swatch-btn");
+      btns.forEach((b, i) => b.classList.toggle("active", i === idx));
+      playHarmonicChime(580);
+    }
+
+    function applySelectedOrbToMainStudio() {
+      localStorage.setItem("tbb_aura_orb_architecture", String(currentArch));
+      localStorage.setItem("tbb_aura_orb_palette", JSON.stringify(activePalette));
+      playHarmonicChime(880);
+      const msgEl = document.getElementById("applyConfirmMsg");
+      msgEl.textContent = "✅ Arquitectura #" + (currentArch + 1) + " guardada como predeterminada para TheBestBrand Studio.";
+    }
+
+    function rotate3D(x, y, z, ax, ay) {
+      // Rotación Y
+      const cosY = Math.cos(ay), sinY = Math.sin(ay);
+      const x1 = x * cosY - z * sinY;
+      const z1 = z * cosY + x * sinY;
+      // Rotación X
+      const cosX = Math.cos(ax), sinX = Math.sin(ax);
+      const y2 = y * cosX - z1 * sinX;
+      const z2 = z1 * cosX + y * sinX;
+      return { x: x1, y: y2, z: z2 };
+    }
+
+    let lastFrameTs = performance.now();
+    let fpsSmooth = 60.0;
+
+    function renderLoop(now) {
+      const dt = Math.max(1, now - lastFrameTs);
+      lastFrameTs = now;
+      fpsSmooth = fpsSmooth * 0.92 + (1000 / dt) * 0.08;
+      document.getElementById("fpsBadge").textContent = `${Math.min(60, fpsSmooth).toFixed(1)} FPS · ${dt.toFixed(1)}ms`;
+
+      mouseX += (targetMouseX - mouseX) * 0.08;
+      mouseY += (targetMouseY - mouseY) * 0.08;
+
+      const stateMult = orbState === "speaking" ? 2.4 * orbAudioBoost : (orbState === "kansei" ? 1.85 : (orbState === "listening" ? 1.35 : 1.0));
+      t += 0.015 * orbSpeed * stateMult;
+
+      const w = canvas.width, h = canvas.height;
+      const cx = w / 2, cy = h / 2, maxR = w * 0.45;
+      const [r1, g1, b1] = activePalette.pri;
+      const [r2, g2, b2] = activePalette.sec;
+      const [r3, g3, b3] = activePalette.deep;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
+      ctx.clip();
+
+      // Base Esférica Profunda
+      const bgGrad = ctx.createRadialGradient(cx - maxR * 0.25, cy - maxR * 0.25, maxR * 0.05, cx, cy, maxR);
+      bgGrad.addColorStop(0, `rgba(${r3}, ${g3}, ${b3}, 0.42)`);
+      bgGrad.addColorStop(0.6, "#0B101E");
+      bgGrad.addColorStop(1, "#04060B");
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.globalCompositeOperation = "screen";
+      const rotX = t * 0.45 + mouseY * 1.2;
+      const rotY = t * 0.65 + mouseX * 1.2;
+
+      if (currentArch === 0) {
+        // ARQUITECTURA 01: TORUS CUÁNTICO 3D & CRISTAL LÍQUIDO (SPLINE STYLE)
+        const rings = Math.round(28 * orbDensity);
+        const segs = 44;
+        for (let i = 0; i < rings; i++) {
+          const u = (i / rings) * Math.PI * 2;
+          ctx.beginPath();
+          for (let j = 0; j <= segs; j++) {
+            const v = (j / segs) * Math.PI * 2;
+            const wave = orbState === "speaking" ? Math.sin(u * 3 + v * 2 + t * 3) * 14 * orbAudioBoost : Math.sin(u * 2 + t) * 5;
+            const R = maxR * 0.52 + wave;
+            const rTube = maxR * 0.22 * (0.85 + 0.25 * Math.cos(u * PHI + t));
+            const px3 = (R + rTube * Math.cos(v)) * Math.cos(u);
+            const py3 = (R + rTube * Math.cos(v)) * Math.sin(u);
+            const pz3 = rTube * Math.sin(v);
+            const rot = rotate3D(px3, py3, pz3, rotX, rotY);
+            const scale = orbFov / (orbFov + rot.z + maxR);
+            const sx = cx + rot.x * scale;
+            const sy = cy + rot.y * scale;
+            if (j === 0) ctx.moveTo(sx, sy);
+            else ctx.lineTo(sx, sy);
+          }
+          const alpha = 0.16 + 0.22 * Math.sin(i * 0.5 + t);
+          ctx.strokeStyle = i % 2 === 0 ? `rgba(${r1},${g1},${b1},${alpha})` : `rgba(${r2},${g2},${b2},${alpha})`;
+          ctx.lineWidth = orbState === "speaking" ? 2.4 : 1.5;
+          ctx.stroke();
+        }
+      } else if (currentArch === 1) {
+        // ARQUITECTURA 02: VISIONOS SIRI VOLUMETRIC LIQUID LOBES
+        for (let l = 0; l < 6; l++) {
+          const ang1 = t * (0.8 + l * 0.15) + l * PHI;
+          const ang2 = t * (0.6 - l * 0.12) + l * 2.1;
+          const p3 = rotate3D(
+            Math.sin(ang1) * maxR * 0.36,
+            Math.cos(ang2) * maxR * 0.36,
+            Math.sin(ang1 + ang2) * maxR * 0.32,
+            mouseY, mouseX
+          );
+          const scale = orbFov / (orbFov - p3.z);
+          const lx = cx + p3.x * scale;
+          const ly = cy + p3.y * scale;
+          const lr = maxR * (0.48 + (orbState === "speaking" ? 0.14 * Math.sin(t * 4 + l) : 0.04)) * scale;
+          const lg = ctx.createRadialGradient(lx, ly, lr * 0.05, lx, ly, lr);
+          lg.addColorStop(0, `rgba(${r1},${g1},${b1},0.75)`);
+          lg.addColorStop(0.5, `rgba(${r2},${g2},${b2},0.35)`);
+          lg.addColorStop(1, `rgba(${r3},${g3},${b3},0)`);
+          ctx.fillStyle = lg;
+          ctx.beginPath();
+          ctx.arc(lx, ly, lr, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (currentArch === 2) {
+        // ARQUITECTURA 03: CONSTELACIÓN KANSEI FIBONACCI 3D
+        const count = Math.min(fibNodes.length, Math.round(130 * orbDensity));
+        const proj = [];
+        for (let i = 0; i < count; i++) {
+          const n = fibNodes[i];
+          const pulse = 1 + (orbState === "speaking" || orbState === "kansei" ? 0.16 * Math.sin(t * 3 + n.phase) : 0.04 * Math.sin(t + n.phase));
+          const r3 = rotate3D(n.x * maxR * 0.76 * pulse, n.y * maxR * 0.76 * pulse, n.z * maxR * 0.76 * pulse, rotX, rotY);
+          const scale = orbFov / (orbFov - r3.z * 0.6);
+          proj.push({ x: cx + r3.x * scale, y: cy + r3.y * scale, z: r3.z, s: scale });
+        }
+        // Conexiones sinápticas
+        ctx.lineWidth = 1.1;
+        for (let i = 0; i < proj.length; i++) {
+          for (let j = i + 1; j < Math.min(i + 6, proj.length); j++) {
+            const dx = proj[i].x - proj[j].x, dy = proj[i].y - proj[j].y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 78) {
+              ctx.strokeStyle = `rgba(${r2},${g2},${b2},${(1 - dist / 78) * 0.45})`;
+              ctx.beginPath();
+              ctx.moveTo(proj[i].x, proj[i].y);
+              ctx.lineTo(proj[j].x, proj[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+        for (const p of proj) {
+          ctx.fillStyle = p.z > 0 ? `rgba(${r1},${g1},${b1},0.92)` : `rgba(${r2},${g2},${b2},0.38)`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, (p.z > 0 ? 3.2 : 1.8) * p.s, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else if (currentArch === 3) {
+        // ARQUITECTURA 04: CIMÁTICA ACÚSTICA CHLADNI 3D (24kHz)
+        const rings = Math.round(18 * orbDensity);
+        for (let rIdx = 1; rIdx <= rings; rIdx++) {
+          const baseR = (rIdx / rings) * maxR * 0.84;
+          ctx.beginPath();
+          const steps = 96;
+          for (let s = 0; s <= steps; s++) {
+            const ang = (s / steps) * Math.PI * 2;
+            const nHarm = 3 + (rIdx % 4);
+            const amp = (orbState === "speaking" ? 18 * orbAudioBoost : 6) * Math.sin(nHarm * ang + t * 2.5) * Math.cos(2 * ang - t);
+            const rr = baseR + amp;
+            const p3 = rotate3D(Math.cos(ang) * rr, Math.sin(ang) * rr, amp * 1.6, mouseY * 0.8 + 0.35, mouseX * 0.8);
+            const sx = cx + p3.x;
+            const sy = cy + p3.y;
+            if (s === 0) ctx.moveTo(sx, sy);
+            else ctx.lineTo(sx, sy);
+          }
+          ctx.closePath();
+          ctx.strokeStyle = rIdx % 2 === 0 ? `rgba(${r1},${g1},${b1},0.48)` : `rgba(${r2},${g2},${b2},0.32)`;
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+        }
+      } else {
+        // ARQUITECTURA 05: MONOLITO RELOJERO SUIZO (STEVE JOBS C-00 / BRAUN)
+        const ticks = 72;
+        for (let i = 0; i < ticks; i++) {
+          const ang = (i / ticks) * Math.PI * 2 + t * 0.12;
+          const activeWave = Math.sin(ang * 4 - t * 3);
+          const len = (i % 6 === 0 ? 18 : 9) + (orbState === "speaking" ? Math.max(0, activeWave) * 22 * orbAudioBoost : 0);
+          const rIn = maxR * 0.68;
+          const rOut = rIn + len;
+          ctx.strokeStyle = i % 6 === 0 ? `rgba(${r1},${g1},${b1},0.9)` : `rgba(${r2},${g2},${b2},0.42)`;
+          ctx.lineWidth = i % 6 === 0 ? 2.4 : 1.2;
+          ctx.beginPath();
+          ctx.moveTo(cx + Math.cos(ang) * rIn, cy + Math.sin(ang) * rIn);
+          ctx.lineTo(cx + Math.cos(ang) * rOut, cy + Math.sin(ang) * rOut);
+          ctx.stroke();
+        }
+        // Anillo Eclipse Central
+        ctx.strokeStyle = `rgba(${r1},${g1},${b1},0.85)`;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(cx, cy, maxR * 0.52, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Núcleo Singular Luminoso Compartido
+      const coreR = maxR * (orbState === "speaking" ? 0.28 + 0.05 * Math.sin(t * 6) : 0.21);
+      const coreG = ctx.createRadialGradient(cx, cy, 2, cx, cy, coreR);
+      coreG.addColorStop(0, "#FFFFFF");
+      coreG.addColorStop(0.4, `rgba(${r1},${g1},${b1},0.85)`);
+      coreG.addColorStop(1, `rgba(${r2},${g2},${b2},0)`);
+      ctx.fillStyle = coreG;
+      ctx.beginPath();
+      ctx.arc(cx, cy, coreR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Reflejo de Lente Esférico Superior
+      ctx.globalCompositeOperation = "source-over";
+      const specG = ctx.createLinearGradient(cx, cy - maxR, cx, cy - maxR * 0.2);
+      specG.addColorStop(0, "rgba(255,255,255,0.34)");
+      specG.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = specG;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy - maxR * 0.58, maxR * 0.62, maxR * 0.28, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+      requestAnimationFrame(renderLoop);
+    }
+
+    // =========================================================================
+    // TAB 2: COMPARADOR INTERACTIVO DE LOS 4 MOTORES DE LOGOS (CONECTADO AL RECORRIDO PASOS 0-5)
+    // =========================================================================
+    const JOURNEY_PROFILES = {
+      tech: {
+        name: "AURA QUANTUM",
+        initials: "AQ",
+        mode: "tech",
+        sector: "Tecnología, IA & SaaS Enterprise",
+        purpose: "Automatizar decisiones complejas con inteligencia cuántica sin fricción humana",
+        metaphor: "Prisma de Convergencia Neural + Estrella Polar Cognitiva + Órbita Cuántica",
+        touchpoints: "App Icon iOS/Android, Dashboard Web Retina, Pitch Deck y NFC Ejecutivo",
+        family: "Squircle Áureo 1:1 & Monograma Geométrico",
+        kanseiGeo: 82,
+        strokeMm: 2.2,
+        priHex: "#38BDF8",
+        secHex: "#D4AF37",
+        bgHex: "#090D16",
+        font: "Space Grotesk",
+        tagline: "QUANTUM INTELLIGENCE · PENTAGRAM GRADE"
+      },
+      sports: {
+        name: "CIMARRONES PRO",
+        initials: "CP",
+        mode: "sports",
+        sector: "Liga Deportiva Profesional & Clubes (TheBestLeague)",
+        purpose: "Forjar campeones con identidad feroz, orgullo regional y espectáculo broadcast",
+        metaphor: "Escudo Heráldico de Campeonato + Corona de Victoria + Emblema Atlético de Estadio",
+        touchpoints: "Bordado en Jersey Oficial (≥1.8mm), Marcador Broadcast TV, Balón y Merchandising",
+        family: "Blasón Heráldico Deportivo & Tipografía de Impacto",
+        kanseiGeo: 90,
+        strokeMm: 2.8,
+        priHex: "#F43F5E",
+        secHex: "#FBBF24",
+        bgHex: "#0F0712",
+        font: "Space Grotesk",
+        tagline: "THEBESTLEAGUE OFFICIAL · HERALDIC CREST"
+      },
+      gastro: {
+        name: "BRASA & RAÍZ",
+        initials: "BR",
+        mode: "gastro",
+        sector: "Hospitalidad, Restaurante de Fuego & Gastronomía de Autor",
+        purpose: "Honrar el ingrediente de origen con cocina de leña ancestral y hospitalidad cálida",
+        metaphor: "Llama Viva de Leña + Raíz Botánica Orgánica + Sello Artesanal de Autor",
+        touchpoints: "Grabado Láser en Madera/Cuero, Menú Editorial, Mandil Bordado y Fachada",
+        family: "Sello Circular Orgánico & Serif Contemporánea",
+        kanseiGeo: 28,
+        strokeMm: 1.9,
+        priHex: "#F59E0B",
+        secHex: "#10B981",
+        bgHex: "#140D08",
+        font: "Plus Jakarta Sans",
+        tagline: "COCINA DE ORIGEN · FUEGO Y TIERRA"
+      }
+    };
+
+    let demoBrand = { ...JOURNEY_PROFILES.tech };
+    let selectedLogoEngineIdx = parseInt(localStorage.getItem("tbb_preferred_logo_engine_idx") || "0", 10) % 4;
+    let lastRenderedLogoCards = [];
+    const LOGO_ENGINE_KEYS = ["recraft_v3_svg", "ideogram_v3_vtracer", "gemini_svg_architect", "kansei_golden_ratio"];
+    const LOGO_ENGINE_NAMES = [
+      "#1 Recraft V3 Native SVG",
+      "#2 Ideogram 3.0 + Rust vtracer",
+      "#3 Gemini 3.1 SVG Architect",
+      "#4 LAB-AVI Kansei Golden Ratio"
+    ];
+
+    function switchLabTab(tab) {
+      const isOrb = tab === "orb";
+      document.getElementById("viewOrbLab").style.display = isOrb ? "grid" : "none";
+      document.getElementById("viewLogoBenchmark").style.display = isOrb ? "none" : "grid";
+      document.getElementById("tabBtnOrb").classList.toggle("active", isOrb);
+      document.getElementById("tabBtnLogos").classList.toggle("active", !isOrb);
+      if (!isOrb) {
+        selectLogoEngine(selectedLogoEngineIdx, false);
+      }
+      playHarmonicChime(isOrb ? 528 : 640);
+    }
+
+    function selectLogoEngine(idx, chime = true) {
+      selectedLogoEngineIdx = idx;
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById("logoEngBtn_" + i);
+        if (btn) btn.classList.toggle("active", i === idx);
+      }
+      renderLogoComparisonCards();
+      if (chime) playHarmonicChime(500 + idx * 70);
+    }
+
+    function loadLiveAppSessionIntoLab() {
+      try {
+        const raw = localStorage.getItem("tbb_active_brand_session_v24");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          const cs = parsed.canvasState || {};
+          const sliders = parsed.bipolarSliderValues || {};
+          const bName = (cs.brandName || "MI MARCA EN VIVO").trim().toUpperCase();
+          const words = bName.split(/\s+/).filter(Boolean);
+          const initials = words.length >= 2 ? (words[0][0] + words[1][0]).slice(0, 2) : bName.slice(0, 2);
+          const colors = cs.selected_colors_hex || ["#FAF8F5", "#090D16", "#D4AF37", "#38BDF8"];
+          const geoVal = typeof sliders.organico_geometrico === "number" ? Math.round((sliders.organico_geometrico + 1) * 50) : 72;
+          const lowerHint = `${bName} ${cs.custom_business_type || ""} ${cs.step0_short_essence || ""}`.toLowerCase();
+          let detectedMode = "tech";
+          if (/liga|futbol|fútbol|deport|club|torneo|cimarron|basket|padel|gym/.test(lowerHint)) detectedMode = "sports";
+          else if (/restaurante|cafe|café|brasa|comida|gastro|hotel|bar| pan|vino|cocina/.test(lowerHint)) detectedMode = "gastro";
+
+          demoBrand = {
+            name: bName.slice(0, 22),
+            initials,
+            mode: detectedMode,
+            sector: cs.step0_short_essence || cs.custom_business_type || "Giro Personalizado del Recorrido (Paso 0)",
+            purpose: cs.golden_circle || cs.value_offer || cs.core_message || "Propósito destilado en las 12 preguntas socráticas del Paso 1",
+            metaphor: cs.step0_paraphrased_essence || "Símbolo de autor sintetizado desde tus respuestas en TheBestBrand",
+            touchpoints: (parsed.tpExtractedItems?.during || ["Web/App", "Empaque", "Uniforme Bordado"]).join(", "),
+            family: "Familia Arquitectónica Paso 4 + 24 Decisiones A/B Paso 5",
+            kanseiGeo: geoVal,
+            strokeMm: 2.3,
+            priHex: colors[2] || "#D4AF37",
+            secHex: colors[3] || "#38BDF8",
+            bgHex: "#090D16",
+            font: cs.primary_font || "Space Grotesk",
+            tagline: (cs.tagline || cs.step0_short_essence || "DATOS EN VIVO DEL APP").toUpperCase().slice(0, 34)
+          };
+        } else {
+          demoBrand = {
+            ...JOURNEY_PROFILES.tech,
+            name: "THEBESTBRAND LIVE",
+            initials: "TB",
+            tagline: "RECORRIDO EN VIVO PASOS 0–5"
+          };
+        }
+      } catch (e) {}
+
+      document.getElementById("lblBrandDemo").textContent = `${demoBrand.name} (${demoBrand.initials})`;
+      document.getElementById("rngKanseiGeo").value = demoBrand.kanseiGeo;
+      document.getElementById("lblKanseiGeo").textContent = `${demoBrand.kanseiGeo}% Geom.`;
+      document.getElementById("rngKanseiStroke").value = Math.round(demoBrand.strokeMm * 10);
+      document.getElementById("lblKanseiStroke").textContent = `${demoBrand.strokeMm.toFixed(1)}mm`;
+      ["app", "tech", "sports", "gastro"].forEach(m => {
+        const b = document.getElementById("demoBrandBtn_" + m);
+        if (b) b.classList.toggle("active", m === "app");
+      });
+      renderLogoComparisonCards();
+      playHarmonicChime(720);
+    }
+
+    function setLogoDemoBrand(name, initials, mode) {
+      const base = JOURNEY_PROFILES[mode] || JOURNEY_PROFILES.tech;
+      demoBrand = { ...base, name, initials, mode };
+      document.getElementById("lblBrandDemo").textContent = `${name} (${initials})`;
+      document.getElementById("rngKanseiGeo").value = demoBrand.kanseiGeo;
+      document.getElementById("lblKanseiGeo").textContent = `${demoBrand.kanseiGeo}% Geom.`;
+      document.getElementById("rngKanseiStroke").value = Math.round(demoBrand.strokeMm * 10);
+      document.getElementById("lblKanseiStroke").textContent = `${demoBrand.strokeMm.toFixed(1)}mm`;
+      ["app", "tech", "sports", "gastro"].forEach(m => {
+        const b = document.getElementById("demoBrandBtn_" + m);
+        if (b) b.classList.toggle("active", m === mode);
+      });
+      renderLogoComparisonCards();
+      playHarmonicChime(600);
+    }
+
+    function onLabKanseiSliderChange() {
+      const geo = parseInt(document.getElementById("rngKanseiGeo").value || "75", 10);
+      const st = parseInt(document.getElementById("rngKanseiStroke").value || "22", 10) / 10;
+      demoBrand.kanseiGeo = geo;
+      demoBrand.strokeMm = st;
+      document.getElementById("lblKanseiGeo").textContent = geo >= 50 ? `${geo}% Geom.` : `${100 - geo}% Orgánico`;
+      document.getElementById("lblKanseiStroke").textContent = `${st.toFixed(1)}mm`;
+      renderLogoComparisonCards();
+    }
+
+    function onCustomLogoBrandInput(val) {
+      const clean = (val || "").trim().toUpperCase();
+      if (!clean) {
+        setLogoDemoBrand("AURA QUANTUM", "AQ", "tech");
+        return;
+      }
+      const words = clean.split(/\s+/).filter(Boolean);
+      const initials = words.length >= 2
+        ? (words[0][0] + words[1][0]).slice(0, 2)
+        : clean.slice(0, 2);
+      demoBrand.name = clean.slice(0, 22);
+      demoBrand.initials = initials;
+      document.getElementById("lblBrandDemo").textContent = `${demoBrand.name} (${initials})`;
+      renderLogoComparisonCards();
+    }
+
+    function buildCompiledMasterScriptText() {
+      return [
+        `=== PROMPT MAESTRO COMPILADO POR THEBESTBRAND (PASOS 0 AL 5) ===`,
+        `1. MARCA Y MONOGRAMA (PASO 3): "${demoBrand.name}" · Monograma «${demoBrand.initials}»`,
+        `2. GIRO E INSIGHTS DE ENTREVISTA SOCRÁTICA (PASOS 0 Y 1):`,
+        `   • Sector / Giro: ${demoBrand.sector}`,
+        `   • Propósito y Diferencial: ${demoBrand.purpose}`,
+        `   • Metáfora Visual Obligatoria: ${demoBrand.metaphor}`,
+        `3. TOUCHPOINTS Y SUSTRATOS FÍSICOS/DIGITALES (PASO 2):`,
+        `   • Aplicaciones Clave: ${demoBrand.touchpoints}`,
+        `4. CALIBRACIÓN DE LOS 7 SLIDERS KANSEI (PASO 4):`,
+        `   • Familia Base: ${demoBrand.family}`,
+        `   • Índice Geométrico vs. Orgánico: ${demoBrand.kanseiGeo}% (${demoBrand.kanseiGeo >= 50 ? 'Trazos Arquitectónicos Bauhaus' : 'Curvas Orgánicas Fibonacci'})`,
+        `5. LAS 24 DECISIONES A/B, GROSOR INDUSTRIAL Y PALETA HEX (PASO 5):`,
+        `   • Grosor de Trazo p/ Bordado y Láser: ${demoBrand.strokeMm.toFixed(2)} mm (Mínimo industrial ≥ 1.20 mm)`,
+        `   • Paleta HEX Bloqueada: Primario ${demoBrand.priHex} | Secundario ${demoBrand.secHex} | Fondo ${demoBrand.bgHex}`,
+        `   • Tipografía Oficial: '${demoBrand.font}'`,
+        `6. MOTOR ACTIVO SELECCIONADO: ${LOGO_ENGINE_NAMES[selectedLogoEngineIdx]}`
+      ].join("\n");
+    }
+
+    function toggleLabMasterScriptModal() {
+      let modal = document.getElementById("labMasterScriptModal");
+      if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "labMasterScriptModal";
+        modal.style.cssText = "position:fixed; inset:0; background:rgba(5,8,17,0.86); backdrop-filter:blur(12px); z-index:9999; display:flex; align-items:center; justify-content:center; padding:24px;";
+        modal.innerHTML = `
+          <div style="background:#0F172A; border:1.5px solid #D4AF37; border-radius:18px; max-width:760px; width:100%; padding:20px; color:#F8FAFC; box-shadow:0 24px 60px rgba(0,0,0,0.6);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <strong style="color:#FDE68A; font-size:0.92rem;">📜 Script / Prompt Maestro Generado por el Recorrido (Pasos 0–5)</strong>
+              <button onclick="document.getElementById('labMasterScriptModal').style.display='none'" style="background:rgba(255,255,255,0.1); border:none; color:#FFF; border-radius:8px; padding:5px 10px; cursor:pointer; font-weight:700;">✕ Cerrar</button>
+            </div>
+            <pre id="labMasterScriptPre" style="background:#050811; border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:14px; font-family:'JetBrains Mono', monospace; font-size:0.74rem; color:#38BDF8; white-space:pre-wrap; line-height:1.5; max-height:340px; overflow-y:auto;"></pre>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+              <span style="font-size:0.72rem; color:#94A3B8;">Este script se compila automáticamente en el Paso 5B del App con todas las respuestas y sliders.</span>
+              <a href="/?step=5" style="background:linear-gradient(135deg,#FDE68A,#D4AF37); color:#070A12; text-decoration:none; padding:8px 14px; border-radius:10px; font-size:0.76rem; font-weight:800;">Ir al Paso 5B en el App →</a>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      } else {
+        modal.style.display = modal.style.display === "none" ? "flex" : "none";
+      }
+      const pre = document.getElementById("labMasterScriptPre");
+      if (pre) pre.textContent = buildCompiledMasterScriptText();
+    }
+
+    function downloadSelectedEngineSvg() {
+      const card = lastRenderedLogoCards[selectedLogoEngineIdx];
+      if (!card) return;
+      const blob = new Blob([card.svg], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${demoBrand.name.toLowerCase().replace(/[^a-z0-9]+/g, "_")}_${LOGO_ENGINE_KEYS[selectedLogoEngineIdx]}.svg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      playHarmonicChime(780);
+    }
+
+    function applySelectedLogoEngineToStudio() {
+      localStorage.setItem("tbb_preferred_logo_engine_idx", String(selectedLogoEngineIdx));
+      localStorage.setItem("tbb_preferred_logo_engine", LOGO_ENGINE_KEYS[selectedLogoEngineIdx]);
+      playHarmonicChime(880);
+    }
+
+    function renderLogoComparisonCards() {
+      const showGrid = document.getElementById("chkGoldenGrid").checked;
+      const { name, initials, mode, priHex, secHex, bgHex, kanseiGeo, strokeMm, tagline } = demoBrand;
+      const sw = Math.max(1.4, strokeMm * 1.15).toFixed(1);
+      const rxCorner = Math.round((100 - kanseiGeo) * 0.36); // Más orgánico = curvas más suaves; más geométrico = ángulos rectos
+      const gridSvg = showGrid ? `
+        <g opacity="0.24" stroke="${priHex}" stroke-width="0.7" stroke-dasharray="3 3">
+          <line x1="0" y1="84" x2="360" y2="84"/>
+          <line x1="180" y1="0" x2="180" y2="190"/>
+          <circle cx="180" cy="74" r="46" fill="none"/>
+          <circle cx="180" cy="74" r="28.4" fill="none"/>
+          <text x="10" y="16" fill="${priHex}" font-family="monospace" font-size="7.5">φ=1.618 · Geo:${kanseiGeo}% · Trazo:${strokeMm.toFixed(1)}mm</text>
+        </g>` : "";
+
+      // Geometría adaptada al Giro + Sliders Kansei para cada uno de los 4 motores
+      let symRecraft = "", symIdeogram = "", symGemini = "", symKansei = "";
+
+      if (mode === "sports") {
+        // MODO DEPORTIVO (THEBESTLEAGUE): Escudos Heráldicos, Estrellas de Campeonato, Alas Atléticas y Laurel
+        symRecraft = `
+          <path d="M-34,-34 H34 V-2 C34,22 0,40 0,40 C0,40 -34,22 -34,-2 Z" fill="${bgHex}" stroke="${priHex}" stroke-width="${sw}"/>
+          <path d="M-24,-22 L0,-30 L24,-22 L16,14 L0,28 L-16,14 Z" fill="${priHex}" fill-opacity="0.22" stroke="${secHex}" stroke-width="1.8"/>
+          <polygon points="0,-24 5,-10 19,-10 8,-1 12,13 0,4 -12,13 -8,-1 -19,-10 -5,-10" fill="${secHex}"/>
+        `;
+        symIdeogram = `
+          <polygon points="0,-42 38,-22 32,22 0,42 -32,22 -38,-22" fill="#18091E" stroke="${secHex}" stroke-width="${sw}"/>
+          <path d="M-26,-14 H26 L20,14 L0,28 L-20,14 Z" fill="${priHex}"/>
+          <text x="0" y="7" text-anchor="middle" fill="#FFFFFF" font-family="Space Grotesk" font-weight="800" font-size="19" letter-spacing="1.5">${initials}</text>
+        `;
+        symGemini = `
+          <rect x="-38" y="-36" width="76" height="72" rx="${rxCorner}" fill="#14081C" stroke="${priHex}" stroke-width="${sw}"/>
+          <path d="M-28,16 L-14,-22 L0,4 L14,-22 L28,16" fill="none" stroke="${secHex}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="0" y="25" text-anchor="middle" fill="#FFF" font-family="Space Grotesk" font-weight="800" font-size="11" letter-spacing="2">${initials} PRO</text>
+        `;
+        symKansei = `
+          <circle cx="0" cy="0" r="38" fill="none" stroke="${priHex}" stroke-width="${sw}"/>
+          <circle cx="0" cy="0" r="30" fill="none" stroke="${secHex}" stroke-width="1.4" stroke-dasharray="6 3"/>
+          <polygon points="0,-26 24,16 -24,16" fill="${priHex}"/>
+          <text x="0" y="11" text-anchor="middle" fill="#FFF" font-family="Space Grotesk" font-weight="800" font-size="12">${initials}</text>
+        `;
+      } else if (mode === "gastro") {
+        // MODO HOSPITALIDAD / FUEGO & RAÍZ: Llama Orgánica, Hoja Botánica, Sello Artesanal
+        symRecraft = `
+          <path d="M0,-38 C22,-18 28,4 18,22 C10,34 -10,34 -18,22 C-28,4 -22,-18 0,-38 Z" fill="${priHex}"/>
+          <path d="M0,-14 C10,-2 12,10 6,20 C2,26 -6,24 -4,14 C-2,6 -6,-2 0,-14 Z" fill="${bgHex}"/>
+          <path d="M-26,30 Q0,20 26,30" fill="none" stroke="${secHex}" stroke-width="${sw}" stroke-linecap="round"/>
+        `;
+        symIdeogram = `
+          <circle cx="0" cy="0" r="38" fill="#1C120B" stroke="${priHex}" stroke-width="${sw}"/>
+          <circle cx="0" cy="0" r="29" fill="none" stroke="${secHex}" stroke-width="1.3" stroke-dasharray="3 3"/>
+          <path d="M-14,-16 Q0,-28 14,-16" fill="none" stroke="${priHex}" stroke-width="2"/>
+          <text x="0" y="8" text-anchor="middle" fill="#FAF8F5" font-family="Plus Jakarta Sans" font-weight="800" font-size="19" letter-spacing="2">${initials}</text>
+        `;
+        symGemini = `
+          <rect x="-36" y="-36" width="72" height="72" rx="${Math.max(18, rxCorner + 12)}" fill="#19110B" stroke="${secHex}" stroke-width="${sw}"/>
+          <path d="M-18,16 C-18,-12 0,-26 0,-26 C0,-26 18,-12 18,16 Z" fill="none" stroke="${priHex}" stroke-width="${sw}"/>
+          <text x="0" y="9" text-anchor="middle" fill="#FAF8F5" font-family="Plus Jakarta Sans" font-weight="800" font-size="14">${initials}</text>
+        `;
+        symKansei = `
+          <circle cx="0" cy="0" r="38" fill="none" stroke="${priHex}" stroke-width="${sw}"/>
+          <ellipse cx="0" cy="0" rx="22" ry="34" fill="none" stroke="${secHex}" stroke-width="1.8"/>
+          <ellipse cx="0" cy="0" rx="34" ry="22" fill="none" stroke="${priHex}" stroke-width="1.8"/>
+          <circle cx="0" cy="0" r="12" fill="${priHex}"/>
+          <text x="0" y="4" text-anchor="middle" fill="#090D16" font-family="Space Grotesk" font-weight="800" font-size="10">${initials}</text>
+        `;
+      } else {
+        // MODO TECH / IA / PERSONALIZADO: Prisma Neural, Squircle Áureo, Nodo Cuántico
+        symRecraft = `
+          <path d="M-36,24 L-8,-34 H8 L36,24 H20 L0,-14 L-20,24 Z" fill="${secHex}"/>
+          <path d="M-18,12 Q0,${-12 + (100 - kanseiGeo) * 0.2} 18,12" fill="none" stroke="#FAF8F5" stroke-width="${sw}" stroke-linecap="round"/>
+          <circle cx="0" cy="-24" r="4.8" fill="${priHex}"/>
+        `;
+        symIdeogram = `
+          <polygon points="0,-42 36,-20 36,20 0,42 -36,20 -36,-20" fill="#0F172A" stroke="${secHex}" stroke-width="${sw}"/>
+          <circle cx="0" cy="0" r="24" fill="none" stroke="${priHex}" stroke-width="1.4" stroke-dasharray="4 3"/>
+          <text x="0" y="7" text-anchor="middle" fill="#FAF8F5" font-family="Space Grotesk" font-weight="800" font-size="20" letter-spacing="2">${initials}</text>
+        `;
+        symGemini = `
+          <rect x="-38" y="-38" width="76" height="76" rx="${Math.max(8, rxCorner + 10)}" fill="#111827" stroke="${priHex}" stroke-width="${sw}"/>
+          <path d="M-22,14 C-18,-22 18,-22 22,14" fill="none" stroke="${secHex}" stroke-width="${sw}" stroke-linecap="round"/>
+          <text x="0" y="9" text-anchor="middle" fill="#FAF8F5" font-family="Plus Jakarta Sans" font-weight="800" font-size="16" letter-spacing="1.5">${initials}</text>
+        `;
+        symKansei = `
+          <circle cx="0" cy="0" r="38" fill="none" stroke="${secHex}" stroke-width="${sw}"/>
+          <path d="M0,-30 L26,18 H-26 Z" fill="none" stroke="${priHex}" stroke-width="${sw}"/>
+          <circle cx="0" cy="2" r="12" fill="${secHex}"/>
+          <text x="0" y="6" text-anchor="middle" fill="#070A12" font-family="Space Grotesk" font-weight="800" font-size="10">${initials}</text>
+        `;
+      }
+
+      const cards = [
+        {
+          badge: "🏆 #1 RECOMENDADO · VECTOR NATIVO IA",
+          title: "1. Recraft V3 Native SVG (`recraftv3`)",
+          desc: `Metáfora: ${demoBrand.metaphor.slice(0, 62)}... · Paleta ${priHex}/${secHex}.`,
+          svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 190" width="100%" height="100%">
+            <rect width="360" height="190" fill="${bgHex}"/>
+            ${gridSvg}
+            <g transform="translate(180,72)">${symRecraft}</g>
+            <text x="180" y="142" text-anchor="middle" fill="#FAF8F5" font-family="${demoBrand.font}, sans-serif" font-weight="800" font-size="15.5" letter-spacing="3.5">${name}</text>
+            <text x="180" y="162" text-anchor="middle" fill="${secHex}" font-family="Inter" font-weight="700" font-size="8" letter-spacing="2">${tagline}</text>
+          </svg>`
+        },
+        {
+          badge: "🥈 #2 · MONOGRAMAS, TEXTO Y ESCUDOS",
+          title: "2. Ideogram 3.0 Design + Rust `vtracer`",
+          desc: `Especialista en monograma «${initials}», heráldica de ${demoBrand.sector.slice(0, 28)} y tipografía exacta.`,
+          svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 190" width="100%" height="100%">
+            <rect width="360" height="190" fill="${bgHex}"/>
+            ${gridSvg}
+            <g transform="translate(180,72)">${symIdeogram}</g>
+            <text x="180" y="142" text-anchor="middle" fill="#FAF8F5" font-family="${demoBrand.font}, sans-serif" font-weight="800" font-size="15" letter-spacing="3.5">${name}</text>
+            <text x="180" y="162" text-anchor="middle" fill="${priHex}" font-family="Inter" font-weight="700" font-size="8" letter-spacing="2">HERALDIC &amp; TYPOGRAPHIC LOCKUP (${initials})</text>
+          </svg>`
+        },
+        {
+          badge: "🥉 #3 · MOTOR CORPORATIVO GOOGLE ($0 EXTRA)",
+          title: "3. Gemini 3.1 SVG Architect + NanoBanana",
+          desc: `Compila el Script de 45+ Insights (Geo ${kanseiGeo}%, Trazo ${strokeMm.toFixed(1)}mm) en código <path>.`,
+          svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 190" width="100%" height="100%">
+            <rect width="360" height="190" fill="${bgHex}"/>
+            ${gridSvg}
+            <g transform="translate(180,72)">${symGemini}</g>
+            <text x="180" y="142" text-anchor="middle" fill="#FAF8F5" font-family="${demoBrand.font}, sans-serif" font-weight="800" font-size="15" letter-spacing="3.5">${name}</text>
+            <text x="180" y="162" text-anchor="middle" fill="${priHex}" font-family="Inter" font-weight="700" font-size="8" letter-spacing="2">45+ INSIGHTS MASTER SCRIPT · GEO ${kanseiGeo}%</text>
+          </svg>`
+        },
+        {
+          badge: "⚡ #4 · TIEMPO REAL 60FPS & BORDADO ≥1.2MM",
+          title: "4. LAB-AVI Kansei Golden Ratio Engine",
+          desc: `Calibrado en vivo con tus Sliders (Trazo ${strokeMm.toFixed(1)}mm ≥ 1.2mm) para bordado y láser.`,
+          svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 190" width="100%" height="100%">
+            <rect width="360" height="190" fill="${bgHex}"/>
+            ${gridSvg}
+            <g transform="translate(180,72)">${symKansei}</g>
+            <text x="180" y="142" text-anchor="middle" fill="#FAF8F5" font-family="${demoBrand.font}, sans-serif" font-weight="800" font-size="15" letter-spacing="3.5">${name}</text>
+            <text x="180" y="162" text-anchor="middle" fill="#34D399" font-family="Inter" font-weight="700" font-size="8" letter-spacing="2">BORDADO CERTIFICADO · TRAZO ${strokeMm.toFixed(1)}MM</text>
+          </svg>`
+        }
+      ];
+      lastRenderedLogoCards = cards;
+
+      document.getElementById("logoCardsContainer").innerHTML = cards.map((c, idx) => {
+        const isSel = idx === selectedLogoEngineIdx;
+        return `
+        <div class="engine-card ${isSel ? 'winner' : ''}" onclick="selectLogoEngine(${idx})" style="cursor:pointer; transition:all 0.2s ease;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.68rem; font-weight:800; color:${isSel ? '#FDE68A' : '#94A3B8'};">${c.badge}</span>
+            <span style="font-size:0.65rem; font-weight:800; padding:2px 8px; border-radius:999px; background:${isSel ? 'rgba(212,175,55,0.22)' : 'rgba(255,255,255,0.05)'}; color:${isSel ? '#FDE68A' : '#64748B'}; border:1px solid ${isSel ? 'rgba(212,175,55,0.55)' : 'transparent'};">
+              ${isSel ? '✓ SELECCIONADO' : 'Clic para elegir'}
+            </span>
+          </div>
+          <div style="font-family:var(--font-display); font-weight:800; font-size:0.86rem; color:#FFF; margin-top:2px;">${c.title}</div>
+          <div class="svg-preview-box">${c.svg}</div>
+          <div style="font-size:0.71rem; color:#CBD5E1; line-height:1.35;">${c.desc}</div>
+        </div>
+      `}).join("");
+    }
+
+    selectOrbArch(currentArch);
+    requestAnimationFrame(renderLoop);
+  </script>
+</body>
+</html>

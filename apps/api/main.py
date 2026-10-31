@@ -46,6 +46,7 @@ from bespoke_logo_studio import (
     DeepTouchpointEngineeringEngine,
     MultiBrandArchitectureEngine
 )
+from benefic_editorial_brandbook import generate_benefic_editorial_brandbook_html
 import tempfile
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../scripts")))
 try:
@@ -55,8 +56,8 @@ except Exception:
     generate_standalone_html_brandbook = None
 
 app = FastAPI(
-    title="TheBestBrand Live Studio v21.0 (Pentagram Logo Studio + Deep Touchpoints + Multi-Brand Architecture + Direct PDF)",
-    version="21.0.0"
+    title="TheBestBrand Live Studio v40.0 (NanoBanana 2.1 + Sir Jony Ive Logo Studio + Official Web Page + BENEFIC 30-Page Brandbook)",
+    version="40.0.0"
 )
 
 app.add_middleware(
@@ -110,6 +111,15 @@ class Step4SynthesizeRequest(BaseModel):
 
 class CompileBrandbookRequest(BaseModel):
     brand_name: str = "Tu Marca"
+    tagline: str = ""
+    industry_key: str = ""
+    business_overview: str = ""
+    selected_logo_svg: str = ""
+    selected_logo_index: int = 0
+    variation_seed: int = 0
+    generation_mode: str = "initial"
+    user_refinement_prompt: str = ""
+    custom_modifiers: Dict[str, Any] = {}
     canvas_state: Dict[str, Any] = {}
     golden_circle: str = ""
     value_offer: str = ""
@@ -120,12 +130,14 @@ class CompileBrandbookRequest(BaseModel):
     customer_behavior: str = ""
     brand_world: str = ""
     ideal_customer: str = ""
-    touchpoints: List[str] = []
+    touchpoints: Any = []
+    touchpoints_detailed: Dict[str, Any] = {}
     master_prompt: str = ""
     selected_kit_name: str = "Kit 01 — Ingeniería & Precisión"
     selected_colors_hex: List[str] = ["#FAF8F5", "#141413", "#D96B43", "#1B5E4A"]
     primary_font: str = "Space Grotesk"
     secondary_font: str = "Plus Jakarta Sans"
+    html_override: str = ""
 
 
 class Step0InterpretRequest(BaseModel):
@@ -136,6 +148,7 @@ class Step0InterpretRequest(BaseModel):
 
 
 @app.get("/", response_class=HTMLResponse)
+@app.get("/web", response_class=HTMLResponse)
 def serve_web_app():
     html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/index.html"))
     with open(html_path, "r", encoding="utf-8") as f:
@@ -144,9 +157,41 @@ def serve_web_app():
             headers={
                 "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
                 "Pragma": "no-cache",
-                "Expires": "0"
+                "Expires": "0",
+                "X-TBB-Release": "v40.0-replit-clean"
             }
         )
+
+
+
+@app.get("/web", response_class=HTMLResponse)
+@app.get("/site", response_class=HTMLResponse)
+def serve_commercial_website():
+    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/website.html"))
+    with open(html_path, "r", encoding="utf-8") as f:
+        return HTMLResponse(content=f.read(), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+
+
+@app.get("/studio", response_class=HTMLResponse)
+@app.get("/app", response_class=HTMLResponse)
+def serve_studio_direct():
+    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/index.html"))
+    with open(html_path, "r", encoding="utf-8") as f:
+        return HTMLResponse(content=f.read(), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+
+
+@app.get("/lab", response_class=HTMLResponse)
+def serve_orb_and_logo_lab():
+    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/aura_orb_3d_lab.html"))
+    with open(html_path, "r", encoding="utf-8") as f:
+        return HTMLResponse(content=f.read(), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+
+
+@app.get("/brandbook", response_class=HTMLResponse)
+def serve_official_brandbook():
+    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/brandbook_editorial_thebestbrand.html"))
+    with open(html_path, "r", encoding="utf-8") as f:
+        return HTMLResponse(content=f.read(), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
 @app.post("/api/step0/interpret-business")
@@ -701,6 +746,17 @@ class StudioLogoGenerateRequest(BaseModel):
     secondary_font: str = "Plus Jakarta Sans"
     descriptor_tagline: str = "ESTÁNDAR DE EXCELENCIA"
     show_construction_grid: bool = True
+    canvas_state: Dict[str, Any] = {}
+    bipolar_sliders: Dict[str, Any] = {}
+    pair_selections: Dict[str, Any] = {}
+    selected_family_index: int = 0
+    custom_prompt_override: str = ""
+    use_live_gemini: bool = True
+    generation_mode: str = "initial"
+    variation_seed: int = 0
+    selected_slot_index: int = 0
+    user_refinement_prompt: str = ""
+    custom_modifiers: Dict[str, Any] = {}
 
 
 @app.post("/api/v1/logos/generate-studio-logos")
@@ -713,11 +769,33 @@ def api_generate_studio_logos(req: StudioLogoGenerateRequest):
         primary_font=req.primary_font,
         secondary_font=req.secondary_font,
         descriptor_tagline=req.descriptor_tagline,
-        show_construction_grid=req.show_construction_grid
+        show_construction_grid=req.show_construction_grid,
+        canvas_state=req.canvas_state,
+        bipolar_sliders=req.bipolar_sliders,
+        pair_selections=req.pair_selections,
+        selected_family_index=req.selected_family_index,
+        custom_prompt_override=req.custom_prompt_override,
+        use_live_gemini=req.use_live_gemini,
+        generation_mode=req.generation_mode,
+        variation_seed=req.variation_seed,
+        selected_slot_index=req.selected_slot_index,
+        user_refinement_prompt=req.user_refinement_prompt,
+        custom_modifiers=req.custom_modifiers
     )
+    first_p = proposals[0] if proposals else {}
     return {
         "brand_name": req.brand_name,
-        "archetype": proposals[0]["archetype"],
+        "archetype": first_p.get("archetype", "pentagram_modernist"),
+        "master_prompt_es": first_p.get("master_prompt_es", ""),
+        "master_prompt_en": first_p.get("master_prompt_en", ""),
+        "design_dna_pills": first_p.get("design_dna_pills", []),
+        "creative_director_rationale": first_p.get("creative_director_rationale", ""),
+        "generated_by": first_p.get("generated_by", "NanoBanana 2.0 + Jony Ive Studio"),
+        "creative_seed_summary": first_p.get("creative_seed_summary", ""),
+        "applied_modifiers": first_p.get("applied_modifiers", {}),
+        "generation_mode": req.generation_mode,
+        "variation_seed": req.variation_seed,
+        "selected_slot_index": req.selected_slot_index,
         "proposals": proposals
     }
 
@@ -750,29 +828,13 @@ def api_get_12_simulated_brands():
     }
 
 
-@app.post("/api/step6/download-pdf")
-def api_download_brandbook_pdf(req: CompileBrandbookRequest):
-    """
-    Compila en vivo el Brandbook Maestro Ilustrado completo de la marca activa y devuelve
-    un archivo binario .PDF real (application/pdf) listo para descarga directa e imprenta.
-    """
+def _build_benefic_brand_payload(req: CompileBrandbookRequest):
     cs = req.canvas_state or {}
-    # Si coincide con una de las 12 marcas pre-compiladas y ya existe el PDF, o compilar en vivo con Playwright
-    matched_preset = next(
-        (b for b in SIMULATED_BRANDS if b["chosen_name"].lower() == req.brand_name.strip().lower()),
-        None
-    )
-    if matched_preset:
-        preset_pdf_path = os.path.join(_BRANDBOOKS_DIR, f"brandbook_{matched_preset['id']}.pdf")
-        if os.path.exists(preset_pdf_path):
-            with open(preset_pdf_path, "rb") as f:
-                pdf_bytes = f.read()
-            safe_slug = req.brand_name.strip().replace(" ", "_")
-            return Response(
-                content=pdf_bytes,
-                media_type="application/pdf",
-                headers={"Content-Disposition": f'attachment; filename="Brandbook_Maestro_{safe_slug}.pdf"'}
-            )
+    raw_name = (req.brand_name or "").strip()
+    if not raw_name or raw_name.lower() in ["mi nueva marca", "tu marca", "aurelian", "aurelian international"]:
+        raw_name = (cs.get("brand_name") or cs.get("existing_brand_name") or "TheBestBrand").strip()
+    if raw_name.lower() in ["mi nueva marca", "tu marca", "aurelian", "aurelian international"]:
+        raw_name = "TheBestBrand"
 
     bg_hex = req.selected_colors_hex[0] if len(req.selected_colors_hex) > 0 else "#FAF8F5"
     ink_hex = req.selected_colors_hex[1] if len(req.selected_colors_hex) > 1 else "#090D16"
@@ -781,50 +843,102 @@ def api_download_brandbook_pdf(req: CompileBrandbookRequest):
 
     gc_val = req.golden_circle or cs.get("golden_circle") or "Impulsar la excelencia, confiabilidad y transformación positiva en cada entrega."
     vo_val = req.value_offer or cs.get("value_offer") or "Calidad superior, ingeniería de precisión y experiencia impecable de principio a fin."
-    sr_val = req.social_role or cs.get("social_role") or f"Elevar el estándar ético, técnico y estético de nuestra comunidad a través de {req.brand_name}."
+    sr_val = req.social_role or cs.get("social_role") or f"Elevar el estándar ético, técnico y estético de nuestra comunidad a través de {raw_name}."
     ps_raw = req.process_steps_text or cs.get("process_steps_text") or ""
-    cm_val = req.core_message or cs.get("core_message") or f"{req.brand_name}: Precisión, confianza y excelencia que trascienden."
+    cm_val = req.core_message or cs.get("core_message") or f"{raw_name}: Precisión, confianza y excelencia que trascienden."
     bp_val = req.brand_persona or cs.get("brand_persona") or "Especialista apasionado, confiable, claro, empático y con autoridad comprobada."
-    cb_val = req.customer_behavior or cs.get("customer_behavior") or "Trato transparente, proactivo, resolutivo y cercano en cada interacción."
-    bw_val = req.brand_world or cs.get("brand_world") or req.master_prompt or "Un entorno de orden visual, materiales nobles, alta visibilidad y excelencia técnica."
+    cb_val = req.customer_behavior or cs.get("customer_behavior") or f"Trato humano, transparente y resolutivo coherente con la personalidad de {raw_name}: {bp_val}"
+    bw_val = req.brand_world or cs.get("brand_world") or "Un entorno de orden visual, materiales nobles, alta visibilidad y excelencia técnica."
     ic_val = req.ideal_customer or cs.get("ideal_customer") or "Tomadores de decisión e instituciones que exigen durabilidad, claridad y desempeño oficial."
 
-    tp_before = (req.touchpoints[0] if len(req.touchpoints) > 0 else "") or cs.get("tp_before") or "Sitio web oficial, catálogo técnico ejecutivo, presencia en redes y demostraciones."
-    tp_during = (req.touchpoints[1] if len(req.touchpoints) > 1 else "") or cs.get("tp_during") or "Cotización formal membretada, uniforme del equipo, contrato de servicio y pasarela de pago."
-    tp_after = (req.touchpoints[2] if len(req.touchpoints) > 2 else "") or cs.get("tp_after") or "Empaque con sello de seguridad, certificado de garantía, manual de bienvenida y soporte continuo."
+    tp_before_list: List[str] = []
+    tp_during_list: List[str] = []
+    tp_after_list: List[str] = []
+    if isinstance(req.touchpoints, dict):
+        tp_before_list = [str(x).strip() for x in (req.touchpoints.get("before") or req.touchpoints.get("antes") or []) if str(x).strip()]
+        tp_during_list = [str(x).strip() for x in (req.touchpoints.get("during") or req.touchpoints.get("durante") or []) if str(x).strip()]
+        tp_after_list = [str(x).strip() for x in (req.touchpoints.get("after") or req.touchpoints.get("despues") or []) if str(x).strip()]
+        tp_before = " | ".join(tp_before_list) or cs.get("tp_before") or "Sitio web oficial | Catálogo técnico ejecutivo | Presencia en redes y demostraciones"
+        tp_during = " | ".join(tp_during_list) or cs.get("tp_during") or "Cotización formal membretada | Uniforme del equipo | Contrato de servicio y pasarela de pago"
+        tp_after = " | ".join(tp_after_list) or cs.get("tp_after") or "Empaque con sello de seguridad | Certificado de garantía | Manual de bienvenida y soporte continuo"
+    elif isinstance(req.touchpoints, list) and len(req.touchpoints) > 0:
+        tp_before = (req.touchpoints[0] if len(req.touchpoints) > 0 else "") or cs.get("tp_before") or "Sitio web oficial | Catálogo técnico ejecutivo | Presencia en redes y demostraciones"
+        tp_during = (req.touchpoints[1] if len(req.touchpoints) > 1 else "") or cs.get("tp_during") or "Cotización formal membretada | Uniforme del equipo | Contrato de servicio y pasarela de pago"
+        tp_after = (req.touchpoints[2] if len(req.touchpoints) > 2 else "") or cs.get("tp_after") or "Empaque con sello de seguridad | Certificado de garantía | Manual de bienvenida y soporte continuo"
+    else:
+        tp_before = cs.get("tp_before") or "Sitio web oficial | Catálogo técnico ejecutivo | Presencia en redes y demostraciones"
+        tp_during = cs.get("tp_during") or "Cotización formal membretada | Uniforme del equipo | Contrato de servicio y pasarela de pago"
+        tp_after = cs.get("tp_after") or "Empaque con sello de seguridad | Certificado de garantía | Manual de bienvenida y soporte continuo"
+
+    # Desglose inteligente de process_steps ya sea que venga separado por saltos de línea, puntos medios '·', '|' o '1. / 2. / 3.'
+    parsed_steps: List[str] = []
+    if ps_raw:
+        import re as _re
+        if "\n" in ps_raw:
+            parsed_steps = [s.strip() for s in ps_raw.split("\n") if s.strip()]
+        elif "·" in ps_raw:
+            parsed_steps = [s.strip() for s in ps_raw.split("·") if s.strip()]
+        elif "|" in ps_raw:
+            parsed_steps = [s.strip() for s in ps_raw.split("|") if s.strip()]
+        elif _re.search(r"\b2[\.\)]\s*", ps_raw):
+            parsed_steps = [s.strip(" ,;.-") for s in _re.split(r"(?=\b[1234][\.\)]\s*)", ps_raw) if s.strip()]
+        elif ";" in ps_raw:
+            parsed_steps = [s.strip() for s in ps_raw.split(";") if s.strip()]
+        else:
+            parsed_steps = [ps_raw.strip()]
+    if not parsed_steps:
+        parsed_steps = [
+            "1. Diagnóstico profundo y comprensión de requerimientos del cliente",
+            "2. Diseño, fabricación o implementación con control de calidad estricto",
+            "3. Entrega puntual, garantía oficial y seguimiento post-venta"
+        ]
 
     brand_dict = {
         "id": "custom_live",
-        "sector": cs.get("sector_label") or "Identidad Corporativa de Alta Precisión",
+        "sector": req.business_overview or cs.get("sector_label") or cs.get("custom_business_type") or cs.get("industry_text") or "Identidad Corporativa & Experiencia de Marca",
+        "step0_essence": cs.get("step0_business_interpretation") or cs.get("custom_business_type") or req.business_overview or "",
         "founder_persona": cs.get("founder_persona") or "Fundador & Dirección General",
-        "chosen_name": req.brand_name,
-        "tagline": cm_val,
+        "chosen_name": raw_name,
+        "tagline": req.tagline or cs.get("tagline") or cm_val,
         "naming_style": "compuesto",
-        "industry_key": cs.get("industry_key") or "tecnologia_saas",
+        "industry_key": req.industry_key or cs.get("industry_key") or "tecnologia_saas",
+        "selected_logo_svg": req.selected_logo_svg or cs.get("selected_logo_svg") or "",
+        "selected_variant_index": req.selected_logo_index if req.selected_logo_index is not None else int(cs.get("selected_logo_index") or 0),
+        "variation_seed": req.variation_seed or int(cs.get("variation_seed") or 0),
+        "generation_mode": req.generation_mode or cs.get("generation_mode") or "initial",
+        "selected_logo_title": cs.get("selected_logo_title") or "",
+        "selected_logo_rationale": cs.get("selected_logo_rationale") or "",
+        "user_refinement_prompt": req.user_refinement_prompt or cs.get("user_refinement_prompt") or "",
+        "custom_modifiers": BespokePentagramLogoEngine.parse_user_refinement_modifiers(
+            req.user_refinement_prompt or cs.get("user_refinement_prompt") or "",
+            req.custom_modifiers or cs.get("custom_modifiers") or {},
+            cs,
+        ),
         "architecture_role": cs.get("architecture_model") or "",
-        "vault_finalists": [req.brand_name, f"{req.brand_name} Group", f"{req.brand_name} Studio", f"{req.brand_name} Global"],
+        "vault_finalists": cs.get("vault_finalists") or [raw_name, f"{raw_name} Group", f"{raw_name} Studio", f"{raw_name} Global"],
         "nice_classes": cs.get("recommended_nice_classes_str") or "Clase 09, Clase 35, Clase 37 y Clase 42 según giro operativo",
         "domains": [
-            f"{req.brand_name.lower().replace(' ', '').replace('&', '')}.com",
-            f"{req.brand_name.lower().replace(' ', '').replace('&', '')}.mx"
+            f"{raw_name.lower().replace(' ', '').replace('&', '')}.com",
+            f"{raw_name.lower().replace(' ', '').replace('&', '')}.mx"
         ],
         "purpose_why": gc_val,
         "value_offer": vo_val,
         "social_role": sr_val,
-        "process_steps": [s.strip() for s in ps_raw.split("\n") if s.strip()] if ps_raw else [
-            "1. Diagnóstico profundo y comprensión de requerimientos del cliente",
-            "2. Diseño, fabricación o implementación con control de calidad estricto",
-            "3. Entrega puntual, garantía oficial y seguimiento post-venta"
-        ],
+        "process_steps": parsed_steps,
         "core_message": cm_val,
         "brand_persona": bp_val,
         "customer_behavior": cb_val,
         "brand_world": bw_val,
         "ideal_customer": ic_val,
+        "gc_notes": cs.get("gc_notes") or [],
         "touchpoints_journey": {
-            "antes": tp_before.replace(",", " · "),
-            "durante": tp_during.replace(",", " · "),
-            "despues": tp_after.replace(",", " · ")
+            "antes": tp_before,
+            "durante": tp_during,
+            "despues": tp_after,
+            "antes_list": tp_before_list,
+            "durante_list": tp_during_list,
+            "despues_list": tp_after_list,
+            "detailed": req.touchpoints_detailed or {}
         },
         "base_family": req.selected_kit_name,
         "primary_font": req.primary_font,
@@ -835,7 +949,7 @@ def api_download_brandbook_pdf(req: CompileBrandbookRequest):
             "Trazo mínimo calibrado ≥ 1.2 mm para bordado y grabado láser",
             "Contraste cromático verificado WCAG AAA e ISO 15930 PDF/X-1a"
         ],
-        "simulation_notes": "Brandbook Maestro compilado en vivo desde el estudio interactivo TheBestBrand."
+        "simulation_notes": "Brandbook Maestro Editorial (Estándar BENEFIC 30 Láminas A4 Horizontal) compilado en vivo."
     }
     color_table = [
         PrePressColorEngine.build_brand_color_table("Superficie Base", bg_hex, ink_hex),
@@ -843,14 +957,33 @@ def api_download_brandbook_pdf(req: CompileBrandbookRequest):
         PrePressColorEngine.build_brand_color_table("Acento Primario", primary_hex, bg_hex),
         PrePressColorEngine.build_brand_color_table("Acento Secundario", secondary_hex, bg_hex),
     ]
-    html_doc = generate_standalone_html_brandbook(brand_dict, {}, color_table)
+    return raw_name, brand_dict, color_table
+
+
+@app.post("/api/step6/preview-editorial-brandbook-html")
+def api_preview_editorial_brandbook_html(req: CompileBrandbookRequest):
+    """
+    Devuelve el HTML completo de las 30 láminas A4 horizontales (Estándar BENEFIC_MANUAL_160318)
+    con rutas de imágenes relativas `/assets/...` para previsualización interactiva en el Paso 6.
+    """
+    raw_name, brand_dict, color_table = _build_benefic_brand_payload(req)
+    html_doc = generate_benefic_editorial_brandbook_html(brand_dict, color_table, assets_base_url="/assets")
+    return {"brand_name": raw_name, "pages_count": 30, "html": html_doc}
+
+
+@app.post("/api/step6/download-pdf")
+def api_download_brandbook_pdf(req: CompileBrandbookRequest):
+    """
+    Compila en vivo el Brandbook Maestro Editorial (30 Láminas A4 Horizontales 297×210mm,
+    estándar de referencia BENEFIC_MANUAL_160318) y devuelve un archivo binario .PDF real.
+    """
+    raw_name, brand_dict, color_table = _build_benefic_brand_payload(req)
+    abs_assets_uri = f"file://{os.path.abspath(_ASSETS_DIR)}"
+    html_doc = generate_benefic_editorial_brandbook_html(brand_dict, color_table, assets_base_url=abs_assets_uri)
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        tmp_html = os.path.join(tmpdir, "brandbook_live.html")
-        tmp_pdf = os.path.join(tmpdir, "brandbook_live.pdf")
-        # Ajustar ruta relativa de imágenes para el archivo temporal
-        abs_logos = os.path.abspath(os.path.join(_ASSETS_DIR, "logos"))
-        html_doc = html_doc.replace("../apps/web/assets/logos/", f"file://{abs_logos}/")
+        tmp_html = os.path.join(tmpdir, "brandbook_benefic_live.html")
+        tmp_pdf = os.path.join(tmpdir, "brandbook_benefic_live.pdf")
         with open(tmp_html, "w", encoding="utf-8") as f:
             f.write(html_doc)
         import subprocess
@@ -861,26 +994,258 @@ def api_download_brandbook_pdf(req: CompileBrandbookRequest):
                 (
                     "import sys; from playwright.sync_api import sync_playwright; "
                     "p = sync_playwright().start(); b = p.chromium.launch(headless=True); "
-                    "page = b.new_page(); page.goto('file://' + sys.argv[1], wait_until='domcontentloaded'); "
-                    "page.pdf(path=sys.argv[2], format='A4', print_background=True, "
-                    "margin={'top':'10mm','bottom':'10mm','left':'10mm','right':'10mm'}); "
+                    "page = b.new_page(viewport={'width': 1123, 'height': 794}); "
+                    "page.goto('file://' + sys.argv[1], wait_until='domcontentloaded'); "
+                    "page.pdf(path=sys.argv[2], format='A4', landscape=True, print_background=True, "
+                    "margin={'top':'0mm','bottom':'0mm','left':'0mm','right':'0mm'}); "
                     "b.close(); p.stop()"
                 ),
                 tmp_html,
                 tmp_pdf
             ],
             check=True,
-            timeout=30
+            timeout=45
         )
         with open(tmp_pdf, "rb") as f:
             pdf_bytes = f.read()
 
-    safe_slug = "".join([c if c.isalnum() else "_" for c in req.brand_name.strip()]) or "TheBestBrand"
+    safe_slug = "".join([c if c.isalnum() else "_" for c in raw_name.strip()]) or "TheBestBrand"
     return Response(
         content=pdf_bytes,
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="Brandbook_Maestro_{safe_slug}.pdf"'}
     )
+
+
+# ======================================================================================
+# BÓVEDA PERSISTENTE DE CUENTAS Y SESIONES DE MARCA (SQLite + Multi-Brand Sync v30.0)
+# Diseñado con Max (Chief Platform Architect):
+# - Permite crear/iniciar sesión en una cuenta para guardar toda la secuencia 0 -> 6.
+# - Permite "Comenzar de nuevo con esta marca" (Hard Reset 0% residuos en BD y cliente).
+# ======================================================================================
+import sqlite3
+import json
+import hashlib
+from datetime import datetime, timezone
+
+_ACCOUNTS_DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "tbb_accounts_vault.db"))
+
+
+_REPLIT_CLEAN_BUILD_TAG = "v40.0_replit_clean_2026_10_30"
+
+
+def _init_accounts_vault_db():
+    with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS accounts (
+                account_id TEXT PRIMARY KEY,
+                email TEXT UNIQUE NOT NULL,
+                name TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS brand_workspaces (
+                brand_id TEXT NOT NULL,
+                account_id TEXT NOT NULL,
+                brand_name TEXT NOT NULL,
+                current_step INTEGER DEFAULT 0,
+                state_json TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                PRIMARY KEY (account_id, brand_id)
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS server_release_meta (
+                meta_key TEXT PRIMARY KEY,
+                meta_value TEXT NOT NULL
+            )
+        """)
+        row = conn.execute(
+            "SELECT meta_value FROM server_release_meta WHERE meta_key = 'clean_release_tag'"
+        ).fetchone()
+        if not row or row[0] != _REPLIT_CLEAN_BUILD_TAG:
+            conn.execute("DELETE FROM brand_workspaces WHERE account_id = 'guest_default'")
+            conn.execute(
+                "INSERT OR REPLACE INTO server_release_meta (meta_key, meta_value) VALUES ('clean_release_tag', ?)",
+                (_REPLIT_CLEAN_BUILD_TAG,)
+            )
+        conn.commit()
+
+
+_init_accounts_vault_db()
+
+
+class AccountLoginRequest(BaseModel):
+    email: str
+    name: str = "Fundador"
+
+
+class AccountSaveStateRequest(BaseModel):
+    account_id: str = "guest_default"
+    email: str = ""
+    brand_id: str = "active_brand_default"
+    brand_name: str = "Tu Marca"
+    current_step: int = 0
+    state_payload: Dict[str, Any] = {}
+
+
+class AccountResetBrandRequest(BaseModel):
+    account_id: str = "guest_default"
+    brand_id: str = "active_brand_default"
+
+
+@app.post("/api/v1/account/login")
+def api_account_login_or_register(req: AccountLoginRequest):
+    clean_email = (req.email or "").strip().lower()
+    if not clean_email or "@" not in clean_email:
+        clean_email = f"{clean_email or 'fundador'}@thebestbrand.studio"
+    clean_name = (req.name or "Fundador").strip() or "Fundador"
+    account_id = "acc_" + hashlib.sha256(clean_email.encode("utf-8")).hexdigest()[:16]
+    now_iso = datetime.now(timezone.utc).isoformat()
+
+    with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute("SELECT * FROM accounts WHERE email = ?", (clean_email,)).fetchone()
+        if not row:
+            conn.execute(
+                "INSERT INTO accounts (account_id, email, name, created_at) VALUES (?, ?, ?, ?)",
+                (account_id, clean_email, clean_name, now_iso)
+            )
+            conn.commit()
+        else:
+            account_id = row["account_id"]
+            if req.name and req.name.strip():
+                conn.execute("UPDATE accounts SET name = ? WHERE account_id = ?", (clean_name, account_id))
+                conn.commit()
+
+        brands_rows = conn.execute(
+            "SELECT brand_id, brand_name, current_step, state_json, updated_at FROM brand_workspaces WHERE account_id = ? ORDER BY updated_at DESC",
+            (account_id,)
+        ).fetchall()
+
+    brands_list = []
+    active_state = None
+    for idx, b in enumerate(brands_rows):
+        parsed_state = {}
+        try:
+            parsed_state = json.loads(b["state_json"] or "{}")
+        except Exception:
+            parsed_state = {}
+        item = {
+            "brand_id": b["brand_id"],
+            "brand_name": b["brand_name"],
+            "current_step": b["current_step"],
+            "updated_at": b["updated_at"],
+            "state_payload": parsed_state
+        }
+        brands_list.append(item)
+        if idx == 0:
+            active_state = item
+
+    return {
+        "status": "ok",
+        "account": {
+            "account_id": account_id,
+            "email": clean_email,
+            "name": clean_name
+        },
+        "brands": brands_list,
+        "active_brand": active_state
+    }
+
+
+@app.post("/api/v1/account/save-state")
+def api_account_save_state(req: AccountSaveStateRequest):
+    account_id = (req.account_id or "guest_default").strip() or "guest_default"
+    brand_id = (req.brand_id or "active_brand_default").strip() or "active_brand_default"
+    brand_name = (req.brand_name or "Tu Marca").strip() or "Tu Marca"
+    now_iso = datetime.now(timezone.utc).isoformat()
+    state_str = json.dumps(req.state_payload or {}, ensure_ascii=False)
+
+    with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+        if req.email and "@" in req.email:
+            clean_email = req.email.strip().lower()
+            conn.execute(
+                "INSERT OR IGNORE INTO accounts (account_id, email, name, created_at) VALUES (?, ?, ?, ?)",
+                (account_id, clean_email, "Fundador", now_iso)
+            )
+        conn.execute(
+            """
+            INSERT INTO brand_workspaces (brand_id, account_id, brand_name, current_step, state_json, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+            ON CONFLICT(account_id, brand_id) DO UPDATE SET
+                brand_name = excluded.brand_name,
+                current_step = excluded.current_step,
+                state_json = excluded.state_json,
+                updated_at = excluded.updated_at
+            """,
+            (brand_id, account_id, brand_name, int(req.current_step or 0), state_str, now_iso)
+        )
+        conn.commit()
+
+    return {
+        "status": "saved",
+        "account_id": account_id,
+        "brand_id": brand_id,
+        "brand_name": brand_name,
+        "current_step": req.current_step,
+        "saved_at": now_iso
+    }
+
+
+@app.get("/api/v1/account/load-state")
+def api_account_load_state(account_id: str = "guest_default", brand_id: str = "active_brand_default"):
+    if not account_id or account_id.strip() == "guest_default":
+        return {"status": "empty", "account_id": "guest_default", "brand_id": brand_id, "state_payload": None}
+    with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute(
+            "SELECT * FROM brand_workspaces WHERE account_id = ? AND brand_id = ?",
+            (account_id, brand_id)
+        ).fetchone()
+        if not row:
+            row = conn.execute(
+                "SELECT * FROM brand_workspaces WHERE account_id = ? ORDER BY updated_at DESC LIMIT 1",
+                (account_id,)
+            ).fetchone()
+        if not row:
+            return {"status": "empty", "account_id": account_id, "brand_id": brand_id, "state_payload": None}
+
+        try:
+            payload = json.loads(row["state_json"] or "{}")
+        except Exception:
+            payload = {}
+
+        return {
+            "status": "loaded",
+            "account_id": row["account_id"],
+            "brand_id": row["brand_id"],
+            "brand_name": row["brand_name"],
+            "current_step": row["current_step"],
+            "updated_at": row["updated_at"],
+            "state_payload": payload
+        }
+
+
+@app.post("/api/v1/account/reset-brand")
+def api_account_reset_brand(req: AccountResetBrandRequest):
+    account_id = (req.account_id or "guest_default").strip() or "guest_default"
+    brand_id = (req.brand_id or "active_brand_default").strip() or "active_brand_default"
+    now_iso = datetime.now(timezone.utc).isoformat()
+    with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+        conn.execute(
+            "DELETE FROM brand_workspaces WHERE account_id = ? AND brand_id = ?",
+            (account_id, brand_id)
+        )
+        conn.commit()
+    return {
+        "status": "reset_complete",
+        "account_id": account_id,
+        "brand_id": brand_id,
+        "purged_at": now_iso,
+        "residue_remaining": 0
+    }
 
 
 if __name__ == "__main__":

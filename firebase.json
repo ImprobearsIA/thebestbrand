@@ -1,0 +1,45 @@
+{
+  "hosting": {
+    "site": "thebestbrand-studio",
+    "public": "apps/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/*.py"
+    ],
+    "rewrites": [
+      {
+        "source": "/web",
+        "destination": "/website.html"
+      },
+      {
+        "source": "/studio",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/lab",
+        "destination": "/aura_orb_3d_lab.html"
+      },
+      {
+        "source": "/brandbook",
+        "destination": "/brandbook_editorial_thebestbrand.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-store, no-cache, must-revalidate, max-age=0"
+          }
+        ]
+      }
+    ]
+  }
+}

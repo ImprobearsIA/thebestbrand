@@ -18,10 +18,11 @@ import struct
 import base64
 import urllib.request
 import urllib.error
+import ssl
+
+_SSL_CTX = ssl._create_unverified_context()
 
 def _load_env_fallback():
-    if "GEMINI_API_KEY" in os.environ and os.environ["GEMINI_API_KEY"]:
-        return os.environ["GEMINI_API_KEY"]
     env_paths = [
         os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.env")),
         os.path.abspath(os.path.join(os.path.dirname(__file__), ".env")),
@@ -35,10 +36,13 @@ def _load_env_fallback():
                         line = line.strip()
                         if line.startswith("GEMINI_API_KEY="):
                             val = line.split("=", 1)[1].strip().strip('"').strip("'")
-                            if val:
+                            if val and not val.startswith("AQ."):
+                                os.environ["GEMINI_API_KEY"] = val
                                 return val
             except Exception:
                 pass
+    if "GEMINI_API_KEY" in os.environ and os.environ["GEMINI_API_KEY"]:
+        return os.environ["GEMINI_API_KEY"]
     return ""
 
 DEFAULT_GEMINI_API_KEY = _load_env_fallback()
@@ -130,12 +134,65 @@ class GeminiNeuralVoiceSynthesizer:
     _CLOUD_TTS_AVAILABLE: bool = True
 
     @classmethod
+    def humanize_text_for_natural_speech(cls, raw_text: str) -> str:
+        """
+        Pre-procesador prosódico para que la voz neural de Aura suene 100% humana, cálida y conversacional:
+        - Elimina ejemplos entre paréntesis largos '(ej: ...)' que suenan robóticos al leerse en voz alta.
+        - Sustituye viñetas, barras y símbolos técnicos por pausas naturales con coma.
+        - Limita la longitud hablada a las ideas principales para no cansar ni interrumpir al usuario.
+        """
+        t = re.sub(r"<[^>]+>", " ", raw_text or "")
+        t = re.sub(r"\(\s*(?:ej\.?|ejemplo|por ejemplo)[^)]*\)", "", t, flags=re.IGNORECASE)
+        t = re.sub(r"[*_#`✦🎬🏆👑🧬⚖️🌐🏛️🎚️🔬⚔️🔤🎨📚💡🎙️✍️✓🟢🔴⚡🧭📋🖨️⬇️]", " ", t)
+        t = re.sub(r"\s*[·•|→⇢]\s*", ", ", t)
+        t = re.sub(r"\b1X\b", "una equis", t)
+        t = re.sub(r"\b8X\s*[×x]\s*3X\b", "ocho por tres", t, flags=re.IGNORECASE)
+        t = re.sub(r"\s+", " ", t).strip()
+        return t
+
+    @classmethod
+    def _synthesize_edge_neural_dalia_b64(cls, clean_text: str) -> Optional[str]:
+        """
+        Sintetiza voz neural humana de alta definición en español de México (Microsoft Edge Neural
+        es-MX-DaliaNeural) en ~1.1 segundos. Elimina por completo el tono robótico del sintetizador local.
+        """
+        try:
+            import asyncio
+            import edge_tts
+
+            async def _run_edge() -> bytes:
+                comm = edge_tts.Communicate(clean_text, "es-MX-DaliaNeural", rate="+3%")
+                chunks = []
+                async for chunk in comm.stream():
+                    if chunk.get("type") == "audio" and chunk.get("data"):
+                        chunks.append(chunk["data"])
+                return b"".join(chunks)
+
+            loop = asyncio.new_event_loop()
+            try:
+                audio_bytes = loop.run_until_complete(asyncio.wait_for(_run_edge(), timeout=6.5))
+            finally:
+                loop.close()
+
+            if audio_bytes and len(audio_bytes) > 200:
+                b64_out = base64.b64encode(audio_bytes).decode("ascii")
+                if len(_TTS_MEMORY_CACHE) < 256:
+                    _TTS_MEMORY_CACHE[clean_text] = b64_out
+                return b64_out
+        except Exception:
+            pass
+        return None
+
+    @classmethod
     def _synthesize_local_consistent_aura_wav_b64(cls, clean_text: str) -> Optional[str]:
         """
-        Sintetiza audio WAV a 24kHz con la voz única y consistente de Aura (Paulina es-MX),
-        garantizando que absolutamente todas las fases, cápsulas de cierre y explicaciones
-        de logotipos hablen exactamente con la misma voz sin caer en voces robóticas del navegador.
+        Primero intenta la voz neural humana es-MX-DaliaNeural (~1.1s). Solo si no hay red
+        recurre al motor local del sistema operativo.
         """
+        neural_b64 = cls._synthesize_edge_neural_dalia_b64(clean_text)
+        if neural_b64:
+            return neural_b64
+
         import subprocess
         import tempfile
         wav_path = None
@@ -143,7 +200,7 @@ class GeminiNeuralVoiceSynthesizer:
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tf:
                 wav_path = tf.name
             subprocess.run(
-                ["say", "-v", "Paulina", "-r", "186", "--data-format=LEI16@24000", "-o", wav_path, clean_text],
+                ["say", "-v", "Paulina", "-r", "180", "--data-format=LEI16@24000", "-o", wav_path, clean_text],
                 check=True,
                 timeout=8
             )
@@ -165,19 +222,22 @@ class GeminiNeuralVoiceSynthesizer:
 
     @classmethod
     def synthesize_gemini_voice_wav_b64(cls, text_to_speak: str, api_key: str = "") -> Optional[str]:
-        clean_t = re.sub(r"<[^>]+>", " ", text_to_speak or "")
-        clean_t = re.sub(r"[*_#`✦🎬🏆👑🧬⚖️🌐🏛️🎚️🔬⚔️🔤🎨📚💡🎙️✍️]", " ", clean_t)
-        clean_t = re.sub(r"\s+", " ", clean_t).strip()
+        clean_t = cls.humanize_text_for_natural_speech(text_to_speak)
         if not clean_t:
             return None
         if clean_t in _TTS_MEMORY_CACHE:
             return _TTS_MEMORY_CACHE[clean_t]
 
-        # SIEMPRE se utiliza la cuenta corporativa del servidor (Jorge Benítez)
+        # Prioridad 1: Voz Neural Humana Ultrarrápida en Español (es-MX-DaliaNeural ~1.1s, 100% natural y cálida)
+        fast_neural = cls._synthesize_edge_neural_dalia_b64(clean_t)
+        if fast_neural:
+            return fast_neural
+
+        # Prioridad 2: Gemini 2.5 Flash Neural TTS (Voz Aoede 24kHz)
         key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY or api_key).strip()
         if key and cls._CLOUD_TTS_AVAILABLE:
             tts_models = ["gemini-2.5-flash-preview-tts", "gemini-3.1-flash-tts-preview"]
-            neutral_voice_name = os.environ.get("AURA_NEUTRAL_VOICE", "Puck")
+            neutral_voice_name = os.environ.get("AURA_NEUTRAL_VOICE", "Aoede")
             for model_name in tts_models:
                 url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
                 payload = {
@@ -197,7 +257,7 @@ class GeminiNeuralVoiceSynthesizer:
                         data=json.dumps(payload).encode("utf-8"),
                         headers={"Content-Type": "application/json"}
                     )
-                    with urllib.request.urlopen(req, timeout=5) as resp:
+                    with urllib.request.urlopen(req, timeout=7, context=_SSL_CTX) as resp:
                         data = json.loads(resp.read().decode("utf-8"))
                         parts = data["candidates"][0]["content"]["parts"]
                         for p in parts:
@@ -209,7 +269,7 @@ class GeminiNeuralVoiceSynthesizer:
                                     _TTS_MEMORY_CACHE[clean_t] = b64_out
                                 return b64_out
                 except urllib.error.HTTPError as he:
-                    if he.code in (402, 403, 429):
+                    if he.code in (402, 403):
                         cls._CLOUD_TTS_AVAILABLE = False
                         break
                 except Exception:
@@ -345,7 +405,8 @@ class LiveGeminiSocraticBrain:
         ("social_role", "3. El Rol en la Sociedad e Impacto (cómo transforma la industria o la vida de la comunidad a 5 años)"),
         ("process_steps_text", "4. El Proceso Operativo Cero Fricción (cómo funciona paso a paso desde el minuto uno)"),
         ("core_message", "5. El Mensaje Nuclear (la promesa central e idea fuerza en 1 sola frase potente)"),
-        ("ideal_customer", "6. El Perfil del Cliente Ideal (quién es el decisor que paga y qué exige)")
+        ("brand_persona", "6. Si tu Marca fuera una Persona (carácter, edad simbólica, cómo viste, cómo habla y cómo trata a la gente)"),
+        ("ideal_customer", "7. El Perfil del Cliente Ideal (quién es el decisor que paga y qué exige)")
     ]
 
     STEP2_DIMENSIONS = [
@@ -452,74 +513,214 @@ Devuelve SIEMPRE JSON válido con estas llaves:
 
     @classmethod
     def _call_gemini_json(cls, prompt: str, system_inst: str, api_key: str = "") -> Optional[Dict[str, Any]]:
-        key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY or api_key).strip()
-        if not key:
-            return None
-        # Cascada de ultra-baja latencia con modelos oficiales estables
-        models_to_try = [
-            "gemini-2.5-flash",
-            "gemini-2.5-flash-lite",
-            "gemini-2.0-flash",
-            "gemini-flash-lite-latest"
-        ]
-        for model_name in models_to_try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
-            gen_cfg: Dict[str, Any] = {
-                "temperature": 0.65,
-                "maxOutputTokens": 650,
-                "responseMimeType": "application/json",
-                "thinkingConfig": {"thinkingBudget": 0}
-            }
-            payload = {
-                "systemInstruction": {"parts": [{"text": system_inst}]},
-                "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-                "generationConfig": gen_cfg
-            }
+        key = (_load_env_fallback() or DEFAULT_GEMINI_API_KEY or api_key).strip()
+        # 1. Anillo Primario: Cascada de ultra-baja latencia con modelos oficiales Google Gemini
+        if key:
+            models_to_try = [
+                "gemini-3-flash-preview",
+                "gemini-2.5-flash",
+                "gemini-3.5-flash-lite",
+                "gemini-3.5-flash"
+            ]
+            for model_name in models_to_try:
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
+                gen_cfg: Dict[str, Any] = {
+                    "temperature": 0.65,
+                    "maxOutputTokens": 650,
+                    "responseMimeType": "application/json",
+                    "thinkingConfig": {"thinkingBudget": 0}
+                }
+                payload = {
+                    "systemInstruction": {"parts": [{"text": system_inst}]},
+                    "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+                    "generationConfig": gen_cfg
+                }
+                try:
+                    req = urllib.request.Request(
+                        url,
+                        data=json.dumps(payload).encode("utf-8"),
+                        headers={"Content-Type": "application/json"}
+                    )
+                    with urllib.request.urlopen(req, timeout=6.5, context=_SSL_CTX) as resp:
+                        raw = json.loads(resp.read().decode("utf-8"))
+                        text_out = raw["candidates"][0]["content"]["parts"][0]["text"].strip()
+                        text_out = re.sub(r"^```(?:json)?\s*|\s*```$", "", text_out).strip()
+                        return json.loads(text_out)
+                except Exception:
+                    continue
+
+        # 2. Anillo Secundario (Superpoder 3): Groq LPU (<250ms, Zero-429 Backup)
+        groq_key = os.environ.get("GROQ_API_KEY", "").strip()
+        if groq_key:
+            for groq_model in ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]:
+                try:
+                    req = urllib.request.Request(
+                        "https://api.groq.com/openai/v1/chat/completions",
+                        data=json.dumps({
+                            "model": groq_model,
+                            "messages": [
+                                {"role": "system", "content": system_inst},
+                                {"role": "user", "content": prompt + "\nDevuelve solo JSON válido."}
+                            ],
+                            "temperature": 0.65,
+                            "max_tokens": 650,
+                            "response_format": {"type": "json_object"}
+                        }).encode("utf-8"),
+                        headers={
+                            "Content-Type": "application/json",
+                            "Authorization": f"Bearer {groq_key}",
+                            "User-Agent": "TheBestBrand-Aura-Router/3.0"
+                        }
+                    )
+                    with urllib.request.urlopen(req, timeout=6.0, context=_SSL_CTX) as resp:
+                        raw = json.loads(resp.read().decode("utf-8"))
+                        text_out = raw["choices"][0]["message"]["content"].strip()
+                        text_out = re.sub(r"^```(?:json)?\s*|\s*```$", "", text_out).strip()
+                        return json.loads(text_out)
+                except Exception:
+                    continue
+
+        # 3. Anillo Terciario (Superpoder 3): OpenRouter Unified (:free models)
+        openrouter_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+        if openrouter_key:
+            for or_model in ["deepseek/deepseek-chat:free", "qwen/qwen-2.5-coder-32b-instruct:free"]:
+                try:
+                    req = urllib.request.Request(
+                        "https://openrouter.ai/api/v1/chat/completions",
+                        data=json.dumps({
+                            "model": or_model,
+                            "messages": [
+                                {"role": "system", "content": system_inst},
+                                {"role": "user", "content": prompt + "\nDevuelve solo JSON válido."}
+                            ],
+                            "temperature": 0.65,
+                            "max_tokens": 650
+                        }).encode("utf-8"),
+                        headers={
+                            "Content-Type": "application/json",
+                            "Authorization": f"Bearer {openrouter_key}",
+                            "HTTP-Referer": "https://thebestbrand.studio",
+                            "X-Title": "TheBestBrand AURA"
+                        }
+                    )
+                    with urllib.request.urlopen(req, timeout=8.0, context=_SSL_CTX) as resp:
+                        raw = json.loads(resp.read().decode("utf-8"))
+                        text_out = raw["choices"][0]["message"]["content"].strip()
+                        text_out = re.sub(r"^```(?:json)?\s*|\s*```$", "", text_out).strip()
+                        return json.loads(text_out)
+                except Exception:
+                    continue
+
+        # 4. Anillo Cuaternario (Superpoder 3): OpenCode Local Gateway (minimax-m2.5 / big-pickle)
+        opencode_url = os.environ.get("OPENCODE_BASE_URL", "http://127.0.0.1:4096/v1/chat/completions")
+        for oc_model in ["minimax-m2.5", "big-pickle"]:
             try:
                 req = urllib.request.Request(
-                    url,
-                    data=json.dumps(payload).encode("utf-8"),
+                    opencode_url,
+                    data=json.dumps({
+                        "model": oc_model,
+                        "messages": [
+                            {"role": "system", "content": system_inst},
+                            {"role": "user", "content": prompt + "\nDevuelve solo JSON válido."}
+                        ],
+                        "temperature": 0.65
+                    }).encode("utf-8"),
                     headers={"Content-Type": "application/json"}
                 )
-                with urllib.request.urlopen(req, timeout=6.0) as resp:
+                with urllib.request.urlopen(req, timeout=4.0) as resp:
                     raw = json.loads(resp.read().decode("utf-8"))
-                    text_out = raw["candidates"][0]["content"]["parts"][0]["text"].strip()
+                    text_out = raw["choices"][0]["message"]["content"].strip()
                     text_out = re.sub(r"^```(?:json)?\s*|\s*```$", "", text_out).strip()
                     return json.loads(text_out)
             except Exception:
                 continue
+
         return None
 
     @classmethod
-    def distill_natural_theme_label(cls, user_msg: str) -> str:
+    def distill_natural_theme_label(cls, user_msg: str, turn_seed: int = 0) -> str:
         """
         Extrae el concepto o tema de negocio de forma natural y humana,
-        evitando por completo citar frases textuales crudas del usuario entre comillas.
+        rotando vocabulario según `turn_seed` y las palabras clave reales del turno
+        para jamás repetir las mismas 2-3 palabras en turnos consecutivos.
         """
         t = (user_msg or "").lower()
-        if re.search(r"\b(aplicaci[oó]n|aplicaciones|app|apps|software|plataforma|sistema|automatiz\w*|inteligencia artificial|datos|digital\w*|sitio web|tecnolog\w*|saas|cloud)\b", t):
-            return "la simplicidad tecnológica, la experiencia intuitiva del usuario y la eliminación de fricciones"
+        idx = abs(int(turn_seed or len(t)))
+
+        if re.search(r"\b(estr[eé]s|ansiedad|tranquil\w*|paz|calma|complicad\w*|frustraci\w*)\b", t):
+            opts = [
+                "la tranquilidad mental del usuario",
+                "eliminar la complejidad operativa",
+                "transformar el estrés en claridad inmediata",
+                "simplificar lo que antes resultaba tedioso"
+            ]
+            return opts[idx % len(opts)]
+        if re.search(r"\b(algoritm\w*|segundos|autom[aá]tic\w*|inteligencia artificial|clasific\w*|tiempo real)\b", t):
+            opts = [
+                "la automatización inteligente en segundos",
+                "la precisión técnica sin esfuerzo manual",
+                "la velocidad algorítmica de respuesta",
+                "el procesamiento instantáneo y seguro"
+            ]
+            return opts[idx % len(opts)]
+        if re.search(r"\b(aplicaci[oó]n|aplicaciones|app|apps|software|plataforma|sistema|datos|digital\w*|sitio web|tecnolog\w*|saas|cloud)\b", t):
+            opts = [
+                "la fluidez de la interfaz digital",
+                "una arquitectura tecnológica intuitiva",
+                "la adopción inmediata en pantalla",
+                "el diseño centrado en el usuario móvil"
+            ]
+            return opts[idx % len(opts)]
         if re.search(r"\b(perros?|gatos?|mascotas?|croquetas?|veterinar\w*|canin\w*|felin\w*)\b", t):
-            return "la salud natural, la nutrición limpia y el bienestar real de quienes confían en ti"
+            opts = [
+                "la nutrición limpia y natural",
+                "la vitalidad y longevidad de cada mascota",
+                "el cuidado libre de químicos industriales",
+                "la tranquilidad de los dueños responsables"
+            ]
+            return opts[idx % len(opts)]
         if re.search(r"\b(restaurantes?|comida|cocina|panader\w*|caf[eé]\w*|sabor|platillos?|brasa|ingredientes?|gastronom\w*|postres?|pasteles?)\b", t):
-            return "la autenticidad gastronómica y la experiencia sensorial en cada detalle"
+            opts = [
+                "la honestidad de los ingredientes frescos",
+                "el carácter artesanal de tu cocina",
+                "la memoria sensorial en cada bocado",
+                "la calidez hospitalaria de la experiencia"
+            ]
+            return opts[idx % len(opts)]
         if re.search(r"\b(cl[ií]nicas?|m[eé]dic[oa]s?|doctore?s?|odont\w*|dental\w*|pacientes?|hospital\w*|consultorios?|terapias?|laboratorios?)\b", t):
-            return "la confianza profesional, la prevención y el cuidado humano integral"
-        if re.search(r"\b(escuelas?|colegios?|educaci\w*|alumnos?|campamentos?|enseñ\w*|formaci[oó]n|aprendiz\w*)\b", t):
-            return "la formación con propósito y el desarrollo de capacidades reales"
-        if re.search(r"\b(construcci\w*|constructora|obras?|arquitect\w*|inmobiliaria|edificios?|ingenier\w*)\b", t):
-            return "la solidez estructural, el cumplimiento exacto y la certeza patrimonial"
-        if re.search(r"\b(muebles?|muebler\w*|madera|artesan\w*|hecho a mano|diseño|durader\w*)\b", t):
-            return "la maestría en el diseño y la creación de soluciones hechas para perdurar"
-        if re.search(r"\b(contab\w*|fiscal\w*|finanz\w*|despachos?|legal\w*|abogad\w*|asesor\w*|consultor\w*|empresas?|b2b)\b", t):
-            return "el respaldo estratégico y la tranquilidad ejecutiva para tus clientes"
-        if any(w in t for w in ["rápid", "rapid", "tiempo", "entrega", "domicilio", "fácil", "facil", "ágil", "agil", "inmediat"]):
-            return "la agilidad de respuesta y el respeto absoluto por el tiempo de tu cliente o usuario"
-        if any(w in t for w in ["precio", "justo", "accesible", "ahorro", "costo", "valor"]):
-            return "entregar un valor superior y transparente que supere toda expectativa"
-        if any(w in t for w in ["familia", "comunidad", "confianza", "trato", "humano", "cercan", "honest", "servicio"]):
-            return "la cercanía humana y la construcción de relaciones de confianza a largo plazo"
-        return "esa visión tan clara para diferenciar tu propuesta y generar valor real"
+            opts = [
+                "la certeza diagnóstica y el trato cálido",
+                "la prevención clínica libre de ansiedad",
+                "el acompañamiento médico empático",
+                "la seguridad profesional en cada consulta"
+            ]
+            return opts[idx % len(opts)]
+        if re.search(r"\b(contab\w*|fiscal\w*|finanz\w*|ahorr\w*|gastos?|dinero|fondo|despachos?|legal\w*|abogad\w*|asesor\w*|consultor\w*|empresas?|b2b)\b", t):
+            opts = [
+                "la claridad financiera y el control patrimonial",
+                "el respaldo estratégico libre de tecnicismos",
+                "la salud financiera de largo plazo",
+                "la certidumbre en la toma de decisiones"
+            ]
+            return opts[idx % len(opts)]
+        if any(w in t for w in ["rápid", "rapid", "tiempo", "entrega", "domicilio", "fácil", "facil", "ágil", "agil", "inmediat", "meta"]):
+            opts = [
+                "el respeto absoluto por el tiempo del usuario",
+                "la inmediatez en el primer resultado",
+                "una ejecución ágil y sin pasos innecesarios",
+                "la facilidad para alcanzar metas concretas"
+            ]
+            return opts[idx % len(opts)]
+
+        fallback_pool = [
+            "ese diferenciador estratégico tan claro",
+            "la solidez práctica de este planteamiento",
+            "el valor real que entregas a tu audiencia",
+            "la autenticidad de tu enfoque operativo",
+            "esa ventaja competitiva tan bien definida",
+            "la precisión con la que resuelves esa necesidad"
+        ]
+        return fallback_pool[idx % len(fallback_pool)]
 
     @classmethod
     def sanitize_colloquial_to_executive_phrase(cls, raw_text: str) -> str:
@@ -546,8 +747,15 @@ Devuelve SIEMPRE JSON válido con estas llaves:
     def synthesize_executive_pillar_statement(cls, pillar_key: str, raw_user_msg: str, custom_biz: str = "") -> str:
         """
         Transforma e interpreta el aporte conversacional del fundador en una declaración
-        estratégica ejecutiva para el Lienzo del Manifiesto (0% copia literal coloquial).
+        estratégica ejecutiva para el Lienzo del Manifiesto, preservando fielmente
+        la idea específica aportada en este turno sin mezclar ni sobrescribir otros pilares.
         """
+        clean_exec = cls.sanitize_colloquial_to_executive_phrase(raw_user_msg or "")
+        # Si el usuario aportó una idea específica de 2 o más palabras, conservarla limpia
+        # para garantizar 100% fidelidad al pilar actual sin plantillas repetitivas que revuelvan datos.
+        if clean_exec and len(clean_exec.split()) >= 2:
+            return clean_exec
+
         theme = cls.distill_natural_theme_label(f"{raw_user_msg} {custom_biz}")
         parsed = cls.paraphrase_and_interpret_step0_business(f"{custom_biz} {raw_user_msg}")
         essence = parsed.get("paraphrased_essence", "una solución especializada de alto valor")
@@ -561,6 +769,7 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             "social_role": f"Transformar positivamente el estándar del sector priorizando {theme} en beneficio de {buyer}.",
             "process_steps_text": f"1. Diagnóstico y acercamiento de confianza · 2. Ejecución centrada en {focus} · 3. Seguimiento continuo y fidelización.",
             "core_message": f"Excelencia y certeza a través de {theme}, diseñada para {buyer}.",
+            "brand_persona": f"Arquetipo experto y cercano que encarna {theme}, habla con claridad ejecutiva, viste con sobriedad contemporánea y trata a {buyer} con empatía y precisión.",
             "ideal_customer": f"Dirigido a {buyer} que valoran {theme} y buscan superar {pain}."
         }
         return templates.get(pillar_key, f"Estrategia centrada en {theme} y {focus}.")
@@ -768,11 +977,12 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             naming_roots = ["Nexo", "Pulso", "Flujo", "Lógica", "Nova"]
             step1_questions = {
                 "golden_circle": f"Al crear tu {short_essence}, ¿qué fricción o pérdida de tiempo viste en los usuarios que te impulsó a desarrollar una mejor solución?",
-                "value_offer": f"Dentro de tu {short_essence}, ¿qué función, simplicidad o ventaja hace que el usuario la prefiera frente a otras opciones?",
-                "social_role": f"Con tu {short_essence}, ¿cómo quieres transformar la vida diaria o productividad de tus usuarios en los próximos 3 a 5 años?",
-                "process_steps_text": f"Para usar tu {short_essence} sin fricciones, ¿cuáles son los 3 pasos simples desde que el usuario entra hasta que obtiene el resultado?",
-                "core_message": f"Si tus usuarios describieran en una sola frase el valor que les da tu {short_essence}, ¿cuál sería esa promesa?",
-                "ideal_customer": f"¿Cómo es el usuario o cliente ideal que más aprovecha tu {short_essence} y qué problema busca resolver?"
+                "value_offer": "¿Qué función clave, simplicidad de interfaz o ventaja técnica hace que el usuario prefiera tu aplicación frente a otras alternativas?",
+                "social_role": "¿Cómo proyectas transformar la rutina o productividad de quienes usan tu plataforma en los próximos 3 a 5 años?",
+                "process_steps_text": "Para garantizar una experiencia sin fricciones, ¿cuáles son los 3 pasos simples desde que el usuario entra a la pantalla hasta que obtiene su primer resultado?",
+                "core_message": "Si tus usuarios resumieran en una sola frase el beneficio central de usar esta herramienta, ¿cuál sería esa promesa?",
+                "brand_persona": "Si tu marca fuera una persona en carne y hueso entrando a una reunión: ¿qué edad simbólica y carácter tendría, cómo vestiría, cómo hablaría y cómo trataría a tus usuarios?",
+                "ideal_customer": "¿Cómo es el perfil del usuario ideal que más provecho saca de este ecosistema digital y qué urgencia busca resolver?"
             }
         elif re.search(r"\b(mascotas?|perros?|gatos?|veterinar\w*|canin\w*|felin\w*|croquetas?|pet|petshop)\b", t):
             is_dog_only = bool(re.search(r"\b(perros?|canin\w*|perrit\w*)\b", t)) and not bool(re.search(r"\b(gatos?|felin\w*)\b", t))
@@ -789,11 +999,12 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             naming_roots = ["Natura", "Noble", "Vital", "Huella", "Origen"]
             step1_questions = {
                 "golden_circle": f"Al ofrecer {short_essence}, ¿qué problema viste en las opciones comerciales para {pet_noun} que te impulsó a crear algo mejor?",
-                "value_offer": f"Dentro de tu {short_essence}, ¿qué ingrediente, preparación o detalle hace que los dueños confíen en ti desde la primera prueba?",
-                "social_role": f"Con tu {short_essence}, ¿cómo quieres mejorar la salud y longevidad de los {pet_noun} en los próximos 3 a 5 años?",
-                "process_steps_text": f"Para entregar tu {short_essence} sin fricciones, ¿cuáles son los 3 pasos simples desde el pedido hasta que el {pet_noun.rstrip('s')} disfruta su plato?",
-                "core_message": f"Si un cliente recomendara tu {short_essence} en el parque, ¿qué promesa de confianza te gustaría que dijera en una frase?",
-                "ideal_customer": f"¿Cómo es el dueño ideal que más valora tu {short_essence} y qué es lo que más cuida al elegirte?"
+                "value_offer": "¿Qué ingrediente noble, método de preparación o cuidado especial hace que las familias confíen en tu marca desde la primera prueba?",
+                "social_role": f"¿Cómo proyectas mejorar la vitalidad y longevidad de los {pet_noun} en los próximos 3 a 5 años?",
+                "process_steps_text": f"Para que la experiencia sea muy sencilla, ¿cuáles son los 3 pasos desde que hacen el pedido hasta que el {pet_noun.rstrip('s')} disfruta su porción?",
+                "core_message": "Si alguien recomendara tu propuesta en el parque, ¿qué promesa de bienestar te gustaría que compartiera en una sola frase?",
+                "brand_persona": f"Si tu marca fuera una persona real cuidando a los {pet_noun}: ¿cómo sería su carácter, cómo hablaría con las familias, cómo vestiría y qué trato les daría?",
+                "ideal_customer": "¿Cómo es el dueño ideal que más valora esta dedicación y qué es lo que más cuida al elegir?"
             }
         elif re.search(r"\b(restauran\w*|caf[eé]s?|cafeter\w*|panader\w*|reposter\w*|pasteles?|postres?|comida|gastronom\w*|bebidas?|bar|bares|tostadur\w*|cocina|alimentos?|tacos?|pizzas?|mariscos?|helados?|chocolat\w*)\b", t):
             concept_title = "🍽️ Gastronomía de Autor, Sabor & Hospitalidad"
@@ -804,11 +1015,12 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             naming_roots = ["Origen", "Brasa", "Trigo", "Ritual", "Alba"]
             step1_questions = {
                 "golden_circle": f"Al crear tu {short_essence}, ¿qué vacío de sabor o calidez viste en las opciones comerciales que decidiste resolver?",
-                "value_offer": f"Dentro de tu {short_essence}, ¿cuál es el secreto en tu receta, insumos o trato que se nota desde la primera vez?",
-                "social_role": f"Con tu {short_essence}, ¿cómo quieres elevar el buen comer o bienestar de tus clientes en los próximos 3 a 5 años?",
-                "process_steps_text": f"Para disfrutar tu {short_essence}, ¿cuáles son los 3 momentos clave desde que nace el antojo hasta el último bocado?",
-                "core_message": f"Cuando alguien recomiende tu {short_essence}, ¿qué promesa de sabor y calidad quieres que recuerde siempre?",
-                "ideal_customer": f"¿Cómo es el comensal ideal que más disfruta tu {short_essence} y en qué momento te busca?"
+                "value_offer": "¿Cuál es el secreto en tu receta, selección de insumos o hospitalidad que conquista al comensal desde la primera visita?",
+                "social_role": "¿Cómo quieres elevar la cultura del buen comer o el bienestar de tu comunidad en los próximos 3 a 5 años?",
+                "process_steps_text": "¿Cuáles son los 3 momentos clave de tu experiencia desde que despierta el antojo hasta el último bocado?",
+                "core_message": "Cuando alguien recomiende tu cocina a un amigo, ¿qué promesa de sabor y autenticidad quieres que recuerde?",
+                "brand_persona": "Si tu marca fuera un anfitrión o chef recibiendo a la gente en su mesa: ¿cómo sería su personalidad, su voz, su porte y cómo haría sentir a cada invitado?",
+                "ideal_customer": "¿Cómo es el comensal ideal que más disfruta tu propuesta gastronómica y en qué ocasión te busca?"
             }
         elif is_strict_medical:
             concept_title = "🩺 Salud Especializada, Prevención & Cuidado Clínico"
@@ -819,11 +1031,12 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             naming_roots = ["Vita", "Serena", "Lumen", "Aurea", "Sana"]
             step1_questions = {
                 "golden_circle": f"Al brindar {short_essence}, ¿qué temor o trato frío de los servicios tradicionales decidiste transformar en tranquilidad?",
-                "value_offer": f"Dentro de tu {short_essence}, ¿qué combinación de método profesional y calidez hace que confíen plenamente en tus manos?",
-                "social_role": f"Con tu {short_essence}, ¿cómo visualizas mejorar la salud y calidad de vida de tu comunidad en 3 a 5 años?",
-                "process_steps_text": f"En tu {short_essence}, ¿cuáles son los 3 pasos simples desde que agendan su cita hasta su seguimiento?",
-                "core_message": f"Si quienes atiendes resumieran en una frase la confianza que les da tu {short_essence}, ¿cuál sería esa promesa?",
-                "ideal_customer": f"¿Cómo es la persona o familia que más valora tu {short_essence} y qué busca resolver al acudir a ti?"
+                "value_offer": "¿Qué combinación de rigor profesional y calidez humana hace que quienes acuden a ti se sientan en manos seguras?",
+                "social_role": "¿Cómo visualizas elevar la prevención y calidad de vida de tu comunidad en los próximos 3 a 5 años?",
+                "process_steps_text": "¿Cuáles son los 3 pasos claros y sin estrés desde que agendan su cita hasta su seguimiento?",
+                "core_message": "Si una familia resumiera en una sola frase la tranquilidad que recibe contigo, ¿cuál sería esa promesa?",
+                "brand_persona": "Si tu marca fuera un especialista conversando cara a cara con la familia: ¿qué carácter y serenidad proyectaría, cómo hablaría y cómo los haría sentir escuchados?",
+                "ideal_customer": "¿Cómo es el perfil de persona que más valora este cuidado especializado y qué busca resolver al acudir a tu consulta?"
             }
         elif re.search(r"\b(despachos?|contab\w*|abogad\w*|legal\w*|jur[ií]dic\w*|consultor\w*|agencias?|marketing|publicidad|finanz\w*|b2b|asesor\w*|corporativ\w*|auditor\w*|recursos humanos|inversi\w*|seguros?)\b", t):
             concept_title = "💼 Consultoría Estratégica, Certeza Ejecutiva & B2B"
@@ -834,11 +1047,12 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             naming_roots = ["Vértice", "Axioma", "Nexo", "Valor", "Faro"]
             step1_questions = {
                 "golden_circle": f"Al ofrecer {short_essence}, ¿qué problema crítico o lentitud de otras firmas decidiste resolver con total claridad?",
-                "value_offer": f"En tu {short_essence}, ¿cuál es el método propio, velocidad o garantía que demuestra tu autoridad desde el primer día?",
-                "social_role": f"Con tu {short_essence}, ¿cómo quieres elevar el estándar y crecimiento de tus clientes en los próximos 3 a 5 años?",
-                "process_steps_text": f"Para trabajar sin burocracia en tu {short_essence}, ¿cuáles son las 3 etapas desde el diagnóstico hasta los resultados?",
-                "core_message": f"¿Cuál es la promesa ejecutiva central por la que quieres que reconozcan tu {short_essence}?",
-                "ideal_customer": f"¿Qué perfil de empresa o directivo aprovecha mejor tu {short_essence} y qué urgencia lo lleva a buscarte?"
+                "value_offer": "¿Cuál es la metodología propia, velocidad de respuesta o garantía que demuestra tu autoridad ejecutiva desde el primer día?",
+                "social_role": "¿Cómo proyectas impulsar el crecimiento y solidez de las empresas que asesoran en los próximos 3 a 5 años?",
+                "process_steps_text": "Para operar sin burocracia, ¿cuáles son las 3 etapas clave desde el diagnóstico inicial hasta la entrega de resultados?",
+                "core_message": "¿Cuál es la promesa ejecutiva central por la que quieres que los directivos reconozcan a tu firma?",
+                "brand_persona": "Si tu firma fuera un consejero sentado en el consejo directivo: ¿qué temperamento, vestimenta, tono de voz y trato tendría frente a tus clientes?",
+                "ideal_customer": "¿Qué perfil de organización o tomador de decisión aprovecha mejor esta solución y qué urgencia lo lleva a buscarte?"
             }
         else:
             concept_title = "✦ Propuesta Especializada de Alto Valor"
@@ -849,11 +1063,12 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             naming_roots = words[:4] if words else ["Origen", "Nexo", "Valor", "Cima"]
             step1_questions = {
                 "golden_circle": f"Al desarrollar tu {short_essence}, ¿qué necesidad mal atendida viste en el mercado que te impulsó a empezar?",
-                "value_offer": f"Dentro de tu {short_essence}, ¿qué detalle único en calidad, técnica o servicio hace que te elijan a ti?",
-                "social_role": f"Con tu {short_essence}, ¿qué impacto positivo quieres lograr en tus clientes en los próximos 3 a 5 años?",
-                "process_steps_text": f"Para entregar tu {short_essence} sin fricciones, ¿cuáles son los 3 pasos clave desde el primer contacto hasta la entrega?",
-                "core_message": f"Si tus clientes recordaran una sola promesa sobre tu {short_essence}, ¿cuál te gustaría que fuera?",
-                "ideal_customer": f"¿Cómo es el cliente ideal que más valora tu {short_essence} y qué cuida al tomar su decisión?"
+                "value_offer": "¿Qué diferenciador en calidad, técnica o servicio hace que los clientes prefieran tu propuesta frente a otras opciones?",
+                "social_role": "¿Qué impacto positivo y duradero quieres generar en la vida de tus clientes durante los próximos 3 a 5 años?",
+                "process_steps_text": "Para brindar una experiencia ágil y sin fricciones, ¿cuáles son los 3 pasos clave desde el primer contacto hasta la entrega?",
+                "core_message": "Si tus clientes recordaran una sola promesa sobre tu marca, ¿cuál te gustaría que fuera ese mensaje central?",
+                "brand_persona": "Si tu marca fuera una persona en carne y hueso: ¿cómo sería su personalidad, cómo hablaría, cómo vestiría y cómo trataría a cada cliente?",
+                "ideal_customer": "¿Cómo describirías al cliente ideal que más valora lo que haces y qué prioriza al tomar su decisión?"
             }
 
         if words:
@@ -863,33 +1078,72 @@ Devuelve SIEMPRE JSON válido con estas llaves:
                     merged_roots.append(r)
             naming_roots = merged_roots[:5]
 
-        step2_guide = {
-            "label": concept_title,
-            "leaderAdvice": f"Para tu propuesta de {short_essence}, diseñemos puntos de contacto memorables antes, durante y después de la compra.",
-            "beforeQuestion": f"1. Antes de Elegirte: Para confiar en tu {short_essence}, ¿qué necesita ver o probar el cliente en su primer contacto?",
-            "duringQuestion": f"2. En el Momento Clave: Al vivir tu {short_essence}, ¿qué detalle de atención o calidad marca la diferencia?",
-            "afterQuestion": f"3. Después de la Entrega: Tras recibir tu {short_essence}, ¿qué empaque o seguimiento logra que el cliente regrese?",
-            "cards": {
-                "before": [
-                    {"icon": "✨", "label": f"Muestra o demostración inicial de tu {short_essence} que transmite confianza inmediata", "sub": "👁️ Impacto visual + 🧠 Elimina dudas desde el primer segundo", "tag": "Primera Impresión"},
-                    {"icon": "📲", "label": "Orientación personalizada, cálida y sin tecnicismos en menos de 5 minutos", "sub": "👂 Escucha empática · El cliente siente que entendiste su caso específico", "tag": "Respuesta Ágil"},
-                    {"icon": "🌿", "label": f"Presentación e identidad sensorial alineada con tu {short_essence}", "sub": "👃 + ✋ Cuidado perceptible en cada detalle físico y digital", "tag": "Sello Sensorial"},
-                    {"icon": "🌟", "label": "Casos reales y testimonios auténticos que demuestran tus resultados", "sub": "🤝 Prueba social auténtica que inspira certeza inmediata", "tag": "Certeza"}
-                ],
-                "during": [
-                    {"icon": "🤝", "label": "Bienvenida por nombre y recomendación adaptada a cada cliente", "sub": "👂 Trato humano que hace sentir único a quien te elige", "tag": "Trato a Medida"},
-                    {"icon": "🎁", "label": "Detalle sorpresa (Surprise & Delight) alineado con tu especialidad durante la experiencia", "sub": "✨ Gesto memorable que supera cualquier expectativa comercial", "tag": "Surprise & Delight"},
-                    {"icon": "⚡", "label": "Proceso de pedido, reserva o contratación ágil, claro y sin fricciones", "sub": "🧠 Cero esfuerzo y total transparencia en cada paso", "tag": "Cero Fricción"},
-                    {"icon": "🏷️", "label": "Presentación impecable de tus insumos, empaque o espacio con carácter propio", "sub": "👁️ + ✋ Coherencia estética en el momento de la verdad", "tag": "Excelencia Visual"}
-                ],
-                "after": [
-                    {"icon": "📦", "label": "Empaque o ritual de entrega insignia que conserva la frescura y emoción en casa", "sub": "✋ Calidad tangible que invita a compartir y recomprar", "tag": "Ritual de Entrega"},
-                    {"icon": "💬", "label": "Mensaje proactivo días después para confirmar que el resultado fue extraordinario", "sub": "🤝 Seguimiento post-venta que consolida la relación a largo plazo", "tag": "Post-Venta Cálida"},
-                    {"icon": "🏅", "label": "Plan de lealtad, suscripción o beneficio especial para clientes frecuentes", "sub": "🌟 Comunidad leal que impulsa la recompra constante", "tag": "Lealtad VIP"},
-                    {"icon": "📘", "label": "Guía práctica de cuidado, porciones o aprovechamiento continuo para el cliente", "sub": "👁️ Valor experto que mantiene tu marca presente todos los días", "tag": "Valor Continuo"}
-                ]
+        if is_tech_app and not is_strict_medical:
+            step1_questions.update({
+                "tp_before": "En la etapa de descubrimiento, ¿cómo conoce el usuario tu aplicación por primera vez y qué demo o prueba rápida lo convence en segundos?",
+                "tp_during": "Durante el uso activo en pantalla, ¿cómo logras un onboarding en menos de 60 segundos y qué micro-interacción enamora al usuario?",
+                "tp_after": "Después de las primeras sesiones, ¿qué notificación inteligente, resumen de progreso o beneficio por invitar amigos mantiene al usuario activo cada semana?"
+            })
+            step2_guide = {
+                "label": concept_title,
+                "leaderAdvice": f"Para tu {short_essence} (producto digital), los touchpoints son 100% digitales: velocidad de activación, claridad de interfaz, micro-interacciones y retención inteligente (cero elementos físicos ajenos).",
+                "beforeQuestion": f"1. Antes de Descargar o Registrarse: ¿Qué demo interactiva, prueba sin tarjeta o claridad en la landing page convence al usuario en 5 segundos?",
+                "duringQuestion": f"2. Durante la Activación y Uso en la App: ¿Cómo logras que el usuario obtenga su primer resultado en menos de 60 segundos sin curva de aprendizaje?",
+                "afterQuestion": f"3. Después del Primer Uso (Retención y Hábito): ¿Qué resumen de impacto, notificación inteligente o programa de referidos hace que vuelva todos los días?",
+                "cards": {
+                    "before": [
+                        {"icon": "⚡", "label": f"Demo interactiva o prueba en vivo de tu {short_essence} sin pedir tarjeta ni registro largo", "sub": "👁️ Interfaz en vivo + ⚡ Valor inmediato en < 30 segundos (Product-Led Growth)", "tag": "Demo Sin Fricción"},
+                        {"icon": "📱", "label": "Landing page y ficha en App Store / Play Store con propuesta de valor clara en 5 segundos", "sub": "👁️ Claridad UI/UX + 🤝 Reseñas verificadas y casos de uso reales", "tag": "Claridad Digital"},
+                        {"icon": "🎯", "label": "Diagnóstico o simulador gratuito instantáneo antes de crear cuenta", "sub": "🧠 Quick-Win inmediato que demuestra el poder algorítmico de la plataforma", "tag": "Valor Instantáneo"},
+                        {"icon": "🎬", "label": "Video interactivo de 45 segundos mostrando cómo resuelve el problema en 3 clics", "sub": "👁️ + 👂 Demostración directa en pantalla real sin tecnicismos", "tag": "Prueba Visual"}
+                    ],
+                    "during": [
+                        {"icon": "🚀", "label": "Onboarding guiado en menos de 60 segundos hacia el primer resultado ('Aha! Moment')", "sub": "⚡ Cero curva de aprendizaje + 🧠 Bajo Esfuerzo Cognitivo (CES)", "tag": "Onboarding < 60s"},
+                        {"icon": "✨", "label": "Interfaz limpia con micro-interacciones fluidas, modo oscuro/claro y respuesta en milisegundos", "sub": "👁️ Precisión visual UI + ⚡ Velocidad instantánea en móvil y web", "tag": "UX Sin Fricción"},
+                        {"icon": "💬", "label": "Asistente inteligente contextual y soporte humano en 1 clic sin salir de la pantalla", "sub": "🤝 Acompañamiento en vivo dentro de la app sin tickets lentos", "tag": "Soporte In-App"},
+                        {"icon": "🔒", "label": "Activación o suscripción transparente en 1 paso con control total desde el perfil", "sub": "🛡️ Certeza digital, privacidad encriptada y cero letra chica", "tag": "Confianza Cloud"}
+                    ],
+                    "after": [
+                        {"icon": "📊", "label": "Resumen automático semanal/mensual del ahorro, tiempo ganado o progreso en la app (estilo Wrapped)", "sub": "👁️ Atribución clara de ROI y progreso que refuerza el hábito de uso", "tag": "Valor Demostrado"},
+                        {"icon": "🔔", "label": "Notificaciones proactivas e inteligentes que avisan en el momento exacto sin hacer spam", "sub": "⚡ Utilidad real oportuna + 🧠 Paz mental para el usuario", "tag": "Retención Smart"},
+                        {"icon": "🎁", "label": "Programa de invitación en 1 clic con funciones premium desbloqueadas para ambos usuarios", "sub": "🤝 Crecimiento viral orgánico impulsado por la comunidad", "tag": "Crecimiento Viral"},
+                        {"icon": "🔄", "label": "Actualizaciones continuas y nuevas herramientas liberadas según los votos de los usuarios", "sub": "🚀 Evolución constante del producto que multiplica la permanencia (LTV)", "tag": "Evolución Continua"}
+                    ]
+                }
             }
-        }
+        else:
+            step1_questions.update({
+                "tp_before": f"Antes de elegir tu {short_essence}, ¿qué necesita ver o probar el cliente en su primer contacto para confiar en ti?",
+                "tp_during": f"En el momento de vivir o contratar tu {short_essence}, ¿qué detalle de atención, agilidad o calidad marca la diferencia?",
+                "tp_after": f"Después de entregar tu {short_essence}, ¿qué seguimiento o gesto de valor logra que el cliente regrese y te recomiende?"
+            })
+            step2_guide = {
+                "label": concept_title,
+                "leaderAdvice": f"Para tu propuesta de {short_essence}, diseñemos puntos de contacto memorables antes, durante y después de la compra.",
+                "beforeQuestion": f"1. Antes de Elegirte: Para confiar en tu {short_essence}, ¿qué necesita ver o probar el cliente en su primer contacto?",
+                "duringQuestion": f"2. En el Momento Clave: Al vivir tu {short_essence}, ¿qué detalle de atención o calidad marca la diferencia?",
+                "afterQuestion": f"3. Después de la Entrega: Tras recibir tu {short_essence}, ¿qué detalle o seguimiento logra que el cliente regrese?",
+                "cards": {
+                    "before": [
+                        {"icon": "✨", "label": f"Muestra, diagnóstico o demostración inicial de tu {short_essence} que transmite confianza inmediata", "sub": "👁️ Impacto visual + 🧠 Elimina dudas desde el primer segundo", "tag": "Primera Impresión"},
+                        {"icon": "📲", "label": "Orientación personalizada, cálida y sin tecnicismos en menos de 5 minutos", "sub": "👂 Escucha empática · El cliente siente que entendiste su caso específico", "tag": "Respuesta Ágil"},
+                        {"icon": "🎯", "label": f"Presentación clara de tu propuesta de valor y diferenciador en {short_essence}", "sub": "👁️ Claridad ejecutiva + 🤝 Transparencia total desde el primer contacto", "tag": "Claridad & Valor"},
+                        {"icon": "🌟", "label": "Casos reales y testimonios auténticos que demuestran tus resultados", "sub": "🤝 Prueba social auténtica que inspira certeza inmediata", "tag": "Certeza"}
+                    ],
+                    "during": [
+                        {"icon": "🤝", "label": "Bienvenida por nombre y solución adaptada a la necesidad exacta de cada cliente", "sub": "👂 Trato humano que hace sentir único a quien te elige", "tag": "Trato a Medida"},
+                        {"icon": "🎁", "label": "Detalle sorpresa (Surprise & Delight) alineado con tu especialidad durante la experiencia", "sub": "✨ Gesto memorable que supera cualquier expectativa comercial", "tag": "Surprise & Delight"},
+                        {"icon": "⚡", "label": "Proceso de compra, activación o contratación ágil, claro y en 1 paso sin fricciones", "sub": "🧠 Cero esfuerzo y total transparencia en cada etapa", "tag": "Cero Fricción"},
+                        {"icon": "🏷️", "label": "Entrega o ejecución impecable con el sello visual y estándar de calidad de tu marca", "sub": "👁️ Coherencia estética y funcional en el momento de la verdad", "tag": "Excelencia"}
+                    ],
+                    "after": [
+                        {"icon": "📦", "label": "Entrega insignia o resumen de bienvenida que conserva la emoción y claridad del servicio", "sub": "✨ Calidad tangible o digital que invita a compartir y recomprar", "tag": "Entrega Memorable"},
+                        {"icon": "💬", "label": "Mensaje proactivo días después para confirmar que el resultado fue extraordinario", "sub": "🤝 Seguimiento post-venta que consolida la relación a largo plazo", "tag": "Post-Venta Cálida"},
+                        {"icon": "🏅", "label": "Plan de lealtad, suscripción o beneficio especial para clientes frecuentes", "sub": "🌟 Comunidad leal que impulsa la recompra constante", "tag": "Lealtad VIP"},
+                        {"icon": "📘", "label": "Guía práctica de aprovechamiento continuo diseñada con la identidad de tu marca", "sub": "👁️ Valor experto que mantiene tu marca presente todos los días", "tag": "Valor Continuo"}
+                    ]
+                }
+            }
 
         synthesis_html = (
             f"<div style='display:grid; grid-template-columns:1fr; gap:8px; margin-top:4px;'>"
@@ -1029,6 +1283,111 @@ Devuelve SIEMPRE JSON válido con estas llaves:
             return guide["question"]
         return "¿Qué otro detalle consideras clave para diferenciarte de manera contundente en tu mercado?"
 
+    CONSULTANT_OPENINGS = [
+        "Me encanta cómo planteas {theme}, porque le da un rumbo claro a tu negocio.",
+        "Esa forma de resolver {theme} te distingue de inmediato frente a las opciones tradicionales.",
+        "Qué valioso es poner {theme} en el centro de lo que haces por tus clientes.",
+        "Queda clarísimo: construir alrededor de {theme} genera confianza desde el primer contacto.",
+        "Ese compromiso con {theme} es exactamente lo que hace que la gente recomiende una marca.",
+        "Tener tan bien definido {theme} facilita que tu cliente entienda tu valor en segundos.",
+        "Integrar {theme} en tu operación diaria le da mucha autenticidad a tu propuesta.",
+        "Esa claridad sobre {theme} será la base para que tu identidad visual proyecte autoridad."
+    ]
+
+    PILLAR_SPECIFIC_OPENINGS = {
+        "value_offer": "Ya capturé el propósito central de tu negocio enfocándote en {theme}.",
+        "social_role": "Ese diferenciador basado en {theme} deja muy clara tu ventaja frente a la competencia.",
+        "process_steps_text": "El impacto positivo que generas con {theme} le da una dimensión muy humana a tu marca.",
+        "core_message": "Tener un proceso claro apoyado en {theme} le transmite total certidumbre a quien te contrata.",
+        "brand_persona": "Esa promesa centrada en {theme} es directa, memorable y fácil de compartir.",
+        "ideal_customer": "Me encanta cómo personificas tu marca alrededor de {theme}; le da una identidad viva y muy auténtica."
+    }
+
+    @classmethod
+    def review_and_deduplicate_aura_text(
+        cls,
+        raw_text: str,
+        recent_turns: Optional[List[str]] = None,
+        short_essence: str = "",
+        user_msg: str = "",
+        turn_index: int = 1
+    ) -> str:
+        """
+        Compuerta de Revisión Léxica Pre-Pantalla (Anti-Repetición de 2-3 palabras):
+        1. Elimina tartamudeos de palabras o bigramas contiguos repetidos (ej. 'de tu de tu').
+        2. Evita que `short_essence` se repita en múltiples oraciones del mismo turno o en turnos consecutivos (>1).
+        3. Detecta n-gramas sustantivos de 2 a 4 palabras repetidos dentro de la misma respuesta (entre insight y pregunta)
+           o heredados del turno anterior de Aura y sustituye la repetición por una referencia limpia ('tu propuesta', 'esta solución', 'tu marca').
+        """
+        if not raw_text:
+            return ""
+        text = re.sub(r"\s+", " ", raw_text).strip()
+
+        # 1. Eliminar palabras idénticas consecutivas y bigramas repetidos contiguos
+        text = re.sub(r"\b([a-zA-ZáéíóúÁÉÍÓÚñÑ]{2,})(?:\s+\1\b)+", r"\1", text, flags=re.IGNORECASE)
+        text = re.sub(
+            r"\b([a-zA-ZáéíóúÁÉÍÓÚñÑ]{2,}\s+[a-zA-ZáéíóúÁÉÍÓÚñÑ]{2,})(?:\s+\1\b)+",
+            r"\1",
+            text,
+            flags=re.IGNORECASE
+        )
+
+        # 2. Si ya estamos después del turno 1 (o si short_essence ya apareció en el historial reciente de Aura),
+        # reemplazar apariciones redundantes de short_essence por sinónimos variados.
+        synonyms = ["tu propuesta", "esta solución", "tu plataforma", "este proyecto", "tu marca", "este ecosistema"]
+        syn_choice = synonyms[turn_index % len(synonyms)]
+        clean_short = (short_essence or "").strip()
+        if clean_short and len(clean_short.split()) >= 2:
+            pattern = re.compile(r"(?:tu\s+)?" + re.escape(clean_short), flags=re.IGNORECASE)
+            matches = list(pattern.finditer(text))
+            prev_aura_text = " ".join([t for t in (recent_turns or []) if "aura:" in t.lower() or "¿" in t]).lower()
+            already_used_in_prev_turns = clean_short.lower() in prev_aura_text or turn_index > 1
+
+            if already_used_in_prev_turns and matches:
+                # Reemplazar todas las apariciones de short_essence en turnos posteriores para no repetir las mismas 2-3 palabras
+                def _repl_all(m: re.Match) -> str:
+                    return syn_choice
+                text = pattern.sub(_repl_all, text)
+            elif len(matches) > 1:
+                # Si aparece más de una vez en el mismo turno, conservar solo la primera y reemplazar las demás
+                first_end = matches[0].end()
+                prefix = text[:first_end]
+                suffix = pattern.sub(syn_choice, text[first_end:])
+                text = prefix + suffix
+
+        # 3. Revisión intra-turno: dividir entre la primera oración (insight) y el resto (pregunta),
+        # y verificar que ningún trigrama o bigrama de contenido (2-3 palabras con >=4 letras) se repita en ambas partes.
+        parts = re.split(r"(?<=[.!?])\s+", text, maxsplit=1)
+        if len(parts) == 2:
+            lead, follow = parts[0], parts[1]
+            stop_set = {
+                "para", "como", "con", "sin", "por", "una", "uno", "unos", "unas", "los", "las", "del",
+                "que", "donde", "cual", "cuál", "cuales", "cuáles", "este", "esta", "estos", "estas",
+                "tiene", "mucho", "muchísimo", "sentido", "sobre", "entre", "hasta", "desde", "hace",
+                "quieres", "gustaría", "clientes", "usuarios", "pasos", "años", "próximos"
+            }
+            lead_words = [
+                w for w in re.findall(r"[a-zA-ZáéíóúÁÉÍÓÚñÑ]+", lead)
+                if len(w) >= 4 and w.lower() not in stop_set
+            ]
+            # Buscar bigramas/trigramas exactos en lead que se repitan en follow
+            lead_tokens = re.findall(r"[a-zA-ZáéíóúÁÉÍÓÚñÑ]+", lead)
+            for n in (3, 2):
+                for i in range(len(lead_tokens) - n + 1):
+                    gram_tokens = lead_tokens[i:i + n]
+                    content_count = sum(1 for w in gram_tokens if len(w) >= 4 and w.lower() not in stop_set)
+                    if content_count >= 2:
+                        gram_str = " ".join(gram_tokens)
+                        gram_pat = re.compile(r"\b" + r"\s+".join(re.escape(w) for w in gram_tokens) + r"\b", flags=re.IGNORECASE)
+                        if gram_pat.search(follow):
+                            follow = gram_pat.sub("ese enfoque", follow, count=1)
+            text = f"{lead} {follow}".strip()
+
+        # Limpiar posibles dobles posesivos ('tu tu propuesta' -> 'tu propuesta')
+        text = re.sub(r"\b(tu|su|esta|este)\s+(tu|su|esta|este)\b", r"\2", text, flags=re.IGNORECASE)
+        text = re.sub(r"\s+", " ", text).strip()
+        return text
+
     @classmethod
     def build_non_repeating_consultant_response(
         cls,
@@ -1038,31 +1397,46 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         next_pillar_key: str,
         custom_biz: str = "",
         step0_interp: str = "",
-        adapted_questions: Optional[Dict[str, str]] = None
+        adapted_questions: Optional[Dict[str, str]] = None,
+        recent_turns: Optional[List[str]] = None
     ) -> str:
         short_essence = cls.build_short_essence_max_6_words(custom_biz or user_msg)
-        natural_theme = cls.distill_natural_theme_label(user_msg or custom_biz)
+        natural_theme = cls.distill_natural_theme_label(user_msg or custom_biz, turn_seed=sub_step)
+        pillar_tpl = cls.PILLAR_SPECIFIC_OPENINGS.get(next_pillar_key)
+        opening_tpl = pillar_tpl or cls.CONSULTANT_OPENINGS[(sub_step + step) % len(cls.CONSULTANT_OPENINGS)]
+        opening_sentence = opening_tpl.format(theme=natural_theme)
+
         if next_pillar_key:
             tailored_q = cls.build_contextual_pillar_question(
                 next_pillar_key, custom_biz, step0_interp, user_msg, adapted_questions
             )
-            return f"Tiene muchísimo sentido priorizar {natural_theme} en tu {short_essence}. {tailored_q}"
+            combined = f"{opening_sentence} {tailored_q}"
+            return cls.review_and_deduplicate_aura_text(
+                combined,
+                recent_turns=recent_turns,
+                short_essence=short_essence,
+                user_msg=user_msg,
+                turn_index=sub_step
+            )
         if step == 3:
-            return (
-                f"Me parece muy acertada esa dirección enfocada en {natural_theme}. Como aconseja Alexandra Watkins en el test SMILE & SCRATCH, "
+            raw_s3 = (
+                f"{opening_sentence} Como aconseja Alexandra Watkins en el test SMILE & SCRATCH, "
                 f"un gran nombre debe despertar una imagen mental inmediata y pronunciarse con total naturalidad. "
                 f"¿Qué sensación te gustaría que transmita tu nombre en los primeros 3 segundos: autoridad ejecutiva o calidez cercana?"
             )
+            return cls.review_and_deduplicate_aura_text(raw_s3, recent_turns=recent_turns, short_essence=short_essence, turn_index=sub_step)
         if step == 4:
-            return (
-                f"Excelente criterio al priorizar {natural_theme}. Como demostraron Paul Rand y Sagi Haviv, "
+            raw_s4 = (
+                f"{opening_sentence} Como demostraron Paul Rand y Sagi Haviv, "
                 f"un gran sistema visual debe ser apropiado, memorable y funcional a cualquier escala. "
-                f"Con tu calibración visual, la identidad está quedando perfectamente alineada a la esencia de tu negocio."
+                f"Con tu calibración visual, la identidad está quedando perfectamente alineada a tu estrategia."
             )
-        return (
-            f"Queda perfectamente integrado tu enfoque en {natural_theme}; le da una solidez enorme a la estrategia de tu marca. "
+            return cls.review_and_deduplicate_aura_text(raw_s4, recent_turns=recent_turns, short_essence=short_essence, turn_index=sub_step)
+        raw_end = (
+            f"{opening_sentence} Esto aporta una solidez enorme a la arquitectura de tu marca. "
             f"¿Te gustaría sumar algún otro detalle práctico de esta etapa, o avanzamos al Paso {step + 1}?"
         )
+        return cls.review_and_deduplicate_aura_text(raw_end, recent_turns=recent_turns, short_essence=short_essence, turn_index=sub_step)
 
     @classmethod
     def generate_creative_names_with_gemini(
@@ -1072,40 +1446,55 @@ Devuelve SIEMPRE JSON válido con estas llaves:
         user_candidates: List[str],
         api_key: str = ""
     ) -> Dict[str, Any]:
+        custom_biz = str(canvas_state.get("custom_business_type", "")).strip()
+        step0_interp = str(canvas_state.get("step0_business_interpretation", "")).strip()
+        combined_ctx = f"{custom_biz} {step0_interp} {canvas_state.get('value_offer', '')} {canvas_state.get('golden_circle', '')}".strip()
+        parsed_biz = cls.paraphrase_and_interpret_step0_business(combined_ctx or "solución especializada")
+        short_ess = parsed_biz.get("short_essence", "tu solución")
+        roots = parsed_biz.get("naming_roots", ["Nexo", "Pulso", "Flujo", "Nova", "Origen"])
+        r1 = roots[0] if len(roots) > 0 else "Nexo"
+        r2 = roots[1] if len(roots) > 1 else "Pulso"
+        r3 = roots[2] if len(roots) > 2 else "Nova"
+
         context_summary = (
+            f"0. Giro y Esencia del Producto/Servicio: {custom_biz or short_ess} ({step0_interp})\n"
             f"1. Propósito: {canvas_state.get('golden_circle', '')}\n"
-            f"2. Posicionamiento: {canvas_state.get('value_offer', '')}\n"
+            f"2. Oferta de Valor y Diferencial: {canvas_state.get('value_offer', '')}\n"
             f"3. Rol Social: {canvas_state.get('social_role', '')}\n"
             f"4. Proceso: {canvas_state.get('process_steps_text', '')}\n"
-            f"5. Mensaje: {canvas_state.get('core_message', '')}\n"
-            f"6. Personalidad: {canvas_state.get('brand_persona', '')}\n"
+            f"5. Mensaje Nuclear: {canvas_state.get('core_message', '')}\n"
+            f"6. Cliente Ideal: {canvas_state.get('ideal_customer', '')}\n"
             f"Touchpoints: Antes={canvas_state.get('tp_before', '')} | Durante={canvas_state.get('tp_during', '')} | Después={canvas_state.get('tp_after', '')}\n"
+            f"Raíces semánticas detectadas: {', '.join(roots)}\n"
             f"Historial reciente: {' | '.join(history[-8:])}\n"
             f"Candidatos del fundador: {', '.join(user_candidates)}"
         )
 
         sys_prompt = """Eres el Director Mundial de Naming Estratégico (SMILE & SCRATCH + Clasificación Internacional de Niza).
-Basado 100% en el proyecto del usuario:
-1. Evalúa con rigor los nombres que el usuario propuso (si propuso alguno).
-2. Genera 6 propuestas de nombre ALTAMENTE CREATIVAS, memorables y con sentido profundo:
-   - 2 Nombres Compuestos de Autoridad
-   - 2 Nombres Evocativos / Metafóricos
-   - 2 Nombres Cortos / Neologismos de Fuerza Visual
+Basado 100% en el producto/servicio real del usuario (Giro, Oferta de Valor, Propósito y Touchpoints):
+1. PROHIBIDO inventar nombres de industrias ajenas (ej. si es una App/Software, genera nombres tecnológicos, ágiles, modernos y memorables para una App; si es gastronomía, nombres sensoriales; si es mascotas, nombres cálidos y confiables).
+2. Genera 6 propuestas de nombre ALTAMENTE CREATIVAS, memorables y alineadas al 100% con la oferta de valor del usuario, cubriendo los 6 estilos:
+   - 1. Descriptivo / Claridad de Categoría
+   - 2. Compuesto de Propuesta de Valor
+   - 3. Neologismo / Palabra Nueva (Fusión)
+   - 4. Siglas Estratégicas con Significado
+   - 5. Evocativo / Metafórico
+   - 6. Sonoro / Corto de Impacto (2 sílabas)
 Devuelve SIEMPRE JSON válido:
 {
   "recommended_nice_class": "Clase(s) de Niza exacta(s) y justificación",
   "proposals": [
     {
       "name": "Nombre",
-      "category": "Tu Propuesta | Compuesto de Autoridad | Evocativo | Neologismo Corto",
-      "smile_score": 95,
-      "syllables": 3,
-      "rationale": "Análisis estratégico, fonético y semiótico vinculado a su proyecto."
+      "category": "1. Descriptivo | 2. Compuesto | 3. Neologismo | 4. Siglas | 5. Evocativo | 6. Sonoro",
+      "smile_score": 96,
+      "syllables": 2,
+      "rationale": "Análisis estratégico, fonético y semiótico vinculado directamente a su oferta de valor."
     }
   ]
 }"""
         out = cls._call_gemini_json(context_summary, sys_prompt, api_key)
-        if out and "proposals" in out:
+        if out and "proposals" in out and isinstance(out["proposals"], list) and len(out["proposals"]) > 0:
             return out
 
         fallback_list = []
@@ -1114,61 +1503,112 @@ Devuelve SIEMPRE JSON válido:
                 fallback_list.append({
                     "name": c.strip(),
                     "category": "Propuesta del Fundador",
-                    "smile_score": 92,
+                    "smile_score": 95,
                     "syllables": max(2, len(re.findall(r"[aeiouáéíóú]+", c.lower()))),
-                    "rationale": "Nombre directo con fuerte anclaje de categoría."
+                    "rationale": f"Nombre propuesto por el fundador con anclaje directo en {short_ess}."
                 })
-        default_creative_pool = [
-            {
-                "name": "OmniGrid",
-                "category": "Compuesto de Autoridad",
-                "smile_score": 96,
-                "syllables": 3,
-                "rationale": "Une 'Omni' (control total centralizado) y 'Grid' (estructura, orden y precisión)."
-            },
-            {
-                "name": "KronoCore",
-                "category": "Neologismo Corto de Precisión",
-                "smile_score": 95,
-                "syllables": 3,
-                "rationale": "Evoca sincronía exacta de tiempo y motor central de operaciones en tiempo real."
-            },
-            {
-                "name": "Vértice Pro",
-                "category": "Evocativo / Ingeniería",
-                "smile_score": 94,
-                "syllables": 4,
-                "rationale": "Evoca estructura sólida, exactitud técnica y punto culminante de rendimiento."
-            },
-            {
-                "name": "ApexFlow",
-                "category": "Compuesto de Autoridad",
-                "smile_score": 95,
-                "syllables": 3,
-                "rationale": "Proyecta liderazgo ('Apex') y fluidez operativa continua sin fricción."
-            },
-            {
-                "name": "NovusPlay",
-                "category": "Neologismo de Categoría",
-                "smile_score": 93,
-                "syllables": 3,
-                "rationale": "Sonoridad fresca que comunica innovación moderna en el ecosistema operativo."
-            },
-            {
-                "name": "ZenithOS",
-                "category": "Arquitectura de Software",
-                "smile_score": 94,
-                "syllables": 3,
-                "rationale": "Comunica el punto más alto de sofisticación y sistema operativo integral."
-            }
-        ]
+
+        is_tech = "💻" in parsed_biz.get("concept_title", "") or bool(re.search(r"\b(app|aplicaci[oó]n|software|saas|plataforma|digital|ia|cloud|web)\b", combined_ctx.lower()))
+        if is_tech:
+            default_creative_pool = [
+                {
+                    "name": f"{r1}Flow",
+                    "category": "2. Compuesto de Propuesta de Valor",
+                    "smile_score": 97,
+                    "syllables": 3,
+                    "rationale": f"Une '{r1}' con fluidez digital ('Flow'), proyectando una experiencia sin fricción para {short_ess}."
+                },
+                {
+                    "name": f"{r1}fy",
+                    "category": "3. Neologismo Tecnológico",
+                    "smile_score": 96,
+                    "syllables": 3,
+                    "rationale": f"Palabra nueva de alta recordación (estilo Spotify/Shopify) diseñada para posicionar {short_ess} en móvil y web."
+                },
+                {
+                    "name": f"{r2} App",
+                    "category": "1. Descriptivo / Claridad Digital",
+                    "smile_score": 95,
+                    "syllables": 3,
+                    "rationale": f"Claridad inmediata en tiendas de aplicaciones y buscadores para {short_ess}."
+                },
+                {
+                    "name": f"Órbita {r1}",
+                    "category": "5. Evocativo / Metafórico",
+                    "smile_score": 95,
+                    "syllables": 4,
+                    "rationale": f"Metáfora de ecosistema conectado que centraliza toda la propuesta de valor de {short_ess}."
+                },
+                {
+                    "name": f"{r1[:3].capitalize()}vo",
+                    "category": "6. Sonoro / Corto (2 Sílabas)",
+                    "smile_score": 96,
+                    "syllables": 2,
+                    "rationale": f"Nombre rítmico de 2 sílabas ideal para ícono 1:1 de aplicación y recomendación de voz."
+                },
+                {
+                    "name": f"{r1[0].upper()}{r2[0].upper()}X · {r1} {r2}",
+                    "category": "4. Siglas Tecnológicas",
+                    "smile_score": 94,
+                    "syllables": 3,
+                    "rationale": f"Acrónimo de alta autoridad tecnológica respaldado por su significado extendido para {short_ess}."
+                }
+            ]
+            nice_cls = "Clase 09 (Apps y Software Descargable) y Clase 42 (SaaS, Plataformas Cloud e IA)"
+        else:
+            default_creative_pool = [
+                {
+                    "name": f"{r1} & {r2}",
+                    "category": "2. Compuesto de Autoridad",
+                    "smile_score": 96,
+                    "syllables": 4,
+                    "rationale": f"Combinación con carácter propio que refleja la promesa de valor de {short_ess}."
+                },
+                {
+                    "name": f"{r1}va",
+                    "category": "3. Neologismo Distintivo",
+                    "smile_score": 97,
+                    "syllables": 3,
+                    "rationale": f"Fusión fonética original de alta registrabilidad para liderar la categoría de {short_ess}."
+                },
+                {
+                    "name": f"Casa {r1}",
+                    "category": "1. Descriptivo / Especialidad",
+                    "smile_score": 95,
+                    "syllables": 4,
+                    "rationale": f"Transmite oficio, cercanía y respaldo directo en {short_ess}."
+                },
+                {
+                    "name": f"Faro {r2}",
+                    "category": "5. Evocativo / Metafórico",
+                    "smile_score": 95,
+                    "syllables": 4,
+                    "rationale": f"Imagen mental luminosa y memorable que guía a los clientes de {short_ess}."
+                },
+                {
+                    "name": f"{r3}ia",
+                    "category": "6. Sonoro / Corto",
+                    "smile_score": 94,
+                    "syllables": 3,
+                    "rationale": f"Cadencia abierta y cálida, muy fácil de recordar y recomendar de boca en boca."
+                },
+                {
+                    "name": f"Grupo {r1} ({r1[0].upper()}{r2[0].upper()})",
+                    "category": "4. Siglas con Respaldo",
+                    "smile_score": 93,
+                    "syllables": 4,
+                    "rationale": f"Monograma ejecutivo acompañado de su descriptor para máxima solidez comercial."
+                }
+            ]
+            nice_cls = "Clase 35 / 41 / 43 / 44 según giro comercial"
+
         for item in default_creative_pool:
             if len(fallback_list) >= 6:
                 break
             if item["name"].lower() not in {x["name"].lower() for x in fallback_list}:
                 fallback_list.append(item)
         return {
-            "recommended_nice_class": "Clase 09 / 35 / 42 según giro operativo",
+            "recommended_nice_class": nice_cls,
             "proposals": fallback_list
         }
 
@@ -1332,7 +1772,7 @@ Devuelve SIEMPRE JSON válido:
                 raw_dom = dom_match.group(1)
                 updated_canvas["brandName"] = raw_dom[0].upper() + raw_dom[1:]
 
-        # Aplicar actualización Delta enriqueciendo el contenido existente
+        # Aplicar actualización secuencial estricta sin revolver ni sobrescribir pilares ya respondidos
         p_key = gemini_out.get("updated_pillar_key", "")
         p_val = gemini_out.get("updated_pillar_synthesis", "")
         valid_keys = {k for k, _ in dims}.union({
@@ -1340,26 +1780,41 @@ Devuelve SIEMPRE JSON válido:
             "core_message", "brand_persona", "customer_behavior", "brand_world",
             "ideal_customer", "tp_before", "tp_during", "tp_after"
         })
-        if p_key in valid_keys and p_val:
-            if cleaned_message.lower().strip() in str(p_val).lower().strip():
-                updated_canvas[p_key] = cls.synthesize_executive_pillar_statement(p_key, cleaned_message, custom_biz=custom_biz)
-            else:
-                updated_canvas[p_key] = cls.sanitize_colloquial_to_executive_phrase(str(p_val))
+        if step in (1, 2) and missing_before:
+            # En Paso 1 y Paso 2 la pregunta activa siempre corresponde a missing_before[0].
+            # Blindaje secuencial: NUNCA permitir que Gemini sobrescriba un pilar ya respondido en un turno anterior.
+            active_pillar_key = missing_before[0]
+            candidate_text = str(p_val).strip() if (p_key == active_pillar_key and p_val) else cleaned_message
+            updated_canvas[active_pillar_key] = cls.synthesize_executive_pillar_statement(
+                active_pillar_key,
+                candidate_text,
+                custom_biz=custom_biz
+            )
+            if active_pillar_key == "brand_persona":
+                persona_stmt = str(updated_canvas.get("brand_persona", "")).strip()
+                if not str(updated_canvas.get("customer_behavior", "")).strip():
+                    updated_canvas["customer_behavior"] = (
+                        f"Trato coherente con su personalidad de marca ({persona_stmt}): escucha activa, claridad sin tecnicismos y acompañamiento resolutivo en cada momento de verdad."
+                    )
+                if not str(updated_canvas.get("brand_world", "")).strip():
+                    updated_canvas["brand_world"] = (
+                        f"Universo sensorial y estético proyectado desde su carácter humano ({persona_stmt}), combinando orden visual, calidez y autoridad contemporánea."
+                    )
+            s_key = gemini_out.get("secondary_pillar_key", "")
+            s_val = gemini_out.get("secondary_pillar_synthesis", "")
+            if s_key in missing_before[1:] and s_val and not str(updated_canvas.get(s_key, "")).strip():
+                updated_canvas[s_key] = cls.sanitize_colloquial_to_executive_phrase(str(s_val))
+        else:
+            if p_key in valid_keys and p_val:
+                if cleaned_message.lower().strip() in str(p_val).lower().strip():
+                    updated_canvas[p_key] = cls.synthesize_executive_pillar_statement(p_key, cleaned_message, custom_biz=custom_biz)
+                else:
+                    updated_canvas[p_key] = cls.sanitize_colloquial_to_executive_phrase(str(p_val))
 
-        s_key = gemini_out.get("secondary_pillar_key", "")
-        s_val = gemini_out.get("secondary_pillar_synthesis", "")
-        if s_key in valid_keys and s_val:
-            updated_canvas[s_key] = cls.sanitize_colloquial_to_executive_phrase(str(s_val))
-
-        # Garantizar que el primer pilar vacío se llene con redacción ejecutiva interpretada (nunca texto coloquial crudo)
-        if missing_before and step in (1, 2):
-            first_missing_key = missing_before[0]
-            if not str(updated_canvas.get(first_missing_key, "")).strip():
-                updated_canvas[first_missing_key] = cls.synthesize_executive_pillar_statement(
-                    first_missing_key,
-                    str(p_val or cleaned_message),
-                    custom_biz=custom_biz
-                )
+            s_key = gemini_out.get("secondary_pillar_key", "")
+            s_val = gemini_out.get("secondary_pillar_synthesis", "")
+            if s_key in valid_keys and s_val and not str(updated_canvas.get(s_key, "")).strip():
+                updated_canvas[s_key] = cls.sanitize_colloquial_to_executive_phrase(str(s_val))
 
         remaining_after = [k for k, _ in dims if not str(updated_canvas.get(k, "")).strip()]
         filled_after = len(dims) - len(remaining_after)
@@ -1380,6 +1835,7 @@ Devuelve SIEMPRE JSON válido:
             raw_avatar_reply = re.sub(re.escape(custom_biz), parsed_concept, raw_avatar_reply, flags=re.IGNORECASE)
 
         last_reply_prev = str(updated_canvas.get("last_avatar_reply", "")).strip()
+        short_ess_curr = cls.build_short_essence_max_6_words(custom_biz or cleaned_message)
         if not raw_avatar_reply or raw_avatar_reply == last_reply_prev:
             avatar_reply = cls.build_non_repeating_consultant_response(
                 step=step,
@@ -1388,10 +1844,17 @@ Devuelve SIEMPRE JSON válido:
                 next_pillar_key=next_target_key,
                 custom_biz=custom_biz,
                 step0_interp=step0_interp,
-                adapted_questions=adapted_questions
+                adapted_questions=adapted_questions,
+                recent_turns=history
             )
         else:
-            avatar_reply = raw_avatar_reply
+            avatar_reply = cls.review_and_deduplicate_aura_text(
+                raw_avatar_reply,
+                recent_turns=history,
+                short_essence=short_ess_curr,
+                user_msg=cleaned_message,
+                turn_index=sub_step
+            )
 
         gc_notes.append({
             "code": f"P{step}-T{sub_step:02d}",
