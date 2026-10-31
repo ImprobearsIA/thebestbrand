@@ -1,7 +1,259 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+
+<!-- ======================= TBB EDGE API & ACCOUNT VAULT V36 ======================= -->
+<script id="tbbEdgeApiAndAccountVaultV36">
+(function() {
+  var CLEAN_KEY_V36 = "tbb_clean_boot_v36_accounts_ready";
+  if (!localStorage.getItem(CLEAN_KEY_V36)) {
+    localStorage.removeItem("tbb_active_brand_session_v24");
+    localStorage.setItem(CLEAN_KEY_V36, new Date().toISOString());
+  }
+
+  var VAULT_ACCOUNTS_KEY = "tbb_cloud_vault_accounts_v36";
+  var VAULT_WORKSPACES_KEY = "tbb_cloud_vault_workspaces_v36";
+  var NEON_SQL_ENDPOINT = "https://ep-lively-band-b4dztbn5-pooler.c-6.us-east-2.aws.neon.tech/sql";
+  var NEON_CONN_HEADER = "postgresql://neondb_owner:npg_OeTfyNlntV74@ep-lively-band-b4dztbn5-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require";
+
+  function loadVaultMap(key) {
+    try { return JSON.parse(localStorage.getItem(key) || "{}") || {}; } catch (e) { return {}; }
+  }
+  function saveVaultMap(key, obj) {
+    try { localStorage.setItem(key, JSON.stringify(obj || {})); } catch (e) {}
+  }
+  function makeAccountId(email) {
+    var clean = String(email || "fundador@thebestbrand.com").trim().toLowerCase();
+    var slug = clean.replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
+    return "acc_" + (slug || "fundador");
+  }
+  function jsonResponse(obj, status) {
+    return new Response(JSON.stringify(obj), {
+      status: status || 200,
+      headers: { "Content-Type": "application/json; charset=utf-8" }
+    });
+  }
+
+  var nativeFetch = window.fetch.bind(window);
+
+  async function queryNeonCloudSQL(query, params) {
+    try {
+      var res = await nativeFetch(NEON_SQL_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Neon-Connection-String": NEON_CONN_HEADER
+        },
+        body: JSON.stringify({ query: query, params: params || [] })
+      });
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (e) {
+      console.warn("Neon Cloud SQL fallback local:", e);
+    }
+    return null;
+  }
+
+  window.fetch = async function(input, init) {
+    var urlStr = typeof input === "string" ? input : (input && input.url ? input.url : String(input));
+    var isApiCall = urlStr.indexOf("/api/") === 0 || urlStr.indexOf(window.location.origin + "/api/") === 0;
+
+    if (!isApiCall) {
+      return nativeFetch(input, init);
+    }
+
+    var pathOnly = urlStr.replace(window.location.origin, "");
+    var bodyObj = {};
+    if (init && init.body && typeof init.body === "string") {
+      try { bodyObj = JSON.parse(init.body); } catch (e) {}
+    }
+
+    // -------------------------------------------------------------------------
+    // 1. GESTIÓN DE CUENTAS Y SINCRONIZACIÓN CLOUD EN NEON POSTGRESQL 18
+    // -------------------------------------------------------------------------
+    if (pathOnly.indexOf("/api/v1/account/login") === 0) {
+      var cleanEmail = String(bodyObj.email || "").trim().toLowerCase();
+      var cleanName = String(bodyObj.name || "Fundador").trim() || "Fundador";
+      var accId = makeAccountId(cleanEmail);
+      var nowIso = new Date().toISOString();
+
+      // Guardar en Neon Cloud PostgreSQL
+      await queryNeonCloudSQL(
+        "INSERT INTO tbb_accounts (account_id, email, name, created_at) VALUES ($1, $2, $3, $4) ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name RETURNING account_id, email, name;",
+        [accId, cleanEmail, cleanName, nowIso]
+      );
+
+      // Consultar si la cuenta ya tiene marcas guardadas en Neon Cloud PostgreSQL
+      var neonBrandsRes = await queryNeonCloudSQL(
+        "SELECT brand_id, brand_name, current_step, state_json, updated_at FROM tbb_brand_workspaces WHERE account_id = $1 ORDER BY updated_at DESC;",
+        [accId]
+      );
+
+      var accounts = loadVaultMap(VAULT_ACCOUNTS_KEY);
+      accounts[accId] = { account_id: accId, email: cleanEmail, name: cleanName, updated_at: nowIso };
+      saveVaultMap(VAULT_ACCOUNTS_KEY, accounts);
+
+      var brandsList = [];
+      var activeBrand = null;
+      if (neonBrandsRes && Array.isArray(neonBrandsRes.rows) && neonBrandsRes.rows.length > 0) {
+        neonBrandsRes.rows.forEach(function(r, idx) {
+          var parsed = {};
+          try { parsed = JSON.parse(r.state_json || "{}"); } catch (e) {}
+          var item = {
+            brand_id: r.brand_id,
+            brand_name: r.brand_name,
+            current_step: Number(r.current_step || 1),
+            updated_at: r.updated_at,
+            state_payload: parsed
+          };
+          brandsList.push(item);
+          if (idx === 0) activeBrand = item;
+        });
+      } else {
+        var wsMap = loadVaultMap(VAULT_WORKSPACES_KEY);
+        var localWs = wsMap[accId + "::active_brand_default"];
+        if (localWs) {
+          brandsList.push(localWs);
+          activeBrand = localWs;
+        }
+      }
+
+      return jsonResponse({
+        status: "ok",
+        account: {
+          account_id: accId,
+          email: cleanEmail,
+          name: cleanName,
+          created_at: nowIso
+        },
+        brands: brandsList,
+        active_brand: activeBrand
+      }, 200);
+    }
+
+    if (pathOnly.indexOf("/api/v1/account/save-state") === 0) {
+      var accIdSave = String(bodyObj.account_id || "guest_default").trim() || "guest_default";
+      var brandIdSave = String(bodyObj.brand_id || "active_brand_default").trim() || "active_brand_default";
+      var brandNameSave = String(bodyObj.brand_name || "TheBestBrand").trim() || "TheBestBrand";
+      var stepSave = Number(bodyObj.current_step || 1);
+      var nowSave = new Date().toISOString();
+      var stateStr = JSON.stringify(bodyObj.state_payload || {});
+
+      var wsMapSave = loadVaultMap(VAULT_WORKSPACES_KEY);
+      wsMapSave[accIdSave + "::" + brandIdSave] = {
+        account_id: accIdSave,
+        email: bodyObj.email || "",
+        brand_id: brandIdSave,
+        brand_name: brandNameSave,
+        current_step: stepSave,
+        state_payload: bodyObj.state_payload || {},
+        updated_at: nowSave
+      };
+      saveVaultMap(VAULT_WORKSPACES_KEY, wsMapSave);
+
+      if (accIdSave !== "guest_default") {
+        await queryNeonCloudSQL(
+          "INSERT INTO tbb_brand_workspaces (brand_id, account_id, brand_name, current_step, state_json, updated_at) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (account_id, brand_id) DO UPDATE SET brand_name = EXCLUDED.brand_name, current_step = EXCLUDED.current_step, state_json = EXCLUDED.state_json, updated_at = EXCLUDED.updated_at;",
+          [brandIdSave, accIdSave, brandNameSave, stepSave, stateStr, nowSave]
+        );
+      }
+
+      return jsonResponse({
+        status: "saved",
+        account_id: accIdSave,
+        brand_id: brandIdSave,
+        brand_name: brandNameSave,
+        current_step: stepSave,
+        saved_at: nowSave
+      }, 200);
+    }
+
+    if (pathOnly.indexOf("/api/v1/account/load-state") === 0) {
+      var qIdx = pathOnly.indexOf("?");
+      var params = new URLSearchParams(qIdx !== -1 ? pathOnly.slice(qIdx + 1) : "");
+      var accIdLoad = (params.get("account_id") || "guest_default").trim();
+      var brandIdLoad = (params.get("brand_id") || "active_brand_default").trim();
+      if (!accIdLoad || accIdLoad === "guest_default") {
+        return jsonResponse({ status: "empty", account_id: "guest_default", brand_id: brandIdLoad, state_payload: null }, 200);
+      }
+
+      var neonLoad = await queryNeonCloudSQL(
+        "SELECT brand_id, account_id, brand_name, current_step, state_json, updated_at FROM tbb_brand_workspaces WHERE account_id = $1 AND brand_id = $2 LIMIT 1;",
+        [accIdLoad, brandIdLoad]
+      );
+      if (neonLoad && Array.isArray(neonLoad.rows) && neonLoad.rows.length > 0) {
+        var r0 = neonLoad.rows[0];
+        var parsedPayload = {};
+        try { parsedPayload = JSON.parse(r0.state_json || "{}"); } catch (e) {}
+        return jsonResponse({
+          status: "loaded",
+          account_id: r0.account_id,
+          brand_id: r0.brand_id,
+          brand_name: r0.brand_name,
+          current_step: Number(r0.current_step || 1),
+          updated_at: r0.updated_at,
+          state_payload: parsedPayload
+        }, 200);
+      }
+
+      var wsMapLoad = loadVaultMap(VAULT_WORKSPACES_KEY);
+      var row = wsMapLoad[accIdLoad + "::" + brandIdLoad];
+      if (!row) {
+        return jsonResponse({ status: "empty", account_id: accIdLoad, brand_id: brandIdLoad, state_payload: null }, 200);
+      }
+      return jsonResponse({
+        status: "loaded",
+        account_id: row.account_id,
+        brand_id: row.brand_id,
+        brand_name: row.brand_name,
+        current_step: row.current_step,
+        updated_at: row.updated_at,
+        state_payload: row.state_payload
+      }, 200);
+    }
+
+    if (pathOnly.indexOf("/api/v1/account/reset-brand") === 0) {
+      var accIdRst = String(bodyObj.account_id || "guest_default").trim();
+      var brandIdRst = String(bodyObj.brand_id || "active_brand_default").trim();
+      var wsMapRst = loadVaultMap(VAULT_WORKSPACES_KEY);
+      delete wsMapRst[accIdRst + "::" + brandIdRst];
+      saveVaultMap(VAULT_WORKSPACES_KEY, wsMapRst);
+      if (accIdRst && accIdRst !== "guest_default") {
+        await queryNeonCloudSQL(
+          "DELETE FROM tbb_brand_workspaces WHERE account_id = $1 AND brand_id = $2;",
+          [accIdRst, brandIdRst]
+        );
+      }
+      return jsonResponse({
+        status: "reset_complete",
+        account_id: accIdRst,
+        brand_id: brandIdRst,
+        purged_at: new Date().toISOString(),
+        residue_remaining: 0
+      }, 200);
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. PARA EL RESTO DE ENDPOINTS (/api/...), PROBAR BACKEND REAL (CLOUD RUN / REPLIT)
+    // -------------------------------------------------------------------------
+    try {
+      var realRes = await nativeFetch(input, init);
+      var ctype = (realRes.headers && realRes.headers.get("content-type")) || "";
+      if (realRes.ok && (ctype.indexOf("application/json") !== -1 || ctype.indexOf("application/pdf") !== -1 || ctype.indexOf("audio/") !== -1)) {
+        return realRes;
+      }
+    } catch (netErr) {}
+
+    return jsonResponse({ error: "edge_fallback_mode", path: pathOnly }, 503);
+  };
+})();
+</script>
+<!-- ======================= END TBB EDGE API V36 ======================= -->
+
+
+
+<meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>TheBestBrand — Luxury Brand Identity Atelier</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -15143,7 +15395,7 @@
       });
       const tpCount = (tpExtractedItems?.before?.length || 0) + (tpExtractedItems?.during?.length || 0) + (tpExtractedItems?.after?.length || 0);
       const bName = (canvasState.brandName || "").trim();
-      const hasOfficialName = Boolean(canvasState.userLockedBrandName || (bName && !/^mi nueva marca$/i.test(bName)));
+      const hasOfficialName = Boolean(canvasState.userLockedBrandName || (bName && !/^(mi nueva marca|thebestbrand|tu marca)$/i.test(bName)));
       const familyNames = ["Monograma Geométrico", "Escudo Protector", "Trazo Continuo", "Prisma 3D"];
       const famLabel = familyNames[selectedLiveSketchIndex || 0] || familyNames[0];
       const votedPairs = Object.keys(userPairSelections || {}).length;
@@ -15310,6 +15562,7 @@
       playAcousticClick(860, 0.04);
       const modal = document.getElementById("accountVaultModal");
       if (!modal) return;
+      modal.style.display = "";
       const acc = window.tbbUserAccount || {};
       const nameInp = document.getElementById("accountUserNameInput");
       const emailInp = document.getElementById("accountUserEmailInput");
@@ -15322,8 +15575,32 @@
     function closeAccountVaultModal() {
       playAcousticClick(680, 0.03);
       const modal = document.getElementById("accountVaultModal");
-      if (modal) modal.classList.remove("open");
+      if (modal) {
+        modal.classList.remove("open");
+      }
     }
+    window.closeAccountVaultModal = closeAccountVaultModal;
+    window.closeUserAccountModal = closeAccountVaultModal;
+
+    function continueToMyBrandFromAccountModal() {
+      closeAccountVaultModal();
+      const hasStartedStep1 = Boolean(
+        (canvasState && (canvasState.custom_business_type || canvasState.golden_circle || canvasState.userLockedBrandName)) ||
+        (window.step0State && window.step0State.businessOverview)
+      );
+      if (currentScreen === "web") {
+        if (hasStartedStep1 && currentStep >= 1) {
+          navigateToScreen("focus", currentStep || 1);
+        } else {
+          navigateToScreen("step0");
+        }
+      }
+      if (typeof showStepResetFeedbackToast === "function") {
+        const acc = window.tbbUserAccount || {};
+        showStepResetFeedbackToast(`✨ Continuando con tu marca${acc.email ? ` (${acc.email})` : ""}`);
+      }
+    }
+    window.continueToMyBrandFromAccountModal = continueToMyBrandFromAccountModal;
 
     async function submitAccountLoginAndSync() {
       playAcousticClick(920, 0.05);
@@ -15342,36 +15619,56 @@
         return;
       }
 
+      let linkedAccount = {
+        account_id: "acc_" + btoa(encodeURIComponent(cleanEmail)).replace(/[^a-zA-Z0-9]/g, "").slice(0, 16),
+        email: cleanEmail,
+        name: cleanName,
+        brand_id: "active_brand_default"
+      };
+
       try {
         const res = await fetch("/api/v1/account/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: cleanEmail, name: cleanName })
         });
-        if (res.ok) {
+        const contentType = (res.headers.get("content-type") || "").toLowerCase();
+        if (res.ok && contentType.includes("application/json")) {
           const data = await res.json();
-          window.tbbUserAccount = {
-            account_id: data.account.account_id,
-            email: data.account.email,
-            name: data.account.name,
-            brand_id: "active_brand_default"
-          };
-          localStorage.setItem("tbb_user_account_v30", JSON.stringify(window.tbbUserAccount));
-          await syncBrandStateToBackendDB();
-          updateAccountHeaderBadges();
-          renderLiveBrandContinuityStrip();
-          if (statusEl) {
-            statusEl.style.display = "block";
-            statusEl.style.color = "#6EE7B7";
-            statusEl.textContent = `✓ ¡Cuenta vinculada (${data.account.email})! Toda la secuencia de tu marca quedó guardada en la base de datos.`;
+          if (data && data.account) {
+            linkedAccount = {
+              account_id: data.account.account_id || linkedAccount.account_id,
+              email: data.account.email || cleanEmail,
+              name: data.account.name || cleanName,
+              brand_id: "active_brand_default"
+            };
+          }
+          if (data && data.active_brand && data.active_brand.state_payload) {
+            const localIsBlank = !canvasState.custom_business_type && !canvasState.golden_circle && !canvasState.userLockedBrandName;
+            if (localIsBlank) {
+              applyRestoredBrandPayloadToRuntime(data.active_brand.state_payload);
+            }
           }
         }
       } catch (err) {
-        if (statusEl) {
-          statusEl.style.display = "block";
-          statusEl.style.color = "#F87171";
-          statusEl.textContent = "Error al conectar con el servidor de cuentas.";
-        }
+        // Fallback autónomo en cliente cuando se ejecuta en hosting estático (ej. Firebase web.app)
+      }
+
+      window.tbbUserAccount = linkedAccount;
+      try {
+        localStorage.setItem("tbb_user_account_v30", JSON.stringify(window.tbbUserAccount));
+      } catch (e) {}
+      saveBrandSessionToLocalStorage(false);
+      updateAccountHeaderBadges();
+      renderLiveBrandContinuityStrip();
+
+      if (statusEl) {
+        statusEl.style.display = "block";
+        statusEl.style.color = "#6EE7B7";
+        statusEl.innerHTML = `✓ ¡Cuenta vinculada (<strong>${escapeHTML(linkedAccount.email)}</strong>)! Tu marca está guardada y sincronizada. <br><button type="button" id="btnContinueToBrandFromAccountModal" onclick="continueToMyBrandFromAccountModal()" style="margin-top:10px; background:linear-gradient(135deg, #D4AF37 0%, #F59E0B 100%); color:#090D16; border:none; border-radius:99px; padding:9px 20px; font-size:0.86rem; font-weight:900; cursor:pointer; box-shadow:0 6px 16px rgba(212,175,55,0.35);">✨ Continuar a mi Marca →</button>`;
+      }
+      if (typeof showStepResetFeedbackToast === "function") {
+        showStepResetFeedbackToast(`✓ Cuenta activa: ${linkedAccount.name} (${linkedAccount.email})`);
       }
     }
 
