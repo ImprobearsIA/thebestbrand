@@ -1,0 +1,22 @@
+# Antigravity Language Server Indexer Exclusions (Prevent OOM & CloudStorage I/O Locks)
+_archived_html_backups/
+entregables_brandbooks/
+__pycache__/
+*.pyc
+*.pyo
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+*.zip
+*.tar.gz
+*.pdf
+*.mp4
+*.mov
+*.webm
+apps/web/assets/
+node_modules/
+.venv/
+venv/
