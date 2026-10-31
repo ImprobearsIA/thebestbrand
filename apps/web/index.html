@@ -3081,25 +3081,38 @@
         </div>
       </header>
 
-      <!-- BIENVENIDA CENTRADA DE AURA + SELECTOR DE AVANCE PANTALLA POR PANTALLA (CERO SCROLL) -->
-      <div style="width:100%; background:linear-gradient(145deg, #090D16 0%, #1E293B 100%); color:#FAF8F5; border:2px solid #D4AF37; border-radius:24px; padding:18px 20px; text-align:center; margin-bottom:14px; box-shadow:0 16px 36px rgba(9,13,22,0.16);">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
-          <span style="display:inline-block; background:rgba(212,175,55,0.2); color:#FDE68A; border:1px solid #D4AF37; font-family:var(--font-mono); font-size:0.7rem; font-weight:800; padding:4px 12px; border-radius:999px;">
-            ✦ PASO 0 · PUNTO DE PARTIDA DE TU MARCA (PANTALLA <span id="step0SubStepCounterLabel">1 DE 3</span>)
-          </span>
-          <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
-            <button type="button" id="btnStep0SubNav1" onclick="switchStep0SubCard(1)" style="background:#D4AF37; color:#090D16; border:none; border-radius:999px; padding:5px 11px; font-size:0.73rem; font-weight:800; cursor:pointer;">1. Objetivo</button>
-            <button type="button" id="btnStep0SubNav2" onclick="switchStep0SubCard(2)" style="background:rgba(255,255,255,0.12); color:#E2E8F0; border:1px solid rgba(255,255,255,0.2); border-radius:999px; padding:5px 11px; font-size:0.73rem; font-weight:700; cursor:pointer;">2. Nombre</button>
-            <button type="button" id="btnStep0SubNav3" onclick="switchStep0SubCard(3)" style="background:rgba(255,255,255,0.12); color:#E2E8F0; border:1px solid rgba(255,255,255,0.2); border-radius:999px; padding:5px 11px; font-size:0.73rem; font-weight:700; cursor:pointer;">3. Tu Giro</button>
-            <button type="button" id="btnStep0SubNavAll" onclick="switchStep0SubCard('all')" style="background:transparent; color:#FDE68A; border:1px dashed rgba(212,175,55,0.55); border-radius:999px; padding:5px 10px; font-size:0.71rem; font-weight:700; cursor:pointer;">Ver Todo</button>
+      <!-- ENCABEZADO DE PROGRESO ESTILO DUOLINGO PARA EL PASO 0 (CERO SCROLL) -->
+      <div id="duolingoStep0TopHeader" class="duolingo-top-progress-header">
+        <button type="button" class="duolingo-close-x-btn" onclick="navigateToScreen('journey')" title="Ir al Mapa de Recorrido">✕</button>
+        <div class="duolingo-progress-track" title="Avance del Paso 0 (1 a 3)">
+          <div id="duolingoStep0ProgressFill" class="duolingo-progress-fill" style="width:33%;">
+            <div class="duolingo-progress-highlight"></div>
           </div>
         </div>
-        <h1 style="font-family:var(--font-display); font-size:clamp(1.35rem, 3.4vw, 1.75rem); font-weight:800; color:#FFFFFF; line-height:1.22; margin-bottom:4px;">
-          Te damos la bienvenida a tu Taller de Marca con Aura
-        </h1>
-        <p style="font-size:0.9rem; color:#CBD5E1; max-width:600px; margin:0 auto; line-height:1.45;">
-          Avanza <strong>pantalla por pantalla sin hacer scroll</strong> en 3 elecciones rápidas para personalizar tu experiencia al 100%.
-        </p>
+        <button type="button" class="duolingo-header-icon-btn" onclick="hardResetCurrentBrandZeroResidue()" title="Comenzar de nuevo desde cero">↺</button>
+      </div>
+
+      <div class="duolingo-instruction-row" style="margin-bottom:8px;">
+        <h1 id="duolingoStep0InstructionTitle" class="duolingo-instruction-title">Personaliza tu punto de partida</h1>
+        <div style="display:flex; gap:4px; align-items:center;">
+          <span id="step0SubStepCounterLabel" style="display:none;">1 DE 3</span>
+          <button type="button" id="btnStep0SubNav1" onclick="switchStep0SubCard(1)" class="duolingo-mini-pill active">1</button>
+          <button type="button" id="btnStep0SubNav2" onclick="switchStep0SubCard(2)" class="duolingo-mini-pill">2</button>
+          <button type="button" id="btnStep0SubNav3" onclick="switchStep0SubCard(3)" class="duolingo-mini-pill">3</button>
+          <button type="button" id="btnStep0SubNavAll" onclick="switchStep0SubCard('all')" style="display:none;">Todo</button>
+        </div>
+      </div>
+
+      <!-- AURA + BURBUJA DE DIÁLOGO ESTILO DUOLINGO EN PASO 0 -->
+      <div id="duolingoStep0AuraBubbleRow" class="duolingo-aura-character-row" style="margin-bottom:10px;">
+        <div class="duolingo-mini-aura-orb" onclick="playAuraInitialGreeting()" title="Escuchar a Aura">
+          <span class="duolingo-mini-aura-core"></span>
+        </div>
+        <div class="duolingo-speech-bubble">
+          <div id="duolingoStep0BubbleText" style="font-size:0.95rem; font-weight:700; color:#090D16; line-height:1.35;">
+            ¡Hola! Soy <strong>Aura</strong>. ¿Cuál es tu objetivo al crear tu marca hoy?
+          </div>
+        </div>
       </div>
 
       <!-- PREGUNTA 1: OBJETIVO DE LA MARCA (PRIMERA MARCA / EVOLUCIÓN / SEGUNDA MARCA / DEMO) -->
@@ -3373,6 +3386,27 @@
         </button>
       </div>
 
+      <!-- ENCABEZADO GRÁFICO DE MAPA DE RECORRIDO ESTILO DUOLINGO -->
+      <div id="duolingoJourneyTopHeader" style="width:100%; max-width:660px; margin:0 auto 14px auto; background:#FFFFFF; border:2px solid #E2E8F0; border-radius:20px; padding:12px 16px; box-shadow:0 4px 0 #E2E8F0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:1.25rem;">🗺️</span>
+            <div>
+              <div style="font-family:var(--font-display); font-size:1.05rem; font-weight:800; color:#090D16; line-height:1.15;">Mapa de Recorrido</div>
+              <div id="duolingoJourneyBrandSubtitle" style="font-size:0.76rem; color:#64748B; font-weight:700;">Toca cualquier paso para avanzar con Aura</div>
+            </div>
+          </div>
+          <button type="button" onclick="launchActiveMission()" style="background:#1CB0F6; color:#FFFFFF; border:none; border-bottom:3px solid #1899D6; border-radius:12px; padding:7px 13px; font-size:0.78rem; font-weight:800; cursor:pointer; white-space:nowrap;">
+            ▶ Continuar
+          </button>
+        </div>
+        <div class="duolingo-progress-track" style="height:14px;">
+          <div id="duolingoJourneyProgressFill" class="duolingo-progress-fill" style="width:16%;">
+            <div class="duolingo-progress-highlight"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Bespoke Visual Experience Roadmap of 6 Milestones (Zero Generic Emojis) -->
       <div class="roadmap-tree-container" id="roadmapTree">
         <!-- Node 1: Propósito -->
@@ -3604,14 +3638,46 @@
       </div>
       <div id="subBrandClonerDrawer" style="display:none !important;"></div>
 
-      <!-- THE LIVING AURA CORE (3D VOLUMETRIC GOLDEN-IRIDESCENT SIRI SPHERE) -->
-      <div class="aura-presence-stage" id="focusAuraStage" style="margin-left:auto; margin-right:auto; text-align:center;">
+      <!-- ==================================================================== -->
+      <!-- DUOLINGO TOP GRAPHICAL PROGRESS BAR + INSTRUCTION HEADER             -->
+      <!-- ==================================================================== -->
+      <div id="duolingoTopProgressHeader" class="duolingo-top-progress-header">
+        <button type="button" class="duolingo-close-x-btn" onclick="navigateToScreen('journey')" title="Volver al Mapa de Recorrido">✕</button>
+        <div id="duolingoGraphicalProgressTrack" class="duolingo-progress-track" title="Tu avance gráfico en este paso">
+          <div id="duolingoGraphicalProgressFill" class="duolingo-progress-fill" style="width:15%;">
+            <div class="duolingo-progress-highlight"></div>
+          </div>
+        </div>
+        <button type="button" id="duolingoVoiceToggleTopBtn" class="duolingo-header-icon-btn" onclick="toggleVoiceMute()" title="Activar o silenciar voz de Aura">🔊</button>
+        <button type="button" id="duolingoResetStepTopBtn" class="duolingo-header-icon-btn" onclick="resetSingleStepData(currentStep || 1, { goToStep: true })" title="Reiniciar este paso">↺</button>
+      </div>
+
+      <div id="duolingoInstructionHeader" class="duolingo-instruction-row">
+        <h2 id="duolingoInstructionTitle" class="duolingo-instruction-title">Responde a Aura</h2>
+        <div id="duolingoStep1QuickActions" style="display:flex; align-items:center; gap:6px;">
+          <button type="button" onclick="focusBrandPersonaQuestionInStep1()" class="duolingo-mini-pill" title="Ir a la pregunta: ¿Cómo sería tu marca si fuera persona?">🧑 Persona</button>
+          <button type="button" onclick="skipToNextStep1PillarQuestion()" class="duolingo-mini-pill" title="Saltar a la siguiente pregunta">Saltar →</button>
+        </div>
+      </div>
+
+      <!-- THE LIVING AURA CORE + DUOLINGO SPEECH BUBBLE (SIDE-BY-SIDE, ZERO SCROLL) -->
+      <div class="aura-presence-stage duolingo-aura-character-row" id="focusAuraStage">
         <div class="aura-orb-halo" id="avatarOrb" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para escuchar la voz de AURA">
           <canvas id="avatarCanvas" width="304" height="304" class="aura-canvas"></canvas>
         </div>
-        <div class="aura-presence-badge" onclick="playAuraInitialGreeting()" style="cursor:pointer;" title="Haz clic para escuchar a Aura">
-          <span class="aura-pulse-dot"></span>
-          <span id="avatarStateLabel">AURA · Hablando en voz alta (Voz Activa)</span>
+        <div class="duolingo-speech-bubble" id="duolingoAuraSpeechBubble">
+          <div class="question-billboard" id="duolingoStep1QuestionContainer" style="margin:0; padding:0; border:none; background:transparent; box-shadow:none; text-align:left;">
+            <span class="question-category" id="questionCategory" style="display:block; font-size:0.68rem; font-weight:800; color:#0284C7; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">01 · Propósito Nuclear</span>
+            <div class="aura-insight-lead" id="auraInsightLead" style="font-size:0.78rem; color:#475569; margin-bottom:3px;"></div>
+            <h1 class="question-text" id="activeQuestionHeading" style="font-size:1.02rem; line-height:1.32; font-weight:800; color:#090D16; margin:0;">
+              ¿Qué problema real le resuelves a tus clientes que nadie más en tu industria ha sido capaz de solucionar?
+            </h1>
+          </div>
+          <div id="duolingoOtherStepQuestion" style="display:none; font-size:0.98rem; line-height:1.34; font-weight:800; color:#090D16; text-align:left;"></div>
+          <div class="aura-presence-badge" onclick="playAuraInitialGreeting()" style="cursor:pointer; display:inline-flex; align-items:center; gap:5px; margin-top:6px; padding:2px 8px; font-size:0.68rem; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:999px; color:#475569;" title="Haz clic para escuchar a Aura">
+            <span class="aura-pulse-dot" style="width:6px; height:6px;"></span>
+            <span id="avatarStateLabel">AURA · Escuchando tus ideas</span>
+          </div>
         </div>
         <!-- SELECTOR RÁPIDO DE ARQUITECTURA 3D DEL ORBE AURA (OCULTO EN UI DE USUARIO FINAL; GESTIONADO DESDE /lab) -->
         <div id="auraOrbModeBar" style="display:none !important; align-items:center; justify-content:center; gap:6px; margin-top:6px;">
@@ -3623,11 +3689,8 @@
           </a>
         </div>
         <!-- OPCIÓN BREVE FLOTANTE PARA CAMBIAR A INTERACCIÓN BASADA SOLO EN TEXTO -->
-        <div id="auraQuickTextOnlyBanner" style="display:none; margin:8px auto 0 auto; max-width:96%; width:fit-content; background:#090D16; color:#FAF8F5; border:1.5px solid #D4AF37; border-radius:999px; padding:5px 8px 5px 14px; font-size:0.75rem; font-weight:700; align-items:center; justify-content:center; gap:8px; flex-direction:row; flex-wrap:nowrap; box-shadow:0 8px 20px rgba(9,13,22,0.2); transition:opacity 0.35s ease;">
-          <span style="display:inline-flex; align-items:center; gap:5px; color:#FDE68A; white-space:nowrap;">🔊 Aura habla por defecto</span>
-          <button type="button" id="btnQuickSwitchToTextOnly" onclick="activateTextOnlyMode()" style="background:#FEF2F2; color:#DC2626; border:1px solid #FECACA; border-radius:999px; padding:4px 10px; font-size:0.72rem; font-weight:800; cursor:pointer; white-space:nowrap;">
-            🔇 Solo Texto
-          </button>
+        <div id="auraQuickTextOnlyBanner" style="display:none !important;">
+          <button type="button" id="btnQuickSwitchToTextOnly" onclick="activateTextOnlyMode()">🔇 Solo Texto</button>
         </div>
       </div>
 
@@ -3643,95 +3706,74 @@
 
         <!-- CENTERED FOCUS COLUMN: AURA SOCRATIC DIALOGUE & DIRECT INPUT -->
         <div class="workbench-dialogue-pane" id="atelierLeftPane">
-          <!-- BARRA CLARA DE RECORRIDO DE LAS 6 PREGUNTAS DEL PASO 1 (P11) -->
-          <div id="step1PillarWayfindingBar" style="width:100%; max-width:660px; margin:0 auto 10px auto; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:14px; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; box-shadow:0 4px 12px rgba(15,23,42,0.04);">
-            <span id="step1CurrentQuestionIndexBadge" style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#090D16; background:#FEF3C7; border:1px solid #F59E0B; padding:4px 10px; border-radius:999px;">
-              ✦ Pregunta 1 de 7 · Propósito
-            </span>
-            <div style="display:flex; gap:5px; align-items:center; flex-wrap:wrap;">
-              <span id="step1Dot_1" style="width:20px; height:7px; border-radius:999px; background:#D97706; display:inline-block;" title="1. Propósito"></span>
-              <span id="step1Dot_2" style="width:20px; height:7px; border-radius:999px; background:#E2E8F0; display:inline-block;" title="2. Diferencial"></span>
-              <span id="step1Dot_3" style="width:20px; height:7px; border-radius:999px; background:#E2E8F0; display:inline-block;" title="3. Impacto"></span>
-              <span id="step1Dot_4" style="width:20px; height:7px; border-radius:999px; background:#E2E8F0; display:inline-block;" title="4. Método"></span>
-              <span id="step1Dot_5" style="width:20px; height:7px; border-radius:999px; background:#E2E8F0; display:inline-block;" title="5. Mensaje"></span>
-              <span id="step1Dot_6" style="width:20px; height:7px; border-radius:999px; background:#E2E8F0; display:inline-block;" title="6. Si tu Marca fuera Persona"></span>
-              <span id="step1Dot_7" style="width:20px; height:7px; border-radius:999px; background:#E2E8F0; display:inline-block;" title="7. Cliente Ideal"></span>
-            </div>
-            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
-              <button type="button" onclick="focusBrandPersonaQuestionInStep1()" style="background:#FFFBEB; color:#92400E; border:1px solid #FDE68A; border-radius:999px; padding:4px 10px; font-size:0.71rem; font-weight:800; cursor:pointer;" title="Responder cómo sería tu marca si fuera una persona">
-                🧑 ¿Si fuera Persona?
-              </button>
-              <button type="button" onclick="skipToNextStep1PillarQuestion()" style="background:#F8FAFC; color:#334155; border:1px solid #CBD5E1; border-radius:999px; padding:4px 10px; font-size:0.72rem; font-weight:800; cursor:pointer;" title="Pasar a la siguiente pregunta de los 7 pilares">
-                Siguiente pregunta →
-              </button>
-              <button type="button" id="btnResetStep1Inline" onclick="resetSingleStepData(1)" style="background:#FEF2F2; color:#B91C1C; border:1px solid #FECACA; border-radius:999px; padding:4px 10px; font-size:0.71rem; font-weight:800; cursor:pointer;" title="Reiniciar únicamente las 7 respuestas del Paso 1 conservando el Giro (Paso 0) y los demás pasos">
-                ↺ Reiniciar Paso 1
-              </button>
-            </div>
-          </div>
-
-          <div class="question-billboard" style="margin-bottom: 12px;">
-            <span class="question-category" id="questionCategory">01 · Propósito Nuclear &amp; Círculo Dorado</span>
-            <div class="aura-insight-lead" id="auraInsightLead"></div>
-            <h1 class="question-text" id="activeQuestionHeading">
-              ¿Qué problema real le resuelves a tus clientes que nadie más en tu industria ha sido capaz de solucionar?
-            </h1>
+          <!-- BARRA DE PILARES OCULTA VISUALMENTE PERO CONSERVADA PARA JS -->
+          <div id="step1PillarWayfindingBar" style="display:none !important;">
+            <span id="step1CurrentQuestionIndexBadge">✦ Pregunta 1 de 7 · Propósito</span>
+            <span id="step1Dot_1"></span>
+            <span id="step1Dot_2"></span>
+            <span id="step1Dot_3"></span>
+            <span id="step1Dot_4"></span>
+            <span id="step1Dot_5"></span>
+            <span id="step1Dot_6"></span>
+            <span id="step1Dot_7"></span>
+            <button type="button" id="btnResetStep1Inline" onclick="resetSingleStepData(1)">↺ Reiniciar Paso 1</button>
           </div>
 
           <!-- ESCUDO DE ESCUCHA ACTIVA SIN INTERRUPCIÓN (P6 & P7) -->
-          <div id="liveVoiceListeningShieldBanner" style="display:none; width:100%; max-width:660px; margin:0 auto 10px auto; background:#ECFDF5; border:1.5px solid #10B981; color:#065F46; border-radius:14px; padding:8px 14px; font-size:0.8rem; font-weight:800; align-items:center; justify-content:space-between; gap:8px;">
-            <span>🟢 Escuchándote al 100% sin límite de pausas (Voz de Aura silenciada para no interrumpirte)</span>
-            <span id="liveDictationWordCountBadge" style="font-family:var(--font-mono); font-size:0.74rem; background:#059669; color:#FFFFFF; padding:3px 9px; border-radius:999px;">0 palabras</span>
+          <div id="liveVoiceListeningShieldBanner" style="display:none; width:100%; max-width:660px; margin:0 auto 6px auto; background:#ECFDF5; border:1.5px solid #10B981; color:#065F46; border-radius:12px; padding:6px 12px; font-size:0.76rem; font-weight:800; align-items:center; justify-content:space-between; gap:8px;">
+            <span>🟢 Escuchándote sin límite de pausas</span>
+            <span id="liveDictationWordCountBadge" style="font-family:var(--font-mono); font-size:0.72rem; background:#059669; color:#FFFFFF; padding:2px 8px; border-radius:999px;">0 palabras</span>
           </div>
 
-          <!-- FLOATING INPUT DOCK DIRECTLY BELOW QUESTION (CENTERED, ZERO OVERFLOW) -->
-          <div class="input-dock" style="margin-bottom: 10px; align-items:center; gap:10px; padding:10px 14px;">
-            <button class="btn-action" id="micBtn" onclick="toggleContinuousVoice('chatInput')" title="Activar o pausar dictado por voz sin límite de pausas" style="border-radius:999px; padding:10px 16px; font-weight:800; font-size:0.82rem; display:inline-flex; align-items:center; gap:6px; background:#F8FAFC; border:1.5px solid #CBD5E1; color:#090D16; white-space:nowrap;">
-              🎙️ Dictar por Voz
-            </button>
-            <textarea
-              id="chatInput"
-              class="input-textarea"
-              rows="2"
-              placeholder="Habla pulsando «🎙️ Dictar por Voz» o escribe aquí tu respuesta..."
-              onfocus="silenceAuraImmediatelyForUserBargeIn()"
-              oninput="onChatInputChanged(this.value)"
-              onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); sendUserMessage(); }"
-            ></textarea>
-            <button class="btn-action primary" id="sendBtn" onclick="sendUserMessage()" title="Enviar respuesta cuando hayas terminado" style="border-radius:999px; padding:12px 20px; font-weight:800; font-size:0.86rem; white-space:nowrap; background:linear-gradient(135deg, #090D16 0%, #1E293B 100%); color:#FDE68A; border:1.5px solid #D4AF37;">
-              Enviar Respuesta ↑
-            </button>
-          </div>
-
-          <!-- CHIPS DE IDEAS RÁPIDAS PARA SABER CÓMO CONTESTAR EN 1 CLIC (P2) -->
-          <div id="step1QuickStarterChipsRow" style="width:100%; max-width:660px; margin:0 auto 12px auto; display:flex; flex-wrap:wrap; justify-content:center; gap:6px; align-items:center;">
-            <span style="font-size:0.74rem; font-weight:800; color:#64748B;">💡 Ideas para empezar:</span>
-            <button type="button" onclick="insertStep1StarterIdea('Eliminamos la fricción, lentitud y falta de confianza que sufren nuestros clientes hoy porque ')" style="background:#FFFFFF; border:1px solid #CBD5E1; color:#1E293B; border-radius:999px; padding:5px 11px; font-size:0.75rem; font-weight:700; cursor:pointer;">⚡ Resolver lentitud y fricción</button>
-            <button type="button" onclick="insertStep1StarterIdea('Nuestra ventaja única frente a la competencia es que ofrecemos calidad comprobable y trato directo sin ')" style="background:#FFFFFF; border:1px solid #CBD5E1; color:#1E293B; border-radius:999px; padding:5px 11px; font-size:0.75rem; font-weight:700; cursor:pointer;">🏆 Calidad y ventaja única</button>
-            <button type="button" onclick="insertStep1StarterIdea('Nuestro cliente ideal busca certeza, resultados rápidos y una marca que realmente lo represente porque ')" style="background:#FFFFFF; border:1px solid #CBD5E1; color:#1E293B; border-radius:999px; padding:5px 11px; font-size:0.75rem; font-weight:700; cursor:pointer;">🎯 Certeza para mi cliente</button>
-          </div>
-
-          <!-- PÍLDORAS CENTRADAS DE ESTADO DE LOS 6 PILARES + AYUDA POP-UP -->
-          <div style="display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap; margin:0 auto 14px auto;">
-            <div id="step1MobileCanvasStatusPill" onclick="openCanvasModal()" style="display:inline-flex; justify-content:center; align-items:center; gap:8px; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:999px; padding:8px 18px; cursor:pointer; font-size:0.82rem; font-weight:700; color:#334155;">
-              📋 Manifiesto: 0/6 pilares listos (Ver)
+          <!-- ÁREA DE RESPUESTA LIMPIA + CHIPS + BOTONES INFERIORES ESTILO DUOLINGO -->
+          <div class="duolingo-lesson-workspace">
+            <div class="duolingo-answer-box-wrap">
+              <textarea
+                id="chatInput"
+                class="input-textarea duolingo-answer-textarea"
+                rows="2"
+                placeholder="Escribe aquí tu idea o toca «PRESIONA PARA HABLAR»..."
+                onfocus="silenceAuraImmediatelyForUserBargeIn()"
+                oninput="onChatInputChanged(this.value)"
+                onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); sendUserMessage(); }"
+              ></textarea>
             </div>
-            <button type="button" id="btnReopenAuraInteractionGuide" onclick="openAuraInteractionGuideModal()" style="display:inline-flex; justify-content:center; align-items:center; gap:6px; background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:999px; padding:8px 14px; cursor:pointer; font-size:0.78rem; font-weight:800; color:#92400E;">
-              💡 ¿Cómo contestarle a Aura?
-            </button>
+
+            <!-- CHIPS DE IDEAS RÁPIDAS ESTILO DUOLINGO WORKBANK -->
+            <div id="step1QuickStarterChipsRow" class="duolingo-wordbank-chips">
+              <button type="button" class="duolingo-word-chip" onclick="insertStep1StarterIdea('Eliminamos la fricción, lentitud y falta de confianza que sufren nuestros clientes hoy porque ')">⚡ Resolver lentitud</button>
+              <button type="button" class="duolingo-word-chip" onclick="insertStep1StarterIdea('Nuestra ventaja única frente a la competencia es que ofrecemos calidad comprobable y trato directo sin ')">🏆 Calidad única</button>
+              <button type="button" class="duolingo-word-chip" onclick="insertStep1StarterIdea('Nuestro cliente ideal busca certeza, resultados rápidos y una marca que realmente lo represente porque ')">🎯 Certeza al cliente</button>
+            </div>
+
+            <!-- BOTONES APILADOS ESTILO DUOLINGO: PRESIONA PARA HABLAR + COMPROBAR -->
+            <div class="input-dock duolingo-bottom-action-stack">
+              <button type="button" class="btn-action duolingo-speak-btn" id="micBtn" onclick="toggleContinuousVoice('chatInput')" title="Activar o pausar dictado por voz">
+                🎙️ PRESIONA PARA HABLAR
+              </button>
+              <button type="button" class="btn-action primary duolingo-check-btn" id="sendBtn" onclick="sendUserMessage()" title="Comprobar y avanzar a la siguiente pregunta">
+                COMPROBAR
+              </button>
+            </div>
+          </div>
+
+          <!-- ELEMENTOS SECUNDARIOS OCULTOS PARA CERO SCROLL (ACCESIBLES VÍA MENÚ INFERIOR) -->
+          <div style="display:none !important;">
+            <div id="step1MobileCanvasStatusPill" onclick="openCanvasModal()">📋 Manifiesto: 0/6 pilares listos</div>
+            <button type="button" id="btnReopenAuraInteractionGuide" onclick="openAuraInteractionGuideModal()">💡 ¿Cómo contestarle a Aura?</button>
           </div>
 
           <!-- CLOSING CONFIRMATION GATE -->
           <div class="closing-gate-pill" id="closingGateBanner">
-            <span class="closing-gate-text">✨ ¡Excelente! Hemos capturado los pilares de este paso. ¿Quieres agregar más ideas o avanzamos viendo tu cápsula de cierre?</span>
+            <span class="closing-gate-text">✨ ¡Excelente! Hemos capturado los pilares de este paso.</span>
             <div class="closing-gate-actions">
-              <button class="btn-action" style="padding:6px 12px; font-size:0.75rem;" onclick="document.getElementById('chatInput').focus()">✍️ Agregar más ideas</button>
-              <button class="btn-action emerald" style="padding:6px 12px; font-size:0.75rem;" onclick="completeStepAndAdvanceWithCelebration(1, 2)">🎬 Ver Video de Cierre e Ir a Touchpoints →</button>
+              <button class="btn-action" style="padding:6px 12px; font-size:0.75rem;" onclick="document.getElementById('chatInput').focus()">✍️ Agregar más</button>
+              <button class="btn-action emerald" style="padding:6px 12px; font-size:0.75rem;" onclick="completeStepAndAdvanceWithCelebration(1, 2)">🎬 Ir a Touchpoints →</button>
             </div>
           </div>
 
-          <!-- SOCRATIC DIALOGUE STREAM (CLEAN: ONLY SHOWS EXCHANGED TURNS) -->
-          <div class="socratic-stream" id="chatHistory" style="max-height: 280px; overflow-y: auto; margin-bottom: 0;"></div>
+          <!-- SOCRATIC DIALOGUE STREAM (OCULTO EN MODO DUOLINGO PURO PARA EVITAR SCROLL) -->
+          <div class="socratic-stream" id="chatHistory" style="display:none !important;"></div>
         </div>
 
         <!-- RIGHT COLUMN: LIVING BRAND CANVAS (ALL-IN-ONE REAL-TIME VIEW) -->
@@ -3900,6 +3942,13 @@
         </div>
       </div>
 
+      <!-- GAVETA COMPACTA PARA EJEMPLOS Y TOUCHPOINTS GUARDADOS (CERO SCROLL EN PASO 2) -->
+      <details id="step2CollapsibleDetailsDrawer" style="width:100%; max-width:660px; margin:0 auto 10px auto; background:#FFFFFF; border:2px solid #E2E8F0; border-radius:16px; padding:10px 14px;">
+        <summary style="cursor:pointer; font-weight:800; font-size:0.86rem; color:#0284C7; list-style:none; display:flex; justify-content:space-between; align-items:center;">
+          <span>💡 Ver ideas rápidas y touchpoints guardados</span>
+          <span style="font-size:0.75rem; color:#64748B;">Desplegar ▾</span>
+        </summary>
+        <div style="margin-top:12px;">
       <!-- TARJETAS DE INSPIRACIÓN GRANDES Y CLARAS + OPCIÓN "NINGUNO DE LOS ANTERIORES, QUIERO CREAR EL MÍO" -->
       <div id="tpBentoGallerySection" style="width:100%; max-width:920px; margin:0 auto 20px auto;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; padding:0 4px;">
@@ -4017,6 +4066,8 @@
           <div class="plaque-text" id="tpAfterText" style="margin-top:8px;"></div>
         </div>
       </div>
+        </div>
+      </details>
 
       <!-- CIERRE DE DESCUBRIMIENTO DEL PASO 2 + CÁPSULA DE VIDEO -->
       <div class="discovery-closure-card" id="step2DiscoveryClosureCard" style="max-width:920px; margin:20px auto 0 auto; padding:22px;">
@@ -17098,7 +17149,861 @@
       } else {
         navigateToScreen("step0");
       }
+      if (typeof updateDuolingoPureFocusUI === "function") {
+        updateDuolingoPureFocusUI();
+      }
     });
+  </script>
+
+  <!-- ==================================================================== -->
+  <!-- V41 DUOLINGO PURE FOCUS ARCHITECTURE:                                -->
+  <!-- 1. SINGLE FIXED BOTTOM MENU BAR (CUENTA, DESCARGAS, MAPA, AURA)      -->
+  <!-- 2. GRAPHICAL 3D TOP PROGRESS BAR (✕ + BARRA DE AVANCE + ICONOS)      -->
+  <!-- 3. ONLY AURA + SPEECH BUBBLE QUESTION IN STEPS (ZERO SCROLL)         -->
+  <!-- ==================================================================== -->
+  <style id="duolingoPureFocusV41Styles">
+    /* 1. OCULTAR BARRAS SUPERIORES MULTI-FILA Y RUIDO VISUAL */
+    .focus-nav-bar,
+    #focusTopStepperBar,
+    #liveBrandContinuityStrip,
+    .journey-header-bar,
+    #missionLauncherCard,
+    #atelierRightPane,
+    #step1PillarWayfindingBar,
+    #step1MobileCanvasStatusPill,
+    #btnReopenAuraInteractionGuide,
+    #chatHistory,
+    #step2CompactTopGuidanceCard,
+    #step3CompactTopGuidanceCard,
+    #step4CompactTopGuidanceCard {
+      display: none !important;
+    }
+
+    /* Fondo limpio tipo Duolingo y espacio para la barra fija inferior */
+    body {
+      background: #FFFFFF !important;
+      padding-bottom: 84px !important;
+    }
+
+    #screen-focus,
+    #screen-step0,
+    #screen-journey {
+      background: #FFFFFF !important;
+      padding-top: 8px !important;
+      padding-bottom: 86px !important;
+    }
+
+    .focus-wrapper,
+    .step0-wrapper,
+    .journey-wrapper {
+      max-width: 640px !important;
+      margin: 0 auto !important;
+      padding: 4px 14px 12px 14px !important;
+    }
+
+    /* 2. BARRA DE PROGRESO GRÁFICA SUPERIOR ESTILO DUOLINGO */
+    .duolingo-top-progress-header {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto 6px auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 2px;
+    }
+
+    .duolingo-close-x-btn {
+      background: transparent;
+      border: none;
+      color: #AFAFAF;
+      font-size: 1.45rem;
+      font-weight: 800;
+      line-height: 1;
+      padding: 4px 6px;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: color 0.15s ease, transform 0.15s ease;
+      flex-shrink: 0;
+    }
+    .duolingo-close-x-btn:hover {
+      color: #4B4B4B;
+      transform: scale(1.06);
+    }
+
+    .duolingo-progress-track {
+      flex: 1;
+      height: 16px;
+      background: #E5E5E5;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .duolingo-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00CD9C 0%, #1CB0F6 100%);
+      border-radius: 999px;
+      position: relative;
+      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      min-width: 12%;
+    }
+
+    .duolingo-progress-highlight {
+      position: absolute;
+      top: 3px;
+      left: 8px;
+      right: 8px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.38);
+      border-radius: 999px;
+    }
+
+    .duolingo-header-icon-btn {
+      background: #F7F7F7;
+      border: 2px solid #E5E5E5;
+      border-bottom-width: 3px;
+      color: #4B4B4B;
+      font-size: 0.92rem;
+      font-weight: 800;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      padding: 0;
+    }
+    .duolingo-header-icon-btn:active {
+      transform: translateY(1px);
+      border-bottom-width: 2px;
+    }
+
+    /* 3. TÍTULO DE INSTRUCCIÓN ESTILO DUOLINGO ("Completa la oración" / "Responde a Aura") */
+    .duolingo-instruction-row {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto 8px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .duolingo-instruction-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #3C3C3C;
+      margin: 0;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .duolingo-mini-pill {
+      background: #FFFFFF;
+      border: 2px solid #E5E5E5;
+      border-bottom-width: 3px;
+      color: #4B4B4B;
+      border-radius: 12px;
+      padding: 4px 10px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .duolingo-mini-pill.active {
+      background: #DDF4FF;
+      border-color: #84D8FF;
+      color: #1899D6;
+    }
+
+    /* 4. AURA A LA IZQUIERDA + BURBUJA DE PREGUNTA A LA DERECHA (CERO SCROLL) */
+    .duolingo-aura-character-row,
+    #focusAuraStage.duolingo-aura-character-row {
+      width: 100% !important;
+      max-width: 640px !important;
+      margin: 0 auto 10px auto !important;
+      padding: 2px 0 !important;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 14px !important;
+      text-align: left !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    #focusAuraStage #avatarOrb {
+      width: 74px !important;
+      height: 74px !important;
+      min-width: 74px !important;
+      min-height: 74px !important;
+      margin: 0 !important;
+      flex-shrink: 0 !important;
+      box-shadow: 0 6px 18px rgba(212, 175, 55, 0.28) !important;
+    }
+
+    #focusAuraStage #avatarCanvas {
+      width: 74px !important;
+      height: 74px !important;
+    }
+
+    .duolingo-mini-aura-orb {
+      width: 64px;
+      height: 64px;
+      min-width: 64px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #FDE68A 0%, #D4AF37 45%, #090D16 100%);
+      border: 2.5px solid #D4AF37;
+      box-shadow: 0 6px 16px rgba(212, 175, 55, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .duolingo-mini-aura-core {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #FFFFFF 0%, rgba(253, 230, 138, 0.2) 75%);
+      box-shadow: 0 0 14px #FFFFFF;
+    }
+
+    .duolingo-speech-bubble {
+      position: relative;
+      flex: 1;
+      background: #FFFFFF;
+      border: 2px solid #E5E5E5;
+      border-bottom-width: 4px;
+      border-radius: 18px;
+      padding: 12px 15px;
+      color: #3C3C3C;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    /* Puntero izquierdo de la burbuja de diálogo hacia Aura */
+    .duolingo-speech-bubble::before {
+      content: "";
+      position: absolute;
+      left: -11px;
+      top: 22px;
+      width: 0;
+      height: 0;
+      border-top: 9px solid transparent;
+      border-bottom: 9px solid transparent;
+      border-right: 11px solid #E5E5E5;
+    }
+    .duolingo-speech-bubble::after {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 23px;
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: 9px solid #FFFFFF;
+    }
+
+    /* 5. ÁREA DE RESPUESTA Y BOTONES INFERIORES APILADOS ESTILO DUOLINGO EN PASO 1 */
+    .unified-workbench-grid {
+      display: block !important;
+      max-width: 640px !important;
+      margin: 0 auto !important;
+    }
+
+    .workbench-dialogue-pane {
+      padding: 0 !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .duolingo-lesson-workspace {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .duolingo-answer-box-wrap {
+      width: 100%;
+    }
+
+    .duolingo-answer-textarea {
+      width: 100% !important;
+      min-height: 78px !important;
+      max-height: 110px !important;
+      background: #F7F7F7 !important;
+      border: 2px solid #E5E5E5 !important;
+      border-radius: 16px !important;
+      padding: 12px 14px !important;
+      font-size: 0.98rem !important;
+      font-weight: 600 !important;
+      color: #3C3C3C !important;
+      line-height: 1.38 !important;
+      resize: none !important;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
+    }
+    .duolingo-answer-textarea:focus {
+      background: #FFFFFF !important;
+      border-color: #1CB0F6 !important;
+      outline: none !important;
+    }
+
+    .duolingo-wordbank-chips {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      margin: 2px 0 4px 0 !important;
+    }
+
+    .duolingo-word-chip {
+      background: #FFFFFF;
+      border: 2px solid #E5E5E5;
+      border-bottom-width: 4px;
+      border-radius: 14px;
+      padding: 7px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #4B4B4B;
+      cursor: pointer;
+      transition: transform 0.1s ease, border-color 0.15s ease;
+    }
+    .duolingo-word-chip:hover {
+      background: #F7F7F7;
+      border-color: #CECECE;
+    }
+    .duolingo-word-chip:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    .duolingo-bottom-action-stack {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
+      padding: 4px 0 0 0 !important;
+      margin: 0 !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .duolingo-speak-btn {
+      width: 100% !important;
+      justify-content: center !important;
+      background: #FFFFFF !important;
+      border: 2px solid #E5E5E5 !important;
+      border-bottom-width: 4px !important;
+      border-radius: 16px !important;
+      padding: 13px 18px !important;
+      font-size: 0.9rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.04em !important;
+      color: #1CB0F6 !important;
+      text-transform: uppercase !important;
+      cursor: pointer !important;
+    }
+    .duolingo-speak-btn:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px !important;
+    }
+
+    .duolingo-check-btn {
+      width: 100% !important;
+      justify-content: center !important;
+      background: #58CC02 !important;
+      border: none !important;
+      border-bottom: 4px solid #58A700 !important;
+      border-radius: 16px !important;
+      padding: 14px 20px !important;
+      font-size: 0.94rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.05em !important;
+      color: #FFFFFF !important;
+      text-transform: uppercase !important;
+      cursor: pointer !important;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .duolingo-check-btn.duolingo-btn-idle {
+      background: #E5E5E5 !important;
+      border-bottom: 4px solid #CECECE !important;
+      color: #AFAFAF !important;
+    }
+    .duolingo-check-btn:active {
+      transform: translateY(2px);
+      border-bottom-width: 2px !important;
+    }
+
+    /* Compactar tarjetas del Paso 0 y contenedores para CERO SCROLL real en móvil (390x844) */
+    html, body {
+      min-height: 0 !important;
+      padding-bottom: 0 !important;
+      overflow-x: hidden !important;
+    }
+    .app-screen.active {
+      min-height: 0 !important;
+    }
+    #screen-step0.active,
+    #screen-focus.active {
+      padding-top: 6px !important;
+      padding-bottom: 76px !important;
+    }
+    .atelier-container,
+    .stage-section.active {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+      min-height: 0 !important;
+    }
+    #step0Card1, #step0Card2, #step0Card3 {
+      padding: 10px 12px !important;
+      margin-bottom: 4px !important;
+      border: 2px solid #E5E5E5 !important;
+      border-bottom-width: 4px !important;
+      border-radius: 18px !important;
+      box-shadow: none !important;
+    }
+    #step0Card1 > span, #step0Card2 > span, #step0Card3 > span,
+    #step0Card1 > h2, #step0Card2 > h2, #step0Card3 > h2 {
+      display: none !important;
+    }
+    .step0-card-grid {
+      gap: 6px !important;
+      margin-bottom: 8px !important;
+    }
+    .step0-choice-card {
+      padding: 8px 11px !important;
+      border: 2px solid #E5E5E5 !important;
+      border-bottom-width: 3px !important;
+      border-radius: 14px !important;
+      background: #FFFFFF !important;
+    }
+    .step0-choice-card.selected {
+      background: #DDF4FF !important;
+      border-color: #38BDF8 !important;
+      color: #0369A1 !important;
+    }
+    .step0-choice-card .step0-choice-title {
+      font-size: 0.86rem !important;
+      margin-bottom: 2px !important;
+      color: #090D16 !important;
+      font-weight: 800 !important;
+    }
+    .step0-choice-card.selected .step0-choice-title {
+      color: #0369A1 !important;
+    }
+    .step0-choice-card .step0-choice-desc {
+      font-size: 0.72rem !important;
+      line-height: 1.22 !important;
+      color: #475569 !important;
+    }
+    .step0-choice-card.selected .step0-choice-desc {
+      color: #0F172A !important;
+    }
+
+    /* 6. UNA SOLA BARRA DE MENÚ GENERAL ABAJO ESTILO DUOLINGO */
+    #tbbDuolingoBottomNav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      background: #FFFFFF;
+      border-top: 2px solid #E5E5E5;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 4px 8px calc(4px + env(safe-area-inset-bottom, 0px)) 8px;
+      z-index: 9500;
+      box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.04);
+    }
+
+    body[data-active-screen="web"] #tbbDuolingoBottomNav {
+      display: none !important;
+    }
+
+    .duolingo-bottom-tab {
+      background: transparent;
+      border: 2px solid transparent;
+      border-radius: 14px;
+      padding: 5px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      cursor: pointer;
+      min-width: 54px;
+      transition: all 0.15s ease;
+    }
+
+    .duolingo-bottom-tab.active {
+      background: #DDF4FF;
+      border-color: #84D8FF;
+    }
+
+    .duolingo-bottom-tab-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+
+    .duolingo-bottom-tab-label {
+      font-family: var(--font-ui);
+      font-size: 0.66rem;
+      font-weight: 800;
+      color: #64748B;
+      letter-spacing: 0.01em;
+    }
+
+    .duolingo-bottom-tab.active .duolingo-bottom-tab-label {
+      color: #1899D6;
+    }
+
+    @media (max-width: 640px) {
+      .duolingo-instruction-title {
+        font-size: 1.12rem;
+      }
+      #focusAuraStage #avatarOrb,
+      #focusAuraStage #avatarCanvas {
+        width: 64px !important;
+        height: 64px !important;
+        min-width: 64px !important;
+        min-height: 64px !important;
+      }
+      #activeQuestionHeading {
+        font-size: 0.94rem !important;
+        line-height: 1.28 !important;
+      }
+      .duolingo-answer-textarea {
+        min-height: 68px !important;
+        font-size: 0.92rem !important;
+        padding: 10px 12px !important;
+      }
+      .duolingo-word-chip {
+        padding: 5px 10px;
+        font-size: 0.74rem;
+      }
+      .duolingo-speak-btn,
+      .duolingo-check-btn {
+        padding: 11px 16px !important;
+        font-size: 0.85rem !important;
+      }
+    }
+  </style>
+
+  <!-- BARRA DE MENÚ GENERAL INFERIOR ÚNICA ESTILO DUOLINGO -->
+  <nav id="tbbDuolingoBottomNav" aria-label="Menú general inferior">
+    <button type="button" class="duolingo-bottom-tab active" id="duoNavTab_step0" onclick="navigateToScreen('step0')" title="Inicio y Giro de tu Marca (Paso 0)">
+      <span class="duolingo-bottom-tab-icon" style="background:#FFF7ED; border:1.5px solid #FDBA74;">🏠</span>
+      <span class="duolingo-bottom-tab-label">Inicio</span>
+    </button>
+    <button type="button" class="duolingo-bottom-tab" id="duoNavTab_journey" onclick="navigateToScreen('journey')" title="Mapa de Recorrido de los 6 Pasos">
+      <span class="duolingo-bottom-tab-icon" style="background:#ECFEFF; border:1.5px solid #67E8F9;">🗺️</span>
+      <span class="duolingo-bottom-tab-label">Mapa</span>
+    </button>
+    <button type="button" class="duolingo-bottom-tab" id="duoNavTab_aura" onclick="navigateToScreen('focus', (window.currentStep >= 1 && window.currentStep <= 5) ? window.currentStep : 1)" title="Continuar Paso Activo con Aura">
+      <span class="duolingo-bottom-tab-icon" style="background:#FEF3C7; border:1.5px solid #FCD34D;">✦</span>
+      <span class="duolingo-bottom-tab-label">Aura</span>
+    </button>
+    <button type="button" class="duolingo-bottom-tab" id="duoNavTab_downloads" onclick="navigateToScreen('focus', 6)" title="Descargas: Brandbook de 29 Páginas y Kit de Logos">
+      <span class="duolingo-bottom-tab-icon" style="background:#F0FDF4; border:1.5px solid #86EFAC;">📥</span>
+      <span class="duolingo-bottom-tab-label">Descargas</span>
+    </button>
+    <button type="button" class="duolingo-bottom-tab" id="duoNavTab_account" onclick="openAccountVaultModal()" title="Mi Cuenta y Guardado en la Nube">
+      <span class="duolingo-bottom-tab-icon" style="background:#FDF2F8; border:1.5px solid #F9A8D4;">👤</span>
+      <span class="duolingo-bottom-tab-label" id="duoNavAccountLabel">Cuenta</span>
+    </button>
+    <button type="button" class="duolingo-bottom-tab" id="duoNavTab_more" onclick="toggleHubDrawer(true)" title="Más Opciones, Reiniciar Paso, Teoría y Letra A+">
+      <span class="duolingo-bottom-tab-icon" style="background:#F3E8FF; border:1.5px solid #D8B4FE;">⋯</span>
+      <span class="duolingo-bottom-tab-label">Más</span>
+    </button>
+  </nav>
+
+  <script id="duolingoPureFocusV41Engine">
+    (function () {
+      let currentStep0CardIndex = 1;
+
+      window.updateDuolingoPureFocusUI = function () {
+        try {
+          const isWeb = document.getElementById("screen-web")?.classList.contains("active");
+          const isJourney = document.getElementById("screen-journey")?.classList.contains("active");
+          const isFocus = document.getElementById("screen-focus")?.classList.contains("active");
+          const activeScreen = isWeb ? "web" : (isJourney ? "journey" : (isFocus ? "focus" : "step0"));
+          document.body.setAttribute("data-active-screen", activeScreen);
+
+          const stepNum = Number(window.currentStep || 1);
+
+          // 1. Actualizar pestaña activa en la barra inferior única
+          const tabs = {
+            step0: document.getElementById("duoNavTab_step0"),
+            journey: document.getElementById("duoNavTab_journey"),
+            aura: document.getElementById("duoNavTab_aura"),
+            downloads: document.getElementById("duoNavTab_downloads")
+          };
+          Object.values(tabs).forEach(el => { if (el) el.classList.remove("active"); });
+          if (activeScreen === "step0" && tabs.step0) {
+            tabs.step0.classList.add("active");
+          } else if (activeScreen === "journey" && tabs.journey) {
+            tabs.journey.classList.add("active");
+          } else if (activeScreen === "focus") {
+            if (stepNum === 6 && tabs.downloads) {
+              tabs.downloads.classList.add("active");
+            } else if (tabs.aura) {
+              tabs.aura.classList.add("active");
+            }
+          }
+
+          // Etiqueta de cuenta si está vinculada
+          const duoAccLbl = document.getElementById("duoNavAccountLabel");
+          if (duoAccLbl && window.userAccountState && window.userAccountState.email) {
+            const shortName = (window.userAccountState.founderName || window.userAccountState.email).split(/[@\s]/)[0];
+            duoAccLbl.textContent = shortName.slice(0, 9);
+          }
+
+          // 2. Actualizar Barra de Progreso del Mapa de Recorrido
+          const journeyFill = document.getElementById("duolingoJourneyProgressFill");
+          if (journeyFill) {
+            const pctMap = Math.max(16, Math.min(100, Math.round((stepNum / 6) * 100)));
+            journeyFill.style.width = pctMap + "%";
+          }
+
+          // 3. Actualizar Barra de Progreso y Burbuja dentro de #screen-focus
+          const topFill = document.getElementById("duolingoGraphicalProgressFill");
+          const instrTitle = document.getElementById("duolingoInstructionTitle");
+          const step1QuickActions = document.getElementById("duolingoStep1QuickActions");
+          const step1QContainer = document.getElementById("duolingoStep1QuestionContainer");
+          const otherStepQ = document.getElementById("duolingoOtherStepQuestion");
+          const voiceBtn = document.getElementById("duolingoVoiceToggleTopBtn");
+
+          if (voiceBtn) {
+            voiceBtn.textContent = window.voiceMuted ? "🔇" : "🔊";
+          }
+
+          if (stepNum === 1) {
+            const qIdx = Math.max(1, Math.min(7, Number(window.currentStep1QuestionIndex || 1)));
+            const pctStep1 = Math.max(14, Math.min(100, Math.round((qIdx / 7) * 100)));
+            if (topFill) topFill.style.width = pctStep1 + "%";
+            if (instrTitle) instrTitle.textContent = "Pregunta " + qIdx + " de 7 · Esencia";
+            if (step1QuickActions) step1QuickActions.style.display = "flex";
+            if (step1QContainer) step1QContainer.style.display = "block";
+            if (otherStepQ) otherStepQ.style.display = "none";
+          } else {
+            if (step1QuickActions) step1QuickActions.style.display = "none";
+            if (step1QContainer) step1QContainer.style.display = "none";
+            if (otherStepQ) otherStepQ.style.display = "block";
+
+            const stepConfig = {
+              2: {
+                pct: 36,
+                title: "Paso 2 · Recorrido del Cliente",
+                bubble: "¿Cómo te conocen tus clientes <strong>Antes, Durante y Después</strong> de comprar? Elige la etapa y regístralo con voz o texto."
+              },
+              3: {
+                pct: 52,
+                title: "Paso 3 · Nombre de tu Marca",
+                bubble: "Exploremos y elijamos el <strong>Nombre Oficial</strong> de tu marca con sus dominios disponibles."
+              },
+              4: {
+                pct: 68,
+                title: "Paso 4 · Personalidad y Familia Base",
+                bubble: "Ajusta los deslizadores de personalidad y elige la <strong>Familia Visual Base</strong> para tu logotipo."
+              },
+              5: {
+                pct: 85,
+                title: "Paso 5 · Estudio de Logotipo IA",
+                bubble: "Partamos de tu idea, elige tu paleta de color y generemos propuestas de <strong>Logotipo con NanoBanana 2.1</strong>."
+              },
+              6: {
+                pct: 100,
+                title: "Paso 6 · Descargas y Brandbook",
+                bubble: "¡Tu <strong>Brandbook de 29 páginas</strong> y tus archivos de logotipo están listos para ver y descargar!"
+              }
+            }[stepNum] || { pct: 50, title: "Taller con Aura", bubble: "Avancemos paso a paso con tu marca." };
+
+            if (topFill) topFill.style.width = stepConfig.pct + "%";
+            if (instrTitle) instrTitle.textContent = stepConfig.title;
+            if (otherStepQ) otherStepQ.innerHTML = stepConfig.bubble;
+          }
+
+          // 4. Estado visual de los botones PRESIONA PARA HABLAR y COMPROBAR en Paso 1
+          const micBtn = document.getElementById("micBtn");
+          if (micBtn && !micBtn.classList.contains("recording")) {
+            micBtn.innerHTML = "🎙️ PRESIONA PARA HABLAR";
+          }
+          const chatInput = document.getElementById("chatInput");
+          const sendBtn = document.getElementById("sendBtn");
+          if (chatInput && sendBtn) {
+            const hasText = String(chatInput.value || "").trim().length > 0;
+            if (hasText) {
+              sendBtn.classList.remove("duolingo-btn-idle");
+              sendBtn.textContent = "COMPROBAR";
+            } else {
+              sendBtn.classList.add("duolingo-btn-idle");
+              sendBtn.textContent = "COMPROBAR";
+            }
+          }
+        } catch (err) {
+          console.warn("updateDuolingoPureFocusUI warn:", err);
+        }
+      };
+
+      // Sincronizar Paso 0 (1 de 3, 2 de 3, 3 de 3) con la barra y burbuja de Aura
+      const origSwitchStep0SubCard = window.switchStep0SubCard;
+      if (typeof origSwitchStep0SubCard === "function") {
+        window.switchStep0SubCard = function (subStep) {
+          origSwitchStep0SubCard.apply(this, arguments);
+          currentStep0CardIndex = subStep === "all" ? 3 : Number(subStep || 1);
+          const s0Fill = document.getElementById("duolingoStep0ProgressFill");
+          const s0Bubble = document.getElementById("duolingoStep0BubbleText");
+          const s0Title = document.getElementById("duolingoStep0InstructionTitle");
+          const pct = currentStep0CardIndex === 1 ? 33 : (currentStep0CardIndex === 2 ? 66 : 100);
+          if (s0Fill) s0Fill.style.width = pct + "%";
+          if (s0Title) {
+            s0Title.textContent = currentStep0CardIndex === 1
+              ? "1 de 3 · Tu objetivo hoy"
+              : (currentStep0CardIndex === 2 ? "2 de 3 · Nombre de tu marca" : "3 de 3 · Giro de tu negocio");
+          }
+          if (s0Bubble) {
+            s0Bubble.innerHTML = currentStep0CardIndex === 1
+              ? "¡Hola! Soy <strong>Aura</strong>. ¿Cuál es tu objetivo al crear tu marca hoy?"
+              : (currentStep0CardIndex === 2
+                  ? "¿Tu marca ya cuenta con un <strong>nombre definido</strong> o quieres que lo creemos juntos?"
+                  : "¡Perfecto! ¿En qué <strong>giro o actividad</strong> se enfoca tu empresa?");
+          }
+          [1, 2, 3].forEach(i => {
+            const btn = document.getElementById("btnStep0SubNav" + i);
+            if (btn) btn.classList.toggle("active", i === currentStep0CardIndex);
+          });
+        };
+      }
+
+      // Hook en funciones de navegación
+      ["navigateToScreen", "switchStep", "updateStep1PillarWayfindingUI", "onChatInputChanged", "toggleVoiceMute", "stopContinuousVoice"].forEach(fnName => {
+        const origFn = window[fnName];
+        if (typeof origFn === "function") {
+          window[fnName] = function () {
+            const res = origFn.apply(this, arguments);
+            window.updateDuolingoPureFocusUI();
+            return res;
+          };
+        }
+      });
+
+      // Fallback Socrático Client-Side en sendUserMessage() para que COMPROBAR funcione al 100% en Firebase Hosting estático
+      window.runClientSideStep1SocraticTurn = function (userText) {
+        const qIdx = Math.max(1, Math.min(7, Number(window.currentStep1QuestionIndex || 1)));
+        const canvasKeys = ["golden_circle", "value_offer", "social_role", "process_steps_text", "core_message", "brand_persona", "ideal_customer"];
+        const cKey = canvasKeys[qIdx - 1] || "golden_circle";
+        if (typeof canvasState === "object" && canvasState) {
+          canvasState[cKey] = userText;
+        }
+        const pillarMap = {
+          1: "purpose",
+          2: "differentiator",
+          3: "impact",
+          4: "method",
+          5: "message",
+          6: "brandPersona",
+          7: "audience"
+        };
+        const targetKey = pillarMap[qIdx] || "purpose";
+        if (window.brandState && window.brandState.pillars) {
+          window.brandState.pillars[targetKey] = userText;
+          if (targetKey === "brandPersona") {
+            window.brandState.brandPersonaProfile = userText;
+          }
+        }
+        if (typeof updateCanvasPlaque === "function") updateCanvasPlaque(cKey, userText);
+        if (typeof updateStep1MobilePillarStatus === "function") updateStep1MobilePillarStatus();
+        if (typeof saveStateToLocalStorage === "function") saveStateToLocalStorage();
+
+        if (qIdx < 7) {
+          if (typeof skipToNextStep1PillarQuestion === "function") {
+            skipToNextStep1PillarQuestion();
+          }
+          const leadEl = document.getElementById("auraInsightLead");
+          if (leadEl) {
+            leadEl.textContent = "✓ Respuesta guardada · Pregunta " + (qIdx + 1) + " de 7:";
+          }
+          const headEl = document.getElementById("activeQuestionHeading");
+          if (headEl && typeof speakWithAura === "function") {
+            speakWithAura("Excelente. " + headEl.textContent);
+          }
+        } else {
+          const gate = document.getElementById("closingGateBanner");
+          if (gate) gate.classList.add("visible");
+          const leadEl = document.getElementById("auraInsightLead");
+          if (leadEl) {
+            leadEl.textContent = "🎉 ¡Completaste las 7 preguntas del Paso 1!";
+          }
+          if (typeof speakWithAura === "function") {
+            speakWithAura("¡Excelente trabajo! Hemos completado las siete preguntas de la esencia de tu marca. Avancemos al Paso 2 para definir los puntos de contacto con tus clientes.");
+          }
+        }
+        window.updateDuolingoPureFocusUI();
+      };
+
+      window.sendUserMessage = async function () {
+        const input = document.getElementById("chatInput");
+        const text = input ? input.value.trim() : "";
+        if (!text) {
+          if (input) input.focus();
+          return;
+        }
+        if (typeof stopContinuousVoice === "function") stopContinuousVoice();
+        input.value = "";
+        window.updateDuolingoPureFocusUI();
+
+        try {
+          const res = await fetch("/api/chat/turn", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sessionId: window.sessionId,
+              message: text,
+              currentStep: window.currentStep
+            })
+          });
+          const contentType = (res.headers.get("content-type") || "").toLowerCase();
+          if (!res.ok || !contentType.includes("application/json")) {
+            window.runClientSideStep1SocraticTurn(text);
+            return;
+          }
+          const data = await res.json();
+          if (data && data.state) {
+            if (typeof syncFullState === "function") syncFullState(data.state);
+            if (typeof updateQuestionBillboard === "function") {
+              updateQuestionBillboard(data.reply, data.nextQuestion, data.questionCategory, data.stepReadyToAdvance);
+            }
+            if (typeof speakWithAura === "function") {
+              speakWithAura(`${data.reply} ${data.nextQuestion || ""}`);
+            }
+            window.updateDuolingoPureFocusUI();
+          } else {
+            window.runClientSideStep1SocraticTurn(text);
+          }
+        } catch (err) {
+          window.runClientSideStep1SocraticTurn(text);
+        }
+      };
+
+      setTimeout(window.updateDuolingoPureFocusUI, 150);
+    })();
   </script>
 </body>
 </html>
