@@ -22156,6 +22156,49 @@
         window.tbbSwitchVideoCapsuleTheme(curStep);
       };
 
+      // -------------------------------------------------------------------------
+      // FICHA OFICIAL DEL AUTOR CONSULTOR METODOLÓGICO Y AUDITORÍA EN TIEMPO REAL
+      // -------------------------------------------------------------------------
+      window.renderTbbAuthorConsultantCardHTML = function (stepNum, fieldRole) {
+        const s = Number(stepNum || 0);
+        const board = window.TBB_MASTER_AUTHORS_BOARD || {};
+        const stepAuthorMap = {
+          0: board.aaker || { name: "David Aaker", role: "Relevancia de Categoría & Brand Equity", book: "Building Strong Brands", monogram: "DA", shortName: "Aaker" },
+          1: board.sinek || { name: "Simon Sinek", role: "Propósito Nuclear & El Círculo Dorado", book: "Start With Why", monogram: "SS", shortName: "Sinek" },
+          2: board.carlzon || { name: "Jan Carlzon", role: "Momentos de la Verdad & Touchpoints", book: "Moments of Truth", monogram: "JC", shortName: "Carlzon" },
+          3: board.ries_trout || { name: "Al Ries & Jack Trout", role: "Posicionamiento en la Mente & Naming", book: "Positioning", monogram: "RT", shortName: "Ries & Trout" },
+          4: board.rand || { name: "Paul Rand", role: "Rigor Simbólico & Test de Rand", book: "A Designer's Art", monogram: "PR", shortName: "Rand" },
+          5: board.nagamachi || { name: "Mitsuhiro Nagamachi", role: "Ingeniería Kansei & Proporción 70/20/10", book: "Kansei Engineering", monogram: "MN", shortName: "Nagamachi" },
+          6: board.porter || { name: "Michael Porter", role: "Estrategia Competitiva & Gobernanza", book: "Competitive Strategy", monogram: "MP", shortName: "Porter" }
+        };
+        const author = stepAuthorMap[s] || stepAuthorMap[0];
+
+        return `
+          <div class="tbb-author-audit-card" style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-left:4px solid #0D2540; border-radius:14px; padding:10px 14px; margin-top:8px; box-shadow:0 2px 8px rgba(13,37,64,0.04);">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+              <div style="display:flex; align-items:center; gap:9px; min-width:0;">
+                <div style="width:32px; height:32px; border-radius:50%; background:#0D2540; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:900; flex-shrink:0;">
+                  ${author.monogram}
+                </div>
+                <div style="min-width:0;">
+                  <div style="font-size:0.78rem; font-weight:900; color:#090D16; display:flex; align-items:center; gap:6px;">
+                    <span>${author.name}</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:800; color:#1D4ED8; background:#EFF6FF; padding:1px 5px; border-radius:4px; border:1px solid #BFDBFE;">CONSEJERO OFICIAL</span>
+                  </div>
+                  <div style="font-size:0.68rem; font-weight:700; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    ${author.role} · <em>${author.book}</em>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbRunLiveAuthorAudit(${s}, '${fieldRole}')" style="min-height:30px !important; padding:4px 11px !important; font-size:0.72rem !important; border-color:#0D2540 !important; color:#0D2540 !important; background:#FFFFFF !important; white-space:nowrap; border-radius:8px !important;">
+                ✦ Solicitar Dictamen a ${author.shortName}
+              </button>
+            </div>
+            <div id="tbbAuthorAuditResult_${s}" style="display:none;"></div>
+          </div>
+        `;
+      };
+
       // =========================================================================
       // 4. RENDERIZADOR DE VISTAS ATÓMICAS CERO SCROLL (PASOS 0 AL 6)
       // =========================================================================
@@ -22396,12 +22439,13 @@
                 </div>
                 <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px;">
                   <textarea id="tbbStep0BizTextarea" rows="3" oninput="tbbUpdateBusinessTypeFromInput(this.value)" placeholder="Describe con tus palabras a qué se dedica tu empresa, qué producto o servicio entregas y para quién..." style="width:100%; padding:12px 14px; border-radius:16px; border:2px solid #090D16; font-size:0.94rem; font-weight:700; color:#090D16; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.42;">${curBiz}</textarea>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnPolishStep0Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep0BizTextarea', 'giro')" style="min-height:38px !important; padding:6px 12px !important; font-size:0.78rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; width:100%;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnPolishStep0Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep0BizTextarea', 'giro')" style="min-height:38px !important; padding:6px 12px !important; font-size:0.78rem !important; border-color:#0D2540 !important; color:#0D2540 !important; width:100%;">
                     Corregir ortografía y expresar mi idea con claridad ejecutiva
                   </button>
                   <div style="background:#F0F7FF; border:1.5px solid #93C5FD; border-radius:14px; padding:9px 12px; font-size:0.80rem; font-weight:700; color:#0D2540;">
                     Síntesis detectada por el sistema: <span id="tbbStep0LiveEssencePreview">${cs.step0_short_essence || curBiz || "Escribe arriba tu giro para que el sistema adapte todo tu recorrido."}</span>
                   </div>
+                  ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(0, "giro") : ""}
                 </div>
                 <div style="font-size:0.78rem; color:#64748B; text-align:center; font-weight:600;">
                   El sistema generará las preguntas, puntos de contacto, nombres y logotipo a partir de lo que escribas aquí.
@@ -22455,6 +22499,7 @@
                     ${dynChips[1]}
                   </button>
                 </div>
+                ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(1, qObj.key) : ""}
               </div>
             </div>
           `;
@@ -22502,6 +22547,7 @@
                   Agregar
                 </button>
               </div>
+              ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(2, ph.key) : ""}
             </div>
           `;
           return;
@@ -22606,6 +22652,7 @@
                     </label>
                     <input type="text" id="tbbStep3TaglineInput" value="${taglineVal.replace(/"/g, '&quot;')}" oninput="canvasState.tagline=this.value; saveBrandSessionToLocalStorage(); if(this.value.trim().length>=4){triggerAuraEmpatheticFeedback('input_name', this.value.trim(), true);}" style="width:100%; height:50px; padding:0 14px; border-radius:14px; border:2px solid #CBD5E1; font-size:0.95rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
+                  ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(3, "brandName") : ""}
                 </div>
               </div>
             `;
@@ -22757,6 +22804,7 @@
               <div style="font-size:0.76rem; color:#0D2540; background:#F0F7FF; border:1.5px solid #93C5FD; border-radius:12px; padding:6px; text-align:center; font-weight:700;">
                 Paradigma inferido por tus deslizadores: ${(SYSTEMIC_LOGO_PARADIGMS.find(p => p.id === st.logoParadigm) || SYSTEMIC_LOGO_PARADIGMS[0]).label}
               </div>
+              ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(4, "step4_seed_idea") : ""}
             </div>
           `;
           return;
@@ -22860,6 +22908,7 @@
                     `).join("")}
                   </div>
                 </div>
+                ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(5, "logoPriHex") : ""}
               </div>
             `;
           } else {
@@ -23149,6 +23198,12 @@
                     <div style="font-family:var(--font-display); font-size:0.94rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                       ${curPlate.num}. ${curPlate.title}
                     </div>
+                    <div style="display:flex; align-items:center; gap:6px; margin-top:2px;">
+                      <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10B981;"></span>
+                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.66rem; font-weight:800; color:#047857; background:#ECFDF5; padding:1px 6px; border-radius:4px; border:1px solid #A7F3D0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                        ${curPlate.leadAuthor || "Consejo Metodológico"} · ${curPlate.auditVerdict || "DICTAMEN METODOLÓGICO: APROBADO"}
+                      </span>
+                    </div>
                   </div>
                   <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; flex:1 1 auto; justify-content:flex-end;">
                     <select aria-label="Seleccionar lámina del manual" onchange="window.tbbState.plateIdx=Number(this.value); triggerAuraEmpatheticFeedback('input_plate_nav', 'Lámina ' + (Number(this.value)+1), false); renderTbbZeroScrollStage();" style="height:40px; padding:0 8px; border-radius:10px; border:2px solid #CBD5E1; font-family:var(--font-ui); font-size:0.75rem; font-weight:800; color:#090D16; background:#F8FAFC; cursor:pointer; flex:1 1 135px; max-width:210px;">
@@ -23210,6 +23265,7 @@
                     Cargar y Abrir Manual Oficial IMPROBEARS (Arquitectura Maestra + Consulting · Ingredients · Studio · AI)
                   </button>
                 </div>
+                ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(6, "governance") : ""}
               </div>
             `;
           }
@@ -24157,9 +24213,9 @@
       }, 90);
     })();
   </script>
-  <script src="/universal-brandbook-30-engine.js?v=67.0"></script>
-  <script src="/improbears-preset-engine.js?v=67.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=67.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=67.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=68.0"></script>
+  <script src="/improbears-preset-engine.js?v=68.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=68.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=68.0"></script>
 </body>
 </html>

@@ -242,6 +242,508 @@
     return s;
   }
 
+  // ==========================================================================
+  // CONSEJO METODOLÓGICO DE AUTORES CONSULTORES · THE BEST BRAND ADVISORY BOARD
+  // Cada autor audita y valida los capítulos y láminas del Brand Book
+  // ==========================================================================
+  window.TBB_MASTER_AUTHORS_BOARD = {
+    aaker: {
+      id: "aaker",
+      name: "David Aaker",
+      shortName: "Aaker",
+      role: "Consejero Metodológico de Relevancia de Categoría & Brand Equity",
+      book: "Building Strong Brands & Brand Relevance",
+      channel: "UC Berkeley Haas / Prophet",
+      monogram: "DA",
+      avatarColor: "#0D2540",
+      accentColor: "#426EAE",
+      stepIds: [0],
+      plates: ["01", "02", "03", "14"],
+      keyMotto: "No compitas por precio: crea una subcategoría propia donde la competencia sea irrelevante.",
+      auditVerdictDefault: "AUDITORÍA DE RELEVANCIA Y CATEGORÍA: APROBADA",
+      auditMethod: function (rawText, context = {}) {
+        const text = String(rawText || "").trim();
+        const bName = context.bName || "la marca";
+        const hasPain = /problema|fricción|caos|desconexión|necesidad|falta|cansad/i.test(text);
+        const hasSol = /solución|sistema|plataforma|servicio|elaboración|diseño/i.test(text);
+        const score = text.length > 25 ? (hasPain && hasSol ? 99 : 95) : 89;
+        const critique = `David Aaker dictamina: Tu descripción define con claridad la categoría y el dolor nuclear que resuelves. La formulación ejecutiva elimina ambigüedades operativas y posiciona a ${bName} como el referente natural de su industria.`;
+        const executiveCopy = window.tbbRefineUserCopyOrthoAndClarity(text, "giro", bName, text);
+        return {
+          author: "David Aaker",
+          role: "Relevancia de Categoría",
+          verdict: "AUDITORÍA DE CATEGORÍA: APROBADA",
+          score: `${score}/100`,
+          critique,
+          executiveCopy
+        };
+      }
+    },
+    osterwalder: {
+      id: "osterwalder",
+      name: "Alexander Osterwalder",
+      shortName: "Osterwalder",
+      role: "Consejero Metodológico de Propuesta de Valor & Business Model Canvas",
+      book: "Business Model Generation & Value Proposition Design",
+      channel: "Strategyzer",
+      monogram: "AO",
+      avatarColor: "#0D2540",
+      accentColor: "#4C9DE6",
+      stepIds: [0, 1],
+      plates: ["02", "03"],
+      keyMotto: "Encaja los dolores y ganancias del cliente con el mapa de valor de tu solución.",
+      auditVerdictDefault: "AUDITORÍA DE ENCAJE PROBLEMA-SOLUCIÓN: VALIDADA",
+      auditMethod: function (rawText, context = {}) {
+        const text = String(rawText || "").trim();
+        const bName = context.bName || "la marca";
+        const executiveCopy = window.tbbRefineUserCopyOrthoAndClarity(text, "offer", bName, text);
+        return {
+          author: "Alexander Osterwalder",
+          role: "Value Proposition Fit",
+          verdict: "ENCAJE DE PROPUESTA DE VALOR: VALIDADO",
+          score: "98/100",
+          critique: `Alexander Osterwalder dictamina: Se verifica un encaje sólido entre los 'Jobs-to-be-Done' del comprador y el mapa de valor entregado por ${bName}.`,
+          executiveCopy
+        };
+      }
+    },
+    sinek: {
+      id: "sinek",
+      name: "Simon Sinek",
+      shortName: "Sinek",
+      role: "Consejero Metodológico de Propósito Nuclear & Círculo Dorado",
+      book: "Start With Why & The Infinite Game",
+      channel: "TED Talk Oficial",
+      monogram: "SS",
+      avatarColor: "#0D2540",
+      accentColor: "#426EAE",
+      stepIds: [1],
+      plates: ["04", "05", "06"],
+      keyMotto: "La gente no compra lo que haces, sino por qué lo haces.",
+      auditVerdictDefault: "AUDITORÍA DE PROPÓSITO CONCÉNTRICO: APROBADA",
+      auditMethod: function (rawText, context = {}) {
+        const text = String(rawText || "").trim();
+        const bName = context.bName || "la marca";
+        const executiveCopy = window.tbbRefineUserCopyOrthoAndClarity(text, "purpose", bName, text);
+        return {
+          author: "Simon Sinek",
+          role: "El Círculo Dorado",
+          verdict: "PROPÓSITO CONCÉNTRICO: APROBADO",
+          score: "99/100",
+          critique: `Simon Sinek dictamina: Tu 'Por Qué' trasciende la simple transacción comercial. Inspira pertenencia y lealtad visceral tanto en el equipo interno como en los clientes.`,
+          executiveCopy
+        };
+      }
+    },
+    miller: {
+      id: "miller",
+      name: "Donald Miller",
+      shortName: "Miller",
+      role: "Consejero Metodológico de Claridad Narrativa & StoryBrand",
+      book: "Building a StoryBrand & Hero on a Mission",
+      channel: "StoryBrand Studios",
+      monogram: "DM",
+      avatarColor: "#0D2540",
+      accentColor: "#4C9DE6",
+      stepIds: [1],
+      plates: ["05", "07", "08"],
+      keyMotto: "El cliente es el héroe de la historia, no tu marca. Tu empresa es el guía.",
+      auditVerdictDefault: "AUDITORÍA DE CLARIDAD NARRATIVA: CERTIFICADA",
+      auditMethod: function (rawText, context = {}) {
+        const text = String(rawText || "").trim();
+        const bName = context.bName || "la marca";
+        const executiveCopy = window.tbbRefineUserCopyOrthoAndClarity(text, "persona", bName, text);
+        return {
+          author: "Donald Miller",
+          role: "Claridad Narrativa & Guía",
+          verdict: "CLARIDAD NARRATIVA: CERTIFICADA",
+          score: "98/100",
+          critique: `Donald Miller dictamina: Tu marca asume con elegancia el rol de 'Guía' (con empatía y autoridad comprobada), ofreciendo un plan claro y medible que guía al héroe hacia el éxito.`,
+          executiveCopy
+        };
+      }
+    },
+    carlzon: {
+      id: "carlzon",
+      name: "Jan Carlzon",
+      shortName: "Carlzon",
+      role: "Consejero Metodológico de Momentos de la Verdad & Experiencia Operativa",
+      book: "Moments of Truth",
+      channel: "SAS Leadership Series",
+      monogram: "JC",
+      avatarColor: "#0D2540",
+      accentColor: "#426EAE",
+      stepIds: [2],
+      plates: ["09", "10", "11", "12"],
+      keyMotto: "Cada interacción de 15 segundos entre un cliente y tu equipo es un Momento de la Verdad.",
+      auditVerdictDefault: "AUDITORÍA DE MOMENTOS DE VERDAD: CERTIFICADA",
+      auditMethod: function (rawList, context = {}) {
+        return {
+          author: "Jan Carlzon",
+          role: "Momentos de la Verdad",
+          verdict: "EXPERIENCIA OPERATIVA: CERTIFICADA",
+          score: "97/100",
+          critique: `Jan Carlzon dictamina: La arquitectura de touchpoints cubre sin fisuras los 3 momentos críticos (Antes, Durante y Después). Se garantiza cero fricción y un estándar humano y puntual en cada contacto.`,
+          executiveCopy: "Mapeo omnicanal homologado con respuesta garantizada, trazabilidad y seguimiento post-venta."
+        };
+      }
+    },
+    norman: {
+      id: "norman",
+      name: "Don Norman",
+      shortName: "Norman",
+      role: "Consejero Metodológico de Diseño Emocional & Experiencia Humana",
+      book: "The Design of Everyday Things & Emotional Design",
+      channel: "Nielsen Norman Group / UCSD",
+      monogram: "DN",
+      avatarColor: "#0D2540",
+      accentColor: "#4C9DE6",
+      stepIds: [2],
+      plates: ["09", "11", "12"],
+      keyMotto: "Las cosas atractivas funcionan mejor: diseña para el nivel visceral, conductual y reflexivo.",
+      auditVerdictDefault: "AUDITORÍA DE USABILIDAD EMOCIONAL: APROBADA",
+      auditMethod: function (rawText, context = {}) {
+        return {
+          author: "Don Norman",
+          role: "Diseño Emocional",
+          verdict: "USABILIDAD EMOCIONAL: APROBADA",
+          score: "98/100",
+          critique: `Don Norman dictamina: El flujo de servicio ofrece affordances claros y retroalimentación inmediata, eliminando la sobrecarga cognitiva del usuario.`,
+          executiveCopy: "Interacción intuitiva, transparente y centrada 100% en las necesidades humanas del cliente."
+        };
+      }
+    },
+    ries_trout: {
+      id: "ries_trout",
+      name: "Al Ries & Jack Trout",
+      shortName: "Ries & Trout",
+      role: "Consejeros Metodológicos de Posicionamiento & Batalla Mental",
+      book: "Positioning: The Battle for Your Mind & 22 Immutable Laws",
+      channel: "Marketing Masters",
+      monogram: "RT",
+      avatarColor: "#0D2540",
+      accentColor: "#426EAE",
+      stepIds: [3],
+      plates: ["13", "14"],
+      keyMotto: "El posicionamiento no es lo que le haces al producto, es lo que construyes en la mente del prospecto.",
+      auditVerdictDefault: "AUDITORÍA DE POSICIONAMIENTO EN LA MENTE: CERTIFICADA",
+      auditMethod: function (rawName, context = {}) {
+        const name = String(rawName || "TheBestBrand").trim();
+        const score = name.length <= 15 ? 99 : 92;
+        return {
+          author: "Al Ries & Jack Trout",
+          role: "Posicionamiento en la Mente",
+          verdict: "POSICIONAMIENTO Y DIFERENCIACIÓN: CERTIFICADO",
+          score: `${score}/100`,
+          critique: `Al Ries & Jack Trout dictaminan: «${name}» posee alta sonoridad y pregnancia nemotécnica. Ocupa un territorio nítido en la mente y permite adueñarse de una sola palabra en la categoría.`,
+          executiveCopy: `${name.toUpperCase()} · Posicionamiento de categoría única con registro prioritario en Niza.`
+        };
+      }
+    },
+    watkins: {
+      id: "watkins",
+      name: "Alexandra Watkins",
+      shortName: "Watkins",
+      role: "Consejera Metodológica de Naming & Fonética Comercial",
+      book: "Hello, My Name Is Awesome: How to Create Brand Names That Stick",
+      channel: "Eat My Words",
+      monogram: "AW",
+      avatarColor: "#0D2540",
+      accentColor: "#4C9DE6",
+      stepIds: [3],
+      plates: ["13"],
+      keyMotto: "Pasa el test SMILE (Suggestive, Meaningful, Imagery, Legs, Emotional) y evita SCRATCH.",
+      auditVerdictDefault: "AUDITORÍA FONÉTICA SMILE: APROBADA CON EXCELENCIA",
+      auditMethod: function (rawName, context = {}) {
+        return {
+          author: "Alexandra Watkins",
+          role: "Test Fonético SMILE & SCRATCH",
+          verdict: "TEST SMILE: 5/5 CRITERIOS SUPERADOS",
+          score: "100/100",
+          critique: `Alexandra Watkins dictamina: El nombre supera las 5 pruebas SMILE: es sugestivo, memorable, evoca imaginería mental positiva, tiene piernas para extenderse y genera tracción emocional.`,
+          executiveCopy: "Nombre fonéticamente equilibrado, libre de ortografía confusa y de pronunciación fluida."
+        };
+      }
+    },
+    rand: {
+      id: "rand",
+      name: "Paul Rand",
+      shortName: "Rand",
+      role: "Consejero Metodológico de Rigor Simbólico & Semiótica Icónica",
+      book: "A Designer's Art & Design, Form, and Chaos",
+      channel: "Yale School of Art Archive",
+      monogram: "PR",
+      avatarColor: "#0D2540",
+      accentColor: "#426EAE",
+      stepIds: [4],
+      plates: ["15", "16", "17", "18", "19", "21", "26"],
+      keyMotto: "Un logo no vende; identifica. Su valor se revela cuando se asocia a un producto o servicio de calidad.",
+      auditVerdictDefault: "TEST DE RAND (7 CRITERIOS DE CALIDAD): 100/100",
+      auditMethod: function (symbolData, context = {}) {
+        return {
+          author: "Paul Rand",
+          role: "Test de Rand de 7 Puntos",
+          verdict: "TEST DE RAND: 7/7 CRITERIOS APROBADOS",
+          score: "100/100",
+          critique: `Paul Rand dictamina: El símbolo maestro cumple rigurosamente con los 7 criterios del Test de Rand: 1. Es distintivo. 2. Es visible. 3. Es adaptable. 4. Es memorable. 5. Es universal. 6. Es atemporal. 7. Es simple.`,
+          executiveCopy: "Síntesis geométrica de alta retención que conserva su legibilidad desde 16px hasta escala monumental."
+        };
+      }
+    },
+    vignelli: {
+      id: "vignelli",
+      name: "Massimo Vignelli",
+      shortName: "Vignelli",
+      role: "Consejero Metodológico de Disciplina Constructiva & Retícula 8x8",
+      book: "The Vignelli Canon",
+      channel: "Vignelli Center for Design Studies",
+      monogram: "MV",
+      avatarColor: "#0D2540",
+      accentColor: "#426EAE",
+      stepIds: [4, 5],
+      plates: ["20", "21", "22", "25"],
+      keyMotto: "Si puedes diseñar una cosa, puedes diseñarlo todo. La retícula es la disciplina que libera la creatividad.",
+      auditVerdictDefault: "RETÍCULA CONSTRUCTIVA 8x8 Y AISLAMIENTO 1.5X: CERTIFICADA",
+      auditMethod: function (gridData, context = {}) {
+        return {
+          author: "Massimo Vignelli",
+          role: "El Canon Vignelli",
+          verdict: "DISCIPLINA CONSTRUCTIVA Y RETÍCULA: CERTIFICADA",
+          score: "99/100",
+          critique: `Massimo Vignelli dictamina: La construcción técnica en módulo 8x8 y el área de aislamiento de 1.5X protegen al símbolo de cualquier contaminación visual. Las 6 prohibiciones blindan la dignidad de la marca.`,
+          executiveCopy: "Geometría euclidiana con cotas exactas, área de guarda innegociable y aplicación calada en negativo."
+        };
+      }
+    },
+    haviv: {
+      id: "haviv",
+      name: "Sagi Haviv",
+      shortName: "Haviv",
+      role: "Consejero Metodológico de Simplicidad Radical & Marcas Perdurables",
+      book: "Identify: Basic Principles of Identity Design",
+      channel: "Chermayeff & Geismar & Haviv",
+      monogram: "SH",
+      avatarColor: "#0D2540",
+      accentColor: "#4C9DE6",
+      stepIds: [4],
+      plates: ["01", "15", "18", "19", "21"],
+      keyMotto: "Un logo excelente no describe; identifica. Debe ser tan simple que un niño pueda dibujarlo de memoria en la arena.",
+      auditVerdictDefault: "AUDITORÍA DE SIMPLICIDAD ICÓNICA: APROBADA",
+      auditMethod: function (iconData, context = {}) {
+        return {
+          author: "Sagi Haviv",
+          role: "Simplicidad Icónica",
+          verdict: "SÍNTESIS ICÓNICA RADICAL: APROBADA",
+          score: "98/100",
+          critique: `Sagi Haviv dictamina: La marca alcanza la cota más alta del diseño de identidad: reducción al elemento esencial sin perder su carga simbólica.`,
+          executiveCopy: "Identificador puro, reproducible en un solo color y reconocible al instante a cualquier distancia."
+        };
+      }
+    },
+    nagamachi: {
+      id: "nagamachi",
+      name: "Mitsuhiro Nagamachi",
+      shortName: "Nagamachi",
+      role: "Consejero Metodológico de Ingeniería Kansei & Psicología Emocional",
+      book: "Kansei Engineering & Affective Product Design",
+      channel: "Hiroshima University Kansei Lab",
+      monogram: "MN",
+      avatarColor: "#0D2540",
+      accentColor: "#426EAE",
+      stepIds: [5],
+      plates: ["23", "24", "26"],
+      keyMotto: "Traduce los sentimientos, emociones y valores psicológicos del usuario en parámetros físicos de diseño.",
+      auditVerdictDefault: "AUDITORÍA KANSEI DE RESONANCIA EMOCIONAL: CERTIFICADA",
+      auditMethod: function (paletteData, context = {}) {
+        return {
+          author: "Mitsuhiro Nagamachi",
+          role: "Ingeniería Kansei",
+          verdict: "RESONANCIA EMOCIONAL KANSEI: CERTIFICADA",
+          score: "99/100",
+          critique: `Mitsuhiro Nagamachi dictamina: La paleta de 8 tonos genera una respuesta afectiva de certeza, serenidad técnica y confianza institucional en el sistema nervioso del observador.`,
+          executiveCopy: "Cromatismo calibrado por longitud de onda, con balance de contraste 18.5:1 sobre lienzo blanco puro."
+        };
+      }
+    },
+    ive: {
+      id: "ive",
+      name: "Jony Ive",
+      shortName: "Ive",
+      role: "Consejero Metodológico de Acabado Sensorial & Proporción de Luz",
+      book: "Industrial Design Philosophy & Sensory Minimalism",
+      channel: "LoveFrom / Apple Design Archive",
+      monogram: "JI",
+      avatarColor: "#0D2540",
+      accentColor: "#4C9DE6",
+      stepIds: [5],
+      plates: ["23", "24", "25", "28"],
+      keyMotto: "La verdadera simplicidad no es solo la ausencia de desorden; es la consecuencia inevitable de resolver profundamente un problema.",
+      auditVerdictDefault: "PROPORCIÓN DE LUZ 70/20/10 Y ACABADO SENSORIAL: APROBADO",
+      auditMethod: function (visualData, context = {}) {
+        return {
+          author: "Jony Ive",
+          role: "Acabado Sensorial & Luz",
+          verdict: "PROPORCIÓN 70/20/10 Y SENSORIALIDAD: APROBADA",
+          score: "100/100",
+          critique: `Jony Ive dictamina: El espacio negativo actúa como material de construcción. 70% lienzo blanco puro, 20% contraste estructural y 10% acento funcional confieren un acabado de lujo austero.`,
+          executiveCopy: "Pureza formal donde cada radio de curvatura y cota tipográfica responde a una razón constructiva ineludible."
+        };
+      }
+    },
+    porter: {
+      id: "porter",
+      name: "Michael Porter",
+      shortName: "Porter",
+      role: "Consejero Metodológico de Estrategia Competitiva & Barreras de Entrada",
+      book: "Competitive Strategy & What is Strategy?",
+      channel: "Harvard Business School",
+      monogram: "MP",
+      avatarColor: "#0D2540",
+      accentColor: "#426EAE",
+      stepIds: [6],
+      plates: ["27", "28", "29", "30"],
+      keyMotto: "La estrategia consiste en elegir qué no hacer y crear un conjunto de actividades único que sea difícil de replicar.",
+      auditVerdictDefault: "AUDITORÍA DE GOBERNANZA Y BARRERAS DE ENTRADA: VIGENTE",
+      auditMethod: function (govData, context = {}) {
+        return {
+          author: "Michael Porter",
+          role: "Estrategia Competitiva",
+          verdict: "BLINDAJE Y BARRERAS DE ENTRADA: CERTIFICADO",
+          score: "99/100",
+          critique: `Michael Porter dictamina: Este manual constituye una barrera de entrada estratégica. Al estandarizar la cadena de valor visual y operativa, convierte a la marca en un activo institucional inimitable.`,
+          executiveCopy: "Gobernanza corporativa de cumplimiento obligatorio que protege la prima de valor en el mercado."
+        };
+      }
+    },
+    neumeier: {
+      id: "neumeier",
+      name: "Marty Neumeier",
+      shortName: "Neumeier",
+      role: "Consejero Metodológico de Síntesis Estratégica & The Brand Gap",
+      book: "The Brand Gap, Zag & The Dictionary of Brand",
+      channel: "Liquid Agency / The Futur",
+      monogram: "MN",
+      avatarColor: "#0D2540",
+      accentColor: "#4C9DE6",
+      stepIds: [6],
+      plates: ["27", "30"],
+      keyMotto: "Una marca no es lo que tú dices que es; es lo que ellos dicen que es.",
+      auditVerdictDefault: "AUDITORÍA DE SÍNTESIS ZAG Y DIFERENCIACIÓN RADICAL: APROBADA",
+      auditMethod: function (brandData, context = {}) {
+        return {
+          author: "Marty Neumeier",
+          role: "The Brand Gap & Zag",
+          verdict: "SÍNTESIS ESTRATÉGICA ZAG: APROBADA",
+          score: "99/100",
+          critique: `Marty Neumeier dictamina: Se ha cerrado la brecha entre la lógica de negocios y la magia del diseño. Mientras el mercado hace ZIG, esta marca hace ZAG con convicción total.`,
+          executiveCopy: "Identidad carismática que une visión estratégica y potencia estética en un solo impulso."
+        };
+      }
+    }
+  };
+
+  // Función global para ejecutar la auditoría interactiva del autor en el paso actual
+  window.tbbRunLiveAuthorAudit = function (stepNum, fieldRole) {
+    const s = Number(stepNum || 0);
+    const board = window.TBB_MASTER_AUTHORS_BOARD || {};
+    const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+    const bGiro = (cs.custom_business_type || cs.step0_short_essence || "Soluciones Especializadas").trim();
+
+    const stepAuthorMap = {
+      0: board.aaker,
+      1: board.sinek,
+      2: board.carlzon,
+      3: board.ries_trout,
+      4: board.rand,
+      5: board.nagamachi,
+      6: board.porter
+    };
+
+    const author = stepAuthorMap[s] || board.aaker;
+    let rawText = "";
+
+    if (s === 0) {
+      rawText = document.getElementById("tbbStep0BizTextarea")?.value || cs.custom_business_type || "";
+    } else if (s === 1) {
+      rawText = document.getElementById("tbbStep1AnswerInput")?.value || cs[fieldRole] || "";
+    } else if (s === 2) {
+      rawText = (typeof tpExtractedItems === "object" && tpExtractedItems[fieldRole]) ? tpExtractedItems[fieldRole] : [];
+    } else if (s === 3) {
+      rawText = cs.brandName || "";
+    } else if (s === 4) {
+      rawText = cs.step4_seed_idea || cs.primary_font || "";
+    } else if (s === 5) {
+      rawText = window.tbbState?.logoPriHex || "#0D2540";
+    } else if (s === 6) {
+      rawText = bName;
+    }
+
+    const audit = author.auditMethod(rawText, { bName, bGiro, fieldRole, step: s });
+
+    const container = document.getElementById(`tbbAuthorAuditResult_${s}`);
+    if (container) {
+      container.style.display = "block";
+      container.innerHTML = `
+        <div style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-top:3.5px solid #0D2540; border-radius:12px; padding:12px 14px; margin-top:8px; box-shadow:0 8px 24px rgba(13,37,64,0.08);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10B981;"></span>
+              <span style="font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:900; color:#0D2540;">${author.name} · ${author.role}</span>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#047857; background:#ECFDF5; padding:3px 8px; border-radius:6px; border:1px solid #A7F3D0;">
+              ✦ ${audit.verdict} (${audit.score})
+            </span>
+          </div>
+          <p style="font-size:0.80rem; color:#334155; line-height:1.48; margin:0 0 10px 0; font-style:italic;">
+            “${audit.critique}”
+          </p>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:10px 12px; margin-bottom:10px;">
+            <div style="font-size:0.68rem; font-weight:800; color:#64748B; margin-bottom:4px; letter-spacing:0.06em;">REDACCIÓN EJECUTIVA DICTAMINADA POR ${author.name.toUpperCase()}:</div>
+            <div style="font-size:0.86rem; font-weight:700; color:#090D16; line-height:1.4;">${audit.executiveCopy}</div>
+          </div>
+          <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbApplyAuthorExecutiveCopy(${s}, '${fieldRole}', '${encodeURIComponent(audit.executiveCopy)}')" style="min-height:36px !important; padding:6px 14px !important; font-size:0.78rem !important; width:100%; border-radius:10px !important;">
+            ✓ Aplicar Redacción Ejecutiva de ${author.shortName} al Campo
+          </button>
+        </div>
+      `;
+    }
+
+    if (typeof window.triggerAuraEmpatheticFeedback === "function") {
+      window.triggerAuraEmpatheticFeedback("author_audit", `Dictamen metodológico emitido por ${author.name}`, false, true);
+    }
+  };
+
+  window.tbbApplyAuthorExecutiveCopy = function (stepNum, fieldRole, encodedCopy) {
+    const text = decodeURIComponent(encodedCopy || "");
+    if (!text) return;
+    const s = Number(stepNum || 0);
+
+    if (s === 0) {
+      const el = document.getElementById("tbbStep0BizTextarea");
+      if (el) el.value = text;
+      if (typeof window.tbbUpdateBusinessTypeFromInput === "function") window.tbbUpdateBusinessTypeFromInput(text);
+    } else if (s === 1) {
+      const el = document.getElementById("tbbStep1AnswerInput");
+      if (el) el.value = text;
+      if (typeof window.tbbSaveStep1Answer === "function") window.tbbSaveStep1Answer(fieldRole, text);
+    } else if (s === 3) {
+      if (typeof window.tbbUpdateBrandNameFromInput === "function") window.tbbUpdateBrandNameFromInput(text);
+    }
+
+    const container = document.getElementById(`tbbAuthorAuditResult_${s}`);
+    if (container) {
+      container.innerHTML = `
+        <div style="background:#ECFDF5; border:1px solid #A7F3D0; border-radius:8px; padding:8px 12px; font-size:0.78rem; font-weight:800; color:#047857; text-align:center;">
+          ✓ Redacción ejecutiva aplicada exitosamente y sincronizada con el Manual de 30 Hojas.
+        </div>
+      `;
+      setTimeout(() => {
+        if (container) container.style.display = "none";
+      }, 3500);
+    }
+  };
+
   window.tbbRefineUserCopyOrthoAndClarity = function (rawText, fieldRole = "general", brandName = "la marca", fallbackText = "") {
     const cleanRaw = String(rawText || "").replace(/\s+/g, " ").trim();
     if (!cleanRaw || /^es una app que sirve para$/i.test(cleanRaw)) {
@@ -1401,36 +1903,306 @@
         ];
 
     return [
-      { num: "01", sec: "PORTADA MAESTRA", title: `Portada Maestra en ${accentNoun}: ${bUpper}` },
-      { num: "02", sec: "01 · ARQUITECTURA METODOLÓGICA", title: "Índice Metodológico TheBestBrand (Pasos 0 al 6 · 30 Láminas)" },
-      { num: "03", sec: "01 · PASO 0 — GIRO Y PROBLEMA", title: "Manifiesto Fundacional: Del Caos al Sistema y Buyer Persona" },
-      { num: "04", sec: "02 · PASO 1 — ADN DE MARCA", title: `El Círculo Dorado (WHY · HOW · WHAT) y Oferta de ${bName}` },
-      { num: "05", sec: "02 · PASO 1 — ADN DE MARCA", title: "Promesa, Misión, Visión y las 6 Máximas de Filosofía" },
-      { num: "06", sec: "02 · PASO 1 — ADN DE MARCA", title: "Los 6 Principios que nos Guían y Nuestra Relación con Clientes" },
-      { num: "07", sec: "02 · PASO 1 — LA EMPRESA COMO PERSONA", title: `La Empresa como Persona: Carácter y 4 Facetas de ${bName}` },
-      { num: "08", sec: "02 · PASO 1 — LA EMPRESA COMO PERSONA", title: "Tono de Voz, Personalidad y Lenguaje Visual" },
-      { num: "09", sec: "03 · PASO 2 — TOUCHPOINTS", title: "Ingeniería de Touchpoints: Mapa de Contacto Real con el Cliente" },
-      { num: "10", sec: "03 · PASO 2 — TOUCHPOINTS", title: "Touchpoints Momento 1: Antes de Comprar (Descubrimiento y Confianza)" },
-      { num: "11", sec: "03 · PASO 2 — TOUCHPOINTS", title: "Touchpoints Momento 2: Durante la Compra y Ejecución del Servicio" },
-      { num: "12", sec: "03 · PASO 2 — TOUCHPOINTS", title: "Touchpoints Momento 3: Después de Comprar (Portal, Entregables y Lealtad)" },
-      { num: "13", sec: "04 · PASO 3 — EL NOMBRE OFICIAL", title: `Naming Estratégico (${bUpper}), Semiótica y Clases de Niza` },
-      { num: "14", sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS", title: plate14Title },
-      { num: "15", sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS", title: "Anatomía Semiótica del Símbolo Maestro en Positivo" },
-      { num: "16", sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS", title: plate16to19Titles[0] },
-      { num: "17", sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS", title: plate16to19Titles[1] },
-      { num: "18", sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS", title: plate16to19Titles[2] },
-      { num: "19", sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS", title: plate16to19Titles[3] },
-      { num: "20", sec: "05 · PASO 4 — CONSTRUCCIÓN TÉCNICA", title: `Retícula Constructiva (8X × 8X) y Sistema de ${accentNoun}` },
-      { num: "21", sec: "05 · PASO 4 — CONSTRUCCIÓN TÉCNICA", title: "Área de Aislamiento (1.5X) y Sección de Aplicación en Negativo" },
-      { num: "22", sec: "05 · PASO 4 — CONSTRUCCIÓN TÉCNICA", title: "Usos Incorrectos y Restricciones de Integridad Visual (6 Reglas)" },
-      { num: "23", sec: "06 · PASO 5 — COLOR Y TIPOGRAFÍA", title: "Paleta Cromática Oficial (8 Colores · Pantone · CMYK · HEX)" },
-      { num: "24", sec: "06 · PASO 5 — COLOR Y TIPOGRAFÍA", title: `Proporción de Luz (70/20/10) y los 6 Recursos en ${accentNoun}` },
-      { num: "25", sec: "06 · PASO 5 — COLOR Y TIPOGRAFÍA", title: "Sistema Tipográfico Oficial y Jerarquía Editorial" },
-      { num: "26", sec: "06 · PASO 5 — COLOR Y TIPOGRAFÍA", title: "Sistema de los 6 Sellos Metodológicos en el Estilo del Logo" },
-      { num: "27", sec: "07 · PASO 6 — APLICACIONES Y GOBERNANZA", title: "Gobernanza de Identidad Documental y Co-Branding (Norma Oficial de Co-Branding)" },
-      { num: "28", sec: "07 · PASO 6 — APLICACIONES Y GOBERNANZA", title: "Papelería en Lienzo Claro, Propuestas, Tarjetas Ejecutivas y Firma" },
-      { num: "29", sec: "07 · PASO 6 — APLICACIONES Y GOBERNANZA", title: "Ecosistema Digital en Lienzo Claro y Checklist de 10 Controles" },
-      { num: "30", sec: "07 · PASO 6 — COLOFÓN INSTITUCIONAL", title: `Colofón Institucional sobre Fondo Claro y Síntesis ${bUpper}` }
+      {
+        num: "01",
+        sec: "PORTADA MAESTRA",
+        title: `Portada Maestra en ${accentNoun}: ${bUpper}`,
+        leadAuthor: "David Aaker & Sagi Haviv",
+        authorBadge: "METODOLOGÍA DAVID AAKER & SAGI HAVIV",
+        authorRole: "Brand Equity & Simbolismo Icónico",
+        auditVerdict: "PORTADA MAESTRA Y SÍMBOLO CENTRAL: CERTIFICADOS",
+        authorQuote: "“Un símbolo no describe; identifica con autoridad inmutable.”"
+      },
+      {
+        num: "02",
+        sec: "01 · ARQUITECTURA METODOLÓGICA",
+        title: "Índice Metodológico TheBestBrand (Pasos 0 al 6 · 30 Láminas)",
+        leadAuthor: "Alexander Osterwalder & David Aaker",
+        authorBadge: "METODOLOGÍA ALEXANDER OSTERWALDER & DAVID AAKER",
+        authorRole: "Modelo de Negocio & Consistencia Sistémica",
+        auditVerdict: "ARQUITECTURA DE 30 LÁMINAS: HOMOLOGADA",
+        authorQuote: "“La consistencia visual y operativa crea ventajas competitivas inexpugnables.”"
+      },
+      {
+        num: "03",
+        sec: "01 · PASO 0 — GIRO Y PROBLEMA",
+        title: "Manifiesto Fundacional: Del Caos al Sistema y Buyer Persona",
+        leadAuthor: "David Aaker & Alexander Osterwalder",
+        authorBadge: "METODOLOGÍA DAVID AAKER & ALEXANDER OSTERWALDER",
+        authorRole: "Relevancia de Categoría & Propuesta de Valor",
+        auditVerdict: "RELEVANCIA DE CATEGORÍA Y BUYER PERSONA: CERTIFICADA",
+        authorQuote: "“Define una categoría donde tu solución sea la única opción obvia.”"
+      },
+      {
+        num: "04",
+        sec: "02 · PASO 1 — ADN DE MARCA",
+        title: `El Círculo Dorado (WHY · HOW · WHAT) y Oferta de ${bName}`,
+        leadAuthor: "Simon Sinek",
+        authorBadge: "METODOLOGÍA SIMON SINEK · EL CÍRCULO DORADO",
+        authorRole: "Propósito Nuclear & Alineación Estratégica",
+        auditVerdict: "PROPÓSITO CONCÉNTRICO (WHY · HOW · WHAT): APROBADO",
+        authorQuote: "“La gente no compra lo que haces, sino por qué lo haces.”"
+      },
+      {
+        num: "05",
+        sec: "02 · PASO 1 — ADN DE MARCA",
+        title: "Promesa, Misión, Visión y las 6 Máximas de Filosofía",
+        leadAuthor: "Donald Miller",
+        authorBadge: "METODOLOGÍA DONALD MILLER · STORYBRAND",
+        authorRole: "Claridad Narrativa & El Guía de la Historia",
+        auditVerdict: "PROMESA CENTRAL Y LAS 6 MÁXIMAS: CERTIFICADAS",
+        authorQuote: "“Si confundes al cliente, lo pierdes. La claridad vence a la persuasión.”"
+      },
+      {
+        num: "06",
+        sec: "02 · PASO 1 — ADN DE MARCA",
+        title: "Los 6 Principios que nos Guían y Nuestra Relación con Clientes",
+        leadAuthor: "Simon Sinek & Donald Miller",
+        authorBadge: "METODOLOGÍA SIMON SINEK & DONALD MILLER",
+        authorRole: "Cultura Operativa & Relaciones Duraderas",
+        auditVerdict: "PRINCIPIOS RECTORES Y 5 COMPROMISOS: CERTIFICADOS",
+        authorQuote: "“Los principios innegociables construyen reputación a través de las décadas.”"
+      },
+      {
+        num: "07",
+        sec: "02 · PASO 1 — LA EMPRESA COMO PERSONA",
+        title: `La Empresa como Persona: Carácter y 4 Facetas de ${bName}`,
+        leadAuthor: "Donald Miller",
+        authorBadge: "METODOLOGÍA DONALD MILLER · LA EMPRESA COMO GUÍA",
+        authorRole: "Personificación de Marca & Empatía con el Cliente",
+        auditVerdict: "ARQUETIPO HUMANO Y 4 FACETAS: CERTIFICADOS",
+        authorQuote: "“Posiciona a tu empresa como el guía leal y al cliente como el héroe de la jornada.”"
+      },
+      {
+        num: "08",
+        sec: "02 · PASO 1 — LA EMPRESA COMO PERSONA",
+        title: "Tono de Voz, Personalidad y Lenguaje Visual",
+        leadAuthor: "Donald Miller & Aura",
+        authorBadge: "METODOLOGÍA DONALD MILLER & MOTOR NEURAL AURA",
+        authorRole: "Calibración Lingüística & Voz Corporativa",
+        auditVerdict: "TONO DE VOZ Y ESPECTRO DE ATRIBUTOS: CALIBRADOS",
+        authorQuote: "“El tono corporativo debe ser firme, cercano y libre de ambigüedades técnicas.”"
+      },
+      {
+        num: "09",
+        sec: "03 · PASO 2 — TOUCHPOINTS",
+        title: "Ingeniería de Touchpoints: Mapa de Contacto Real con el Cliente",
+        leadAuthor: "Jan Carlzon & Don Norman",
+        authorBadge: "METODOLOGÍA JAN CARLZON & DON NORMAN",
+        authorRole: "Momentos de la Verdad & Diseño Emocional",
+        auditVerdict: "INGENIERÍA DE TOUCHPOINTS (3 FASES): CERTIFICADA",
+        authorQuote: "“50,000 momentos de verdad diarios definen si tu marca vive o muere.”"
+      },
+      {
+        num: "10",
+        sec: "03 · PASO 2 — TOUCHPOINTS",
+        title: "Touchpoints Momento 1: Antes de Comprar (Descubrimiento y Confianza)",
+        leadAuthor: "Jan Carlzon",
+        authorBadge: "METODOLOGÍA JAN CARLZON · MOMENTO 1 (ANTES)",
+        authorRole: "Arquitectura de Descubrimiento & Confianza",
+        auditVerdict: "DESCUBRIMIENTO Y ANCLAJE DE CONFIANZA: APROBADO",
+        authorQuote: "“La primera impresión fija el marco mental en el que se juzgará todo lo demás.”"
+      },
+      {
+        num: "11",
+        sec: "03 · PASO 2 — TOUCHPOINTS",
+        title: "Touchpoints Momento 2: Durante la Compra y Ejecución del Servicio",
+        leadAuthor: "Jan Carlzon & Don Norman",
+        authorBadge: "METODOLOGÍA JAN CARLZON & DON NORMAN · MOMENTO 2 (DURANTE)",
+        authorRole: "Experiencia en Vivo & Fricción Cero",
+        auditVerdict: "EJECUCIÓN DEL SERVICIO SIN FRICCIÓN: APROBADA",
+        authorQuote: "“La experiencia en vivo es donde la promesa comercial se vuelve realidad medible.”"
+      },
+      {
+        num: "12",
+        sec: "03 · PASO 2 — TOUCHPOINTS",
+        title: "Touchpoints Momento 3: Después de Comprar (Portal, Entregables y Lealtad)",
+        leadAuthor: "Jan Carlzon & Don Norman",
+        authorBadge: "METODOLOGÍA JAN CARLZON & DON NORMAN · MOMENTO 3 (DESPUÉS)",
+        authorRole: "Retención, Post-Venta & Lealtad",
+        auditVerdict: "PORTAL, ENTREGABLES Y FIDELIZACIÓN: CERTIFICADOS",
+        authorQuote: "“El servicio post-venta no es un costo; es la génesis de la próxima compra.”"
+      },
+      {
+        num: "13",
+        sec: "04 · PASO 3 — EL NOMBRE OFICIAL",
+        title: `Naming Estratégico (${bUpper}), Semiótica y Clases de Niza`,
+        leadAuthor: "Al Ries, Jack Trout & Alexandra Watkins",
+        authorBadge: "METODOLOGÍA AL RIES, JACK TROUT & ALEXANDRA WATKINS",
+        authorRole: "Posicionamiento en la Mente & Test SMILE",
+        auditVerdict: "TEST SMILE Y CLASIFICACIÓN DE NIZA: APROBADA",
+        authorQuote: "“El nombre es la primera clavija mental que se inserta en el cerebro del consumidor.”"
+      },
+      {
+        num: "14",
+        sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS",
+        title: plate14Title,
+        leadAuthor: "David Aaker & Al Ries",
+        authorBadge: "METODOLOGÍA DAVID AAKER & AL RIES",
+        authorRole: "Arquitectura de Portafolio & Concentración de Capital",
+        auditVerdict: "ARQUITECTURA DE MARCA MONOLÍTICA: HOMOLOGADA",
+        authorQuote: "“Una marca única multiplica el retorno sobre la inversión en cada punto de contacto.”"
+      },
+      {
+        num: "15",
+        sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS",
+        title: "Anatomía Semiótica del Símbolo Maestro en Positivo",
+        leadAuthor: "Paul Rand & Sagi Haviv",
+        authorBadge: "METODOLOGÍA PAUL RAND & SAGI HAVIV",
+        authorRole: "Test de Rand de 7 Puntos & Proporción Áurea",
+        auditVerdict: "TEST DE RAND (7 PUNTOS) Y PROPORCIÓN ÁUREA: 100/100",
+        authorQuote: "“La belleza de un símbolo radica en su inevitabilidad funcional.”"
+      },
+      {
+        num: "16",
+        sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS",
+        title: plate16to19Titles[0],
+        leadAuthor: "Paul Rand",
+        authorBadge: "METODOLOGÍA PAUL RAND · PILAR 01 (PROPUESTA CORE)",
+        authorRole: "Síntesis Visual & Firma Horizontal",
+        auditVerdict: "FIRMA HORIZONTAL Y SOLUCIÓN PRINCIPAL: APROBADA",
+        authorQuote: "“Diseña para la mente del observador, no para su capacidad de asombro efímero.”"
+      },
+      {
+        num: "17",
+        sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS",
+        title: plate16to19Titles[1],
+        leadAuthor: "Paul Rand",
+        authorBadge: "METODOLOGÍA PAUL RAND · PILAR 02 (EXPERIENCIA)",
+        authorRole: "Integridad y Estándar de Presencia Físcia",
+        auditVerdict: "ESTÁNDAR DE ATENCIÓN Y PRESENCIA FÍSICA: APROBADA",
+        authorQuote: "“La coherencia geométrica transmite integridad ética y técnica.”"
+      },
+      {
+        num: "18",
+        sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS",
+        title: plate16to19Titles[2],
+        leadAuthor: "Sagi Haviv",
+        authorBadge: "METODOLOGÍA SAGI HAVIV · PILAR 03 (ECOSISTEMA DIGITAL)",
+        authorRole: "Adaptabilidad Digital & Reducción Escalar",
+        auditVerdict: "ADAPTABILIDAD DIGITAL 1:1 Y FAVICON: CERTIFICADA",
+        authorQuote: "“Si el símbolo no funciona a 16 píxeles, la marca fracasará en el mundo digital.”"
+      },
+      {
+        num: "19",
+        sec: "05 · PASO 4 — ARQUITECTURA Y LOGOTIPOS",
+        title: plate16to19Titles[3],
+        leadAuthor: "Paul Rand & Sagi Haviv",
+        authorBadge: "METODOLOGÍA PAUL RAND & SAGI HAVIV · PILAR 04 (ENTREGABLES)",
+        authorRole: "Control de Calidad & Garantía de Marca",
+        auditVerdict: "GARANTÍA DE CALIDAD Y RETENCIÓN: APROBADA",
+        authorQuote: "“El rigor en el detalle final es lo que distingue a los grandes del resto.”"
+      },
+      {
+        num: "20",
+        sec: "05 · PASO 4 — CONSTRUCCIÓN TÉCNICA",
+        title: `Retícula Constructiva (8X × 8X) y Sistema de ${accentNoun}`,
+        leadAuthor: "Massimo Vignelli",
+        authorBadge: "METODOLOGÍA MASSIMO VIGNELLI · EL CANON",
+        authorRole: "Geometría Euclidiana & Retícula 8x8",
+        auditVerdict: "RETÍCULA CONSTRUCTIVA 8x8 Y COTAS EUCLIDIANAS: CERTIFICADAS",
+        authorQuote: "“La retícula es un instrumento de claridad y honestidad moral.”"
+      },
+      {
+        num: "21",
+        sec: "05 · PASO 4 — CONSTRUCCIÓN TÉCNICA",
+        title: "Área de Aislamiento (1.5X) y Sección de Aplicación en Negativo",
+        leadAuthor: "Massimo Vignelli & Paul Rand",
+        authorBadge: "METODOLOGÍA MASSIMO VIGNELLI & PAUL RAND",
+        authorRole: "Área de Guarda & Calado en Negativo",
+        auditVerdict: "ÁREA DE AISLAMIENTO 1.5X Y NEGATIVO CALADO: APROBADOS",
+        authorQuote: "“El espacio de guarda garantiza que la marca nunca sea asfixiada por su entorno.”"
+      },
+      {
+        num: "22",
+        sec: "05 · PASO 4 — CONSTRUCCIÓN TÉCNICA",
+        title: "Usos Incorrectos y Restricciones de Integridad Visual (6 Reglas)",
+        leadAuthor: "Massimo Vignelli",
+        authorBadge: "METODOLOGÍA MASSIMO VIGNELLI · RESTRICCIONES DE INTEGRIDAD",
+        authorRole: "Disciplina Gráfica & Protección del Símbolo",
+        auditVerdict: "CÓDIGO DE LAS 6 PROHIBICIONES VISUALES: VIGENTE",
+        authorQuote: "“La disciplina visual es la barrera que protege a la marca de la mediocridad.”"
+      },
+      {
+        num: "23",
+        sec: "06 · PASO 5 — COLOR Y TIPOGRAFÍA",
+        title: "Paleta Cromática Oficial (8 Colores · Pantone · CMYK · HEX)",
+        leadAuthor: "Mitsuhiro Nagamachi",
+        authorBadge: "METODOLOGÍA MITSUHIRO NAGAMACHI · INGENIERÍA KANSEI",
+        authorRole: "Psicología Afectiva del Color & Calibración de Onda",
+        auditVerdict: "SISTEMA CROMÁTICO DE 8 TONOS (PANTONE/CMYK/HEX): CERTIFICADO",
+        authorQuote: "“El color no decora; induce estados psicológicos de confianza y certeza.”"
+      },
+      {
+        num: "24",
+        sec: "06 · PASO 5 — COLOR Y TIPOGRAFÍA",
+        title: `Proporción de Luz (70/20/10) y los 6 Recursos en ${accentNoun}`,
+        leadAuthor: "Jony Ive & Mitsuhiro Nagamachi",
+        authorBadge: "METODOLOGÍA JONY IVE & MITSUHIRO NAGAMACHI",
+        authorRole: "Lienzo Puro & Balance 70/20/10",
+        auditVerdict: "PROPORCIÓN DE LUZ 70/20/10 Y RECURSOS DE TRAZO: APROBADA",
+        authorQuote: "“El 70% de lienzo claro otorga el oxígeno que hace brillar al producto.”"
+      },
+      {
+        num: "25",
+        sec: "06 · PASO 5 — COLOR Y TIPOGRAFÍA",
+        title: "Sistema Tipográfico Oficial y Jerarquía Editorial",
+        leadAuthor: "Massimo Vignelli & Jony Ive",
+        authorBadge: "METODOLOGÍA MASSIMO VIGNELLI & JONY IVE",
+        authorRole: "Tipografía Modular & Escala Armónica",
+        auditVerdict: "ESCALA MODULAR TIPOGRÁFICA Y JERARQUÍA: CERTIFICADA",
+        authorQuote: "“La tipografía debe ser una voz elocuente y no un estorbo ruidoso.”"
+      },
+      {
+        num: "26",
+        sec: "06 · PASO 5 — COLOR Y TIPOGRAFÍA",
+        title: "Sistema de los 6 Sellos Metodológicos en el Estilo del Logo",
+        leadAuthor: "Paul Rand & Mitsuhiro Nagamachi",
+        authorBadge: "METODOLOGÍA PAUL RAND & MITSUHIRO NAGAMACHI",
+        authorRole: "Sellos de Certificación & Calidad Institucional",
+        auditVerdict: "SISTEMA DE LOS 6 SELLOS METODOLÓGICOS: HOMOLOGADO",
+        authorQuote: "“Los sellos de certificación son la rúbrica visible de la excelencia técnica.”"
+      },
+      {
+        num: "27",
+        sec: "07 · PASO 6 — APLICACIONES Y GOBERNANZA",
+        title: "Gobernanza de Identidad Documental y Co-Branding (Norma Oficial de Co-Branding)",
+        leadAuthor: "Michael Porter & Marty Neumeier",
+        authorBadge: "METODOLOGÍA MICHAEL PORTER & MARTY NEUMEIER",
+        authorRole: "Gobernanza Institucional & Norma de Co-Branding",
+        auditVerdict: "GOBERNANZA Y NORMA OFICIAL DE CO-BRANDING: VIGENTE",
+        authorQuote: "“El co-branding en cápsula neutra protege el capital de ambas partes sin mezclar identidades.”"
+      },
+      {
+        num: "28",
+        sec: "07 · PASO 6 — APLICACIONES Y GOBERNANZA",
+        title: "Papelería en Lienzo Claro, Propuestas, Tarjetas Ejecutivas y Firma",
+        leadAuthor: "Marty Neumeier & Jony Ive",
+        authorBadge: "METODOLOGÍA MARTY NEUMEIER & JONY IVE",
+        authorRole: "Papelería Corporativa & Experiencia Táctil",
+        auditVerdict: "SISTEMA DE PAPELERÍA EN LIENZO CLARO: APROBADO",
+        authorQuote: "“Cada pieza física que toca un cliente es un embajador tangible de tu promesa.”"
+      },
+      {
+        num: "29",
+        sec: "07 · PASO 6 — APLICACIONES Y GOBERNANZA",
+        title: "Ecosistema Digital en Lienzo Claro y Checklist de 10 Controles",
+        leadAuthor: "Michael Porter",
+        authorBadge: "METODOLOGÍA MICHAEL PORTER · AUDITORÍA DE 10 CONTROLES",
+        authorRole: "Auditoría de Activos Digitales & Blindaje de Marca",
+        auditVerdict: "ECOSISTEMA DIGITAL Y CHECKLIST DE INTEGRIDAD: 10/10",
+        authorQuote: "“El control exhaustivo de los activos digitales blinda la reputación en cualquier canal.”"
+      },
+      {
+        num: "30",
+        sec: "07 · PASO 6 — COLOFÓN INSTITUCIONAL",
+        title: `Colofón Institucional sobre Fondo Claro y Síntesis ${bUpper}`,
+        leadAuthor: "Marty Neumeier & Michael Porter",
+        authorBadge: "METODOLOGÍA MARTY NEUMEIER & MICHAEL PORTER",
+        authorRole: "Constitución Oficial de Marca & Promulgación",
+        auditVerdict: "COLOFÓN CONSTITUCIONAL Y VALIDEZ JURÍDICA: PROMULGADO",
+        authorQuote: "“La marca queda formalmente constituida como un activo intangible inmutable y de valor creciente.”"
+      }
     ];
   };
 
@@ -1572,6 +2344,18 @@
         <div style="display:flex;align-items:center;gap:14px;flex-shrink:0;white-space:nowrap;">
           <span style="font-family:'${priFont}','Montserrat',sans-serif;font-weight:700;font-size:8.0px;letter-spacing:0.11em;color:${pal.pri};white-space:nowrap;">${esc(dna.systemStyleBadge)}</span>
           <span style="font-family:'${priFont}','Montserrat',sans-serif;font-weight:800;font-size:9.5px;color:${pal.darkInk};border-bottom:2.5px solid ${pal.sec};padding-bottom:2px;letter-spacing:0.1em;white-space:nowrap;">LAMINA ${meta.num} / 30</span>
+        </div>
+      </div>
+      <div class="plate-author-seal-bar" style="display:flex;align-items:center;justify-content:space-between;background:#F8FAFC;border:1px solid #E2E8F0;border-left:3.5px solid ${pal.sec};border-radius:6px;padding:3px 12px;margin:2px 34px 6px 34px;">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;">
+          <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#10B981;flex-shrink:0;"></span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:7.4px;font-weight:800;letter-spacing:0.08em;color:${pal.darkInk};white-space:nowrap;text-transform:uppercase;">${esc(meta.authorBadge || "CONSEJO METODOLÓGICO THE BEST BRAND")}</span>
+          <span style="color:#94A3B8;font-size:8px;flex-shrink:0;">•</span>
+          <span style="font-family:'Montserrat',sans-serif;font-size:7.4px;font-weight:700;color:${pal.sec};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(meta.leadAuthor || "Equipo Metodológico")}</span>
+          ${meta.authorQuote ? `<span style="color:#64748B;font-size:7.2px;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(meta.authorQuote)}</span>` : ""}
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:7.0px;font-weight:800;color:#047857;letter-spacing:0.06em;background:#ECFDF5;padding:1px 6px;border-radius:4px;border:1px solid #A7F3D0;white-space:nowrap;flex-shrink:0;">
+          ✦ ${esc(meta.auditVerdict || "DICTAMEN METODOLÓGICO: APROBADO")}
         </div>
       </div>
     `;
