@@ -11,11 +11,11 @@
     "rewrites": [
       {
         "source": "/web",
-        "destination": "/website.html"
+        "destination": "/index.html"
       },
       {
         "source": "/studio",
-        "destination": "/index.html"
+        "destination": "/studio.html"
       },
       {
         "source": "/lab",

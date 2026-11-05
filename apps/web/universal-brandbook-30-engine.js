@@ -1,5 +1,5 @@
 // ============================================================================
-// UNIVERSAL 30-PLATE BRANDBOOK ENGINE IN CURVES (DIRECTIVA MAX C-00 · GUÍA IMPROBEARS)
+// UNIVERSAL 30-PLATE BRANDBOOK ENGINE IN CURVES (GUÍA OFICIAL DE ARQUITECTURA DE MARCA)
 // Diseña las 30 láminas completas siguiendo la Guía Oficial de ImproBears,
 // extrayendo los colores, acentos, geometría y tipografía del logotipo activo,
 // y generando escenas editoriales e ilustraciones vectoriales 100% coherentes con el logo.
@@ -89,7 +89,7 @@
   // Extrae colores reales del SVG de Gemini si el usuario pidió colores específicos en el chat
   function extractColorsFromLogoState(activeIt, st) {
     let pri = (activeIt && activeIt.pri) || (st && st.logoPriHex) || "#426EAE";
-    let sec = (activeIt && activeIt.sec) || (st && st.logoSecHex) || "#FF7A00";
+    let sec = (activeIt && activeIt.sec) || (st && st.logoSecHex) || "#4C9DE6";
 
     const customSvg = (activeIt && activeIt.geminiCustomSvg) ? String(activeIt.geminiCustomSvg) : "";
     if (customSvg.length > 20) {
@@ -809,7 +809,7 @@
           diffTitle: "Símbolo Diferenciador: Lente de Claridad Editorial",
           diffText: `Conecta la geometría del logotipo con el sistema de acentos (${dna.strokeLabel.toLowerCase()}) sobre lienzo claro (#FFFFFF).`,
           pillars: [
-            { t: "01. Identidad y Sistemas Visuales", d: "Materiales corporativos, presentaciones ejecutivas y catálogos bajo la Regla C-00." },
+            { t: "01. Identidad y Sistemas Visuales", d: "Materiales corporativos, presentaciones ejecutivas y catálogos bajo la Norma Oficial de Identidad." },
             { t: "02. Producción Audiovisual y Digital", d: "Cápsulas demostrativas, fotografía de marca y contenido educativo para redes y web." },
             { t: "03. Experiencia de Cliente y Embalaje", d: "Diseño de cada punto de contacto físico y digital para transmitir confianza inmediata." }
           ],
@@ -885,7 +885,7 @@
           tagline: `Disposición Horizontal Maestra para cabezales web, fachada, propuestas y presentación de la oferta core: ${clipWords(offer1, 95, true)}`,
           promise: `“Una sola marca sólida (${bName}) que concentra el 100% del reconocimiento, la confianza y la propuesta de valor.”`,
           diffTitle: `Geometría Rectora: ${dna.strokeLabel} · ${dna.eraLabel}`,
-          diffText: `En Arquitectura Monolítica no se fragmenta el nombre en submarcas: el Lockup Horizontal Maestro une el símbolo en positivo con el nombre ${bName} y su descriptor de oferta en ${pal.sec}.`,
+          diffText: `En el Sistema Oficial de Marca Única no se fragmenta el nombre en submarcas: el Lockup Horizontal Maestro une el símbolo en positivo con el nombre ${bName} y su descriptor de oferta en ${pal.sec}.`,
           pillars: [
             { t: "01. Aplicación en Oferta Principal (Core)", d: `${offer1}. Firmado siempre con la versión horizontal principal sobre lienzo claro (#FFFFFF).` },
             { t: "02. Proporción Símbolo + Logotipo Tipográfico", d: `Alineación constructiva en ${priFont} con acentos en ${dna.strokeStyle === "rectilinear" ? "líneas rectas y cortes geométricos" : "curvas orgánicas continuas"}.` },
@@ -1408,7 +1408,7 @@
       { num: "05", sec: "02 · PASO 1 — ADN DE MARCA", title: "Promesa, Misión, Visión y las 6 Máximas de Filosofía" },
       { num: "06", sec: "02 · PASO 1 — ADN DE MARCA", title: "Los 6 Principios que nos Guían y Nuestra Relación con Clientes" },
       { num: "07", sec: "02 · PASO 1 — LA EMPRESA COMO PERSONA", title: `La Empresa como Persona: Carácter y 4 Facetas de ${bName}` },
-      { num: "08", sec: "02 · PASO 1 — LA EMPRESA COMO PERSONA", title: "Voz, Conducta y Calibración de los 7 Vectores Kansei" },
+      { num: "08", sec: "02 · PASO 1 — LA EMPRESA COMO PERSONA", title: "Tono de Voz, Personalidad y Lenguaje Visual" },
       { num: "09", sec: "03 · PASO 2 — TOUCHPOINTS", title: "Ingeniería de Touchpoints: Mapa de Contacto Real con el Cliente" },
       { num: "10", sec: "03 · PASO 2 — TOUCHPOINTS", title: "Touchpoints Momento 1: Antes de Comprar (Descubrimiento y Confianza)" },
       { num: "11", sec: "03 · PASO 2 — TOUCHPOINTS", title: "Touchpoints Momento 2: Durante la Compra y Ejecución del Servicio" },
@@ -1427,7 +1427,7 @@
       { num: "24", sec: "06 · PASO 5 — COLOR Y TIPOGRAFÍA", title: `Proporción de Luz (70/20/10) y los 6 Recursos en ${accentNoun}` },
       { num: "25", sec: "06 · PASO 5 — COLOR Y TIPOGRAFÍA", title: "Sistema Tipográfico Oficial y Jerarquía Editorial" },
       { num: "26", sec: "06 · PASO 5 — COLOR Y TIPOGRAFÍA", title: "Sistema de los 6 Sellos Metodológicos en el Estilo del Logo" },
-      { num: "27", sec: "07 · PASO 6 — APLICACIONES Y GOBERNANZA", title: "Gobernanza de Identidad Documental y Co-Branding (Directiva Max C-00)" },
+      { num: "27", sec: "07 · PASO 6 — APLICACIONES Y GOBERNANZA", title: "Gobernanza de Identidad Documental y Co-Branding (Norma Oficial de Co-Branding)" },
       { num: "28", sec: "07 · PASO 6 — APLICACIONES Y GOBERNANZA", title: "Papelería en Lienzo Claro, Propuestas, Tarjetas Ejecutivas y Firma" },
       { num: "29", sec: "07 · PASO 6 — APLICACIONES Y GOBERNANZA", title: "Ecosistema Digital en Lienzo Claro y Checklist de 10 Controles" },
       { num: "30", sec: "07 · PASO 6 — COLOFÓN INSTITUCIONAL", title: `Colofón Institucional sobre Fondo Claro y Síntesis ${bUpper}` }
@@ -1514,7 +1514,7 @@
       ? `la Marca Madre <strong>${esc(bName)}</strong> y sus <strong>4 Submarcas Homologadas</strong>`
       : (dna.archMode === "portfolio"
           ? `la Marca Rectora <strong>${esc(bName)}</strong> y sus <strong>4 Líneas de Portafolio</strong> en ${esc(bGiro.slice(0, 46))}`
-          : `la Marca Única <strong>${esc(bName)}</strong> (Arquitectura Monolítica) y sus <strong>4 Versiones Oficiales de Aplicación</strong>`);
+          : `la Marca Única <strong>${esc(bName)}</strong> y sus <strong>4 Versiones Oficiales de Aplicación</strong>`);
 
     const archShortList = assets.subBrands.map(s => s.suffix).join(" · ");
 
@@ -1710,7 +1710,7 @@
                       <div style="font-family:'${secFont}',sans-serif;font-size:10.4px;color:${pal.darkInk};line-height:1.38;margin-top:3px;font-weight:600;">${esc(clipWords(bOffer, 128, true))}</div>
                     </div>
                     <div>
-                      <div style="font-family:'${priFont}',sans-serif;font-size:8.5px;font-weight:800;color:${pal.darkInk};letter-spacing:0.14em;">03 · MARCA ÚNICA C-00</div>
+                      <div style="font-family:'${priFont}',sans-serif;font-size:8.5px;font-weight:800;color:${pal.darkInk};letter-spacing:0.14em;">03 · MARCA ÚNICA OFICIAL</div>
                       <div style="font-family:'${secFont}',sans-serif;font-size:10.4px;color:#333333;line-height:1.38;margin-top:3px;">100% reputación unificada en <strong>${esc(bName)}</strong> sin fragmentarse en submarcas.</div>
                     </div>
                   </div>
@@ -1743,7 +1743,7 @@
         ? "14. Arquitectura: Madre + 4 Submarcas<br/>15. Anatomía · 16–19. Las 4 Submarcas"
         : (dna.archMode === "portfolio"
             ? "14. Arquitectura: Marca + 4 Líneas de Oferta<br/>15. Anatomía · 16–19. Las 4 Líneas de Valor"
-            : "14. Arquitectura Monolítica de Marca Única<br/>15. Anatomía · 16–19. Las 4 Versiones del Logo");
+            : "14. Sistema Oficial de Marca Única<br/>15. Anatomía · 16–19. Las 4 Versiones del Logo");
 
       plateInnerHTML = `
         <section class="benefic-plate" id="plate-02">
@@ -1792,7 +1792,7 @@
 
                   <circle cx="372" cy="36" r="14" fill="${pal.sec}"/>
                   <text x="372" y="40" text-anchor="middle" font-family="${priFont}" font-weight="800" font-size="8" fill="#FFFFFF">P5·6</text>
-                  <text x="366" y="14" text-anchor="middle" font-family="${priFont}" font-weight="800" font-size="7.5" fill="${pal.sec}">SISTEMA C-00</text>
+                  <text x="366" y="14" text-anchor="middle" font-family="${priFont}" font-weight="800" font-size="7.5" fill="${pal.sec}">SISTEMA OFICIAL</text>
                 </svg>
                 <div style="font-family:'${priFont}',sans-serif;font-size:8.5px;font-weight:800;color:${pal.pri};letter-spacing:0.12em;margin-top:4px;">
                   ${esc(dna.systemStyleBadge)} • DEL ADN Y TOUCHPOINTS A LA IDENTIDAD
@@ -1826,7 +1826,7 @@
                 <div class="ib-flow-node" style="cursor:pointer;" onclick="if(!${Boolean(forPrint)}){window.tbbState.plateIdx=3;renderTbbZeroScrollStage();}">
                   <div class="ib-node-hdr" style="color:${pal.pri};"><span style="width:8px;height:8px;border-radius:${isRect ? "1px" : "50%"};background:${pal.pri};display:inline-block;"></span>SECCION 02 • LAMINAS 04–08 (PASO 1)</div>
                   <div class="ib-flow-title" style="color:${pal.darkInk};">ADN y La Empresa como Persona</div>
-                  <div class="ib-flow-txt">04. Círculo Dorado (WHY · HOW · WHAT)<br/>05. Promesa, Misión, Visión y 6 Máximas<br/>06. Los 6 Principios y Relación Cliente<br/>07. <strong>La Empresa como Persona</strong><br/>08. Voz, Conducta y Espectro Kansei</div>
+                  <div class="ib-flow-txt">04. Círculo Dorado (WHY · HOW · WHAT)<br/>05. Promesa, Misión, Visión y 6 Máximas<br/>06. Los 6 Principios y Relación Cliente<br/>07. <strong>La Empresa como Persona</strong><br/>08. Voz, Conducta y Espectro Atributos Visuales</div>
                 </div>
                 <div class="ib-flow-node" style="cursor:pointer;" onclick="if(!${Boolean(forPrint)}){window.tbbState.plateIdx=8;renderTbbZeroScrollStage();}">
                   <div class="ib-node-hdr" style="color:${pal.pri};"><span style="width:8px;height:8px;border-radius:${isRect ? "1px" : "50%"};background:${pal.sec};display:inline-block;"></span>SECCION 03 • LAMINAS 09–12 (PASO 2)</div>
@@ -1845,8 +1845,8 @@
                 </div>
                 <div class="ib-flow-node" style="cursor:pointer;" onclick="if(!${Boolean(forPrint)}){window.tbbState.plateIdx=26;renderTbbZeroScrollStage();}">
                   <div class="ib-node-hdr" style="color:${pal.pri};"><span style="width:8px;height:8px;border-radius:${isRect ? "1px" : "50%"};background:${pal.pri};display:inline-block;"></span>SECCION 07 • LAMINAS 27–30 (PASO 6)</div>
-                  <div class="ib-flow-title" style="color:${pal.darkInk};">Aplicaciones y Gobernanza C-00</div>
-                  <div class="ib-flow-txt">27. Regla C-00 de Co-Branding<br/>28. Papelería, Propuestas, Tarjetas y Firma<br/>29. Ecosistema Digital y Auditoría (10 Controles)<br/>30. Colofón Institucional en Lienzo Claro</div>
+                  <div class="ib-flow-title" style="color:${pal.darkInk};">Aplicaciones y Gobernanza Oficial</div>
+                  <div class="ib-flow-txt">27. Norma Oficial de Co-Branding<br/>28. Papelería, Propuestas, Tarjetas y Firma<br/>29. Ecosistema Digital y Auditoría (10 Controles)<br/>30. Colofón Institucional en Lienzo Claro</div>
                 </div>
               </div>
             </div>
@@ -2209,7 +2209,7 @@
     }
 
     // =========================================================================
-    // LÁMINA 08: VOZ, CONDUCTA Y CALIBRACIÓN DE LOS 7 VECTORES KANSEI (PASO 1.5)
+    // LÁMINA 08: VOZ, CONDUCTA Y CALIBRACIÓN DE LOS LENGUAJE Y ATRIBUTOS VISUALES (PASO 1.5)
     // =========================================================================
     else if (idx === 7) {
       const bp = (typeof window.bipolarSliderValues === "object" && window.bipolarSliderValues) ? window.bipolarSliderValues : {};
@@ -2225,7 +2225,7 @@
       plateInnerHTML = `
         <section class="benefic-plate" id="plate-08">
           ${bgCurvesStandard}
-          ${renderHeader("SECCION 02", "LA EMPRESA COMO PERSONA • VOZ, CONDUCTA Y CALIBRACION KANSEI (PASO 1.5)")}
+          ${renderHeader("SECCION 02", "LA EMPRESA COMO PERSONA • TONO DE VOZ, PERSONALIDAD Y ATRIBUTOS VISUALES (PASO 1.5)")}
           <div class="plate-body" style="display:grid;grid-template-columns:0.96fr 1.04fr;gap:32px;align-items:center;">
             <div style="display:flex;flex-direction:column;gap:14px;padding-right:20px;border-right:1.5px solid ${pal.lightGray};">
               <div style="border-left:3.5px solid ${pal.pri};padding-left:14px;">
@@ -2255,7 +2255,7 @@
 
             <div style="display:flex;flex-direction:column;gap:9px;">
               <div style="font-family:'${priFont}',sans-serif;font-size:10px;font-weight:800;color:${pal.darkInk};letter-spacing:0.15em;margin-bottom:2px;">
-                CALIBRACION PSICOMETRICA DE LOS 7 VECTORES KANSEI Y TRAZOS
+                CALIBRACIÓN DE ATRIBUTOS DE MARCA Y LENGUAJE VISUAL
               </div>
               ${kanseiRows.map((k, i) => `
                 <div style="padding-bottom:5px;border-bottom:1px solid ${pal.lightGray};">
@@ -2877,7 +2877,7 @@
               </div>
 
               <div style="font-family:'${secFont}',sans-serif;font-size:10.5px;color:${pal.accentLight};font-weight:600;">
-                Regla C-00: En el 95% de los documentos se usa el Logotipo en Positivo sobre Lienzo Claro (#FFFFFF).
+                Regla de Oro: En el 95% de los documentos se usa el Logotipo en Positivo sobre Lienzo Claro (#FFFFFF).
               </div>
             </div>
           </div>
@@ -3157,13 +3157,13 @@
     }
 
     // =========================================================================
-    // LÁMINA 27: GOBERNANZA DE IDENTIDAD DOCUMENTAL Y CO-BRANDING (DIRECTIVA MAX C-00 · PASO 6.1)
+    // LÁMINA 27: GOBERNANZA DE IDENTIDAD DOCUMENTAL Y CO-BRANDING (NORMA OFICIAL DE CO-BRANDING · PASO 6.1)
     // =========================================================================
     else if (idx === 26) {
       plateInnerHTML = `
         <section class="benefic-plate" id="plate-27">
           ${bgCurvesStandard}
-          ${renderHeader("SECCION 07", "GOBERNANZA DE IDENTIDAD DOCUMENTAL Y CO-BRANDING • REGLA C-00 (PASO 6.1)")}
+          ${renderHeader("SECCION 07", "GOBERNANZA DE IDENTIDAD DOCUMENTAL Y CO-BRANDING • NORMA OFICIAL (PASO 6.1)")}
           <div class="plate-body" style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:stretch;">
             <div style="border-top:4px solid ${pal.pri};padding-top:14px;display:flex;flex-direction:column;justify-content:space-between;">
               <div>
@@ -3203,7 +3203,7 @@
               </div>
 
               <div style="border-left:3.5px solid ${pal.sec};padding-left:14px;background:${pal.warmTint};padding:14px;border-radius:${isRect ? "0 4px 4px 0" : "0 16px 16px 0"};">
-                <div style="font-family:'${priFont}',sans-serif;font-size:10px;font-weight:800;color:${pal.darkInk};">GARANTIA DE COHERENCIA VISUAL C-00</div>
+                <div style="font-family:'${priFont}',sans-serif;font-size:10px;font-weight:800;color:${pal.darkInk};">GARANTÍA DE COHERENCIA VISUAL OFICIAL</div>
                 <div style="font-family:'${secFont}',sans-serif;font-size:10.8px;color:#333333;line-height:1.42;margin-top:4px;">
                   Ningún documento de <strong>${esc(bName)}</strong> puede adoptar colores ajenos al logotipo ni fondos negros que contradigan la regla 70/20/10 de lienzo claro.
                 </div>
@@ -3328,7 +3328,7 @@
     // =========================================================================
     else if (idx === 28) {
       const ctrl06Text = dna.archMode === "monolithic"
-        ? { t: "06. Arquitectura Monolítica Homologada", d: `4 Versiones Oficiales del Logotipo y Pilares de Oferta de ${bName} en coherencia total.` }
+        ? { t: "06. Sistema Oficial de Marca Única", d: `4 Versiones Oficiales del Logotipo y Pilares de Oferta de ${bName} en coherencia total.` }
         : (dna.archMode === "portfolio"
           ? { t: "06. Portafolio de 4 Líneas de Oferta", d: `Marca rectora ${bName} respaldando sus 4 líneas de valor en ${bGiro.slice(0, 36)}.` }
           : { t: "06. Familia de 4 Submarcas Homologada", d: `Submarcas con el mismo símbolo maestro y descriptor en ${pal.sec}.` });
@@ -3341,7 +3341,7 @@
         ctrl06Text,
         { t: "07. Aplicación en Negativo sin Parches", d: "En fondos oscuros se usa la versión en negativo calado sin círculos ni parches blancos." },
         { t: "08. Tipografía Oficial Intocable", d: `Titulares en ${priFont} y cuerpo ejecutivo en ${secFont} con amplio aire blanco.` },
-        { t: "09. Directiva Max C-00 (Co-Branding)", d: "Logo del cliente aislado en cápsula neutra sin mezclar colores ni vectores." },
+        { t: "09. Norma Oficial de Co-Branding (Co-Branding)", d: "Logo del cliente aislado en cápsula neutra sin mezclar colores ni vectores." },
         { t: "10. Imágenes y Mockups Coherentes con el Logo", d: `Todas las ilustraciones y aplicaciones integran el logotipo real y su paleta (${pal.pri} / ${pal.sec}).` }
       ];
       plateInnerHTML = `
@@ -3359,7 +3359,7 @@
                   </div>
                 </div>
               </div>
-              <span style="font-family:'${priFont}',sans-serif;font-size:9px;font-weight:800;color:${pal.darkInk};border-left:3px solid ${pal.sec};padding-left:10px;">AUDITORIA C-00 VERIFICADA</span>
+              <span style="font-family:'${priFont}',sans-serif;font-size:9px;font-weight:800;color:${pal.darkInk};border-left:3px solid ${pal.sec};padding-left:10px;">AUDITORÍA DE IDENTIDAD VERIFICADA</span>
             </div>
 
             <div style="display:grid;grid-template-columns:1fr 1fr;column-gap:30px;row-gap:8px;flex:1;align-items:center;">
@@ -3448,7 +3448,7 @@
                     <div style="font-family:'${secFont}',sans-serif;font-size:11px;color:${pal.darkInk};line-height:1.42;margin-top:4px;font-weight:600;">${esc(clipWords(bOffer, 128, true))}</div>
                   </div>
                   <div>
-                    <div style="font-family:'${priFont}',sans-serif;font-size:9px;font-weight:800;color:${pal.darkInk};letter-spacing:0.15em;">03 · IDENTIDAD DE MARCA ÚNICA C-00</div>
+                    <div style="font-family:'${priFont}',sans-serif;font-size:9px;font-weight:800;color:${pal.darkInk};letter-spacing:0.15em;">03 · IDENTIDAD DE MARCA ÚNICA OFICIAL</div>
                     <div style="font-family:'${secFont}',sans-serif;font-size:11px;color:#333333;line-height:1.42;margin-top:4px;">Nombre oficial único <strong>${esc(bName)}</strong> en lienzo claro (#FFFFFF), acentos en <strong>${esc(dna.strokeLabel.toLowerCase())}</strong> y logotipo en positivo por defecto.</div>
                   </div>
                 </div>
@@ -3756,7 +3756,7 @@
               30 LÁMINAS A4 · ${esc(bName.toUpperCase())}
             </div>
             <div style="font-size:0.70rem;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-              Guía Oficial ImproBears C-00 · Desliza hacia abajo para ver las 30 láminas
+              Guía Oficial de Marca · Desliza hacia abajo para ver las 30 láminas
             </div>
           </div>
         </div>
@@ -4151,7 +4151,7 @@
 
     const drawC00Chrome = (plateIdx) => {
       const meta = PLATE_META[plateIdx];
-      // Lienzo 100% Blanco Puro (Directiva C-00)
+      // Lienzo 100% Blanco Puro (Norma Oficial de Identidad)
       ctx.fillStyle = "#FFFFFF";
       ctx.fillRect(0, 0, W, H);
 
@@ -4423,7 +4423,7 @@
           const pillarsCover = [
             { badge: "01 · PROPÓSITO CENTRAL", title: "Por qué existimos", body: d.whyText, col: pal.sec },
             { badge: "02 · OFERTA DE VALOR", title: "Qué entregamos", body: d.valueOffer, col: pal.pri },
-            { badge: "03 · MARCA ÚNICA C-00", title: `100% ${bName}`, body: `Toda la reputación y confianza se concentra en el nombre único ${bName}, sin dividirla en submarcas.`, col: pal.darkInk }
+            { badge: "03 · MARCA ÚNICA OFICIAL", title: `100% ${bName}`, body: `Toda la reputación y confianza se concentra en el nombre único ${bName}, sin dividirla en submarcas.`, col: pal.darkInk }
           ];
           const colW = Math.floor((cardW - 36) / 3);
           pillarsCover.forEach((pCol, pIdx) => {
@@ -4525,7 +4525,7 @@
             { code: "P2", lbl: "Touchpoints", x: 254, y: 598, c: pal.sec },
             { code: "P3", lbl: "Naming", x: 336, y: 660, c: pal.pri },
             { code: "P4", lbl: dna.archMode === "multibrand" ? "Submarcas" : "Logo Único", x: 416, y: 604, c: pal.darkInk },
-            { code: "P5-6", lbl: "Color C-00", x: 486, y: 558, c: pal.sec }
+            { code: "P5-6", lbl: "Color Oficial", x: 486, y: 558, c: pal.sec }
           ];
           ctx.strokeStyle = pal.pri;
           ctx.lineWidth = 3.5;
@@ -4560,11 +4560,11 @@
           // 6 Bloques del Índice (Derecha)
           const secs = [
             ["SECCIÓN 01 · LÁMINAS 01–03 (PASO 0)", "Introducción, Giro y Problema", "01. Portada Maestra · 02. Mapa Metodológico · 03. Manifiesto: Del Caos al Sistema y Buyer Persona."],
-            ["SECCIÓN 02 · LÁMINAS 04–08 (PASO 1)", "ADN y La Empresa como Persona", "04. Círculo Dorado (WHY·HOW·WHAT) · 05. Promesa, Misión, Visión y 6 Máximas · 06. 6 Principios · 07. La Empresa como Persona · 08. Voz y Kansei."],
+            ["SECCIÓN 02 · LÁMINAS 04–08 (PASO 1)", "ADN y La Empresa como Persona", "04. Círculo Dorado (WHY·HOW·WHAT) · 05. Promesa, Misión, Visión y 6 Máximas · 06. 6 Principios · 07. La Empresa como Persona · 08. Voz y Atributos Visuales."],
             ["SECCIÓN 03 · LÁMINAS 09–12 (PASO 2)", "Ingeniería de Touchpoints", "09. Mapa Integral del Viaje del Cliente · 10. Touchpoints ANTES de Comprar · 11. Touchpoints DURANTE la Compra · 12. Touchpoints DESPUÉS de Comprar."],
             ["SECCIÓN 04–05 · LÁMINAS 13–22 (PASO 3–4)", "Nombre, Identidad y Logotipos", `13. Naming y Niza · 14. ${dna.archTitle} · 15. Anatomía · 16–19. Pilares de ${bName} · 20. Retícula 8X · 21. Negativo · 22. Prohibiciones.`],
             ["SECCIÓN 06 · LÁMINAS 23–26 (PASO 5)", "Color, Trazos, Tipografía y Sellos", `23. Paleta Oficial (8 Tonos) · 24. Regla 70/20/10 y 6 Recursos (${dna.strokeLabel}) · 25. Tipografía Oficial · 26. Los 6 Sellos.`],
-            ["SECCIÓN 07 · LÁMINAS 27–30 (PASO 6)", "Aplicaciones y Gobernanza C-00", "27. Regla C-00 de Co-Branding · 28. Papelería, Propuestas, Tarjetas y Firma · 29. Ecosistema Digital y 10 Controles · 30. Colofón Institucional."]
+            ["SECCIÓN 07 · LÁMINAS 27–30 (PASO 6)", "Aplicaciones y Gobernanza Oficial", "27. Norma Oficial de Co-Branding · 28. Papelería, Propuestas, Tarjetas y Firma · 29. Ecosistema Digital y 10 Controles · 30. Colofón Institucional."]
           ];
           secs.forEach((sItem, idx) => {
             const col = idx % 2;
@@ -4578,7 +4578,7 @@
 
           const scenes = [
             ["01 · ANTES DEL SISTEMA", "Operación Fragmentada y Fricción", "Múltiples criterios dispersos, desgaste operativo y falta de estandarización visual y comercial.", "#64748B"],
-            ["02 · INTERVENCIÓN " + bUpper, "Identidad y Estandarización C-00", `Integración estratégica guiada por el símbolo y sistema de ${bName} con procesos claros.`, pal.pri],
+            ["02 · INTERVENCIÓN " + bUpper, "Identidad y Estandarización Oficial", `Integración estratégica guiada por el símbolo y sistema de ${bName} con procesos claros.`, pal.pri],
             ["03 · RESULTADO MEDIBLE", "Claridad, Prestigio y Escalabilidad", `Marca sólida bajo ${dna.archTitle} y touchpoints homologados.`, pal.sec]
           ];
           scenes.forEach((sc, idx) => {
@@ -4913,7 +4913,7 @@
           // 3 Tarjetas Ejecutivas de Cierre
           drawNodeCard(54, 604, 416, 286, `01 · PROPÓSITO DE ${bUpper}`, "Por qué existimos", d.whyText, pal.sec);
           drawNodeCard(492, 604, 416, 286, "02 · OFERTA DE VALOR UNIFICADA", "Qué entregamos al cliente", d.valueOffer, pal.pri);
-          drawNodeCard(930, 604, 416, 286, "03 · CERTIFICACIÓN DOCUMENTAL C-00", dna.archTitle, `Manual oficial en Lienzo Claro (#FFFFFF) con logotipo en positivo por defecto, acentos en ${dna.strokeLabel.toLowerCase()} y paleta cromática (${pal.pri} y ${pal.sec}).`, pal.darkInk);
+          drawNodeCard(930, 604, 416, 286, "03 · CERTIFICACIÓN DOCUMENTAL OFICIAL", dna.archTitle, `Manual oficial en Lienzo Claro (#FFFFFF) con logotipo en positivo por defecto, acentos en ${dna.strokeLabel.toLowerCase()} y paleta cromática (${pal.pri} y ${pal.sec}).`, pal.darkInk);
         } else {
           // LÁMINAS 05–13, 15–19, 22, 24–29: SISTEMA EDITORIAL MULTIFORMATO CON CLIPPING ESTRICTO E ILUSTRACIÓN TEMÁTICA
           const subBadgeObj = (i >= 15 && i <= 18 && dna.archMode === "multibrand" && assets.subBrands[i - 15])
@@ -4944,7 +4944,7 @@
                 body: `Operación alineada al 100% con la identidad de ${bName} en atención directa, canales digitales (www.${assets.cleanSlug}.com) y entregables certificados.`
               },
               {
-                badge: "REGLA DE IDENTIDAD VISUAL C-00",
+                badge: "REGLA OFICIAL DE IDENTIDAD VISUAL",
                 title: isMulti ? `Firma Oficial ${bName} ${sbUnit.suffix}` : `Uso del Logotipo Único de ${bName}`,
                 body: isMulti
                   ? `Mantiene el símbolo maestro en positivo y el descriptor en color acento (${pal.sec}) sobre Lienzo Claro (#FFFFFF).`
@@ -5408,7 +5408,7 @@
   <div class="top-print-bar">
     <div style="min-width:220px;flex:1;">
       <strong style="font-family:'Montserrat',sans-serif;color:${pal.darkInk};font-size:0.92rem;display:block;">MANUAL OFICIAL EN CURVAS · 30 LÁMINAS A4 · ${esc(bName.toUpperCase())}</strong>
-      <div style="font-size:0.76rem;color:#475569;margin-top:2px;">Diseñado siguiendo tu logotipo (${pal.pri} y ${pal.sec}) bajo la Guía Oficial de ImproBears C-00.</div>
+      <div style="font-size:0.76rem;color:#475569;margin-top:2px;">Diseñado siguiendo tu logotipo (${pal.pri} y ${pal.sec}) bajo la Guía Oficial de Identidad de Marca.</div>
     </div>
     <div class="top-print-actions">
       <button type="button" class="top-print-btn-sec" onclick="if(window.history.length>1){window.history.back();}else{window.location.href='${originUrl}/';}">← Volver a la App</button>
