@@ -1,0 +1,11 @@
+.git
+.gitignore
+_archived_html_backups/
+entregables_brandbooks/
+apps/web/assets/videos/
+*.pdf
+*.zip
+*.mp4
+*.mov
+__pycache__/
+*.pyc

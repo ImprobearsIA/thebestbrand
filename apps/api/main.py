@@ -556,7 +556,7 @@ Devuelve SIEMPRE JSON válido."""
         "algorithmic_decision_engine": algo_bundle,
         "conclusion_video": {
             "has_video": True,
-            "title": "🎬 Conclusión del Paso 4: Tu Vector Osgood EPA, Modelo Bradley-Terry y Master Prompt",
+            "title": " Conclusión del Paso 4: Tu Vector Osgood EPA, Modelo Bradley-Terry y Master Prompt",
             "narration": f"¡Excelente! Con el Diferencial Semántico de Osgood y el modelo probabilístico Bradley-Terry hemos calculado los parámetros exactos de curvatura, peso tipográfico y espacio de color CIELAB para {brand_name}. Pasemos al Paso 5."
         }
     }
@@ -1041,9 +1041,17 @@ def _init_accounts_vault_db():
                 account_id TEXT PRIMARY KEY,
                 email TEXT UNIQUE NOT NULL,
                 name TEXT NOT NULL,
+                password_hash TEXT DEFAULT '',
+                password_salt TEXT DEFAULT '',
+                migration_code TEXT DEFAULT '',
                 created_at TEXT NOT NULL
             )
         """)
+        for col_name in ("password_hash", "password_salt", "migration_code"):
+            try:
+                conn.execute(f"ALTER TABLE accounts ADD COLUMN {col_name} TEXT DEFAULT ''")
+            except Exception:
+                pass
         conn.execute("""
             CREATE TABLE IF NOT EXISTS brand_workspaces (
                 brand_id TEXT NOT NULL,
@@ -1076,9 +1084,27 @@ def _init_accounts_vault_db():
 _init_accounts_vault_db()
 
 
+def _hash_account_password(password: str, salt: str) -> str:
+    if not password:
+        return ""
+    return hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode("utf-8"),
+        salt.encode("utf-8"),
+        100_000
+    ).hex()
+
+
+def _build_migration_code(email: str, password_hash: str) -> str:
+    raw = hashlib.sha256(f"{email}:{password_hash}:TBB_VAULT".encode("utf-8")).hexdigest().upper()
+    return f"TBB-{raw[:4]}-{raw[4:8]}"
+
+
 class AccountLoginRequest(BaseModel):
     email: str
     name: str = "Fundador"
+    password: str = ""
+    mode: str = "auto"
 
 
 class AccountSaveStateRequest(BaseModel):
@@ -1101,6 +1127,7 @@ def api_account_login_or_register(req: AccountLoginRequest):
     if not clean_email or "@" not in clean_email:
         clean_email = f"{clean_email or 'fundador'}@thebestbrand.studio"
     clean_name = (req.name or "Fundador").strip() or "Fundador"
+    raw_password = (req.password or "").strip()
     account_id = "acc_" + hashlib.sha256(clean_email.encode("utf-8")).hexdigest()[:16]
     now_iso = datetime.now(timezone.utc).isoformat()
 
@@ -1108,16 +1135,45 @@ def api_account_login_or_register(req: AccountLoginRequest):
         conn.row_factory = sqlite3.Row
         row = conn.execute("SELECT * FROM accounts WHERE email = ?", (clean_email,)).fetchone()
         if not row:
+            salt = hashlib.sha256(f"salt:{clean_email}".encode("utf-8")).hexdigest()[:24]
+            pwd_hash = _hash_account_password(raw_password, salt) if raw_password else ""
+            mig_code = _build_migration_code(clean_email, pwd_hash or account_id)
             conn.execute(
-                "INSERT INTO accounts (account_id, email, name, created_at) VALUES (?, ?, ?, ?)",
-                (account_id, clean_email, clean_name, now_iso)
+                "INSERT INTO accounts (account_id, email, name, password_hash, password_salt, migration_code, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (account_id, clean_email, clean_name, pwd_hash, salt, mig_code, now_iso)
             )
             conn.commit()
         else:
             account_id = row["account_id"]
-            if req.name and req.name.strip():
+            existing_hash = row["password_hash"] if "password_hash" in row.keys() else ""
+            existing_salt = (row["password_salt"] if "password_salt" in row.keys() else "") or hashlib.sha256(f"salt:{clean_email}".encode("utf-8")).hexdigest()[:24]
+            if existing_hash and raw_password:
+                candidate_hash = _hash_account_password(raw_password, existing_salt)
+                if candidate_hash != existing_hash:
+                    return JSONResponse(
+                        status_code=401,
+                        content={
+                            "status": "error",
+                            "message": "Contraseña incorrecta para esta cuenta. Verifica tu contraseña e intenta de nuevo."
+                        }
+                    )
+            elif not existing_hash and raw_password:
+                new_hash = _hash_account_password(raw_password, existing_salt)
+                new_mig = _build_migration_code(clean_email, new_hash)
+                conn.execute(
+                    "UPDATE accounts SET password_hash = ?, password_salt = ?, migration_code = ? WHERE account_id = ?",
+                    (new_hash, existing_salt, new_mig, account_id)
+                )
+                conn.commit()
+
+            if req.name and req.name.strip() and req.name.strip() != "Fundador":
                 conn.execute("UPDATE accounts SET name = ? WHERE account_id = ?", (clean_name, account_id))
                 conn.commit()
+            else:
+                clean_name = row["name"] or clean_name
+
+        updated_row = conn.execute("SELECT * FROM accounts WHERE account_id = ?", (account_id,)).fetchone()
+        mig_code = (updated_row["migration_code"] if updated_row and "migration_code" in updated_row.keys() else "") or _build_migration_code(clean_email, account_id)
 
         brands_rows = conn.execute(
             "SELECT brand_id, brand_name, current_step, state_json, updated_at FROM brand_workspaces WHERE account_id = ? ORDER BY updated_at DESC",
@@ -1148,7 +1204,9 @@ def api_account_login_or_register(req: AccountLoginRequest):
         "account": {
             "account_id": account_id,
             "email": clean_email,
-            "name": clean_name
+            "name": clean_name,
+            "migration_code": mig_code,
+            "security_verified": bool(raw_password)
         },
         "brands": brands_list,
         "active_brand": active_state
@@ -1251,5 +1309,5 @@ def api_account_reset_brand(req: AccountResetBrandRequest):
 if __name__ == "__main__":
     host = os.environ.get("HOST", "0.0.0.0")
     port = int(os.environ.get("PORT", 8000))
-    print(f"🚀 Starting TheBestBrand Studio on http://{host}:{port}")
+    print(f" Starting TheBestBrand Studio on http://{host}:{port}")
     uvicorn.run(app, host=host, port=port)

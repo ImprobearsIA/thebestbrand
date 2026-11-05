@@ -1,229 +1,281 @@
 [
   {
-    "step": 1,
-    "video_url": "/assets/videos/capsula_teoria_paso_1.mp4",
-    "duration_sec": 46.8,
-    "size_kb": 1304.4,
-    "title": "Paso 1: El Círculo Dorado y la Promesa de Valor",
-    "theory_badge": "TEORÍA 01 · SIMON SINEK & ARQUITECTURA DE PROPÓSITO",
+    "step": 0,
+    "video_url": "/assets/videos/capsula_teoria_paso_0.mp4",
+    "duration_sec": 49.7,
+    "size_kb": 4132.8,
+    "title": "Paso 0: Objetivo, Evolución de Logo Actual y Giro del Negocio",
+    "author_name": "David Aaker & Sagi Haviv",
+    "author_role": "Capital de Marca y Evolución de Símbolos",
+    "theory_badge": "TEORÍA 00 · DAVID AAKER, SAGI HAVIV & PETER DRUCKER",
     "scenes": [
       {
-        "phase_tag": "1/4 · BIENVENIDA E INTERPRETACIÓN INICIAL",
-        "headline": "Bienvenido al Paso 1: El Alma Estratégica de tu Marca",
-        "bullet_title": "Del Giro Comercial al Propósito Nuclear",
-        "body_text": "Aura ya interpretó a qué se dedica tu negocio en el Paso 0. Antes de pensar en colores o logotipos, toda gran marca necesita cimientos estratégicos claros.",
-        "narration": "Bienvenido al primer paso de The Best Brand. Ya interpretamos la esencia de tu negocio, y antes de diseñar cualquier logotipo, vamos a construir los cimientos estratégicos de tu marca."
+        "phase_tag": "CLIP 1/4 · EL PUNTO DE PARTIDA ESTRATÉGICO",
+        "headline": "¿Crear desde Cero, Evolucionar o Crear una Sub-marca?",
+        "bullet_title": "Cita de Autor: Peter Drucker & Marty Neumeier",
+        "body_text": "Como enseñó Peter Drucker, toda gran transformación empieza definiendo la misión actual. Elige tu objetivo mientras Aura te responde en menos de 10 segundos.",
+        "narration": "Hola, soy Aura. Como afirma Peter Drucker, la mejor forma de predecir el futuro es creándolo. En el Paso cero eliges si construyes tu marca desde cero, evolucionas la actual o creas una sub-marca."
       },
       {
-        "phase_tag": "2/4 · LA TEORÍA: EL CÍRCULO DORADO",
-        "headline": "Teoría: El Círculo Dorado de Simon Sinek",
-        "bullet_title": "Empezar por el 'Por Qué' antes del 'Qué'",
-        "body_text": "La mayoría de las empresas dicen qué venden, pero las marcas líderes inspiran desde el centro: 1) ¿Por qué existes?, 2) ¿Cómo lo haces único?, y 3) ¿Qué entregas exactamente?",
-        "narration": "La teoría del Círculo Dorado de Simon Sinek demuestra que la gente no compra lo que haces, sino el porqué lo haces. Cuando comunicas tu propósito y tu método único, dejas de competir por precio."
+        "phase_tag": "CLIP 2/4 · SUBE TU LOGO ACTUAL: MANTENER O EVOLUCIONAR",
+        "headline": "Nuevo Motor para Marcas con Nombre o Logotipo Existente",
+        "bullet_title": "Cita de Autor: David Aaker & Sagi Haviv",
+        "body_text": "David Aaker demostró que tu logo actual guarda valor acumulado. Súbelo en PNG o SVG: extraemos sus colores y decides si mantenerlo o evolucionarlo como base.",
+        "narration": "Si ya tienes nombre y logotipo, David Aaker y Sagi Haviv recomiendan proteger tu capital visual. Ahora puedes subir tu logo actual para mantenerlo intacto o pedirle al motor que lo tome como base y lo mejore."
       },
       {
-        "phase_tag": "3/4 · IMPORTANCIA PARA TU NEGOCIO",
-        "headline": "¿Por qué es vital definir tus 6 Pilares hoy?",
-        "bullet_title": "Filtro para Nombre, Touchpoints e Identidad Visual",
-        "body_text": "Tu Propósito, Oferta de Valor, Rol Social, Proceso en 3 pasos, Promesa Central y Cliente Ideal guiarán automáticamente las sugerencias de nombres y el diseño de tu logotipo.",
-        "narration": "Definir estos seis pilares es crucial porque evita que tu identidad sea genérica. Cada respuesta que des aquí alimentará directamente tu mapa de experiencia, tu nombre y tu logotipo."
+        "phase_tag": "CLIP 3/4 · GIRO COMERCIAL QUE ALIMENTA TODO EL SISTEMA",
+        "headline": "Describe tu Giro: El Motor Adapta Preguntas y Láminas",
+        "bullet_title": "Cita de Autor: Al Ries, Jack Trout & Clayton Christensen",
+        "body_text": "Al describir a qué se dedica tu negocio con tus palabras, el sistema sintetiza tu esencia para personalizar automáticamente los Pasos 1 al 6.",
+        "narration": "Siguiendo a Al Ries y Jack Trout en Posicionamiento, cuando describes tu giro con claridad en el tercer sub-paso, el sistema adapta automáticamente tus preguntas, puntos de contacto y propuestas."
       },
       {
-        "phase_tag": "4/4 · EJEMPLO BREVE Y PRIMERA PREGUNTA",
+        "phase_tag": "CLIP 4/4 · SINCRONIZACIÓN EN VIVO Y RESPUESTAS DE AURA",
+        "headline": "Tu Cuenta Sincronizada en Todos tus Dispositivos",
+        "bullet_title": "Continuidad Total en iPhone, iPad y Computadora",
+        "body_text": "Con solo iniciar sesión controlas tus dispositivos activos y escuchas el consejo breve de Aura con referencias de autores en cada interacción.",
+        "narration": "Además, tu sesión se sincroniza en tiempo real entre tu teléfono y tu computadora. En cada decisión escucharás mi respuesta breve de menos de diez segundos con el respaldo de los grandes autores."
+      }
+    ]
+  },
+  {
+    "step": 1,
+    "video_url": "/assets/videos/capsula_teoria_paso_1.mp4",
+    "duration_sec": 44.5,
+    "size_kb": 3873.6,
+    "title": "Paso 1: El Círculo Dorado y la Promesa de Valor",
+    "author_name": "Simon Sinek",
+    "author_role": "Autor de Start With Why (El Círculo Dorado)",
+    "theory_badge": "TEORÍA 01 · SIMON SINEK, ALEX OSTERWALDER & DONALD MILLER",
+    "scenes": [
+      {
+        "phase_tag": "CLIP 1/4 · DEL GIRO AL PROPÓSITO NUCLEAR",
+        "headline": "Paso 1: Construyendo el Alma Estratégica de tu Marca",
+        "bullet_title": "Cita de Autor: Simon Sinek & Jim Collins",
+        "body_text": "Aura ya interpretó tu giro del Paso 0. Ahora definiremos tus 6 pilares estratégicos antes de trazar una sola línea gráfica.",
+        "narration": "Bienvenido al Paso uno. Como demostró Jim Collins en Empresas que Sobresalen, toda marca duradera nace de cimientos estratégicos claros antes de diseñar su identidad visual."
+      },
+      {
+        "phase_tag": "CLIP 2/4 · LA TEORÍA: EL CÍRCULO DORADO",
+        "headline": "Empezar por el 'Por Qué' antes del 'Qué'",
+        "bullet_title": "Cita de Autor: Simon Sinek (Start With Why)",
+        "body_text": "Las marcas ordinarias dicen qué venden; las marcas líderes inspiran desde el centro: 1) ¿Por qué existes?, 2) ¿Cómo lo haces único?, y 3) ¿Qué entregas?",
+        "narration": "La teoría del Círculo Dorado de Simon Sinek enseña que la gente no compra lo que haces, sino el porqué lo haces. Cuando comunicas tu propósito nuclear, dejas de competir por precio."
+      },
+      {
+        "phase_tag": "CLIP 3/4 · OFERTA DE VALOR Y PLAN DE 3 PASOS",
+        "headline": "Claridad que Elimina la Fricción de Compra",
+        "bullet_title": "Cita de Autor: Alex Osterwalder & Donald Miller",
+        "body_text": "Definir tu Oferta de Valor (Osterwalder) y resumir tu método en 3 pasos simples (Donald Miller) da certidumbre inmediata a tu cliente ideal.",
+        "narration": "Combinamos el Lienzo de Propuesta de Valor de Alex Osterwalder con el método StoryBrand de Donald Miller: al explicar tu proceso en tres pasos claros, tu cliente confía sin dudar."
+      },
+      {
+        "phase_tag": "CLIP 4/4 · CASO REAL Y ENTRADA AL TALLER",
         "headline": "Ejemplo Real: Apple y Nubank",
-        "bullet_title": "Vender Transformación en lugar de Funciones",
-        "body_text": "Nubank no dijo 'somos una tarjeta de crédito'; su propósito fue liberar a las personas de la burocracia bancaria con una app humana y transparente. ¡Respondamos tu primera pregunta!",
-        "narration": "Por ejemplo, Nubank no se presentó como un banco más, sino como una plataforma para liberar a la gente de la burocracia financiera. Ahora sí, pasemos a la primera pregunta de tu Paso 1."
+        "bullet_title": "Vender Transformación Humana en lugar de Funciones",
+        "body_text": "Nubank no vendió 'una tarjeta más'; su propósito fue liberar a las personas de la burocracia bancaria. ¡Respondamos tus 7 preguntas del Paso 1!",
+        "narration": "Observa a Nubank: su propósito fue liberar a las personas de la burocracia financiera con calidez y transparencia. Entra ahora al Paso uno y construyamos tus pilares estratégicos."
       }
     ]
   },
   {
     "step": 2,
     "video_url": "/assets/videos/capsula_teoria_paso_2.mp4",
-    "duration_sec": 48.4,
-    "size_kb": 1335.5,
-    "title": "Paso 2: Arquitectura de Touchpoints y Customer Journey",
-    "theory_badge": "TEORÍA 02 · LEMON & VERHOEF · SERVICE BLUEPRINT",
+    "duration_sec": 43.8,
+    "size_kb": 3964.3,
+    "title": "Paso 2: Arquitectura de Touchpoints (Antes, Durante y Después)",
+    "author_name": "Don Norman & K. Lemon",
+    "author_role": "Diseño de Experiencia y Service Blueprint",
+    "theory_badge": "TEORÍA 02 · LEMON & VERHOEF, JAN CARLZON & DON NORMAN",
     "scenes": [
       {
-        "phase_tag": "1/4 · RESUMEN DEL PASO 1 COMPLETADO",
-        "headline": "¡Paso 1 Conquistado! Tu Esencia está Lista",
-        "bullet_title": "De la Promesa Abstracta a la Experiencia Real",
-        "body_text": "En el Paso 1 definiste tu propósito, tu diferencial y tu cliente ideal. Ahora traduciremos esa promesa en interacciones tangibles que el cliente pueda ver, tocar o usar en pantalla.",
-        "narration": "¡Excelente trabajo en el Paso 1! Ya definiste tu propósito nuclear y tu oferta de valor. Ahora daremos el siguiente paso: convertir esa promesa en puntos de contacto reales con tu cliente."
+        "phase_tag": "CLIP 1/4 · DE LA PROMESA A LA EXPERIENCIA TANGIBLE",
+        "headline": "Convirtiendo tu Propósito en Momentos de la Verdad",
+        "bullet_title": "Cita de Autor: Jan Carlzon (Momentos de la Verdad)",
+        "body_text": "En el Paso 1 definiste tu promesa. Como enseñó Jan Carlzon, bastan 15 segundos en un punto de contacto para demostrar la grandeza de tu marca.",
+        "narration": "Excelente avance en el Paso uno. Como enseñó Jan Carlzon en los Momentos de la Verdad, cada contacto de quince segundos con tu cliente define si confía en tu marca."
       },
       {
-        "phase_tag": "2/4 · LA TEORÍA: ARQUITECTURA DE TOUCHPOINTS",
-        "headline": "Teoría: Los 3 Momentos de la Verdad",
-        "bullet_title": "Antes, Durante y Después de Comprar o Registrarse",
-        "body_text": "Según Lemon y Verhoef, toda experiencia se divide en 3 etapas: 1) Antes (atracción y confianza), 2) Durante (activación o compra sin fricción) y 3) Después (retención y recomendación).",
-        "narration": "La teoría de Arquitectura de Experiencia divide el viaje de tu cliente en tres etapas críticas: qué ve antes de elegirte, qué vive durante el uso o compra, y qué recibe después para volver."
+        "phase_tag": "CLIP 2/4 · LA TEORÍA: ANTES, DURANTE Y DESPUÉS",
+        "headline": "El Viaje Completo del Cliente en 3 Etapas",
+        "bullet_title": "Cita de Autor: Katherine Lemon, Peter Verhoef & Lynn Shostack",
+        "body_text": "Mapearemos: 1) Antes (descubrimiento y confianza), 2) Durante (compra o servicio sin fricción) y 3) Después (seguimiento, lealtad y recomendación).",
+        "narration": "Según Katherine Lemon y Peter Verhoef, toda experiencia se divide en tres etapas: cómo te descubren Antes, cómo entregas valor Durante, y cómo fidelizas Después."
       },
       {
-        "phase_tag": "3/4 · IMPORTANCIA Y EFECTO SURPRISE & DELIGHT",
-        "headline": "Coherencia con tu Giro: Digital vs. Físico",
-        "bullet_title": "Por qué tus Touchpoints dictan tus Entregables",
-        "body_text": "Si tu producto es una App, tus touchpoints son pantallas, demos interactivas y notificaciones; si es físico, son empaques, aromas y servicio. De aquí saldrán las aplicaciones de tu manual.",
-        "narration": "Esto es vital porque tus puntos de contacto deben corresponder al cien por ciento con la naturaleza de tu negocio, ya sea una aplicación digital o un servicio físico, definiendo tus entregables reales."
+        "phase_tag": "CLIP 3/4 · ELIMINAR FRICCIONES Y CONECTAR CON EL MANUAL",
+        "headline": "Por qué tus Touchpoints Dictan las Láminas de tu Brandbook",
+        "bullet_title": "Cita de Autor: Don Norman (El Diseño de las Cosas Cotidianas)",
+        "body_text": "Don Norman demostró que el buen diseño reduce la carga mental. Los touchpoints que elijas aquí se plasmarán en la Lámina 05 y aplicaciones del Paso 6.",
+        "narration": "Don Norman explica que el diseño excelente elimina la fricción operativa. Los puntos de contacto reales que selecciones aquí alimentarán directamente las láminas de tu manual final."
       },
       {
-        "phase_tag": "4/4 · EJEMPLO BREVE Y PRIMERA PREGUNTA",
-        "headline": "Ejemplo Real: Spotify Wrapped y Duolingo",
-        "bullet_title": "Micro-momentos que Enamoran y Retienen",
-        "body_text": "En una app, permitir probar sin tarjeta Antes, lograr el primer resultado en 60 segundos Durante, y enviar un resumen compartible tipo Spotify Wrapped Después multiplica la lealtad.",
-        "narration": "Por ejemplo, en una app digital, ofrecer una prueba inmediata al inicio y un resumen anual interactivo como Spotify Wrapped convierte usuarios en embajadores. ¡Vamos a la primera pregunta del Paso 2!"
+        "phase_tag": "CLIP 4/4 · EJEMPLO REAL Y PASO A LA ACCIÓN",
+        "headline": "Ejemplo Real: ImproBears y Experiencias Memorables",
+        "bullet_title": "Atención 24/7, Capacitación In Situ y Portal Sin Fricción",
+        "body_text": "Conectar redes y agente WhatsApp Antes, entrega impecable Durante, y seguimiento proactivo Después convierte clientes en embajadores.",
+        "narration": "Cuando articulas atención ágil antes, servicio impecable durante y acompañamiento leal después, tus clientes se vuelven promotores. Seleccionemos ahora tus puntos de contacto en el Paso dos."
       }
     ]
   },
   {
     "step": 3,
     "video_url": "/assets/videos/capsula_teoria_paso_3.mp4",
-    "duration_sec": 47.8,
-    "size_kb": 1297.7,
-    "title": "Paso 3: Ingeniería de Naming, Fonética y Registro",
-    "theory_badge": "TEORÍA 03 · SMILE & SCRATCH + CLASIFICACIÓN DE NIZA",
+    "duration_sec": 40.5,
+    "size_kb": 2736.7,
+    "title": "Paso 3: Ingeniería de Naming, Fonética y Clases de Niza",
+    "author_name": "Alexandra Watkins",
+    "author_role": "Creadora del Método SMILE & SCRATCH",
+    "theory_badge": "TEORÍA 03 · ALEXANDRA WATKINS, DAVID PLACEK & AL RIES",
     "scenes": [
       {
-        "phase_tag": "1/4 · RESUMEN DEL PASO 2 COMPLETADO",
-        "headline": "¡Viaje del Cliente Mapeado al 100%!",
-        "bullet_title": "Tus canales reales ya están listos",
-        "body_text": "Acabas de definir cómo te descubren, cómo te usan o compran, y cómo fidelizas a tus clientes. Esos canales determinan exactamente cómo debe sonar y registrarse tu nombre.",
-        "narration": "¡Felicidades por completar el Paso 2! Ya tenemos el mapa completo de cómo interactúa tu cliente Antes, Durante y Después. Esa información es el insumo clave para bautizar tu marca."
+        "phase_tag": "CLIP 1/4 · LA IDENTIDAD VERBAL DE TU MARCA",
+        "headline": "Bautizando o Confirmando el Nombre Oficial",
+        "bullet_title": "Cita de Autor: Wally Olins & Al Ries",
+        "body_text": "Tus touchpoints ya están listos. Ahora confirmaremos tu nombre actual o generaremos propuestas a partir de las raíces estratégicas de tus respuestas.",
+        "narration": "Ya tienes el mapa de experiencia de tu cliente. Como afirma Wally Olins, el nombre es el primer activo verbal que pronunciarán tus clientes en cada canal."
       },
       {
-        "phase_tag": "2/4 · LA TEORÍA: SMILE & SCRATCH + 6 ESTILOS",
-        "headline": "Teoría: Fonética Memorizable y 6 Familias",
-        "bullet_title": "Alexandra Watkins + Clasificación Internacional de Niza",
-        "body_text": "Un gran nombre cumple el modelo SMILE: Sugerente, Memorable, con Imagen mental, Piernas para crecer y Emoción. Exploraremos 6 estilos: Descriptivo, Compuesto, Neologismo, Siglas, Evocativo y Corto.",
-        "narration": "Aplicaremos la metodología SMILE de Alexandra Watkins junto con seis estilos de naming y la Clasificación Internacional de Niza. Un nombre poderoso tiene de dos a tres sílabas, ritmo claro y alta registrabilidad."
+        "phase_tag": "CLIP 2/4 · LA TEORÍA: MODELO SMILE & FONÉTICA",
+        "headline": "Sonoridad, Recordación e Imagen Mental",
+        "bullet_title": "Cita de Autor: Alexandra Watkins & David Placek (Lexicon)",
+        "body_text": "Alexandra Watkins evalúa que el nombre sea Sugerente, Memorable y Emocional (SMILE), mientras David Placek optimiza su fuerza acústica en 2 a 3 sílabas.",
+        "narration": "Aplicamos el modelo SMILE de Alexandra Watkins y el simbolismo fonético de David Placek: buscamos un nombre de dos a tres sílabas, fácil de recordar y con iniciales potentes."
       },
       {
-        "phase_tag": "3/4 · IMPORTANCIA ESTRATÉGICA Y LEGAL",
-        "headline": "¿Por qué no basta un nombre 'bonito'?",
-        "bullet_title": "Viabilidad en IMPI/USPTO, App Stores y Dominios",
-        "body_text": "Un nombre genérico o incoherente con tu producto confunde al usuario y es rechazado al registrar la marca. Evaluaremos su fonética y su encaje exacto con tu oferta de valor.",
-        "narration": "Elegir el nombre correcto con respaldo fonético y legal te ahorra rechazos de registro y hace que tus clientes te recomienden de boca en boca sin errores de ortografía."
+        "phase_tag": "CLIP 3/4 · BLINDAJE EN CLASES DE NIZA Y DESCRIPTOR",
+        "headline": "Viabilidad Legal y Descriptor de 3 Segundos",
+        "bullet_title": "Cita de Autor: Alina Wheeler (Designing Brand Identity)",
+        "body_text": "Vinculamos tu nombre con las Clases Internacionales de Niza de tu giro y definimos el descriptor oficial que acompañará a tu logotipo.",
+        "narration": "Siguiendo a Alina Wheeler, acompañamos tu nombre oficial con un descriptor claro y verificamos sus clases internacionales de Niza para proteger tu registro legal."
       },
       {
-        "phase_tag": "4/4 · EJEMPLO BREVE Y ENTRADA AL PASO 3",
+        "phase_tag": "CLIP 4/4 · EJEMPLO REAL Y SELECCIÓN EN VIVO",
         "headline": "Ejemplo Real: Stripe, Notion y Rolex",
-        "bullet_title": "Ritmo Acústico de 2 Sílabas y Monograma Fuerte",
-        "body_text": "Nombres cortos como 'Stripe' o 'Notion' en tecnología, o 'Rolex' en relojería, destacan por sus consonantes firmes y por tener iniciales perfectas para su icono y monograma.",
-        "narration": "Piensa en nombres como Notion o Stripe en aplicaciones digitales: son cortos, fáciles de pronunciar y sus iniciales lucen impecables en un icono de pantalla. ¡Entremos al Paso 3 para elegir el tuyo!"
+        "bullet_title": "Nombres Cortos con Monogramas Perfectos para Ícono 1:1",
+        "body_text": "Nombres rítmicos como Rolex o Stripe brillan por su sonoridad y por proyectar un monograma limpio en cualquier pantalla o fachada.",
+        "narration": "Piensa en Rolex o Stripe: nombres breves cuyas iniciales forman un monograma inconfundible. Entremos al Paso tres para confirmar el nombre y eslogan de tu marca."
       }
     ]
   },
   {
     "step": 4,
     "video_url": "/assets/videos/capsula_teoria_paso_4.mp4",
-    "duration_sec": 50.0,
-    "size_kb": 1359.6,
-    "title": "Paso 4: Psicología de la Forma y los 7 Ejes Visuales",
-    "theory_badge": "TEORÍA 04 · INGENIERÍA KANSEI & SEMIÓTICA VISUAL",
+    "duration_sec": 44.7,
+    "size_kb": 2764.8,
+    "title": "Paso 4: Ingeniería Kansei, 7 Ejes Visuales y Tipografía",
+    "author_name": "Prof. Mitsuo Nagamachi",
+    "author_role": "Fundador de la Ingeniería Kansei & Semiótica",
+    "theory_badge": "TEORÍA 04 · MITSUO NAGAMACHI, CHARLES OSGOOD & R. BRINGHURST",
     "scenes": [
       {
-        "phase_tag": "1/4 · RESUMEN DEL PASO 3 COMPLETADO",
-        "headline": "¡Tu Marca ya Tiene Nombre Oficial!",
-        "bullet_title": "De la Identidad Verbal a la Arquitectura Visual",
-        "body_text": "Tu nombre oficial y su monograma ya quedaron blindados en el sistema. Ahora definiremos la personalidad visual y la estructura geométrica que representará a ese nombre.",
-        "narration": "¡Extraordinario! Ya seleccionaste y bloqueaste el nombre oficial de tu marca. Con tu nombre definido, ahora vamos a traducir su carácter a formas, proporciones y geometría visual."
+        "phase_tag": "CLIP 1/4 · DE LA PALABRA A LA GEOMETRÍA EMOCIONAL",
+        "headline": "Traduciendo tu Estrategia a Parámetros Visuales",
+        "bullet_title": "Cita de Autor: Mitsuo Nagamachi (Ingeniería Kansei)",
+        "body_text": "Con tu nombre confirmado, usamos la Ingeniería Kansei de Mitsuo Nagamachi para convertir emociones humanas en proporciones geométricas exactas.",
+        "narration": "Con tu nombre oficial listo, entramos al Paso cuatro. El profesor Mitsuo Nagamachi creó la Ingeniería Kansei para traducir sentimientos humanos en parámetros de diseño exactos."
       },
       {
-        "phase_tag": "2/4 · LA TEORÍA: INGENIERÍA KANSEI Y DIFERENCIAL DE OSGOOD",
-        "headline": "Teoría: Psicología de la Forma (Bouba vs. Kiki)",
-        "bullet_title": "Cómo el cerebro humano interpreta líneas y ángulos",
-        "body_text": "La neurociencia visual demuestra que las curvas suaves comunican cercanía y empatía, mientras que los ángulos geométricos comunican precisión técnica, velocidad y autoridad.",
-        "narration": "En el Paso 4 utilizamos la Ingeniería Kansei y el Diferencial Semántico de Osgood. Nuestro cerebro asocia instantáneamente curvas suaves con empatía, y trazos geométricos con tecnología y precisión."
+        "phase_tag": "CLIP 2/4 · PSICOLOGÍA DE LA FORMA Y 7 EJES DE OSGOOD",
+        "headline": "Curvas de Cercanía vs. Ángulos de Precisión",
+        "bullet_title": "Cita de Autor: V. S. Ramachandran & Charles Osgood",
+        "body_text": "El efecto Bouba/Kiki demuestra que las curvas comunican empatía y los ángulos proyectan precisión técnica. Calibra los 7 ejes con referencias reales.",
+        "narration": "Como demostraron Ramachandran y Charles Osgood, nuestro cerebro asocia curvas suaves con cercanía humana y ángulos rectos con precisión técnica. Desliza los siete ejes hacia tu polo ideal."
       },
       {
-        "phase_tag": "3/4 · IMPORTANCIA: LAS 4 FAMILIAS ARQUITECTÓNICAS",
-        "headline": "Calibrar antes de Dibujar",
-        "bullet_title": "Monograma, Escudo, Trazo Continuo o Prisma 3D",
-        "body_text": "Al ajustar los 7 deslizadores bipolares y elegir entre las 4 Familias Arquitectónicas Base, establecemos el plano maestro sobre el cual refinaremos tu logotipo en el siguiente paso.",
-        "narration": "Calibrar estos siete ejes y elegir tu familia arquitectónica base —ya sea monograma, escudo, trazo fluido o prisma— es fundamental para que el logotipo refleje la personalidad exacta de tu negocio."
+        "phase_tag": "CLIP 3/4 · LA TIPOGRAFÍA ES LA VOZ VISIBLE",
+        "headline": "Selección Tipográfica y Estructura Base",
+        "bullet_title": "Cita de Autor: Robert Bringhurst & Adrian Frutiger",
+        "body_text": "Robert Bringhurst llamó a la tipografía 'el lenguaje hecho visible', y Adrian Frutiger estableció las familias estructurales de todo gran símbolo.",
+        "narration": "Robert Bringhurst afirma que la tipografía es el lenguaje hecho visible, y Adrian Frutiger demostró el poder de la estructura base. Aquí elegirás tu fuente oficial y tu familia constructiva."
       },
       {
-        "phase_tag": "4/4 · EJEMPLO BREVE Y ENTRADA AL PASO 4",
+        "phase_tag": "CLIP 4/4 · EJEMPLO REAL Y PASO AL CALIBRADOR",
         "headline": "Ejemplo Real: Airbnb vs. Tesla",
-        "bullet_title": "Dos Polos de Tensión Visual Exitosos",
-        "body_text": "Airbnb usa un símbolo continuo curvo ('Bélo') porque vende pertenencia humana; Tesla usa vértices afilados y simetría técnica porque vende ingeniería eléctrica de vanguardia.",
-        "narration": "Observa la diferencia entre Airbnb, que usa un trazo curvo continuo para transmitir calidez, y Tesla, que emplea ángulos precisos de ingeniería. ¡Entremos al Paso 4 para calibrar tu marca!"
+        "bullet_title": "Coherencia Absoluta entre Personalidad y Trazo",
+        "body_text": "Airbnb emplea curvas orgánicas para evocar hospitalidad; Tesla usa vértices agudos para proyectar ingeniería eléctrica. ¡Calibremos tu marca!",
+        "narration": "Mira cómo Airbnb usa un lazo curvo para transmitir pertenencia, mientras Tesla usa ángulos de ingeniería. Calibra ahora el carácter visual de tu marca en el Paso cuatro."
       }
     ]
   },
   {
     "step": 5,
     "video_url": "/assets/videos/capsula_teoria_paso_5.mp4",
-    "duration_sec": 50.5,
-    "size_kb": 1358.1,
-    "title": "Paso 5: Aislamiento Ceteris Paribus de 24 Atributos y Logo Final",
-    "theory_badge": "TEORÍA 05 · MÉTODO CETERIS PARIBUS & LEYES DE LA GESTALT",
+    "duration_sec": 49.0,
+    "size_kb": 3400.4,
+    "title": "Paso 5: Estudio de Logotipo con Gemini Vision y Evolución de Base",
+    "author_name": "Paul Rand & Jony Ive",
+    "author_role": "Maestros de Identidad Visual y Liquid Glass",
+    "theory_badge": "TEORÍA 05 · PAUL RAND, SAGI HAVIV, JONY IVE & JOSEF ALBERS",
     "scenes": [
       {
-        "phase_tag": "1/4 · RESUMEN DEL PASO 4 COMPLETADO",
-        "headline": "¡Personalidad y Familia Base Calibradas!",
-        "bullet_title": "Tu Estructura Madre ya está Definida",
-        "body_text": "Ya configuraste los 7 ejes bipolares y elegiste la familia arquitectónica de tu símbolo. Ahora afinaremos con bisturí cada rasgo gráfico antes de ensamblar tu logotipo final.",
-        "narration": "¡Excelente! Ya definiste los siete ejes de personalidad y la familia arquitectónica base de tu marca. Ahora pasaremos a perfeccionar cada detalle visual mediante veinticuatro duelos de precisión."
+        "phase_tag": "CLIP 1/4 · BIENVENIDO AL TALLER DE LOGOTIPO EN VIVO",
+        "headline": "Simplicidad, Fuerza Geométrica y Color Consciente",
+        "bullet_title": "Cita de Autor: Paul Rand & Josef Albers",
+        "body_text": "Paul Rand enseñó que un logo debe ser simple, memorable y versátil desde 16px hasta una fachada, apoyado en la interacción del color de Josef Albers.",
+        "narration": "Bienvenido al Paso cinco. Como enseñó el legendario Paul Rand, un logotipo extraordinario combina simplicidad geométrica y recordación inmediata, potenciado por la armonía cromática de Josef Albers."
       },
       {
-        "phase_tag": "2/4 · LA TEORÍA: AISLAMIENTO CETERIS PARIBUS",
-        "headline": "Teoría: Cambiar 1 Solo Atributo a la Vez",
-        "bullet_title": "12 de Forma (B/N) · 6 de Tipografía · 6 de Color",
-        "body_text": "Bajo el principio científico Ceteris Paribus ('todo lo demás constante'), en cada par A/B mantenemos idéntico el boceto y cambiamos un único parámetro para aislar tu preferencia real.",
-        "narration": "Utilizamos el principio científico Ceteris Paribus: en cada comparación verás la misma estructura, cambiando únicamente un atributo a la vez: primero doce de forma en blanco y negro, luego seis de tipografía y seis de color."
+        "phase_tag": "CLIP 2/4 · CONSERVA O EVOLUCIONA TU LOGO ACTUAL COMO BASE",
+        "headline": "Visión Multimodal Gemini para Mejorar tu Logo Existente",
+        "bullet_title": "Cita de Autor: Sagi Haviv (Chermayeff & Geismar & Haviv)",
+        "body_text": "Si subiste tu logo actual, puedes mantenerlo intacto o pulsar 'Evolucionar mi Logo': Gemini Vision analiza tu imagen y traza una evolución vectorial.",
+        "narration": "Si subiste tu logotipo actual, seguimos la máxima de Sagi Haviv: respetar la esencia reconocible mientras perfeccionamos sus trazos. Gemini analiza tu imagen y crea versiones evolucionadas al instante."
       },
       {
-        "phase_tag": "3/4 · IMPORTANCIA: PRIMERO FORMA EN B/N, LUEGO COLOR",
-        "headline": "¿Por qué evaluamos primero en Blanco y Negro?",
-        "bullet_title": "Regla de Oro de Paul Rand y Pentagram",
-        "body_text": "El color emociona, pero puede distraer de un trazo débil. Si un símbolo funciona en blanco y negro a 16 píxeles (favicon de app) y en fachada, funcionará siempre.",
-        "narration": "Los grandes estudios como Pentagram evalúan primero la geometría en blanco y negro porque el color puede engañar al ojo. Al final de los veinticuatro duelos, generaremos cuatro propuestas finales con tu nombre oficial."
+        "phase_tag": "CLIP 3/4 · LIBERTAD CREATIVA 100% ABIERTA SIN LÍMITES",
+        "headline": "Cambia el Objeto, Estilo o Proporción en Tiempo Real",
+        "bullet_title": "Cita de Autor: Max Wertheimer (Gestalt) & Dieter Rams",
+        "body_text": "Escribe en el cuadro inferior cualquier objeto, símbolo, tipografía o disposición: cada iteración se guarda en la barra superior para comparar.",
+        "narration": "Bajo las leyes de la Gestalt de Max Wertheimer y la pureza de Dieter Rams, tienes libertad total: pide cualquier símbolo u objeto nuevo en el cuadro inferior y compara tus iteraciones arriba."
       },
       {
-        "phase_tag": "4/4 · EJEMPLO BREVE Y ENTRADA AL PASO 5",
-        "headline": "Ejemplo Real: El Espacio Negativo de FedEx y Apple",
-        "bullet_title": "Decisiones Micro-geométricas que Crean Iconos",
-        "body_text": "Aislar si prefieres vértices redondeados o rectos, trazo fino o bold, y serif o sans-serif geométrica nos permite sintetizar tu Logotipo Oficial sin adivinanzas.",
-        "narration": "Por ejemplo, decidir aisladamente el radio de las esquinas o el peso tipográfico es lo que separa un boceto amateur de un logotipo icónico. ¡Comencemos con el Duelo 1 del Paso 5!"
+        "phase_tag": "CLIP 4/4 · LOCKUP PRINCIPAL + ÍCONO APP 1:1 LIQUID GLASS",
+        "headline": "Doble Vista Simultánea Lista para el Brandbook",
+        "bullet_title": "Cita de Autor: Jony Ive (Física Óptica y Proporción 1:1)",
+        "body_text": "Observa en vivo tu logotipo horizontal o apilado arriba y tu ícono App 1:1 debajo. Al confirmarlo, se integra en tus 30 láminas del Paso 6.",
+        "narration": "Inspirados en el rigor industrial de Jony Ive, visualizas al mismo tiempo tu logotipo completo y su ícono uno a uno. Cuando te enamore el resultado, confírmalo para generar tu manual."
       }
     ]
   },
   {
     "step": 6,
     "video_url": "/assets/videos/capsula_teoria_paso_6.mp4",
-    "duration_sec": 48.4,
-    "size_kb": 1325.4,
-    "title": "Paso 6: Brandbook Maestro y Norma Técnica Internacional",
-    "theory_badge": "TEORÍA 06 · SISTEMAS DE IDENTIDAD & NORMA ISO 12647-2",
+    "duration_sec": 46.9,
+    "size_kb": 3176.1,
+    "title": "Paso 6: Brandbook Maestro de 30 Láminas en Curvas (Guía C-00)",
+    "author_name": "Massimo Vignelli & El Oso",
+    "author_role": "Sistemas de Retículas y Constitución C-00 ImproBears",
+    "theory_badge": "TEORÍA 06 · MASSIMO VIGNELLI, MÜLLER-BROCKMANN & GUÍA C-00",
     "scenes": [
       {
-        "phase_tag": "1/4 · RESUMEN DEL PASO 5 COMPLETADO",
-        "headline": "¡Logotipo Oficial y 24 Atributos Aprobados!",
-        "bullet_title": "Tu Identidad Visual y Verbal están Completas",
-        "body_text": "Has completado los 24 duelos de aislamiento y adoptaste el Logotipo Oficial de tu marca. Ahora compilaremos todos los pasos en tu Brandbook Maestro Ilustrado.",
-        "narration": "¡Felicidades! Has elegido el logotipo oficial de tu marca tras completar los veinticuatro duelos de aislamiento. Ahora integraremos absolutamente todo tu recorrido en el Brandbook Maestro."
+        "phase_tag": "CLIP 1/4 · LA CONSTITUCIÓN VISUAL DE TU MARCA",
+        "headline": "30 Láminas Horizontales Conectadas de Punta a Punta",
+        "bullet_title": "Cita de Autor: Massimo Vignelli (The Vignelli Canon)",
+        "body_text": "Massimo Vignelli demostró que un sistema de identidad protege el valor de la marca frente a terceros. Tu Brandbook une tus respuestas del Paso 0 al 5.",
+        "narration": "Felicidades por llegar al Paso seis. Como estableció Massimo Vignelli en su Canon, un manual de identidad es la constitución que protege la coherencia de tu marca en todo momento."
       },
       {
-        "phase_tag": "2/4 · LA TEORÍA: SISTEMAS DE GOBERNANZA VISUAL",
-        "headline": "Teoría: Retícula Constructiva y Reproducción Fiel",
-        "bullet_title": "Massimo Vignelli · Norma ISO 12647-2 (FOGRA39) y WCAG AAA",
-        "body_text": "Un logotipo sin reglas técnicas se deforma en manos de terceros. El Brandbook establece la retícula 8X por 3X, el área de protección 1X, perfiles CMYK FOGRA39 y contraste digital AAA.",
-        "narration": "Como enseñó Massimo Vignelli, un manual de identidad es la constitución técnica de tu marca. Establece la retícula constructiva, el área de aislamiento, las tintas para imprenta y el contraste en pantallas."
+        "phase_tag": "CLIP 2/4 · FLUJO EN CURVAS ABIERTAS Y REGLA 70/20/10",
+        "headline": "Estándar Editorial C-00 de ImproBears en 30 Secciones",
+        "bullet_title": "Cita de Autor: Josef Müller-Brockmann & Guía C-00 ImproBears",
+        "body_text": "Diseñado sobre lienzo claro dominante, ondas vectoriales orgánicas, logotipo en positivo por defecto, acentos de tu logo y marcos fotográficos curvos.",
+        "narration": "Aplicamos los sistemas de retículas de Josef Müller-Brockmann y la Guía Oficial C-Cero-Cero de ImproBears: treinta láminas en curvas abiertas sobre lienzo claro, siguiendo exactamente los colores de tu logotipo."
       },
       {
-        "phase_tag": "3/4 · IMPORTANCIA: CONTINUIDAD TOTAL DEL PASO 1 AL 6",
-        "headline": "¿Por qué este Manual protege tu Inversión?",
-        "bullet_title": "Guía Lista para Desarrolladores, Diseñadores e Imprentas",
-        "body_text": "Tu manual une el Propósito (Paso 1), los Touchpoints reales de tu giro (Paso 2), el Nombre Oficial (Paso 3), la Geometría (Paso 4) y el Logotipo adoptado (Paso 5) sin contradicciones.",
-        "narration": "Este documento evita que programadores, agencias o proveedores distorsionen tu marca. Conecta sin fisuras tu propósito, tus touchpoints reales, tu nombre oficial y tu logotipo final."
+        "phase_tag": "CLIP 3/4 · ARQUITECTURA COMPLETA: DE LA FILOSOFÍA A LA IMPRENTA",
+        "headline": "Retícula 8X×3X, Pantone/CMYK, Submarcas y Touchpoints",
+        "bullet_title": "Cita de Autor: Danne & Blackburn (Manual NASA) & Alina Wheeler",
+        "body_text": "Incluye Esencia, La Empresa como Persona, Touchpoints, Geometría, Variantes en Positivo y Negativo, Usos Incorrectos, Papelería, Uniformes y Checklist.",
+        "narration": "Al igual que el manual de la NASA de Danne y Blackburn y la metodología de Alina Wheeler, tus treinta láminas cubren desde la filosofía y geometría hasta papelería, uniformes y firma digital."
       },
       {
-        "phase_tag": "4/4 · EJEMPLO BREVE Y APERTURA DEL BRANDBOOK",
-        "headline": "Ejemplo Real: Manual de la NASA y Apple HIG",
-        "bullet_title": "Consistencia desde un Ícono de 16px hasta Corporativo",
-        "body_text": "Gracias a sus normas de escala mínima, usos incorrectos prohibidos y hojas de producción en 1 página, cualquier colaborador aplica la marca con precisión quirúrgica.",
-        "narration": "Igual que los manuales técnicos de la NASA o Apple, tu Brandbook incluye láminas ilustradas y hojas técnicas listas para descargar en PDF. ¡Abramos tu Brandbook Maestro en el Paso 6!"
+        "phase_tag": "CLIP 4/4 · DESCARGA INSTANTÁNEA EN IPHONE, IPAD Y ESCRITORIO",
+        "headline": "Exportación Ultrarrápida en PDF, HTML Autónomo y SVG",
+        "bullet_title": "Compatible con Modo App en iOS y Compartir Nativo",
+        "body_text": "Descarga las 30 láminas en PDF en menos de 2 segundos, abre el visor interactivo dentro de la app o exporta los vectores de tu logotipo.",
+        "narration": "Con un solo toque puedes descargar tu PDF de treinta láminas en menos de dos segundos, compartirlo desde tu iPhone o exportar tu logotipo en curvas. Tu marca está lista para conquistar el mundo."
       }
     ]
   }

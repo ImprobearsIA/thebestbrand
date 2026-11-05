@@ -2,657 +2,121 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TheBestBrand — Luxury Brand Identity Atelier | Página Web Oficial</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>body { margin:0; padding:0; background:#FAF8F5; }</style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>THE BEST BRAND — YOUR BRAND, NOW!!! · Edición Brandbook 1.0 Oficial (Awwwards Edition)</title>
+  <meta name="description" content="Diseña la identidad y el manual oficial de 30 láminas en curvas de tu marca con Aura en tiempo real. Vive la Demo de los Pasos 1 y 2 y adquiere la app con Tarjeta, Apple Pay, Google Pay o PayPal." />
+  <meta name="theme-color" content="#050811" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style id="tbbAwwwardsStylesheet">
+    :root {
+      --tbb-obsidian-deep: #050811;
+      --tbb-obsidian-card: #090D16;
+      --tbb-obsidian-surface: #0E1422;
+      --tbb-sapphire: #1D4ED8;
+      --tbb-sapphire-light: #93C5FD;
+      --tbb-sapphire-glow: rgba(29, 78, 216, 0.35);
+      --tbb-amber: #F97316;
+      --tbb-amber-deep: #EA580C;
+      --tbb-amber-bright: #FF7A00;
+      --tbb-amber-glow: rgba(249, 115, 22, 0.42);
+      --tbb-parchment: #F8FAFC;
+      --tbb-pure-white: #FFFFFF;
+      --tbb-ink: #090D16;
+      --tbb-text-muted: #64748B;
+      --tbb-border-subtle: #CBD5E1;
+      --tbb-border-glass: rgba(255, 255, 255, 0.14);
+      --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-heading: 'Montserrat', 'Plus Jakarta Sans', sans-serif;
+      --font-display: 'Cinzel', Georgia, serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: clip;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--tbb-pure-white);
+      color: var(--tbb-ink);
+      font-family: var(--font-main);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: clip;
+    }
+
+    section, [id^="tbbComm"] {
+      scroll-margin-top: 86px;
+    }
+
+    /* Top Scroll Progress Bar (ImproBears + Acqua Standard) */
+    .tbb-scroll-progress-track {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3.5px;
+      background: rgba(9, 13, 22, 0.4);
+      z-index: 2500;
+      pointer-events: none;
+    }
+
+    .tbb-scroll-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #1D4ED8 0%, #3B82F6 45%, #FF7A00 100%);
+      box-shadow: 0 0 12px rgba(249, 115, 22, 0.75);
+      transition: width 0.08s linear;
+    }
+
+    footer.tbb-comm-footer {
+      background: #050811;
+      color: #E2E8F0;
+      border-top: 5px solid #F97316;
+      padding: 48px 24px 116px 24px;
+      text-align: center;
+      font-size: 0.84rem;
+    }
+  </style>
 </head>
-<body>
+<body data-tbb-standalone-web="true">
+  <div class="tbb-scroll-progress-track" aria-hidden="true">
+    <div class="tbb-scroll-progress-bar" id="tbbScrollProgressBar"></div>
+  </div>
 
-<!-- ======================= TBB V35 REPLIT CLEAN SLATE & COMMERCIAL WEBSITE ======================= -->
-<style id="tbbCommercialWebsiteStyles">
-  #tbbCommercialWebsitePortal {
-    position: fixed;
-    inset: 0;
-    z-index: 99990;
-    background: #FAF8F5;
-    color: #090D16;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-  }
-  #tbbCommercialWebsitePortal.tbb-portal-hidden {
-    display: none !important;
-  }
-  .tbb-web-nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: rgba(250, 248, 245, 0.92);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(197, 155, 39, 0.22);
-    padding: 14px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .tbb-web-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: #090D16;
-  }
-  .tbb-web-brand-title {
-    font-family: 'Inter', sans-serif;
-    font-weight: 800;
-    font-size: 17px;
-    letter-spacing: -0.03em;
-    color: #090D16;
-  }
-  .tbb-web-brand-sub {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9.5px;
-    color: #9A7217;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    display: block;
-  }
-  .tbb-web-links {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
-  .tbb-web-links a {
-    color: #334155;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-    transition: color 0.15s ease;
-  }
-  .tbb-web-links a:hover {
-    color: #C59B27;
-  }
-  .tbb-web-cta-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .tbb-btn-gold {
-    background: linear-gradient(135deg, #090D16 0%, #1E293B 100%);
-    color: #FAF8F5;
-    border: 1.5px solid #C59B27;
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    padding: 10px 20px;
-    border-radius: 99px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 8px 24px rgba(9, 13, 22, 0.16);
-    transition: all 0.2s ease;
-    text-decoration: none;
-  }
-  .tbb-btn-gold:hover {
-    background: linear-gradient(135deg, #C59B27 0%, #9A7217 100%);
-    color: #090D16;
-    transform: translateY(-1px);
-    box-shadow: 0 12px 28px rgba(197, 155, 39, 0.32);
-  }
-  .tbb-btn-outline {
-    background: #FFFFFF;
-    color: #090D16;
-    border: 1px solid rgba(9, 13, 22, 0.16);
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 12.5px;
-    padding: 9px 16px;
-    border-radius: 99px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    text-decoration: none;
-    transition: all 0.15s ease;
-  }
-  .tbb-btn-outline:hover {
-    border-color: #C59B27;
-    background: #FEFDFB;
-  }
-  .tbb-hero-section {
-    position: relative;
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 56px 32px 64px 32px;
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 44px;
-    align-items: center;
-  }
-  .tbb-phi-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(197, 155, 39, 0.12);
-    border: 1px solid rgba(197, 155, 39, 0.4);
-    color: #855E0E;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 99px;
-    letter-spacing: 0.06em;
-    margin-bottom: 18px;
-  }
-  .tbb-hero-h1 {
-    font-family: 'Inter', sans-serif;
-    font-size: clamp(32px, 4.2vw, 52px);
-    font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -0.03em;
-    color: #090D16;
-    margin-bottom: 18px;
-  }
-  .tbb-hero-h1 span {
-    background: linear-gradient(135deg, #C59B27 0%, #855E0E 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .tbb-hero-lead {
-    font-size: 16.5px;
-    line-height: 1.62;
-    color: #334155;
-    margin-bottom: 28px;
-    max-width: 610px;
-  }
-  .tbb-hero-metrics {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 1px solid rgba(9, 13, 22, 0.1);
-  }
-  .tbb-metric-val {
-    font-family: 'Inter', sans-serif;
-    font-size: 24px;
-    font-weight: 800;
-    color: #090D16;
-  }
-  .tbb-metric-lbl {
-    font-size: 12px;
-    color: #334155;
-    margin-top: 2px;
-  }
-  .tbb-showcase-card {
-    background: #090D16;
-    color: #FAF8F5;
-    border-radius: 28px;
-    padding: 28px;
-    border: 1.5px solid rgba(197, 155, 39, 0.45);
-    box-shadow: 0 28px 60px rgba(9, 13, 22, 0.24);
-    position: relative;
-    overflow: hidden;
-  }
-  .tbb-section-wrap {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 64px 32px;
-  }
-  .tbb-grid-3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 22px;
-  }
-  .tbb-grid-4 {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-  }
-  .tbb-feature-card {
-    background: #FFFFFF;
-    border: 1px solid rgba(9, 13, 22, 0.08);
-    border-top: 3px solid #C59B27;
-    border-radius: 20px;
-    padding: 24px;
-    box-shadow: 0 10px 30px rgba(9, 13, 22, 0.04);
-  }
-  .tbb-step-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    color: #C59B27;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-    display: block;
-  }
-  .tbb-feature-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 17px;
-    font-weight: 800;
-    color: #090D16;
-    margin-bottom: 8px;
-  }
-  .tbb-feature-desc {
-    font-size: 13.5px;
-    color: #334155;
-    line-height: 1.55;
-  }
-  @media (max-width: 960px) {
-    .tbb-hero-section { grid-template-columns: 1fr; padding: 32px 20px; }
-    .tbb-grid-3, .tbb-grid-4 { grid-template-columns: 1fr; }
-    .tbb-web-links { display: none; }
-  }
-</style>
+  <!-- Contenedor Raíz de la Página Comercial Oficial Brandbook 1.0 (Awwwards Edition V58) -->
+  <main id="tbbStandaloneCommercialPageRoot"></main>
 
-<div id="tbbCommercialWebsitePortal">
-  <!-- NAVBAR OFICIAL THEBESTBRAND -->
-  <header class="tbb-web-nav">
-    <a href="#top" class="tbb-web-brand">
-      <!-- Símbolo Oficial: Portal de Fibonacci phi = 1.618 -->
-      <svg width="42" height="42" viewBox="0 0 100 100" fill="none">
-        <rect width="100" height="100" rx="24" fill="#090D16"/>
-        <circle cx="50" cy="50" r="36" stroke="#C59B27" stroke-width="3"/>
-        <path d="M50 14 A36 36 0 0 1 86 50 A22.2 22.2 0 0 1 63.8 72.2 A13.7 13.7 0 0 1 50 58.5 A8.5 8.5 0 0 1 58.5 50" stroke="#FDE68A" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="55" cy="48" r="4" fill="#C59B27"/>
-      </svg>
-      <div>
-        <span class="tbb-web-brand-title">THEBESTBRAND</span>
-        <span class="tbb-web-brand-sub">Luxury Brand Identity Atelier · φ = 1.618</span>
+  <footer class="tbb-comm-footer">
+    <div style="max-width:1120px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:12px;">
+      <div style="font-family:var(--font-heading); font-weight:900; font-size:1.08rem; color:#FFFFFF; letter-spacing:0.02em;">
+        THE BEST BRAND — <span style="color:#F97316;">YOUR BRAND, NOW!!!</span> · BRANDBOOK 1.0 EDITION
       </div>
-    </a>
-
-    <nav class="tbb-web-links">
-      <a href="#metodo">Método de 6 Pasos</a>
-      <a href="#logo-atelier">Atelier NanoBanana 2.1</a>
-      <a href="#brandbook-38">Brandbook 38 Páginas</a>
-      <a href="/brandbook" target="_blank">Ver Muestra Editorial ↗</a>
-      <a href="/lab" target="_blank">Lab 3D &amp; Motores ↗</a>
-      <a href="#planes">Planes</a>
-    </nav>
-
-    <div class="tbb-web-cta-group">
-      <button type="button" class="tbb-btn-outline" onclick="window.tbbLaunchCleanStudio(true)" title="Borra cualquier sesión previa e inicia una marca desde cero">
-        🧹 Nueva Marca (Desde Cero)
-      </button>
-      <button type="button" class="tbb-btn-gold" onclick="window.tbbLaunchCleanStudio(false)">
-        ✨ Entrar al Atelier Interactivo →
-      </button>
-    </div>
-  </header>
-
-  <!-- HERO PRINCIPAL: AUREATE INTELLIGENCE -->
-  <section class="tbb-hero-section" id="top">
-    <div>
-      <div class="tbb-phi-pill">
-        <span>✨ AUREATE INTELLIGENCE · INGENIERÍA KANSEI QTTI + NANOBANANA 2.1 + SIR JONY IVE</span>
+      <div style="color:#94A3B8; font-weight:600; max-width:720px; line-height:1.55;">
+        Sistema Rector de Identidad Estratégica, Círculo Dorado Circular, La Empresa como Persona, Ingeniería de Touchpoints, Síntesis Vectorial 3D y Manual Oficial de 30 Láminas en Curvas.
       </div>
-      <h1 class="tbb-hero-h1">
-        Transforma la visión hablada de tu negocio en un <span>Sistema de Marca de $48,500 USD</span> en minutos.
-      </h1>
-      <p class="tbb-hero-lead">
-        <strong>TheBestBrand</strong> fusiona consultoría socrática en vivo con <strong>AURA (voz neuronal 24kHz)</strong>, psicometría de elección discreta, síntesis vectorial de <strong>8 propuestas por lote con NanoBanana 2.1</strong> y compilación automática de un <strong>Brandbook Maestro de 38 páginas</strong> listo para registro marcario (IMPI/USPTO) e imprenta CMYK FOGRA39 / Pantone.
-      </p>
-
-      <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
-        <button type="button" class="tbb-btn-gold" style="font-size:15px; padding:14px 28px;" onclick="window.tbbLaunchCleanStudio(true)">
-          🚀 Crear Mi Marca Ahora (Paso 0) →
-        </button>
-        <a href="/brandbook" target="_blank" class="tbb-btn-outline" style="padding:13px 20px;">
-          📖 Ver Brandbook Oficial (Muestra) ↗
-        </a>
-        <a href="/lab" target="_blank" class="tbb-btn-outline" style="padding:13px 20px;">
-          🧪 Probar Lab 3D &amp; 4 Motores ↗
-        </a>
-      </div>
-
-      <div class="tbb-hero-metrics">
-        <div>
-          <div class="tbb-metric-val">38 Páginas</div>
-          <div class="tbb-metric-lbl">Estándar Editorial BËNEFIC · Curvas Bézier &lt;path&gt;</div>
-        </div>
-        <div>
-          <div class="tbb-metric-val">8 + 8 Logos</div>
-          <div class="tbb-metric-lbl">Propuestas NanoBanana 2.1 + 8 Variaciones Fieles</div>
-        </div>
-        <div>
-          <div class="tbb-metric-val">45 Clases</div>
-          <div class="tbb-metric-lbl">Filtro Fonético y Viabilidad de Niza (SMILE &amp; SCRATCH)</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TARJETA DERECHA: ORBE DE AURA EN VIVO + VISTA PREVIA DEL ESTUDIO -->
-    <div class="tbb-showcase-card">
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-        <span style="font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#FDE68A; letter-spacing:0.1em; text-transform:uppercase;">● AURA · NÚCLEO ESTRATÉGICO ACTIVO</span>
-        <span style="background:rgba(197,155,39,0.2); border:1px solid #C59B27; color:#FDE68A; font-family:'JetBrains Mono',monospace; font-size:10px; padding:3px 10px; border-radius:99px;">φ = 1.618 · WCAG AAA</span>
-      </div>
-
-      <!-- Esfera Volumétrica Dorada de AURA -->
-      <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:18px 0;">
-        <div style="width:148px; height:148px; border-radius:50%; position:relative; display:flex; align-items:center; justify-content:center; background:radial-gradient(circle at 35% 30%, #FEF3C7 0%, #F59E0B 38%, #78350F 74%, #090D16 100%); box-shadow: 0 0 50px rgba(245, 158, 11, 0.45), inset 0 0 28px rgba(255, 255, 255, 0.55); cursor:pointer;" onclick="window.tbbLaunchCleanStudio(false)">
-          <svg viewBox="0 0 120 120" style="width:128px; height:128px; opacity:0.88;">
-            <ellipse cx="60" cy="60" rx="48" ry="22" fill="none" stroke="#FAF8F5" stroke-width="1.2" transform="rotate(25 60 60)"/>
-            <ellipse cx="60" cy="60" rx="48" ry="22" fill="none" stroke="#FDE68A" stroke-width="1.2" transform="rotate(-35 60 60)"/>
-            <ellipse cx="60" cy="60" rx="48" ry="22" fill="none" stroke="#C59B27" stroke-width="1.2" transform="rotate(80 60 60)"/>
-            <circle cx="60" cy="60" r="14" fill="#FFFFFF" opacity="0.65"/>
-          </svg>
-        </div>
-        <div style="font-family:'Inter',sans-serif; font-weight:700; font-size:15px; color:#FAF8F5; margin-top:16px; text-align:center;">
-          “Cuéntame la esencia de tu negocio y forjemos juntos tu identidad.”
-        </div>
-        <div style="font-size:12px; color:#94A3B8; margin-top:4px; text-align:center;">
-          Voz Neuronal Real 24kHz · Síntesis Socrática Multi-Ángulo
-        </div>
-      </div>
-
-      <!-- Mini-Resumen de las 3 Etapas del Paso 5 (Jony Ive 1-2-3) -->
-      <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:14px; margin-top:10px; font-size:12px;">
-        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#C59B27; text-transform:uppercase; margin-bottom:8px;">NUEVO MOTOR DE LOGOTIPOS v35.0 (ORDEN LÓGICO 1 → 2 → 3):</div>
-        <div style="display:flex; flex-direction:column; gap:6px; color:#E2E8F0;">
-          <div><strong style="color:#FDE68A;">1. Punto de Partida:</strong> Palabra, Frase, 24 Objetos o Combinación <code>A + B</code> + 12 Paletas de Jony Ive.</div>
-          <div><strong style="color:#FDE68A;">2. Galería de 8 Logos:</strong> 8 propuestas vectoriales con <strong>NanoBanana 2.1</strong> + <strong>8 Variaciones Fieles</strong>.</div>
-          <div><strong style="color:#FDE68A;">3. Afinación con IA:</strong> Ajusta geometría, trazo y composición en tiempo real.</div>
-        </div>
-      </div>
-
-      <button type="button" class="tbb-btn-gold" style="width:100%; justify-content:center; margin-top:16px; background:linear-gradient(135deg, #C59B27 0%, #9A7217 100%); color:#090D16;" onclick="window.tbbLaunchCleanStudio(false)">
-        ✨ Abrir el Atelier en Vivo Ahora →
-      </button>
-    </div>
-  </section>
-
-  <!-- SECCIÓN 1: EL RECORRIDO GUIADO DE 6 PASOS -->
-  <section id="metodo" style="background:#090D16; color:#FAF8F5; padding:72px 0; border-top:2px solid #C59B27; border-bottom:2px solid #C59B27;">
-    <div class="tbb-section-wrap" style="padding-top:0; padding-bottom:0;">
-      <div style="text-align:center; max-width:760px; margin:0 auto 44px auto;">
-        <span class="tbb-phi-pill" style="background:rgba(197,155,39,0.18); color:#FDE68A;">ARQUITECTURA METODOLÓGICA · 6 PASOS GUIADOS</span>
-        <h2 style="font-family:'Inter',sans-serif; font-size:34px; font-weight:800; letter-spacing:-0.02em; color:#FAF8F5; margin-bottom:12px;">
-          El rigor de una consultora global de $48,500 USD, destilado en un flujo interactivo sin fricción.
-        </h2>
-        <p style="color:#94A3B8; font-size:15px;">
-          Cada respuesta hablada o escrita y cada deslizador alimenta en vivo un expediente de más de 45 insights estratégicos que gobierna el nombre, la paleta, el logotipo y el manual de 38 páginas.
-        </p>
-      </div>
-
-      <div class="tbb-grid-3">
-        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(197,155,39,0.3); border-radius:20px; padding:24px;">
-          <span class="tbb-step-num">PASO 0 &amp; PASO 1 · ESENCIA Y PROPÓSITO</span>
-          <h3 style="font-family:'Inter',sans-serif; font-size:18px; font-weight:800; color:#FAF8F5; margin-bottom:8px;">ADN del Giro &amp; Círculo Dorado (Simon Sinek)</h3>
-          <p style="font-size:13.5px; color:#CBD5E1; line-height:1.55;">
-            El intérprete de 4 dimensiones identifica tu industria, modelo operativo y audiencia para articular tu <strong>WHY (Propósito)</strong>, <strong>HOW (Diferencial)</strong> y <strong>WHAT (Arquitectura de Producto)</strong> mediante diálogo socrático con AURA.
-          </p>
-        </div>
-
-        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(197,155,39,0.3); border-radius:20px; padding:24px;">
-          <span class="tbb-step-num">PASO 2 &amp; PASO 3 · PERSONALIDAD Y NAMING</span>
-          <h3 style="font-family:'Inter',sans-serif; font-size:18px; font-weight:800; color:#FAF8F5; margin-bottom:8px;">Arquetipos de Jung, Onlyness &amp; 45 Clases de Niza</h3>
-          <p style="font-size:13.5px; color:#CBD5E1; line-height:1.55;">
-            Definimos el carácter humano de tu marca, su declaración de unicidad (Marty Neumeier) y validamos nombres candidatos con el protocolo <strong>SMILE &amp; SCRATCH</strong> y viabilidad registral en las 45 Clases de Niza.
-          </p>
-        </div>
-
-        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(197,155,39,0.3); border-radius:20px; padding:24px;">
-          <span class="tbb-step-num">PASO 4 · PSICOMETRÍA VISUAL</span>
-          <h3 style="font-family:'Inter',sans-serif; font-size:18px; font-weight:800; color:#FAF8F5; margin-bottom:8px;">Ingeniería Kansei Tipo I (QTTI) &amp; 7 Deslizadores</h3>
-          <p style="font-size:13.5px; color:#CBD5E1; line-height:1.55;">
-            Calibramos los 7 ejes semánticos bipolares (<em>Tradicional ↔ Innovador, Accesible ↔ Exclusivo, Orgánico ↔ Geométrico</em>) y traducimos tus preferencias emocionales en parámetros geométricos exactos.
-          </p>
-        </div>
-
-        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(197,155,39,0.3); border-radius:20px; padding:24px;">
-          <span class="tbb-step-num">PASO 5A · DIRECCIÓN DE ARTE</span>
-          <h3 style="font-family:'Inter',sans-serif; font-size:18px; font-weight:800; color:#FAF8F5; margin-bottom:8px;">24 Decisiones Visuales Bradley-Terry + Semilla Libre</h3>
-          <p style="font-size:13.5px; color:#CBD5E1; line-height:1.55;">
-            Elige entre pares contrastantes de tipografía, geometría y ritmo visual, o parte directamente de una <strong>palabra, frase, objeto o combinación de conceptos</strong> junto con tus colores favoritos.
-          </p>
-        </div>
-
-        <div style="background:rgba(197,155,39,0.12); border:1.5px solid #C59B27; border-radius:20px; padding:24px;">
-          <span class="tbb-step-num" style="color:#FDE68A;">PASO 5B · ATELIER DE LOGOTIPOS (NANOBANANA 2.1)</span>
-          <h3 style="font-family:'Inter',sans-serif; font-size:18px; font-weight:800; color:#FAF8F5; margin-bottom:8px;">8 Propuestas por Lote + 8 Variaciones Coherentes</h3>
-          <p style="font-size:13.5px; color:#CBD5E1; line-height:1.55;">
-            Genera <strong>8 propuestas vectoriales inéditas</strong> (sin ciclos repetitivos), explora <strong>8 variaciones fieles del logo elegido</strong>, cambia entre las 12 paletas de Sir Jony Ive en 1 clic y descarga el <code>.SVG</code> en curvas puras.
-          </p>
-        </div>
-
-        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(197,155,39,0.3); border-radius:20px; padding:24px;">
-          <span class="tbb-step-num">PASO 6 · ENTREGABLE EDITORIAL COMPLETO</span>
-          <h3 style="font-family:'Inter',sans-serif; font-size:18px; font-weight:800; color:#FAF8F5; margin-bottom:8px;">Brandbook Maestro de 38 Páginas &amp; Pre-Prensa</h3>
-          <p style="font-size:13.5px; color:#CBD5E1; line-height:1.55;">
-            Compila al instante tu Manual de Identidad Corporativa completo con retículas constructivas ($arphi = 1.618$), áreas de aislamiento, tablas CMYK FOGRA39 / Pantone, papelería y aplicaciones B2B/B2C.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECCIÓN 2: EL NUEVO ESTUDIO DE LOGOTIPOS (SIR JONY IVE + NANOBANANA 2.1) -->
-  <section id="logo-atelier" class="tbb-section-wrap">
-    <div style="text-align:center; max-width:780px; margin:0 auto 44px auto;">
-      <span class="tbb-phi-pill">ATELIER DE LOGOTIPOS v35.0 · SIN REPETICIONES CÍCLICAS</span>
-      <h2 style="font-family:'Inter',sans-serif; font-size:32px; font-weight:800; color:#090D16; margin-bottom:10px;">
-        Parte de una idea propia, elige tus colores favoritos y genera con NanoBanana 2.1
-      </h2>
-      <p style="color:#334155; font-size:15px;">
-        Rediseñado bajo la dirección de <strong>Sir Jony Ive</strong> y <strong>Max</strong> en un orden lógico de 3 pasos (<strong>1. Punto de Partida → 2. Galería de 8 Propuestas → 3. Afinación con IA</strong>).
-      </p>
-    </div>
-
-    <div class="tbb-grid-4">
-      <div class="tbb-feature-card">
-        <span class="tbb-step-num">01 · SEMILLA CREATIVA</span>
-        <div class="tbb-feature-title">Palabra, Frase, Objeto o Fusión Dual (A + B)</div>
-        <p class="tbb-feature-desc">
-          Elige entre <strong>24 símbolos escultóricos</strong> (<em>Faro, Brújula, León, Águila, Corona, Escudo, Loto, Reloj, Fénix...</em>) o fusiona dos conceptos (ej. <em>«Brújula + Estrella»</em>, <em>«León + Escudo»</em>) en espacio negativo Gestalt.
-        </p>
-      </div>
-      <div class="tbb-feature-card">
-        <span class="tbb-step-num">02 · ATELIER CROMÁTICO</span>
-        <div class="tbb-feature-title">14 Pigmentos Puros &amp; 12 Paletas de Jony Ive</div>
-        <p class="tbb-feature-desc">
-          Selecciona tus colores individuales preferidos, usa el selector libre HEX o aplica en 1 clic una de las <strong>12 paletas curadas</strong> (<em>Obsidian &amp; Savile Gold, Cupertino Titanium, Swiss Emerald...</em>) con contraste WCAG AAA.
-        </p>
-      </div>
-      <div class="tbb-feature-card">
-        <span class="tbb-step-num">03 · NANOBANANA 2.1 + IA</span>
-        <div class="tbb-feature-title">8 Propuestas por Lote + 8 Variaciones Fieles</div>
-        <p class="tbb-feature-desc">
-          Cada lote sintetiza <strong>8 propuestas distintas</strong> en vectores <code>&lt;path&gt;</code> reales. Cuando una te gusta, pulsa <strong>«🧬 8 Variaciones de este Logo»</strong> para ver 8 evoluciones fieles sin cambiar de símbolo.
-        </p>
-      </div>
-      <div class="tbb-feature-card">
-        <span class="tbb-step-num">04 · GRADO INDUSTRIAL</span>
-        <div class="tbb-feature-title">Curvas Bézier Puras &amp; Cota ≥ 1.2mm</div>
-        <p class="tbb-feature-desc">
-          Cero mapas de bits pixelados. Todos los logotipos se entregan en vectores matemáticos escalables con grosor mínimo certificado ($\ge 1.2	ext{ mm}$) para bordado textil, grabado láser e imprenta.
-        </p>
-      </div>
-    </div>
-
-    <div style="text-align:center; margin-top:34px;">
-      <button type="button" class="tbb-btn-gold" style="font-size:14px; padding:13px 26px;" onclick="window.tbbJumpToStep(5)">
-        🍌 Ir Directo al Estudio de Logotipos (Paso 5) →
-      </button>
-    </div>
-  </section>
-
-  <!-- SECCIÓN 3: BRANDBOOK EDITORIAL DE 38 PÁGINAS + PLANES -->
-  <section id="brandbook-38" style="background:#F3EFEA; padding:64px 0; border-top:1px solid rgba(9,13,22,0.08);">
-    <div class="tbb-section-wrap" style="padding-top:0; padding-bottom:0;" id="planes">
-      <div style="text-align:center; max-width:760px; margin:0 auto 40px auto;">
-        <span class="tbb-phi-pill">ENTREGABLE EJECUTIVO FULL-BLEED · CERO CAJAS RÍGIDAS</span>
-        <h2 style="font-family:'Inter',sans-serif; font-size:32px; font-weight:800; color:#090D16; margin-bottom:10px;">
-          Tu Manual de Identidad listo para presentar a socios, bancos e imprentas.
-        </h2>
-        <p style="color:#334155; font-size:15px;">
-          Generado bajo nuestra arquitectura editorial de hoja completa (<em>Full-Bleed</em>) con curvas vectoriales, retícula de Fibonacci, psicología del color y mockups arquitectónicos.
-        </p>
-      </div>
-
-      <div class="tbb-grid-3">
-        <!-- Plan 1 -->
-        <div class="tbb-feature-card" style="display:flex; flex-direction:column; justify-content:space-between;">
-          <div>
-            <span class="tbb-step-num">MODALIDAD 01 · EMPRENDEDOR</span>
-            <div class="tbb-feature-title" style="font-size:20px;">Identidad Esencial</div>
-            <div style="font-family:'Inter',sans-serif; font-size:28px; font-weight:800; color:#090D16; margin:12px 0;">Incluido <span style="font-size:12px; font-weight:500; color:#334155;">en Demo Activa</span></div>
-            <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; font-size:13px; color:#334155; margin-bottom:20px;">
-              <li>✓ Entrevista Socrática Completa con AURA</li>
-              <li>✓ Filtro de Naming &amp; 45 Clases de Niza</li>
-              <li>✓ Generador de 8 Logos + 12 Paletas Jony Ive</li>
-              <li>✓ Descarga de Logotipo en <code>.SVG</code> Vectorial</li>
-            </ul>
-          </div>
-          <button type="button" class="tbb-btn-outline" style="width:100%; justify-content:center;" onclick="window.tbbLaunchCleanStudio(true)">
-            Iniciar Marca desde Cero →
-          </button>
-        </div>
-
-        <!-- Plan 2 Destacado -->
-        <div class="tbb-feature-card" style="background:#090D16; color:#FAF8F5; border:2px solid #C59B27; display:flex; flex-direction:column; justify-content:space-between; transform:translateY(-6px);">
-          <div>
-            <span class="tbb-step-num" style="color:#FDE68A;">MODALIDAD 02 · ATELIER PRO (RECOMENDADO)</span>
-            <div class="tbb-feature-title" style="font-size:20px; color:#FAF8F5;">Brandbook Maestro 38 Páginas + NanoBanana 2.1</div>
-            <div style="font-family:'Inter',sans-serif; font-size:28px; font-weight:800; color:#C59B27; margin:12px 0;">Acceso Total <span style="font-size:12px; font-weight:500; color:#CBD5E1;">Suite Completa</span></div>
-            <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; font-size:13px; color:#E2E8F0; margin-bottom:20px;">
-              <li>✓ Todo lo de Identidad Esencial + Voz Neuronal 24kHz</li>
-              <li>✓ Semilla Libre (Palabra, Objeto, Fusión <code>A + B</code>)</li>
-              <li>✓ 8 Variaciones Fieles + Refinamiento Libre con IA</li>
-              <li>✓ <strong>Brandbook Editorial BËNEFIC (38 Págs PDF + CMYK + Pantone)</strong></li>
-            </ul>
-          </div>
-          <button type="button" class="tbb-btn-gold" style="width:100%; justify-content:center; background:linear-gradient(135deg, #C59B27 0%, #9A7217 100%); color:#090D16;" onclick="window.tbbLaunchCleanStudio(false)">
-            ✨ Entrar al Atelier Pro Ahora →
-          </button>
-        </div>
-
-        <!-- Plan 3 -->
-        <div class="tbb-feature-card" style="display:flex; flex-direction:column; justify-content:space-between;">
-          <div>
-            <span class="tbb-step-num">MODALIDAD 03 · CORPORATIVO &amp; SUB-MARCAS</span>
-            <div class="tbb-feature-title" style="font-size:20px;">Arquitectura Multi-Marca (Branded House)</div>
-            <div style="font-family:'Inter',sans-serif; font-size:28px; font-weight:800; color:#090D16; margin:12px 0;">Enterprise <span style="font-size:12px; font-weight:500; color:#334155;">Holdings &amp; Ligas</span></div>
-            <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; font-size:13px; color:#334155; margin-bottom:20px;">
-              <li>✓ Clonación de Sub-Marcas y Divisiones en 1 Clic</li>
-              <li>✓ Exportación de 12 Arquetipos Industriales</li>
-              <li>✓ Hojas de Pre-Prensa FOGRA39 y Bordado ≥ 1.2mm</li>
-              <li>✓ Integración con <em>TheBestLeague</em> &amp; <em>ImproBears</em></li>
-            </ul>
-          </div>
-          <a href="/brandbook" target="_blank" class="tbb-btn-outline" style="width:100%; justify-content:center;">
-            📖 Ver Brandbook Oficial de Muestra ↗
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER OFICIAL THEBESTBRAND -->
-  <footer style="background:#090D16; color:#94A3B8; padding:32px; border-top:1px solid rgba(197,155,39,0.25); font-size:12px;">
-    <div style="max-width:1240px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px;">
-      <div style="display:flex; align-items:center; gap:10px; color:#FAF8F5; font-family:'Inter',sans-serif; font-weight:700;">
-        <span style="width:8px; height:8px; border-radius:50%; background:#C59B27; display:inline-block;"></span>
-        THEBESTBRAND — LUXURY BRAND IDENTITY ATELIER · v35.0
-      </div>
-      <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#C59B27;">
-        PROPORCIÓN ÁUREA φ = 1.618 · KANSEI QTTI · NANOBANANA 2.1 · CERO REMANENTES
-      </div>
-      <div>
-        Parte del Ecosistema <strong>ImproBears</strong> &amp; <strong>Suite The Best</strong>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:6px;">
+        <a href="/studio" style="color:#93C5FD; font-weight:800; text-decoration:none;">Abrir Estudio Completo</a>
+        <span style="color:#475569;">·</span>
+        <a href="#tbbCommPlateExplorerSection" style="color:#E2E8F0; font-weight:800; text-decoration:none;">Explorador de 30 Láminas</a>
+        <span style="color:#475569;">·</span>
+        <a href="#tbbCommLiveDemoSection" style="color:#FDBA74; font-weight:800; text-decoration:none;">Demo en Vivo (Pasos 1 y 2)</a>
+        <span style="color:#475569;">·</span>
+        <a href="#tbbCommPricingSection" onclick="if(window.tbbOpenBuyAppCheckoutModal){window.tbbOpenBuyAppCheckoutModal('pro_atelier'); return false;}" style="color:#FFFFFF; font-weight:800; text-decoration:none;">Comprar la App (Tarjeta · Apple Pay · Google Pay · PayPal)</a>
       </div>
     </div>
   </footer>
-</div>
 
-<script id="tbbZeroRemnantAndWebsiteController">
-(function() {
-  // 1. HARD PURGE DE CUALQUIER REMANENTE DE VERSIONES ANTERIORES DE REPLIT (v1..v34)
-  var CLEAN_BOOT_KEY = "tbb_clean_replit_release_v35_0";
-  var params = new URLSearchParams(window.location.search);
-  var forceReset = params.get("reset") === "1" || params.get("clean") === "1";
-
-  if (!localStorage.getItem(CLEAN_BOOT_KEY) || forceReset) {
-    var keysToPurge = [];
-    for (var i = 0; i < localStorage.length; i++) {
-      var k = localStorage.key(i);
-      if (k && k !== CLEAN_BOOT_KEY) {
-        keysToPurge.push(k);
-      }
-    }
-    keysToPurge.forEach(function(k) { localStorage.removeItem(k); });
-    try { sessionStorage.clear(); } catch (e) {}
-    localStorage.setItem(CLEAN_BOOT_KEY, new Date().toISOString());
-    console.log("[TheBestBrand v35.0] Purga total de remanentes anteriores completada.");
-  }
-
-  // 2. Si la URL pide ir directo a un paso (?step=5 o ?studio=1 o /studio), ocultar el portal web comercial
-  var isDirectStudio = params.has("step") || params.get("studio") === "1" || window.location.pathname.indexOf("/studio") === 0;
-  var portalEl = document.getElementById("tbbCommercialWebsitePortal");
-  if (portalEl && isDirectStudio) {
-    portalEl.classList.add("tbb-portal-hidden");
-  }
-
-  // 3. Funciones globales para entrar al Atelier o limpiar sesión sin dejar remanentes
-  window.tbbLaunchCleanStudio = function(wipePreviousBrand) {
-    if (wipePreviousBrand) {
-      localStorage.removeItem("tbb_active_brand_session_v24");
-      localStorage.removeItem("tbb_user_account_v30");
-      try { sessionStorage.clear(); } catch (e) {}
-      fetch("/api/v1/account/reset-brand", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ account_id: "guest_default", brand_id: "active_brand_default" })
-      }).catch(function() {});
-      // Si ya estamos en la SPA, recargar con ?studio=1&clean=1 para garantizar estado virgen
-      if (window.location.pathname.indexOf("/web") === 0) {
-        window.location.href = "/studio?studio=1&clean=1";
-        return;
-      }
-      window.location.href = window.location.pathname + "?studio=1&clean=1";
-      return;
-    }
-    if (window.location.pathname.indexOf("/web") === 0) {
-      window.location.href = "/studio?studio=1";
-      return;
-    }
-    var p = document.getElementById("tbbCommercialWebsitePortal");
-    if (p) p.classList.add("tbb-portal-hidden");
-  };
-
-  window.tbbShowCommercialWebsite = function() {
-    var p = document.getElementById("tbbCommercialWebsitePortal");
-    if (p) {
-      p.classList.remove("tbb-portal-hidden");
-      p.scrollTop = 0;
-    } else {
-      window.location.href = "/web";
-    }
-  };
-
-  window.tbbJumpToStep = function(stepNum) {
-    if (window.location.pathname.indexOf("/web") === 0) {
-      window.location.href = "/studio?step=" + stepNum;
-      return;
-    }
-    var p = document.getElementById("tbbCommercialWebsitePortal");
-    if (p) p.classList.add("tbb-portal-hidden");
-    if (typeof window.goToStep === "function") {
-      window.goToStep(stepNum);
-    } else {
-      window.location.href = "/?step=" + stepNum;
-    }
-  };
-})();
-</script>
-<!-- ======================= END TBB V35 COMMERCIAL WEBSITE ======================= -->
-
+  <script src="/universal-brandbook-30-engine.js?v=58.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=58.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=58.0"></script>
 </body>
 </html>

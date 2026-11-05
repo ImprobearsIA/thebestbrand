@@ -327,68 +327,28 @@ class BespokePentagramLogoEngine:
 
         bg_light, ink_dark, pri_accent, sec_accent = colors[0], colors[1], colors[2], colors[3]
 
-        master_prompt_es = f"""DIRECTRIZ MAESTRA DE DISEÑO DE LOGOTIPO (SÍNTESIS DE 45+ INSIGHTS DE TU ENTREVISTA)
-================================================================================
-1. IDENTIDAD VERBAL Y ARQUITECTURA DE MARCA (PASO 3):
-• Nombre Oficial de la Marca: "{clean_brand}"
-• Monograma / Iniciales Constructivas: "{initials}"
-• Descriptor / Eslogan Oficial: "{tagline}"
-
-2. GIRO REAL, PROPÓSITO Y PSICOLOGÍA DEL CLIENTE (PASOS 0 Y 1):
-• Giro y Esencia del Negocio: {paraphrased_essence or custom_biz or short_essence or metaphor_info['sector_label']}
-• Resumen Nuclear (≤ 6 palabras): {short_essence or metaphor_info['sector_label']}
-• Propósito (Círculo Dorado): {golden_circle or 'Revolucionar su categoría con excelencia, agilidad y confianza absoluta.'}
-• Oferta de Valor Diferenciada: {value_offer or 'Solución superior, intuitiva y diseñada a la medida de las expectativas reales del cliente.'}
-• Cliente Ideal Detectado: {buyer_actor or 'Clientes exigentes que valoran calidad profesional, claridad y resultados reales.'}
-• Problema del Mercado que Resuelve: {market_pain or 'Elimina la fricción, la improvisación y la falta de calidad en las alternativas tradicionales.'}
-• Mensaje Nuclear de Marca: {core_message or tagline}
-
-3. METÁFORA VISUAL Y CONCEPTO CREATIVO (ESTÁNDAR PENTAGRAM / WOLFF OLINS):
-• Arquetipo Sectorial Detectado: {metaphor_info['sector_label']}
-• Metáfora Visual Obligatoria: {metaphor_info['metaphor']}
-• Elementos Constructivos del Símbolo: {metaphor_info['symbol_elements']}
-
-4. SUSTRATOS REALES Y TOUCHPOINTS DONDE VIVIRÁ EL LOGOTIPO (PASO 2):
-• Puntos de Contacto Prioritarios: {tp_summary}
-• Requisito Técnico: El símbolo debe funcionar impecablemente desde 16x16 px (App Icon / Favicon) hasta señalética arquitectónica, impresión de gala y bordado/grabado láser (trazo mínimo ≥ 1.2 mm).
-
-5. CALIBRACIÓN KANSEI Y FAMILIA ARQUITECTÓNICA ELEGIDA (PASO 4):
-• Familia Base Seleccionada: {family_label}
-{chr(10).join(slider_summary_lines)}
-
-6. REGLAS GEOMÉTRICAS, TIPOGRÁFICAS Y CROMÁTICAS DE LAS 24 DECISIONES A/B (PASO 5):
-• Geometría de Vértices: {vertices_rule}
-• Calibre de Trazo: {stroke_rule}
-• Balance y Ejes: {symmetry_rule}
-• Psicología Gestalt: {neg_space_rule}
-• Contención del Símbolo: {enclosure_rule}
-• Tipografía Principal: '{primary_font}' ({case_rule}) + Secundaria '{secondary_font}'
-• Paleta Cromática Oficial (HEX): Fondo Claro Editorial {bg_light} | Tinta Profunda {ink_dark} | Acento Maestro {pri_accent} | Acento Secundario {sec_accent}
-
-7. INSTRUCCIÓN EJECUTIVA PARA GEMINI AI STUDIO:
-Diseña un logotipo memorable, ultra-profesional y digno de un premio internacional de diseño (Pentagram / Chermayeff & Geismar / Apple Design Award) para "{clean_brand}". Prohibido usar clip-art genérico o polígonos vacíos sin alma. Fusiona la metáfora del giro ({metaphor_info['metaphor']}) con las iniciales "{initials}" en proporción áurea (φ = 1.618), utilizando exclusivamente la paleta ({ink_dark}, {pri_accent}, {sec_accent}, {bg_light}) y jerarquía tipográfica de lujo.""".strip()
+        captured_essence = (short_essence or paraphrased_essence or custom_biz or value_offer or golden_circle or metaphor_info["sector_label"]).strip()
+        short_context = " ".join(captured_essence.split()[:10])
+        raw_short_es = (
+            f"Diseña el logotipo de «{clean_brand}» ({short_context}) con estructura {family_label.split('&')[0].strip()}, "
+            f"colores {pri_accent} y {sec_accent}, tipografía {primary_font} e ícono App en proporción 1:1."
+        )
+        master_prompt_es = " ".join(raw_short_es.split()[:40])
 
         if custom_prompt_override and custom_prompt_override.strip():
-            raw_override = custom_prompt_override.strip()
-            # No permitir que un override viejo con "Mi Nueva Marca" / "MNM" contamine el nombre real
+            raw_override = " ".join(custom_prompt_override.strip().split())
             if clean_brand.lower() not in ("mi nueva marca", "mi marca") and (
                 "mi nueva marca" in raw_override.lower() or '"mnm"' in raw_override.lower() or "«mnm»" in raw_override.lower()
             ):
                 pass
             else:
-                master_prompt_es = raw_override
+                master_prompt_es = " ".join(raw_override.split()[:40])
 
-        master_prompt_en = (
-            f"Design a museum-grade, bespoke vector brand identity and logo mark (Pentagram, Chermayeff & Geismar, Wolff Olins standard) "
-            f"for '{clean_brand}' (Monogram initials: '{initials}', Tagline: '{tagline}'). "
-            f"Business & Core Essence: {paraphrased_essence or custom_biz or metaphor_info['sector_label']}. "
-            f"Value Proposition: {value_offer or golden_circle}. Target Audience: {buyer_actor}. "
-            f"Mandatory Visual Metaphor: {metaphor_info['metaphor']}. "
-            f"Base Architectural Family: {family_label}. "
-            f"Geometric Rules from 24 A/B Selections: {vertices_rule}; {stroke_rule}; {symmetry_rule}; {neg_space_rule}; {enclosure_rule}. "
-            f"Typography: '{primary_font}' ({case_rule}). "
-            f"Exact Color Palette: Deep Ink {ink_dark}, Primary Luxury Accent {pri_accent}, Secondary Accent {sec_accent}, Editorial Canvas {bg_light}."
+        raw_short_en = (
+            f"Design the official logo for '{clean_brand}' ({short_context}) with {family_label.split('&')[0].strip()} architecture, "
+            f"colors {pri_accent} and {sec_accent}, '{primary_font}' typography, and a 1:1 App Icon."
         )
+        master_prompt_en = " ".join(raw_short_en.split()[:40])
 
         design_dna_pills = [
             {"label": "Marca & Monograma", "value": f"{clean_brand} ({initials})"},
@@ -1108,7 +1068,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
   "creative_director_rationale": "Síntesis ejecutiva en español (2-3 oraciones) explicando cómo el propósito, el giro, los touchpoints, los 7 sliders Kansei y las 24 decisiones A/B dan vida a la identidad visual de {brand_name} ({initials}).",
   "proposals_meta": [
     {{
-      "tag": "⭐ OPCIÓN #01 · 99% MATCH CON TU ENTREVISTA",
+      "tag": " OPCIÓN #01 · 99% MATCH CON TU ENTREVISTA",
       "title": "{brand_name} · Lockup Totémico Flagship ({initials})",
       "rationale": "Explicación específica en español (2 oraciones) de por qué esta primera opción representa el 99% de match con su entrevista, fusionando la metáfora de su giro con el monograma {initials} y su paleta."
     }},
@@ -1763,7 +1723,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"VAR-{sel_idx+1}-A",
                     "title": ai_titles.get(0) or f"{compiled['brand_name']} · Variación A (Evolución Directa de {parent_label})",
                     "subtitle": f"Geometría Base de {parent_label} Perfeccionada en Proporción Áurea φ=1.618",
-                    "tag": f"🧬 VARIACIÓN A DE {parent_label.upper()} · FIDELIDAD ÁUREA",
+                    "tag": f" VARIACIÓN A DE {parent_label.upper()} · FIDELIDAD ÁUREA",
                     "rationale": ai_rationales.get(0) or f"Conserva la estructura central de tu {parent_label} seleccionada y afina el balance óptico en {primary_font}.",
                     "archetype": archetype,
                     "svg": svg_01
@@ -1772,7 +1732,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"VAR-{sel_idx+1}-B",
                     "title": ai_titles.get(1) or f"{compiled['brand_name']} · Variación B (Trazo Fino & Órbita Editorial)",
                     "subtitle": f"Versión Estilizada de {parent_label} sobre Lienzo Claro Alabastro",
-                    "tag": f"🧬 VARIACIÓN B DE {parent_label.upper()} · MINIMALISMO EDITORIAL",
+                    "tag": f" VARIACIÓN B DE {parent_label.upper()} · MINIMALISMO EDITORIAL",
                     "rationale": ai_rationales.get(1) or f"Estiliza los trazos de tu {parent_label} con una órbita áurea sobre fondo claro de alto contraste.",
                     "archetype": archetype,
                     "svg": svg_02
@@ -1781,7 +1741,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"VAR-{sel_idx+1}-C",
                     "title": ai_titles.get(2) or f"{compiled['brand_name']} · Variación C (Monograma «{initials}» en el Núcleo)",
                     "subtitle": f"Fusión Escultórica de {parent_label} con las Iniciales Constructivas «{initials}»",
-                    "tag": f"🧬 VARIACIÓN C DE {parent_label.upper()} · NÚCLEO MONOGRAMÁTICO",
+                    "tag": f" VARIACIÓN C DE {parent_label.upper()} · NÚCLEO MONOGRAMÁTICO",
                     "rationale": ai_rationales.get(2) or f"Integra el monograma «{initials}» directamente en el corazón geométrico de tu {parent_label}.",
                     "archetype": archetype,
                     "svg": svg_03
@@ -1790,7 +1750,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"VAR-{sel_idx+1}-D",
                     "title": ai_titles.get(3) or f"{compiled['brand_name']} · Variación D (Insignia Escudo & App Icon 1:1)",
                     "subtitle": f"Emblema Contenedor de {parent_label} Blindado para Ícono Digital y Empaque",
-                    "tag": f"🧬 VARIACIÓN D DE {parent_label.upper()} · ESCUDO & APP ICON",
+                    "tag": f" VARIACIÓN D DE {parent_label.upper()} · ESCUDO & APP ICON",
                     "rationale": ai_rationales.get(3) or f"Enmarca la geometría de tu {parent_label} dentro de un escudo de prestigio y contenedor Squircle 1:1.",
                     "archetype": archetype,
                     "svg": svg_04
@@ -1799,7 +1759,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"VAR-{sel_idx+1}-E",
                     "title": ai_titles.get(4) or f"{compiled['brand_name']} · Variación E (Síntesis IA NanoBanana 2.1)",
                     "subtitle": f"Reinterpretación Generativa de {parent_label} con Acento Secundario",
-                    "tag": f"🍌 VARIACIÓN E · NANOBANANA 2.1 IA",
+                    "tag": f" VARIACIÓN E · NANOBANANA 2.1 IA",
                     "rationale": ai_rationales.get(4) or f"Exploración generativa en vivo basada en el concepto de tu {parent_label}.",
                     "archetype": archetype,
                     "svg": svg_05
@@ -1808,7 +1768,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"VAR-{sel_idx+1}-F",
                     "title": ai_titles.get(5) or f"{compiled['brand_name']} · Variación F (Curvas Orgánicas sobre Marfil)",
                     "subtitle": f"Versión Fluida de {parent_label} para Papelería y Web Clara",
-                    "tag": f"🍌 VARIACIÓN F · ESPACIO NEGATIVO CLARO",
+                    "tag": f" VARIACIÓN F · ESPACIO NEGATIVO CLARO",
                     "rationale": ai_rationales.get(5) or f"Suaviza los radios ópticos de tu {parent_label} sobre lienzo claro editorial.",
                     "archetype": archetype,
                     "svg": svg_06
@@ -1817,7 +1777,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"VAR-{sel_idx+1}-G",
                     "title": ai_titles.get(6) or f"{compiled['brand_name']} · Variación G (Lockup Horizontal Octogonal)",
                     "subtitle": f"Formato Panorámico 16:9 de {parent_label}",
-                    "tag": f"🧬 VARIACIÓN G · PANORÁMICO 16:9",
+                    "tag": f" VARIACIÓN G · PANORÁMICO 16:9",
                     "rationale": ai_rationales.get(6) or f"Disposición horizontal ejecutiva derivada directamente de tu {parent_label}.",
                     "archetype": archetype,
                     "svg": svg_07
@@ -1826,7 +1786,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"VAR-{sel_idx+1}-H",
                     "title": ai_titles.get(7) or f"{compiled['brand_name']} · Variación H (Medallón de Prestigio Jony Ive)",
                     "subtitle": f"Sello Circular de Alta Precisión de {parent_label}",
-                    "tag": f"🍎 VARIACIÓN H · SELLO ANODIZADO",
+                    "tag": f" VARIACIÓN H · SELLO ANODIZADO",
                     "rationale": ai_rationales.get(7) or f"Versión en medallón circular anodizado lista para grabado láser y lacre.",
                     "archetype": archetype,
                     "svg": svg_08
@@ -1839,7 +1799,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"PROP-01-S{seed_int}",
                     "title": ai_titles.get(0) or (meta_list[0].get("title") if len(meta_list) > 0 else None) or f"{compiled['brand_name']} · Escultura Áurea #01{cycle_badge}",
                     "subtitle": f"Lockup Totémico Flagship · {seed_summary or metaphor_info['sector_label']}",
-                    "tag": f"⭐ OPCIÓN #01{cycle_badge} · ESCULTURA ÁUREA PRINCIPAL",
+                    "tag": f" OPCIÓN #01{cycle_badge} · ESCULTURA ÁUREA PRINCIPAL",
                     "rationale": ai_rationales.get(0) or (meta_list[0].get("rationale") if len(meta_list) > 0 else None) or f"Interpretación escultórica directa de tu idea y giro en proporción áurea (φ = 1.618) con tipografía {primary_font}.",
                     "archetype": archetype,
                     "svg": svg_01
@@ -1866,7 +1826,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"PROP-04-S{seed_int}",
                     "title": ai_titles.get(3) or (meta_list[3].get("title") if len(meta_list) > 3 else None) or f"{compiled['brand_name']} · Sistema App Icon Squircle #04{cycle_badge}",
                     "subtitle": f"Símbolo Autónomo «{initials}» en Chasis Squircle iOS/macOS",
-                    "tag": f"🍎 OPCIÓN #04{cycle_badge} · APP ICON SQUIRCLE 1:1",
+                    "tag": f" OPCIÓN #04{cycle_badge} · APP ICON SQUIRCLE 1:1",
                     "rationale": ai_rationales.get(3) or (meta_list[3].get("rationale") if len(meta_list) > 3 else None) or "Diseñado bajo el estándar de Sir Jony Ive para brillar como ícono de aplicación, avatar social y sello 1:1.",
                     "archetype": archetype,
                     "svg": svg_04
@@ -1875,7 +1835,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"PROP-05-S{seed_int}",
                     "title": ai_titles.get(4) or f"{compiled['brand_name']} · Síntesis IA Figurativa #05{cycle_badge}",
                     "subtitle": "Generación Vectorial en Vivo NanoBanana 2.1 + Gemini 3.5",
-                    "tag": f"🍌 OPCIÓN #05{cycle_badge} · SÍNTESIS IA NANOBANANA 2.1",
+                    "tag": f" OPCIÓN #05{cycle_badge} · SÍNTESIS IA NANOBANANA 2.1",
                     "rationale": ai_rationales.get(4) or f"Trazo generativo inédito creado por IA a partir de tu idea base y paleta cromática ({pri_hex}, {sec_hex}).",
                     "archetype": archetype,
                     "svg": svg_05
@@ -1884,7 +1844,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"PROP-06-S{seed_int}",
                     "title": ai_titles.get(5) or f"{compiled['brand_name']} · Espacio Negativo Gestalt #06{cycle_badge}",
                     "subtitle": "Síntesis Minimalista sobre Lienzo Claro de Alto Contraste",
-                    "tag": f"🍌 OPCIÓN #06{cycle_badge} · GESTALT & ESPACIO NEGATIVO",
+                    "tag": f" OPCIÓN #06{cycle_badge} · GESTALT & ESPACIO NEGATIVO",
                     "rationale": ai_rationales.get(5) or "Exploración de figura-fondo sobre lienzo marfil para papelería corporativa y aplicaciones luminosas.",
                     "archetype": archetype,
                     "svg": svg_06
@@ -1893,7 +1853,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"PROP-07-S{seed_int}",
                     "title": ai_titles.get(6) or f"{compiled['brand_name']} · Emblema Panorámico Octogonal #07{cycle_badge}",
                     "subtitle": "Insignia Geométrica de Autor en Formato Horizontal Oscuro",
-                    "tag": f"🏛️ OPCIÓN #07{cycle_badge} · INSIGNIA PANORÁMICA",
+                    "tag": f" OPCIÓN #07{cycle_badge} · INSIGNIA PANORÁMICA",
                     "rationale": ai_rationales.get(6) or "Combina un emblema octogonal de precisión con composición horizontal ejecutiva en modo nocturno.",
                     "archetype": archetype,
                     "svg": svg_07
@@ -1902,7 +1862,7 @@ Devuelve UNICAMENTE un objeto JSON válido con esta estructura:
                     "proposal_id": f"PROP-08-S{seed_int}",
                     "title": ai_titles.get(7) or f"{compiled['brand_name']} · Medallón Anodizado Jony Ive #08{cycle_badge}",
                     "subtitle": "Sello Circular de Alta Precisión para Grabado, Empaque y Lacre",
-                    "tag": f"🍎 OPCIÓN #08{cycle_badge} · MEDALLÓN DE AUTOR",
+                    "tag": f" OPCIÓN #08{cycle_badge} · MEDALLÓN DE AUTOR",
                     "rationale": ai_rationales.get(7) or "Equilibrio radial perfecto calibrado para reproducción física en metal, bordado, empaque y firma institucional.",
                     "archetype": archetype,
                     "svg": svg_08
@@ -1962,9 +1922,9 @@ class DeepTouchpointEngineeringEngine:
                     "aura_question": "Empecemos por ANTES DE COMPRAR (Pre-compra): ¿Cómo te descubre el comensal por primera vez? ¿Es el aroma que sale a la calle, la recomendación de un amigo o un video donde se escucha el crepitar de la brasa?",
                     "examples": [
                         {
-                            "icon": "🔥",
+                            "icon": "",
                             "title": "Aroma a leña de encino y humo cálido desde la banqueta (Servicescape Olfativo)",
-                            "sensory_channel": "👃 Olfato + 👁️ Vista (Ambiental / Brand-Owned)",
+                            "sensory_channel": " Olfato +  Vista (Ambiental / Brand-Owned)",
                             "governance": "Brand-Owned (Control Total)",
                             "nature": "Ambiental / Física (Servicescape)",
                             "surprise_delight": "Ventilación aromática intencional hacia el acceso y cálida luz ámbar 2400K que invita a asomarse.",
@@ -1973,9 +1933,9 @@ class DeepTouchpointEngineeringEngine:
                             "metrics": "Tráfico peatonal convertido (Walk-in rate) + Menciones orgánicas en Stories (Social/External)"
                         },
                         {
-                            "icon": "📱",
+                            "icon": "",
                             "title": "Confirmación de reserva por WhatsApp con audio o nota del Chef y playlist de la noche",
-                            "sensory_channel": "👂 Oído + 🤝 Emoción Humana (Digital + Humana)",
+                            "sensory_channel": " Oído +  Emoción Humana (Digital + Humana)",
                             "governance": "Brand-Owned (Control Total)",
                             "nature": "Tecnológica + Humana Directa",
                             "surprise_delight": "Preguntar sutilmente si celebran algún aniversario o alergia para preparar un gesto sorpresa en mesa.",
@@ -1984,9 +1944,9 @@ class DeepTouchpointEngineeringEngine:
                             "metrics": "CES (Esfuerzo de reserva < 30 seg) + Reducción de No-Shows al < 3%"
                         },
                         {
-                            "icon": "🗣️",
+                            "icon": "",
                             "title": "Reseñas vivas e historias de comensales reales recomendando el plato insignia",
-                            "sensory_channel": "👁️ Vista + 🤝 Confianza Social (Social / External)",
+                            "sensory_channel": " Vista +  Confianza Social (Social / External)",
                             "governance": "Social / External (Impulsado por deleite)",
                             "nature": "Comunidad entre Pares",
                             "surprise_delight": "Iluminación cenital cálida en cada mesa pensada para que los platillos luzcan extraordinarios sin usar flash.",
@@ -2000,9 +1960,9 @@ class DeepTouchpointEngineeringEngine:
                     "aura_question": "Vamos a DURANTE LA COMPRA: Cuando el cliente ya cruzó tu puerta y se sienta a la mesa, ¿qué toca, qué huele, cómo lo saluda tu equipo y qué detalle inesperado lo enamora?",
                     "examples": [
                         {
-                            "icon": "🍵",
+                            "icon": "",
                             "title": "Ritual de bienvenida con toalla húmeda tibia con esencia de romero y pan recién horneado",
-                            "sensory_channel": "✋ Tacto (Temperatura) + 👃 Olfato + 👅 Gusto",
+                            "sensory_channel": " Tacto (Temperatura) +  Olfato +  Gusto",
                             "governance": "Brand-Owned (Control Total)",
                             "nature": "Humana Directa + Sensorial",
                             "surprise_delight": "Se entrega en los primeros 90 segundos sin costo antes de abrir la carta para bajar el estrés del día.",
@@ -2011,9 +1971,9 @@ class DeepTouchpointEngineeringEngine:
                             "metrics": "CSAT de primera impresión + Incremento en tiempo de permanencia placentera"
                         },
                         {
-                            "icon": "📖",
+                            "icon": "",
                             "title": "Carta táctil en papel algodón y piel con relato corto de los productores locales",
-                            "sensory_channel": "✋ Tacto + 👁️ Vista (Evidencia Física)",
+                            "sensory_channel": " Tacto +  Vista (Evidencia Física)",
                             "governance": "Brand-Owned (Control Total)",
                             "nature": "Ambiental / Física + Humana",
                             "surprise_delight": "El personal tiene autonomía (estilo Ritz-Carlton) para ofrecer media porción de cortesía si el cliente duda entre dos entradas.",
@@ -2022,9 +1982,9 @@ class DeepTouchpointEngineeringEngine:
                             "metrics": "Ticket promedio + Conversión de platillos de autor"
                         },
                         {
-                            "icon": "🎶",
+                            "icon": "",
                             "title": "Acústica envolvente que permite conversar sin gritar y cocina abierta con aroma a brasa limpia",
-                            "sensory_channel": "👂 Oído + 👃 Olfato + 👁️ Vista (Servicescape)",
+                            "sensory_channel": " Oído +  Olfato +  Vista (Servicescape)",
                             "governance": "Brand-Owned (Control Total)",
                             "nature": "Ambiental / Física",
                             "surprise_delight": "Curaduría musical que evoluciona según la hora y absorción acústica oculta bajo las mesas de madera maciza.",
@@ -2038,9 +1998,9 @@ class DeepTouchpointEngineeringEngine:
                     "aura_question": "Por último, DESPUÉS DE LA COMPRA (Post-compra): ¿Cómo cierras la experiencia al pedir la cuenta y qué pasa cuando el cliente llega a su casa para que quiera volver la próxima semana?",
                     "examples": [
                         {
-                            "icon": "💌",
+                            "icon": "",
                             "title": "Entrega de la cuenta en caja artesanal con infusión digestiva y postal con semilla plantable",
-                            "sensory_channel": "👅 Gusto + ✋ Tacto + 🤝 Sorpresa Emocional",
+                            "sensory_channel": " Gusto +  Tacto +  Sorpresa Emocional",
                             "governance": "Brand-Owned + Customer-Owned",
                             "nature": "Humana Directa + Evidencia Física",
                             "surprise_delight": "Si es su primera visita o cumpleaños, incluye una pequeña hogaza o frasco de salsa de la casa etiquetado con su nombre para el desayuno del día siguiente.",
@@ -2049,9 +2009,9 @@ class DeepTouchpointEngineeringEngine:
                             "metrics": "CES de pago + Tasa de recompra en los siguientes 30 días (LTV)"
                         },
                         {
-                            "icon": "📲",
+                            "icon": "",
                             "title": "Mensaje personal al día siguiente agradeciendo la visita y compartiendo la receta o playlist",
-                            "sensory_channel": "👂 Oído + 🤝 Vínculo Relacional",
+                            "sensory_channel": " Oído +  Vínculo Relacional",
                             "governance": "Brand-Owned",
                             "nature": "Tecnológica Humanizada",
                             "surprise_delight": "Cero spam promocional: se envía un enlace a la playlist que escuchó esa noche (estilo Spotify) o un tip del chef.",
@@ -2072,9 +2032,9 @@ class DeepTouchpointEngineeringEngine:
                     "aura_question": "En la etapa ANTES DE CONTRATARTE: ¿Qué hace que un cliente confíe en tu autoridad antes de hablar contigo? ¿Un diagnóstico claro, un caso de éxito o una recomendación?",
                     "examples": [
                         {
-                            "icon": "📊",
+                            "icon": "",
                             "title": "Diagnóstico ejecutivo gratuito en 1 página con hallazgos reales (sin jerga incomprensible)",
-                            "sensory_channel": "👁️ Claridad Visual + 🧠 Alivio Cognitivo",
+                            "sensory_channel": " Claridad Visual +  Alivio Cognitivo",
                             "governance": "Brand-Owned (Control Total)",
                             "nature": "Humana Directa + Tecnológica",
                             "surprise_delight": "Entregar valor real antes de cobrar un centavo: un semáforo visual de riesgos y ahorros explicados en lenguaje llano.",
@@ -2083,9 +2043,9 @@ class DeepTouchpointEngineeringEngine:
                             "metrics": "Tasa de conversión a reunión de cierre + Reducción de CAC"
                         },
                         {
-                            "icon": "🤝",
+                            "icon": "",
                             "title": "Dossier de casos de éxito verificables y recomendaciones de clientes del mismo giro",
-                            "sensory_channel": "✋ Tacto (Papel Algodón) / 🖥️ Interactivo + Confianza Social",
+                            "sensory_channel": " Tacto (Papel Algodón) /  Interactivo + Confianza Social",
                             "governance": "Brand-Owned + Social/External",
                             "nature": "Comunicación de Autoridad",
                             "surprise_delight": "Incluir métricas auditadas de retorno de inversión (ROI) y contacto directo de referencias autorizadas.",
@@ -2099,9 +2059,9 @@ class DeepTouchpointEngineeringEngine:
                     "aura_question": "En DURANTE LA CONTRATACIÓN: ¿Cómo es tu sala de juntas o videollamada, cómo presentas tu propuesta económica y cómo eliminas el miedo a la 'letra chica'?",
                     "examples": [
                         {
-                            "icon": "☕",
+                            "icon": "",
                             "title": "Recepción en sala con aroma a madera de cedro, café de especialidad y silencio acústico",
-                            "sensory_channel": "👃 Olfato + 👂 Silencio Acústico + 👅 Gusto",
+                            "sensory_channel": " Olfato +  Silencio Acústico +  Gusto",
                             "governance": "Brand-Owned (Control Total)",
                             "nature": "Ambiental / Física (Servicescape)",
                             "surprise_delight": "Taza de cerámica tibia con el emblema en bajo relieve y pantalla lista con el nombre del visitante al entrar.",
@@ -2110,9 +2070,9 @@ class DeepTouchpointEngineeringEngine:
                             "metrics": "CSAT de reunión presencial + Tasa de aceptación de propuesta"
                         },
                         {
-                            "icon": "📝",
+                            "icon": "",
                             "title": "Contrato transparente en lenguaje claro con resumen ejecutivo de 5 puntos y firma en 1 clic",
-                            "sensory_channel": "👁️ Claridad Visual + 🧠 Cero Esfuerzo (Bajo CES)",
+                            "sensory_channel": " Claridad Visual +  Cero Esfuerzo (Bajo CES)",
                             "governance": "Brand-Owned",
                             "nature": "Tecnológica + Humana",
                             "surprise_delight": "Garantía explícita de nivel de servicio (SLA) escrita en el encabezado sin cláusulas ocultas.",
@@ -2126,9 +2086,9 @@ class DeepTouchpointEngineeringEngine:
                     "aura_question": "En DESPUÉS DE CONTRATAR (Onboarding y Fidelización): ¿Qué recibe tu cliente en sus primeros 7 días para sentir que tomó la mejor decisión de su vida?",
                     "examples": [
                         {
-                            "icon": "🎁",
+                            "icon": "",
                             "title": "Kit de bienvenida físico/digital y llamada proactiva de tranquilidad antes de que el cliente pregunte",
-                            "sensory_channel": "✋ Tacto + 👂 Voz Empática + 🧠 Paz Mental",
+                            "sensory_channel": " Tacto +  Voz Empática +  Paz Mental",
                             "governance": "Brand-Owned",
                             "nature": "Humana Directa (Surprise & Delight)",
                             "surprise_delight": "Regla proactiva: si ocurre un cambio regulatorio o técnico, el cliente recibe un audio explicativo de su asesor antes de verlo en las noticias.",
@@ -2149,9 +2109,9 @@ class DeepTouchpointEngineeringEngine:
                     "aura_question": "En ANTES DE COMPRAR: ¿Cómo demuestra tu marca que trabaja con precisión superior? ¿Una demostración en vivo, tocar los materiales reales o ver una obra impecable?",
                     "examples": [
                         {
-                            "icon": "🪵",
+                            "icon": "",
                             "title": "Muestrario táctil de materiales reales (maderas, aceros, acabados) o demostración en vivo",
-                            "sensory_channel": "✋ Tacto (Peso y Textura) + 👁️ Vista + 👃 Olor a material noble",
+                            "sensory_channel": " Tacto (Peso y Textura) +  Vista +  Olor a material noble",
                             "governance": "Brand-Owned",
                             "nature": "Ambiental / Física + Humana",
                             "surprise_delight": "Permitir que el cliente se lleve a su casa u oficina una caja de muestras reales para verlas bajo su propia luz.",
@@ -2160,9 +2120,9 @@ class DeepTouchpointEngineeringEngine:
                             "metrics": "Tasa de conversión de prospectos calificados"
                         },
                         {
-                            "icon": "🏗️",
+                            "icon": "",
                             "title": "Presencia en campo / planta / avenida con señalética limpia, orden impecable y código QR en vivo",
-                            "sensory_channel": "👁️ Vista (Orden Arquitectónico) + 📱 Interacción Digital",
+                            "sensory_channel": " Vista (Orden Arquitectónico) +  Interacción Digital",
                             "governance": "Brand-Owned",
                             "nature": "Ambiental / Física + Tecnológica",
                             "surprise_delight": "Visitas guiadas con casco o equipo impecablemente personalizado e hidratación fresca para el visitante.",
@@ -2176,9 +2136,9 @@ class DeepTouchpointEngineeringEngine:
                     "aura_question": "En DURANTE LA COMPRA Y EJECUCIÓN: ¿Cómo mantienes informado y tranquilo al cliente mientras fabricas, instalas o construyes su pedido?",
                     "examples": [
                         {
-                            "icon": "📹",
+                            "icon": "",
                             "title": "Bitácora semanal por WhatsApp con video de 45 segundos del avance real de su pieza u obra",
-                            "sensory_channel": "👁️ Vista + 👂 Voz del responsable + 🧠 Certeza",
+                            "sensory_channel": " Vista +  Voz del responsable +  Certeza",
                             "governance": "Brand-Owned",
                             "nature": "Tecnológica + Humana Directa",
                             "surprise_delight": "El cliente nunca tiene que llamar para preguntar '¿cómo va mi pedido?': recibe el avance cada viernes a la misma hora.",
@@ -2187,9 +2147,9 @@ class DeepTouchpointEngineeringEngine:
                             "metrics": "Reducción del 90% en llamadas de ansiedad + CSAT de proceso"
                         },
                         {
-                            "icon": "👷",
+                            "icon": "",
                             "title": "Cuadrilla de entrega e instalación con uniforme impecable, protección de pisos y trato de guante blanco",
-                            "sensory_channel": "👁️ Pulcritud Visual + 🤝 Respeto al Espacio del Cliente",
+                            "sensory_channel": " Pulcritud Visual +  Respeto al Espacio del Cliente",
                             "governance": "Brand-Owned / Partner-Owned",
                             "nature": "Humana Directa + Evidencia Física",
                             "surprise_delight": "Dejar el espacio del cliente más limpio de como lo encontraron y explicar el uso en 3 minutos.",
@@ -2203,9 +2163,9 @@ class DeepTouchpointEngineeringEngine:
                     "aura_question": "En DESPUÉS DE LA ENTREGA: ¿Qué sello físico queda en el producto y qué gesto tienes meses después para que te recomienden con orgullo?",
                     "examples": [
                         {
-                            "icon": "🛡️",
+                            "icon": "",
                             "title": "Placa metálica o sello grabado a fuego en la pieza + Kit de cuidado (cera, herramientas o manual QR)",
-                            "sensory_channel": "✋ Tacto Permanente + 👃 Aroma (Cera natural) + 👁️ Orgullo",
+                            "sensory_channel": " Tacto Permanente +  Aroma (Cera natural) +  Orgullo",
                             "governance": "Brand-Owned + Customer-Owned",
                             "nature": "Evidencia Física Duradera",
                             "surprise_delight": "Un sello discreto y elegante con el año de fabricación y una revisión preventiva programada a los 6 meses sin costo.",
@@ -2344,7 +2304,7 @@ class DeepTouchpointEngineeringEngine:
         tp_id = f"TP-{phase_key[:3].upper()}-{index_num:02d}"
 
         # Inferencia de dimensiones sensoriales, gobernanza Lemon & Verhoef, Service Blueprint y Surprise & Delight
-        sensory_dims = "👁️ Vista + 🤝 Confianza Relacional"
+        sensory_dims = " Vista +  Confianza Relacional"
         governance_type = "Brand-Owned (Control Directo de la Marca)"
         interaction_nature = "Humana Directa + Evidencia Física"
         surprise_delight_gesture = "Gesto inesperado de atención personalizada que reduce el esfuerzo percibido (CES) y eleva el deleite."
@@ -2353,19 +2313,19 @@ class DeepTouchpointEngineeringEngine:
         metrics_attribution = "CSAT Transaccional · CES (Bajo Esfuerzo) · NPS 3.0 Longitudinal · Impacto en LTV"
 
         if any(w in low for w in ["aroma", "olor", "leña", "humo", "café", "pino", "cera", "romero", "perfume", "fragancia", "ambient"]):
-            sensory_dims = "👃 Olfato + 🌡️ Temperatura + 👁️ Vista (Servicescape)"
+            sensory_dims = " Olfato +  Temperatura +  Vista (Servicescape)"
             interaction_nature = "Ambiental / Física (Servicescape Sensorial)"
             surprise_delight_gesture = "Huella olfativa memorable que activa la memoria límbica del cliente desde los primeros 3 segundos."
         elif any(w in low for w in ["música", "acústic", "silencio", "audio", "voz", "llamada", "sonido", "playlist"]):
-            sensory_dims = "👂 Oído + 🤝 Calidez Humana"
+            sensory_dims = " Oído +  Calidez Humana"
             interaction_nature = "Ambiental Acústica / Humana por Voz"
             surprise_delight_gesture = "Curaduría sonora y tono de voz empático sin guiones robóticos (Filosofía Zappos No-Script)."
         elif any(w in low for w in ["degust", "pan", "caldo", "infusión", "vino", "platillo", "bocado", "sabor", "probar"]):
-            sensory_dims = "👅 Gusto + 👃 Olfato + ✋ Tacto"
+            sensory_dims = " Gusto +  Olfato +  Tacto"
             interaction_nature = "Sensorial Gastronómica + Hospitalidad Onstage"
             surprise_delight_gesture = "Cortesía inesperada en mesa o recepción que desarma positivamente al cliente antes de la transacción."
         elif any(w in low for w in ["toalla", "madera", "piel", "algodón", "cerámica", "textura", "muestrario", "caja", "unboxing"]):
-            sensory_dims = "✋ Tacto (Textura, Peso y Temperatura) + 👁️ Vista"
+            sensory_dims = " Tacto (Textura, Peso y Temperatura) +  Vista"
             interaction_nature = "Evidencia Física Táctil + Ritual de Uso"
             surprise_delight_gesture = "Materiales nobles al tacto con peso y temperatura cuidados que comunican calidad sin decir una palabra."
 
@@ -2386,7 +2346,7 @@ class DeepTouchpointEngineeringEngine:
           <text x="110" y="26" fill="#0F172A" font-family="sans-serif" font-weight="800" font-size="9.2">{html.escape(clean[:28])}</text>
           <text x="110" y="41" fill="#475569" font-family="monospace" font-size="7.2">ID: {tp_id} · {p_code}</text>
           <text x="110" y="56" fill="#0F172A" font-family="sans-serif" font-size="7.4">{html.escape(sensory_dims[:30])}</text>
-          <text x="110" y="72" fill="#059669" font-family="monospace" font-weight="700" font-size="7.2">✓ {html.escape(governance_type[:28])}</text>
+          <text x="110" y="72" fill="#059669" font-family="monospace" font-weight="700" font-size="7.2"> {html.escape(governance_type[:28])}</text>
           <text x="110" y="88" fill="#64748B" font-family="sans-serif" font-size="7.0">Métrica: CSAT · CES · NPS · LTV</text>
         </svg>"""
 
