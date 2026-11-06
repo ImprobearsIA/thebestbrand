@@ -142,15 +142,15 @@
           </div>
 
           <!-- COLUMNA 2: THE BEST BRAND 1.0 (DESTACADA AL CENTRO) -->
-          <div style="background:#0D2540; border:2.5px solid #4C9DE6; border-radius:20px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 18px 42px rgba(13,37,64,0.45); transform:scale(1.02); position:relative;">
-            <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:linear-gradient(90deg, #4C9DE6 0%, #0D2540 100%); color:#FFFFFF; border:1.5px solid #FFFFFF; border-radius:999px; padding:3px 14px; font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:900; letter-spacing:0.04em; white-space:nowrap;">
-              ★ PUNTO DULCE ÓPTIMO
+          <div style="background:#0D2540; border:2.5px solid #4C9DE6; border-top:5px solid #FF7A00; border-radius:20px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 18px 42px rgba(13,37,64,0.45); transform:scale(1.02); position:relative;">
+            <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:#0D2540; color:#FFFFFF; border:1.5px solid #FF7A00; border-radius:999px; padding:3px 14px; font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:900; letter-spacing:0.04em; white-space:nowrap; box-shadow:0 4px 14px rgba(255,122,0,0.35);">
+              ★ <span style="color:#FF7A00;">PUNTO DULCE ÓPTIMO</span>
             </div>
 
             <div>
               <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
                 ${window.tbbBuildOfficialBrandbook1EmblemSVG ? window.tbbBuildOfficialBrandbook1EmblemSVG(26) : ''}
-                <div style="font-family:'Montserrat', sans-serif; font-size:1.20rem; font-weight:900; color:#FFFFFF;">THE BEST BRAND</div>
+                <div style="font-family:'Montserrat', sans-serif; font-size:1.20rem; font-weight:900; color:#FFFFFF;">THE BEST BRAND <span style="color:#FF7A00; font-size:0.75rem; vertical-align:middle;">1.0</span></div>
               </div>
               <p style="font-size:0.80rem; color:#CBD5E1; line-height:1.45; margin:0 0 16px 0;">
                 Mentora socrática con IA (Aura) que te guía paso a paso y genera tu Manual de Marca de 30 Hojas en Curvas de nivel internacional.
@@ -178,14 +178,17 @@
                     <div style="font-size:0.70rem; font-weight:800; color:#93C5FD;">PROFESIONALISMO</div>
                     <div style="font-size:0.82rem; font-weight:800; color:#FFFFFF;">30 Hojas en Curvas Vector</div>
                   </div>
-                  <div>${renderIcons("prof", 5, 5, "#FFFFFF")} <span style="font-family:'JetBrains Mono',monospace; font-size:0.74rem; font-weight:800; color:#FFFFFF; margin-left:4px;">5/5</span></div>
+                  <div>${renderIcons("prof", 5, 5, "#FFFFFF")} <span style="font-family:'JetBrains Mono',monospace; font-size:0.74rem; font-weight:800; color:#FF7A00; margin-left:4px;">5/5 ★</span></div>
                 </div>
               </div>
             </div>
 
-            <div style="margin-top:20px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.18);">
-              <button type="button" class="tbb-comm-btn-black" onclick="window.tbbSwitchMainSection(2)" style="width:100%; padding:10px; font-size:0.84rem; background:#0D2540; border:1px solid #4C9DE6; color:#FFFFFF;">
-                <span>Probar Demo en Vivo →</span>
+            <div style="margin-top:20px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.18); display:flex; flex-direction:column; gap:8px;">
+              <a href="/studio" style="width:100%; padding:11px; font-size:0.86rem; background:linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%); border:1.5px solid #4C9DE6; border-bottom:3px solid #FF7A00; color:#FFFFFF; border-radius:999px; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:6px; font-weight:800; cursor:pointer; box-shadow:0 6px 16px rgba(0,0,0,0.3);">
+                <span style="color:#FF7A00;">●</span> <span>Entrar al Estudio Completo →</span>
+              </a>
+              <button type="button" class="tbb-comm-btn-outline" onclick="window.tbbSwitchMainSection(2)" style="width:100%; padding:8px; font-size:0.78rem;">
+                <span>Probar Demo Rápida ↓</span>
               </button>
             </div>
           </div>
@@ -310,7 +313,7 @@
       navDeliverables: "Entregables",
       navDemo: "Demo Pasos 1 y 2",
       navPricing: "Planes y Licencias",
-      navOpenApp: "Estudio Completo",
+      navOpenApp: "Entrar a la App ↗",
       buyNowSticky: "Comprar App · $49 USD",
       buyNowShort: "Comprar · $49",
       webDemoShort: "Demo Pasos 1 y 2",
@@ -392,7 +395,7 @@
       navDeliverables: "Deliverables",
       navDemo: "Live Demo (Steps 1 & 2)",
       navPricing: "Pricing & Licenses",
-      navOpenApp: "Full Studio",
+      navOpenApp: "Open App ↗",
       buyNowSticky: "Buy App · $49 USD",
       buyNowShort: "Buy · $49",
       webDemoShort: "Steps 1 & 2 Demo",
@@ -474,7 +477,7 @@
       navDeliverables: "Livrables",
       navDemo: "Démo Étapes 1 & 2",
       navPricing: "Tarifs & Licences",
-      navOpenApp: "Atelier Complet",
+      navOpenApp: "Ouvrir l'App ↗",
       buyNowSticky: "Acheter l'App · $49 USD",
       buyNowShort: "Acheter · $49",
       webDemoShort: "Démo Étapes 1 & 2",
@@ -556,7 +559,7 @@
       navDeliverables: "Entregáveis",
       navDemo: "Demo Passos 1 e 2",
       navPricing: "Planos e Licenças",
-      navOpenApp: "Estúdio Completo",
+      navOpenApp: "Abrir App ↗",
       buyNowSticky: "Comprar App · $49 USD",
       buyNowShort: "Comprar · $49",
       webDemoShort: "Demo Passos 1 e 2",
@@ -638,7 +641,7 @@
       navDeliverables: "Ergebnisse",
       navDemo: "Live-Demo (1 & 2)",
       navPricing: "Preise & Lizenzen",
-      navOpenApp: "Vollstudio",
+      navOpenApp: "App Öffnen ↗",
       buyNowSticky: "App kaufen · $49 USD",
       buyNowShort: "Kaufen · $49",
       webDemoShort: "Demo Schritte 1 & 2",
@@ -720,7 +723,7 @@
       navDeliverables: "Deliverables",
       navDemo: "Demo Passi 1 e 2",
       navPricing: "Piani e Licenze",
-      navOpenApp: "Studio Completo",
+      navOpenApp: "Apri App ↗",
       buyNowSticky: "Acquista App · $49 USD",
       buyNowShort: "Acquista · $49",
       webDemoShort: "Demo Passi 1 & 2",
@@ -1813,7 +1816,7 @@
           ${window.tbbBuildOfficialBrandbook1EmblemSVG(40)}
           <div style="min-width:0;">
             <div style="font-family:'Montserrat', 'Plus Jakarta Sans', sans-serif; font-size:0.96rem; font-weight:900; color:#FFFFFF; letter-spacing:-0.02em; line-height:1.1; white-space:nowrap;">
-              THE BEST BRAND <span class="tbb-brand-inline-tagline" style="color:#0D2540; font-size:0.68rem;">YOUR BRAND, NOW!!!</span>
+              THE BEST BRAND <span class="tbb-brand-inline-tagline" style="color:#FF7A00; font-size:0.68rem; font-weight:800; letter-spacing:0.04em;">YOUR BRAND, NOW!!!</span>
             </div>
             <div class="tbb-brand-subtag" style="font-family:'JetBrains Mono', monospace; font-size:0.54rem; font-weight:800; color:#93C5FD; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:250px;">
               ${t("brandTag")}
@@ -1840,7 +1843,7 @@
           </a>
         </nav>
 
-        <!-- Acciones Derecha (Selector Idioma + Comprar + Estudio + Hamburger Móvil) -->
+        <!-- Acciones Derecha (Selector Idioma + Comprar + Botón App Universal + Hamburger Móvil) -->
         <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
           <select id="tbbCommercialLangSelect" aria-label="Idioma" onchange="window.tbbChangeCommercialLanguage(this.value)" class="tbb-desktop-only-ctrl" style="height:36px; padding:0 10px; border-radius:999px; background:#0E1422; color:#FFFFFF; border:1.5px solid #1D4ED8; font-family:'Plus Jakarta Sans', sans-serif; font-size:0.74rem; font-weight:800; cursor:pointer;">
             <option value="es" ${curLang === "es" ? "selected" : ""}>ES</option>
@@ -1851,12 +1854,13 @@
             <option value="it" ${curLang === "it" ? "selected" : ""}>IT</option>
           </select>
 
-          <button type="button" class="tbb-comm-btn-black" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')" style="padding:8px 15px; font-size:0.78rem; white-space:nowrap;">
+          <button type="button" class="tbb-comm-btn-black tbb-desktop-only-ctrl" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')" style="padding:8px 13px; font-size:0.76rem; white-space:nowrap;">
             <span>${isLicensed ? t("licenseActiveBadge") : t("buyNowShort")}</span>
           </button>
 
           ${isStandalonePage ? `
-            <a href="/studio" class="tbb-comm-btn-blue tbb-desktop-only-ctrl" style="padding:8px 14px; font-size:0.76rem; white-space:nowrap;">
+            <a href="/studio" class="tbb-comm-btn-studio-header" style="padding:7px 14px; font-size:0.75rem; white-space:nowrap;">
+              <span style="color:#FF7A00; font-size:0.82rem; line-height:1;">●</span>
               <span>${t("navOpenApp")}</span>
             </a>
           ` : `
@@ -1882,7 +1886,7 @@
         <button type="button" class="tbb-sec-tab tbb-tab-destello ${st.activeMainSection === 2 ? 'is-active' : ''}" id="tbbSecTab_2" onclick="window.tbbSwitchMainSection(2)">
           <span class="tbb-tab-number">02</span>
           <span class="tbb-tab-text">Demo en Vivo</span>
-          <span class="tbb-badge-spark">EN VIVO ✨</span>
+          <span class="tbb-badge-spark" style="background:#FF7A00; color:#FFFFFF; border-color:#FF7A00;">EN VIVO ✨</span>
         </button>
         <button type="button" class="tbb-sec-tab ${st.activeMainSection === 3 ? 'is-active' : ''}" id="tbbSecTab_3" onclick="window.tbbSwitchMainSection(3)">
           <span class="tbb-tab-number">03</span>
@@ -1892,6 +1896,10 @@
           <span class="tbb-tab-number">04</span>
           <span class="tbb-tab-text">Videos y Libros</span>
         </button>
+        <a href="/studio" class="tbb-sec-tab-direct-studio" title="Abrir la aplicación completa con todos los pasos y autores" style="display:inline-flex; align-items:center; gap:6px; padding:7px 15px; border-radius:999px; background:linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%); color:#FFFFFF; border:1.5px solid #4C9DE6; border-bottom:3px solid #FF7A00; text-decoration:none; font-family:'Plus Jakarta Sans',sans-serif; font-size:0.76rem; font-weight:800; white-space:nowrap; margin-left:auto; box-shadow:0 4px 14px rgba(13,37,64,0.35);">
+          <span style="width:7px; height:7px; border-radius:50%; background:#FF7A00; box-shadow:0 0 8px #FF7A00; display:inline-block;"></span>
+          <span>Abrir App Completa ↗</span>
+        </a>
       </nav>
 
       <!-- DRAWER MÓVIL SLIDE-OVER (Cero apilamiento en iPhone) -->
@@ -1900,16 +1908,28 @@
         <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.12);">
           <div style="display:flex; align-items:center; gap:8px;">
             ${window.tbbBuildOfficialBrandbook1EmblemSVG(32)}
-            <span style="font-weight:900; font-size:0.92rem; color:#FFFFFF;">THE BEST BRAND 1.0</span>
+            <span style="font-weight:900; font-size:0.92rem; color:#FFFFFF;">THE BEST BRAND <span style="color:#FF7A00;">1.0</span></span>
           </div>
           <button type="button" class="tbb-comm-btn-outline" onclick="window.tbbToggleMobileDrawer(false)" style="padding:5px 10px;">✕</button>
         </div>
         <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px;">
-          <a href="#tbbCommPlateExplorerSection" onclick="window.tbbToggleMobileDrawer(false)" class="tbb-comm-btn-outline" style="justify-content:flex-start; padding:11px 14px;">${t("navPlates")}</a>
-          <a href="#tbbCommDeliverablesSection" onclick="window.tbbToggleMobileDrawer(false)" class="tbb-comm-btn-outline" style="justify-content:flex-start; padding:11px 14px;">${t("navDeliverables")}</a>
-          <a href="#tbbCommVideoSection" onclick="window.tbbToggleMobileDrawer(false)" class="tbb-comm-btn-outline" style="justify-content:flex-start; padding:11px 14px;">${t("navMasterclass")}</a>
-          <a href="#tbbCommLiveDemoSection" onclick="window.tbbToggleMobileDrawer(false)" class="tbb-comm-btn-outline" style="justify-content:flex-start; padding:11px 14px; border-color:#0D2540;">${t("navDemo")}</a>
-          <a href="#tbbCommPricingSection" onclick="window.tbbToggleMobileDrawer(false)" class="tbb-comm-btn-outline" style="justify-content:flex-start; padding:11px 14px;">${t("navPricing")}</a>
+          <!-- ACCESO DIRECTO DESTACADO A LA APP -->
+          <a href="/studio" style="display:flex; align-items:center; justify-content:space-between; padding:13px 15px; background:linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%); border:2px solid #4C9DE6; border-bottom:3.5px solid #FF7A00; border-radius:14px; text-decoration:none; color:#FFFFFF; margin-bottom:6px; box-shadow:0 8px 20px rgba(0,0,0,0.35);">
+            <div>
+              <div style="font-size:0.92rem; font-weight:900; display:flex; align-items:center; gap:6px;">
+                <span style="color:#FF7A00;">●</span> Entrar al Estudio Completo
+              </div>
+              <div style="font-size:0.72rem; color:#93C5FD; margin-top:2px;">
+                Taller de Marca de 7 Pasos · 15 Autores · 30 Hojas
+              </div>
+            </div>
+            <span style="font-size:1.25rem; font-weight:900; color:#FF7A00;">↗</span>
+          </a>
+          <a href="#tbbCommPlateExplorerSection" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(3);" class="tbb-comm-btn-outline" style="justify-content:flex-start; padding:11px 14px;">${t("navPlates")}</a>
+          <a href="#tbbCommDeliverablesSection" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(3);" class="tbb-comm-btn-outline" style="justify-content:flex-start; padding:11px 14px;">${t("navDeliverables")}</a>
+          <a href="#tbbCommVideoSection" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(4);" class="tbb-comm-btn-outline" style="justify-content:flex-start; padding:11px 14px;">${t("navMasterclass")}</a>
+          <a href="#tbbCommLiveDemoSection" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(2);" class="tbb-comm-btn-outline" style="justify-content:flex-start; padding:11px 14px; border-color:#0D2540;">${t("navDemo")}</a>
+          <a href="#tbbCommPricingSection" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(3);" class="tbb-comm-btn-outline" style="justify-content:flex-start; padding:11px 14px;">${t("navPricing")}</a>
           <div style="padding-top:8px; border-top:1px solid rgba(255,255,255,0.12); display:flex; gap:8px;">
             <select aria-label="Idioma Móvil" onchange="window.tbbChangeCommercialLanguage(this.value)" style="flex:1; height:40px; padding:0 12px; border-radius:10px; background:#0E1422; color:#FFFFFF; border:1.5px solid #1D4ED8; font-weight:800;">
               <option value="es" ${curLang === "es" ? "selected" : ""}>ES · Español</option>
@@ -1920,7 +1940,6 @@
               <option value="it" ${curLang === "it" ? "selected" : ""}>IT · Italiano</option>
             </select>
           </div>
-          <a href="/studio" class="tbb-comm-btn-blue" style="padding:12px; margin-top:4px;">${t("navOpenApp")}</a>
           <button type="button" class="tbb-comm-btn-black" onclick="window.tbbToggleMobileDrawer(false); window.tbbOpenBuyAppCheckoutModal('pro_atelier');" style="padding:12px;">${t("buyNowSticky")}</button>
         </div>
       </aside>
@@ -1947,14 +1966,14 @@
 
         <div style="position:relative; z-index:2; max-width:1180px; margin:0 auto;" class="tbb-comm-grid-2">
           <div class="tbb-apple-reveal is-visible" style="display:flex; flex-direction:column; gap:16px;">
-            <div style="display:inline-flex; align-items:center; gap:8px; align-self:flex-start; background:rgba(9,13,22,0.88); border:1.5px solid #1D4ED8; border-left:4px solid #0D2540; border-radius:999px; padding:6px 14px; font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:800; color:#93C5FD; box-shadow:0 0 24px rgba(29,78,216,0.35);">
-              <span style="width:7px; height:7px; border-radius:50%; background:#0D2540; display:inline-block;"></span>
+            <div style="display:inline-flex; align-items:center; gap:8px; align-self:flex-start; background:rgba(9,13,22,0.88); border:1.5px solid #1D4ED8; border-left:4px solid #FF7A00; border-radius:999px; padding:6px 14px; font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:800; color:#93C5FD; box-shadow:0 0 24px rgba(29,78,216,0.35);">
+              <span style="width:7px; height:7px; border-radius:50%; background:#FF7A00; box-shadow:0 0 8px #FF7A00; display:inline-block;"></span>
               <span>${t("heroBadge")}</span>
             </div>
 
             <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(2.15rem, 4.2vw, 3.25rem); font-weight:900; line-height:1.08; letter-spacing:-0.03em; margin:0; color:#FFFFFF;">
               Crea tu Marca de manera profesional, <br/>
-              <span style="color:#4C9DE6; text-shadow:0 0 32px rgba(76,157,230,0.5);">¡en minutos!</span>
+              <span style="color:#4C9DE6; text-shadow:0 0 32px rgba(76,157,230,0.5); border-bottom:3.5px solid #FF7A00; padding-bottom:2px; display:inline-block;">¡en minutos!</span>
             </h1>
 
             <p style="font-size:1.02rem; font-weight:500; color:#E2E8F0; line-height:1.62; margin:0; max-width:580px;">
@@ -1962,11 +1981,15 @@
             </p>
 
             <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:8px;">
-              <button type="button" class="tbb-comm-btn-black tbb-tab-destello" onclick="window.tbbSwitchMainSection(2)" style="font-size:0.94rem; padding:14px 24px; background:#0D2540; border:2px solid #4C9DE6; color:#FFFFFF; font-weight:800; border-radius:999px; cursor:pointer;">
-                <span>• Probar la App en Vivo Gratis →</span>
+              <a href="/studio" class="tbb-comm-btn-black tbb-tab-destello" style="font-size:0.94rem; padding:14px 24px; background:#0D2540; border:2px solid #4C9DE6; border-bottom:3.5px solid #FF7A00; color:#FFFFFF; font-weight:800; border-radius:999px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; cursor:pointer; box-shadow:0 10px 25px rgba(13,37,64,0.45);">
+                <span style="color:#FF7A00; font-size:1.1rem; line-height:1;">●</span>
+                <span>Probar la App en Vivo Gratis ↗</span>
+              </a>
+              <button type="button" class="tbb-btn-light-surface" onclick="window.tbbSwitchMainSection(2)" style="font-size:0.90rem; padding:13px 20px; background:#FFFFFF; color:#0D2540; border:1.5px solid #CBD5E1; border-radius:999px; font-weight:800; cursor:pointer;">
+                <span>Demo Rápida (Pasos 1 y 2) ↓</span>
               </button>
               <button type="button" class="tbb-btn-light-surface" onclick="window.tbbOpenAuraRecorridoModal()" style="font-size:0.90rem; padding:13px 20px; background:#FFFFFF; color:#0D2540; border:1.5px solid #0D2540; border-radius:999px; font-weight:800; cursor:pointer;">
-                <span>• Ver a Aura Explicar el Recorrido (02:48) ►</span>
+                <span style="color:#4C9DE6; margin-right:4px;">●</span> Ver a Aura Explicar el Recorrido (02:48) ►
               </button>
               <button type="button" class="tbb-btn-light-surface" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')" style="font-size:0.88rem; padding:13px 18px; border-radius:999px; font-weight:800;">
                 <span>Comprar Pro · $49 USD</span>
@@ -2051,8 +2074,9 @@
         <div style="max-width:1160px; margin:0 auto; display:flex; flex-direction:column; gap:22px;">
           <div class="tbb-apple-reveal" style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap;">
             <div>
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#0D2540; letter-spacing:0.06em;">
-                ${t("demoSectionTag")}
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#FF7A00; letter-spacing:0.06em; display:flex; align-items:center; gap:6px;">
+                <span style="width:6px; height:6px; border-radius:50%; background:#FF7A00; display:inline-block;"></span>
+                <span>${t("demoSectionTag")}</span>
               </div>
               <h2 style="font-family:'Montserrat', 'Plus Jakarta Sans', sans-serif; font-size:clamp(1.75rem, 3.2vw, 2.35rem); font-weight:900; color:#090D16; margin:6px 0;">
                 ${t("demoSectionTitle")}
@@ -2061,6 +2085,16 @@
                 ${t("demoSectionSub")}
               </p>
             </div>
+          </div>
+
+          <!-- Banner Directo al Estudio Completo para no atrapar al usuario en la demo -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:#EFF6FF; border:1.5px solid #93C5FD; border-left:4px solid #FF7A00; border-radius:14px; padding:12px 18px; box-shadow:0 4px 14px rgba(13,37,64,0.05);">
+            <div style="font-size:0.84rem; font-weight:700; color:#0D2540;">
+              <span style="color:#FF7A00; font-size:0.95rem;">●</span> <strong>Demostración de Pasos 1 y 2</strong>. Para vivir los 7 pasos completos con los 15 autores y tu Brandbook de 30 Hojas:
+            </div>
+            <a href="/studio" style="display:inline-flex; align-items:center; gap:6px; padding:8px 18px; background:#0D2540; color:#FFFFFF; border:1px solid #4C9DE6; border-bottom:2.5px solid #FF7A00; border-radius:999px; font-size:0.78rem; font-weight:800; text-decoration:none; white-space:nowrap; box-shadow:0 3px 10px rgba(13,37,64,0.3);">
+              <span style="color:#FF7A00;">●</span> <span>Abrir Estudio Completo (App) ↗</span>
+            </a>
           </div>
 
           <!-- Pestañas de Paso 1 y Paso 2 con Alto Contraste sobre Superficie Clara -->
@@ -2152,10 +2186,13 @@
                   </button>
                 </div>
 
-                <div style="display:flex; gap:10px; flex-wrap:wrap; padding-top:4px;">
-                  <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbContinueFromDemoIntoFullStudio()" style="width:100%; padding:14px 20px; font-size:0.92rem; font-weight:800; background:linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%);">
+                <div style="display:flex; flex-direction:column; gap:8px; padding-top:4px;">
+                  <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbContinueFromDemoIntoFullStudio()" style="width:100%; padding:14px 20px; font-size:0.92rem; font-weight:800; background:linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%); border-bottom:3.5px solid #FF7A00;">
                     <span>Continuar al Paso 3 · Naming & Clases de Niza →</span>
                   </button>
+                  <a href="/studio" style="text-align:center; font-size:0.80rem; font-weight:800; color:#426EAE; text-decoration:none; padding:4px;">
+                    O abrir el Estudio Completo directamente (Pasos 0 al 6) ↗
+                  </a>
                 </div>
               `}
             </div>
@@ -2398,8 +2435,9 @@
         <div style="max-width:1160px; margin:0 auto; display:flex; flex-direction:column; gap:24px;">
           <div class="tbb-apple-reveal" style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap;">
             <div>
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#0D2540;">
-                ${t("videoSectionTag")}
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#FF7A00; letter-spacing:0.08em; display:flex; align-items:center; gap:6px;">
+                <span style="width:6px; height:6px; border-radius:50%; background:#FF7A00; display:inline-block;"></span>
+                <span>${t("videoSectionTag")}</span>
               </div>
               <h2 style="font-family:'Montserrat', 'Plus Jakarta Sans', sans-serif; font-size:clamp(1.75rem, 3.2vw, 2.35rem); font-weight:900; color:#FFFFFF; margin:6px 0;">
                 ${t("videoSectionTitle")}
@@ -2408,7 +2446,7 @@
                 ${t("videoSectionSub")}
               </p>
             </div>
-            <button type="button" class="tbb-comm-btn-black" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')" style="padding:11px 20px; font-size:0.86rem;">
+            <button type="button" class="tbb-comm-btn-black" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')" style="padding:11px 20px; font-size:0.86rem; border-bottom:2.5px solid #FF7A00;">
               <span>${t("buyNowSticky")}</span>
             </button>
           </div>
@@ -2423,11 +2461,11 @@
 
           <div class="tbb-apple-reveal" style="background:#050811; border:2px solid #1D4ED8; border-top:6px solid #0D2540; border-radius:24px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.6); position:relative;">
             <div style="aspect-ratio:16/9; width:100%; max-height:540px; background:#000000; position:relative;">
-              <video id="tbbMasterclassVideoPlayer" src="${activeCapsule.url}" poster="${activeCapsule.poster || '/assets/videos/poster_aura_recorrido.jpg'}" playsinline webkit-playsinline preload="metadata" style="width:100%; height:100%; object-fit:contain; display:block;"></video>
+              <video id="tbbMasterclassVideoPlayer" src="${activeCapsule.url}" poster="${activeCapsule.poster || '/assets/videos/poster_aura_recorrido.jpg'}" playsinline webkit-playsinline controls preload="metadata" style="width:100%; height:100%; object-fit:contain; display:block;"></video>
               
-              <!-- Botón de Reproducción Central Navy Blue (¡CERO NARANJA!) -->
+              <!-- Botón de Reproducción Central Navy Blue con Micro-Acento Naranja -->
               <div id="tbbVideoPlayOverlay" onclick="window.tbbToggleMasterclassPlay()" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(9,13,22,0.35); cursor:pointer;">
-                <div style="width:78px; height:78px; border-radius:50%; background:#0D2540; border:2.5px solid #4C9DE6; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 32px rgba(13,37,64,0.6); transition:transform 0.2s ease;">
+                <div style="width:78px; height:78px; border-radius:50%; background:#0D2540; border:2.5px solid #4C9DE6; border-bottom:3.5px solid #FF7A00; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 32px rgba(13,37,64,0.6); transition:transform 0.2s ease;">
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="#FFFFFF" style="margin-left:3px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 </div>
               </div>
@@ -2447,7 +2485,7 @@
               </div>
 
               <div style="display:flex; gap:10px; flex-shrink:0;">
-                <button type="button" id="tbbBtnVidPlayPause" class="tbb-comm-btn-blue" onclick="window.tbbToggleMasterclassPlay()" style="padding:10px 18px; font-size:0.84rem;">
+                <button type="button" id="tbbBtnVidPlayPause" class="tbb-comm-btn-blue" onclick="window.tbbToggleMasterclassPlay()" style="padding:10px 18px; font-size:0.84rem; border-bottom:2.5px solid #FF7A00;">
                   <span>▶ ${t("videoPlayBtn")}</span>
                 </button>
                 <button type="button" id="tbbBtnVidMute" class="tbb-comm-btn-outline" onclick="window.tbbToggleMasterclassMute()" style="padding:10px 14px; font-size:0.82rem;">
@@ -2459,8 +2497,9 @@
 
           <!-- VIDEOTECA DE YOUTUBE DE LOS AUTORES -->
           <div style="margin-top:44px; padding-top:32px; border-top:1.5px solid rgba(255,255,255,0.12);">
-            <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#4C9DE6; letter-spacing:0.06em;">
-              LOS PILARES METODOLÓGICOS EN YOUTUBE
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#FF7A00; letter-spacing:0.08em; display:flex; align-items:center; gap:6px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:#FF7A00; display:inline-block;"></span>
+              <span>LOS PILARES METODOLÓGICOS EN YOUTUBE</span>
             </div>
             <h3 style="font-family:'Montserrat', sans-serif; font-size:1.65rem; font-weight:900; color:#FFFFFF; margin:6px 0 16px 0;">
               Conferencias Magistrales de los Autores
@@ -2497,8 +2536,9 @@
           <div style="margin-top:44px; padding-top:32px; border-top:1.5px solid rgba(255,255,255,0.12);">
             <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; margin-bottom:20px;">
               <div>
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#4C9DE6; letter-spacing:0.06em;">
-                  BIBLIOTECA DEL FUNDADOR · LECTURAS ESENCIALES
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#FF7A00; letter-spacing:0.08em; display:flex; align-items:center; gap:6px;">
+                  <span style="width:6px; height:6px; border-radius:50%; background:#FF7A00; display:inline-block;"></span>
+                  <span>BIBLIOTECA DEL FUNDADOR · LECTURAS ESENCIALES</span>
                 </div>
                 <h3 style="font-family:'Montserrat', sans-serif; font-size:1.65rem; font-weight:900; color:#FFFFFF; margin:6px 0;">
                   Libros Recomendados para Emprendedores
@@ -2969,7 +3009,26 @@
           display: inline-flex !important;
         }
         .tbb-awwwards-nav {
-          padding: 10px 14px;
+          padding: 10px 12px;
+          gap: 8px;
+        }
+        .tbb-brand-inline-tagline {
+          display: none !important;
+        }
+      }
+      @media (max-width: 640px) {
+        .tbb-awwwards-nav {
+          padding: 8px 10px;
+        }
+        .tbb-comm-btn-studio-header {
+          padding: 6px 10px !important;
+          font-size: 0.72rem !important;
+          gap: 4px !important;
+        }
+        .tbb-mobile-hamburger-btn {
+          width: 34px !important;
+          height: 34px !important;
+          font-size: 1rem !important;
         }
       }
       /* Mobile Slide-Over Drawer */
@@ -3003,6 +3062,28 @@
       }
 
       /* Botones de Superficie Oscura */
+      .tbb-comm-btn-studio-header {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%);
+        color: #FFFFFF !important;
+        font-family: var(--font-main);
+        font-weight: 800;
+        text-decoration: none;
+        border: 1.5px solid #4C9DE6;
+        border-bottom: 2.5px solid #FF7A00;
+        border-radius: 999px;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(13, 37, 64, 0.35);
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .tbb-comm-btn-studio-header:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(255, 122, 0, 0.35);
+        border-color: #FF7A00;
+      }
       .tbb-comm-btn-black {
         display: inline-flex;
         align-items: center;
@@ -3278,6 +3359,7 @@
         background: #0D2540 !important;
         color: #FFFFFF !important;
         border-color: #0D2540 !important;
+        border-bottom: 3.5px solid #FF7A00 !important;
         box-shadow: 0 4px 14px rgba(13, 37, 64, 0.35);
       }
       .tbb-tab-number {
@@ -3298,17 +3380,17 @@
         font-family: 'JetBrains Mono', monospace;
         font-size: 0.65rem;
         font-weight: 800;
-        background: #EFF6FF;
-        color: #1D4ED8;
-        border: 1px solid #93C5FD;
+        background: rgba(255, 122, 0, 0.12);
+        color: #FF7A00;
+        border: 1px solid rgba(255, 122, 0, 0.35);
         border-radius: 999px;
         padding: 2px 7px;
         margin-left: 2px;
       }
       .tbb-sec-tab.is-active .tbb-badge-spark {
-        background: #4C9DE6;
-        color: #0D2540;
-        border-color: #FFFFFF;
+        background: #FF7A00 !important;
+        color: #FFFFFF !important;
+        border-color: #FF7A00 !important;
       }
       .tbb-tab-destello {
         position: relative;
@@ -3316,7 +3398,7 @@
       }
       @keyframes tbbSparkPulse {
         0%, 100% { box-shadow: 0 0 0 0 rgba(76, 157, 230, 0); }
-        50% { box-shadow: 0 0 16px 3px rgba(76, 157, 230, 0.55); border-color: #4C9DE6; }
+        50% { box-shadow: 0 0 16px 3px rgba(255, 122, 0, 0.48); border-color: #FF7A00; }
       }
       @media (max-width: 640px) {
         .tbb-sections-tabs-bar {
@@ -3481,9 +3563,10 @@
     const isLicensed = Boolean(localStorage.getItem(LICENSE_STORAGE_KEY));
     floatBar.style.display = "flex";
     floatBar.innerHTML = `
-      <div style="display:flex; align-items:center; gap:7px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="width:7px; height:7px; border-radius:50%; background:#FF7A00; box-shadow:0 0 8px #FF7A00; display:inline-block;"></span>
         ${window.tbbBuildOfficialBrandbook1EmblemSVG(22)}
-        <span style="font-size:0.72rem; font-weight:800; color:#E2E8F0; white-space:nowrap;">THE BEST BRAND 1.0</span>
+        <span style="font-size:0.72rem; font-weight:800; color:#E2E8F0; white-space:nowrap;">THE BEST BRAND <span style="color:#FF7A00;">1.0</span></span>
       </div>
       <button type="button" class="tbb-float-buy-cta" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')">
         ${isLicensed ? t("licenseActiveBadge") : t("buyNowSticky")}
