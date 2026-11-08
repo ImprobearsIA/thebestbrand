@@ -40,6 +40,13 @@
     if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
     window.tbbCommercialDemoState.activeMainSection = s;
 
+    // Regla de Aislamiento Estricto: en Sección 2 (Demo en Vivo) se ocultan barras de compra
+    if (s === 2) {
+      document.body.classList.add("tbb-is-demo-section");
+    } else {
+      document.body.classList.remove("tbb-is-demo-section");
+    }
+
     for (let i = 1; i <= 4; i++) {
       const pane = document.getElementById(`tbbMainSectionPane_${i}`);
       if (pane) {
@@ -50,8 +57,7 @@
       });
     }
 
-    // Regla de Aislamiento Estricto para la Demo en Vivo:
-    // En la Sección 2, la barra flotante de compra debe desaparecer por completo
+    // Ocultar barra flotante y botones de compra en Demo
     const floatBar = document.getElementById("tbbAlwaysOnBuyFloatingBar");
     if (floatBar) {
       floatBar.style.display = (s === 2) ? "none" : "flex";
@@ -296,10 +302,12 @@
 
   window.tbbOpenAuraRecorridoModal = function () {
     window.tbbSwitchMainSection(4);
-    setTimeout(() => {
-      window.tbbSelectMasterclassChapter(0);
-      window.tbbToggleMasterclassPlay();
-    }, 150);
+    const videoSec = document.getElementById("tbbCommVideoSection");
+    if (videoSec) {
+      videoSec.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    window.tbbSelectMasterclassChapter(0);
+    window.tbbToggleMasterclassPlay();
   };
 
   // ---------------------------------------------------------------------------
@@ -1556,14 +1564,53 @@
     const capsule = VIDEO_CAPSULES[s] || VIDEO_CAPSULES[1];
     if (player) {
       player.src = capsule.url;
+      player.poster = capsule.poster || '/assets/videos/poster_aura_recorrido.jpg';
       player.muted = window.tbbCommercialDemoState.videoMuted;
-      player.play().then(() => {
+      
+      // Wire event listeners nativos para Safari iOS y Desktop
+      player.onplay = function () {
         window.tbbCommercialDemoState.videoIsPlaying = true;
+        const ov = document.getElementById("tbbVideoPlayOverlay");
+        if (ov) ov.style.display = "none";
         window.tbbUpdateVideoControlsUI();
-      }).catch(() => {
+      };
+      player.onpause = function () {
         window.tbbCommercialDemoState.videoIsPlaying = false;
+        const ov = document.getElementById("tbbVideoPlayOverlay");
+        if (ov) ov.style.display = "flex";
         window.tbbUpdateVideoControlsUI();
-      });
+      };
+      player.onended = function () {
+        window.tbbCommercialDemoState.videoIsPlaying = false;
+        const ov = document.getElementById("tbbVideoPlayOverlay");
+        if (ov) ov.style.display = "flex";
+        window.tbbUpdateVideoControlsUI();
+      };
+
+      const playPromise = player.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          window.tbbCommercialDemoState.videoIsPlaying = true;
+          const ov = document.getElementById("tbbVideoPlayOverlay");
+          if (ov) ov.style.display = "none";
+          window.tbbUpdateVideoControlsUI();
+        }).catch(() => {
+          // Si Safari bloquea audio, activar mute defensivo y reproducir video
+          player.muted = true;
+          window.tbbCommercialDemoState.videoMuted = true;
+          player.play().then(() => {
+            window.tbbCommercialDemoState.videoIsPlaying = true;
+            const ov = document.getElementById("tbbVideoPlayOverlay");
+            if (ov) ov.style.display = "none";
+            window.tbbUpdateVideoControlsUI();
+          }).catch(() => {
+            window.tbbCommercialDemoState.videoIsPlaying = false;
+            const ov = document.getElementById("tbbVideoPlayOverlay");
+            if (ov) ov.style.display = "flex";
+            window.tbbUpdateVideoControlsUI();
+          });
+        });
+      }
     }
     const titleEl = document.getElementById("tbbMasterclassTitle");
     const authorEl = document.getElementById("tbbMasterclassAuthor");
@@ -2087,15 +2134,7 @@
             </div>
           </div>
 
-          <!-- Banner Directo al Estudio Completo para no atrapar al usuario en la demo -->
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:#EFF6FF; border:1.5px solid #93C5FD; border-left:4px solid #FF7A00; border-radius:14px; padding:12px 18px; box-shadow:0 4px 14px rgba(13,37,64,0.05);">
-            <div style="font-size:0.84rem; font-weight:700; color:#0D2540;">
-              <span style="color:#FF7A00; font-size:0.95rem;">●</span> <strong>Demostración de Pasos 1 y 2</strong>. Para vivir los 7 pasos completos con los 15 autores y tu Brandbook de 30 Hojas:
-            </div>
-            <a href="/studio" style="display:inline-flex; align-items:center; gap:6px; padding:8px 18px; background:#0D2540; color:#FFFFFF; border:1px solid #4C9DE6; border-bottom:2.5px solid #FF7A00; border-radius:999px; font-size:0.78rem; font-weight:800; text-decoration:none; white-space:nowrap; box-shadow:0 3px 10px rgba(13,37,64,0.3);">
-              <span style="color:#FF7A00;">●</span> <span>Abrir Estudio Completo (App) ↗</span>
-            </a>
-          </div>
+          <!-- Demo en Vivo Aislada e Inmersiva (Cero ruido publicitario) -->
 
           <!-- Pestañas de Paso 1 y Paso 2 con Alto Contraste sobre Superficie Clara -->
           <div style="display:flex; gap:12px; flex-wrap:wrap;">
@@ -2190,9 +2229,7 @@
                   <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbContinueFromDemoIntoFullStudio()" style="width:100%; padding:14px 20px; font-size:0.92rem; font-weight:800; background:linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%); border-bottom:3.5px solid #FF7A00;">
                     <span>Continuar al Paso 3 · Naming & Clases de Niza →</span>
                   </button>
-                  <a href="/studio" style="text-align:center; font-size:0.80rem; font-weight:800; color:#426EAE; text-decoration:none; padding:4px;">
-                    O abrir el Estudio Completo directamente (Pasos 0 al 6) ↗
-                  </a>
+
                 </div>
               `}
             </div>

@@ -5137,13 +5137,113 @@
 
     const jpegPages = [];
 
+    // =========================================================================
+    // ENRIQUECIMIENTO SEMÁNTICO DE DATOS (PASOS 0 AL 6) — CERO REDUNDANCIAS
+    // =========================================================================
+    const rawPersona = (cs.brand_persona || `Líder con mente de ingeniero, rigor analítico y calidez de socio leal: escucha primero la necesidad real del cliente, estructura con orden y acompaña hombro a hombro con fuerza serena y visión de largo plazo.`).trim();
+    d.persona = window.tbbRefineUserCopyOrthoAndClarity(rawPersona, "persona", bName, industry);
+
+    const tpBeforeRaw = (typeof window.tpExtractedItems === "object" && window.tpExtractedItems?.before?.length)
+      ? window.tpExtractedItems.before
+      : (cs.tp_before ? cs.tp_before.split(",").map(s => s.trim()).filter(Boolean) : [
+          `Presencia de autoridad y contenidos de valor en redes ejecutivas (${bName})`,
+          `Sitio web oficial claro, sin fricciones y orientado a la conversión (www.${assets.cleanSlug}.com)`,
+          `Agente conversacional inteligente en WhatsApp 24/7 con atención inmediata`,
+          `Diagnóstico inicial ágil, solicitud de propuesta ejecutiva o sesión de alineación`
+        ]);
+    const tpDuringRaw = (typeof window.tpExtractedItems === "object" && window.tpExtractedItems?.during?.length)
+      ? window.tpExtractedItems.during
+      : (cs.tp_during ? cs.tp_during.split(",").map(s => s.trim()).filter(Boolean) : [
+          `Proceso de contratación y pago transparente con opciones digitales integradas`,
+          `Sesión de alineación estratégica hombro a hombro (in situ o vía videoconferencia)`,
+          `Tablero interactivo de seguimiento y presentación ejecutiva de prototipos`,
+          `Entrega puntual certificada con acabados y empaquetado de estándar superior`
+        ]);
+    const tpAfterRaw = (typeof window.tpExtractedItems === "object" && window.tpExtractedItems?.after?.length)
+      ? window.tpExtractedItems.after
+      : (cs.tp_after ? cs.tp_after.split(",").map(s => s.trim()).filter(Boolean) : [
+          `Bóveda digital de cliente con historial completo de activos, entregables y facturas`,
+          `Manuales de aplicación, certificados de autenticidad y garantías en lienzo claro`,
+          `Encuesta ejecutiva de satisfacción, calibración de impacto y mejora continua`,
+          `Acompañamiento post-lanzamiento, evolución continua y revisión estratégica anual`
+        ]);
+
+    d.tpBefore = tpBeforeRaw.slice(0, 4).map(t => window.tbbRefineUserCopyOrthoAndClarity(t, "touchpoint", bName, industry));
+    d.tpDuring = tpDuringRaw.slice(0, 4).map(t => window.tbbRefineUserCopyOrthoAndClarity(t, "touchpoint", bName, industry));
+    d.tpAfter = tpAfterRaw.slice(0, 4).map(t => window.tbbRefineUserCopyOrthoAndClarity(t, "touchpoint", bName, industry));
+
+    while (d.tpBefore.length < 4) d.tpBefore.push(`Punto de contacto de descubrimiento y confianza (${bName})`);
+    while (d.tpDuring.length < 4) d.tpDuring.push(`Punto de contacto de contratación y entrega ágil (${bName})`);
+    while (d.tpAfter.length < 4) d.tpAfter.push(`Punto de contacto de portal, entregables y lealtad (${bName})`);
+
+    // Helper para tarjeta editorial asimétrica suiza (cero cajas baratas, respiración amplia)
+    const drawEditorialBlock = (bx, by, bw, bh, badge, title, bodyText, accentCol) => {
+      drawRoundedRect(ctx, bx, by, bw, bh, isRect ? 4 : 14, "#FFFFFF", "#E2E8F0", 1.5);
+      ctx.fillStyle = accentCol || pal.pri;
+      ctx.fillRect(bx, by, isRect ? 4 : 6, bh);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(bx + 14, by + 10, bw - 28, bh - 20);
+      ctx.clip();
+
+      ctx.fillStyle = accentCol || pal.pri;
+      ctx.font = "800 10.5px Montserrat, sans-serif";
+      fillTextFitted(ctx, String(badge || "").toUpperCase(), bx + 22, by + 26, bw - 44);
+
+      ctx.fillStyle = pal.darkInk;
+      ctx.font = "800 16px Montserrat, sans-serif";
+      const nextY = drawWrappedText(ctx, title, bx + 22, by + 48, bw - 44, 21, 2);
+
+      if (bodyText) {
+        ctx.fillStyle = "#334155";
+        ctx.font = "500 12.8px Plus Jakarta Sans, sans-serif";
+        const availH = (by + bh - 12) - (nextY + 6);
+        const maxLines = Math.max(1, Math.floor(availH / 18.5));
+        drawWrappedText(ctx, bodyText, bx + 22, nextY + 6, bw - 44, 18.5, maxLines);
+      }
+      ctx.restore();
+    };
+
+    // Helper para citatorio o directriz de autor clásica
+    const drawAuthorCallout = (cx, cy, cw, ch, quote, author, role) => {
+      drawRoundedRect(ctx, cx, cy, cw, ch, isRect ? 4 : 12, pal.lightBg, pal.softTint, 1.5);
+      ctx.fillStyle = pal.sec;
+      ctx.fillRect(cx, cy, 5, ch);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(cx + 12, cy + 8, cw - 24, ch - 16);
+      ctx.clip();
+
+      ctx.fillStyle = pal.darkInk;
+      ctx.font = "italic 600 12.5px Plus Jakarta Sans, sans-serif";
+      const afterQ = drawWrappedText(ctx, `«${quote}»`, cx + 18, cy + 28, cw - 36, 18, 3);
+
+      ctx.fillStyle = pal.sec;
+      ctx.font = "800 10px Montserrat, sans-serif";
+      fillTextFitted(ctx, `— ${author.toUpperCase()} · ${role}`, cx + 18, Math.max(cy + ch - 16, afterQ + 14), cw - 36);
+      ctx.restore();
+    };
+
     for (let i = 0; i < 30; i++) {
       if (typeof onProgress === "function") onProgress(i + 1, 30);
       drawC00Chrome(i);
       const meta = PLATE_META[i];
 
+      if (i > 0) {
+        // TÍTULO EDITORIAL OFICIAL (LÁMINAS 02 A 30)
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        fillTextFitted(ctx, `${meta.sec}  ·  ${dna.archBadge}`, 54, 106, W - 108);
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 24px Montserrat, sans-serif";
+        fillTextFitted(ctx, `${meta.num}. ${meta.title}`, 54, 138, W - 108);
+      }
+
       if (i === 0) {
-        // LÁMINA 01: PORTADA MAESTRA ADAPTATIVA (SIN CAJAS MULTIMARCA EN MARCA ÚNICA Y CERO TEXTO FUERA DEL RECUADRO)
+        // LÁMINA 01: PORTADA MAESTRA ADAPTATIVA (MONUMENTAL ATELIER · CERO SUBMARCAS FORZADAS EN MARCA ÚNICA)
         ctx.fillStyle = pal.sec;
         ctx.font = "800 12.5px Montserrat, sans-serif";
         fillTextFitted(ctx, `MANUAL OFICIAL DE IDENTIDAD · ${dna.archBadge} · ${dna.strokeBadge}`, 72, 316, 670);
@@ -5167,7 +5267,6 @@
           ctx.fill();
         }
 
-        // Giro / Esencia redactada con claridad (sin anteponer frases repetitivas que corten la idea)
         ctx.fillStyle = pal.darkInk;
         ctx.font = "700 19.5px Plus Jakarta Sans, sans-serif";
         const afterGiroY = drawWrappedText(ctx, industry, 72, 480, 668, 26, 2);
@@ -5176,7 +5275,7 @@
         ctx.font = "500 13.5px Plus Jakarta Sans, sans-serif";
         drawWrappedText(
           ctx,
-          `Manual rector con Círculo Dorado, La Empresa como Persona, Ingeniería de Touchpoints (Antes · Durante · Después) y acentos en ${dna.strokeLabel.toLowerCase()} (${dna.eraLabel.toLowerCase()}) para ${bName}.`,
+          `Constitución oficial de marca con Círculo Dorado (Why·How·What), La Empresa como Persona, Ingeniería de Touchpoints en 3 Momentos y Sistema Visual en ${dna.strokeLabel.toLowerCase()} (${pal.pri} y ${pal.sec}) para ${bName}.`,
           72,
           Math.max(540, afterGiroY + 10),
           668,
@@ -5185,7 +5284,6 @@
         );
 
         if (dna.archMode === "multibrand") {
-          // Solo cuando la marca es verdaderamente Multimarca se muestran las 4 submarcas en portada
           const subs = assets.subBrands.map(s => s.suffix);
           subs.forEach((s, idx) => {
             const sx = 72 + idx * 168;
@@ -5198,16 +5296,16 @@
             ctx.restore();
           });
         } else {
-          // Para Marca Única (Monolítica): Ficha Ejecutiva de Marca Única en 3 columnas (Cero submarcas)
+          // Marca Única Monolítica: Ficha Estratégica en 3 Columnas
           const cardX = 72, cardY = 626, cardW = 668, cardH = 168;
           drawRoundedRect(ctx, cardX, cardY, cardW, cardH, isRect ? 4 : 16, "#F8FAFC", "#CBD5E1", 1.5);
           ctx.fillStyle = pal.sec;
           ctx.fillRect(cardX, cardY, cardW, 5);
 
           const pillarsCover = [
-            { badge: "01 · PROPÓSITO CENTRAL", title: "Por qué existimos", body: d.whyText, col: pal.sec },
+            { badge: "01 · PROPÓSITO NUCLEAR", title: "Por qué existimos", body: d.whyText, col: pal.sec },
             { badge: "02 · OFERTA DE VALOR", title: "Qué entregamos", body: d.valueOffer, col: pal.pri },
-            { badge: "03 · MARCA ÚNICA OFICIAL", title: `100% ${bName}`, body: `Toda la reputación y confianza se concentra en el nombre único ${bName}, sin dividirla en submarcas.`, col: pal.darkInk }
+            { badge: "03 · IDENTIDAD MONOLÍTICA", title: `100% ${bName}`, body: `Concentración total del prestigio en un solo nombre oficial. Cero división de capital en submarcas.`, col: pal.darkInk }
           ];
           const colW = Math.floor((cardW - 36) / 3);
           pillarsCover.forEach((pCol, pIdx) => {
@@ -5237,7 +5335,7 @@
           });
         }
 
-        // Emblema Monumental Derecho con Marco Amplio y Textos 100% Dentro del Cuadro sin chocar con las esquinas
+        // Emblema Monumental Derecho en Lienzo Limpio con Órbitas Áureas
         const boxX = 790, boxY = 220, boxW = 546, boxH = 574;
         const cx = boxX + boxW / 2;
         drawRoundedRect(ctx, boxX, boxY, boxW, boxH, isRect ? 4 : 24, "#FFFFFF", "#CBD5E1", 2);
@@ -5247,27 +5345,19 @@
         ctx.rect(boxX + 4, boxY + 4, boxW - 8, boxH - 8);
         ctx.clip();
 
-        // Esquinas decorativas o arco orbital bien separados del texto inferior
-        ctx.strokeStyle = pal.sec;
-        ctx.lineWidth = 4;
-        if (isRect) {
-          ctx.beginPath();
-          ctx.moveTo(boxX + 22, boxY + 92);
-          ctx.lineTo(boxX + 22, boxY + 22);
-          ctx.lineTo(boxX + 92, boxY + 22);
-          ctx.moveTo(boxX + boxW - 22, boxY + 92);
-          ctx.lineTo(boxX + boxW - 22, boxY + 22);
-          ctx.lineTo(boxX + boxW - 92, boxY + 22);
-          ctx.stroke();
-        } else {
-          ctx.beginPath();
-          ctx.arc(cx, boxY + 215, 175, -Math.PI * 0.8, -Math.PI * 0.2);
-          ctx.stroke();
-        }
+        // Órbitas matemáticas sutiles en fondo
+        ctx.strokeStyle = pal.softTint;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(cx, boxY + 225, 195, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, boxY + 225, 140, 0, Math.PI * 2);
+        ctx.stroke();
 
-        drawLogoOrEmblem(cx - 140, boxY + 62, 280, false);
+        drawLogoOrEmblem(cx - 140, boxY + 65, 280, false);
 
-        // Banda informativa inferior dentro del cuadro derecho
+        // Ficha inferior de certificación de portada
         const footerBoxY = boxY + 458;
         drawRoundedRect(ctx, boxX + 26, footerBoxY, boxW - 52, 92, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.5);
         ctx.textAlign = "center";
@@ -5279,665 +5369,2238 @@
         fillTextFitted(ctx, `Versión Positiva Principal sobre Lienzo Claro (#FFFFFF) · ${pal.pri} & ${pal.sec}`, cx, footerBoxY + 62, boxW - 80);
         ctx.textAlign = "left";
         ctx.restore();
-      } else {
-        // TÍTULO EDITORIAL DE LA LÁMINA (02 a 30) con ajuste automático para no desbordar
+
+      } else if (i === 1) {
+        // LÁMINA 02: MAPA METODOLÓGICO DE 30 LÁMINAS (PASOS 0 AL 6)
+        // Columna Izquierda: Arquitectura del Manual + Pipeline Vectorial Continuo
+        drawEditorialBlock(54, 160, 480, 240, "ARQUITECTURA DEL MANUAL", `Del Caos al Sistema de ${dna.strokeLabel}`, `Este manual se adapta a la identidad real de ${bName} (${dna.archTitle}). Ordena primero el problema raíz (Paso 0), el propósito nuclear y la personificación (Paso 1) y los puntos de contacto reales (Paso 2) antes de definir el nombre (Paso 3) y la geometría oficial del logotipo (${pal.pri} y ${pal.sec}).`, pal.pri);
+
+        // Pipeline Vectorial Continuo P0 a P6
+        drawRoundedRect(ctx, 54, 420, 480, 465, isRect ? 4 : 18, "#F8FAFC", pal.softTint, 2);
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(58, 424, 472, 457);
+        ctx.clip();
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "800 13px Montserrat, sans-serif";
+        fillTextFitted(ctx, "TRAYECTORIA METODOLÓGICA (PASOS 0 AL 6)", 76, 452, 436);
+
+        const flowSteps = [
+          { p: "P0", name: "Giro & Problema", sub: "Diagnóstico comercial y buyer persona", y: 495, c: pal.darkInk },
+          { p: "P1", name: "ADN & Persona", sub: "Círculo Dorado y arquetipos humanos", y: 560, c: pal.pri },
+          { p: "P2", name: "Touchpoints", sub: "Experiencia Antes · Durante · Después", y: 625, c: pal.sec },
+          { p: "P3", name: "Naming & Niza", sub: "Semiótica, Test SMILE y registro", y: 690, c: pal.pri },
+          { p: "P4", name: "Arquitectura", sub: dna.archMode === "multibrand" ? "Marca Madre + Submarcas" : "Marca Única Monolítica", y: 755, c: pal.darkInk },
+          { p: "P5-6", name: "Color & Gobernanza", sub: "Paleta 8 tonos, tipografía y sellos", y: 820, c: pal.sec }
+        ];
+
+        // Eje vertical conector
+        ctx.strokeStyle = "#CBD5E1";
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(96, 495);
+        ctx.lineTo(96, 820);
+        ctx.stroke();
+
+        flowSteps.forEach((st) => {
+          ctx.fillStyle = st.c;
+          ctx.beginPath();
+          ctx.arc(96, st.y, 16, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = "#FFFFFF";
+          ctx.font = "800 9px Montserrat, sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText(st.p, 96, st.y + 3);
+          ctx.textAlign = "left";
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 13px Montserrat, sans-serif";
+          fillTextFitted(ctx, st.name, 126, st.y - 2, 380);
+
+          ctx.fillStyle = "#64748B";
+          ctx.font = "500 11px Plus Jakarta Sans, sans-serif";
+          fillTextFitted(ctx, st.sub, 126, st.y + 14, 380);
+        });
+        ctx.restore();
+
+        // Columna Derecha: 6 Bloques del Índice Oficial de 30 Láminas
+        const secs = [
+          ["SECCIÓN 01 · LÁMINAS 01–03", "Introducción, Giro y Problema", "01. Portada Maestra · 02. Mapa Metodológico · 03. Manifiesto: Del Caos al Sistema y Buyer Persona."],
+          ["SECCIÓN 02 · LÁMINAS 04–08", "ADN y La Empresa como Persona", "04. Círculo Dorado (Why·How·What) · 05. Promesa, Misión, Visión · 06. 6 Principios · 07. La Empresa como Persona · 08. Tono de Voz."],
+          ["SECCIÓN 03 · LÁMINAS 09–12", "Ingeniería de Touchpoints", "09. Mapa Integral del Viaje · 10. Antes de Comprar · 11. Durante la Compra · 12. Después de Comprar."],
+          ["SECCIÓN 04–05 · LÁMINAS 13–22", "Nombre, Arquitectura y Logotipos", `13. Naming y Niza · 14. ${dna.archTitle} · 15. Anatomía Semiótica · 16–19. Los 4 Pilares · 20. Retícula 8X · 21. Aislamiento · 22. 6 Prohibiciones.`],
+          ["SECCIÓN 06 · LÁMINAS 23–26", "Color, Trazo, Tipografía y Sellos", `23. Paleta Cromática (8 Tonos) · 24. Proporción 70/20/10 y Trazo · 25. Tipografía Oficial · 26. Los 6 Sellos Metodológicos.`],
+          ["SECCIÓN 07 · LÁMINAS 27–30", "Aplicaciones y Gobernanza Oficial", "27. Norma Oficial de Co-Branding · 28. Papelería y Tarjetas · 29. Ecosistema Digital · 30. Colofón y Certificado Institucional."]
+        ];
+        secs.forEach((sItem, idx) => {
+          const col = idx % 2;
+          const row = Math.floor(idx / 2);
+          const bx = 560 + col * 400;
+          const by = 160 + row * 242;
+          drawEditorialBlock(bx, by, 384, 226, sItem[0], sItem[1], sItem[2], idx % 2 === 0 ? pal.pri : pal.sec);
+        });
+
+      } else if (i === 2) {
+        // LÁMINA 03: PASO 0 — MANIFIESTO: DEL CAOS AL SISTEMA & BUYER PERSONA
+        drawEditorialBlock(54, 160, 630, 310, "EL PROBLEMA QUE RESOLVEMOS · DEL CAOS AL SISTEMA", `Transformamos la incertidumbre en certidumbre operativa en ${sectorShort}`, `${bName} nace para erradicar la improvisación y la falta de estandarización en ${industry}. Muchas empresas operan con procesos dispersos y comunicación incoherente que agota al equipo y confunde al comprador. Nuestra solución unifica estrategia, lenguaje y entrega bajo un solo estándar medible y confiable.`, pal.sec);
+
+        drawEditorialBlock(710, 160, 636, 310, "EL ACTOR COMPRADOR (BUYER PERSONA)", d.idealCustomer, `Perfil del comprador ideal: Organizaciones y líderes que valoran la honestidad profesional, la precisión técnica y el acompañamiento leal. Buscan un socio que escuche primero y resuelva con método, sin perder tiempo ni generar fricción. Rol social de nuestra marca: ${d.socialRole}`, pal.pri);
+
+        // Comparativa Asimétrica de 3 Escenas en el Mundo Real
+        const scenes = [
+          ["01 · EL CAOS PREVIO", "Operación Fragmentada y Fricción", "Criterios dispersos, mensajes contradictorios y desgaste en cada punto de contacto comercial.", "#64748B"],
+          ["02 · LA INTERVENCIÓN " + bUpper, "Identidad y Estandarización Oficial", `Implantación del sistema de ${bName}: procesos alineados, imagen ejecutiva y certidumbre.`, pal.pri],
+          ["03 · EL RESULTADO MEDIBLE", "Claridad, Confianza y Crecimiento", `Operación sólida bajo ${dna.archTitle}, lealtad del cliente y escalabilidad sostenible.`, pal.sec]
+        ];
+        scenes.forEach((sc, idx) => {
+          const sx = 54 + idx * 440;
+          drawRoundedRect(ctx, sx, 496, 412, 395, isRect ? 4 : 18, "#F8FAFC", pal.softTint, 2);
+          ctx.fillStyle = sc[3];
+          ctx.fillRect(sx, 496, 412, 7);
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(sx + 10, 506, 392, 375);
+          ctx.clip();
+
+          ctx.fillStyle = sc[3];
+          ctx.font = "800 11px Montserrat, sans-serif";
+          fillTextFitted(ctx, sc[0], sx + 22, 532, 368);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 16px Montserrat, sans-serif";
+          drawWrappedText(ctx, sc[1], sx + 22, 558, 368, 21, 2);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 13px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, sc[2], sx + 22, 616, 368, 20, 5);
+
+          // Vector conceptual de escena
+          drawRoundedRect(ctx, sx + 22, 735, 368, 120, isRect ? 4 : 12, "#FFFFFF", "#E2E8F0", 1.5);
+          ctx.fillStyle = sc[3];
+          ctx.beginPath();
+          ctx.arc(sx + 56, 795, 20, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#FFFFFF";
+          ctx.font = "800 12px Montserrat, sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText(`0${idx + 1}`, sx + 56, 799);
+          ctx.textAlign = "left";
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "700 12.5px Plus Jakarta Sans, sans-serif";
+          fillTextFitted(ctx, idx === 0 ? "Diagnóstico profundo en Paso 0" : idx === 1 ? "Alineación integral con Aura" : "Liderazgo sólido y respetado", sx + 88, 798, 280);
+          ctx.restore();
+        });
+
+      } else if (i === 3) {
+        // LÁMINA 04: EL CÍRCULO DORADO (WHY · HOW · WHAT) — SIMON SINEK
+        // Izquierda: 3 Círculos Concéntricos Puros con Vectores Matemáticos
+        const cx = 335, cy = 528;
+        // Anillo 3: WHAT (Oferta Externa)
+        ctx.beginPath();
+        ctx.arc(cx, cy, 244, 0, Math.PI * 2);
+        ctx.fillStyle = "#F8FAFC";
+        ctx.fill();
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = "#CBD5E1";
+        ctx.stroke();
+
+        // Anillo 2: HOW (Método y Diferencial)
+        ctx.beginPath();
+        ctx.arc(cx, cy, 168, 0, Math.PI * 2);
+        ctx.fillStyle = pal.lightBg;
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = pal.pri;
+        ctx.stroke();
+
+        // Anillo 1: WHY (Propósito Nuclear)
+        ctx.beginPath();
+        ctx.arc(cx, cy, 92, 0, Math.PI * 2);
+        ctx.fillStyle = pal.darkInk;
+        ctx.fill();
+        ctx.lineWidth = 3.5;
+        ctx.strokeStyle = pal.sec;
+        ctx.stroke();
+
+        // Rótulos centrales concéntricos
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "900 16px Montserrat, sans-serif";
+        ctx.fillText("01. WHY", cx, cy - 8);
+        ctx.font = "700 10px Plus Jakarta Sans, sans-serif";
+        ctx.fillText("PROPÓSITO", cx, cy + 10);
+
+        ctx.fillStyle = pal.pri;
+        ctx.font = "800 12.5px Montserrat, sans-serif";
+        ctx.fillText("02. HOW · EL MÉTODO Y DIFERENCIAL", cx, cy - 132);
+
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 12.5px Montserrat, sans-serif";
+        ctx.fillText("03. WHAT · LA OFERTA AL MERCADO", cx, cy - 208);
+        ctx.textAlign = "left";
+
+        // Derecha: 3 Bloques Editoriales Ricos y Profundos
+        drawEditorialBlock(650, 165, 696, 226, "01 · WHY (EL PROPÓSITO CENTRAL · LA CREENCIA)", "Por qué existe " + bName + " más allá de vender", d.whyText, pal.sec);
+        drawEditorialBlock(650, 412, 696, 226, "02 · HOW (EL MÉTODO Y DIFERENCIAL REAL)", "Cómo lo hacemos realidad cada día con rigor", d.howText + ". " + d.socialRole, pal.pri);
+        drawEditorialBlock(650, 660, 696, 226, "03 · WHAT (LA OFERTA CONCRETA DE VALOR)", "Qué entregamos al mercado con maestría técnica", d.whatText + ` Diseñado y operado bajo el estándar de calidad de ${bName}.`, pal.darkInk);
+
+      } else if (i === 4) {
+        // LÁMINA 05: PROMESA, MISIÓN, VISIÓN Y LAS 6 MÁXIMAS DE FILOSOFÍA (DONALD MILLER)
+        // Columna Izquierda: Promesa, Misión y Visión
+        drawEditorialBlock(54, 160, 580, 226, "LA GRAN PROMESA DE MARCA (STORYBRAND)", `La transformación del cliente al elegir ${bName}`, `Prometemos a cada cliente que encontrará en ${bName} un socio de máxima fiabilidad técnica y calidez humana. Sustituimos la incertidumbre por claridad ejecutiva, entregando soluciones de alto impacto que protegen su inversión y multiplican su valor.`, pal.sec);
+
+        drawEditorialBlock(54, 404, 580, 226, "MISIÓN OPERATIVA", `Qué hacemos cada día con maestría`, `Diseñar, estructurar y operar soluciones integrales en ${industry} mediante procesos rigurosos, tecnología de punta y acompañamiento cercano que libera tiempo mental a nuestros clientes.`, pal.pri);
+
+        drawEditorialBlock(54, 648, 580, 238, "VISIÓN DE LARGO PLAZO", `Hacia dónde construimos para la próxima década`, `Ser reconocidos como el referente indiscutible de excelencia, ética y consistencia en ${sectorShort}, demostrando que el orden, la belleza funcional y la lealtad con el cliente son las mayores ventajas competitivas sostenibles.`, pal.darkInk);
+
+        // Columna Derecha: Las 6 Máximas de Filosofía
+        drawRoundedRect(ctx, 660, 160, 686, 726, isRect ? 4 : 20, "#F8FAFC", pal.softTint, 2);
+        ctx.fillStyle = pal.pri;
+        ctx.fillRect(660, 160, 686, 8);
+
         ctx.fillStyle = pal.sec;
         ctx.font = "800 11px Montserrat, sans-serif";
-        fillTextFitted(ctx, `${meta.sec}  ·  ${dna.archBadge}`, 54, 106, W - 108);
+        fillTextFitted(ctx, "FILOSOFÍA INSTITUCIONAL INNEGOCIABLE", 692, 196, 620);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 22px Montserrat, sans-serif";
+        fillTextFitted(ctx, `Las 6 Máximas de Filosofía de ${bName}`, 692, 226, 620);
+
+        const maximas = [
+          ["01", "Claridad Radical sobre Artificios", "Si no aporta claridad al cliente, se elimina. La simplicidad funcional es nuestra mayor muestra de respeto."],
+          ["02", "Mente de Ingeniero, Trato de Socio", "Combinamos la exactitud matemática con la empatía de quien camina hombro con hombro."],
+          ["03", "Cero Tolerancia a la Improvisación", "Cada proceso, entregable y documento cuenta con una razón técnica y estética inmutable."],
+          ["04", "El Cliente es el Héroe; Nosotros el Guía", "Nuestra autoridad se demuestra en el éxito de nuestros clientes, no en la ostentación propia."],
+          ["05", "Valor Medible y Sostenible", "Toda intervención debe justificarse en reducción de fricción, certidumbre y rentabilidad duradera."],
+          ["06", "Coherencia de la Idea a la Entrega", "Lo que prometemos en el primer contacto es exactamente lo que recibe en sus manos."]
+        ];
+
+        maximas.forEach((m, mIdx) => {
+          const my = 260 + mIdx * 98;
+          drawRoundedRect(ctx, 692, my, 622, 84, isRect ? 3 : 12, "#FFFFFF", "#E2E8F0", 1.2);
+          ctx.fillStyle = mIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.fillRect(692, my, 5, 84);
+
+          ctx.fillStyle = mIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.font = "900 16px Montserrat, sans-serif";
+          ctx.fillText(m[0], 712, my + 34);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 14px Montserrat, sans-serif";
+          fillTextFitted(ctx, m[1], 752, my + 30, 540);
+
+          ctx.fillStyle = "#475569";
+          ctx.font = "500 11.5px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, m[2], 752, my + 48, 540, 16, 2);
+        });
+
+      } else if (i === 5) {
+        // LÁMINA 06: LOS 6 PRINCIPIOS RECTORES Y CÓDIGO DE RELACIÓN CON CLIENTES
+        // Columna Izquierda: Los 6 Principios Rectores
+        const prX = 54, prW = 630;
+        drawEditorialBlock(prX, 160, prW, 726, "CÓDIGO OPERATIVO INTERNO", "Los 6 Principios que Guían Cada Decisión", "", pal.pri);
+
+        const principles = [
+          ["PRINCIPIO 01 · VERDAD TÉCNICA", "Honestidad de Diagnóstico", "Nunca inflamos problemas para vender soluciones complejas. Decimos la verdad técnica con datos objetivos."],
+          ["PRINCIPIO 02 · RESPETO AL TIEMPO", "Eficiencia y Cero Fricción", "El tiempo mental de nuestro cliente es sagrado. Diseñamos sistemas que resuelven en minutos lo que otros tardan semanas."],
+          ["PRINCIPIO 03 · RIGOR EN EL DETALLE", "Obsesión por la Calidad", "Cuidamos cada milímetro, cada píxel y cada palabra con el estándar de un taller artesanal de alta precisión."],
+          ["PRINCIPIO 04 · TRANSPARENCIA", "Cuentas y Términos Claros", "Sin letras pequeñas, costos ocultos ni ambigüedades contractuales. Operamos con luz total desde el primer momento."],
+          ["PRINCIPIO 05 · ACOMPAÑAMIENTO", "Presencia Real y Accesible", "No desaparecemos tras la venta. Mantenemos canales abiertos y respuesta humana ante cualquier contingencia."],
+          ["PRINCIPIO 06 · MEJORA CONTINUA", "Evolución sin Descanso", "Auditamos nuestros propios sistemas periódicamente para incorporar innovaciones que beneficien al usuario."]
+        ];
+
+        principles.forEach((pr, pIdx) => {
+          const py = 240 + pIdx * 104;
+          drawRoundedRect(ctx, prX + 20, py, prW - 40, 92, isRect ? 3 : 10, "#F8FAFC", "#E2E8F0", 1);
+          ctx.fillStyle = pIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.font = "800 10px Montserrat, sans-serif";
+          fillTextFitted(ctx, pr[0], prX + 36, py + 24, prW - 72);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 14px Montserrat, sans-serif";
+          fillTextFitted(ctx, pr[1], prX + 36, py + 44, prW - 72);
+
+          ctx.fillStyle = "#475569";
+          ctx.font = "500 11.5px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, pr[2], prX + 36, py + 62, prW - 72, 16, 2);
+        });
+
+        // Columna Derecha: Código de Relación con Clientes
+        const rcX = 710, rcW = 636;
+        drawEditorialBlock(rcX, 160, rcW, 726, "RELACIÓN HUMANA CON EL CLIENTE", `El Compromiso de Confianza de ${bName}`, "", pal.sec);
+
+        const commitments = [
+          ["COMPROMISO 01", "Escucha Activa antes de Proponer", "Primero comprendemos la meta y el contexto del cliente antes de sugerir cualquier herramienta o servicio."],
+          ["COMPROMISO 02", "Propuesta de Valor Directa", "Cada propuesta explica en lenguaje claro el entregable, el cronograma y el impacto tangible."],
+          ["COMPROMISO 03", "Entrega en Lienzo Claro", "Todos los entregables se entregan listos para operar, con acceso irrestricto y sin dependencias cautivas."],
+          ["COMPROMISO 04", "Atención Inteligente 24/7", "Canales de soporte siempre activos que resuelven dudas inmediatas y escalan a atención ejecutiva."],
+          ["COMPROMISO 05", "Alianza a Largo Plazo", "Medimos nuestro éxito en la recompra, la recomendación sincera y la lealtad mutua a través de los años."]
+        ];
+
+        commitments.forEach((cm, cIdx) => {
+          const cy = 250 + cIdx * 124;
+          drawRoundedRect(ctx, rcX + 24, cy, rcW - 48, 110, isRect ? 4 : 14, "#F8FAFC", pal.softTint, 1.5);
+          ctx.fillStyle = pal.sec;
+          ctx.fillRect(rcX + 24, cy, 6, 110);
+
+          ctx.fillStyle = pal.sec;
+          ctx.font = "800 10.5px Montserrat, sans-serif";
+          fillTextFitted(ctx, cm[0], rcX + 44, cy + 28, rcW - 88);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 15px Montserrat, sans-serif";
+          fillTextFitted(ctx, cm[1], rcX + 44, cy + 50, rcW - 88);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 12.2px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, cm[2], rcX + 44, cy + 70, rcW - 88, 17.5, 2);
+        });
+
+      } else if (i === 6) {
+        // LÁMINA 07: LA EMPRESA COMO PERSONA (CARÁCTER Y 4 FACETAS HUMANAS)
+        // Izquierda: Gráfico Radar de Arquetipos de Carl Jung (6 Ejes en Curvas)
+        drawEditorialBlock(54, 160, 560, 726, "ARQUETIPO DE MARCA Y PSICOLOGÍA", `La Personalidad Humana de ${bName}`, "", pal.sec);
+
+        const rx = 334, ry = 480, rRad = 175;
+        // Malla poligonal hexagonal
+        ctx.strokeStyle = "#CBD5E1";
+        ctx.lineWidth = 1.2;
+        [0.35, 0.7, 1.0].forEach(scale => {
+          ctx.beginPath();
+          for (let a = 0; a < 6; a++) {
+            const angle = (Math.PI / 3) * a - Math.PI / 2;
+            const px = rx + Math.cos(angle) * rRad * scale;
+            const py = ry + Math.sin(angle) * rRad * scale;
+            if (a === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+          }
+          ctx.closePath();
+          ctx.stroke();
+        });
+
+        // Ejes de coordenadas
+        const axesLabels = [
+          "Fuerza Serena", "Rigor Técnico", "Claridad Ejecutiva",
+          "Empatía & Calidez", "Agilidad", "Lealtad Leal"
+        ];
+        for (let a = 0; a < 6; a++) {
+          const angle = (Math.PI / 3) * a - Math.PI / 2;
+          const px = rx + Math.cos(angle) * rRad;
+          const py = ry + Math.sin(angle) * rRad;
+          ctx.strokeStyle = "#CBD5E1";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(rx, ry);
+          ctx.lineTo(px, py);
+          ctx.stroke();
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 10.5px Montserrat, sans-serif";
+          ctx.textAlign = "center";
+          const lx = rx + Math.cos(angle) * (rRad + 24);
+          const ly = ry + Math.sin(angle) * (rRad + 24) + 4;
+          ctx.fillText(axesLabels[a], lx, ly);
+          ctx.textAlign = "left";
+        }
+
+        // Polígono de personalidad calibrada
+        const values = [0.92, 0.88, 0.95, 0.85, 0.78, 0.96];
+        ctx.beginPath();
+        for (let a = 0; a < 6; a++) {
+          const angle = (Math.PI / 3) * a - Math.PI / 2;
+          const vx = rx + Math.cos(angle) * rRad * values[a];
+          const vy = ry + Math.sin(angle) * rRad * values[a];
+          if (a === 0) ctx.moveTo(vx, vy);
+          else ctx.lineTo(vx, vy);
+        }
+        ctx.closePath();
+        ctx.fillStyle = pal.pri;
+        ctx.globalAlpha = 0.22;
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+        ctx.strokeStyle = pal.sec;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        drawAuthorCallout(74, 715, 520, 145, d.persona, "ARQUETIPO OFICIAL", "Personalidad y Conducta de Marca");
+
+        // Derecha: Las 4 Facetas de Carácter Humano
+        const fcX = 640, fcW = 706;
+        drawEditorialBlock(fcX, 160, fcW, 726, "LAS 4 FACETAS DE CONDUCTA", "Cómo se Manifiesta Nuestra Personalidad en Vivo", "", pal.pri);
+
+        const facets = [
+          ["01 · EL ARQUITECTO DE CLARIDAD", "Mente Analítica y Estructura", "Aborda los desafíos con orden matemático. Convierte problemas dispersos en esquemas diáfanos, cronogramas viables y decisiones bien fundamentadas.", pal.pri],
+          ["02 · EL SOCIO LEAL", "Calidez Humana y Cercanía", "Escucha sin arrogancia. No impone ideas desde la distancia; se sienta junto al cliente para construir la mejor solución técnica hombro a hombro.", pal.sec],
+          ["03 · LA FUERZA SERENA", "Autoridad Tranquila y Firmeza", "Transmite seguridad sin necesidad de aspavientos ni agresividad comercial. Su tranquilidad se apoya en el dominio del oficio y la preparación rigurosa.", pal.darkInk],
+          ["04 · EL ARTESANO FUNCIONAL", "Cuidado Obsesivo por la Forma", "Sabe que cada línea, cada tipografía y cada interfaz refleja el valor de la empresa. No tolera la mediocridad gráfica ni el descuido operacional.", pal.pri]
+        ];
+
+        facets.forEach((fc, fIdx) => {
+          const fy = 246 + fIdx * 154;
+          drawRoundedRect(ctx, fcX + 24, fy, fcW - 48, 138, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.2);
+          ctx.fillStyle = fc[3];
+          ctx.fillRect(fcX + 24, fy, 6, 138);
+
+          ctx.fillStyle = fc[3];
+          ctx.font = "800 11px Montserrat, sans-serif";
+          fillTextFitted(ctx, fc[0], fcX + 44, fy + 30, fcW - 88);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 16px Montserrat, sans-serif";
+          fillTextFitted(ctx, fc[1], fcX + 44, fy + 54, fcW - 88);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 12.8px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, fc[2], fcX + 44, fy + 78, fcW - 88, 19, 3);
+        });
+
+      } else if (i === 7) {
+        // LÁMINA 08: TONO DE VOZ, PERSONALIDAD Y LENGUAJE VISUAL (AURA & DONALD MILLER)
+        // Izquierda: Espectro Tonal en Sliders de Polaridad
+        const slX = 54, slW = 580;
+        drawEditorialBlock(slX, 160, slW, 726, "CALIBRACIÓN KANSEI DEL TONO", "Espectro Tonal en 4 Dimensiones", `El tono de ${bName} está calibrado para proyectar solvencia ejecutiva sin sonar distante, y cercanía humana sin caer en la informalidad trivial.`, pal.sec);
+
+        const sliders = [
+          ["DIMENSIÓN 01 · CERCANÍA VS FORMALIDAD", "Cercano y Humano", "Rígido y Distante", 0.65, "65% Cercano"],
+          ["DIMENSIÓN 02 · LENGUAJE TÉCNICO", "Claro y Accesible", "Jerga Compleja", 0.78, "78% Accesible"],
+          ["DIMENSIÓN 03 · POSTURA COMERCIAL", "Consultivo y Seguro", "Vendedor Agresivo", 0.72, "72% Consultivo"],
+          ["DIMENSIÓN 04 · ENFOQUE NARRATIVO", "Pragmático y Realista", "Idealismo Vacío", 0.68, "68% Pragmático"]
+        ];
+
+        sliders.forEach((sl, sIdx) => {
+          const sy = 280 + sIdx * 135;
+          drawRoundedRect(ctx, slX + 20, sy, slW - 40, 116, isRect ? 3 : 12, "#F8FAFC", "#E2E8F0", 1);
+
+          ctx.fillStyle = pal.sec;
+          ctx.font = "800 10.5px Montserrat, sans-serif";
+          fillTextFitted(ctx, sl[0], slX + 36, sy + 24, slW - 72);
+
+          // Pista del slider
+          const trackX = slX + 36, trackW = slW - 72, trackY = sy + 58;
+          ctx.fillStyle = "#E2E8F0";
+          ctx.beginPath();
+          ctx.roundRect(trackX, trackY, trackW, 8, [4]);
+          ctx.fill();
+
+          // Relleno activo
+          ctx.fillStyle = pal.pri;
+          ctx.beginPath();
+          ctx.roundRect(trackX, trackY, trackW * sl[3], 8, [4]);
+          ctx.fill();
+
+          // Puntero / Manija
+          ctx.fillStyle = pal.sec;
+          ctx.beginPath();
+          ctx.arc(trackX + trackW * sl[3], trackY + 4, 9, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Etiquetas de extremos
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "700 11px Plus Jakarta Sans, sans-serif";
+          ctx.fillText(sl[1], trackX, sy + 88);
+          ctx.textAlign = "right";
+          ctx.fillStyle = "#64748B";
+          ctx.fillText(sl[2], trackX + trackW, sy + 88);
+          ctx.textAlign = "left";
+
+          ctx.fillStyle = pal.pri;
+          ctx.font = "800 10.5px JetBrains Mono, monospace";
+          ctx.fillText(sl[4], trackX + trackW / 2 - 32, sy + 46);
+        });
+
+        // Derecha: Do's and Don'ts de Lenguaje
+        const ddX = 660, ddW = 686;
+        drawEditorialBlock(ddX, 160, ddW, 726, "GUÍA DE ESTILO LINGÜÍSTICO", "Directrices de Qué Decir y Qué Evitar", "", pal.pri);
+
+        // Tabla comparativa Dos & Don'ts
+        const dosX = ddX + 24, colHalfW = (ddW - 64) / 2;
+        drawRoundedRect(ctx, dosX, 240, colHalfW, 616, isRect ? 4 : 14, "#F0FDF4", "#BBF7D0", 1.5);
+        ctx.fillStyle = "#15803D";
+        ctx.fillRect(dosX, 240, colHalfW, 6);
+
+        ctx.fillStyle = "#15803D";
+        ctx.font = "800 13px Montserrat, sans-serif";
+        ctx.fillText("✓ CÓMO HABLAMOS (RECOMENDADO)", dosX + 16, 272);
+
+        const dosList = [
+          "«Diseñamos sistemas que reducen la fricción y liberan tu tiempo.»",
+          "«Te explicamos el diagnóstico con datos y alternativas claras.»",
+          "«El proceso toma 7 pasos y cuentas con nuestro apoyo diario.»",
+          "«Hacemos que lo complejo se sienta sencillo y elegante.»",
+          "«Tu marca queda lista para operar hoy mismo con certeza legal.»"
+        ];
+        dosList.forEach((item, idx) => {
+          const dy = 300 + idx * 105;
+          ctx.fillStyle = "#166534";
+          ctx.font = "700 11.5px Plus Jakarta Sans, sans-serif";
+          ctx.fillText(`0${idx + 1}.`, dosX + 16, dy);
+          ctx.fillStyle = "#1F2937";
+          ctx.font = "500 12.2px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, item, dosX + 42, dy, colHalfW - 56, 18, 4);
+        });
+
+        const dontsX = dosX + colHalfW + 16;
+        drawRoundedRect(ctx, dontsX, 240, colHalfW, 616, isRect ? 4 : 14, "#FEF2F2", "#FECACA", 1.5);
+        ctx.fillStyle = "#B91C1C";
+        ctx.fillRect(dontsX, 240, colHalfW, 6);
+
+        ctx.fillStyle = "#B91C1C";
+        ctx.font = "800 13px Montserrat, sans-serif";
+        ctx.fillText("✕ LO QUE NUNCA DECIMOS (PROHIBIDO)", dontsX + 16, 272);
+
+        const dontsList = [
+          "«Somos los líderes número uno indiscutibles del mercado global.»",
+          "«Nuestra sinergia holística disruptiva cambiará el paradigma.»",
+          "«El costo depende... ya le avisaremos cuánto va a salir todo.»",
+          "«Usted no se preocupe por los detalles técnicos porque no los entendería.»",
+          "«Ofrecemos la solución mágica que resuelve cualquier cosa sin esfuerzo.»"
+        ];
+        dontsList.forEach((item, idx) => {
+          const dy = 300 + idx * 105;
+          ctx.fillStyle = "#991B1B";
+          ctx.font = "700 11.5px Plus Jakarta Sans, sans-serif";
+          ctx.fillText(`0${idx + 1}.`, dontsX + 16, dy);
+          ctx.fillStyle = "#1F2937";
+          ctx.font = "500 12.2px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, item, dontsX + 42, dy, colHalfW - 56, 18, 4);
+        });
+
+      } else if (i === 8) {
+        // LÁMINA 09: INGENIERÍA DE TOUCHPOINTS: MAPA INTEGRAL DEL VIAJE DEL CLIENTE
+        // Cabezal Editorial Holístico
+        drawEditorialBlock(54, 160, 1292, 160, "LOS 50,000 MOMENTOS DE LA VERDAD (JAN CARLZON & DON NORMAN)", `El Mapa Holístico de Experiencia de ${bName}`, `La reputación de ${bName} no se construye con discursos, sino en cada punto de contacto real donde el cliente interactúa con la marca. Diseñamos y homologamos la experiencia a lo largo de 3 momentos secuenciales: Antes de Comprar (descubrimiento y anclaje de confianza), Durante la Compra (ejecución sin fricción y trato humano) y Después de Comprar (entrega ejecutiva, portal y lealtad).`, pal.sec);
+
+        // Infografía Vectorial Continua de las 3 Macro-Fases
+        const phases = [
+          {
+            num: "01",
+            name: "ANTES DE COMPRAR",
+            tag: "Momento 1 · Descubrimiento y Confianza",
+            color: pal.darkInk,
+            points: d.tpBefore
+          },
+          {
+            num: "02",
+            name: "DURANTE LA COMPRA",
+            tag: "Momento 2 · Ejecución y Trato Humano",
+            color: pal.pri,
+            points: d.tpDuring
+          },
+          {
+            num: "03",
+            name: "DESPUÉS DE COMPRAR",
+            tag: "Momento 3 · Portal, Entregables y Lealtad",
+            color: pal.sec,
+            points: d.tpAfter
+          }
+        ];
+
+        phases.forEach((ph, pIdx) => {
+          const px = 54 + pIdx * 440;
+          drawRoundedRect(ctx, px, 340, 412, 546, isRect ? 4 : 18, "#F8FAFC", pal.softTint, 2);
+          ctx.fillStyle = ph.color;
+          ctx.fillRect(px, 340, 412, 8);
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(px + 10, 350, 392, 526);
+          ctx.clip();
+
+          // Número grande de momento
+          ctx.fillStyle = ph.color;
+          ctx.font = "900 32px Montserrat, sans-serif";
+          ctx.fillText(ph.num, px + 22, 395);
+
+          ctx.fillStyle = ph.color;
+          ctx.font = "800 11px Montserrat, sans-serif";
+          fillTextFitted(ctx, ph.tag, px + 76, 380, 310);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 17px Montserrat, sans-serif";
+          fillTextFitted(ctx, ph.name, px + 76, 404, 310);
+
+          // Línea separadora
+          ctx.strokeStyle = "#CBD5E1";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(px + 22, 422);
+          ctx.lineTo(px + 390, 422);
+          ctx.stroke();
+
+          // Los 4 Puntos de Contacto Reales de esta Fase
+          ph.points.forEach((pt, ptIdx) => {
+            const py = 440 + ptIdx * 105;
+            drawRoundedRect(ctx, px + 20, py, 372, 92, isRect ? 3 : 12, "#FFFFFF", "#E2E8F0", 1.2);
+            ctx.fillStyle = ph.color;
+            ctx.fillRect(px + 20, py, 5, 92);
+
+            ctx.fillStyle = ph.color;
+            ctx.font = "800 10px Montserrat, sans-serif";
+            fillTextFitted(ctx, `PUNTO CLAVE 0${ptIdx + 1}`, px + 36, py + 22, 340);
+
+            ctx.fillStyle = pal.darkInk;
+            ctx.font = "600 12.2px Plus Jakarta Sans, sans-serif";
+            drawWrappedText(ctx, pt, px + 36, py + 42, 340, 18, 3);
+          });
+          ctx.restore();
+        });
+
+      } else if (i === 9) {
+        // LÁMINA 10: TOUCHPOINTS MOMENTO 1: ANTES DE COMPRAR (DESCUBRIMIENTO Y CONFIANZA)
+        // Columna Izquierda: Escenario Vectorial de Descubrimiento (Móvil + Búsqueda)
+        const scX = 54, scW = 540;
+        drawEditorialBlock(scX, 160, scW, 726, "ESCENARIO DE DESCUBRIMIENTO", "La Primera Impresión Fija el Marco de Confianza", `Como enseña Jan Carlzon, el cliente se forma una opinión en los primeros 15 segundos. Nuestro ecosistema previo a la compra combina presencia en redes, web clara y atención conversacional inmediata para transmitir orden y autoridad técnica.`, pal.darkInk);
+
+        // Vector de smartphone en curvas con wireframe de landing y chat
+        const phX = scX + 130, phY = 320, phW = 280, phH = 430;
+        drawRoundedRect(ctx, phX, phY, phW, phH, 32, "#0F172A", "#334155", 3);
+        drawRoundedRect(ctx, phX + 12, phY + 12, phW - 24, phH - 24, 22, "#FFFFFF", "#E2E8F0", 1.5);
+
+        // Pantalla de teléfono
+        ctx.fillStyle = pal.pri;
+        ctx.fillRect(phX + 12, phY + 12, phW - 24, 38);
+        drawLogoOrEmblem(phX + 22, phY + 18, 26, true);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "800 11px Montserrat, sans-serif";
+        ctx.fillText(bUpper, phX + 56, phY + 36);
+
+        // Wireframe de contenido en pantalla
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "800 13px Montserrat, sans-serif";
+        drawWrappedText(ctx, `Crea tu marca en minutos con Aura`, phX + 26, phY + 76, phW - 52, 17, 2);
+
+        // Mensaje de WhatsApp en pantalla
+        drawRoundedRect(ctx, phX + 24, phY + 130, phW - 48, 86, 12, "#DCF8C6", "#86EFAC", 1);
+        ctx.fillStyle = "#065F46";
+        ctx.font = "800 9.5px Montserrat, sans-serif";
+        ctx.fillText("AURA CONCIERGE 24/7", phX + 36, phY + 148);
+        ctx.fillStyle = "#1F2937";
+        ctx.font = "500 10.5px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Hola, bienvenido a ${bName}. Cuéntame tu proyecto y te preparo una propuesta en 2 minutos.`, phX + 36, phY + 166, phW - 72, 15, 3);
+
+        // Ficha inferior
+        drawRoundedRect(ctx, scX + 24, 765, scW - 48, 105, isRect ? 4 : 14, "#F8FAFC", pal.softTint, 1.5);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 10px Montserrat, sans-serif";
+        ctx.fillText("ESTÁNDAR OFICIAL DE RESPUESTA", scX + 40, 792);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "700 12.5px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Tiempo de respuesta menor a 3 minutos vía WhatsApp y sitio web con velocidad de carga menor a 1.2 segundos.`, scX + 40, 814, scW - 80, 18, 2);
+
+        // Columna Derecha: Los 4 Touchpoints de Descubrimiento a Detalle
+        const dtX = 620, dtW = 726;
+        drawEditorialBlock(dtX, 160, dtW, 726, "INGENIERÍA DE MOMENTO 1", "Los 4 Puntos de Contacto Previos a la Compra", "", pal.sec);
+
+        const beforeTouchpoints = [
+          {
+            badge: "TOUCHPOINT 01 · AUTORIDAD DIGITAL",
+            title: "Redes Sociales y Publicaciones de Valor",
+            body: d.tpBefore[0] || `Presencia cuidada en LinkedIn e Instagram con piezas visuales en Lienzo Claro (#FFFFFF) y acentos en ${pal.sec}. Compartimos casos reales y método, sin saturar con promociones vacías.`
+          },
+          {
+            badge: "TOUCHPOINT 02 · SITIO WEB OFICIAL",
+            title: `Portal Comercial y Experiencia Web (${assets.cleanSlug}.com)`,
+            body: d.tpBefore[1] || `Sitio web limpio y directo que explica el valor en el primer scroll. Incluye comparativa de valor transparente y acceso inmediato a demo sin necesidad de registro forzado.`
+          },
+          {
+            badge: "TOUCHPOINT 03 · ASISTENCIA CONVERSACIONAL",
+            title: "Agente Inteligente en WhatsApp 24/7",
+            body: d.tpBefore[2] || `Atención inmediata con lenguaje empático que resuelve inquietudes de horario, precio y metodología, facilitando la agenda de citas o la compra directa en segundos.`
+          },
+          {
+            badge: "TOUCHPOINT 04 · DIAGNÓSTICO INICIAL",
+            title: "Solicitud y Cotización Transparente",
+            body: d.tpBefore[3] || `Formulario o diálogo inicial que captura las necesidades reales sin tecnicismos confusos, generando una propuesta ejecutiva formal en menos de 24 horas.`
+          }
+        ];
+
+        beforeTouchpoints.forEach((bt, bIdx) => {
+          const by = 246 + bIdx * 154;
+          drawRoundedRect(ctx, dtX + 24, by, dtW - 48, 138, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.2);
+          ctx.fillStyle = bIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.fillRect(dtX + 24, by, 6, 138);
+
+          ctx.fillStyle = bIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.font = "800 11px Montserrat, sans-serif";
+          fillTextFitted(ctx, bt.badge, dtX + 44, by + 30, dtW - 88);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 16px Montserrat, sans-serif";
+          fillTextFitted(ctx, bt.title, dtX + 44, by + 54, dtW - 88);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 12.8px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, bt.body, dtX + 44, by + 78, dtW - 88, 19, 3);
+        });
+
+      }
+    
+      else if (i === 10) {
+        // LÁMINA 11: TOUCHPOINTS MOMENTO 2: DURANTE LA COMPRA Y EJECUCIÓN (JAN CARLZON & DON NORMAN)
+        // Columna Izquierda: Escenario Vectorial de Ejecución y Contrato
+        const exX = 54, exW = 540;
+        drawEditorialBlock(exX, 160, exW, 726, "ESCENARIO DE COMPRA Y SERVICIO", "Fricción Cero en la Contratación y Entrega", `La fase donde la promesa comercial se vuelve realidad tangible. Diseñamos un flujo transparente sin sorpresas de costos, con sesiones de trabajo colaborativas y visualización continua de avances.`, pal.pri);
+
+        // Vector de documento ejecutivo y apretón de manos
+        const docX = exX + 130, docY = 320, docW = 280, docH = 430;
+        drawRoundedRect(ctx, docX, docY, docW, docH, 16, "#FFFFFF", "#CBD5E1", 2);
+        ctx.fillStyle = pal.pri;
+        ctx.fillRect(docX, docY, docW, 40);
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "800 12px Montserrat, sans-serif";
+        ctx.fillText("PROPUESTA Y ACUERDO OFICIAL", docX + 18, docY + 25);
+
+        // Líneas de contenido de documento
+        [80, 110, 140, 170, 200, 230, 260].forEach((ly, lIdx) => {
+          ctx.fillStyle = lIdx === 0 ? pal.sec : "#E2E8F0";
+          ctx.fillRect(docX + 20, docY + ly, lIdx === 0 ? 120 : (lIdx % 2 === 0 ? docW - 50 : docW - 80), lIdx === 0 ? 8 : 6);
+        });
+
+        // Casillas de verificación
+        [300, 335, 370].forEach((cy, cIdx) => {
+          ctx.strokeStyle = "#10B981";
+          ctx.lineWidth = 2;
+          ctx.strokeRect(docX + 20, docY + cy, 18, 18);
+          ctx.fillStyle = "#10B981";
+          ctx.beginPath();
+          ctx.arc(docX + 29, docY + cy + 9, 5, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "700 11px Plus Jakarta Sans, sans-serif";
+          ctx.fillText(cIdx === 0 ? "Diagnóstico validado" : (cIdx === 1 ? "Entregables certificados" : "Acompañamiento activo"), docX + 48, docY + cy + 13);
+        });
+
+        drawRoundedRect(ctx, exX + 24, 765, exW - 48, 105, isRect ? 4 : 14, "#F8FAFC", pal.softTint, 1.5);
+        ctx.fillStyle = pal.pri;
+        ctx.font = "800 10px Montserrat, sans-serif";
+        ctx.fillText("ESTÁNDAR DE EJECUCIÓN", exX + 40, 792);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "700 12.5px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Tiempos de entrega innegociables y actualización de avances cada 48 horas sin que el cliente tenga que solicitarlo.`, exX + 40, 814, exW - 80, 18, 2);
+
+        // Columna Derecha: Los 4 Touchpoints Durante la Compra
+        const dcX = 620, dcW = 726;
+        drawEditorialBlock(dcX, 160, dcW, 726, "INGENIERÍA DE MOMENTO 2", "Los 4 Puntos de Contacto Durante el Servicio", "", pal.pri);
+
+        const duringTouchpoints = [
+          {
+            badge: "TOUCHPOINT 01 · CONTRATACIÓN ÁGIL",
+            title: "Proceso de Pago y Firma Transparente",
+            body: d.tpDuring[0] || `Pasarela digital segura con opciones de pago directo (Tarjeta, Apple Pay, Google Pay, transferencia bancaria), factura inmediata y contrato de términos claros sin cláusulas abusivas.`
+          },
+          {
+            badge: "TOUCHPOINT 02 · ONBOARDING EJECUTIVO",
+            title: "Sesión de Alineación Hombro con Hombro",
+            body: d.tpDuring[1] || `Reunión inicial de bienvenida para clarificar expectativas, roles y fechas clave. Se asigna un responsable directo de proyecto que acompaña al cliente sin triangulaciones.`
+          },
+          {
+            badge: "TOUCHPOINT 03 · SEGUIMIENTO EN VIVO",
+            title: "Presentación de Avances y Prototipos",
+            body: d.tpDuring[2] || `Presentaciones visuales ejecutivas en Lienzo Claro (#FFFFFF) donde el cliente evalúa avances reales con criterio técnico, permitiendo retroalimentación precisa y ágil.`
+          },
+          {
+            badge: "TOUCHPOINT 04 · PROTOCOLO DE ENTREGA",
+            title: "Entrega Puntual y Empaquetado Premium",
+            body: d.tpDuring[3] || `Tanto en entregables físicos como digitales, cuidamos el acabado, la resolución y la organización estructural para que el cliente reciba una solución lista para operar hoy mismo.`
+          }
+        ];
+
+        duringTouchpoints.forEach((dt, dIdx) => {
+          const dy = 246 + dIdx * 154;
+          drawRoundedRect(ctx, dcX + 24, dy, dcW - 48, 138, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.2);
+          ctx.fillStyle = dIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.fillRect(dcX + 24, dy, 6, 138);
+
+          ctx.fillStyle = dIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.font = "800 11px Montserrat, sans-serif";
+          fillTextFitted(ctx, dt.badge, dcX + 44, dy + 30, dcW - 88);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 16px Montserrat, sans-serif";
+          fillTextFitted(ctx, dt.title, dcX + 44, dy + 54, dcW - 88);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 12.8px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, dt.body, dcX + 44, dy + 78, dcW - 88, 19, 3);
+        });
+
+      } else if (i === 11) {
+        // LÁMINA 12: TOUCHPOINTS MOMENTO 3: DESPUÉS DE COMPRAR (PORTAL, ENTREGABLES Y LEALTAD)
+        // Columna Izquierda: Escenario Vectorial de Bóveda y Lealtad
+        const poX = 54, poW = 540;
+        drawEditorialBlock(poX, 160, poW, 726, "ESCENARIO DE POST-VENTA", "La Génesis de la Próxima Compra y Recomendación", `El servicio post-venta en ${bName} no es un costo de soporte; es el activo que convierte clientes satisfechos en embajadores apasionados. Garantizamos acceso perpetuo a los activos y acompañamiento evolutivo.`, pal.sec);
+
+        // Vector de portal digital con carpetas de activos
+        const vX = poX + 130, vY = 320, vW = 280, vH = 430;
+        drawRoundedRect(ctx, vX, vY, vW, vH, 18, "#0F172A", "#1E293B", 2);
+
+        // Cabezal del portal
+        ctx.fillStyle = "#1E293B";
+        ctx.fillRect(vX, vY, vW, 44);
+        ctx.fillStyle = pal.sec;
+        ctx.beginPath();
+        ctx.arc(vX + 24, vY + 22, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "800 11px Montserrat, sans-serif";
+        ctx.fillText(`PORTAL DE CLIENTE · ${bUpper}`, vX + 38, vY + 26);
+
+        // Carpetas de activos digitales
+        const folders = [
+          ["Manual Oficial 30 Hojas (.PDF)", "Vectores en curvas de alta resolución"],
+          ["Logotipos en Formatos Vectoriales", ".SVG, .PNG positivo y negativo calado"],
+          ["Fuentes y Recursos Tipográficos", "Familias Montserrat y Plus Jakarta Sans"],
+          ["Facturas y Certificados de Vigencia", "Comprobantes fiscales y licencias"]
+        ];
+
+        folders.forEach((f, fIdx) => {
+          const fy = vY + 60 + fIdx * 80;
+          drawRoundedRect(ctx, vX + 16, fy, vW - 32, 68, 10, "#1E293B", "#334155", 1);
+          ctx.fillStyle = pal.pri;
+          ctx.fillRect(vX + 16, fy, 4, 68);
+
+          ctx.fillStyle = "#F8FAFC";
+          ctx.font = "800 11.5px Montserrat, sans-serif";
+          fillTextFitted(ctx, f[0], vX + 28, fy + 26, vW - 56);
+
+          ctx.fillStyle = "#94A3B8";
+          ctx.font = "500 10.5px Plus Jakarta Sans, sans-serif";
+          fillTextFitted(ctx, f[1], vX + 28, fy + 46, vW - 56);
+        });
+
+        // Ficha inferior
+        drawRoundedRect(ctx, poX + 24, 765, poW - 48, 105, isRect ? 4 : 14, "#F8FAFC", pal.softTint, 1.5);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 10px Montserrat, sans-serif";
+        ctx.fillText("GARANTÍA Y RETENCIÓN ACTIVA", poX + 40, 792);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "700 12.5px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Auditoría anual de vigencia visual y actualización gratuita ante cambios de versión del software o formatos web.`, poX + 40, 814, poW - 80, 18, 2);
+
+        // Columna Derecha: Los 4 Touchpoints de Post-Venta
+        const atX = 620, atW = 726;
+        drawEditorialBlock(atX, 160, atW, 726, "INGENIERÍA DE MOMENTO 3", "Los 4 Puntos de Contacto de Fidelización y Lealtad", "", pal.sec);
+
+        const afterTouchpoints = [
+          {
+            badge: "TOUCHPOINT 01 · BÓVEDA DIGITAL PRIVADA",
+            title: "Portal de Clientes con Acceso 24/7",
+            body: d.tpAfter[0] || `Repositorio centralizado en la nube donde el cliente descarga en cualquier momento sus manuales, logotipos en curvas, licencias y comprobantes sin intermediarios ni demoras.`
+          },
+          {
+            badge: "TOUCHPOINT 02 · ENTREGABLES CERTIFICADOS",
+            title: "Manuales de Marca y Guías Operativas",
+            body: d.tpAfter[1] || `Entrega del Manual de Marca de 30 Hojas en .PDF vectorial nativo y versión .HTML interactiva, garantizando que impresores, desarrolladores y agencias apliquen la marca sin desviaciones.`
+          },
+          {
+            badge: "TOUCHPOINT 03 · CALIBRACIÓN DE SATISFACCIÓN",
+            title: "Encuesta Ejecutiva de Calidad y NPS",
+            body: d.tpAfter[2] || `Medición formal del índice de satisfacción tras la entrega, evaluando la claridad, la velocidad y la atención recibida para implementar mejoras operativas inmediatas.`
+          },
+          {
+            badge: "TOUCHPOINT 04 · ALIANZA CONTINUA",
+            title: "Acompañamiento y Evolución de Marca",
+            body: d.tpAfter[3] || `Seguimiento periódico para evaluar la tracción del sistema en el mercado, ofreciendo ampliaciones de portafolio y nuevos recursos gráficos conforme el negocio crece.`
+          }
+        ];
+
+        afterTouchpoints.forEach((at, aIdx) => {
+          const ay = 246 + aIdx * 154;
+          drawRoundedRect(ctx, atX + 24, ay, atW - 48, 138, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.2);
+          ctx.fillStyle = aIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.fillRect(atX + 24, ay, 6, 138);
+
+          ctx.fillStyle = aIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.font = "800 11px Montserrat, sans-serif";
+          fillTextFitted(ctx, at.badge, atX + 44, ay + 30, atW - 88);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 16px Montserrat, sans-serif";
+          fillTextFitted(ctx, at.title, atX + 44, ay + 54, atW - 88);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 12.8px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, at.body, atX + 44, ay + 78, atW - 88, 19, 3);
+        });
+
+      } else if (i === 12) {
+        // LÁMINA 13: NAMING ESTRATÉGICO, SEMIÓTICA Y CLASES DE NIZA (ALEXANDRA WATKINS & AL RIES)
+        // Cabezal Superior con Desglose Fonético del Nombre
+        drawRoundedRect(ctx, 54, 160, 1292, 185, isRect ? 4 : 18, "#F8FAFC", pal.softTint, 2);
+        ctx.fillStyle = pal.pri;
+        ctx.fillRect(54, 160, 1292, 7);
+
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 11.5px Montserrat, sans-serif";
+        fillTextFitted(ctx, "ANATOMÍA FONÉTICA Y POSICIONAMIENTO EN LA MENTE", 80, 194, 600);
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 44px Montserrat, sans-serif";
+        fillTextFitted(ctx, bUpper, 80, 246, 750);
+
+        ctx.fillStyle = pal.pri;
+        ctx.font = "700 13px Plus Jakarta Sans, sans-serif";
+        fillTextFitted(ctx, `Etimología y justificación semiótica: Nombre de alta sonoridad y memorabilidad inmediata diseñado para dominar la categoría de ${industry}.`, 80, 280, 750);
+
+        // Bloque derecho de cabezal: Sello oficial de registro Niza
+        drawRoundedRect(ctx, 920, 185, 396, 134, isRect ? 4 : 14, "#FFFFFF", "#CBD5E1", 1.5);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        fillTextFitted(ctx, "CLASIFICACIÓN INTERNACIONAL DE NIZA", 940, 214, 356);
 
         ctx.fillStyle = pal.darkInk;
         ctx.font = "900 24px Montserrat, sans-serif";
-        fillTextFitted(ctx, `${meta.num}. ${meta.title}`, 54, 138, W - 108);
+        fillTextFitted(ctx, "CLASES 35 · 42 · PROTECCIÓN GLOBAL", 940, 246, 356);
 
-        if (i === 1) {
-          // LÁMINA 02: MAPA METODOLÓGICO DE 30 LÁMINAS
-          drawNodeCard(54, 160, 480, 310, "ARQUITECTURA DEL MANUAL", `De la Esencia Humana al Sistema de ${dna.strokeLabel}`, `Este manual se adapta a la identidad real de ${bName} (${dna.archTitle}), definiendo primero el problema que resuelve (Paso 0), el ADN (Paso 1) y los Touchpoints (Paso 2) antes del Nombre (Paso 3) y los acentos visuales derivados del logotipo (${pal.pri} y ${pal.sec}).`, pal.pri);
+        ctx.fillStyle = "#475569";
+        ctx.font = "500 11.5px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Servicios comerciales, dirección de negocios, diseño tecnológico y software de marca. Blindaje ante homónimos.`, 940, 270, 356, 16, 2);
 
-          // Trayectoria Metodológica P0 -> P6
-          drawRoundedRect(ctx, 54, 488, 480, 402, isRect ? 4 : 18, pal.lightBg, pal.softTint, 2);
-          ctx.save();
-          ctx.beginPath();
-          ctx.rect(58, 492, 472, 394);
-          ctx.clip();
+        // Mitad Inferior: El Test SMILE de Alexandra Watkins (Izquierda) y Test SCRATCH (Derecha)
+        const smX = 54, smW = 630;
+        drawEditorialBlock(smX, 365, smW, 520, "AUDITORÍA SMILE (ALEXANDRA WATKINS)", "5 Factores de Fortaleza Fonética y Emocional", "", pal.pri);
+
+        const smileItems = [
+          ["S · SUGGESTIVE", "Evoca la Esencia del Negocio", `Sugiere de forma inmediata excelencia, liderazgo y solución en ${sectorShort}.`],
+          ["M · MEANINGFUL", "Cargado de Significado Real", `El nombre comunica valor genuino sin depender de explicaciones forzadas.`],
+          ["I · IMAGERY", "Crea una Imagen Mental Clara", `Provoca asociaciones visuales de estructura, confianza y vanguardia tecnológica.`],
+          ["L · LEGS", "Capacidad de Extensión", `Permite crecer hacia nuevas líneas de producto y servicios sin quedar obsoleto.`],
+          ["E · EMOTIONAL", "Conexión Empática Inmediata", `Genera calidez y certidumbre en el primer contacto con el cliente.`]
+        ];
+
+        smileItems.forEach((sm, smIdx) => {
+          const sy = 440 + smIdx * 82;
+          drawRoundedRect(ctx, smX + 20, sy, smW - 40, 72, isRect ? 3 : 10, "#F8FAFC", "#E2E8F0", 1);
+          ctx.fillStyle = pal.pri;
+          ctx.font = "800 11.5px Montserrat, sans-serif";
+          ctx.fillText(sm[0], smX + 36, sy + 24);
 
           ctx.fillStyle = pal.darkInk;
-          ctx.font = "800 13.5px Montserrat, sans-serif";
-          fillTextFitted(ctx, "FLUJO METODOLÓGICO (PASOS 0 AL 6)", 76, 522, 436);
-          const stepsFlow = [
-            { code: "P0", lbl: "Giro", x: 96, y: 715, c: pal.darkInk },
-            { code: "P1", lbl: "ADN", x: 172, y: 650, c: pal.pri },
-            { code: "P2", lbl: "Touchpoints", x: 254, y: 598, c: pal.sec },
-            { code: "P3", lbl: "Naming", x: 336, y: 660, c: pal.pri },
-            { code: "P4", lbl: dna.archMode === "multibrand" ? "Submarcas" : "Logo Único", x: 416, y: 604, c: pal.darkInk },
-            { code: "P5-6", lbl: "Color Oficial", x: 486, y: 558, c: pal.sec }
-          ];
-          ctx.strokeStyle = pal.pri;
-          ctx.lineWidth = 3.5;
-          ctx.beginPath();
-          stepsFlow.forEach((stNode, idx) => {
-            if (idx === 0) ctx.moveTo(stNode.x, stNode.y);
-            else ctx.lineTo(stNode.x, stNode.y);
-          });
-          ctx.stroke();
-          stepsFlow.forEach((stNode) => {
-            ctx.fillStyle = stNode.c;
-            if (isRect) {
-              ctx.fillRect(stNode.x - 19, stNode.y - 19, 38, 38);
-            } else {
-              ctx.beginPath();
-              ctx.arc(stNode.x, stNode.y, 19, 0, Math.PI * 2);
-              ctx.fill();
-            }
-            ctx.fillStyle = "#FFFFFF";
-            ctx.font = "800 10px Montserrat, sans-serif";
-            ctx.textAlign = "center";
-            ctx.fillText(stNode.code, stNode.x, stNode.y + 4);
-            ctx.fillStyle = pal.darkInk;
-            ctx.font = "700 9.5px Plus Jakarta Sans, sans-serif";
-            fillTextFitted(ctx, stNode.lbl, stNode.x, stNode.y + 34, 72);
-            ctx.textAlign = "left";
-          });
-          ctx.restore();
+          ctx.font = "800 13px Montserrat, sans-serif";
+          fillTextFitted(ctx, sm[1], smX + 180, sy + 24, smW - 210);
 
-          drawNodeCard(74, 774, 440, 98, "ACENTOS ADAPTATIVOS DEL LOGOTIPO", `${dna.strokeLabel} · ${dna.eraLabel}`, `Geometría y contenedores fieles a las elecciones de logo de ${bName}.`, pal.sec);
+          ctx.fillStyle = "#475569";
+          ctx.font = "500 11px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, sm[2], smX + 36, sy + 44, smW - 72, 15, 2);
+        });
 
-          // 6 Bloques del Índice (Derecha)
-          const secs = [
-            ["SECCIÓN 01 · LÁMINAS 01–03 (PASO 0)", "Introducción, Giro y Problema", "01. Portada Maestra · 02. Mapa Metodológico · 03. Manifiesto: Del Caos al Sistema y Buyer Persona."],
-            ["SECCIÓN 02 · LÁMINAS 04–08 (PASO 1)", "ADN y La Empresa como Persona", "04. Círculo Dorado (WHY·HOW·WHAT) · 05. Promesa, Misión, Visión y 6 Máximas · 06. 6 Principios · 07. La Empresa como Persona · 08. Voz y Atributos Visuales."],
-            ["SECCIÓN 03 · LÁMINAS 09–12 (PASO 2)", "Ingeniería de Touchpoints", "09. Mapa Integral del Viaje del Cliente · 10. Touchpoints ANTES de Comprar · 11. Touchpoints DURANTE la Compra · 12. Touchpoints DESPUÉS de Comprar."],
-            ["SECCIÓN 04–05 · LÁMINAS 13–22 (PASO 3–4)", "Nombre, Identidad y Logotipos", `13. Naming y Niza · 14. ${dna.archTitle} · 15. Anatomía · 16–19. Pilares de ${bName} · 20. Retícula 8X · 21. Negativo · 22. Prohibiciones.`],
-            ["SECCIÓN 06 · LÁMINAS 23–26 (PASO 5)", "Color, Trazos, Tipografía y Sellos", `23. Paleta Oficial (8 Tonos) · 24. Regla 70/20/10 y 6 Recursos (${dna.strokeLabel}) · 25. Tipografía Oficial · 26. Los 6 Sellos.`],
-            ["SECCIÓN 07 · LÁMINAS 27–30 (PASO 6)", "Aplicaciones y Gobernanza Oficial", "27. Norma Oficial de Co-Branding · 28. Papelería, Propuestas, Tarjetas y Firma · 29. Ecosistema Digital y 10 Controles · 30. Colofón Institucional."]
-          ];
-          secs.forEach((sItem, idx) => {
-            const col = idx % 2;
-            const row = Math.floor(idx / 2);
-            drawNodeCard(560 + col * 400, 160 + row * 246, 384, 228, sItem[0], sItem[1], sItem[2], idx % 2 === 0 ? pal.pri : pal.sec);
-          });
-        } else if (i === 2) {
-          // LÁMINA 03: PASO 0 · GIRO, PROBLEMA Y BUYER PERSONA + 3 ESCENAS
-          drawNodeCard(54, 160, 630, 310, "EL PROBLEMA QUE RESOLVEMOS · DEL CAOS AL SISTEMA", `Transformamos la incertidumbre en claridad: ${industry}`, `${bName} nace para resolver la desconexión entre lo que el cliente necesita y lo que el mercado entrega habitualmente. Sustituimos la improvisación y las soluciones aisladas por un sistema claro, humano y medible. Oferta de valor: ${d.valueOffer}`, pal.sec);
-          drawNodeCard(710, 160, 636, 310, "EL ACTOR COMPRADOR (BUYER PERSONA)", d.idealCustomer, `Organizaciones y personas que valoran la certeza técnica, el acompañamiento cercano y una ejecución impecable en ${sectorShort} sin perder tiempo ni energía. Rol social: ${d.socialRole}`, pal.pri);
+        // Derecha: Test SCRATCH de Eliminación de Errores Críticos
+        const scX2 = 710, scW2 = 636;
+        drawEditorialBlock(scX2, 365, scW2, 520, "FILTRO SCRATCH DE RIESGO CERO", "7 Errores Críticos Superados con Éxito (100%)", "", pal.sec);
 
-          const scenes = [
-            ["01 · ANTES DEL SISTEMA", "Operación Fragmentada y Fricción", "Múltiples criterios dispersos, desgaste operativo y falta de estandarización visual y comercial.", "#64748B"],
-            ["02 · INTERVENCIÓN " + bUpper, "Identidad y Estandarización Oficial", `Integración estratégica guiada por el símbolo y sistema de ${bName} con procesos claros.`, pal.pri],
-            ["03 · RESULTADO MEDIBLE", "Claridad, Prestigio y Escalabilidad", `Marca sólida bajo ${dna.archTitle} y touchpoints homologados.`, pal.sec]
-          ];
-          scenes.forEach((sc, idx) => {
-            const sx = 54 + idx * 440;
-            drawRoundedRect(ctx, sx, 496, 412, 395, isRect ? 4 : 18, "#F8FAFC", pal.softTint, 2);
-            ctx.save();
-            ctx.beginPath();
-            ctx.rect(sx + 8, 502, 396, 383);
-            ctx.clip();
+        const scratchItems = [
+          ["Spelling-challenged", "Fácil de escribir al escuchar"],
+          ["Copycat", "Original y sin copia de rivales"],
+          ["Restrictive", "No limita la expansión futura"],
+          ["Annoying", "Agradable al oído y elegante"],
+          ["Tame", "Memorable con personalidad propia"],
+          ["Curse of Knowledge", "Cero tecnicismos crípticos"],
+          ["Hard to pronounce", "Pronunciación universal fluida"]
+        ];
 
-            drawLogoOrEmblem(sx + 24, 518, 68, false);
-            ctx.fillStyle = sc[3];
-            ctx.font = "800 10.5px Montserrat, sans-serif";
-            fillTextFitted(ctx, sc[0], sx + 108, 540, 280);
+        scratchItems.forEach((sc, scIdx) => {
+          const scy = 440 + scIdx * 58;
+          drawRoundedRect(ctx, scX2 + 20, scy, scW2 - 40, 50, isRect ? 3 : 8, "#F8FAFC", "#E2E8F0", 1);
+          ctx.fillStyle = "#10B981";
+          ctx.font = "900 14px Montserrat, sans-serif";
+          ctx.fillText("✓", scX2 + 36, scy + 32);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 12.5px Montserrat, sans-serif";
+          ctx.fillText(`Superado: ${sc[0]}`, scX2 + 64, scy + 26);
+
+          ctx.fillStyle = "#64748B";
+          ctx.font = "500 11px Plus Jakarta Sans, sans-serif";
+          ctx.fillText(`— ${sc[1]}`, scX2 + 64, scy + 42);
+        });
+
+      } else if (i === 13) {
+        // LÁMINA 14: ARQUITECTURA DE MARCA ÚNICA (MONOLÍTICA) O MULTIMARCA
+        if (dna.archMode === "multibrand") {
+          // Multimarca con 4 Submarcas Homologadas
+          drawEditorialBlock(54, 160, 1292, 160, "ARQUITECTURA MULTIMARCA HOMOLOGADA", `Marca Madre ${bUpper} y sus 4 Divisiones de Negocio`, `Estructura corporativa diseñada para grupos que operan en múltiples líneas especializadas. Cada división comparte el símbolo maestro y la tipografía rectora, diferenciándose mediante un color de acento armónico y un descriptor funcional claro.`, pal.pri);
+
+          assets.subBrands.forEach((sb, sIdx) => {
+            const sx = 54 + sIdx * 328;
+            drawRoundedRect(ctx, sx, 340, 308, 546, isRect ? 4 : 18, "#F8FAFC", pal.softTint, 2);
+            ctx.fillStyle = sIdx % 2 === 0 ? pal.pri : pal.sec;
+            ctx.fillRect(sx, 340, 308, 8);
+
+            drawLogoOrEmblem(sx + 89, 370, 130, false, sb.suffix, 270);
             ctx.fillStyle = pal.darkInk;
             ctx.font = "800 16px Montserrat, sans-serif";
-            drawWrappedText(ctx, sc[1], sx + 108, 562, 280, 21, 2);
-            ctx.fillStyle = "#334155";
-            ctx.font = "500 13px Plus Jakarta Sans, sans-serif";
-            drawWrappedText(ctx, sc[2], sx + 24, 620, 364, 20, 5);
-            drawRoundedRect(ctx, sx + 24, 765, 364, 98, isRect ? 4 : 12, "#FFFFFF", "#E2E8F0", 1.5);
-            ctx.fillStyle = pal.pri;
-            ctx.font = "800 10.5px JetBrains Mono, monospace";
-            fillTextFitted(ctx, `IMPACTO DIRECTO EN ${bUpper}`, sx + 40, 795, 332);
-            ctx.fillStyle = pal.darkInk;
-            ctx.font = "700 12.5px Plus Jakarta Sans, sans-serif";
-            fillTextFitted(ctx, idx === 0 ? "Diagnóstico de raíz en Paso 0" : idx === 1 ? "Sistema visual y operativo unificado" : "Crecimiento sostenido y lealtad", sx + 40, 825, 332);
-            ctx.restore();
-          });
-        } else if (i === 3) {
-          // LÁMINA 04: EL CÍRCULO DORADO (WHY · HOW · WHAT) — SIEMPRE 3 CÍRCULOS CONCÉNTRICOS PERFECTOS
-          const cx = 335, cy = 528;
-          // Anillo exterior 3. WHAT (Siempre circular)
-          ctx.beginPath();
-          ctx.arc(cx, cy, 244, 0, Math.PI * 2);
-          ctx.fillStyle = pal.lightBg;
-          ctx.fill();
-          ctx.strokeStyle = pal.darkInk;
-          ctx.lineWidth = 3;
-          ctx.stroke();
-
-          // Anillo intermedio 2. HOW (Siempre circular)
-          ctx.beginPath();
-          ctx.arc(cx, cy, 166, 0, Math.PI * 2);
-          ctx.fillStyle = pal.softTint;
-          ctx.fill();
-          ctx.strokeStyle = pal.pri;
-          ctx.lineWidth = 3;
-          ctx.stroke();
-
-          // Núcleo central 1. WHY (Siempre circular)
-          ctx.beginPath();
-          ctx.arc(cx, cy, 90, 0, Math.PI * 2);
-          ctx.fillStyle = pal.sec;
-          ctx.fill();
-
-          // Líneas conectoras del Círculo Dorado hacia las 3 tarjetas derechas
-          ctx.save();
-          ctx.strokeStyle = pal.sec;
-          ctx.lineWidth = 2;
-          ctx.setLineDash([5, 4]);
-          ctx.beginPath();
-          ctx.moveTo(cx + 88, cy);
-          ctx.lineTo(646, 275);
-          ctx.stroke();
-
-          ctx.strokeStyle = pal.pri;
-          ctx.beginPath();
-          ctx.moveTo(cx + 166, cy);
-          ctx.lineTo(646, 525);
-          ctx.stroke();
-
-          ctx.strokeStyle = pal.darkInk;
-          ctx.beginPath();
-          ctx.moveTo(cx + 215, cy + 110);
-          ctx.lineTo(646, 770);
-          ctx.stroke();
-          ctx.restore();
-
-          ctx.textAlign = "center";
-          ctx.fillStyle = "#FFFFFF";
-          ctx.font = "900 22px Montserrat, sans-serif";
-          ctx.fillText("1. WHY", cx, cy - 4);
-          ctx.font = "800 11.5px Montserrat, sans-serif";
-          ctx.fillText("PROPÓSITO", cx, cy + 18);
-
-          ctx.fillStyle = pal.pri;
-          ctx.font = "900 14.5px Montserrat, sans-serif";
-          ctx.fillText("2. HOW · EL MÉTODO", cx, cy - 116);
-
-          ctx.fillStyle = pal.darkInk;
-          ctx.font = "900 14px Montserrat, sans-serif";
-          ctx.fillText("3. WHAT · OFERTA DE VALOR", cx, cy - 196);
-          ctx.textAlign = "left";
-
-          drawNodeCard(650, 165, 696, 225, "01 · WHY (EL PROPÓSITO CENTRAL · LA CREENCIA)", "Por qué existe " + bName, d.whyText, pal.sec);
-          drawNodeCard(650, 412, 696, 225, "02 · HOW (EL MÉTODO Y DIFERENCIAL REAL)", "Cómo lo hacemos realidad cada día", d.howText + " · " + d.valueOffer, pal.pri);
-          drawNodeCard(650, 660, 696, 225, "03 · WHAT (OFERTA DE VALOR Y ENTREGA)", "Qué entregamos al mercado con excelencia", `${d.whatText} Concentrado al 100% en la identidad de ${bName}.`, pal.darkInk);
-        } else if (i === 13) {
-          // LÁMINA 14: SISTEMA DE MARCA ÚNICA (SIN ÁRBOL MULTIMARCA) O ARQUITECTURA MULTIMARCA
-          if (dna.archMode === "multibrand") {
-            drawRoundedRect(ctx, 410, 165, 580, 210, isRect ? 6 : 22, "#F8FAFC", pal.pri, 3);
-            ctx.save();
-            ctx.beginPath();
-            ctx.rect(418, 171, 564, 198);
-            ctx.clip();
-            drawLogoOrEmblem(440, 185, 145, false);
-            ctx.fillStyle = pal.sec;
-            ctx.font = "800 11px Montserrat, sans-serif";
-            fillTextFitted(ctx, dna.archBadge, 610, 220, 355);
-            ctx.fillStyle = pal.darkInk;
-            ctx.font = "900 30px Montserrat, sans-serif";
-            fillTextFitted(ctx, bUpper, 610, 258, 355);
-            ctx.fillStyle = pal.pri;
-            ctx.font = "700 13.5px Plus Jakarta Sans, sans-serif";
-            drawWrappedText(ctx, tagline, 610, 286, 355, 19, 3);
-            ctx.restore();
-
-            ctx.strokeStyle = pal.pri;
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.moveTo(700, 375);
-            ctx.lineTo(700, 425);
-            ctx.moveTo(205, 425);
-            ctx.lineTo(1195, 425);
-            [205, 535, 865, 1195].forEach((bx) => {
-              ctx.moveTo(bx, 425);
-              ctx.lineTo(bx, 460);
-            });
-            ctx.stroke();
-
-            assets.subBrands.forEach((sb, idx) => {
-              const sx = 54 + idx * 330;
-              drawRoundedRect(ctx, sx, 460, 302, 430, isRect ? 4 : 18, "#FFFFFF", pal.softTint, 2);
-              ctx.fillStyle = idx % 2 === 0 ? pal.pri : pal.sec;
-              ctx.fillRect(sx, 460, 302, 8);
-              ctx.save();
-              ctx.beginPath();
-              ctx.rect(sx + 10, 472, 282, 410);
-              ctx.clip();
-              drawLogoOrEmblem(sx + 86, 488, 130, false, sb.suffix, 260);
-              ctx.fillStyle = pal.darkInk;
-              ctx.font = "900 14px Montserrat, sans-serif";
-              ctx.textAlign = "center";
-              fillTextFitted(ctx, `${bUpper} ${sb.suffix}`, sx + 151, 662, 266);
-              ctx.textAlign = "left";
-              ctx.fillStyle = "#334155";
-              ctx.font = "500 12.2px Plus Jakarta Sans, sans-serif";
-              drawWrappedText(ctx, sb.tagline, sx + 20, 692, 262, 18, 6);
-              ctx.fillStyle = pal.pri;
-              ctx.font = "800 10.5px JetBrains Mono, monospace";
-              ctx.textAlign = "center";
-              fillTextFitted(ctx, sb.domain, sx + 151, 864, 266);
-              ctx.textAlign = "left";
-              ctx.restore();
-            });
-          } else {
-            // MARCA ÚNICA (MONOLÍTICA): Cero árbol de submarcas. Panel Rector de Marca Única + 3 Disposiciones Funcionales del Logo
-            drawRoundedRect(ctx, 54, 165, 530, 725, isRect ? 6 : 22, "#F8FAFC", pal.pri, 2.5);
-            ctx.fillStyle = pal.sec;
-            ctx.fillRect(54, 165, 530, 8);
-            ctx.save();
-            ctx.beginPath();
-            ctx.rect(64, 178, 510, 704);
-            ctx.clip();
-
-            drawLogoOrEmblem(209, 198, 220, false);
             ctx.textAlign = "center";
-            ctx.fillStyle = pal.sec;
-            ctx.font = "800 11px Montserrat, sans-serif";
-            fillTextFitted(ctx, `IDENTIDAD UNIFICADA AL 100% · SIN SUBMARCAS`, 319, 452, 470);
-            ctx.fillStyle = pal.darkInk;
-            ctx.font = "900 28px Montserrat, sans-serif";
-            fillTextFitted(ctx, bUpper, 319, 488, 470);
-            ctx.fillStyle = pal.pri;
-            ctx.font = "700 13.5px Plus Jakarta Sans, sans-serif";
-            fillTextFitted(ctx, tagline, 319, 514, 470);
+            fillTextFitted(ctx, `${bUpper} ${sb.suffix}`, sx + 154, 545, 275);
             ctx.textAlign = "left";
 
-            drawNodeCard(82, 542, 474, 158, "POR QUÉ OPERAMOS COMO MARCA ÚNICA", "Concentración Total de Prestigio y Confianza", `A diferencia de los grupos multimarca, ${bName} concentra el 100% de su valor en un solo nombre oficial. No se fragmenta en submarcas: cada producto, servicio y experiencia fortalece directamente a ${bName}.`, pal.pri);
-            drawNodeCard(82, 714, 474, 152, "REGLA DE ORO DE IDENTIDAD ÚNICA", "Un Solo Nombre y Tres Disposiciones Geométricas", `Prohibido agregar sufijos o crear submarcas. El logotipo único de ${bName} se adapta únicamente en su disposición (Horizontal, Vertical o Símbolo 1:1) según el soporte.`, pal.sec);
-            ctx.restore();
-
-            // Derecha: Las 3 Disposiciones Oficiales del Logotipo Único
-            const dispositions = [
-              {
-                badge: "DISPOSICIÓN 01 · USO PRINCIPAL EN CABEZALES Y DOCUMENTOS",
-                title: `Firma Horizontal Principal (${bName})`,
-                body: `Integra el símbolo en positivo a la izquierda y el logotipo tipográfico a la derecha. Uso obligatorio en cabezales web (www.${assets.cleanSlug}.com), portadas de propuestas comerciales y hojas membretadas.`
-              },
-              {
-                badge: "DISPOSICIÓN 02 · USO EN EMPAQUES, SEÑALÉTICA Y PRESENCIA FÍSICA",
-                title: `Emblema Vertical Centrado (${bName})`,
-                body: `Presenta el símbolo maestro en eje central simétrico sobre el nombre ${bUpper}. Ideal para etiquetas verticales, empaques, bolsas de entrega, uniformes y tótems de recepción.`
-              },
-              {
-                badge: "DISPOSICIÓN 03 · USO EN ECOSISTEMA DIGITAL, REDES Y MÓVIL",
-                title: "Símbolo Compacto 1:1 (Icono de App y Avatar)",
-                body: `Síntesis óptica cuadrada 1:1 para foto de perfil en WhatsApp Business, Instagram, LinkedIn, favicon web e icono de aplicación móvil desde 40 px con máxima nitidez.`
-              }
-            ];
-            dispositions.forEach((disp, dIdx) => {
-              const dy = 165 + dIdx * 248;
-              drawRoundedRect(ctx, 612, dy, 734, 228, isRect ? 4 : 18, "#FFFFFF", "#CBD5E1", 1.8);
-              ctx.fillStyle = dIdx % 2 === 0 ? pal.pri : pal.sec;
-              ctx.fillRect(612, dy, 6, 228);
-
-              ctx.save();
-              ctx.beginPath();
-              ctx.rect(622, dy + 8, 716, 212);
-              ctx.clip();
-
-              drawRoundedRect(ctx, 634, dy + 22, 184, 184, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.5);
-              drawLogoOrEmblem(666, dy + 42, 120, false, dIdx === 0 ? "HORIZONTAL" : dIdx === 1 ? "VERTICAL" : "ICONO 1:1", 164);
-
-              ctx.fillStyle = dIdx % 2 === 0 ? pal.pri : pal.sec;
-              ctx.font = "800 10px Montserrat, sans-serif";
-              fillTextFitted(ctx, disp.badge, 840, dy + 42, 484);
-
-              ctx.fillStyle = pal.darkInk;
-              ctx.font = "800 18px Montserrat, sans-serif";
-              fillTextFitted(ctx, disp.title, 840, dy + 72, 484);
-
-              ctx.fillStyle = "#334155";
-              ctx.font = "500 13px Plus Jakarta Sans, sans-serif";
-              drawWrappedText(ctx, disp.body, 840, dy + 102, 484, 20, 5);
-              ctx.restore();
-            });
-          }
-        } else if (i === 20) {
-          // LÁMINA 21: ÁREA DE AISLAMIENTO 1.5X Y SECCIÓN EN NEGATIVO CALADO
-          drawRoundedRect(ctx, 54, 165, 630, 725, isRect ? 6 : 22, "#F8FAFC", pal.pri, 2);
-          ctx.save();
-          ctx.beginPath();
-          ctx.rect(62, 173, 614, 709);
-          ctx.clip();
-          ctx.fillStyle = pal.pri;
-          ctx.font = "800 11.5px Montserrat, sans-serif";
-          fillTextFitted(ctx, "01 · LOGOTIPO POSITIVO POR DEFECTO · AISLAMIENTO 1.5X", 84, 204, 570);
-          ctx.fillStyle = pal.darkInk;
-          ctx.font = "800 19px Montserrat, sans-serif";
-          fillTextFitted(ctx, "Uso Primario sobre Lienzo Claro (#FFFFFF)", 84, 234, 570);
-          drawRoundedRect(ctx, 134, 270, 470, 410, isRect ? 4 : 18, "#FFFFFF", pal.sec, 2);
-          drawLogoOrEmblem(224, 315, 290, false);
-          ctx.fillStyle = "#334155";
-          ctx.font = "500 13.5px Plus Jakarta Sans, sans-serif";
-          drawWrappedText(ctx, "El área de protección perimetral (1.5X) garantiza que ningún texto, borde fotográfico o elemento externo invada la lectura del símbolo maestro.", 84, 725, 570, 21, 4);
-          ctx.restore();
-
-          // Contenedor Oscuro para Logotipo en Negativo Calado
-          drawRoundedRect(ctx, 716, 165, 630, 725, isRect ? 6 : 22, pal.darkInk, pal.sec, 3);
-          ctx.save();
-          ctx.beginPath();
-          ctx.rect(724, 173, 614, 709);
-          ctx.clip();
-          ctx.fillStyle = pal.sec;
-          ctx.font = "800 11.5px Montserrat, sans-serif";
-          fillTextFitted(ctx, "02 · SECCIÓN EXCLUSIVA EN NEGATIVO CALADO (-negativo)", 746, 204, 570);
-          ctx.fillStyle = "#FFFFFF";
-          ctx.font = "800 19px Montserrat, sans-serif";
-          fillTextFitted(ctx, `Aplicación sobre Soporte Oscuro (${pal.darkInk})`, 746, 234, 570);
-          drawLogoOrEmblem(886, 290, 290, true);
-          ctx.fillStyle = "#CBD5E1";
-          ctx.font = "500 13.5px Plus Jakarta Sans, sans-serif";
-          drawWrappedText(ctx, `Prohibido colocar el logotipo positivo dentro de cajas o parches blancos sobre fondos oscuros. Cuando el soporte sea oscuro (${pal.darkInk}), se utiliza exclusivamente esta versión en negativo calado con trazos blancos luminosos y acento en ${pal.sec}.`, 746, 680, 570, 21, 5);
-          ctx.restore();
-        } else if (i === 22) {
-          // LÁMINA 23: PALETA CROMÁTICA OFICIAL DE 8 COLORES
-          const swatches = [
-            { name: "01 · PRIMARIO OFICIAL", hex: pal.pri, role: "Identidad estructural, titulares y vectores principales (20%)" },
-            { name: "02 · PROFUNDO / NOCHE", hex: pal.darkInk, role: "Contraste ejecutivo, tipografía principal y soporte negativo" },
-            { name: "03 · ACENTO ENERGÍA", hex: pal.sec, role: "Descriptores, puntos focales y llamadas a la acción (10%)" },
-            { name: "04 · LUMINOSO CONECTOR", hex: pal.softTint, role: "Bordes activos, nodos secundarios y enlaces interactivos" },
-            { name: "05 · CARBÓN EDITORIAL", hex: "#333333", role: "Cuerpo de texto largo con lectura descansada WCAG AAA" },
-            { name: "06 · GRIS TÉCNICO", hex: "#707070", role: "Metadatos, pies de foto, cotas de retícula y numeración" },
-            { name: "07 · GRIS LÍNEA SUTIL", hex: "#E6E6E6", role: "Divisores editoriales finos y bordes de tarjetas abiertas" },
-            { name: "08 · LIENZO CLARO PURO", hex: "#FFFFFF", role: "Superficie luminosa obligatoria en el 100% de documentos (70%)" }
-          ];
-          swatches.forEach((sw, idx) => {
-            const col = idx % 4;
-            const row = Math.floor(idx / 4);
-            const sx = 54 + col * 330;
-            const sy = 168 + row * 360;
-            drawRoundedRect(ctx, sx, sy, 304, 332, isRect ? 4 : 18, "#FFFFFF", "#CBD5E1", 1.5);
-            ctx.save();
-            ctx.beginPath();
-            ctx.rect(sx + 8, sy + 8, 288, 316);
-            ctx.clip();
-            drawRoundedRect(ctx, sx + 14, sy + 14, 276, 145, isRect ? 4 : 12, sw.hex, "#CBD5E1", 1);
-            ctx.fillStyle = pal.darkInk;
-            ctx.font = "900 12.5px Montserrat, sans-serif";
-            fillTextFitted(ctx, sw.name, sx + 18, sy + 188, 268);
-            ctx.fillStyle = pal.pri;
-            ctx.font = "800 13.5px JetBrains Mono, monospace";
-            fillTextFitted(ctx, `HEX: ${sw.hex.toUpperCase()}`, sx + 18, sy + 214, 268);
-            ctx.fillStyle = "#475569";
-            ctx.font = "600 11px JetBrains Mono, monospace";
-            fillTextFitted(ctx, `RGB: ${hexToRgbStr(sw.hex)} · CMYK: ${hexToCmykStr(sw.hex)}`, sx + 18, sy + 236, 268);
             ctx.fillStyle = "#334155";
-            ctx.font = "500 12px Plus Jakarta Sans, sans-serif";
-            drawWrappedText(ctx, sw.role, sx + 18, sy + 264, 268, 17, 3);
-            ctx.restore();
+            ctx.font = "500 12.2px Plus Jakarta Sans, sans-serif";
+            drawWrappedText(ctx, sb.tagline, sx + 20, 580, 268, 18, 5);
+
+            ctx.fillStyle = pal.pri;
+            ctx.font = "800 10.5px JetBrains Mono, monospace";
+            ctx.textAlign = "center";
+            fillTextFitted(ctx, sb.domain, sx + 154, 845, 275);
+            ctx.textAlign = "left";
           });
-        } else if (i === 29) {
-          // LÁMINA 30: COLOFÓN INSTITUCIONAL DE CIERRE (SIN CAJAS MULTIMARCA EN MARCA ÚNICA)
-          drawRoundedRect(ctx, 54, 165, 1292, 415, isRect ? 6 : 24, "#F8FAFC", pal.pri, 2);
-          ctx.fillStyle = pal.sec;
-          ctx.fillRect(54, 165, 1292, 8);
-
-          ctx.save();
-          ctx.beginPath();
-          ctx.rect(64, 178, 1272, 394);
-          ctx.clip();
-
-          drawLogoOrEmblem(600, 195, 200, false);
-          ctx.textAlign = "center";
-          ctx.fillStyle = pal.darkInk;
-          ctx.font = "900 30px Montserrat, sans-serif";
-          fillTextFitted(ctx, `${bUpper} — ${tagline.toUpperCase()}`, 700, 442, 1180);
-          ctx.fillStyle = pal.pri;
-          ctx.font = "700 15px Plus Jakarta Sans, sans-serif";
-          fillTextFitted(ctx, industry, 700, 474, 1180);
-          ctx.fillStyle = pal.sec;
-          ctx.font = "800 11.5px Montserrat, sans-serif";
-          fillTextFitted(ctx, `${dna.archBadge}  •  ${dna.strokeBadge}  •  ${dna.eraLabel.toUpperCase()}`, 700, 506, 1180);
-          ctx.fillStyle = "#475569";
-          ctx.font = "600 12.5px Plus Jakarta Sans, sans-serif";
-          fillTextFitted(ctx, `Contacto Oficial: contacto@${assets.cleanSlug}.com · direccion@${assets.cleanSlug}.com · www.${assets.cleanSlug}.com`, 700, 542, 1180);
-          ctx.textAlign = "left";
-          ctx.restore();
-
-          // 3 Tarjetas Ejecutivas de Cierre
-          drawNodeCard(54, 604, 416, 286, `01 · PROPÓSITO DE ${bUpper}`, "Por qué existimos", d.whyText, pal.sec);
-          drawNodeCard(492, 604, 416, 286, "02 · OFERTA DE VALOR UNIFICADA", "Qué entregamos al cliente", d.valueOffer, pal.pri);
-          drawNodeCard(930, 604, 416, 286, "03 · CERTIFICACIÓN DOCUMENTAL OFICIAL", dna.archTitle, `Manual oficial en Lienzo Claro (#FFFFFF) con logotipo en positivo por defecto, acentos en ${dna.strokeLabel.toLowerCase()} y paleta cromática (${pal.pri} y ${pal.sec}).`, pal.darkInk);
         } else {
-          // LÁMINAS 05–13, 15–19, 22, 24–29: SISTEMA EDITORIAL MULTIFORMATO CON CLIPPING ESTRICTO E ILUSTRACIÓN TEMÁTICA
-          const subBadgeObj = (i >= 15 && i <= 18 && dna.archMode === "multibrand" && assets.subBrands[i - 15])
-            ? assets.subBrands[i - 15].suffix
-            : bUpper;
+          // MARCA ÚNICA (MONOLÍTICA): Foco total en un solo nombre oficial
+          // Columna Izquierda: Principio de Concentración Total de Valor
+          const moX = 54, moW = 540;
+          drawRoundedRect(ctx, moX, 160, moW, 726, isRect ? 4 : 20, "#F8FAFC", pal.pri, 2);
+          ctx.fillStyle = pal.sec;
+          ctx.fillRect(moX, 160, moW, 8);
 
-          const itemsToDraw = [];
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(moX + 10, 172, moW - 20, 706);
+          ctx.clip();
 
-          // Para las Láminas 16–19 (Pilares de Marca Única o Unidades de Oferta), construir 4 tarjetas ejecutivas limpias y directas
-          if (i >= 15 && i <= 18 && assets.subBrands[i - 15]) {
-            const sbUnit = assets.subBrands[i - 15];
-            const pillarNum = `0${i - 14}`;
-            const isMulti = dna.archMode === "multibrand";
-            itemsToDraw.push(
-              {
-                badge: isMulti ? `SUBMARCA 0${i - 14} · ROL ESTRATÉGICO` : `PILAR ${pillarNum} · ENFOQUE DE VALOR`,
-                title: isMulti ? `${bName} ${sbUnit.suffix}` : `Propuesta Central del Pilar ${pillarNum} (${bName})`,
-                body: sbUnit.tagline.replace(/\s+/g, " ").trim()
-              },
-              {
-                badge: `PROMESA AL CLIENTE · ${bUpper}`,
-                title: "Compromiso y Estándar de Ejecución",
-                body: String(sbUnit.promise || d.whyText).replace(/[“”"]/g, "").trim()
-              },
-              {
-                badge: "EXPERIENCIA Y PUNTOS DE CONTACTO",
-                title: `Aplicación Real en ${sectorShort}`,
-                body: `Operación alineada al 100% con la identidad de ${bName} en atención directa, canales digitales (www.${assets.cleanSlug}.com) y entregables certificados.`
-              },
-              {
-                badge: "REGLA OFICIAL DE IDENTIDAD VISUAL",
-                title: isMulti ? `Firma Oficial ${bName} ${sbUnit.suffix}` : `Uso del Logotipo Único de ${bName}`,
-                body: isMulti
-                  ? `Mantiene el símbolo maestro en positivo y el descriptor en color acento (${pal.sec}) sobre Lienzo Claro (#FFFFFF).`
-                  : `Opera siempre bajo el nombre único ${bName} sin crear submarcas, adaptando únicamente su disposición geométrica (${sbUnit.suffix || sbUnit.unitKindLabel || "Oficial"}) y acentos en ${dna.strokeLabel.toLowerCase()}.`
-              }
-            );
-          } else {
-            const rawHtml = (window.isImproBearsActiveBrand && window.isImproBearsActiveBrand() && typeof window.renderImproBearsSinglePlateHTML === "function")
-              ? window.renderImproBearsSinglePlateHTML(i, true)
-              : window.renderUniversalImproBearsGuideSinglePlateHTML(i, true);
+          drawLogoOrEmblem(moX + 160, 195, 220, false);
+          ctx.textAlign = "center";
+          ctx.fillStyle = pal.sec;
+          ctx.font = "800 11px Montserrat, sans-serif";
+          fillTextFitted(ctx, "IDENTIDAD UNIFICADA AL 100% · SIN SUBMARCAS", moX + 270, 452, moW - 60);
 
-            const parserDiv = document.createElement("div");
-            parserDiv.innerHTML = rawHtml;
-            // Eliminar cabeceras, pies de página y textos internos de SVG para que jamás se filtren a las tarjetas
-            parserDiv.querySelectorAll("header, footer, svg, style, script").forEach(el => el.remove());
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "900 28px Montserrat, sans-serif";
+          fillTextFitted(ctx, bUpper, moX + 270, 488, moW - 60);
 
-            const flowEls = Array.from(parserDiv.querySelectorAll(".ib-flow-node"));
-            if (flowEls.length > 0) {
-              flowEls.slice(0, 6).forEach((fEl, fIdx) => {
-                const hdr = (fEl.querySelector(".ib-node-hdr") && fEl.querySelector(".ib-node-hdr").textContent.trim()) || `PUNTO CLAVE 0${fIdx + 1}`;
-                const ttl = (fEl.querySelector(".ib-flow-title") && fEl.querySelector(".ib-flow-title").textContent.trim()) || meta.title;
-                const txt = (fEl.querySelector(".ib-flow-txt") && fEl.querySelector(".ib-flow-txt").textContent.trim()) || fEl.textContent.trim();
-                itemsToDraw.push({ badge: hdr, title: ttl, body: txt.replace(/\s+/g, " ") });
-              });
+          ctx.fillStyle = pal.pri;
+          ctx.font = "700 13px Plus Jakarta Sans, sans-serif";
+          fillTextFitted(ctx, tagline, moX + 270, 514, moW - 60);
+          ctx.textAlign = "left";
+
+          drawEditorialBlock(moX + 22, 542, moW - 44, 155, "POR QUÉ OPERAMOS COMO MARCA ÚNICA", "Concentración Absoluta de Prestigio", `A diferencia de los grupos dispersos, ${bName} concentra el 100% de su inversión publicitaria, confianza y valor de marca en un solo nombre. Cada éxito de cualquier producto fortalece directamente la reputación global de ${bName}.`, pal.pri);
+
+          drawEditorialBlock(moX + 22, 712, moW - 44, 155, "REGLA DE ORO DE IDENTIDAD", "Un Solo Nombre y 3 Disposiciones", `Queda estrictamente prohibido crear submarcas o agregar sufijos arbitrarios. La marca se adapta únicamente en su disposición geométrica (Horizontal, Vertical o 1:1) según las exigencias del soporte.`, pal.sec);
+          ctx.restore();
+
+          // Columna Derecha: Las 3 Disposiciones Oficiales del Logotipo Único
+          const dpX = 620, dpW = 726;
+          const dispositions = [
+            {
+              badge: "DISPOSICIÓN 01 · USO PRINCIPAL EN CABEZALES Y DOCUMENTOS",
+              title: `Firma Horizontal Principal (${bName})`,
+              body: `Integra el símbolo en positivo a la izquierda y el logotipo tipográfico a la derecha. Uso obligatorio en cabezales web (www.${assets.cleanSlug}.com), portadas de propuestas comerciales y hojas membretadas oficiales.`
+            },
+            {
+              badge: "DISPOSICIÓN 02 · USO EN EMPAQUES, SEÑALÉTICA Y RÓTULOS",
+              title: `Emblema Vertical Centrado (${bName})`,
+              body: `Presenta el símbolo maestro en eje central simétrico sobre el nombre ${bUpper}. Ideal para etiquetas verticales, empaques, bolsas de entrega, uniformes y tótems de recepción.`
+            },
+            {
+              badge: "DISPOSICIÓN 03 · USO EN ECOSISTEMA DIGITAL Y REDES",
+              title: "Símbolo Compacto 1:1 (Icono de App y Avatar)",
+              body: `Síntesis óptica cuadrada 1:1 para foto de perfil en WhatsApp Business, Instagram, LinkedIn, favicon web e icono de aplicación móvil desde 16 píxeles con máxima nitidez.`
             }
-            if (itemsToDraw.length === 0) {
-              // Extraer pares (h3/h4 + párrafo) o párrafos hoja limpios
-              const headings = Array.from(parserDiv.querySelectorAll("h3, h4"));
-              headings.forEach((hEl, hIdx) => {
-                if (itemsToDraw.length >= 6) return;
-                const hTitle = hEl.textContent.trim().replace(/\s+/g, " ");
-                const parent = hEl.parentElement;
-                const pEl = parent ? parent.querySelector("p, ul") : null;
-                const pBody = pEl ? pEl.textContent.trim().replace(/\s+/g, " ") : "";
-                if (hTitle && pBody && pBody.length > 18) {
-                  itemsToDraw.push({
-                    badge: `${meta.sec} · 0${itemsToDraw.length + 1}`,
-                    title: hTitle,
-                    body: pBody
-                  });
-                }
-              });
-            }
-            if (itemsToDraw.length === 0) {
-              const leafNodes = Array.from(parserDiv.querySelectorAll("p, li")).map(e => e.textContent.trim().replace(/\s+/g, " ")).filter(t => t.length > 28 && t.length < 360);
-              const uniqueP = [...new Set(leafNodes)].slice(0, 6);
-              uniqueP.forEach((pText, pIdx) => {
-                itemsToDraw.push({
-                  badge: `${meta.sec} · 0${pIdx + 1}`,
-                  title: `${bName} — Directriz Estratégica #0${pIdx + 1}`,
-                  body: pText
-                });
-              });
-            }
-          }
-          while (itemsToDraw.length < 4) {
-            itemsToDraw.push({
-              badge: `${dna.archBadge} · 0${itemsToDraw.length + 1}`,
-              title: `Estándar Oficial de ${bName}`,
-              body: `${d.whyText} ${d.valueOffer}`
-            });
-          }
+          ];
 
-          const layoutVariant = i % 3;
-
-          if (layoutVariant === 0) {
-            // ARQUETIPO A: ESCAPARATE VISUAL IZQUIERDO + CUADRÍCULA DE TARJETAS DERECHA
-            drawRoundedRect(ctx, 54, 165, 440, 720, isRect ? 4 : 20, "#F8FAFC", pal.softTint, 2);
-            ctx.fillStyle = pal.pri;
-            ctx.fillRect(54, 165, 440, 8);
+          dispositions.forEach((disp, dIdx) => {
+            const dy = 160 + dIdx * 248;
+            drawRoundedRect(ctx, dpX, dy, dpW, 230, isRect ? 4 : 18, "#FFFFFF", "#CBD5E1", 1.8);
+            ctx.fillStyle = dIdx % 2 === 0 ? pal.pri : pal.sec;
+            ctx.fillRect(dpX, dy, 6, 230);
 
             ctx.save();
             ctx.beginPath();
-            ctx.rect(62, 175, 424, 702);
+            ctx.rect(dpX + 10, dy + 8, dpW - 20, 214);
             ctx.clip();
 
-            drawLogoOrEmblem(174, 190, 190, false, subBadgeObj, 380);
+            drawRoundedRect(ctx, dpX + 20, dy + 22, 184, 184, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.5);
+            drawLogoOrEmblem(dpX + 52, dy + 42, 120, false, dIdx === 0 ? "HORIZONTAL" : dIdx === 1 ? "VERTICAL" : "ICONO 1:1", 164);
 
-            ctx.fillStyle = pal.sec;
-            ctx.font = "800 10.5px Montserrat, sans-serif";
-            ctx.textAlign = "center";
-            fillTextFitted(ctx, `${dna.themeTitle.toUpperCase()} · ${dna.strokeBadge}`, 274, 422, 396);
-            ctx.textAlign = "left";
+            ctx.fillStyle = dIdx % 2 === 0 ? pal.pri : pal.sec;
+            ctx.font = "800 10px Montserrat, sans-serif";
+            fillTextFitted(ctx, disp.badge, dpX + 225, dy + 40, dpW - 245);
 
             ctx.fillStyle = pal.darkInk;
-            ctx.font = "900 16.5px Montserrat, sans-serif";
-            drawWrappedText(ctx, meta.title, 78, 448, 392, 21, 2);
+            ctx.font = "800 18px Montserrat, sans-serif";
+            fillTextFitted(ctx, disp.title, dpX + 225, dy + 68, dpW - 245);
 
-            // Ilustración vectorial temática integrada
-            drawCanvasSectorIllustration(78, 500, 392, 134, i);
-
-            drawRoundedRect(ctx, 78, 648, 392, 214, isRect ? 4 : 14, "#FFFFFF", "#E2E8F0", 1.5);
-            ctx.fillStyle = pal.pri;
-            ctx.font = "800 10.5px JetBrains Mono, monospace";
-            fillTextFitted(ctx, `SÍNTESIS · ${bUpper}`, 96, 676, 356);
-            ctx.fillStyle = "#334155";
-            ctx.font = "500 12.2px Plus Jakarta Sans, sans-serif";
-            drawWrappedText(
-              ctx,
-              `Lámina ${meta.num}/30 diseñada bajo ${dna.archTitle} para ${sectorShort}, con acentos en ${dna.strokeLabel.toLowerCase()} (${pal.pri} y ${pal.sec}).`,
-              96,
-              700,
-              356,
-              18,
-              4
-            );
-            [pal.pri, pal.sec, pal.darkInk, pal.softTint].forEach((cHex, cIdx) => {
-              drawRoundedRect(ctx, 96 + cIdx * 88, 798, 76, 40, isRect ? 3 : 8, cHex, "#CBD5E1", 1);
-            });
-            ctx.restore();
-
-            const cardList = itemsToDraw.slice(0, 6);
-            const cols = cardList.length > 3 ? 2 : 1;
-            const rows = Math.ceil(cardList.length / cols);
-            const colW = cols === 2 ? 406 : 832;
-            const rowH = Math.floor((720 - (rows - 1) * 16) / rows);
-
-            cardList.forEach((cItem, cIdx) => {
-              const c = cIdx % cols;
-              const r = Math.floor(cIdx / cols);
-              const cxCard = 518 + c * (colW + 20);
-              const cyCard = 165 + r * (rowH + 16);
-              drawNodeCard(cxCard, cyCard, colW, rowH, cItem.badge, cItem.title, cItem.body, cIdx % 2 === 0 ? pal.pri : pal.sec);
-            });
-          } else if (layoutVariant === 1) {
-            // ARQUETIPO B: BANNER PANORÁMICO SUPERIOR CON ILUSTRACIÓN DE SECTOR + 3 COLUMNAS EDITORIALES INFERIORES
-            drawRoundedRect(ctx, 54, 165, 1292, 235, isRect ? 4 : 20, "#F8FAFC", pal.pri, 2);
-            ctx.fillStyle = pal.sec;
-            ctx.fillRect(54, 165, 1292, 7);
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.rect(62, 174, 1276, 218);
-            ctx.clip();
-
-            drawLogoOrEmblem(84, 192, 160, false);
-
-            ctx.fillStyle = pal.sec;
-            ctx.font = "800 10.5px Montserrat, sans-serif";
-            fillTextFitted(ctx, `APLICACIÓN DE MARCA · ${dna.themeTitle.toUpperCase()} · ${dna.archBadge}`, 268, 210, 680);
-            ctx.fillStyle = pal.darkInk;
-            ctx.font = "900 20px Montserrat, sans-serif";
-            drawWrappedText(ctx, `${bName}: ${d.valueOffer}`, 268, 238, 680, 25, 2);
             ctx.fillStyle = "#334155";
             ctx.font = "500 13px Plus Jakarta Sans, sans-serif";
-            drawWrappedText(ctx, `${d.whyText} Acentos en ${dna.strokeLabel.toLowerCase()} y carácter ${dna.eraLabel.toLowerCase()}.`, 268, 296, 680, 19, 3);
-
-            // Escena vectorial derecha dentro del banner panorámico (100% contenida)
-            drawCanvasSectorIllustration(972, 190, 352, 185, i);
+            drawWrappedText(ctx, disp.body, dpX + 225, dy + 98, dpW - 245, 20, 5);
             ctx.restore();
-
-            // 3 Columnas Editoriales Inferiores
-            const top3 = itemsToDraw.slice(0, 3);
-            top3.forEach((cItem, cIdx) => {
-              const sx = 54 + cIdx * 438;
-              drawNodeCard(sx, 422, 416, 462, cItem.badge, cItem.title, cItem.body + (itemsToDraw[cIdx + 3] ? " · " + itemsToDraw[cIdx + 3].body : ""), cIdx % 2 === 0 ? pal.pri : pal.sec);
-            });
-          } else {
-            // ARQUETIPO C: COMPOSICIÓN EDITORIAL IZQUIERDA (4 BLOQUES) + ESCAPARATE TEMÁTICO DERECHO
-            const left4 = itemsToDraw.slice(0, 4);
-            left4.forEach((cItem, cIdx) => {
-              const c = cIdx % 2;
-              const r = Math.floor(cIdx / 2);
-              drawNodeCard(54 + c * 424, 165 + r * 368, 406, 352, cItem.badge, cItem.title, cItem.body, cIdx % 2 === 0 ? pal.sec : pal.pri);
-            });
-
-            drawRoundedRect(ctx, 906, 165, 440, 720, isRect ? 4 : 20, "#F8FAFC", pal.sec, 2);
-            ctx.fillStyle = pal.sec;
-            ctx.fillRect(906, 165, 440, 8);
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.rect(914, 175, 424, 702);
-            ctx.clip();
-
-            drawLogoOrEmblem(1031, 190, 190, false, subBadgeObj, 380);
-
-            ctx.fillStyle = pal.pri;
-            ctx.font = "800 10.5px Montserrat, sans-serif";
-            ctx.textAlign = "center";
-            fillTextFitted(ctx, `APLICACIÓN EN VIVO · ${dna.themeTitle.toUpperCase()}`, 1126, 422, 396);
-            ctx.textAlign = "left";
-
-            ctx.fillStyle = pal.darkInk;
-            ctx.font = "900 16.5px Montserrat, sans-serif";
-            drawWrappedText(ctx, meta.title, 930, 448, 392, 21, 2);
-
-            // Ilustración vectorial temática integrada
-            drawCanvasSectorIllustration(930, 500, 392, 134, i);
-
-            drawRoundedRect(ctx, 930, 648, 392, 214, isRect ? 4 : 14, "#FFFFFF", "#E2E8F0", 1.5);
-            ctx.fillStyle = pal.sec;
-            ctx.font = "800 10.5px JetBrains Mono, monospace";
-            fillTextFitted(ctx, `SÍNTESIS EJECUTIVA · ${bUpper}`, 948, 676, 356);
-            ctx.fillStyle = "#334155";
-            ctx.font = "500 12.2px Plus Jakarta Sans, sans-serif";
-            drawWrappedText(
-              ctx,
-              `${d.idealCustomer}. ${d.socialRole}`,
-              948,
-              700,
-              356,
-              18,
-              6
-            );
-            ctx.restore();
-          }
+          });
         }
+
+      } else if (i === 14) {
+        // LÁMINA 15: ANATOMÍA SEMIÓTICA DEL SÍMBOLO MAESTRO (PAUL RAND & SAGI HAVIV)
+        // Izquierda: Símbolo a Gran Escala con Guías Ópticas de Construcción
+        const smX = 54, smW = 630;
+        drawRoundedRect(ctx, smX, 160, smW, 726, isRect ? 4 : 22, "#FFFFFF", "#CBD5E1", 2);
+        ctx.fillStyle = pal.pri;
+        ctx.fillRect(smX, 160, smW, 8);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(smX + 8, 172, smW - 16, 706);
+        ctx.clip();
+
+        const sCenter = smX + smW / 2;
+        // Guías de retícula y ejes
+        ctx.strokeStyle = "#E2E8F0";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(sCenter, 200);
+        ctx.lineTo(sCenter, 570);
+        ctx.moveTo(smX + 50, 385);
+        ctx.lineTo(smX + smW - 50, 385);
+        ctx.stroke();
+
+        // Círculos de proporción áurea
+        ctx.strokeStyle = pal.softTint;
+        ctx.lineWidth = 1.8;
+        [120, 160, 200].forEach(r => {
+          ctx.beginPath();
+          ctx.arc(sCenter, 385, r, 0, Math.PI * 2);
+          ctx.stroke();
+        });
+
+        // Símbolo maestro central
+        drawLogoOrEmblem(sCenter - 140, 245, 280, false);
+
+        // Ficha técnica inferior del símbolo
+        drawRoundedRect(ctx, smX + 24, 620, smW - 48, 235, isRect ? 4 : 14, "#F8FAFC", pal.softTint, 1.5);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        fillTextFitted(ctx, "JUSTIFICACIÓN SEMIÓTICA Y EQUILIBRIO ÓPTICO", smX + 44, 650, smW - 88);
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "800 16px Montserrat, sans-serif";
+        fillTextFitted(ctx, `La Morfología Visual de ${bName}`, smX + 44, 678, smW - 88);
+
+        ctx.fillStyle = "#334155";
+        ctx.font = "500 12.8px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `El símbolo sintetiza los valores de ${industry}: orden, solidez técnica y visión hacia el futuro. Su geometría se apoya en arcos tangentes que transmiten dinamismo sin perder aplomo institucional. Los trazos en ${dna.strokeLabel.toLowerCase()} garantizan un peso óptico homogéneo que no se deforma al reducirse a iconos móviles ni al ampliarse en señalética arquitectónica.`, smX + 44, 704, smW - 88, 19, 6);
+        ctx.restore();
+
+        // Derecha: Auditoría de 7 Puntos de Paul Rand (100/100)
+        const prX = 710, prW = 636;
+        drawEditorialBlock(prX, 160, prW, 726, "TEST DE PAUL RAND (CALIDAD DE LOGO)", "Evaluación de 7 Factores de Viabilidad Icónica", "", pal.sec);
+
+        const randFactors = [
+          ["01 · DISTINTIVIDAD", "10 / 10", "Se diferencia con claridad de cualquier competidor directo en " + sectorShort + "."],
+          ["02 · VISIBILIDAD", "10 / 10", "Impacto visual instantáneo a primer golpe de vista, incluso en entornos saturados."],
+          ["03 · ADAPTABILIDAD", "10 / 10", "Funciona en blanco y negro, grabado láser, bordado textil y pantalla digital."],
+          ["04 · MEMORABILIDAD", "10 / 10", "Fácil de recordar y describir verbalmente tras verlo una sola vez."],
+          ["05 · UNIVERSALIDAD", "10 / 10", "Aceptado y comprendido a través de distintas culturas sin connotaciones equívocas."],
+          ["06 · PERDURABILIDAD", "10 / 10", "Diseño inmune a modas pasajeras que mantendrá su vigencia durante décadas."],
+          ["07 · SIMPLICIDAD", "10 / 10", "Reducido a sus elementos indispensables sin elementos superfluos."]
+        ];
+
+        randFactors.forEach((rf, rIdx) => {
+          const rfy = 246 + rIdx * 78;
+          drawRoundedRect(ctx, prX + 24, rfy, prW - 48, 68, isRect ? 3 : 10, "#F8FAFC", "#E2E8F0", 1);
+
+          ctx.fillStyle = pal.pri;
+          ctx.font = "800 11px Montserrat, sans-serif";
+          ctx.fillText(rf[0], prX + 40, rfy + 24);
+
+          ctx.fillStyle = "#10B981";
+          ctx.font = "900 13px Montserrat, sans-serif";
+          ctx.textAlign = "right";
+          ctx.fillText(rf[1] + " ★", prX + prW - 40, rfy + 24);
+          ctx.textAlign = "left";
+
+          ctx.fillStyle = "#475569";
+          ctx.font = "500 11.5px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, rf[2], prX + 40, rfy + 44, prW - 80, 16, 2);
+        });
+
+        // Dictamen inferior de Rand
+        drawRoundedRect(ctx, prX + 24, 804, prW - 48, 68, isRect ? 4 : 10, "#ECFDF5", "#A7F3D0", 1.5);
+        ctx.fillStyle = "#047857";
+        ctx.font = "800 12px Montserrat, sans-serif";
+        ctx.fillText("DICTAMEN OFICIAL: APTO PARA REGISTRO Y RECONOCIMIENTO ICÓNICO", prX + 40, 832);
+        ctx.fillStyle = "#065F46";
+        ctx.font = "600 11px Plus Jakarta Sans, sans-serif";
+        ctx.fillText("Puntuación Total: 100/100 · Símbolo certificado por el Consejo Metodológico.", prX + 40, 852);
+
+      } else if (i >= 15 && i <= 18) {
+        // LÁMINAS 16–19: LOS 4 PILARES DE EXCELENCIA DE LA MARCA ÚNICA (O SUBMARCAS)
+        const pilarIndex = i - 14; // 1, 2, 3, 4
+        const pilarTitles = [
+          `Pilar 01 de ${bName}: Solución Central y Propuesta de Valor`,
+          `Pilar 02 de ${bName}: Estándar de Experiencia y Atención al Cliente`,
+          `Pilar 03 de ${bName}: Ecosistema Digital y Adaptabilidad 1:1`,
+          `Pilar 04 de ${bName}: Control de Calidad, Entrega y Retención`
+        ];
+        const pilarBadges = [
+          "PROPUESTA CORE Y VENTAJA COMPETITIVA",
+          "EXPERIENCIA HUMANA Y TRATO DE SOCIO",
+          "CONECTIVIDAD DIGITAL Y MOVILIDAD",
+          "GARANTÍA INSTITUCIONAL Y LEALTAD"
+        ];
+        const pilarBodies = [
+          `La solución central de ${bName} combina rigor analítico, metodología probada y ejecución especializada para resolver el problema raíz de nuestros clientes en ${industry}. Oferta oficial: ${d.valueOffer}`,
+          `El trato con el cliente se apoya en la empatía y la presencia accesible. Ningún cliente es un número de folio; acompañamos hombro con hombro desde el diagnóstico inicial hasta la implantación final.`,
+          `Diseño concebido para brillar en pantallas OLED de smartphones, tablets, ordenadores y redes sociales. El símbolo 1:1 mantiene su nitidez absoluta incluso en favicons de 16 píxeles.`,
+          `Compromiso contractual con la entrega puntual, la vigencia documental y la mejora continua. Respaldamos cada solución con soporte activo y auditorías periódicas.`
+        ];
+
+        // Columna Izquierda: Símbolo Monumental en Positivo sobre Fondo Claro
+        const pX = 54, pW = 540;
+        drawRoundedRect(ctx, pX, 160, pW, 726, isRect ? 4 : 20, "#FFFFFF", "#CBD5E1", 2);
+        ctx.fillStyle = i % 2 === 0 ? pal.pri : pal.sec;
+        ctx.fillRect(pX, 160, pW, 8);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(pX + 8, 172, pW - 16, 706);
+        ctx.clip();
+
+        drawLogoOrEmblem(pX + 140, 240, 260, false, `PILAR 0${pilarIndex} · OFICIAL`, pW - 60);
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 24px Montserrat, sans-serif";
+        ctx.textAlign = "center";
+        fillTextFitted(ctx, bUpper, pX + 270, 560, pW - 60);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 12px Montserrat, sans-serif";
+        fillTextFitted(ctx, `DISPOSICIÓN OFICIAL EN ${i === 15 ? 'HORIZONTAL' : (i === 16 ? 'VERTICAL' : (i === 17 ? 'ICONO 1:1' : 'DOCUMENTAL'))}`, pX + 270, 588, pW - 60);
+        ctx.textAlign = "left";
+
+        drawEditorialBlock(pX + 24, 630, pW - 48, 226, "APLICACIÓN EN EL MUNDO REAL", "Norma de Uso del Logotipo", `En este pilar, la marca ${bName} se presenta con su logotipo en positivo sobre Lienzo Claro (#FFFFFF). Prohibido deformar el trazo o añadir cajas blancas que rompan el flujo visual.`, pal.pri);
+        ctx.restore();
+
+        // Columna Derecha: Contenido Editorial Profundo del Pilar
+        const pdX = 620, pdW = 726;
+        drawEditorialBlock(pdX, 160, pdW, 726, pilarBadges[pilarIndex - 1], pilarTitles[pilarIndex - 1], "", i % 2 === 0 ? pal.pri : pal.sec);
+
+        // 3 Bloques Específicos de este Pilar
+        const pilarSubBlocks = [
+          [
+            ["01 · DIAGNÓSTICO PROFUNDO", "Comprensión de Raíz", `Analizamos el contexto específico de cada cliente en ${sectorShort} para diseñar la solución exacta.`],
+            ["02 · MÉTODO PROBADO", "Cero Improvisación", `Ejecutamos bajo el marco de 7 pasos de The Best Brand con estándares de clase mundial.`],
+            ["03 · RESULTADO TANGIBLE", "Impacto Medible", `El cliente experimenta reducción inmediata de fricción operativa y claridad en su comunicación.`]
+          ],
+          [
+            ["01 · ESCUCHA ACTIVA", "Atención sin Arrogancia", "Escuchamos primero la visión del cliente para profesionalizarla con rigor sin imponer caprichos."],
+            ["02 · RESPUESTA RÁPIDA", "Cero Burocracia", "Canales directos de comunicación que eliminan intermediarios y resuelven dudas en minutos."],
+            ["03 · LEALTAD MUTUA", "Alianza a Largo Plazo", "Construimos relaciones comerciales que perduran por años basadas en el respeto y la confianza."]
+          ],
+          [
+            ["01 · REDUCCIÓN ESCALAR", "Nitidez a 16 Píxeles", "El símbolo mantiene su legibilidad óptica tanto en un rascacielos como en el favicon del navegador."],
+            ["02 · OPTIMIZACIÓN MÓVIL", "Cero Latencia en Red", "Archivos SVG matemáticos ultra-ligeros (<15 KB) que cargan instantáneamente en 4G/5G."],
+            ["03 · AVATARES Y REDES", "Ajuste Óptico Cuadrado", "Encuadre calibrado para círculos y cuadrados de WhatsApp Business, LinkedIn e Instagram."]
+          ],
+          [
+            ["01 · VIGENCIA DOCUMENTAL", "Garantía de Marca", "Todos los archivos y fuentes quedan resguardados en el portal con validez permanente."],
+            ["02 · ENTREGABLES NATIVOS", "Formatos Industriales", "Archivos listos para imprenta offset, serigrafía textil, corte láser y desarrollo web."],
+            ["03 · AUDITORÍA ANUAL", "Evolución sin Costo", "Revisión anual para certificar que la marca siga alineada con las nuevas tecnologías."]
+          ]
+        ];
+
+        pilarSubBlocks[pilarIndex - 1].forEach((sb, sbIdx) => {
+          const sby = 246 + sbIdx * 206;
+          drawRoundedRect(ctx, pdX + 24, sby, pdW - 48, 186, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.2);
+          ctx.fillStyle = sbIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.fillRect(pdX + 24, sby, 6, 186);
+
+          ctx.fillStyle = sbIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.font = "800 11.5px Montserrat, sans-serif";
+          fillTextFitted(ctx, sb[0], pdX + 44, sby + 32, pdW - 88);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 18px Montserrat, sans-serif";
+          fillTextFitted(ctx, sb[1], pdX + 44, sby + 58, pdW - 88);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 13px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, sb[2], pdX + 44, sby + 86, pdW - 88, 20, 4);
+        });
+
+      } else if (i === 19) {
+        // LÁMINA 20: RETÍCULA CONSTRUCTIVA (8X × 8X) Y GEOMETRÍA EUCLIDIANA (MASSIMO VIGNELLI)
+        // Izquierda: Plano Técnico de Construcción en Grilla 8x8 con Cotas en Cyan
+        const gridX = 54, gridW = 740, gridH = 726;
+        drawRoundedRect(ctx, gridX, 160, gridW, gridH, isRect ? 4 : 20, "#FFFFFF", "#CBD5E1", 2);
+        ctx.fillStyle = "#0284C7";
+        ctx.fillRect(gridX, 160, gridW, 8);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(gridX + 8, 172, gridW - 16, gridH - 24);
+        ctx.clip();
+
+        // Malla cuadriculada 8x8
+        const gCells = 8;
+        const cellSize = 62;
+        const startGX = gridX + (gridW - gCells * cellSize) / 2;
+        const startGY = 210;
+
+        ctx.strokeStyle = "#E0F2FE";
+        ctx.lineWidth = 1;
+        for (let r = 0; r <= gCells; r++) {
+          ctx.beginPath();
+          ctx.moveTo(startGX, startGY + r * cellSize);
+          ctx.lineTo(startGX + gCells * cellSize, startGY + r * cellSize);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.moveTo(startGX + r * cellSize, startGY);
+          ctx.lineTo(startGX + r * cellSize, startGY + gCells * cellSize);
+          ctx.stroke();
+        }
+
+        // Ejes principales en Cyan
+        ctx.strokeStyle = "#0284C7";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(startGX, startGY + 4 * cellSize);
+        ctx.lineTo(startGX + gCells * cellSize, startGY + 4 * cellSize);
+        ctx.moveTo(startGX + 4 * cellSize, startGY);
+        ctx.lineTo(startGX + 4 * cellSize, startGY + gCells * cellSize);
+        ctx.stroke();
+
+        // Círculos de radio constructivo
+        ctx.strokeStyle = pal.sec;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(startGX + 4 * cellSize, startGY + 4 * cellSize, 3 * cellSize, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(startGX + 4 * cellSize, startGY + 4 * cellSize, 1.8 * cellSize, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Símbolo dibujado en el centro de la retícula
+        drawLogoOrEmblem(startGX + 4 * cellSize - 110, startGY + 4 * cellSize - 110, 220, false);
+
+        // Cotas milimétricas '8X' y '1X'
+        ctx.fillStyle = "#0369A1";
+        ctx.font = "800 12px JetBrains Mono, monospace";
+        ctx.fillText("|<------------------------ 8X ------------------------>|", startGX, startGY + gCells * cellSize + 28);
+        ctx.fillText("MODULO = 1X", startGX + gCells * cellSize + 14, startGY + 32);
+
+        // Rótulo inferior técnico
+        drawRoundedRect(ctx, gridX + 24, 755, gridW - 48, 105, isRect ? 4 : 12, "#F0F9FF", "#BAE6FD", 1.5);
+        ctx.fillStyle = "#0369A1";
+        ctx.font = "800 11px Montserrat, sans-serif";
+        ctx.fillText("PROPORCIÓN MATEMÁTICA Y PRECISIÓN VECTORIAL", gridX + 40, 782);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "500 12px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `La totalidad del símbolo se inscribe en un módulo cuadrado de 8X × 8X. Todos los ángulos y radios de curvatura derivan de múltiplos exactos de X, permitiendo una reproducción milimétrica en cualquier soporte físico o digital.`, gridX + 40, 804, gridW - 80, 18, 3);
+        ctx.restore();
+
+        // Derecha: Explicación de las Leyes de la Retícula
+        const grX = 820, grW = 526;
+        drawEditorialBlock(grX, 160, grW, 726, "EL CANON DE MASSIMO VIGNELLI", "Leyes de la Retícula Euclidiana", "", "#0284C7");
+
+        const gridRules = [
+          ["01 · EL MÓDULO BASE (1X)", "Unidad Mínima Inmutable", "El grosor del trazo principal define la variable matemática X. Ningún elemento puede trazarse fuera de esta proporción."],
+          ["02 · RELACIÓN DE ALTURAS", "Simbolismo y Logotipo", "La altura del texto tipográfico corresponde exactamente a 2.5X respecto a la altura total del símbolo (8X)."],
+          ["03 · ESPACIADO ÓPTICO (KERNING)", "Interletraje Calibrado", "El espacio entre caracteres está ajustado matemáticamente para mantener la legibilidad incluso a distancias mayores a 10 metros."],
+          ["04 · CENTRO DE GRAVEDAD", "Equilibrio Físico y Visual", "El baricentro óptico del símbolo coincide con el cruce de las diagonales principales de la grilla 8x8."]
+        ];
+
+        gridRules.forEach((gr, gIdx) => {
+          const gry = 246 + gIdx * 154;
+          drawRoundedRect(ctx, grX + 24, gry, grW - 48, 138, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.2);
+          ctx.fillStyle = "#0284C7";
+          ctx.fillRect(grX + 24, gry, 6, 138);
+
+          ctx.fillStyle = "#0284C7";
+          ctx.font = "800 11px Montserrat, sans-serif";
+          fillTextFitted(ctx, gr[0], grX + 44, gry + 30, grW - 88);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 16px Montserrat, sans-serif";
+          fillTextFitted(ctx, gr[1], grX + 44, gry + 54, grW - 88);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 12.8px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, gr[2], grX + 44, gry + 78, grW - 88, 19, 3);
+        });
+
       }
+    
+      else if (i === 20) {
+        // LÁMINA 21: ÁREA DE AISLAMIENTO (1.5X) Y SECCIÓN EN NEGATIVO CALADO (MASSIMO VIGNELLI & PAUL RAND)
+        // Izquierda: Área de Aislamiento 1.5X con Cotas de Ingeniería sobre Lienzo Claro
+        const isX = 54, isW = 630;
+        drawRoundedRect(ctx, isX, 160, isW, 726, isRect ? 4 : 20, "#FFFFFF", "#CBD5E1", 2);
+        ctx.fillStyle = pal.pri;
+        ctx.fillRect(isX, 160, isW, 8);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(isX + 8, 172, isW - 16, 706);
+        ctx.clip();
+
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        fillTextFitted(ctx, "ESPACIO DE GUARDA PERIMETRAL (1.5X)", isX + 24, 202, isW - 48);
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "800 18px Montserrat, sans-serif";
+        fillTextFitted(ctx, "Protección Contra Asfixia Visual", isX + 24, 228, isW - 48);
+
+        // Bounding box punteado de aislamiento
+        const bxX = isX + 105, bxY = 270, bxW = 420, bxH = 340;
+        ctx.strokeStyle = pal.sec;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6, 6]);
+        ctx.strokeRect(bxX, bxY, bxW, bxH);
+        ctx.setLineDash([]);
+
+        // Flechas de cota 1.5X
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 11px JetBrains Mono, monospace";
+        ctx.fillText("1.5X", bxX + bxW / 2 - 14, bxY - 10);
+        ctx.fillText("1.5X", bxX + bxW / 2 - 14, bxY + bxH + 18);
+        ctx.fillText("1.5X", bxX - 38, bxY + bxH / 2 + 4);
+        ctx.fillText("1.5X", bxX + bxW + 8, bxY + bxH / 2 + 4);
+
+        // Símbolo dentro del área segura
+        drawLogoOrEmblem(bxX + 90, bxY + 50, 240, false);
+
+        // Ficha técnica inferior
+        drawRoundedRect(ctx, isX + 24, 650, isW - 48, 205, isRect ? 4 : 14, "#F8FAFC", pal.softTint, 1.5);
+        ctx.fillStyle = pal.pri;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        fillTextFitted(ctx, "NORMA DE RESPETO PERIMETRAL", isX + 44, 680, isW - 88);
+
+        ctx.fillStyle = "#334155";
+        ctx.font = "500 12.8px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `El área de aislamiento equivale a 1.5 veces el módulo X del logotipo. Ningún texto, fotografía, borde o elemento gráfico puede invadir este espacio de guarda. Esta norma garantiza que el símbolo de ${bName} mantenga su respiración y destaque con máxima jerarquía sin competir con su entorno.`, isX + 44, 706, isW - 88, 19, 6);
+        ctx.restore();
+
+        // Derecha: Sección Oficial en Negativo Calado sobre Fondo Azul Noche
+        const ngX = 710, ngW = 636;
+        drawRoundedRect(ctx, ngX, 160, ngW, 726, isRect ? 4 : 20, pal.darkInk, pal.sec, 2.5);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(ngX + 8, 172, ngW - 16, 706);
+        ctx.clip();
+
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        fillTextFitted(ctx, "VERSIÓN EN NEGATIVO CALADO (SOPORTES OSCUROS)", ngX + 24, 202, ngW - 48);
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "800 18px Montserrat, sans-serif";
+        fillTextFitted(ctx, "Firma Oficial sobre Fondo Nocturno", ngX + 24, 228, ngW - 48);
+
+        // Símbolo en negativo a gran escala
+        drawLogoOrEmblem(ngX + (ngW - 270) / 2, 280, 270, true);
+
+        // Ficha técnica de uso en negativo
+        drawRoundedRect(ctx, ngX + 24, 610, ngW - 48, 245, isRect ? 4 : 14, "rgba(255,255,255,0.06)", "rgba(255,255,255,0.18)", 1.5);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        fillTextFitted(ctx, "REGLA SUPREMA: CERO PARCHES BLANCOS", ngX + 44, 642, ngW - 88);
+
+        ctx.fillStyle = "#CBD5E1";
+        ctx.font = "500 12.8px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Queda estrictamente prohibido encerrar el logotipo positivo dentro de cajas o parches blancos rectangulares cuando el soporte sea oscuro. Cuando el fondo sea ${pal.darkInk}, negro o fotográfico oscuro, se utiliza exclusivamente esta versión calada en negativo con trazos en blanco puro y acento en ${pal.sec}.`, ngX + 44, 668, ngW - 88, 19, 7);
+        ctx.restore();
+
+      } else if (i === 21) {
+        // LÁMINA 22: USOS INCORRECTOS Y 6 RESTRICCIONES DE INTEGRIDAD VISUAL (MASSIMO VIGNELLI)
+        // Cabezal Editorial
+        drawEditorialBlock(54, 160, 1292, 140, "DISCIPLINA GRÁFICA Y BLINDAJE DE MARCA (MASSIMO VIGNELLI)", "Las 6 Prohibiciones Innegociables de Uso del Logotipo", `La consistencia visual es la barrera que protege a ${bName} de la degradación gráfica. Estas seis restricciones son de observancia obligatoria para cualquier colaborador, impresor o proveedor tecnológico externo. El logotipo no se interpreta: se reproduce de forma fidedigna.`, "#DC2626");
+
+        // Matriz de 6 Infotargetas Vectoriales con Prohibiciones
+        const infractions = [
+          {
+            num: "01",
+            title: "Prohibido Deformar o Estirar",
+            desc: "Bajo ninguna circunstancia se debe alterar la proporción horizontal o vertical (aspect ratio) del símbolo o del texto tipográfico.",
+            drawInfraction: (ix, iy, iw, ih) => {
+              // Dibujar logo estirado artificialmente
+              ctx.save();
+              ctx.scale(1.4, 0.7);
+              drawLogoOrEmblem((ix + 20) / 1.4, (iy + 15) / 0.7, 54, false);
+              ctx.restore();
+            }
+          },
+          {
+            num: "02",
+            title: "Prohibido Rotar Arbitrariamente",
+            desc: "El símbolo y el logotipo deben apoyarse siempre en un plano horizontal perfecto de 0°. Queda prohibido inclinarlo o girarlo.",
+            drawInfraction: (ix, iy, iw, ih) => {
+              ctx.save();
+              ctx.translate(ix + iw / 2, iy + ih / 2);
+              ctx.rotate(0.35);
+              drawLogoOrEmblem(-27, -27, 54, false);
+              ctx.restore();
+            }
+          },
+          {
+            num: "03",
+            title: "Prohibido Alterar la Paleta",
+            desc: `No se permite aplicar colores ajenos a la paleta oficial (como rojos, verdes o degradados no autorizados fuera de ${pal.pri} y ${pal.sec}).`,
+            drawInfraction: (ix, iy, iw, ih) => {
+              drawRoundedRect(ctx, ix + iw / 2 - 27, iy + ih / 2 - 27, 54, 54, 8, "#EC4899", "#BE185D", 2);
+              ctx.fillStyle = "#FFFFFF";
+              ctx.font = "900 16px Montserrat, sans-serif";
+              ctx.fillText("!?", ix + iw / 2 - 9, iy + ih / 2 + 6);
+            }
+          },
+          {
+            num: "04",
+            title: "Prohibido Sombras o Biseles",
+            desc: "Cero sombras grises difusas, biseles 3D, relieves o efectos de iluminación artificial que rompan la pureza plana vectorial.",
+            drawInfraction: (ix, iy, iw, ih) => {
+              ctx.fillStyle = "rgba(0,0,0,0.35)";
+              ctx.beginPath();
+              ctx.arc(ix + iw / 2 + 6, iy + ih / 2 + 6, 26, 0, Math.PI * 2);
+              ctx.fill();
+              drawLogoOrEmblem(ix + iw / 2 - 26, iy + ih / 2 - 26, 52, false);
+            }
+          },
+          {
+            num: "05",
+            title: "Prohibido Parche Blanco en Oscuro",
+            desc: "Nunca encerrar el logotipo positivo en una caja blanca sobre fondos oscuros. En fondos oscuros se usa la versión calada.",
+            drawInfraction: (ix, iy, iw, ih) => {
+              ctx.fillStyle = "#0F172A";
+              ctx.fillRect(ix + 16, iy + 10, iw - 32, ih - 20);
+              drawRoundedRect(ctx, ix + iw / 2 - 32, iy + ih / 2 - 24, 64, 48, 4, "#FFFFFF", "#E2E8F0", 1);
+              drawLogoOrEmblem(ix + iw / 2 - 18, iy + ih / 2 - 18, 36, false);
+            }
+          },
+          {
+            num: "06",
+            title: "Prohibido Cambiar la Tipografía",
+            desc: "No sustituir las familias oficiales (Montserrat y Plus Jakarta Sans) por tipografías genéricas como Arial, Times o Comic Sans.",
+            drawInfraction: (ix, iy, iw, ih) => {
+              ctx.fillStyle = "#991B1B";
+              ctx.font = "italic 700 20px 'Times New Roman', serif";
+              ctx.textAlign = "center";
+              ctx.fillText(bName, ix + iw / 2, iy + ih / 2 + 7);
+              ctx.textAlign = "left";
+            }
+          }
+        ];
+
+        infractions.forEach((inf, idx) => {
+          const col = idx % 3;
+          const row = Math.floor(idx / 3);
+          const cxCard = 54 + col * 440;
+          const cyCard = 320 + row * 280;
+
+          drawRoundedRect(ctx, cxCard, cyCard, 412, 260, isRect ? 4 : 14, "#FEF2F2", "#FECACA", 1.5);
+          ctx.fillStyle = "#DC2626";
+          ctx.fillRect(cxCard, cyCard, 412, 5);
+
+          // Escenario visual de infracción (Izquierda de tarjeta)
+          const scX = cxCard + 16, scY = cyCard + 24, scW = 110, scH = 100;
+          drawRoundedRect(ctx, scX, scY, scW, scH, 8, "#FFFFFF", "#FCA5A5", 1);
+          inf.drawInfraction(scX, scY, scW, scH);
+
+          // Símbolo de PROHIBIDO (Círculo rojo con barra diagonal)
+          ctx.strokeStyle = "#DC2626";
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(scX + scW / 2, scY + scH / 2, 34, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(scX + scW / 2 - 24, scY + scH / 2 - 24);
+          ctx.lineTo(scX + scW / 2 + 24, scY + scH / 2 + 24);
+          ctx.stroke();
+
+          // Textos de infracción
+          ctx.fillStyle = "#DC2626";
+          ctx.font = "800 11px Montserrat, sans-serif";
+          fillTextFitted(ctx, `RESTRICCIÓN ${inf.num}`, cxCard + 140, cyCard + 42, 250);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 16px Montserrat, sans-serif";
+          drawWrappedText(ctx, inf.title, cxCard + 140, cyCard + 64, 250, 19, 2);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 12.2px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, inf.desc, cxCard + 16, cyCard + 146, 380, 18, 5);
+        });
+
+      } else if (i === 22) {
+        // LÁMINA 23: PALETA CROMÁTICA OFICIAL (8 COLORES · PANTONE · CMYK · HEX · WCAG AAA)
+        drawEditorialBlock(54, 160, 1292, 130, "INGENIERÍA KANSEI DEL COLOR (MITSUHIRO NAGAMACHI)", "Los 8 Tonos Oficiales del Sistema Cromático", `El color no decora: induce estados emocionales de certeza, autoridad y modernidad. Esta paleta de 8 tonos cuenta con fórmulas verificadas para impresión offset (Pantone & CMYK) y pantallas digitales (HEX & RGB), garantizando contraste accesible certificado WCAG AAA.`, pal.sec);
+
+        const swatches = [
+          { name: "01 · PRIMARIO OFICIAL", hex: pal.pri, pms: "Pantone 2945 C", role: "Identidad estructural, vectores principales y cabezales", pct: "20%" },
+          { name: "02 · AZUL NOCHE PROFUNDO", hex: pal.darkInk, pms: "Pantone 534 C", role: "Tipografía de lectura, contraste y soporte negativo calado", pct: "70% Fondo" },
+          { name: "03 · NARANJA ENERGÍA ACENTO", hex: pal.sec, pms: "Pantone 1585 C", role: "Descriptores, puntos de acción (CTA) y acentos focales", pct: "10%" },
+          { name: "04 · AZUL ELÉCTRICO VIBRANTE", hex: pal.accentLight || "#4C9DE6", pms: "Pantone 2925 C", role: "Vínculos interactivos, badges y destellos tecnológicos", pct: "Acento" },
+          { name: "05 · GRIS PIZARRA EJECUTIVO", hex: "#334155", pms: "Pantone 7546 C", role: "Párrafos secundarios, fichas técnicas y bordes sutiles", pct: "Neutro" },
+          { name: "06 · GRIS MEDIO TÉCNICO", hex: "#707070", pms: "Pantone Cool Gray 8 C", role: "Líneas de cota, retículas de construcción y flechas", pct: "Neutro" },
+          { name: "07 · LIENZO CLARO SUPERFICIE", hex: pal.softTint || "#F0F6FC", pms: "Pantone 656 C", role: "Fondos de tarjetas, paneles de lectura y tablas", pct: "Fondo Sec" },
+          { name: "08 · BLANCO PURO LIENZO", hex: "#FFFFFF", pms: "Pantone Bright White", role: "Lienzo dominante (70% de la superficie) y respiración", pct: "70% Dom" }
+        ];
+
+        swatches.forEach((sw, idx) => {
+          const col = idx % 4;
+          const row = Math.floor(idx / 4);
+          const sx = 54 + col * 328;
+          const sy = 310 + row * 285;
+
+          drawRoundedRect(ctx, sx, sy, 308, 265, isRect ? 4 : 16, "#FFFFFF", "#CBD5E1", 1.5);
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(sx + 4, sy + 4, 300, 257);
+          ctx.clip();
+
+          // Muestra grande del color
+          drawRoundedRect(ctx, sx + 14, sy + 14, 280, 110, isRect ? 3 : 10, sw.hex, "#CBD5E1", 1);
+
+          ctx.fillStyle = sw.hex === "#FFFFFF" || sw.hex === pal.softTint ? "#0F172A" : "#FFFFFF";
+          ctx.font = "800 11px JetBrains Mono, monospace";
+          ctx.fillText(sw.hex, sx + 26, sy + 104);
+
+          ctx.fillStyle = pal.sec;
+          ctx.font = "800 10px Montserrat, sans-serif";
+          fillTextFitted(ctx, sw.name, sx + 16, sy + 146, 276);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 14px Montserrat, sans-serif";
+          fillTextFitted(ctx, sw.pms, sx + 16, sy + 168, 276);
+
+          ctx.fillStyle = "#64748B";
+          ctx.font = "600 10.5px JetBrains Mono, monospace";
+          ctx.fillText(`RGB: ${hexToRgbStr(sw.hex)}`, sx + 16, sy + 192);
+          ctx.fillText(`CMYK: ${hexToCmykStr(sw.hex)}`, sx + 16, sy + 210);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 11.5px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, `${sw.role} (${sw.pct})`, sx + 16, sy + 230, 276, 16, 2);
+          ctx.restore();
+        });
+
+      } else if (i === 23) {
+        // LÁMINA 24: PROPORCIÓN DE LUZ (70/20/10) Y RECURSOS DE TRAZO (JONY IVE)
+        // Cabezal Superior
+        drawEditorialBlock(54, 160, 1292, 130, "ARQUITECTURA DE LA LUZ Y EL VACÍO (JONY IVE)", "La Regla de Oro de Luz: 70% Lienzo Claro · 20% Primario · 10% Acento", `El 70% de espacio en blanco (#FFFFFF) no es ausencia de diseño: es el aire y la respiración que otorga jerarquía a la solución de ${bName}. El 20% aporta la solidez institucional y el 10% focaliza la mirada en los puntos críticos de decisión.`, pal.pri);
+
+        // Barra Monumental Proporcional de Luz
+        const barX = 54, barY = 310, barW = 1292, barH = 100;
+        drawRoundedRect(ctx, barX, barY, barW, barH, 18, "#FFFFFF", "#CBD5E1", 2);
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(barX + 2, barY + 2, barW - 4, barH - 4);
+        ctx.clip();
+
+        // 70% Lienzo Claro
+        ctx.fillStyle = "#F8FAFC";
+        ctx.fillRect(barX, barY, barW * 0.70, barH);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 24px Montserrat, sans-serif";
+        ctx.fillText("70% LIENZO CLARO (#FFFFFF)", barX + 32, barY + 58);
+        ctx.font = "600 12px Plus Jakarta Sans, sans-serif";
+        ctx.fillText("Espacio de respiración, fondo dominante y limpieza absoluta", barX + 32, barY + 80);
+
+        // 20% Primario
+        ctx.fillStyle = pal.pri;
+        ctx.fillRect(barX + barW * 0.70, barY, barW * 0.20, barH);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "900 18px Montserrat, sans-serif";
+        ctx.fillText("20% ESTRUCTURA", barX + barW * 0.70 + 20, barY + 54);
+        ctx.font = "600 11px Plus Jakarta Sans, sans-serif";
+        ctx.fillText(`${pal.pri} · Identidad oficial`, barX + barW * 0.70 + 20, barY + 76);
+
+        // 10% Acento
+        ctx.fillStyle = pal.sec;
+        ctx.fillRect(barX + barW * 0.90, barY, barW * 0.10, barH);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "900 16px Montserrat, sans-serif";
+        ctx.fillText("10%", barX + barW * 0.90 + 16, barY + 54);
+        ctx.font = "800 10px Montserrat, sans-serif";
+        ctx.fillText("ACENTO", barX + barW * 0.90 + 16, barY + 74);
+        ctx.restore();
+
+        // Mitad Inferior: Los 6 Recursos Gráficos en Curvas de The Best Brand
+        const resX = 54, resW = 1292, resY = 440;
+        drawEditorialBlock(resX, resY, resW, 446, "CATÁLOGO DE RECURSOS DE TRAZO", `El Sistema de ${dna.strokeLabel} de ${bName}`, "", pal.sec);
+
+        const strokeResources = [
+          ["01 · Curva Orbital Asimétrica", "Línea de flujo abierta que guía la lectura sin encasillar"],
+          ["02 · Filete de Cota Técnico", "Líneas de 1.5 pt en color acento con nodos en los extremos"],
+          ["03 · Contenedores Orgánicos", "Superficies con radio asimétrico que abrazan el contenido"],
+          ["04 · Conectores de Trayectoria", "Trazos Bézier con derivaciones hacia hitos de avance"],
+          ["05 · Marco Fotográfico Curvo", "Borde asimétrico que enmarca retratos sin cortar cabezas"],
+          ["06 · Separador de Eje Limpio", "Línea arquitectónica de 1 pt con corte de color al 30%"]
+        ];
+
+        strokeResources.forEach((sr, sIdx) => {
+          const col = sIdx % 3;
+          const row = Math.floor(sIdx / 3);
+          const rxCard = resX + 24 + col * 420;
+          const ryCard = resY + 90 + row * 165;
+
+          drawRoundedRect(ctx, rxCard, ryCard, 400, 145, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.2);
+          ctx.fillStyle = sIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.fillRect(rxCard, ryCard, 5, 145);
+
+          ctx.fillStyle = sIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.font = "800 11px Montserrat, sans-serif";
+          fillTextFitted(ctx, sr[0], rxCard + 20, ryCard + 30, 360);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 12.5px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, sr[1], rxCard + 20, ryCard + 54, 360, 18, 3);
+
+          // Mini vector demostrativo
+          ctx.strokeStyle = sIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(rxCard + 20, ryCard + 120);
+          ctx.bezierCurveTo(rxCard + 120, ryCard + 105, rxCard + 240, ryCard + 135, rxCard + 370, ryCard + 115);
+          ctx.stroke();
+        });
+
+      } else if (i === 24) {
+        // LÁMINA 25: SISTEMA TIPOGRÁFICO OFICIAL: FAMILIAS Y ESCALA (MASSIMO VIGNELLI & JONY IVE)
+        // Columna Izquierda: Tipografía Principal Display (Montserrat)
+        const tyX = 54, tyW = 630;
+        drawEditorialBlock(tyX, 160, tyW, 726, "TIPOGRAFÍA PRINCIPAL DISPLAY (TITULARES)", "Montserrat · Fortaleza Geométrica y Elegancia", `Diseñada por Julieta Ulanovsky en Buenos Aires, inspirada en los letreros urbanos del siglo XX. Aporta autoridad inmutable, legibilidad a gran escala y solidez arquitectónica en titulares y logotipos.`, pal.pri);
+
+        drawRoundedRect(ctx, tyX + 24, 280, tyW - 48, 240, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.2);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 48px Montserrat, sans-serif";
+        ctx.fillText("Aa Gg Rr 99", tyX + 44, 345);
+
+        ctx.fillStyle = pal.pri;
+        ctx.font = "700 18px Montserrat, sans-serif";
+        ctx.fillText("ABCDEFGHIJKLMNÑOPQRSTUVWXYZ", tyX + 44, 385);
+        ctx.fillText("abcdefghijklmnñopqrstuvwxyz", tyX + 44, 415);
+        ctx.fillText("0123456789 • !?@#$%&/()=", tyX + 44, 445);
+
+        ctx.fillStyle = "#64748B";
+        ctx.font = "600 11.5px JetBrains Mono, monospace";
+        ctx.fillText("PESOS OFICIALES: 900 BLACK · 800 EXTRA BOLD · 700 BOLD", tyX + 44, 490);
+
+        // Columna Izquierda Inferior: Párrafo de prueba Display
+        drawRoundedRect(ctx, tyX + 24, 545, tyW - 48, 315, isRect ? 4 : 14, "#FFFFFF", "#E2E8F0", 1.2);
+        ctx.fillStyle = pal.pri;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        ctx.fillText("ESCALA MODULAR DE TITULARES", tyX + 44, 575);
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 28px Montserrat, sans-serif";
+        fillTextFitted(ctx, `Titular H1: ${bUpper}`, tyX + 44, 615, tyW - 88);
+
+        ctx.font = "800 20px Montserrat, sans-serif";
+        fillTextFitted(ctx, `Subtítulo H2: Sistemas de Alta Precisión`, tyX + 44, 655, tyW - 88);
+
+        ctx.font = "700 15px Montserrat, sans-serif";
+        fillTextFitted(ctx, `Encabezado H3: Claridad Radical para ${sectorShort}`, tyX + 44, 695, tyW - 88);
+
+        ctx.fillStyle = "#334155";
+        ctx.font = "500 12.5px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Uso exclusivo en portadas, nombres de láminas, títulos de propuesta ejecutiva y cabezales comerciales. Nunca utilizar para bloques de texto corrido mayores a 3 líneas.`, tyX + 44, 735, tyW - 88, 18, 4);
+
+        // Columna Derecha: Tipografía Secundaria de Lectura (Plus Jakarta Sans / Avenir Next)
+        const trX = 710, trW = 636;
+        drawEditorialBlock(trX, 160, trW, 726, "TIPOGRAFÍA SECUNDARIA DE LECTURA (TEXTO CORRIDO)", "Plus Jakarta Sans / Avenir Next · Claridad Suiza", `Familia geométrica neogrotesca calibrada para lectura prolongada en pantallas de alta densidad y documentos impresos. Garantiza fatiga visual cero y un flujo armónico en cuerpos de texto y tablas técnicas.`, pal.sec);
+
+        drawRoundedRect(ctx, trX + 24, 280, trW - 48, 240, isRect ? 4 : 14, "#F8FAFC", "#E2E8F0", 1.2);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 48px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("Ee Mm Kk 42", trX + 44, 345);
+
+        ctx.fillStyle = pal.sec;
+        ctx.font = "700 18px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("ABCDEFGHIJKLMNÑOPQRSTUVWXYZ", trX + 44, 385);
+        ctx.fillText("abcdefghijklmnñopqrstuvwxyz", trX + 44, 415);
+        ctx.fillText("0123456789 • €$£¥«»—–§±≠", trX + 44, 445);
+
+        ctx.fillStyle = "#64748B";
+        ctx.font = "600 11.5px JetBrains Mono, monospace";
+        ctx.fillText("PESOS OFICIALES: 600 SEMIBOLD · 500 MEDIUM · 400 REGULAR", trX + 44, 490);
+
+        // Columna Derecha Inferior: Escala Modular de Párrafos y Jerarquía
+        drawRoundedRect(ctx, trX + 24, 545, trW - 48, 315, isRect ? 4 : 14, "#FFFFFF", "#E2E8F0", 1.2);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        ctx.fillText("JERARQUÍA EDITORIAL DE LECTURA", trX + 44, 575);
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "600 14.5px 'Plus Jakarta Sans', sans-serif";
+        fillTextFitted(ctx, `Texto Lead (14 pt): Introducción ejecutiva con ritmo dinámico.`, trX + 44, 610, trW - 88);
+
+        ctx.font = "500 12.5px 'Plus Jakarta Sans', sans-serif";
+        fillTextFitted(ctx, `Cuerpo Principal (12 pt): Párrafos informativos con interlineado de 1.5x.`, trX + 44, 645, trW - 88);
+
+        ctx.font = "400 10.5px 'Plus Jakarta Sans', sans-serif";
+        fillTextFitted(ctx, `Texto Técnico (10 pt): Notas al pie, metadatos y citas metodológicas.`, trX + 44, 680, trW - 88);
+
+        ctx.fillStyle = "#334155";
+        ctx.font = "500 12.2px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Pangrama de validación de glifos: «El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja». Todas las tildes, signos y diéresis verificados.`, trX + 44, 725, trW - 88, 18, 5);
+
+      } else if (i === 25) {
+        // LÁMINA 26: LOS 6 SELLOS METODOLÓGICOS (PAUL RAND & MITSUHIRO NAGAMACHI)
+        drawEditorialBlock(54, 160, 1292, 130, "SISTEMA DE CERTIFICACIÓN Y RIGOR TÉCNICO", "Los 6 Sellos Metodológicos Oficiales", `Rúbricas gráficas de garantía que avalan la integridad intelectual de cada solución desarrollada bajo el marco de The Best Brand. Se aplican en diplomas, portadas de propuestas, empaques y contratos formales.`, pal.sec);
+
+        const seals = [
+          { code: "SELLO 01", name: "Estrategia Socrática", author: "Simon Sinek", desc: "Certifica que la marca cuenta con propósito nuclear (Why) y alineación de causa.", icon: "WHY" },
+          { code: "SELLO 02", name: "Geometría Euclidiana", author: "Massimo Vignelli", desc: "Aval de retícula constructiva 8X, proporciones exactas y vectores limpios.", icon: "8X" },
+          { code: "SELLO 03", name: "Calibración Kansei", author: "Mitsuhiro Nagamachi", desc: "Garantía de respuesta emocional positiva, balance cromático y empatía humana.", icon: "KAN" },
+          { code: "SELLO 04", name: "Arquitectura Monolítica", author: "David Aaker", desc: "Certificación de concentración de valor en un solo nombre sin submarcas forzadas.", icon: "MONO" },
+          { code: "SELLO 05", name: "Auditoría Directiva C-00", author: "Consejo Crítico", desc: "Superación del estándar implacable de Steve Jobs: cero plantillas y cero relleno.", icon: "C-00" },
+          { code: "SELLO 06", name: "Promulgación Oficial", author: "The Best Brand", desc: "Sello de vigencia constitucional e inmutabilidad de activos de marca.", icon: "LEX" }
+        ];
+
+        seals.forEach((sl, sIdx) => {
+          const col = sIdx % 3;
+          const row = Math.floor(sIdx / 3);
+          const sx = 54 + col * 440;
+          const sy = 310 + row * 285;
+
+          drawRoundedRect(ctx, sx, sy, 412, 260, isRect ? 4 : 16, "#FFFFFF", "#CBD5E1", 1.5);
+          ctx.fillStyle = sIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.fillRect(sx, sy, 412, 6);
+
+          // Emblema circular del sello
+          const scx = sx + 74, scy = sy + 80;
+          ctx.strokeStyle = sIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.arc(scx, scy, 44, 0, Math.PI * 2);
+          ctx.stroke();
+
+          ctx.strokeStyle = pal.softTint;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(scx, scy, 38, 0, Math.PI * 2);
+          ctx.stroke();
+
+          ctx.fillStyle = sIdx % 2 === 0 ? pal.pri : pal.sec;
+          ctx.font = "900 13px Montserrat, sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText(sl.icon, scx, scy + 5);
+          ctx.textAlign = "left";
+
+          // Textos del sello
+          ctx.fillStyle = pal.sec;
+          ctx.font = "800 10.5px Montserrat, sans-serif";
+          fillTextFitted(ctx, sl.code, sx + 135, sy + 44, 250);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 16px Montserrat, sans-serif";
+          fillTextFitted(ctx, sl.name, sx + 135, sy + 70, 250);
+
+          ctx.fillStyle = "#64748B";
+          ctx.font = "600 11px Plus Jakarta Sans, sans-serif";
+          fillTextFitted(ctx, `Metodología: ${sl.author}`, sx + 135, sy + 92, 250);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 12.2px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, sl.desc, sx + 22, sy + 148, 368, 18, 5);
+        });
+
+      } else if (i === 26) {
+        // LÁMINA 27: GOBERNANZA Y NORMA OFICIAL DE CO-BRANDING (REGLA MAX C-00)
+        drawEditorialBlock(54, 160, 1292, 130, "GOBERNANZA DE IDENTIDAD DOCUMENTAL (MICHAEL PORTER & MARTY NEUMEIER)", "La Regla Max C-00 de Co-Branding y Preservación de Jerarquía", `Cuando ${bName} colabora con clientes, aliados o patrocinadores, la jerarquía visual debe ser nítida e inmutable. El logotipo del cliente o aliado jamás se mezcla ni se funde con los trazos de ${bName}: habita exclusivamente en una cápsula neutra aislada.`, pal.pri);
+
+        // Mitad Inferior: Demostración Visual del Co-Branding en Cápsula Neutra
+        const cbX = 54, cbW = 1292, cbY = 310;
+        drawRoundedRect(ctx, cbX, cbY, cbW, 576, isRect ? 4 : 20, "#FFFFFF", "#CBD5E1", 2);
+
+        // Lado Izquierdo: Logotipo Dominante de The Best Brand
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 12px Montserrat, sans-serif";
+        ctx.fillText("MARCA RECTORA AUTÓNOMA (LIENZO CLARO DOMINANTE)", cbX + 44, cbY + 48);
+
+        drawLogoOrEmblem(cbX + 80, cbY + 110, 240, false);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 32px Montserrat, sans-serif";
+        ctx.fillText(bUpper, cbX + 360, cbY + 200);
+        ctx.fillStyle = pal.pri;
+        ctx.font = "700 14px Plus Jakarta Sans, sans-serif";
+        ctx.fillText(tagline.toUpperCase(), cbX + 360, cbY + 230);
+
+        // Línea divisoria vertical de co-branding
+        ctx.strokeStyle = "#CBD5E1";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(cbX + cbW / 2 + 60, cbY + 40);
+        ctx.lineTo(cbX + cbW / 2 + 60, cbY + 530);
+        ctx.stroke();
+
+        ctx.fillStyle = "#64748B";
+        ctx.font = "800 16px Montserrat, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("EN ALIANZA CON", cbX + cbW / 2 + 60, cbY + 285);
+        ctx.textAlign = "left";
+
+        // Lado Derecho: La Cápsula Neutra Aislada del Aliado
+        const capX = cbX + cbW / 2 + 130, capY = cbY + 120, capW = 440, capH = 260;
+        drawRoundedRect(ctx, capX, capY, capW, capH, 16, "#F8FAFC", "#CBD5E1", 1.5);
+
+        ctx.fillStyle = "#64748B";
+        ctx.font = "800 11px Montserrat, sans-serif";
+        ctx.fillText("CÁPSULA NEUTRA AISLADA DEL CLIENTE O ALIADO", capX + 24, capY + 36);
+
+        // Simulación de logo de cliente en caja neutra
+        drawRoundedRect(ctx, capX + 30, capY + 60, capW - 60, 110, 8, "#FFFFFF", "#E2E8F0", 1);
+        ctx.fillStyle = "#94A3B8";
+        ctx.font = "800 18px Montserrat, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("[ LOGOTIPO DEL CLIENTE / PARTNER ]", capX + capW / 2, capY + 125);
+        ctx.textAlign = "left";
+
+        ctx.fillStyle = "#475569";
+        ctx.font = "500 11.5px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Aislamiento estricto: El logotipo del cliente no adopta la tipografía ni los colores de ${bName}, preservando al 100% su identidad original en su propio espacio.`, capX + 24, capY + 195, capW - 48, 17, 3);
+
+        // Rótulo de directiva al pie
+        drawRoundedRect(ctx, cbX + 44, cbY + 440, cbW - 88, 100, isRect ? 4 : 12, "#F8FAFC", pal.softTint, 1.5);
+        ctx.fillStyle = pal.pri;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        ctx.fillText("REGLA DOCUMENTAL MAX C-00 (VIGENTE)", cbX + 64, cbY + 468);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "500 12.5px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Todo documento emitido por ${bName} debe ejecutarse en Lienzo Claro (#FFFFFF) con logotipo en positivo. Si el documento es firmado por el cliente, se diseña enteramente bajo el manual del cliente sin mezclar estilos.`, cbX + 64, cbY + 490, cbW - 128, 18, 2);
+
+      } else if (i === 27) {
+        // LÁMINA 28: PAPELERÍA EN LIENZO CLARO Y APLICACIONES EJECUTIVAS (MARTY NEUMEIER & JONY IVE)
+        drawEditorialBlock(54, 160, 1292, 130, "APLICACIONES FÍSICAS EN LIENZO CLARO", "Papelería Corporativa, Hojas Membretadas y Tarjetas Ejecutivas", `La experiencia táctil en el mundo real. Cada pieza física refleja el mismo rigor gráfico: papel opalina de alto gramaje, 70% de blanco puro, logotipo positivo y acentos precisos sin saturar.`, pal.sec);
+
+        // Mockup Vectorial Izquierdo: Hoja Membretada Ejecutiva A4
+        const letX = 54, letY = 310, letW = 520, letH = 576;
+        drawRoundedRect(ctx, letX, letY, letW, letH, 16, "#FFFFFF", "#CBD5E1", 2);
+
+        // Cabezal de carta membretada
+        drawLogoOrEmblem(letX + 32, letY + 30, 48, false);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 14px Montserrat, sans-serif";
+        ctx.fillText(bUpper, letX + 90, letY + 52);
+        ctx.fillStyle = pal.pri;
+        ctx.font = "700 9.5px Plus Jakarta Sans, sans-serif";
+        ctx.fillText(tagline.toUpperCase(), letX + 90, letY + 68);
+
+        ctx.strokeStyle = "#CBD5E1";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(letX + 32, letY + 95);
+        ctx.lineTo(letX + letW - 32, letY + 95);
+        ctx.stroke();
+
+        // Líneas de texto de carta simulada
+        ctx.fillStyle = "#64748B";
+        ctx.font = "600 10.5px JetBrains Mono, monospace";
+        ctx.fillText("FECHA: NOVIEMBRE 2026 · CIUDAD DE MÉXICO", letX + 32, letY + 125);
+        ctx.fillText("REF: PROPUESTA INTEGRAL DE MARCA", letX + 32, letY + 145);
+
+        [185, 215, 245, 275, 305, 345, 375, 405, 435].forEach((ly, lIdx) => {
+          ctx.fillStyle = lIdx === 0 ? pal.pri : (lIdx === 4 ? pal.sec : "#E2E8F0");
+          ctx.fillRect(letX + 32, letY + ly, lIdx === 0 ? 180 : (lIdx % 3 === 0 ? letW - 120 : letW - 64), lIdx === 0 ? 8 : 6);
+        });
+
+        // Firma en carta
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "italic 700 13px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("Jorge Benítez «El Oso»", letX + 32, letY + 500);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 10px Montserrat, sans-serif";
+        ctx.fillText("FUNDADOR · IMPROBEARS & SUITE THE BEST", letX + 32, letY + 518);
+
+        // Pie de membrete
+        ctx.fillStyle = "#94A3B8";
+        ctx.font = "500 9px Plus Jakarta Sans, sans-serif";
+        ctx.fillText(`www.${assets.cleanSlug}.com • contacto@${assets.cleanSlug}.com • Confidencial`, letX + 32, letY + 552);
+
+        // Mockups Derechos: Tarjeta Ejecutiva (Frente y Vuelta) + Firma Digital
+        const crdX = 600, crdW = 746, crdY = 310;
+
+        // Tarjeta Frente (Lienzo Blanco)
+        drawRoundedRect(ctx, crdX, crdY, 360, 210, 14, "#FFFFFF", "#CBD5E1", 2);
+        drawLogoOrEmblem(crdX + 40, crdY + 55, 100, false);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 18px Montserrat, sans-serif";
+        ctx.fillText(bUpper, crdX + 155, crdY + 105);
+        ctx.fillStyle = pal.pri;
+        ctx.font = "700 10.5px Plus Jakarta Sans, sans-serif";
+        ctx.fillText(tagline.toUpperCase(), crdX + 155, crdY + 125);
+
+        // Tarjeta Vuelta (Azul Noche Calado)
+        drawRoundedRect(ctx, crdX + 386, crdY, 360, 210, 14, pal.darkInk, pal.sec, 2);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "900 14px Montserrat, sans-serif";
+        ctx.fillText("JORGE BENÍTEZ «EL OSO»", crdX + 416, crdY + 55);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 10px Montserrat, sans-serif";
+        ctx.fillText("CHIEF ARCHITECT & FOUNDER", crdX + 416, crdY + 75);
+
+        ctx.fillStyle = "#CBD5E1";
+        ctx.font = "500 10.5px JetBrains Mono, monospace";
+        ctx.fillText("jorge.benitez@improbears.com", crdX + 416, crdY + 115);
+        ctx.fillText("+52 55 1234 5678", crdX + 416, crdY + 135);
+        ctx.fillText(`www.${assets.cleanSlug}.com`, crdX + 416, crdY + 155);
+
+        // Firma Digital Ejecutiva de Correo (Inferior Derecha)
+        drawRoundedRect(ctx, crdX, crdY + 235, crdW, 341, 16, "#F8FAFC", pal.softTint, 1.5);
+        ctx.fillStyle = pal.pri;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        ctx.fillText("FIRMA DIGITAL HOMOLOGADA PARA CORREO ELECTRÓNICO", crdX + 30, crdY + 270);
+
+        drawRoundedRect(ctx, crdX + 30, crdY + 290, crdW - 60, 165, 12, "#FFFFFF", "#E2E8F0", 1.5);
+        drawLogoOrEmblem(crdX + 50, crdY + 320, 68, false);
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 16px Montserrat, sans-serif";
+        ctx.fillText("Equipo Directivo de " + bName, crdX + 135, crdY + 342);
+
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        ctx.fillText(`Especialistas en ${sectorShort}`, crdX + 135, crdY + 364);
+
+        ctx.fillStyle = "#475569";
+        ctx.font = "500 11.5px Plus Jakarta Sans, sans-serif";
+        ctx.fillText(`Atención directa: contacto@${assets.cleanSlug}.com • WhatsApp 24/7 disponible`, crdX + 135, crdY + 392);
+        ctx.fillText(`Sitio oficial: www.${assets.cleanSlug}.com`, crdX + 135, crdY + 414);
+
+        ctx.fillStyle = "#64748B";
+        ctx.font = "500 10.5px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Regla técnica: Todas las firmas de correo corporativo deben utilizar código HTML responsivo con imágenes alojadas en CDN SSL y tipografía web segura.`, crdX + 30, crdY + 480, crdW - 60, 17, 3);
+
+      } else if (i === 28) {
+        // LÁMINA 29: ECOSISTEMA DIGITAL Y CHECKLIST DE 10 CONTROLES DE INTEGRIDAD (MICHAEL PORTER)
+        // Columna Izquierda: Mockups Digitales Responsivos (Desktop + Smartphone)
+        const dX = 54, dW = 560;
+        drawEditorialBlock(dX, 160, dW, 726, "RESPONSIVIDAD Y MOVILIDAD", "Adaptabilidad Digital en Cualquier Pantalla", `El sistema de diseño de ${bName} se adapta con fluidez desde monitores de escritorio ultrawide hasta pantallas compactas de smartphone. Los vectores matemáticos garantizan velocidad de carga instantánea y cero distorsión.`, pal.pri);
+
+        // Ventana de navegador desktop vectorial
+        const brX = dX + 30, brY = 320, brW = dW - 60, brH = 260;
+        drawRoundedRect(ctx, brX, brY, brW, brH, 12, "#FFFFFF", "#CBD5E1", 2);
+
+        // Barra superior de navegador
+        ctx.fillStyle = "#F1F5F9";
+        ctx.fillRect(brX, brY, brW, 36);
+        ctx.fillStyle = "#EF4444";
+        ctx.beginPath();
+        ctx.arc(brX + 18, brY + 18, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#F59E0B";
+        ctx.beginPath();
+        ctx.arc(brX + 34, brY + 18, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#10B981";
+        ctx.beginPath();
+        ctx.arc(brX + 50, brY + 18, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Barra de URL
+        drawRoundedRect(ctx, brX + 70, brY + 8, brW - 90, 20, 6, "#FFFFFF", "#CBD5E1", 1);
+        ctx.fillStyle = "#64748B";
+        ctx.font = "600 9.5px JetBrains Mono, monospace";
+        ctx.fillText(`https://www.${assets.cleanSlug}.com`, brX + 85, brY + 22);
+
+        // Contenido de la ventana web
+        drawLogoOrEmblem(brX + 24, brY + 54, 42, false);
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 15px Montserrat, sans-serif";
+        ctx.fillText(bUpper, brX + 76, brY + 76);
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 18px Montserrat, sans-serif";
+        fillTextFitted(ctx, `Crea tu marca en minutos con Aura`, brX + 24, brY + 130, brW - 48);
+
+        ctx.fillStyle = "#475569";
+        ctx.font = "500 11.5px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Sin semanas de espera ni costos inflados. Tu Manual de 30 Hojas listo hoy mismo.`, brX + 24, brY + 155, brW - 48, 16, 2);
+
+        drawRoundedRect(ctx, brX + 24, brY + 195, 140, 36, 18, pal.pri, pal.sec, 1.5);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "800 11px Montserrat, sans-serif";
+        ctx.fillText("Probar Demo ↗", brX + 44, brY + 218);
+
+        // Ficha inferior de velocidad
+        drawRoundedRect(ctx, dX + 30, 610, dW - 60, 245, isRect ? 4 : 14, "#F8FAFC", pal.softTint, 1.5);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 11px Montserrat, sans-serif";
+        ctx.fillText("ESTÁNDAR DE RENDIMIENTO WEB", dX + 50, 642);
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "800 15px Montserrat, sans-serif";
+        ctx.fillText("Core Web Vitals 100/100 · Carga < 1.2s", dX + 50, 668);
+
+        ctx.fillStyle = "#334155";
+        ctx.font = "500 12.2px Plus Jakarta Sans, sans-serif";
+        drawWrappedText(ctx, `Todos los activos SVG y estilos CSS están minificados y optimizados para garantizar que la plataforma obtenga puntuaciones perfectas en Google PageSpeed y sea indexada con máxima prioridad en motores de búsqueda.`, dX + 50, 694, dW - 100, 18, 6);
+
+        // Columna Derecha: Checklist de los 10 Controles de Integridad Digital
+        const chX = 640, chW = 706;
+        drawEditorialBlock(chX, 160, chW, 726, "AUDITORÍA TÉCNICA DE 10 CONTROLES", "Checklist de Verificación de Integridad Digital (10/10)", "", pal.sec);
+
+        const checkList = [
+          ["CONTROL 01", "Favicon 1:1 en formato .ICO y .PNG a 16px, 32px y 48px con nitidez absoluta."],
+          ["CONTROL 02", "OpenGraph Card para previsualización impecable al compartir enlaces en WhatsApp y LinkedIn."],
+          ["CONTROL 03", "Tipografía web con carga asíncrona (font-display: swap) para evitar saltos de maquetación."],
+          ["CONTROL 04", "Contraste accesible nivel WCAG AAA en todos los botones y textos informativos."],
+          ["CONTROL 05", "Modo Oscuro nativo utilizando la versión en negativo calado sobre fondos nocturnos."],
+          ["CONTROL 06", "Iconos de aplicación móvil en proporción 1:1 listos para iOS App Store y Google Play."],
+          ["CONTROL 07", "Archivos SVG depurados con rutas simplificadas y peso menor a 15 KB por archivo."],
+          ["CONTROL 08", "Seguridad SSL obligatoria y encabezados de protección CSP contra inyección de código."],
+          ["CONTROL 09", "Firma HTML corporativa homologada para todos los buzones de correo institucionales."],
+          ["CONTROL 10", "Bóveda de activos en la nube con acceso permanente para clientes y proveedores certificados."]
+        ];
+
+        checkList.forEach((ck, cIdx) => {
+          const cky = 246 + cIdx * 62;
+          drawRoundedRect(ctx, chX + 24, cky, chW - 48, 54, isRect ? 3 : 10, "#F8FAFC", "#E2E8F0", 1);
+
+          ctx.fillStyle = "#10B981";
+          ctx.font = "900 15px Montserrat, sans-serif";
+          ctx.fillText("✓", chX + 40, cky + 33);
+
+          ctx.fillStyle = pal.pri;
+          ctx.font = "800 11px Montserrat, sans-serif";
+          ctx.fillText(ck[0], chX + 68, cky + 24);
+
+          ctx.fillStyle = "#334155";
+          ctx.font = "500 11.5px Plus Jakarta Sans, sans-serif";
+          fillTextFitted(ctx, ck[1], chX + 160, cky + 24, chW - 220);
+
+          ctx.fillStyle = "#047857";
+          ctx.font = "800 10px JetBrains Mono, monospace";
+          ctx.fillText("CERTIFICADO", chX + chW - 130, cky + 33);
+        });
+
+      } else if (i === 29) {
+        // LÁMINA 30: COLOFÓN INSTITUCIONAL Y CERTIFICADO DE PROMULGACIÓN (MARTY NEUMEIER & MICHAEL PORTER)
+        // Gran Marco de Certificado Oficial con Doble Filete en Oro y Navy
+        const certX = 54, certY = 160, certW = 1292, certH = 726;
+        drawRoundedRect(ctx, certX, certY, certW, certH, isRect ? 4 : 24, "#FFFFFF", pal.pri, 3);
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(certX + 10, certY + 10, certW - 20, certH - 20);
+        ctx.clip();
+
+        // Filete interior dorado/secundario
+        ctx.strokeStyle = pal.sec;
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(certX + 18, certY + 18, certW - 36, certH - 36);
+
+        // Sello de agua central sutil
+        ctx.save();
+        ctx.globalAlpha = 0.04;
+        drawLogoOrEmblem(certX + certW / 2 - 200, certY + certH / 2 - 200, 400, false);
+        ctx.restore();
+
+        // Cabezal del Certificado
+        ctx.textAlign = "center";
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 13px Montserrat, sans-serif";
+        ctx.fillText("REPÚBLICA EDITORIAL DE MARCA · THE BEST BRAND", certX + certW / 2, certY + 70);
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "900 36px Montserrat, sans-serif";
+        ctx.fillText("ACTA DE CONSTITUCIÓN Y PROMULGACIÓN DE MARCA", certX + certW / 2, certY + 115);
+
+        ctx.fillStyle = pal.pri;
+        ctx.font = "700 15px Plus Jakarta Sans, sans-serif";
+        ctx.fillText(`Manual Oficial de 30 Láminas en Curvas — Edición Maestra para ${bUpper}`, certX + certW / 2, certY + 145);
+
+        // Texto formal de promulgación
+        ctx.fillStyle = "#334155";
+        ctx.font = "500 13.5px Plus Jakarta Sans, sans-serif";
+        const declX = certX + 120, declW = certW - 240;
+        const textDecl = `Por medio del presente documento, se certifica que la identidad visual, el propósito nuclear, la arquitectura de marca y las normas de ingeniería gráfica contenidas en este manual de 30 láminas han sido plenamente promulgadas y homologadas para ${bName}. A partir de esta fecha, este sistema constituye el estándar inmutable y rector para todas las aplicaciones físicas, digitales, comerciales y jurídicas de la organización, quedando prohibida cualquier desviación que comprometa su integridad.`;
+        drawWrappedText(ctx, textDecl, declX, certY + 195, declW, 22, 5);
+
+        // 3 Bloques de Certificación Formal
+        const certBlocks = [
+          ["AUTORÍA INTELECTUAL", "Ingeniería de Acqua e ImproBears", "Marco de 7 pasos fundamentado en Sinek, Carlzon, Vignelli, Rand y Neumeier."],
+          ["ARQUITECTURA DE MARCA", dna.archTitle, `Operación concentrada en marca única sin dispersión de capital en submarcas.`],
+          ["FORMATO Y VIGENCIA", "ISO 32000-1 (.PDF Vectorial)", "Vectores matemáticos en curvas puras sin pérdida de resolución a perpetuidad."]
+        ];
+
+        certBlocks.forEach((cb, cIdx) => {
+          const bx = certX + 60 + cIdx * 395;
+          const by = certY + 340;
+          drawRoundedRect(ctx, bx, by, 380, 130, isRect ? 4 : 14, "#F8FAFC", pal.softTint, 1.5);
+          ctx.fillStyle = pal.sec;
+          ctx.font = "800 10.5px Montserrat, sans-serif";
+          ctx.fillText(cb[0], bx + 20, by + 30);
+
+          ctx.fillStyle = pal.darkInk;
+          ctx.font = "800 15px Montserrat, sans-serif";
+          fillTextFitted(ctx, cb[1], bx + 20, by + 56, 340);
+
+          ctx.fillStyle = "#475569";
+          ctx.font = "500 12px Plus Jakarta Sans, sans-serif";
+          drawWrappedText(ctx, cb[2], bx + 20, by + 80, 340, 17, 2);
+        });
+
+        // Firmas Oficiales y Sello al pie del certificado
+        const sigY = certY + 540;
+
+        // Firma 1: Fundador
+        ctx.strokeStyle = pal.darkInk;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(certX + 140, sigY + 60);
+        ctx.lineTo(certX + 440, sigY + 60);
+        ctx.stroke();
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "italic 700 18px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("Jorge Benítez «El Oso»", certX + 290, sigY + 45);
+
+        ctx.font = "800 11.5px Montserrat, sans-serif";
+        ctx.fillText("JORGE BENÍTEZ «EL OSO»", certX + 290, sigY + 80);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "700 10px Plus Jakarta Sans, sans-serif";
+        ctx.fillText("Fundador · ImproBears & Suite The Best", certX + 290, sigY + 96);
+
+        // Sello Central de Certificación
+        const selCX = certX + certW / 2, selCY = sigY + 50;
+        ctx.strokeStyle = pal.pri;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(selCX, selCY, 48, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.strokeStyle = pal.sec;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(selCX, selCY, 42, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = pal.pri;
+        ctx.font = "900 12px Montserrat, sans-serif";
+        ctx.fillText("PROMULGADO", selCX, selCY - 4);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "800 9.5px JetBrains Mono, monospace";
+        ctx.fillText("OFICIAL 2026", selCX, selCY + 12);
+
+        // Firma 2: Mentor / Arquitecto de Marca
+        ctx.strokeStyle = pal.darkInk;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(certX + certW - 440, sigY + 60);
+        ctx.lineTo(certX + certW - 140, sigY + 60);
+        ctx.stroke();
+
+        ctx.fillStyle = pal.darkInk;
+        ctx.font = "italic 700 18px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("Aura Brand Architect", certX + certW - 290, sigY + 45);
+
+        ctx.font = "800 11.5px Montserrat, sans-serif";
+        ctx.fillText("AURA · MENTORA DE IDENTIDAD", certX + certW - 290, sigY + 80);
+        ctx.fillStyle = pal.sec;
+        ctx.font = "700 10px Plus Jakarta Sans, sans-serif";
+        ctx.fillText("Motor Algorítmico de Síntesis de Marca", certX + certW - 290, sigY + 96);
+
+        // Hash de Verificación Criptográfica al fondo
+        ctx.fillStyle = "#94A3B8";
+        ctx.font = "600 9.5px JetBrains Mono, monospace";
+        ctx.fillText(`HASH DE VERIFICACIÓN: SHA256-${bUpper.slice(0, 4)}-${Date.now().toString(16).toUpperCase()}-V71 · EMISIÓN LEGAL REGISTRADA`, certX + certW / 2, certY + certH - 30);
+        ctx.textAlign = "left";
+        ctx.restore();
+
+      }
+    
 
       jpegPages.push({
         dataUrl: canvas.toDataURL("image/jpeg", 0.88),
