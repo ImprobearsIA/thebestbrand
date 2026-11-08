@@ -5629,6 +5629,21 @@
              ESTADO A: SIN SESIÓN INICIADA (SOLO FORMULARIO LIMPIO DE LOGIN)
              ====================================================================== -->
         <div id="accountLoggedOutFormView" style="display:block;">
+          <!-- ACCESO RÁPIDO PARA ADMINISTRADOR (JORGE BENÍTEZ · THE BEST BRAND) -->
+          <div style="background:linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%); border:1.5px solid #4C9DE6; border-bottom:3.5px solid #FF7A00; border-radius:16px; padding:12px 14px; margin-bottom:12px; color:#FFFFFF; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; box-shadow:0 4px 14px rgba(13,37,64,0.35);">
+            <div>
+              <div style="font-size:0.86rem; font-weight:900; display:flex; align-items:center; gap:6px;">
+                <span style="color:#FF7A00;">●</span> Sesión de Administrador Oficial
+              </div>
+              <div style="font-size:0.72rem; color:#93C5FD; margin-top:2px;">
+                Jorge Benítez · ImproBears (jorge.benitez@improbears.com)
+              </div>
+            </div>
+            <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="window.tbbLoadOfficialAdminTheBestBrandData(6); closeAccountVaultModal();" style="padding:7px 14px !important; min-height:36px !important; font-size:0.75rem !important;">
+              <span>⚡ Cargar TheBestBrand (Paso 6)</span>
+            </button>
+          </div>
+
           <div style="background:#F0F9FF; border:1.5px solid #BAE6FD; border-radius:16px; padding:12px 14px; margin-bottom:12px;">
             <div style="font-size:0.95rem; font-weight:900; color:#090D16; margin-bottom:4px;">
               Inicia sesión para sincronizar tus dispositivos automáticamente
@@ -20533,7 +20548,7 @@
       <div id="tbbDiscreteProgressTrack" title="Progreso del paso actual">
         <div id="tbbDiscreteProgressFill" style="width:20%;"></div>
       </div>
-      <select id="tbbTopQuickStepJumper" aria-label="Saltar al Paso" onchange="tbbJumpToStep(Number(this.value), 1);" style="height:32px; padding:0 8px; border-radius:8px; border:1.5px solid #CBD5E1; border-bottom:2.5px solid #FF7A00; background:#FFFFFF; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#0D2540; cursor:pointer;">
+      <select id="tbbTopQuickStepJumper" aria-label="Saltar al Paso" onchange="if(this.value==='admin_tbb'){window.tbbLoadOfficialAdminTheBestBrandData(6);}else{tbbJumpToStep(Number(this.value), 1);}" style="height:32px; padding:0 8px; border-radius:8px; border:1.5px solid #CBD5E1; border-bottom:2.5px solid #FF7A00; background:#FFFFFF; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#0D2540; cursor:pointer;">
         <option value="0">Paso 0 · Inicio & Giro</option>
         <option value="1">Paso 1 · Círculo Dorado</option>
         <option value="2">Paso 2 · Touchpoints</option>
@@ -20541,7 +20556,11 @@
         <option value="4">Paso 4 · Personalidad</option>
         <option value="5">Paso 5 · Logotipos</option>
         <option value="6">Paso 6 · Manual 30 Hojas</option>
+        <option value="admin_tbb" style="color:#FF7A00; font-weight:900;">⚡ Cargar Admin (TheBestBrand)</option>
       </select>
+      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" id="tbbBtnTopAdminTbb" onclick="window.tbbLoadOfficialAdminTheBestBrandData(6)" title="Cargar perfil administrador con datos oficiales de TheBestBrand (Jorge Benítez) y abrir Brandbook de 30 Hojas" style="padding:0 9px; font-size:0.70rem; min-height:32px !important; white-space:nowrap; border-bottom:2.5px solid #FF7A00; color:#0D2540; background:#FEF3C7; border-color:#F59E0B;">
+        <span>⚡ Admin TBB</span>
+      </button>
       <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnTopStepVideo" onclick="tbbOpenCurrentStepVideoCapsule()" title="Ver Video Introductorio y Cierre de este Paso">
         <span id="tbbIconTopVideo"></span>
         <span id="tbbLblTopVideo">Video</span>
@@ -24022,6 +24041,179 @@
         }
       };
 
+      window.tbbLoadOfficialAdminTheBestBrandData = function (targetStep = 6) {
+        if (typeof playAcousticClick === "function") playAcousticClick(960, 0.08);
+
+        // 1. Establecer Cuenta de Administrador Oficial de Jorge Benítez (ImproBears)
+        window.tbbUserAccount = {
+          account_id: "acc_1a4a238d9dbdb42c66a4",
+          email: "jorge.benitez@improbears.com",
+          name: "Jorge Benítez \"El Oso\"",
+          role: "admin",
+          security_verified: true,
+          license_tier: "admin_master",
+          brand_id: "thebestbrand_master",
+          migration_code: "ADMIN-IMPROBEARS-MASTER"
+        };
+        try {
+          localStorage.setItem("tbb_user_account_v30", JSON.stringify(window.tbbUserAccount));
+          localStorage.setItem("tbb_license_active_pro_atelier", "true");
+          localStorage.setItem("tbb_license_token", "LIC-TBB-PRO-ADMIN-JORGE-BENITEZ-001");
+        } catch (e) {}
+
+        // 2. Configurar Estado del Paso 0 (Giro, Actividad y Diagnóstico Inicial)
+        window.step0State = {
+          goal: "evolve",
+          assets: "full_assets",
+          customBusinessType: "SaaS y Atelier de Identidad Visual Algorítmica con Inteligencia Artificial, diseño en curvas bezier y mentoría de voz neural de Aura",
+          hasExistingLogo: true,
+          existingBrandName: "TheBestBrand",
+          interpretedProfile: {
+            shortEssence: "Atelier SaaS de Identidad Visual Algorítmica y Brandbook de 30 Hojas en Curvas",
+            primaryActor: "Fundadores, Directores de Marca, Agencias y Emprendedores de Alto Rendimiento",
+            keyProblem: "Las agencias tradicionales tardan meses y cobran fortunas desmedidas, mientras que los creadores de logos baratos entregan archivos planos sin valor estratégico ni manual operativo.",
+            category: "Algorithmic Visual Identity & Luxury Brand Engineering"
+          }
+        };
+
+        // 3. Configurar Estado de Marca Oficial TheBestBrand (canvasState)
+        canvasState.brandName = "TheBestBrand";
+        canvasState.userLockedBrandName = true;
+        canvasState.tagline = "YOUR BRAND, NOW!!!";
+        canvasState.custom_business_type = "SaaS y Atelier de Identidad Visual Algorítmica guiado por IA y voz neural (Aura)";
+        canvasState.step0_short_essence = "Atelier SaaS de Identidad Visual Algorítmica y Brandbooks en Curvas";
+        canvasState.step0_paraphrased_essence = "Plataforma de alta dirección y diseño algorítmico que construye la identidad visual completa de tu empresa y su Manual Oficial de 30 Hojas en Curvas en minutos.";
+        canvasState.step0_buyer_actor = "Fundadores, Directores Generales, Directores de Marketing y Emprendedores Exigentes";
+        canvasState.step0_goal = "evolve";
+
+        // Paso 1: ADN de Marca y Círculo Dorado (Simon Sinek)
+        canvasState.golden_circle = "WHY (Propósito Nuclear): Democratizar la excelencia del branding de lujo y la alta dirección, permitiendo a emprendedores y directores acceder en minutos a identidades visuales matemáticamente perfectas sin pagar fortunas ni esperar semanas. HOW (Cómo): Mediante la convergencia de inteligencia artificial generativa, geometría algorítmica en curvas bezier, mentoría de voz neural de Aura y el rigor metodológico de 15 autores legendarios. WHAT (Qué): Atelier SaaS que diseña tu identidad corporativa, modela tu logotipo vectorial y genera el Manual Oficial de Marca de 30 Hojas en Curvas listo para imprenta y gobernanza corporativa.";
+        canvasState.value_offer = "Democratizar la excelencia del branding de lujo: creamos tu identidad de clase mundial y tu Manual Oficial de Marca de 30 Hojas en Curvas en minutos con IA y precisión matemática.";
+        canvasState.social_role = "Erradicar la mediocridad y la informalidad visual en las empresas, dotando a cada proyecto de un activo patrimonial inmutable que inspire confianza y atraiga clientes de alto valor.";
+        canvasState.process_steps_text = "1. Diagnóstico Estratégico y Círculo Dorado guiado por Aura · 2. Ingeniería de Touchpoints y Naming con Clases Niza · 3. Síntesis Algorítmica del Logotipo Vectorial y Despliegue del Manual de 30 Hojas.";
+        canvasState.core_message = "THE BEST BRAND — YOUR BRAND, NOW!!!: Crea tu Marca de manera profesional, ¡en minutos!";
+        canvasState.brand_persona = "La Empresa como Persona: Precisión de ingeniero, estética de atelier suizo y fuerza serena. Un aliado leal de alta tecnología que escucha, estructura y profesionaliza hombro a hombro la visión del fundador sin imponer ego.";
+        canvasState.ideal_customer = "Empresarios, directores generales y emprendedores que no tienen tiempo que perder con agencias lentas y exigen un estándar de diseño de nivel Apple o Linear.";
+
+        // Paso 2: Touchpoints (Don Norman & Bernd Schmitt)
+        canvasState.tp_before = "Redes Sociales Oficiales (LinkedIn / X / Instagram), Web Comercial (thebestbrand-studio.web.app), Aura Agente de Voz 24/7, Cuestionario Interactivo de 7 Pasos, Diagnóstico Gratuito de Marca en Minutos";
+        canvasState.tp_during = "Pasarela de Pago Rápida (Apple Pay / Tarjeta / PayPal), Generación en Tiempo Real de Logotipos en Canvas y SVG, Asesoría en Vivo de los 15 Autores Consejeros, Renderizado Instantáneo del Brandbook de 30 Hojas, Ajustes Interactivos de Color y Trazos";
+        canvasState.tp_after = "Descarga del Manual de Marca de 30 Hojas en Curvas (PDF y vectores), Paquete de Logotipos en Curvas Bezier (SVG / PNG), Certificado de Autoría y Licencia Perpetua, Portal de Clientes y Soporte Continuo ImproBears, Encuesta de Satisfacción y Calidad de Servicio";
+
+        tpExtractedItems.before = [
+          "Redes Sociales Oficiales (LinkedIn / X / Instagram)",
+          "Web Comercial (thebestbrand-studio.web.app)",
+          "Aura Agente de Voz 24/7",
+          "Cuestionario Interactivo de 7 Pasos",
+          "Diagnóstico Gratuito de Marca en Minutos"
+        ];
+        tpExtractedItems.during = [
+          "Pasarela de Pago Rápida (Apple Pay / Tarjeta / PayPal)",
+          "Generación en Tiempo Real de Logotipos en Canvas y SVG",
+          "Asesoría en Vivo de los 15 Autores Consejeros",
+          "Renderizado Instantáneo del Brandbook de 30 Hojas",
+          "Ajustes Interactivos de Color, Trazos y Tipografía"
+        ];
+        tpExtractedItems.after = [
+          "Descarga del Manual de Marca de 30 Hojas en Curvas (PDF)",
+          "Paquete de Logotipos en Curvas Bezier (SVG / PNG)",
+          "Certificado de Autoría y Licencia Perpetua",
+          "Portal de Clientes y Soporte Continuo ImproBears",
+          "Encuesta de Satisfacción y Calidad de Servicio"
+        ];
+
+        // Paso 3: Naming (Alexandra Watkins & Steve Jobs)
+        canvasState.official_naming_origin = "THE BEST BRAND ('La Mejor Marca'): Naming directo, categórico, de alta recordación y promesa monolítica insuperable.";
+        canvasState.naming_pronunciation = "Də Bɛst Brænd (Inglés) / The Best Brand";
+        canvasState.naming_criteria = "SMILE (Suggestive, Memorable, Imagery, Legs, Emotional) — Calificación: 10/10.";
+        canvasState.primary_nice_class = "CLASE 42 (Software como Servicio SaaS, Diseño Gráfico e IA) & CLASE 35 (Estrategia y Gestión de Marcas)";
+
+        window.acceptedNamingVault = [
+          {
+            name: "TheBestBrand",
+            category: "Software SaaS & Luxury Brand Atelier",
+            verdict: "Aprobado 100% · Criterio SMILE & Clases Niza 42 y 35",
+            classes: "Clase 42 y 35"
+          }
+        ];
+
+        // Paso 4: Arquetipos y Sliders Bipolares (Carl Jung & Margaret Mark)
+        canvasState.archetype_primary = "El Sabio (Rigor técnico, metodología comprobada, precisión)";
+        canvasState.archetype_secondary = "El Creador (Vanguardia, diseño algorítmico, estética de alta costura)";
+        canvasState.tone_of_voice = "Autoritativo, claro, ejecutivo, inspirador, tecnológico y empático";
+        canvasState.primary_font = "Montserrat";
+        canvasState.secondary_font = "Avenir Next";
+
+        bipolarSliderValues.organico_geometrico = 0.75;
+        bipolarSliderValues.tradicional_innovador = 0.85;
+        bipolarSliderValues.minimalista_complejo = -0.45;
+        bipolarSliderValues.amigable_autoritario = 0.35;
+        bipolarSliderValues.humano_tecnologico = 0.60;
+        bipolarSliderValues.serio_jugueton = -0.40;
+        bipolarSliderValues.convencional_rebelde = 0.50;
+
+        // Paso 5: Colores Oficiales (Paul Rand & Sagi Haviv)
+        canvasState.primary_color = "#0D2540";
+        canvasState.secondary_color = "#426EAE";
+        canvasState.accent_color = "#FF7A00";
+        canvasState.color_cmyk_primary = "C:95 M:75 Y:35 K:65 (Navy Profundo)";
+        canvasState.color_cmyk_secondary = "C:75 M:45 Y:0 K:0 (Sapphire ImproBears)";
+        canvasState.color_cmyk_accent = "C:0 M:60 Y:100 K:0 (Naranja Acento ImproBears)";
+        canvasState.pantone_primary = "Pantone 534 C";
+        canvasState.pantone_secondary = "Pantone 7684 C";
+        canvasState.pantone_accent = "Pantone 1505 C";
+
+        // Paso 6: Configurar Estado del Estudio y Logotipo
+        const emblemSvg = window.tbbBuildOfficialBrandbook1EmblemSVG ? window.tbbBuildOfficialBrandbook1EmblemSVG(220) : "";
+        window.tbbState = {
+          activeMode: "step",
+          step: Number(targetStep || 6),
+          subStep: 1,
+          plateIdx: 0,
+          logoParadigm: "volumetric_glass",
+          logoPriHex: "#0D2540",
+          logoSecHex: "#426EAE",
+          logoDarkBg: false,
+          logoScale: 1.0,
+          selectedFontFamily: "Montserrat",
+          logoIterationIndex: 1,
+          logoIterations: [
+            {
+              idx: 1,
+              conceptLabel: "Orbe Atómico de Resonancia Cuántica TheBestBrand (Oficial)",
+              archetype: "volumetric_atom_core",
+              paradigm: "volumetric_glass",
+              priHex: "#0D2540",
+              secHex: "#426EAE",
+              accentHex: "#FF7A00",
+              fontFamily: "Montserrat",
+              darkBg: false,
+              scale: 1.0,
+              layout: "horizontal",
+              note: "Logotipo oficial de TheBestBrand: 8 elipses en curvas bezier y núcleo activo en naranja #FF7A00.",
+              svgOverlayAdditions: "",
+              geminiCustomSvg: emblemSvg
+            }
+          ]
+        };
+
+        if (typeof saveBrandSessionToLocalStorage === "function") {
+          saveBrandSessionToLocalStorage(false, true);
+        }
+        if (typeof updateAccountHeaderBadges === "function") {
+          updateAccountHeaderBadges();
+        }
+        if (typeof renderLiveBrandContinuityStrip === "function") {
+          renderLiveBrandContinuityStrip();
+        }
+        if (typeof window.triggerAuraEmpatheticFeedback === "function") {
+          window.triggerAuraEmpatheticFeedback("admin_thebestbrand_loaded", "Perfil de Administrador TheBestBrand cargado con éxito. Explorando el Manual de 30 Hojas en Curvas.", true);
+        }
+        if (typeof window.renderTbbZeroScrollStage === "function") {
+          window.renderTbbZeroScrollStage();
+        }
+      };
+
       window.tbbJumpToStep = function (stepNum, subStepNum = 1) {
         window.tbbState.activeMode = "step";
         window.tbbState.step = Number(stepNum || 0);
@@ -24239,14 +24431,22 @@
       };
 
       setTimeout(() => {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const brandParam = (params.get("brand") || params.get("admin") || "").toLowerCase();
+          if (brandParam === "thebestbrand" || brandParam === "tbb" || params.get("admin") === "1" || params.get("admin") === "true") {
+            const stepParam = parseInt(params.get("step") || "6", 10);
+            window.tbbLoadOfficialAdminTheBestBrandData(isNaN(stepParam) ? 6 : stepParam);
+          }
+        } catch (e) {}
         window.renderTbbZeroScrollStage();
         window.tbbStartAuraSplashBootEngine();
       }, 90);
     })();
   </script>
-  <script src="/universal-brandbook-30-engine.js?v=69.0"></script>
-  <script src="/improbears-preset-engine.js?v=69.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=69.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=69.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=70.0"></script>
+  <script src="/improbears-preset-engine.js?v=70.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=70.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=70.0"></script>
 </body>
 </html>
