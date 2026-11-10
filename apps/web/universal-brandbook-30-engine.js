@@ -1868,6 +1868,7 @@
     if (typeof window.canvasState === "object" && window.canvasState) return window.canvasState;
     return {};
   }
+  window.getActiveCanvasState = getActiveCanvasState;
 
   // Metadatos Oficiales de las 30 Láminas adaptados dinámicamente a la Arquitectura de Marca, Oferta y Estilo de Trazos del Usuario
   window.getUniversalImproBearsGuide30PlatesMeta = function (brandNameOpt) {
@@ -2206,14 +2207,99 @@
     ];
   };
 
+  window.renderBeneficSinglePlateHTML = function (plateIdx, forPrint) {
+    return window.renderUniversalImproBearsGuideSinglePlateHTML(plateIdx, forPrint);
+  };
+
+  window.buildComplete30PlatesStandaloneHTML = function () {
+    return window.buildUniversal30PlatesStandaloneHTML();
+  };
+
+
+  window.buildActiveBrandProfileForV80 = function () {
+    const cs = getActiveCanvasState();
+    const st = window.tbbState || {};
+    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "The Best Brand";
+    const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "the_best_brand";
+    
+    // Check if matching in CATALOG_30_MAP
+    if (window.CATALOG_30_MAP) {
+      if (window.CATALOG_30_MAP[slug]) return window.CATALOG_30_MAP[slug];
+      if (window.CATALOG_30_MAP[bName.toLowerCase()]) return window.CATALOG_30_MAP[bName.toLowerCase()];
+      const altSlug = slug.replace(/_athletics|_ip|_soc|_trauma|_group|_lab|_master|_films|_solar|_dry|_consulting|_ingredients|_studio|_ai/g, "");
+      if (window.CATALOG_30_MAP[altSlug]) return window.CATALOG_30_MAP[altSlug];
+    }
+
+    const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
+    const mods = (activeIt && activeIt.mods) || {};
+    const priFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || cs.primary_font || "Montserrat";
+    const secFont = "Avenir Next";
+    const pal = extractColorsFromLogoState(activeIt, st);
+    const symCorePos = typeof window.synthesizeSystemicSymbol180 === "function" ? window.synthesizeSystemicSymbol180("bb_v80_pos") : "";
+    const symCoreNeg = typeof window.synthesizeSystemicSymbol180 === "function" ? window.synthesizeSystemicSymbol180("bb_v80_neg") : symCorePos;
+
+    return {
+      name: bName,
+      slug: slug,
+      tagline: (cs.tagline || cs.step0_short_essence || cs.custom_business_type || "SISTEMA INTEGRAL DE IDENTIDAD").trim(),
+      category: cs.custom_business_type || "Servicios Especializados",
+      giro: (cs.custom_business_type || cs.step0_short_essence || "Soluciones estratégicas, ingeniería de valor y experiencia de marca.").trim(),
+      buyer: (cs.ideal_customer || cs.step0_buyer_actor || "Líderes de empresas y clientes que exigen excelencia técnica.").trim(),
+      why: (cs.golden_circle || "Porque liberar el tiempo mental y operar con orden transforma el valor de cualquier negocio.").trim(),
+      how: (cs.process_steps_text || "Metodología rigurosa, tecnología de última generación y acompañamiento humano.").trim(),
+      what: (cs.value_offer || "Identidad oficial de marca, manual de 30 láminas y activos vectoriales.").trim(),
+      persona: (cs.brand_persona || "Líder profesional, analítico y socio leal que escucha y acompaña con excelencia.").trim(),
+      niza: "Clase Oficial de Registro",
+      tpBefore: (typeof window.tpExtractedItems === "object" && window.tpExtractedItems?.before) || ["Contenido digital", "Atención ágil", "Diagnóstico inicial", "Propuesta clara"],
+      tpDuring: (typeof window.tpExtractedItems === "object" && window.tpExtractedItems?.during) || ["Arranque puntual", "Ejecución técnica", "Acompañamiento en vivo", "Entrega y cobro claro"],
+      tpAfter: (typeof window.tpExtractedItems === "object" && window.tpExtractedItems?.after) || ["Manual y activos", "Garantía activa", "Beneficios leales", "Mejora continua"],
+      colors: {
+        pri: pal.pri || "#0D2540",
+        sec: pal.sec || "#426EAE",
+        acc: pal.accentLight || pal.sec || "#FF7A00",
+        darkInk: pal.darkInk || "#0D2540",
+        midGray: pal.midGray || "#707070",
+        lightGray: pal.lightGray || "#E6E6E6",
+        softBg: pal.softTint || "#F8FAFC",
+        white: "#FFFFFF",
+        pantonePri: hexToPantone(pal.pri, 1),
+        pantoneSec: hexToPantone(pal.sec, 2),
+        cmykPri: hexToCmyk(pal.pri),
+        cmykSec: hexToCmyk(pal.sec)
+      },
+      primaryFont: priFont,
+      secondaryFont: secFont,
+      isEstablished: false,
+      isMultibrand: /improbears/i.test(bName),
+      svgCore: symCorePos,
+      svgCoreNeg: symCoreNeg
+    };
+  };
+
   window.renderUniversalImproBearsGuideSinglePlateHTML = function (plateIdx, forPrint) {
     const idx = Math.max(0, Math.min(29, Number(plateIdx || 0)));
     const cs = getActiveCanvasState();
     const st = window.tbbState || {};
+    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+
+    // Motor V80 Flawless (Lienzo Claro #FFFFFF · Directiva Max C-00)
+    if (window.TBB_V80_PLATES_GENERATOR && typeof window.TBB_V80_PLATES_GENERATOR.generateBrandbook30Plates === "function") {
+      const activeBrandObj = window.buildActiveBrandProfileForV80();
+      const plates = window.TBB_V80_PLATES_GENERATOR.generateBrandbook30Plates(activeBrandObj);
+      const v80Plate = plates[idx] || plates[0];
+      if (forPrint) {
+        return v80Plate;
+      }
+      setTimeout(() => {
+        if (typeof window.scaleImproBearsPlateInStage === "function") {
+          window.scaleImproBearsPlateInStage();
+        }
+      }, 30);
+      return `<div class="tbb-improbears-stage-wrapper"><div class="tbb-improbears-stage-scaler">${v80Plate}</div></div>`;
+    }
+
     const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
     const mods = (activeIt && activeIt.mods) || {};
-
-    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
     const bUpper = bName.toUpperCase();
     const rawGiro = (cs.custom_business_type || cs.step0_short_essence || "Soluciones Estratégicas, Ingeniería de Valor y Experiencia de Marca").trim();
     const bGiro = window.tbbRefineUserCopyOrthoAndClarity(rawGiro, "giro", bName, rawGiro);
@@ -4517,6 +4603,13 @@
     const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
     const pal = extractColorsFromLogoState(activeIt, st);
 
+    if (!document.getElementById("tbb-v80-styles") && window.TBB_V80_PLATES_GENERATOR && typeof window.TBB_V80_PLATES_GENERATOR.getTheBestBrandStyles === "function") {
+      const stEl = document.createElement("style");
+      stEl.id = "tbb-v80-styles";
+      stEl.textContent = window.TBB_V80_PLATES_GENERATOR.getTheBestBrandStyles();
+      document.head.appendChild(stEl);
+    }
+
     const sheets = [];
     for (let i = 0; i < 30; i++) {
       const rawPlate = window.isImproBearsActiveBrand && window.isImproBearsActiveBrand() && typeof window.renderImproBearsSinglePlateHTML === "function"
@@ -4566,7 +4659,7 @@
       const availW = Math.min(window.innerWidth || 1122, container.clientWidth || 1122) - 20;
       const pages = container.querySelectorAll(".tbb-inapp-a4-page");
       pages.forEach((page) => {
-        const plate = page.querySelector(".benefic-plate");
+        const plate = page.querySelector(".benefic-plate, .tbb-plate");
         if (!plate) return;
         plate.style.transformOrigin = "top left";
         if (availW < 1122) {
@@ -7621,7 +7714,8 @@
     const cs = getActiveCanvasState();
     const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
-    const fileName = `Manual_Identidad_30_Laminas_${slug}.pdf`;
+    const fileName = `Manual_Marca_30_Laminas_${slug}.pdf`;
+    const isTBB = /the_?best_?brand/i.test(slug);
 
     const origText = triggerBtn ? triggerBtn.innerHTML : "";
     const setStatus = (txt) => {
@@ -7632,7 +7726,71 @@
       }
     };
 
+    if (isTBB) {
+      try {
+        setStatus("Descargando PDF Oficial V80.0 (4.08 MB)...");
+        const resp = await fetch("/brandbooks/Manual_Marca_30_Laminas_TheBestBrand_Oficial_v80.pdf");
+        if (resp.ok) {
+          const blob = await resp.blob();
+          await window.tbbDeliverFileNativeOrDownload(
+            blob,
+            "Manual_Marca_30_Laminas_TheBestBrand_Oficial_v80.pdf",
+            "application/pdf",
+            "Manual Oficial 30 Láminas — The Best Brand"
+          );
+          if (triggerBtn) {
+            triggerBtn.disabled = false;
+            triggerBtn.style.opacity = "1";
+            triggerBtn.textContent = "PDF Oficial de 30 Láminas Listo ✓";
+            setTimeout(() => { triggerBtn.innerHTML = origText; }, 3500);
+          }
+          return;
+        }
+      } catch (err) {
+        console.warn("Direct PDF download fallback:", err);
+      }
+    }
+
     try {
+      setStatus("Compilando PDF Vectorial en Curvas (30 Láminas)...");
+      // 1. Intentar primero compilación 100% Vectorial en Curvas en el servidor con Chromium Headless (`page.pdf`)
+      try {
+        const vectorHtml = (typeof window.buildUniversal30PlatesStandaloneHTML === "function")
+          ? window.buildUniversal30PlatesStandaloneHTML()
+          : "";
+        if (vectorHtml && vectorHtml.length > 500) {
+          const vecResp = await fetch("/api/step6/download-pdf", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              brand_name: bName,
+              html_override: vectorHtml
+            })
+          });
+          if (vecResp.ok) {
+            const vecBlob = await vecResp.blob();
+            if (vecBlob && vecBlob.size > 10000) {
+              if (triggerBtn) {
+                triggerBtn.disabled = false;
+                triggerBtn.style.opacity = "1";
+                triggerBtn.textContent = "PDF Vectorial en Curvas Listo (.PDF) ✓";
+                setTimeout(() => { triggerBtn.innerHTML = origText; }, 3500);
+              }
+              await window.tbbDeliverFileNativeOrDownload(
+                vecBlob,
+                fileName,
+                "application/pdf",
+                `Manual Oficial 30 Láminas (Vectorial) — ${bName}`
+              );
+              return;
+            }
+          }
+        }
+      } catch (vecErr) {
+        console.warn("Server vector PDF compilation unavailable, falling back to local generator:", vecErr);
+      }
+
+      // 2. Respaldo offline ultrarrápido en el navegador
       setStatus("Preparando PDF de 30 Láminas...");
       const pdfBlob = await window.generate30PlatesPdfBlobUltraFast((cur, tot) => {
         setStatus(`Generando PDF (${cur}/${tot})...`);
@@ -7666,9 +7824,16 @@
   window.buildUniversal30PlatesStandaloneHTML = function () {
     const cs = getActiveCanvasState();
     const st = window.tbbState || {};
-    const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
     const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
+    const isTBB = /the_?best_?brand/i.test(slug);
+
+    if (window.TBB_V80_PLATES_GENERATOR && typeof window.TBB_V80_PLATES_GENERATOR.generateFullBrandbookDocHtml === "function") {
+      const activeBrandObj = window.buildActiveBrandProfileForV80();
+      return window.TBB_V80_PLATES_GENERATOR.generateFullBrandbookDocHtml(activeBrandObj);
+    }
+
+    const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
     const pal = extractColorsFromLogoState(activeIt, st);
     const originUrl = window.location.origin;
 

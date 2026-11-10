@@ -72,10 +72,10 @@
   ];
 
   const GEMINI_TTS_MODELS = [
-    "gemini-3.8-flash-lite-tts",
-    "gemini-3.8-flash-tts",
+    "gemini-2.5-flash-preview-tts",
     "gemini-3.1-flash-tts-preview",
-    "gemini-2.5-flash-preview-tts"
+    "gemini-3.8-flash-lite-tts",
+    "gemini-3.8-flash-tts"
   ];
 
   window._tbbGeminiModel429CooldownUntil = window._tbbGeminiModel429CooldownUntil || {};
@@ -127,7 +127,7 @@
       const k = localStorage.getItem("tbb_gemini_api_key");
       if (k && k.trim().length > 10) return k.trim();
     } catch (e) {}
-    return "AIzaSyByQl8lrqiK5R4d" + "ZQSQA-b2qSxli8ctZQE";
+    return "";
   }
 
   function base64ToUint8Array(base64Str) {
@@ -567,28 +567,29 @@
     }
 
     const apiKey = getGeminiApiKey();
-    if (!apiKey) return null;
 
-    // 1. Intentar primero con Gemini 3.8 Live WebSocket (rápido, fluido y sin cuota diaria de 10 llamadas)
-    const livePayload = await synthesizeViaGeminiLiveWebSocket(
-      cleanText,
-      voiceName,
-      langCode,
-      maxDurationSec,
-      apiKey
-    );
-    if (livePayload && livePayload.wavBytes && livePayload.wavBytes.byteLength > 100) {
-      if (window._tbbGeminiTtsCache.size > 80) {
-        const firstKey = window._tbbGeminiTtsCache.keys().next().value;
-        window._tbbGeminiTtsCache.delete(firstKey);
+    // 1. Intentar primero con Gemini 3.8 Live WebSocket si el usuario proveyó apiKey explícita
+    if (apiKey) {
+      const livePayload = await synthesizeViaGeminiLiveWebSocket(
+        cleanText,
+        voiceName,
+        langCode,
+        maxDurationSec,
+        apiKey
+      );
+      if (livePayload && livePayload.wavBytes && livePayload.wavBytes.byteLength > 100) {
+        if (window._tbbGeminiTtsCache.size > 80) {
+          const firstKey = window._tbbGeminiTtsCache.keys().next().value;
+          window._tbbGeminiTtsCache.delete(firstKey);
+        }
+        window._tbbGeminiTtsCache.set(cacheKey, livePayload);
+        idbSaveVoiceClip(cacheKey, livePayload);
+        window._tbbLastGeminiVoiceModelUsed = livePayload.modelUsed;
+        return livePayload;
       }
-      window._tbbGeminiTtsCache.set(cacheKey, livePayload);
-      idbSaveVoiceClip(cacheKey, livePayload);
-      window._tbbLastGeminiVoiceModelUsed = livePayload.modelUsed;
-      return livePayload;
     }
 
-    // 2. Respaldo REST con memoria de enfriamiento si un modelo devuelve 429
+    // 2. Respaldo REST vía Proxy Blindado Backend (`/api/v1/gemini/proxy`) o directo si hay apiKey
     const now = Date.now();
     for (let i = 0; i < GEMINI_TTS_MODELS.length; i++) {
       const modelName = GEMINI_TTS_MODELS[i];
@@ -598,13 +599,17 @@
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 7200);
       try {
+        const endpointUrl = apiKey
+          ? `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(apiKey)}`
+          : "/api/v1/gemini/proxy";
         const res = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(apiKey)}`,
+          endpointUrl,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             signal: controller.signal,
             body: JSON.stringify({
+              model: modelName,
               contents: [
                 {
                   parts: [{ text: cleanText }]

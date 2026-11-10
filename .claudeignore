@@ -1,0 +1,42 @@
+# ==============================================================================
+# IMPROBEARS — Exclusiones FinOps para Claude Code & Antigravity (60-80% Ahorro)
+# ==============================================================================
+node_modules/
+.venv/
+venv/
+__pycache__/
+.git/
+dist/
+build/
+.next/
+coverage/
+*.pyc
+*.pyo
+*.DS_Store
+
+# Backups pesados y snapshots históricos (No leer en contexto LLM)
+backup_improbears_live_*/
+_BACKUPS_PRE_CLAUDE_CODE_SYNC/
+*backup*.html
+index_pre_*.html
+index_v11_backup.html
+*.bak
+*.tmp
+
+# Capturas forenses crudas y multimedia pesada (Usar REA CLI o ResolveMCP en su lugar)
+*.har
+*.saz
+*.pcap
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.zip
+*.tar.gz
+
+# Protección de llaves y credenciales sensibles
+.env
+.env.*
+.zoho_credentials*.json
+token.json
+cookies.txt

@@ -1,0 +1,1597 @@
+// =========================================================================
+// CATÁLOGO MAESTRO DE 30 EMPRENDEDORES (THE BEST BRAND V80.0)
+// Diversidad Total · Giros Reales · Directiva Max C-00
+// =========================================================================
+
+export const ENTREPRENEURS_30 = [
+  {
+    "id": 1,
+    "name": "Maison Levain",
+    "slug": "maison_levain",
+    "tagline": "PANADERÍA DE MASA MADRE & FERMENTACIÓN LENTA",
+    "category": "Comestibles / Panadería Artesanal",
+    "giro": "Panadería francesa tradicional especializada en hogazas de masa madre de fermentación natural de 48 horas, viennoiserie hojaldrada con mantequilla AOC y repostería rústica.",
+    "buyer": "Familias, chefs y comensales que buscan sabor profundo, digestibilidad superior y materias primas limpias sin aditivos químicos ni mejoradores industriales.",
+    "why": "Porque el verdadero pan es alimento sagrado que solo la paciencia, el grano entero agroecológico y el fermento vivo pueden honrar.",
+    "how": "Cuidamos masa madre viva centenaria, harinas molidas a la piedra y horneado artesanal sobre piso de piedra refractaria.",
+    "what": "Hogazas rústicas de centeno y espelta, croissants de mantequilla francesa, baguettes de fermentación en frío y brioche de vainilla natural.",
+    "persona": "Maestro panadero con rigor de relojero y calidez de hogar: amasa antes del amanecer y explica con orgullo la corteza crujiente y la miga alveolada a cada comensal.",
+    "niza": "Clase 30 (Pan, harinas, preparaciones a base de cereales, pastelería y confitería).",
+    "tpBefore": [
+      "Perfil en Instagram con videos del greñado de hogazas y el crujido de la corteza al salir del horno",
+      "Tienda online con menú semanal de horneado y apartado de hogazas en prelanzamiento",
+      "Aroma a pan caliente perceptible a dos cuadras del obrador desde las 6:30 AM",
+      "Menú impreso en papel kraft reciclado con mapa de procedencia de los trigos limpios"
+    ],
+    "tpDuring": [
+      "Bienvenida con degustación de pan campesino tibio con mantequilla de rancho y flor de sal",
+      "Empaque en bolsas de papel microperforado que conservan la corteza crocante durante el traslado",
+      "Recomendación experta del panadero sobre maridajes de quesos, mermeladas y vinos",
+      "Cobro ágil con terminal contactless y ticket digital enviado de inmediato al WhatsApp del cliente"
+    ],
+    "tpAfter": [
+      "Guía impresa de conservación del pan de masa madre y técnicas de tostado perfecto en sartén",
+      "Suscripción semanal de Pan Fresco a Domicilio con entrega garantizada cada martes y viernes",
+      "Invitación a talleres bimensuales de iniciación a la masa madre casera para clientes leales",
+      "Encuesta de 1 toque sobre textura y humedad de la miga para ajuste fino del lote siguiente"
+    ],
+    "colors": {
+      "pri": "#854D0E",
+      "sec": "#D97706",
+      "acc": "#F59E0B",
+      "darkInk": "#292524",
+      "midGray": "#78716C",
+      "lightGray": "#E7E5E4",
+      "softBg": "#FAF8F5",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 7558 C",
+      "pantoneSec": "Pantone 7549 C",
+      "cmykPri": "C:15 M:45 Y:90 K:48",
+      "cmykSec": "C:5 M:50 Y:95 K:0"
+    },
+    "primaryFont": "Playfair Display",
+    "secondaryFont": "Montserrat",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#FAF8F5\" stroke=\"#D97706\" stroke-width=\"1.8\" stroke-dasharray=\"4,4\"/><path d=\"M 68 140 C 64 110, 54 86, 68 54 C 62 70, 58 90, 68 140 Z\" fill=\"#D97706\"/><path d=\"M 68 76 C 54 74, 46 66, 44 58 C 52 60, 62 66, 68 76 Z\" fill=\"#F59E0B\"/><path d=\"M 66 94 C 52 92, 44 84, 42 76 C 50 78, 60 84, 66 94 Z\" fill=\"#F59E0B\"/><path d=\"M 67 112 C 53 110, 45 102, 43 94 C 51 96, 61 102, 67 112 Z\" fill=\"#F59E0B\"/><path d=\"M 112 140 C 116 110, 126 86, 112 54 C 118 70, 122 90, 112 140 Z\" fill=\"#D97706\"/><path d=\"M 112 76 C 126 74, 134 66, 136 58 C 128 60, 118 66, 112 76 Z\" fill=\"#F59E0B\"/><path d=\"M 114 94 C 128 92, 136 84, 138 76 C 130 78, 120 84, 114 94 Z\" fill=\"#F59E0B\"/><path d=\"M 113 112 C 127 110, 135 102, 137 94 C 129 96, 119 102, 113 112 Z\" fill=\"#F59E0B\"/><path d=\"M 52 120 C 52 86, 128 86, 128 120 C 128 132, 52 132, 52 120 Z\" fill=\"#854D0E\" stroke=\"#5C3407\" stroke-width=\"2\"/><path d=\"M 64 112 Q 78 94 92 112\" fill=\"none\" stroke=\"#FDE68A\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><path d=\"M 88 112 Q 102 94 116 112\" fill=\"none\" stroke=\"#FDE68A\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><path d=\"M 88 42 L 92 42 L 92 78 L 88 78 Z\" fill=\"#78716C\"/><path d=\"M 85 40 Q 90 28 95 40 L 93 48 L 87 48 Z\" fill=\"#D97706\"/><circle cx=\"90\" cy=\"34\" r=\"2.5\" fill=\"#FAF8F5\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"none\" stroke=\"#F59E0B\" stroke-width=\"1.8\" stroke-dasharray=\"4,4\"/><path d=\"M 68 140 C 64 110, 54 86, 68 54 C 62 70, 58 90, 68 140 Z\" fill=\"#F59E0B\"/><path d=\"M 68 76 C 54 74, 46 66, 44 58 C 52 60, 62 66, 68 76 Z\" fill=\"#FDE68A\"/><path d=\"M 66 94 C 52 92, 44 84, 42 76 C 50 78, 60 84, 66 94 Z\" fill=\"#FDE68A\"/><path d=\"M 67 112 C 53 110, 45 102, 43 94 C 51 96, 61 102, 67 112 Z\" fill=\"#FDE68A\"/><path d=\"M 112 140 C 116 110, 126 86, 112 54 C 118 70, 122 90, 112 140 Z\" fill=\"#F59E0B\"/><path d=\"M 112 76 C 126 74, 134 66, 136 58 C 128 60, 118 66, 112 76 Z\" fill=\"#FDE68A\"/><path d=\"M 114 94 C 128 92, 136 84, 138 76 C 130 78, 120 84, 114 94 Z\" fill=\"#FDE68A\"/><path d=\"M 113 112 C 127 110, 135 102, 137 94 C 129 96, 119 102, 113 112 Z\" fill=\"#FDE68A\"/><path d=\"M 52 120 C 52 86, 128 86, 128 120 C 128 132, 52 132, 52 120 Z\" fill=\"#FFFFFF\" stroke=\"#F59E0B\" stroke-width=\"2\"/><path d=\"M 64 112 Q 78 94 92 112\" fill=\"none\" stroke=\"#D97706\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><path d=\"M 88 112 Q 102 94 116 112\" fill=\"none\" stroke=\"#D97706\" stroke-width=\"2.6\" stroke-linecap=\"round\"/><path d=\"M 88 42 L 92 42 L 92 78 L 88 78 Z\" fill=\"#E7E5E4\"/><path d=\"M 85 40 Q 90 28 95 40 L 93 48 L 87 48 Z\" fill=\"#F59E0B\"/><circle cx=\"90\" cy=\"34\" r=\"2.5\" fill=\"#292524\"/></g>"
+  },
+  {
+    "id": 2,
+    "name": "Vértice & Sombra",
+    "slug": "vertice_y_sombra",
+    "tagline": "ARQUITECTURA BIOCLIMÁTICA & PAISAJE PASIVO",
+    "category": "Arquitectura & Construcción",
+    "giro": "Taller de arquitectura bioclimática de autor especializado en residencias sustentables de alta gama, envolventes térmicas pasivas y paisajismo nativo regenerativo.",
+    "buyer": "Familias e inversionistas conscientes que buscan hogares confortables que reduzcan al mínimo el consumo energético sin renunciar a la belleza estética.",
+    "why": "Porque habitar con dignidad significa sincronizar el refugio humano con la luz del sol, la dirección del viento y la sombra de los árboles.",
+    "how": "Calculamos trayectorias solares 3D, empleamos muros de inercia térmica en tierra compactada y diseñamos celosías de ventilación cruzada.",
+    "what": "Proyectos ejecutivos bioclimáticos, dirección técnica de obra sustentable, consultoría de eficiencia LEED y diseño de jardines xerófilos.",
+    "persona": "Arquitecto bioclimático con mente de físico y alma de botánico: escucha cómo vive la familia y orienta cada ventana hacia la brisa más fresca.",
+    "niza": "Clase 42 (Servicios de arquitectura, diseño urbanístico, ingeniería bioclimática y consultoría medioambiental).",
+    "tpBefore": [
+      "Monografía digital descargable con análisis de asoleamiento y balance térmico de proyectos construidos",
+      "Recorridos inmersivos 3D en web mostrando la sombra proyectada en solsticios y equinoccios",
+      "Diagnóstico preliminar bioclimático del terreno en 48 horas con datos satelitales de viento",
+      "Conferencias y artículos técnicos en revistas internacionales de arquitectura pasiva"
+    ],
+    "tpDuring": [
+      "Presentación de maqueta física seccionada en maderas locales y acrílico solar",
+      "Bitácora fotográfica semanal de obra con medición térmica in situ de muros y techos",
+      "Visitas conjuntas a canteras y viveros regionales para selección directa de materiales y vegetación",
+      "Contrato transparente a precio alzado con hitos constructivos certificados ante notario"
+    ],
+    "tpAfter": [
+      "Manual del Usuario Bioclimático con instrucciones para operar celosías y ventilas en cada estación",
+      "Monitoreo térmico post-ocupación durante el primer año con sensores IoT en estancia y recámaras",
+      "Póliza de garantía extendida de 5 años en impermeabilización y hermeticidad de carpinterías",
+      "Sesión fotográfica editorial de la residencia habitada para publicación en libros de arquitectura"
+    ],
+    "colors": {
+      "pri": "#0F3A40",
+      "sec": "#2A6F68",
+      "acc": "#D97706",
+      "darkInk": "#0B1E22",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F8FAFC",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 5463 C",
+      "pantoneSec": "Pantone 7475 C",
+      "cmykPri": "C:80 M:40 Y:50 K:60",
+      "cmykSec": "C:70 M:20 Y:45 K:15"
+    },
+    "primaryFont": "Montserrat",
+    "secondaryFont": "Inter",
+    "isEstablished": true,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><line x1=\"20\" y1=\"160\" x2=\"160\" y2=\"160\" stroke=\"#E2E8F0\" stroke-width=\"1.2\"/><line x1=\"20\" y1=\"160\" x2=\"20\" y2=\"20\" stroke=\"#E2E8F0\" stroke-width=\"1.2\"/><polygon points=\"90,26 150,56 150,126 90,96\" fill=\"#2A6F68\" opacity=\"0.85\"/><polygon points=\"90,26 30,56 30,126 90,96\" fill=\"#0F3A40\"/><polygon points=\"90,96 150,126 90,156 30,126\" fill=\"#D97706\" opacity=\"0.90\"/><line x1=\"42\" y1=\"62\" x2=\"42\" y2=\"118\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><line x1=\"56\" y1=\"69\" x2=\"56\" y2=\"125\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><line x1=\"70\" y1=\"76\" x2=\"70\" y2=\"132\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><line x1=\"84\" y1=\"83\" x2=\"84\" y2=\"139\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><circle cx=\"145\" cy=\"30\" r=\"10\" fill=\"#D97706\"/><line x1=\"135\" y1=\"36\" x2=\"105\" y2=\"54\" stroke=\"#D97706\" stroke-width=\"2\" stroke-dasharray=\"3,3\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><line x1=\"20\" y1=\"160\" x2=\"160\" y2=\"160\" stroke=\"#2A6F68\" stroke-width=\"1.2\"/><line x1=\"20\" y1=\"160\" x2=\"20\" y2=\"20\" stroke=\"#2A6F68\" stroke-width=\"1.2\"/><polygon points=\"90,26 150,56 150,126 90,96\" fill=\"#2A6F68\"/><polygon points=\"90,26 30,56 30,126 90,96\" fill=\"#FFFFFF\"/><polygon points=\"90,96 150,126 90,156 30,126\" fill=\"#D97706\"/><line x1=\"42\" y1=\"62\" x2=\"42\" y2=\"118\" stroke=\"#0F3A40\" stroke-width=\"2\"/><line x1=\"56\" y1=\"69\" x2=\"56\" y2=\"125\" stroke=\"#0F3A40\" stroke-width=\"2\"/><line x1=\"70\" y1=\"76\" x2=\"70\" y2=\"132\" stroke=\"#0F3A40\" stroke-width=\"2\"/><line x1=\"84\" y1=\"83\" x2=\"84\" y2=\"139\" stroke=\"#0F3A40\" stroke-width=\"2\"/><circle cx=\"145\" cy=\"30\" r=\"10\" fill=\"#D97706\"/><line x1=\"135\" y1=\"36\" x2=\"105\" y2=\"54\" stroke=\"#D97706\" stroke-width=\"2\" stroke-dasharray=\"3,3\"/></g>"
+  },
+  {
+    "id": 3,
+    "name": "Ábaco & Ley",
+    "slug": "abaco_y_ley",
+    "tagline": "AUDITORÍA CORPORATIVA & ESTRATEGIA FISCAL INTEGRAL",
+    "category": "Servicios / Consultoría Fiscal & Legal",
+    "giro": "Firma boutique de abogados fiscalistas y contadores públicos certificados, especializada en planeación patrimonial, auditoría financiera forense y litigio ante tribunales federales.",
+    "buyer": "Consejos de administración, directores generales y family offices que demandan blindaje fiscal riguroso y transparencia contable ante autoridades recaudatorias.",
+    "why": "Porque la verdadera tranquilidad de un empresario reside en una contabilidad matemáticamente exacta y legalmente inexpugnable.",
+    "how": "Modelamos escenarios fiscales con algoritmos de predicción, auditamos libro por libro bajo normas NIF internacionales y defendemos cada peso con la ley en la mano.",
+    "what": "Dictámenes fiscales para efectos fiscales, reestructuras corporativas, cumplimiento regulatorio antilavado y defensa tributaria en juicio de amparo.",
+    "persona": "Socio fiscalista con mente de ajedrecista y serenidad de juez: escucha los planes de expansión del cliente y diseña una armadura que optimiza su patrimonio.",
+    "niza": "Clase 35 (Servicios de contabilidad, auditoría tributaria y consultoría de negocios) y Clase 45 (Servicios jurídicos y defensa fiscal).",
+    "tpBefore": [
+      "Informe Trimestral de Criterios Vinculativos de la Autoridad Fiscal distribuido a clientes VIP",
+      "Calculadora web confidencial para proyectar el impacto de reformas tributarias en la empresa",
+      "Diagnóstico preliminar de 360° en riesgos de discrepancia fiscal y cumplimiento de nómina",
+      "Seminarios ejecutivos a puerta cerrada sobre gobierno corporativo y sucesión patrimonial"
+    ],
+    "tpDuring": [
+      "Reunión mensual del Comité Fiscal con entrega de carpeta ejecutiva en piel con sellos de auditoría",
+      "Acceso cifrado a la bóveda digital con respaldos de CFDI y dictámenes firmados electrónicamente",
+      "Línea roja directa de WhatsApp para resolver dudas tributarias de urgencia en menos de 20 minutos",
+      "Simulacros anuales de auditoría para capacitar al equipo contable interno de la empresa"
+    ],
+    "tpAfter": [
+      "Certificado Anual de Blindaje Fiscal con opinión de cumplimiento 100% positiva emitida por el SAT",
+      "Archivo documental digital indexado y listo para responder a requerimientos en menos de 24 horas",
+      "Revisión semestral del plan de pensiones y distribución de dividendos de los accionistas",
+      "Almuerzo anual de planeación estratégica para proyectar el crecimiento del año fiscal venidero"
+    ],
+    "colors": {
+      "pri": "#0B1E36",
+      "sec": "#1E3A8A",
+      "acc": "#CA8A04",
+      "darkInk": "#070F1C",
+      "midGray": "#6B7280",
+      "lightGray": "#E5E7EB",
+      "softBg": "#F9FAFB",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 289 C",
+      "pantoneSec": "Pantone 280 C",
+      "cmykPri": "C:90 M:70 Y:30 K:70",
+      "cmykSec": "C:95 M:75 Y:10 K:20"
+    },
+    "primaryFont": "Cinzel",
+    "secondaryFont": "Plus Jakarta Sans",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><rect x=\"74\" y=\"146\" width=\"32\" height=\"12\" rx=\"2\" fill=\"#0B1E36\"/><line x1=\"90\" y1=\"46\" x2=\"90\" y2=\"146\" stroke=\"#0B1E36\" stroke-width=\"4\"/><line x1=\"32\" y1=\"52\" x2=\"148\" y2=\"52\" stroke=\"#0B1E36\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><circle cx=\"90\" cy=\"52\" r=\"6\" fill=\"#CA8A04\"/><line x1=\"36\" y1=\"52\" x2=\"36\" y2=\"108\" stroke=\"#1E3A8A\" stroke-width=\"1.8\"/><line x1=\"56\" y1=\"52\" x2=\"56\" y2=\"108\" stroke=\"#1E3A8A\" stroke-width=\"1.8\"/><circle cx=\"36\" cy=\"68\" r=\"4.5\" fill=\"#CA8A04\"/><circle cx=\"36\" cy=\"80\" r=\"4.5\" fill=\"#CA8A04\"/><circle cx=\"56\" cy=\"74\" r=\"4.5\" fill=\"#CA8A04\"/><path d=\"M 28 108 C 28 126, 64 126, 64 108 Z\" fill=\"#0B1E36\"/><line x1=\"124\" y1=\"52\" x2=\"124\" y2=\"108\" stroke=\"#1E3A8A\" stroke-width=\"1.8\"/><line x1=\"144\" y1=\"52\" x2=\"144\" y2=\"108\" stroke=\"#1E3A8A\" stroke-width=\"1.8\"/><circle cx=\"124\" cy=\"74\" r=\"4.5\" fill=\"#CA8A04\"/><circle cx=\"144\" cy=\"68\" r=\"4.5\" fill=\"#CA8A04\"/><circle cx=\"144\" cy=\"80\" r=\"4.5\" fill=\"#CA8A04\"/><path d=\"M 116 108 C 116 126, 152 126, 152 108 Z\" fill=\"#0B1E36\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><rect x=\"74\" y=\"146\" width=\"32\" height=\"12\" rx=\"2\" fill=\"#FFFFFF\"/><line x1=\"90\" y1=\"46\" x2=\"90\" y2=\"146\" stroke=\"#FFFFFF\" stroke-width=\"4\"/><line x1=\"32\" y1=\"52\" x2=\"148\" y2=\"52\" stroke=\"#FFFFFF\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><circle cx=\"90\" cy=\"52\" r=\"6\" fill=\"#CA8A04\"/><line x1=\"36\" y1=\"52\" x2=\"36\" y2=\"108\" stroke=\"#E5E7EB\" stroke-width=\"1.8\"/><line x1=\"56\" y1=\"52\" x2=\"56\" y2=\"108\" stroke=\"#E5E7EB\" stroke-width=\"1.8\"/><circle cx=\"36\" cy=\"68\" r=\"4.5\" fill=\"#CA8A04\"/><circle cx=\"36\" cy=\"80\" r=\"4.5\" fill=\"#CA8A04\"/><circle cx=\"56\" cy=\"74\" r=\"4.5\" fill=\"#CA8A04\"/><path d=\"M 28 108 C 28 126, 64 126, 64 108 Z\" fill=\"#CA8A04\"/><line x1=\"124\" y1=\"52\" x2=\"124\" y2=\"108\" stroke=\"#E5E7EB\" stroke-width=\"1.8\"/><line x1=\"144\" y1=\"52\" x2=\"144\" y2=\"108\" stroke=\"#E5E7EB\" stroke-width=\"1.8\"/><circle cx=\"124\" cy=\"74\" r=\"4.5\" fill=\"#CA8A04\"/><circle cx=\"144\" cy=\"68\" r=\"4.5\" fill=\"#CA8A04\"/><circle cx=\"144\" cy=\"80\" r=\"4.5\" fill=\"#CA8A04\"/><path d=\"M 116 108 C 116 126, 152 126, 152 108 Z\" fill=\"#CA8A04\"/></g>"
+  },
+  {
+    "id": 4,
+    "name": "AeroVent Athletics",
+    "slug": "aerovent_athletics",
+    "tagline": "INDUMENTARIA TÉCNICA & CALZADO DE ALTO RENDIMIENTO",
+    "category": "Tienda / Ropa Deportiva & Calzado",
+    "giro": "Marca de ropa deportiva técnica y calzado de trail running diseñada con textiles inteligentes de ventilación biomecánica, peso ultraligero y absorción de impacto.",
+    "buyer": "Maratonistas, atletas de montaña y corredores urbanos que exigen máxima ligereza, transpirabilidad absoluta y durabilidad en condiciones extremas.",
+    "why": "Porque cada gramo y cada segundo cuentan cuando la mente y el cuerpo desafían la gravedad y los límites de la resistencia humana.",
+    "how": "Diseñamos con escaneos de termografía corporal, telas con microcanales de evaporación y suelas con compuesto de caucho vulcanizado de agarre milimétrico.",
+    "what": "Playeras termoselladas sin costuras, shorts de compresión muscular, rompevientos hidrofóbicos y calzado de trail con placa de carbono integrada.",
+    "persona": "Ingeniero textil y ultra-corredor: prueba personalmente cada prenda en carreras de 100 millas bajo lluvia, sol y barro antes de mandarla a producción.",
+    "niza": "Clase 25 (Prendas de vestir, calzado y artículos de sombrerería para deporte).",
+    "tpBefore": [
+      "Pruebas de túnel de viento transmitidas en vivo mostrando la reducción de resistencia del textil",
+      "Guía interactiva de calzado según pisada (pronador, neutro, supinador) y tipo de terreno",
+      "Stand interactivo en las principales expo-maratones del país con prueba de pisada 3D gratuita",
+      "Comunidad en Strava con retos mensuales de kilometraje y recompensas exclusivas"
+    ],
+    "tpDuring": [
+      "Empaque tubular en aluminio reciclado con malla transpirable reutilizable para llevar a carreras",
+      "Medición de talla con sensor óptico en tienda o kit de prueba en casa con devolución sin costo",
+      "Instrucciones de cuidado térmico impresas con tinta reflectiva de alta visibilidad nocturna",
+      "Prueba de carrera en banda sin fin con cámaras de alta velocidad en boutique oficial"
+    ],
+    "tpAfter": [
+      "Programa de reciclaje técnico: recibe crédito en tienda al devolver tenis usados para trituración",
+      "Garantía de rendimiento de 500 kilómetros con cambio inmediato ante cualquier desprendimiento",
+      "Acceso VIP a entrenamientos guiados por atletas olímpicos embajadores de la marca",
+      "Recordatorio automático de renovación de calzado cuando se alcanza el kilometraje recomendado"
+    ],
+    "colors": {
+      "pri": "#1E40AF",
+      "sec": "#2563EB",
+      "acc": "#84CC16",
+      "darkInk": "#0F172A",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F8FAFC",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 286 C",
+      "pantoneSec": "Pantone 2728 C",
+      "cmykPri": "C:95 M:75 Y:0 K:5",
+      "cmykSec": "C:85 M:55 Y:0 K:0"
+    },
+    "primaryFont": "Space Grotesk",
+    "secondaryFont": "Montserrat",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><path d=\"M 30 140 L 90 32 L 150 140 L 126 140 L 90 72 L 54 140 Z\" fill=\"#1E40AF\"/><path d=\"M 44 148 L 90 60 L 136 148 L 118 148 L 90 92 L 62 148 Z\" fill=\"#2563EB\"/><path d=\"M 76 100 L 90 44 L 104 100 L 90 88 Z\" fill=\"#84CC16\"/><circle cx=\"90\" cy=\"24\" r=\"5\" fill=\"#84CC16\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><path d=\"M 30 140 L 90 32 L 150 140 L 126 140 L 90 72 L 54 140 Z\" fill=\"#FFFFFF\"/><path d=\"M 44 148 L 90 60 L 136 148 L 118 148 L 90 92 L 62 148 Z\" fill=\"#84CC16\"/><path d=\"M 76 100 L 90 44 L 104 100 L 90 88 Z\" fill=\"#2563EB\"/><circle cx=\"90\" cy=\"24\" r=\"5\" fill=\"#84CC16\"/></g>"
+  },
+  {
+    "id": 5,
+    "name": "DentaLumina",
+    "slug": "dentalumina",
+    "tagline": "ODONTOLOGÍA DIGITAL, CIRUGÍA GUIADA & ESTÉTICA DENTAL",
+    "category": "Profesional / Odontología & Salud",
+    "giro": "Clínica odontológica de alta especialidad que combina escaneo intraoral 3D, diseño digital de sonrisa, implantes guiados por computadora y carillas de porcelana ultra-delgadas.",
+    "buyer": "Ejecutivos, novias, pacientes y profesionales que buscan perfeccionar su sonrisa con procedimientos indoloros, mínimamente invasivos y resultados de armonía natural.",
+    "why": "Porque una sonrisa auténtica y saludable transforma la autoestima, la seguridad personal y la forma en que una persona se conecta con el mundo.",
+    "how": "Eliminamos moldes molestos con escáner óptico HD, simulamos el resultado final antes de tocar una pieza y tallamos porcelana con fresado robótico CAD/CAM.",
+    "what": "Diseño de Sonrisa Digital (DSD), carillas cerámicas Feldespáticas, ortodoncia invisible con alineadores transparentes y blanqueamiento láser.",
+    "persona": "Cirujano dentista con sensibilidad de artista y precisión de cirujano plástico: trata al paciente con empatía absoluta, explica cada fase y garantiza cero dolor.",
+    "niza": "Clase 44 (Servicios médicos y odontológicos, clínicas dentales, higiene y estética bucodental).",
+    "tpBefore": [
+      "Simulador virtual en web que muestra cómo luciría tu sonrisa con escaneo de una selfie",
+      "Tour fotográfico de las instalaciones mostrando quirófanos estériles y suites privadas de relajación",
+      "Citas gestionadas por WhatsApp con recordatorio automático y ubicación Waze con valet parking",
+      "Testimonios en video en alta definición de pacientes reales mostrando el antes y después"
+    ],
+    "tpDuring": [
+      "Sala de espera con aromaterapia relajante, selección de café orgánico y sillón con masaje lumbar",
+      "Uso de lentes de realidad virtual durante el tratamiento para ver películas y aislar ruidos",
+      "Anestesia computarizada indolora dosificada gota a gota para eliminar cualquier molestia",
+      "Fotografía clínica profesional en estudio fotográfico propio para comparar cada avance"
+    ],
+    "tpAfter": [
+      "Kit de bienvenida con cepillo sónico recargable, cera ortodóntica y pasta remineralizante",
+      "Mensaje personalizado del doctor a las 8:00 PM consultando cómo va la recuperación",
+      "Certificado de autenticidad y garantía de 10 años en porcelanas y aditamentos de titanio",
+      "Recordatorio automático de profilaxis y pulido preventivo cada 6 meses"
+    ],
+    "colors": {
+      "pri": "#0284C7",
+      "sec": "#0EA5E9",
+      "acc": "#06B6D4",
+      "darkInk": "#082F49",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F0F9FF",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 300 C",
+      "pantoneSec": "Pantone 299 C",
+      "cmykPri": "C:80 M:30 Y:0 K:0",
+      "cmykSec": "C:65 M:15 Y:0 K:0"
+    },
+    "primaryFont": "Plus Jakarta Sans",
+    "secondaryFont": "Inter",
+    "isEstablished": true,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><path d=\"M 90 26 C 60 26, 42 48, 42 80 C 42 116, 62 152, 74 160 C 82 165, 88 152, 90 144 C 92 152, 98 165, 106 160 C 118 152, 138 116, 138 80 C 138 48, 120 26, 90 26 Z\" fill=\"#0284C7\"/><path d=\"M 90 32 C 66 32, 50 50, 50 78 C 50 110, 68 142, 78 150 C 84 154, 88 144, 90 138 C 92 144, 96 154, 102 150 C 112 142, 130 110, 130 78 C 130 50, 114 32, 90 32 Z\" fill=\"#0EA5E9\"/><path d=\"M 64 54 C 70 42, 80 38, 90 38 C 84 46, 76 56, 72 70 C 68 64, 66 58, 64 54 Z\" fill=\"#FFFFFF\" opacity=\"0.65\"/><path d=\"M 142 30 L 145 38 L 153 41 L 145 44 L 142 52 L 139 44 L 131 41 L 139 38 Z\" fill=\"#06B6D4\" stroke=\"#FFFFFF\" stroke-width=\"1.2\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><path d=\"M 90 26 C 60 26, 42 48, 42 80 C 42 116, 62 152, 74 160 C 82 165, 88 152, 90 144 C 92 152, 98 165, 106 160 C 118 152, 138 116, 138 80 C 138 48, 120 26, 90 26 Z\" fill=\"#FFFFFF\"/><path d=\"M 90 32 C 66 32, 50 50, 50 78 C 50 110, 68 142, 78 150 C 84 154, 88 144, 90 138 C 92 144, 96 154, 102 150 C 112 142, 130 110, 130 78 C 130 50, 114 32, 90 32 Z\" fill=\"#0EA5E9\"/><path d=\"M 64 54 C 70 42, 80 38, 90 38 C 84 46, 76 56, 72 70 C 68 64, 66 58, 64 54 Z\" fill=\"#082F49\" opacity=\"0.30\"/><path d=\"M 142 30 L 145 38 L 153 41 L 145 44 L 142 52 L 139 44 L 131 41 L 139 38 Z\" fill=\"#06B6D4\" stroke=\"#FFFFFF\" stroke-width=\"1.2\"/></g>"
+  },
+  {
+    "id": 6,
+    "name": "LexProtect IP",
+    "slug": "lexprotect_ip",
+    "tagline": "PROPIEDAD INTELECTUAL, PATENTES & DERECHO TECNOLÓGICO",
+    "category": "Servicios / Despacho Jurídico de Patentes",
+    "giro": "Firma legal especializada en registro internacional de marcas y patentes, secretos industriales, derechos de autor en software e inteligencia artificial y litigio contra piratería.",
+    "buyer": "Startups tecnológicas, laboratorios farmacéuticos, diseñadores y empresas creadoras de valor intelectual que necesitan blindar sus invenciones en mercados globales.",
+    "why": "Porque una gran idea sin registro legal no te pertenece; defender la innovación es garantizar el futuro de quienes se atreven a crear.",
+    "how": "Realizamos búsquedas fonéticas y del estado del arte en bases de datos mundiales (IMPI, USPTO, EPO, WIPO) y redactamos memorias técnicas inatacables.",
+    "what": "Patentes de invención, modelos de utilidad, registros de marca multiclase, contratos de cesión de derechos y ciber-litigio de nombres de dominio.",
+    "persona": "Abogado de patentes con formación en ingeniería: comprende el algoritmo o la fórmula química tan profundamente como el código de leyes que la protege.",
+    "niza": "Clase 45 (Servicios jurídicos, gestión de propiedad intelectual, concesión de licencias de patentes y litigio de marcas).",
+    "tpBefore": [
+      "Búsqueda fonética preliminar gratuita de viabilidad de marca entregada en 2 horas por correo",
+      "Portal con monitor de marcas que alerta sobre solicitudes de competidores con nombres similares",
+      "Calculadora online de tasas oficiales para registro de patentes en México, EE.UU. y Europa",
+      "Webinars mensuales sobre protección de algoritmos de Machine Learning y marcas registradas"
+    ],
+    "tpDuring": [
+      "Entrega del expediente de solicitud con sello digital y código QR de seguimiento ante el IMPI",
+      "Panel de control privado para consultar en tiempo real el estatus de trámites en 140 países",
+      "Redacción estratégica de oposiciones legales contra solicitudes que intenten invadir tu mercado",
+      "Facturación por honorarios fijos transparentes sin costos ocultos de paquetería o gestoría"
+    ],
+    "tpAfter": [
+      "Envío del Título de Registro Oficial enmarcado en madera fina con grabado en placa metálica",
+      "Vigilancia marcaria automatizada 24/7 durante los 10 años de vigencia del título legal",
+      "Recordatorio oportuno para la Declaración de Uso Real y Efectivo al tercer año del registro",
+      "Asesoría exprés para redactar contratos de franquicia y licenciamiento comercial de la marca"
+    ],
+    "colors": {
+      "pri": "#111827",
+      "sec": "#374151",
+      "acc": "#D97706",
+      "darkInk": "#030712",
+      "midGray": "#6B7280",
+      "lightGray": "#E5E7EB",
+      "softBg": "#F9FAFB",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone Black 6 C",
+      "pantoneSec": "Pantone 446 C",
+      "cmykPri": "C:60 M:50 Y:40 K:100",
+      "cmykSec": "C:40 M:30 Y:20 K:70"
+    },
+    "primaryFont": "Cormorant Garamond",
+    "secondaryFont": "Montserrat",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><path d=\"M 90 22 L 148 44 C 148 100, 126 142, 90 162 C 54 142, 32 100, 32 44 Z\" fill=\"#111827\" stroke=\"#D97706\" stroke-width=\"2.2\"/><path d=\"M 90 32 L 138 50 C 138 98, 120 134, 90 150 C 60 134, 42 98, 42 50 Z\" fill=\"#374151\"/><path d=\"M 90 46 L 102 78 L 102 116 L 90 128 L 78 116 L 78 78 Z\" fill=\"#D97706\"/><line x1=\"90\" y1=\"46\" x2=\"90\" y2=\"108\" stroke=\"#111827\" stroke-width=\"2\"/><circle cx=\"90\" cy=\"108\" r=\"3.5\" fill=\"#111827\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><path d=\"M 90 22 L 148 44 C 148 100, 126 142, 90 162 C 54 142, 32 100, 32 44 Z\" fill=\"#FFFFFF\" stroke=\"#D97706\" stroke-width=\"2.2\"/><path d=\"M 90 32 L 138 50 C 138 98, 120 134, 90 150 C 60 134, 42 98, 42 50 Z\" fill=\"#D97706\"/><path d=\"M 90 46 L 102 78 L 102 116 L 90 128 L 78 116 L 78 78 Z\" fill=\"#FFFFFF\"/><line x1=\"90\" y1=\"46\" x2=\"90\" y2=\"108\" stroke=\"#D97706\" stroke-width=\"2\"/><circle cx=\"90\" cy=\"108\" r=\"3.5\" fill=\"#D97706\"/></g>"
+  },
+  {
+    "id": 7,
+    "name": "Brasa & Nori",
+    "slug": "brasa_y_nori",
+    "tagline": "COCINA DE FUEGO NIKKEI & BARRA OMAKASE",
+    "category": "Comestibles / Restaurante Nikkei & Fusión",
+    "giro": "Restaurante de alta cocina nikkei que fusiona el rigor y la pureza del corte japonés con la intensidad del fuego de leña de encino y los ajíes del Perú y México.",
+    "buyer": "Foodies cosmopolitas, parejas y grupos de amigos que buscan una experiencia sensorial vibrante, coctelería botánica de autor y maridajes inolvidables.",
+    "why": "Porque cuando la precisión milimétrica del corte crudo se encuentra con el humo salvaje de la brasa, la gastronomía trasciende en pura emoción.",
+    "how": "Seleccionamos pesca del día sustentable de cooperativas ribereñas, asamos con carbón binchotan sin humo y elaboramos salsas de fermentación propia.",
+    "what": "Nigiris flameados al soplete con mantequilla trufada, anticuchos de pulpo a la brasa, tiraditos de hamachi con ají amarillo y barra omakase de 9 tiempos.",
+    "persona": "Itamae apasionado con delantal de cuero y cuchillo yanagiba: atiende la barra con reverencia y explica la historia de cada bocado antes de colocarlo en tu plato.",
+    "niza": "Clase 43 (Servicios de restauración, restaurantes de sushi y brasa, bares y catering gourmet).",
+    "tpBefore": [
+      "Feed de Instagram con fotografía macro de cortes de atún aleta azul y chispas de fuego",
+      "Sistema de reservación por OpenTable integrado con confirmación instantánea por WhatsApp",
+      "Menú degustación publicado diariamente según la pesca fresca disponible en lonja",
+      "Fachada sobria en madera quemada Shou Sugi Ban con luz tenue y aroma sutil a encino"
+    ],
+    "tpDuring": [
+      "Bienvenida en la barra con toalla húmeda Oshibori caliente con aroma a té verde y cítricos",
+      "Servicio sincronizado en vajilla de cerámica negra artesanal hecha por artesanos de Oaxaca",
+      "Cata guiada de sakes artesanales y mezcales de agave silvestre por el sommelier de la casa",
+      "Demostración en vivo del corte de pescado y técnica de soplado frente al comensal"
+    ],
+    "tpAfter": [
+      "Infusión de cortesía de jengibre y zacate limón servida en taza térmica para el camino",
+      "Envío digital de la comanda detallando los nombres de cada pieza degustada y su origen",
+      "Invitación preferente a las noches mensuales de ronqueo de atún en vivo con el chef invitado",
+      "Tarjeta de cliente frecuente que desbloquea bocados secretos en visitas subsecuentes"
+    ],
+    "colors": {
+      "pri": "#18181B",
+      "sec": "#DC2626",
+      "acc": "#F59E0B",
+      "darkInk": "#09090B",
+      "midGray": "#71717A",
+      "lightGray": "#E4E4E7",
+      "softBg": "#FAFAFA",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone Black 7 C",
+      "pantoneSec": "Pantone 186 C",
+      "cmykPri": "C:50 M:40 Y:30 K:95",
+      "cmykSec": "C:0 M:95 Y:90 K:0"
+    },
+    "primaryFont": "Syne",
+    "secondaryFont": "Montserrat",
+    "isEstablished": true,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"74\" fill=\"#18181B\"/><path d=\"M 90 28 C 118 42, 138 76, 126 112 C 114 148, 72 158, 56 128 C 44 104, 60 80, 80 72 C 68 84, 68 100, 78 108 C 88 116, 102 108, 106 94 C 110 76, 96 52, 90 28 Z\" fill=\"#DC2626\"/><path d=\"M 92 68 C 104 80, 108 96, 98 108 C 90 116, 78 112, 74 104 C 80 102, 86 96, 88 88 C 90 80, 88 74, 92 68 Z\" fill=\"#F59E0B\"/><line x1=\"36\" y1=\"46\" x2=\"144\" y2=\"134\" stroke=\"#FAF8F5\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"50\" y1=\"36\" x2=\"134\" y2=\"148\" stroke=\"#FAF8F5\" stroke-width=\"3\" stroke-linecap=\"round\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"74\" fill=\"#FFFFFF\"/><path d=\"M 90 28 C 118 42, 138 76, 126 112 C 114 148, 72 158, 56 128 C 44 104, 60 80, 80 72 C 68 84, 68 100, 78 108 C 88 116, 102 108, 106 94 C 110 76, 96 52, 90 28 Z\" fill=\"#DC2626\"/><path d=\"M 92 68 C 104 80, 108 96, 98 108 C 90 116, 78 112, 74 104 C 80 102, 86 96, 88 88 C 90 80, 88 74, 92 68 Z\" fill=\"#F59E0B\"/><line x1=\"36\" y1=\"46\" x2=\"144\" y2=\"134\" stroke=\"#18181B\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"50\" y1=\"36\" x2=\"134\" y2=\"148\" stroke=\"#18181B\" stroke-width=\"3\" stroke-linecap=\"round\"/></g>"
+  },
+  {
+    "id": 8,
+    "name": "Titanium Forge",
+    "slug": "titanium_forge",
+    "tagline": "GIMNASIO DE FUERZA, HALTEROFILIA & CALISTENIA DE ALTO RENDIMIENTO",
+    "category": "Servicios / Gimnasio & Entrenamiento",
+    "giro": "Centro de entrenamiento de fuerza pura, halterofilia olímpica y calistenia avanzada, equipado con barras de competencia calibradas, plataformas de madera y asesoría biomecánica.",
+    "buyer": "Atletas de fuerza, powerlifters y personas comprometidas que rechazan los gimnasios comerciales de plástico y buscan construir poder muscular real y disciplina inquebrantable.",
+    "why": "Porque la fuerza física no es vanidad; es la armadura sobre la cual se cimientan la resiliencia mental y la longevidad del ser humano.",
+    "how": "Diseñamos progresiones de sobrecarga basadas en datos, enseñamos técnica milimétrica de levantamiento y forjamos una hermandad donde nadie entrena solo.",
+    "what": "Membresías de acceso libre, programas periodizados de fuerza, coaching biomecánico personalizado y talleres de arrancada olímpica.",
+    "persona": "Entrenador jefe y ex-halterista: corrige tu postura con un compás en la mirada, aplaude tu esfuerzo con magnesia en las manos y te exige superarte sin excusas.",
+    "niza": "Clase 41 (Servicios de entrenamiento físico, gimnasios de halterofilia, clubes deportivos y preparación de atletas).",
+    "tpBefore": [
+      "Video cinemático en YouTube mostrando el silencio tenso antes de levantar 250 kg de peso muerto",
+      "Calculadora web de 1RM (repetición máxima) y test de movilidad articular online gratuito",
+      "Clase de prueba presencial de 90 minutos con diagnóstico técnico de sentadilla y press de banca",
+      "Instalaciones industriales con ventilación cruzada natural y pisos de caucho de alta densidad"
+    ],
+    "tpDuring": [
+      "Asignación de casillero metálico numerado con toalla de algodón pesado y bote de magnesio líquido",
+      "Supervisión activa del coach en cada serie para garantizar rango de movimiento completo y seguro",
+      "Pizarrón comunitario donde se registran los nuevos récords personales logrados en el día",
+      "Barra de recuperación con batidos de proteína aislada limpia, electrolitos y fruta fresca"
+    ],
+    "tpAfter": [
+      "App móvil para registrar cargas, volumen semanal y gráficos de progresión de fuerza",
+      "Chequeo mensual de composición corporal por bioimpedancia médica con nutriólogo deportivo",
+      "Competencias internas trimestrales de levantamiento con jueces certificados y medallas de acero",
+      "Descuento en tiendas de equipo técnico: cinturones de palanca, rodilleras y calzado de halterofilia"
+    ],
+    "colors": {
+      "pri": "#334155",
+      "sec": "#475569",
+      "acc": "#EA580C",
+      "darkInk": "#0F172A",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F8FAFC",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 431 C",
+      "pantoneSec": "Pantone 430 C",
+      "cmykPri": "C:55 M:40 Y:30 K:40",
+      "cmykSec": "C:45 M:30 Y:25 K:30"
+    },
+    "primaryFont": "Montserrat",
+    "secondaryFont": "Space Grotesk",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><polygon points=\"90,16 154,52 154,128 90,164 26,128 26,52\" fill=\"#334155\"/><polygon points=\"90,26 144,57 144,123 90,154 36,123 36,57\" fill=\"#0F172A\"/><path d=\"M 46 80 L 134 80 L 126 96 L 106 96 L 110 126 L 70 126 L 74 96 L 54 96 Z\" fill=\"#475569\"/><path d=\"M 38 80 L 52 80 L 52 92 L 42 92 Z\" fill=\"#EA580C\"/><circle cx=\"90\" cy=\"54\" r=\"8\" fill=\"#EA580C\"/><path d=\"M 86 42 L 94 42 L 94 66 L 86 66 Z\" fill=\"#FFFFFF\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><polygon points=\"90,16 154,52 154,128 90,164 26,128 26,52\" fill=\"#FFFFFF\"/><polygon points=\"90,26 144,57 144,123 90,154 36,123 36,57\" fill=\"#334155\"/><path d=\"M 46 80 L 134 80 L 126 96 L 106 96 L 110 126 L 70 126 L 74 96 L 54 96 Z\" fill=\"#EA580C\"/><path d=\"M 38 80 L 52 80 L 52 92 L 42 92 Z\" fill=\"#FFFFFF\"/><circle cx=\"90\" cy=\"54\" r=\"8\" fill=\"#FFFFFF\"/><path d=\"M 86 42 L 94 42 L 94 66 L 86 66 Z\" fill=\"#EA580C\"/></g>"
+  },
+  {
+    "id": 9,
+    "name": "Grano Silvestre",
+    "slug": "grano_silvestre",
+    "tagline": "CAFÉ DE ESPECIALIDAD & MICRO-TOSTADURÍA DE ALTURA",
+    "category": "Comestibles / Café de Especialidad",
+    "giro": "Tostaduría de café de especialidad de origen ético con puntuación SCA superior a 86, tostado en pequeños lotes con perfil de curva térmica y cafetería de métodos artesanales.",
+    "buyer": "Amantes del buen café, baristas y nómadas digitales que valoran la trazabilidad de la finca, las notas sensoriales complejas y el comercio justo con productores locales.",
+    "why": "Porque una taza de café excepcional es el puente que conecta el trabajo digno del agricultor en la montaña con la lucidez y el placer del citadino.",
+    "how": "Compramos directamente a fincas sustentables de Oaxaca, Chiapas y Veracruz, catamos cada lote y tostamos para resaltar notas frutales y florales naturales.",
+    "what": "Bolsas de café de grano entero con fecha de tueste, servicio de barra de espresso y métodos lentos (V60, Chemex, Aeropress, Cold Brew).",
+    "persona": "Tostador y catador Q-Grader: huele la molienda con reverencia y te enseña a percibir los matices de jazmín, cacao y ciruela amarilla en cada sorbo.",
+    "niza": "Clase 30 (Café, granos de café tostados, bebidas a base de café y sucedáneos de café).",
+    "tpBefore": [
+      "Mapa interactivo en la tienda online mostrando la altitud, varietal y nombre del productor de cada microlote",
+      "Guías ilustradas de preparación en casa para Chemex, cafetera italiana y prensa francesa",
+      "Aroma embriagador a café recién tostado en el obrador los martes y viernes por la mañana",
+      "Prueba de molienda y degustación de café en grano antes de realizar la compra"
+    ],
+    "tpDuring": [
+      "Explicación sensorial del barista sobre la temperatura y tiempo de extracción de tu método elegido",
+      "Empaque en bolsas herméticas con válvula desgasificadora y cierre zip reutilizable",
+      "Acompañamiento con vaso de agua mineral fría con gas para limpiar el paladar antes de probar el café",
+      "Posibilidad de moler el grano en molino Mahlkönig según el método de cafetera del cliente"
+    ],
+    "tpAfter": [
+      "Suscripción mensual de café a domicilio con granos recién tostados y ficha técnica del lote",
+      "Invitación a catas públicas gratuitas el primer sábado de cada mes para comparar varietales",
+      "Recepción de sacos vacíos de café de yute para reutilización en macetas y jardines urbanos",
+      "Acceso al canal de Discord de baristas caseros para intercambiar recetas de extracción de agua"
+    ],
+    "colors": {
+      "pri": "#3B2219",
+      "sec": "#78350F",
+      "acc": "#15803D",
+      "darkInk": "#1C120C",
+      "midGray": "#78716C",
+      "lightGray": "#E7E5E4",
+      "softBg": "#FAF8F5",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 4695 C",
+      "pantoneSec": "Pantone 7554 C",
+      "cmykPri": "C:40 M:70 Y:80 K:60",
+      "cmykSec": "C:25 M:65 Y:95 K:35"
+    },
+    "primaryFont": "Fraunces",
+    "secondaryFont": "Plus Jakarta Sans",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#FAF8F5\" stroke=\"#78350F\" stroke-width=\"1.8\"/><path d=\"M 60 76 C 50 48, 64 28, 86 36 C 88 56, 76 74, 60 76 Z\" fill=\"#15803D\"/><line x1=\"62\" y1=\"72\" x2=\"84\" y2=\"40\" stroke=\"#86EFAC\" stroke-width=\"1.2\"/><path d=\"M 120 76 C 130 48, 116 28, 94 36 C 92 56, 104 74, 120 76 Z\" fill=\"#15803D\"/><line x1=\"118\" y1=\"72\" x2=\"96\" y2=\"40\" stroke=\"#86EFAC\" stroke-width=\"1.2\"/><ellipse cx=\"90\" cy=\"112\" rx=\"38\" ry=\"46\" fill=\"#3B2219\"/><path d=\"M 90 68 C 82 82, 100 102, 90 120 C 80 138, 98 152, 90 156\" fill=\"none\" stroke=\"#FAF8F5\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><circle cx=\"56\" cy=\"92\" r=\"7\" fill=\"#DC2626\"/><circle cx=\"124\" cy=\"92\" r=\"7\" fill=\"#DC2626\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"none\" stroke=\"#FDE68A\" stroke-width=\"1.8\"/><path d=\"M 60 76 C 50 48, 64 28, 86 36 C 88 56, 76 74, 60 76 Z\" fill=\"#86EFAC\"/><line x1=\"62\" y1=\"72\" x2=\"84\" y2=\"40\" stroke=\"#15803D\" stroke-width=\"1.2\"/><path d=\"M 120 76 C 130 48, 116 28, 94 36 C 92 56, 104 74, 120 76 Z\" fill=\"#86EFAC\"/><line x1=\"118\" y1=\"72\" x2=\"96\" y2=\"40\" stroke=\"#15803D\" stroke-width=\"1.2\"/><ellipse cx=\"90\" cy=\"112\" rx=\"38\" ry=\"46\" fill=\"#FFFFFF\"/><path d=\"M 90 68 C 82 82, 100 102, 90 120 C 80 138, 98 152, 90 156\" fill=\"none\" stroke=\"#78350F\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><circle cx=\"56\" cy=\"92\" r=\"7\" fill=\"#F87171\"/><circle cx=\"124\" cy=\"92\" r=\"7\" fill=\"#F87171\"/></g>"
+  },
+  {
+    "id": 10,
+    "name": "Nexus Scale",
+    "slug": "nexus_scale",
+    "tagline": "GROWTH MARKETING, ADTECH & ESTRATEGIA DE ESCALAMIENTO",
+    "category": "Servicios / Growth Marketing & AdTech",
+    "giro": "Agencia de ingeniería de crecimiento para empresas tecnológicas y e-commerce, combinando compra de medios con algoritmos de atribución, optimización de embudos y analítica predictiva.",
+    "buyer": "CEOs, CMOs y directores de e-commerce que necesitan escalar su facturación reduciendo el CAC (Costo de Adquisición de Clientes) y maximizando el LTV.",
+    "why": "Porque en un ecosistema saturado de publicidad vacía, el crecimiento rentable solo responde a hipótesis científicas, datos duros y ejecución ágil.",
+    "how": "Conectamos tracking server-side, diseñamos creativos de alta conversión con pruebas A/B y automatizamos pujas con modelos de machine learning.",
+    "what": "Campañas de Google Ads, Meta Ads y TikTok Ads orientadas a ROI, optimización CRO de páginas de venta y dashboards ejecutivos en tiempo real.",
+    "persona": "Ingeniero de crecimiento y estratega de conversión: no habla de 'likes' ni 'impresiones', habla de margen de contribución, retorno de inversión y escalamiento sostenible.",
+    "niza": "Clase 35 (Publicidad, gestión de negocios comerciales, marketing digital y optimización de motores de búsqueda).",
+    "tpBefore": [
+      "Auditoría técnica de tracking y atribución entregada en video Loom de 15 minutos sin costo",
+      "Casos de estudio auditados con métricas reales de escalamiento de 1M a 10M de dólares en ventas",
+      "Calculadora interactiva de rentabilidad publicitaria según margen de producto y ticket promedio",
+      "Benchmark trimestral de costos por clic y tendencias de conversión en el sector de e-commerce"
+    ],
+    "tpDuring": [
+      "Dashboard ejecutivo privado en Looker Studio actualizado cada hora con ventas y ROAS real",
+      "Sprint semanal de 30 minutos los lunes para revisar hipótesis aprobadas, aprendizajes y próximos pasos",
+      "Canal compartido en Slack con tiempo de respuesta promedio de menos de 12 minutos en horario laboral",
+      "Bóveda creativa compartida en Figma con más de 20 variaciones de anuncios listos para pauta"
+    ],
+    "tpAfter": [
+      "Reporte mensual de atribución multitoque con desglose de canales de mayor rentabilidad",
+      "Manual de directrices de creativos ganadores para el equipo interno de diseño del cliente",
+      "Revisión trimestral de estrategia comercial con propuesta de nuevos mercados y canales emergentes",
+      "Sesión de alineación con el equipo de ventas para mejorar el cierre de leads calificados"
+    ],
+    "colors": {
+      "pri": "#4338CA",
+      "sec": "#6366F1",
+      "acc": "#06B6D4",
+      "darkInk": "#0F172A",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F8FAFC",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 2685 C",
+      "pantoneSec": "Pantone 2725 C",
+      "cmykPri": "C:85 M:80 Y:0 K:0",
+      "cmykSec": "C:70 M:60 Y:0 K:0"
+    },
+    "primaryFont": "Outfit",
+    "secondaryFont": "Inter",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><path d=\"M 30 144 L 80 94 L 114 116 L 154 36\" fill=\"none\" stroke=\"#4338CA\" stroke-width=\"4.5\" stroke-linecap=\"round\"/><polygon points=\"158,26 138,36 156,54\" fill=\"#06B6D4\"/><circle cx=\"30\" cy=\"144\" r=\"8\" fill=\"#4338CA\"/><circle cx=\"80\" cy=\"94\" r=\"8\" fill=\"#6366F1\"/><circle cx=\"114\" cy=\"116\" r=\"8\" fill=\"#6366F1\"/><circle cx=\"154\" cy=\"36\" r=\"10\" fill=\"#06B6D4\"/><line x1=\"30\" y1=\"156\" x2=\"160\" y2=\"156\" stroke=\"#E2E8F0\" stroke-width=\"1.8\"/><rect x=\"44\" y=\"120\" width=\"16\" height=\"34\" rx=\"2\" fill=\"#E2E8F0\"/><rect x=\"72\" y=\"104\" width=\"16\" height=\"50\" rx=\"2\" fill=\"#E2E8F0\"/><rect x=\"100\" y=\"80\" width=\"16\" height=\"74\" rx=\"2\" fill=\"#E2E8F0\"/><rect x=\"128\" y=\"52\" width=\"16\" height=\"102\" rx=\"2\" fill=\"#4338CA\" opacity=\"0.30\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><path d=\"M 30 144 L 80 94 L 114 116 L 154 36\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"4.5\" stroke-linecap=\"round\"/><polygon points=\"158,26 138,36 156,54\" fill=\"#06B6D4\"/><circle cx=\"30\" cy=\"144\" r=\"8\" fill=\"#6366F1\"/><circle cx=\"80\" cy=\"94\" r=\"8\" fill=\"#6366F1\"/><circle cx=\"114\" cy=\"116\" r=\"8\" fill=\"#6366F1\"/><circle cx=\"154\" cy=\"36\" r=\"10\" fill=\"#06B6D4\"/><line x1=\"30\" y1=\"156\" x2=\"160\" y2=\"156\" stroke=\"#4338CA\" stroke-width=\"1.8\"/><rect x=\"44\" y=\"120\" width=\"16\" height=\"34\" rx=\"2\" fill=\"#312E81\"/><rect x=\"72\" y=\"104\" width=\"16\" height=\"50\" rx=\"2\" fill=\"#312E81\"/><rect x=\"100\" y=\"80\" width=\"16\" height=\"74\" rx=\"2\" fill=\"#312E81\"/><rect x=\"128\" y=\"52\" width=\"16\" height=\"102\" rx=\"2\" fill=\"#06B6D4\" opacity=\"0.40\"/></g>"
+  },
+  {
+    "id": 11,
+    "name": "Genomix Lab",
+    "slug": "genomix_lab",
+    "tagline": "DIAGNÓSTICO GENÓMICO AVANZADO & SECUENCIACIÓN NGS",
+    "category": "Profesional / Biotecnología & Salud",
+    "giro": "Laboratorio de biotecnología médica y secuenciación genómica de última generación (NGS) especializado en oncología de precisión, cribado prenatal y farmacogenómica.",
+    "buyer": "Médicos oncólogos, genetistas, hospitales de tercer nivel y pacientes que requieren diagnósticos moleculares de precisión milimétrica para tratamientos personalizados.",
+    "why": "Porque en el código del ADN residen las respuestas para prevenir enfermedades antes de que se manifiesten y salvar vidas con medicina personalizada.",
+    "how": "Secuenciamos en plataformas Illumina NovaSeq de alto rendimiento, interpretamos variantes con bioinformática clínica y validamos con patólogos moleculares.",
+    "what": "Paneles de secuenciación de cáncer hereditario, biopsia líquida en sangre, estudios prenatales no invasivos (NIPT) y perfil farmacogenético.",
+    "persona": "Científica genetista y doctora en biología molecular: rigurosa con la calidad del ensayo, empática al explicar el informe clínico y dedicada al bienestar del paciente.",
+    "niza": "Clase 42 (Investigación científica, servicios de laboratorio genético y análisis bioinformáticos) y Clase 44 (Diagnósticos médicos y análisis clínicos).",
+    "tpBefore": [
+      "Kit de toma de muestra bucal o sanguínea enviado a domicilio con empaque estéril y guía prepagada",
+      "Calculadora web de compatibilidad genética y catálogo interactivo de más de 500 genes analizables",
+      "Videollamada informativa previa con asesora genética para resolver dudas del paciente y su familia",
+      "Certificaciones internacionales CLIA y CAP visibles con número de registro verificable en web"
+    ],
+    "tpDuring": [
+      "Notificación por SMS y correo en cada fase: muestra recibida, extracción de ADN, secuenciación y bioinformática",
+      "Portal seguro para médicos tratantes con visor genómico de variantes patogénicas y literatura científica",
+      "Re-análisis de calidad doble ciego en muestras complejas sin costo adicional para el paciente",
+      "Soporte telefónico directo con el genetista bioinformático para discutir hallazgos incidentales"
+    ],
+    "tpAfter": [
+      "Reporte clínico ejecutivo de 20 páginas con infografías claras, nivel de evidencia y recomendaciones",
+      "Sesión de asesoramiento genético post-resultado de 60 minutos incluida con médico especialista",
+      "Re-análisis anual gratuito de variantes de significado incierto (VUS) con nuevas bases de datos mundiales",
+      "Custodia segura y cifrada del archivo FASTQ/VCF en la nube con acceso vitalicio para el paciente"
+    ],
+    "colors": {
+      "pri": "#1D4ED8",
+      "sec": "#3B82F6",
+      "acc": "#DB2777",
+      "darkInk": "#0B132B",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F8FAFC",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 2728 C",
+      "pantoneSec": "Pantone 279 C",
+      "cmykPri": "C:90 M:65 Y:0 K:0",
+      "cmykSec": "C:75 M:45 Y:0 K:0"
+    },
+    "primaryFont": "Montserrat",
+    "secondaryFont": "JetBrains Mono",
+    "isEstablished": true,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#F8FAFC\" stroke=\"#1D4ED8\" stroke-width=\"1.8\"/><path d=\"M 64 36 C 46 60, 46 120, 64 144 C 74 158, 86 158, 96 144 C 114 120, 114 60, 96 36 C 86 22, 74 22, 64 36 Z\" fill=\"none\" stroke=\"#1D4ED8\" stroke-width=\"4\"/><path d=\"M 116 36 C 134 60, 134 120, 116 144 C 106 158, 94 158, 84 144 C 66 120, 66 60, 84 36 C 94 22, 106 22, 116 36 Z\" fill=\"none\" stroke=\"#DB2777\" stroke-width=\"4\"/><line x1=\"56\" y1=\"58\" x2=\"124\" y2=\"58\" stroke=\"#3B82F6\" stroke-width=\"2.5\"/><line x1=\"52\" y1=\"80\" x2=\"128\" y2=\"80\" stroke=\"#DB2777\" stroke-width=\"2.5\"/><line x1=\"52\" y1=\"100\" x2=\"128\" y2=\"100\" stroke=\"#3B82F6\" stroke-width=\"2.5\"/><line x1=\"56\" y1=\"122\" x2=\"124\" y2=\"122\" stroke=\"#DB2777\" stroke-width=\"2.5\"/><circle cx=\"90\" cy=\"90\" r=\"6\" fill=\"#1D4ED8\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"none\" stroke=\"#3B82F6\" stroke-width=\"1.8\"/><path d=\"M 64 36 C 46 60, 46 120, 64 144 C 74 158, 86 158, 96 144 C 114 120, 114 60, 96 36 C 86 22, 74 22, 64 36 Z\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"4\"/><path d=\"M 116 36 C 134 60, 134 120, 116 144 C 106 158, 94 158, 84 144 C 66 120, 66 60, 84 36 C 94 22, 106 22, 116 36 Z\" fill=\"none\" stroke=\"#DB2777\" stroke-width=\"4\"/><line x1=\"56\" y1=\"58\" x2=\"124\" y2=\"58\" stroke=\"#93C5FD\" stroke-width=\"2.5\"/><line x1=\"52\" y1=\"80\" x2=\"128\" y2=\"80\" stroke=\"#F472B6\" stroke-width=\"2.5\"/><line x1=\"52\" y1=\"100\" x2=\"128\" y2=\"100\" stroke=\"#93C5FD\" stroke-width=\"2.5\"/><line x1=\"56\" y1=\"122\" x2=\"124\" y2=\"122\" stroke=\"#F472B6\" stroke-width=\"2.5\"/><circle cx=\"90\" cy=\"90\" r=\"6\" fill=\"#FFFFFF\"/></g>"
+  },
+  {
+    "id": 12,
+    "name": "Hormigón & Cristal",
+    "slug": "hormigon_y_cristal",
+    "tagline": "ESTRUCTURAS PESADAS, TORRES CORPORATIVAS & FACHADAS MONUMENTALES",
+    "category": "Materiales & Construcción",
+    "giro": "Constructora e ingeniería civil especializada en edificación vertical de gran escala, torres corporativas en concreto preesforzado y fachadas continuas de vidrio templado.",
+    "buyer": "Fondos de inversión inmobiliaria, desarrolladores de usos mixtos y corporativos internacionales que requieren entrega puntual de obras de alta complejidad técnica.",
+    "why": "Porque levantar los monumentos que definen el horizonte de una ciudad exige la fuerza inquebrantable del hormigón y la ligereza transparente del cristal.",
+    "how": "Implementamos metodología BIM 5D en tiempo real, concreto autocompactante de ultra-alta resistencia (UHPC) y grúas torre con monitoreo satelital.",
+    "what": "Construcción de torres residenciales y corporativas, cálculo estructural sismorresistente, muros cortina de doble acristalamiento y cimentaciones profundas.",
+    "persona": "Ingeniero civil de obra pesada y casco blanco: planifica con diagramas de Gantt milimétricos, exige cero accidentes y supervisa cada colado hasta el fraguado perfecto.",
+    "niza": "Clase 37 (Construcción de edificios, supervisión de obras, ingeniería civil y montaje de fachadas).",
+    "tpBefore": [
+      "Dossier técnico impreso en carpeta de aluminio anodizado con desglose de proyectos de más de 40 niveles",
+      "Visita guiada con drones y realidad aumentada a predios en proceso de excavación profunda",
+      "Modelado financiero y programa de ruta crítica con amortización de capital garantizada por contrato",
+      "Fianzas de cumplimiento y vicios ocultos respaldadas por instituciones afianzadoras internacionales"
+    ],
+    "tpDuring": [
+      "Cámaras de transmisión en vivo 4K instaladas en obra accesibles 24/7 para el comité técnico del inversionista",
+      "Reporte semanal de cubicación de concreto y pruebas de compresión de cilindros en laboratorio acreditado",
+      "Reuniones de coordinación BIM quincenales para resolver interferencias de instalaciones sin retrasos",
+      "Protocolos estrictos de seguridad industrial 'Cero Daño' con auditorías externas no anunciadas"
+    ],
+    "tpAfter": [
+      "Entrega del As-Built digital completo con gemelo digital 3D (Digital Twin) para gestión de mantenimiento",
+      "Póliza de garantía estructural de 10 años y manual de operación del sistema de limpieza de fachadas",
+      "Acompañamiento técnico durante la recepción y entrega de áreas privativas a condóminos",
+      "Auditoría anual de comportamiento sismológico y asentamientos diferenciales durante los primeros 3 años"
+    ],
+    "colors": {
+      "pri": "#374151",
+      "sec": "#4B5563",
+      "acc": "#0284C7",
+      "darkInk": "#111827",
+      "midGray": "#6B7280",
+      "lightGray": "#E5E7EB",
+      "softBg": "#F9FAFB",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 432 C",
+      "pantoneSec": "Pantone 431 C",
+      "cmykPri": "C:50 M:40 Y:35 K:50",
+      "cmykSec": "C:45 M:35 Y:30 K:40"
+    },
+    "primaryFont": "Montserrat",
+    "secondaryFont": "Plus Jakarta Sans",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><rect x=\"36\" y=\"24\" width=\"36\" height=\"132\" fill=\"#374151\"/><rect x=\"42\" y=\"32\" width=\"24\" height=\"116\" fill=\"#1F2937\"/><polygon points=\"72,24 144,24 144,156 72,156\" fill=\"#0284C7\" opacity=\"0.80\"/><line x1=\"72\" y1=\"56\" x2=\"144\" y2=\"56\" stroke=\"#FFFFFF\" stroke-width=\"1.8\"/><line x1=\"72\" y1=\"90\" x2=\"144\" y2=\"90\" stroke=\"#FFFFFF\" stroke-width=\"1.8\"/><line x1=\"72\" y1=\"124\" x2=\"144\" y2=\"124\" stroke=\"#FFFFFF\" stroke-width=\"1.8\"/><line x1=\"108\" y1=\"24\" x2=\"108\" y2=\"156\" stroke=\"#FFFFFF\" stroke-width=\"1.8\"/><polygon points=\"72,24 108,24 88,156 72,156\" fill=\"#FFFFFF\" opacity=\"0.25\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><rect x=\"36\" y=\"24\" width=\"36\" height=\"132\" fill=\"#FFFFFF\"/><rect x=\"42\" y=\"32\" width=\"24\" height=\"116\" fill=\"#374151\"/><polygon points=\"72,24 144,24 144,156 72,156\" fill=\"#0284C7\"/><line x1=\"72\" y1=\"56\" x2=\"144\" y2=\"56\" stroke=\"#FFFFFF\" stroke-width=\"1.8\"/><line x1=\"72\" y1=\"90\" x2=\"144\" y2=\"90\" stroke=\"#FFFFFF\" stroke-width=\"1.8\"/><line x1=\"72\" y1=\"124\" x2=\"144\" y2=\"124\" stroke=\"#FFFFFF\" stroke-width=\"1.8\"/><line x1=\"108\" y1=\"24\" x2=\"108\" y2=\"156\" stroke=\"#FFFFFF\" stroke-width=\"1.8\"/><polygon points=\"72,24 108,24 88,156 72,156\" fill=\"#FFFFFF\" opacity=\"0.30\"/></g>"
+  },
+  {
+    "id": 13,
+    "name": "Roble Ancestral",
+    "slug": "roble_ancestral",
+    "tagline": "EBANISTERÍA DE AUTOR, MADERAS MACIZAS & MOBILIARIO PATRIMONIAL",
+    "category": "Tienda / Mueblería de Autor",
+    "giro": "Taller de ebanistería fina y diseño de mobiliario escultórico elaborado a mano con maderas duras mexicanas y americanas de tala sustentable certificada (FSC).",
+    "buyer": "Arquitectos de interiores, coleccionistas de diseño y familias que buscan muebles con alma, ensamble tradicional sin clavos y durabilidad para varias generaciones.",
+    "why": "Porque en un mundo de muebles desechables de aglomerado plástico, la nobleza de la madera maciza labrada a mano devuelve la calma y la raíz a los hogares.",
+    "how": "Curamos maderas al aire libre por 24 meses, realizamos ensambles tradicionales de caja y espiga y terminamos con ceras y aceites de linaza puros sin solventes.",
+    "what": "Comedores monolíticos de borde vivo (live edge), credenzas con puertas ranuradas, sillas ergonómicas de autor y escritorios ejecutivos a medida.",
+    "persona": "Maestro ebanista de tercera generación: lee la veta del tronco como si fuera poesía, respeta cada nudo de la madera y lija cada superficie hasta el tacto de seda.",
+    "niza": "Clase 20 (Muebles de madera, ebanistería, mesas, sillas y elementos decorativos de madera maciza).",
+    "tpBefore": [
+      "Catálogo físico de muestras de madera (nogal, tzalam, roble blanco, parota) encuadernado en lino",
+      "Visita al aserradero del taller para que el cliente elija personalmente el tablón para su mesa",
+      "Bocetos a escala en acuarela y planos acotados a mano antes de realizar el primer corte",
+      "Exposición de piezas en galería de arte con iluminación cenital para apreciar el grano natural"
+    ],
+    "tpDuring": [
+      "Reporte fotográfico en blanco y negro del proceso de cepillado, ensamble y aceitado manual",
+      "Firma y número de serie único pirograbado a fuego en el reverso de cada mueble fabricado",
+      "Entrega con personal especializado propio con guantes blancos y ajuste de nivelación milimétrico",
+      "Presentación en funda de manta cruda reutilizable de algodón con fragancia a cedro"
+    ],
+    "tpAfter": [
+      "Kit de mantenimiento incluido con cera de abeja natural, paño de lana y esponja pulidora",
+      "Servicio gratuito de re-aceitado y nutrición de madera al cumplir el primer año en el hogar",
+      "Certificado de procedencia de la madera con coordenadas del bosque sustentable de origen",
+      "Garantía de ensamble de por vida respaldada por el taller con derecho de herencia patrimonial"
+    ],
+    "colors": {
+      "pri": "#451A03",
+      "sec": "#78350F",
+      "acc": "#D97706",
+      "darkInk": "#1A0A01",
+      "midGray": "#78716C",
+      "lightGray": "#E7E5E4",
+      "softBg": "#FAF8F5",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 4625 C",
+      "pantoneSec": "Pantone 7554 C",
+      "cmykPri": "C:30 M:75 Y:90 K:70",
+      "cmykSec": "C:20 M:65 Y:95 K:35"
+    },
+    "primaryFont": "Cormorant Garamond",
+    "secondaryFont": "Montserrat",
+    "isEstablished": true,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"74\" fill=\"#FAF8F5\" stroke=\"#78350F\" stroke-width=\"2\"/><circle cx=\"90\" cy=\"90\" r=\"62\" fill=\"none\" stroke=\"#78350F\" stroke-width=\"1.2\" stroke-dasharray=\"6,4\"/><circle cx=\"90\" cy=\"90\" r=\"48\" fill=\"none\" stroke=\"#D97706\" stroke-width=\"1.2\"/><circle cx=\"90\" cy=\"90\" r=\"34\" fill=\"none\" stroke=\"#78350F\" stroke-width=\"1.2\" stroke-dasharray=\"4,4\"/><circle cx=\"90\" cy=\"90\" r=\"20\" fill=\"#451A03\"/><polygon points=\"90,74 104,84 98,106 82,106 76,84\" fill=\"#D97706\"/><line x1=\"90\" y1=\"20\" x2=\"90\" y2=\"70\" stroke=\"#78350F\" stroke-width=\"1.5\"/><line x1=\"90\" y1=\"110\" x2=\"90\" y2=\"160\" stroke=\"#78350F\" stroke-width=\"1.5\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"74\" fill=\"none\" stroke=\"#D97706\" stroke-width=\"2\"/><circle cx=\"90\" cy=\"90\" r=\"62\" fill=\"none\" stroke=\"#D97706\" stroke-width=\"1.2\" stroke-dasharray=\"6,4\"/><circle cx=\"90\" cy=\"90\" r=\"48\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"1.2\"/><circle cx=\"90\" cy=\"90\" r=\"34\" fill=\"none\" stroke=\"#D97706\" stroke-width=\"1.2\" stroke-dasharray=\"4,4\"/><circle cx=\"90\" cy=\"90\" r=\"20\" fill=\"#D97706\"/><polygon points=\"90,74 104,84 98,106 82,106 76,84\" fill=\"#FFFFFF\"/><line x1=\"90\" y1=\"20\" x2=\"90\" y2=\"70\" stroke=\"#FFFFFF\" stroke-width=\"1.5\"/><line x1=\"90\" y1=\"110\" x2=\"90\" y2=\"160\" stroke=\"#FFFFFF\" stroke-width=\"1.5\"/></g>"
+  },
+  {
+    "id": 14,
+    "name": "Serena Prana",
+    "slug": "serena_prana",
+    "tagline": "YOGA TERAPÉUTICO, MINDFULNESS & MEDICINA AYURVÉDICA",
+    "category": "Servicios / Bienestar & Mindfulness",
+    "giro": "Centro holístico de bienestar dedicado a la práctica de hatha yoga restaurativo, pranayama, meditación sonora con cuencos de cuarzo y consultas de nutrición ayurvédica.",
+    "buyer": "Profesionales con vidas aceleradas, madres y personas en búsqueda de equilibrio mental, alivio del estrés crónico y reconexión profunda con su cuerpo.",
+    "why": "Porque en un mundo que premia la prisa y el agotamiento, detenerse a respirar con consciencia es el acto de sanación más revolucionario.",
+    "how": "Creamos espacios de silencio y luz natural, guiamos con maestros certificados en India y personalizamos las posturas según la anatomía de cada alumno.",
+    "what": "Clases diarias de yoga en grupos reducidos, retiros de silencio de fin de semana, terapia de sonido y masajes terapéuticos abhyanga con aceites herbales.",
+    "persona": "Maestra de yoga y terapeuta ayurvédica: habla con voz apacible, mira a los ojos con calidez sincera y te guía para habitar el presente sin juicios.",
+    "niza": "Clase 41 (Enseñanza de yoga y meditación, retiros espirituales y actividades de bienestar) y Clase 44 (Terapias de relajación, masajes y centros de bienestar).",
+    "tpBefore": [
+      "Meditaciones guiadas gratuitas en Spotify para iniciar el día con serenidad y foco mental",
+      "Cuestionario ayurvédico online para descubrir tu Dosha predominante (Vata, Pitta, Kapha)",
+      "Bienvenida por WhatsApp con guía de vestimenta cómoda y recomendaciones para la primera sesión",
+      "Shala de madera natural con pisos cálidos, plantas aromáticas y filtros de aire de grado médico"
+    ],
+    "tpDuring": [
+      "Recepción descalzo sobre duela de bambú con té blanco tibio de jengibre y cardamomo",
+      "Uso de tapetes de caucho natural orgánico desinfectados con aceites esenciales de lavanda",
+      "Ajustes sutiles y respetuosos de postura con autorización previa del practicante",
+      "Cierre de clase con relajación profunda en Savasana y baño sonoro con gongs tibetanos"
+    ],
+    "tpAfter": [
+      "Mensaje de seguimiento con una cita inspiradora y recomendaciones de hidratación para el día",
+      "Acceso a la biblioteca digital de Serena Prana con grabaciones de clases y recetario ayurvédico",
+      "Descuento preferencial en retiros de bienestar en la montaña para miembros constantes",
+      "Comunidad de apoyo con círculos de palabra mensuales sobre autocompasión y manejo del estrés"
+    ],
+    "colors": {
+      "pri": "#365314",
+      "sec": "#4D7C0F",
+      "acc": "#BE185D",
+      "darkInk": "#142006",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F7FEE7",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 7496 C",
+      "pantoneSec": "Pantone 7495 C",
+      "cmykPri": "C:60 M:30 Y:95 K:40",
+      "cmykSec": "C:50 M:20 Y:90 K:20"
+    },
+    "primaryFont": "Outfit",
+    "secondaryFont": "Inter",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#F7FEE7\" stroke=\"#4D7C0F\" stroke-width=\"1.8\"/><path d=\"M 90 40 C 82 58, 80 84, 90 108 C 100 84, 98 58, 90 40 Z\" fill=\"#BE185D\"/><path d=\"M 90 56 C 74 68, 62 88, 70 106 C 80 98, 88 88, 90 56 Z\" fill=\"#4D7C0F\"/><path d=\"M 90 56 C 106 68, 118 88, 110 106 C 100 98, 92 88, 90 56 Z\" fill=\"#4D7C0F\"/><path d=\"M 90 74 C 64 82, 48 98, 54 114 C 68 112, 80 104, 90 74 Z\" fill=\"#365314\"/><path d=\"M 90 74 C 116 82, 132 98, 126 114 C 112 112, 100 104, 90 74 Z\" fill=\"#365314\"/><path d=\"M 40 128 Q 90 144 140 128\" fill=\"none\" stroke=\"#4D7C0F\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><path d=\"M 52 138 Q 90 152 128 138\" fill=\"none\" stroke=\"#BE185D\" stroke-width=\"2\" stroke-linecap=\"round\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"none\" stroke=\"#BE185D\" stroke-width=\"1.8\"/><path d=\"M 90 40 C 82 58, 80 84, 90 108 C 100 84, 98 58, 90 40 Z\" fill=\"#BE185D\"/><path d=\"M 90 56 C 74 68, 62 88, 70 106 C 80 98, 88 88, 90 56 Z\" fill=\"#FFFFFF\"/><path d=\"M 90 56 C 106 68, 118 88, 110 106 C 100 98, 92 88, 90 56 Z\" fill=\"#FFFFFF\"/><path d=\"M 90 74 C 64 82, 48 98, 54 114 C 68 112, 80 104, 90 74 Z\" fill=\"#A3E635\"/><path d=\"M 90 74 C 116 82, 132 98, 126 114 C 112 112, 100 104, 90 74 Z\" fill=\"#A3E635\"/><path d=\"M 40 128 Q 90 144 140 128\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><path d=\"M 52 138 Q 90 152 128 138\" fill=\"none\" stroke=\"#BE185D\" stroke-width=\"2\" stroke-linecap=\"round\"/></g>"
+  },
+  {
+    "id": 15,
+    "name": "Flete Veloz",
+    "slug": "flete_veloz",
+    "tagline": "LOGÍSTICA FEDERAL, CARGA PESADA & CADENA DE FRÍO CERTIFICADA",
+    "category": "Servicios / Logística & Transporte",
+    "giro": "Empresa de transporte de carga pesada federal, fletes consolidados en caja seca y refrigerada, con flota moderna monitoreada por telemetría GPS y custodia satelital 24/7.",
+    "buyer": "Directores de cadena de suministro, plantas automotrices, cadenas de retail y exportadores agrícolas que demandan puntualidad inamovible y seguridad total en ruta.",
+    "why": "Porque el comercio y la economía de un país se mueven sobre ruedas; cuando una carga llega a tiempo, las promesas entre empresas se cumplen.",
+    "how": "Operamos tractocamiones de última generación con mantenimiento predictivo, doble operador en rutas largas y protocolos certificados OEA y C-TPAT.",
+    "what": "Transporte de carga completa (FTL), consolidado nacional (LTL), flete refrigerado a temperatura controlada y cruces fronterizos rápidos.",
+    "persona": "Director de operaciones logísticas: conoce cada kilómetro de carretera, resuelve contingencias con calma militar y entrega con precisión de relojero.",
+    "niza": "Clase 39 (Transporte de mercancías, servicios de flete, almacenamiento y logística de distribución).",
+    "tpBefore": [
+      "Cotizador online instantáneo que calcula tarifas por kilómetro y tiempo estimado de tránsito",
+      "Portal para clientes con confirmación de disponibilidad de tractores en menos de 15 minutos",
+      "Pólizas de seguro de carga de amplia cobertura con aseguradoras de prestigio internacional",
+      "Fichas técnicas descargables de la flota con año, capacidad volumétrica y sellos de emisiones"
+    ],
+    "tpDuring": [
+      "Enlace privado de rastreo GPS en tiempo real con sensor de apertura de puertas y temperatura de caja",
+      "Operadores certificados con pruebas toxicológicas vigentes, uniforme y gafete de seguridad",
+      "Monitoreo desde el Centro de Control C5 propio con botón de pánico y enlace a Guardia Nacional",
+      "Carta porte digital complementada con timbrado CFDI entregada antes de que el camión arranque"
+    ],
+    "tpAfter": [
+      "Evidencia fotográfica digital de la entrega con sello y firma de recibido enviada al instante por app",
+      "Reporte mensual de KPI logísticos: índice de puntualidad on-time, mermas cero y ahorro en combustible",
+      "Línea de crédito comercial a 30 y 45 días para cuentas corporativas con facturación recurrente",
+      "Encuesta ejecutiva de satisfacción del servicio para evaluar la atención del operador y la mesa de ayuda"
+    ],
+    "colors": {
+      "pri": "#1E3A8A",
+      "sec": "#2563EB",
+      "acc": "#F97316",
+      "darkInk": "#0B132B",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F8FAFC",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 280 C",
+      "pantoneSec": "Pantone 2728 C",
+      "cmykPri": "C:95 M:75 Y:10 K:20",
+      "cmykSec": "C:85 M:55 Y:0 K:0"
+    },
+    "primaryFont": "Montserrat",
+    "secondaryFont": "Space Grotesk",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><path d=\"M 24 116 L 40 56 L 110 56 L 110 116 Z\" fill=\"#1E3A8A\"/><path d=\"M 110 74 L 140 74 L 156 102 L 156 116 L 110 116 Z\" fill=\"#2563EB\"/><polygon points=\"114,80 134,80 148,100 114,100\" fill=\"#93C5FD\"/><circle cx=\"56\" cy=\"126\" r=\"14\" fill=\"#0F172A\"/><circle cx=\"56\" cy=\"126\" r=\"6\" fill=\"#F8FAFC\"/><circle cx=\"136\" cy=\"126\" r=\"14\" fill=\"#0F172A\"/><circle cx=\"136\" cy=\"126\" r=\"6\" fill=\"#F8FAFC\"/><line x1=\"20\" y1=\"46\" x2=\"90\" y2=\"46\" stroke=\"#F97316\" stroke-width=\"4\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"34\" x2=\"80\" y2=\"34\" stroke=\"#F97316\" stroke-width=\"3\" stroke-linecap=\"round\"/><polygon points=\"158,98 174,98 170,106 158,106\" fill=\"#F97316\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><path d=\"M 24 116 L 40 56 L 110 56 L 110 116 Z\" fill=\"#FFFFFF\"/><path d=\"M 110 74 L 140 74 L 156 102 L 156 116 L 110 116 Z\" fill=\"#F97316\"/><polygon points=\"114,80 134,80 148,100 114,100\" fill=\"#1E3A8A\"/><circle cx=\"56\" cy=\"126\" r=\"14\" fill=\"#FFFFFF\"/><circle cx=\"56\" cy=\"126\" r=\"6\" fill=\"#1E3A8A\"/><circle cx=\"136\" cy=\"126\" r=\"14\" fill=\"#FFFFFF\"/><circle cx=\"136\" cy=\"126\" r=\"6\" fill=\"#1E3A8A\"/><line x1=\"20\" y1=\"46\" x2=\"90\" y2=\"46\" stroke=\"#F97316\" stroke-width=\"4\" stroke-linecap=\"round\"/><line x1=\"30\" y1=\"34\" x2=\"80\" y2=\"34\" stroke=\"#F97316\" stroke-width=\"3\" stroke-linecap=\"round\"/><polygon points=\"158,98 174,98 170,106 158,106\" fill=\"#FFFFFF\"/></g>"
+  },
+  {
+    "id": 16,
+    "name": "Decibel Master",
+    "slug": "decibel_master",
+    "tagline": "ACADEMIA DE AUDIO, MEZCLA DOLBY ATMOS & MASTERIZACIÓN PROFESIONAL",
+    "category": "Servicios / Producción Musical & Audio",
+    "giro": "Estudio de grabación acústicamente calibrado y academia de ingeniería en audio profesional, especializada en masterización para plataformas de streaming y mezclas inmersivas Dolby Atmos.",
+    "buyer": "Músicos independientes, productores, sellos discográficos y podcasters que buscan un sonido cristalino, profundidad estéreo y competir al nivel sonoro de la industria global.",
+    "why": "Porque la música es el lenguaje invisible del alma humana y cada frecuencia merece ser escuchada con fidelidad pristina y pegada emocional.",
+    "how": "Utilizamos convertidores analógico-digitales Prism Sound, monitores de campo cercano ATC y salas de escucha tratadas con trampas de graves de precisión quirúrgica.",
+    "what": "Masterización estéreo de tracks para Apple Music y Spotify, mezcla binaural e inmersiva 7.1.4, cursos de producción musical y alquiler de salas de grabación.",
+    "persona": "Ingeniero de mezcla ganador de premios de la industria: escucha lo que otros no perciben, trata la pista con respeto absoluto y balancea graves y agudos con oído de oro.",
+    "niza": "Clase 41 (Producción musical, grabación en estudio, masterización de sonido y cursos de ingeniería de audio).",
+    "tpBefore": [
+      "Prueba de masterización gratuita de 45 segundos enviando tu mezcla en WAV sin compromiso",
+      "Guía técnica en PDF para preparar tus pistas (stems) con el headroom ideal antes de enviar a mezcla",
+      "Videos en YouTube con análisis de producción de grandes obras maestras de la música",
+      "Estudio con diseño acústico flotante caja-dentro-de-caja visible en tour virtual 360°"
+    ],
+    "tpDuring": [
+      "Sesión de escucha conjunta presencial o vía streaming de alta fidelidad sin compresión (Audiomovers)",
+      "Hasta 3 revisiones de mezcla detalladas con notas de timecode compartidas en tiempo real",
+      "Entrega de masters optimizados para vinilo, CD y streaming con estándares de sonoridad LUFS exactos",
+      "Café espresso de cortesía en la sala de control mientras se calibran los sintetizadores analógicos"
+    ],
+    "tpAfter": [
+      "Entrega de archivo DDP y metadatos ISRC incrustados listos para distribución discográfica digital",
+      "Respaldo perpetuo de los stems y proyectos en almacenamiento RAID redundante sin costo",
+      "Recomendación directa con agregadores musicales y editores para monetización de regalías",
+      "Descuento en paquetes de masterización de EP o álbum completo para proyectos subsecuentes"
+    ],
+    "colors": {
+      "pri": "#18181B",
+      "sec": "#27272A",
+      "acc": "#10B981",
+      "darkInk": "#09090B",
+      "midGray": "#71717A",
+      "lightGray": "#E4E4E7",
+      "softBg": "#FAFAFA",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone Black 7 C",
+      "pantoneSec": "Pantone 447 C",
+      "cmykPri": "C:50 M:40 Y:30 K:95",
+      "cmykSec": "C:40 M:35 Y:30 K:80"
+    },
+    "primaryFont": "Space Grotesk",
+    "secondaryFont": "Montserrat",
+    "isEstablished": true,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#18181B\"/><circle cx=\"90\" cy=\"90\" r=\"64\" fill=\"none\" stroke=\"#27272A\" stroke-width=\"2\"/><circle cx=\"90\" cy=\"90\" r=\"50\" fill=\"none\" stroke=\"#27272A\" stroke-width=\"1.5\"/><rect x=\"52\" y=\"96\" width=\"8\" height=\"34\" rx=\"2\" fill=\"#10B981\"/><rect x=\"64\" y=\"80\" width=\"8\" height=\"50\" rx=\"2\" fill=\"#10B981\"/><rect x=\"76\" y=\"60\" width=\"8\" height=\"70\" rx=\"2\" fill=\"#10B981\"/><rect x=\"88\" y=\"44\" width=\"8\" height=\"86\" rx=\"2\" fill=\"#10B981\"/><rect x=\"100\" y=\"68\" width=\"8\" height=\"62\" rx=\"2\" fill=\"#10B981\"/><rect x=\"112\" y=\"86\" width=\"8\" height=\"44\" rx=\"2\" fill=\"#10B981\"/><rect x=\"124\" y=\"104\" width=\"8\" height=\"26\" rx=\"2\" fill=\"#10B981\"/><circle cx=\"90\" cy=\"90\" r=\"8\" fill=\"#FFFFFF\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#FFFFFF\"/><circle cx=\"90\" cy=\"90\" r=\"64\" fill=\"none\" stroke=\"#E4E4E7\" stroke-width=\"2\"/><circle cx=\"90\" cy=\"90\" r=\"50\" fill=\"none\" stroke=\"#E4E4E7\" stroke-width=\"1.5\"/><rect x=\"52\" y=\"96\" width=\"8\" height=\"34\" rx=\"2\" fill=\"#10B981\"/><rect x=\"64\" y=\"80\" width=\"8\" height=\"50\" rx=\"2\" fill=\"#10B981\"/><rect x=\"76\" y=\"60\" width=\"8\" height=\"70\" rx=\"2\" fill=\"#10B981\"/><rect x=\"88\" y=\"44\" width=\"8\" height=\"86\" rx=\"2\" fill=\"#10B981\"/><rect x=\"100\" y=\"68\" width=\"8\" height=\"62\" rx=\"2\" fill=\"#10B981\"/><rect x=\"112\" y=\"86\" width=\"8\" height=\"44\" rx=\"2\" fill=\"#10B981\"/><rect x=\"124\" y=\"104\" width=\"8\" height=\"26\" rx=\"2\" fill=\"#10B981\"/><circle cx=\"90\" cy=\"90\" r=\"8\" fill=\"#18181B\"/></g>"
+  },
+  {
+    "id": 17,
+    "name": "Lúpulo Feroz",
+    "slug": "lupulo_feroz",
+    "tagline": "MICRO-CERVECERÍA DE AUTOR, HAZY IPA & FERMENTACIÓN SALVAJE",
+    "category": "Comestibles / Cervecería Artesanal",
+    "giro": "Cervecería artesanal independiente especializada en cervezas lupuladas de perfil jugoso (Hazy IPA, Double Dry Hopped, West Coast IPA) y series experimentales añejadas en barrica.",
+    "buyer": "Entusiastas de la cerveza artesanal, catadores y grupos de amigos que rechazan las cervezas industriales aguadas y buscan intensidad aromática y frescura extrema.",
+    "why": "Porque la cerveza artesanal es rebelión contra lo insípido; cada lata debe ser una explosión de aroma a mango, pino y maracuyá sin pasteurizar.",
+    "how": "Importamos lúpulos frescos de Yakima Valley en cadena fría, aplicamos doble dry-hopping a bajas temperaturas y enlatamos con niveles ínfimos de oxígeno disuelto.",
+    "what": "Latas de 473 ml de Hazy IPA, Imperial Stout con café de altura, Sour de frutos rojos fermentada con levaduras salvajes y servicio en taproom con 16 líneas de barril.",
+    "persona": "Maestro cervecero de barba y botas de hule: vive midiendo densidades de fermentación, celebra la turbidez perfecta y sirve cada pinta con dos dedos de espuma densa.",
+    "niza": "Clase 32 (Cervezas, cervezas artesanales, ales, lagers y bebidas a base de malta).",
+    "tpBefore": [
+      "Anuncio de lanzamientos de latas de edición limitada cada jueves a las 7:00 PM en Instagram",
+      "Tienda online con envíos refrigerados express para garantizar que la cerveza no pierda frescura",
+      "Fichas sensoriales descargables con varietales de lúpulo (Citra, Mosaic, Galaxy) e IBU exacto",
+      "Música indie y aroma a malta tostada saliendo de los fermentadores en el taproom urbano"
+    ],
+    "tpDuring": [
+      "Servicio en vaso Teku de cristal fino diseñado para concentrar los aceites esenciales del lúpulo",
+      "Venta de latas frías para llevar directo del cuarto frío a 2°C con portavasos ilustrados de colección",
+      "Recomendación del personal del taproom sobre el orden de degustación según graduación alcohólica",
+      "Pizzas a la leña con masa madre elaborada con el mismo grano de malta cervecera"
+    ],
+    "tpAfter": [
+      "Club 'Feroz VIP' con derecho de apartado de barriles especiales y catas con el maestro cervecero",
+      "Contenedores especiales en el taproom para reciclaje de latas de aluminio limpias",
+      "Venta de growlers térmicos de acero inoxidable con recarga a precio preferencial",
+      "Invitación a cocinar colaborativamente una cerveza comunitaria con votos de la comunidad"
+    ],
+    "colors": {
+      "pri": "#14532D",
+      "sec": "#166534",
+      "acc": "#CA8A04",
+      "darkInk": "#052010",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F8FAFC",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 343 C",
+      "pantoneSec": "Pantone 348 C",
+      "cmykPri": "C:85 M:35 Y:85 K:50",
+      "cmykSec": "C:75 M:25 Y:75 K:30"
+    },
+    "primaryFont": "Montserrat",
+    "secondaryFont": "Plus Jakarta Sans",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#F8FAFC\" stroke=\"#166534\" stroke-width=\"2\"/><path d=\"M 90 28 C 76 44, 62 68, 62 96 C 62 128, 80 152, 90 158 C 100 152, 118 128, 118 96 C 118 68, 104 44, 90 28 Z\" fill=\"#14532D\"/><path d=\"M 90 42 C 82 54, 72 74, 72 96 C 72 122, 84 140, 90 144 C 96 140, 108 122, 108 96 C 108 74, 98 54, 90 42 Z\" fill=\"#166534\"/><path d=\"M 90 60 C 86 68, 80 82, 80 96 C 80 114, 88 126, 90 128 C 92 126, 100 114, 100 96 C 100 82, 94 68, 90 60 Z\" fill=\"#CA8A04\"/><path d=\"M 68 124 L 54 146 L 76 138 Z\" fill=\"#CA8A04\"/><path d=\"M 112 124 L 126 146 L 104 138 Z\" fill=\"#CA8A04\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"none\" stroke=\"#CA8A04\" stroke-width=\"2\"/><path d=\"M 90 28 C 76 44, 62 68, 62 96 C 62 128, 80 152, 90 158 C 100 152, 118 128, 118 96 C 118 68, 104 44, 90 28 Z\" fill=\"#FFFFFF\"/><path d=\"M 90 42 C 82 54, 72 74, 72 96 C 72 122, 84 140, 90 144 C 96 140, 108 122, 108 96 C 108 74, 98 54, 90 42 Z\" fill=\"#CA8A04\"/><path d=\"M 90 60 C 86 68, 80 82, 80 96 C 80 114, 88 126, 90 128 C 92 126, 100 114, 100 96 C 100 82, 94 68, 90 60 Z\" fill=\"#14532D\"/><path d=\"M 68 124 L 54 146 L 76 138 Z\" fill=\"#FFFFFF\"/><path d=\"M 112 124 L 126 146 L 104 138 Z\" fill=\"#FFFFFF\"/></g>"
+  },
+  {
+    "id": 18,
+    "name": "Nébula Selva",
+    "slug": "nebula_selva",
+    "tagline": "ECO-RESORT, RESERVA BIOLÓGICA & GLAMPING EN SELVA NUBLADA",
+    "category": "Servicios / Hotelería Sustentable",
+    "giro": "Hotel boutique ecoturístico inmerso en una reserva biológica de bosque de niebla, con domos geodésicos suspendidos sobre el dosel de la selva, energía solar y gastronomía de recolección.",
+    "buyer": "Viajeros conscientes, parejas y naturalistas que buscan desconexión digital absoluta, confort de lujo sustentable y contacto íntimo con la biodiversidad silvestre.",
+    "why": "Porque solo al escuchar la lluvia sobre las hojas de la selva y contemplar la niebla subiendo por el cañón se recupera el asombro por la naturaleza viva.",
+    "how": "Construimos sin derribar un solo árbol, captamos 100% de agua pluvial y destinamos el 30% de los ingresos a la protección del hábitat del jaguar y el quetzal.",
+    "what": "Hospedaje en domos panorámicos privados, senderismo con biólogos certificados, baños de vapor temazcal y cenas botánicas bajo las estrellas.",
+    "persona": "Guía naturalista y anfitriona ecológica: te recibe con una sonrisa serena, conoce el canto de cada ave del bosque y cuida cada detalle de tu estancia con respeto absoluto.",
+    "niza": "Clase 43 (Servicios de alojamiento temporal, hoteles boutique, eco-resorts y restaurantes de reserva ecológica).",
+    "tpBefore": [
+      "Sitio web con transmisión de sonidos en vivo del bosque de niebla (lluvia, ranas y aves)",
+      "Guía descargable de preparación de maleta: calzado de montaña, ropa térmica y linterna frontal",
+      "Coordinación de transporte 4x4 desde el aeropuerto más cercano con chofer de la comunidad",
+      "Políticas claras de turismo regenerativo y compromiso de 'Cero Plásticos de un Solo Uso'"
+    ],
+    "tpDuring": [
+      "Bienvenida con infusión de hierbas silvestres de la selva y toalla tibia con aceite de pino",
+      "Domo con cama king size, sábanas de lino orgánico y terraza con tina de madera con vista al abismo",
+      "Recorridos nocturnos guiados con lámparas de luz ultravioleta para observar hongos bioluminiscentes",
+      "Cocina de la selva preparada por cocineras tradicionales con ingredientes del huerto permacultural"
+    ],
+    "tpAfter": [
+      "Certificado de neutralización de huella de carbono del viaje con árbol nativo sembrado a tu nombre",
+      "Enlace a galería fotográfica personalizada de las especies de aves avistadas durante tu estancia",
+      "Envío de café de sombra y miel virgen de la reserva para revivir los sabores de la selva en casa",
+      "Invitación a formar parte del patronato de conservación del bosque de niebla"
+    ],
+    "colors": {
+      "pri": "#064E3B",
+      "sec": "#047857",
+      "acc": "#0284C7",
+      "darkInk": "#02221A",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#ECFDF5",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 3305 C",
+      "pantoneSec": "Pantone 341 C",
+      "cmykPri": "C:85 M:35 Y:65 K:60",
+      "cmykSec": "C:80 M:20 Y:60 K:20"
+    },
+    "primaryFont": "Playfair Display",
+    "secondaryFont": "Outfit",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#ECFDF5\" stroke=\"#047857\" stroke-width=\"1.8\"/><path d=\"M 40 144 C 56 128, 76 112, 90 92 C 104 112, 124 128, 140 144 Z\" fill=\"#047857\"/><path d=\"M 64 144 C 74 130, 84 118, 90 102 C 96 118, 106 130, 116 144 Z\" fill=\"#064E3B\"/><circle cx=\"90\" cy=\"62\" r=\"28\" fill=\"#064E3B\"/><path d=\"M 30 110 C 60 98, 120 120, 150 108\" fill=\"none\" stroke=\"#0284C7\" stroke-width=\"3\" stroke-linecap=\"round\" opacity=\"0.80\"/><path d=\"M 44 126 C 74 114, 110 134, 136 124\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"132\" cy=\"50\" r=\"8\" fill=\"#0284C7\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"none\" stroke=\"#0284C7\" stroke-width=\"1.8\"/><path d=\"M 40 144 C 56 128, 76 112, 90 92 C 104 112, 124 128, 140 144 Z\" fill=\"#FFFFFF\"/><path d=\"M 64 144 C 74 130, 84 118, 90 102 C 96 118, 106 130, 116 144 Z\" fill=\"#047857\"/><circle cx=\"90\" cy=\"62\" r=\"28\" fill=\"#FFFFFF\"/><path d=\"M 30 110 C 60 98, 120 120, 150 108\" fill=\"none\" stroke=\"#0284C7\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M 44 126 C 74 114, 110 134, 136 124\" fill=\"none\" stroke=\"#047857\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"132\" cy=\"50\" r=\"8\" fill=\"#0284C7\"/></g>"
+  },
+  {
+    "id": 19,
+    "name": "VitalVet Trauma",
+    "slug": "vitalvet_trauma",
+    "tagline": "HOSPITAL VETERINARIO DE ALTA ESPECIALIDAD, TERAPIA INTENSIVA & CIRUGÍA 24/7",
+    "category": "Profesional / Medicina Veterinaria",
+    "giro": "Hospital veterinario de urgencias médicas disponible las 24 horas del día, con quirófanos de flujo laminar, tomografía computarizada, banco de sangre y terapia intensiva para perros y gatos.",
+    "buyer": "Tutores de mascotas que consideran a sus animales parte sagrada de la familia y exigen el mismo nivel de tecnología, rigor médico y compasión que un hospital humano.",
+    "why": "Porque la lealtad incondicional de un animal merece una respuesta médica de excelencia cuando su vida pende de un hilo.",
+    "how": "Mantenemos un equipo de cirujanos y urgenciólogos de guardia permanente, monitoreo hemodinámico avanzado y comunicación empática y transparente con la familia.",
+    "what": "Cirugía de trauma ortopédico y tejidos blandos, hospitalización en cubículos aislados con oxígeno, hemodiálisis veterinaria y medicina felina Cat-Friendly.",
+    "persona": "Médico veterinario urgenciólogo: sereno en medio de la crisis, con manos precisas en el quirófano y calidez infinita para abrazar a la familia preocupada.",
+    "niza": "Clase 44 (Servicios médicos veterinarios, hospitales de animales, cirugía y cuidados intensivos para mascotas).",
+    "tpBefore": [
+      "Línea de emergencia telefónica directa atendida por un médico veterinario en menos de 3 tonos",
+      "Guía de primeros auxilios y estabilización de mascotas antes de trasladarlas al hospital en web",
+      "Área de estacionamiento de urgencias con camilla y personal esperando en la puerta",
+      "Instalaciones con certificación internacional Cat-Friendly Clinic con salas de espera separadas"
+    ],
+    "tpDuring": [
+      "Triage inmediato en menos de 5 minutos con monitoreo de signos vitales frente al tutor",
+      "Acceso de la familia a la sala de terapia intensiva durante los horarios de visita terapéutica",
+      "Parte médico diario detallado con video y fotografías del estado de ánimo del paciente",
+      "Presupuesto claro y desglosado por fases médicas sin costos sorpresivos en la cuenta final"
+    ],
+    "tpAfter": [
+      "Instrucciones de medicación y curaciones explicadas paso a paso con video en WhatsApp",
+      "Llamada telefónica a las 24 y 48 horas post-alta para monitorear apetito, dolor y movilidad",
+      "Historial clínico digitalizado completo con estudios de imagen y laboratorio descargables en PDF",
+      "Servicio de ambulancia veterinaria para revisiones de seguimiento a domicilio si el paciente no puede caminar"
+    ],
+    "colors": {
+      "pri": "#0F766E",
+      "sec": "#0D9488",
+      "acc": "#E11D48",
+      "darkInk": "#042624",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F0FDFA",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 3282 C",
+      "pantoneSec": "Pantone 3262 C",
+      "cmykPri": "C:80 M:30 Y:50 K:25",
+      "cmykSec": "C:70 M:15 Y:40 K:5"
+    },
+    "primaryFont": "Plus Jakarta Sans",
+    "secondaryFont": "Inter",
+    "isEstablished": true,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><rect x=\"72\" y=\"24\" width=\"36\" height=\"132\" rx=\"6\" fill=\"#0F766E\"/><rect x=\"24\" y=\"72\" width=\"132\" height=\"36\" rx=\"6\" fill=\"#0F766E\"/><circle cx=\"90\" cy=\"90\" r=\"28\" fill=\"#FFFFFF\"/><circle cx=\"82\" cy=\"84\" r=\"5\" fill=\"#0D9488\"/><circle cx=\"98\" cy=\"84\" r=\"5\" fill=\"#0D9488\"/><circle cx=\"74\" cy=\"94\" r=\"4\" fill=\"#0D9488\"/><circle cx=\"106\" cy=\"94\" r=\"4\" fill=\"#0D9488\"/><ellipse cx=\"90\" cy=\"102\" rx=\"9\" ry=\"7\" fill=\"#0F766E\"/><path d=\"M 32 90 L 64 90 L 72 74 L 80 106 L 88 84 L 94 94 L 100 90 L 148 90\" fill=\"none\" stroke=\"#E11D48\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><rect x=\"72\" y=\"24\" width=\"36\" height=\"132\" rx=\"6\" fill=\"#FFFFFF\"/><rect x=\"24\" y=\"72\" width=\"132\" height=\"36\" rx=\"6\" fill=\"#FFFFFF\"/><circle cx=\"90\" cy=\"90\" r=\"28\" fill=\"#0F766E\"/><circle cx=\"82\" cy=\"84\" r=\"5\" fill=\"#FFFFFF\"/><circle cx=\"98\" cy=\"84\" r=\"5\" fill=\"#FFFFFF\"/><circle cx=\"74\" cy=\"94\" r=\"4\" fill=\"#FFFFFF\"/><circle cx=\"106\" cy=\"94\" r=\"4\" fill=\"#FFFFFF\"/><ellipse cx=\"90\" cy=\"102\" rx=\"9\" ry=\"7\" fill=\"#FFFFFF\"/><path d=\"M 32 90 L 64 90 L 72 74 L 80 106 L 88 84 L 94 94 L 100 90 L 148 90\" fill=\"none\" stroke=\"#E11D48\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></g>"
+  },
+  {
+    "id": 20,
+    "name": "Fortress Shield SOC",
+    "slug": "fortress_shield_soc",
+    "tagline": "CIBERSEGURIDAD DEFENSIVA, CENTRO DE OPERACIONES SOC & THREAT INTELLIGENCE",
+    "category": "Productos Digitales / Ciberseguridad & SOC",
+    "giro": "Centro de Operaciones de Seguridad (SOC) de misión crítica especializado en detección de intrusiones en tiempo real, respuesta a incidentes de ransomware y pruebas de penetración (Red Team).",
+    "buyer": "Bancos, plataformas fintech, aseguradoras y corporativos que manejan infraestructura crítica y datos sensibles y no pueden permitirse una sola brecha de seguridad.",
+    "why": "Porque en la era digital la soberanía de una empresa depende de su capacidad de anticipar, resistir y neutralizar cualquier ciberataque antes de que toque sus activos.",
+    "how": "Monitoreamos telemetría de red con IA predictiva, contenemos ataques con agentes EDR en milisegundos y auditamos código bajo estándares ISO 27001 y NIST.",
+    "what": "SOC administrado 24/7/365, análisis de vulnerabilidades, simulacros de secuestro de datos (Ransomware Defense) y remediación forense digital.",
+    "persona": "Comandante de operaciones de ciberseguridad: metódico, vigilante incansable y con reflejos de hacker ético: neutraliza la amenaza antes de que el cliente siquiera note el intento.",
+    "niza": "Clase 42 (Servicios de ciberseguridad, monitoreo de redes informáticas, protección contra malware y auditoría de software).",
+    "tpBefore": [
+      "Escaneo externo gratuito de superficie de ataque que identifica puertos abiertos y credenciales filtradas",
+      "Calculadora de riesgo financiero ante ataques de ransomware según el volumen de transacciones de la empresa",
+      "Demostración en vivo de detección de intrusión en un entorno sandbox controlado",
+      "Acuerdos de confidencialidad estrictos (NDA) firmados digitalmente antes de intercambiar cualquier información"
+    ],
+    "tpDuring": [
+      "Despliegue de sensores de monitoreo en toda la red corporativa en menos de 4 horas",
+      "Dashboard en tiempo real con mapa mundial de ciberataques mitigados y niveles de alerta",
+      "Línea de comunicación de emergencia directa vía Signal y llamadas cifradas con el equipo de respuesta rápida",
+      "Informes ejecutivos semanales sin tecnicismos incomprensibles para la junta de directores"
+    ],
+    "tpAfter": [
+      "Certificado Oficial de Blindaje de Infraestructura y Cumplimiento de Controles de Seguridad",
+      "Simulacros periódicos de phishing para evaluar y capacitar a los colaboradores de la empresa",
+      "Revisión semestral de la arquitectura en la nube (AWS, Azure, GCP) para cerrar nuevas brechas",
+      "Póliza de garantía de tiempo de respuesta (SLA) inferior a 15 minutos ante cualquier evento crítico"
+    ],
+    "colors": {
+      "pri": "#030712",
+      "sec": "#1F2937",
+      "acc": "#10B981",
+      "darkInk": "#000000",
+      "midGray": "#6B7280",
+      "lightGray": "#E5E7EB",
+      "softBg": "#F9FAFB",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone Black 6 C",
+      "pantoneSec": "Pantone 432 C",
+      "cmykPri": "C:70 M:60 Y:50 K:100",
+      "cmykSec": "C:50 M:40 Y:35 K:60"
+    },
+    "primaryFont": "Space Grotesk",
+    "secondaryFont": "JetBrains Mono",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><polygon points=\"90,18 152,48 152,118 90,162 28,118 28,48\" fill=\"#030712\" stroke=\"#10B981\" stroke-width=\"2.5\"/><polygon points=\"90,32 140,56 140,112 90,148 40,112 40,56\" fill=\"#1F2937\"/><circle cx=\"90\" cy=\"80\" r=\"14\" fill=\"#030712\" stroke=\"#10B981\" stroke-width=\"2\"/><rect x=\"86\" y=\"80\" width=\"8\" height=\"24\" fill=\"#10B981\"/><line x1=\"90\" y1=\"42\" x2=\"90\" y2=\"66\" stroke=\"#10B981\" stroke-width=\"2\"/><line x1=\"58\" y1=\"92\" x2=\"76\" y2=\"92\" stroke=\"#10B981\" stroke-width=\"2\"/><line x1=\"104\" y1=\"92\" x2=\"122\" y2=\"92\" stroke=\"#10B981\" stroke-width=\"2\"/><circle cx=\"90\" cy=\"42\" r=\"3\" fill=\"#10B981\"/><circle cx=\"58\" cy=\"92\" r=\"3\" fill=\"#10B981\"/><circle cx=\"122\" cy=\"92\" r=\"3\" fill=\"#10B981\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><polygon points=\"90,18 152,48 152,118 90,162 28,118 28,48\" fill=\"#FFFFFF\" stroke=\"#10B981\" stroke-width=\"2.5\"/><polygon points=\"90,32 140,56 140,112 90,148 40,112 40,56\" fill=\"#030712\"/><circle cx=\"90\" cy=\"80\" r=\"14\" fill=\"#10B981\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><rect x=\"86\" y=\"80\" width=\"8\" height=\"24\" fill=\"#FFFFFF\"/><line x1=\"90\" y1=\"42\" x2=\"90\" y2=\"66\" stroke=\"#10B981\" stroke-width=\"2\"/><line x1=\"58\" y1=\"92\" x2=\"76\" y2=\"92\" stroke=\"#10B981\" stroke-width=\"2\"/><line x1=\"104\" y1=\"92\" x2=\"122\" y2=\"92\" stroke=\"#10B981\" stroke-width=\"2\"/><circle cx=\"90\" cy=\"42\" r=\"3\" fill=\"#10B981\"/><circle cx=\"58\" cy=\"92\" r=\"3\" fill=\"#10B981\"/><circle cx=\"122\" cy=\"92\" r=\"3\" fill=\"#10B981\"/></g>"
+  },
+  {
+    "id": 21,
+    "name": "Aurum & Diamante",
+    "slug": "aurum_y_diamante",
+    "tagline": "ALTA JOYERÍA DE AUTOR, ORO ÉTICO 24K & DIAMANTES CERTIFICADOS",
+    "category": "Tienda / Alta Joyería & Lujo",
+    "giro": "Atelier de alta joyería de autor especializado en sortijas de compromiso, collares de gemas preciosas sin conflicto y piezas de alta orfebrería forjadas a mano en oro ético de 24 y 18 quilates.",
+    "buyer": "Coleccionistas, parejas comprometidas y conocedores que buscan piezas conmemorativas únicas, piedras con certificado gemológico GIA y manufactura artística irrepetible.",
+    "why": "Porque los grandes momentos de la vida merecen un objeto imperecedero cuya belleza y valor trasciendan los siglos y las generaciones.",
+    "how": "Seleccionamos diamantes naturales bajo el Proceso de Kimberley, esculpimos modelos en cera perdida y engastamos cada gema bajo microscopio estereoscópico.",
+    "what": "Anillos de compromiso solitarios y halo, churumbelas de diamantes, brazaletes rígidos de oro macizo y servicio de restauración de joyas de herencia familiar.",
+    "persona": "Maestro joyero y gemólogo certificado: examina cada faceta de luz con lupa de 10x, trata los metales preciosos con devoción y custodia la historia emocional de cada cliente.",
+    "niza": "Clase 14 (Metales preciosos y sus aleaciones, joyería, piedras preciosas y semipreciosas, relojería).",
+    "tpBefore": [
+      "Boutique privada con cita exclusiva a puerta cerrada con champaña y asesoría personalizada",
+      "Visor digital interactivo en web para rotar diamantes en 360° y examinar su claridad y color",
+      "Certificado gemológico oficial GIA o HRD entregado en carpeta de piel con holograma de seguridad",
+      "Bocetos a mano alzada en gouache mostrando las dimensiones reales de la joya antes de fabricarla"
+    ],
+    "tpDuring": [
+      "Prueba de montura en cera para confirmar el ajuste perfecto al dedo antes del vaciado en oro",
+      "Grabado láser personalizado en el interior del aro con caligrafía o huella dactilar de la pareja",
+      "Estuche joyero artesanal forrado en terciopelo azul noche con cerradura de latón dorado",
+      "Entrega con guantes de seda blanca y paño de microfibra especial para pulido de metales nobles"
+    ],
+    "tpAfter": [
+      "Servicio de limpieza y mantenimiento ultrasónico gratuito de por vida para todas las piezas del atelier",
+      "Póliza de seguro contra robo y pérdida respaldada por aseguradora internacional durante el primer año",
+      "Avalúo comercial formal actualizado cada 3 años para fines patrimoniales y testamentarios",
+      "Invitación a exhibiciones privadas anuales de gemas raras recién llegadas de Amberes y Ceilán"
+    ],
+    "colors": {
+      "pri": "#0F172A",
+      "sec": "#1E293B",
+      "acc": "#EAB308",
+      "darkInk": "#020617",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#FAF8F5",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 296 C",
+      "pantoneSec": "Pantone 295 C",
+      "cmykPri": "C:85 M:70 Y:45 K:60",
+      "cmykSec": "C:75 M:60 Y:40 K:40"
+    },
+    "primaryFont": "Cinzel",
+    "secondaryFont": "Montserrat",
+    "isEstablished": true,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#FAF8F5\" stroke=\"#EAB308\" stroke-width=\"1.8\"/><polygon points=\"90,32 126,58 142,58 90,138 38,58 54,58\" fill=\"#0F172A\"/><polygon points=\"54,58 126,58 90,138\" fill=\"#1E293B\"/><polygon points=\"54,58 90,32 126,58\" fill=\"#EAB308\"/><line x1=\"90\" y1=\"32\" x2=\"90\" y2=\"138\" stroke=\"#FFFFFF\" stroke-width=\"1.5\"/><line x1=\"72\" y1=\"58\" x2=\"90\" y2=\"138\" stroke=\"#FFFFFF\" stroke-width=\"1.2\"/><line x1=\"108\" y1=\"58\" x2=\"90\" y2=\"138\" stroke=\"#FFFFFF\" stroke-width=\"1.2\"/><circle cx=\"90\" cy=\"24\" r=\"5\" fill=\"#EAB308\"/><circle cx=\"70\" cy=\"28\" r=\"3.5\" fill=\"#EAB308\"/><circle cx=\"110\" cy=\"28\" r=\"3.5\" fill=\"#EAB308\"/><path d=\"M 134 40 L 137 46 L 143 48 L 137 50 L 134 56 L 131 50 L 125 48 L 131 46 Z\" fill=\"#EAB308\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"none\" stroke=\"#EAB308\" stroke-width=\"1.8\"/><polygon points=\"90,32 126,58 142,58 90,138 38,58 54,58\" fill=\"#FFFFFF\"/><polygon points=\"54,58 126,58 90,138\" fill=\"#EAB308\"/><polygon points=\"54,58 90,32 126,58\" fill=\"#FFFFFF\"/><line x1=\"90\" y1=\"32\" x2=\"90\" y2=\"138\" stroke=\"#0F172A\" stroke-width=\"1.5\"/><line x1=\"72\" y1=\"58\" x2=\"90\" y2=\"138\" stroke=\"#0F172A\" stroke-width=\"1.2\"/><line x1=\"108\" y1=\"58\" x2=\"90\" y2=\"138\" stroke=\"#0F172A\" stroke-width=\"1.2\"/><circle cx=\"90\" cy=\"24\" r=\"5\" fill=\"#EAB308\"/><circle cx=\"70\" cy=\"28\" r=\"3.5\" fill=\"#EAB308\"/><circle cx=\"110\" cy=\"28\" r=\"3.5\" fill=\"#EAB308\"/><path d=\"M 134 40 L 137 46 L 143 48 L 137 50 L 134 56 L 131 50 L 125 48 L 131 46 Z\" fill=\"#FFFFFF\"/></g>"
+  },
+  {
+    "id": 22,
+    "name": "Cilindro Maestro",
+    "slug": "cilindro_maestro",
+    "tagline": "RESTAURACIÓN DE MOTORES V8, MECÁNICA DE PRECISIÓN & AUTOS CLÁSICOS",
+    "category": "Servicios / Restauración Automotriz",
+    "giro": "Taller mecánico de alta precisión especializado en reconstrucción integral de motores V8 clásicos y modernos, calibración de carburadores de competición y restauración de carrocerías.",
+    "buyer": "Coleccionistas de autos clásicos, pilotos de carreras y apasionados del motor que demandan potencia pura, sonido sinfónico y ajustes mecánicos con tolerancias milimétricas.",
+    "why": "Porque un motor de combustión bien afinado es una obra maestra de la ingeniería mecánica que merece rugir con fuerza y orgullo sobre el asfalto.",
+    "how": "Rectificamos monoblocks en tornos computarizados, balanceamos cigüeñales dinámicamente y probamos cada motor en banco de potencia dinamométrico (Dyno).",
+    "what": "Reconstrucción completa de motores de alto desempeño, puesta a punto de sistemas de inyección y carburación, reconstrucción de transmisiones y suspensión deportiva.",
+    "persona": "Maestro mecánico y preparador de motores de competencia: escucha el ralentí con el oído pegado al múltiple de admisión y calibra válvulas con galgas de precisión.",
+    "niza": "Clase 37 (Reparación, restauración y mantenimiento de vehículos de motor, rectificación de motores y afinación mecánica).",
+    "tpBefore": [
+      "Diagnóstico preliminar en video mostrando pruebas de compresión cilindro por cilindro y endoscopía interna",
+      "Galería fotográfica de proyectos de restauración 'frame-off' completados con más de 2,000 horas de trabajo",
+      "Presupuesto detallado parte por parte con números de pieza originales OEM y tiempos de entrega",
+      "Recepción del vehículo en plataforma cerrada con inventario fotográfico minucioso de 50 puntos"
+    ],
+    "tpDuring": [
+      "Acceso semanal a la bitácora fotográfica en línea donde se documenta el maquinado de cada pieza",
+      "Prueba de encendido inicial transmitida en vivo para el cliente desde la celda de pruebas del dinamómetro",
+      "Gráfica oficial de potencia (HP) y torque (lb-pie) certificada por el banco de potencia Dynojet",
+      "Lavado ultrasónico de cada tornillo y recubrimiento anticorrosivo de grado automotriz de carrera"
+    ],
+    "tpAfter": [
+      "Libro de bitácora encuadernado en cuero con todas las tolerancias de holgura, fotos y especificaciones de torque",
+      "Póliza de garantía de 12 meses o 20,000 km en la reconstrucción del bloque del motor",
+      "Afinación y cambio de aceite de rodaje gratuito a los primeros 1,000 kilómetros de uso",
+      "Asistencia técnica telefónica directa con el maestro mecánico para dudas en eventos de exhibición o pista"
+    ],
+    "colors": {
+      "pri": "#1F2937",
+      "sec": "#374151",
+      "acc": "#DC2626",
+      "darkInk": "#0D1117",
+      "midGray": "#6B7280",
+      "lightGray": "#E5E7EB",
+      "softBg": "#F9FAFB",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 432 C",
+      "pantoneSec": "Pantone 431 C",
+      "cmykPri": "C:50 M:40 Y:35 K:60",
+      "cmykSec": "C:45 M:35 Y:30 K:45"
+    },
+    "primaryFont": "Montserrat",
+    "secondaryFont": "Space Grotesk",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><rect x=\"62\" y=\"32\" width=\"56\" height=\"52\" rx=\"4\" fill=\"#1F2937\"/><line x1=\"62\" y1=\"46\" x2=\"118\" y2=\"46\" stroke=\"#374151\" stroke-width=\"2.5\"/><line x1=\"62\" y1=\"60\" x2=\"118\" y2=\"60\" stroke=\"#374151\" stroke-width=\"2.5\"/><circle cx=\"90\" cy=\"74\" r=\"8\" fill=\"#DC2626\"/><path d=\"M 84 84 L 76 138 L 104 138 L 96 84 Z\" fill=\"#374151\"/><circle cx=\"90\" cy=\"144\" r=\"16\" fill=\"#1F2937\"/><circle cx=\"90\" cy=\"144\" r=\"8\" fill=\"#FFFFFF\"/><path d=\"M 38 126 C 38 78, 54 44, 90 24\" fill=\"none\" stroke=\"#DC2626\" stroke-width=\"2.5\" stroke-dasharray=\"6,4\"/><path d=\"M 142 126 C 142 78, 126 44, 90 24\" fill=\"none\" stroke=\"#DC2626\" stroke-width=\"2.5\" stroke-dasharray=\"6,4\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><rect x=\"62\" y=\"32\" width=\"56\" height=\"52\" rx=\"4\" fill=\"#FFFFFF\"/><line x1=\"62\" y1=\"46\" x2=\"118\" y2=\"46\" stroke=\"#DC2626\" stroke-width=\"2.5\"/><line x1=\"62\" y1=\"60\" x2=\"118\" y2=\"60\" stroke=\"#DC2626\" stroke-width=\"2.5\"/><circle cx=\"90\" cy=\"74\" r=\"8\" fill=\"#DC2626\"/><path d=\"M 84 84 L 76 138 L 104 138 L 96 84 Z\" fill=\"#FFFFFF\"/><circle cx=\"90\" cy=\"144\" r=\"16\" fill=\"#FFFFFF\"/><circle cx=\"90\" cy=\"144\" r=\"8\" fill=\"#1F2937\"/><path d=\"M 38 126 C 38 78, 54 44, 90 24\" fill=\"none\" stroke=\"#DC2626\" stroke-width=\"2.5\" stroke-dasharray=\"6,4\"/><path d=\"M 142 126 C 142 78, 126 44, 90 24\" fill=\"none\" stroke=\"#DC2626\" stroke-width=\"2.5\" stroke-dasharray=\"6,4\"/></g>"
+  },
+  {
+    "id": 23,
+    "name": "Botánica Sublime",
+    "slug": "botanica_sublime",
+    "tagline": "ALTA COSTURA FLORAL, ARTE BOTÁNICO & PAISAJISMO ESCULTÓRICO",
+    "category": "Tienda & Servicios / Alta Floristería",
+    "giro": "Estudio de arte botánico y alta costura floral especializado en ambientación de bodas de destino, instalaciones vegetales efímeras para eventos de lujo y paisajismo residencial.",
+    "buyer": "Novias sofisticadas, marcas de moda de lujo, hotelería premium y amantes de las flores que buscan propuestas artísticas vanguardistas que rompan con los arreglos convencionales.",
+    "why": "Porque las flores son la manifestación más efímera y sublime de la belleza en la tierra; capturar su poesía transforma cualquier espacio en un santuario vivo.",
+    "how": "Importamos flores de corte fresco de cultivos sustentables de Holanda, Ecuador y México, seleccionamos formas escultóricas y respetamos el movimiento natural de cada tallo.",
+    "what": "Instalaciones florales suspendidas, arcos ceremoniales monumentales, ramos de novia de autor y diseño de jardines perennes de bajo consumo hídrico.",
+    "persona": "Directora creativa y artista floral: piensa con la sensibilidad de una pintora impresionista, compone con volúmenes botánicos orgánicos y llena cada atmósfera de aroma y elegancia.",
+    "niza": "Clase 31 (Flores naturales, plantas vivas, arreglos botánicos) y Clase 44 (Servicios de floristería, diseño de jardines y paisajismo).",
+    "tpBefore": [
+      "Moodboard conceptual personalizado en Notion con paleta cromática botánica y texturas de follaje",
+      "Visita técnica de exploración al recinto o jardín para analizar la luz solar y la ventilación del espacio",
+      "Portafolio editorial publicado en revistas internacionales de bodas y diseño de interiores",
+      "Prueba de flores frescas y muestra de texturas en el showroom del atelier antes de la firma del contrato"
+    ],
+    "tpDuring": [
+      "Montaje in situ con equipo de floristas profesionales trabajando bajo refrigeración controlada",
+      "Selección y curaduría de floreros de cerámica artesanal, cristal soplado y bases de piedra volcánica",
+      "Supervisión personal de la directora creativa hasta el minuto previo al inicio del evento",
+      "Re-hidratación periódica de las flores para garantizar que luzcan radiantes durante toda la velada"
+    ],
+    "tpAfter": [
+      "Servicio de desmontaje ecológico con compostaje de residuos vegetales en rancho orgánico asociado",
+      "Donación de flores en perfecto estado a hospitales y asilos locales con previa autorización del cliente",
+      "Entrega del ramo de novia deshidratado y preservado en marco botánico hermético de colección",
+      "Álbum fotográfico digital de alta resolución con los detalles de la ambientación para el archivo familiar"
+    ],
+    "colors": {
+      "pri": "#2D3748",
+      "sec": "#4A5568",
+      "acc": "#EC4899",
+      "darkInk": "#1A202C",
+      "midGray": "#718096",
+      "lightGray": "#E2E8F0",
+      "softBg": "#FFF5F7",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 432 C",
+      "pantoneSec": "Pantone 430 C",
+      "cmykPri": "C:55 M:45 Y:35 K:45",
+      "cmykSec": "C:45 M:35 Y:25 K:30"
+    },
+    "primaryFont": "Cormorant Garamond",
+    "secondaryFont": "Montserrat",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#FFF5F7\" stroke=\"#EC4899\" stroke-width=\"1.5\"/><path d=\"M 90 152 C 90 110, 80 84, 88 54 C 92 68, 86 98, 90 152 Z\" fill=\"#2D3748\"/><path d=\"M 88 54 C 74 34, 60 48, 70 66 C 78 62, 84 58, 88 54 Z\" fill=\"#EC4899\"/><path d=\"M 88 54 C 102 34, 116 48, 106 66 C 98 62, 92 58, 88 54 Z\" fill=\"#EC4899\"/><path d=\"M 88 54 C 88 28, 88 28, 88 28 C 84 38, 84 48, 88 54 Z\" fill=\"#4A5568\"/><circle cx=\"88\" cy=\"54\" r=\"6\" fill=\"#FDE047\"/><path d=\"M 89 110 C 64 100, 48 114, 56 128 C 70 126, 82 118, 89 110 Z\" fill=\"#4A5568\"/><path d=\"M 89 94 C 114 84, 130 98, 122 112 C 108 110, 96 102, 89 94 Z\" fill=\"#4A5568\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"none\" stroke=\"#EC4899\" stroke-width=\"1.5\"/><path d=\"M 90 152 C 90 110, 80 84, 88 54 C 92 68, 86 98, 90 152 Z\" fill=\"#FFFFFF\"/><path d=\"M 88 54 C 74 34, 60 48, 70 66 C 78 62, 84 58, 88 54 Z\" fill=\"#EC4899\"/><path d=\"M 88 54 C 102 34, 116 48, 106 66 C 98 62, 92 58, 88 54 Z\" fill=\"#EC4899\"/><path d=\"M 88 54 C 88 28, 88 28, 88 28 C 84 38, 84 48, 88 54 Z\" fill=\"#FFFFFF\"/><circle cx=\"88\" cy=\"54\" r=\"6\" fill=\"#FDE047\"/><path d=\"M 89 110 C 64 100, 48 114, 56 128 C 70 126, 82 118, 89 110 Z\" fill=\"#F472B6\"/><path d=\"M 89 94 C 114 84, 130 98, 122 112 C 108 110, 96 102, 89 94 Z\" fill=\"#F472B6\"/></g>"
+  },
+  {
+    "id": 24,
+    "name": "FacturaFlow",
+    "slug": "facturaflow",
+    "tagline": "FACTURACIÓN ELECTRÓNICA, COBRANZA AUTOMATIZADA CON IA & ERP CLOUD",
+    "category": "Productos Digitales / Software SaaS & Fintech",
+    "giro": "Plataforma de software como servicio (SaaS) en la nube para emisión masiva de CFDI 4.0, conciliación bancaria automática con inteligencia artificial y gestión de cobranza preventiva.",
+    "buyer": "Directores de finanzas, contadores, directores de operaciones y empresas en crecimiento que pierden días enteros conciliando facturas manualmente y sufren por cobranza tardía.",
+    "why": "Porque el tiempo de los equipos financieros no debe consumirse en tareas burocráticas repetitivas, sino en analizar números para hacer crecer el negocio.",
+    "how": "Conectamos API directa con los principales bancos y el SAT, procesamos comprobantes con OCR inteligente y enviamos recordatorios de pago automatizados y amables.",
+    "what": "Emisión ilimitada de facturas electrónicas, complementos de pago automáticos, portal de autoservicio para clientes y reportes de flujo de caja en tiempo real.",
+    "persona": "Ingeniero de producto y líder fintech: obsesionado con la velocidad de carga de la app, la claridad visual de las tablas y la precisión en cada centavo.",
+    "niza": "Clase 9 (Software descargable y aplicaciones web para facturación y contabilidad) y Clase 35 (Servicios de facturación electrónica y gestión contable).",
+    "tpBefore": [
+      "Prueba gratuita de 14 días con acceso total sin necesidad de ingresar tarjeta de crédito",
+      "Calculadora web de horas ahorradas y reducción de cartera vencida con FacturaFlow",
+      "Migración automática de catálogos de clientes y productos desde el software anterior en 1 clic",
+      "Webinars semanales de actualización sobre cambios en las reglas de la miscelánea fiscal"
+    ],
+    "tpDuring": [
+      "Emisión de una factura completa en menos de 18 segundos con envío automático por correo y WhatsApp",
+      "Botón de pago directo en la factura digital para que los clientes paguen con transferencia o tarjeta",
+      "Soporte técnico por chat en vivo con especialistas contables que responden en menos de 90 segundos",
+      "Respaldo automático de todos los XML y PDF en servidores con cifrado bancario de 256 bits"
+    ],
+    "tpAfter": [
+      "Reporte mensual de cobranza con desglose de facturas pagadas, pendientes y proyección de flujo",
+      "Alertas automáticas ante facturas canceladas indebidamente por proveedores o clientes",
+      "Integración nativa con sistemas ERP corporativos (SAP, Oracle, Zoho Books) mediante Webhooks",
+      "Reunión de éxito del cliente trimestral para optimizar flujos de trabajo contables y reducir fricciones"
+    ],
+    "colors": {
+      "pri": "#0F172A",
+      "sec": "#2563EB",
+      "acc": "#059669",
+      "darkInk": "#020617",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F8FAFC",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 296 C",
+      "pantoneSec": "Pantone 2728 C",
+      "cmykPri": "C:85 M:70 Y:45 K:60",
+      "cmykSec": "C:85 M:55 Y:0 K:0"
+    },
+    "primaryFont": "Plus Jakarta Sans",
+    "secondaryFont": "Inter",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><rect x=\"36\" y=\"32\" width=\"60\" height=\"84\" rx=\"6\" fill=\"#0F172A\"/><rect x=\"44\" y=\"44\" width=\"44\" height=\"6\" rx=\"2\" fill=\"#E2E8F0\"/><rect x=\"44\" y=\"56\" width=\"36\" height=\"4\" rx=\"2\" fill=\"#64748B\"/><rect x=\"44\" y=\"66\" width=\"40\" height=\"4\" rx=\"2\" fill=\"#64748B\"/><rect x=\"44\" y=\"76\" width=\"28\" height=\"4\" rx=\"2\" fill=\"#64748B\"/><rect x=\"84\" y=\"64\" width=\"60\" height=\"84\" rx=\"6\" fill=\"#2563EB\"/><rect x=\"92\" y=\"76\" width=\"44\" height=\"6\" rx=\"2\" fill=\"#FFFFFF\"/><rect x=\"92\" y=\"88\" width=\"36\" height=\"4\" rx=\"2\" fill=\"#BFDBFE\"/><rect x=\"92\" y=\"98\" width=\"40\" height=\"4\" rx=\"2\" fill=\"#BFDBFE\"/><rect x=\"92\" y=\"108\" width=\"28\" height=\"4\" rx=\"2\" fill=\"#BFDBFE\"/><polygon points=\"98,34 76,78 92,78 82,112 114,64 96,64\" fill=\"#059669\" stroke=\"#FFFFFF\" stroke-width=\"2.2\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><rect x=\"36\" y=\"32\" width=\"60\" height=\"84\" rx=\"6\" fill=\"#FFFFFF\"/><rect x=\"44\" y=\"44\" width=\"44\" height=\"6\" rx=\"2\" fill=\"#0F172A\"/><rect x=\"44\" y=\"56\" width=\"36\" height=\"4\" rx=\"2\" fill=\"#2563EB\"/><rect x=\"44\" y=\"66\" width=\"40\" height=\"4\" rx=\"2\" fill=\"#2563EB\"/><rect x=\"44\" y=\"76\" width=\"28\" height=\"4\" rx=\"2\" fill=\"#2563EB\"/><rect x=\"84\" y=\"64\" width=\"60\" height=\"84\" rx=\"6\" fill=\"#2563EB\"/><rect x=\"92\" y=\"76\" width=\"44\" height=\"6\" rx=\"2\" fill=\"#FFFFFF\"/><rect x=\"92\" y=\"88\" width=\"36\" height=\"4\" rx=\"2\" fill=\"#BFDBFE\"/><rect x=\"92\" y=\"98\" width=\"40\" height=\"4\" rx=\"2\" fill=\"#BFDBFE\"/><rect x=\"92\" y=\"108\" width=\"28\" height=\"4\" rx=\"2\" fill=\"#BFDBFE\"/><polygon points=\"98,34 76,78 92,78 82,112 114,64 96,64\" fill=\"#059669\" stroke=\"#FFFFFF\" stroke-width=\"2.2\"/></g>"
+  },
+  {
+    "id": 25,
+    "name": "AquaPure Dry",
+    "slug": "aquapure_dry",
+    "tagline": "TINTORERÍA ECOLÓGICA, CUIDADO TEXTIL CON OZONO & CERO EMISIONES",
+    "category": "Servicios / Tintorería & Lavandería Ecológica",
+    "giro": "Tintorería y lavandería sustentable que sustituye los químicos tóxicos tradicionales (percloroetileno) por tecnología Wet Cleaning de lavado en agua con ozono y detergentes biodegradables.",
+    "buyer": "Familias conscientes, profesionistas con trajes finos y amantes de las prendas delicadas que buscan ropa impecable, suave al tacto y sin olores químicos dañinos.",
+    "why": "Porque cuidar tus prendas no tiene por qué contaminar los ríos ni exponer tu piel a sustancias químicas cancerígenas.",
+    "how": "Utilizamos microburbujas de ozono que desinfectan en frío, agua suavizada y planchas de vapor vertical que protegen la fibra natural de lanas y sedas.",
+    "what": "Lavado ecológico de trajes, vestidos de noche, abrigos de lana, edredones de pluma, tenis de lujo y servicio de entrega a domicilio en vehículos eléctricos.",
+    "persona": "Especialista textil y maestro tintorero: inspecciona cada mancha bajo luz blanca, identifica la fibra al tacto y trata cada prenda con el cuidado de una reliquia.",
+    "niza": "Clase 37 (Servicios de tintorería, limpieza de ropa, planchado y cuidado de prendas textiles).",
+    "tpBefore": [
+      "App móvil para programar recolección a domicilio con chofer en horario exacto de 30 minutos",
+      "Guía de etiquetado textil en web para saber si tus prendas son aptas para Wet Cleaning",
+      "Bolsa de recolección textil reutilizable de lona impermeable entregada en el primer pedido",
+      "Locales luminosos con ventanales limpios, aroma a brisa fresca y plantas purificadoras"
+    ],
+    "tpDuring": [
+      "Inspección minuciosa con reporte fotográfico en la app de botones flojos o manchas preexistentes",
+      "Proceso de lavado con agua recirculada y ozono que ahorra 70% de agua comparado con métodos tradicionales",
+      "Planchado a mano con fundas protectoras en suela de teflón para evitar brillos en telas oscuras",
+      "Empaque en fundas biodegradables de almidón de maíz o bolsas de tela del propio cliente"
+    ],
+    "tpAfter": [
+      "Prendas entregadas con aroma a frescura natural sin ningún residuo químico ni olor a solvente",
+      "Ganchos de madera reciclada que se pueden devolver en el siguiente pedido para crédito en monedero",
+      "Historial de ahorro de agua y químicos tóxicos acumulado en el perfil de usuario de la app",
+      "Garantía de satisfacción: si una mancha no cede en el primer intento, se re-trata sin costo adicional"
+    ],
+    "colors": {
+      "pri": "#0284C7",
+      "sec": "#0EA5E9",
+      "acc": "#10B981",
+      "darkInk": "#082F49",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F0FDF4",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 300 C",
+      "pantoneSec": "Pantone 299 C",
+      "cmykPri": "C:80 M:30 Y:0 K:0",
+      "cmykSec": "C:65 M:15 Y:0 K:0"
+    },
+    "primaryFont": "Outfit",
+    "secondaryFont": "Inter",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#F0FDF4\" stroke=\"#0284C7\" stroke-width=\"1.8\"/><path d=\"M 90 28 C 90 28, 48 86, 48 116 C 48 140, 68 156, 90 156 C 112 156, 132 140, 132 116 C 132 86, 90 28, 90 28 Z\" fill=\"#0284C7\"/><path d=\"M 90 38 C 90 38, 56 90, 56 116 C 56 134, 72 148, 90 148 C 108 148, 124 134, 124 116 C 124 90, 90 38, 90 38 Z\" fill=\"#0EA5E9\"/><path d=\"M 72 108 C 72 90, 84 80, 96 84 C 98 94, 90 106, 72 108 Z\" fill=\"#10B981\"/><line x1=\"74\" y1=\"106\" x2=\"94\" y2=\"86\" stroke=\"#FFFFFF\" stroke-width=\"1.2\"/><circle cx=\"106\" cy=\"118\" r=\"8\" fill=\"#FFFFFF\" opacity=\"0.65\"/><circle cx=\"114\" cy=\"106\" r=\"4\" fill=\"#FFFFFF\" opacity=\"0.55\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"none\" stroke=\"#0EA5E9\" stroke-width=\"1.8\"/><path d=\"M 90 28 C 90 28, 48 86, 48 116 C 48 140, 68 156, 90 156 C 112 156, 132 140, 132 116 C 132 86, 90 28, 90 28 Z\" fill=\"#FFFFFF\"/><path d=\"M 90 38 C 90 38, 56 90, 56 116 C 56 134, 72 148, 90 148 C 108 148, 124 134, 124 116 C 124 90, 90 38, 90 38 Z\" fill=\"#0EA5E9\"/><path d=\"M 72 108 C 72 90, 84 80, 96 84 C 98 94, 90 106, 72 108 Z\" fill=\"#10B981\"/><line x1=\"74\" y1=\"106\" x2=\"94\" y2=\"86\" stroke=\"#FFFFFF\" stroke-width=\"1.2\"/><circle cx=\"106\" cy=\"118\" r=\"8\" fill=\"#082F49\" opacity=\"0.45\"/><circle cx=\"114\" cy=\"106\" r=\"4\" fill=\"#082F49\" opacity=\"0.45\"/></g>"
+  },
+  {
+    "id": 26,
+    "name": "Cumbre Austral",
+    "slug": "cumbre_austral",
+    "tagline": "GUÍAS DE ALTA MONTAÑA, EXPEDICIONES ANDINAS & RESCATE ALPINO",
+    "category": "Servicios / Ecoturismo & Montañismo",
+    "giro": "Compañía de guías profesionales de montaña certificados UIAGM/IFMGA especializada en expediciones de alta dificultad a volcanes y cumbres de América del Sur, escalada en hielo y travesías glaciares.",
+    "buyer": "Montañistas, escaladores y amantes de la aventura extrema que buscan alcanzar cimas desafiantes con la máxima seguridad técnica y respeto irrestricto por la montaña.",
+    "why": "Porque en las cumbres más altas de la cordillera el ser humano comprende su pequeñez ante la inmensidad y descubre su verdadera fortaleza interior.",
+    "how": "Mantenemos ratio estricto de 1 guía por cada 2 clientes, equipo de telecomunicaciones satelitales Iridium y protocolos médicos de mal agudo de montaña (MAM).",
+    "what": "Expediciones guiadas al Aconcagua, Orizaba, Alpamayo y Huascarán, cursos de rescate en grietas glaciares y programas de aclimatación progresiva.",
+    "persona": "Guía alpino de alta montaña: sereno ante la ventisca, con pasos firmes sobre el glaciar, respeto sagrado por el clima y compromiso absoluto de regresar a todos con vida.",
+    "niza": "Clase 39 (Organización de viajes de expedición, servicios de guías de montaña y transporte alpino) y Clase 41 (Instrucción en montañismo y escalada).",
+    "tpBefore": [
+      "Test médico y físico previo obligatorio revisado por el médico especialista en medicina de altitud",
+      "Sesión de revisión de equipo técnico por videollamada para verificar crampones, piolet y botas dobles",
+      "Manual de entrenamiento físico de 16 semanas diseñado específicamente para la cumbre objetivo",
+      "Póliza de rescate aéreo en helicóptero y repatriación médica incluida en todas las expediciones"
+    ],
+    "tpDuring": [
+      "Campamento base con domos geodésicos calefaccionados, comida caliente reconfortante y oxímetro diario",
+      "Monitoreo meteorológico satelital actualizado dos veces al día antes del ataque a la cumbre",
+      "Cuerdas de seguridad dinámicas homologadas UIAA y anclajes en nieve y roca certificados",
+      "Celebración en la cima con foto conmemorativa y tiempo suficiente para contemplar el amanecer andino"
+    ],
+    "tpAfter": [
+      "Certificado Oficial de Cumbre firmado por el guía líder y la asociación nacional de montañismo",
+      "Enlace a galería fotográfica y de video en 4K capturada con cámaras de acción durante la expedición",
+      "Cena de cierre en la ciudad con entrega de medalla de cumbre forjada en peltre conmemorativo",
+      "Crédito del 15% para la siguiente expedición a cumbres internacionales del circuito de las 7 Cimas"
+    ],
+    "colors": {
+      "pri": "#1E293B",
+      "sec": "#334155",
+      "acc": "#0EA5E9",
+      "darkInk": "#0F172A",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F8FAFC",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 432 C",
+      "pantoneSec": "Pantone 431 C",
+      "cmykPri": "C:70 M:55 Y:40 K:45",
+      "cmykSec": "C:60 M:45 Y:35 K:35"
+    },
+    "primaryFont": "Montserrat",
+    "secondaryFont": "Inter",
+    "isEstablished": true,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><polygon points=\"90,26 148,136 32,136\" fill=\"#1E293B\"/><polygon points=\"90,26 112,68 90,60 74,74 68,68\" fill=\"#F8FAFC\"/><polygon points=\"128,68 168,136 114,136\" fill=\"#334155\"/><polygon points=\"128,68 142,94 132,90 120,96\" fill=\"#F8FAFC\"/><polygon points=\"52,68 12,136 66,136\" fill=\"#334155\"/><polygon points=\"52,68 62,94 52,90 40,96\" fill=\"#F8FAFC\"/><line x1=\"20\" y1=\"146\" x2=\"160\" y2=\"146\" stroke=\"#0EA5E9\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"90\" y1=\"60\" x2=\"90\" y2=\"136\" stroke=\"#334155\" stroke-width=\"1.8\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><polygon points=\"90,26 148,136 32,136\" fill=\"#FFFFFF\"/><polygon points=\"90,26 112,68 90,60 74,74 68,68\" fill=\"#0EA5E9\"/><polygon points=\"128,68 168,136 114,136\" fill=\"#E2E8F0\"/><polygon points=\"128,68 142,94 132,90 120,96\" fill=\"#0EA5E9\"/><polygon points=\"52,68 12,136 66,136\" fill=\"#E2E8F0\"/><polygon points=\"52,68 62,94 52,90 40,96\" fill=\"#0EA5E9\"/><line x1=\"20\" y1=\"146\" x2=\"160\" y2=\"146\" stroke=\"#0EA5E9\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"90\" y1=\"60\" x2=\"90\" y2=\"136\" stroke=\"#0F172A\" stroke-width=\"1.8\"/></g>"
+  },
+  {
+    "id": 27,
+    "name": "Órbita Films",
+    "slug": "orbita_films",
+    "tagline": "CASA PRODUCTORA DE CINE, DOCUMENTAL & EFECTOS VISUALES VFX",
+    "category": "Servicios / Producción Audiovisual & Cine",
+    "giro": "Casa productora cinematográfica y estudio de post-producción especializado en largometrajes de ficción, documentales de impacto social, comerciales de televisión y efectos visuales VFX.",
+    "buyer": "Directores de cine, plataformas de streaming (Netflix, Prime), agencias de publicidad y marcas que buscan narrativa visual conmovedora y estética cinematográfica impecable.",
+    "why": "Porque una historia contada con luz, encuadre y sonido auténticos tiene el poder de conmover al espectador y cambiar su percepción del mundo.",
+    "how": "Rodamos con cámaras de cine digital ARRI Alexa y lentes anamórficos vintage, operamos salas de etalonaje DaVinci Resolve y cuidamos el diseño sonoro en surround.",
+    "what": "Producción integral de películas y series, corrección de color HDR en monitores de masterización Flanders Scientific, animación 3D y diseño de producción de arte.",
+    "persona": "Director de fotografía y cineasta: mira la realidad en proporciones de 2.39:1, encuentra la poesía en las sombras y no se detiene hasta lograr la toma perfecta.",
+    "niza": "Clase 41 (Producción de películas, producción de videos, servicios de post-producción cinematográfica y montaje audiovisual).",
+    "tpBefore": [
+      "Reel cinematográfico en 4K en Vimeo con contraseña privada mostrando escenas de alto impacto",
+      "Desglose de guión y propuesta visual en 'lookbook' editorial con referencias de arte e iluminación",
+      "Scouting de locaciones con fotografía aérea y estudio de posición solar por hora del día",
+      "Plan de rodaje y presupuesto transparente dividido según lineamientos de sindicatos cinematográficos"
+    ],
+    "tpDuring": [
+      "Set de filmación ordenado y profesional con monitores inalámbricos de alta resolución para clientes",
+      "Catering gourmet saludable para el equipo técnico y actores durante las jornadas de llamado",
+      "Respaldo digital seguro en set con checksum triple en discos duros SSD de alta velocidad",
+      "Ambiente de trabajo respetuoso y enfocado en la creatividad y la visión del director"
+    ],
+    "tpAfter": [
+      "Sesiones de corrección de color conjuntas en sala oscura de proyección cinematográfica calibrada",
+      "Entrega del master digital en formato DCP para salas de cine y ProRes 4444 XQ para streaming",
+      "Trailer promocional y paquete de pósters oficiales en alta resolución listos para festivales",
+      "Celebración de premier privada con alfombra roja para el equipo y patrocinadores del proyecto"
+    ],
+    "colors": {
+      "pri": "#0A0A0A",
+      "sec": "#18181B",
+      "acc": "#F59E0B",
+      "darkInk": "#000000",
+      "midGray": "#71717A",
+      "lightGray": "#E4E4E7",
+      "softBg": "#FAFAFA",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone Black 6 C",
+      "pantoneSec": "Pantone Black 7 C",
+      "cmykPri": "C:60 M:50 Y:40 K:100",
+      "cmykSec": "C:50 M:40 Y:30 K:95"
+    },
+    "primaryFont": "Syne",
+    "secondaryFont": "Montserrat",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#0A0A0A\"/><circle cx=\"90\" cy=\"90\" r=\"62\" fill=\"none\" stroke=\"#F59E0B\" stroke-width=\"1.8\"/><circle cx=\"90\" cy=\"90\" r=\"30\" fill=\"#18181B\"/><path d=\"M 68 68 L 112 68 L 90 90 Z\" fill=\"#F59E0B\"/><path d=\"M 112 68 L 112 112 L 90 90 Z\" fill=\"#DC2626\"/><path d=\"M 112 112 L 68 112 L 90 90 Z\" fill=\"#F59E0B\"/><path d=\"M 68 112 L 68 68 L 90 90 Z\" fill=\"#DC2626\"/><circle cx=\"90\" cy=\"90\" r=\"10\" fill=\"#0A0A0A\"/><circle cx=\"90\" cy=\"90\" r=\"4\" fill=\"#FFFFFF\"/><circle cx=\"146\" cy=\"54\" r=\"5\" fill=\"#F59E0B\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#FFFFFF\"/><circle cx=\"90\" cy=\"90\" r=\"62\" fill=\"none\" stroke=\"#F59E0B\" stroke-width=\"1.8\"/><circle cx=\"90\" cy=\"90\" r=\"30\" fill=\"#E4E4E7\"/><path d=\"M 68 68 L 112 68 L 90 90 Z\" fill=\"#F59E0B\"/><path d=\"M 112 68 L 112 112 L 90 90 Z\" fill=\"#DC2626\"/><path d=\"M 112 112 L 68 112 L 90 90 Z\" fill=\"#F59E0B\"/><path d=\"M 68 112 L 68 68 L 90 90 Z\" fill=\"#DC2626\"/><circle cx=\"90\" cy=\"90\" r=\"10\" fill=\"#FFFFFF\"/><circle cx=\"90\" cy=\"90\" r=\"4\" fill=\"#0A0A0A\"/><circle cx=\"146\" cy=\"54\" r=\"5\" fill=\"#F59E0B\"/></g>"
+  },
+  {
+    "id": 28,
+    "name": "Helios Solar",
+    "slug": "helios_solar",
+    "tagline": "PARQUES FOTOVOLTAICOS, ENERGÍA LIMPIA & ALMACENAMIENTO INDUSTRIAL BESS",
+    "category": "Materiales & Servicios / Energía Solar Fotovoltaica",
+    "giro": "Empresa de ingeniería EPC especializada en diseño, instalación y mantenimiento de centrales solares fotovoltaicas sobre cubierta y a gran escala, y sistemas de almacenamiento con baterías BESS.",
+    "buyer": "Parques industriales, centros comerciales, maquiladoras y empresas con altos consumos eléctricos que buscan reducir drásticamente su factura de luz y cumplir metas ESG.",
+    "why": "Porque aprovechar la radiación inagotable del sol es el camino más inteligente, rentable y patriótico para lograr la independencia energética y frenar el cambio climático.",
+    "how": "Instalamos paneles solares monocristalinos Tier-1 de alta eficiencia, inversores inteligentes con telemetría en tiempo real y estructuras de aluminio anodizado resistentes a huracanes.",
+    "what": "Sistemas fotovoltaicos interconectados a red (PPA), baterías de litio industriales para respaldo de energía, auditorías de calidad de energía y gestión de contratos ante la CFE.",
+    "persona": "Ingeniero en energías renovables: riguroso con los cálculos de radiación y sombras, obsesionado con la seguridad eléctrica y comprometido con la descarbonización del país.",
+    "niza": "Clase 37 (Instalación, mantenimiento y reparación de paneles solares fotovoltaicos) y Clase 40 (Generación de energía solar y renovable).",
+    "tpBefore": [
+      "Estudio preliminar gratuito de viabilidad solar y retorno de inversión (ROI) analizando los últimos 12 recibos de CFE",
+      "Modelado 3D del techo de la nave industrial con simulación de irradiación solar en software Helioscope",
+      "Opciones de financiamiento verde y contratos de compra de energía (PPA) con cero inversión inicial",
+      "Visita técnica a proyectos industriales en operación para constatar la calidad del cableado y los inversores"
+    ],
+    "tpDuring": [
+      "Instalación certificada por técnicos electricistas con equipo de protección contra caídas y líneas de vida",
+      "Pruebas de termografía con drones sobre los módulos instalados para verificar la ausencia de puntos calientes",
+      "Gestión completa de los trámites de interconexión y cambio de medidor bidireccional ante la CFE",
+      "Capacitación al equipo de mantenimiento de la planta sobre el funcionamiento y paro de emergencia"
+    ],
+    "tpAfter": [
+      "Monitoreo 24/7 de generación de kWh y ahorro acumulado a través de la aplicación móvil de Helios Solar",
+      "Servicio programado de limpieza robótica de paneles solares para mantener la eficiencia máxima",
+      "Póliza de garantía de 25 años en la generación de energía de los módulos y 10 años en inversores",
+      "Certificado anual de reducción de emisiones de CO₂ emitido para los informes de sustentabilidad de la empresa"
+    ],
+    "colors": {
+      "pri": "#0C4A6E",
+      "sec": "#0284C7",
+      "acc": "#F59E0B",
+      "darkInk": "#082F49",
+      "midGray": "#64748B",
+      "lightGray": "#E2E8F0",
+      "softBg": "#F8FAFC",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 303 C",
+      "pantoneSec": "Pantone 300 C",
+      "cmykPri": "C:90 M:55 Y:25 K:40",
+      "cmykSec": "C:80 M:30 Y:0 K:0"
+    },
+    "primaryFont": "Montserrat",
+    "secondaryFont": "Space Grotesk",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#F8FAFC\" stroke=\"#0C4A6E\" stroke-width=\"1.8\"/><circle cx=\"90\" cy=\"90\" r=\"32\" fill=\"#F59E0B\"/><polygon points=\"90,16 96,36 84,36\" fill=\"#F59E0B\"/><polygon points=\"90,164 96,144 84,144\" fill=\"#F59E0B\"/><polygon points=\"16,90 36,96 36,84\" fill=\"#F59E0B\"/><polygon points=\"164,90 144,96 144,84\" fill=\"#F59E0B\"/><polygon points=\"38,38 56,48 48,56\" fill=\"#F59E0B\"/><polygon points=\"142,142 124,132 132,124\" fill=\"#F59E0B\"/><polygon points=\"142,38 132,56 124,48\" fill=\"#F59E0B\"/><polygon points=\"38,142 48,124 56,132\" fill=\"#F59E0B\"/><rect x=\"74\" y=\"74\" width=\"32\" height=\"32\" fill=\"#0C4A6E\"/><line x1=\"90\" y1=\"74\" x2=\"90\" y2=\"106\" stroke=\"#38BDF8\" stroke-width=\"1.5\"/><line x1=\"74\" y1=\"90\" x2=\"106\" y2=\"90\" stroke=\"#38BDF8\" stroke-width=\"1.5\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"none\" stroke=\"#F59E0B\" stroke-width=\"1.8\"/><circle cx=\"90\" cy=\"90\" r=\"32\" fill=\"#F59E0B\"/><polygon points=\"90,16 96,36 84,36\" fill=\"#FFFFFF\"/><polygon points=\"90,164 96,144 84,144\" fill=\"#FFFFFF\"/><polygon points=\"16,90 36,96 36,84\" fill=\"#FFFFFF\"/><polygon points=\"164,90 144,96 144,84\" fill=\"#FFFFFF\"/><polygon points=\"38,38 56,48 48,56\" fill=\"#FFFFFF\"/><polygon points=\"142,142 124,132 132,124\" fill=\"#FFFFFF\"/><polygon points=\"142,38 132,56 124,48\" fill=\"#FFFFFF\"/><polygon points=\"38,142 48,124 56,132\" fill=\"#FFFFFF\"/><rect x=\"74\" y=\"74\" width=\"32\" height=\"32\" fill=\"#FFFFFF\"/><line x1=\"90\" y1=\"74\" x2=\"90\" y2=\"106\" stroke=\"#0C4A6E\" stroke-width=\"1.5\"/><line x1=\"74\" y1=\"90\" x2=\"106\" y2=\"90\" stroke=\"#0C4A6E\" stroke-width=\"1.5\"/></g>"
+  },
+  {
+    "id": 29,
+    "name": "Dolce Gelato",
+    "slug": "dolce_gelato",
+    "tagline": "GELATERÍA ARTESANAL ITALIANA & SORBETES DE FRUTA NATURAL",
+    "category": "Comestibles / Heladería Artesanal",
+    "giro": "Gelatería tradicional italiana elaborada diariamente en pequeñas cubas pozetti, con leche entera de libre pastoreo, pistache de Bronte (Sicilia), avellanas de Piamonte y sorbetes de fruta natural 100% veganos.",
+    "buyer": "Familias, niños, jóvenes y amantes de los postres que aprecian la textura cremosa y sedosa del gelato auténtico, bajo en grasa y libre de colorantes y esencias artificiales.",
+    "why": "Porque una cucharada de gelato artesanal frío en una tarde cálida tiene la magia inocente de dibujar una sonrisa instantánea en cualquier persona.",
+    "how": "Mantecamos a bajas revoluciones para incorporar solo el aire natural, no usamos saborizantes sintéticos y servimos con espátula tradicional a temperatura exacta.",
+    "what": "Gelatos de pistache, fior di latte con stracciatella, avellana tostada, chocolate oscuro al 70%, conos de waffle crujiente recién horneados y affogato al café espresso.",
+    "persona": "Maestro gelataio italiano: sonriente, amante de su oficio y generoso al ofrecer pruebas con la cucharita antes de que decidas tu combinación de sabores favorita.",
+    "niza": "Clase 30 (Helados comestibles, gelatos artesanales, sorbetes y preparaciones para hacer helados).",
+    "tpBefore": [
+      "Feed de Instagram con videos hipnóticos del gelato saliendo de la máquina mantecadora con textura de terciopelo",
+      "Aroma irresistible a barquillo dulce y vainilla saliendo de la plancha del cono en el local",
+      "Pizarrón con los sabores de temporada según la fruta más fresca disponible en el mercado",
+      "Ubicación céntrica en plaza arbolada con mesas al aire libre y espacio pet-friendly"
+    ],
+    "tpDuring": [
+      "Prueba sin límite de sabores con cucharita compostable para que elijas exactamente lo que se te antoja",
+      "Servicio en cono de barquillo caliente recién hecho o en vasito de cartón biodegradable con galleta",
+      "Opción de agregar un chorro de chocolate derretido tibio dentro del cono antes de servir el helado",
+      "Atención amable, rápida y con una música italiana suave sonando de fondo"
+    ],
+    "tpAfter": [
+      "Venta de envases térmicos de medio y un litro para llevar a cenas familiares o eventos en casa",
+      "Tarjeta de lealtad digital que te regala un cono mediano al acumular 8 visitas",
+      "Servicio de carrito de gelatos para bodas y eventos corporativos con barista y 4 sabores a elegir",
+      "Encuesta de 1 toque sobre temperatura y cremosidad para mantener la receta siempre impecable"
+    ],
+    "colors": {
+      "pri": "#451A03",
+      "sec": "#78350F",
+      "acc": "#059669",
+      "darkInk": "#1A0A01",
+      "midGray": "#78716C",
+      "lightGray": "#E7E5E4",
+      "softBg": "#FAF8F5",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 4625 C",
+      "pantoneSec": "Pantone 7554 C",
+      "cmykPri": "C:30 M:75 Y:90 K:70",
+      "cmykSec": "C:20 M:65 Y:95 K:35"
+    },
+    "primaryFont": "Playfair Display",
+    "secondaryFont": "Montserrat",
+    "isEstablished": false,
+    "isMultibrand": false,
+    "svgCore": "<g transform=\"translate(10,10)\"><polygon points=\"62,102 118,102 90,162\" fill=\"#D97706\"/><line x1=\"72\" y1=\"102\" x2=\"98\" y2=\"148\" stroke=\"#B45309\" stroke-width=\"1.2\"/><line x1=\"84\" y1=\"102\" x2=\"106\" y2=\"136\" stroke=\"#B45309\" stroke-width=\"1.2\"/><line x1=\"96\" y1=\"102\" x2=\"82\" y2=\"148\" stroke=\"#B45309\" stroke-width=\"1.2\"/><line x1=\"108\" y1=\"102\" x2=\"74\" y2=\"136\" stroke=\"#B45309\" stroke-width=\"1.2\"/><path d=\"M 64 102 C 60 74, 120 74, 116 102 Z\" fill=\"#78350F\"/><path d=\"M 68 84 C 64 54, 116 54, 112 84 Z\" fill=\"#059669\"/><path d=\"M 74 64 C 70 34, 110 34, 106 64 C 98 44, 82 44, 74 64 Z\" fill=\"#451A03\"/><circle cx=\"90\" cy=\"30\" r=\"10\" fill=\"#DC2626\"/><path d=\"M 94 22 C 98 12, 108 14, 112 16\" fill=\"none\" stroke=\"#166534\" stroke-width=\"2\" stroke-linecap=\"round\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><polygon points=\"62,102 118,102 90,162\" fill=\"#D97706\"/><line x1=\"72\" y1=\"102\" x2=\"98\" y2=\"148\" stroke=\"#FFFFFF\" stroke-width=\"1.2\"/><line x1=\"84\" y1=\"102\" x2=\"106\" y2=\"136\" stroke=\"#FFFFFF\" stroke-width=\"1.2\"/><line x1=\"96\" y1=\"102\" x2=\"82\" y2=\"148\" stroke=\"#FFFFFF\" stroke-width=\"1.2\"/><line x1=\"108\" y1=\"102\" x2=\"74\" y2=\"136\" stroke=\"#FFFFFF\" stroke-width=\"1.2\"/><path d=\"M 64 102 C 60 74, 120 74, 116 102 Z\" fill=\"#FFFFFF\"/><path d=\"M 68 84 C 64 54, 116 54, 112 84 Z\" fill=\"#059669\"/><path d=\"M 74 64 C 70 34, 110 34, 106 64 C 98 44, 82 44, 74 64 Z\" fill=\"#FDE68A\"/><circle cx=\"90\" cy=\"30\" r=\"10\" fill=\"#DC2626\"/><path d=\"M 94 22 C 98 12, 108 14, 112 16\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2\" stroke-linecap=\"round\"/></g>"
+  },
+  {
+    "id": 30,
+    "name": "Grupo Corporativo ImproBears",
+    "slug": "improbears_group",
+    "tagline": "HOLDING EMPRESARIAL, INNOVACIÓN & SISTEMAS PATRIMONIALES",
+    "category": "Corporativo / Grupo Multimarca",
+    "giro": "Grupo corporativo y holding de empresas que articula servicios profesionales de consultoría estratégica, cadena de suministro e ingredientes alimenticios, producción audiovisual cinematográfica e inteligencia artificial aplicada al negocio.",
+    "buyer": "Consejos directivos, empresarios consolidados, inversionistas y directores generales que requieren soluciones de transformación 360° para sus organizaciones.",
+    "why": "Porque liberar el tiempo mental de los líderes empresariales y erradicar el caos operativo es el motor para construir organizaciones humanas, eficientes y perdurables.",
+    "how": "Operamos bajo la Directiva Max C-00: rigor de ingeniería, calidez de socio leal, metodologías probadas en campo y tecnología de última generación.",
+    "what": "Ecosistema de 4 divisiones homologadas: ImproBears Consulting, ImproBears Ingredients, ImproBears Studio e ImproBears AI.",
+    "persona": "Jorge Benítez 'El Oso': mente de ingeniero, fuerza tranquila y socio leal: escucha primero la idea del cliente y la profesionaliza hombro a hombro sin imponer.",
+    "niza": "Clase 35 (Consultoría corporativa y gestión de negocios), Clase 30/31 (Ingredientes alimenticios), Clase 41 (Producción audiovisual en Studio) y Clase 42 (Servicios de Inteligencia Artificial).",
+    "tpBefore": [
+      "Portal corporativo de alta claridad en improbears.com con arquitectura de las 4 divisiones",
+      "Agente conversacional en WhatsApp disponible 24/7 para canalizar requerimientos a la división correcta",
+      "Diagnóstico preliminar integral 'Del Caos al Sistema' sin costo en menos de 48 horas",
+      "Brandbook oficial de 30 láminas en curvas que demuestra la autoridad documental del grupo"
+    ],
+    "tpDuring": [
+      "Acompañamiento cercano hombro a hombro in situ por directores de cada división especializada",
+      "Portal de Clientes unificado en Zoho Books para seguimiento de entregables, pedidos y facturación",
+      "Sesiones ejecutivas de avance con visualizaciones claras y cero tecnicismos innecesarios",
+      "Contratos de confidencialidad y garantía de entrega en tiempo y forma en todos los proyectos"
+    ],
+    "tpAfter": [
+      "Encuesta de satisfacción ejecutiva post-servicio para evaluar la excelencia operativa",
+      "Acompañamiento continuo y revisión semestral de resultados con los socios fundadores del grupo",
+      "Acceso preferencial y descuentos cruzados entre las 4 divisiones del grupo corporativo",
+      "Eventos anuales de networking exclusivo con la comunidad de líderes y empresarios ImproBears"
+    ],
+    "colors": {
+      "pri": "#0D2540",
+      "sec": "#426EAE",
+      "acc": "#FF7A00",
+      "darkInk": "#0D2540",
+      "midGray": "#707070",
+      "lightGray": "#E6E6E6",
+      "softBg": "#F8FAFC",
+      "white": "#FFFFFF",
+      "pantonePri": "Pantone 296 C",
+      "pantoneSec": "Pantone 7683 C",
+      "cmykPri": "C:90 M:70 Y:45 K:65",
+      "cmykSec": "C:75 M:45 Y:0 K:10"
+    },
+    "primaryFont": "Montserrat",
+    "secondaryFont": "Avenir Next",
+    "isEstablished": true,
+    "isMultibrand": true,
+    "subbrands": [
+      {
+        "name": "IMPROBEARS CONSULTING",
+        "descriptor": "BUSINESS IMPROVEMENT & ESTRATEGIA OPERATIVA",
+        "focus": "Optimización de procesos, gobernanza corporativa y liberación de tiempo mental para el líder.",
+        "color": "#426EAE",
+        "acc": "#FF7A00"
+      },
+      {
+        "name": "IMPROBEARS INGREDIENTS",
+        "descriptor": "MATERIA PRIMA & QUÍMICA LIMPIA CERTIFICADA",
+        "focus": "Suministro de ingredientes de grado alimenticio, trazabilidad sustentable y formulaciones de alto estándar.",
+        "color": "#0D2540",
+        "acc": "#FF7A00"
+      },
+      {
+        "name": "IMPROBEARS STUDIO",
+        "descriptor": "PRODUCCIÓN AUDIOVISUAL & BRAND IDENTITY ATELIER",
+        "focus": "Cine, video corporativo, diseño documental de alta gama y material audiovisual memorable.",
+        "color": "#4C9DE6",
+        "acc": "#FF7A00"
+      },
+      {
+        "name": "IMPROBEARS AI",
+        "descriptor": "SISTEMAS NEURALES & AUTOMATIZACIÓN DE NEGOCIO",
+        "focus": "Agentes autónomos, automatización de procesos y modelos predictivos para escalar operaciones.",
+        "color": "#1D4ED8",
+        "acc": "#FF7A00"
+      }
+    ],
+    "svgCore": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"#F8FAFC\" stroke=\"#426EAE\" stroke-width=\"2\"/><circle cx=\"58\" cy=\"46\" r=\"18\" fill=\"#0D2540\"/><circle cx=\"122\" cy=\"46\" r=\"18\" fill=\"#0D2540\"/><circle cx=\"58\" cy=\"46\" r=\"10\" fill=\"#426EAE\"/><circle cx=\"122\" cy=\"46\" r=\"10\" fill=\"#426EAE\"/><ellipse cx=\"90\" cy=\"94\" rx=\"52\" ry=\"46\" fill=\"#0D2540\"/><ellipse cx=\"90\" cy=\"108\" rx=\"26\" ry=\"20\" fill=\"#426EAE\"/><ellipse cx=\"90\" cy=\"98\" rx=\"10\" ry=\"7\" fill=\"#FF7A00\"/><circle cx=\"70\" cy=\"80\" r=\"5\" fill=\"#FFFFFF\"/><circle cx=\"110\" cy=\"80\" r=\"5\" fill=\"#FFFFFF\"/><circle cx=\"71\" cy=\"79\" r=\"2.5\" fill=\"#0D2540\"/><circle cx=\"111\" cy=\"79\" r=\"2.5\" fill=\"#0D2540\"/><path d=\"M 82 112 Q 90 120 98 112\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"148\" cy=\"34\" r=\"6\" fill=\"#FF7A00\"/></g>",
+    "svgCoreNeg": "<g transform=\"translate(10,10)\"><circle cx=\"90\" cy=\"90\" r=\"76\" fill=\"none\" stroke=\"#FF7A00\" stroke-width=\"2\"/><circle cx=\"58\" cy=\"46\" r=\"18\" fill=\"#FFFFFF\"/><circle cx=\"122\" cy=\"46\" r=\"18\" fill=\"#FFFFFF\"/><circle cx=\"58\" cy=\"46\" r=\"10\" fill=\"#426EAE\"/><circle cx=\"122\" cy=\"46\" r=\"10\" fill=\"#426EAE\"/><ellipse cx=\"90\" cy=\"94\" rx=\"52\" ry=\"46\" fill=\"#FFFFFF\"/><ellipse cx=\"90\" cy=\"108\" rx=\"26\" ry=\"20\" fill=\"#426EAE\"/><ellipse cx=\"90\" cy=\"98\" rx=\"10\" ry=\"7\" fill=\"#FF7A00\"/><circle cx=\"70\" cy=\"80\" r=\"5\" fill=\"#0D2540\"/><circle cx=\"110\" cy=\"80\" r=\"5\" fill=\"#0D2540\"/><circle cx=\"71\" cy=\"79\" r=\"2.5\" fill=\"#FFFFFF\"/><circle cx=\"111\" cy=\"79\" r=\"2.5\" fill=\"#FFFFFF\"/><path d=\"M 82 112 Q 90 120 98 112\" fill=\"none\" stroke=\"#FFFFFF\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"148\" cy=\"34\" r=\"6\" fill=\"#FF7A00\"/></g>"
+  }
+];

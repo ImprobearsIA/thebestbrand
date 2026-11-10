@@ -35,3 +35,14 @@ BENEFIC_MANUAL_160318.pdf
 *_backup.html
 
 
+
+# Respaldos SHA-256 locales (no versionar)
+_BACKUPS_PRE_CLAUDE_CODE_SYNC/
+
+# Preservación local de entregables pesados y DB local (Regla 3: intactos en disco, excluidos de Git)
+apps/api/tbb_accounts_vault.db
+entregables_brandbooks/entrepreneurs_30/*.pdf
+entregables_brandbooks/entrepreneurs_30/*.png
+entregables_brandbooks/evidences/
+.firebase/
+.env.local

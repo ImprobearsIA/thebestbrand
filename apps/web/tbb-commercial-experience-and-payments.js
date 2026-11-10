@@ -839,8 +839,8 @@
       title: "Recorrido Completo: Cómo Aura Construye tu Marca en 7 Pasos",
       author: "Aura · Mentora de Marca con IA",
       duration: "02:48",
-      url: "/assets/videos/capsula_teoria_aura_recorrido.mp4",
-      poster: "/assets/videos/poster_aura_recorrido.jpg",
+      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_aura_recorrido.mp4",
+      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_aura_recorrido.jpg",
       quote: "«The Best Brand te da el control total: de tu propósito nuclear al Manual Oficial de Marca de 30 Hojas en Curvas listo para imprenta en minutos.»"
     },
     {
@@ -848,8 +848,8 @@
       title: "Paso 1: Diálogo Socrático Nuclear (Círculo Dorado)",
       author: "Simon Sinek & Donald Miller",
       duration: "00:44",
-      url: "/assets/videos/capsula_teoria_paso_1.mp4",
-      poster: "/assets/videos/poster_paso_1.jpg",
+      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_1.mp4",
+      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_1.jpg",
       quote: "«La gente no compra lo que haces, sino el porqué lo haces (Start With Why).»"
     },
     {
@@ -857,8 +857,8 @@
       title: "Paso 2: Ingeniería de Touchpoints (Antes · Durante · Después)",
       author: "Jan Carlzon & Don Norman",
       duration: "00:43",
-      url: "/assets/videos/capsula_teoria_paso_2.mp4",
-      poster: "/assets/videos/poster_paso_2.jpg",
+      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_2.mp4",
+      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_2.jpg",
       quote: "«En quince segundos de contacto tu cliente decide si confía para siempre en tu marca.»"
     },
     {
@@ -866,8 +866,8 @@
       title: "Paso 3: Fonética y Naming Estratégico",
       author: "Alexandra Watkins & David Placek",
       duration: "00:43",
-      url: "/assets/videos/capsula_teoria_paso_3.mp4",
-      poster: "/assets/videos/poster_paso_3.jpg",
+      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_3.mp4",
+      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_3.jpg",
       quote: "«Un gran nombre reduce a la mitad tu costo de adquisición de clientes.»"
     },
     {
@@ -875,8 +875,8 @@
       title: "Paso 4: Calibración Visual Kansei y Tipografías",
       author: "Mitsuo Nagamachi & Robert Bringhurst",
       duration: "00:47",
-      url: "/assets/videos/capsula_teoria_paso_4.mp4",
-      poster: "/assets/videos/poster_paso_4.jpg",
+      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_4.mp4",
+      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_4.jpg",
       quote: "«La tipografía y la geometría transmiten confianza visceral antes de que la razón intervenga.»"
     },
     {
@@ -884,8 +884,8 @@
       title: "Paso 5: Síntesis Vectorial 3D y Logotipo",
       author: "Paul Rand & Jony Ive",
       duration: "00:45",
-      url: "/assets/videos/capsula_teoria_paso_5.mp4",
-      poster: "/assets/videos/poster_paso_5.jpg",
+      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_5.mp4",
+      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_5.jpg",
       quote: "«El diseño no es solo cómo se ve, sino cómo transforma la complejidad en belleza y función.»"
     },
     {
@@ -893,8 +893,8 @@
       title: "Paso 6: La Bóveda de Manual de Marca de 30 Hojas en Curvas",
       author: "Massimo Vignelli & Josef Müller-Brockmann",
       duration: "00:48",
-      url: "/assets/videos/capsula_teoria_paso_6.mp4",
-      poster: "/assets/videos/poster_paso_6.jpg",
+      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_6.mp4",
+      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_6.jpg",
       quote: "«El orden tipográfico y la disciplina de retícula convierten una idea en un imperio.»"
     }
   ];
@@ -1564,7 +1564,7 @@
     const capsule = VIDEO_CAPSULES[s] || VIDEO_CAPSULES[1];
     if (player) {
       player.src = capsule.url;
-      player.poster = capsule.poster || '/assets/videos/poster_aura_recorrido.jpg';
+      player.poster = capsule.poster || 'https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_aura_recorrido.jpg';
       player.muted = window.tbbCommercialDemoState.videoMuted;
       
       // Wire event listeners nativos para Safari iOS y Desktop
@@ -1961,7 +1961,7 @@
         </div>
         <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px;">
           <!-- ACCESO DIRECTO DESTACADO A LA APP -->
-          <a href="/studio" style="display:flex; align-items:center; justify-content:space-between; padding:13px 15px; background:linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%); border:2px solid #4C9DE6; border-bottom:3.5px solid #FF7A00; border-radius:14px; text-decoration:none; color:#FFFFFF; margin-bottom:6px; box-shadow:0 8px 20px rgba(0,0,0,0.35);">
+          <a href="/studio" style="display:flex; align-items:center; justify-content:space-between; padding:13px 15px; background:linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%); border:2px solid #4C9DE6; border-bottom: 2.5px solid #4C9DE6; border-radius:14px; text-decoration:none; color:#FFFFFF; margin-bottom:6px; box-shadow:0 8px 20px rgba(0,0,0,0.35);">
             <div>
               <div style="font-size:0.92rem; font-weight:900; display:flex; align-items:center; gap:6px;">
                 <span style="color:#FF7A00;">●</span> Entrar al Estudio Completo
@@ -2020,7 +2020,7 @@
 
             <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(2.15rem, 4.2vw, 3.25rem); font-weight:900; line-height:1.08; letter-spacing:-0.03em; margin:0; color:#FFFFFF;">
               Crea tu Marca de manera profesional, <br/>
-              <span style="color:#4C9DE6; text-shadow:0 0 32px rgba(76,157,230,0.5); border-bottom:3.5px solid #FF7A00; padding-bottom:2px; display:inline-block;">¡en minutos!</span>
+              <span style="color:#4C9DE6; text-shadow:0 0 32px rgba(76,157,230,0.5); border-bottom: 2.5px solid #4C9DE6; padding-bottom:2px; display:inline-block;">¡en minutos!</span>
             </h1>
 
             <p style="font-size:1.02rem; font-weight:500; color:#E2E8F0; line-height:1.62; margin:0; max-width:580px;">
@@ -2028,7 +2028,7 @@
             </p>
 
             <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:8px;">
-              <a href="/studio" class="tbb-comm-btn-black tbb-tab-destello" style="font-size:0.94rem; padding:14px 24px; background:#0D2540; border:2px solid #4C9DE6; border-bottom:3.5px solid #FF7A00; color:#FFFFFF; font-weight:800; border-radius:999px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; cursor:pointer; box-shadow:0 10px 25px rgba(13,37,64,0.45);">
+              <a href="/studio" class="tbb-comm-btn-black tbb-tab-destello" style="font-size:0.94rem; padding:14px 24px; background:#0D2540; border:2px solid #4C9DE6; border-bottom: 2.5px solid #4C9DE6; color:#FFFFFF; font-weight:800; border-radius:999px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; cursor:pointer; box-shadow:0 10px 25px rgba(13,37,64,0.45);">
                 <span style="color:#FF7A00; font-size:1.1rem; line-height:1;">●</span>
                 <span>Probar la App en Vivo Gratis ↗</span>
               </a>
@@ -2226,7 +2226,7 @@
                 </div>
 
                 <div style="display:flex; flex-direction:column; gap:8px; padding-top:4px;">
-                  <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbContinueFromDemoIntoFullStudio()" style="width:100%; padding:14px 20px; font-size:0.92rem; font-weight:800; background:linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%); border-bottom:3.5px solid #FF7A00;">
+                  <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbContinueFromDemoIntoFullStudio()" style="width:100%; padding:14px 20px; font-size:0.92rem; font-weight:800; background:linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%); border-bottom: 2.5px solid #4C9DE6;">
                     <span>Continuar al Paso 3 · Naming & Clases de Niza →</span>
                   </button>
 
@@ -2498,11 +2498,11 @@
 
           <div class="tbb-apple-reveal" style="background:#050811; border:2px solid #1D4ED8; border-top:6px solid #0D2540; border-radius:24px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.6); position:relative;">
             <div style="aspect-ratio:16/9; width:100%; max-height:540px; background:#000000; position:relative;">
-              <video id="tbbMasterclassVideoPlayer" src="${activeCapsule.url}" poster="${activeCapsule.poster || '/assets/videos/poster_aura_recorrido.jpg'}" playsinline webkit-playsinline controls preload="metadata" style="width:100%; height:100%; object-fit:contain; display:block;"></video>
+              <video id="tbbMasterclassVideoPlayer" src="${activeCapsule.url}" poster="${activeCapsule.poster || 'https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_aura_recorrido.jpg'}" playsinline webkit-playsinline controls preload="metadata" style="width:100%; height:100%; object-fit:contain; display:block;"></video>
               
               <!-- Botón de Reproducción Central Navy Blue con Micro-Acento Naranja -->
               <div id="tbbVideoPlayOverlay" onclick="window.tbbToggleMasterclassPlay()" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(9,13,22,0.35); cursor:pointer;">
-                <div style="width:78px; height:78px; border-radius:50%; background:#0D2540; border:2.5px solid #4C9DE6; border-bottom:3.5px solid #FF7A00; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 32px rgba(13,37,64,0.6); transition:transform 0.2s ease;">
+                <div style="width:78px; height:78px; border-radius:50%; background:#0D2540; border:2.5px solid #4C9DE6; border-bottom: 2.5px solid #4C9DE6; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 32px rgba(13,37,64,0.6); transition:transform 0.2s ease;">
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="#FFFFFF" style="margin-left:3px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 </div>
               </div>
@@ -3307,16 +3307,34 @@
         }
       }
       .tbb-float-buy-cta {
-        background: linear-gradient(135deg, #4C9DE6 0%, #0D2540 100%);
-        color: #FFFFFF;
-        font-family: var(--font-main);
-        font-weight: 800;
-        border: none;
+        background: linear-gradient(135deg, #0D2540 0%, #1D4ED8 100%) !important;
+        color: #FFFFFF !important;
+        border: 1.5px solid #4C9DE6 !important;
+        padding: 9px 18px;
         border-radius: 999px;
-        padding: 8px 16px;
+        font-family: var(--font-main);
+        font-size: 0.82rem;
+        font-weight: 800;
         cursor: pointer;
-        font-size: 0.78rem;
+        box-shadow: 0 4px 14px rgba(13, 37, 64, 0.45) !important;
         white-space: nowrap;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .tbb-float-buy-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(76, 157, 230, 0.45) !important;
+        border-color: #93C5FD !important;
+      }
+
+      
+      /* REGLA DE AISLAMIENTO ESTRICTO EN SECCIÓN DEMO: Cero ruido de compra */
+      body.tbb-is-demo-section #tbbAlwaysOnBuyFloatingBar,
+      body.tbb-is-demo-section .tbb-comm-btn-black,
+      body.tbb-is-demo-section #tbbBtnTopBuyAppNow,
+      body.tbb-is-demo-section .tbb-sec-tab-direct-studio,
+      body.tbb-is-demo-section .tbb-comm-btn-studio-header,
+      body.tbb-is-demo-section #tbbCommercialLangSelect {
+        display: none !important;
       }
 
       /* Modales */
@@ -3553,7 +3571,7 @@
 
   function ensureModalsAndFloatingBarMounted() {
     tbbInjectAwwwardsStyles();
-    const isStandalone = document.body.getAttribute("data-tbb-standalone-web") === "true";
+    const isStandalone = document.body.getAttribute("data-tbb-standalone-web") === "true" && window.location.pathname !== "/studio" && !window.location.pathname.endsWith("studio.html");
 
     // CRÍTICO: En /studio (index.html) NO montamos #tbbAlwaysOnBuyFloatingBar encima de la barra
     // inferior porque /studio ya tiene los botones "Web / Demo" y "Comprar App" en el header superior,
@@ -3592,7 +3610,7 @@
   window.tbbUpdateAlwaysOnFloatingBarText = function () {
     const floatBar = document.getElementById("tbbAlwaysOnBuyFloatingBar");
     if (!floatBar) return;
-    const isStandalone = document.body.getAttribute("data-tbb-standalone-web") === "true";
+    const isStandalone = document.body.getAttribute("data-tbb-standalone-web") === "true" && window.location.pathname !== "/studio" && !window.location.pathname.endsWith("studio.html");
     if (!isStandalone) {
       floatBar.style.display = "none";
       return;

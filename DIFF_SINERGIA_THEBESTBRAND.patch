@@ -1,0 +1,699 @@
+--- a/apps/web/tbb-generative-brandbook-engine.js
++++ b/apps/web/tbb-generative-brandbook-engine.js
+@@ -33,6 +33,38 @@
+     const m = Math.round(((1 - g1 - k) / (1 - k)) * 100);
+     const y = Math.round(((1 - b1 - k) / (1 - k)) * 100);
+     return `C:${c} M:${m} Y:${y} K:${Math.round(k * 100)}`;
++  }
++
++  // UID seguro para IDs SVG (sin espacios ni símbolos, para que url(#...) siempre resuelva)
++  function toSafeSymbolUid(raw) {
++    return String(raw || "marca").toLowerCase().replace(/[^a-z0-9_-]+/g, "_").replace(/^_+|_+$/g, "") || "marca";
++  }
++
++  // Negativo real calado (Lámina 21): todo trazo, relleno y parada de gradiente pasa a blanco puro.
++  // Se conservan fill="none"/transparent y las opacidades, sin parches ni fondos añadidos.
++  function toCaladoNegativeSvg(rawSvg) {
++    if (!rawSvg) return "";
++    const colorRe = /(#[0-9a-f]{3,8}\b|rgba?\([^)]*\)|hsla?\([^)]*\))/gi;
++    return String(rawSvg)
++      .replace(/\b(fill|stroke|stop-color|flood-color|lighting-color)\s*=\s*(["'])(.*?)\2/gi, (m, attr, q, val) =>
++        /^(none|transparent)$/i.test(val.trim()) || /^url\(/i.test(val.trim()) ? m : `${attr}=${q}#FFFFFF${q}`)
++      .replace(/\b(fill|stroke|stop-color)\s*:\s*([^;"']+)/gi, (m, prop, val) =>
++        /^(none|transparent)$/i.test(val.trim()) || /^url\(/i.test(val.trim()) ? m : `${prop}:${val.replace(colorRe, "#FFFFFF")}`);
++  }
++
++  // Isotipo 180x180 sintetizado por studio.html (firma real: synthesizeSystemicSymbol180(uid), colores tomados del estado)
++  function buildSystemicSymbolPair(uidBase, fallbackPos, fallbackNeg) {
++    if (typeof window.synthesizeSystemicSymbol180 === "function") {
++      try {
++        const uid = toSafeSymbolUid(uidBase);
++        const pos = window.synthesizeSystemicSymbol180(uid + "_pos");
++        const neg = toCaladoNegativeSvg(window.synthesizeSystemicSymbol180(uid + "_neg"));
++        if (pos) return { pos, neg: neg || fallbackNeg };
++      } catch (e) {
++        console.warn("synthesizeSystemicSymbol180 no disponible:", e);
++      }
++    }
++    return { pos: fallbackPos, neg: fallbackNeg };
+   }
+ 
+   function hexToPantone(hex, idx = 1) {
+@@ -70,8 +102,14 @@
+     const lightGray = (brand.colors && brand.colors.lightGray) || "#E6E6E6";
+     const softBg = (brand.colors && brand.colors.softBg) || "#FAF8F5";
+     const priFont = brand.primaryFont || "Montserrat";
+-    const symCore = brand.svgCore || `<circle cx="90" cy="90" r="70" fill="${pri}"/>`;
+-    const symCoreNeg = brand.svgCoreNeg || `<circle cx="90" cy="90" r="70" fill="#FFFFFF"/>`;
++    const defaultCurvedMonolith = `<path d="M90 18 C132 18 162 48 162 90 C162 132 132 162 90 162 C48 162 18 132 18 90 C18 48 48 18 90 18 Z M90 42 C63.5 42 42 63.5 42 90 C42 116.5 63.5 138 90 138 C116.5 138 138 116.5 138 90 C138 63.5 116.5 42 90 42 Z" fill-rule="evenodd" fill="${pri}"/><path d="M66 90 L90 56 L114 90 L90 124 Z" fill="${acc}"/>`;
++    const defaultCurvedMonolithNeg = toCaladoNegativeSvg(defaultCurvedMonolith);
++    const needsSymbolPair = !brand.svgCore || !brand.svgCoreNeg;
++    const symbolPair = needsSymbolPair
++      ? buildSystemicSymbolPair("bb_v81_" + (brand.slug || bName), defaultCurvedMonolith, defaultCurvedMonolithNeg)
++      : null;
++    const symCore = brand.svgCore || symbolPair.pos;
++    const symCoreNeg = brand.svgCoreNeg || (brand.svgCore ? toCaladoNegativeSvg(brand.svgCore) : symbolPair.neg);
+ 
+     // 1. LOGO HORIZONTAL (Ratio 3.5:1 para cabeceras, papelería y firmas)
+     const logoHorizontal = `
+@@ -386,8 +424,14 @@
+     const secFont = brand.secondaryFont || "Plus Jakarta Sans";
+     const isMultibrand = Boolean(brand.isMultibrand);
+ 
+-    const symCore = brand.svgCore || `<circle cx="90" cy="90" r="70" fill="${pri}"/>`;
+-    const symCoreNeg = brand.svgCoreNeg || `<circle cx="90" cy="90" r="70" fill="#FFFFFF"/>`;
++    const defaultCurvedMonolith = `<path d="M90 18 C132 18 162 48 162 90 C162 132 132 162 90 162 C48 162 18 132 18 90 C18 48 48 18 90 18 Z M90 42 C63.5 42 42 63.5 42 90 C42 116.5 63.5 138 90 138 C116.5 138 138 116.5 138 90 C138 63.5 116.5 42 90 42 Z" fill-rule="evenodd" fill="${pri}"/><path d="M66 90 L90 56 L114 90 L90 124 Z" fill="${acc}"/>`;
++    const defaultCurvedMonolithNeg = toCaladoNegativeSvg(defaultCurvedMonolith);
++    const needsSymbolPair = !brand.svgCore || !brand.svgCoreNeg;
++    const symbolPair = needsSymbolPair
++      ? buildSystemicSymbolPair("bb_v81_" + (brand.slug || bName), defaultCurvedMonolith, defaultCurvedMonolithNeg)
++      : null;
++    const symCore = brand.svgCore || symbolPair.pos;
++    const symCoreNeg = brand.svgCoreNeg || (brand.svgCore ? toCaladoNegativeSvg(brand.svgCore) : symbolPair.neg);
+ 
+     // Generar la Terna de Logos Profesional
+     const suite = generateTriFoldLogoSuite(brand);
+@@ -1603,11 +1647,16 @@
+ </html>`;
+   }
+ 
+-  // --- MÓDULO DE REFINAMIENTO SOCRÁTICO CON GEMINI (API DIRECTA) ---
++  // --- MÓDULO DE REFINAMIENTO SOCRÁTICO CON GEMINI (PROXY BLINDADO + MEMOIZACIÓN FINOPS) ---
++  const _refineContentCache = new Map();
+   async function refineBrandContentWithGemini(rawUserInput, sectionKey, brandContext = {}) {
+     if (!rawUserInput || String(rawUserInput).trim().length < 3) return rawUserInput;
+-    const apiKey = window.TBB_GEMINI_KEY || ("AIzaSyByQl8lrqiK5R4d" + "ZQSQA-b2qSxli8ctZQE");
+     const bName = brandContext.name || "Marca";
++    const cacheKey = `${bName}:${sectionKey}:${String(rawUserInput).trim().toLowerCase()}`;
++    if (_refineContentCache.has(cacheKey)) {
++      return _refineContentCache.get(cacheKey);
++    }
++    const apiKey = window.TBB_GEMINI_KEY || (typeof process !== "undefined" && process.env && process.env.GEMINI_API_KEY) || "";
+ 
+     const prompt = `Actúa como editor de marcas socrático de clase mundial.
+ El usuario ha redactado lo siguiente para su marca "${bName}" en la sección "${sectionKey}":
+@@ -1620,11 +1669,18 @@
+ 4. Devuelve ÚNICAMENTE el texto pulido en español, sin preámbulos ni explicaciones.`;
+ 
+     try {
+-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+       const payload = {
++        model: "gemini-2.5-flash",
+         contents: [{ parts: [{ text: prompt }] }],
+         generationConfig: { temperature: 0.3 }
+       };
++      const baseOrigin = window.TBB_API_BASE || (window.location && window.location.origin ? window.location.origin : "");
++      if (!apiKey && !baseOrigin) {
++        return rawUserInput;
++      }
++      const url = apiKey
++        ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
++        : `${baseOrigin}/api/v1/gemini/proxy`;
+ 
+       const res = await fetch(url, {
+         method: "POST",
+@@ -1637,7 +1693,9 @@
+         const candidate = data.candidates && data.candidates[0];
+         const text = candidate && candidate.content && candidate.content.parts && candidate.content.parts[0] && candidate.content.parts[0].text;
+         if (text && text.trim().length > 3) {
+-          return text.trim();
++          const cleaned = text.trim();
++          _refineContentCache.set(cacheKey, cleaned);
++          return cleaned;
+         }
+       }
+     } catch (e) {
+@@ -1693,11 +1751,19 @@
+     };
+ 
+     if (window.tbbState) {
+-      window.tbbState.activeStep = 1;
++      window.tbbState.activeMode = "step";
++      window.tbbState.step = 0;
++      window.tbbState.activeStep = 0;
+       window.tbbState.subStep = 1;
++      window.tbbState.plateIdx = 0;
+       window.tbbState.logoIterationIndex = 1;
+       window.tbbState.logoIterations = [];
+-    }
++      window.tbbState.logoPriHex = "";
++      window.tbbState.logoSecHex = "";
++      window.tbbState.selectedFontFamily = "";
++    }
++    window.currentStep = 1;
++    window.acceptedNamingVault = [];
+ 
+     // Limpiar campos del DOM si existen
+     const s0Name = document.getElementById("step0BrandNameInput");
+@@ -1707,8 +1773,12 @@
+     const s0Giro = document.getElementById("step0CustomBusinessInput");
+     if (s0Giro) s0Giro.value = "";
+ 
+-    if (typeof window.navigateToScreen === "function") {
++    if (typeof window.tbbJumpToStep === "function") {
++      window.tbbJumpToStep(0, 1);
++    } else if (typeof window.navigateToScreen === "function") {
+       window.navigateToScreen("step0", 1);
++    } else if (typeof window.renderTbbZeroScrollStage === "function") {
++      window.renderTbbZeroScrollStage();
+     }
+     console.log("✓ Sesión limpia establecida con éxito.");
+   }
+@@ -1778,34 +1848,66 @@
+     const btnDownload = document.getElementById("tbbBtnDownloadBrandbookPdf");
+     if (btnDownload) {
+       btnDownload.onclick = function () {
+-        window.print();
++        if (typeof window.downloadReal30PlatesPDFDirect === "function") {
++          window.downloadReal30PlatesPDFDirect(btnDownload);
++        } else {
++          window.print();
++        }
+       };
+     }
+   }
+ 
+   // --- EXPORTACIONES GLOBALES AL RUNTIME DE THE BEST BRAND ---
++  // Preservamos las referencias nativas del motor de curvas oficial (universal-brandbook-30-engine.js)
++  // para no degradar sus curvas asimétricas (18px 38px 18px 18px) ni sus isométricos vectoriales.
++  const _nativeOpenInApp30PlatesViewer = typeof window.openInApp30PlatesViewer === "function"
++    ? window.openInApp30PlatesViewer
++    : null;
++  const _nativeBuildUniversal30PlatesStandaloneHTML = typeof window.buildUniversal30PlatesStandaloneHTML === "function"
++    ? window.buildUniversal30PlatesStandaloneHTML
++    : null;
++  const _nativeRenderUniversalSinglePlateHTML = typeof window.renderUniversalImproBearsGuideSinglePlateHTML === "function"
++    ? window.renderUniversalImproBearsGuideSinglePlateHTML
++    : null;
++
+   window.generateTriFoldLogoSuite = generateTriFoldLogoSuite;
+   window.getDynamicBrandbookStyles = getDynamicBrandbookStyles;
+   window.generateBrandbook30Plates = generateBrandbook30Plates;
+   window.generateFullBrandbookDocHtml = generateFullBrandbookDocHtml;
+   window.refineBrandContentWithGemini = refineBrandContentWithGemini;
+   window.startFreshBrandSession = startFreshBrandSession;
+-  window.openInApp30PlatesViewer = openInApp30PlatesViewer;
+-
+-  // Interfaz de compatibilidad universal
++  window.openInApp30PlatesViewer = _nativeOpenInApp30PlatesViewer || openInApp30PlatesViewer;
++
++  // Interfaz de compatibilidad universal (Directiva Max C-00 + Escalador Zero-Scroll)
+   window.buildUniversal30PlatesStandaloneHTML = function () {
++    if (_nativeBuildUniversal30PlatesStandaloneHTML && window.useLegacyCardBrandbook !== true) {
++      return _nativeBuildUniversal30PlatesStandaloneHTML();
++    }
+     const b = (typeof window.buildActiveBrandProfileForV80 === "function")
+       ? window.buildActiveBrandProfileForV80()
+       : (window.canvasState || {});
+     return generateFullBrandbookDocHtml(b);
+   };
+ 
+-  window.renderUniversalImproBearsGuideSinglePlateHTML = function (idx) {
++  window.renderUniversalImproBearsGuideSinglePlateHTML = function (plateIdx, forPrint) {
++    if (_nativeRenderUniversalSinglePlateHTML && window.useLegacyCardBrandbook !== true) {
++      return _nativeRenderUniversalSinglePlateHTML(plateIdx, forPrint);
++    }
++    const idx = Math.max(0, Math.min(29, Number(plateIdx || 0)));
+     const b = (typeof window.buildActiveBrandProfileForV80 === "function")
+       ? window.buildActiveBrandProfileForV80()
+       : (window.canvasState || {});
+     const plates = generateBrandbook30Plates(b);
+-    return plates[idx] || plates[0];
++    const activePlate = plates[idx] || plates[0];
++    if (forPrint) {
++      return activePlate;
++    }
++    setTimeout(() => {
++      if (typeof window.scaleImproBearsPlateInStage === "function") {
++        window.scaleImproBearsPlateInStage();
++      }
++    }, 30);
++    return `<div class="tbb-improbears-stage-wrapper"><div class="tbb-improbears-stage-scaler">${activePlate}</div></div>`;
+   };
+ 
+   window.TBB_V80_PLATES_GENERATOR = {
+@@ -1813,8 +1915,8 @@
+     getUniversalBrandbookStyles: getDynamicBrandbookStyles,
+     getTheBestBrandStyles: getDynamicBrandbookStyles,
+     generateFullBrandbookDocHtml: generateFullBrandbookDocHtml,
+-    renderTheBestBrandPlate: function (idx) {
+-      return window.renderUniversalImproBearsGuideSinglePlateHTML(idx);
++    renderTheBestBrandPlate: function (idx, forPrint) {
++      return window.renderUniversalImproBearsGuideSinglePlateHTML(idx, forPrint);
+     }
+   };
+ 
+@@ -1842,26 +1944,29 @@
+     console.log("✓ Terna de Logotipos Tri-Fold actualizada en UI para:", brand.name);
+   };
+ 
+-  window.downloadTriFoldAsset = function (type) {
++  window.downloadTriFoldAsset = async function (type, format) {
++    if (typeof window.exportCloudIllustratorAsset === "function") {
++      return window.exportCloudIllustratorAsset(type, format || "svg");
++    }
+     if (!window.currentTriFoldSuite) {
+       window.refreshTriFoldLogoSuiteUI();
+     }
+     const suite = window.currentTriFoldSuite || {};
+-    const bName = (window.canvasState && window.canvasState.brandName) || "Marca";
+-    const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "marca";
++    const activeBrand = (typeof window.buildActiveBrandProfileForV80 === "function" && window.buildActiveBrandProfileForV80()) || {};
++    const slug = activeBrand.slug || ((window.canvasState && window.canvasState.brandName) || "marca").toLowerCase().replace(/[^a-z0-9]+/g, "_") || "marca";
+ 
+     let svgContent = "";
+     let filename = "";
+ 
+     if (type === "horizontal") {
+       svgContent = suite.horizontal || "";
+-      filename = `Logotipo_Horizontal_${slug}.svg`;
++      filename = `Logotipo_Horizontal_Curvas_${slug}.svg`;
+     } else if (type === "avatar") {
+       svgContent = suite.avatar || "";
+-      filename = `Avatar_Social_1x1_${slug}.svg`;
++      filename = `Avatar_Social_1x1_Curvas_${slug}.svg`;
+     } else if (type === "seal") {
+       svgContent = suite.seal || "";
+-      filename = `Sello_Autor_Packaging_${slug}.svg`;
++      filename = `Sello_Autor_Packaging_Curvas_${slug}.svg`;
+     }
+ 
+     if (!svgContent) {
+@@ -1880,7 +1985,7 @@
+     URL.revokeObjectURL(url);
+   };
+ 
+-  window.copyTriFoldAssetCode = function (type) {
++  window.copyTriFoldAssetCode = async function (type) {
+     if (!window.currentTriFoldSuite) {
+       window.refreshTriFoldLogoSuiteUI();
+     }
+@@ -1890,54 +1995,113 @@
+     else if (type === "avatar") svgContent = suite.avatar;
+     else if (type === "seal") svgContent = suite.seal;
+ 
++    if (typeof window.convertSvgTextToIllustratorCurves === "function" && svgContent) {
++      try {
++        svgContent = await window.convertSvgTextToIllustratorCurves(svgContent);
++      } catch (e) {
++        console.warn("Outliner warning on copy:", e);
++      }
++    }
++
+     if (navigator.clipboard && svgContent) {
+       navigator.clipboard.writeText(svgContent).then(() => {
+-        alert("¡Código SVG copiado al portapapeles con éxito!");
++        alert("¡Código SVG 100% en Curvas (0 etiquetas <text>) copiado al portapapeles!");
+       }).catch(() => {
+-        alert("No se pudo copiar automáticamente. Puedes descargar el archivo SVG.");
++        alert("No se pudo copiar automáticamente. Puedes descargar el archivo SVG en curvas.");
+       });
+     }
+   };
+ 
+-  // Anulación y garantía de perfil en vivo (Cero plantillas fijas)
++  // --- PERFIL UNIFICADO EN VIVO (SINCRONIZA tbbState + canvasState + step0State + tpExtractedItems) ---
+   window.buildActiveBrandProfileForV80 = function () {
+     const cs = window.canvasState || {};
+-    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "The Best Brand";
++    const st = window.tbbState || {};
++    const s0 = window.step0State || {};
++
++    const rawName = cs.brandName || s0.brandName || "";
++    const bName = (rawName && !/^mi nueva marca$/i.test(rawName)) ? rawName.trim() : "The Best Brand";
+     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "the_best_brand";
+ 
++    // Si es una marca del catálogo oficial de 30 empresarios y el usuario no ha personalizado un logo propio, devolver su ficha rica
++    const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
++    if (!activeIt && window.CATALOG_30_MAP) {
++      if (window.CATALOG_30_MAP[slug]) return window.CATALOG_30_MAP[slug];
++      if (window.CATALOG_30_MAP[bName.toLowerCase()]) return window.CATALOG_30_MAP[bName.toLowerCase()];
++    }
++
++    // Prioridad de Colores: 1) Iteración de Logo activa en Paso 5, 2) tbbState.logoPriHex/logoSecHex, 3) canvasState.primary_color, 4) selected_colors_hex
+     const priColors = (Array.isArray(cs.selected_colors_hex) && cs.selected_colors_hex.length >= 2)
+       ? cs.selected_colors_hex
+       : ["#FFFFFF", "#090D16", "#0D2540", "#426EAE"];
+ 
+-    const pri = priColors[2] || "#0D2540";
+-    const sec = priColors[3] || "#426EAE";
+-    const acc = priColors[0] !== "#FFFFFF" ? priColors[0] : "#FF7A00";
++    const pri = (activeIt && (activeIt.pri || activeIt.priHex))
++      || st.logoPriHex
++      || cs.primary_color
++      || priColors[2]
++      || "#0D2540";
++
++    const sec = (activeIt && (activeIt.sec || activeIt.secHex))
++      || st.logoSecHex
++      || cs.secondary_color
++      || priColors[3]
++      || "#426EAE";
++
++    const acc = (activeIt && activeIt.accentHex)
++      || cs.accent_color
++      || (priColors[0] && priColors[0] !== "#FFFFFF" ? priColors[0] : "#FF7A00");
++
+     const darkInk = priColors[1] || "#090D16";
+ 
+-    const tpB = (window.tpExtractedItems && window.tpExtractedItems.before && window.tpExtractedItems.before.length)
++    // Lectura pura: NO se escribe de vuelta en canvasState. Escribir aquí congelaba cs.primary_color
++    // e ignoraba los cambios posteriores de paleta del Paso 4 (selected_colors_hex).
++
++    const mods = (activeIt && activeIt.mods) || {};
++    const priFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || st.selectedFontFamily || cs.primary_font || "Montserrat";
++    const secFont = cs.secondary_font || "Plus Jakarta Sans";
++
++    // Isotipo vectorial puro calado 180x180 (NUNCA inyectar el lienzo doble 760x440 de vista previa)
++    const synthPair = buildSystemicSymbolPair("bb_v81_" + slug, "", "");
++    let pureSymbolPos = synthPair.pos;
++    let pureSymbolNeg = synthPair.neg;
++    if (!pureSymbolPos) {
++      const candidateSvg = cs.selected_symbol_only_svg || "";
++      const isPreviewCanvas760 = /viewBox\s*=\s*["']\s*0\s+0\s+760\s+440/i.test(candidateSvg) || candidateSvg.includes("App en proporción 1:1");
++      if (candidateSvg && !isPreviewCanvas760) {
++        pureSymbolPos = candidateSvg;
++        pureSymbolNeg = cs.selected_symbol_only_neg_svg || toCaladoNegativeSvg(candidateSvg);
++      } else {
++        // Fallback calado: anillo (espacio negativo real) + núcleo, sin disco sólido de parche
++        pureSymbolPos = `<path d="M90 20 C128.7 20 160 51.3 160 90 C160 128.7 128.7 160 90 160 C51.3 160 20 128.7 20 90 C20 51.3 51.3 20 90 20 Z M90 46 C65.7 46 46 65.7 46 90 C46 114.3 65.7 134 90 134 C114.3 134 134 114.3 134 90 C134 65.7 114.3 46 90 46 Z" fill-rule="evenodd" fill="${pri}"/><circle cx="90" cy="90" r="22" fill="${acc}"/>`;
++        pureSymbolNeg = toCaladoNegativeSvg(pureSymbolPos);
++      }
++    }
++
++    const tpB = (window.tpExtractedItems && Array.isArray(window.tpExtractedItems.before) && window.tpExtractedItems.before.length)
+       ? window.tpExtractedItems.before
+       : ["Presencia digital clara y accesible", "Atención ágil vía WhatsApp/Web", "Diagnóstico inicial transparente", "Propuesta técnica detallada"];
+ 
+-    const tpD = (window.tpExtractedItems && window.tpExtractedItems.during && window.tpExtractedItems.during.length)
++    const tpD = (window.tpExtractedItems && Array.isArray(window.tpExtractedItems.during) && window.tpExtractedItems.during.length)
+       ? window.tpExtractedItems.during
+       : ["Bienvenida personalizada y cálida", "Ejecución profesional con estándares suizos", "Acompañamiento en tiempo real", "Entrega puntual y cobro sin sorpresas"];
+ 
+-    const tpA = (window.tpExtractedItems && window.tpExtractedItems.after && window.tpExtractedItems.after.length)
++    const tpA = (window.tpExtractedItems && Array.isArray(window.tpExtractedItems.after) && window.tpExtractedItems.after.length)
+       ? window.tpExtractedItems.after
+       : ["Entrega de manual y activos vectoriales", "Garantía de servicio y soporte activo", "Comunidad de clientes leales", "Encuesta breve de satisfacción"];
++
++    const giroText = (cs.custom_business_type || s0.customBusinessType || cs.step0_short_essence || "Soluciones estratégicas, ingeniería de valor y experiencia de marca.").trim();
+ 
+     return {
+       name: bName,
+       slug: slug,
+-      tagline: (cs.tagline || cs.custom_business_type || "SISTEMA INTEGRAL DE IDENTIDAD").trim(),
+-      category: cs.custom_business_type || "Servicios Especializados",
+-      giro: (cs.custom_business_type || "Soluciones estratégicas, ingeniería de valor y experiencia de marca.").trim(),
+-      buyer: (cs.ideal_customer || "Clientes y empresas que exigen excelencia técnica y resultados.").trim(),
++      tagline: (cs.tagline || s0.tagline || cs.step0_short_essence || giroText || "SISTEMA INTEGRAL DE IDENTIDAD").trim(),
++      category: cs.custom_business_type || s0.customBusinessType || "Servicios Especializados",
++      giro: giroText,
++      buyer: (cs.ideal_customer || cs.step0_buyer_actor || "Clientes y empresas que exigen excelencia técnica y resultados.").trim(),
+       why: (cs.golden_circle || "Porque el propósito auténtico conecta con las personas y trasciende.").trim(),
+       how: (cs.process_steps_text || "Metodología rigurosa, tecnología de última generación y trato humano.").trim(),
+       what: (cs.value_offer || "Identidad oficial de marca, manual de 30 láminas y activos vectoriales.").trim(),
+       persona: (cs.brand_persona || "Líder apasionado, confiable, empático y enfocado en resultados.").trim(),
+-      niza: "Clase Oficial de Registro de Marca",
++      niza: cs.primary_nice_class || "Clase Oficial de Registro de Marca",
+       tpBefore: tpB,
+       tpDuring: tpD,
+       tpAfter: tpA,
+@@ -1952,27 +2116,50 @@
+         white: "#FFFFFF",
+         pantonePri: hexToPantone(pri, 1),
+         pantoneSec: hexToPantone(sec, 2),
+-        pantoneAcc: hexToPantone(acc, 3)
++        pantoneAcc: hexToPantone(acc, 3),
++        cmykPri: hexToCmyk(pri),
++        cmykSec: hexToCmyk(sec)
+       },
+-      primaryFont: cs.primary_font || "Montserrat",
+-      secondaryFont: cs.secondary_font || "Plus Jakarta Sans",
+-      svgCore: cs.selected_logo_svg || `<circle cx="90" cy="90" r="70" fill="${pri}"/>`,
+-      svgCoreNeg: cs.selected_logo_svg || `<circle cx="90" cy="90" r="70" fill="#FFFFFF"/>`
++      primaryFont: priFont,
++      secondaryFont: secFont,
++      isMultibrand: /improbears/i.test(bName),
++      svgCore: pureSymbolPos,
++      svgCoreNeg: pureSymbolNeg
+     };
+   };
+ 
+-  
+-  // --- TURNO SOCRÁTICO DIRECTO CON GEMINI (INDEPENDIENTE DEL BACKEND) ---
++  // Compatibilidad con scripts y tests V80 (`getTheBestBrand30PlatesHtml`)
++  if (window.TBB_V80_PLATES_GENERATOR && typeof window.TBB_V80_PLATES_GENERATOR.getTheBestBrand30PlatesHtml !== "function") {
++    window.TBB_V80_PLATES_GENERATOR.getTheBestBrand30PlatesHtml = function (optBrand) {
++      const b = optBrand || window.buildActiveBrandProfileForV80();
++      return generateBrandbook30Plates(b);
++    };
++  }
++
++  // --- TURNO SOCRÁTICO DIRECTO CON GEMINI (CON CACHÉ DE IDEMPOTENCIA Y DEDUPLICACIÓN IN-FLIGHT) ---
++  const _socraticTurnCache = new Map();
++  const _socraticInFlight = new Map();
++
+   async function executeDirectGeminiSocraticTurn(userText, step = 1, subStep = 1, cs = {}) {
+-    const apiKey = window.TBB_GEMINI_KEY || ("AIzaSyByQl8lrqiK5R4d" + "ZQSQA-b2qSxli8ctZQE");
++    const safeUserText = String(userText || "");
+     const bName = (cs && cs.brandName) || "tu marca";
+     const giro = (cs && cs.custom_business_type) || "tu negocio";
++    const cacheKey = `${step}:${subStep}:${bName}:${safeUserText.trim().toLowerCase()}`;
++    if (_socraticTurnCache.has(cacheKey)) {
++      return JSON.parse(JSON.stringify(_socraticTurnCache.get(cacheKey)));
++    }
++    if (_socraticInFlight.has(cacheKey)) {
++      const sharedRes = await _socraticInFlight.get(cacheKey);
++      return JSON.parse(JSON.stringify(sharedRes));
++    }
++
++    const apiKey = window.TBB_GEMINI_KEY || (typeof process !== "undefined" && process.env && process.env.GEMINI_API_KEY) || "";
+ 
+     const prompt = `Actúa como Aura, mentora ejecutiva de identidad visual de TheBestBrand.
+ El usuario está respondiendo en el Paso ${step}, Subpaso ${subStep}.
+ Marca: "${bName}" (Giro: "${giro}").
+ Texto ingresado por el usuario:
+-"${userText}"
++"${safeUserText}"
+ 
+ Genera una respuesta en formato JSON estrictamente válido con los siguientes campos:
+ {
+@@ -1988,35 +2175,59 @@
+ }
+ Solo incluye en "updated_canvas" los campos que se desprendan directamente de lo que dijo el usuario. NO inventes datos que el usuario no mencionó. Devuelve SOLO el JSON sin markdown.`;
+ 
++    const requestPromise = (async () => {
++      try {
++        const baseOrigin = window.TBB_API_BASE || (window.location && window.location.origin ? window.location.origin : "");
++        if (!apiKey && !baseOrigin) {
++          throw new Error("headless_no_origin");
++        }
++        const url = apiKey
++          ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
++          : `${baseOrigin}/api/v1/gemini/proxy`;
++        const res = await fetch(url, {
++          method: "POST",
++          headers: { "Content-Type": "application/json" },
++          body: JSON.stringify({
++            model: "gemini-2.5-flash",
++            contents: [{ parts: [{ text: prompt }] }],
++            generationConfig: { responseMimeType: "application/json", temperature: 0.25 }
++          })
++        });
++        if (res.ok) {
++          const respData = await res.json();
++          const rawJson = respData.candidates?.[0]?.content?.parts?.[0]?.text;
++          if (rawJson) {
++            const parsed = JSON.parse(rawJson);
++            _socraticTurnCache.set(cacheKey, parsed);
++            return parsed;
++          }
++        }
++      } catch (err) {
++        console.warn("Direct Gemini socratic error:", err);
++      }
++
++      const fallbackCanvas = {};
++      if (step === 1 && subStep === 1) fallbackCanvas.golden_circle = safeUserText.slice(0, 180);
++      else if (step === 1 && subStep === 2) fallbackCanvas.process_steps_text = safeUserText.slice(0, 180);
++      else if (step === 1 && subStep === 3) fallbackCanvas.value_offer = safeUserText.slice(0, 180);
++      else if (step === 1 && subStep === 4) fallbackCanvas.brand_persona = safeUserText.slice(0, 180);
++      else if (step === 0) fallbackCanvas.ideal_customer = safeUserText.slice(0, 180);
++      else fallbackCanvas.value_offer = safeUserText.slice(0, 180);
++
++      return {
++        avatar_response: `Excelente aporte para ${bName}. Sigamos profundizando para que tu Brandbook quede impecable.`,
++        updated_canvas: fallbackCanvas,
++        next_sub_step: subStep + 1
++      };
++    })();
++
++    _socraticInFlight.set(cacheKey, requestPromise);
+     try {
+-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+-      const res = await fetch(url, {
+-        method: "POST",
+-        headers: { "Content-Type": "application/json" },
+-        body: JSON.stringify({
+-          contents: [{ parts: [{ text: prompt }] }],
+-          generationConfig: { responseMimeType: "application/json", temperature: 0.25 }
+-        })
+-      });
+-      if (res.ok) {
+-        const respData = await res.json();
+-        const rawJson = respData.candidates?.[0]?.content?.parts?.[0]?.text;
+-        if (rawJson) {
+-          const parsed = JSON.parse(rawJson);
+-          return parsed;
+-        }
+-      }
+-    } catch (err) {
+-      console.warn("Direct Gemini socratic error:", err);
+-    }
+-
+-    return {
+-      avatar_response: `Excelente aporte para ${bName}. Sigamos profundizando para que tu Brandbook quede impecable.`,
+-      updated_canvas: {
+-        value_offer: userText.slice(0, 180)
+-      },
+-      next_sub_step: subStep + 1
+-    };
++      const finalOut = await requestPromise;
++      return JSON.parse(JSON.stringify(finalOut));
++    } finally {
++      _socraticInFlight.delete(cacheKey);
++    }
+   }
+ 
+   window.executeDirectGeminiSocraticTurn = executeDirectGeminiSocraticTurn;
+--- a/apps/web/studio.html
++++ b/apps/web/studio.html
+@@ -4683,9 +4683,10 @@
+                   <span style="color:#94A3B8; font-size:0.75rem;">Generando vista previa...</span>
+                 </div>
+               </div>
+-              <div style="margin-top:10px; display:flex; gap:6px;">
+-                <button type="button" onclick="window.downloadTriFoldAsset && window.downloadTriFoldAsset('horizontal')" style="flex:1; background:#0D2540; color:#FFFFFF; border:none; padding:7px; border-radius:6px; font-size:0.74rem; font-weight:800; cursor:pointer;">Descargar SVG</button>
+-                <button type="button" onclick="window.copyTriFoldAssetCode && window.copyTriFoldAssetCode('horizontal')" style="background:#E2E8F0; color:#1E293B; border:none; padding:7px 12px; border-radius:6px; font-size:0.74rem; font-weight:700; cursor:pointer;">Copiar SVG</button>
++              <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
++                <button type="button" onclick="window.downloadTriFoldAsset && window.downloadTriFoldAsset('horizontal', 'svg')" style="flex:1; background:#0D2540; color:#FFFFFF; border:none; padding:7px; border-radius:6px; font-size:0.72rem; font-weight:800; cursor:pointer;">SVG en Curvas</button>
++                <button type="button" onclick="window.downloadTriFoldAsset && window.downloadTriFoldAsset('horizontal', 'ai')" style="flex:1; background:#FF7A00; color:#FFFFFF; border:none; padding:7px; border-radius:6px; font-size:0.72rem; font-weight:800; cursor:pointer;">Illustrator (.AI)</button>
++                <button type="button" onclick="window.copyTriFoldAssetCode && window.copyTriFoldAssetCode('horizontal')" style="background:#E2E8F0; color:#1E293B; border:none; padding:7px 10px; border-radius:6px; font-size:0.72rem; font-weight:700; cursor:pointer;">Copiar</button>
+               </div>
+             </div>
+ 
+@@ -4700,9 +4701,10 @@
+                   <span style="color:#94A3B8; font-size:0.75rem;">Generando vista previa...</span>
+                 </div>
+               </div>
+-              <div style="margin-top:10px; display:flex; gap:6px;">
+-                <button type="button" onclick="window.downloadTriFoldAsset && window.downloadTriFoldAsset('avatar')" style="flex:1; background:#0D2540; color:#FFFFFF; border:none; padding:7px; border-radius:6px; font-size:0.74rem; font-weight:800; cursor:pointer;">Descargar SVG</button>
+-                <button type="button" onclick="window.copyTriFoldAssetCode && window.copyTriFoldAssetCode('avatar')" style="background:#E2E8F0; color:#1E293B; border:none; padding:7px 12px; border-radius:6px; font-size:0.74rem; font-weight:700; cursor:pointer;">Copiar SVG</button>
++              <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
++                <button type="button" onclick="window.downloadTriFoldAsset && window.downloadTriFoldAsset('avatar', 'svg')" style="flex:1; background:#0D2540; color:#FFFFFF; border:none; padding:7px; border-radius:6px; font-size:0.72rem; font-weight:800; cursor:pointer;">SVG en Curvas</button>
++                <button type="button" onclick="window.downloadTriFoldAsset && window.downloadTriFoldAsset('avatar', 'ai')" style="flex:1; background:#FF7A00; color:#FFFFFF; border:none; padding:7px; border-radius:6px; font-size:0.72rem; font-weight:800; cursor:pointer;">Illustrator (.AI)</button>
++                <button type="button" onclick="window.copyTriFoldAssetCode && window.copyTriFoldAssetCode('avatar')" style="background:#E2E8F0; color:#1E293B; border:none; padding:7px 10px; border-radius:6px; font-size:0.72rem; font-weight:700; cursor:pointer;">Copiar</button>
+               </div>
+             </div>
+ 
+@@ -4717,9 +4719,10 @@
+                   <span style="color:#94A3B8; font-size:0.75rem;">Generando vista previa...</span>
+                 </div>
+               </div>
+-              <div style="margin-top:10px; display:flex; gap:6px;">
+-                <button type="button" onclick="window.downloadTriFoldAsset && window.downloadTriFoldAsset('seal')" style="flex:1; background:#0D2540; color:#FFFFFF; border:none; padding:7px; border-radius:6px; font-size:0.74rem; font-weight:800; cursor:pointer;">Descargar SVG</button>
+-                <button type="button" onclick="window.copyTriFoldAssetCode && window.copyTriFoldAssetCode('seal')" style="background:#E2E8F0; color:#1E293B; border:none; padding:7px 12px; border-radius:6px; font-size:0.74rem; font-weight:700; cursor:pointer;">Copiar SVG</button>
++              <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
++                <button type="button" onclick="window.downloadTriFoldAsset && window.downloadTriFoldAsset('seal', 'svg')" style="flex:1; background:#0D2540; color:#FFFFFF; border:none; padding:7px; border-radius:6px; font-size:0.72rem; font-weight:800; cursor:pointer;">SVG en Curvas</button>
++                <button type="button" onclick="window.downloadTriFoldAsset && window.downloadTriFoldAsset('seal', 'ai')" style="flex:1; background:#FF7A00; color:#FFFFFF; border:none; padding:7px; border-radius:6px; font-size:0.72rem; font-weight:800; cursor:pointer;">Illustrator (.AI)</button>
++                <button type="button" onclick="window.copyTriFoldAssetCode && window.copyTriFoldAssetCode('seal')" style="background:#E2E8F0; color:#1E293B; border:none; padding:7px 10px; border-radius:6px; font-size:0.72rem; font-weight:700; cursor:pointer;">Copiar</button>
+               </div>
+             </div>
+           </div>
+@@ -19393,7 +19396,6 @@
+         updateStep1PillarWayfindingUI(1);
+       }
+ 
+-      const urlParams = new URLSearchParams(window.location.search);
+       const targetStepParam = parseInt(urlParams.get("step") || "0", 10);
+       const isWebViewRequested = window.location.pathname === "/web" || urlParams.get("view") === "web";
+ 
+@@ -22267,7 +22269,7 @@
+         const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "la marca";
+         const bGiro = (cs.custom_business_type || cs.step0_short_essence || "su proyecto").trim();
+         const recentUsed = (st.auraUsedMessages || []).slice(-10).join(" | ");
+-        const apiKey = window.TBB_GEMINI_KEY || ("AIzaSyByQl8lrqiK5R4d" + "ZQSQA-b2qSxli8ctZQE");
++        const apiKey = window.TBB_GEMINI_KEY || "";
+ 
+         const stepAuthors = {
+           0: "Peter Drucker, Marty Neumeier, David Aaker o Sagi Haviv",
+@@ -22291,10 +22293,15 @@
+         ].join("\n");
+ 
+         try {
+-          const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`, {
++          const auraModel = "gemini-3.5-flash-lite";
++          const endpointUrl = apiKey
++            ? `https://generativelanguage.googleapis.com/v1beta/models/${auraModel}:generateContent?key=${apiKey}`
++            : (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
++          const resp = await fetch(endpointUrl, {
+             method: "POST",
+             headers: { "Content-Type": "application/json" },
+             body: JSON.stringify({
++              model: auraModel,
+               contents: [{ parts: [{ text: prompt }] }],
+               generationConfig: { temperature: 0.6, maxOutputTokens: 60 }
+             })
+@@ -23895,7 +23902,7 @@
+         const giro = (cs.custom_business_type || cs.step0_short_essence || "Aplicación digital de identidad corporativa").trim();
+         const purpose = (cs.golden_circle || cs.value_offer || "").trim();
+         const init = brandName.split(/\s+/).map(w => w[0] || "").join("").slice(0, 2).toUpperCase() || "TB";
+-        const apiKey = window.TBB_GEMINI_KEY || ("AIzaSyByQl8lrqiK5R4d" + "ZQSQA-b2qSxli8ctZQE");
++        const apiKey = window.TBB_GEMINI_KEY || "";
+ 
+         st.geminiBusy = true;
+         st.geminiStatusText = userInstruction
+@@ -23941,9 +23948,10 @@
+           "   - Si el usuario subió su logotipo actual como base, analiza la imagen adjunta y construye en `custom_svg_g` una versión evolucionada, limpia, simétrica y memorable de ese símbolo respetando sus colores y esencia.",
+           "   - Si el usuario pide cambiar el objeto principal, la forma o el concepto, DESCARTA por completo el SVG anterior y dibuja desde cero el nuevo objeto principal en `custom_svg_g`.",
+           "   - Si el usuario pide transformar la forma del objeto actual (ej. hacerlo curvo, triangular, más ancho, abrir las alas, cambiar la postura, fusionar dos objetos, quitar partes, cambiar el estilo a minimalista plano, degradado fluido, emblema grabado o 3D volumétrico), REESCRIBE y TRANSFORMA a fondo los trazos `<path>`, `<polygon>`, `<circle>`, `<ellipse>` de `custom_svg_g` para que el cambio geométrico sea contundente y exacto.",
+-          "3. CALIDAD ARTÍSTICA DEL SVG (`custom_svg_g`):",
++          "3. CALIDAD ARTÍSTICA PENTAGRAM / PROPORCIÓN ÁUREA DEL SVG (`custom_svg_g`):",
+           "   - `custom_svg_g` es OBLIGATORIO en todas las respuestas y NUNCA puede ir vacío.",
+           "   - Debe ser un bloque `<g>...</g>` autocontenido para un lienzo `viewBox=\"0 0 180 180\"` (centro en `90, 90`, ocupando aprox. de `16` a `164` en X e Y).",
++          "   - PROHIBIDO usar clip-art infantil, círculos o triángulos básicos sueltos. Construye curvas Bézier cúbicas de grado Pentagram (`<path d=\"M... C... Z\"/>`) con tensión geométrica áurea (phi = 1.618), equilibrio masa/vacío (espacio negativo Gestalt) y legibilidad perfecta desde 16px (favicon) hasta 180px.",
+           "   - Incluye dentro de `custom_svg_g` tu propio bloque `<defs>` con `<linearGradient>` y `<radialGradient>` ricos en matices (o usa también los shaders disponibles `url(#lgSapphire)`, `url(#lgAmberGlow)`, `url(#lgPearlRibbon)`, `url(#lgDeepCobalt)`), y construye la figura con entre 14 y 28 trazos vectoriales (`<path>`, `<polygon>`, `<circle>`, `<ellipse>`, `<rect>`) con volumen, silueta reconocible al instante, luces especulares y sombras.",
+           "4. CONTROL DE TIPOGRAFÍA, TEXTO Y DISPOSICIÓN: Si el usuario pide cambiar colores (`pri_hex`, `sec_hex`), fondo oscuro/claro (`bg_dark`), posición del texto (`layout`: `\"horizontal\"`, `\"stacked\"` para texto abajo, o `\"icon_only\"` para dejar solo el símbolo sin texto), tipografía (`font_family`), o el texto/subtítulo de la marca (`brand_title_override`, `subtitle_override`), refléjalo en las claves correspondientes.",
+           "Devuelve ÚNICAMENTE un objeto JSON válido con estas claves exactas:",
+@@ -23982,6 +23990,7 @@
+         }
+ 
+         const allModelConfigs = [
++          // Verificados contra ListModels (2026-11-10). gemini-2.0-flash ya no existe; 2.5-pro excluido por costo (FinOps).
+           { name: "gemini-3.5-flash", gc: { responseMimeType: "application/json", temperature: 0.45, thinkingConfig: { thinkingLevel: "MINIMAL" } } },
+           { name: "gemini-3.6-flash", gc: { responseMimeType: "application/json", temperature: 0.45, thinkingConfig: { thinkingLevel: "MINIMAL" } } },
+           { name: "gemini-2.5-flash", gc: { responseMimeType: "application/json", temperature: 0.45, thinkingConfig: { thinkingBudget: 0 } } },
+@@ -23999,10 +24008,14 @@
+         ];
+         for (const modelCfg of modelsToTry) {
+           try {
+-            const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelCfg.name}:generateContent?key=${apiKey}`, {
++            const endpointUrl = apiKey
++              ? `https://generativelanguage.googleapis.com/v1beta/models/${modelCfg.name}:generateContent?key=${apiKey}`
++              : (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
++            const resp = await fetch(endpointUrl, {
+               method: "POST",
+               headers: { "Content-Type": "application/json" },
+               body: JSON.stringify({
++                model: modelCfg.name,
+                 contents: [{ parts: requestParts }],
+                 generationConfig: modelCfg.gc
+               })
+@@ -24594,6 +24607,8 @@
+       }, 90);
+     })();
+   </script>
++  <script src="/assets/vendor/opentype.min.js?v=1.3.4"></script>
++  <script src="/tbb-cloud-vector-outliner.js?v=82.0"></script>
+   <script src="/tbb-v80-brandbook-plates.js?v=80.0"></script>
+   <script src="/universal-brandbook-30-engine.js?v=80.0"></script>
+   <script src="/tbb-generative-brandbook-engine.js?v=81.0"></script>

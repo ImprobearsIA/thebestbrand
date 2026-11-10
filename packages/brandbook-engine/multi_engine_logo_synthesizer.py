@@ -113,11 +113,10 @@ class MultiEngineLogoSynthesizer:
 
     # Cascada de modelos de síntesis vectorial en vivo (ordenados por disponibilidad y velocidad real verificada)
     LIVE_VECTOR_ARCHITECT_MODELS: List[str] = [
-        "gemini-3.5-flash-lite",
-        "gemini-3.1-flash-lite",
-        "gemini-3.5-flash",
+        "gemini-2.5-flash",
+        "gemini-2.5-pro",
+        "gemini-2.0-flash",
         "gemini-flash-lite-latest",
-        "gemma-4-31b-it",
     ]
 
     @classmethod

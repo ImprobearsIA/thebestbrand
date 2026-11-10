@@ -7,7 +7,9 @@ ENV CLOUD_MODE=1
 
 WORKDIR /app
 COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt && \
+    pip install --no-cache-dir playwright fonttools && \
+    playwright install --with-deps chromium
 
 COPY apps /app/apps
 COPY packages /app/packages

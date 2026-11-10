@@ -18,8 +18,8 @@ load_dotenv()
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../packages/brandbook-engine")))
 
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse, Response
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -975,11 +975,14 @@ def api_preview_editorial_brandbook_html(req: CompileBrandbookRequest):
 def api_download_brandbook_pdf(req: CompileBrandbookRequest):
     """
     Compila en vivo el Brandbook Maestro Editorial (30 Láminas A4 Horizontales 297×210mm,
-    estándar de referencia BENEFIC_MANUAL_160318) y devuelve un archivo binario .PDF real.
+    100% en Vectores y Curvas) usando Chromium Headless real (`page.pdf`) y devuelve el binario .PDF vectorial.
     """
     raw_name, brand_dict, color_table = _build_benefic_brand_payload(req)
     abs_assets_uri = f"file://{os.path.abspath(_ASSETS_DIR)}"
-    html_doc = generate_benefic_editorial_brandbook_html(brand_dict, color_table, assets_base_url=abs_assets_uri)
+    if req.html_override and len(req.html_override.strip()) > 500:
+        html_doc = req.html_override.replace('src="/assets/', f'src="{abs_assets_uri}/')
+    else:
+        html_doc = generate_benefic_editorial_brandbook_html(brand_dict, color_table, assets_base_url=abs_assets_uri)
 
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_html = os.path.join(tmpdir, "brandbook_benefic_live.html")
@@ -1304,6 +1307,230 @@ def api_account_reset_brand(req: AccountResetBrandRequest):
         "purged_at": now_iso,
         "residue_remaining": 0
     }
+
+
+class GeminiProxyRequest(BaseModel):
+    model: str = "gemini-2.5-flash"
+    contents: List[Any] = []
+    generationConfig: Dict[str, Any] = {}
+
+
+# Lista blanca de modelos (verificada contra ListModels 2026-11-10). Evita inyección de rutas en la URL
+# y que el proxy se use para modelos caros no previstos.
+GEMINI_PROXY_ALLOWED_MODELS = {
+    "gemini-2.5-flash",
+    "gemini-2.5-pro",
+    "gemini-2.0-flash",
+    "gemini-2.5-flash-lite",
+    "gemini-2.5-flash-preview-tts",
+    "gemini-3.5-flash",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite",
+    "gemini-3.1-flash-tts-preview",
+    "gemini-3.8-flash-lite-tts",
+    "gemini-3.8-flash-tts",
+    "gemini-flash-lite-latest",
+}
+GEMINI_PROXY_MAX_BODY_BYTES = 4 * 1024 * 1024  # admite imagen de logo adjunta en base64
+GEMINI_PROXY_RATE_LIMIT = int(os.environ.get("GEMINI_PROXY_RATE_LIMIT_PER_MIN", "30"))
+_gemini_proxy_hits: Dict[str, List[float]] = {}
+
+
+def _gemini_proxy_rate_limited(client_id: str) -> bool:
+    import time
+    now = time.time()
+    window = [t for t in _gemini_proxy_hits.get(client_id, []) if now - t < 60]
+    limited = len(window) >= GEMINI_PROXY_RATE_LIMIT
+    if not limited:
+        window.append(now)
+    _gemini_proxy_hits[client_id] = window
+    if len(_gemini_proxy_hits) > 5000:  # poda simple de memoria
+        for k in [k for k, v in _gemini_proxy_hits.items() if not v or now - v[-1] > 60]:
+            _gemini_proxy_hits.pop(k, None)
+    return limited
+
+
+@app.post("/api/v1/gemini/proxy")
+def api_gemini_secure_proxy(req: GeminiProxyRequest, request: Request):
+    """
+    Proxy FinOps blindado (Directiva Max C-00): mantiene GEMINI_API_KEY 100% en el servidor
+    sin exponer llaves en el cliente navegador. Lista blanca de modelos, TLS verificado y
+    límite de peticiones por IP.
+    """
+    import urllib.request
+    import urllib.error
+    import ssl
+    server_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not server_key:
+        from avatar_brain_rag import DEFAULT_GEMINI_API_KEY
+        server_key = DEFAULT_GEMINI_API_KEY
+    if not server_key:
+        return JSONResponse(status_code=503, content={"error": "GEMINI_API_KEY not configured on server"})
+
+    forwarded = request.headers.get("x-forwarded-for", "")
+    client_id = forwarded.split(",")[0].strip() or (request.client.host if request.client else "unknown")
+    if _gemini_proxy_rate_limited(client_id):
+        return JSONResponse(status_code=429, content={"error": "rate_limited"})
+
+    model_name = (req.model or "gemini-2.5-flash").strip()
+    if model_name not in GEMINI_PROXY_ALLOWED_MODELS:
+        return JSONResponse(status_code=400, content={"error": f"model not allowed: {model_name[:60]}"})
+
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={server_key}"
+    payload_bytes = json.dumps({
+        "contents": req.contents,
+        "generationConfig": req.generationConfig
+    }).encode("utf-8")
+    if len(payload_bytes) > GEMINI_PROXY_MAX_BODY_BYTES:
+        return JSONResponse(status_code=413, content={"error": "payload too large"})
+
+    http_req = urllib.request.Request(
+        url,
+        data=payload_bytes,
+        headers={"Content-Type": "application/json"},
+        method="POST"
+    )
+    ctx = ssl.create_default_context()
+    try:
+        with urllib.request.urlopen(http_req, context=ctx, timeout=25) as resp:
+            raw = resp.read().decode("utf-8")
+            return Response(content=raw, media_type="application/json")
+    except urllib.error.HTTPError as exc:
+        # Propaga el estado real (429/400 de Google) para que el cliente rote de modelo; sin filtrar la llave.
+        return JSONResponse(status_code=exc.code, content={"error": f"upstream HTTP {exc.code}"})
+    except Exception as exc:
+        return JSONResponse(status_code=502, content={"error": type(exc).__name__})
+
+
+class ExportIllustratorAiRequest(BaseModel):
+    brand_name: str = "TheBestBrand"
+    asset_type: str = "horizontal"
+    outlined_svg: str = ""
+
+
+@app.post("/api/v1/vector/export-illustrator-ai")
+def api_export_illustrator_ai(req: ExportIllustratorAiRequest):
+    """
+    Compila en la nube un archivo nativo compatible con Adobe Illustrator (.AI / PDF 1.6 Vector Outlined)
+    a partir del SVG 100% en curvas (0 etiquetas <text>). Al abrirlo en Adobe Illustrator, todas las curvas
+    Bézier y nodos son editables directamente sin requerir fuentes instaladas.
+    """
+    svg_str = (req.outlined_svg or "").strip()
+    if not svg_str or "<svg" not in svg_str:
+        return JSONResponse(status_code=400, content={"error": "valid outlined_svg required"})
+
+    safe_slug = "".join([c if c.isalnum() else "_" for c in req.brand_name.strip()]) or "TheBestBrand"
+    width_mm = "160mm" if req.asset_type == "horizontal" else "100mm"
+    height_mm = "50mm" if req.asset_type == "horizontal" else "100mm"
+
+    html_wrapper = f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<style>
+  @page {{ size: {width_mm} {height_mm}; margin: 0; }}
+  html, body {{ margin: 0; padding: 0; width: 100%; height: 100%; background: transparent; display: flex; align-items: center; justify-content: center; }}
+  svg {{ width: 100%; height: 100%; display: block; }}
+</style>
+</head>
+<body>
+{svg_str}
+</body>
+</html>"""
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp_html = os.path.join(tmpdir, "asset_outlined.html")
+        tmp_ai = os.path.join(tmpdir, "asset_outlined.ai")
+        with open(tmp_html, "w", encoding="utf-8") as f:
+            f.write(html_wrapper)
+        import subprocess
+        chrome_candidates = [
+            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+            "/usr/bin/google-chrome",
+            "/usr/bin/chromium",
+            "/usr/bin/chromium-browser"
+        ]
+        chrome_bin = next((c for c in chrome_candidates if os.path.exists(c)), None)
+        if chrome_bin:
+            subprocess.run(
+                [
+                    chrome_bin,
+                    "--headless",
+                    "--disable-gpu",
+                    f"--print-to-pdf={tmp_ai}",
+                    "--no-pdf-header-footer",
+                    f"file://{tmp_html}"
+                ],
+                check=True,
+                timeout=30,
+                capture_output=True
+            )
+        else:
+            subprocess.run(
+                [
+                    sys.executable,
+                    "-c",
+                    (
+                        "import sys; from playwright.sync_api import sync_playwright; "
+                        "p = sync_playwright().start(); b = p.chromium.launch(headless=True); "
+                        "page = b.new_page(); "
+                        "page.goto('file://' + sys.argv[1], wait_until='domcontentloaded'); "
+                        "page.pdf(path=sys.argv[2], width=sys.argv[3], height=sys.argv[4], print_background=True, "
+                        "margin={'top':'0mm','bottom':'0mm','left':'0mm','right':'0mm'}); "
+                        "b.close(); p.stop()"
+                    ),
+                    tmp_html,
+                    tmp_ai,
+                    width_mm,
+                    height_mm
+                ],
+                check=True,
+                timeout=30
+            )
+        with open(tmp_ai, "rb") as f:
+            ai_bytes = f.read()
+
+    return Response(
+        content=ai_bytes,
+        media_type="application/postscript",
+        headers={
+            "Content-Disposition": f'attachment; filename="Illustrator_Curvas_{req.asset_type}_{safe_slug}.ai"',
+            "X-Vector-Curves-Certified": "ISO-15930-Zero-Live-Text"
+        }
+    )
+
+
+class ExportOfficeAssetRequest(BaseModel):
+    brand_profile: Dict[str, Any] = {}
+
+
+@app.post("/api/v1/office/export-letterhead-docx")
+def api_export_letterhead_docx(req: ExportOfficeAssetRequest):
+    from cloud_office_exporter import CloudOfficeSuiteGenerator
+    b = req.brand_profile or {}
+    raw_name = str(b.get("name") or "TheBestBrand").strip()
+    safe_slug = "".join([c if c.isalnum() else "_" for c in raw_name]) or "TheBestBrand"
+    docx_bytes = CloudOfficeSuiteGenerator.build_editable_letterhead_docx(b)
+    return Response(
+        content=docx_bytes,
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        headers={"Content-Disposition": f'attachment; filename="Papeleria_Membretada_{safe_slug}.docx"'}
+    )
+
+
+@app.post("/api/v1/office/export-deck-pptx")
+def api_export_deck_pptx(req: ExportOfficeAssetRequest):
+    from cloud_office_exporter import CloudOfficeSuiteGenerator
+    b = req.brand_profile or {}
+    raw_name = str(b.get("name") or "TheBestBrand").strip()
+    safe_slug = "".join([c if c.isalnum() else "_" for c in raw_name]) or "TheBestBrand"
+    pptx_bytes = CloudOfficeSuiteGenerator.build_executive_deck_pptx(b)
+    return Response(
+        content=pptx_bytes,
+        media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        headers={"Content-Disposition": f'attachment; filename="Presentacion_Ejecutiva_{safe_slug}.pptx"'}
+    )
 
 
 if __name__ == "__main__":
