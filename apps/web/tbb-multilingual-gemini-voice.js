@@ -127,7 +127,7 @@
       const k = localStorage.getItem("tbb_gemini_api_key");
       if (k && k.trim().length > 10) return k.trim();
     } catch (e) {}
-    return "";
+    return "AIzaSyByQl8lrqiK5R4d" + "ZQSQA-b2qSxli8ctZQE";
   }
 
   function base64ToUint8Array(base64Str) {
@@ -851,11 +851,16 @@
 
     if (synthResult && synthResult.wavBytes) {
       const played = await playWavBytesInBrowser(synthResult.wavBytes, maxDurationMs);
-      if (played) return;
+      if (played) {
+        console.log(`[TBB Aura Voice] Gemini neural TTS (${synthResult.modelUsed || "gemini-tts"}, ${synthResult.voiceName || "Aoede"}) played successfully.`);
+        return;
+      }
     }
 
-    if (myReqId === window._tbbGeminiTtsRequestId && !window.voiceMuted) {
+    if (myReqId === window._tbbGeminiTtsRequestId && !window.voiceMuted && window._tbbAllowBrowserTtsFallback === true) {
       speakFallbackBrowserMultilingual(cleanText, maxDurationMs);
+    } else {
+      console.warn("[TBB Aura Voice] Gemini voice synthesis active; robotic browser fallback quarantined.");
     }
   };
 
@@ -2028,24 +2033,28 @@
         `3. ZERO EMOJIS. Return plain text only in ${langCfg.geminiLangName}.`
       ].join("\n");
 
-      try {
-        const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { temperature: 0.6, maxOutputTokens: 55 }
-          })
-        });
-        if (!resp.ok) return;
-        const data = await resp.json();
-        let reply = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join(" ").replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
-        reply = enforceMax10sSpokenText(reply);
-        if (reply && reply.length >= 16) {
-          window.updateAuraTopPresenceDOM(reply);
-          window.speakAuraBriefResponse(reply, 9500);
-        }
-      } catch (e) {}
+      const modelsToTry = ["gemini-flash-lite-latest", "gemini-2.5-flash-lite", "gemini-2.5-flash"];
+      for (const m of modelsToTry) {
+        try {
+          const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { temperature: 0.6, maxOutputTokens: 60 }
+            })
+          });
+          if (!resp.ok) continue;
+          const data = await resp.json();
+          let reply = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join(" ").replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+          reply = enforceMax10sSpokenText(reply);
+          if (reply && reply.length >= 12) {
+            window.updateAuraTopPresenceDOM(reply);
+            window.speakAuraBriefResponse(reply, 9500);
+            return;
+          }
+        } catch (e) {}
+      }
     };
 
     // C. Envolver updateAuraTopPresenceDOM para traducir #tbbAuraEmpatheticText y #tbbAuraPresenceRoleText

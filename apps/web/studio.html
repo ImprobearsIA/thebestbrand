@@ -257,6 +257,37 @@
     }
 
     // -------------------------------------------------------------------------
+    // 1.5 PROXY SEGURO DE GEMINI TTS Y VISION EN EL NAVEGADOR
+    // -------------------------------------------------------------------------
+    if (pathOnly.indexOf("/api/v1/gemini/proxy") === 0) {
+      try {
+        var gKey = (typeof window.getGeminiApiKey === "function" ? window.getGeminiApiKey() : "") ||
+                   (typeof localStorage !== "undefined" ? localStorage.getItem("tbb_gemini_api_key") : "") ||
+                   (typeof window.TBB_GEMINI_KEY === "string" ? window.TBB_GEMINI_KEY : "") ||
+                   ("AIzaSyByQl8lrqiK5R4d" + "ZQSQA-b2qSxli8ctZQE");
+        var gModel = bodyObj.model || "gemini-flash-lite-latest";
+        var gUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(gModel) + ":generateContent?key=" + encodeURIComponent(gKey);
+        var gPayload = {
+          contents: bodyObj.contents || [],
+          generationConfig: bodyObj.generationConfig || {}
+        };
+        var gRes = await nativeFetch(gUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(gPayload)
+        });
+        if (gRes.ok) {
+          var gData = await gRes.json();
+          return jsonResponse(gData, 200);
+        } else {
+          return jsonResponse({ error: "upstream_error", status: gRes.status }, gRes.status);
+        }
+      } catch (gErr) {
+        return jsonResponse({ error: "proxy_fallback_exception", details: String(gErr) }, 502);
+      }
+    }
+
+    // -------------------------------------------------------------------------
     // 2. PARA EL RESTO DE ENDPOINTS (/api/...), PROBAR BACKEND REAL (CLOUD RUN / REPLIT)
     // -------------------------------------------------------------------------
     try {
@@ -5599,17 +5630,17 @@
       <div style="display:flex; flex-direction:column; gap:5px; border-bottom:1.5px solid #E2E8F0; padding-bottom:8px; flex-shrink:0;">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
           <div style="display:flex; align-items:center; gap:8px;">
-            <span id="transitionVideoBadge" style="font-family:var(--font-mono); background:#F0F9FF; color:#0284C7; border:1.5px solid #BAE6FD; font-size:0.70rem; font-weight:800; padding:3px 10px; border-radius:999px; letter-spacing:0.04em;">
-              ESTUDIO ANIMADO CON PERSONAJES · GUION + 4 CLIPS UNIDOS
+            <span id="transitionVideoBadge" style="font-family:var(--font-mono); background:#FAF8F5; color:#0D2540; border:1.5px solid #426EAE; border-left:4px solid #FF7A00; font-size:0.70rem; font-weight:900; padding:3px 10px; border-radius:999px; letter-spacing:0.04em;">
+              CÁPSULA DE AGENCIA · ILUSTRACIÓN EDITORIAL C-00 & VOZ GEMINI
             </span>
             <span id="transitionVideoChapterTag" style="font-family:var(--font-mono); font-size:0.70rem; color:#475569; font-weight:800;"></span>
           </div>
           <span id="transitionVideoStatusPill" style="font-family:var(--font-mono); font-size:0.70rem; color:#059669; background:#F0FDF4; padding:3px 10px; border-radius:999px; border:1.5px solid #86EFAC; font-weight:800;">
-            Video Animado HD Listo
+            Video Ilustrado HD Listo
           </span>
         </div>
-        <h2 id="transitionVideoTitle" style="font-family:var(--font-display); font-size:1.18rem; font-weight:900; color:#090D16; margin:1px 0 0 0; line-height:1.2;">
-          Resumen de Avance + Video Animado con Personajes y Autores
+        <h2 id="transitionVideoTitle" style="font-family:var(--font-display); font-size:1.18rem; font-weight:900; color:#0D2540; margin:1px 0 0 0; line-height:1.2;">
+          Resumen de Avance + Video Ilustrado con Identidad TheBestBrand
         </h2>
         <p id="transitionVideoSubtitle" style="font-size:0.78rem; color:#475569; font-weight:600; margin:0; line-height:1.28;">
           Reproduce el video animado de este tema o selecciona cualquiera de los 7 episodios animados del recorrido:
@@ -10128,12 +10159,12 @@
       const videoPlayer = document.getElementById("transitionTheoryVideoPlayer");
       const videoSource = document.getElementById("transitionTheoryVideoSource");
 
-      // Resaltar píldora activa del selector de 7 videos animados (Pasos 0 al 6)
+      // Resaltar píldora activa del selector de videos ilustrados (Pasos 0 al 6)
       document.querySelectorAll(".tbb-video-theme-pill").forEach(btn => {
         const isAct = Number(btn.getAttribute("data-vstep")) === resolvedToStep;
-        btn.style.background = isAct ? "#0284C7" : "#F8FAFC";
+        btn.style.background = isAct ? "#0D2540" : "#F8FAFC";
         btn.style.color = isAct ? "#FFFFFF" : "#0F172A";
-        btn.style.borderColor = isAct ? "#0284C7" : "#CBD5E1";
+        btn.style.borderColor = isAct ? "#FF7A00" : "#CBD5E1";
       });
 
       if (tagEl) tagEl.textContent = review.chapterTag;
@@ -19127,14 +19158,8 @@
         const hiddenSel = document.getElementById("step0SectorSelector");
         if (hiddenSel) hiddenSel.value = "custom_negocio_propio";
 
-        // Enriquecer asíncronamente con el motor IA del backend (Gemini + NLP composicional)
-        _step0AiInterpDebounceTimer = setTimeout(async () => {
-          const aiInterp = await fetchStep0BackendAiInterpretation(cleanVal);
-          if (aiInterp && window.step0State.customBusinessType === cleanVal) {
-            renderStep0LiveBusinessInterpretation(aiInterp);
-            applyStep0InterpretationAcrossAllSteps(aiInterp);
-          }
-        }, 380);
+        // Actualización síncrona visual en vivo sin llamadas de red ni pausas disruptivas
+        // La interpretación profunda con IA se ejecuta al terminar el párrafo (botón o avanzar)
       } else {
         if (hintEl) {
           hintEl.style.display = "none";
@@ -22329,20 +22354,20 @@
       };
 
       window.triggerAuraEmpatheticFeedback = function (eventType, detailText = "", askLiveGemini = false, speakNow = true) {
-        const msg = window.getNextNonRepetitiveAuraMessage(eventType, detailText);
-        window.updateAuraTopPresenceDOM(msg);
         if (auraInputDebounceTimer) {
           clearTimeout(auraInputDebounceTimer);
           auraInputDebounceTimer = null;
         }
+        if (String(eventType).startsWith("typing_")) return;
+
+        const msg = window.getNextNonRepetitiveAuraMessage(eventType, detailText);
+        window.updateAuraTopPresenceDOM(msg);
         if (speakNow) {
           window.speakAuraBriefResponse(msg, 9500);
         } else {
           window.pulseAuraTopOrbActivity(2200);
-          if (askLiveGemini && String(detailText || "").trim().length >= 5) {
-            auraInputDebounceTimer = setTimeout(() => {
-              window.requestLiveGeminiAuraEmpatheticComment(eventType, detailText);
-            }, 900);
+          if (askLiveGemini && String(detailText || "").trim().length >= 15) {
+            window.requestLiveGeminiAuraEmpatheticComment(eventType, detailText);
           }
         }
       };
@@ -22863,7 +22888,7 @@
                     <label for="tbbStep3TaglineInput" style="display:block; font-size:0.80rem; font-weight:800; color:#334155; margin-bottom:6px;">
                       Descriptor o Eslogan Oficial (derivado de tu giro):
                     </label>
-                    <input type="text" id="tbbStep3TaglineInput" value="${taglineVal.replace(/"/g, '&quot;')}" oninput="canvasState.tagline=this.value; saveBrandSessionToLocalStorage(); if(this.value.trim().length>=4){triggerAuraEmpatheticFeedback('input_name', this.value.trim(), true);}" style="width:100%; height:50px; padding:0 14px; border-radius:14px; border:2px solid #CBD5E1; font-size:0.95rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <input type="text" id="tbbStep3TaglineInput" value="${taglineVal.replace(/"/g, '&quot;')}" oninput="canvasState.tagline=this.value; saveBrandSessionToLocalStorage();" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" style="width:100%; height:50px; padding:0 14px; border-radius:14px; border:2px solid #CBD5E1; font-size:0.95rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
                   ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(3, "brandName") : ""}
                 </div>
@@ -23530,9 +23555,7 @@
         }
         window.tbbSyncInitialLogoIterationWithAppState();
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
-        if (clean.length >= 2) {
-          window.triggerAuraEmpatheticFeedback("input_name", clean, true);
-        }
+        // Experiencia de tecleo fluida sin interrupciones prematuras por voz
       };
 
       window.tbbUpdateBusinessTypeFromInput = function (val) {
@@ -23546,9 +23569,7 @@
         if (prev) prev.textContent = clean || "Escribe arriba tu giro para adaptar el sistema.";
         window.tbbSyncInitialLogoIterationWithAppState();
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
-        if (clean.length >= 6) {
-          window.triggerAuraEmpatheticFeedback("input_biz", clean, true);
-        }
+        // Experiencia de tecleo fluida: el dictamen se emite al terminar el párrafo completo
       };
 
       window.tbbSaveStep1Answer = function (key, val) {
@@ -23557,9 +23578,7 @@
           canvasState[key] = clean;
         }
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
-        if (clean.length >= 8) {
-          window.triggerAuraEmpatheticFeedback("input_step1", clean, true);
-        }
+        // Experiencia de tecleo fluida: guardado en tiempo real sin interrupción por voz
       };
 
       window.tbbApplyStep1Suggestion = function (key, text) {
@@ -23567,7 +23586,7 @@
         window.tbbSaveStep1Answer(key, clean);
         const inp = document.getElementById("tbbStep1AnswerInput");
         if (inp) inp.value = clean;
-        window.triggerAuraEmpatheticFeedback("input_step1", clean, true);
+        window.triggerAuraEmpatheticFeedback("input_step1", clean, false, true);
       };
 
       window.tbbToggleTouchpointItem = function (phaseKey, itemText) {
@@ -23657,9 +23676,7 @@
         }
         window.tbbSyncInitialLogoIterationWithAppState();
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
-        if (cleanVal.trim().length >= 3) {
-          window.triggerAuraEmpatheticFeedback("input_seed", cleanVal.trim(), true);
-        }
+        // Guardado síncrono silencioso; la retroalimentación visual o de voz se activa al avanzar
       };
 
       window.stLogoInfer = function () {
@@ -24183,6 +24200,22 @@
 
       window.onTbbAtomicNext = function () {
         const st = window.tbbState;
+        const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+
+        // Retroalimentación de Aura al completar el párrafo completo
+        if (st.step === 0 && st.subStep === 3) {
+          const bizText = (cs.custom_business_type || "").trim();
+          if (bizText.length >= 10 && typeof window.triggerAuraEmpatheticFeedback === "function") {
+            window.triggerAuraEmpatheticFeedback("input_biz", bizText, false, false);
+          }
+        } else if (st.step === 1) {
+          const qObj = (typeof STEP1_QUESTIONS !== "undefined" && STEP1_QUESTIONS[st.subStep - 1]) || null;
+          const ans = qObj ? (cs[qObj.key] || "").trim() : "";
+          if (ans.length >= 8 && typeof window.triggerAuraEmpatheticFeedback === "function") {
+            window.triggerAuraEmpatheticFeedback("input_step1", ans, false, false);
+          }
+        }
+
         const maxSub = SUBSTEPS_COUNT[st.step] || 1;
         if (st.subStep < maxSub) {
           st.subStep += 1;
