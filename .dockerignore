@@ -1,11 +1,16 @@
+# === IMPROBEARS CLOUD BUILD OPTIMIZATION (#0705) ===
 .git
-.gitignore
-_archived_html_backups/
-entregables_brandbooks/
-apps/web/assets/videos/
-*.pdf
-*.zip
-*.mp4
-*.mov
-__pycache__/
+.github
+.claude
+.firebase
+.venv
+venv
+__pycache__
 *.pyc
+.DS_Store
+.env
+.env.local
+apps/api/tbb_accounts_vault.db
+entregables_brandbooks/entrepreneurs_30/*.pdf
+entregables_brandbooks/entrepreneurs_30/*.png
+entregables_brandbooks/evidences/
