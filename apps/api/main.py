@@ -1591,3 +1591,33 @@ def api_vector_cache_status():
         "entrepreneurs_30_pdfs_count": len(pdf_files),
         "all_30_above_3_5mb": len(pdf_files) == 30 and all(p["valid_weight"] for p in pdf_files),
     }
+
+
+@app.post("/api/v1/office/export-email-signature")
+def api_export_email_signature(req: ExportOfficeAssetRequest):
+    """[#0303] Exporta firma de correo HTML ejecutiva con la identidad de la marca."""
+    from cloud_office_exporter import CloudOfficeSuiteGenerator
+    b = req.brand_profile or {}
+    raw_name = str(b.get("name") or "TheBestBrand").strip()
+    safe_slug = "".join([c if c.isalnum() else "_" for c in raw_name]) or "TheBestBrand"
+    sig_html = CloudOfficeSuiteGenerator.build_email_signature_html(b)
+    return Response(
+        content=sig_html.encode("utf-8"),
+        media_type="text/html; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="Firma_Correo_{safe_slug}.html"'}
+    )
+
+
+@app.post("/api/v1/office/export-quote-xlsx")
+def api_export_quote_xlsx(req: ExportOfficeAssetRequest):
+    """[#0303] Exporta libro editable de Excel (.xlsx) de Cotización Ejecutiva en la nube."""
+    from cloud_office_exporter import CloudOfficeSuiteGenerator
+    b = req.brand_profile or {}
+    raw_name = str(b.get("name") or "TheBestBrand").strip()
+    safe_slug = "".join([c if c.isalnum() else "_" for c in raw_name]) or "TheBestBrand"
+    xlsx_bytes = CloudOfficeSuiteGenerator.build_editable_quote_xlsx(b)
+    return Response(
+        content=xlsx_bytes,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="Cotizacion_Ejecutiva_{safe_slug}.xlsx"'}
+    )

@@ -382,3 +382,107 @@ class CloudOfficeSuiteGenerator:
                 sxml = cls._build_pptx_slide_xml(stitle, ssub, sbullets, pri_hex, acc_hex, pri_font)
                 zf.writestr(f"ppt/slides/slide{idx}.xml", sxml)
         return buf.getvalue()
+
+
+    @classmethod
+    def build_email_signature_html(cls, brand: Dict[str, Any]) -> str:
+        """[#0303] Genera una firma de correo HTML ejecutiva lista para Gmail / Zoho Mail / Outlook bajo norma C-00."""
+        b_name = escape(str(brand.get("name") or "The Best Brand"))
+        tagline = escape(str(brand.get("tagline") or "DIRECCIÓN GENERAL"))
+        giro = escape(str(brand.get("giro") or "Excelencia y Soluciones Estratégicas"))
+        pri_hex = _clean_hex((brand.get("colors") or {}).get("pri"), "0D2540")
+        sec_hex = _clean_hex((brand.get("colors") or {}).get("sec"), "426EAE")
+        acc_hex = _clean_hex((brand.get("colors") or {}).get("acc"), "FF7A00")
+        pri_font = escape(str(brand.get("primaryFont") or "Montserrat"))
+
+        return f"""<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Firma Ejecutiva - {b_name}</title></head>
+<body style="margin:0;padding:16px;background:#FFFFFF;font-family:'{pri_font}', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;">
+  <table cellpadding="0" cellspacing="0" border="0" style="background:#FFFFFF;border-collapse:collapse;max-width:560px;">
+    <tr>
+      <td style="border-left:4px solid #{acc_hex};padding-left:16px;">
+        <div style="font-size:18px;font-weight:800;color:#{pri_hex};letter-spacing:0.5px;text-transform:uppercase;">{b_name}</div>
+        <div style="font-size:11px;font-weight:700;color:#{acc_hex};letter-spacing:1.2px;text-transform:uppercase;margin-top:2px;">{tagline}</div>
+        <div style="font-size:12px;color:#333333;margin-top:8px;line-height:1.4;">{giro}</div>
+        <div style="font-size:11px;color:#707070;margin-top:8px;">
+          <span style="color:#{sec_hex};font-weight:700;">●</span> Identidad Oficial Certificada C-00 · Paleta #{pri_hex} / #{sec_hex} / #{acc_hex}
+        </div>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>"""
+
+    @classmethod
+    def build_editable_quote_xlsx(cls, brand: Dict[str, Any]) -> bytes:
+        """[#0303] Genera un libro nativo Excel (.xlsx OpenXML ECMA-376) de Cotización Ejecutiva 100% en la nube."""
+        b_name = escape(str(brand.get("name") or "The Best Brand"))
+        tagline = escape(str(brand.get("tagline") or "COTIZACIÓN COMERCIAL EJECUTIVA"))
+        what = escape(str(brand.get("what") or "Servicio Integral Profesional"))
+
+        content_types = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+  <Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+</Types>"""
+
+        root_rels = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>"""
+
+        wb_rels = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+</Relationships>"""
+
+        workbook_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+          xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+  <sheets>
+    <sheet name="Cotizacion_Oficial" sheetId="1" r:id="rId1"/>
+  </sheets>
+</workbook>"""
+
+        sheet1_xml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  <sheetData>
+    <row r="1">
+      <c r="A1" t="inlineStr"><is><t>{b_name.upper()} — {tagline}</t></is></c>
+    </row>
+    <row r="2">
+      <c r="A2" t="inlineStr"><is><t>Concepto / Entregable</t></is></c>
+      <c r="B2" t="inlineStr"><is><t>Cantidad</t></is></c>
+      <c r="C2" t="inlineStr"><is><t>Precio Unitario (MXN)</t></is></c>
+      <c r="D2" t="inlineStr"><is><t>Subtotal (MXN)</t></is></c>
+    </row>
+    <row r="3">
+      <c r="A3" t="inlineStr"><is><t>{what}</t></is></c>
+      <c r="B3"><v>1</v></c>
+      <c r="C3"><v>15000</v></c>
+      <c r="D3"><f>B3*C3</f><v>15000</v></c>
+    </row>
+    <row r="4">
+      <c r="A4" t="inlineStr"><is><t>Acompañamiento Estratégico y Garantía de Calidad</t></is></c>
+      <c r="B4"><v>1</v></c>
+      <c r="C4"><v>5000</v></c>
+      <c r="D4"><f>B4*C4</f><v>5000</v></c>
+    </row>
+    <row r="5">
+      <c r="C5" t="inlineStr"><is><t>TOTAL NETO</t></is></c>
+      <c r="D5"><f>SUM(D3:D4)</f><v>20000</v></c>
+    </row>
+  </sheetData>
+</worksheet>"""
+
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+            zf.writestr("[Content_Types].xml", content_types)
+            zf.writestr("_rels/.rels", root_rels)
+            zf.writestr("xl/workbook.xml", workbook_xml)
+            zf.writestr("xl/_rels/workbook.xml.rels", wb_rels)
+            zf.writestr("xl/worksheets/sheet1.xml", sheet1_xml)
+        return buf.getvalue()
