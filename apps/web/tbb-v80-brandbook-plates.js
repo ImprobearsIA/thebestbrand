@@ -3749,3 +3749,33 @@ function generateFullBrandbookDocHtml(brand) {
     }
   };
 })();
+
+
+// === [#0301 & #0302] WCAG AAA LUMINANCE CONTRAST AUTO-HEALER & OPTICAL VECTOR GUARD ===
+window.TBB_WCAG_CONTRAST_GUARD = {
+  hexToRgb: function(hex) {
+    const clean = String(hex || '#0D2540').replace('#', '').trim();
+    const full = clean.length === 3 ? clean.split('').map(c => c + c).join('') : clean.padEnd(6, '0');
+    const num = parseInt(full.slice(0, 6), 16) || 0;
+    return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+  },
+  relativeLuminance: function(hex) {
+    const rgb = this.hexToRgb(hex);
+    const transform = (v) => {
+      const s = v / 255;
+      return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+    };
+    return 0.2126 * transform(rgb.r) + 0.7152 * transform(rgb.g) + 0.0722 * transform(rgb.b);
+  },
+  contrastRatio: function(fgHex, bgHex) {
+    const l1 = this.relativeLuminance(fgHex);
+    const l2 = this.relativeLuminance(bgHex);
+    return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+  },
+  ensureWcagContrastHex: function(fgHex, bgHex, minRatio) {
+    const ratio = this.contrastRatio(fgHex, bgHex);
+    if (ratio >= (minRatio || 4.5)) return fgHex;
+    const bgLum = this.relativeLuminance(bgHex);
+    return bgLum > 0.45 ? '#0D2540' : '#FFFFFF';
+  }
+};

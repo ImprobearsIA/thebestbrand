@@ -2313,3 +2313,37 @@
     bootMultilingualAndGeminiVoice();
   }
 })();
+
+
+// === [#0305] INCREMENTAL 5-SECOND VOICE INTERVIEW CHECKPOINT AUTOSAVE ===
+window.TBB_VOICE_SESSION_AUTOSAVE = {
+  STORAGE_KEY: "tbb_v82_voice_interview_checkpoint",
+  saveCheckpoint: function(stateObj) {
+    try {
+      const payload = {
+        savedAt: new Date().toISOString(),
+        lang: localStorage.getItem("tbb_app_lang") || "es",
+        state: stateObj || window.tbbCurrentBrandState || {}
+      };
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(payload));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
+  restoreCheckpoint: function() {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+};
+if (typeof window !== "undefined") {
+  setInterval(function() {
+    if (window.tbbCurrentBrandState && Object.keys(window.tbbCurrentBrandState).length > 0) {
+      window.TBB_VOICE_SESSION_AUTOSAVE.saveCheckpoint(window.tbbCurrentBrandState);
+    }
+  }, 5000);
+}

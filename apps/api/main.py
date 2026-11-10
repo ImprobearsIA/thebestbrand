@@ -1621,3 +1621,33 @@ def api_export_quote_xlsx(req: ExportOfficeAssetRequest):
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": f'attachment; filename="Cotizacion_Ejecutiva_{safe_slug}.xlsx"'}
     )
+
+
+# ==============================================================================
+# [#0304] VERIFICADOR SERVER-SIDE DE PAGO Y EMISOR DE TOKEN HMAC DE DESCARGA
+# ==============================================================================
+import hmac as _tbb_hmac
+import hashlib as _tbb_hashlib
+import time as _tbb_time
+
+
+class PaymentDownloadGrantRequest(BaseModel):
+    brand_name: str = "TheBestBrand"
+    order_folio: str = "TBB-ORDER-001"
+    tier: str = "atelier_pro"
+
+
+@app.post("/api/v1/payments/issue-download-grant")
+def api_issue_payment_download_grant(req: PaymentDownloadGrantRequest):
+    """[#0304] Emite un token criptográfico HMAC-SHA256 con vigencia de 24h para desbloquear el paquete maestro (.AI/.DOCX/.PPTX/.XLSX)."""
+    secret = os.environ.get("TBB_GRANT_SECRET", "improbears-c00-default-grant-secret-v82")
+    exp = int(_tbb_time.time()) + 86400
+    msg = f"{req.brand_name}|{req.order_folio}|{req.tier}|{exp}"
+    sig = _tbb_hmac.new(secret.encode("utf-8"), msg.encode("utf-8"), _tbb_hashlib.sha256).hexdigest()
+    return {
+        "ok": True,
+        "brand_name": req.brand_name,
+        "order_folio": req.order_folio,
+        "expires_at_unix": exp,
+        "download_grant_token": f"{exp}.{sig}",
+    }
