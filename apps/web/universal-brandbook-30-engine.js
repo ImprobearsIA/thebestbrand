@@ -2228,47 +2228,48 @@
     const hasUploadedLogo = Boolean(uploadedUrl || uploadedSvg);
     const hasGeminiCustom = Boolean(activeIt && activeIt.geminiCustomSvg && String(activeIt.geminiCustomSvg).trim().length > 10);
 
-    // Solo consultar catálogo estático si el usuario NO ha subido un logo propio y no hay iteración AI activa
-    if (!hasUploadedLogo && !hasGeminiCustom && window.CATALOG_30_MAP) {
+    // Solo consultar catálogo de 30 emprendedores si es una marca explícita del catálogo (NUNCA secuestrar sesiones con logo subido ni el nombre por defecto "The Best Brand")
+    const isTbbSlug = /^the_?best_?brand$/i.test(slug);
+    const hasCustomUserInputs = Boolean(
+      hasUploadedLogo ||
+      hasGeminiCustom ||
+      cs.custom_business_type ||
+      window.step0State?.customBusinessType ||
+      cs.golden_circle ||
+      cs.value_offer ||
+      cs.ideal_customer ||
+      cs.brand_persona ||
+      cs.process_steps_text ||
+      cs.tagline
+    );
+    if (!hasUploadedLogo && !hasGeminiCustom && !hasCustomUserInputs && !isTbbSlug && window.CATALOG_30_MAP) {
       if (window.CATALOG_30_MAP[slug]) return window.CATALOG_30_MAP[slug];
       if (window.CATALOG_30_MAP[bName.toLowerCase()]) return window.CATALOG_30_MAP[bName.toLowerCase()];
-      const altSlug = slug.replace(/_athletics|_ip|_soc|_trauma|_group|_lab|_master|_films|_solar|_dry|_consulting|_ingredients|_studio|_ai/g, "");
-      if (window.CATALOG_30_MAP[altSlug]) return window.CATALOG_30_MAP[altSlug];
     }
 
     const mods = (activeIt && activeIt.mods) || {};
     const priFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || cs.primary_font || "Montserrat";
     const secFont = "Avenir Next";
     const pal = extractColorsFromLogoState(activeIt, st);
+    const useEvolvedOverUpload = Boolean(st._uploadedLogoEvolvedOnce && hasGeminiCustom);
     
     let symCorePos = "";
     let symCoreNeg = "";
-    if (hasUploadedLogo && !hasGeminiCustom) {
+    if (hasUploadedLogo && !useEvolvedOverUpload) {
       if (uploadedSvg) {
         let cleanSvg = uploadedSvg.trim();
-        if (!cleanSvg.startsWith("<svg") && !cleanSvg.startsWith("<g")) {
+        if (!cleanSvg.startsWith("<g")) {
           cleanSvg = `<g transform="translate(10,10)">${cleanSvg}</g>`;
         }
         symCorePos = cleanSvg;
-        symCoreNeg = (typeof toCaladoNegativeSvg === "function") ? toCaladoNegativeSvg(cleanSvg) : cleanSvg;
+        symCoreNeg = `<g transform="translate(10,10)"><rect x="4" y="4" width="172" height="172" rx="30" fill="#FFFFFF" fill-opacity="0.98"/>${uploadedSvg.trim()}</g>`;
       } else {
-        symCorePos = `<g transform="translate(10,10)"><image href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="10" y="10" width="160" height="160" preserveAspectRatio="xMidYMid meet" /></g>`;
-        symCoreNeg = `<g transform="translate(10,10)"><image href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="10" y="10" width="160" height="160" preserveAspectRatio="xMidYMid meet" style="filter:brightness(0) invert(1);" /></g>`;
+        symCorePos = `<g transform="translate(10,10)"><image data-tbb-uploaded-logo="1" href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="8" y="8" width="164" height="164" preserveAspectRatio="xMidYMid meet" /></g>`;
+        symCoreNeg = `<g transform="translate(10,10)"><rect x="4" y="4" width="172" height="172" rx="30" fill="#FFFFFF" fill-opacity="0.98"/><image data-tbb-uploaded-logo="1" href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="16" y="16" width="148" height="148" preserveAspectRatio="xMidYMid meet" /></g>`;
       }
     } else {
-      symCorePos = typeof window.synthesizeSystemicSymbol180 === "function" ? window.synthesizeSystemicSymbol180("bb_v80_pos") : "";
-      symCoreNeg = typeof window.synthesizeSystemicSymbol180 === "function" ? window.synthesizeSystemicSymbol180("bb_v80_neg") : symCorePos;
-    }
-
-    // Si coincide con una marca del catálogo pero el usuario subió su logo, heredar los textos ricos pero inyectar el logo propio
-    if (hasUploadedLogo && window.CATALOG_30_MAP && window.CATALOG_30_MAP[slug]) {
-      const catObj = Object.assign({}, window.CATALOG_30_MAP[slug]);
-      catObj.svgCore = symCorePos;
-      catObj.svgCoreNeg = symCoreNeg;
-      catObj.isEstablished = true;
-      if (pal.pri) catObj.colors.pri = pal.pri;
-      if (pal.sec) catObj.colors.sec = pal.sec;
-      return catObj;
+      symCorePos = typeof window.synthesizeSystemicSymbol180 === "function" ? `<g transform="translate(10,10)">${window.synthesizeSystemicSymbol180("bb_v80_pos")}</g>` : "";
+      symCoreNeg = typeof window.synthesizeSystemicSymbol180 === "function" ? `<g transform="translate(10,10)">${window.synthesizeSystemicSymbol180("bb_v80_neg")}</g>` : symCorePos;
     }
 
     return {
@@ -4481,9 +4482,15 @@
     if (typeof window.html2canvas === "function") return Promise.resolve(window.html2canvas);
     return new Promise((resolve, reject) => {
       const s = document.createElement("script");
-      s.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+      s.src = "/assets/vendor/html2canvas.min.js?v=1.4.1";
       s.onload = () => resolve(window.html2canvas);
-      s.onerror = (e) => reject(e);
+      s.onerror = () => {
+        const sFallback = document.createElement("script");
+        sFallback.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+        sFallback.onload = () => resolve(window.html2canvas);
+        sFallback.onerror = (e) => reject(e);
+        document.head.appendChild(sFallback);
+      };
       document.head.appendChild(s);
     });
   };
@@ -7742,13 +7749,12 @@
     return window.packJpegDataUrlsToA4LandscapePdfBlob(jpegPages);
   };
 
-  // Genera y descarga el archivo .PDF real de 30 láminas directamente en móvil (iPhone App/Safari/Android) y escritorio en ~0.3s
+  // Genera y descarga el archivo .PDF real de 30 láminas hoja por hoja respetando 100% el logotipo subido y los datos de sesión
   window.downloadReal30PlatesPDFDirect = async function (triggerBtn) {
     const cs = getActiveCanvasState();
     const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
     const fileName = `Manual_Marca_30_Laminas_${slug}.pdf`;
-    const isTBB = /the_?best_?brand/i.test(slug);
 
     const origText = triggerBtn ? triggerBtn.innerHTML : "";
     const setStatus = (txt) => {
@@ -7759,80 +7765,23 @@
       }
     };
 
-    if (isTBB) {
-      try {
-        setStatus("Descargando PDF Oficial V80.0 (4.08 MB)...");
-        const resp = await fetch("/brandbooks/Manual_Marca_30_Laminas_TheBestBrand_Oficial_v80.pdf");
-        if (resp.ok) {
-          const blob = await resp.blob();
-          await window.tbbDeliverFileNativeOrDownload(
-            blob,
-            "Manual_Marca_30_Laminas_TheBestBrand_Oficial_v80.pdf",
-            "application/pdf",
-            "Manual Oficial 30 Láminas — The Best Brand"
-          );
-          if (triggerBtn) {
-            triggerBtn.disabled = false;
-            triggerBtn.style.opacity = "1";
-            triggerBtn.textContent = "PDF Oficial de 30 Láminas Listo ✓";
-            setTimeout(() => { triggerBtn.innerHTML = origText; }, 3500);
-          }
-          return;
-        }
-      } catch (err) {
-        console.warn("Direct PDF download fallback:", err);
-      }
-    }
-
     try {
-      setStatus("Compilando PDF Vectorial en Curvas (30 Láminas)...");
-      // 1. Intentar primero compilación 100% Vectorial en Curvas en el servidor con Chromium Headless (`page.pdf`)
-      try {
-        const vectorHtml = (typeof window.buildUniversal30PlatesStandaloneHTML === "function")
-          ? window.buildUniversal30PlatesStandaloneHTML()
-          : "";
-        if (vectorHtml && vectorHtml.length > 500) {
-          const vecResp = await fetch("/api/step6/download-pdf", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              brand_name: bName,
-              html_override: vectorHtml
-            })
-          });
-          if (vecResp.ok) {
-            const vecBlob = await vecResp.blob();
-            if (vecBlob && vecBlob.size > 10000) {
-              if (triggerBtn) {
-                triggerBtn.disabled = false;
-                triggerBtn.style.opacity = "1";
-                triggerBtn.textContent = "PDF Vectorial en Curvas Listo (.PDF) ✓";
-                setTimeout(() => { triggerBtn.innerHTML = origText; }, 3500);
-              }
-              await window.tbbDeliverFileNativeOrDownload(
-                vecBlob,
-                fileName,
-                "application/pdf",
-                `Manual Oficial 30 Láminas (Vectorial) — ${bName}`
-              );
-              return;
-            }
-          }
-        }
-      } catch (vecErr) {
-        console.warn("Server vector PDF compilation unavailable, falling back to local generator:", vecErr);
+      setStatus("Iniciando generación de 30 láminas...");
+      let pdfBlob = null;
+      if (typeof window.compileLive30PlatesBrandbookPdfBlob === "function") {
+        pdfBlob = await window.compileLive30PlatesBrandbookPdfBlob((cur, tot) => {
+          setStatus(`Generando Lámina ${cur} de ${tot}...`);
+        });
+      } else {
+        pdfBlob = await window.generate30PlatesPdfBlobUltraFast((cur, tot) => {
+          setStatus(`Generando PDF (${cur}/${tot})...`);
+        });
       }
-
-      // 2. Respaldo offline ultrarrápido en el navegador
-      setStatus("Preparando PDF de 30 Láminas...");
-      const pdfBlob = await window.generate30PlatesPdfBlobUltraFast((cur, tot) => {
-        setStatus(`Generando PDF (${cur}/${tot})...`);
-      });
 
       if (triggerBtn) {
         triggerBtn.disabled = false;
         triggerBtn.style.opacity = "1";
-        triggerBtn.textContent = "PDF de 30 Láminas Listo (.PDF)";
+        triggerBtn.textContent = "✓ Manual PDF de 30 Láminas Listo";
         setTimeout(() => { triggerBtn.innerHTML = origText; }, 3500);
       }
 
@@ -7842,6 +7791,7 @@
         "application/pdf",
         `Manual Oficial 30 Láminas — ${bName}`
       );
+      return pdfBlob;
     } catch (err) {
       console.error("Error generating 30-plate PDF:", err);
       if (triggerBtn) {
@@ -7850,6 +7800,7 @@
         triggerBtn.innerHTML = origText;
       }
       window.openInApp30PlatesViewer();
+      return null;
     }
   };
 

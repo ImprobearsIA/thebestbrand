@@ -126,6 +126,9 @@ if (!buildMatchUniv) {
 eval("window.getActiveCanvasState = function() { return window.canvasState; };");
 eval("window.extractColorsFromLogoState = function() { return { pri: '#123456', sec: '#654321' }; };");
 eval("window.toCaladoNegativeSvg = function(s) { return s; };");
+eval("global.hexToPantone = function(h, i) { return 'Pantone ' + i; };");
+eval("global.hexToCmyk = function(h) { return 'C:0 M:0 Y:0 K:0'; };");
+eval("global.buildSystemicSymbolPair = function() { return { pos: '', neg: '' }; };");
 eval("window.buildActiveBrandProfileForV80_univ = function() {" + buildMatchUniv[1] + "};");
 
 // Con logo subido en marca del catálogo (maison_levain)
@@ -166,7 +169,51 @@ assert(!profGen.svgCore.includes("hardcoded_maison_wheat"), "TEST 5 FALLIDO: El 
 assert(profGen.svgCore.includes("MI LOGO REAL"), "TEST 5 FALLIDO: svgCore no contiene el SVG del usuario en generative engine!");
 console.log("✓ TEST 5 PASADO: tbb-generative-brandbook-engine respeta el logo subido con prioridad absoluta");
 
+// Test 6: Evaluar motor generativo completo + inyección de estilos Step 6 + 30 láminas reales + no atajo estático PDF
+const headStyles = {};
+global.document.head = {
+  appendChild: (el) => { if (el.id) headStyles[el.id] = el; }
+};
+global.document.getElementById = (id) => headStyles[id] || null;
+eval(genEngineJs);
+
+window.canvasState = {
+  brandName: "The Best Brand",
+  custom_business_type: "Tostaduría artesanal de café de especialidad en Chiapas",
+  golden_circle: "Honrar a los caficultores mexicanos con trazabilidad pura.",
+  uploaded_logo_data_url: samplePngDataUrl
+};
+window.step0State = {
+  uploadedLogoDataUrl: samplePngDataUrl,
+  existingLogoMode: "keep"
+};
+window.tbbState = {
+  logoIterationIndex: 1,
+  logoIterations: [{
+    idx: 1,
+    isUploadedUserLogo: true,
+    uploadedLogoDataUrl: samplePngDataUrl,
+    archetype: "uploaded_user_logo"
+  }]
+};
+
+const step6Markup = window.renderUniversalImproBearsGuideSinglePlateHTML(11, false);
+assert(headStyles["tbb-inapp-brandbook-styles"] && headStyles["tbb-inapp-brandbook-styles"].textContent.includes(".tbb-plate"), "TEST 6 FALLIDO: No se inyectaron los estilos #tbb-inapp-brandbook-styles en document.head!");
+assert(step6Markup.includes("tbb-improbears-stage-scaler") && step6Markup.includes('class="tbb-plate"'), "TEST 6 FALLIDO: La lámina de Paso 6 no está envuelta en el escalador con clase .tbb-plate!");
+console.log("✓ TEST 6 PASADO: Paso 6 inyecta CSS editorial y renderiza láminas A4 estilizadas (cero HTML crudo)");
+
+const fullBrand = window.buildActiveBrandProfileForV80();
+const plates30 = window.generateBrandbook30Plates(fullBrand);
+assert(plates30.length === 30, "TEST 7 FALLIDO: No se generaron exactamente 30 láminas!");
+assert(plates30[0].includes("Tostaduría artesanal de café de especialidad en Chiapas"), "TEST 7 FALLIDO: El catálogo estático de The Best Brand secuestró los textos del usuario!");
+assert(plates30[0].includes(samplePngDataUrl) && plates30[12].includes(samplePngDataUrl) && plates30[17].includes(samplePngDataUrl) && plates30[24].includes(samplePngDataUrl), "TEST 7 FALLIDO: El logotipo PNG subido no está incrustado en las láminas 01, 13, 18 y 25!");
+console.log("✓ TEST 7 PASADO: Las 30 láminas usan los textos reales del usuario e incrustan su logo subido en todas las vistas");
+
+assert(!universalEngineJs.includes('fetch("/brandbooks/Manual_Marca_30_Laminas_TheBestBrand_Oficial_v80.pdf")'), "TEST 8 FALLIDO: Aún existe el atajo instantáneo al PDF estático sin logo de usuario!");
+assert(typeof window.compileLive30PlatesBrandbookPdfBlob === "function", "TEST 8 FALLIDO: compileLive30PlatesBrandbookPdfBlob no está exportado!");
+console.log("✓ TEST 8 PASADO: Exportación PDF compila las 30 hojas reales y eliminó el atajo instantáneo estático");
+
 console.log("\n=======================================================");
-console.log(" TODOS LOS TESTS DE AUDITORÍA PASARON EXITOSAMENTE (5/5)");
-console.log(" EL LOGOTIPO SUBIDO TIENE PRIORIDAD ABSOLUTA EN TODO EL SISTEMA");
+console.log(" TODOS LOS TESTS DE AUDITORÍA PASARON EXITOSAMENTE (8/8)");
+console.log(" EL LOGOTIPO SUBIDO Y EL GENERADOR DE 30 HOJAS ESTÁN BLINDADOS");
 console.log("=======================================================");

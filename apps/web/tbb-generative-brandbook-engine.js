@@ -111,14 +111,9 @@
     const symCore = brand.svgCore || symbolPair.pos;
     const symCoreNeg = brand.svgCoreNeg || (brand.svgCore ? toCaladoNegativeSvg(brand.svgCore) : symbolPair.neg);
 
-    // 1. LOGO HORIZONTAL (Ratio 3.5:1 para cabeceras, papelería y firmas)
+    // 1. LOGO HORIZONTAL (Ratio 3.5:1 para cabeceras, papelería y firmas — Cero sombras grises C-00)
     const logoHorizontal = `
-      <svg viewBox="0 0 460 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="display:block; max-height:100px;">
-        <defs>
-          <filter id="hDropShadow" x="-10%" y="-10%" width="120%" height="120%">
-            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.06"/>
-          </filter>
-        </defs>
+      <svg viewBox="0 0 460 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block; max-height:100px;">
         <!-- Isotipo Reducido a la izquierda -->
         <g transform="translate(15, 15) scale(0.5)">
           ${symCore}
@@ -133,7 +128,7 @@
 
     // 1B. LOGO HORIZONTAL EN NEGATIVO (Para soportes oscuros / contraste)
     const logoHorizontalNeg = `
-      <svg viewBox="0 0 460 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="display:block; max-height:100px;">
+      <svg viewBox="0 0 460 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block; max-height:100px;">
         <g transform="translate(15, 15) scale(0.5)">
           ${symCoreNeg}
         </g>
@@ -145,7 +140,7 @@
 
     // 2. AVATAR SOCIAL MEDIA & APP ICON (1:1 con esquinas suaves y zona de respiración 20%)
     const logoSocialAvatar = `
-      <svg viewBox="0 0 200 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+      <svg viewBox="0 0 200 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block;">
         <rect width="200" height="200" rx="46" fill="${softBg}" stroke="${lightGray}" stroke-width="2"/>
         <g transform="translate(35, 35) scale(0.72)">
           ${symCore}
@@ -155,7 +150,7 @@
 
     // 2B. AVATAR EN CONTRASTE PRIMARIO
     const logoSocialAvatarInverted = `
-      <svg viewBox="0 0 200 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+      <svg viewBox="0 0 200 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block;">
         <rect width="200" height="200" rx="46" fill="${pri}"/>
         <g transform="translate(35, 35) scale(0.72)">
           ${symCoreNeg}
@@ -166,7 +161,7 @@
     // 3. SELLO DE AUTOR / EMBLEMA DE PACKAGING (Circular con trazado perimetral)
     const sealId = "sealPath_" + Math.random().toString(36).slice(2, 8);
     const logoSeal = `
-      <svg viewBox="0 0 260 260" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+      <svg viewBox="0 0 260 260" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block;">
         <defs>
           <path id="${sealId}_top" d="M 35,130 A 95,95 0 1,1 225,130" fill="none"/>
           <path id="${sealId}_bottom" d="M 225,130 A 95,95 0 0,1 35,130" fill="none"/>
@@ -202,16 +197,8 @@
   }
 
   // --- ESTILOS VECTORIALES GLOBALES (DIRECTIVA MAX C-00) ---
-  function getDynamicBrandbookStyles() {
-    return `
-      @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Cormorant+Garamond:wght@600;700&family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&family=Montserrat:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800&display=swap');
-
-      * {
-        box-sizing: border-box;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-      }
-
+  function getDynamicBrandbookStyles(forInApp) {
+    const bodyCss = forInApp ? "" : `
       body {
         margin: 0;
         padding: 0;
@@ -220,22 +207,39 @@
         color: #090D16;
         -webkit-font-smoothing: antialiased;
       }
+    `;
+    return `
+      @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Cormorant+Garamond:wght@600;700&family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&family=Montserrat:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800&display=swap');
+
+      ${bodyCss}
+
+      .tbb-plate,
+      .tbb-plate * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
 
       .tbb-plate {
         width: 1122px;
         height: 794px;
+        min-width: 1122px;
+        min-height: 794px;
         max-width: 1122px;
         max-height: 794px;
-        margin: 0 auto 24px auto;
+        margin: ${forInApp ? "0" : "0 auto 24px auto"};
         background: #FFFFFF !important;
         border: 1px solid #E6E6E6;
-        box-shadow: 0 16px 40px rgba(13, 37, 64, 0.08);
-        padding: 38px 48px 30px 48px;
+        border-radius: ${forInApp ? "10px" : "18px 38px 18px 18px"};
+        box-shadow: none !important;
+        padding: 36px 46px 28px 46px;
         position: relative;
         overflow: hidden;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        font-family: 'Plus Jakarta Sans', 'Avenir Next', -apple-system, BlinkMacSystemFont, sans-serif;
+        color: #090D16;
         page-break-after: always;
         break-inside: avoid;
       }
@@ -253,6 +257,7 @@
         .tbb-plate {
           margin: 0 !important;
           border: none !important;
+          border-radius: 0 !important;
           box-shadow: none !important;
           max-width: 100% !important;
           max-height: 100% !important;
@@ -265,6 +270,8 @@
 
       /* ENCABEZADOS Y PIES CONECTADOS AL TEMARIO */
       .tbb-hdr {
+        position: relative;
+        z-index: 2;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -285,7 +292,7 @@
         font-size: 9.5px;
         letter-spacing: 1.5px;
         padding: 5px 12px;
-        border-radius: 6px;
+        border-radius: 6px 14px 6px 6px;
       }
       .tbb-hdr-titles h2 {
         margin: 0;
@@ -309,6 +316,8 @@
       }
 
       .tbb-ftr {
+        position: relative;
+        z-index: 2;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -319,13 +328,15 @@
         color: #707070;
       }
 
-      /* COMPONENTES EDITORIALES FLEXIBLES */
+      /* COMPONENTES EDITORIALES EN CURVAS ASIMÉTRICAS (DIRECTIVA MAX C-00 · CERO SOMBRAS GRISES) */
       .tbb-card {
+        position: relative;
+        z-index: 2;
         background: #FFFFFF;
         border: 1px solid #E6E6E6;
-        border-radius: 12px;
+        border-radius: 14px 28px 14px 14px;
         padding: 16px 20px;
-        box-shadow: 0 4px 14px rgba(13, 37, 64, 0.03);
+        box-shadow: none !important;
       }
       .tbb-card-title {
         font-family: 'Montserrat', sans-serif;
@@ -345,18 +356,24 @@
       }
 
       .tbb-grid-2col {
+        position: relative;
+        z-index: 2;
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 20px;
         flex: 1;
       }
       .tbb-grid-3col {
+        position: relative;
+        z-index: 2;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 16px;
         flex: 1;
       }
       .tbb-grid-4col {
+        position: relative;
+        z-index: 2;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 14px;
@@ -364,10 +381,13 @@
       }
 
       .tbb-swatch {
-        border-radius: 10px;
+        position: relative;
+        z-index: 2;
+        border-radius: 14px 26px 14px 14px;
         padding: 12px;
         background: #FFFFFF;
         border: 1px solid #E6E6E6;
+        box-shadow: none !important;
         display: flex;
         flex-direction: column;
         gap: 8px;
@@ -375,7 +395,7 @@
       .tbb-swatch-box {
         width: 100%;
         height: 64px;
-        border-radius: 8px;
+        border-radius: 10px 20px 10px 10px;
         border: 1px solid rgba(0,0,0,0.08);
       }
       .tbb-swatch-meta {
@@ -388,7 +408,7 @@
         border-left: 3.5px solid #0D2540;
         padding: 10px 14px;
         background: #FAF8F5;
-        border-radius: 0 8px 8px 0;
+        border-radius: 0 14px 8px 0;
         margin-bottom: 8px;
         font-size: 11px;
         line-height: 1.45;
@@ -436,16 +456,32 @@
     // Generar la Terna de Logos Profesional
     const suite = generateTriFoldLogoSuite(brand);
 
+    // Trazos vectoriales fluidos en curvas tipo Illustrator (Directiva Max C-00 · 100% Lienzo Claro #FFFFFF)
+    const curveBackdrop = (pNum) => {
+      const flip = pNum % 2 === 0;
+      return `
+        <svg viewBox="0 0 1122 794" width="1122" height="794" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="position:absolute;inset:0;pointer-events:none;z-index:0;">
+          <path d="${flip ? "M0,0 L560,0 C390,22 210,38 0,58 Z" : "M0,0 L680,0 C490,26 260,44 0,66 Z"}" fill="${pri}" fill-opacity="0.05"/>
+          <path d="M780,0 L1122,0 L1122,42 C990,28 875,14 780,0 Z" fill="${sec}" fill-opacity="0.09"/>
+          <path d="M910,0 L1122,0 L1122,16 C1040,11 970,5 910,0 Z" fill="${acc}" fill-opacity="0.88"/>
+          <path d="M0,746 C340,774 760,722 1122,752" fill="none" stroke="${lightGray}" stroke-width="1.3"/>
+          <path d="M840,794 C940,768 1030,750 1122,736 L1122,794 Z" fill="${pri}" fill-opacity="0.04"/>
+          <path d="M940,794 C1010,776 1068,764 1122,754" fill="none" stroke="${acc}" stroke-width="2" stroke-opacity="0.7"/>
+        </svg>
+      `;
+    };
+
     const hdr = (secNum, secName, pNum, pTitle) => `
+      ${curveBackdrop(pNum)}
       <header class="tbb-hdr">
         <div class="tbb-hdr-left">
           <span class="tbb-tag-pill" style="background:${pri};">${secNum}</span>
           <div class="tbb-hdr-titles">
-            <h2>${secName}</h2>
+            <h2 style="color:${darkInk};">${secName}</h2>
             <span>${pTitle}</span>
           </div>
         </div>
-        <div class="tbb-hdr-right" style="color:${pri};">
+        <div class="tbb-hdr-right" style="color:${pri}; border-bottom:2.5px solid ${acc}; padding-bottom:2px;">
           LÁMINA ${String(pNum).padStart(2, "0")} / 30
         </div>
       </header>
@@ -453,66 +489,82 @@
 
     const ftr = (pNum) => `
       <footer class="tbb-ftr">
-        <div><strong>${esc(bUpper)}</strong> · MANUAL OFICIAL DE IDENTIDAD Y ARQUITECTURA DE MARCA</div>
-        <div>DIRECTIVA MAX C-00 · CONSTITUCIÓN DOCUMENTAL V81.0</div>
-        <div>PÁGINA ${String(pNum).padStart(2, "0")}</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${acc};"></span>
+          <span><strong style="color:${darkInk};">${esc(bUpper)}</strong> · MANUAL OFICIAL DE IDENTIDAD Y ARQUITECTURA DE MARCA</span>
+        </div>
+        <div style="color:${sec};font-weight:700;letter-spacing:0.06em;">DIRECTIVA MAX C-00 · FLUJO VECTORIAL EN CURVAS</div>
+        <div style="font-weight:800;color:${darkInk};">PÁG. ${String(pNum).padStart(2, "0")} / 30</div>
       </footer>
     `;
 
     const plates = [];
 
     // =========================================================================
-    // LÁMINA 01: PORTADA MONUMENTAL DE AUTOR
+    // LÁMINA 01: PORTADA MONUMENTAL DE AUTOR EN CURVAS
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-01">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid ${pri}; padding-bottom:12px;">
-          <div style="font-family:'Montserrat', sans-serif; font-weight:800; font-size:11px; letter-spacing:2px; color:${pri};">
+        <svg viewBox="0 0 1122 794" width="1122" height="794" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="position:absolute;inset:0;pointer-events:none;z-index:0;">
+          <path d="M0,0 L520,0 C370,68 190,145 0,260 Z" fill="${acc}" fill-opacity="0.92"/>
+          <path d="M0,190 C180,108 360,52 575,0 L655,0 C420,82 215,168 0,295 Z" fill="${lightGray}" fill-opacity="0.72"/>
+          <path d="M760,794 C910,705 1025,595 1122,445 L1122,794 Z" fill="${pri}" fill-opacity="0.08"/>
+          <path d="M690,794 C865,695 1005,570 1122,395 L1122,450 C1010,605 880,715 735,794 Z" fill="${sec}" fill-opacity="0.18"/>
+          <path d="M645,794 C830,690 985,555 1122,360" fill="none" stroke="${acc}" stroke-width="2.6" stroke-opacity="0.8"/>
+        </svg>
+
+        <div style="position:relative; z-index:2; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid ${pri}; padding-bottom:12px;">
+          <div style="font-family:'Montserrat', sans-serif; font-weight:800; font-size:11px; letter-spacing:2px; color:${darkInk}; background:rgba(255,255,255,0.92); padding:4px 10px; border-radius:6px;">
             MANUAL OFICIAL DE IDENTIDAD Y ARQUITECTURA DE MARCA
           </div>
-          <div style="font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:700; color:${sec};">
-            VERSIÓN 81.0 OFICIAL · 2026
+          <div style="font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:700; color:${pri};">
+            EDICIÓN OFICIAL EN CURVAS · 2026
           </div>
         </div>
 
-        <div style="display:grid; grid-template-columns: 1.15fr 0.85fr; gap:40px; align-items:center; flex:1; padding:20px 0;">
-          <div>
-            <span style="display:inline-block; background:${softBg}; border:1px solid ${lightGray}; border-left:3.5px solid ${acc}; padding:4px 10px; font-size:10px; font-weight:800; color:${darkInk}; border-radius:4px; margin-bottom:14px;">
+        <div style="position:relative; z-index:2; display:grid; grid-template-columns: 1.15fr 0.85fr; gap:40px; align-items:center; flex:1; padding:20px 0;">
+          <div style="background:rgba(255,255,255,0.90); border-radius:16px; padding:12px 14px 12px 0;">
+            <span style="display:inline-block; background:${softBg}; border:1px solid ${lightGray}; border-left:3.5px solid ${acc}; padding:4px 10px; font-size:10px; font-weight:800; color:${darkInk}; border-radius:4px 12px 4px 4px; margin-bottom:14px;">
               ${esc(category.toUpperCase())}
             </span>
             <h1 style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:46px; font-weight:900; line-height:1.05; color:${darkInk}; margin:0 0 12px 0; letter-spacing:-0.5px;">
               ${esc(bUpper)}
             </h1>
-            <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:13px; font-weight:800; color:${pri}; letter-spacing:2px; margin-bottom:18px;">
+            <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:13px; font-weight:800; color:${pri}; letter-spacing:2px; margin-bottom:14px;">
               ${esc(tagline.toUpperCase())}
             </div>
-            <p style="font-size:12.5px; line-height:1.6; color:#475569; margin:0 0 24px 0; max-width:500px;">
+            <svg width="220" height="10" viewBox="0 0 220 10" xmlns="http://www.w3.org/2000/svg" style="display:block; margin-bottom:14px;">
+              <line x1="0" y1="5" x2="92" y2="5" stroke="${acc}" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="102" y1="5" x2="178" y2="5" stroke="${sec}" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="192" cy="5" r="3.8" fill="${pri}"/>
+            </svg>
+            <p style="font-size:12.5px; line-height:1.6; color:#334155; margin:0 0 22px 0; max-width:500px;">
               ${esc(giro)}
             </p>
 
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; border-top:1px solid ${lightGray}; padding-top:16px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; border-top:1px solid ${lightGray}; padding-top:14px;">
               <div>
-                <div style="font-size:9.5px; font-weight:800; color:${midGray}; letter-spacing:1px;">PROPÓSITO NUCLEAR</div>
-                <div style="font-size:11px; font-weight:700; color:${darkInk}; margin-top:2px;">${esc(why.slice(0, 90))}...</div>
+                <div style="font-size:9.5px; font-weight:800; color:${acc}; letter-spacing:1px;">PROPÓSITO NUCLEAR</div>
+                <div style="font-size:11px; font-weight:700; color:${darkInk}; margin-top:2px;">${esc(why.slice(0, 96))}${why.length > 96 ? "…" : ""}</div>
               </div>
               <div>
-                <div style="font-size:9.5px; font-weight:800; color:${midGray}; letter-spacing:1px;">CLASIFICACIÓN NIZA</div>
-                <div style="font-size:11px; font-weight:700; color:${darkInk}; margin-top:2px;">${esc(niza.slice(0, 45))}</div>
+                <div style="font-size:9.5px; font-weight:800; color:${sec}; letter-spacing:1px;">CLASIFICACIÓN NIZA</div>
+                <div style="font-size:11px; font-weight:700; color:${darkInk}; margin-top:2px;">${esc(niza.slice(0, 48))}</div>
               </div>
             </div>
           </div>
 
-          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:${softBg}; border:1.5px solid ${lightGray}; border-radius:20px; padding:32px; box-shadow:0 12px 28px rgba(13,37,64,0.04);">
-            <div style="width:200px; height:200px; margin-bottom:18px;">
-              <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:#FFFFFF; border:1.5px solid ${lightGray}; border-bottom:4px solid ${acc}; border-radius:20px 42px 20px 20px; padding:30px;">
+            <div style="width:210px; height:210px; margin-bottom:16px; display:flex; align-items:center; justify-content:center;">
+              <svg viewBox="0 0 200 200" width="205" height="205" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 ${symCore}
               </svg>
             </div>
             <div style="font-family:'Montserrat', sans-serif; font-size:10px; font-weight:800; color:${pri}; letter-spacing:2px;">
-              ISOTIPO CENTRAL MATRIZ
+              IDENTIDAD OFICIAL EN POSITIVO
             </div>
-            <div style="font-size:9.5px; color:${midGray}; margin-top:2px;">
-              Curvas Bézier Vectoriales Puras · 100% Sin Rasterizado
+            <div style="font-size:9.5px; color:${midGray}; margin-top:3px;">
+              Lienzo Claro Puro (#FFFFFF) · Directiva Max C-00
             </div>
           </div>
         </div>
@@ -938,7 +990,7 @@
         <div class="tbb-grid-2col" style="align-items:center;">
           <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:${softBg}; border:1.5px solid ${lightGray}; border-radius:18px; padding:28px;">
             <div style="width:190px; height:190px;">
-              <svg viewBox="0 0 200 200" width="190" height="190" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 200 200" width="190" height="190" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 ${symCore}
               </svg>
             </div>
@@ -975,7 +1027,7 @@
         <div class="tbb-grid-2col" style="align-items:center;">
           <div style="position:relative; background:${softBg}; border:1.5px solid ${lightGray}; border-radius:18px; padding:24px; display:flex; align-items:center; justify-content:center;">
             <!-- Retícula de Guías Superpuesta -->
-            <svg viewBox="0 0 200 200" width="200" height="200" style="position:absolute; inset:24px; pointer-events:none;">
+            <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg" style="position:absolute; inset:24px; pointer-events:none;">
               <circle cx="100" cy="100" r="90" fill="none" stroke="#CBD5E1" stroke-width="1"/>
               <circle cx="100" cy="100" r="55.6" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3,3"/>
               <circle cx="100" cy="100" r="34.4" fill="none" stroke="${sec}" stroke-width="1"/>
@@ -985,7 +1037,7 @@
               <line x1="20" y1="180" x2="180" y2="20" stroke="#E2E8F0" stroke-width="0.8"/>
             </svg>
             <div style="width:200px; height:200px; opacity:0.85;">
-              <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 ${symCore}
               </svg>
             </div>
@@ -1024,7 +1076,7 @@
               <div style="background:${softBg}; border:1px dashed ${sec}; border-radius:12px; padding:24px; display:flex; align-items:center; justify-content:center;">
                 <div style="border:1.5px dashed ${pri}; padding:14px; border-radius:8px;">
                   <div style="width:110px; height:110px;">
-                    <svg viewBox="0 0 200 200" width="110" height="110">${symCore}</svg>
+                    <svg viewBox="0 0 200 200" width="110" height="110" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg>
                   </div>
                 </div>
               </div>
@@ -1063,7 +1115,7 @@
       <article class="tbb-plate" id="plate-17">
         ${hdr("SECCIÓN 03", "ARQUITECTURA DE IDENTIDAD VISUAL", 17, "Versión Oficial en Positivo (100% Lienzo Claro #FFFFFF)")}
         <div style="display:flex; flex-direction:column; justify-content:space-between; flex:1;">
-          <div style="background:#FFFFFF; border:2px solid #E6E6E6; border-radius:16px; padding:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; box-shadow:0 8px 24px rgba(13,37,64,0.03);">
+          <div style="background:#FFFFFF; border:2px solid #E6E6E6; border-radius:16px 34px 16px 16px; padding:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1;">
             <div style="max-width:480px; width:100%;">
               ${suite.horizontal}
             </div>
@@ -1082,16 +1134,16 @@
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-18">
-        ${hdr("SECCIÓN 03", "ARQUITECTURA DE IDENTIDAD VISUAL", 18, "Versión Oficial en Negativo Calado (Fondo Oscuro sin Parches)")}
-        <div style="display:flex; flex-direction:column; justify-content:space-between; flex:1;">
-          <div style="background:${darkInk}; border-radius:16px; padding:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; box-shadow:0 12px 30px rgba(0,0,0,0.18);">
+        ${hdr("SECCIÓN 03", "ARQUITECTURA DE IDENTIDAD VISUAL", 18, "Versión Oficial en Negativo Calado y Soporte Oscuro")}
+        <div style="display:flex; flex-direction:column; justify-content:space-between; flex:1; position:relative; z-index:2;">
+          <div style="background:${darkInk}; border-radius:16px 34px 16px 16px; padding:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1;">
             <div style="max-width:480px; width:100%;">
               ${suite.horizontalNeg}
             </div>
           </div>
           <div class="tbb-card" style="margin-top:14px; border-left:4px solid ${sec};">
-            <div class="tbb-card-title">NORMATIVA DE NEGATIVO CALADO</div>
-            <div class="tbb-card-body">Uso exclusivo cuando el soporte sea negro, azul corporativo oscuro o fotográfico de baja luminosidad. El isotipo se adapta en blanco óptico y zafiro, eliminando cualquier contenedor blanco rectangular.</div>
+            <div class="tbb-card-title">NORMATIVA DE SOPORTE OSCURO Y CÁPSULA NEUTRA</div>
+            <div class="tbb-card-body">Uso exclusivo cuando el soporte sea oscuro o fotográfico de baja luminosidad. En vectores calados se emplea blanco óptico; en logotipos preexistentes a color se preserva su integridad dentro de cápsula neutra aislada.</div>
           </div>
         </div>
         ${ftr(18)}
@@ -1111,7 +1163,7 @@
               <p style="font-size:11px; color:#475569; margin:4px 0 16px 0;">Para facturación fiscal física, sellos de goma, copias fotostáticas y documentos legales notariales:</p>
               <div style="background:#FFFFFF; border:1px solid #E6E6E6; border-radius:10px; padding:24px; display:flex; align-items:center; justify-content:center;">
                 <div style="width:110px; height:110px; filter:grayscale(100%) contrast(200%);">
-                  <svg viewBox="0 0 200 200" width="110" height="110">${symCore}</svg>
+                  <svg viewBox="0 0 200 200" width="110" height="110" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg>
                 </div>
               </div>
             </div>
@@ -1124,7 +1176,7 @@
               <p style="font-size:11px; color:#475569; margin:4px 0 16px 0;">Para publicaciones en prensa y guías impresas a una sola tinta con valores de gris diferenciados:</p>
               <div style="background:#FFFFFF; border:1px solid #E6E6E6; border-radius:10px; padding:24px; display:flex; align-items:center; justify-content:center;">
                 <div style="width:110px; height:110px; filter:grayscale(100%);">
-                  <svg viewBox="0 0 200 200" width="110" height="110">${symCore}</svg>
+                  <svg viewBox="0 0 200 200" width="110" height="110" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg>
                 </div>
               </div>
             </div>
@@ -1141,10 +1193,10 @@
     plates.push(`
       <article class="tbb-plate" id="plate-20">
         ${hdr("SECCIÓN 03", "ARQUITECTURA DE IDENTIDAD VISUAL", 20, "Usos Prohibidos y Deformaciones Gráficas No Permitidas")}
-        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; flex:1;">
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; flex:1; position:relative; z-index:2;">
           <div class="tbb-card" style="text-align:center; border:1.5px solid #FCA5A5;">
             <div style="height:70px; display:flex; align-items:center; justify-content:center; transform:scaleX(1.4); opacity:0.8;">
-              <div style="width:50px; height:50px;"><svg viewBox="0 0 200 200">${symCore}</svg></div>
+              <div style="width:50px; height:50px;"><svg viewBox="0 0 200 200" width="50" height="50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
             <div style="color:#DC2626; font-weight:900; font-size:11px; margin:6px 0 2px 0;">✕ NO DEFORMAR</div>
             <div style="font-size:9.5px; color:#666;">Prohibido estirar horizontal o verticalmente.</div>
@@ -1152,7 +1204,7 @@
 
           <div class="tbb-card" style="text-align:center; border:1.5px solid #FCA5A5;">
             <div style="height:70px; display:flex; align-items:center; justify-content:center; filter:drop-shadow(4px 4px 6px #000);">
-              <div style="width:50px; height:50px;"><svg viewBox="0 0 200 200">${symCore}</svg></div>
+              <div style="width:50px; height:50px;"><svg viewBox="0 0 200 200" width="50" height="50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
             <div style="color:#DC2626; font-weight:900; font-size:11px; margin:6px 0 2px 0;">✕ NO SOMBRAS GRISES</div>
             <div style="font-size:9.5px; color:#666;">Prohibido añadir sombras paralelas borrosas.</div>
@@ -1160,7 +1212,7 @@
 
           <div class="tbb-card" style="text-align:center; border:1.5px solid #FCA5A5;">
             <div style="height:70px; display:flex; align-items:center; justify-content:center; filter:hue-rotate(140deg);">
-              <div style="width:50px; height:50px;"><svg viewBox="0 0 200 200">${symCore}</svg></div>
+              <div style="width:50px; height:50px;"><svg viewBox="0 0 200 200" width="50" height="50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
             <div style="color:#DC2626; font-weight:900; font-size:11px; margin:6px 0 2px 0;">✕ NO CAMBIAR PALETA</div>
             <div style="font-size:9.5px; color:#666;">Usar exclusivamente los tonos aprobados.</div>
@@ -1168,7 +1220,7 @@
 
           <div class="tbb-card" style="text-align:center; border:1.5px solid #FCA5A5;">
             <div style="height:70px; display:flex; align-items:center; justify-content:center; transform:rotate(28deg);">
-              <div style="width:50px; height:50px;"><svg viewBox="0 0 200 200">${symCore}</svg></div>
+              <div style="width:50px; height:50px;"><svg viewBox="0 0 200 200" width="50" height="50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
             <div style="color:#DC2626; font-weight:900; font-size:11px; margin:6px 0 2px 0;">✕ NO ROTAR EN ÁNGULO</div>
             <div style="font-size:9.5px; color:#666;">El símbolo siempre se alinea en eje recto.</div>
@@ -1176,7 +1228,7 @@
 
           <div class="tbb-card" style="text-align:center; border:1.5px solid #FCA5A5;">
             <div style="height:70px; display:flex; align-items:center; justify-content:center; background:#E11D48; border-radius:6px; padding:4px;">
-              <div style="width:50px; height:50px;"><svg viewBox="0 0 200 200">${symCore}</svg></div>
+              <div style="width:50px; height:50px;"><svg viewBox="0 0 200 200" width="50" height="50" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
             <div style="color:#DC2626; font-weight:900; font-size:11px; margin:6px 0 2px 0;">✕ NO FONDOS ESTRIDENTES</div>
             <div style="font-size:9.5px; color:#666;">Jamás montar sobre rojos, verdes o amarillos.</div>
@@ -1555,7 +1607,7 @@
           <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; flex:1; align-items:center;">
             <!-- Consulting -->
             <div class="tbb-card" style="text-align:center; padding:14px;">
-              <div style="width:70px; height:70px; margin:0 auto 8px auto;"><svg viewBox="0 0 200 200">${symCore}</svg></div>
+              <div style="width:70px; height:70px; margin:0 auto 8px auto;"><svg viewBox="0 0 200 200" width="70" height="70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
               <div style="font-family:'Montserrat', sans-serif; font-size:10px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
               <div style="font-size:9px; font-weight:800; color:#FF7A00; letter-spacing:1px; margin-top:2px;">CONSULTING</div>
               <div style="font-size:8.5px; color:${midGray}; margin-top:6px;">Estrategia &amp; Negocios</div>
@@ -1563,7 +1615,7 @@
 
             <!-- Ingredients -->
             <div class="tbb-card" style="text-align:center; padding:14px;">
-              <div style="width:70px; height:70px; margin:0 auto 8px auto;"><svg viewBox="0 0 200 200">${symCore}</svg></div>
+              <div style="width:70px; height:70px; margin:0 auto 8px auto;"><svg viewBox="0 0 200 200" width="70" height="70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
               <div style="font-family:'Montserrat', sans-serif; font-size:10px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
               <div style="font-size:9px; font-weight:800; color:#FF7A00; letter-spacing:1px; margin-top:2px;">INGREDIENTS</div>
               <div style="font-size:8.5px; color:${midGray}; margin-top:6px;">Ingeniería de Valor</div>
@@ -1571,7 +1623,7 @@
 
             <!-- Studio -->
             <div class="tbb-card" style="text-align:center; padding:14px;">
-              <div style="width:70px; height:70px; margin:0 auto 8px auto;"><svg viewBox="0 0 200 200">${symCore}</svg></div>
+              <div style="width:70px; height:70px; margin:0 auto 8px auto;"><svg viewBox="0 0 200 200" width="70" height="70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
               <div style="font-family:'Montserrat', sans-serif; font-size:10px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
               <div style="font-size:9px; font-weight:800; color:#FF7A00; letter-spacing:1px; margin-top:2px;">STUDIO</div>
               <div style="font-size:8.5px; color:${midGray}; margin-top:6px;">Medios &amp; Marca</div>
@@ -1579,7 +1631,7 @@
 
             <!-- AI -->
             <div class="tbb-card" style="text-align:center; padding:14px;">
-              <div style="width:70px; height:70px; margin:0 auto 8px auto;"><svg viewBox="0 0 200 200">${symCore}</svg></div>
+              <div style="width:70px; height:70px; margin:0 auto 8px auto;"><svg viewBox="0 0 200 200" width="70" height="70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
               <div style="font-family:'Montserrat', sans-serif; font-size:10px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
               <div style="font-size:9px; font-weight:800; color:#FF7A00; letter-spacing:1px; margin-top:2px;">AI</div>
               <div style="font-size:8.5px; color:${midGray}; margin-top:6px;">Soluciones Autónomas</div>
@@ -1783,10 +1835,67 @@ Instrucciones obligatorias:
     console.log("✓ Sesión limpia establecida con éxito.");
   }
 
+  // --- INYECCIÓN SEGURA DE ESTILOS EDITORIALES DENTRO DE STUDIO.HTML (PASO 6) ---
+  function ensureInAppBrandbookStylesInjected() {
+    if (typeof document === "undefined" || !document.head) return;
+    let stEl = document.getElementById("tbb-inapp-brandbook-styles");
+    if (!stEl) {
+      stEl = document.createElement("style");
+      stEl.id = "tbb-inapp-brandbook-styles";
+      document.head.appendChild(stEl);
+    }
+    const desiredCss = getDynamicBrandbookStyles(true);
+    if (stEl.textContent !== desiredCss) {
+      stEl.textContent = desiredCss;
+    }
+  }
+
+  // --- METADATOS SINCRONIZADOS 1:1 CON LAS 30 LÁMINAS GENERATIVAS ---
+  function getGenerative30PlatesMeta(brandNameOpt) {
+    const activeBrand = (!brandNameOpt && typeof window.buildActiveBrandProfileForV80 === "function")
+      ? window.buildActiveBrandProfileForV80()
+      : null;
+    const bName = brandNameOpt || (activeBrand && activeBrand.name) || ((window.canvasState && window.canvasState.brandName) ? window.canvasState.brandName : "The Best Brand");
+    return [
+      { num: "01", sec: "PORTADA MONUMENTAL", title: `Portada Oficial de Marca: ${bName}`, leadAuthor: "Massimo Vignelli & Paul Rand", auditVerdict: "LIENZO CLARO C-00 CERTIFICADO" },
+      { num: "02", sec: "01 · ESTRUCTURA EDITORIAL", title: "Índice General de las 30 Láminas de Constitución", leadAuthor: "Josef Müller-Brockmann", auditVerdict: "ARQUITECTURA EDITORIAL APROBADA" },
+      { num: "03", sec: "01 · ADN Y ESTRATEGIA", title: "Manifiesto Central y Filosofía Operativa", leadAuthor: "David Aaker & Marty Neumeier", auditVerdict: "COHERENCIA FILOSÓFICA APROBADA" },
+      { num: "04", sec: "01 · ADN Y ESTRATEGIA", title: "El Círculo Dorado (Why · How · What)", leadAuthor: "Simon Sinek", auditVerdict: "PROPÓSITO NUCLEAR VALIDADO" },
+      { num: "05", sec: "01 · ADN Y ESTRATEGIA", title: "La Empresa como Persona: Identidad Humana", leadAuthor: "Jennifer Aaker & Carl Jung", auditVerdict: "CARÁCTER CORPORATIVO DEFINIDO" },
+      { num: "06", sec: "01 · ADN Y ESTRATEGIA", title: "Tono de Voz Verbal y Criterios Editoriales", leadAuthor: "Ann Handley & Seth Godin", auditVerdict: "SISTEMA VERBAL APROBADO" },
+      { num: "07", sec: "01 · ADN Y ESTRATEGIA", title: "Perfil del Cliente Ideal (Buyer Persona)", leadAuthor: "Philip Kotler & Adele Revella", auditVerdict: "SEGMENTO OBJETIVO CALIBRADO" },
+      { num: "08", sec: "01 · ADN Y ESTRATEGIA", title: "Mapa de Empatía del Cliente", leadAuthor: "Alexander Osterwalder", auditVerdict: "EMPATÍA DE USUARIO VALIDADA" },
+      { num: "09", sec: "01 · ADN Y ESTRATEGIA", title: "Declaración de Posicionamiento Competitivo", leadAuthor: "Al Ries & Jack Trout", auditVerdict: "DIFERENCIACIÓN APROBADA" },
+      { num: "10", sec: "02 · INGENIERÍA DE TOUCHPOINTS", title: "Touchpoints Fase 1: Antes de la Compra", leadAuthor: "Don Norman & Bernd Schmitt", auditVerdict: "DESCUBRIMIENTO SIN FRICCIÓN" },
+      { num: "11", sec: "02 · INGENIERÍA DE TOUCHPOINTS", title: "Touchpoints Fase 2: Durante el Servicio", leadAuthor: "Jan Carlzon & Don Norman", auditVerdict: "EJECUCIÓN OPERATIVA APROBADA" },
+      { num: "12", sec: "02 · INGENIERÍA DE TOUCHPOINTS", title: "Touchpoints Fase 3: Después del Servicio", leadAuthor: "Fred Reichheld & Jan Carlzon", auditVerdict: "LEALTAD Y GARANTÍA BLINDADAS" },
+      { num: "13", sec: "03 · IDENTIDAD VISUAL", title: "Terna Oficial de Logotipos (Horizontal, Avatar y Sello)", leadAuthor: "Paul Rand & Sagi Haviv", auditVerdict: "SISTEMA TRI-FOLD EN CURVAS" },
+      { num: "14", sec: "03 · IDENTIDAD VISUAL", title: "Anatomía y Fundamentación Conceptual del Símbolo", leadAuthor: "Adrian Frutiger & Paul Rand", auditVerdict: "SÍMBOLO OFICIAL RESPETADO 100%" },
+      { num: "15", sec: "03 · IDENTIDAD VISUAL", title: "Retícula de Construcción y Proporción Áurea", leadAuthor: "Wim Crouwel & Müller-Brockmann", auditVerdict: "PRECISIÓN GEOMÉTRICA APROBADA" },
+      { num: "16", sec: "03 · IDENTIDAD VISUAL", title: "Área de Aislamiento y Escala Mínima", leadAuthor: "Massimo Vignelli", auditVerdict: "ZONA DE SEGURIDAD 1.5X ACTIVA" },
+      { num: "17", sec: "03 · IDENTIDAD VISUAL", title: "Versión Oficial en Positivo sobre Lienzo Claro", leadAuthor: "Directiva Max C-00", auditVerdict: "POSITIVO POR DEFECTO APROBADO" },
+      { num: "18", sec: "03 · IDENTIDAD VISUAL", title: "Versión Oficial sobre Soporte Oscuro / Negativo", leadAuthor: "Directiva Max C-00", auditVerdict: "CONTRASTE ÓPTICO CERTIFICADO" },
+      { num: "19", sec: "03 · IDENTIDAD VISUAL", title: "Versión Monocromática, Grabado Láser y Sello", leadAuthor: "Sagi Haviv & Herb Lubalin", auditVerdict: "REPRODUCCIÓN 1 TINTA VALIDADA" },
+      { num: "20", sec: "03 · IDENTIDAD VISUAL", title: "Usos Incorrectos y Restricciones Normativas", leadAuthor: "Pentagram & Paula Scher", auditVerdict: "INTEGRIDAD VISUAL BLINDADA" },
+      { num: "21", sec: "04 · COLOR Y TIPOGRAFÍA", title: "Paleta Cromática Oficial (HEX · RGB · CMYK · Pantone)", leadAuthor: "Josef Albers & Johannes Itten", auditVerdict: "COLORIMETRÍA CERTIFICADA" },
+      { num: "22", sec: "04 · COLOR Y TIPOGRAFÍA", title: "Tipografía Institucional Primaria: Titulares", leadAuthor: "Robert Bringhurst & Emil Ruder", auditVerdict: "JERARQUÍA DISPLAY APROBADA" },
+      { num: "23", sec: "04 · COLOR Y TIPOGRAFÍA", title: "Tipografía de Lectura, UI y Contratos", leadAuthor: "Erik Spiekermann & Jan Tschichold", auditVerdict: "LEGIBILIDAD EDITORIAL APROBADA" },
+      { num: "24", sec: "05 · APLICACIONES", title: "Despliegue Digital: Web, App Icon y Avatar Social", leadAuthor: "Jony Ive & Dieter Rams", auditVerdict: "ECOSISTEMA DIGITAL APROBADO" },
+      { num: "25", sec: "05 · APLICACIONES", title: "Papelería Ejecutiva: Hoja Membretada y Tarjetas", leadAuthor: "Massimo Vignelli", auditVerdict: "FIRMA DOCUMENTAL C-00 LISTA" },
+      { num: "26", sec: "05 · APLICACIONES", title: "Packaging, Empaque y Sello de Clausura", leadAuthor: "Kenya Hara & Dieter Rams", auditVerdict: "EXPERIENCIA TÁCTIL APROBADA" },
+      { num: "27", sec: "05 · APLICACIONES", title: "Indumentaria Corporativa, Bordado y Textil", leadAuthor: "Consejo Técnico Industrial", auditVerdict: "ESPECIFICACIÓN TEXTIL VALIDADA" },
+      { num: "28", sec: "05 · APLICACIONES", title: "Espacio Físico, Fachada y Señalética", leadAuthor: "Lance Wyman & Pentagram", auditVerdict: "ARQUITECTURA AMBIENTAL LISTA" },
+      { num: "29", sec: "06 · GOBERNANZA LEGAL", title: "Registro de Marca y Clasificación Internacional de Niza", leadAuthor: "Alexandra Watkins & OMPI", auditVerdict: "BLINDAJE MARCARIO DEFINIDO" },
+      { num: "30", sec: "06 · CLAUSURA OFICIAL", title: "Certificado Oficial de Entrega y Constitución de Marca", leadAuthor: "Consejo Rector TheBestBrand", auditVerdict: "DOCUMENTO 30/30 COMPLETADO" }
+    ];
+  }
+
   // --- VISOR NATIVO EN PANTALLA DENTRO DE STUDIO.HTML ---
   function openInApp30PlatesViewer() {
     let existing = document.getElementById("tbbInApp30PlatesViewerModal");
     if (existing) existing.remove();
+
+    ensureInAppBrandbookStylesInjected();
 
     const brand = (typeof window.buildActiveBrandProfileForV80 === "function")
       ? window.buildActiveBrandProfileForV80()
@@ -1796,20 +1905,12 @@ Instrucciones obligatorias:
     const pri = (brand.colors && brand.colors.pri) || "#0D2540";
     const plates = generateBrandbook30Plates(brand);
 
-    // Inyectar estilos si no existen
-    if (!document.getElementById("tbb-v81-styles")) {
-      const stEl = document.createElement("style");
-      stEl.id = "tbb-v81-styles";
-      stEl.textContent = getDynamicBrandbookStyles();
-      document.head.appendChild(stEl);
-    }
-
     const modal = document.createElement("div");
     modal.id = "tbbInApp30PlatesViewerModal";
     modal.style.cssText = "position:fixed;inset:0;background:#F1F5F9;z-index:999990;display:flex;flex-direction:column;overflow:hidden;";
 
     modal.innerHTML = `
-      <div style="background:#FFFFFF; border-bottom:4px solid ${pri}; padding:max(12px, env(safe-area-inset-top)) 18px 12px 18px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; box-shadow:0 8px 24px rgba(13,37,64,0.08); z-index:10;">
+      <div style="background:#FFFFFF; border-bottom:4px solid ${pri}; padding:max(12px, env(safe-area-inset-top)) 18px 12px 18px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; z-index:10;">
         <div style="display:flex; align-items:center; gap:12px;">
           <button type="button" id="tbbBtnCloseInApp30Viewer" style="background:#F8FAFC; color:#0F172A; border:2px solid #CBD5E1; border-radius:10px; padding:8px 14px; font-family:'Montserrat',sans-serif; font-size:0.82rem; font-weight:800; cursor:pointer;">
             ← Volver al Atelier
@@ -1819,28 +1920,43 @@ Instrucciones obligatorias:
               30 LÁMINAS EN CURVAS · ${esc(bName.toUpperCase())}
             </div>
             <div style="font-size:0.72rem; color:#64748B;">
-              Manual Oficial Generado desde Cero · Directiva Max C-00
+              Manual Oficial Generado en Vivo · Directiva Max C-00
             </div>
           </div>
         </div>
 
         <div style="display:flex; gap:10px; align-items:center;">
-          <button type="button" id="tbbBtnDownloadBrandbookPdf" style="background:${pri}; color:#FFFFFF; border:none; border-radius:10px; padding:9px 16px; font-family:'Montserrat',sans-serif; font-size:0.82rem; font-weight:800; cursor:pointer; box-shadow:0 4px 12px rgba(13,37,64,0.18);">
+          <button type="button" id="tbbBtnDownloadBrandbookPdf" style="background:${pri}; color:#FFFFFF; border:none; border-radius:10px; padding:9px 16px; font-family:'Montserrat',sans-serif; font-size:0.82rem; font-weight:800; cursor:pointer;">
              Descargar PDF de 30 Láminas
           </button>
         </div>
       </div>
 
-      <div id="tbbInApp30PlatesScrollBody" style="flex:1; overflow-y:auto; padding:24px 12px; display:flex; flex-direction:column; align-items:center; -webkit-overflow-scrolling:touch;">
-        ${plates.join("\n")}
+      <div id="tbbInApp30PlatesScrollBody" style="flex:1; overflow-y:auto; padding:24px 12px; display:flex; flex-direction:column; align-items:center; gap:20px; -webkit-overflow-scrolling:touch;">
+        ${plates.map(p => `<div class="tbb-viewer-plate-slot" style="display:flex;justify-content:center;width:100%;overflow:hidden;"><div class="tbb-viewer-plate-scaler" style="width:1122px;height:794px;transform-origin:top center;flex-shrink:0;">${p}</div></div>`).join("\n")}
       </div>
     `;
 
     document.body.appendChild(modal);
 
+    const scaleViewerPlates = () => {
+      const bodyEl = document.getElementById("tbbInApp30PlatesScrollBody");
+      if (!bodyEl) return;
+      const availW = Math.max(280, bodyEl.clientWidth - 24);
+      const scale = Math.min(1, availW / 1122);
+      bodyEl.querySelectorAll(".tbb-viewer-plate-slot").forEach((slot) => {
+        slot.style.height = Math.round(794 * scale) + "px";
+        const scaler = slot.querySelector(".tbb-viewer-plate-scaler");
+        if (scaler) scaler.style.transform = `scale(${scale.toFixed(4)})`;
+      });
+    };
+    setTimeout(scaleViewerPlates, 20);
+    window.addEventListener("resize", scaleViewerPlates);
+
     const btnClose = document.getElementById("tbbBtnCloseInApp30Viewer");
     if (btnClose) {
       btnClose.onclick = function () {
+        window.removeEventListener("resize", scaleViewerPlates);
         modal.remove();
       };
     }
@@ -1857,73 +1973,75 @@ Instrucciones obligatorias:
     }
   }
 
-  // --- EXPORTACIONES GLOBALES AL RUNTIME DE THE BEST BRAND ---
-  // Preservamos las referencias nativas del motor de curvas oficial (tbb-v80-brandbook-plates.js + universal-brandbook-30-engine.js)
-  // para no degradar sus curvas asimétricas (18px 38px 18px 18px) ni sus isométricos vectoriales.
-  const _nativeOpenInApp30PlatesViewer = typeof window.openInApp30PlatesViewer === "function"
-    ? window.openInApp30PlatesViewer
-    : null;
-  const _nativeBuildUniversal30PlatesStandaloneHTML = typeof window.buildUniversal30PlatesStandaloneHTML === "function"
-    ? window.buildUniversal30PlatesStandaloneHTML
-    : null;
-  const _nativeRenderUniversalSinglePlateHTML = typeof window.renderUniversalImproBearsGuideSinglePlateHTML === "function"
-    ? window.renderUniversalImproBearsGuideSinglePlateHTML
-    : null;
-  const _nativeV80PlatesGenerator = window.TBB_V80_PLATES_GENERATOR
-    ? Object.assign({}, window.TBB_V80_PLATES_GENERATOR)
-    : null;
-
+  // --- EXPORTACIONES GLOBALES AUTORITATIVAS AL RUNTIME DE THE BEST BRAND ---
   window.generateTriFoldLogoSuite = generateTriFoldLogoSuite;
   window.getDynamicBrandbookStyles = getDynamicBrandbookStyles;
-  window.generateBrandbook30Plates = (_nativeV80PlatesGenerator && _nativeV80PlatesGenerator.generateBrandbook30Plates) || generateBrandbook30Plates;
-  window.generateFullBrandbookDocHtml = (_nativeV80PlatesGenerator && _nativeV80PlatesGenerator.generateFullBrandbookDocHtml) || generateFullBrandbookDocHtml;
+  window.ensureInAppBrandbookStylesInjected = ensureInAppBrandbookStylesInjected;
+  window.getGenerative30PlatesMeta = getGenerative30PlatesMeta;
+  window.generateBrandbook30Plates = generateBrandbook30Plates;
+  window.generateFullBrandbookDocHtml = generateFullBrandbookDocHtml;
   window.refineBrandContentWithGemini = refineBrandContentWithGemini;
   window.startFreshBrandSession = startFreshBrandSession;
-  window.openInApp30PlatesViewer = _nativeOpenInApp30PlatesViewer || openInApp30PlatesViewer;
+  window.openInApp30PlatesViewer = openInApp30PlatesViewer;
 
-  // Interfaz de compatibilidad universal (Directiva Max C-00 + Escalador Zero-Scroll)
-  window.buildUniversal30PlatesStandaloneHTML = function () {
-    if (_nativeBuildUniversal30PlatesStandaloneHTML && window.useLegacyCardBrandbook !== true) {
-      return _nativeBuildUniversal30PlatesStandaloneHTML();
+  window.getUniversalImproBearsGuide30PlatesMeta = function (brandNameOpt) {
+    if (window.isImproBearsActiveBrand && window.isImproBearsActiveBrand() && Array.isArray(window.IMPROBEARS_30_PLATES_META)) {
+      return window.IMPROBEARS_30_PLATES_META;
     }
+    return getGenerative30PlatesMeta(brandNameOpt);
+  };
+
+  window.buildUniversal30PlatesStandaloneHTML = function () {
     const b = (typeof window.buildActiveBrandProfileForV80 === "function")
       ? window.buildActiveBrandProfileForV80()
       : (window.canvasState || {});
-    return window.generateFullBrandbookDocHtml(b);
+    return generateFullBrandbookDocHtml(b);
   };
 
   window.renderUniversalImproBearsGuideSinglePlateHTML = function (plateIdx, forPrint) {
-    if (_nativeRenderUniversalSinglePlateHTML && window.useLegacyCardBrandbook !== true) {
-      return _nativeRenderUniversalSinglePlateHTML(plateIdx, forPrint);
+    if (window.isImproBearsActiveBrand && window.isImproBearsActiveBrand() && typeof window.renderImproBearsSinglePlateHTML === "function") {
+      return window.renderImproBearsSinglePlateHTML(plateIdx, forPrint);
     }
+    ensureInAppBrandbookStylesInjected();
     const idx = Math.max(0, Math.min(29, Number(plateIdx || 0)));
     const b = (typeof window.buildActiveBrandProfileForV80 === "function")
       ? window.buildActiveBrandProfileForV80()
       : (window.canvasState || {});
-    const plates = window.generateBrandbook30Plates(b);
+    const plates = generateBrandbook30Plates(b);
     const activePlate = plates[idx] || plates[0];
     if (forPrint) {
       return activePlate;
     }
-    setTimeout(() => {
-      if (typeof window.scaleImproBearsPlateInStage === "function") {
-        window.scaleImproBearsPlateInStage();
-      }
-    }, 30);
+    if (typeof window !== "undefined") {
+      setTimeout(() => {
+        if (typeof window.scaleImproBearsPlateInStage === "function") {
+          window.scaleImproBearsPlateInStage();
+        }
+      }, 25);
+    }
     return `<div class="tbb-improbears-stage-wrapper"><div class="tbb-improbears-stage-scaler">${activePlate}</div></div>`;
   };
 
-  window.TBB_V80_PLATES_GENERATOR = _nativeV80PlatesGenerator || {
+  window.TBB_V80_PLATES_GENERATOR = {
     generateBrandbook30Plates: generateBrandbook30Plates,
     getUniversalBrandbookStyles: getDynamicBrandbookStyles,
     getTheBestBrandStyles: getDynamicBrandbookStyles,
     generateFullBrandbookDocHtml: generateFullBrandbookDocHtml,
+    renderAllPlatesDocHtml: generateFullBrandbookDocHtml,
+    getTheBestBrand30PlatesHtml: function (optBrand) {
+      const b = optBrand || window.buildActiveBrandProfileForV80();
+      return generateBrandbook30Plates(b);
+    },
     renderTheBestBrandPlate: function (idx, forPrint) {
       return window.renderUniversalImproBearsGuideSinglePlateHTML(idx, forPrint);
     }
   };
 
-  
+  // Inyectar estilos de inmediato si el DOM ya está disponible
+  if (typeof document !== "undefined" && document.head) {
+    ensureInAppBrandbookStylesInjected();
+  }
+
   // --- UI INTERACTIVA DE TERNA DE LOGOTIPOS (STEP 5 & 6) ---
   window.currentTriFoldSuite = null;
 
@@ -2015,29 +2133,49 @@ Instrucciones obligatorias:
     }
   };
 
-  // --- PERFIL UNIFICADO EN VIVO (SINCRONIZA tbbState + canvasState + step0State + tpExtractedItems) ---
+  // --- PERFIL UNIFICADO EN VIVO (RESPETA 100% LOGO SUBIDO + DATOS REALES DE SESIÓN) ---
   window.buildActiveBrandProfileForV80 = function () {
     const cs = window.canvasState || {};
     const st = window.tbbState || {};
     const s0 = window.step0State || {};
 
-    const rawName = cs.brandName || s0.brandName || "";
+    const rawName = cs.brandName || s0.brandName || s0.existingBrandName || "";
     const bName = (rawName && !/^mi nueva marca$/i.test(rawName)) ? rawName.trim() : "The Best Brand";
     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "the_best_brand";
+    const isTbbSlug = /^the_?best_?brand$/i.test(slug);
 
     const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
     const uploadedUrl = (activeIt && activeIt.uploadedLogoDataUrl) || cs.uploaded_logo_data_url || s0.uploadedLogoDataUrl || "";
     const uploadedSvg = (activeIt && activeIt.uploadedLogoSvgMarkup) || cs.uploaded_logo_svg_markup || s0.uploadedLogoSvgMarkup || "";
     const hasUploadedLogo = Boolean(uploadedUrl || uploadedSvg);
     const hasGeminiCustom = Boolean(activeIt && activeIt.geminiCustomSvg && String(activeIt.geminiCustomSvg).trim().length > 10);
+    const useEvolvedCustomOverUpload = Boolean(st._uploadedLogoEvolvedOnce && hasGeminiCustom);
 
-    // Solo consultar catálogo estático si el usuario NO ha subido un logo propio y no hay iteración AI activa
-    if (!hasUploadedLogo && !hasGeminiCustom && window.CATALOG_30_MAP) {
+    const hasCustomUserInputs = Boolean(
+      hasUploadedLogo ||
+      hasGeminiCustom ||
+      cs.custom_business_type ||
+      s0.customBusinessType ||
+      cs.golden_circle ||
+      cs.value_offer ||
+      cs.ideal_customer ||
+      cs.brand_persona ||
+      cs.process_steps_text ||
+      cs.tagline ||
+      s0.tagline ||
+      (window.tpExtractedItems && (
+        (Array.isArray(window.tpExtractedItems.before) && window.tpExtractedItems.before.length > 0) ||
+        (Array.isArray(window.tpExtractedItems.during) && window.tpExtractedItems.during.length > 0) ||
+        (Array.isArray(window.tpExtractedItems.after) && window.tpExtractedItems.after.length > 0)
+      ))
+    );
+
+    // Solo consultar catálogo de 30 emprendedores si es una marca explícita del catálogo (NUNCA secuestrar sesiones con logo subido ni datos del usuario ni el nombre por defecto "The Best Brand")
+    if (!hasUploadedLogo && !hasGeminiCustom && !hasCustomUserInputs && !isTbbSlug && window.CATALOG_30_MAP) {
       if (window.CATALOG_30_MAP[slug]) return window.CATALOG_30_MAP[slug];
       if (window.CATALOG_30_MAP[bName.toLowerCase()]) return window.CATALOG_30_MAP[bName.toLowerCase()];
     }
 
-    // Prioridad de Colores: 1) Iteración de Logo activa en Paso 5, 2) tbbState.logoPriHex/logoSecHex, 3) canvasState.primary_color, 4) selected_colors_hex
     const priColors = (Array.isArray(cs.selected_colors_hex) && cs.selected_colors_hex.length >= 2)
       ? cs.selected_colors_hex
       : ["#FFFFFF", "#090D16", "#0D2540", "#426EAE"];
@@ -2045,72 +2183,63 @@ Instrucciones obligatorias:
     const pri = (activeIt && (activeIt.pri || activeIt.priHex))
       || st.logoPriHex
       || cs.primary_color
+      || (Array.isArray(cs.uploaded_logo_colors) && cs.uploaded_logo_colors[0])
       || priColors[2]
       || "#0D2540";
 
     const sec = (activeIt && (activeIt.sec || activeIt.secHex))
       || st.logoSecHex
       || cs.secondary_color
+      || (Array.isArray(cs.uploaded_logo_colors) && cs.uploaded_logo_colors[1])
       || priColors[3]
       || "#426EAE";
 
     const acc = (activeIt && activeIt.accentHex)
       || cs.accent_color
-      || (priColors[0] && priColors[0] !== "#FFFFFF" ? priColors[0] : "#FF7A00");
+      || (priColors[0] && !/^#(?:fff(?:fff)?|faf8f5|f8fafc)$/i.test(priColors[0]) ? priColors[0] : "#FF7A00");
 
-    const darkInk = priColors[1] || "#090D16";
-
-    // Lectura pura: NO se escribe de vuelta en canvasState. Escribir aquí congelaba cs.primary_color
-    // e ignoraba los cambios posteriores de paleta del Paso 4 (selected_colors_hex).
+    const darkInk = (priColors[1] && !/^#fff/i.test(priColors[1])) ? priColors[1] : "#090D16";
 
     const mods = (activeIt && activeIt.mods) || {};
     const priFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || st.selectedFontFamily || cs.primary_font || "Montserrat";
     const secFont = cs.secondary_font || "Plus Jakarta Sans";
 
-    // Isotipo vectorial puro calado 180x180 (NUNCA inyectar el lienzo doble 760x440 de vista previa)
+    // Símbolo central centrado en viewBox 0..200 (180x180 desplazado +10,+10)
     let pureSymbolPos = "";
     let pureSymbolNeg = "";
 
-    if (hasUploadedLogo && !hasGeminiCustom) {
+    if (hasUploadedLogo && !useEvolvedCustomOverUpload) {
       if (uploadedSvg) {
         let cleanSvg = uploadedSvg.trim();
         if (!cleanSvg.startsWith("<svg") && !cleanSvg.startsWith("<g")) {
           cleanSvg = `<g transform="translate(10,10)">${cleanSvg}</g>`;
+        } else if (cleanSvg.startsWith("<svg")) {
+          cleanSvg = `<g transform="translate(10,10)">${cleanSvg}</g>`;
         }
         pureSymbolPos = cleanSvg;
-        pureSymbolNeg = (typeof toCaladoNegativeSvg === "function") ? toCaladoNegativeSvg(cleanSvg) : cleanSvg;
+        pureSymbolNeg = `<g transform="translate(10,10)"><rect x="4" y="4" width="172" height="172" rx="30" fill="#FFFFFF" fill-opacity="0.98"/>${uploadedSvg.trim()}</g>`;
       } else {
-        pureSymbolPos = `<g transform="translate(10,10)"><image href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="10" y="10" width="160" height="160" preserveAspectRatio="xMidYMid meet" /></g>`;
-        pureSymbolNeg = `<g transform="translate(10,10)"><image href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="10" y="10" width="160" height="160" preserveAspectRatio="xMidYMid meet" style="filter:brightness(0) invert(1);" /></g>`;
+        pureSymbolPos = `<g transform="translate(10,10)"><image data-tbb-uploaded-logo="1" href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="8" y="8" width="164" height="164" preserveAspectRatio="xMidYMid meet" /></g>`;
+        // Directiva Max C-00: cápsula neutra blanca aislada sobre soporte oscuro para respetar 100% los colores originales del logo subido sin parches negros/blancos
+        pureSymbolNeg = `<g transform="translate(10,10)"><rect x="4" y="4" width="172" height="172" rx="30" fill="#FFFFFF" fill-opacity="0.98"/><image data-tbb-uploaded-logo="1" href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="16" y="16" width="148" height="148" preserveAspectRatio="xMidYMid meet" /></g>`;
       }
     } else {
-      const synthPair = buildSystemicSymbolPair("bb_v81_" + slug, "", "");
-      pureSymbolPos = synthPair.pos;
-      pureSymbolNeg = synthPair.neg;
-      if (!pureSymbolPos) {
-        const candidateSvg = cs.selected_symbol_only_svg || "";
+      const synthPair = buildSystemicSymbolPair("bb_v82_" + slug, "", "");
+      if (synthPair.pos) {
+        pureSymbolPos = `<g transform="translate(10,10)">${synthPair.pos}</g>`;
+        pureSymbolNeg = `<g transform="translate(10,10)">${synthPair.neg || synthPair.pos}</g>`;
+      } else {
+        const candidateSvg = (activeIt && activeIt.geminiCustomSvg) || cs.selected_symbol_only_svg || "";
         const isPreviewCanvas760 = /viewBox\s*=\s*["']\s*0\s+0\s+760\s+440/i.test(candidateSvg) || candidateSvg.includes("App en proporción 1:1");
         if (candidateSvg && !isPreviewCanvas760) {
-          pureSymbolPos = candidateSvg;
-          pureSymbolNeg = cs.selected_symbol_only_neg_svg || toCaladoNegativeSvg(candidateSvg);
+          pureSymbolPos = `<g transform="translate(10,10)">${candidateSvg}</g>`;
+          pureSymbolNeg = `<g transform="translate(10,10)">${cs.selected_symbol_only_neg_svg || toCaladoNegativeSvg(candidateSvg)}</g>`;
         } else {
-          // Fallback calado: anillo (espacio negativo real) + núcleo, sin disco sólido de parche
-          pureSymbolPos = `<path d="M90 20 C128.7 20 160 51.3 160 90 C160 128.7 128.7 160 90 160 C51.3 160 20 128.7 20 90 C20 51.3 51.3 20 90 20 Z M90 46 C65.7 46 46 65.7 46 90 C46 114.3 65.7 134 90 134 C114.3 134 134 114.3 134 90 C134 65.7 114.3 46 90 46 Z" fill-rule="evenodd" fill="${pri}"/><circle cx="90" cy="90" r="22" fill="${acc}"/>`;
-          pureSymbolNeg = toCaladoNegativeSvg(pureSymbolPos);
+          const fallbackRing = `<path d="M90 20 C128.7 20 160 51.3 160 90 C160 128.7 128.7 160 90 160 C51.3 160 20 128.7 20 90 C20 51.3 51.3 20 90 20 Z M90 46 C65.7 46 46 65.7 46 90 C46 114.3 65.7 134 90 134 C114.3 134 134 114.3 134 90 C134 65.7 114.3 46 90 46 Z" fill-rule="evenodd" fill="${pri}"/><circle cx="90" cy="90" r="22" fill="${acc}"/>`;
+          pureSymbolPos = `<g transform="translate(10,10)">${fallbackRing}</g>`;
+          pureSymbolNeg = `<g transform="translate(10,10)">${toCaladoNegativeSvg(fallbackRing)}</g>`;
         }
       }
-    }
-
-    // Si coincide con una marca del catálogo pero el usuario subió su propio logo, heredar los textos ricos pero inyectar el logo propio
-    if (hasUploadedLogo && window.CATALOG_30_MAP && (window.CATALOG_30_MAP[slug] || window.CATALOG_30_MAP[bName.toLowerCase()])) {
-      const baseCat = window.CATALOG_30_MAP[slug] || window.CATALOG_30_MAP[bName.toLowerCase()];
-      const catObj = Object.assign({}, baseCat);
-      catObj.svgCore = pureSymbolPos;
-      catObj.svgCoreNeg = pureSymbolNeg;
-      catObj.isEstablished = true;
-      if (pri) catObj.colors.pri = pri;
-      if (sec) catObj.colors.sec = sec;
-      return catObj;
     }
 
     const tpB = (window.tpExtractedItems && Array.isArray(window.tpExtractedItems.before) && window.tpExtractedItems.before.length)
@@ -2159,19 +2288,361 @@ Instrucciones obligatorias:
       },
       primaryFont: priFont,
       secondaryFont: secFont,
+      isEstablished: hasUploadedLogo,
+      hasUploadedLogo: hasUploadedLogo,
+      uploadedLogoDataUrl: uploadedUrl || "",
       isMultibrand: /improbears/i.test(bName),
       svgCore: pureSymbolPos,
       svgCoreNeg: pureSymbolNeg
     };
   };
 
-  // Compatibilidad con scripts y tests V80 (`getTheBestBrand30PlatesHtml`)
-  if (window.TBB_V80_PLATES_GENERATOR && typeof window.TBB_V80_PLATES_GENERATOR.getTheBestBrand30PlatesHtml !== "function") {
-    window.TBB_V80_PLATES_GENERATOR.getTheBestBrand30PlatesHtml = function (optBrand) {
-      const b = optBrand || window.buildActiveBrandProfileForV80();
-      return generateBrandbook30Plates(b);
+  // --- COMPILADOR HOJA POR HOJA EN ALTA DEFINICIÓN DE LAS 30 LÁMINAS (.PDF REAL CON LOGO SUBIDO GARANTIZADO) ---
+  const _pdfRasterImageCache = new Map();
+  function loadRasterImageForPdf(src) {
+    if (!src) return Promise.resolve(null);
+    if (_pdfRasterImageCache.has(src)) return _pdfRasterImageCache.get(src);
+    const p = new Promise((resolve) => {
+      const img = new Image();
+      if (!src.startsWith("data:")) img.crossOrigin = "anonymous";
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = src;
+    });
+    _pdfRasterImageCache.set(src, p);
+    return p;
+  }
+
+  async function rasterizePlateTopLevelSvgsForPdf(plateRootEl) {
+    const topSvgs = Array.from(plateRootEl.querySelectorAll("svg")).filter(
+      (s) => !s.parentElement || !s.parentElement.closest("svg")
+    );
+
+    for (const svgEl of topSvgs) {
+      try {
+        const svgRect = svgEl.getBoundingClientRect();
+        const attrW = parseFloat(svgEl.getAttribute("width")) || 0;
+        const attrH = parseFloat(svgEl.getAttribute("height")) || 0;
+        const vbParts = (svgEl.getAttribute("viewBox") || "").trim().split(/[\s,]+/).map(Number);
+        const vbW = (vbParts.length === 4 && vbParts[2] > 0) ? vbParts[2] : 200;
+        const vbH = (vbParts.length === 4 && vbParts[3] > 0) ? vbParts[3] : 200;
+
+        let cssW = svgRect.width > 2 ? svgRect.width : (attrW > 2 ? attrW : vbW);
+        let cssH = svgRect.height > 2 ? svgRect.height : (attrH > 2 ? attrH : vbH);
+
+        // Capturar coordenadas exactas de todos los <image> internos ANTES de serializar el SVG
+        const nestedImages = [];
+        const liveImgEls = Array.from(svgEl.querySelectorAll("image"));
+        for (const imgNode of liveImgEls) {
+          const href = imgNode.getAttribute("href") || imgNode.getAttribute("xlink:href") || "";
+          if (!href) continue;
+          const ir = imgNode.getBoundingClientRect();
+          let rx = 0, ry = 0, rw = 0, rh = 0;
+          if (svgRect.width > 2 && ir.width > 1 && ir.height > 1) {
+            rx = ir.left - svgRect.left;
+            ry = ir.top - svgRect.top;
+            rw = ir.width;
+            rh = ir.height;
+          } else if (typeof imgNode.getCTM === "function") {
+            const ctm = imgNode.getCTM();
+            const ix = parseFloat(imgNode.getAttribute("x")) || 0;
+            const iy = parseFloat(imgNode.getAttribute("y")) || 0;
+            const iw = parseFloat(imgNode.getAttribute("width")) || 160;
+            const ih = parseFloat(imgNode.getAttribute("height")) || 160;
+            if (ctm) {
+              rx = ctm.a * ix + ctm.c * iy + ctm.e;
+              ry = ctm.b * ix + ctm.d * iy + ctm.f;
+              rw = Math.abs(ctm.a * iw);
+              rh = Math.abs(ctm.d * ih);
+            }
+          }
+          if (rw > 0.5 && rh > 0.5) {
+            nestedImages.push({ href, rx, ry, rw, rh });
+          }
+        }
+
+        const dpr = 2;
+        const cnv = document.createElement("canvas");
+        cnv.width = Math.max(4, Math.round(cssW * dpr));
+        cnv.height = Math.max(4, Math.round(cssH * dpr));
+        const ctx = cnv.getContext("2d");
+        const inlineFilter = svgEl.style && svgEl.style.filter ? svgEl.style.filter : "";
+        if (inlineFilter) {
+          try { ctx.filter = inlineFilter; } catch (e) {}
+        }
+
+        // Clonar SVG sin los nodos <image> (que los navegadores bloquean dentro de data:image/svg+xml)
+        const clone = svgEl.cloneNode(true);
+        clone.querySelectorAll("image").forEach((n) => n.remove());
+        clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        clone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+        clone.setAttribute("width", String(Math.round(cssW)));
+        clone.setAttribute("height", String(Math.round(cssH)));
+
+        const serialized = new XMLSerializer().serializeToString(clone);
+        const svgDataUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(serialized);
+        const vecImg = await loadRasterImageForPdf(svgDataUrl);
+        if (vecImg) {
+          ctx.drawImage(vecImg, 0, 0, cnv.width, cnv.height);
+        }
+
+        // Superponer con fidelidad 100% los logotipos/activos <image> directamente en el canvas 2x (xMidYMid meet)
+        for (const item of nestedImages) {
+          const loadedLogo = await loadRasterImageForPdf(item.href);
+          if (loadedLogo) {
+            const natW = loadedLogo.naturalWidth || loadedLogo.width || item.rw;
+            const natH = loadedLogo.naturalHeight || loadedLogo.height || item.rh;
+            const boxX = item.rx * dpr;
+            const boxY = item.ry * dpr;
+            const boxW = item.rw * dpr;
+            const boxH = item.rh * dpr;
+            const fitScale = Math.min(boxW / natW, boxH / natH);
+            const drawW = natW * fitScale;
+            const drawH = natH * fitScale;
+            const drawX = boxX + (boxW - drawW) / 2;
+            const drawY = boxY + (boxH - drawH) / 2;
+            ctx.drawImage(loadedLogo, drawX, drawY, drawW, drawH);
+          }
+        }
+
+        const replacementImg = document.createElement("img");
+        replacementImg.src = cnv.toDataURL("image/png");
+        const csStyle = window.getComputedStyle(svgEl);
+        if (csStyle.position === "absolute") {
+          replacementImg.style.position = "absolute";
+          replacementImg.style.top = csStyle.top;
+          replacementImg.style.left = csStyle.left;
+          replacementImg.style.right = csStyle.right;
+          replacementImg.style.bottom = csStyle.bottom;
+          replacementImg.style.zIndex = csStyle.zIndex;
+          replacementImg.style.pointerEvents = "none";
+          replacementImg.style.width = Math.round(cssW) + "px";
+          replacementImg.style.height = Math.round(cssH) + "px";
+        } else {
+          replacementImg.style.display = csStyle.display === "inline" ? "inline-block" : csStyle.display;
+          replacementImg.style.width = Math.round(cssW) + "px";
+          replacementImg.style.height = Math.round(cssH) + "px";
+          replacementImg.style.maxWidth = "100%";
+          replacementImg.style.margin = csStyle.margin;
+          replacementImg.style.flexShrink = csStyle.flexShrink;
+        }
+        svgEl.replaceWith(replacementImg);
+      } catch (svgErr) {
+        console.warn("SVG rasterize warning:", svgErr);
+      }
+    }
+  }
+
+  function openLivePdfCompilationModal(brand) {
+    if (typeof document === "undefined" || !document.body) return null;
+    let existing = document.getElementById("tbbLivePdfCompilationModal");
+    if (existing) existing.remove();
+
+    const pri = (brand.colors && brand.colors.pri) || "#0D2540";
+    const acc = (brand.colors && brand.colors.acc) || "#FF7A00";
+    const bName = brand.name || "Tu Marca";
+
+    const overlay = document.createElement("div");
+    overlay.id = "tbbLivePdfCompilationModal";
+    overlay.style.cssText = "position:fixed;inset:0;background:rgba(9,13,22,0.76);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:999998;display:flex;align-items:center;justify-content:center;padding:18px;";
+
+    overlay.innerHTML = `
+      <div style="width:100%;max-width:480px;background:#FFFFFF;border:2px solid ${pri};border-bottom:5px solid ${acc};border-radius:18px 34px 18px 18px;padding:24px 22px;font-family:'Plus Jakarta Sans',sans-serif;text-align:center;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:#FFF7ED;color:#C2410C;border:1px solid #FDBA74;border-radius:999px;padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:0.70rem;font-weight:800;margin-bottom:10px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:${acc};display:inline-block;"></span>
+          MOTOR EDITORIAL EN CURVAS · DIRECTIVA MAX C-00
+        </div>
+        <h3 style="font-family:'Montserrat',sans-serif;font-size:1.12rem;font-weight:900;color:#090D16;margin:0 0 4px 0;">
+          Generando las 30 Láminas de «${esc(bName)}»
+        </h3>
+        <div id="tbbLivePdfSheetSub" style="font-size:0.78rem;color:#475569;font-weight:700;margin-bottom:14px;min-height:18px;">
+          Preparando logotipo activo, tipografía y lienzo A4 Horizontal...
+        </div>
+
+        <div style="width:100%;max-width:336px;height:238px;margin:0 auto 14px auto;background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;">
+          <canvas id="tbbLivePdfSheetThumb" width="561" height="397" style="width:100%;height:100%;object-fit:contain;display:block;background:#FFFFFF;"></canvas>
+          <div id="tbbLivePdfBadgeCounter" style="position:absolute;bottom:8px;right:8px;background:rgba(13,37,64,0.88);color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;padding:3px 9px;border-radius:999px;">
+            01 / 30
+          </div>
+        </div>
+
+        <div style="width:100%;height:10px;background:#E2E8F0;border-radius:999px;overflow:hidden;margin-bottom:8px;">
+          <div id="tbbLivePdfProgressBar" style="width:3%;height:100%;background:linear-gradient(90deg, ${pri}, ${acc});border-radius:999px;transition:width 0.14s ease-out;"></div>
+        </div>
+        <div id="tbbLivePdfPercentLabel" style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:800;color:${pri};">
+          Iniciando compilación hoja por hoja (0%)...
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    return {
+      update(cur, tot, title, sourceCanvas) {
+        const pct = Math.round((cur / tot) * 100);
+        const sub = document.getElementById("tbbLivePdfSheetSub");
+        const bar = document.getElementById("tbbLivePdfProgressBar");
+        const lbl = document.getElementById("tbbLivePdfPercentLabel");
+        const bdg = document.getElementById("tbbLivePdfBadgeCounter");
+        const thumb = document.getElementById("tbbLivePdfSheetThumb");
+        if (sub) sub.textContent = `Lámina ${String(cur).padStart(2, "0")}: ${title || ""}`;
+        if (bar) bar.style.width = `${pct}%`;
+        if (lbl) lbl.textContent = `Renderizando hoja ${cur} de ${tot} en alta definición (${pct}%)...`;
+        if (bdg) bdg.textContent = `${String(cur).padStart(2, "0")} / ${tot}`;
+        if (thumb && sourceCanvas) {
+          const tctx = thumb.getContext("2d");
+          if (tctx) {
+            tctx.fillStyle = "#FFFFFF";
+            tctx.fillRect(0, 0, thumb.width, thumb.height);
+            tctx.drawImage(sourceCanvas, 0, 0, thumb.width, thumb.height);
+          }
+        }
+      },
+      close() {
+        overlay.remove();
+      }
     };
   }
+
+  window.compileLive30PlatesBrandbookPdfBlob = async function (onSheetProgress, options = {}) {
+    const isImproBears = Boolean(window.isImproBearsActiveBrand && window.isImproBearsActiveBrand() && Array.isArray(window.IMPROBEARS_30_PLATES_HTML));
+    const brand = window.buildActiveBrandProfileForV80();
+    const plates = isImproBears ? window.IMPROBEARS_30_PLATES_HTML : generateBrandbook30Plates(brand);
+    const metaList = isImproBears ? (window.IMPROBEARS_30_PLATES_META || []) : getGenerative30PlatesMeta(brand.name);
+
+    const h2c = (typeof window.ensureHtml2CanvasLoaded === "function")
+      ? await window.ensureHtml2CanvasLoaded()
+      : window.html2canvas;
+
+    if (typeof h2c !== "function") {
+      throw new Error("html2canvas no está disponible para compilar las 30 láminas.");
+    }
+
+    if (document.fonts && document.fonts.ready) {
+      try { await document.fonts.ready; } catch (e) {}
+    }
+    if (brand.uploadedLogoDataUrl) {
+      await loadRasterImageForPdf(brand.uploadedLogoDataUrl);
+    }
+
+    ensureInAppBrandbookStylesInjected();
+
+    const host = document.createElement("div");
+    host.id = "tbbOffscreenPdfCompilerHost";
+    host.style.cssText = "position:fixed;left:-14000px;top:0;width:1122px;height:794px;overflow:hidden;background:#FFFFFF;z-index:-1;pointer-events:none;";
+    const mount = document.createElement("div");
+    mount.style.cssText = "width:1122px;height:794px;overflow:hidden;background:#FFFFFF;position:relative;";
+    host.appendChild(mount);
+    document.body.appendChild(host);
+
+    const modalCtrl = options.silentModal ? null : openLivePdfCompilationModal(brand);
+    const jpegPages = [];
+    const renderScale = options.scale || 1.65;
+
+    try {
+      for (let i = 0; i < plates.length; i++) {
+        const metaItem = metaList[i] || { title: `Lámina ${i + 1}` };
+        mount.innerHTML = plates[i];
+
+        // Permitir al navegador calcular el layout exacto de cada hoja y actualizar la barra en vivo
+        await new Promise((r) => requestAnimationFrame(() => setTimeout(r, 35)));
+
+        const plateRoot = mount.firstElementChild || mount;
+        await rasterizePlateTopLevelSvgsForPdf(plateRoot);
+
+        const cnv = await h2c(plateRoot, {
+          width: 1122,
+          height: 794,
+          windowWidth: 1122,
+          windowHeight: 794,
+          scale: renderScale,
+          backgroundColor: "#FFFFFF",
+          useCORS: true,
+          allowTaint: true,
+          logging: false
+        });
+
+        if (modalCtrl) {
+          modalCtrl.update(i + 1, plates.length, metaItem.title, cnv);
+        }
+        if (typeof onSheetProgress === "function") {
+          onSheetProgress(i + 1, plates.length, metaItem.title);
+        }
+
+        // Breve pausa visual para que el usuario aprecie la miniatura real de cada hoja generada
+        await new Promise((r) => setTimeout(r, 20));
+
+        jpegPages.push({
+          dataUrl: cnv.toDataURL("image/jpeg", 0.92),
+          width: cnv.width,
+          height: cnv.height
+        });
+        cnv.width = 1;
+        cnv.height = 1;
+      }
+
+      if (typeof window.packJpegDataUrlsToA4LandscapePdfBlob !== "function") {
+        throw new Error("Empaquetador PDF A4 no encontrado.");
+      }
+      return window.packJpegDataUrlsToA4LandscapePdfBlob(jpegPages);
+    } finally {
+      if (modalCtrl) modalCtrl.close();
+      host.remove();
+    }
+  };
+
+  window.downloadReal30PlatesPDFDirect = async function (triggerBtn) {
+    const brand = window.buildActiveBrandProfileForV80();
+    const bName = brand.name || "The Best Brand";
+    const slug = brand.slug || "the_best_brand";
+    const fileName = `Manual_Marca_30_Laminas_${slug}.pdf`;
+
+    const origHtml = triggerBtn ? triggerBtn.innerHTML : "";
+    const setBtnStatus = (txt, busy) => {
+      if (!triggerBtn) return;
+      triggerBtn.disabled = Boolean(busy);
+      triggerBtn.style.opacity = busy ? "0.88" : "1";
+      triggerBtn.textContent = txt;
+    };
+
+    try {
+      setBtnStatus("Iniciando generación de 30 láminas...", true);
+      const pdfBlob = await window.compileLive30PlatesBrandbookPdfBlob((cur, tot) => {
+        setBtnStatus(`Generando Lámina ${cur} de ${tot}...`, true);
+      });
+
+      setBtnStatus("✓ Manual PDF de 30 Láminas Listo", false);
+      setTimeout(() => {
+        if (triggerBtn && origHtml) triggerBtn.innerHTML = origHtml;
+      }, 3500);
+
+      if (typeof window.tbbDeliverFileNativeOrDownload === "function") {
+        await window.tbbDeliverFileNativeOrDownload(
+          pdfBlob,
+          fileName,
+          "application/pdf",
+          `Manual Oficial 30 Láminas — ${bName}`
+        );
+      } else {
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 30000);
+      }
+      return pdfBlob;
+    } catch (err) {
+      console.error("Error en compilación hoja por hoja de las 30 láminas:", err);
+      if (triggerBtn) {
+        triggerBtn.disabled = false;
+        triggerBtn.style.opacity = "1";
+        if (origHtml) triggerBtn.innerHTML = origHtml;
+      }
+      openInApp30PlatesViewer();
+      return null;
+    }
+  };
 
   // --- TURNO SOCRÁTICO DIRECTO CON GEMINI (CON CACHÉ DE IDEMPOTENCIA Y DEDUPLICACIÓN IN-FLIGHT) ---
   const _socraticTurnCache = new Map();

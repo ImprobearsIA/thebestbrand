@@ -32,13 +32,14 @@
       height: 794px;
       transform-origin: center center;
       flex-shrink: 0;
-      box-shadow: 0 14px 36px rgba(13,37,64,0.12);
-      border-radius: 8px;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 10px;
       overflow: hidden;
       background: #FFFFFF;
     }
     .benefic-plate,
-    .tbb-improbears-stage-scaler .benefic-plate {
+    .tbb-improbears-stage-scaler .benefic-plate,
+    .tbb-improbears-stage-scaler .tbb-plate {
       width: 1122px !important;
       min-width: 1122px !important;
       max-width: 1122px !important;
@@ -46,7 +47,7 @@
       min-height: 794px !important;
       max-height: 794px !important;
       margin: 0 !important;
-      background: #FFFFFF;
+      background: #FFFFFF !important;
       position: relative;
       overflow: hidden;
       display: flex;

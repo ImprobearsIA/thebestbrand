@@ -20649,7 +20649,7 @@
     <div class="tbb-splash-card">
       <div class="tbb-splash-pill">
         <span style="width:8px; height:8px; border-radius:999px; background:#FF7A00; display:inline-block; box-shadow:0 0 10px #FF7A00;"></span>
-        <span>THE BEST BRAND · YOUR BRAND, NOW!!! · V82.3</span>
+        <span>THE BEST BRAND · YOUR BRAND, NOW!!! · V82.4</span>
       </div>
       <div class="tbb-splash-orb-stage">
         <canvas id="tbbSplashAuraCanvas" width="448" height="448"></canvas>
@@ -23523,6 +23523,7 @@
             if (lblNext) lblNext.textContent = "Ir a Descargas";
 
             const activePlateMarkup = window.renderBeneficSinglePlateHTML(st.plateIdx, false);
+            const hasUserUploadedLogo = Boolean(cs.uploaded_logo_data_url || cs.uploaded_logo_svg_markup || window.step0State?.uploadedLogoDataUrl || window.step0State?.uploadedLogoSvgMarkup);
 
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:8px;">
@@ -23534,11 +23535,12 @@
                     <div style="font-family:var(--font-display); font-size:0.94rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                       ${curPlate.num}. ${curPlate.title}
                     </div>
-                    <div style="display:flex; align-items:center; gap:6px; margin-top:2px;">
+                    <div style="display:flex; align-items:center; gap:6px; margin-top:2px; flex-wrap:wrap;">
                       <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10B981;"></span>
-                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.66rem; font-weight:800; color:#047857; background:#ECFDF5; padding:1px 6px; border-radius:4px; border:1px solid #A7F3D0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:800; color:#047857; background:#ECFDF5; padding:1px 6px; border-radius:4px; border:1px solid #A7F3D0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                         ${curPlate.leadAuthor || "Consejo Metodológico"} · ${curPlate.auditVerdict || "DICTAMEN METODOLÓGICO: APROBADO"}
                       </span>
+                      ${hasUserUploadedLogo ? `<span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:800; color:#C2410C; background:#FFF7ED; padding:1px 6px; border-radius:4px; border:1px solid #FDBA74;">✓ TU LOGOTIPO OFICIAL INTEGRADO</span>` : ""}
                     </div>
                   </div>
                   <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; flex:1 1 auto; justify-content:flex-end;">
@@ -23551,14 +23553,14 @@
                     <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbState.plateIdx=(window.tbbState.plateIdx+1)%${totalPlates}; triggerAuraEmpatheticFeedback('input_plate_nav', 'Siguiente lámina', false); renderTbbZeroScrollStage();" style="padding:7px 10px !important; min-height:40px !important; font-size:0.75rem !important;">
                       Siguiente
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Descarga PDF 30 Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{window.openPrintable30PlatesBrandbook();}" style="padding:7px 12px !important; min-height:40px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Descargar o guardar las 30 láminas completas en archivo PDF">
-                      Descargar / Guardar PDF (30 Láminas)
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Descarga PDF 30 Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{window.openPrintable30PlatesBrandbook();}" style="padding:7px 12px !important; min-height:40px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Generar y guardar las 30 láminas completas hoja por hoja en archivo PDF">
+                      Exportar PDF (30 Láminas)
                     </button>
                   </div>
                 </div>
 
                 <!-- Lienzo Editorial en Curvas de la Lámina Activa (30 Láminas · Guía ImproBears C-00) -->
-                <div style="flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column;">
+                <div id="tbbStep6PlateViewport" style="flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column; position:relative;">
                   ${activePlateMarkup}
                 </div>
               </div>
@@ -23566,6 +23568,44 @@
             setTimeout(() => {
               if (typeof window.scaleImproBearsPlateInStage === "function") {
                 window.scaleImproBearsPlateInStage();
+              }
+              const brandSig = `${bName}|${(cs.uploaded_logo_data_url || "").slice(0, 48)}|${cs.primary_color || st.logoPriHex || ""}|${(cs.custom_business_type || "").slice(0, 24)}`;
+              if (window._tbbStep6PendingCeremony && window._tbbLastStep6SynthesizedSig !== brandSig) {
+                window._tbbStep6PendingCeremony = false;
+                window._tbbLastStep6SynthesizedSig = brandSig;
+                const vp = document.getElementById("tbbStep6PlateViewport");
+                if (vp && !document.getElementById("tbbStep6LiveAssemblyOverlay")) {
+                  const ov = document.createElement("div");
+                  ov.id = "tbbStep6LiveAssemblyOverlay";
+                  ov.style.cssText = "position:absolute;inset:0;background:rgba(255,255,255,0.94);backdrop-filter:blur(4px);z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;border-radius:12px;transition:opacity 0.28s ease;";
+                  ov.innerHTML = `
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.70rem;font-weight:800;color:#FF7A00;letter-spacing:1.4px;margin-bottom:6px;">SÍNTESIS EDITORIAL EN CURVAS · DIRECTIVA MAX C-00</div>
+                    <div style="font-family:'Montserrat',sans-serif;font-size:1.05rem;font-weight:900;color:#0D2540;margin-bottom:10px;text-align:center;">Construyendo las 30 Láminas de «${escapeHTML(bName)}»</div>
+                    <div id="tbbStep6AsmTxt" style="font-size:0.78rem;color:#475569;font-weight:700;margin-bottom:12px;">Integrando logotipo activo, paleta y retícula A4 Horizontal (01/30)...</div>
+                    <div style="width:260px;max-width:85%;height:8px;background:#E2E8F0;border-radius:999px;overflow:hidden;">
+                      <div id="tbbStep6AsmBar" style="width:6%;height:100%;background:linear-gradient(90deg,#0D2540,#FF7A00);border-radius:999px;transition:width 0.12s linear;"></div>
+                    </div>
+                  `;
+                  vp.appendChild(ov);
+                  let pStep = 1;
+                  const asmTimer = setInterval(() => {
+                    pStep = Math.min(30, pStep + 3);
+                    const bar = document.getElementById("tbbStep6AsmBar");
+                    const txt = document.getElementById("tbbStep6AsmTxt");
+                    if (bar) bar.style.width = Math.round((pStep / 30) * 100) + "%";
+                    if (txt) {
+                      const mItem = metaList[pStep - 1] || { title: "" };
+                      txt.textContent = `Maquetando Lámina ${String(pStep).padStart(2, "0")}/30 · ${mItem.title.slice(0, 38)}...`;
+                    }
+                    if (pStep >= 30) {
+                      clearInterval(asmTimer);
+                      setTimeout(() => {
+                        ov.style.opacity = "0";
+                        setTimeout(() => ov.remove(), 290);
+                      }, 180);
+                    }
+                  }, 135);
+                }
               }
             }, 30);
           } else {
@@ -24382,6 +24422,10 @@
         };
 
         // 3. Configurar Estado de Marca Oficial TheBestBrand (canvasState)
+        delete canvasState.uploaded_logo_data_url;
+        delete canvasState.uploaded_logo_svg_markup;
+        delete canvasState.uploaded_logo_colors;
+        canvasState.isOfficialAdminTbbPreset = true;
         canvasState.brandName = "TheBestBrand";
         canvasState.userLockedBrandName = true;
         canvasState.tagline = "YOUR BRAND, NOW!!!";
@@ -24520,9 +24564,14 @@
       };
 
       window.tbbJumpToStep = function (stepNum, subStepNum = 1) {
+        const prevStep = window.tbbState.step;
         window.tbbState.activeMode = "step";
         window.tbbState.step = Number(stepNum || 0);
         window.tbbState.subStep = Number(subStepNum || 1);
+        if (Number(stepNum) === 6 && Number(subStepNum || 1) === 1) {
+          if (prevStep !== 6) window.tbbState.plateIdx = 0;
+          window._tbbStep6PendingCeremony = true;
+        }
         if (stepNum >= 1) {
           window.currentStep = stepNum;
         }
@@ -24750,12 +24799,13 @@
     })();
   </script>
   <script src="/assets/vendor/opentype.min.js?v=1.3.4"></script>
-  <script src="/tbb-cloud-vector-outliner.js?v=82.3"></script>
-  <script src="/tbb-v80-brandbook-plates.js?v=82.3"></script>
-  <script src="/universal-brandbook-30-engine.js?v=82.3"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=82.3"></script>
-  <script src="/improbears-preset-engine.js?v=82.3"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=82.3"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=82.3"></script>
+  <script src="/assets/vendor/html2canvas.min.js?v=1.4.1"></script>
+  <script src="/tbb-cloud-vector-outliner.js?v=82.4"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=82.4"></script>
+  <script src="/universal-brandbook-30-engine.js?v=82.4"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=82.4"></script>
+  <script src="/improbears-preset-engine.js?v=82.4"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=82.4"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=82.4"></script>
 </body>
 </html>
