@@ -11,10 +11,11 @@ Sirve la aplicación interactiva completa en http://127.0.0.1:8000 y conecta tod
 
 import sys
 import os
-from dotenv import load_dotenv
-
-# Cargar variables de entorno locales (.env)
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../packages/brandbook-engine")))
 
