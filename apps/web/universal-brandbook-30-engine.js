@@ -2222,21 +2222,54 @@
     const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "The Best Brand";
     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "the_best_brand";
     
-    // Check if matching in CATALOG_30_MAP
-    if (window.CATALOG_30_MAP) {
+    const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
+    const uploadedUrl = (activeIt && activeIt.uploadedLogoDataUrl) || cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
+    const uploadedSvg = (activeIt && activeIt.uploadedLogoSvgMarkup) || cs.uploaded_logo_svg_markup || window.step0State?.uploadedLogoSvgMarkup || "";
+    const hasUploadedLogo = Boolean(uploadedUrl || uploadedSvg);
+    const hasGeminiCustom = Boolean(activeIt && activeIt.geminiCustomSvg && String(activeIt.geminiCustomSvg).trim().length > 10);
+
+    // Solo consultar catálogo estático si el usuario NO ha subido un logo propio y no hay iteración AI activa
+    if (!hasUploadedLogo && !hasGeminiCustom && window.CATALOG_30_MAP) {
       if (window.CATALOG_30_MAP[slug]) return window.CATALOG_30_MAP[slug];
       if (window.CATALOG_30_MAP[bName.toLowerCase()]) return window.CATALOG_30_MAP[bName.toLowerCase()];
       const altSlug = slug.replace(/_athletics|_ip|_soc|_trauma|_group|_lab|_master|_films|_solar|_dry|_consulting|_ingredients|_studio|_ai/g, "");
       if (window.CATALOG_30_MAP[altSlug]) return window.CATALOG_30_MAP[altSlug];
     }
 
-    const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
     const mods = (activeIt && activeIt.mods) || {};
     const priFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || cs.primary_font || "Montserrat";
     const secFont = "Avenir Next";
     const pal = extractColorsFromLogoState(activeIt, st);
-    const symCorePos = typeof window.synthesizeSystemicSymbol180 === "function" ? window.synthesizeSystemicSymbol180("bb_v80_pos") : "";
-    const symCoreNeg = typeof window.synthesizeSystemicSymbol180 === "function" ? window.synthesizeSystemicSymbol180("bb_v80_neg") : symCorePos;
+    
+    let symCorePos = "";
+    let symCoreNeg = "";
+    if (hasUploadedLogo && !hasGeminiCustom) {
+      if (uploadedSvg) {
+        let cleanSvg = uploadedSvg.trim();
+        if (!cleanSvg.startsWith("<svg") && !cleanSvg.startsWith("<g")) {
+          cleanSvg = `<g transform="translate(10,10)">${cleanSvg}</g>`;
+        }
+        symCorePos = cleanSvg;
+        symCoreNeg = (typeof toCaladoNegativeSvg === "function") ? toCaladoNegativeSvg(cleanSvg) : cleanSvg;
+      } else {
+        symCorePos = `<g transform="translate(10,10)"><image href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="10" y="10" width="160" height="160" preserveAspectRatio="xMidYMid meet" /></g>`;
+        symCoreNeg = `<g transform="translate(10,10)"><image href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="10" y="10" width="160" height="160" preserveAspectRatio="xMidYMid meet" style="filter:brightness(0) invert(1);" /></g>`;
+      }
+    } else {
+      symCorePos = typeof window.synthesizeSystemicSymbol180 === "function" ? window.synthesizeSystemicSymbol180("bb_v80_pos") : "";
+      symCoreNeg = typeof window.synthesizeSystemicSymbol180 === "function" ? window.synthesizeSystemicSymbol180("bb_v80_neg") : symCorePos;
+    }
+
+    // Si coincide con una marca del catálogo pero el usuario subió su logo, heredar los textos ricos pero inyectar el logo propio
+    if (hasUploadedLogo && window.CATALOG_30_MAP && window.CATALOG_30_MAP[slug]) {
+      const catObj = Object.assign({}, window.CATALOG_30_MAP[slug]);
+      catObj.svgCore = symCorePos;
+      catObj.svgCoreNeg = symCoreNeg;
+      catObj.isEstablished = true;
+      if (pal.pri) catObj.colors.pri = pal.pri;
+      if (pal.sec) catObj.colors.sec = pal.sec;
+      return catObj;
+    }
 
     return {
       name: bName,
@@ -2269,7 +2302,7 @@
       },
       primaryFont: priFont,
       secondaryFont: secFont,
-      isEstablished: false,
+      isEstablished: hasUploadedLogo,
       isMultibrand: /improbears/i.test(bName),
       svgCore: symCorePos,
       svgCoreNeg: symCoreNeg

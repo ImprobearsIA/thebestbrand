@@ -2025,9 +2025,14 @@ Instrucciones obligatorias:
     const bName = (rawName && !/^mi nueva marca$/i.test(rawName)) ? rawName.trim() : "The Best Brand";
     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "the_best_brand";
 
-    // Si es una marca del catálogo oficial de 30 empresarios y el usuario no ha personalizado un logo propio, devolver su ficha rica
     const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
-    if (!activeIt && window.CATALOG_30_MAP) {
+    const uploadedUrl = (activeIt && activeIt.uploadedLogoDataUrl) || cs.uploaded_logo_data_url || s0.uploadedLogoDataUrl || "";
+    const uploadedSvg = (activeIt && activeIt.uploadedLogoSvgMarkup) || cs.uploaded_logo_svg_markup || s0.uploadedLogoSvgMarkup || "";
+    const hasUploadedLogo = Boolean(uploadedUrl || uploadedSvg);
+    const hasGeminiCustom = Boolean(activeIt && activeIt.geminiCustomSvg && String(activeIt.geminiCustomSvg).trim().length > 10);
+
+    // Solo consultar catálogo estático si el usuario NO ha subido un logo propio y no hay iteración AI activa
+    if (!hasUploadedLogo && !hasGeminiCustom && window.CATALOG_30_MAP) {
       if (window.CATALOG_30_MAP[slug]) return window.CATALOG_30_MAP[slug];
       if (window.CATALOG_30_MAP[bName.toLowerCase()]) return window.CATALOG_30_MAP[bName.toLowerCase()];
     }
@@ -2063,20 +2068,49 @@ Instrucciones obligatorias:
     const secFont = cs.secondary_font || "Plus Jakarta Sans";
 
     // Isotipo vectorial puro calado 180x180 (NUNCA inyectar el lienzo doble 760x440 de vista previa)
-    const synthPair = buildSystemicSymbolPair("bb_v81_" + slug, "", "");
-    let pureSymbolPos = synthPair.pos;
-    let pureSymbolNeg = synthPair.neg;
-    if (!pureSymbolPos) {
-      const candidateSvg = cs.selected_symbol_only_svg || "";
-      const isPreviewCanvas760 = /viewBox\s*=\s*["']\s*0\s+0\s+760\s+440/i.test(candidateSvg) || candidateSvg.includes("App en proporción 1:1");
-      if (candidateSvg && !isPreviewCanvas760) {
-        pureSymbolPos = candidateSvg;
-        pureSymbolNeg = cs.selected_symbol_only_neg_svg || toCaladoNegativeSvg(candidateSvg);
+    let pureSymbolPos = "";
+    let pureSymbolNeg = "";
+
+    if (hasUploadedLogo && !hasGeminiCustom) {
+      if (uploadedSvg) {
+        let cleanSvg = uploadedSvg.trim();
+        if (!cleanSvg.startsWith("<svg") && !cleanSvg.startsWith("<g")) {
+          cleanSvg = `<g transform="translate(10,10)">${cleanSvg}</g>`;
+        }
+        pureSymbolPos = cleanSvg;
+        pureSymbolNeg = (typeof toCaladoNegativeSvg === "function") ? toCaladoNegativeSvg(cleanSvg) : cleanSvg;
       } else {
-        // Fallback calado: anillo (espacio negativo real) + núcleo, sin disco sólido de parche
-        pureSymbolPos = `<path d="M90 20 C128.7 20 160 51.3 160 90 C160 128.7 128.7 160 90 160 C51.3 160 20 128.7 20 90 C20 51.3 51.3 20 90 20 Z M90 46 C65.7 46 46 65.7 46 90 C46 114.3 65.7 134 90 134 C114.3 134 134 114.3 134 90 C134 65.7 114.3 46 90 46 Z" fill-rule="evenodd" fill="${pri}"/><circle cx="90" cy="90" r="22" fill="${acc}"/>`;
-        pureSymbolNeg = toCaladoNegativeSvg(pureSymbolPos);
+        pureSymbolPos = `<g transform="translate(10,10)"><image href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="10" y="10" width="160" height="160" preserveAspectRatio="xMidYMid meet" /></g>`;
+        pureSymbolNeg = `<g transform="translate(10,10)"><image href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="10" y="10" width="160" height="160" preserveAspectRatio="xMidYMid meet" style="filter:brightness(0) invert(1);" /></g>`;
       }
+    } else {
+      const synthPair = buildSystemicSymbolPair("bb_v81_" + slug, "", "");
+      pureSymbolPos = synthPair.pos;
+      pureSymbolNeg = synthPair.neg;
+      if (!pureSymbolPos) {
+        const candidateSvg = cs.selected_symbol_only_svg || "";
+        const isPreviewCanvas760 = /viewBox\s*=\s*["']\s*0\s+0\s+760\s+440/i.test(candidateSvg) || candidateSvg.includes("App en proporción 1:1");
+        if (candidateSvg && !isPreviewCanvas760) {
+          pureSymbolPos = candidateSvg;
+          pureSymbolNeg = cs.selected_symbol_only_neg_svg || toCaladoNegativeSvg(candidateSvg);
+        } else {
+          // Fallback calado: anillo (espacio negativo real) + núcleo, sin disco sólido de parche
+          pureSymbolPos = `<path d="M90 20 C128.7 20 160 51.3 160 90 C160 128.7 128.7 160 90 160 C51.3 160 20 128.7 20 90 C20 51.3 51.3 20 90 20 Z M90 46 C65.7 46 46 65.7 46 90 C46 114.3 65.7 134 90 134 C114.3 134 134 114.3 134 90 C134 65.7 114.3 46 90 46 Z" fill-rule="evenodd" fill="${pri}"/><circle cx="90" cy="90" r="22" fill="${acc}"/>`;
+          pureSymbolNeg = toCaladoNegativeSvg(pureSymbolPos);
+        }
+      }
+    }
+
+    // Si coincide con una marca del catálogo pero el usuario subió su propio logo, heredar los textos ricos pero inyectar el logo propio
+    if (hasUploadedLogo && window.CATALOG_30_MAP && (window.CATALOG_30_MAP[slug] || window.CATALOG_30_MAP[bName.toLowerCase()])) {
+      const baseCat = window.CATALOG_30_MAP[slug] || window.CATALOG_30_MAP[bName.toLowerCase()];
+      const catObj = Object.assign({}, baseCat);
+      catObj.svgCore = pureSymbolPos;
+      catObj.svgCoreNeg = pureSymbolNeg;
+      catObj.isEstablished = true;
+      if (pri) catObj.colors.pri = pri;
+      if (sec) catObj.colors.sec = sec;
+      return catObj;
     }
 
     const tpB = (window.tpExtractedItems && Array.isArray(window.tpExtractedItems.before) && window.tpExtractedItems.before.length)

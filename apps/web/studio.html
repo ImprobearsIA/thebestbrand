@@ -16721,6 +16721,7 @@
               idx: Number(it.idx || idx + 1),
               isUploadedUserLogo: Boolean(it.isUploadedUserLogo),
               uploadedLogoDataUrl: it.uploadedLogoDataUrl || "",
+              uploadedLogoSvgMarkup: it.uploadedLogoSvgMarkup || "",
               paradigm: it.paradigm || "volumetric_glass",
               archetype: it.archetype || "apple_liquid_wings",
               pri: it.pri || it.priHex || window.tbbState.logoPriHex || "#1D4ED8",
@@ -21422,8 +21423,33 @@
         const sy = scale * Number(mods.scaleY || 1.0);
         const rot = Number(mods.rotateDeg || 0);
 
-        // Si la marca es The Best Brand, emitir el Isotipo Maestro Oficial: Alas de Convergencia & Núcleo Central TB
-        const isTBB = /the\s*best\s*brand/i.test(brandName) || !cs.brandName || /^mi nueva marca$/i.test(cs.brandName);
+        const uploadedDataUrl = (activeIt && activeIt.uploadedLogoDataUrl) || cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
+        const uploadedSvg = (activeIt && activeIt.uploadedLogoSvgMarkup) || cs.uploaded_logo_svg_markup || window.step0State?.uploadedLogoSvgMarkup || "";
+        const hasUploadedLogo = Boolean(uploadedDataUrl || uploadedSvg);
+        const hasGeminiEvolution = Boolean(activeIt && activeIt.geminiCustomSvg && String(activeIt.geminiCustomSvg).trim().length > 10);
+
+        // REGLA CRÍTICA: Si el usuario subió un logo propio y no ha seleccionado una evolución AI explícita,
+        // el logotipo subido tiene PRIORIDAD ABSOLUTA sobre cualquier preset o arquetipo inventado.
+        if (hasUploadedLogo && !hasGeminiEvolution) {
+          let innerCore = "";
+          if (uploadedSvg) {
+            let cleanSvg = uploadedSvg.trim();
+            if (!cleanSvg.startsWith("<svg") && !cleanSvg.startsWith("<g")) {
+              cleanSvg = `<g transform="translate(10,10)">${cleanSvg}</g>`;
+            }
+            innerCore = cleanSvg;
+          } else {
+            innerCore = `<image href="${uploadedDataUrl}" xlink:href="${uploadedDataUrl}" x="10" y="10" width="160" height="160" preserveAspectRatio="xMidYMid meet" />`;
+          }
+          return `
+            <g transform="translate(90,90) rotate(${rot}) scale(${sx}, ${sy}) translate(-90,-90)">
+              ${innerCore}
+            </g>
+          `;
+        }
+
+        // Si la marca es The Best Brand y NO hay logo subido por el usuario, emitir el Isotipo Maestro Oficial: Alas de Convergencia & Núcleo Central TB
+        const isTBB = (/the\s*best\s*brand/i.test(brandName) || !cs.brandName || /^mi nueva marca$/i.test(cs.brandName)) && !hasUploadedLogo;
         if (isTBB) {
           const uidTbb = "tbb_def_" + uid;
           return `
@@ -21547,9 +21573,8 @@
           : "";
 
         let coreMarkup = "";
-        const uploadedDataUrl = (activeIt && activeIt.uploadedLogoDataUrl) || cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
         const isUploadedBaseIter = Boolean(
-          uploadedDataUrl &&
+          hasUploadedLogo &&
           (
             archetype === "uploaded_user_logo" ||
             (activeIt && activeIt.isUploadedUserLogo) ||
@@ -21557,11 +21582,19 @@
           )
         );
         if (isUploadedBaseIter) {
-          coreMarkup = `
-            <g>
-              <image href="${uploadedDataUrl}" x="12" y="12" width="156" height="156" preserveAspectRatio="xMidYMid meet" />
-            </g>
-          `;
+          if (uploadedSvg) {
+            let cleanSvg = uploadedSvg.trim();
+            if (!cleanSvg.startsWith("<svg") && !cleanSvg.startsWith("<g")) {
+              cleanSvg = `<g transform="translate(10,10)">${cleanSvg}</g>`;
+            }
+            coreMarkup = cleanSvg;
+          } else {
+            coreMarkup = `
+              <g>
+                <image href="${uploadedDataUrl}" xlink:href="${uploadedDataUrl}" x="10" y="10" width="160" height="160" preserveAspectRatio="xMidYMid meet" />
+              </g>
+            `;
+          }
         } else if (geminiCustomSvg && String(geminiCustomSvg).trim().length > 10) {
           coreMarkup = window.sanitizeAndNamespaceGeminiSvg(geminiCustomSvg, uid);
         } else {
@@ -21635,10 +21668,12 @@
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const s0 = window.step0State || {};
         const dataUrl = cs.uploaded_logo_data_url || s0.uploadedLogoDataUrl || "";
-        if (!dataUrl || !st) return;
-        const mode = cs.existing_logo_mode || s0.existingLogoMode || "evolve";
-        const pri = st.logoPriHex || "#1D4ED8";
-        const sec = st.logoSecHex || "#0D2540";
+        const svgMarkup = cs.uploaded_logo_svg_markup || s0.uploadedLogoSvgMarkup || "";
+        if (!dataUrl && !svgMarkup) return;
+        if (!st) return;
+        const mode = cs.existing_logo_mode || s0.existingLogoMode || "keep";
+        const pri = st.logoPriHex || (cs.uploaded_logo_colors && cs.uploaded_logo_colors[0]) || "#0D2540";
+        const sec = st.logoSecHex || (cs.uploaded_logo_colors && cs.uploaded_logo_colors[1]) || "#426EAE";
         const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca";
 
         const baseIterObj = {
@@ -21646,21 +21681,22 @@
           isInitialSystemic: false,
           isUploadedUserLogo: true,
           uploadedLogoDataUrl: dataUrl,
+          uploadedLogoSvgMarkup: svgMarkup,
           paradigm: st.logoParadigm || "volumetric_glass",
           archetype: "uploaded_user_logo",
-          conceptLabel: mode === "keep" ? "Logo Actual (Oficial)" : "Tu Logo Actual (Base)",
+          conceptLabel: "Mi Logotipo Oficial",
           pri: pri,
           sec: sec,
           scale: 1.0,
           darkBg: Boolean(st.logoDarkBg),
-          fontFamily: cs.primary_font || st.selectedFontFamily || "Plus Jakarta Sans",
+          fontFamily: cs.primary_font || st.selectedFontFamily || "Montserrat",
           layout: "horizontal",
           mods: {},
           geminiCustomSvg: "",
           svgOverlayAdditions: "",
-          note: mode === "keep" ? `Logo actual conservado para ${bName}` : `Logo actual cargado como base para evolucionar ${bName}`,
-          prompt: `Logotipo actual subido por el usuario para ${bName} con paleta extraída ${pri} y ${sec} (${mode === "keep" ? "Modo: Mantener original" : "Modo: Tomar como base para evolucionar con IA"}).`,
-          geminiPrompt40w: `Logotipo actual subido por el usuario para ${bName} con paleta extraída ${pri} y ${sec} (${mode === "keep" ? "Modo: Mantener original" : "Modo: Tomar como base para evolucionar con IA"}).`
+          note: `Logotipo oficial cargado por el usuario para ${bName}`,
+          prompt: `Logotipo oficial subido por el usuario para ${bName} con paleta ${pri} y ${sec}.`,
+          geminiPrompt40w: `Logotipo oficial subido por el usuario para ${bName} con paleta ${pri} y ${sec}.`
         };
 
         if (!Array.isArray(st.logoIterations) || st.logoIterations.length === 0) {
@@ -21668,7 +21704,8 @@
           st.logoIterationIndex = 1;
         } else {
           st.logoIterations[0] = Object.assign({}, st.logoIterations[0], baseIterObj);
-          if (mode === "keep") {
+          // Si el usuario no está visualizando activamente una propuesta generada por Gemini, mantener en foco la Iteración #1
+          if (!st.logoIterations[st.logoIterationIndex - 1]?.geminiCustomSvg) {
             st.logoIterationIndex = 1;
           }
         }
@@ -21677,45 +21714,46 @@
       window.tbbHandleExistingLogoUpload = function (inputEl) {
         const file = inputEl && inputEl.files && inputEl.files[0];
         if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function (ev) {
-          const rawDataUrl = String(ev.target?.result || "");
-          if (!rawDataUrl) return;
-          const img = new Image();
-          img.crossOrigin = "anonymous";
-          img.onload = function () {
-            try {
-              const maxDim = 220;
-              const cnv = document.createElement("canvas");
-              cnv.width = maxDim;
-              cnv.height = maxDim;
-              const ctx = cnv.getContext("2d");
-              ctx.clearRect(0, 0, maxDim, maxDim);
-              const iw = img.naturalWidth || img.width || maxDim;
-              const ih = img.naturalHeight || img.height || maxDim;
-              const scale = Math.min((maxDim - 16) / iw, (maxDim - 16) / ih);
-              const dw = Math.round(iw * scale);
-              const dh = Math.round(ih * scale);
-              const dx = Math.round((maxDim - dw) / 2);
-              const dy = Math.round((maxDim - dh) / 2);
-              ctx.drawImage(img, dx, dy, dw, dh);
 
-              const imgData = ctx.getImageData(0, 0, maxDim, maxDim);
-              const [extractedPri, extractedSec] = window.tbbExtractDominantColorsFromImageData(imgData);
-              const compactPngUrl = cnv.toDataURL("image/png");
+        const isSvg = file.type === "image/svg+xml" || /\.svg$/i.test(file.name);
+
+        if (isSvg) {
+          const reader = new FileReader();
+          reader.onload = function (ev) {
+            try {
+              const svgText = String(ev.target?.result || "");
+              if (!svgText) return;
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(svgText, "image/svg+xml");
+              const svgEl = doc.querySelector("svg");
+              let innerMarkup = svgText;
+              if (svgEl) {
+                const vb = svgEl.getAttribute("viewBox") || ("0 0 " + (svgEl.getAttribute("width") || 160) + " " + (svgEl.getAttribute("height") || 160));
+                innerMarkup = `<svg viewBox="${vb}" width="160" height="160" x="10" y="10" preserveAspectRatio="xMidYMid meet">${svgEl.innerHTML}</svg>`;
+              }
+
+              // Extraer paleta sugerida de colores hex del SVG
+              const hexMatches = svgText.match(/#(?:[0-9a-fA-F]{3}){1,2}\b/g) || [];
+              const uniqueHex = Array.from(new Set(hexMatches.map(h => h.toUpperCase())))
+                .filter(h => h !== "#FFFFFF" && h !== "#FFF" && h !== "#000000" && h !== "#000");
+              const extractedPri = uniqueHex[0] || "#0D2540";
+              const extractedSec = uniqueHex[1] || "#426EAE";
+
+              const compactUrl = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgText)));
 
               if (!window.step0State) window.step0State = { goal: "redesign", assets: "has_name" };
               window.step0State.assets = "has_name";
-              const defaultMode = window.step0State.existingLogoMode || (window.step0State.goal === "redesign" ? "evolve" : "keep");
-              window.step0State.existingLogoMode = defaultMode;
-              window.step0State.uploadedLogoDataUrl = compactPngUrl;
+              window.step0State.existingLogoMode = "keep";
+              window.step0State.uploadedLogoDataUrl = compactUrl;
+              window.step0State.uploadedLogoSvgMarkup = innerMarkup;
               window.step0State.uploadedLogoColors = [extractedPri, extractedSec];
 
               const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-              cs.uploaded_logo_data_url = compactPngUrl;
-              cs.existing_logo_mode = defaultMode;
+              cs.uploaded_logo_data_url = compactUrl;
+              cs.uploaded_logo_svg_markup = innerMarkup;
+              cs.existing_logo_mode = "keep";
               cs.uploaded_logo_colors = [extractedPri, extractedSec];
-              cs.selected_colors_hex = ["#FFFFFF", "#090D16", extractedPri, extractedSec];
+              cs.selected_colors_hex = ["#FAF8F5", "#090D16", extractedPri, extractedSec];
 
               const st = window.tbbState;
               if (st) {
@@ -21730,9 +21768,74 @@
               }
               window.triggerAuraEmpatheticFeedback(
                 "input_seed",
-                defaultMode === "keep"
-                  ? `Logo actual cargado para mantenerlo (Colores: ${extractedPri} y ${extractedSec})`
-                  : `Logo actual cargado como base para evolucionarlo (Colores: ${extractedPri} y ${extractedSec})`,
+                `Logotipo vectorial SVG oficial cargado exitosamente. Colores identificados: ${extractedPri} y ${extractedSec}.`,
+                false
+              );
+              window.renderTbbZeroScrollStage();
+            } catch (err) {
+              console.warn("Error procesando SVG subido:", err);
+            }
+          };
+          reader.readAsText(file);
+          return;
+        }
+
+        // Archivos Raster (PNG, JPG, JPEG, WEBP)
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+          const rawDataUrl = String(ev.target?.result || "");
+          if (!rawDataUrl) return;
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.onload = function () {
+            try {
+              const maxDim = 1024; // Alta resolución para retina y exportación PDF/print nítida
+              const cnv = document.createElement("canvas");
+              cnv.width = maxDim;
+              cnv.height = maxDim;
+              const ctx = cnv.getContext("2d");
+              ctx.clearRect(0, 0, maxDim, maxDim);
+              const iw = img.naturalWidth || img.width || maxDim;
+              const ih = img.naturalHeight || img.height || maxDim;
+              const scale = Math.min((maxDim - 24) / iw, (maxDim - 24) / ih);
+              const dw = Math.round(iw * scale);
+              const dh = Math.round(ih * scale);
+              const dx = Math.round((maxDim - dw) / 2);
+              const dy = Math.round((maxDim - dh) / 2);
+              ctx.drawImage(img, dx, dy, dw, dh);
+
+              const imgData = ctx.getImageData(0, 0, maxDim, maxDim);
+              const [extractedPri, extractedSec] = window.tbbExtractDominantColorsFromImageData(imgData);
+              const compactPngUrl = cnv.toDataURL("image/png");
+
+              if (!window.step0State) window.step0State = { goal: "redesign", assets: "has_name" };
+              window.step0State.assets = "has_name";
+              window.step0State.existingLogoMode = "keep";
+              window.step0State.uploadedLogoDataUrl = compactPngUrl;
+              delete window.step0State.uploadedLogoSvgMarkup;
+              window.step0State.uploadedLogoColors = [extractedPri, extractedSec];
+
+              const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+              cs.uploaded_logo_data_url = compactPngUrl;
+              delete cs.uploaded_logo_svg_markup;
+              cs.existing_logo_mode = "keep";
+              cs.uploaded_logo_colors = [extractedPri, extractedSec];
+              cs.selected_colors_hex = ["#FAF8F5", "#090D16", extractedPri, extractedSec];
+
+              const st = window.tbbState;
+              if (st) {
+                st.logoPriHex = extractedPri;
+                st.logoSecHex = extractedSec;
+                st._uploadedLogoEvolvedOnce = false;
+              }
+
+              window.tbbSyncUploadedLogoIntoIterations();
+              if (typeof saveBrandSessionToLocalStorage === "function") {
+                saveBrandSessionToLocalStorage(false, true);
+              }
+              window.triggerAuraEmpatheticFeedback(
+                "input_seed",
+                `Logotipo oficial cargado en alta definición. Colores identificados: ${extractedPri} y ${extractedSec}.`,
                 false
               );
               window.renderTbbZeroScrollStage();
@@ -21766,11 +21869,13 @@
       window.tbbClearExistingLogo = function () {
         if (window.step0State) {
           delete window.step0State.uploadedLogoDataUrl;
+          delete window.step0State.uploadedLogoSvgMarkup;
           delete window.step0State.uploadedLogoColors;
           delete window.step0State.existingLogoMode;
         }
         if (typeof canvasState === "object" && canvasState) {
           delete canvasState.uploaded_logo_data_url;
+          delete canvasState.uploaded_logo_svg_markup;
           delete canvasState.uploaded_logo_colors;
           delete canvasState.existing_logo_mode;
         }
@@ -21785,6 +21890,7 @@
         }
         window.triggerAuraEmpatheticFeedback("input_seed", "Lienzo de logotipo reiniciado", false);
         window.renderTbbZeroScrollStage();
+      };
       };
 
       window.tbbTriggerEvolutionFromUploadedLogo = function (customNote) {
@@ -22582,7 +22688,7 @@
             `;
           } else if (st.subStep === 2) {
             const uploadedLogoUrl = cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
-            const existingLogoMode = cs.existing_logo_mode || window.step0State?.existingLogoMode || (curGoal === "redesign" ? "evolve" : "keep");
+            const existingLogoMode = cs.existing_logo_mode || window.step0State?.existingLogoMode || "keep";
             const extColors = cs.uploaded_logo_colors || window.step0State?.uploadedLogoColors || [st.logoPriHex || "#1D4ED8", st.logoSecHex || "#0D2540"];
             const hasActiveNameOrLogo = Boolean(curAssets !== "none" || uploadedLogoUrl || (curName && curName.trim().length > 0));
             stage.innerHTML = `
@@ -22629,7 +22735,7 @@
                         Subir mi Logo Actual (.PNG, .JPG, .SVG)
                       </button>
                       <div style="font-size:0.71rem; color:#475569; font-weight:600; text-align:center; line-height:1.25;">
-                        Si lo subes, podrás mantenerlo tal cual o pedirle al motor generador que lo tome como base para evolucionarlo.
+                        Si lo subes, el motor lo mantendrá como tu logotipo oficial en todo el recorrido y en las 30 láminas.
                       </div>
                     ` : `
                       <div style="display:flex; align-items:center; gap:10px; background:#FFFFFF; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px;">
@@ -22642,6 +22748,9 @@
                             <span style="display:inline-flex; align-items:center; gap:3px;"><span style="width:10px; height:10px; border-radius:50%; background:${extColors[1] || '#0D2540'}; display:inline-block; border:1px solid rgba(0,0,0,0.15);"></span>${extColors[1] || '#0D2540'}</span>
                           </div>
                         </div>
+                      </div>
+                      <div style="font-size:0.71rem; color:#059669; font-weight:800; background:#ECFDF5; border:1px solid #A7F3D0; border-radius:8px; padding:4px 8px; text-align:center;">
+                        ✓ Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas
                       </div>
                       <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px;">
                         <button type="button" class="tbb-duo-btn ${existingLogoMode === 'keep' ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSetExistingLogoMode('keep')" style="min-height:38px !important; padding:5px 8px !important; font-size:0.75rem !important;">
@@ -23153,19 +23262,9 @@
             // Sub-vista 5.2: Lienzo de Logotipo a Pantalla Completa + Prompt <=40 palabras + Cuadro Único de Iteración (Cero Scroll)
             const firstIt = st.logoIterations[0];
             const seedIdeaTrim = String(cs.step4_seed_idea || "").trim();
+            // Nota: Si el usuario subió su logo, se preserva intacto en Iteración #1.
+            // La evolución AI solo se activa cuando el usuario presiona explícitamente "Evolucionar mi Logo" o "Iterar con Gemini".
             if (
-              uploadedLogoUrl &&
-              existingLogoMode === "evolve" &&
-              st.logoIterations.length === 1 &&
-              !st._uploadedLogoEvolvedOnce &&
-              !st.geminiBusy &&
-              typeof window.tbbTriggerEvolutionFromUploadedLogo === "function"
-            ) {
-              st._uploadedLogoEvolvedOnce = true;
-              setTimeout(() => {
-                window.tbbTriggerEvolutionFromUploadedLogo();
-              }, 50);
-            } else if (
               !uploadedLogoUrl &&
               st.logoIterations.length === 1 &&
               firstIt &&
@@ -23870,8 +23969,13 @@
         st.logoIterationIndex = nextIdx;
         const mergedMods = Object.assign({}, (prevIt && prevIt.mods) || {}, customMods || {});
         const fontFam = mergedMods.fontFamily || (prevIt && prevIt.fontFamily) || st.selectedFontFamily || cs.primary_font || "Plus Jakarta Sans";
+        const isPrevUploaded = Boolean(prevIt && prevIt.isUploadedUserLogo);
+        const resolvedCustomSvg = inheritCustomSvg !== undefined ? inheritCustomSvg : ((prevIt && prevIt.geminiCustomSvg) || "");
         const newEntry = {
           idx: nextIdx,
+          isUploadedUserLogo: isPrevUploaded && !resolvedCustomSvg,
+          uploadedLogoDataUrl: (isPrevUploaded && !resolvedCustomSvg) ? (prevIt.uploadedLogoDataUrl || cs.uploaded_logo_data_url || "") : "",
+          uploadedLogoSvgMarkup: (isPrevUploaded && !resolvedCustomSvg) ? (prevIt.uploadedLogoSvgMarkup || cs.uploaded_logo_svg_markup || "") : "",
           paradigm: st.logoParadigm,
           archetype: chosenArch,
           conceptLabel: inheritConceptLabel || (prevIt && prevIt.conceptLabel) || "",
@@ -23884,7 +23988,7 @@
           fontFamily: fontFam,
           layout: mergedMods.layout || (prevIt && prevIt.layout) || "horizontal",
           mods: mergedMods,
-          geminiCustomSvg: inheritCustomSvg !== undefined ? inheritCustomSvg : ((prevIt && prevIt.geminiCustomSvg) || ""),
+          geminiCustomSvg: resolvedCustomSvg,
           svgOverlayAdditions: inheritOverlaySvg !== undefined ? inheritOverlaySvg : ((prevIt && prevIt.svgOverlayAdditions) || ""),
           note: noteText || `Iteración #${nextIdx}`,
           prompt: "",
