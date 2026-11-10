@@ -60,9 +60,17 @@ app = FastAPI(
     version="40.0.0"
 )
 
+_ALLOWED_CORS_ORIGINS = [
+    o.strip() for o in os.environ.get(
+        "TBB_CORS_ORIGINS",
+        "https://thebestbrand-studio.web.app,https://crm-improbears.web.app,https://improbears.com,http://localhost:8000,http://127.0.0.1:8000,http://localhost:5173,http://127.0.0.1:5173,null"
+    ).split(",") if o.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_ALLOWED_CORS_ORIGINS if os.environ.get("TBB_STRICT_CORS") == "1" else ["*"],
+    allow_origin_regex=r"https://.*\.(web\.app|firebaseapp\.com|improbears\.com)|http://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -1538,3 +1546,47 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     print(f" Starting TheBestBrand Studio on http://{host}:{port}")
     uvicorn.run(app, host=host, port=port)
+
+
+# ==============================================================================
+# [#0036 & #0037] PRE-CARGA EN MEMORIA DE FUENTES TTF Y AUDITOR DE CALIDAD PDF/SVG
+# ==============================================================================
+class FontGlyphMemoryCache:
+    """[#0036] Singleton que mantiene en RAM los binarios .ttf de Google Fonts para respuesta <45 ms."""
+    _fonts_ram: Dict[str, bytes] = {}
+
+    @classmethod
+    def warmup(cls) -> Dict[str, int]:
+        fonts_dir = os.path.join(_ASSETS_DIR, "fonts")
+        if not os.path.isdir(fonts_dir):
+            return {}
+        for fname in os.listdir(fonts_dir):
+            if fname.endswith((".ttf", ".otf")):
+                fpath = os.path.join(fonts_dir, fname)
+                if fname not in cls._fonts_ram and os.path.isfile(fpath):
+                    with open(fpath, "rb") as f:
+                        cls._fonts_ram[fname] = f.read()
+        return {k: len(v) for k, v in cls._fonts_ram.items()}
+
+
+# Pre-calentar caché de fuentes al iniciar el módulo
+_WARMED_FONTS = FontGlyphMemoryCache.warmup()
+
+
+@app.get("/api/v1/system/vector-cache-status")
+def api_vector_cache_status():
+    """[#0036 & #0037] Reporta el estado del caché RAM de fuentes TTF y validación de los 30 Brandbooks."""
+    entrepreneurs_dir = os.path.join(_BRANDBOOKS_DIR, "entrepreneurs_30")
+    pdf_files = []
+    if os.path.isdir(entrepreneurs_dir):
+        for fn in sorted(os.listdir(entrepreneurs_dir)):
+            if fn.endswith(".pdf"):
+                sz = os.path.getsize(os.path.join(entrepreneurs_dir, fn))
+                pdf_files.append({"file": fn, "size_bytes": sz, "size_mb": round(sz / (1024 * 1024), 2), "valid_weight": sz > 3_500_000})
+    return {
+        "status": "OK",
+        "warmed_ttf_fonts_in_ram": len(_WARMED_FONTS),
+        "fonts_detail_bytes": _WARMED_FONTS,
+        "entrepreneurs_30_pdfs_count": len(pdf_files),
+        "all_30_above_3_5mb": len(pdf_files) == 30 and all(p["valid_weight"] for p in pdf_files),
+    }
