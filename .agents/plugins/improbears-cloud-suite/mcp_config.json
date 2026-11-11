@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "Neon": {
+      "url": "https://mcp.neon.tech/mcp"
+    },
+    "google-stitch": {
+      "command": "python3",
+      "args": [
+        ".agents/plugins/improbears-cloud-suite/scripts/improbears_superpowers_mcp_server.py"
+      ]
+    },
+    "notebooklm-studio": {
+      "command": "python3",
+      "args": [
+        ".agents/plugins/improbears-cloud-suite/scripts/improbears_superpowers_mcp_server.py"
+      ]
+    },
+    "improbears-bridge": {
+      "command": "python3",
+      "args": [
+        ".agents/plugins/improbears-cloud-suite/scripts/improbears_bridge_mcp_server.py"
+      ]
+    }
+  }
+}
