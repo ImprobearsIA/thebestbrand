@@ -341,61 +341,105 @@
         color: #64748B;
       }
 
-      /* COMPONENTES EDITORIALES EN CURVAS ASIMÉTRICAS (DIRECTIVA MAX C-00 · CERO SOMBRAS GRISES · DENSIDAD EDITORIAL RICA) */
+      /* FLUJO EDITORIAL ABIERTO ESTILO REVISTA DE AUTOR (DIRECTIVA MAX C-00 · CERO CAJAS RÍGIDAS · CERO SOMBRAS GRISES · LECTURA AMPLIA) */
       .tbb-card {
         position: relative;
         z-index: 2;
-        background: #FFFFFF;
-        border: 1.5px solid #E2E8F0;
-        border-radius: 16px 32px 16px 16px;
-        padding: 20px 24px;
+        background: transparent !important;
+        border-right: none !important;
+        border-bottom: none !important;
+        border-top: 1px solid rgba(203, 213, 225, 0.65);
+        border-left: none;
+        border-radius: 0 !important;
+        padding: 14px 8px 12px 18px;
         box-shadow: none !important;
       }
       .tbb-card-title {
         font-family: 'Montserrat', sans-serif;
         font-weight: 800;
-        font-size: 16.5px;
+        font-size: 18px;
         color: #0D2540;
         letter-spacing: 0px;
         margin-bottom: 8px;
-        line-height: 1.3;
+        line-height: 1.28;
         display: block;
       }
       .tbb-card-body {
-        font-size: 13.8px;
-        line-height: 1.58;
-        color: #334155;
+        font-size: 15.4px;
+        line-height: 1.64;
+        color: #1E293B;
       }
 
-      /* MARCO VISUAL CURVO ASIMÉTRICO C-00 PARA CAPTURAS DE APP E ILUSTRACIONES GOOGLE FLOW */
+      /* BLOQUES EDITORIALES FLUIDOS PARA INTEGRACIÓN TEXTO + FOTOGRAFÍA */
+      .tbb-editorial-kicker {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11.5px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        margin-bottom: 6px;
+        display: block;
+      }
+      .tbb-editorial-lead {
+        font-size: 22.5px;
+        line-height: 1.36;
+        font-weight: 900;
+        color: #090D16;
+        margin: 0 0 12px 0;
+      }
+      .tbb-editorial-copy {
+        font-size: 15.8px;
+        line-height: 1.68;
+        color: #1E293B;
+        margin: 0;
+      }
+      .tbb-editorial-divider {
+        height: 1px;
+        background: linear-gradient(90deg, #CBD5E1 0%, rgba(203,213,225,0.08) 100%);
+        border: none;
+        margin: 16px 0;
+      }
+      .tbb-editorial-pillar {
+        padding: 8px 4px 8px 16px;
+        border-left: 3px solid #0D2540;
+      }
+
+      /* MARCO FOTOGRÁFICO EDITORIAL CON PROPORCIÓN BLOQUEADA 4:3 (CERO DEFORMACIÓN NI ESTIRAMIENTO) */
       .tbb-visual-frame {
         position: relative;
         z-index: 2;
-        border-radius: 18px 42px 18px 18px;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        max-height: 396px;
+        align-self: center;
+        border-radius: 18px 48px 18px 18px;
         overflow: hidden;
-        border: 1.5px solid #CBD5E1;
+        border: none;
+        border-bottom: 4px solid #FF7A00;
         background: #F8FAFC;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: flex-end;
       }
       .tbb-visual-frame img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center top;
+        position: absolute;
+        inset: 0;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center 22% !important;
         display: block;
       }
       .tbb-visual-caption {
-        position: absolute;
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-        background: rgba(255, 255, 255, 0.94);
-        border: 1px solid #E2E8F0;
-        border-radius: 10px 20px 10px 10px;
-        padding: 8px 14px;
-        font-size: 11.5px;
+        position: relative;
+        z-index: 3;
+        margin: 0 14px 12px 14px;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-left: 3px solid #FF7A00;
+        border-radius: 6px 16px 6px 6px;
+        padding: 7px 14px;
+        font-size: 12px;
         font-weight: 700;
         color: #0F172A;
         display: flex;
@@ -406,14 +450,17 @@
       .tbb-kpi-strip {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-top: 12px;
+        gap: 20px;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1.5px solid #E2E8F0;
       }
       .tbb-kpi-pill {
-        background: #FAF8F5;
-        border: 1px solid #E6E6E6;
-        border-radius: 12px 22px 12px 12px;
-        padding: 10px 14px;
+        background: transparent;
+        border: none;
+        border-left: 3px solid #CBD5E1;
+        border-radius: 0;
+        padding: 4px 8px 4px 14px;
       }
 
       .tbb-grid-2col {
@@ -421,7 +468,7 @@
         z-index: 2;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 22px;
+        gap: 34px;
         flex: 1;
       }
       .tbb-grid-3col {
@@ -429,7 +476,7 @@
         z-index: 2;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
+        gap: 26px;
         flex: 1;
       }
       .tbb-grid-4col {
@@ -437,42 +484,42 @@
         z-index: 2;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
+        gap: 22px;
         flex: 1;
       }
 
       .tbb-swatch {
         position: relative;
         z-index: 2;
-        border-radius: 16px 30px 16px 16px;
-        padding: 16px;
-        background: #FFFFFF;
-        border: 1.5px solid #E2E8F0;
+        padding: 8px 4px;
+        background: transparent;
+        border: none;
         box-shadow: none !important;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 14px;
       }
       .tbb-swatch-box {
         width: 100%;
-        height: 118px;
-        border-radius: 12px 24px 12px 12px;
+        height: 150px;
+        border-radius: 16px 38px 16px 16px;
         border: 1px solid rgba(0,0,0,0.08);
       }
       .tbb-swatch-meta {
-        font-size: 12.5px;
-        line-height: 1.55;
+        font-size: 14px;
+        line-height: 1.62;
         color: #1E293B;
+        padding-left: 12px;
+        border-left: 3px solid #E2E8F0;
       }
 
       .tbb-tp-pill {
-        border-left: 4px solid #0D2540;
-        padding: 12px 16px;
-        background: #FAF8F5;
-        border-radius: 0 16px 10px 0;
-        margin-bottom: 10px;
-        font-size: 13px;
-        line-height: 1.5;
+        border-left: 3px solid #0D2540;
+        padding: 10px 14px;
+        background: transparent;
+        margin-bottom: 12px;
+        font-size: 15px;
+        line-height: 1.56;
       }
     `;
   }
@@ -518,57 +565,57 @@
     // Generar la Terna de Logos Profesional
     const suite = generateTriFoldLogoSuite(brand);
 
-    // Resolver imágenes de capítulos: Capturas Reales de la App (para TheBestBrand/SaaS) o Ilustraciones Google Flow / Editorial Vector
+    // Resolver fotografías editoriales realistas 4:3 de capítulos (o Capturas Reales de la App para TheBestBrand)
     const isTbbAppBrand = /^the_?best_?brand$/i.test(brand.slug || bName) && !brand.hasUploadedLogo;
-    const flowCacheKey = `${brand.slug || "marca"}|${(brand.giro || "").slice(0, 32)}`;
-    const flowVisuals = (typeof window !== "undefined" && window._tbbFlowVisualsCache && window._tbbFlowVisualsCache[flowCacheKey]) || {};
+    const flowCacheKey = `photo_v85|${brand.slug || "marca"}|${(brand.giro || "").slice(0, 32)}`;
+    const legacyFlowKey = `${brand.slug || "marca"}|${(brand.giro || "").slice(0, 32)}`;
+    const flowVisuals = (typeof window !== "undefined" && window._tbbFlowVisualsCache && (window._tbbFlowVisualsCache[flowCacheKey] || window._tbbFlowVisualsCache[legacyFlowKey])) || {};
 
     function renderChapterVisualFrame(slotKey, fallbackTitle, fallbackSub, appCapturePath) {
-      if (isTbbAppBrand && appCapturePath) {
+      const safeCapture = typeof appCapturePath === "string" ? appCapturePath : "";
+      if (isTbbAppBrand && safeCapture) {
         return `
-          <div class="tbb-visual-frame" style="height:100%; min-height:250px;">
-            <img src="${appCapturePath}" alt="${esc(fallbackTitle)}" />
-            <div class="tbb-visual-caption">
+          <div class="tbb-visual-frame" style="border-bottom-color:${acc};">
+            <img src="${safeCapture}" alt="${esc(fallbackTitle)}" />
+            <div class="tbb-visual-caption" style="border-left-color:${acc};">
               <span>${esc(fallbackTitle)}</span>
-              <span style="color:${acc};font-family:'JetBrains Mono',monospace;font-size:10.5px;">UI EN VIVO · STUDIO V83</span>
+              <span style="color:${pri};font-family:'JetBrains Mono',monospace;font-size:10.5px;">UI EN VIVO · STUDIO</span>
             </div>
           </div>
         `;
       }
       if (flowVisuals && flowVisuals[slotKey]) {
         return `
-          <div class="tbb-visual-frame" style="height:100%; min-height:250px;">
+          <div class="tbb-visual-frame" style="border-bottom-color:${acc};">
             <img src="${flowVisuals[slotKey]}" alt="${esc(fallbackTitle)}" />
-            <div class="tbb-visual-caption">
+            <div class="tbb-visual-caption" style="border-left-color:${acc};">
               <span>${esc(fallbackTitle)}</span>
-              <span style="color:${acc};font-family:'JetBrains Mono',monospace;font-size:10.5px;">GOOGLE FLOW · IA</span>
+              <span style="color:${pri};font-family:'JetBrains Mono',monospace;font-size:10.5px;">FOTOGRAFÍA EDITORIAL · 4:3</span>
             </div>
           </div>
         `;
       }
-      // Ilustración editorial vectorial de alta densidad cuando aún no se invoca Flow en línea
+      // Lienzo editorial limpio con proporción exacta 4:3 mientras carga la fotografía realista
       return `
-        <div class="tbb-visual-frame" style="height:100%; min-height:250px; background:linear-gradient(135deg, #FFFFFF 0%, ${softBg} 100%); padding:22px; display:flex; flex-direction:column; justify-content:space-between;">
-          <svg viewBox="0 0 420 210" width="100%" height="185" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block;">
-            <rect x="6" y="6" width="408" height="198" rx="20" fill="#FFFFFF" stroke="${lightGray}" stroke-width="1.5"/>
-            <path d="M 6 150 C 120 110, 260 185, 414 125 L 414 204 L 6 204 Z" fill="${pri}" fill-opacity="0.08"/>
-            <path d="M 6 172 C 150 140, 290 195, 414 152 L 414 204 L 6 204 Z" fill="${acc}" fill-opacity="0.14"/>
-            <circle cx="96" cy="98" r="56" fill="${softBg}" stroke="${pri}" stroke-width="2"/>
-            <g transform="translate(46, 48) scale(0.5)">
+        <div class="tbb-visual-frame" style="border-bottom-color:${acc}; background:linear-gradient(135deg, #FFFFFF 0%, ${softBg} 100%); padding:22px; display:flex; flex-direction:column; justify-content:space-between;">
+          <svg viewBox="0 0 420 230" width="100%" height="205" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block;">
+            <path d="M 0 162 C 130 118, 270 196, 420 132 L 420 230 L 0 230 Z" fill="${pri}" fill-opacity="0.06"/>
+            <path d="M 0 186 C 155 152, 295 208, 420 162 L 420 230 L 0 230 Z" fill="${acc}" fill-opacity="0.14"/>
+            <circle cx="98" cy="108" r="58" fill="#FFFFFF" stroke="${lightGray}" stroke-width="1.5"/>
+            <g transform="translate(48, 58) scale(0.5)">
               ${symCore}
             </g>
-            <rect x="176" y="48" width="196" height="16" rx="8" fill="${pri}" fill-opacity="0.88"/>
-            <rect x="176" y="74" width="152" height="11" rx="5.5" fill="${sec}" fill-opacity="0.65"/>
-            <rect x="176" y="96" width="206" height="10" rx="5" fill="#CBD5E1"/>
-            <rect x="176" y="114" width="180" height="10" rx="5" fill="#CBD5E1"/>
-            <rect x="176" y="138" width="112" height="24" rx="12" fill="${acc}"/>
+            <line x1="182" y1="68" x2="368" y2="68" stroke="${pri}" stroke-width="4" stroke-linecap="round"/>
+            <line x1="182" y1="92" x2="328" y2="92" stroke="${sec}" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="182" y1="114" x2="380" y2="114" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+            <line x1="182" y1="132" x2="346" y2="132" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
           </svg>
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid ${lightGray};padding-top:10px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid ${lightGray};padding-top:10px;position:relative;z-index:2;">
             <div>
-              <div style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;color:${darkInk};">${esc(fallbackTitle)}</div>
-              <div style="font-size:11.5px;color:#475569;">${esc(fallbackSub)}</div>
+              <div style="font-family:'Montserrat',sans-serif;font-size:13.5px;font-weight:800;color:${darkInk};">${esc(fallbackTitle)}</div>
+              <div style="font-size:12px;color:#475569;">${esc(fallbackSub)}</div>
             </div>
-            <span style="background:${pri};color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;padding:4px 9px;border-radius:999px;">C-00</span>
+            <span style="background:${pri};color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;padding:4px 9px;border-radius:999px;">4:3</span>
           </div>
         </div>
       `;
@@ -640,48 +687,52 @@
           </div>
         </div>
 
-        <div style="position:relative; z-index:2; display:grid; grid-template-columns: 1.15fr 0.85fr; gap:40px; align-items:center; flex:1; padding:18px 0;">
-          <div style="background:rgba(255,255,255,0.94); border-radius:16px; padding:14px 16px 14px 0;">
-            <span style="display:inline-block; background:${softBg}; border:1px solid ${lightGray}; border-left:4px solid ${acc}; padding:6px 14px; font-size:12px; font-weight:800; color:${darkInk}; border-radius:4px 12px 4px 4px; margin-bottom:14px;">
+        <div style="position:relative; z-index:2; display:grid; grid-template-columns: 1.18fr 0.82fr; gap:44px; align-items:center; flex:1; padding:18px 0;">
+          <div style="padding:10px 14px 10px 0;">
+            <span style="display:inline-block; border-left:4px solid ${acc}; padding:2px 0 2px 12px; font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:800; color:${pri}; margin-bottom:14px;">
               ${esc(category.toUpperCase())}
             </span>
-            <h1 style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:52px; font-weight:900; line-height:1.05; color:${darkInk}; margin:0 0 12px 0; letter-spacing:0px;">
+            <h1 style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:54px; font-weight:900; line-height:1.04; color:${darkInk}; margin:0 0 12px 0; letter-spacing:0px;">
               ${esc(bUpper)}
             </h1>
-            <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:15.5px; font-weight:800; color:${pri}; letter-spacing:0px; margin-bottom:14px;">
+            <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:17px; font-weight:800; color:${pri}; letter-spacing:0px; margin-bottom:16px;">
               ${esc(tagline.toUpperCase())}
             </div>
-            <svg width="240" height="10" viewBox="0 0 240 10" xmlns="http://www.w3.org/2000/svg" style="display:block; margin-bottom:16px;">
+            <svg width="240" height="10" viewBox="0 0 240 10" xmlns="http://www.w3.org/2000/svg" style="display:block; margin-bottom:18px;">
               <line x1="0" y1="5" x2="102" y2="5" stroke="${acc}" stroke-width="3.8" stroke-linecap="round"/>
               <line x1="112" y1="5" x2="192" y2="5" stroke="${sec}" stroke-width="2.4" stroke-linecap="round"/>
               <circle cx="208" cy="5" r="4" fill="${pri}"/>
             </svg>
-            <p style="font-size:14.5px; line-height:1.62; color:#1E293B; margin:0 0 22px 0; max-width:540px;">
+            <p style="font-size:16px; line-height:1.65; color:#1E293B; margin:0 0 24px 0; max-width:560px;">
               ${esc(giro)}
             </p>
 
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; border-top:1.5px solid ${lightGray}; padding-top:14px;">
-              <div>
-                <div style="font-size:11px; font-weight:800; color:${acc};">PROPÓSITO NUCLEAR</div>
-                <div style="font-size:13px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.45;">${esc(why.slice(0, 110))}${why.length > 110 ? "…" : ""}</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; border-top:1.5px solid ${lightGray}; padding-top:16px;">
+              <div style="border-left:3px solid ${acc}; padding-left:12px;">
+                <div style="font-size:11.5px; font-weight:800; color:${acc};">PROPÓSITO NUCLEAR</div>
+                <div style="font-size:14px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.48;">${esc(why.slice(0, 110))}${why.length > 110 ? "…" : ""}</div>
               </div>
-              <div>
-                <div style="font-size:11px; font-weight:800; color:${sec};">CLASIFICACIÓN NIZA</div>
-                <div style="font-size:13px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.45;">${esc(niza.slice(0, 64))}</div>
+              <div style="border-left:3px solid ${sec}; padding-left:12px;">
+                <div style="font-size:11.5px; font-weight:800; color:${sec};">CLASIFICACIÓN NIZA</div>
+                <div style="font-size:14px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.48;">${esc(niza.slice(0, 64))}</div>
               </div>
             </div>
           </div>
 
-          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:#FFFFFF; border:2px solid ${lightGray}; border-bottom:5px solid ${acc}; border-radius:22px 46px 22px 22px; padding:34px;">
-            <div style="width:236px; height:236px; margin-bottom:16px; display:flex; align-items:center; justify-content:center;">
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:26px; position:relative;">
+            <svg viewBox="0 0 320 320" width="300" height="300" xmlns="http://www.w3.org/2000/svg" style="position:absolute; pointer-events:none; opacity:0.55;">
+              <circle cx="160" cy="148" r="132" fill="none" stroke="${lightGray}" stroke-width="1.5"/>
+              <path d="M 48 238 Q 160 284 272 238" fill="none" stroke="${acc}" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <div style="width:236px; height:236px; margin-bottom:18px; display:flex; align-items:center; justify-content:center; position:relative; z-index:2;">
               <svg viewBox="0 0 200 200" width="230" height="230" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 ${symCore}
               </svg>
             </div>
-            <div style="font-family:'Montserrat', sans-serif; font-size:12.5px; font-weight:900; color:${pri}; letter-spacing:0px;">
+            <div style="font-family:'Montserrat', sans-serif; font-size:13px; font-weight:900; color:${pri}; letter-spacing:0px; position:relative; z-index:2;">
               IDENTIDAD OFICIAL CENTRADA EN POSITIVO
             </div>
-            <div style="font-size:11.5px; color:${midGray}; margin-top:4px; font-weight:600;">
+            <div style="font-size:12px; color:${midGray}; margin-top:4px; font-weight:600; position:relative; z-index:2;">
               Lienzo Claro Puro (#FFFFFF) · Directiva Max C-00
             </div>
           </div>

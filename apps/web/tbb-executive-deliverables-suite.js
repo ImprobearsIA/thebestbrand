@@ -1765,18 +1765,22 @@
 
   window._tbbFlowVisualsCache = window._tbbFlowVisualsCache || {};
 
-  async function generateSingleFlowIllustration(promptText, slotKey, brand) {
+  async function generateSingleFlowIllustration(promptText, slotKey, brand, aspectRatio = "4:3") {
     const models = ["gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview", "gemini-2.5-flash-image"];
     const proxyUrl = (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
     for (const model of models) {
       try {
+        const genCfg = { responseModalities: ["IMAGE", "TEXT"] };
+        if (model !== "gemini-2.5-flash-image" && aspectRatio) {
+          genCfg.imageConfig = { aspectRatio: aspectRatio };
+        }
         const resp = await fetch(proxyUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             model: model,
             contents: [{ parts: [{ text: promptText }] }],
-            generationConfig: { responseModalities: ["IMAGE", "TEXT"] }
+            generationConfig: genCfg
           })
         });
         if (!resp.ok) continue;
@@ -1789,7 +1793,7 @@
           }
         }
       } catch (e) {
-        console.warn("Flow chapter image fallback:", e);
+        console.warn("Flow chapter photo fallback:", e);
       }
     }
     return buildEditorialSvgSceneDataUrl(slotKey || "environment", brand || {});
@@ -1801,15 +1805,15 @@
     const origBtnHtml = triggerBtn ? triggerBtn.innerHTML : "";
     if (triggerBtn) {
       triggerBtn.disabled = true;
-      triggerBtn.textContent = "Ilustrando capítulos (0/5)...";
+      triggerBtn.textContent = "Fotografiando capítulos (0/6)...";
     }
     const brand = (!isDomButton && brandOrBtn && brandOrBtn.slug) ? brandOrBtn : window.buildActiveBrandProfileForV80();
-    const cacheKey = `${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
+    const cacheKey = `photo_v85|${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
     window._tbbFlowVisualsInFlight = window._tbbFlowVisualsInFlight || {};
     if (window._tbbFlowVisualsCache[cacheKey] && window._tbbFlowVisualsCache[cacheKey]._complete) {
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Capítulos Ilustrados";
+        triggerBtn.textContent = "✓ Fotografía Editorial Lista";
         setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2200);
       }
       return window._tbbFlowVisualsCache[cacheKey];
@@ -1831,33 +1835,44 @@
     const pri = brand.colors?.pri || "#0D2540";
     const sec = brand.colors?.sec || "#426EAE";
     const acc = brand.colors?.acc || "#FF7A00";
-    const styleSuffix = `Editorial luxury agency vector-and-editorial illustration style (Google Flow / Monocle / Pentagram aesthetic), clean bright daylight composition, harmonious color palette featuring ${pri}, ${sec}, and warm accent ${acc}, zero text, no words, no watermarks, crisp framing, keep full heads and subjects comfortably inside frame.`;
+    const photoStyle = `Ultra-realistic high-end editorial magazine photography (Kinfolk / Architectural Digest / Monocle / Leica SL2 50mm f/1.8 lens), authentic natural daylight, rich real-world physical textures (stone, wood, metal, linen, skin, glass), subtle color harmony echoing ${pri}, ${sec}, and warm accent ${acc}. STRICTLY REAL PHOTOGRAPHY (zero cartoon, zero vector art, zero comic outlines, zero AI plastic gloss), zero text, no words, no signs with letters, no watermarks, generous headroom so full heads and subjects sit comfortably inside the 4:3 horizontal frame.`;
 
     const jobs = [
       {
         key: "persona",
+        aspect: "4:3",
         label: "La Empresa como Persona",
-        prompt: `Warm editorial portrait scene representing the brand persona of "${brand.name}" (${brand.giro}): ${brand.persona}. Confident, approachable leader in their authentic professional environment. ${styleSuffix}`
+        prompt: `Authentic editorial environmental portrait photograph representing the human archetype of "${brand.name}" (${brand.giro}): ${brand.persona}. Warm, composed expert in their real craft studio or workspace, medium-wide framing with generous breathing room above the head. ${photoStyle}`
       },
       {
         key: "buyer",
+        aspect: "4:3",
         label: "Cliente Ideal (Buyer Persona)",
-        prompt: `Editorial scene depicting the ideal customer of "${brand.name}": ${brand.buyer}, experiencing relief, clarity, and satisfaction thanks to ${brand.what}. ${styleSuffix}`
+        prompt: `Candid luxury editorial lifestyle photograph of the ideal customer of "${brand.name}": ${brand.buyer}, genuinely enjoying ${brand.what} in a sunlit refined setting, natural expressions, medium-wide horizontal 4:3 composition. ${photoStyle}`
       },
       {
         key: "tpBefore",
+        aspect: "4:3",
         label: "Touchpoint Antes de Comprar",
-        prompt: `Editorial illustration of the first discovery touchpoint for "${brand.name}" (${brand.giro}): ${(brand.tpBefore && brand.tpBefore[0]) || "digital discovery and welcoming consultation"}. ${styleSuffix}`
+        prompt: `High-end editorial photograph of the first discovery touchpoint for "${brand.name}" (${brand.giro}): ${(brand.tpBefore && brand.tpBefore[0]) || "welcoming boutique entrance or curated digital discovery moment"}, clean architectural lines and natural light. ${photoStyle}`
       },
       {
         key: "tpDuring",
+        aspect: "4:3",
         label: "Touchpoint Durante el Servicio",
-        prompt: `Editorial illustration of the signature service delivery moment for "${brand.name}" (${brand.giro}): ${(brand.tpDuring && brand.tpDuring[0]) || "precision execution and warm human service"}. ${styleSuffix}`
+        prompt: `Editorial close-to-medium documentary photograph of the signature service experience of "${brand.name}" (${brand.giro}): ${(brand.tpDuring && brand.tpDuring[0]) || "bespoke consultation and tactile presentation"}, authentic hands, real materials, warm hospitality. ${photoStyle}`
+      },
+      {
+        key: "tpAfter",
+        aspect: "4:3",
+        label: "Touchpoint Después del Servicio",
+        prompt: `Tactile editorial still-life and lifestyle photograph of the post-purchase keepsake, packaging, certificate, or lasting memory of "${brand.name}" (${brand.giro}): ${(brand.tpAfter && brand.tpAfter[0]) || "signature keepsake box, certificate of authenticity and lasting relationship"} resting on natural stone or warm timber in soft morning sunlight, 4:3 horizontal composition. ${photoStyle}`
       },
       {
         key: "environment",
-        label: "Espacio Físico y Experiencia de Marca",
-        prompt: `Architectural flagship environment, studio, or signature product presentation of "${brand.name}" (${brand.giro}), refined modern interior and tactile materials. ${styleSuffix}`
+        aspect: "4:3",
+        label: "Espacio Físico y Arquitectura de Marca",
+        prompt: `Architectural Digest style wide-angle interior & exterior flagship photograph of "${brand.name}" (${brand.giro}), refined contemporary architecture, museum-grade lighting, noble materials, zero text on walls. ${photoStyle}`
       }
     ];
 
@@ -1868,11 +1883,11 @@
     const runPromise = (async () => {
       for (const j of jobs) {
         if (!entry[j.key] || String(entry[j.key]).startsWith("data:image/svg")) {
-          const url = await generateSingleFlowIllustration(j.prompt, j.key, brand);
+          const url = await generateSingleFlowIllustration(j.prompt, j.key, brand, j.aspect || "4:3");
           if (url) entry[j.key] = url;
         }
         done++;
-        if (triggerBtn) triggerBtn.textContent = `Ilustrando Flow (${done}/${jobs.length})...`;
+        if (triggerBtn) triggerBtn.textContent = `Fotografía IA (${done}/${jobs.length})...`;
         if (typeof onProgress === "function") onProgress(done, jobs.length, j.label);
         if (typeof window.renderTbbZeroScrollStage === "function") {
           window.renderTbbZeroScrollStage();
@@ -1880,11 +1895,11 @@
       }
 
       const realRasterCount = Object.values(entry).filter(v => typeof v === "string" && /^data:image\/(png|jpeg|webp)/i.test(v)).length;
-      entry._complete = realRasterCount >= 3;
+      entry._complete = realRasterCount >= 4;
       delete window._tbbFlowVisualsInFlight[cacheKey];
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Capítulos Ilustrados";
+        triggerBtn.textContent = "✓ Fotografía Editorial Lista";
         if (typeof window.renderTbbZeroScrollStage === "function") {
           window.renderTbbZeroScrollStage();
         }
