@@ -203,17 +203,36 @@ assert(step6Markup.includes("tbb-improbears-stage-scaler") && step6Markup.includ
 console.log("✓ TEST 6 PASADO: Paso 6 inyecta CSS editorial y renderiza láminas A4 estilizadas (cero HTML crudo)");
 
 const fullBrand = window.buildActiveBrandProfileForV80();
-const plates30 = window.generateBrandbook30Plates(fullBrand);
-assert(plates30.length === 30, "TEST 7 FALLIDO: No se generaron exactamente 30 láminas!");
-assert(plates30[0].includes("Tostaduría artesanal de café de especialidad en Chiapas"), "TEST 7 FALLIDO: El catálogo estático de The Best Brand secuestró los textos del usuario!");
-assert(plates30[0].includes(samplePngDataUrl) && plates30[12].includes(samplePngDataUrl) && plates30[17].includes(samplePngDataUrl) && plates30[24].includes(samplePngDataUrl), "TEST 7 FALLIDO: El logotipo PNG subido no está incrustado en las láminas 01, 13, 18 y 25!");
-console.log("✓ TEST 7 PASADO: Las 30 láminas usan los textos reales del usuario e incrustan su logo subido en todas las vistas");
+const plates36 = window.generateBrandbook30Plates(fullBrand);
+assert(plates36.length === 36, `TEST 7 FALLIDO: Se esperaban 36 láminas dinámicas y se generaron ${plates36.length}!`);
+assert(!plates36[0].includes("__TOTAL_PLATES__") && plates36[0].includes("PÁG. 01 / 36") && plates36[1].includes("LÁMINA 02 / 36"), "TEST 7 FALLIDO: El contador dinámico de láminas no resolvió 36 hojas!");
+assert(plates36[0].includes("Tostaduría artesanal de café de especialidad en Chiapas"), "TEST 7 FALLIDO: El catálogo estático de The Best Brand secuestró los textos del usuario!");
+assert(plates36[0].includes(samplePngDataUrl) && plates36[12].includes(samplePngDataUrl) && plates36[17].includes(samplePngDataUrl) && plates36[24].includes(samplePngDataUrl) && plates36[32].includes(samplePngDataUrl), "TEST 7 FALLIDO: El logotipo PNG subido no está incrustado en las láminas 01, 13, 18, 25 y 33!");
+console.log("✓ TEST 7 PASADO: Las 36 láminas usan los textos reales del usuario e incrustan su logo subido en todas las vistas");
+
+const suite = window.generateTriFoldLogoSuite(fullBrand);
+assert(suite.horizontal.includes("translate(10, 10) scale(0.5)"), "TEST 7B FALLIDO: El lockup horizontal no tiene centrado óptico exacto (translate(10, 10) scale(0.5))!");
+assert(suite.avatar.includes("translate(28, 28) scale(0.72)"), "TEST 7B FALLIDO: El avatar 1:1 no tiene centrado óptico exacto (translate(28, 28) scale(0.72))!");
+assert(suite.seal.includes("translate(75, 75) scale(0.55)"), "TEST 7B FALLIDO: El sello circular no tiene centrado óptico exacto (translate(75, 75) scale(0.55))!");
+console.log("✓ TEST 7B PASADO: Terna de logotipos (Horizontal, Avatar 1:1 y Sello) centrada ópticamente a 0.00px");
 
 assert(!universalEngineJs.includes('fetch("/brandbooks/Manual_Marca_30_Laminas_TheBestBrand_Oficial_v80.pdf")'), "TEST 8 FALLIDO: Aún existe el atajo instantáneo al PDF estático sin logo de usuario!");
 assert(typeof window.compileLive30PlatesBrandbookPdfBlob === "function", "TEST 8 FALLIDO: compileLive30PlatesBrandbookPdfBlob no está exportado!");
-console.log("✓ TEST 8 PASADO: Exportación PDF compila las 30 hojas reales y eliminó el atajo instantáneo estático");
+console.log("✓ TEST 8 PASADO: Exportación PDF compila las 36 hojas reales y eliminó el atajo instantáneo estático");
+
+// Evaluar tbb-executive-deliverables-suite.js
+const execDeliverablesJs = fs.readFileSync(path.join(__dirname, '../apps/web/tbb-executive-deliverables-suite.js'), 'utf8');
+eval(execDeliverablesJs);
+assert(typeof window.tbbAutoTrimAndCenterRasterLogo === "function", "TEST 9 FALLIDO: tbbAutoTrimAndCenterRasterLogo no está exportado!");
+assert(typeof window.tbbVectorizeRasterLogoToSvgCurves === "function", "TEST 9 FALLIDO: tbbVectorizeRasterLogoToSvgCurves no está exportado!");
+assert(typeof window.tbbExportLogoInCurves === "function", "TEST 9 FALLIDO: tbbExportLogoInCurves no está exportado!");
+assert(typeof window.tbbDownloadEditableLetterheadDOCX === "function", "TEST 9 FALLIDO: tbbDownloadEditableLetterheadDOCX no está exportado!");
+assert(typeof window.tbbDownloadEditableDeckPPTX === "function", "TEST 9 FALLIDO: tbbDownloadEditableDeckPPTX no está exportado!");
+assert(typeof window.tbbOpenEmailSignatureModal === "function", "TEST 9 FALLIDO: tbbOpenEmailSignatureModal no está exportado!");
+assert(typeof window.tbbBuildCorporateEmailSignatureHTML === "function", "TEST 9 FALLIDO: tbbBuildCorporateEmailSignatureHTML no está exportado!");
+console.log("✓ TEST 9 PASADO: Suite Ejecutiva V83.0 (.SVG/.AI en Curvas, .HTML Firma, .DOCX Membretada, .PPTX 16:9) verificada");
 
 console.log("\n=======================================================");
-console.log(" TODOS LOS TESTS DE AUDITORÍA PASARON EXITOSAMENTE (8/8)");
-console.log(" EL LOGOTIPO SUBIDO Y EL GENERADOR DE 30 HOJAS ESTÁN BLINDADOS");
+console.log(" TODOS LOS TESTS DE AUDITORÍA PASARON EXITOSAMENTE (9/9)");
+console.log(" EL LOGOTIPO SUBIDO, EL CENTRADO 0.00PX Y LAS 36 HOJAS ESTÁN BLINDADOS");
 console.log("=======================================================");

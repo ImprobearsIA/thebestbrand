@@ -111,54 +111,54 @@
     const symCore = brand.svgCore || symbolPair.pos;
     const symCoreNeg = brand.svgCoreNeg || (brand.svgCore ? toCaladoNegativeSvg(brand.svgCore) : symbolPair.neg);
 
-    // 1. LOGO HORIZONTAL (Ratio 3.5:1 para cabeceras, papelería y firmas — Cero sombras grises C-00)
+    // 1. LOGO HORIZONTAL (Ratio 3.5:1 · Centro óptico exacto del isotipo 200x200 en Y=60: 10 + 0.5*100 = 60)
     const logoHorizontal = `
       <svg viewBox="0 0 460 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block; max-height:100px;">
-        <!-- Isotipo Reducido a la izquierda -->
-        <g transform="translate(15, 15) scale(0.5)">
+        <!-- Isotipo Reducido centrado en (60, 60) -->
+        <g transform="translate(10, 10) scale(0.5)">
           ${symCore}
         </g>
         <!-- Línea Divisoria Vertical Fina -->
-        <line x1="125" y1="28" x2="125" y2="92" stroke="${lightGray}" stroke-width="1.8"/>
+        <line x1="125" y1="24" x2="125" y2="96" stroke="${lightGray}" stroke-width="1.8"/>
         <!-- Textos Tipográficos con Kerning y Escala Óptima -->
-        <text x="145" y="58" font-family="'${priFont}', 'Montserrat', sans-serif" font-weight="900" font-size="26" letter-spacing="2" fill="${darkInk}">${esc(bUpper)}</text>
-        <text x="146" y="80" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.5" letter-spacing="3" fill="${pri}">${esc(taglineUpper.slice(0, 42))}</text>
+        <text x="145" y="56" font-family="'${priFont}', 'Montserrat', sans-serif" font-weight="900" font-size="26" letter-spacing="1.8" fill="${darkInk}">${esc(bUpper)}</text>
+        <text x="146" y="79" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.5" letter-spacing="2.4" fill="${pri}">${esc(taglineUpper.slice(0, 42))}</text>
       </svg>
     `;
 
-    // 1B. LOGO HORIZONTAL EN NEGATIVO (Para soportes oscuros / contraste)
+    // 1B. LOGO HORIZONTAL EN NEGATIVO (Centro óptico exacto en Y=60)
     const logoHorizontalNeg = `
       <svg viewBox="0 0 460 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block; max-height:100px;">
-        <g transform="translate(15, 15) scale(0.5)">
+        <g transform="translate(10, 10) scale(0.5)">
           ${symCoreNeg}
         </g>
-        <line x1="125" y1="28" x2="125" y2="92" stroke="rgba(255,255,255,0.25)" stroke-width="1.8"/>
-        <text x="145" y="58" font-family="'${priFont}', 'Montserrat', sans-serif" font-weight="900" font-size="26" letter-spacing="2" fill="#FFFFFF">${esc(bUpper)}</text>
-        <text x="146" y="80" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.5" letter-spacing="3" fill="${acc}">${esc(taglineUpper.slice(0, 42))}</text>
+        <line x1="125" y1="24" x2="125" y2="96" stroke="rgba(255,255,255,0.25)" stroke-width="1.8"/>
+        <text x="145" y="56" font-family="'${priFont}', 'Montserrat', sans-serif" font-weight="900" font-size="26" letter-spacing="1.8" fill="#FFFFFF">${esc(bUpper)}</text>
+        <text x="146" y="79" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.5" letter-spacing="2.4" fill="${acc}">${esc(taglineUpper.slice(0, 42))}</text>
       </svg>
     `;
 
-    // 2. AVATAR SOCIAL MEDIA & APP ICON (1:1 con esquinas suaves y zona de respiración 20%)
+    // 2. AVATAR SOCIAL MEDIA & APP ICON (1:1 · Centro óptico exacto 100,100: 28 + 0.72*100 = 100.0)
     const logoSocialAvatar = `
       <svg viewBox="0 0 200 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block;">
         <rect width="200" height="200" rx="46" fill="${softBg}" stroke="${lightGray}" stroke-width="2"/>
-        <g transform="translate(35, 35) scale(0.72)">
+        <g transform="translate(28, 28) scale(0.72)">
           ${symCore}
         </g>
       </svg>
     `;
 
-    // 2B. AVATAR EN CONTRASTE PRIMARIO
+    // 2B. AVATAR EN CONTRASTE PRIMARIO (Centro exacto 100,100)
     const logoSocialAvatarInverted = `
       <svg viewBox="0 0 200 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block;">
         <rect width="200" height="200" rx="46" fill="${pri}"/>
-        <g transform="translate(35, 35) scale(0.72)">
+        <g transform="translate(28, 28) scale(0.72)">
           ${symCoreNeg}
         </g>
       </svg>
     `;
 
-    // 3. SELLO DE AUTOR / EMBLEMA DE PACKAGING (Circular con trazado perimetral)
+    // 3. SELLO DE AUTOR / EMBLEMA DE PACKAGING (Centro exacto 130,130: 75 + 0.55*100 = 130.0)
     const sealId = "sealPath_" + Math.random().toString(36).slice(2, 8);
     const logoSeal = `
       <svg viewBox="0 0 260 260" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block;">
@@ -180,8 +180,8 @@
         <text font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="9" letter-spacing="3" fill="${pri}">
           <textPath href="#${sealId}_bottom" startOffset="50%" text-anchor="middle">★ CALIDAD CERTIFICADA · 2026 ★</textPath>
         </text>
-        <!-- Símbolo en el Corazón del Sello -->
-        <g transform="translate(80, 80) scale(0.55)">
+        <!-- Símbolo en el Corazón del Sello (130, 130 exacto) -->
+        <g transform="translate(75, 75) scale(0.55)">
           ${symCore}
         </g>
       </svg>
@@ -218,6 +218,18 @@
         box-sizing: border-box;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
+        font-kerning: normal;
+        word-spacing: normal;
+      }
+
+      /* BLINDAJE CRÍTICO CONTRA CORRUPCIÓN DE KERNING EN HTML2CANVAS (Cero letras separadas como "1 .M orfología") */
+      #tbbOffscreenPdfCompilerHost,
+      #tbbOffscreenPdfCompilerHost * {
+        letter-spacing: 0px !important;
+        word-spacing: normal !important;
+        font-kerning: normal !important;
+        font-variant-ligatures: none !important;
+        text-rendering: geometricPrecision !important;
       }
 
       .tbb-plate {
@@ -232,7 +244,7 @@
         border: 1px solid #E6E6E6;
         border-radius: ${forInApp ? "10px" : "18px 38px 18px 18px"};
         box-shadow: none !important;
-        padding: 36px 46px 28px 46px;
+        padding: 32px 44px 26px 44px;
         position: relative;
         overflow: hidden;
         display: flex;
@@ -268,50 +280,51 @@
         }
       }
 
-      /* ENCABEZADOS Y PIES CONECTADOS AL TEMARIO */
+      /* ENCABEZADOS Y PIES CONECTADOS AL TEMARIO · JERARQUÍA EDITORIAL AMPLIA */
       .tbb-hdr {
         position: relative;
         z-index: 2;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1.5px solid #E6E6E6;
+        border-bottom: 2px solid #E6E6E6;
         padding-bottom: 12px;
         margin-bottom: 16px;
       }
       .tbb-hdr-left {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 14px;
       }
       .tbb-tag-pill {
         background: #0D2540;
         color: #FFFFFF;
         font-family: 'Montserrat', sans-serif;
         font-weight: 800;
-        font-size: 9.5px;
-        letter-spacing: 1.5px;
-        padding: 5px 12px;
+        font-size: 11px;
+        letter-spacing: 0px;
+        padding: 6px 14px;
         border-radius: 6px 14px 6px 6px;
       }
       .tbb-hdr-titles h2 {
         margin: 0;
         font-family: 'Montserrat', sans-serif;
-        font-size: 15px;
-        font-weight: 800;
+        font-size: 19px;
+        font-weight: 900;
         color: #0D2540;
-        letter-spacing: 0.5px;
+        letter-spacing: 0px;
+        line-height: 1.2;
       }
       .tbb-hdr-titles span {
-        font-size: 11px;
-        color: #707070;
-        font-weight: 500;
+        font-size: 13px;
+        color: #475569;
+        font-weight: 600;
       }
       .tbb-hdr-right {
         text-align: right;
         font-family: 'JetBrains Mono', monospace;
-        font-size: 10.5px;
-        font-weight: 700;
+        font-size: 12px;
+        font-weight: 800;
         color: #0D2540;
       }
 
@@ -321,38 +334,86 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-top: 1px solid #E6E6E6;
+        border-top: 1.5px solid #E6E6E6;
         padding-top: 10px;
-        margin-top: 16px;
-        font-size: 9.5px;
-        color: #707070;
+        margin-top: 14px;
+        font-size: 10.5px;
+        color: #64748B;
       }
 
-      /* COMPONENTES EDITORIALES EN CURVAS ASIMÉTRICAS (DIRECTIVA MAX C-00 · CERO SOMBRAS GRISES) */
+      /* COMPONENTES EDITORIALES EN CURVAS ASIMÉTRICAS (DIRECTIVA MAX C-00 · CERO SOMBRAS GRISES · DENSIDAD EDITORIAL RICA) */
       .tbb-card {
         position: relative;
         z-index: 2;
         background: #FFFFFF;
-        border: 1px solid #E6E6E6;
-        border-radius: 14px 28px 14px 14px;
-        padding: 16px 20px;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 16px 32px 16px 16px;
+        padding: 20px 24px;
         box-shadow: none !important;
       }
       .tbb-card-title {
         font-family: 'Montserrat', sans-serif;
         font-weight: 800;
-        font-size: 12px;
+        font-size: 16.5px;
         color: #0D2540;
-        letter-spacing: 0.5px;
-        margin-bottom: 6px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        letter-spacing: 0px;
+        margin-bottom: 8px;
+        line-height: 1.3;
+        display: block;
       }
       .tbb-card-body {
+        font-size: 13.8px;
+        line-height: 1.58;
+        color: #334155;
+      }
+
+      /* MARCO VISUAL CURVO ASIMÉTRICO C-00 PARA CAPTURAS DE APP E ILUSTRACIONES GOOGLE FLOW */
+      .tbb-visual-frame {
+        position: relative;
+        z-index: 2;
+        border-radius: 18px 42px 18px 18px;
+        overflow: hidden;
+        border: 1.5px solid #CBD5E1;
+        background: #F8FAFC;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .tbb-visual-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        display: block;
+      }
+      .tbb-visual-caption {
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid #E2E8F0;
+        border-radius: 10px 20px 10px 10px;
+        padding: 8px 14px;
         font-size: 11.5px;
-        line-height: 1.55;
-        color: #333333;
+        font-weight: 700;
+        color: #0F172A;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .tbb-kpi-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .tbb-kpi-pill {
+        background: #FAF8F5;
+        border: 1px solid #E6E6E6;
+        border-radius: 12px 22px 12px 12px;
+        padding: 10px 14px;
       }
 
       .tbb-grid-2col {
@@ -360,7 +421,7 @@
         z-index: 2;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 20px;
+        gap: 22px;
         flex: 1;
       }
       .tbb-grid-3col {
@@ -368,7 +429,7 @@
         z-index: 2;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
+        gap: 18px;
         flex: 1;
       }
       .tbb-grid-4col {
@@ -376,42 +437,42 @@
         z-index: 2;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
+        gap: 16px;
         flex: 1;
       }
 
       .tbb-swatch {
         position: relative;
         z-index: 2;
-        border-radius: 14px 26px 14px 14px;
-        padding: 12px;
+        border-radius: 16px 30px 16px 16px;
+        padding: 16px;
         background: #FFFFFF;
-        border: 1px solid #E6E6E6;
+        border: 1.5px solid #E2E8F0;
         box-shadow: none !important;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
       }
       .tbb-swatch-box {
         width: 100%;
-        height: 64px;
-        border-radius: 10px 20px 10px 10px;
+        height: 118px;
+        border-radius: 12px 24px 12px 12px;
         border: 1px solid rgba(0,0,0,0.08);
       }
       .tbb-swatch-meta {
-        font-size: 10px;
-        line-height: 1.4;
-        color: #333333;
+        font-size: 12.5px;
+        line-height: 1.55;
+        color: #1E293B;
       }
 
       .tbb-tp-pill {
-        border-left: 3.5px solid #0D2540;
-        padding: 10px 14px;
+        border-left: 4px solid #0D2540;
+        padding: 12px 16px;
         background: #FAF8F5;
-        border-radius: 0 14px 8px 0;
-        margin-bottom: 8px;
-        font-size: 11px;
-        line-height: 1.45;
+        border-radius: 0 16px 10px 0;
+        margin-bottom: 10px;
+        font-size: 13px;
+        line-height: 1.5;
       }
     `;
   }
@@ -420,6 +481,7 @@
   function generateBrandbook30Plates(brand) {
     const bName = brand.name || "The Best Brand";
     const bUpper = bName.toUpperCase();
+    const slug = brand.slug || bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
     const tagline = brand.tagline || "BRAND IDENTITY ATELIER";
     const giro = brand.giro || "Servicios profesionales e identidad de marca";
     const category = brand.category || "Servicios Generales";
@@ -456,6 +518,62 @@
     // Generar la Terna de Logos Profesional
     const suite = generateTriFoldLogoSuite(brand);
 
+    // Resolver imágenes de capítulos: Capturas Reales de la App (para TheBestBrand/SaaS) o Ilustraciones Google Flow / Editorial Vector
+    const isTbbAppBrand = /^the_?best_?brand$/i.test(brand.slug || bName) && !brand.hasUploadedLogo;
+    const flowCacheKey = `${brand.slug || "marca"}|${(brand.giro || "").slice(0, 32)}`;
+    const flowVisuals = (typeof window !== "undefined" && window._tbbFlowVisualsCache && window._tbbFlowVisualsCache[flowCacheKey]) || {};
+
+    function renderChapterVisualFrame(slotKey, fallbackTitle, fallbackSub, appCapturePath) {
+      if (isTbbAppBrand && appCapturePath) {
+        return `
+          <div class="tbb-visual-frame" style="height:100%; min-height:250px;">
+            <img src="${appCapturePath}" alt="${esc(fallbackTitle)}" />
+            <div class="tbb-visual-caption">
+              <span>${esc(fallbackTitle)}</span>
+              <span style="color:${acc};font-family:'JetBrains Mono',monospace;font-size:10.5px;">UI EN VIVO · STUDIO V83</span>
+            </div>
+          </div>
+        `;
+      }
+      if (flowVisuals && flowVisuals[slotKey]) {
+        return `
+          <div class="tbb-visual-frame" style="height:100%; min-height:250px;">
+            <img src="${flowVisuals[slotKey]}" alt="${esc(fallbackTitle)}" />
+            <div class="tbb-visual-caption">
+              <span>${esc(fallbackTitle)}</span>
+              <span style="color:${acc};font-family:'JetBrains Mono',monospace;font-size:10.5px;">GOOGLE FLOW · IA</span>
+            </div>
+          </div>
+        `;
+      }
+      // Ilustración editorial vectorial de alta densidad cuando aún no se invoca Flow en línea
+      return `
+        <div class="tbb-visual-frame" style="height:100%; min-height:250px; background:linear-gradient(135deg, #FFFFFF 0%, ${softBg} 100%); padding:22px; display:flex; flex-direction:column; justify-content:space-between;">
+          <svg viewBox="0 0 420 210" width="100%" height="185" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block;">
+            <rect x="6" y="6" width="408" height="198" rx="20" fill="#FFFFFF" stroke="${lightGray}" stroke-width="1.5"/>
+            <path d="M 6 150 C 120 110, 260 185, 414 125 L 414 204 L 6 204 Z" fill="${pri}" fill-opacity="0.08"/>
+            <path d="M 6 172 C 150 140, 290 195, 414 152 L 414 204 L 6 204 Z" fill="${acc}" fill-opacity="0.14"/>
+            <circle cx="96" cy="98" r="56" fill="${softBg}" stroke="${pri}" stroke-width="2"/>
+            <g transform="translate(46, 48) scale(0.5)">
+              ${symCore}
+            </g>
+            <rect x="176" y="48" width="196" height="16" rx="8" fill="${pri}" fill-opacity="0.88"/>
+            <rect x="176" y="74" width="152" height="11" rx="5.5" fill="${sec}" fill-opacity="0.65"/>
+            <rect x="176" y="96" width="206" height="10" rx="5" fill="#CBD5E1"/>
+            <rect x="176" y="114" width="180" height="10" rx="5" fill="#CBD5E1"/>
+            <rect x="176" y="138" width="112" height="24" rx="12" fill="${acc}"/>
+          </svg>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid ${lightGray};padding-top:10px;">
+            <div>
+              <div style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;color:${darkInk};">${esc(fallbackTitle)}</div>
+              <div style="font-size:11.5px;color:#475569;">${esc(fallbackSub)}</div>
+            </div>
+            <span style="background:${pri};color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;padding:4px 9px;border-radius:999px;">C-00</span>
+          </div>
+        </div>
+      `;
+    }
+
     // Trazos vectoriales fluidos en curvas tipo Illustrator (Directiva Max C-00 · 100% Lienzo Claro #FFFFFF)
     const curveBackdrop = (pNum) => {
       const flip = pNum % 2 === 0;
@@ -482,7 +600,7 @@
           </div>
         </div>
         <div class="tbb-hdr-right" style="color:${pri}; border-bottom:2.5px solid ${acc}; padding-bottom:2px;">
-          LÁMINA ${String(pNum).padStart(2, "0")} / 30
+          LÁMINA ${String(pNum).padStart(2, "0")} / __TOTAL_PLATES__
         </div>
       </header>
     `;
@@ -493,8 +611,8 @@
           <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${acc};"></span>
           <span><strong style="color:${darkInk};">${esc(bUpper)}</strong> · MANUAL OFICIAL DE IDENTIDAD Y ARQUITECTURA DE MARCA</span>
         </div>
-        <div style="color:${sec};font-weight:700;letter-spacing:0.06em;">DIRECTIVA MAX C-00 · FLUJO VECTORIAL EN CURVAS</div>
-        <div style="font-weight:800;color:${darkInk};">PÁG. ${String(pNum).padStart(2, "0")} / 30</div>
+        <div style="color:${sec};font-weight:700;letter-spacing:0px;">DIRECTIVA MAX C-00 · FLUJO VECTORIAL EN CURVAS</div>
+        <div style="font-weight:800;color:${darkInk};">PÁG. ${String(pNum).padStart(2, "0")} / __TOTAL_PLATES__</div>
       </footer>
     `;
 
@@ -514,56 +632,56 @@
         </svg>
 
         <div style="position:relative; z-index:2; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid ${pri}; padding-bottom:12px;">
-          <div style="font-family:'Montserrat', sans-serif; font-weight:800; font-size:11px; letter-spacing:2px; color:${darkInk}; background:rgba(255,255,255,0.92); padding:4px 10px; border-radius:6px;">
+          <div style="font-family:'Montserrat', sans-serif; font-weight:800; font-size:12px; letter-spacing:0px; color:${darkInk}; background:rgba(255,255,255,0.92); padding:5px 12px; border-radius:6px;">
             MANUAL OFICIAL DE IDENTIDAD Y ARQUITECTURA DE MARCA
           </div>
-          <div style="font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:700; color:${pri};">
-            EDICIÓN OFICIAL EN CURVAS · 2026
+          <div style="font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:800; color:${pri};">
+            EDICIÓN INTEGRAL EN CURVAS · __TOTAL_PLATES__ LÁMINAS · 2026
           </div>
         </div>
 
-        <div style="position:relative; z-index:2; display:grid; grid-template-columns: 1.15fr 0.85fr; gap:40px; align-items:center; flex:1; padding:20px 0;">
-          <div style="background:rgba(255,255,255,0.90); border-radius:16px; padding:12px 14px 12px 0;">
-            <span style="display:inline-block; background:${softBg}; border:1px solid ${lightGray}; border-left:3.5px solid ${acc}; padding:4px 10px; font-size:10px; font-weight:800; color:${darkInk}; border-radius:4px 12px 4px 4px; margin-bottom:14px;">
+        <div style="position:relative; z-index:2; display:grid; grid-template-columns: 1.15fr 0.85fr; gap:40px; align-items:center; flex:1; padding:18px 0;">
+          <div style="background:rgba(255,255,255,0.94); border-radius:16px; padding:14px 16px 14px 0;">
+            <span style="display:inline-block; background:${softBg}; border:1px solid ${lightGray}; border-left:4px solid ${acc}; padding:6px 14px; font-size:12px; font-weight:800; color:${darkInk}; border-radius:4px 12px 4px 4px; margin-bottom:14px;">
               ${esc(category.toUpperCase())}
             </span>
-            <h1 style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:46px; font-weight:900; line-height:1.05; color:${darkInk}; margin:0 0 12px 0; letter-spacing:-0.5px;">
+            <h1 style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:52px; font-weight:900; line-height:1.05; color:${darkInk}; margin:0 0 12px 0; letter-spacing:0px;">
               ${esc(bUpper)}
             </h1>
-            <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:13px; font-weight:800; color:${pri}; letter-spacing:2px; margin-bottom:14px;">
+            <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:15.5px; font-weight:800; color:${pri}; letter-spacing:0px; margin-bottom:14px;">
               ${esc(tagline.toUpperCase())}
             </div>
-            <svg width="220" height="10" viewBox="0 0 220 10" xmlns="http://www.w3.org/2000/svg" style="display:block; margin-bottom:14px;">
-              <line x1="0" y1="5" x2="92" y2="5" stroke="${acc}" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="102" y1="5" x2="178" y2="5" stroke="${sec}" stroke-width="2.2" stroke-linecap="round"/>
-              <circle cx="192" cy="5" r="3.8" fill="${pri}"/>
+            <svg width="240" height="10" viewBox="0 0 240 10" xmlns="http://www.w3.org/2000/svg" style="display:block; margin-bottom:16px;">
+              <line x1="0" y1="5" x2="102" y2="5" stroke="${acc}" stroke-width="3.8" stroke-linecap="round"/>
+              <line x1="112" y1="5" x2="192" y2="5" stroke="${sec}" stroke-width="2.4" stroke-linecap="round"/>
+              <circle cx="208" cy="5" r="4" fill="${pri}"/>
             </svg>
-            <p style="font-size:12.5px; line-height:1.6; color:#334155; margin:0 0 22px 0; max-width:500px;">
+            <p style="font-size:14.5px; line-height:1.62; color:#1E293B; margin:0 0 22px 0; max-width:540px;">
               ${esc(giro)}
             </p>
 
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; border-top:1px solid ${lightGray}; padding-top:14px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; border-top:1.5px solid ${lightGray}; padding-top:14px;">
               <div>
-                <div style="font-size:9.5px; font-weight:800; color:${acc}; letter-spacing:1px;">PROPÓSITO NUCLEAR</div>
-                <div style="font-size:11px; font-weight:700; color:${darkInk}; margin-top:2px;">${esc(why.slice(0, 96))}${why.length > 96 ? "…" : ""}</div>
+                <div style="font-size:11px; font-weight:800; color:${acc};">PROPÓSITO NUCLEAR</div>
+                <div style="font-size:13px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.45;">${esc(why.slice(0, 110))}${why.length > 110 ? "…" : ""}</div>
               </div>
               <div>
-                <div style="font-size:9.5px; font-weight:800; color:${sec}; letter-spacing:1px;">CLASIFICACIÓN NIZA</div>
-                <div style="font-size:11px; font-weight:700; color:${darkInk}; margin-top:2px;">${esc(niza.slice(0, 48))}</div>
+                <div style="font-size:11px; font-weight:800; color:${sec};">CLASIFICACIÓN NIZA</div>
+                <div style="font-size:13px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.45;">${esc(niza.slice(0, 64))}</div>
               </div>
             </div>
           </div>
 
-          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:#FFFFFF; border:1.5px solid ${lightGray}; border-bottom:4px solid ${acc}; border-radius:20px 42px 20px 20px; padding:30px;">
-            <div style="width:210px; height:210px; margin-bottom:16px; display:flex; align-items:center; justify-content:center;">
-              <svg viewBox="0 0 200 200" width="205" height="205" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:#FFFFFF; border:2px solid ${lightGray}; border-bottom:5px solid ${acc}; border-radius:22px 46px 22px 22px; padding:34px;">
+            <div style="width:236px; height:236px; margin-bottom:16px; display:flex; align-items:center; justify-content:center;">
+              <svg viewBox="0 0 200 200" width="230" height="230" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 ${symCore}
               </svg>
             </div>
-            <div style="font-family:'Montserrat', sans-serif; font-size:10px; font-weight:800; color:${pri}; letter-spacing:2px;">
-              IDENTIDAD OFICIAL EN POSITIVO
+            <div style="font-family:'Montserrat', sans-serif; font-size:12.5px; font-weight:900; color:${pri}; letter-spacing:0px;">
+              IDENTIDAD OFICIAL CENTRADA EN POSITIVO
             </div>
-            <div style="font-size:9.5px; color:${midGray}; margin-top:3px;">
+            <div style="font-size:11.5px; color:${midGray}; margin-top:4px; font-weight:600;">
               Lienzo Claro Puro (#FFFFFF) · Directiva Max C-00
             </div>
           </div>
@@ -574,55 +692,66 @@
     `);
 
     // =========================================================================
-    // LÁMINA 02: ÍNDICE GENERAL Y TEMARIO RECTOR
+    // LÁMINA 02: ÍNDICE GENERAL Y ARQUITECTURA EXTENDIDA DE LA MARCA
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-02">
-        ${hdr("SECCIÓN 01", "ESTRUCTURA EDITORIAL Y TEMARIO RECTOR", 2, "Índice General de las 30 Láminas de Constitución de Marca")}
-        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; flex:1;">
-          <div class="tbb-card">
-            <div class="tbb-card-title" style="color:${pri};">I. ADN Y ESTRATEGIA (01 - 09)</div>
-            <ul style="margin:0; padding-left:18px; font-size:10.5px; line-height:1.65; color:#333;">
-              <li>01. Portada Monumental de Marca</li>
-              <li>02. Temario Rector e Índice General</li>
-              <li>03. Manifiesto y Declaración de Valor</li>
-              <li>04. Círculo Dorado (Why, How, What)</li>
-              <li>05. La Empresa como Persona</li>
-              <li>06. Arquetipo y Tono Verbal</li>
-              <li>07. Buyer Persona y Perfil Ideal</li>
+        ${hdr("SECCIÓN 01", "ESTRUCTURA EDITORIAL Y TEMARIO RECTOR", 2, "Índice General de Constitución de Marca y Suite de Entregables Ejecutivos")}
+        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:16px; flex:1;">
+          <div class="tbb-card" style="border-top:4px solid ${pri};">
+            <div class="tbb-card-title" style="color:${pri}; font-size:15px;">I. ADN Y ESTRATEGIA (01–09)</div>
+            <ul style="margin:0; padding-left:18px; font-size:12.5px; line-height:1.72; color:#1E293B; font-weight:600;">
+              <li>01. Portada Monumental en Curvas</li>
+              <li>02. Índice Rector y Arquitectura</li>
+              <li>03. Manifiesto y Filosofía Operativa</li>
+              <li>04. Círculo Dorado (Why · How · What)</li>
+              <li>05. La Empresa como Persona + Visual</li>
+              <li>06. Tono de Voz y Criterios Verbales</li>
+              <li>07. Buyer Persona Ideal + Escena</li>
               <li>08. Mapa de Empatía del Cliente</li>
-              <li>09. Posicionamiento Estratégico</li>
+              <li>09. Posicionamiento Competitivo</li>
             </ul>
           </div>
-          <div class="tbb-card">
-            <div class="tbb-card-title" style="color:${sec};">II. TOUCHPOINTS & LOGOS (10 - 18)</div>
-            <ul style="margin:0; padding-left:18px; font-size:10.5px; line-height:1.65; color:#333;">
+          <div class="tbb-card" style="border-top:4px solid ${sec};">
+            <div class="tbb-card-title" style="color:${sec}; font-size:15px;">II. TOUCHPOINTS Y LOGOS (10–20)</div>
+            <ul style="margin:0; padding-left:18px; font-size:12.5px; line-height:1.72; color:#1E293B; font-weight:600;">
               <li>10. Touchpoints Fase 1: Antes</li>
               <li>11. Touchpoints Fase 2: Durante</li>
               <li>12. Touchpoints Fase 3: Después</li>
               <li>13. <strong>Terna Oficial de Logotipos</strong></li>
-              <li>14. Anatomía del Símbolo Central</li>
-              <li>15. Construcción y Retícula Áurea</li>
-              <li>16. Área de Aislamiento y Reducción</li>
+              <li>14. Anatomía y Síntesis del Símbolo</li>
+              <li>15. Retícula Áurea y Centrado (0.00px)</li>
+              <li>16. Área de Aislamiento y Escala</li>
               <li>17. Versión Oficial en Positivo</li>
-              <li>18. Versión Oficial en Negativo Calado</li>
+              <li>18. Versión en Negativo / Cápsula</li>
+              <li>19. Monocromo y Grabado Láser</li>
+              <li>20. Usos Incorrectos y Normativa</li>
             </ul>
           </div>
-          <div class="tbb-card">
-            <div class="tbb-card-title" style="color:${acc};">III. SISTEMA & GOBERNANZA (19 - 30)</div>
-            <ul style="margin:0; padding-left:18px; font-size:10.5px; line-height:1.65; color:#333;">
-              <li>19. Versión Monocromo y Fax</li>
-              <li>20. Usos Prohibidos y Normativa</li>
-              <li>21. Paleta Cromática (HEX/Pantone)</li>
-              <li>22. Jerarquía Tipográfica Principal</li>
-              <li>23. Jerarquía Tipográfica de Lectura</li>
-              <li>24. Despliegue en Entornos Digitales</li>
-              <li>25. Papelería y Documentos Ejecutivos</li>
-              <li>26. Packaging y Sello de Autor</li>
-              <li>27. Indumentaria y Textiles</li>
-              <li>28. Entorno Físico y Señalética</li>
-              <li>29. Clasificación de Niza Legal</li>
-              <li>30. Gobernanza y Clausura Oficial</li>
+          <div class="tbb-card" style="border-top:4px solid ${acc};">
+            <div class="tbb-card-title" style="color:${acc}; font-size:15px;">III. SISTEMA Y APLICACIONES (21–30)</div>
+            <ul style="margin:0; padding-left:18px; font-size:12.5px; line-height:1.72; color:#1E293B; font-weight:600;">
+              <li>21. Paleta Cromática (HEX/CMYK/PMS)</li>
+              <li>22. Tipografía Institucional Primaria</li>
+              <li>23. Tipografía de Lectura y Contratos</li>
+              <li>24. Ecosistema Web, App y Avatar</li>
+              <li>25. Papelería Ejecutiva y Tarjetas</li>
+              <li>26. Packaging y Sello de Clausura</li>
+              <li>27. Indumentaria y Bordado Textil</li>
+              <li>28. Fachada y Arquitectura Ambiental</li>
+              <li>29. Registro de Marca y Clase Niza</li>
+              <li>30. Gobernanza / División Corporativa</li>
+            </ul>
+          </div>
+          <div class="tbb-card" style="border-top:4px solid #10B981; background:#FAF8F5;">
+            <div class="tbb-card-title" style="color:#047857; font-size:15px;">IV. SUITE EJECUTIVA (31–36)</div>
+            <ul style="margin:0; padding-left:18px; font-size:12.5px; line-height:1.72; color:#1E293B; font-weight:600;">
+              <li>31. <strong>Showcase Visual de Experiencia (Pasos 0–3)</strong></li>
+              <li>32. <strong>Showcase Visual de Atelier y Entrega (Pasos 4–6)</strong></li>
+              <li>33. <strong>Firma Corporativa en .HTML</strong> (Gmail / Outlook)</li>
+              <li>34. <strong>Plantilla Hoja Membretada (.DOCX)</strong></li>
+              <li>35. <strong>Presentación Ejecutiva 16:9 (.PPTX)</strong></li>
+              <li>36. <strong>Certificado de Vectores en Curvas (.SVG / .AI)</strong></li>
             </ul>
           </div>
         </div>
@@ -631,36 +760,50 @@
     `);
 
     // =========================================================================
-    // LÁMINA 03: MANIFIESTO Y DECLARACIÓN DE VALOR
+    // LÁMINA 05: LA EMPRESA COMO PERSONA (CON ILUSTRACIÓN FLOW / CAPTURA APP)
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-03">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 3, "Manifiesto Central y Filosofía Operativa")}
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:26px; flex:1; align-items:center;">
-          <div>
-            <div style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:26px; font-weight:900; line-height:1.2; color:${darkInk}; margin-bottom:16px;">
-              "El valor real no se impone: se demuestra con rigor, calidez y certidumbre en cada interacción."
+        <div style="display:grid; grid-template-columns: 1.05fr 0.95fr; gap:26px; flex:1; align-items:stretch;">
+          <div style="display:flex; flex-direction:column; justify-content:space-between;">
+            <div style="background:${softBg}; border:1.5px solid ${lightGray}; border-left:6px solid ${acc}; border-radius:16px 32px 16px 16px; padding:22px 24px;">
+              <div style="font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:800; color:${acc}; margin-bottom:6px;">DECLARACIÓN DE PRINCIPIOS</div>
+              <div style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:24px; font-weight:900; line-height:1.25; color:${darkInk};">
+                "El valor real no se impone: se demuestra con rigor técnico, calidez humana y certidumbre en cada interacción."
+              </div>
             </div>
-            <p style="font-size:12px; line-height:1.65; color:#334155; margin-bottom:14px;">
-              En <strong>${esc(bName)}</strong> operamos bajo la premisa de que todo punto de fricción debe transformarse en una experiencia sin esfuerzo para quien confía en nosotros.
-            </p>
-            <div class="tbb-card" style="border-left:4px solid ${pri};">
-              <div class="tbb-card-title">COMPROMISO INSTITUCIONAL</div>
+            <div class="tbb-card" style="border-left:5px solid ${pri};">
+              <div class="tbb-card-title">COMPROMISO INSTITUCIONAL DE ${esc(bUpper)}</div>
               <div class="tbb-card-body">${esc(giro)}</div>
             </div>
+            <div class="tbb-kpi-strip">
+              <div class="tbb-kpi-pill">
+                <div style="font-size:18px;font-weight:900;color:${pri};font-family:'Montserrat',sans-serif;">100%</div>
+                <div style="font-size:11.5px;font-weight:700;color:#475569;">Trazabilidad y Rigor</div>
+              </div>
+              <div class="tbb-kpi-pill">
+                <div style="font-size:18px;font-weight:900;color:${sec};font-family:'Montserrat',sans-serif;">0.00 px</div>
+                <div style="font-size:11.5px;font-weight:700;color:#475569;">Precisión Geométrica</div>
+              </div>
+              <div class="tbb-kpi-pill">
+                <div style="font-size:18px;font-weight:900;color:${acc};font-family:'Montserrat',sans-serif;">24 / 7</div>
+                <div style="font-size:11.5px;font-weight:700;color:#475569;">Respaldo al Cliente</div>
+              </div>
+            </div>
           </div>
-          <div style="display:flex; flex-direction:column; gap:12px;">
-            <div class="tbb-card">
+          <div style="display:flex; flex-direction:column; justify-content:space-between; gap:14px;">
+            <div class="tbb-card" style="flex:1;">
               <div class="tbb-card-title" style="color:${pri};">1. Rigor Metodológico</div>
-              <div class="tbb-card-body">Cero atajos; cada entregable o producto responde a los más altos estándares técnicos de su categoría.</div>
+              <div class="tbb-card-body">Cero atajos ni improvisaciones; cada entregable, servicio o producto responde a los más altos estándares técnicos de su categoría.</div>
             </div>
-            <div class="tbb-card">
-              <div class="tbb-card-title" style="color:${sec};">2. Calidez Humana</div>
-              <div class="tbb-card-body">Escuchar activamente antes de proponer; trato de socio leal, transparente y empático.</div>
+            <div class="tbb-card" style="flex:1;">
+              <div class="tbb-card-title" style="color:${sec};">2. Calidez de Socio Leal</div>
+              <div class="tbb-card-body">Escuchar activamente antes de prescribir; acompañamiento hombro con hombro con transparencia total.</div>
             </div>
-            <div class="tbb-card">
+            <div class="tbb-card" style="flex:1;">
               <div class="tbb-card-title" style="color:${acc};">3. Certeza en el Tiempo</div>
-              <div class="tbb-card-body">Liberar tiempo mental y energía al usuario, asegurando que cada resultado sea duradero y medible.</div>
+              <div class="tbb-card-body">Liberar tiempo mental y operativo a nuestros clientes asegurando resultados duraderos, claros y medibles.</div>
             </div>
           </div>
         </div>
@@ -675,36 +818,36 @@
       <article class="tbb-plate" id="plate-04">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 4, "El Círculo Dorado: Propósito, Proceso y Resultado")}
         <div class="tbb-grid-3col">
-          <div class="tbb-card" style="border-top:4px solid ${acc}; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="tbb-card" style="border-top:5px solid ${acc}; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-              <div style="font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:800; color:${acc};">01 · PROPÓSITO CENTRAL</div>
-              <h3 style="font-family:'Montserrat', sans-serif; font-size:18px; font-weight:900; color:${darkInk}; margin:8px 0 12px 0;">¿POR QUÉ EXISTIMOS?</h3>
-              <p style="font-size:12px; line-height:1.6; color:#333;">${esc(why)}</p>
+              <div style="font-family:'JetBrains Mono', monospace; font-size:11.5px; font-weight:800; color:${acc};">01 · PROPÓSITO CENTRAL (WHY)</div>
+              <h3 style="font-family:'Montserrat', sans-serif; font-size:21px; font-weight:900; color:${darkInk}; margin:8px 0 12px 0;">¿POR QUÉ EXISTIMOS?</h3>
+              <p style="font-size:14px; line-height:1.62; color:#1E293B; margin:0;">${esc(why)}</p>
             </div>
-            <div style="background:${softBg}; padding:8px 12px; border-radius:6px; font-size:10.5px; color:${midGray}; font-weight:600;">
-              El corazón emocional y causa raíz del negocio.
+            <div style="background:${softBg}; border:1px solid ${lightGray}; padding:12px 14px; border-radius:10px 20px 10px 10px; font-size:12px; color:#334155; font-weight:700;">
+              El corazón emocional y la causa raíz que guía todas las decisiones de ${esc(bName)}.
             </div>
           </div>
 
-          <div class="tbb-card" style="border-top:4px solid ${sec}; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="tbb-card" style="border-top:5px solid ${sec}; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-              <div style="font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:800; color:${sec};">02 · METODOLOGÍA ÚNICA</div>
-              <h3 style="font-family:'Montserrat', sans-serif; font-size:18px; font-weight:900; color:${darkInk}; margin:8px 0 12px 0;">¿CÓMO LO HACEMOS?</h3>
-              <p style="font-size:12px; line-height:1.6; color:#333;">${esc(how)}</p>
+              <div style="font-family:'JetBrains Mono', monospace; font-size:11.5px; font-weight:800; color:${sec};">02 · METODOLOGÍA ÚNICA (HOW)</div>
+              <h3 style="font-family:'Montserrat', sans-serif; font-size:21px; font-weight:900; color:${darkInk}; margin:8px 0 12px 0;">¿CÓMO LO HACEMOS?</h3>
+              <p style="font-size:14px; line-height:1.62; color:#1E293B; margin:0;">${esc(how)}</p>
             </div>
-            <div style="background:${softBg}; padding:8px 12px; border-radius:6px; font-size:10.5px; color:${midGray}; font-weight:600;">
-              El estándar técnico y diferencial competitivo.
+            <div style="background:${softBg}; border:1px solid ${lightGray}; padding:12px 14px; border-radius:10px 20px 10px 10px; font-size:12px; color:#334155; font-weight:700;">
+              Disciplina operativa, procesos propietarios y diferenciación real frente al mercado.
             </div>
           </div>
 
-          <div class="tbb-card" style="border-top:4px solid ${pri}; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="tbb-card" style="border-top:5px solid ${pri}; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-              <div style="font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:800; color:${pri};">03 · OFERTA TANGIBLE</div>
-              <h3 style="font-family:'Montserrat', sans-serif; font-size:18px; font-weight:900; color:${darkInk}; margin:8px 0 12px 0;">¿QUÉ ENTREGAMOS?</h3>
-              <p style="font-size:12px; line-height:1.6; color:#333;">${esc(what)}</p>
+              <div style="font-family:'JetBrains Mono', monospace; font-size:11.5px; font-weight:800; color:${pri};">03 · OFERTA TANGIBLE (WHAT)</div>
+              <h3 style="font-family:'Montserrat', sans-serif; font-size:21px; font-weight:900; color:${darkInk}; margin:8px 0 12px 0;">¿QUÉ ENTREGAMOS?</h3>
+              <p style="font-size:14px; line-height:1.62; color:#1E293B; margin:0;">${esc(what)}</p>
             </div>
-            <div style="background:${softBg}; padding:8px 12px; border-radius:6px; font-size:10.5px; color:${midGray}; font-weight:600;">
-              El resultado tangible que recibe el usuario final.
+            <div style="background:${softBg}; border:1px solid ${lightGray}; padding:12px 14px; border-radius:10px 20px 10px 10px; font-size:12px; color:#334155; font-weight:700;">
+              Productos, servicios y entregables tangibles auditados con calidad superior.
             </div>
           </div>
         </div>
@@ -713,38 +856,36 @@
     `);
 
     // =========================================================================
-    // LÁMINA 05: LA EMPRESA COMO PERSONA
+    // LÁMINA 05: LA EMPRESA COMO PERSONA (CON VISUAL CAPTURA / GOOGLE FLOW)
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-05">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 5, "La Empresa como Persona: Identidad Humana y Arquetipo")}
-        <div class="tbb-grid-2col" style="align-items:center;">
-          <div class="tbb-card" style="border-left:5px solid ${pri}; padding:24px;">
-            <div style="font-family:'JetBrains Mono', monospace; font-size:10.5px; font-weight:800; color:${pri}; margin-bottom:8px;">
-              PERFIL DE CARÁCTER CORPORATIVO
+        <div style="display:grid; grid-template-columns: 1.08fr 0.92fr; gap:22px; flex:1; align-items:stretch;">
+          <div style="display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+            <div class="tbb-card" style="border-left:5px solid ${pri};">
+              <div style="font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:800; color:${pri}; margin-bottom:4px;">
+                CARÁCTER HUMANO Y ARQUETIPO RECTOR
+              </div>
+              <h3 style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:20px; font-weight:900; color:${darkInk}; margin:0 0 8px 0; line-height:1.3;">
+                ${esc(persona)}
+              </h3>
+              <p class="tbb-card-body" style="margin:0;">
+                Si <strong>${esc(bName)}</strong> fuera una persona, proyectaría autoridad serena, dominio técnico y cercanía genuina: escucha primero la necesidad del cliente y la resuelve con precisión de relojería.
+              </p>
             </div>
-            <h3 style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:24px; font-weight:900; color:${darkInk}; margin:0 0 14px 0;">
-              ${esc(persona)}
-            </h3>
-            <p style="font-size:12px; line-height:1.65; color:#475569; margin:0;">
-              Si <strong>${esc(bName)}</strong> fuera una persona de carne y hueso, entraría al espacio con paso seguro y mirada franca. Habla con métricas precisas y conocimiento profundo de su oficio, pero siempre con un café en la mano y la disposición genuina de escuchar antes de prescribir.
-            </p>
-          </div>
-
-          <div style="display:flex; flex-direction:column; gap:12px;">
-            <div class="tbb-card">
-              <div class="tbb-card-title" style="color:${pri};">Fuerza Tranquila</div>
-              <div class="tbb-card-body">Seguridad que nace de la maestría técnica; jamás necesita levantar la voz ni usar artificios agresivos de venta.</div>
-            </div>
-            <div class="tbb-card">
-              <div class="tbb-card-title" style="color:${sec};">Mente de Ingeniero</div>
-              <div class="tbb-card-body">Estructura, lógica, datos y procesos claros que resuelven problemas reales desde la raíz.</div>
-            </div>
-            <div class="tbb-card">
-              <div class="tbb-card-title" style="color:${acc};">Calidez de Socio Leal</div>
-              <div class="tbb-card-body">Acompañamiento cercano; celebra el éxito de su cliente como propio y cuida sus intereses con honorabilidad.</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="tbb-card">
+                <div class="tbb-card-title" style="color:${pri}; font-size:15px;">Fuerza Tranquila</div>
+                <div class="tbb-card-body" style="font-size:13px;">Seguridad nacida de la maestría técnica; cero promesas vacías.</div>
+              </div>
+              <div class="tbb-card">
+                <div class="tbb-card-title" style="color:${acc}; font-size:15px;">Socio Leal</div>
+                <div class="tbb-card-body" style="font-size:13px;">Acompañamiento empático que protege los intereses del cliente.</div>
+              </div>
             </div>
           </div>
+          ${renderChapterVisualFrame("persona", `Personificación de ${bName}`, "Fuerza tranquila, mente estructurada y trato cálido", "/assets/app_captures/tbb_capture_01_aura_splash.jpg")}
         </div>
         ${ftr(5)}
       </article>
@@ -757,24 +898,34 @@
       <article class="tbb-plate" id="plate-06">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 6, "Tono de Voz Verbal: Lo que Somos y lo que Jamás Seremos")}
         <div class="tbb-grid-2col">
-          <div class="tbb-card" style="border-top:4px solid #10B981;">
-            <div class="tbb-card-title" style="color:#059669;"> SÍ HABLAMOS ASÍ (PRINCIPIOS APROBADOS)</div>
-            <ul style="margin:10px 0 0 0; padding-left:18px; font-size:11.5px; line-height:1.7; color:#333;">
-              <li><strong>Claro y Directo:</strong> Frases concisas que van al grano sin rodeos innecesarios.</li>
-              <li><strong>Profesional y Cercano:</strong> Vocabulario especializado pero explicado con total claridad.</li>
-              <li><strong>Orientado a Soluciones:</strong> Enfocado en el beneficio tangible y en la certeza del cliente.</li>
-              <li><strong>Empatía y Respeto:</strong> Tratamos al usuario como un igual inteligente y ocupado.</li>
-            </ul>
+          <div class="tbb-card" style="border-top:5px solid #10B981; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div class="tbb-card-title" style="color:#059669; font-size:17px;">✓ SÍ HABLAMOS ASÍ (ESTÁNDAR APROBADO)</div>
+              <ul style="margin:12px 0 0 0; padding-left:20px; font-size:14px; line-height:1.78; color:#1E293B;">
+                <li><strong>Claro y Ejecutivo:</strong> Frases concisas que aportan valor desde el primer renglón.</li>
+                <li><strong>Didáctico y Cercano:</strong> Dominio técnico explicado en lenguaje humano y transparente.</li>
+                <li><strong>Orientado a Certeza:</strong> Énfasis en tiempos, garantías y beneficios verificables.</li>
+                <li><strong>Respetuoso del Tiempo:</strong> Comunicación estructurada que facilita tomar decisiones.</li>
+              </ul>
+            </div>
+            <div style="background:#ECFDF5; border:1px solid #A7F3D0; border-radius:10px; padding:10px 14px; font-size:12.5px; font-weight:700; color:#065F46;">
+              Ejemplo: "Tu proyecto queda garantizado y entregado este viernes con trazabilidad completa."
+            </div>
           </div>
 
-          <div class="tbb-card" style="border-top:4px solid #EF4444;">
-            <div class="tbb-card-title" style="color:#DC2626;">✕ JAMÁS HABLAMOS ASÍ (PROHIBICIONES)</div>
-            <ul style="margin:10px 0 0 0; padding-left:18px; font-size:11.5px; line-height:1.7; color:#333;">
-              <li><strong>Cero Arrogancia:</strong> Prohibido usar tecnicismos para confundir o presumir superioridad.</li>
-              <li><strong>Cero Jerga de Relleno:</strong> Evitar frases vacías como "soluciones disruptivas 360°".</li>
-              <li><strong>Cero Falsas Promesas:</strong> Nunca prometer tiempos o resultados que no se puedan auditar.</li>
-              <li><strong>Cero Informalidad Excesiva:</strong> Respetamos el tono institucional sin caer en frialdad.</li>
-            </ul>
+          <div class="tbb-card" style="border-top:5px solid #EF4444; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div class="tbb-card-title" style="color:#DC2626; font-size:17px;">✕ JAMÁS HABLAMOS ASÍ (PROHIBICIONES)</div>
+              <ul style="margin:12px 0 0 0; padding-left:20px; font-size:14px; line-height:1.78; color:#1E293B;">
+                <li><strong>Cero Arrogancia:</strong> Prohibido usar tecnicismos rebuscados para confundir al cliente.</li>
+                <li><strong>Cero Clichés Vacíos:</strong> Evitar muletillas genéricas sin sustento operativo real.</li>
+                <li><strong>Cero Ambigüedad:</strong> Jamás ocultar alcances, costos ni condiciones de servicio.</li>
+                <li><strong>Cero Respuestas Robóticas:</strong> Trato cálido y personalizado en cada contacto.</li>
+              </ul>
+            </div>
+            <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:10px; padding:10px 14px; font-size:12.5px; font-weight:700; color:#991B1B;">
+              Prohibido: "Ofrecemos sinergias holísticas 360° más o menos la próxima semana."
+            </div>
           </div>
         </div>
         ${ftr(6)}
@@ -782,34 +933,32 @@
     `);
 
     // =========================================================================
-    // LÁMINA 07: BUYER PERSONA Y PERFIL IDEAL
+    // LÁMINA 07: BUYER PERSONA Y PERFIL IDEAL (CON VISUAL CAPTURA / GOOGLE FLOW)
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-07">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 7, "Perfil del Cliente Ideal (Buyer Persona)")}
-        <div class="tbb-grid-2col" style="align-items:center;">
-          <div class="tbb-card" style="border-left:4px solid ${sec}; padding:20px;">
-            <div style="font-size:10px; font-weight:800; color:${sec}; letter-spacing:1px; margin-bottom:6px;">SEGMENTO OBJETIVO</div>
-            <h3 style="font-family:'Montserrat', sans-serif; font-size:18px; font-weight:900; color:${darkInk}; margin:0 0 10px 0;">${esc(buyer)}</h3>
-            <p style="font-size:11.5px; line-height:1.6; color:#475569; margin:0;">
-              Individuos y directores de empresas que valoran su tiempo por encima de todo. No buscan el precio más bajo sino la máxima garantía de calidad, cumplimiento y tranquilidad operativa.
-            </p>
-          </div>
-
-          <div style="display:flex; flex-direction:column; gap:10px;">
-            <div class="tbb-card">
-              <div class="tbb-card-title" style="color:${pri};">Dolor Principal que Resolvemos</div>
-              <div class="tbb-card-body">Incertidumbre, proveedores informales que entregan a medias y falta de claridad técnica en el sector.</div>
+        <div style="display:grid; grid-template-columns: 1.08fr 0.92fr; gap:22px; flex:1; align-items:stretch;">
+          <div style="display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+            <div class="tbb-card" style="border-left:5px solid ${sec};">
+              <div style="font-size:11px; font-weight:800; color:${sec}; margin-bottom:4px;">SEGMENTO OBJETIVO PRIORITARIO</div>
+              <h3 style="font-family:'Montserrat', sans-serif; font-size:20px; font-weight:900; color:${darkInk}; margin:0 0 8px 0; line-height:1.3;">${esc(buyer)}</h3>
+              <p class="tbb-card-body" style="margin:0;">
+                Tomadores de decisión y clientes exigentes que valoran su tiempo y buscan certeza técnica, estética impecable y un aliado que responda sin excusas.
+              </p>
             </div>
-            <div class="tbb-card">
-              <div class="tbb-card-title" style="color:${sec};">Criterio de Decisión de Compra</div>
-              <div class="tbb-card-body">Evidencia de resultados, trazabilidad, seriedad institucional y trato humano personalizado.</div>
-            </div>
-            <div class="tbb-card">
-              <div class="tbb-card-title" style="color:${acc};">Transformación Lograda</div>
-              <div class="tbb-card-body">Pasan de la dispersión y la duda al control absoluto y la satisfacción con orgullo de marca.</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+              <div class="tbb-card">
+                <div class="tbb-card-title" style="color:${pri}; font-size:15px;">Dolor que Resolvemos</div>
+                <div class="tbb-card-body" style="font-size:13px;">Proveedores lentos, entregas informales y pérdida de tiempo operativo.</div>
+              </div>
+              <div class="tbb-card">
+                <div class="tbb-card-title" style="color:${acc}; font-size:15px;">Transformación</div>
+                <div class="tbb-card-body" style="font-size:13px;">Del caos y la incertidumbre al orgullo y control total de su marca.</div>
+              </div>
             </div>
           </div>
+          ${renderChapterVisualFrame("buyer", `Cliente Ideal de ${bName}`, buyer.slice(0, 68), "/assets/app_captures/tbb_capture_02_golden_circle.jpg")}
         </div>
         ${ftr(7)}
       </article>
@@ -821,22 +970,22 @@
     plates.push(`
       <article class="tbb-plate" id="plate-08">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 8, "Mapa de Empatía: Lo que Siente, Ve y Necesita el Cliente")}
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; flex:1;">
-          <div class="tbb-card">
-            <div class="tbb-card-title" style="color:${pri};">¿QUÉ PIENSA Y SIENTE?</div>
-            <p class="tbb-card-body">"Necesito un aliado que realmente sepa lo que hace y me quite problemas de encima, no que me genere más juntas ni tareas pendientes."</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px; flex:1;">
+          <div class="tbb-card" style="border-left:4px solid ${pri};">
+            <div class="tbb-card-title" style="color:${pri};">1. ¿QUÉ PIENSA Y SIENTE?</div>
+            <p class="tbb-card-body" style="margin:0;">"Necesito un socio experto que entienda mi visión a la primera y me entregue resultados de clase mundial sin hacerme perder semanas en revisiones."</p>
           </div>
-          <div class="tbb-card">
-            <div class="tbb-card-title" style="color:${sec};">¿QUÉ VE EN EL MERCADO?</div>
-            <p class="tbb-card-body">Opciones genéricas con promesas exageradas, plantillas baratas y poca sustancia profesional.</p>
+          <div class="tbb-card" style="border-left:4px solid ${sec};">
+            <div class="tbb-card-title" style="color:${sec};">2. ¿QUÉ VE EN EL MERCADO?</div>
+            <p class="tbb-card-body" style="margin:0;">Alternativas genéricas, plantillas improvisadas sin rigor metodológico o proveedores tradicionales lentos y desconectados de la operación real.</p>
           </div>
-          <div class="tbb-card">
-            <div class="tbb-card-title" style="color:${acc};">¿QUÉ DICE Y HACE?</div>
-            <p class="tbb-card-body">Investiga recomendaciones, revisa portafolios previos y exige seriedad desde el primer mensaje de WhatsApp o llamada.</p>
+          <div class="tbb-card" style="border-left:4px solid ${acc};">
+            <div class="tbb-card-title" style="color:${acc};">3. ¿QUÉ DICE Y HACE?</div>
+            <p class="tbb-card-body" style="margin:0;">Compara calidad tangible, exige respuestas claras desde el primer contacto en WhatsApp o web y premia con lealtad a quien cumple en tiempo y forma.</p>
           </div>
-          <div class="tbb-card">
-            <div class="tbb-card-title" style="color:${darkInk};">¿QUÉ FRUSTRACIÓN EVITAMOS?</div>
-            <p class="tbb-card-body">El desgaste de tiempo, la pérdida de dinero en pruebas fallidas y el estrés de la improvisación.</p>
+          <div class="tbb-card" style="border-left:4px solid ${darkInk};">
+            <div class="tbb-card-title" style="color:${darkInk};">4. ¿QUÉ ÉXITO ALCANZA CON NOSOTROS?</div>
+            <p class="tbb-card-body" style="margin:0;">Tranquilidad mental, imagen profesional impecable y activos listos para operar y vender desde el primer día.</p>
           </div>
         </div>
         ${ftr(8)}
@@ -849,17 +998,17 @@
     plates.push(`
       <article class="tbb-plate" id="plate-09">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 9, "Declaración de Posicionamiento Competitivo")}
-        <div style="display:flex; flex-direction:column; justify-content:center; gap:20px; flex:1;">
+        <div style="display:flex; flex-direction:column; justify-content:space-between; gap:18px; flex:1;">
           <div class="tbb-card" style="border-left:6px solid ${pri}; padding:26px;">
-            <div style="font-size:10px; font-weight:800; color:${pri}; letter-spacing:1px; margin-bottom:8px;">FÓRMULA DE POSICIONAMIENTO</div>
-            <div style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:20px; font-weight:900; line-height:1.35; color:${darkInk};">
-              Para <u>${esc(buyer)}</u>, <strong>${esc(bName)}</strong> es el referente en <u>${esc(category)}</u> que entrega <u>${esc(what)}</u> porque a diferencia de las alternativas comunes, nosotros <u>${esc(how)}</u>.
+            <div style="font-size:11px; font-weight:800; color:${pri}; margin-bottom:8px;">FÓRMULA OFICIAL DE POSICIONAMIENTO</div>
+            <div style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:21px; font-weight:900; line-height:1.4; color:${darkInk};">
+              Para <u>${esc(buyer)}</u>, <strong>${esc(bName)}</strong> es el referente en <u>${esc(category)}</u> que entrega <u>${esc(what)}</u> porque, a diferencia de las opciones tradicionales, nosotros <u>${esc(how)}</u>.
             </div>
           </div>
           <div class="tbb-grid-3col">
-            <div class="tbb-card"><div class="tbb-card-title">Atributo Clave #1</div><div class="tbb-card-body">Precisión de ingeniería y diseño en curvas puras.</div></div>
-            <div class="tbb-card"><div class="tbb-card-title">Atributo Clave #2</div><div class="tbb-card-body">Acompañamiento personalizado y socio leal 24/7.</div></div>
-            <div class="tbb-card"><div class="tbb-card-title">Atributo Clave #3</div><div class="tbb-card-body">Garantía total de cumplimiento y certeza de valor.</div></div>
+            <div class="tbb-card"><div class="tbb-card-title" style="color:${pri};">1. Diferencial Técnico</div><div class="tbb-card-body">Estándar de calidad auditable, geometría en curvas puras y cero plantillas genéricas.</div></div>
+            <div class="tbb-card"><div class="tbb-card-title" style="color:${sec};">2. Velocidad y Claridad</div><div class="tbb-card-body">Procesos ágiles que eliminan burocracia y entregan valor inmediato al cliente.</div></div>
+            <div class="tbb-card"><div class="tbb-card-title" style="color:${acc};">3. Garantía Total</div><div class="tbb-card-body">Acompañamiento continuo Antes, Durante y Después de cada servicio.</div></div>
           </div>
         </div>
         ${ftr(9)}
@@ -867,42 +1016,44 @@
     `);
 
     // =========================================================================
-    // LÁMINA 10: TOUCHPOINTS FASE 1 (ANTES DE LA COMPRA)
+    // LÁMINA 10: TOUCHPOINTS FASE 1 (ANTES DE LA COMPRA + VISUAL)
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-10">
         ${hdr("SECCIÓN 02", "INGENIERÍA DE TOUCHPOINTS", 10, "Fase 1: Puntos de Contacto Antes de la Compra (Descubrimiento)")}
-        <div style="margin-bottom:12px; font-size:12px; color:#475569;">
-          Touchpoints diseñados para transmitir confianza inmediata, autoridad técnica y eliminar toda fricción inicial:
-        </div>
-        <div class="tbb-grid-2col">
-          ${tpBefore.map((tp, idx) => `
-            <div class="tbb-card" style="border-left:4px solid ${pri};">
-              <div style="font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:800; color:${pri}; margin-bottom:4px;">TOUCHPOINT 0${idx+1} · ANTES</div>
-              <div style="font-size:12px; font-weight:700; color:${darkInk}; line-height:1.45;">${esc(tp)}</div>
-            </div>
-          `).join("")}
+        <div style="display:grid; grid-template-columns: 1.12fr 0.88fr; gap:20px; flex:1; align-items:stretch;">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+            ${tpBefore.slice(0, 4).map((tp, idx) => `
+              <div class="tbb-card" style="border-left:4px solid ${pri}; display:flex; flex-direction:column; justify-content:space-between;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:800; color:${pri};">TOUCHPOINT 0${idx + 1} · ANTES</div>
+                <div style="font-size:14px; font-weight:800; color:${darkInk}; line-height:1.45; margin:6px 0;">${esc(tp)}</div>
+                <div style="font-size:11.5px; color:#64748B;">Primera impresión de autoridad y confianza sin fricción.</div>
+              </div>
+            `).join("")}
+          </div>
+          ${renderChapterVisualFrame("tpBefore", "Descubrimiento y Primer Contacto", tpBefore[0] || "Presencia digital clara y accesible", "/assets/app_captures/tbb_capture_03_touchpoints.jpg")}
         </div>
         ${ftr(10)}
       </article>
     `);
 
     // =========================================================================
-    // LÁMINA 11: TOUCHPOINTS FASE 2 (DURANTE LA COMPRA / OPERACIÓN)
+    // LÁMINA 11: TOUCHPOINTS FASE 2 (DURANTE LA COMPRA / OPERACIÓN + VISUAL)
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-11">
         ${hdr("SECCIÓN 02", "INGENIERÍA DE TOUCHPOINTS", 11, "Fase 2: Puntos de Contacto Durante el Servicio (Operación y Entrega)")}
-        <div style="margin-bottom:12px; font-size:12px; color:#475569;">
-          Puntos de contacto que garantizan una experiencia impecable, sin retrasos y con transparencia total:
-        </div>
-        <div class="tbb-grid-2col">
-          ${tpDuring.map((tp, idx) => `
-            <div class="tbb-card" style="border-left:4px solid ${sec};">
-              <div style="font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:800; color:${sec}; margin-bottom:4px;">TOUCHPOINT 0${idx+5} · DURANTE</div>
-              <div style="font-size:12px; font-weight:700; color:${darkInk}; line-height:1.45;">${esc(tp)}</div>
-            </div>
-          `).join("")}
+        <div style="display:grid; grid-template-columns: 1.12fr 0.88fr; gap:20px; flex:1; align-items:stretch;">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+            ${tpDuring.slice(0, 4).map((tp, idx) => `
+              <div class="tbb-card" style="border-left:4px solid ${sec}; display:flex; flex-direction:column; justify-content:space-between;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:800; color:${sec};">TOUCHPOINT 0${idx + 5} · DURANTE</div>
+                <div style="font-size:14px; font-weight:800; color:${darkInk}; line-height:1.45; margin:6px 0;">${esc(tp)}</div>
+                <div style="font-size:11.5px; color:#64748B;">Ejecución puntual, transparente y acompañada en vivo.</div>
+              </div>
+            `).join("")}
+          </div>
+          ${renderChapterVisualFrame("tpDuring", "Experiencia Durante el Servicio", tpDuring[0] || "Ejecución con estándares suizos", "/assets/app_captures/tbb_capture_04_kansei_faders.jpg")}
         </div>
         ${ftr(11)}
       </article>
@@ -914,14 +1065,15 @@
     plates.push(`
       <article class="tbb-plate" id="plate-12">
         ${hdr("SECCIÓN 02", "INGENIERÍA DE TOUCHPOINTS", 12, "Fase 3: Puntos de Contacto Después del Servicio (Lealtad y Garantía)")}
-        <div style="margin-bottom:12px; font-size:12px; color:#475569;">
-          Touchpoints que consolidan la lealtad a largo plazo, convierten clientes en promotores y blindan la garantía:
+        <div style="margin-bottom:10px; font-size:13.5px; font-weight:600; color:#334155;">
+          Puntos de contacto posteriores a la entrega que consolidan la recompra, la recomendación orgánica y el respaldo post-venta:
         </div>
         <div class="tbb-grid-2col">
-          ${tpAfter.map((tp, idx) => `
-            <div class="tbb-card" style="border-left:4px solid ${acc};">
-              <div style="font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:800; color:${acc}; margin-bottom:4px;">TOUCHPOINT 0${idx+9} · DESPUÉS</div>
-              <div style="font-size:12px; font-weight:700; color:${darkInk}; line-height:1.45;">${esc(tp)}</div>
+          ${tpAfter.slice(0, 4).map((tp, idx) => `
+            <div class="tbb-card" style="border-left:5px solid ${acc}; display:flex; flex-direction:column; justify-content:space-between;">
+              <div style="font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:800; color:${acc};">TOUCHPOINT 0${idx + 9} · DESPUÉS</div>
+              <div style="font-size:15px; font-weight:800; color:${darkInk}; line-height:1.45;">${esc(tp)}</div>
+              <div style="font-size:12px; color:#475569;">Fidelización activa y garantía institucional de largo plazo.</div>
             </div>
           `).join("")}
         </div>
@@ -1534,27 +1686,31 @@
       <article class="tbb-plate" id="plate-28">
         ${hdr("SECCIÓN 05", "SISTEMA DE APLICACIONES", 28, "Espacio Físico, Fachada y Señalética Arquitectónica")}
         <div class="tbb-grid-2col" style="align-items:center;">
-          <div class="tbb-card" style="border-left:4px solid ${acc}; padding:20px;">
-            <div class="tbb-card-title">RÓTULO EXTERIOR DE FACHADA</div>
-            <p style="font-size:11.5px; line-height:1.6; color:#333; margin-bottom:12px;">
-              El rótulo exterior debe montarse en letras 3D recortadas (aluminio cepillado o acrílico mate de 15 mm) con retroiluminación LED cálida (3000K):
-            </p>
-            <div style="background:${softBg}; border:1px solid ${lightGray}; border-radius:8px; padding:16px; text-align:center;">
-              <div style="font-family:'${priFont}', sans-serif; font-size:22px; font-weight:900; color:${darkInk}; letter-spacing:3px;">
-                ${esc(bUpper)}
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="tbb-card" style="border-left:4px solid ${acc}; padding:16px;">
+              <div class="tbb-card-title">RÓTULO EXTERIOR DE FACHADA</div>
+              <p style="font-size:11.5px; line-height:1.55; color:#333; margin-bottom:10px;">
+                Montaje en letras 3D recortadas (aluminio cepillado o acrílico mate de 15 mm) con retroiluminación LED cálida (3000K):
+              </p>
+              <div style="background:${softBg}; border:1px solid ${lightGray}; border-radius:8px; padding:12px; text-align:center;">
+                <div style="font-family:'${priFont}', sans-serif; font-size:20px; font-weight:900; color:${darkInk}; letter-spacing:3px;">
+                  ${esc(bUpper)}
+                </div>
+                <div style="font-size:9px; color:${pri}; font-weight:700; margin-top:4px;">${esc(tagline.toUpperCase())}</div>
               </div>
-              <div style="font-size:9px; color:${pri}; font-weight:700; margin-top:4px;">${esc(tagline.toUpperCase())}</div>
+            </div>
+
+            <div class="tbb-card" style="border-left:4px solid ${pri}; padding:16px;">
+              <div class="tbb-card-title">SEÑALIZACIÓN INTERIOR Y TÓTEM</div>
+              <ul style="margin:0; padding-left:18px; font-size:11px; line-height:1.55; color:#475569;">
+                <li>Placas de directorio en vidrio templado esmerilado con chapetones de acero inoxidable.</li>
+                <li>Señalética de módulos con tipografía ${secFont} a 1.60 m de altura respecto al piso.</li>
+                <li>Aroma y música ambiental curados para complementar la experiencia sensorial del giro.</li>
+              </ul>
             </div>
           </div>
 
-          <div class="tbb-card" style="border-left:4px solid ${pri}; padding:20px;">
-            <div class="tbb-card-title">SEÑALIZACIÓN INTERIOR Y TÓTEM</div>
-            <ul style="margin:0; padding-left:18px; font-size:11px; line-height:1.65; color:#475569;">
-              <li>Placas de directorio en vidrio templado esmerilado con chapetones de acero inoxidable.</li>
-              <li>Señalética de módulos con tipografía ${secFont} a 1.60 m de altura respecto al piso.</li>
-              <li>Aroma y música ambiental curados para complementar la experiencia sensorial del giro.</li>
-            </ul>
-          </div>
+          ${renderChapterVisualFrame("environment", "ARQUITECTURA Y WAYFINDING · CAPÍTULO 28", "Integración física y ambiental de la identidad de " + bName, 260)}
         </div>
         ${ftr(28)}
       </article>
@@ -1677,7 +1833,191 @@
       `);
     }
 
-    return plates;
+    // =========================================================================
+    // LÁMINA 31: SHOWCASE VISUAL DE EXPERIENCIA (PASOS 0 A 3)
+    // =========================================================================
+    plates.push(`
+      <article class="tbb-plate" id="plate-31">
+        ${hdr("SECCIÓN 07", "GALERÍA DE INTERFAZ Y EXPERIENCIA", 31, "Showcase Visual de Diagnóstico, ADN y Touchpoints (Pasos 0 a 3)")}
+        <div class="tbb-grid-3col" style="align-items:stretch;">
+          ${renderChapterVisualFrame("step0_splash", "PASO 0 · BIENVENIDA Y DIAGNÓSTICO", "Mentoría inicial y captura de esencia de " + bName, 265)}
+          ${renderChapterVisualFrame("step1_golden", "PASO 1 Y 2 · CÍRCULO DORADO Y PERSONA", "Síntesis estratégica y arquetipo humano", 265)}
+          ${renderChapterVisualFrame("step3_touchpoints", "PASO 3 · INGENIERÍA DE TOUCHPOINTS", "Recorrido Antes · Durante · Después del servicio", 265)}
+        </div>
+        ${ftr(31)}
+      </article>
+    `);
+
+    // =========================================================================
+    // LÁMINA 32: SHOWCASE VISUAL DE ATELIER (PASOS 4 A 6)
+    // =========================================================================
+    plates.push(`
+      <article class="tbb-plate" id="plate-32">
+        ${hdr("SECCIÓN 07", "GALERÍA DE INTERFAZ Y EXPERIENCIA", 32, "Showcase Visual de Faders Kansei, Vectores y Mapa (Pasos 4 a 6)")}
+        <div class="tbb-grid-3col" style="align-items:stretch;">
+          ${renderChapterVisualFrame("step4_kansei", "PASO 4 · CALIBRACIÓN PSICOFÍSICA KANSEI", "Espectro cromático y tipográfico de " + bName, 265)}
+          ${renderChapterVisualFrame("step5_atelier", "PASO 5 · ATELIER VECTORIAL EN CURVAS", "Centrado óptico 0.00px y terna oficial de marca", 265)}
+          ${renderChapterVisualFrame("step6_map", "PASO 6 · MAPA Y BÓVEDA DE ENTREGABLES", "Compilación ejecutiva de activos en alta definición", 265)}
+        </div>
+        ${ftr(32)}
+      </article>
+    `);
+
+    // =========================================================================
+    // LÁMINA 33: APLICACIÓN DIGITAL EJECUTIVA: FIRMA CORPORATIVA EN .HTML
+    // =========================================================================
+    plates.push(`
+      <article class="tbb-plate" id="plate-33">
+        ${hdr("SECCIÓN 08", "SUITE EJECUTIVA DESCARGABLE", 33, "Aplicación Digital: Firma Corporativa Oficial en .HTML (Gmail / Outlook / Apple Mail)")}
+        <div class="tbb-grid-2col" style="align-items:center;">
+          <div style="background:#FFFFFF; border:1.5px solid ${lightGray}; border-top:4px solid ${pri}; border-radius:14px; padding:18px; display:flex; flex-direction:column; gap:12px;">
+            <div style="font-size:9px; font-weight:800; color:${acc}; letter-spacing:1.2px;">VISTA PREVIA EN CLIENTE DE CORREO</div>
+            <div style="display:flex; align-items:center; gap:14px; border-left:4px solid ${pri}; padding-left:14px;">
+              <div style="width:68px; height:68px; flex-shrink:0; background:#FFFFFF; border:1px solid ${lightGray}; border-radius:12px; display:flex; align-items:center; justify-content:center; padding:6px;">
+                <svg viewBox="0 0 200 200" width="54" height="54" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg>
+              </div>
+              <div>
+                <div style="font-family:'${priFont}', sans-serif; font-size:15px; font-weight:900; color:${darkInk};">${esc(bName)}</div>
+                <div style="font-size:10px; font-weight:800; color:${acc}; letter-spacing:1px; margin-bottom:4px;">DIRECCIÓN GENERAL · ${esc(category.toUpperCase().slice(0, 28))}</div>
+                <div style="font-size:10px; color:#475569; line-height:1.45;">
+                  ✉ contacto@${esc(slug.replace(/_/g, ""))}.com &nbsp;|&nbsp; 🌐 www.${esc(slug.replace(/_/g, ""))}.com
+                </div>
+              </div>
+            </div>
+            <div style="background:${softBg}; border:1px solid ${lightGray}; border-radius:8px; padding:8px 12px; font-size:9.5px; color:#334155; display:flex; justify-content:space-between; align-items:center;">
+              <span><strong>${esc(tagline.slice(0, 56))}</strong></span>
+              <span style="background:${pri}; color:#FFFFFF; padding:3px 9px; border-radius:999px; font-weight:800; font-size:8.5px;">Agendar Reunión →</span>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="tbb-card" style="border-left:4px solid ${pri};">
+              <div class="tbb-card-title">ESTÁNDAR TÉCNICO DE CORREO CORPORATIVO</div>
+              <div class="tbb-card-body">Maquetación en tablas HTML con CSS inline 100% compatible con Gmail, Microsoft Outlook (Desktop/365), Apple Mail e iOS sin bloqueo de imágenes.</div>
+            </div>
+            <div class="tbb-card" style="border-left:4px solid ${acc};">
+              <div class="tbb-card-title">DESCARGA LISTA EN LA BÓVEDA (PASO 6)</div>
+              <div class="tbb-card-body">Incluye botón de copiado visual con 1 clic para pegar directamente en la configuración de firma de Gmail o descargar el archivo <strong>.HTML</strong> autónomo.</div>
+            </div>
+          </div>
+        </div>
+        ${ftr(33)}
+      </article>
+    `);
+
+    // =========================================================================
+    // LÁMINA 34: PLANTILLA EDITABLE DE HOJA MEMBRETADA CORPORATIVA (.DOCX)
+    // =========================================================================
+    plates.push(`
+      <article class="tbb-plate" id="plate-34">
+        ${hdr("SECCIÓN 08", "SUITE EJECUTIVA DESCARGABLE", 34, "Aplicación Editorial Editable: Hoja Membretada Oficial (.DOCX Word / Google Docs)")}
+        <div class="tbb-grid-2col" style="align-items:center;">
+          <div style="background:#FFFFFF; border:1.5px solid ${lightGray}; border-radius:12px; padding:16px 20px; height:260px; display:flex; flex-direction:column; justify-content:space-between;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2.5px solid ${pri}; padding-bottom:8px;">
+              <div style="width:170px; height:42px;">${suite.horizontal}</div>
+              <div style="text-align:right; font-size:8.5px; color:${midGray}; line-height:1.35;">
+                <strong style="color:${darkInk};">${esc(bUpper)}</strong><br/>
+                contacto@${esc(slug.replace(/_/g, ""))}.com · Folios Oficiales
+              </div>
+            </div>
+            <div style="padding:8px 0; font-size:9.5px; color:#334155; line-height:1.55;">
+              <div style="font-weight:800; color:${darkInk}; margin-bottom:4px;">ASUNTO: PROPUESTA EJECUTIVA Y COTIZACIÓN FORMAL</div>
+              <p style="margin:0 0 6px 0;">Por medio de la presente compartimos el alcance estratégico y operativo diseñado bajo los estándares de calidad de <strong>${esc(bName)}</strong>.</p>
+              <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:4px; background:${softBg}; border:1px solid ${lightGray}; padding:5px 8px; border-radius:6px; font-size:8.5px; font-weight:700;">
+                <span>Concepto / Entregable</span><span>Vigencia</span><span>Estado</span>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-top:1.5px solid ${acc}; padding-top:6px; font-size:8px; color:${midGray};">
+              <span>${esc(bName)} · Lienzo Claro Directiva Max C-00</span>
+              <span style="color:${pri}; font-weight:800;">Archivo Editable .DOCX</span>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="tbb-card" style="border-left:4px solid ${pri};">
+              <div class="tbb-card-title">ARQUITECTURA OOXML NATIVA (.DOCX)</div>
+              <div class="tbb-card-body">Documento nativo de Microsoft Word y Google Docs con encabezado y pie de página bloqueados en las secciones <code>header1.xml</code> y <code>footer1.xml</code>, logotipo oficial integrado en alta resolución y estilos tipográficos preconfigurados.</div>
+            </div>
+            <div class="tbb-card" style="border-left:4px solid ${acc};">
+              <div class="tbb-card-title">LISTA PARA CONTRATOS Y COTIZACIONES</div>
+              <div class="tbb-card-body">Incluye tabla financiera con los colores institucionales (<strong>${pri}</strong> / <strong>${acc}</strong>) y bloque de firma autorizada listo para personalizar.</div>
+            </div>
+          </div>
+        </div>
+        ${ftr(34)}
+      </article>
+    `);
+
+    // =========================================================================
+    // LÁMINA 35: PRESENTACIÓN EJECUTIVA WIDESCREEN 16:9 (.PPTX)
+    // =========================================================================
+    plates.push(`
+      <article class="tbb-plate" id="plate-35">
+        ${hdr("SECCIÓN 08", "SUITE EJECUTIVA DESCARGABLE", 35, "Aplicación Comercial Editable: Presentación Ejecutiva 16:9 (.PPTX PowerPoint / Slides)")}
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; flex:1; align-items:stretch;">
+          ${[
+            { n: "SLIDE 01", t: "Portada Monumental 16:9", d: "Logotipo oficial en positivo, propuesta de valor y firma institucional." },
+            { n: "SLIDE 02", t: "El Círculo Dorado (ADN)", d: "Tarjetas editables con el Propósito (Why), Proceso (How) y Solución (What)." },
+            { n: "SLIDE 03", t: "Cliente Ideal y Persona", d: "Arquetipo corporativo y perfil de audiencia para presentaciones de ventas." },
+            { n: "SLIDE 04", t: "Ingeniería de Touchpoints", d: "Matriz operativa Antes, Durante y Después del servicio en columnas editables." },
+            { n: "SLIDE 05", t: "Sistema Visual y Color", d: "Muestras cromáticas HEX/Pantone y jerarquía tipográfica primaria y secundaria." },
+            { n: "SLIDE 06", t: "Cierre Comercial y Contacto", d: "Llamado a la acción, datos de contacto y sello de garantía de la marca." }
+          ].map((sl, idx) => `
+            <div style="background:#FFFFFF; border:1.5px solid ${lightGray}; border-top:4px solid ${idx % 2 === 0 ? pri : acc}; border-radius:10px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:8.5px; font-weight:800; color:${acc};">${sl.n}</span>
+                  <span style="font-size:8px; font-weight:800; color:${pri}; background:${softBg}; padding:2px 6px; border-radius:4px;">16:9 PPTX</span>
+                </div>
+                <div style="font-family:'Montserrat',sans-serif; font-size:11px; font-weight:900; color:${darkInk}; margin-bottom:4px;">${sl.t}</div>
+                <div style="font-size:9.5px; color:#475569; line-height:1.4;">${sl.d}</div>
+              </div>
+              <div style="border-top:1px dashed ${lightGray}; padding-top:6px; font-size:8px; color:${midGray}; display:flex; justify-content:space-between;">
+                <span>${esc(bName)}</span>
+                <span>100% Editable</span>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+        ${ftr(35)}
+      </article>
+    `);
+
+    // =========================================================================
+    // LÁMINA 36: CERTIFICADO DE VECTORES EN CURVAS (.SVG / .AI) Y CLAUSURA
+    // =========================================================================
+    plates.push(`
+      <article class="tbb-plate" id="plate-36">
+        ${hdr("SECCIÓN 08", "CERTIFICACIÓN TÉCNICA Y VECTORES", 36, "Certificado de Logotipo 100% en Curvas Bézier (.SVG / .AI) y Bóveda Completa")}
+        <div class="tbb-grid-2col" style="align-items:center;">
+          <div style="background:${softBg}; border:1.5px solid ${lightGray}; border-radius:14px; padding:18px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px;">
+            <div style="width:100%; max-width:320px; height:96px; background:#FFFFFF; border:1px solid ${lightGray}; border-radius:10px; display:flex; align-items:center; justify-content:center; padding:8px;">
+              ${suite.horizontal}
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+              <span style="background:${pri}; color:#FFFFFF; font-size:8.5px; font-weight:800; padding:4px 10px; border-radius:999px;">✓ 0 Etiquetas &lt;text&gt;</span>
+              <span style="background:#0F172A; color:#FFFFFF; font-size:8.5px; font-weight:800; padding:4px 10px; border-radius:999px;">✓ Centrado Óptico 0.00px</span>
+              <span style="background:${acc}; color:#FFFFFF; font-size:8.5px; font-weight:800; padding:4px 10px; border-radius:999px;">✓ Nodos Cúbicos Bézier (.SVG / .AI)</span>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div class="tbb-card" style="border-left:4px solid ${pri}; padding:12px 14px;">
+              <div class="tbb-card-title"> TRAZADO VECTORIAL REAL Y CONTORNOS PUROS</div>
+              <div class="tbb-card-body">Tanto los símbolos generativos como los logotipos subidos en PNG/JPG pasan por auto-recorte de márgenes vacíos, centrado óptico exacto (0.00px) y conversión a curvas matemáticas cerradas (<code>&lt;path d="M... C... Z"/&gt;</code>) listas para corte CNC, vinil, serigrafía e imprenta offset.</div>
+            </div>
+            <div class="tbb-card" style="border-left:4px solid ${acc}; padding:12px 14px;">
+              <div class="tbb-card-title">INVENTARIO COMPLETO DE ENTREGABLES V83.0</div>
+              <div class="tbb-card-body">1) Manual de __TOTAL_PLATES__ Láminas (.PDF) · 2) Logotipo Horizontal, Avatar 1:1 y Sello en Curvas (.SVG) · 3) Archivo Nativo Adobe Illustrator (.AI) · 4) Firma de Correo (.HTML) · 5) Hoja Membretada Editable (.DOCX) · 6) Presentación Ejecutiva 16:9 (.PPTX).</div>
+            </div>
+          </div>
+        </div>
+        ${ftr(36)}
+      </article>
+    `);
+
+    const totalStr = String(plates.length).padStart(2, "0");
+    return plates.map((p) => p.replace(/__TOTAL_PLATES__/g, totalStr));
   }
 
   // --- COMPILADOR DE DOCUMENTO HTML COMPLETO ---
@@ -1690,7 +2030,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Manual Oficial de Identidad (30 Láminas) — ${esc(bName)}</title>
+  <title>Manual Oficial de Identidad (${plates.length} Láminas) — ${esc(bName)}</title>
   <style>${styles}</style>
 </head>
 <body>
@@ -1886,7 +2226,13 @@ Instrucciones obligatorias:
       { num: "27", sec: "05 · APLICACIONES", title: "Indumentaria Corporativa, Bordado y Textil", leadAuthor: "Consejo Técnico Industrial", auditVerdict: "ESPECIFICACIÓN TEXTIL VALIDADA" },
       { num: "28", sec: "05 · APLICACIONES", title: "Espacio Físico, Fachada y Señalética", leadAuthor: "Lance Wyman & Pentagram", auditVerdict: "ARQUITECTURA AMBIENTAL LISTA" },
       { num: "29", sec: "06 · GOBERNANZA LEGAL", title: "Registro de Marca y Clasificación Internacional de Niza", leadAuthor: "Alexandra Watkins & OMPI", auditVerdict: "BLINDAJE MARCARIO DEFINIDO" },
-      { num: "30", sec: "06 · CLAUSURA OFICIAL", title: "Certificado Oficial de Entrega y Constitución de Marca", leadAuthor: "Consejo Rector TheBestBrand", auditVerdict: "DOCUMENTO 30/30 COMPLETADO" }
+      { num: "30", sec: "06 · CLAUSURA OFICIAL", title: "Certificado Oficial de Entrega y Constitución de Marca", leadAuthor: "Consejo Rector TheBestBrand", auditVerdict: "CONSTITUCIÓN DE MARCA APROBADA" },
+      { num: "31", sec: "07 · SHOWCASE EXPERIENCIA", title: "Showcase Visual de Diagnóstico, ADN y Touchpoints (Pasos 0 a 3)", leadAuthor: "Don Norman & Jony Ive", auditVerdict: "EXPERIENCIA INTERACTIVA VALIDADA" },
+      { num: "32", sec: "07 · SHOWCASE ATELIER", title: "Showcase Visual de Faders Kansei, Vectores y Mapa (Pasos 4 a 6)", leadAuthor: "Dieter Rams & Wim Crouwel", auditVerdict: "ATELIER VECTORIAL CERTIFICADO" },
+      { num: "33", sec: "08 · SUITE EJECUTIVA", title: "Aplicación Digital: Firma Corporativa Oficial en .HTML", leadAuthor: "Massimo Vignelli", auditVerdict: "FIRMA HTML COMPATIBLE 100%" },
+      { num: "34", sec: "08 · SUITE EJECUTIVA", title: "Aplicación Editorial Editable: Hoja Membretada Corporativa (.DOCX)", leadAuthor: "Jan Tschichold & Vignelli", auditVerdict: "PLANTILLA DOCX OOXML LISTA" },
+      { num: "35", sec: "08 · SUITE EJECUTIVA", title: "Aplicación Comercial Editable: Presentación Ejecutiva 16:9 (.PPTX)", leadAuthor: "Nancy Duarte & Garr Reynolds", auditVerdict: "DECK 16:9 PPTX OOXML LISTO" },
+      { num: "36", sec: "08 · CERTIFICACIÓN CURVAS", title: "Certificado de Logotipo 100% en Curvas Bézier (.SVG / .AI) y Clausura", leadAuthor: "Consejo Rector TheBestBrand V83", auditVerdict: "SUITE COMPLETA 36/36 CERTIFICADA" }
     ];
   }
 
@@ -1917,7 +2263,7 @@ Instrucciones obligatorias:
           </button>
           <div>
             <div style="font-family:'Montserrat',sans-serif; font-size:0.86rem; font-weight:900; color:${pri};">
-              30 LÁMINAS EN CURVAS · ${esc(bName.toUpperCase())}
+              ${plates.length} LÁMINAS EN CURVAS · ${esc(bName.toUpperCase())}
             </div>
             <div style="font-size:0.72rem; color:#64748B;">
               Manual Oficial Generado en Vivo · Directiva Max C-00
@@ -1927,7 +2273,7 @@ Instrucciones obligatorias:
 
         <div style="display:flex; gap:10px; align-items:center;">
           <button type="button" id="tbbBtnDownloadBrandbookPdf" style="background:${pri}; color:#FFFFFF; border:none; border-radius:10px; padding:9px 16px; font-family:'Montserrat',sans-serif; font-size:0.82rem; font-weight:800; cursor:pointer;">
-             Descargar PDF de 30 Láminas
+             Descargar PDF de ${plates.length} Láminas
           </button>
         </div>
       </div>
@@ -2003,11 +2349,12 @@ Instrucciones obligatorias:
       return window.renderImproBearsSinglePlateHTML(plateIdx, forPrint);
     }
     ensureInAppBrandbookStylesInjected();
-    const idx = Math.max(0, Math.min(29, Number(plateIdx || 0)));
     const b = (typeof window.buildActiveBrandProfileForV80 === "function")
       ? window.buildActiveBrandProfileForV80()
       : (window.canvasState || {});
     const plates = generateBrandbook30Plates(b);
+    const maxIdx = Math.max(0, plates.length - 1);
+    const idx = Math.max(0, Math.min(maxIdx, Number(plateIdx || 0)));
     const activePlate = plates[idx] || plates[0];
     if (forPrint) {
       return activePlate;
@@ -2433,7 +2780,7 @@ Instrucciones obligatorias:
     }
   }
 
-  function openLivePdfCompilationModal(brand) {
+  function openLivePdfCompilationModal(brand, totalCount = 36) {
     if (typeof document === "undefined" || !document.body) return null;
     let existing = document.getElementById("tbbLivePdfCompilationModal");
     if (existing) existing.remove();
@@ -2453,7 +2800,7 @@ Instrucciones obligatorias:
           MOTOR EDITORIAL EN CURVAS · DIRECTIVA MAX C-00
         </div>
         <h3 style="font-family:'Montserrat',sans-serif;font-size:1.12rem;font-weight:900;color:#090D16;margin:0 0 4px 0;">
-          Generando las 30 Láminas de «${esc(bName)}»
+          Generando las ${totalCount} Láminas de «${esc(bName)}»
         </h3>
         <div id="tbbLivePdfSheetSub" style="font-size:0.78rem;color:#475569;font-weight:700;margin-bottom:14px;min-height:18px;">
           Preparando logotipo activo, tipografía y lienzo A4 Horizontal...
@@ -2462,7 +2809,7 @@ Instrucciones obligatorias:
         <div style="width:100%;max-width:336px;height:238px;margin:0 auto 14px auto;background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;">
           <canvas id="tbbLivePdfSheetThumb" width="561" height="397" style="width:100%;height:100%;object-fit:contain;display:block;background:#FFFFFF;"></canvas>
           <div id="tbbLivePdfBadgeCounter" style="position:absolute;bottom:8px;right:8px;background:rgba(13,37,64,0.88);color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;padding:3px 9px;border-radius:999px;">
-            01 / 30
+            01 / ${totalCount}
           </div>
         </div>
 
@@ -2533,7 +2880,7 @@ Instrucciones obligatorias:
     host.appendChild(mount);
     document.body.appendChild(host);
 
-    const modalCtrl = options.silentModal ? null : openLivePdfCompilationModal(brand);
+    const modalCtrl = options.silentModal ? null : openLivePdfCompilationModal(brand, plates.length);
     const jpegPages = [];
     const renderScale = options.scale || 1.65;
 
@@ -2593,7 +2940,8 @@ Instrucciones obligatorias:
     const brand = window.buildActiveBrandProfileForV80();
     const bName = brand.name || "The Best Brand";
     const slug = brand.slug || "the_best_brand";
-    const fileName = `Manual_Marca_30_Laminas_${slug}.pdf`;
+    const totalCount = getGenerative30PlatesMeta(bName).length || 36;
+    const fileName = `Manual_Marca_${totalCount}_Laminas_${slug}.pdf`;
 
     const origHtml = triggerBtn ? triggerBtn.innerHTML : "";
     const setBtnStatus = (txt, busy) => {
@@ -2604,12 +2952,12 @@ Instrucciones obligatorias:
     };
 
     try {
-      setBtnStatus("Iniciando generación de 30 láminas...", true);
+      setBtnStatus(`Iniciando generación de ${totalCount} láminas...`, true);
       const pdfBlob = await window.compileLive30PlatesBrandbookPdfBlob((cur, tot) => {
         setBtnStatus(`Generando Lámina ${cur} de ${tot}...`, true);
       });
 
-      setBtnStatus("✓ Manual PDF de 30 Láminas Listo", false);
+      setBtnStatus(`✓ Manual PDF de ${totalCount} Láminas Listo`, false);
       setTimeout(() => {
         if (triggerBtn && origHtml) triggerBtn.innerHTML = origHtml;
       }, 3500);
@@ -2619,7 +2967,7 @@ Instrucciones obligatorias:
           pdfBlob,
           fileName,
           "application/pdf",
-          `Manual Oficial 30 Láminas — ${bName}`
+          `Manual Oficial ${totalCount} Láminas — ${bName}`
         );
       } else {
         const blobUrl = URL.createObjectURL(pdfBlob);

@@ -223,7 +223,11 @@
    * Descarga directa del activo en formato Adobe Illustrator (.AI Vector PDF 1.6 en curvas)
    * o .SVG 100% en curvas sin depender de Illustrator instalado localmente.
    */
-  async function exportCloudIllustratorAsset(type, format = "svg") {
+  async function exportCloudIllustratorAsset(type, format = "svg", triggerBtn = null) {
+    // Delegar al motor nativo V83.0 que traza imágenes PNG/JPG a curvas Bézier puras y empaqueta .AI PDF 1.6 sin servidor externo
+    if (typeof window.tbbExportLogoInCurves === "function") {
+      return window.tbbExportLogoInCurves(type || "horizontal", format || "svg", triggerBtn);
+    }
     if (!window.currentTriFoldSuite && typeof window.refreshTriFoldLogoSuiteUI === "function") {
       window.refreshTriFoldLogoSuiteUI();
     }
@@ -294,7 +298,13 @@
    * Descarga directa de Hoja Membretada Editable (.DOCX) o Presentación Ejecutiva (.PPTX)
    * generadas 100% en la nube con el perfil de marca activo.
    */
-  async function exportCloudOfficeAsset(format = "docx") {
+  async function exportCloudOfficeAsset(format = "docx", triggerBtn = null) {
+    if (format === "pptx" && typeof window.tbbDownloadEditableDeckPPTX === "function") {
+      return window.tbbDownloadEditableDeckPPTX(triggerBtn);
+    }
+    if (format !== "pptx" && typeof window.tbbDownloadEditableLetterheadDOCX === "function") {
+      return window.tbbDownloadEditableLetterheadDOCX(triggerBtn);
+    }
     const activeBrand = (typeof window.buildActiveBrandProfileForV80 === "function" && window.buildActiveBrandProfileForV80()) || {};
     const slug = activeBrand.slug || ((window.canvasState && window.canvasState.brandName) || "marca").toLowerCase().replace(/[^a-z0-9]+/g, "_") || "marca";
     const endpoint = format === "pptx"

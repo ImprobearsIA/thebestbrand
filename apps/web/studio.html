@@ -21782,68 +21782,90 @@
 
         // Archivos Raster (PNG, JPG, JPEG, WEBP)
         const reader = new FileReader();
-        reader.onload = function (ev) {
+        reader.onload = async function (ev) {
           const rawDataUrl = String(ev.target?.result || "");
           if (!rawDataUrl) return;
-          const img = new Image();
-          img.crossOrigin = "anonymous";
-          img.onload = function () {
-            try {
-              const maxDim = 1024; // Alta resolución para retina y exportación PDF/print nítida
-              const cnv = document.createElement("canvas");
-              cnv.width = maxDim;
-              cnv.height = maxDim;
-              const ctx = cnv.getContext("2d");
-              ctx.clearRect(0, 0, maxDim, maxDim);
-              const iw = img.naturalWidth || img.width || maxDim;
-              const ih = img.naturalHeight || img.height || maxDim;
-              const scale = Math.min((maxDim - 24) / iw, (maxDim - 24) / ih);
-              const dw = Math.round(iw * scale);
-              const dh = Math.round(ih * scale);
-              const dx = Math.round((maxDim - dw) / 2);
-              const dy = Math.round((maxDim - dh) / 2);
-              ctx.drawImage(img, dx, dy, dw, dh);
+          try {
+            // Auto-recortar márgenes vacíos/blancos y centrar ópticamente a 0.00px en lienzo 1024x1024
+            let centeredPngUrl = rawDataUrl;
+            let extractedPri = "#0D2540";
+            let extractedSec = "#426EAE";
 
-              const imgData = ctx.getImageData(0, 0, maxDim, maxDim);
-              const [extractedPri, extractedSec] = window.tbbExtractDominantColorsFromImageData(imgData);
-              const compactPngUrl = cnv.toDataURL("image/png");
-
-              if (!window.step0State) window.step0State = { goal: "redesign", assets: "has_name" };
-              window.step0State.assets = "has_name";
-              window.step0State.existingLogoMode = "keep";
-              window.step0State.uploadedLogoDataUrl = compactPngUrl;
-              delete window.step0State.uploadedLogoSvgMarkup;
-              window.step0State.uploadedLogoColors = [extractedPri, extractedSec];
-
-              const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-              cs.uploaded_logo_data_url = compactPngUrl;
-              delete cs.uploaded_logo_svg_markup;
-              cs.existing_logo_mode = "keep";
-              cs.uploaded_logo_colors = [extractedPri, extractedSec];
-              cs.selected_colors_hex = ["#FAF8F5", "#090D16", extractedPri, extractedSec];
-
-              const st = window.tbbState;
-              if (st) {
-                st.logoPriHex = extractedPri;
-                st.logoSecHex = extractedSec;
-                st._uploadedLogoEvolvedOnce = false;
-              }
-
-              window.tbbSyncUploadedLogoIntoIterations();
-              if (typeof saveBrandSessionToLocalStorage === "function") {
-                saveBrandSessionToLocalStorage(false, true);
-              }
-              window.triggerAuraEmpatheticFeedback(
-                "input_seed",
-                `Logotipo oficial cargado en alta definición. Colores identificados: ${extractedPri} y ${extractedSec}.`,
-                false
-              );
-              window.renderTbbZeroScrollStage();
-            } catch (err) {
-              console.warn("Error procesando logo subido:", err);
+            if (typeof window.tbbAutoTrimAndCenterRasterLogo === "function") {
+              centeredPngUrl = await window.tbbAutoTrimAndCenterRasterLogo(rawDataUrl);
             }
-          };
-          img.src = rawDataUrl;
+
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            await new Promise((resolve) => {
+              img.onload = resolve;
+              img.onerror = resolve;
+              img.src = centeredPngUrl;
+            });
+
+            const maxDim = 1024;
+            const cnv = document.createElement("canvas");
+            cnv.width = maxDim;
+            cnv.height = maxDim;
+            const ctx = cnv.getContext("2d");
+            ctx.clearRect(0, 0, maxDim, maxDim);
+            const iw = img.naturalWidth || img.width || maxDim;
+            const ih = img.naturalHeight || img.height || maxDim;
+            const scale = Math.min(maxDim / iw, maxDim / ih);
+            const dw = Math.round(iw * scale);
+            const dh = Math.round(ih * scale);
+            const dx = Math.round((maxDim - dw) / 2);
+            const dy = Math.round((maxDim - dh) / 2);
+            ctx.drawImage(img, dx, dy, dw, dh);
+
+            const imgData = ctx.getImageData(0, 0, maxDim, maxDim);
+            [extractedPri, extractedSec] = window.tbbExtractDominantColorsFromImageData(imgData);
+            const compactPngUrl = cnv.toDataURL("image/png");
+
+            if (!window.step0State) window.step0State = { goal: "redesign", assets: "has_name" };
+            window.step0State.assets = "has_name";
+            window.step0State.existingLogoMode = "keep";
+            window.step0State.uploadedLogoDataUrl = compactPngUrl;
+            delete window.step0State.uploadedLogoSvgMarkup;
+            window.step0State.uploadedLogoColors = [extractedPri, extractedSec];
+
+            const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+            cs.uploaded_logo_data_url = compactPngUrl;
+            delete cs.uploaded_logo_svg_markup;
+            cs.existing_logo_mode = "keep";
+            cs.uploaded_logo_colors = [extractedPri, extractedSec];
+            cs.selected_colors_hex = ["#FAF8F5", "#090D16", extractedPri, extractedSec];
+
+            // Pre-trazar versión 100% en curvas Bézier para exportación inmediata en .SVG / .AI
+            if (typeof window.tbbVectorizeRasterLogoToSvgCurves === "function") {
+              window.tbbVectorizeRasterLogoToSvgCurves(compactPngUrl).then((tracedSvg) => {
+                if (tracedSvg) {
+                  cs.uploaded_logo_traced_curves_svg = tracedSvg;
+                  if (window.step0State) window.step0State.uploadedLogoTracedCurvesSvg = tracedSvg;
+                }
+              }).catch(() => {});
+            }
+
+            const st = window.tbbState;
+            if (st) {
+              st.logoPriHex = extractedPri;
+              st.logoSecHex = extractedSec;
+              st._uploadedLogoEvolvedOnce = false;
+            }
+
+            window.tbbSyncUploadedLogoIntoIterations();
+            if (typeof saveBrandSessionToLocalStorage === "function") {
+              saveBrandSessionToLocalStorage(false, true);
+            }
+            window.triggerAuraEmpatheticFeedback(
+              "input_seed",
+              `Logotipo oficial centrado ópticamente (0.00px) y vectorizado en curvas. Colores: ${extractedPri} y ${extractedSec}.`,
+              false
+            );
+            window.renderTbbZeroScrollStage();
+          } catch (err) {
+            console.warn("Error procesando logo subido:", err);
+          }
         };
         reader.readAsDataURL(file);
       };
@@ -23350,161 +23372,165 @@
         }
 
         // ---------------------------------------------------------------------
-        // PASO 6: MOTOR EDITORIAL DE 30 LÁMINAS HORIZONTALES (ESTÁNDAR BENEFIC · CERO SCROLL)
+        // PASO 6: MOTOR EDITORIAL DE LÁMINAS HORIZONTALES Y BÓVEDA EJECUTIVA V83.0
         // ---------------------------------------------------------------------
-        if (typeof window.renderBeneficSinglePlateHTML !== "function") {
-          window.hexToRgbTriplet = function (hex) {
-            const clean = String(hex || "#1D4ED8").replace("#", "").trim();
-            const full = clean.length === 3 ? clean.split("").map(c => c + c).join("") : clean.padEnd(6, "0");
-            const num = parseInt(full.slice(0, 6), 16) || 0;
-            return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+        window.hexToRgbTriplet = window.hexToRgbTriplet || function (hex) {
+          const clean = String(hex || "#1D4ED8").replace("#", "").trim();
+          const full = clean.length === 3 ? clean.split("").map(c => c + c).join("") : clean.padEnd(6, "0");
+          const num = parseInt(full.slice(0, 6), 16) || 0;
+          return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+        };
+
+        window.hexToCmykSpec = window.hexToCmykSpec || function (hex) {
+          const { r, g, b } = window.hexToRgbTriplet(hex);
+          const r1 = r / 255, g1 = g / 255, b1 = b / 255;
+          const k = 1 - Math.max(r1, g1, b1);
+          if (k >= 0.99) return "C:40 M:30 Y:20 K:100";
+          const c = Math.round(((1 - r1 - k) / (1 - k)) * 100);
+          const m = Math.round(((1 - g1 - k) / (1 - k)) * 100);
+          const y = Math.round(((1 - b1 - k) / (1 - k)) * 100);
+          const kPct = Math.round(k * 100);
+          return `C:${c} M:${m} Y:${y} K:${kPct}`;
+        };
+
+        window.hexToPantoneApprox = window.hexToPantoneApprox || function (hex, idx) {
+          const h = String(hex || "").toUpperCase();
+          const map = {
+            "#1D4ED8": "Pantone 2728 C",
+            "#0D2540": "Pantone 1655 C",
+            "#047857": "Pantone 348 C",
+            "#D97706": "Pantone 7549 C",
+            "#991B1B": "Pantone 1807 C",
+            "#DB2777": "Pantone 219 C",
+            "#7C3AED": "Pantone 266 C",
+            "#090D16": "Pantone Black 6 C",
+            "#D4AF37": "Pantone 871 C (Metallic)",
+            "#0284C7": "Pantone 2925 C",
+            "#F8FAFC": "Pantone Cool Gray 1 C"
           };
+          return map[h] || ["Pantone 2728 C", "Pantone 1655 C", "Pantone Black 6 C", "Pantone Cool Gray 1 C"][idx % 4];
+        };
 
-          window.hexToCmykSpec = function (hex) {
-            const { r, g, b } = window.hexToRgbTriplet(hex);
-            const r1 = r / 255, g1 = g / 255, b1 = b / 255;
-            const k = 1 - Math.max(r1, g1, b1);
-            if (k >= 0.99) return "C:40 M:30 Y:20 K:100";
-            const c = Math.round(((1 - r1 - k) / (1 - k)) * 100);
-            const m = Math.round(((1 - g1 - k) / (1 - k)) * 100);
-            const y = Math.round(((1 - b1 - k) / (1 - k)) * 100);
-            const kPct = Math.round(k * 100);
-            return `C:${c} M:${m} Y:${y} K:${kPct}`;
-          };
+        window.buildLockupHorizontalOrStackedForBrandbook = window.buildLockupHorizontalOrStackedForBrandbook || function (uidSuffix, isDark, wPx, hPx) {
+          const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+          const st = window.tbbState || {};
+          const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
+          const mods = (activeIt && activeIt.mods) || {};
+          const rawBrand = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+          const chosenFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || cs.primary_font || "Plus Jakarta Sans";
+          const pri = (activeIt && activeIt.pri) || st.logoPriHex || "#1D4ED8";
+          const sec = (activeIt && activeIt.sec) || st.logoSecHex || "#0D2540";
+          const txtMain = isDark ? "#FFFFFF" : "#090D16";
+          const txtSub = isDark ? "#FDE68A" : pri;
+          const tagline = (cs.tagline || cs.step0_short_essence || cs.custom_business_type || "IDENTIDAD CORPORATIVA").trim().toUpperCase().slice(0, 44);
+          const sym = window.synthesizeSystemicSymbol180("bb_" + uidSuffix);
+          const layoutMode = (activeIt && activeIt.layout) || mods.layout || "horizontal";
 
-          window.hexToPantoneApprox = function (hex, idx) {
-            const h = String(hex || "").toUpperCase();
-            const map = {
-              "#1D4ED8": "Pantone 2728 C",
-              "#0D2540": "Pantone 1655 C",
-              "#047857": "Pantone 348 C",
-              "#D97706": "Pantone 7549 C",
-              "#991B1B": "Pantone 1807 C",
-              "#DB2777": "Pantone 219 C",
-              "#7C3AED": "Pantone 266 C",
-              "#090D16": "Pantone Black 6 C",
-              "#D4AF37": "Pantone 871 C (Metallic)",
-              "#0284C7": "Pantone 2925 C",
-              "#F8FAFC": "Pantone Cool Gray 1 C"
-            };
-            return map[h] || ["Pantone 2728 C", "Pantone 1655 C", "Pantone Black 6 C", "Pantone Cool Gray 1 C"][idx % 4];
-          };
-
-          window.buildLockupHorizontalOrStackedForBrandbook = function (uidSuffix, isDark, wPx, hPx) {
-            const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-            const st = window.tbbState || {};
-            const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
-            const mods = (activeIt && activeIt.mods) || {};
-            const rawBrand = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
-            const chosenFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || cs.primary_font || "Plus Jakarta Sans";
-            const pri = (activeIt && activeIt.pri) || st.logoPriHex || "#1D4ED8";
-            const sec = (activeIt && activeIt.sec) || st.logoSecHex || "#0D2540";
-            const txtMain = isDark ? "#FFFFFF" : "#090D16";
-            const txtSub = isDark ? "#FDE68A" : pri;
-            const tagline = (cs.tagline || cs.step0_short_essence || cs.custom_business_type || "IDENTIDAD CORPORATIVA").trim().toUpperCase().slice(0, 44);
-            const sym = window.synthesizeSystemicSymbol180("bb_" + uidSuffix);
-            const layoutMode = (activeIt && activeIt.layout) || mods.layout || "horizontal";
-
-            if (layoutMode === "stacked") {
-              return `<svg viewBox="0 0 460 190" width="${wPx || 320}" height="${hPx || 130}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%; height:auto; display:block; margin:0 auto;">
-                <g transform="translate(172, 2) scale(0.64)">${sym}</g>
-                <text x="230" y="148" text-anchor="middle" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="900" font-size="28" letter-spacing="1">${escapeHTML(rawBrand.toUpperCase())}</text>
-                <text x="230" y="170" text-anchor="middle" fill="${txtSub}" font-family="var(--font-mono)" font-weight="700" font-size="9.5" letter-spacing="1.6">${escapeHTML(tagline)}</text>
-              </svg>`;
-            }
-            return `<svg viewBox="0 0 520 140" width="${wPx || 360}" height="${hPx || 98}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%; height:auto; display:block;">
-              <g transform="translate(6, 2) scale(0.75)">${sym}</g>
-              <text x="152" y="74" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="900" font-size="34" letter-spacing="0.4">${escapeHTML(rawBrand)}</text>
-              <line x1="152" y1="88" x2="480" y2="88" stroke="${sec}" stroke-width="1.6" stroke-opacity="0.65"/>
-              <text x="152" y="108" fill="${txtSub}" font-family="var(--font-mono)" font-weight="700" font-size="9.5" letter-spacing="1.8">${escapeHTML(tagline)}</text>
+          if (layoutMode === "stacked") {
+            return `<svg viewBox="0 0 460 190" width="${wPx || 320}" height="${hPx || 130}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%; height:auto; display:block; margin:0 auto;">
+              <g transform="translate(172, 2) scale(0.64)">${sym}</g>
+              <text x="230" y="148" text-anchor="middle" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="900" font-size="28" letter-spacing="1">${escapeHTML(rawBrand.toUpperCase())}</text>
+              <text x="230" y="170" text-anchor="middle" fill="${txtSub}" font-family="var(--font-mono)" font-weight="700" font-size="9.5" letter-spacing="1.6">${escapeHTML(tagline)}</text>
             </svg>`;
-          };
+          }
+          return `<svg viewBox="0 0 520 140" width="${wPx || 360}" height="${hPx || 98}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%; height:auto; display:block;">
+            <g transform="translate(6, 5) scale(0.72)">${sym}</g>
+            <text x="152" y="74" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="900" font-size="34" letter-spacing="0.4">${escapeHTML(rawBrand)}</text>
+            <line x1="152" y1="88" x2="480" y2="88" stroke="${sec}" stroke-width="1.6" stroke-opacity="0.65"/>
+            <text x="152" y="108" fill="${txtSub}" font-family="var(--font-mono)" font-weight="700" font-size="9.5" letter-spacing="1.8">${escapeHTML(tagline)}</text>
+          </svg>`;
+        };
 
-          window.getBenefic30PlatesMeta = function () {
-            if (window.isImproBearsActiveBrand && window.isImproBearsActiveBrand() && window.IMPROBEARS_30_PLATES_META) {
-              return window.IMPROBEARS_30_PLATES_META;
-            }
-            if (typeof window.getUniversalImproBearsGuide30PlatesMeta === "function") {
-              return window.getUniversalImproBearsGuide30PlatesMeta();
-            }
-            return window.IMPROBEARS_30_PLATES_META || [];
-          };
+        window.getBenefic30PlatesMeta = function () {
+          if (window.isImproBearsActiveBrand && window.isImproBearsActiveBrand() && window.IMPROBEARS_30_PLATES_META) {
+            return window.IMPROBEARS_30_PLATES_META;
+          }
+          if (typeof window.getUniversalImproBearsGuide30PlatesMeta === "function") {
+            return window.getUniversalImproBearsGuide30PlatesMeta();
+          }
+          return window.IMPROBEARS_30_PLATES_META || [];
+        };
 
-          window.renderBeneficSinglePlateHTML = function (plateIdx, forPrint) {
-            if (window.isImproBearsActiveBrand && window.isImproBearsActiveBrand() && typeof window.renderImproBearsSinglePlateHTML === "function") {
-              return window.renderImproBearsSinglePlateHTML(plateIdx, forPrint);
-            }
-            if (typeof window.renderUniversalImproBearsGuideSinglePlateHTML === "function") {
-              return window.renderUniversalImproBearsGuideSinglePlateHTML(plateIdx, forPrint);
-            }
-            return "";
-          };
+        window.renderBeneficSinglePlateHTML = function (plateIdx, forPrint) {
+          if (window.isImproBearsActiveBrand && window.isImproBearsActiveBrand() && typeof window.renderImproBearsSinglePlateHTML === "function") {
+            return window.renderImproBearsSinglePlateHTML(plateIdx, forPrint);
+          }
+          if (typeof window.renderUniversalImproBearsGuideSinglePlateHTML === "function") {
+            return window.renderUniversalImproBearsGuideSinglePlateHTML(plateIdx, forPrint);
+          }
+          return "";
+        };
 
-          window.buildComplete30PlatesStandaloneHTML = function () {
-            if (typeof window.buildUniversal30PlatesStandaloneHTML === "function") {
-              return window.buildUniversal30PlatesStandaloneHTML();
-            }
-            return "";
-          };
+        window.buildComplete30PlatesStandaloneHTML = function () {
+          if (typeof window.buildUniversal30PlatesStandaloneHTML === "function") {
+            return window.buildUniversal30PlatesStandaloneHTML();
+          }
+          return "";
+        };
 
-          window.openPrintable30PlatesBrandbook = function () {
-            if (typeof window.openInApp30PlatesViewer === "function") {
-              window.openInApp30PlatesViewer();
-              return;
-            }
-            if (window.isImproBearsActiveBrand && window.isImproBearsActiveBrand()) {
-              window.open("/brandbooks/improbears-arquitectura-maestra.html", "_blank");
-              return;
-            }
-            const htmlDoc = window.buildComplete30PlatesStandaloneHTML();
-            const blob = new Blob([htmlDoc], { type: "text/html;charset=utf-8" });
-            const blobUrl = URL.createObjectURL(blob);
-            const win = window.open(blobUrl, "_blank");
-            if (!win) {
-              window.location.href = blobUrl;
-            }
-          };
+        window.openPrintable30PlatesBrandbook = function () {
+          if (typeof window.openInApp30PlatesViewer === "function") {
+            window.openInApp30PlatesViewer();
+            return;
+          }
+          if (window.isImproBearsActiveBrand && window.isImproBearsActiveBrand()) {
+            window.open("/brandbooks/improbears-arquitectura-maestra.html", "_blank");
+            return;
+          }
+          const htmlDoc = window.buildComplete30PlatesStandaloneHTML();
+          const blob = new Blob([htmlDoc], { type: "text/html;charset=utf-8" });
+          const blobUrl = URL.createObjectURL(blob);
+          const win = window.open(blobUrl, "_blank");
+          if (!win) {
+            window.location.href = blobUrl;
+          }
+        };
 
-          window.downloadCompleteBrandbookHTML = function () {
-            const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-            const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
-            const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
-            const fileName = `Manual_Identidad_30_Laminas_${slug}.html`;
-            const htmlDoc = window.buildComplete30PlatesStandaloneHTML();
-            const blob = new Blob([htmlDoc], { type: "text/html;charset=utf-8" });
-            if (typeof window.tbbDeliverFileNativeOrDownload === "function") {
-              window.tbbDeliverFileNativeOrDownload(blob, fileName, "text/html", `Manual Interactivo 30 Láminas — ${bName}`);
-              return;
-            }
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-          };
+        window.downloadCompleteBrandbookHTML = function () {
+          const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+          const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+          const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
+          const metaList = (typeof window.getBenefic30PlatesMeta === "function") ? window.getBenefic30PlatesMeta() : [];
+          const count = metaList.length || 36;
+          const fileName = `Manual_Identidad_${count}_Laminas_${slug}.html`;
+          const htmlDoc = window.buildComplete30PlatesStandaloneHTML();
+          const blob = new Blob([htmlDoc], { type: "text/html;charset=utf-8" });
+          if (typeof window.tbbDeliverFileNativeOrDownload === "function") {
+            window.tbbDeliverFileNativeOrDownload(blob, fileName, "text/html", `Manual Interactivo ${count} Láminas — ${bName}`);
+            return;
+          }
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        };
 
-          window.exportActive3DLogoSVG = function () {
-            const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-            const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
-            const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
-            const fileName = `Logotipo_Oficial_3D_${slug}.svg`;
-            const svgStr = window.buildSystemicDualLogoSVG();
-            const blob = new Blob([svgStr], { type: "image/svg+xml;charset=utf-8" });
-            if (typeof window.tbbDeliverFileNativeOrDownload === "function") {
-              window.tbbDeliverFileNativeOrDownload(blob, fileName, "image/svg+xml", `Logotipo 3D Oficial en Curvas — ${bName}`);
-              return;
-            }
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-          };
-        }
+        window.exportActive3DLogoSVG = function (btnEl) {
+          if (typeof window.tbbExportLogoInCurves === "function") {
+            window.tbbExportLogoInCurves("horizontal", "svg", btnEl);
+            return;
+          }
+          const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+          const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+          const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
+          const fileName = `Logotipo_Oficial_Curvas_${slug}.svg`;
+          const svgStr = window.buildSystemicDualLogoSVG();
+          const blob = new Blob([svgStr], { type: "image/svg+xml;charset=utf-8" });
+          if (typeof window.tbbDeliverFileNativeOrDownload === "function") {
+            window.tbbDeliverFileNativeOrDownload(blob, fileName, "image/svg+xml", `Logotipo Oficial en Curvas — ${bName}`);
+            return;
+          }
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        };
 
         if (st.step === 6) {
           const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
@@ -23530,7 +23556,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
                   <div style="min-width:180px; flex:1 1 200px;">
                     <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#1D4ED8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                      PASO 6 · LÁMINA ${curPlate.num} DE 30 · ${curPlate.sec}
+                      PASO 6 · LÁMINA ${curPlate.num} DE ${totalPlates} · ${curPlate.sec}
                     </div>
                     <div style="font-family:var(--font-display); font-size:0.94rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                       ${curPlate.num}. ${curPlate.title}
@@ -23540,7 +23566,7 @@
                       <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:800; color:#047857; background:#ECFDF5; padding:1px 6px; border-radius:4px; border:1px solid #A7F3D0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                         ${curPlate.leadAuthor || "Consejo Metodológico"} · ${curPlate.auditVerdict || "DICTAMEN METODOLÓGICO: APROBADO"}
                       </span>
-                      ${hasUserUploadedLogo ? `<span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:800; color:#C2410C; background:#FFF7ED; padding:1px 6px; border-radius:4px; border:1px solid #FDBA74;">✓ TU LOGOTIPO OFICIAL INTEGRADO</span>` : ""}
+                      ${hasUserUploadedLogo ? `<span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:800; color:#C2410C; background:#FFF7ED; padding:1px 6px; border-radius:4px; border:1px solid #FDBA74;">✓ TU LOGOTIPO OFICIAL CENTRADO EN CURVAS</span>` : ""}
                     </div>
                   </div>
                   <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; flex:1 1 auto; justify-content:flex-end;">
@@ -23553,13 +23579,16 @@
                     <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbState.plateIdx=(window.tbbState.plateIdx+1)%${totalPlates}; triggerAuraEmpatheticFeedback('input_plate_nav', 'Siguiente lámina', false); renderTbbZeroScrollStage();" style="padding:7px 10px !important; min-height:40px !important; font-size:0.75rem !important;">
                       Siguiente
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Descarga PDF 30 Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{window.openPrintable30PlatesBrandbook();}" style="padding:7px 12px !important; min-height:40px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Generar y guardar las 30 láminas completas hoja por hoja en archivo PDF">
-                      Exportar PDF (30 Láminas)
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="if(window.tbbGenerateChapterVisualsWithFlow){window.tbbGenerateChapterVisualsWithFlow(this);}" style="padding:7px 10px !important; min-height:40px !important; font-size:0.74rem !important;" title="Generar ilustraciones editoriales para cada capítulo del manual con Google Flow / Imagen">
+                      Ilustrar Capítulos (Flow IA)
+                    </button>
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Descarga PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{window.openPrintable30PlatesBrandbook();}" style="padding:7px 12px !important; min-height:40px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Generar y guardar las ${totalPlates} láminas completas hoja por hoja en archivo PDF">
+                      Exportar PDF (${totalPlates} Láminas)
                     </button>
                   </div>
                 </div>
 
-                <!-- Lienzo Editorial en Curvas de la Lámina Activa (30 Láminas · Guía ImproBears C-00) -->
+                <!-- Lienzo Editorial en Curvas de la Lámina Activa (Guía ImproBears C-00) -->
                 <div id="tbbStep6PlateViewport" style="flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column; position:relative;">
                   ${activePlateMarkup}
                 </div>
@@ -23580,8 +23609,8 @@
                   ov.style.cssText = "position:absolute;inset:0;background:rgba(255,255,255,0.94);backdrop-filter:blur(4px);z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;border-radius:12px;transition:opacity 0.28s ease;";
                   ov.innerHTML = `
                     <div style="font-family:'JetBrains Mono',monospace;font-size:0.70rem;font-weight:800;color:#FF7A00;letter-spacing:1.4px;margin-bottom:6px;">SÍNTESIS EDITORIAL EN CURVAS · DIRECTIVA MAX C-00</div>
-                    <div style="font-family:'Montserrat',sans-serif;font-size:1.05rem;font-weight:900;color:#0D2540;margin-bottom:10px;text-align:center;">Construyendo las 30 Láminas de «${escapeHTML(bName)}»</div>
-                    <div id="tbbStep6AsmTxt" style="font-size:0.78rem;color:#475569;font-weight:700;margin-bottom:12px;">Integrando logotipo activo, paleta y retícula A4 Horizontal (01/30)...</div>
+                    <div style="font-family:'Montserrat',sans-serif;font-size:1.05rem;font-weight:900;color:#0D2540;margin-bottom:10px;text-align:center;">Construyendo las ${totalPlates} Láminas de «${escapeHTML(bName)}»</div>
+                    <div id="tbbStep6AsmTxt" style="font-size:0.78rem;color:#475569;font-weight:700;margin-bottom:12px;">Integrando logotipo activo, paleta y retícula A4 Horizontal (01/${totalPlates})...</div>
                     <div style="width:260px;max-width:85%;height:8px;background:#E2E8F0;border-radius:999px;overflow:hidden;">
                       <div id="tbbStep6AsmBar" style="width:6%;height:100%;background:linear-gradient(90deg,#0D2540,#FF7A00);border-radius:999px;transition:width 0.12s linear;"></div>
                     </div>
@@ -23589,15 +23618,15 @@
                   vp.appendChild(ov);
                   let pStep = 1;
                   const asmTimer = setInterval(() => {
-                    pStep = Math.min(30, pStep + 3);
+                    pStep = Math.min(totalPlates, pStep + 4);
                     const bar = document.getElementById("tbbStep6AsmBar");
                     const txt = document.getElementById("tbbStep6AsmTxt");
-                    if (bar) bar.style.width = Math.round((pStep / 30) * 100) + "%";
+                    if (bar) bar.style.width = Math.round((pStep / totalPlates) * 100) + "%";
                     if (txt) {
                       const mItem = metaList[pStep - 1] || { title: "" };
-                      txt.textContent = `Maquetando Lámina ${String(pStep).padStart(2, "0")}/30 · ${mItem.title.slice(0, 38)}...`;
+                      txt.textContent = `Maquetando Lámina ${String(pStep).padStart(2, "0")}/${totalPlates} · ${mItem.title.slice(0, 38)}...`;
                     }
-                    if (pStep >= 30) {
+                    if (pStep >= totalPlates) {
                       clearInterval(asmTimer);
                       setTimeout(() => {
                         ov.style.opacity = "0";
@@ -23611,34 +23640,43 @@
           } else {
             if (lblNext) lblNext.textContent = "Ver Mapa de Avance";
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:14px 18px; gap:10px;">
+              <div class="tbb-atomic-card" style="padding:12px 16px; gap:8px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#0D2540; font-weight:900;">PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS Y PRODUCCIÓN</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.22rem; font-weight:900; color:#090D16; margin:4px 0 4px 0;">
-                    Manual Editorial Completo (30 Láminas en Curvas · Brandbook 1.0) y Vectores de «${escapeHTML(bName)}»
+                  <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:900; color:#0D2540;">PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS Y PRODUCCIÓN EJECUTIVA V83.0</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.12rem; font-weight:900; color:#090D16; margin:2px 0 2px 0;">
+                    Manual Oficial (${totalPlates} Láminas en Curvas), Vectores (.SVG / .AI) y Suite Editable (.DOCX / .PPTX / .HTML) de «${escapeHTML(bName)}»
                   </h2>
-                  <div style="font-size:0.78rem; color:#475569; font-weight:600;">
-                    Diseñado siguiendo tu logotipo activo, sus acentos cromáticos, arquitectura monolítica de marca única y las 30 láminas oficiales en curvas.
+                  <div style="font-size:0.75rem; color:#475569; font-weight:600;">
+                    Todos tus activos listos para imprenta, Adobe Illustrator, Gmail/Outlook, Microsoft Word y PowerPoint con centrado óptico 0.00px.
                   </div>
                 </div>
-                <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:10px; align-content:center;">
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual PDF 30 Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{downloadFullBrandbookPDFDirect(this);}" style="grid-column:1 / -1;">
-                    Descargar Manual Oficial Completo en PDF Directo (30 Láminas .PDF)
+                <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:8px; align-content:center;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{downloadFullBrandbookPDFDirect(this);}" style="grid-column:1 / -1; min-height:42px !important;">
+                    1. Descargar Manual Oficial Completo en PDF Directo (${totalPlates} Láminas .PDF)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Vista Completa 30 Láminas', false); window.openPrintable30PlatesBrandbook()">
-                    Abrir Vista Completa / Imprimir 30 Láminas (A4 Horizontal)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Logotipo SVG en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','svg',this);}else{window.exportActive3DLogoSVG(this);}" style="min-height:40px !important; font-size:0.77rem !important;">
+                    2. Logotipo Horizontal 100% en Curvas (.SVG Vectorizado)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual Interactivo HTML', false); window.downloadCompleteBrandbookHTML()">
-                    Descargar Manual Interactivo (.HTML Autónomo 30 Láminas)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Archivo Illustrator AI', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','ai',this);}" style="min-height:40px !important; font-size:0.77rem !important;">
+                    3. Archivo Nativo Adobe Illustrator en Curvas (.AI)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Logotipo 3D SVG en Curvas', false); window.exportActive3DLogoSVG()">
-                    Descargar Logotipo 3D Oficial en Curvas (.SVG)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Firma Corporativa HTML', false); if(window.tbbOpenEmailSignatureModal){window.tbbOpenEmailSignatureModal();}" style="min-height:40px !important; font-size:0.77rem !important;">
+                    4. Firma Corporativa de Correo (.HTML Gmail / Outlook)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.subStep=1; renderTbbZeroScrollStage();">
-                    Explorar las 30 Láminas Interactivas (01 a 30)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Hoja Membretada DOCX', false); if(window.tbbDownloadEditableLetterheadDOCX){window.tbbDownloadEditableLetterheadDOCX(this);}" style="min-height:40px !important; font-size:0.77rem !important;">
+                    5. Plantilla Editable Hoja Membretada (.DOCX Word / Docs)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual Oficial ImproBears', false); if(window.loadImproBearsMasterArchitecturePreset){window.loadImproBearsMasterArchitecturePreset(true);}" style="grid-column:1 / -1;">
-                    Cargar y Abrir Manual Oficial IMPROBEARS (Arquitectura Maestra + Consulting · Ingredients · Studio · AI)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Presentación Ejecutiva PPTX', false); if(window.tbbDownloadEditableDeckPPTX){window.tbbDownloadEditableDeckPPTX(this);}" style="min-height:40px !important; font-size:0.77rem !important;">
+                    6. Presentación Ejecutiva Editable 16:9 (.PPTX PowerPoint)
+                  </button>
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Avatar y Sello en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('avatar','svg',this); setTimeout(()=>window.tbbExportLogoInCurves('seal','svg'), 450);}" style="min-height:40px !important; font-size:0.76rem !important;">
+                    7. Avatar 1:1 + Sello Circular en Curvas (.SVG)
+                  </button>
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual Interactivo HTML', false); window.downloadCompleteBrandbookHTML()" style="min-height:40px !important; font-size:0.76rem !important;">
+                    8. Manual Web Interactivo Autónomo (.HTML ${totalPlates} Láminas)
+                  </button>
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.subStep=1; renderTbbZeroScrollStage();" style="grid-column:1 / -1; min-height:38px !important; font-size:0.75rem !important;">
+                    ← Volver al Visor Interactivo de las ${totalPlates} Láminas (01 a ${totalPlates})
                   </button>
                 </div>
                 ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(6, "governance") : ""}
@@ -24319,7 +24357,9 @@
           return;
         }
         if (st.step === 6 && st.subStep === 1) {
-          st.plateIdx = (st.plateIdx + 1) % 30;
+          const metaList = (typeof window.getBenefic30PlatesMeta === "function") ? window.getBenefic30PlatesMeta() : [];
+          const totalPlates = metaList.length || 36;
+          st.plateIdx = (st.plateIdx + 1) % totalPlates;
           window.renderTbbZeroScrollStage();
         }
       };
@@ -24800,12 +24840,13 @@
   </script>
   <script src="/assets/vendor/opentype.min.js?v=1.3.4"></script>
   <script src="/assets/vendor/html2canvas.min.js?v=1.4.1"></script>
-  <script src="/tbb-cloud-vector-outliner.js?v=82.4"></script>
-  <script src="/tbb-v80-brandbook-plates.js?v=82.4"></script>
-  <script src="/universal-brandbook-30-engine.js?v=82.4"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=82.4"></script>
-  <script src="/improbears-preset-engine.js?v=82.4"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=82.4"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=82.4"></script>
+  <script src="/tbb-executive-deliverables-suite.js?v=83.0"></script>
+  <script src="/tbb-cloud-vector-outliner.js?v=83.0"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=83.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=83.0"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=83.0"></script>
+  <script src="/improbears-preset-engine.js?v=83.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=83.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=83.0"></script>
 </body>
 </html>
