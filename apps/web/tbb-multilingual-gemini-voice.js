@@ -127,7 +127,7 @@
       const k = localStorage.getItem("tbb_gemini_api_key");
       if (k && k.trim().length > 10) return k.trim();
     } catch (e) {}
-    return "AIzaSyByQl8lrqiK5R4d" + "ZQSQA-b2qSxli8ctZQE";
+    return "";
   }
 
   function base64ToUint8Array(base64Str) {

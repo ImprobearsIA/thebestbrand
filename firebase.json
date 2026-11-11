@@ -10,6 +10,13 @@
     ],
     "rewrites": [
       {
+        "source": "/api/**",
+        "run": {
+          "serviceId": "thebestbrand-api",
+          "region": "us-central1"
+        }
+      },
+      {
         "source": "/web",
         "destination": "/index.html"
       },

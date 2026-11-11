@@ -2062,7 +2062,7 @@ Instrucciones obligatorias:
 
     try {
       const payload = {
-        model: "gemini-2.5-flash",
+        model: "gemini-3.8-flash",
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: { temperature: 0.3 }
       };
@@ -2071,7 +2071,7 @@ Instrucciones obligatorias:
         return rawUserInput;
       }
       const url = apiKey
-        ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
+        ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`
         : `${baseOrigin}/api/v1/gemini/proxy`;
 
       const res = await fetch(url, {
@@ -3056,13 +3056,13 @@ Solo incluye en "updated_canvas" los campos que se desprendan directamente de lo
           throw new Error("headless_no_origin");
         }
         const url = apiKey
-          ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
+          ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`
           : `${baseOrigin}/api/v1/gemini/proxy`;
         const res = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            model: "gemini-2.5-flash",
+            model: "gemini-3.8-flash",
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: { responseMimeType: "application/json", temperature: 0.25 }
           })

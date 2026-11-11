@@ -263,8 +263,15 @@
       try {
         var gKey = (typeof window.getGeminiApiKey === "function" ? window.getGeminiApiKey() : "") ||
                    (typeof localStorage !== "undefined" ? localStorage.getItem("tbb_gemini_api_key") : "") ||
-                   (typeof window.TBB_GEMINI_KEY === "string" ? window.TBB_GEMINI_KEY : "") ||
-                   ("AIzaSyByQl8lrqiK5R4d" + "ZQSQA-b2qSxli8ctZQE");
+                   (typeof window.TBB_GEMINI_KEY === "string" ? window.TBB_GEMINI_KEY : "");
+        if (!gKey) {
+          // Delegar al backend corporativo real (/api/v1/gemini/proxy) sin exponer llaves en cliente
+          var srvRes = await nativeFetch((window.TBB_API_BASE || "") + "/api/v1/gemini/proxy", init);
+          if (srvRes.ok && ((srvRes.headers && srvRes.headers.get("content-type")) || "").indexOf("application/json") !== -1) {
+            return srvRes;
+          }
+          return jsonResponse({ error: "server_proxy_unavailable", status: srvRes.status }, 503);
+        }
         var gModel = bodyObj.model || "gemini-flash-lite-latest";
         var gUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(gModel) + ":generateContent?key=" + encodeURIComponent(gKey);
         var gPayload = {
@@ -23326,6 +23333,9 @@
                     `).join("")}
                   </div>
                   <div style="display:flex; gap:6px; flex-shrink:0;">
+                    <button type="button" id="tbbBtnNanoBananaSymbol" class="tbb-duo-btn tbb-duo-btn-emerald" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value:'');}" style="padding:6px 11px !important; font-size:0.76rem !important;" title="Generar símbolo visual de agencia con Nano Banana (Gemini Image) y trazarlo a curvas Bézier">
+                      ✦ Símbolo Nano Banana
+                    </button>
                     ${uploadedLogoUrl ? `
                       <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="window.tbbTriggerEvolutionFromUploadedLogo()" style="padding:6px 11px !important; font-size:0.76rem !important;" title="Generar nueva evolución tomando tu logo subido como base">
                         Evolucionar mi Logo
@@ -23598,6 +23608,11 @@
                 window.scaleImproBearsPlateInStage();
               }
               const brandSig = `${bName}|${(cs.uploaded_logo_data_url || "").slice(0, 48)}|${cs.primary_color || st.logoPriHex || ""}|${(cs.custom_business_type || "").slice(0, 24)}`;
+              // Disparar automáticamente las 5 ilustraciones reales de capítulo con Nano Banana / Flow IA al entrar al Paso 6
+              if (typeof window.tbbGenerateChapterVisualsWithFlow === "function") {
+                const btnFlowAuto = document.querySelector("button[onclick*='tbbGenerateChapterVisualsWithFlow']");
+                window.tbbGenerateChapterVisualsWithFlow(btnFlowAuto || undefined);
+              }
               if (window._tbbStep6PendingCeremony && window._tbbLastStep6SynthesizedSig !== brandSig) {
                 window._tbbStep6PendingCeremony = false;
                 window._tbbLastStep6SynthesizedSig = brandSig;
@@ -24193,10 +24208,10 @@
         }
 
         const allModelConfigs = [
-          // Verificados contra ListModels (2026-11-10). gemini-2.0-flash ya no existe; 2.5-pro excluido por costo (FinOps).
-          { name: "gemini-3.5-flash", gc: { responseMimeType: "application/json", temperature: 0.45, thinkingConfig: { thinkingLevel: "MINIMAL" } } },
+          // Verificados contra ListModels (2026-11-11).
+          { name: "gemini-3.8-flash", gc: { responseMimeType: "application/json", temperature: 0.45 } },
           { name: "gemini-3.6-flash", gc: { responseMimeType: "application/json", temperature: 0.45, thinkingConfig: { thinkingLevel: "MINIMAL" } } },
-          { name: "gemini-2.5-flash", gc: { responseMimeType: "application/json", temperature: 0.45, thinkingConfig: { thinkingBudget: 0 } } },
+          { name: "gemini-3.5-flash", gc: { responseMimeType: "application/json", temperature: 0.45, thinkingConfig: { thinkingLevel: "MINIMAL" } } },
           { name: "gemini-3.5-flash-lite", gc: { responseMimeType: "application/json", temperature: 0.45 } },
           { name: "gemini-3.1-flash-lite", gc: { responseMimeType: "application/json", temperature: 0.45 } }
         ];

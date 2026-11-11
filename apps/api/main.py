@@ -1319,12 +1319,12 @@ def api_account_reset_brand(req: AccountResetBrandRequest):
 
 
 class GeminiProxyRequest(BaseModel):
-    model: str = "gemini-2.5-flash"
+    model: str = "gemini-3.8-flash"
     contents: List[Any] = []
     generationConfig: Dict[str, Any] = {}
 
 
-# Lista blanca de modelos (verificada contra ListModels 2026-11-10). Evita inyección de rutas en la URL
+# Lista blanca de modelos (verificada contra ListModels 2026-11-11). Evita inyección de rutas en la URL
 # y que el proxy se use para modelos caros no previstos.
 GEMINI_PROXY_ALLOWED_MODELS = {
     "gemini-2.5-flash",
@@ -1332,17 +1332,32 @@ GEMINI_PROXY_ALLOWED_MODELS = {
     "gemini-2.0-flash",
     "gemini-2.5-flash-lite",
     "gemini-2.5-flash-preview-tts",
-    "gemini-3.5-flash",
-    "gemini-3.6-flash",
-    "gemini-3.5-flash-lite",
+    "gemini-2.5-pro-preview-tts",
+    "gemini-2.5-flash-image",
+    "gemini-3-flash-preview",
+    "gemini-3-pro-image",
+    "gemini-3-pro-image-preview",
+    "gemini-3.1-flash-image",
+    "gemini-3.1-flash-image-preview",
     "gemini-3.1-flash-lite",
+    "gemini-3.1-flash-lite-preview",
+    "gemini-3.1-flash-lite-image",
     "gemini-3.1-flash-tts-preview",
+    "gemini-3.5-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.6-flash",
+    "gemini-3.7-flash",
+    "gemini-3.8-flash",
     "gemini-3.8-flash-lite-tts",
     "gemini-3.8-flash-tts",
+    "gemini-flash-latest",
     "gemini-flash-lite-latest",
+    "gemini-omni-1.1-flash",
+    "gemini-omni-1.2-flash",
+    "gemini-omni-flash-preview",
 }
-GEMINI_PROXY_MAX_BODY_BYTES = 4 * 1024 * 1024  # admite imagen de logo adjunta en base64
-GEMINI_PROXY_RATE_LIMIT = int(os.environ.get("GEMINI_PROXY_RATE_LIMIT_PER_MIN", "30"))
+GEMINI_PROXY_MAX_BODY_BYTES = 10 * 1024 * 1024  # admite imagen de logo adjunta en base64
+GEMINI_PROXY_RATE_LIMIT = int(os.environ.get("GEMINI_PROXY_RATE_LIMIT_PER_MIN", "90"))
 _gemini_proxy_hits: Dict[str, List[float]] = {}
 
 
@@ -1382,7 +1397,10 @@ def api_gemini_secure_proxy(req: GeminiProxyRequest, request: Request):
     if _gemini_proxy_rate_limited(client_id):
         return JSONResponse(status_code=429, content={"error": "rate_limited"})
 
-    model_name = (req.model or "gemini-2.5-flash").strip()
+    model_name = (req.model or "gemini-3.8-flash").strip()
+    # Mapear automáticamente modelos retirados (ej. gemini-2.5-flash en cuentas nuevas) a gemini-3.8-flash
+    if model_name in ("gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-flash-lite"):
+        model_name = "gemini-3.8-flash"
     if model_name not in GEMINI_PROXY_ALLOWED_MODELS:
         return JSONResponse(status_code=400, content={"error": f"model not allowed: {model_name[:60]}"})
 
@@ -1402,7 +1420,7 @@ def api_gemini_secure_proxy(req: GeminiProxyRequest, request: Request):
     )
     ctx = ssl.create_default_context()
     try:
-        with urllib.request.urlopen(http_req, context=ctx, timeout=25) as resp:
+        with urllib.request.urlopen(http_req, context=ctx, timeout=55) as resp:
             raw = resp.read().decode("utf-8")
             return Response(content=raw, media_type="application/json")
     except urllib.error.HTTPError as exc:
@@ -1542,13 +1560,6 @@ def api_export_deck_pptx(req: ExportOfficeAssetRequest):
     )
 
 
-if __name__ == "__main__":
-    host = os.environ.get("HOST", "0.0.0.0")
-    port = int(os.environ.get("PORT", 8000))
-    print(f" Starting TheBestBrand Studio on http://{host}:{port}")
-    uvicorn.run(app, host=host, port=port)
-
-
 # ==============================================================================
 # [#0036 & #0037] PRE-CARGA EN MEMORIA DE FUENTES TTF Y AUDITOR DE CALIDAD PDF/SVG
 # ==============================================================================
@@ -1651,3 +1662,10 @@ def api_issue_payment_download_grant(req: PaymentDownloadGrantRequest):
         "expires_at_unix": exp,
         "download_grant_token": f"{exp}.{sig}",
     }
+
+
+if __name__ == "__main__":
+    host = os.environ.get("HOST", "0.0.0.0")
+    port = int(os.environ.get("PORT", 8000))
+    print(f" Starting TheBestBrand Studio on http://{host}:{port}")
+    uvicorn.run(app, host=host, port=port)

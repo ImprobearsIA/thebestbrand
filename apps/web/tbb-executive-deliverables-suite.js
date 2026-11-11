@@ -1766,10 +1766,11 @@
   window._tbbFlowVisualsCache = window._tbbFlowVisualsCache || {};
 
   async function generateSingleFlowIllustration(promptText, slotKey, brand) {
-    const models = ["gemini-2.5-flash-image", "gemini-3.1-flash-image"];
+    const models = ["gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview", "gemini-2.5-flash-image"];
+    const proxyUrl = (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
     for (const model of models) {
       try {
-        const resp = await fetch("/api/v1/gemini/proxy", {
+        const resp = await fetch(proxyUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -1804,6 +1805,7 @@
     }
     const brand = (!isDomButton && brandOrBtn && brandOrBtn.slug) ? brandOrBtn : window.buildActiveBrandProfileForV80();
     const cacheKey = `${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
+    window._tbbFlowVisualsInFlight = window._tbbFlowVisualsInFlight || {};
     if (window._tbbFlowVisualsCache[cacheKey] && window._tbbFlowVisualsCache[cacheKey]._complete) {
       if (triggerBtn) {
         triggerBtn.disabled = false;
@@ -1811,6 +1813,9 @@
         setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2200);
       }
       return window._tbbFlowVisualsCache[cacheKey];
+    }
+    if (window._tbbFlowVisualsInFlight[cacheKey]) {
+      return window._tbbFlowVisualsInFlight[cacheKey];
     }
 
     const isTbbApp = /^the_?best_?brand$/i.test(brand.slug) && !brand.hasUploadedLogo;
@@ -1860,30 +1865,138 @@
     window._tbbFlowVisualsCache[cacheKey] = entry;
 
     let done = 0;
-    await Promise.allSettled(
-      jobs.map(async (j) => {
-        if (!entry[j.key]) {
+    const runPromise = (async () => {
+      for (const j of jobs) {
+        if (!entry[j.key] || String(entry[j.key]).startsWith("data:image/svg")) {
           const url = await generateSingleFlowIllustration(j.prompt, j.key, brand);
           if (url) entry[j.key] = url;
         }
         done++;
         if (triggerBtn) triggerBtn.textContent = `Ilustrando Flow (${done}/${jobs.length})...`;
         if (typeof onProgress === "function") onProgress(done, jobs.length, j.label);
-      })
-    );
-
-    entry._complete = Object.keys(entry).length >= 2;
-    if (triggerBtn) {
-      triggerBtn.disabled = false;
-      triggerBtn.textContent = "✓ Capítulos Ilustrados";
-      if (typeof window.renderTbbZeroScrollStage === "function") {
-        window.renderTbbZeroScrollStage();
+        if (typeof window.renderTbbZeroScrollStage === "function") {
+          window.renderTbbZeroScrollStage();
+        }
       }
-      setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2600);
-    }
-    return entry;
+
+      const realRasterCount = Object.values(entry).filter(v => typeof v === "string" && /^data:image\/(png|jpeg|webp)/i.test(v)).length;
+      entry._complete = realRasterCount >= 3;
+      delete window._tbbFlowVisualsInFlight[cacheKey];
+      if (triggerBtn) {
+        triggerBtn.disabled = false;
+        triggerBtn.textContent = "✓ Capítulos Ilustrados";
+        if (typeof window.renderTbbZeroScrollStage === "function") {
+          window.renderTbbZeroScrollStage();
+        }
+        setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2600);
+      }
+      return entry;
+    })();
+    window._tbbFlowVisualsInFlight[cacheKey] = runPromise;
+    return runPromise;
   }
 
+  async function tbbGenerateNanoBananaBrandSymbol(userHint) {
+    const cs = (typeof window.canvasState === "object" && window.canvasState) ? window.canvasState : {};
+    const st = window.tbbState || {};
+    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca";
+    const giro = (cs.custom_business_type || cs.step0_short_essence || "Servicios profesionales").trim();
+    const persona = (cs.brand_persona || "").trim();
+    const seedIdea = String(userHint || cs.step4_logo_seed_idea || "").trim();
+    const pri = st.logoPriHex || (Array.isArray(cs.selected_colors_hex) && cs.selected_colors_hex[2]) || "#0D2540";
+    const sec = st.logoSecHex || (Array.isArray(cs.selected_colors_hex) && cs.selected_colors_hex[3]) || "#FF7A00";
+
+    st.geminiBusy = true;
+    st.geminiStatusText = "Nano Banana (Gemini Image) diseñando tu símbolo de agencia y trazando curvas Bézier...";
+    if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
+
+    const prompt = [
+      `Masterpiece minimalist corporate logo symbol (ICON MARK ONLY, ZERO TEXT, NO LETTERS, NO WORDS, NO TYPOGRAPHY) for brand "${bName}" in sector: ${giro}.`,
+      seedIdea ? `Visual concept & motif requested: ${seedIdea}.` : "",
+      persona ? `Brand personality: ${persona}.` : "",
+      `Pentagram / Chermayeff & Geismar / Sagi Haviv award-winning emblem design: crisp flat solid vector-style shapes, bold clean silhouette, balanced negative space, strictly using ONLY two flat colors (${pri} primary and ${sec} accent) centered on a pure solid stark white #FFFFFF background.`,
+      `No photorealism, no thin hairlines, no drop shadows, no mockups, no frames touching edges, generous white margin around the emblem.`
+    ].filter(Boolean).join(" ");
+
+    const proxyUrl = (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
+    const models = ["gemini-3.1-flash-image-preview", "gemini-2.5-flash-image", "gemini-3-pro-image-preview"];
+    let rawImgUrl = "";
+
+    for (const model of models) {
+      try {
+        const resp = await fetch(proxyUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: model,
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { responseModalities: ["IMAGE", "TEXT"] }
+          })
+        });
+        if (!resp.ok) continue;
+        const data = await resp.json();
+        const parts = data?.candidates?.[0]?.content?.parts || [];
+        for (const p of parts) {
+          if (p?.inlineData?.data) {
+            const mime = p.inlineData.mimeType || "image/png";
+            rawImgUrl = `data:${mime};base64,${p.inlineData.data}`;
+            break;
+          }
+        }
+        if (rawImgUrl) break;
+      } catch (err) {
+        console.warn("Nano Banana logo error:", err);
+      }
+    }
+
+    if (rawImgUrl) {
+      const centeredPng = await tbbAutoTrimAndCenterRasterLogo(rawImgUrl, 1024, 0.78);
+      const tracedCurves = await tbbVectorizeRasterLogoToSvgCurves(centeredPng);
+
+      if (!window.step0State) window.step0State = {};
+      window.step0State.uploadedLogoDataUrl = centeredPng;
+      window.step0State.uploadedLogoTracedCurvesSvg = tracedCurves || "";
+      cs.uploaded_logo_data_url = centeredPng;
+      cs.uploaded_logo_traced_curves_svg = tracedCurves || "";
+      cs.existing_logo_mode = "evolve";
+
+      const nextIdx = (Array.isArray(st.logoIterations) ? st.logoIterations.length : 0) + 1;
+      const nbEntry = {
+        idx: nextIdx,
+        isInitialSystemic: false,
+        isUploadedUserLogo: true,
+        isNanoBananaGenerated: true,
+        uploadedLogoDataUrl: centeredPng,
+        uploadedLogoSvgMarkup: "",
+        paradigm: st.logoParadigm || "detailed_emblem",
+        archetype: "uploaded_user_logo",
+        conceptLabel: "Nano Banana IA · Curvas",
+        pri: pri,
+        sec: sec,
+        scale: 1.0,
+        darkBg: Boolean(st.logoDarkBg),
+        fontFamily: cs.primary_font || st.selectedFontFamily || "Montserrat",
+        layout: "horizontal",
+        mods: {},
+        geminiCustomSvg: "",
+        svgOverlayAdditions: "",
+        note: seedIdea || `Símbolo Nano Banana para ${bName}`,
+        prompt: `Símbolo de agencia generado con Nano Banana para «${bName}» en tonos ${pri} y ${sec}, centrado a 0.00px y vectorizado a curvas Bézier.`,
+        geminiPrompt40w: `Símbolo de agencia generado con Nano Banana para «${bName}» en tonos ${pri} y ${sec}, centrado a 0.00px y vectorizado a curvas Bézier.`
+      };
+      if (!Array.isArray(st.logoIterations)) st.logoIterations = [];
+      st.logoIterations.push(nbEntry);
+      st.logoIterationIndex = st.logoIterations.length;
+      if (typeof window.saveBrandSessionToLocalStorage === "function") window.saveBrandSessionToLocalStorage();
+    }
+
+    st.geminiBusy = false;
+    st.geminiStatusText = "";
+    if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
+    return rawImgUrl;
+  }
+
+  window.tbbGenerateNanoBananaBrandSymbol = tbbGenerateNanoBananaBrandSymbol;
   window.tbbAutoTrimAndCenterRasterLogo = tbbAutoTrimAndCenterRasterLogo;
   window.tbbEnsureUploadedLogoCentered = tbbEnsureUploadedLogoCentered;
   window.tbbVectorizeRasterLogoToSvgCurves = tbbVectorizeRasterLogoToSvgCurves;

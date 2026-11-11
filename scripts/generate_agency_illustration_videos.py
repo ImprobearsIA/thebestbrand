@@ -46,7 +46,7 @@ def get_gemini_key():
                     k = line.split("=", 1)[1].strip().strip('"').strip("'")
                     if k:
                         return k
-    return "AIzaSyByQl8lrqiK5R4dZQSQA-b2qSxli8ctZQE"
+    return os.environ.get("GEMINI_API_KEY", "").strip()
 
 GEMINI_API_KEY = get_gemini_key()
 

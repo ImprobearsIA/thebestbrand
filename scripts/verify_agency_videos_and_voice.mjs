@@ -100,10 +100,10 @@ console.log('  ✓ studio.html maneja /api/v1/gemini/proxy con clave de respaldo
 console.log('\n4. Verificando motor de voz en apps/web/tbb-multilingual-gemini-voice.js:');
 const voiceJs = fs.readFileSync(path.join(root, 'apps', 'web', 'tbb-multilingual-gemini-voice.js'), 'utf8');
 
-if (!voiceJs.includes('AIzaSyByQl8lrqiK5R4d')) {
-  throw new Error('tbb-multilingual-gemini-voice.js no tiene la clave de respaldo de Gemini');
+if (voiceJs.includes('AIzaSy')) {
+  throw new Error('ALERTA FINOPS: tbb-multilingual-gemini-voice.js contiene una llave expuesta en cliente');
 }
-console.log('  ✓ Clave de respaldo Gemini neural activa.');
+console.log('  ✓ Blindaje FinOps activo: 0 llaves expuestas en cliente.');
 
 if (!voiceJs.includes('gemini-2.5-flash-preview-tts')) {
   throw new Error('Modelo gemini-2.5-flash-preview-tts no configurado en GEMINI_TTS_MODELS');
