@@ -2113,8 +2113,8 @@ Instrucciones obligatorias:
       keysToPurge.forEach(k => localStorage.removeItem(k));
     } catch (e) {}
 
-    // Limpiar estado en memoria de window
-    window.canvasState = {
+    // Limpiar estado en memoria de window mutando en el lugar (sin romper referencias léxicas en studio.html)
+    const freshCanvasDefaults = {
       brandName: "",
       tagline: "",
       primary_font: "Montserrat",
@@ -2127,20 +2127,38 @@ Instrucciones obligatorias:
       brand_persona: "",
       selected_colors_hex: ["#FFFFFF", "#090D16", "#0D2540", "#426EAE"]
     };
+    if (window.canvasState && typeof window.canvasState === "object") {
+      Object.keys(window.canvasState).forEach((k) => { delete window.canvasState[k]; });
+      Object.assign(window.canvasState, freshCanvasDefaults);
+    } else {
+      window.canvasState = Object.assign({}, freshCanvasDefaults);
+    }
 
-    window.step0State = {
+    const freshStep0Defaults = {
       goal: "first",
       sector: "custom_negocio_propio",
       brandName: "",
       tagline: "",
       customBusinessType: ""
     };
+    if (window.step0State && typeof window.step0State === "object") {
+      Object.keys(window.step0State).forEach((k) => { delete window.step0State[k]; });
+      Object.assign(window.step0State, freshStep0Defaults);
+    } else {
+      window.step0State = Object.assign({}, freshStep0Defaults);
+    }
 
-    window.tpExtractedItems = {
-      before: [],
-      during: [],
-      after: []
-    };
+    if (window.tpExtractedItems && typeof window.tpExtractedItems === "object") {
+      window.tpExtractedItems.before = [];
+      window.tpExtractedItems.during = [];
+      window.tpExtractedItems.after = [];
+    } else {
+      window.tpExtractedItems = {
+        before: [],
+        during: [],
+        after: []
+      };
+    }
 
     if (window.tbbState) {
       window.tbbState.activeMode = "step";

@@ -1643,9 +1643,129 @@
   // ==========================================================================
   // 7. MOTOR GOOGLE FLOW / GEMINI IMAGE PARA ILUSTRAR CAPÍTULOS DE MARCA
   // ==========================================================================
+  function buildEditorialSvgSceneDataUrl(slotKey, brand) {
+    const pri = brand.colors?.pri || "#0D2540";
+    const sec = brand.colors?.sec || "#426EAE";
+    const acc = brand.colors?.acc || "#FF7A00";
+    const soft = brand.colors?.softBg || "#FAF8F5";
+    const dark = brand.colors?.darkInk || "#090D16";
+    const textCtx = `${brand.giro || ""} ${brand.persona || ""} ${brand.what || ""}`.toLowerCase();
+    const isNature = /campamento|sierra|bosque|monta[ñn]a|naturaleza|ecotur|glamping|r[ií]o|fogata|sender/i.test(textCtx);
+    const isFood = /restaurante|caf[eé]|panader|gastronom|cocina|bar|vino|mezcal|alimento/i.test(textCtx);
+
+    let scenePaths = "";
+    if (isNature) {
+      if (slotKey === "persona") {
+        // Guardabosques / guía cálido en la Sierra Gorda con montañas, pinos y taza humeante
+        scenePaths = `
+          <circle cx="480" cy="96" r="42" fill="${acc}" fill-opacity="0.22"/>
+          <circle cx="480" cy="96" r="24" fill="${acc}"/>
+          <path d="M0,255 L145,125 L265,215 L395,98 L535,210 L640,145 L640,360 L0,360 Z" fill="${pri}" fill-opacity="0.22"/>
+          <path d="M0,285 L195,158 L335,248 L475,142 L640,262 L640,360 L0,360 Z" fill="${pri}" fill-opacity="0.48"/>
+          <g fill="${pri}">
+            <path d="M98,162 L68,225 H84 L60,275 H136 L112,225 H128 Z"/>
+            <rect x="93" y="275" width="10" height="26" fill="${dark}"/>
+            <path d="M548,154 L518,218 H534 L510,270 H586 L562,218 H578 Z"/>
+            <rect x="543" y="270" width="10" height="28" fill="${dark}"/>
+          </g>
+          <!-- Figura humana editorial del guía/guardabosques -->
+          <circle cx="310" cy="176" r="28" fill="#FDE68A" stroke="${dark}" stroke-width="2.5"/>
+          <path d="M268,168 Q310,138 352,168 Z" fill="${acc}" stroke="${dark}" stroke-width="2.5"/>
+          <ellipse cx="310" cy="168" rx="48" ry="7" fill="${pri}"/>
+          <path d="M254,330 C258,244 276,216 310,216 C344,216 362,244 366,330 Z" fill="${pri}"/>
+          <path d="M286,216 L310,256 L334,216" fill="none" stroke="${acc}" stroke-width="5" stroke-linecap="round"/>
+          <!-- Taza de café de olla caliente con vapor -->
+          <rect x="366" y="246" width="32" height="36" rx="6" fill="${acc}" stroke="#FFFFFF" stroke-width="2.5"/>
+          <path d="M398,254 C410,254 410,274 398,274" fill="none" stroke="${acc}" stroke-width="4"/>
+          <path d="M376,236 Q372,222 380,212 M388,236 Q384,220 392,208" fill="none" stroke="${acc}" stroke-width="2.8" stroke-linecap="round"/>
+        `;
+      } else if (slotKey === "buyer") {
+        // Familia feliz explorando sendero natural con niños
+        scenePaths = `
+          <circle cx="515" cy="84" r="34" fill="${acc}" fill-opacity="0.88"/>
+          <path d="M0,250 Q160,120 330,215 T640,175 L640,360 L0,360 Z" fill="${pri}" fill-opacity="0.22"/>
+          <path d="M0,290 Q220,210 430,275 T640,250 L640,360 L0,360 Z" fill="${pri}" fill-opacity="0.55"/>
+          <path d="M240,360 C275,305 345,295 395,255 C425,232 465,228 520,235" fill="none" stroke="#FDE68A" stroke-width="18" stroke-linecap="round"/>
+          <!-- Padres e hijos tomados de la mano -->
+          <circle cx="215" cy="192" r="20" fill="#FDE68A"/><path d="M188,315 C192,242 200,220 215,220 C230,220 238,242 242,315 Z" fill="${pri}"/>
+          <circle cx="280" cy="226" r="15" fill="#FDE68A"/><path d="M260,315 C264,268 270,248 280,248 C290,248 296,268 300,315 Z" fill="${acc}"/>
+          <circle cx="340" cy="232" r="14" fill="#FDE68A"/><path d="M322,315 C325,272 331,252 340,252 C349,252 355,272 358,315 Z" fill="${sec}"/>
+          <circle cx="405" cy="196" r="19" fill="#FDE68A"/><path d="M380,315 C384,246 392,224 405,224 C418,224 426,246 430,315 Z" fill="${dark}"/>
+        `;
+      } else if (slotKey === "tpDuring") {
+        // Fogata nocturna/atardecer, tienda glamping y cielo estrellado con telescopio
+        scenePaths = `
+          <rect x="0" y="0" width="640" height="360" fill="${dark}"/>
+          <circle cx="110" cy="68" r="3" fill="#FDE68A"/><circle cx="195" cy="48" r="2.5" fill="#FFFFFF"/>
+          <circle cx="310" cy="62" r="4" fill="${acc}"/><circle cx="445" cy="52" r="3" fill="#FDE68A"/><circle cx="545" cy="82" r="2.5" fill="#FFFFFF"/>
+          <path d="M0,250 L150,138 L295,232 L460,118 L640,238 L640,360 L0,360 Z" fill="${pri}" fill-opacity="0.58"/>
+          <!-- Tienda Glamping iluminada -->
+          <path d="M96,288 L196,172 L296,288 Z" fill="#FAF8F5" stroke="${acc}" stroke-width="4"/>
+          <path d="M162,288 L196,216 L230,288 Z" fill="${acc}" fill-opacity="0.88"/>
+          <!-- Fogata cálida central -->
+          <circle cx="415" cy="272" r="52" fill="${acc}" fill-opacity="0.22"/>
+          <path d="M415,214 C442,242 446,274 415,288 C384,274 388,242 415,214 Z" fill="${acc}"/>
+          <path d="M415,238 C430,254 430,274 415,284 C400,274 400,254 415,238 Z" fill="#FDE68A"/>
+          <rect x="382" y="286" width="66" height="10" rx="5" fill="#78350F" transform="rotate(-12 415 291)"/>
+          <rect x="382" y="286" width="66" height="10" rx="5" fill="#92400E" transform="rotate(12 415 291)"/>
+          <!-- Telescopio astronómico -->
+          <line x1="528" y1="226" x2="508" y2="294" stroke="#E2E8F0" stroke-width="3.5"/>
+          <line x1="528" y1="226" x2="548" y2="294" stroke="#E2E8F0" stroke-width="3.5"/>
+          <rect x="496" y="204" width="62" height="14" rx="5" fill="#FFFFFF" transform="rotate(-24 527 211)"/>
+        `;
+      } else {
+        // Cabañas sustentables, río cristalino y puente colgante en bosque de niebla
+        scenePaths = `
+          <path d="M0,220 L165,96 L325,208 L485,88 L640,196 L640,360 L0,360 Z" fill="${pri}" fill-opacity="0.25"/>
+          <path d="M0,265 Q180,225 340,268 T640,248 L640,360 L0,360 Z" fill="${pri}" fill-opacity="0.62"/>
+          <!-- Río cristalino serpenteante -->
+          <path d="M295,258 C255,288 365,312 285,360 L395,360 C455,312 335,286 355,258 Z" fill="#38BDF8" fill-opacity="0.82"/>
+          <!-- Cabaña sustentable de madera -->
+          <path d="M92,216 L168,156 L244,216 Z" fill="${acc}"/>
+          <rect x="110" y="216" width="116" height="68" rx="6" fill="#FFFFFF" stroke="${pri}" stroke-width="3"/>
+          <rect x="148" y="236" width="40" height="48" rx="4" fill="${acc}" fill-opacity="0.85"/>
+          <!-- Puente colgante escénico -->
+          <path d="M355,196 Q470,242 585,192" fill="none" stroke="${acc}" stroke-width="5"/>
+          <path d="M355,214 Q470,260 585,210" fill="none" stroke="${dark}" stroke-width="3"/>
+        `;
+      }
+    } else if (isFood) {
+      scenePaths = `
+        <circle cx="320" cy="175" r="98" fill="#FFFFFF" stroke="${pri}" stroke-width="4"/>
+        <circle cx="320" cy="175" r="72" fill="${soft}" stroke="${acc}" stroke-width="2.5" stroke-dasharray="6 4"/>
+        <path d="M268,192 C268,148 372,148 372,192 Z" fill="${pri}"/>
+        <path d="M295,126 Q288,104 300,88 M322,122 Q315,98 328,82 M348,126 Q342,104 352,88" fill="none" stroke="${acc}" stroke-width="3.5" stroke-linecap="round"/>
+      `;
+    } else {
+      scenePaths = `
+        <circle cx="490" cy="108" r="68" fill="${acc}" fill-opacity="0.16"/>
+        <rect x="84" y="76" width="260" height="196" rx="22" fill="#FFFFFF" stroke="${pri}" stroke-width="3"/>
+        <rect x="114" y="110" width="140" height="18" rx="9" fill="${pri}"/>
+        <rect x="114" y="142" width="196" height="12" rx="6" fill="${sec}" fill-opacity="0.65"/>
+        <rect x="114" y="166" width="172" height="12" rx="6" fill="#CBD5E1"/>
+        <rect x="114" y="206" width="112" height="32" rx="16" fill="${acc}"/>
+        <circle cx="446" cy="196" r="64" fill="${pri}"/>
+        <path d="M418,196 L438,216 L476,176" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      `;
+    }
+
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+      <defs>
+        <linearGradient id="bg_${slotKey}" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#FFFFFF"/>
+          <stop offset="55%" stop-color="${soft}"/>
+          <stop offset="100%" stop-color="${pri}" stop-opacity="0.14"/>
+        </linearGradient>
+      </defs>
+      <rect width="640" height="360" fill="url(#bg_${slotKey})"/>
+      ${scenePaths}
+    </svg>`;
+    return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
+  }
+
   window._tbbFlowVisualsCache = window._tbbFlowVisualsCache || {};
 
-  async function generateSingleFlowIllustration(promptText) {
+  async function generateSingleFlowIllustration(promptText, slotKey, brand) {
     const models = ["gemini-2.5-flash-image", "gemini-3.1-flash-image"];
     for (const model of models) {
       try {
@@ -1671,18 +1791,35 @@
         console.warn("Flow chapter image fallback:", e);
       }
     }
-    return "";
+    return buildEditorialSvgSceneDataUrl(slotKey || "environment", brand || {});
   }
 
-  async function tbbGenerateChapterVisualsWithFlow(brandOpt, onProgress) {
-    const brand = brandOpt || window.buildActiveBrandProfileForV80();
+  async function tbbGenerateChapterVisualsWithFlow(brandOrBtn, onProgress) {
+    const isDomButton = brandOrBtn && typeof brandOrBtn === "object" && (brandOrBtn.tagName === "BUTTON" || typeof brandOrBtn.textContent === "string");
+    const triggerBtn = isDomButton ? brandOrBtn : null;
+    const origBtnHtml = triggerBtn ? triggerBtn.innerHTML : "";
+    if (triggerBtn) {
+      triggerBtn.disabled = true;
+      triggerBtn.textContent = "Ilustrando capítulos (0/5)...";
+    }
+    const brand = (!isDomButton && brandOrBtn && brandOrBtn.slug) ? brandOrBtn : window.buildActiveBrandProfileForV80();
     const cacheKey = `${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
     if (window._tbbFlowVisualsCache[cacheKey] && window._tbbFlowVisualsCache[cacheKey]._complete) {
+      if (triggerBtn) {
+        triggerBtn.disabled = false;
+        triggerBtn.textContent = "✓ Capítulos Ilustrados";
+        setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2200);
+      }
       return window._tbbFlowVisualsCache[cacheKey];
     }
 
     const isTbbApp = /^the_?best_?brand$/i.test(brand.slug) && !brand.hasUploadedLogo;
     if (isTbbApp) {
+      if (triggerBtn) {
+        triggerBtn.disabled = false;
+        triggerBtn.textContent = "✓ Capturas App Activas";
+        setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2200);
+      }
       return null; // TheBestBrand usa capturas reales en alta definición de la aplicación
     }
 
@@ -1726,15 +1863,24 @@
     await Promise.allSettled(
       jobs.map(async (j) => {
         if (!entry[j.key]) {
-          const url = await generateSingleFlowIllustration(j.prompt);
+          const url = await generateSingleFlowIllustration(j.prompt, j.key, brand);
           if (url) entry[j.key] = url;
         }
         done++;
+        if (triggerBtn) triggerBtn.textContent = `Ilustrando Flow (${done}/${jobs.length})...`;
         if (typeof onProgress === "function") onProgress(done, jobs.length, j.label);
       })
     );
 
     entry._complete = Object.keys(entry).length >= 2;
+    if (triggerBtn) {
+      triggerBtn.disabled = false;
+      triggerBtn.textContent = "✓ Capítulos Ilustrados";
+      if (typeof window.renderTbbZeroScrollStage === "function") {
+        window.renderTbbZeroScrollStage();
+      }
+      setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2600);
+    }
     return entry;
   }
 

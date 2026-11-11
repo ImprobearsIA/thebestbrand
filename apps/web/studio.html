@@ -6057,14 +6057,13 @@
     let userPairSelections = {};
     let selectedLiveSketchIndex = 0;
 
-    let canvasState = {
+    var canvasState = window.canvasState = {
       brandName: "TheBestBrand",
       tagline: "Identidad Estratégica y Visual de Alto Impacto",
       primary_font: "Plus Jakarta Sans",
       selected_colors_hex: ["#FAF8F5", "#090D16", "#C59B27", "#D4AF37"],
       selected_kit_index: 0
     };
-    window.canvasState = canvasState;
 
     // CENTRALIZED CORPORATE BACKEND ACCOUNT (ZERO USER API KEYS)
     function getActiveApiKey() {
@@ -7727,7 +7726,7 @@
     // =========================================================================
     let currentTpPhase = "before"; // "before" | "during" | "after" | "all"
     let currentTpSectorKey = "custom_negocio_propio";
-    const tpExtractedItems = {
+    var tpExtractedItems = window.tpExtractedItems = {
       before: [],
       during: [],
       after: []
@@ -20696,7 +20695,7 @@
         <option value="3">Paso 3 · Naming & Niza</option>
         <option value="4">Paso 4 · Personalidad</option>
         <option value="5">Paso 5 · Logotipos</option>
-        <option value="6">Paso 6 · Manual 30 Hojas</option>
+        <option value="6">Paso 6 · Manual 36 Láminas</option>
         <option value="admin_tbb" style="color:#FF7A00; font-weight:900;">⚡ Cargar Admin (TheBestBrand)</option>
       </select>
       <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" id="tbbBtnTopAdminTbb" onclick="window.tbbLoadOfficialAdminTheBestBrandData(6)" title="Cargar perfil administrador con datos oficiales de TheBestBrand (Jorge Benítez) y abrir Brandbook de 30 Hojas" style="padding:0 9px; font-size:0.70rem; min-height:32px !important; white-space:nowrap; border-bottom:2.5px solid #FF7A00; color:#0D2540; background:#FEF3C7; border-color:#F59E0B;">
@@ -21048,8 +21047,8 @@
       window.buildDynamicTouchpointOptions = function (phaseKey) {
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const giro = (cs.custom_business_type || cs.step0_short_essence || "").toLowerCase();
-        const isDigital = /app|aplicaci|plataforma|software|web|digital|saas|sistema|ia|datos/i.test(giro);
-        const isService = /consultor|despacho|clínica|clinica|salud|educac|colegio|servicio|agencia|arquitect|construct/i.test(giro);
+        const isDigital = /\b(app|aplicaci[oó]n|plataforma|software|web|digital|saas|sistema|ia|datos)\b/i.test(giro);
+        const isService = /\b(consultor[ií]a|despacho|cl[ií]nica|salud|educaci[oó]n|colegio|servicio|agencia|arquitectura|construcci[oó]n)\b/i.test(giro);
 
         if (phaseKey === "before") {
           if (isDigital) return ["Búsqueda Web y App Store", "Demostración Interactiva en Línea", "Recomendación de Usuarios", "Contenido Especializado en Redes"];
@@ -22412,7 +22411,7 @@
               3: "PASO 3 · NOMBRE",
               4: "PASO 4 · PERSONALIDAD",
               5: "PASO 5 · LOGOTIPO",
-              6: "PASO 6 · 30 LÁMINAS"
+              6: "PASO 6 · 36 LÁMINAS"
             };
             roleEl.textContent = roleSubLabel || `AURA · ${stepNames[st.step] || "MENTORA"} · REF: ${authorName.toUpperCase()}`;
           }
