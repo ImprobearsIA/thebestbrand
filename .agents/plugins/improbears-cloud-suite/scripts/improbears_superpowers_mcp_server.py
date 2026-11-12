@@ -9,7 +9,7 @@ Implementa los Superpoderes 1 y 4 del video (oV4jPxFcQLY) para toda la plataform
 2. `notebooklm-studio`:
    - `notebook_list`: Lista los cuadernos activos en la Bóveda `Cerebro_NotebookLM` e ImproBears.
    - `notebook_create`: Crea un nuevo cuaderno de investigación estructurado con fuentes verificadas.
-   - `quiz_create`: Crea un cuestionario interactivo funcional (`NotebookLM Studio Quiz Create`) sobre cualquier cuaderno (ej. Certificación Arbitral `TheBestLeague`, Alineación de Marca `TheBestBrand`, Setters `OpenClaw`).
+   - `quiz_create`: Crea un cuestionario interactivo funcional (`NotebookLM Studio Quiz Create`) sobre cualquier cuaderno (ej. Certificación Arbitral `TheBestLeague`, Alineación de Marca `TheBestBrand`, Setters `Proyecto Aura ImproBears`).
 """
 
 import datetime
@@ -18,7 +18,7 @@ import os
 import sys
 from pathlib import Path
 
-SUITE_DIR = Path("/Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi unidad/_1 IMPROBEARS/Proyectos Antigravity/03_SISTEMAS_IMPROBEARS/Zoho_ImproBears/OpenClaw_Ramiro_Cubria_Suite")
+SUITE_DIR = Path("/Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi unidad/_1 IMPROBEARS/Proyectos Antigravity/03_SISTEMAS_IMPROBEARS/Zoho_ImproBears/Proyecto_Aura_ImproBears_Suite")
 ZOHO_DIR = SUITE_DIR.parent
 NOTEBOOK_VAULT = ZOHO_DIR / "Cerebro_NotebookLM"
 STITCH_VAULT = SUITE_DIR / "00_ADUANA_APROBADOS_CEREBRO" / "stitch_designs"

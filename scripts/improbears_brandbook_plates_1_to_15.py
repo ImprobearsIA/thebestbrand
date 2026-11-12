@@ -1242,7 +1242,7 @@ def build_plates_01_to_15(assets: dict) -> list:
               <div style="font-family:'Montserrat',sans-serif;font-size:12px;font-weight:800;color:#0D2540;">IMPROBEARS <span style="color:#FF7A00;">AI</span></div>
               <div style="font-family:'Montserrat',sans-serif;font-size:7.8px;font-weight:800;color:#FF7A00;margin:2px 0 4px 0;letter-spacing:0.08em;">NUCLEO NEURONAL COGNITIVO</div>
               <div style="font-family:'Avenir Next',sans-serif;font-size:10.3px;color:#333333;line-height:1.34;">
-                Sistemas multi-agente autónomos (La Socia / OpenClaw), automatización cognitiva y Suite SaaS TheBest.
+                Sistemas multi-agente autónomos (Proyecto Aura ImproBears), automatización cognitiva y Suite SaaS TheBest.
               </div>
             </div>
             <img src="{photo_ai_woman}" alt="ImproBears AI" style="width:100%;height:136px;object-fit:cover;object-position:center 12%;border-radius:14px 30px 14px 14px;border-bottom:3px solid #4C9DE6;display:block;" />

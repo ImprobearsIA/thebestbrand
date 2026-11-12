@@ -250,8 +250,8 @@ def build_plates_16_to_30(assets: dict) -> list:
             </div>
             <div>
               <div class="ib-node-hdr"><span class="ib-dot-orange"></span>ECOSISTEMA TECNOLOGICO</div>
-              <div class="ib-flow-title" style="font-size:13.5px;">La Socia + OpenClaw + Suite TheBest</div>
-              <div class="ib-flow-txt">• <strong>Gina (“La Socia”):</strong> Motor ejecutivo conectado a Zoho One.<br/>• <strong>Célula OpenClaw:</strong> 7 agentes autónomos especializados.<br/>• <strong>Suite SaaS:</strong> TheBestBrand, TheBestLeague y TheBestScoreboard.</div>
+              <div class="ib-flow-title" style="font-size:13.5px;">La Socia + Proyecto Aura ImproBears + Suite TheBest</div>
+              <div class="ib-flow-txt">• <strong>Gina (“La Socia”):</strong> Motor ejecutivo conectado a Zoho One.<br/>• <strong>Proyecto Aura ImproBears:</strong> 7 agentes autónomos especializados.<br/>• <strong>Suite SaaS:</strong> TheBestBrand, TheBestLeague y TheBestScoreboard.</div>
             </div>
           </div>
 
