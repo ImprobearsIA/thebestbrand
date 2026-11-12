@@ -14,3 +14,12 @@ description: Runbook y configuración oficial para usar Google Flow (Veo 3.1 / K
 - `notebooklm-studio`: Gestión de cuadernos de investigación (`notebook_list`, `notebook_create`, `quiz_create`).
 - `improbears-bridge`: Bandeja operativa compartida entre Antigravity (`Max`) y `Claude Code` (`bridge_post_task`, `bridge_claim_task`, `bridge_complete_task`, `bridge_record_decision`).
 - `Neon`: Conexión directa a PostgreSQL 18 (`https://mcp.neon.tech/mcp`).
+
+## 3. Protocolo Zero-Touch (Cero Copiar y Pegar en Terminal para Jorge)
+- **Política Obligatoria (`C-00`):** Jamás pedirle a Jorge Benítez ("El Oso") que copie y pegue comandos en la terminal cuando esté fuera de su computadora o en sesiones remotas (`☁️ Remote Conversations`, iPhone o Apple CarPlay).
+- **Flujo en Nube (`Git Push -> Auto-Deploy`):**
+  1. Max y Claude ejecutan las ediciones, pruebas (`node server/verify.mjs`, `node --check`) y hacen `git commit` + `git push origin main` directamente desde la máquina virtual remota.
+  2. El workflow `.github/workflows/zero-touch-deploy.yml` valida el código en GitHub Actions y despliega en Firebase Hosting (`improbears-com`, `thebestbrand-studio`) y Cloudflare Workers (`acquaixtapa`), mientras Railway actualiza los backends automáticamente.
+- **Sincronización Silenciosa 24/7 en la Mac (`improbears_zero_touch_guardian.sh`):**
+  - El demonio `.agents/plugins/improbears-cloud-suite/scripts/improbears_zero_touch_guardian.sh` (`com.improbears.zerotouch.guardian`) corre cada 60 segundos en la Mac, hace `git fetch` + `git merge --ff-only` protegiendo cualquier cambio local con `autostash`, y ejecuta los despliegues locales autenticados (Firebase / Wrangler / Xcode CarPlay) sin intervención humana.
+

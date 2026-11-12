@@ -1,0 +1,51 @@
+name: Zero-Touch CI & Firebase Hosting Auto-Deploy (TheBestBrand)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+
+concurrency:
+  group: zero-touch-deploy-thebestbrand-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-and-deploy:
+    name: Verify V86 Engine & Auto-Deploy to Firebase Hosting
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 22 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify JavaScript Engines Syntax (Zero Parse Failures)
+        run: |
+          node --check apps/web/tbb-v80-brandbook-plates.js
+          node --check apps/web/universal-brandbook-30-engine.js
+          node --check apps/web/tbb-generative-brandbook-engine.js
+          node --check apps/web/tbb-executive-deliverables-suite.js
+          node --check apps/web/tbb-commercial-experience-and-payments.js
+
+      - name: Deploy to Firebase Hosting (thebestbrand-studio)
+        if: ${{ secrets.FIREBASE_SERVICE_ACCOUNT != '' || secrets.FIREBASE_TOKEN != '' }}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -n "$GOOGLE_APPLICATION_CREDENTIALS_JSON" ]; then
+            echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/firebase-sa.json
+            export GOOGLE_APPLICATION_CREDENTIALS="/tmp/firebase-sa.json"
+            npx --yes firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears
+            rm -f /tmp/firebase-sa.json
+          else
+            npx --yes firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears --token "$FIREBASE_TOKEN"
+          fi
