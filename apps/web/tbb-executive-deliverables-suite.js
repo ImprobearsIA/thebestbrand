@@ -1749,7 +1749,7 @@
       `;
     }
 
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" width="640" height="480" preserveAspectRatio="xMidYMid slice">
       <defs>
         <linearGradient id="bg_${slotKey}" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#FFFFFF"/>
@@ -1757,13 +1757,51 @@
           <stop offset="100%" stop-color="${pri}" stop-opacity="0.14"/>
         </linearGradient>
       </defs>
-      <rect width="640" height="360" fill="url(#bg_${slotKey})"/>
-      ${scenePaths}
+      <rect width="640" height="480" fill="url(#bg_${slotKey})"/>
+      <g transform="translate(0, 60)">
+        ${scenePaths}
+      </g>
     </svg>`;
     return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
   }
 
   window._tbbFlowVisualsCache = window._tbbFlowVisualsCache || {};
+
+  // Recorta/normaliza cualquier imagen generada exactamente a 4:3 (960x720) preservando la proporción 1:1 de píxeles (CERO estiramiento ni deformación)
+  async function normalizePhotoToLocked4x3Canvas(rawDataUrl) {
+    if (!rawDataUrl || typeof document === "undefined") return rawDataUrl;
+    return new Promise((resolve) => {
+      const img = new Image();
+      if (!rawDataUrl.startsWith("data:")) img.crossOrigin = "anonymous";
+      img.onload = () => {
+        try {
+          const targetW = 960;
+          const targetH = 720; // Proporción exacta 4:3 bloqueada
+          const sw = img.naturalWidth || img.width || targetW;
+          const sh = img.naturalHeight || img.height || targetH;
+          const cnv = document.createElement("canvas");
+          cnv.width = targetW;
+          cnv.height = targetH;
+          const ctx = cnv.getContext("2d");
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(0, 0, targetW, targetH);
+
+          // Escalado uniforme (Math.max) sin alterar jamás la relación de aspecto original; encuadre superior (22%) para no cortar cabezas
+          const scale = Math.max(targetW / sw, targetH / sh);
+          const drawW = sw * scale;
+          const drawH = sh * scale;
+          const dx = (targetW - drawW) * 0.5;
+          const dy = (targetH - drawH) * 0.22;
+          ctx.drawImage(img, dx, dy, drawW, drawH);
+          resolve(cnv.toDataURL("image/jpeg", 0.92));
+        } catch (err) {
+          resolve(rawDataUrl);
+        }
+      };
+      img.onerror = () => resolve(rawDataUrl);
+      img.src = rawDataUrl;
+    });
+  }
 
   async function generateSingleFlowIllustration(promptText, slotKey, brand, aspectRatio = "4:3") {
     const models = ["gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview", "gemini-2.5-flash-image"];
@@ -1789,7 +1827,8 @@
         for (const p of parts) {
           if (p?.inlineData?.data) {
             const mime = p.inlineData.mimeType || "image/png";
-            return `data:${mime};base64,${p.inlineData.data}`;
+            const rawUrl = `data:${mime};base64,${p.inlineData.data}`;
+            return await normalizePhotoToLocked4x3Canvas(rawUrl);
           }
         }
       } catch (e) {
@@ -1808,12 +1847,12 @@
       triggerBtn.textContent = "Fotografiando capítulos (0/6)...";
     }
     const brand = (!isDomButton && brandOrBtn && brandOrBtn.slug) ? brandOrBtn : window.buildActiveBrandProfileForV80();
-    const cacheKey = `photo_v85|${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
+    const cacheKey = `photo_v86|${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
     window._tbbFlowVisualsInFlight = window._tbbFlowVisualsInFlight || {};
     if (window._tbbFlowVisualsCache[cacheKey] && window._tbbFlowVisualsCache[cacheKey]._complete) {
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Fotografía Editorial Lista";
+        triggerBtn.textContent = "✓ Fotografía Editorial 4:3 Lista";
         setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2200);
       }
       return window._tbbFlowVisualsCache[cacheKey];
@@ -1835,44 +1874,50 @@
     const pri = brand.colors?.pri || "#0D2540";
     const sec = brand.colors?.sec || "#426EAE";
     const acc = brand.colors?.acc || "#FF7A00";
-    const photoStyle = `Ultra-realistic high-end editorial magazine photography (Kinfolk / Architectural Digest / Monocle / Leica SL2 50mm f/1.8 lens), authentic natural daylight, rich real-world physical textures (stone, wood, metal, linen, skin, glass), subtle color harmony echoing ${pri}, ${sec}, and warm accent ${acc}. STRICTLY REAL PHOTOGRAPHY (zero cartoon, zero vector art, zero comic outlines, zero AI plastic gloss), zero text, no words, no signs with letters, no watermarks, generous headroom so full heads and subjects sit comfortably inside the 4:3 horizontal frame.`;
+    const photoStyle = `Award-winning editorial magazine photography (Kinfolk / Cereal Magazine / Architectural Digest / Monocle), captured on medium-format Hasselblad X2D 50mm f/2.5 lens, natural golden-hour daylight, tactile organic materials (travertine stone, warm oak wood, brushed metal, raw linen, natural skin tones), subtle chromatic harmony with ${pri}, ${sec}, and warm accent ${acc}. STRICTLY REAL PHOTOGRAPHY (zero cartoon, zero flat vector illustration, zero comic outlines, zero 3D CGI render), zero text, no words, no signs with letters, no watermarks, locked 4:3 horizontal composition with generous headroom so heads and subjects are never cropped or stretched.`;
 
     const jobs = [
       {
         key: "persona",
+        alias: "step0_splash",
         aspect: "4:3",
         label: "La Empresa como Persona",
-        prompt: `Authentic editorial environmental portrait photograph representing the human archetype of "${brand.name}" (${brand.giro}): ${brand.persona}. Warm, composed expert in their real craft studio or workspace, medium-wide framing with generous breathing room above the head. ${photoStyle}`
+        prompt: `Authentic editorial environmental portrait photograph representing the human archetype of "${brand.name}" (${brand.giro}): ${brand.persona}. Warm, composed expert in their real craft studio or architectural workspace, medium-wide 4:3 horizontal framing with generous breathing room above the head. ${photoStyle}`
       },
       {
         key: "buyer",
+        alias: "step1_golden",
         aspect: "4:3",
         label: "Cliente Ideal (Buyer Persona)",
-        prompt: `Candid luxury editorial lifestyle photograph of the ideal customer of "${brand.name}": ${brand.buyer}, genuinely enjoying ${brand.what} in a sunlit refined setting, natural expressions, medium-wide horizontal 4:3 composition. ${photoStyle}`
+        prompt: `Candid luxury editorial lifestyle photograph of the ideal customer of "${brand.name}": ${brand.buyer}, genuinely enjoying ${brand.what} in a sunlit refined setting, natural expressions, medium-wide horizontal 4:3 composition with full headroom. ${photoStyle}`
       },
       {
         key: "tpBefore",
+        alias: "step3_touchpoints",
         aspect: "4:3",
         label: "Touchpoint Antes de Comprar",
-        prompt: `High-end editorial photograph of the first discovery touchpoint for "${brand.name}" (${brand.giro}): ${(brand.tpBefore && brand.tpBefore[0]) || "welcoming boutique entrance or curated digital discovery moment"}, clean architectural lines and natural light. ${photoStyle}`
+        prompt: `High-end editorial photograph of the first discovery touchpoint for "${brand.name}" (${brand.giro}): ${(brand.tpBefore && brand.tpBefore[0]) || "welcoming boutique entrance or curated digital discovery moment"}, clean architectural lines and natural light, 4:3 horizontal frame. ${photoStyle}`
       },
       {
         key: "tpDuring",
+        alias: "step4_kansei",
         aspect: "4:3",
         label: "Touchpoint Durante el Servicio",
-        prompt: `Editorial close-to-medium documentary photograph of the signature service experience of "${brand.name}" (${brand.giro}): ${(brand.tpDuring && brand.tpDuring[0]) || "bespoke consultation and tactile presentation"}, authentic hands, real materials, warm hospitality. ${photoStyle}`
+        prompt: `Editorial medium documentary photograph of the signature service experience of "${brand.name}" (${brand.giro}): ${(brand.tpDuring && brand.tpDuring[0]) || "bespoke consultation and tactile presentation"}, authentic human connection, real materials, warm hospitality, 4:3 horizontal frame. ${photoStyle}`
       },
       {
         key: "tpAfter",
+        alias: "step5_atelier",
         aspect: "4:3",
         label: "Touchpoint Después del Servicio",
-        prompt: `Tactile editorial still-life and lifestyle photograph of the post-purchase keepsake, packaging, certificate, or lasting memory of "${brand.name}" (${brand.giro}): ${(brand.tpAfter && brand.tpAfter[0]) || "signature keepsake box, certificate of authenticity and lasting relationship"} resting on natural stone or warm timber in soft morning sunlight, 4:3 horizontal composition. ${photoStyle}`
+        prompt: `Tactile editorial still-life and lifestyle photograph of the post-purchase keepsake, bespoke packaging, certificate, or lasting relationship of "${brand.name}" (${brand.giro}): ${(brand.tpAfter && brand.tpAfter[0]) || "signature keepsake box, certificate of authenticity and lasting relationship"} resting on natural stone or warm timber in soft morning sunlight, 4:3 horizontal composition. ${photoStyle}`
       },
       {
         key: "environment",
+        alias: "step6_map",
         aspect: "4:3",
         label: "Espacio Físico y Arquitectura de Marca",
-        prompt: `Architectural Digest style wide-angle interior & exterior flagship photograph of "${brand.name}" (${brand.giro}), refined contemporary architecture, museum-grade lighting, noble materials, zero text on walls. ${photoStyle}`
+        prompt: `Architectural Digest style wide-angle interior & exterior flagship photograph of "${brand.name}" (${brand.giro}), refined contemporary architecture, museum-grade lighting, noble materials, zero text on walls, 4:3 horizontal composition. ${photoStyle}`
       }
     ];
 
@@ -1884,10 +1929,15 @@
       for (const j of jobs) {
         if (!entry[j.key] || String(entry[j.key]).startsWith("data:image/svg")) {
           const url = await generateSingleFlowIllustration(j.prompt, j.key, brand, j.aspect || "4:3");
-          if (url) entry[j.key] = url;
+          if (url) {
+            entry[j.key] = url;
+            if (j.alias) entry[j.alias] = url;
+          }
+        } else if (j.alias && !entry[j.alias]) {
+          entry[j.alias] = entry[j.key];
         }
         done++;
-        if (triggerBtn) triggerBtn.textContent = `Fotografía IA (${done}/${jobs.length})...`;
+        if (triggerBtn) triggerBtn.textContent = `Fotografía Editorial 4:3 (${done}/${jobs.length})...`;
         if (typeof onProgress === "function") onProgress(done, jobs.length, j.label);
         if (typeof window.renderTbbZeroScrollStage === "function") {
           window.renderTbbZeroScrollStage();
@@ -1899,7 +1949,7 @@
       delete window._tbbFlowVisualsInFlight[cacheKey];
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Fotografía Editorial Lista";
+        triggerBtn.textContent = "✓ Fotografía Editorial 4:3 Lista";
         if (typeof window.renderTbbZeroScrollStage === "function") {
           window.renderTbbZeroScrollStage();
         }

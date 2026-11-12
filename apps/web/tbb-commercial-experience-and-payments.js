@@ -1413,22 +1413,22 @@
 
     if (plateNum === 4) {
       return `
-        <div style="background:#FFFFFF; border:2px solid #CBD5E1; border-radius:20px; padding:24px; box-shadow:0 20px 50px rgba(9,13,22,0.12); color:#090D16;">
+        <div style="background:#FFFFFF; border-radius:20px; padding:28px; box-shadow:0 20px 50px rgba(9,13,22,0.08); color:#090D16;">
           ${plateHeader("04", "02 · PASO 1 — ADN Y CÍRCULO DORADO", `El Círculo Dorado (WHY · HOW · WHAT) de ${escHtml(bName)}`)}
-          <div class="tbb-comm-grid-2" style="align-items:center;">
+          <div class="tbb-comm-grid-2" style="align-items:center; gap:28px;">
             <div>${window.tbbBuildCircularGoldenCircleSVG()}</div>
-            <div style="display:flex; flex-direction:column; gap:10px;">
-              <div style="background:#F0F7FF; border:1.5px solid #93C5FD; border-left:5px solid #0D2540; border-radius:12px; padding:12px;">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:800; color:#0D2540;">1. POR QUÉ EXISTIMOS (WHY · PROPÓSITO NUCLEAR)</div>
-                <div style="font-size:0.86rem; font-weight:700; color:#090D16; margin-top:3px;">${escHtml(st.whyPurpose)}</div>
+            <div style="display:flex; flex-direction:column; gap:20px;">
+              <div style="border-top:2px solid #0D2540; padding-top:12px;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#0D2540; letter-spacing:0.12em;">01 · POR QUÉ EXISTIMOS (WHY · PROPÓSITO NUCLEAR)</div>
+                <div style="font-size:1.02rem; font-weight:700; color:#090D16; margin-top:6px; line-height:1.55;">${escHtml(st.whyPurpose)}</div>
               </div>
-              <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-left:5px solid #1D4ED8; border-radius:12px; padding:12px;">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:800; color:#1D4ED8;">2. CÓMO LO HACEMOS ÚNICO (HOW · MÉTODO)</div>
-                <div style="font-size:0.86rem; font-weight:700; color:#090D16; margin-top:3px;">${escHtml(st.howMethod)}</div>
+              <div style="border-top:2px solid #1D4ED8; padding-top:12px;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#1D4ED8; letter-spacing:0.12em;">02 · CÓMO LO HACEMOS ÚNICO (HOW · MÉTODO)</div>
+                <div style="font-size:1.02rem; font-weight:700; color:#090D16; margin-top:6px; line-height:1.55;">${escHtml(st.howMethod)}</div>
               </div>
-              <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-left:5px solid #090D16; border-radius:12px; padding:12px;">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:800; color:#090D16;">3. QUÉ ENTREGAMOS (WHAT · OFERTA CONCRETA)</div>
-                <div style="font-size:0.86rem; font-weight:700; color:#090D16; margin-top:3px;">${escHtml(st.whatOffer)}</div>
+              <div style="border-top:2px solid #FF7A00; padding-top:12px;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#FF7A00; letter-spacing:0.12em;">03 · QUÉ ENTREGAMOS (WHAT · OFERTA CONCRETA)</div>
+                <div style="font-size:1.02rem; font-weight:700; color:#090D16; margin-top:6px; line-height:1.55;">${escHtml(st.whatOffer)}</div>
               </div>
             </div>
           </div>
@@ -1438,23 +1438,23 @@
 
     if (plateNum === 6) {
       return `
-        <div style="background:#FFFFFF; border:2px solid #CBD5E1; border-radius:20px; padding:24px; box-shadow:0 20px 50px rgba(9,13,22,0.12); color:#090D16;">
+        <div style="background:#FFFFFF; border-radius:20px; padding:28px; box-shadow:0 20px 50px rgba(9,13,22,0.08); color:#090D16;">
           ${plateHeader("06", "02 · PASO 1 — LA EMPRESA COMO PERSONA", `Arquetipo Humano, Voz y Personalidad de ${escHtml(bName)}`)}
-          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;">
-            <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-top:4px solid #1D4ED8; border-radius:14px; padding:16px;">
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:800; color:#1D4ED8;">01 · CARÁCTER Y PRESENCIA</div>
-              <h4 style="margin:6px 0; font-size:1rem; font-weight:900;">Fuerza Tranquila y Mente de Ingeniero</h4>
-              <p style="font-size:0.80rem; color:#334155; margin:0; line-height:1.5;">Escucha primero la idea del cliente y la estructura hombro a hombro sin imponer jerga innecesaria.</p>
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:26px;">
+            <div style="border-top:3px solid #1D4ED8; padding-top:14px;">
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#1D4ED8; letter-spacing:0.12em;">01 · CARÁCTER Y PRESENCIA</div>
+              <h4 style="margin:8px 0; font-size:1.12rem; font-weight:900;">Fuerza Tranquila y Mente de Ingeniero</h4>
+              <p style="font-size:0.95rem; color:#334155; margin:0; line-height:1.62;">Escucha primero la idea del cliente y la estructura hombro a hombro sin imponer jerga innecesaria.</p>
             </div>
-            <div style="background:#F0F7FF; border:1.5px solid #93C5FD; border-top:4px solid #0D2540; border-radius:14px; padding:16px;">
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:800; color:#0D2540;">02 · TONO DE COMUNICACIÓN</div>
-              <h4 style="margin:6px 0; font-size:1rem; font-weight:900;">Claridad Ejecutiva y Cero Ambigüedad</h4>
-              <p style="font-size:0.80rem; color:#334155; margin:0; line-height:1.5;">Frases directas, accionables y memorables que cualquier colaborador o cliente comprende en cinco segundos.</p>
+            <div style="border-top:3px solid #0D2540; padding-top:14px;">
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#0D2540; letter-spacing:0.12em;">02 · TONO DE COMUNICACIÓN</div>
+              <h4 style="margin:8px 0; font-size:1.12rem; font-weight:900;">Claridad Ejecutiva y Cero Ambigüedad</h4>
+              <p style="font-size:0.95rem; color:#334155; margin:0; line-height:1.62;">Frases directas, accionables y memorables que cualquier colaborador o cliente comprende en cinco segundos.</p>
             </div>
-            <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-top:4px solid #090D16; border-radius:14px; padding:16px;">
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:800; color:#090D16;">03 · REGLA DE DECISIÓN C-00</div>
-              <h4 style="margin:6px 0; font-size:1rem; font-weight:900;">Del Caos al Sistema</h4>
-              <p style="font-size:0.80rem; color:#334155; margin:0; line-height:1.5;">Toda pieza visual o comercial debe eliminar fricción operativa y liberar tiempo mental al líder.</p>
+            <div style="border-top:3px solid #FF7A00; padding-top:14px;">
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#FF7A00; letter-spacing:0.12em;">03 · REGLA DE DECISIÓN C-00</div>
+              <h4 style="margin:8px 0; font-size:1.12rem; font-weight:900;">Del Caos al Sistema</h4>
+              <p style="font-size:0.95rem; color:#334155; margin:0; line-height:1.62;">Toda pieza visual o comercial debe eliminar fricción operativa y liberar tiempo mental al líder.</p>
             </div>
           </div>
         </div>
@@ -1463,24 +1463,24 @@
 
     if (plateNum === 8) {
       return `
-        <div style="background:#FFFFFF; border:2px solid #CBD5E1; border-radius:20px; padding:24px; box-shadow:0 20px 50px rgba(9,13,22,0.12); color:#090D16;">
+        <div style="background:#FFFFFF; border-radius:20px; padding:28px; box-shadow:0 20px 50px rgba(9,13,22,0.08); color:#090D16;">
           ${plateHeader("08", "03 · PASO 2 — INGENIERÍA DE TOUCHPOINTS", `Mapa de Momentos de la Verdad (Antes · Durante · Después)`)}
-          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;">
-            <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-top:5px solid #1D4ED8; border-radius:14px; padding:16px;">
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#1D4ED8;">1. ANTES DE COMPRAR (${st.tpBefore.length})</div>
-              <ul style="margin:10px 0 0 0; padding-left:18px; font-size:0.82rem; font-weight:700; color:#090D16; line-height:1.65;">
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:26px;">
+            <div style="border-top:3px solid #1D4ED8; padding-top:14px;">
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#1D4ED8; letter-spacing:0.12em;">1. ANTES DE COMPRAR (${st.tpBefore.length})</div>
+              <ul style="margin:12px 0 0 0; padding-left:18px; font-size:0.95rem; font-weight:600; color:#090D16; line-height:1.7;">
                 ${st.tpBefore.map(item => `<li>${escHtml(item)}</li>`).join("")}
               </ul>
             </div>
-            <div style="background:#F0F7FF; border:1.5px solid #93C5FD; border-top:5px solid #0D2540; border-radius:14px; padding:16px;">
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#0D2540;">2. DURANTE LA COMPRA (${st.tpDuring.length})</div>
-              <ul style="margin:10px 0 0 0; padding-left:18px; font-size:0.82rem; font-weight:700; color:#090D16; line-height:1.65;">
+            <div style="border-top:3px solid #0D2540; padding-top:14px;">
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#0D2540; letter-spacing:0.12em;">2. DURANTE LA COMPRA (${st.tpDuring.length})</div>
+              <ul style="margin:12px 0 0 0; padding-left:18px; font-size:0.95rem; font-weight:600; color:#090D16; line-height:1.7;">
                 ${st.tpDuring.map(item => `<li>${escHtml(item)}</li>`).join("")}
               </ul>
             </div>
-            <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-top:5px solid #090D16; border-radius:14px; padding:16px;">
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#090D16;">3. DESPUÉS DE COMPRAR (${st.tpAfter.length})</div>
-              <ul style="margin:10px 0 0 0; padding-left:18px; font-size:0.82rem; font-weight:700; color:#090D16; line-height:1.65;">
+            <div style="border-top:3px solid #FF7A00; padding-top:14px;">
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:800; color:#FF7A00; letter-spacing:0.12em;">3. DESPUÉS DE COMPRAR (${st.tpAfter.length})</div>
+              <ul style="margin:12px 0 0 0; padding-left:18px; font-size:0.95rem; font-weight:600; color:#090D16; line-height:1.7;">
                 ${st.tpAfter.map(item => `<li>${escHtml(item)}</li>`).join("")}
               </ul>
             </div>
@@ -1491,34 +1491,34 @@
 
     if (plateNum === 14) {
       return `
-        <div style="background:#FFFFFF; border:2px solid #CBD5E1; border-radius:20px; padding:24px; box-shadow:0 20px 50px rgba(9,13,22,0.12); color:#090D16;">
+        <div style="background:#FFFFFF; border-radius:20px; padding:28px; box-shadow:0 20px 50px rgba(9,13,22,0.08); color:#090D16;">
           ${plateHeader("14", "05 · PASO 4 — SISTEMA DE IDENTIDAD MONOLÍTICA", `Concentración del 100% de Prestigio en Marca Única (Cero Submarcas)`)}
-          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;">
-            <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:18px; text-align:center;">
-              <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px;">
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:26px;">
+            <div style="border-top:3px solid #1D4ED8; padding-top:16px; text-align:center;">
+              <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:12px;">
                 ${window.tbbBuildOfficialBrandbook1EmblemSVG(52)}
                 <div style="text-align:left;">
-                  <div style="font-weight:900; font-size:1rem; color:#090D16;">${escHtml(bName)}</div>
-                  <div style="font-size:0.65rem; font-weight:800; color:#0D2540;">${escHtml(bTag)}</div>
+                  <div style="font-weight:900; font-size:1.05rem; color:#090D16;">${escHtml(bName)}</div>
+                  <div style="font-size:0.70rem; font-weight:800; color:#0D2540;">${escHtml(bTag)}</div>
                 </div>
               </div>
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:800; color:#1D4ED8;">01 · LOCKUP HORIZONTAL MAESTRO</div>
-              <p style="font-size:0.76rem; color:#475569; margin:4px 0 0 0;">Uso principal en cabeceras web, propuestas comerciales y firmas ejecutivas.</p>
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#1D4ED8; letter-spacing:0.1em;">01 · LOCKUP HORIZONTAL MAESTRO</div>
+              <p style="font-size:0.90rem; color:#475569; margin:6px 0 0 0; line-height:1.58;">Uso principal en cabeceras web, propuestas comerciales y firmas ejecutivas.</p>
             </div>
-            <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:18px; text-align:center;">
-              <div style="display:flex; flex-direction:column; align-items:center; margin-bottom:8px;">
+            <div style="border-top:3px solid #0D2540; padding-top:16px; text-align:center;">
+              <div style="display:flex; flex-direction:column; align-items:center; margin-bottom:10px;">
                 ${window.tbbBuildOfficialBrandbook1EmblemSVG(54)}
-                <div style="font-weight:900; font-size:0.92rem; color:#090D16; margin-top:4px;">${escHtml(bName)}</div>
+                <div style="font-weight:900; font-size:0.98rem; color:#090D16; margin-top:4px;">${escHtml(bName)}</div>
               </div>
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:800; color:#0D2540;">02 · TÓTEM VERTICAL CENTRAL</div>
-              <p style="font-size:0.76rem; color:#475569; margin:4px 0 0 0;">Uso en portadas editoriales, empaque de lujo y señalética arquitectónica.</p>
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#0D2540; letter-spacing:0.1em;">02 · TÓTEM VERTICAL CENTRAL</div>
+              <p style="font-size:0.90rem; color:#475569; margin:6px 0 0 0; line-height:1.58;">Uso en portadas editoriales, empaque de lujo y señalética arquitectónica.</p>
             </div>
-            <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:18px; text-align:center;">
-              <div style="display:flex; justify-content:center; margin-bottom:12px;">
+            <div style="border-top:3px solid #FF7A00; padding-top:16px; text-align:center;">
+              <div style="display:flex; justify-content:center; margin-bottom:14px;">
                 ${window.tbbBuildOfficialBrandbook1EmblemSVG(62)}
               </div>
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:800; color:#090D16;">03 · SÍMBOLO PURO APP ICON 1:1</div>
-              <p style="font-size:0.76rem; color:#475569; margin:4px 0 0 0;">Uso en ícono iOS/Android, avatar social, favicon y lacre de autenticidad.</p>
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#FF7A00; letter-spacing:0.1em;">03 · SÍMBOLO PURO APP ICON 1:1</div>
+              <p style="font-size:0.90rem; color:#475569; margin:6px 0 0 0; line-height:1.58;">Uso en ícono iOS/Android, avatar social, favicon y lacre de autenticidad.</p>
             </div>
           </div>
         </div>
@@ -1526,28 +1526,32 @@
     }
 
     return `
-      <div style="background:#FFFFFF; border:2px solid #CBD5E1; border-radius:20px; padding:24px; box-shadow:0 20px 50px rgba(9,13,22,0.12); color:#090D16;">
+      <div style="background:#FFFFFF; border-radius:20px; padding:28px; box-shadow:0 20px 50px rgba(9,13,22,0.08); color:#090D16;">
         ${plateHeader("20", "06 · PASO 6 — PAPELERÍA EJECUTIVA Y REGISTRO", `Especificación Técnica CMYK, Pantone y Vectores de Imprenta`)}
-        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;">
-          <div style="background:#090D16; color:#FFFFFF; border-radius:14px; padding:16px;">
-            <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; color:#93C5FD;">OBSIDIANA PROFUNDO</div>
-            <div style="font-size:1.15rem; font-weight:900; margin-top:4px;">#090D16</div>
-            <div style="font-size:0.70rem; color:#94A3B8; margin-top:4px;">CMYK 82 · 71 · 52 · 86<br/>Pantone Black 6 C</div>
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:18px;">
+          <div style="border-top:6px solid #090D16; padding-top:12px;">
+            <div style="width:100%; height:44px; border-radius:10px 24px 10px 10px; background:#090D16; margin-bottom:10px;"></div>
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#090D16;">OBSIDIANA PROFUNDO</div>
+            <div style="font-size:1.18rem; font-weight:900; margin-top:4px; color:#090D16;">#090D16</div>
+            <div style="font-size:0.82rem; color:#475569; margin-top:4px; line-height:1.5;">CMYK 82 · 71 · 52 · 86<br/>Pantone Black 6 C</div>
           </div>
-          <div style="background:#1D4ED8; color:#FFFFFF; border-radius:14px; padding:16px;">
-            <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; color:#DBEAFE;">ZAFIRO ESTRATÉGICO</div>
-            <div style="font-size:1.15rem; font-weight:900; margin-top:4px;">#1D4ED8</div>
-            <div style="font-size:0.70rem; color:#DBEAFE; margin-top:4px;">CMYK 88 · 68 · 0 · 0<br/>Pantone 2728 C</div>
+          <div style="border-top:6px solid #1D4ED8; padding-top:12px;">
+            <div style="width:100%; height:44px; border-radius:10px 24px 10px 10px; background:#1D4ED8; margin-bottom:10px;"></div>
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#1D4ED8;">ZAFIRO ESTRATÉGICO</div>
+            <div style="font-size:1.18rem; font-weight:900; margin-top:4px; color:#090D16;">#1D4ED8</div>
+            <div style="font-size:0.82rem; color:#475569; margin-top:4px; line-height:1.5;">CMYK 88 · 68 · 0 · 0<br/>Pantone 2728 C</div>
           </div>
-          <div style="background:#0D2540; color:#FFFFFF; border-radius:14px; padding:16px;">
-            <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; color:#F0F7FF;">ÁMBAR NÚCLEO AURA</div>
-            <div style="font-size:1.15rem; font-weight:900; margin-top:4px;">#0D2540</div>
-            <div style="font-size:0.70rem; color:#F0F7FF; margin-top:4px;">CMYK 0 · 62 · 95 · 0<br/>Pantone 1585 C</div>
+          <div style="border-top:6px solid #0D2540; padding-top:12px;">
+            <div style="width:100%; height:44px; border-radius:10px 24px 10px 10px; background:#0D2540; margin-bottom:10px;"></div>
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#0D2540;">AZUL PROFUNDO</div>
+            <div style="font-size:1.18rem; font-weight:900; margin-top:4px; color:#090D16;">#0D2540</div>
+            <div style="font-size:0.82rem; color:#475569; margin-top:4px; line-height:1.5;">CMYK 100 · 80 · 30 · 20<br/>Pantone 289 C</div>
           </div>
-          <div style="background:#F8FAFC; color:#090D16; border:2px solid #CBD5E1; border-radius:14px; padding:16px;">
-            <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; color:#0D2540;">LIENZO SUIZO OFICIAL</div>
-            <div style="font-size:1.15rem; font-weight:900; margin-top:4px;">#FFFFFF</div>
-            <div style="font-size:0.70rem; color:#475569; margin-top:4px;">Papel Cotton 300g<br/>Acabado Mate Natural</div>
+          <div style="border-top:6px solid #CBD5E1; padding-top:12px;">
+            <div style="width:100%; height:44px; border-radius:10px 24px 10px 10px; background:#FAF8F5; border:1px solid #E2E8F0; margin-bottom:10px;"></div>
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:800; color:#0D2540;">LIENZO SUIZO OFICIAL</div>
+            <div style="font-size:1.18rem; font-weight:900; margin-top:4px; color:#090D16;">#FFFFFF</div>
+            <div style="font-size:0.82rem; color:#475569; margin-top:4px; line-height:1.5;">Papel Cotton 300g<br/>Acabado Mate Natural</div>
           </div>
         </div>
       </div>
