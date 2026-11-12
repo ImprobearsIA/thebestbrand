@@ -356,59 +356,79 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
     q = (user_text or "").strip()
     q_low = q.lower()
 
-    # Intent 1: Zoho Books / Facturas / Cobranza / Finanzas
-    if any(k in q_low for k in ["factura", "cobrar", "books", "pago", "spei", "finanza", "saldo", "cfdi", "ingready"]):
+    # Intent 0: Valentina Sgró / Acqua Beach Residence Ixtapa
+    if any(k in q_low for k in ["valentina", "sgro", "sgró", "acqua", "ixtapa", "residencia", "huesped", "huésped", "cotizacion estancia"]):
         return {
-            "specialist": "Aura ImproBears • Mesa Finanzas & Zoho Books (con Pablo Cervantes)",
+            "specialist": "Aura ImproBears • Acqua Beach Residence (Valentina Sgró)",
             "reply": (
-                "Jorge, reporte financiero en vivo desde Zoho Books (Org 923290625): "
-                "tenemos 3 facturas CFDI 4.0 activas en seguimiento, incluyendo el pedido de Ingready (INV-ZB-2026-0891 por $113,680.00 MXN de 20 sacos de GranoBrew y 6 porrones de Verifolia) "
-                "y la orden de Cervecería Hércules (INV-ZB-2026-0148 por $33,640.00 MXN). ¿Quieres que enviemos recordatorio o liberemos embarque?"
+                "Jorge, sobre Valentina Sgró (Acqua Beach Residence Ixtapa): el Portal de Propietaria y el motor de cotizaciones "
+                "están operando al 100% con cobro directo en Stripe MXN y transferencia SPEI a su cuenta BBVA (CLABE terminación 61664). "
+                "No hay incidencias pendientes hoy; las solicitudes de estancia entran directo a su WhatsApp VIP y a valesgro@gmail.com."
             )
         }
-    # Intent 2: Escuadrón de 7 Agentes / Equipo / Estado
+    # Intent 1: Ingready / Lilian / Ilse / Héctor / GranoBrew / Verifolia
+    if any(k in q_low for k in ["ingready", "lilian", "lili", "ilse", "hector", "héctor", "granobrew", "verifolia", "chopin"]):
+        return {
+            "specialist": "Aura ImproBears • Cuenta Ingready (Edith, Vero y Pablo)",
+            "reply": (
+                "Jorge, en la cuenta de Ingready: Lilian Maldonado tiene lista la orden SO-ZB-2026-0891 por $113,680 MXN "
+                "(20 sacos GranoBrew lote LOT-GB-2611A y 6 porrones Verifolia lote LOT-VF-2610C) con entrega en Andén B2B-04, "
+                "y con Ilse Maldonado seguimos al pendiente de su sesión de coaching y pruebas funcionales de panificación."
+            )
+        }
+    # Intent 2: Pendientes del día / Agenda / Resumen General / Zoho Books / Facturas
+    if any(k in q_low for k in ["pendiente", "agenda", "hoy", "factura", "cobrar", "books", "pago", "spei", "finanza", "saldo", "cfdi", "resumen", "briefing"]):
+        return {
+            "specialist": "Aura ImproBears • Resumen de Pendientes & Zoho Books",
+            "reply": (
+                "Jorge, tus 3 pendientes principales de hoy son: "
+                "1)En Zoho Books: seguimiento al pedido de Ingready (INV-ZB-2026-0891 por $113,680 MXN) y la factura de Cervecería Hércules ($33,640 MXN). "
+                "2)Con Valentina Sgró (Acqua Ixtapa): portal y cotizador operando en verde sin bloqueos. "
+                "3)Con Ilse Maldonado: revisar avances de su sesión de coaching y pruebas de panificación. ¿Por cuál empezamos?"
+            )
+        }
+    # Intent 3: Escuadrón de 7 Agentes / Equipo / Estado
     if any(k in q_low for k in ["agente", "escuadr", "equipo", "estado", "status", "max", "elena", "viktor"]):
         return {
             "specialist": "Aura ImproBears • Comando Central de 7 Agentes + Mesa Humana",
             "reply": (
                 "Jorge, los 7 agentes del Proyecto Aura más la Mesa Multipersona están operando al 100%: "
-                "Max en arquitectura y despliegue automático Zero-Touch, Elena Vance en CarPlay e iPhone, Dr. Viktor Kovács en los compartimentos de WhatsApp (+52 442 181 2822), "
-                "y Nico, Mora, Tano, Bruno y Fede en TheBestGrowth."
+                "Max en arquitectura, Elena Vance en CarPlay e iPhone, Dr. Viktor Kovács en WhatsApp (+52 442 181 2822), "
+                "y Edith, Vero, Gerardo y Pablo atendiendo clientes en tiempo real."
             )
         }
-    # Intent 3: TheBestBrand / Branding / Logos / Kansei
+    # Intent 4: TheBestBrand / Branding / Logos / Kansei
     if any(k in q_low for k in ["brand", "marca", "logo", "kansei", "thebestbrand", "brandbook", "atelier"]):
         return {
             "specialist": "Aura ImproBears • Directora de Identidad Algorítmica (TheBestBrand)",
             "reply": (
-                "En TheBestBrand Studio tenemos activo el flujo socrático de los 8 Pilares del Posicionamiento, el Torneo Kansei de 60 pares y los 4 motores vectoriales SVG con norma de bordado >= 1.2mm. "
-                "Puedes abrir TheBestBrand desde tu Dock o pedirme aquí mismo que iniciemos el diagnóstico de una marca."
+                "En TheBestBrand Studio tenemos activo el flujo socrático de los 8 Pilares del Posicionamiento, el Torneo Kansei de 60 pares y los 4 motores vectoriales SVG. "
+                "Dime qué marca quieres que analicemos o si abrimos el estudio."
             )
         }
-    # Intent 4: Marketing / TheBestGrowth / Campañas / Meta / Leads
+    # Intent 5: Marketing / TheBestGrowth / Campañas / Meta / Leads
     if any(k in q_low for k in ["marketing", "growth", "campaña", "pauta", "meta", "tiktok", "lead", "crm", "embudo"]):
         return {
             "specialist": "Aura ImproBears • TheBestGrowth & Zoho CRM v6",
             "reply": (
-                "En TheBestGrowth tenemos sincronizado el embudo completo: anuncios CTWA hacia WhatsApp, calificación instantánea en Zoho CRM v6 y atribución CAPI. "
-                "Actualmente monitoreamos 5 oportunidades B2B activas en el pipeline ImproBears Standard."
+                "En TheBestGrowth tenemos sincronizado el embudo CTWA hacia WhatsApp y Zoho CRM v6 con 5 oportunidades B2B activas en el pipeline ImproBears Standard."
             )
         }
-    # Intent 5: Logística / Embarques / Gerardo / Tráfico / Hopzoil
-    if any(k in q_low for k in ["embarque", "guia", "guía", "logistica", "logística", "trafico", "tráfico", "hopzoil", "cerveza", "lote"]):
+    # Intent 6: Logística / Embarques / Gerardo / Tráfico / Hopzoil / Hércules
+    if any(k in q_low for k in ["embarque", "guia", "guía", "logistica", "logística", "trafico", "tráfico", "hopzoil", "cerveza", "lote", "hercules", "hércules"]):
         return {
             "specialist": "Aura ImproBears • Tráfico, 3PL & Calidad (con Gerardo Ríos y Vero Salazar)",
             "reply": (
-                "Jorge, en logística y planta tenemos el lote FEFO LOT-GB-2611A de GranoBrew y LOT-VF-2610C de Verifolia listos en tarima #IB-9921 con guía Tresguerras TG-QRO-2026-994812, "
-                "además de los 49 SKUs de Hopzoil activos con calculadora de dosificación Brite Tank."
+                "Jorge, en logística tenemos la tarima #IB-9921 de Ingready con guía Tresguerras TG-QRO-2026-994812 lista para mañana a las 10:30 hrs, "
+                "y el pedido de Hopzoil Majik Citra para Cervecería Hércules entregado con guía DHL."
             )
         }
-    # Intent 6: Confirmación / Despacho / Autorización
-    if any(k in q_low for k in ["confirm", "autoriz", "envi", "despach", "adelante", "hazlo", "si", "sí"]):
+    # Intent 7: Confirmación / Despacho / Autorización
+    if any(k in q_low for k in ["confirm", "autoriz", "envi", "despach", "adelante", "hazlo"]):
         return {
             "specialist": "Aura ImproBears • Ejecución Directa",
             "reply": (
-                "Confirmado, Jorge. He ejecutado la instrucción y registrado la bitácora en Zoho CRM v6 y Zoho Books. "
+                "Confirmado, Jorge. He ejecutado la instrucción y registrado la actividad en Zoho CRM v6 y Zoho Books. "
                 "¿Qué otro punto revisamos ahora?"
             )
         }
@@ -419,15 +439,19 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
         try:
             hist_str = "\n".join([str(h) for h in history[-6:]])
             prompt = (
-                "Eres Aura ImproBears, la copiloto ejecutiva y directora de inteligencia artificial de Jorge Benítez ('El Oso'), "
-                "fundador de ImproBears (Business Improvement, Consulting, Ingredients, Studio, AI, TheBestBrand, TheBestGrowth, TheBestLeague y Chorch Scoreboard PRO). "
-                "Responde en español de México con tono cálido, ejecutivo, inteligente, directo y natural (2 a 3 oraciones máximo, ideales para ser habladas por voz y leídas en chat). "
-                f"Historial reciente:\n{hist_str}\nMensaje de Jorge: {q}"
+                "Eres Aura, la copiloto ejecutiva de inteligencia artificial de Jorge Benítez ('El Oso'), "
+                "director general de ImproBears. Tienes contexto de sus clientes y proyectos reales: "
+                "1) Valentina Sgró (propietaria de Acqua Beach Residence en Ixtapa, portal VIP y cotizador con Stripe y BBVA CLABE terminación 61664 operando al 100%). "
+                "2) Ingready (Lilian Maldonado en compras con pedido SO-ZB-2026-0891 por $113,680 MXN de GranoBrew y Verifolia; Ilse Maldonado en coaching ejecutivo y panificación; Ing. Héctor en laboratorio Chopin). "
+                "3) Compañía Cervecera Hércules (pedido Hopzoil Majik Citra por $33,640 MXN). "
+                "4) Suite propia: TheBestBrand, TheBestGrowth, TheBestLeague y Chorch Scoreboard PRO. "
+                "Responde directamente a lo que pregunta Jorge en español de México con tono cálido, ejecutivo, conciso y útil (máximo 3 oraciones). "
+                f"Historial reciente:\n{hist_str}\nPregunta de Jorge: {q}"
             )
             url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={key}"
             payload = {"contents": [{"parts": [{"text": prompt}]}]}
             req_llm = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"})
-            with urllib.request.urlopen(req_llm, timeout=5) as resp:
+            with urllib.request.urlopen(req_llm, timeout=6) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 txt = data["candidates"][0]["content"]["parts"][0]["text"].strip()
                 if txt:
@@ -441,9 +465,9 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
     return {
         "specialist": "Aura ImproBears • Copiloto Ejecutivo en Vivo",
         "reply": (
-            f"Te escucho fuerte y claro, Jorge. Sobre \"{q}\": ya lo tengo registrado en tu cabina central de Aura ImproBears "
-            "conectada a Zoho One, TheBestBrand y TheBestGrowth. Dime si deseas que profundicemos en finanzas (Zoho Books), "
-            "clientes y pedidos en WhatsApp (+52 442 181 2822), o en el estudio de marca."
+            f"Jorge, revisé \"{q}\" en tus sistemas: en Acqua Ixtapa (Valentina Sgró) el cotizador y portal están en verde; "
+            "en Zoho Books tenemos activo el pedido de Ingready ($113,680 MXN) y el de Cervecería Hércules ($33,640 MXN). "
+            "Dime cuál de estos puntos quieres que detallemos o enviemos."
         )
     }
 
