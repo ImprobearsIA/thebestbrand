@@ -247,6 +247,29 @@ bootstrap_github_secrets() {
   fi
 }
 
+ensure_macos_dock_suite() {
+  # Instala automáticamente una vez los 3 accesos directos en el Dock de la Mac:
+  # TheBestBrand, TheBestGrowth (Automatización de Marketing) y Aura
+  [ "$(uname -s)" = "Darwin" ] || return 0
+  local marker="${STATE_DIR}/.dock_suite_installed_v1"
+  [ -f "${marker}" ] && return 0
+
+  local dock_script=""
+  for cand in \
+    "$(cd "$(dirname "$0")" && pwd)/install_macos_dock_suite.sh" \
+    "/Users/oso/Proyectos_ImproBears_SSD/ImproBears-Web/.agents/plugins/improbears-cloud-suite/scripts/install_macos_dock_suite.sh"; do
+    if [ -x "${cand}" ]; then
+      dock_script="${cand}"
+      break
+    fi
+  done
+
+  if [ -n "${dock_script}" ]; then
+    log_msg "🖥️ Instalando accesos directos en el Dock de macOS (TheBestBrand, TheBestGrowth, Aura)..."
+    "${dock_script}" >> "${LOG_FILE}" 2>&1 && touch "${marker}" || true
+  fi
+}
+
 show_status() {
   echo "=============================================================================="
   echo "🛡️  IMPROBEARS ZERO-TOUCH GUARDIAN — ESTADO ACTUAL"
@@ -266,11 +289,17 @@ case "${1:---sync-once}" in
   --install-daemon)
     install_macos_launch_agent
     bootstrap_github_secrets
+    ensure_macos_dock_suite
     sync_all_repos_once
     ;;
   --sync-once)
     bootstrap_github_secrets
+    ensure_macos_dock_suite
     sync_all_repos_once
+    ;;
+  --install-dock)
+    rm -f "${STATE_DIR}/.dock_suite_installed_v1"
+    ensure_macos_dock_suite
     ;;
   --bootstrap-ci)
     rm -f "${STATE_DIR}/.gh_secrets_bootstrapped_v1"
@@ -280,7 +309,7 @@ case "${1:---sync-once}" in
     show_status
     ;;
   *)
-    echo "Uso: $0 [--sync-once | --install-daemon | --bootstrap-ci | --status]"
+    echo "Uso: $0 [--sync-once | --install-daemon | --install-dock | --bootstrap-ci | --status]"
     exit 1
     ;;
 esac
