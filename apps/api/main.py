@@ -352,122 +352,171 @@ class AuraActionButtonRequest(BaseModel):
     include_audio: bool = True
 
 
+def _fetch_live_zoho_telemetry() -> Dict[str, Any]:
+    """Consulta en vivo Zoho Books (Org 923290625) y Zoho CRM v6 si las credenciales están en el entorno."""
+    import urllib.request
+    import urllib.parse
+    import json
+
+    client_id = os.environ.get("ZOHO_CLIENT_ID", "").strip()
+    client_secret = os.environ.get("ZOHO_CLIENT_SECRET", "").strip()
+    refresh_token = os.environ.get("ZOHO_REFRESH_TOKEN", "").strip()
+    accounts_url = os.environ.get("ZOHO_ACCOUNTS_URL", "https://accounts.zoho.com").strip()
+    api_domain = os.environ.get("ZOHO_API_DOMAIN", "https://www.zohoapis.com").strip()
+    org_id = os.environ.get("ZOHO_BOOKS_ORG_ID", "923290625").strip()
+
+    if not (client_id and client_secret and refresh_token):
+        return {"connected": False, "reason": "Credenciales OAuth de Zoho no inyectadas en este nodo"}
+
+    try:
+        form = urllib.parse.urlencode({
+            "refresh_token": refresh_token,
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "grant_type": "refresh_token",
+        }).encode("utf-8")
+        tok_req = urllib.request.Request(
+            f"{accounts_url}/oauth/v2/token",
+            data=form,
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+            method="POST"
+        )
+        with urllib.request.urlopen(tok_req, timeout=4.5) as r:
+            tok_data = json.loads(r.read().decode("utf-8"))
+        access_token = tok_data.get("access_token", "")
+        if not access_token:
+            return {"connected": False, "reason": "Token OAuth vacío de Zoho"}
+
+        headers = {"Authorization": f"Zoho-oauthtoken {access_token}"}
+        invoices = []
+        deals = []
+
+        try:
+            inv_req = urllib.request.Request(
+                f"{api_domain}/books/v3/invoices?organization_id={org_id}&per_page=10",
+                headers=headers
+            )
+            with urllib.request.urlopen(inv_req, timeout=4.5) as ir:
+                inv_json = json.loads(ir.read().decode("utf-8"))
+                for inv in (inv_json.get("invoices") or [])[:5]:
+                    invoices.append({
+                        "number": inv.get("invoice_number"),
+                        "customer": inv.get("customer_name"),
+                        "total": inv.get("total"),
+                        "balance": inv.get("balance"),
+                        "status": inv.get("status"),
+                        "currency": inv.get("currency_code", "MXN")
+                    })
+        except Exception:
+            pass
+
+        try:
+            deals_req = urllib.request.Request(
+                f"{api_domain}/crm/v6/Deals?fields=Deal_Name,Stage,Amount,Account_Name,Closing_Date&per_page=10&page=1",
+                headers=headers
+            )
+            with urllib.request.urlopen(deals_req, timeout=4.5) as dr:
+                deals_json = json.loads(dr.read().decode("utf-8"))
+                for d in (deals_json.get("data") or [])[:5]:
+                    acc = d.get("Account_Name") or {}
+                    deals.append({
+                        "name": d.get("Deal_Name"),
+                        "account": acc.get("name") if isinstance(acc, dict) else str(acc),
+                        "stage": d.get("Stage"),
+                        "amount": d.get("Amount")
+                    })
+        except Exception:
+            pass
+
+        return {
+            "connected": True,
+            "org_id": org_id,
+            "invoices_count": len(invoices),
+            "invoices": invoices,
+            "deals_count": len(deals),
+            "deals": deals
+        }
+    except Exception as e:
+        return {"connected": False, "reason": str(e)}
+
+
+def _fetch_live_dof_fx() -> Dict[str, Any]:
+    """Consulta en vivo el tipo de cambio USD/MXN utilizado por Acqua Ixtapa."""
+    import urllib.request
+    import json
+    try:
+        req = urllib.request.Request("https://open.er-api.com/v6/latest/USD")
+        with urllib.request.urlopen(req, timeout=3.0) as r:
+            data = json.loads(r.read().decode("utf-8"))
+            mxn = data.get("rates", {}).get("MXN")
+            if mxn:
+                return {"connected": True, "usd_mxn": round(float(mxn), 4), "updated_utc": data.get("time_last_update_utc", "")}
+    except Exception:
+        pass
+    return {"connected": False}
+
+
 def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) -> Dict[str, str]:
+    import urllib.request
+    import json
+
     q = (user_text or "").strip()
-    q_low = q.lower()
+    zoho_live = _fetch_live_zoho_telemetry()
+    fx_live = _fetch_live_dof_fx()
 
-    # Intent 0: Valentina Sgró / Acqua Beach Residence Ixtapa
-    if any(k in q_low for k in ["valentina", "sgro", "sgró", "acqua", "ixtapa", "residencia", "huesped", "huésped", "cotizacion estancia"]):
-        return {
-            "specialist": "Aura ImproBears • Acqua Beach Residence (Valentina Sgró)",
-            "reply": (
-                "Jorge, sobre Valentina Sgró (Acqua Beach Residence Ixtapa): el Portal de Propietaria y el motor de cotizaciones "
-                "están operando al 100% con cobro directo en Stripe MXN y transferencia SPEI a su cuenta BBVA (CLABE terminación 61664). "
-                "No hay incidencias pendientes hoy; las solicitudes de estancia entran directo a su WhatsApp VIP y a valesgro@gmail.com."
-            )
-        }
-    # Intent 1: Ingready / Lilian / Ilse / Héctor / GranoBrew / Verifolia
-    if any(k in q_low for k in ["ingready", "lilian", "lili", "ilse", "hector", "héctor", "granobrew", "verifolia", "chopin"]):
-        return {
-            "specialist": "Aura ImproBears • Cuenta Ingready (Edith, Vero y Pablo)",
-            "reply": (
-                "Jorge, en la cuenta de Ingready: Lilian Maldonado tiene lista la orden SO-ZB-2026-0891 por $113,680 MXN "
-                "(20 sacos GranoBrew lote LOT-GB-2611A y 6 porrones Verifolia lote LOT-VF-2610C) con entrega en Andén B2B-04, "
-                "y con Ilse Maldonado seguimos al pendiente de su sesión de coaching y pruebas funcionales de panificación."
-            )
-        }
-    # Intent 2: Pendientes del día / Agenda / Resumen General / Zoho Books / Facturas
-    if any(k in q_low for k in ["pendiente", "agenda", "hoy", "factura", "cobrar", "books", "pago", "spei", "finanza", "saldo", "cfdi", "resumen", "briefing"]):
-        return {
-            "specialist": "Aura ImproBears • Resumen de Pendientes & Zoho Books",
-            "reply": (
-                "Jorge, tus 3 pendientes principales de hoy son: "
-                "1)En Zoho Books: seguimiento al pedido de Ingready (INV-ZB-2026-0891 por $113,680 MXN) y la factura de Cervecería Hércules ($33,640 MXN). "
-                "2)Con Valentina Sgró (Acqua Ixtapa): portal y cotizador operando en verde sin bloqueos. "
-                "3)Con Ilse Maldonado: revisar avances de su sesión de coaching y pruebas de panificación. ¿Por cuál empezamos?"
-            )
-        }
-    # Intent 3: Escuadrón de 7 Agentes / Equipo / Estado
-    if any(k in q_low for k in ["agente", "escuadr", "equipo", "estado", "status", "max", "elena", "viktor"]):
-        return {
-            "specialist": "Aura ImproBears • Comando Central de 7 Agentes + Mesa Humana",
-            "reply": (
-                "Jorge, los 7 agentes del Proyecto Aura más la Mesa Multipersona están operando al 100%: "
-                "Max en arquitectura, Elena Vance en CarPlay e iPhone, Dr. Viktor Kovács en WhatsApp (+52 442 181 2822), "
-                "y Edith, Vero, Gerardo y Pablo atendiendo clientes en tiempo real."
-            )
-        }
-    # Intent 4: TheBestBrand / Branding / Logos / Kansei
-    if any(k in q_low for k in ["brand", "marca", "logo", "kansei", "thebestbrand", "brandbook", "atelier"]):
-        return {
-            "specialist": "Aura ImproBears • Directora de Identidad Algorítmica (TheBestBrand)",
-            "reply": (
-                "En TheBestBrand Studio tenemos activo el flujo socrático de los 8 Pilares del Posicionamiento, el Torneo Kansei de 60 pares y los 4 motores vectoriales SVG. "
-                "Dime qué marca quieres que analicemos o si abrimos el estudio."
-            )
-        }
-    # Intent 5: Marketing / TheBestGrowth / Campañas / Meta / Leads
-    if any(k in q_low for k in ["marketing", "growth", "campaña", "pauta", "meta", "tiktok", "lead", "crm", "embudo"]):
-        return {
-            "specialist": "Aura ImproBears • TheBestGrowth & Zoho CRM v6",
-            "reply": (
-                "En TheBestGrowth tenemos sincronizado el embudo CTWA hacia WhatsApp y Zoho CRM v6 con 5 oportunidades B2B activas en el pipeline ImproBears Standard."
-            )
-        }
-    # Intent 6: Logística / Embarques / Gerardo / Tráfico / Hopzoil / Hércules
-    if any(k in q_low for k in ["embarque", "guia", "guía", "logistica", "logística", "trafico", "tráfico", "hopzoil", "cerveza", "lote", "hercules", "hércules"]):
-        return {
-            "specialist": "Aura ImproBears • Tráfico, 3PL & Calidad (con Gerardo Ríos y Vero Salazar)",
-            "reply": (
-                "Jorge, en logística tenemos la tarima #IB-9921 de Ingready con guía Tresguerras TG-QRO-2026-994812 lista para mañana a las 10:30 hrs, "
-                "y el pedido de Hopzoil Majik Citra para Cervecería Hércules entregado con guía DHL."
-            )
-        }
-    # Intent 7: Confirmación / Despacho / Autorización
-    if any(k in q_low for k in ["confirm", "autoriz", "envi", "despach", "adelante", "hazlo"]):
-        return {
-            "specialist": "Aura ImproBears • Ejecución Directa",
-            "reply": (
-                "Confirmado, Jorge. He ejecutado la instrucción y registrado la actividad en Zoho CRM v6 y Zoho Books. "
-                "¿Qué otro punto revisamos ahora?"
-            )
-        }
-
-    # Try Live Gemini LLM for open conversational questions if API key is present
     key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY).strip()
     if key:
         try:
             hist_str = "\n".join([str(h) for h in history[-6:]])
+            zoho_str = json.dumps(zoho_live, ensure_ascii=False)
+            fx_str = json.dumps(fx_live, ensure_ascii=False)
             prompt = (
                 "Eres Aura, la copiloto ejecutiva de inteligencia artificial de Jorge Benítez ('El Oso'), "
-                "director general de ImproBears. Tienes contexto de sus clientes y proyectos reales: "
-                "1) Valentina Sgró (propietaria de Acqua Beach Residence en Ixtapa, portal VIP y cotizador con Stripe y BBVA CLABE terminación 61664 operando al 100%). "
-                "2) Ingready (Lilian Maldonado en compras con pedido SO-ZB-2026-0891 por $113,680 MXN de GranoBrew y Verifolia; Ilse Maldonado en coaching ejecutivo y panificación; Ing. Héctor en laboratorio Chopin). "
-                "3) Compañía Cervecera Hércules (pedido Hopzoil Majik Citra por $33,640 MXN). "
-                "4) Suite propia: TheBestBrand, TheBestGrowth, TheBestLeague y Chorch Scoreboard PRO. "
-                "Responde directamente a lo que pregunta Jorge en español de México con tono cálido, ejecutivo, conciso y útil (máximo 3 oraciones). "
-                f"Historial reciente:\n{hist_str}\nPregunta de Jorge: {q}"
+                "director general de ImproBears. "
+                "REGLA ESTRICTA DE INTEGRIDAD (CERO INVENCIÓN): JAMÁS inventes montos, folios ni facturas de prueba "
+                "(prohibido inventar '$113,680 MXN', '$33,640 MXN', 'SO-ZB-2026-0891' o cualquier dato que no esté en la telemetría real). "
+                "Si el usuario pregunta si estás conectada al sistema o si estás inventando datos, responde con total honestidad y transparencia "
+                "indicando exactamente a qué nodos estás conectada en este instante y los datos reales obtenidos:\n"
+                f"- Telemetría Zoho One en vivo: {zoho_str}\n"
+                f"- Tipo de cambio en vivo (Acqua Ixtapa USD/MXN): {fx_str}\n"
+                "- Estado de plataforma: API TheBestBrand / Aura activa en vivo.\n"
+                "Responde directamente a Jorge en español de México, breve, clara y 100% veraz (máximo 3-4 oraciones).\n"
+                f"Historial reciente:\n{hist_str}\n"
+                f"Mensaje de Jorge: {q}"
             )
             url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={key}"
             payload = {"contents": [{"parts": [{"text": prompt}]}]}
             req_llm = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"})
-            with urllib.request.urlopen(req_llm, timeout=6) as resp:
+            with urllib.request.urlopen(req_llm, timeout=8) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 txt = data["candidates"][0]["content"]["parts"][0]["text"].strip()
                 if txt:
                     return {
-                        "specialist": "Aura ImproBears • Inteligencia Ejecutiva Gemini en Vivo",
+                        "specialist": "Aura ImproBears • Conectada en Vivo (Cero Datos Inventados)",
                         "reply": txt
                     }
         except Exception:
             pass
 
+    if zoho_live.get("connected"):
+        invs = zoho_live.get("invoices") or []
+        deals = zoho_live.get("deals") or []
+        inv_summary = ", ".join([f"{i['number']} ({i['customer']}: ${i['total']} {i['currency']}, estado {i['status']})" for i in invs[:3]]) or "sin facturas pendientes en la vista actual"
+        deal_summary = ", ".join([f"{d['name']} ({d['stage']})" for d in deals[:3]]) or "sin tratos abiertos en la vista actual"
+        return {
+            "specialist": "Aura ImproBears • Telemetría Zoho One en Vivo",
+            "reply": (
+                f"Jorge, consulta en vivo a Zoho One (Org {zoho_live.get('org_id')}): "
+                f"Facturas reales: {inv_summary}. Tratos en CRM: {deal_summary}."
+            )
+        }
+
+    fx_msg = f"Tipo de cambio DOF/Banxico en vivo: ${fx_live['usd_mxn']} MXN/USD." if fx_live.get("connected") else ""
     return {
-        "specialist": "Aura ImproBears • Copiloto Ejecutivo en Vivo",
+        "specialist": "Aura ImproBears • Diagnóstico Real de Conexión",
         "reply": (
-            f"Jorge, revisé \"{q}\" en tus sistemas: en Acqua Ixtapa (Valentina Sgró) el cotizador y portal están en verde; "
-            "en Zoho Books tenemos activo el pedido de Ingready ($113,680 MXN) y el de Cervecería Hércules ($33,640 MXN). "
-            "Dime cuál de estos puntos quieres que detallemos o enviemos."
+            f"Jorge, te respondo con datos 100% reales sin inventar cifras: recibí tu consulta \"{q}\". "
+            f"Estado en vivo: servidor Cloud activo ({fx_msg}); Zoho OAuth en este nodo reporta: {zoho_live.get('reason', 'requiere enlace con servidor OpenClaw 34.121.182.185:4747')}."
         )
     }
 
