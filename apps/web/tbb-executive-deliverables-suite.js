@@ -279,8 +279,39 @@
     return [points[0], points[end]];
   }
 
-  // Convierte polígono cerrado simplificado en curvas Bézier cúbicas suaves (preservando esquinas agudas < 115°)
-  function closedLoopToBezierPath(pts, scaleFactor, offsetX, offsetY) {
+  // Suavizado iterativo de Chaikin (Corner-Cutting) que preserva esquinas agudas (< 115°) y convierte escalones de píxeles en curvas continuas
+  function chaikinSmoothLoop(pts, iterations = 2) {
+    let current = pts.slice();
+    for (let it = 0; it < iterations; it++) {
+      const n = current.length;
+      if (n < 4) break;
+      const next = [];
+      for (let i = 0; i < n; i++) {
+        const p0 = current[(i - 1 + n) % n];
+        const p1 = current[i];
+        const p2 = current[(i + 1) % n];
+        const v1x = p0[0] - p1[0], v1y = p0[1] - p1[1];
+        const v2x = p2[0] - p1[0], v2y = p2[1] - p1[1];
+        const l1 = Math.hypot(v1x, v1y) || 1;
+        const l2 = Math.hypot(v2x, v2y) || 1;
+        const cosA = (v1x * v2x + v1y * v2y) / (l1 * l2);
+        // Si es una esquina geométrica pronunciada y los brazos son largos (> 5px), preservar el vértice exacto
+        if (cosA > -0.25 && l1 > 5 && l2 > 5) {
+          next.push([p1[0], p1[1]]);
+        } else {
+          next.push([0.75 * p1[0] + 0.25 * p2[0], 0.75 * p1[1] + 0.25 * p2[1]]);
+          next.push([0.25 * p1[0] + 0.75 * p2[0], 0.25 * p1[1] + 0.75 * p2[1]]);
+        }
+      }
+      current = next;
+    }
+    return current;
+  }
+
+  // Convierte polígono cerrado suavizado en splines Bézier cúbicas continuas (Catmull-Rom) sin escalones dentados
+  function closedLoopToBezierPath(rawPts, scaleFactor, offsetX, offsetY) {
+    if (!rawPts || rawPts.length < 3) return "";
+    const pts = rawPts.length >= 5 ? chaikinSmoothLoop(rawPts, 2) : rawPts;
     const n = pts.length;
     if (n < 3) return "";
     const tx = (x) => (x * scaleFactor + offsetX).toFixed(2);
@@ -300,11 +331,10 @@
       const cosAng = (v1x * v2x + v1y * v2y) / (len1 * len2);
       const segLen = Math.hypot(p2[0] - p1[0], p2[1] - p1[1]);
 
-      // Si es un tramo largo recto o esquina geométrica marcada, usar línea exacta L; si es curva suave, usar Bézier cúbica C
-      if (segLen > 14 || cosAng > -0.35) {
+      if (segLen > 24 && cosAng > -0.25) {
         d += ` L ${tx(p2[0])} ${ty(p2[1])}`;
       } else {
-        const tension = 0.22;
+        const tension = 0.20;
         const cp1x = p1[0] + (p2[0] - p0[0]) * tension;
         const cp1y = p1[1] + (p2[1] - p0[1]) * tension;
         const cp2x = p2[0] - (p3[0] - p1[0]) * tension;
@@ -316,7 +346,7 @@
   }
 
   // Extrae todos los contornos cerrados (exteriores e interiores) de una máscara binaria WxH mediante aristas dirigidas exactas
-  function traceBinaryMaskToLoops(mask, w, h) {
+  function traceBinaryMaskToLoops(mask, w, h, rdpTol = 1.05) {
     const nextEdgeMap = new Map();
     const keyOf = (x, y) => (y * (w + 2) + x);
 
@@ -349,7 +379,7 @@
         const loop = [[sx, sy]];
         let cx = firstNext[0], cy = firstNext[1];
         let guard = 0;
-        while ((cx !== sx || cy !== sy) && guard < 30000) {
+        while ((cx !== sx || cy !== sy) && guard < 45000) {
           guard++;
           loop.push([cx, cy]);
           const ck = keyOf(cx, cy);
@@ -359,8 +389,7 @@
           cx = nxt[0];
           cy = nxt[1];
         }
-        if (loop.length >= 4) {
-          // Eliminar puntos colineales intermedios antes de RDP
+        if (loop.length >= 6) {
           const compact = [];
           for (let i = 0; i < loop.length; i++) {
             const prev = loop[(i - 1 + loop.length) % loop.length];
@@ -371,8 +400,8 @@
           }
           if (compact.length >= 3) {
             const halfLen = Math.floor(compact.length / 2);
-            const s1 = rdpSimplify(compact.slice(0, halfLen + 1), 0.72);
-            const s2 = rdpSimplify(compact.slice(halfLen).concat([compact[0]]), 0.72);
+            const s1 = rdpSimplify(compact.slice(0, halfLen + 1), rdpTol);
+            const s2 = rdpSimplify(compact.slice(halfLen).concat([compact[0]]), rdpTol);
             const merged = s1.slice(0, s1.length - 1).concat(s2.slice(0, s2.length - 1));
             if (merged.length >= 3) loops.push(merged);
           }
@@ -382,7 +411,113 @@
     return loops;
   }
 
-  async function tbbVectorizeRasterLogoToSvgCurves(rawDataUrl, maxColors = 5) {
+  // ==========================================================================
+  // 2A-BIS. CONSTRUCTOR VECTORIAL PARAMÉTRICO DE ALTA PRECISIÓN CON TRANSPARENCIAS REALES
+  // (Apple Liquid Glass / Roseta Radial 12 Pétalos + Lentes Translúcidas /ca & fill-opacity)
+  // ==========================================================================
+  function buildParametricLiquidGlassVectorCore(brandColors) {
+    const pri = cleanHex6((brandColors && brandColors.pri) || "#0D2540", "0D2540");
+    const sec = cleanHex6((brandColors && brandColors.sec) || "#426EAE", "426EAE");
+    const acc = cleanHex6((brandColors && brandColors.acc) || "#FF7A00", "FF7A00");
+
+    // Construye un pétalo simétrico perfecto en curvas Bézier cúbicas rotado a `angleDeg` alrededor de (100, 100)
+    const buildRotatedPetalPath = (angleDeg, rInner, rTip, halfWidthCtrl1, halfWidthCtrl2, ctrl1Radius, ctrl2Radius) => {
+      const rad = (angleDeg * Math.PI) / 180;
+      const cos = Math.cos(rad);
+      const sin = Math.sin(rad);
+      // En coordenadas locales del pétalo: eje principal hacia arriba (0, -r) desde el centro (100, 100)
+      const rotPt = (lx, ly) => {
+        const gx = 100 + lx * cos - ly * sin;
+        const gy = 100 + lx * sin + ly * cos;
+        return `${gx.toFixed(2)} ${gy.toFixed(2)}`;
+      };
+      return [
+        `M ${rotPt(0, -rInner)}`,
+        `C ${rotPt(-halfWidthCtrl1, -ctrl1Radius)}, ${rotPt(-halfWidthCtrl2, -ctrl2Radius)}, ${rotPt(0, -rTip)}`,
+        `C ${rotPt(halfWidthCtrl2, -ctrl2Radius)}, ${rotPt(halfWidthCtrl1, -ctrl1Radius)}, ${rotPt(0, -rInner)}`,
+        "Z"
+      ].join(" ");
+    };
+
+    const layers = [];
+
+    // 1. Sombra de contacto exterior sutil (transparencia real fill-opacity="0.10")
+    layers.push(`<circle cx="100" cy="102" r="87" fill="#090D16" fill-opacity="0.10"/>`);
+
+    // 2. Anillo perimetral Apple Liquid Glass en Naranja Acción (#FF7A00) + bisel cálido interior
+    layers.push(`<circle cx="100" cy="100" r="86" fill="#${acc}"/>`);
+    layers.push(`<circle cx="100" cy="100" r="84.2" fill="none" stroke="#FFF7ED" stroke-width="1.2" stroke-opacity="0.55"/>`);
+    layers.push(`<circle cx="100" cy="100" r="81.2" fill="#EA580C" fill-opacity="0.65"/>`);
+
+    // 3. Esfera profunda de obsidiana y zafiro (#070D19 -> #0D2540) con anillos ópticos concéntricos suaves
+    layers.push(`<circle cx="100" cy="100" r="79.5" fill="#070D19"/>`);
+    layers.push(`<circle cx="100" cy="100" r="76.5" fill="#${pri}" fill-opacity="0.88"/>`);
+    layers.push(`<circle cx="100" cy="96" r="68" fill="#1E3A8A" fill-opacity="0.28"/>`);
+    layers.push(`<circle cx="100" cy="100" r="77.2" fill="none" stroke="#60A5FA" stroke-width="1.3" stroke-opacity="0.42"/>`);
+
+    // 4. Cáustica ambiental azul cielo detrás de la roseta de 12 pétalos
+    layers.push(`<circle cx="100" cy="100" r="56" fill="#38BDF8" fill-opacity="0.12"/>`);
+    layers.push(`<circle cx="100" cy="100" r="44" fill="#${sec}" fill-opacity="0.18"/>`);
+
+    // 5. Los 12 Pétalos Radiales de Cristal Líquido (Curvas Bézier matemáticas puras con transparencia real)
+    for (let i = 0; i < 12; i++) {
+      const deg = i * 30;
+      const isPrimaryPetal = i % 2 === 0;
+      // Pétalo exterior translúcido (efecto lente de cristal)
+      const outerD = buildRotatedPetalPath(deg, 13, 68, 13.5, 18.5, 32, 57);
+      const innerD = buildRotatedPetalPath(deg, 16, 61, 8.2, 11.4, 30, 52);
+      const spineD = buildRotatedPetalPath(deg, 18, 54, 3.2, 4.5, 28, 46);
+
+      // Cuerpo de cristal azul translúcido
+      layers.push(
+        `<path d="${outerD}" fill="${isPrimaryPetal ? "#38BDF8" : "#" + sec}" fill-opacity="${isPrimaryPetal ? "0.28" : "0.22"}" stroke="${isPrimaryPetal ? "#7DD3FC" : "#60A5FA"}" stroke-width="1.35" stroke-opacity="0.82"/>`
+      );
+      // Refracción interna del pétalo (caustic core)
+      layers.push(
+        `<path d="${innerD}" fill="${isPrimaryPetal ? "#BAE6FD" : "#38BDF8"}" fill-opacity="0.20" stroke="#E0F2FE" stroke-width="0.65" stroke-opacity="0.55"/>`
+      );
+      // Filamento cálido naranja en pétalos alternos (fiel al Torus de Aura)
+      if (i % 3 === 0) {
+        layers.push(
+          `<path d="${spineD}" fill="#${acc}" fill-opacity="0.22" stroke="#FB923C" stroke-width="0.85" stroke-opacity="0.68"/>`
+        );
+      }
+    }
+
+    // 6. Anillo de entrelazado central de los 12 pétalos (geometría sagrada)
+    layers.push(`<circle cx="100" cy="100" r="28" fill="none" stroke="#93C5FD" stroke-width="0.9" stroke-opacity="0.45"/>`);
+
+    // 7. Halo central incandescente en Naranja Acción (#FF7A00) con caída alfa progresiva (8 capas suaves sin escalones)
+    const warmGlowRadii = [
+      { r: 30, hex: acc, op: "0.14" },
+      { r: 25, hex: acc, op: "0.22" },
+      { r: 21, hex: "FB923C", op: "0.34" },
+      { r: 17.5, hex: "F97316", op: "0.48" },
+      { r: 14.5, hex: "FDBA74", op: "0.68" },
+      { r: 11.8, hex: "FFEDD5", op: "0.86" },
+      { r: 9.2, hex: "FFFFFF", op: "0.96" },
+      { r: 6.5, hex: "FFFFFF", op: "1.00" }
+    ];
+    for (const g of warmGlowRadii) {
+      layers.push(`<circle cx="100" cy="100" r="${g.r}" fill="#${g.hex}" fill-opacity="${g.op}"/>`);
+    }
+
+    // 8. Domo superior de refracción Apple Liquid Glass (Specular Top Highlight Curve)
+    layers.push(
+      `<path d="M 42 66 C 56 35, 144 35, 158 66 C 138 50, 62 50, 42 66 Z" fill="#FFFFFF" fill-opacity="0.26"/>`
+    );
+    layers.push(
+      `<path d="M 54 54 C 72 34, 128 34, 146 54 C 126 43, 74 43, 54 54 Z" fill="#FFFFFF" fill-opacity="0.38"/>`
+    );
+    // 9. Reflejo de borde inferior (Rim Bounce Light)
+    layers.push(
+      `<path d="M 52 152 C 74 172, 126 172, 148 152 C 126 164, 74 164, 52 152 Z" fill="#7DD3FC" fill-opacity="0.28"/>`
+    );
+
+    return `<g data-tbb-parametric-liquid-glass="true" data-tbb-bezier-traced="true">${layers.join("")}</g>`;
+  }
+
+  async function tbbVectorizeRasterLogoToSvgCurves(rawDataUrl, maxColors = 14) {
     if (!rawDataUrl || typeof document === "undefined") return "";
     const centeredUrl = await tbbAutoTrimAndCenterRasterLogo(rawDataUrl);
     if (_tracedSvgCache.has(centeredUrl)) return _tracedSvgCache.get(centeredUrl);
@@ -390,28 +525,39 @@
     const img = await loadImgAsync(centeredUrl);
     if (!img) return "";
 
-    const grid = 220;
+    // Alta resolución de muestreo (360x360) con suavizado óptico para eliminar dientes de sierra y preservar transparencias (alpha)
+    const grid = 360;
     const cnv = document.createElement("canvas");
     cnv.width = grid;
     cnv.height = grid;
     const ctx = cnv.getContext("2d");
     ctx.clearRect(0, 0, grid, grid);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
     ctx.drawImage(img, 0, 0, grid, grid);
 
     const data = ctx.getImageData(0, 0, grid, grid).data;
 
-    // Cuantizar colores visibles en cubetas de 24 niveles y fusionar colores cercanos
+    // Cuantizar colores + canal alfa (opacidad real en 4 bandas: 0.28, 0.55, 0.80, 1.00)
     const buckets = new Map();
     let fgCount = 0;
+    const quantizeAlphaBand = (a) => {
+      if (a < 28) return 0;
+      if (a < 95) return 72;    // ~0.28 opacidad (glows / sombras translúcidas)
+      if (a < 165) return 140;  // ~0.55 opacidad (cristal medio)
+      if (a < 225) return 204;  // ~0.80 opacidad (semisólido)
+      return 255;               // 1.00 opacidad sólida
+    };
+
     for (let i = 0; i < data.length; i += 4) {
-      const a = data[i + 3];
-      if (a < 64) continue;
+      const aBand = quantizeAlphaBand(data[i + 3]);
+      if (aBand === 0) continue;
       fgCount++;
-      const qr = Math.round(data[i] / 24) * 24;
-      const qg = Math.round(data[i + 1] / 24) * 24;
-      const qb = Math.round(data[i + 2] / 24) * 24;
-      const k = `${qr},${qg},${qb}`;
-      const b = buckets.get(k) || { count: 0, rSum: 0, gSum: 0, bSum: 0 };
+      const qr = Math.round(data[i] / 16) * 16;
+      const qg = Math.round(data[i + 1] / 16) * 16;
+      const qb = Math.round(data[i + 2] / 16) * 16;
+      const k = `${qr},${qg},${qb},${aBand}`;
+      const b = buckets.get(k) || { count: 0, rSum: 0, gSum: 0, bSum: 0, aBand };
       b.count++;
       b.rSum += data[i];
       b.gSum += data[i + 1];
@@ -419,22 +565,23 @@
       buckets.set(k, b);
     }
 
-    if (fgCount < 10) return "";
+    if (fgCount < 16) return "";
 
     const sorted = Array.from(buckets.values())
       .map((b) => ({
         count: b.count,
         r: Math.round(b.rSum / b.count),
         g: Math.round(b.gSum / b.count),
-        b: Math.round(b.bSum / b.count)
+        b: Math.round(b.bSum / b.count),
+        aBand: b.aBand
       }))
       .sort((a, b) => b.count - a.count);
 
     const palette = [];
     for (const cand of sorted) {
-      if (cand.count < fgCount * 0.008 && palette.length > 0) continue;
+      if (cand.count < fgCount * 0.003 && palette.length > 0) continue;
       const existing = palette.find(
-        (p) => Math.abs(p.r - cand.r) + Math.abs(p.g - cand.g) + Math.abs(p.b - cand.b) < 62
+        (p) => p.aBand === cand.aBand && (Math.abs(p.r - cand.r) + Math.abs(p.g - cand.g) + Math.abs(p.b - cand.b) < 38)
       );
       if (existing) {
         const tot = existing.count + cand.count;
@@ -447,15 +594,18 @@
       }
     }
 
-    // Asignar cada píxel visible al color más cercano de la paleta extraída
+    // Ordenar capas de menor opacidad / mayor área (fondo) a mayor opacidad / detalle (frente)
+    palette.sort((a, b) => (a.aBand - b.aBand) || (b.count - a.count));
+
     const pixelClass = new Int8Array(grid * grid).fill(-1);
     for (let p = 0; p < grid * grid; p++) {
-      const a = data[p * 4 + 3];
-      if (a < 64) continue;
+      const aBand = quantizeAlphaBand(data[p * 4 + 3]);
+      if (aBand === 0) continue;
       const r = data[p * 4], g = data[p * 4 + 1], b = data[p * 4 + 2];
       let bestIdx = 0, bestDist = 1e9;
       for (let c = 0; c < palette.length; c++) {
-        const dist = Math.abs(r - palette[c].r) + Math.abs(g - palette[c].g) + Math.abs(b - palette[c].b);
+        const alphaPenalty = Math.abs(aBand - palette[c].aBand) * 1.5;
+        const dist = Math.abs(r - palette[c].r) + Math.abs(g - palette[c].g) + Math.abs(b - palette[c].b) + alphaPenalty;
         if (dist < bestDist) {
           bestDist = dist;
           bestIdx = c;
@@ -464,7 +614,32 @@
       pixelClass[p] = bestIdx;
     }
 
-    // Mapear de 220x220 al espacio 200x200 centrado en (100,100): margen 16px -> caja 168x168
+    // Filtro de mediana 3x3 para eliminar manchas aisladas ("speckles") antes de trazar curvas
+    const cleanedClass = new Int8Array(pixelClass);
+    for (let y = 1; y < grid - 1; y++) {
+      for (let x = 1; x < grid - 1; x++) {
+        const idx = y * grid + x;
+        const cur = pixelClass[idx];
+        let sameNeighbors = 0;
+        const counts = new Map();
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            if (dx === 0 && dy === 0) continue;
+            const nb = pixelClass[(y + dy) * grid + (x + dx)];
+            if (nb === cur) sameNeighbors++;
+            counts.set(nb, (counts.get(nb) || 0) + 1);
+          }
+        }
+        if (sameNeighbors <= 1) {
+          let majClass = cur, majCount = 0;
+          for (const [k, v] of counts.entries()) {
+            if (v > majCount) { majCount = v; majClass = k; }
+          }
+          cleanedClass[idx] = majClass;
+        }
+      }
+    }
+
     const scaleFactor = 168 / grid;
     const offset = 16;
     const pathElements = [];
@@ -473,17 +648,19 @@
       const mask = new Uint8Array(grid * grid);
       let count = 0;
       for (let p = 0; p < grid * grid; p++) {
-        if (pixelClass[p] === c) {
+        if (cleanedClass[p] === c) {
           mask[p] = 1;
           count++;
         }
       }
-      if (count < 6) continue;
-      const loops = traceBinaryMaskToLoops(mask, grid, grid);
+      if (count < 14) continue;
+      const loops = traceBinaryMaskToLoops(mask, grid, grid, 1.15);
       const subPaths = loops.map((lp) => closedLoopToBezierPath(lp, scaleFactor, offset, offset)).filter(Boolean);
       if (subPaths.length > 0) {
         const hex = "#" + [palette[c].r, palette[c].g, palette[c].b].map((v) => v.toString(16).padStart(2, "0")).join("").toUpperCase();
-        pathElements.push(`<path d="${subPaths.join(" ")}" fill="${hex}" fill-rule="evenodd"/>`);
+        const opacityVal = (palette[c].aBand / 255).toFixed(2);
+        const opAttr = palette[c].aBand < 250 ? ` fill-opacity="${opacityVal}"` : "";
+        pathElements.push(`<path d="${subPaths.join(" ")}" fill="${hex}"${opAttr} fill-rule="evenodd"/>`);
       }
     }
 
@@ -493,7 +670,7 @@
   }
 
   // ==========================================================================
-  // 2B. EXPORTADOR NATIVO EN CURVAS (.SVG 100% <path> Y .AI ADOBE ILLUSTRATOR PDF 1.6)
+  // 2B. EXPORTADOR NATIVO EN CURVAS (.SVG 100% <path> Y .AI ADOBE ILLUSTRATOR PDF 1.6 CON TRANSPARENCIA /ExtGState)
   // ==========================================================================
   function hexToRgbUnit(hex) {
     const h = cleanHex6(hex, "0D2540");
@@ -505,7 +682,6 @@
   }
 
   function parseTransformMatrix(transformStr) {
-    // Soporta translate(tx, ty), scale(sx, sy), rotate(deg) en cadena
     let m = [1, 0, 0, 1, 0, 0];
     if (!transformStr) return m;
     const mul = (m1, m2) => [
@@ -545,6 +721,18 @@
     const H = vb[3] || 120;
 
     const ops = ["q"];
+    // Registro dinámico de estados de transparencia PDF 1.6 (/ExtGState << /GS1 << /Type /ExtGState /ca 0.28 /CA 0.82 >> >>)
+    const extGStates = new Map();
+    const getGsName = (fillAlpha, strokeAlpha) => {
+      const fa = Math.max(0, Math.min(1, isNaN(fillAlpha) ? 1 : fillAlpha)).toFixed(2);
+      const sa = Math.max(0, Math.min(1, isNaN(strokeAlpha) ? 1 : strokeAlpha)).toFixed(2);
+      const key = `${fa}_${sa}`;
+      if (!extGStates.has(key)) {
+        const gsId = `GS${extGStates.size + 1}`;
+        extGStates.set(key, { id: gsId, ca: fa, CA: sa });
+      }
+      return extGStates.get(key).id;
+    };
 
     function getCumulativeMatrix(el) {
       const chain = [];
@@ -637,6 +825,10 @@
         const fill = el.getAttribute("fill") || (tag === "line" ? "none" : "#0D2540");
         const stroke = el.getAttribute("stroke") || "none";
         const sw = parseFloat(el.getAttribute("stroke-width") || "1") * Math.hypot(m[0], m[1]);
+        const baseOp = parseFloat(el.getAttribute("opacity") || "1");
+        const fillOp = parseFloat(el.getAttribute("fill-opacity") || "1") * (isNaN(baseOp) ? 1 : baseOp);
+        const strokeOp = parseFloat(el.getAttribute("stroke-opacity") || "1") * (isNaN(baseOp) ? 1 : baseOp);
+        const gsName = getGsName(fillOp, strokeOp);
 
         let geom = "";
         if (tag === "rect") {
@@ -644,8 +836,24 @@
           const y = parseFloat(el.getAttribute("y") || "0");
           const w = parseFloat(el.getAttribute("width") || "0");
           const h = parseFloat(el.getAttribute("height") || "0");
+          const rx = Math.min(parseFloat(el.getAttribute("rx") || "0"), w / 2, h / 2);
           if (w > 0 && h > 0) {
-            geom = `${pt(m, x, y)} m ${pt(m, x + w, y)} l ${pt(m, x + w, y + h)} l ${pt(m, x, y + h)} l h`;
+            if (rx > 0.5) {
+              const k = 0.55228475 * rx;
+              geom = [
+                `${pt(m, x + rx, y)} m`,
+                `${pt(m, x + w - rx, y)} l`,
+                `${pt(m, x + w - rx + k, y)} ${pt(m, x + w, y + rx - k)} ${pt(m, x + w, y + rx)} c`,
+                `${pt(m, x + w, y + h - rx)} l`,
+                `${pt(m, x + w, y + h - rx + k)} ${pt(m, x + w - rx + k, y + h)} ${pt(m, x + w - rx, y + h)} c`,
+                `${pt(m, x + rx, y + h)} l`,
+                `${pt(m, x + rx - k, y + h)} ${pt(m, x, y + h - rx + k)} ${pt(m, x, y + h - rx)} c`,
+                `${pt(m, x, y + rx)} l`,
+                `${pt(m, x, y + rx - k)} ${pt(m, x + rx - k, y)} ${pt(m, x + rx, y)} c h`
+              ].join("\n");
+            } else {
+              geom = `${pt(m, x, y)} m ${pt(m, x + w, y)} l ${pt(m, x + w, y + h)} l ${pt(m, x, y + h)} l h`;
+            }
           }
         } else if (tag === "circle") {
           const cx = parseFloat(el.getAttribute("cx") || "0");
@@ -677,23 +885,28 @@
         if (hasFill && hasStroke) {
           const [fr, fg, fb] = hexToRgbUnit(fill);
           const [sr, sg, sb] = hexToRgbUnit(stroke);
-          ops.push(`${fr} ${fg} ${fb} rg ${sr} ${sg} ${sb} RG ${sw.toFixed(2)} w\n${geom}\nB*`);
+          ops.push(`/${gsName} gs ${fr} ${fg} ${fb} rg ${sr} ${sg} ${sb} RG ${sw.toFixed(2)} w\n${geom}\nB*`);
         } else if (hasFill) {
           const [fr, fg, fb] = hexToRgbUnit(fill);
-          ops.push(`${fr} ${fg} ${fb} rg\n${geom}\nf*`);
+          ops.push(`/${gsName} gs ${fr} ${fg} ${fb} rg\n${geom}\nf*`);
         } else if (hasStroke) {
           const [sr, sg, sb] = hexToRgbUnit(stroke);
-          ops.push(`${sr} ${sg} ${sb} RG ${sw.toFixed(2)} w\n${geom}\nS`);
+          ops.push(`/${gsName} gs ${sr} ${sg} ${sb} RG ${sw.toFixed(2)} w\n${geom}\nS`);
         }
       }
     }
     ops.push("Q");
     const streamStr = ops.join("\n");
 
+    const extGStateEntries = Array.from(extGStates.values())
+      .map((g) => `/${g.id} << /Type /ExtGState /ca ${g.ca} /CA ${g.CA} /BM /Normal >>`)
+      .join(" ");
+    const resourcesDict = `<< /ExtGState << ${extGStateEntries} >> >>`;
+
     const objs = [
-      `1 0 obj\n<< /Type /Catalog /Pages 2 0 R /Creator (TheBestBrand Cloud Vector Engine V83 - Adobe Illustrator Compatible) >>\nendobj\n`,
+      `1 0 obj\n<< /Type /Catalog /Pages 2 0 R /Creator (TheBestBrand Cloud Vector Engine V89 - Native Transparency & Bezier Curves) >>\nendobj\n`,
       `2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n`,
-      `3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /ArtBox [0 0 ${W} ${H}] /Contents 4 0 R >>\nendobj\n`,
+      `3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /ArtBox [0 0 ${W} ${H}] /Group << /Type /Group /S /Transparency /CS /DeviceRGB >> /Resources ${resourcesDict} /Contents 4 0 R >>\nendobj\n`,
       `4 0 obj\n<< /Length ${streamStr.length} >>\nstream\n${streamStr}\nendstream\nendobj\n`
     ];
 
@@ -716,18 +929,25 @@
     const origTxt = triggerBtn ? triggerBtn.innerHTML : "";
     if (triggerBtn) {
       triggerBtn.disabled = true;
-      triggerBtn.textContent = "Trazando curvas Bézier...";
+      triggerBtn.textContent = "Trazando curvas Bézier y transparencias...";
     }
 
     try {
       const brand = window.buildActiveBrandProfileForV80 ? Object.assign({}, window.buildActiveBrandProfileForV80()) : {};
       const slug = brand.slug || "marca";
       const bName = brand.name || "Marca";
+      const finishStyle = String((window.canvasState && window.canvasState.logo_finish_style) || brand.finishStyle || "").toLowerCase();
+      const isLiquidGlassOrTbb = finishStyle === "liquid_glass" || /the_?best_?brand/i.test(slug) || /aura/i.test(slug);
 
-      // Si el usuario subió un PNG/JPG, vectorizarlo a curvas Bézier puras (<path>) para que el archivo .SVG / .AI sea 100% vectorial real (0 <image>)
-      if (brand.uploadedLogoDataUrl && !String(brand.uploadedLogoDataUrl).startsWith("data:image/svg")) {
-        const tracedGroup = (window.canvasState && window.canvasState.uploaded_logo_traced_curves_svg)
-          || await tbbVectorizeRasterLogoToSvgCurves(brand.uploadedLogoDataUrl);
+      if (isLiquidGlassOrTbb) {
+        // Reconstrucción vectorial paramétrica 100% en curvas Bézier matemáticas con transparencias reales (/ca & fill-opacity)
+        const parametricCore = buildParametricLiquidGlassVectorCore(brand.colors);
+        if (window.canvasState) window.canvasState.uploaded_logo_traced_curves_svg = parametricCore;
+        brand.svgCore = parametricCore;
+        brand.svgCoreNeg = parametricCore;
+      } else if (brand.uploadedLogoDataUrl && !String(brand.uploadedLogoDataUrl).startsWith("data:image/svg")) {
+        // Vectorizador multicapa con canal alfa real y splines suaves (Chaikin + Catmull-Rom) para cualquier otro logo raster
+        const tracedGroup = await tbbVectorizeRasterLogoToSvgCurves(brand.uploadedLogoDataUrl, 14);
         if (tracedGroup) {
           if (window.canvasState) window.canvasState.uploaded_logo_traced_curves_svg = tracedGroup;
           brand.svgCore = tracedGroup;
