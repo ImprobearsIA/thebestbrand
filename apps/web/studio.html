@@ -295,7 +295,7 @@
     }
 
     // -------------------------------------------------------------------------
-    // 2. PARA EL RESTO DE ENDPOINTS (/api/...), PROBAR BACKEND REAL (CLOUD RUN / REPLIT)
+    // 2. PARA EL RESTO DE ENDPOINTS (/api/...), PROBAR BACKEND REAL (RAILWAY / CLOUD RUN)
     // -------------------------------------------------------------------------
     try {
       var realRes = await nativeFetch(input, init);
@@ -304,6 +304,15 @@
         return realRes;
       }
     } catch (netErr) {}
+
+    try {
+      var railwayUrl = "https://thebestbrand-api-studio-production.up.railway.app" + pathOnly;
+      var rwRes = await nativeFetch(railwayUrl, init);
+      var rwCtype = (rwRes.headers && rwRes.headers.get("content-type")) || "";
+      if (rwRes.ok && (rwCtype.indexOf("application/json") !== -1 || rwCtype.indexOf("application/pdf") !== -1 || rwCtype.indexOf("audio/") !== -1)) {
+        return rwRes;
+      }
+    } catch (rwErr) {}
 
     return jsonResponse({ error: "edge_fallback_mode", path: pathOnly }, 503);
   };

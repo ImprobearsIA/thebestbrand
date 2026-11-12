@@ -184,14 +184,68 @@ class GeminiNeuralVoiceSynthesizer:
         return None
 
     @classmethod
+    def _synthesize_google_cloud_neural_mp3_b64(cls, clean_text: str) -> Optional[str]:
+        """
+        Respaldo neural directo por HTTPS (Google Cloud / Translate TTS es-MX) que funciona
+        en cualquier contenedor Linux (Railway / Cloud Run) en <0.4s sin dependencias binarias.
+        Divide textos largos en fragmentos de <=180 caracteres por oración.
+        """
+        import urllib.parse
+        try:
+            raw_sentences = re.split(r"(?<=[.!?])\s+", clean_text)
+            chunks_text: List[str] = []
+            current = ""
+            for s in raw_sentences:
+                s = s.strip()
+                if not s:
+                    continue
+                if len(current) + len(s) + 1 <= 185:
+                    current = f"{current} {s}".strip()
+                else:
+                    if current:
+                        chunks_text.append(current)
+                    while len(s) > 185:
+                        cut = s.rfind(" ", 0, 185)
+                        if cut <= 40:
+                            cut = 185
+                        chunks_text.append(s[:cut].strip())
+                        s = s[cut:].strip()
+                    current = s
+            if current:
+                chunks_text.append(current)
+
+            mp3_parts: List[bytes] = []
+            for part_txt in chunks_text[:6]:
+                q = urllib.parse.quote(part_txt)
+                url = f"https://translate.googleapis.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es-MX&q={q}"
+                req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+                with urllib.request.urlopen(req, timeout=5, context=_SSL_CTX) as r:
+                    b = r.read()
+                    if b and len(b) > 100:
+                        mp3_parts.append(b)
+            if mp3_parts:
+                full_mp3 = b"".join(mp3_parts)
+                b64_out = base64.b64encode(full_mp3).decode("ascii")
+                if len(_TTS_MEMORY_CACHE) < 256:
+                    _TTS_MEMORY_CACHE[clean_text] = b64_out
+                return b64_out
+        except Exception:
+            pass
+        return None
+
+    @classmethod
     def _synthesize_local_consistent_aura_wav_b64(cls, clean_text: str) -> Optional[str]:
         """
-        Primero intenta la voz neural humana es-MX-DaliaNeural (~1.1s). Solo si no hay red
-        recurre al motor local del sistema operativo.
+        Primero intenta la voz neural humana es-MX-DaliaNeural (~1.1s), luego el stream neural
+        de Google es-MX (~0.4s), y finalmente el motor local del sistema operativo.
         """
         neural_b64 = cls._synthesize_edge_neural_dalia_b64(clean_text)
         if neural_b64:
             return neural_b64
+
+        google_mp3_b64 = cls._synthesize_google_cloud_neural_mp3_b64(clean_text)
+        if google_mp3_b64:
+            return google_mp3_b64
 
         import subprocess
         import tempfile
@@ -228,12 +282,7 @@ class GeminiNeuralVoiceSynthesizer:
         if clean_t in _TTS_MEMORY_CACHE:
             return _TTS_MEMORY_CACHE[clean_t]
 
-        # Prioridad 1: Voz Neural Humana Ultrarrápida en Español (es-MX-DaliaNeural ~1.1s, 100% natural y cálida)
-        fast_neural = cls._synthesize_edge_neural_dalia_b64(clean_t)
-        if fast_neural:
-            return fast_neural
-
-        # Prioridad 2: Gemini 2.5 Flash Neural TTS (Voz Aoede 24kHz)
+        # Prioridad 1: Gemini 2.5 Flash Neural TTS (Voz Aoede 24kHz) si hay API Key activa
         key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY or api_key).strip()
         if key and cls._CLOUD_TTS_AVAILABLE:
             tts_models = ["gemini-2.5-flash-preview-tts", "gemini-3.1-flash-tts-preview"]
@@ -275,6 +324,12 @@ class GeminiNeuralVoiceSynthesizer:
                 except Exception:
                     continue
 
+        # Prioridad 2: Voz Neural Humana Ultrarrápida en Español (es-MX-DaliaNeural ~1.1s, 100% natural y cálida)
+        fast_neural = cls._synthesize_edge_neural_dalia_b64(clean_t)
+        if fast_neural:
+            return fast_neural
+
+        # Prioridad 3: Stream Neural HTTPS de Google Cloud/Translate es-MX (~0.4s) + Fallback Local
         return cls._synthesize_local_consistent_aura_wav_b64(clean_t)
 
 

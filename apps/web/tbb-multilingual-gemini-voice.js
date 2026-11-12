@@ -668,6 +668,40 @@
         clearTimeout(timeoutId);
       }
     }
+
+    // 3. Respaldo Cloud Backend (/api/tts/gemini local o en Railway Cloud)
+    const ttsEndpoints = [
+      "/api/tts/gemini",
+      "https://thebestbrand-api-studio-production.up.railway.app/api/tts/gemini"
+    ];
+    for (let j = 0; j < ttsEndpoints.length; j++) {
+      try {
+        const resTts = await fetch(ttsEndpoints[j], {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: cleanText, llm_api_key: apiKey || "" })
+        });
+        if (resTts.ok) {
+          const dataTts = await resTts.json();
+          if (dataTts && dataTts.audio_wav_base64) {
+            const rawBytes = base64ToUint8Array(dataTts.audio_wav_base64);
+            if (rawBytes && rawBytes.byteLength > 100) {
+              const payload = {
+                wavBytes: rawBytes,
+                durationSec: 6.0,
+                sampleRate: 24000,
+                modelUsed: "gemini-cloud-neural",
+                voiceName,
+                langCode
+              };
+              window._tbbGeminiTtsCache.set(cacheKey, payload);
+              idbSaveVoiceClip(cacheKey, payload);
+              return payload;
+            }
+          }
+        }
+      } catch (e) {}
+    }
     return null;
   };
 
