@@ -214,6 +214,39 @@ EOF
   fi
 }
 
+bootstrap_github_secrets() {
+  # Si estamos en la Mac de Jorge y 'gh' está autenticado, sincroniza una sola vez
+  # las credenciales de Firebase / Cloudflare hacia GitHub Actions Secrets para
+  # que GitHub despliegue en la nube incluso si la Mac está apagada.
+  local marker="${STATE_DIR}/.gh_secrets_bootstrapped_v1"
+  [ -f "${marker}" ] && return 0
+  command -v gh >/dev/null 2>&1 || return 0
+  gh auth status >/dev/null 2>&1 || return 0
+
+  local sa_file=""
+  for cand in \
+    "${HOME}/.config/improbears/firebase-service-account.json" \
+    "/Users/oso/Proyectos_ImproBears_SSD/.firebase-service-account.json" \
+    "/Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi unidad/_1 IMPROBEARS/Proyectos Antigravity/03_SISTEMAS_IMPROBEARS/firebase-service-account.json"; do
+    if [ -f "${cand}" ]; then
+      sa_file="${cand}"
+      break
+    fi
+  done
+
+  if [ -n "${sa_file}" ]; then
+    log_msg "🔑 Subiendo FIREBASE_SERVICE_ACCOUNT a GitHub Secrets (ImproBears-Web y thebestbrand)..."
+    gh secret set FIREBASE_SERVICE_ACCOUNT -R ImprobearsIA/ImproBears-Web < "${sa_file}" 2>/dev/null || true
+    gh secret set FIREBASE_SERVICE_ACCOUNT -R ImprobearsIA/thebestbrand < "${sa_file}" 2>/dev/null || true
+    touch "${marker}"
+  elif [ -n "${FIREBASE_TOKEN:-}" ]; then
+    log_msg "🔑 Subiendo FIREBASE_TOKEN a GitHub Secrets (ImproBears-Web y thebestbrand)..."
+    printf "%s" "${FIREBASE_TOKEN}" | gh secret set FIREBASE_TOKEN -R ImprobearsIA/ImproBears-Web 2>/dev/null || true
+    printf "%s" "${FIREBASE_TOKEN}" | gh secret set FIREBASE_TOKEN -R ImprobearsIA/thebestbrand 2>/dev/null || true
+    touch "${marker}"
+  fi
+}
+
 show_status() {
   echo "=============================================================================="
   echo "🛡️  IMPROBEARS ZERO-TOUCH GUARDIAN — ESTADO ACTUAL"
@@ -232,16 +265,22 @@ show_status() {
 case "${1:---sync-once}" in
   --install-daemon)
     install_macos_launch_agent
+    bootstrap_github_secrets
     sync_all_repos_once
     ;;
   --sync-once)
+    bootstrap_github_secrets
     sync_all_repos_once
+    ;;
+  --bootstrap-ci)
+    rm -f "${STATE_DIR}/.gh_secrets_bootstrapped_v1"
+    bootstrap_github_secrets
     ;;
   --status)
     show_status
     ;;
   *)
-    echo "Uso: $0 [--sync-once | --install-daemon | --status]"
+    echo "Uso: $0 [--sync-once | --install-daemon | --bootstrap-ci | --status]"
     exit 1
     ;;
 esac
