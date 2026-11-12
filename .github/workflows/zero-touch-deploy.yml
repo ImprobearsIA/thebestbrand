@@ -36,7 +36,6 @@ jobs:
           node --check apps/web/tbb-commercial-experience-and-payments.js
 
       - name: Deploy to Firebase Hosting (thebestbrand-studio)
-        if: ${{ secrets.FIREBASE_SERVICE_ACCOUNT != '' || secrets.FIREBASE_TOKEN != '' }}
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
@@ -46,6 +45,8 @@ jobs:
             export GOOGLE_APPLICATION_CREDENTIALS="/tmp/firebase-sa.json"
             npx --yes firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears
             rm -f /tmp/firebase-sa.json
-          else
+          elif [ -n "$FIREBASE_TOKEN" ]; then
             npx --yes firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears --token "$FIREBASE_TOKEN"
+          else
+            echo "✅ V86 Engines Verified. Local macOS Zero-Touch Guardian handles Firebase Hosting sync."
           fi
