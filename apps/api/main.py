@@ -390,15 +390,17 @@ def _fetch_live_zoho_telemetry() -> Dict[str, Any]:
         headers = {"Authorization": f"Zoho-oauthtoken {access_token}"}
         invoices = []
         deals = []
+        tasks = []
+        contacts = []
 
         try:
             inv_req = urllib.request.Request(
-                f"{api_domain}/books/v3/invoices?organization_id={org_id}&per_page=10",
+                f"{api_domain}/books/v3/invoices?organization_id={org_id}&per_page=15",
                 headers=headers
             )
             with urllib.request.urlopen(inv_req, timeout=4.5) as ir:
                 inv_json = json.loads(ir.read().decode("utf-8"))
-                for inv in (inv_json.get("invoices") or [])[:5]:
+                for inv in (inv_json.get("invoices") or [])[:10]:
                     invoices.append({
                         "number": inv.get("invoice_number"),
                         "customer": inv.get("customer_name"),
@@ -412,12 +414,12 @@ def _fetch_live_zoho_telemetry() -> Dict[str, Any]:
 
         try:
             deals_req = urllib.request.Request(
-                f"{api_domain}/crm/v6/Deals?fields=Deal_Name,Stage,Amount,Account_Name,Closing_Date&per_page=10&page=1",
+                f"{api_domain}/crm/v6/Deals?fields=Deal_Name,Stage,Amount,Account_Name,Closing_Date&per_page=15&page=1",
                 headers=headers
             )
             with urllib.request.urlopen(deals_req, timeout=4.5) as dr:
                 deals_json = json.loads(dr.read().decode("utf-8"))
-                for d in (deals_json.get("data") or [])[:5]:
+                for d in (deals_json.get("data") or [])[:10]:
                     acc = d.get("Account_Name") or {}
                     deals.append({
                         "name": d.get("Deal_Name"),
@@ -428,16 +430,77 @@ def _fetch_live_zoho_telemetry() -> Dict[str, Any]:
         except Exception:
             pass
 
+        try:
+            tasks_req = urllib.request.Request(
+                f"{api_domain}/crm/v6/Tasks?fields=Subject,Status,Priority,Due_Date,Who_Id,What_Id&per_page=25&page=1",
+                headers=headers
+            )
+            with urllib.request.urlopen(tasks_req, timeout=4.5) as tr:
+                tasks_json = json.loads(tr.read().decode("utf-8"))
+                for t in (tasks_json.get("data") or [])[:20]:
+                    who = t.get("Who_Id") or {}
+                    what = t.get("What_Id") or {}
+                    tasks.append({
+                        "id": t.get("id"),
+                        "subject": t.get("Subject"),
+                        "status": t.get("Status"),
+                        "priority": t.get("Priority"),
+                        "due_date": t.get("Due_Date"),
+                        "contact": who.get("name") if isinstance(who, dict) else str(who or ""),
+                        "account": what.get("name") if isinstance(what, dict) else str(what or "")
+                    })
+        except Exception:
+            pass
+
+        try:
+            contacts_req = urllib.request.Request(
+                f"{api_domain}/crm/v6/Contacts?fields=Full_Name,Email,Phone,Mobile,Account_Name,Title&per_page=25&page=1",
+                headers=headers
+            )
+            with urllib.request.urlopen(contacts_req, timeout=4.5) as cr:
+                contacts_json = json.loads(cr.read().decode("utf-8"))
+                for c in (contacts_json.get("data") or [])[:20]:
+                    acc = c.get("Account_Name") or {}
+                    contacts.append({
+                        "id": c.get("id"),
+                        "name": c.get("Full_Name"),
+                        "email": c.get("Email"),
+                        "phone": c.get("Mobile") or c.get("Phone"),
+                        "account": acc.get("name") if isinstance(acc, dict) else str(acc or ""),
+                        "title": c.get("Title")
+                    })
+        except Exception:
+            pass
+
         return {
             "connected": True,
             "org_id": org_id,
             "invoices_count": len(invoices),
             "invoices": invoices,
             "deals_count": len(deals),
-            "deals": deals
+            "deals": deals,
+            "tasks_count": len(tasks),
+            "tasks": tasks,
+            "contacts_count": len(contacts),
+            "contacts": contacts
         }
     except Exception as e:
         return {"connected": False, "reason": str(e)}
+
+
+def _fetch_live_openclaw_whatsapp_cloud() -> Dict[str, Any]:
+    """Consulta en vivo el nodo Google Cloud 34.121.182.185:4747 desde Railway Cloud (sin bloqueo de proxy)."""
+    import urllib.request
+    import json
+    oc_base = os.environ.get("AURA_OPENCLAW_URL", "http://34.121.182.185:4747").rstrip("/")
+    try:
+        req = urllib.request.Request(f"{oc_base}/api/gina/history")
+        with urllib.request.urlopen(req, timeout=4.0) as r:
+            raw = json.loads(r.read().decode("utf-8"))
+            items = raw.get("items") or raw.get("messages") or raw.get("history") or (raw if isinstance(raw, list) else [])
+            return {"connected": True, "url": oc_base, "messages_count": len(items), "messages": items[:30]}
+    except Exception as e:
+        return {"connected": False, "url": oc_base, "reason": str(e)}
 
 
 def _fetch_live_dof_fx() -> Dict[str, Any]:
@@ -462,6 +525,7 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
 
     q = (user_text or "").strip()
     zoho_live = _fetch_live_zoho_telemetry()
+    wa_live = _fetch_live_openclaw_whatsapp_cloud()
     fx_live = _fetch_live_dof_fx()
 
     key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY).strip()
@@ -469,17 +533,19 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
         try:
             hist_str = "\n".join([str(h) for h in history[-6:]])
             zoho_str = json.dumps(zoho_live, ensure_ascii=False)
+            wa_str = json.dumps(wa_live, ensure_ascii=False)
             fx_str = json.dumps(fx_live, ensure_ascii=False)
             prompt = (
                 "Eres Aura, la copiloto ejecutiva de inteligencia artificial de Jorge Benítez ('El Oso'), "
                 "director general de ImproBears. "
-                "REGLA ESTRICTA DE INTEGRIDAD (CERO INVENCIÓN): JAMÁS inventes montos, folios ni facturas de prueba "
-                "(prohibido inventar '$113,680 MXN', '$33,640 MXN', 'SO-ZB-2026-0891' o cualquier dato que no esté en la telemetría real). "
-                "Si el usuario pregunta si estás conectada al sistema o si estás inventando datos, responde con total honestidad y transparencia "
-                "indicando exactamente a qué nodos estás conectada en este instante y los datos reales obtenidos:\n"
-                f"- Telemetría Zoho One en vivo: {zoho_str}\n"
+                "REGLA ESTRICTA DE INTEGRIDAD (CERO INVENCIÓN): JAMÁS inventes montos, folios, tareas ni facturas de prueba "
+                "(prohibido inventar '$113,680 MXN', '$33,640 MXN', 'SO-ZB-2026-0891', 'GAP-CRM' o cualquier dato que no esté en la telemetría real). "
+                "Si el usuario pregunta si estás conectada al sistema o pide auditar WhatsApp y Zoho CRM, responde con total honestidad y transparencia "
+                "indicando exactamente a qué nodos Cloud 24/7 estás conectada en este instante y los datos reales obtenidos:\n"
+                f"- Telemetría Zoho One en vivo (Books + CRM Deals/Tasks/Contacts): {zoho_str}\n"
+                f"- Nodo Cloud WhatsApp (+52 442 181 2822 / 34.121.182.185:4747): {wa_str}\n"
                 f"- Tipo de cambio en vivo (Acqua Ixtapa USD/MXN): {fx_str}\n"
-                "- Estado de plataforma: API TheBestBrand / Aura activa en vivo.\n"
+                "- Estado de plataforma: API TheBestBrand / Aura 100% Cloud 24/7 activa (independiente de la Mac).\n"
                 "Responde directamente a Jorge en español de México, breve, clara y 100% veraz (máximo 3-4 oraciones).\n"
                 f"Historial reciente:\n{hist_str}\n"
                 f"Mensaje de Jorge: {q}"
@@ -492,7 +558,7 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
                 txt = data["candidates"][0]["content"]["parts"][0]["text"].strip()
                 if txt:
                     return {
-                        "specialist": "Aura ImproBears • Conectada en Vivo (Cero Datos Inventados)",
+                        "specialist": "Aura ImproBears • Cloud 24/7 en Vivo (Cero Datos Inventados)",
                         "reply": txt
                     }
         except Exception:
@@ -501,32 +567,93 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
     if zoho_live.get("connected"):
         invs = zoho_live.get("invoices") or []
         deals = zoho_live.get("deals") or []
-        inv_summary = ", ".join([f"{i['number']} ({i['customer']}: ${i['total']} {i['currency']}, estado {i['status']})" for i in invs[:3]]) or "sin facturas pendientes en la vista actual"
-        deal_summary = ", ".join([f"{d['name']} ({d['stage']})" for d in deals[:3]]) or "sin tratos abiertos en la vista actual"
+        tasks = zoho_live.get("tasks") or []
+        inv_summary = ", ".join([f"{i['number']} ({i['customer']}: ${i['total']} {i['currency']}, estado {i['status']})" for i in invs[:3]]) or "sin facturas pendientes"
+        deal_summary = ", ".join([f"{d['name']} ({d['stage']})" for d in deals[:3]]) or "sin tratos abiertos"
+        task_summary = ", ".join([f"{t['subject']} ({t['status']})" for t in tasks[:3]]) or "sin tareas registradas"
         return {
-            "specialist": "Aura ImproBears • Telemetría Zoho One en Vivo",
+            "specialist": "Aura ImproBears • Telemetría Zoho One Cloud 24/7",
             "reply": (
-                f"Jorge, consulta en vivo a Zoho One (Org {zoho_live.get('org_id')}): "
-                f"Facturas reales: {inv_summary}. Tratos en CRM: {deal_summary}."
+                f"Jorge, consulta Cloud 24/7 en vivo a Zoho One (Org {zoho_live.get('org_id')}): "
+                f"Facturas: {inv_summary}. Tratos: {deal_summary}. Tareas CRM: {task_summary}."
             )
         }
 
     fx_msg = f"Tipo de cambio DOF/Banxico en vivo: ${fx_live['usd_mxn']} MXN/USD." if fx_live.get("connected") else ""
+    wa_msg = f"WhatsApp Cloud (34.121.182.185): {'CONECTADO (' + str(wa_live.get('messages_count', 0)) + ' msgs)' if wa_live.get('connected') else wa_live.get('reason', 'sin enlace')}."
     return {
-        "specialist": "Aura ImproBears • Diagnóstico Real de Conexión",
+        "specialist": "Aura ImproBears • Diagnóstico Real Cloud 24/7",
         "reply": (
-            f"Jorge, te respondo con datos 100% reales sin inventar cifras: recibí tu consulta \"{q}\". "
-            f"Estado en vivo: servidor Cloud activo ({fx_msg}); Zoho OAuth en este nodo reporta: {zoho_live.get('reason', 'requiere enlace con servidor OpenClaw 34.121.182.185:4747')}."
+            f"Jorge, te respondo desde el servidor Cloud 24/7 (sin depender de tu Mac) y sin inventar datos: recibí \"{q}\". "
+            f"{fx_msg} {wa_msg} Zoho OAuth: {zoho_live.get('reason', 'pendiente')}."
         )
+    }
+
+
+_CLOUD_WHATSAPP_INBOUND_QUEUE: List[Dict[str, Any]] = []
+
+
+@app.get("/api/webhooks/whatsapp")
+def verify_meta_whatsapp_cloud_webhook(request: Request):
+    params = dict(request.query_params)
+    mode = params.get("hub.mode")
+    challenge = params.get("hub.challenge")
+    if mode == "subscribe" and challenge:
+        return Response(content=str(challenge), media_type="text/plain")
+    return {"ok": True, "cloud_24x7": True, "inbound_messages_count": len(_CLOUD_WHATSAPP_INBOUND_QUEUE)}
+
+
+@app.post("/api/webhooks/whatsapp")
+async def receive_meta_whatsapp_cloud_webhook(request: Request):
+    import datetime
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    entry = {
+        "received_at_utc": datetime.datetime.utcnow().isoformat() + "Z",
+        "payload": body
+    }
+    _CLOUD_WHATSAPP_INBOUND_QUEUE.insert(0, entry)
+    del _CLOUD_WHATSAPP_INBOUND_QUEUE[100:]
+    return {"ok": True, "cloud_24x7": True, "stored": True, "queue_size": len(_CLOUD_WHATSAPP_INBOUND_QUEUE)}
+
+
+@app.get("/api/whatsapp-compartment/audit-unregistered-tasks")
+@app.post("/api/whatsapp-compartment/audit-unregistered-tasks")
+async def cloud_audit_unregistered_crm_tasks():
+    zoho_live = _fetch_live_zoho_telemetry()
+    wa_live = _fetch_live_openclaw_whatsapp_cloud()
+    return {
+        "ok": True,
+        "cloud_24x7": True,
+        "mac_dependency": False,
+        "liveConnectionStatus": {
+            "whatsappWebhookRealMessages": len(_CLOUD_WHATSAPP_INBOUND_QUEUE),
+            "openClawNodeUrl": wa_live.get("url"),
+            "openClawReachableFromCloud": wa_live.get("connected", False),
+            "openClawMessagesCount": wa_live.get("messages_count", 0),
+            "openClawDiagnostic": wa_live.get("reason"),
+            "zohoCrmOAuthConnected": zoho_live.get("connected", False),
+            "zohoCrmLiveTasksCount": zoho_live.get("tasks_count", 0),
+            "zohoCrmLiveDealsCount": zoho_live.get("deals_count", 0),
+            "zohoBooksLiveInvoicesCount": zoho_live.get("invoices_count", 0)
+        },
+        "zohoLiveTasks": zoho_live.get("tasks", []),
+        "whatsappLiveMessages": wa_live.get("messages", []),
+        "tasks": []
     }
 
 
 @app.get("/api/aura/history")
 @app.get("/api/gina/history")
 def get_aura_cloud_history():
+    wa_live = _fetch_live_openclaw_whatsapp_cloud()
     return {
         "ok": True,
+        "cloud_24x7": True,
         "project": "Proyecto Aura ImproBears",
+        "openclaw_bridge": wa_live,
         "items": _AURA_CLOUD_HISTORY[:20]
     }
 
@@ -556,6 +683,7 @@ def handle_aura_action_button_or_chat(req: AuraActionButtonRequest):
 
     return {
         "ok": True,
+        "cloud_24x7": True,
         "project": "Proyecto Aura ImproBears",
         "specialist": specialist,
         "query": user_text,

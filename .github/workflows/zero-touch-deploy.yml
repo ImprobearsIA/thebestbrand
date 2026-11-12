@@ -50,3 +50,12 @@ jobs:
           else
             echo "✅ V86 Engines Verified. Local macOS Zero-Touch Guardian handles Firebase Hosting sync."
           fi
+
+      - name: Deploy Backend to Railway Cloud 24/7 (if RAILWAY_TOKEN configured)
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          if [ -n "$RAILWAY_TOKEN" ]; then
+            npx --yes @railway/cli up --detach || true
+          fi
+
