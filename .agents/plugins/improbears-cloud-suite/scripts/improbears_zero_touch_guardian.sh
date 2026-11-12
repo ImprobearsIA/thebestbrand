@@ -96,6 +96,22 @@ run_post_update_hooks() {
           || log_msg "ℹ️ [${repo_name}] Aura.app compilado (iPhone no conectado por cable en este momento)."
       fi
     fi
+
+    if echo "${changed_files}" | grep -qE "^(\.agents/plugins/improbears-cloud-suite/|public/assets/brand/dock-installer\.sh)"; then
+      if [ -f "${repo_dir}/.agents/plugins/improbears-cloud-suite/scripts/improbears_zero_touch_guardian.sh" ]; then
+        cp "${repo_dir}/.agents/plugins/improbears-cloud-suite/scripts/improbears_zero_touch_guardian.sh" "${STATE_DIR}/improbears_zero_touch_guardian.sh" 2>/dev/null || true
+        chmod +x "${STATE_DIR}/improbears_zero_touch_guardian.sh" 2>/dev/null || true
+      fi
+      if [ "$(uname -s)" = "Darwin" ]; then
+        if [ -f "${repo_dir}/public/assets/brand/dock-installer.sh" ]; then
+          log_msg "🖥️ [${repo_name}] Actualizando accesos directos del Dock desde dock-installer.sh..."
+          /bin/bash "${repo_dir}/public/assets/brand/dock-installer.sh" >> "${LOG_FILE}" 2>&1 || true
+        elif [ -x "${repo_dir}/.agents/plugins/improbears-cloud-suite/scripts/install_macos_dock_suite.sh" ]; then
+          log_msg "🖥️ [${repo_name}] Actualizando accesos directos del Dock desde install_macos_dock_suite.sh..."
+          "${repo_dir}/.agents/plugins/improbears-cloud-suite/scripts/install_macos_dock_suite.sh" >> "${LOG_FILE}" 2>&1 || true
+        fi
+      fi
+    fi
   fi
 
   # 2. TheBestBrand: Auto-deploy Firebase Hosting (thebestbrand-studio)
@@ -248,10 +264,40 @@ bootstrap_github_secrets() {
 }
 
 ensure_macos_dock_suite() {
-  # Instala automáticamente una vez los 3 accesos directos en el Dock de la Mac:
-  # TheBestBrand, TheBestGrowth (Automatización de Marketing) y Aura
+  # Instala y mantiene sincronizados automáticamente los 3 accesos directos en el Dock de la Mac:
+  # TheBestBrand (https://thebestbrand-studio.web.app/studio?studio=1)
+  # TheBestGrowth (https://improbears-com.web.app/consola-marketing#automatizacion-marketing)
+  # Aura (https://improbears-com.web.app/voz)
   [ "$(uname -s)" = "Darwin" ] || return 0
-  local marker="${STATE_DIR}/.dock_suite_installed_v1"
+
+  # 1. Si existe un instalador actualizado en el Escritorio (sincronizado por Google Drive) o en public/assets/brand/dock-installer.sh,
+  #    verificar su hash para ejecutarlo automáticamente cuando cambie sin pedir clic manual.
+  local desktop_installer=""
+  for d_cand in \
+    "${HOME}/Desktop/.instalar_dock_improbears.sh" \
+    "/Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi unidad/Desktop/.instalar_dock_improbears.sh" \
+    "/Users/oso/Proyectos_ImproBears_SSD/ImproBears-Web/public/assets/brand/dock-installer.sh"; do
+    if [ -f "${d_cand}" ]; then
+      desktop_installer="${d_cand}"
+      break
+    fi
+  done
+
+  if [ -n "${desktop_installer}" ]; then
+    local current_hash
+    current_hash="$(shasum -a 256 "${desktop_installer}" 2>/dev/null | awk '{print $1}' || true)"
+    local saved_hash_file="${STATE_DIR}/.dock_installer_last_sha256"
+    local saved_hash=""
+    [ -f "${saved_hash_file}" ] && saved_hash="$(cat "${saved_hash_file}" 2>/dev/null || true)"
+    if [ -n "${current_hash}" ] && [ "${current_hash}" != "${saved_hash}" ]; then
+      log_msg "🖥️ Detectada nueva versión de accesos directos del Dock (${desktop_installer}). Actualizando Dock automáticamente..."
+      printf "%s" "${current_hash}" > "${saved_hash_file}"
+      /bin/bash "${desktop_installer}" >> "${LOG_FILE}" 2>&1 || true
+      return 0
+    fi
+  fi
+
+  local marker="${STATE_DIR}/.dock_suite_installed_v6"
   [ -f "${marker}" ] && return 0
 
   local dock_script=""
@@ -265,7 +311,7 @@ ensure_macos_dock_suite() {
   done
 
   if [ -n "${dock_script}" ]; then
-    log_msg "🖥️ Instalando accesos directos en el Dock de macOS (TheBestBrand, TheBestGrowth, Aura)..."
+    log_msg "🖥️ Actualizando accesos directos en el Dock de macOS (TheBestBrand Studio, TheBestGrowth, Aura Viva)..."
     "${dock_script}" >> "${LOG_FILE}" 2>&1 && touch "${marker}" || true
   fi
 }

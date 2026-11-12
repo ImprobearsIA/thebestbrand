@@ -76,7 +76,7 @@ create_macos_app_bundle() {
   <key>CFBundlePackageType</key>
   <string>APPL</string>
   <key>CFBundleShortVersionString</key>
-  <string>2.1.0</string>
+  <string>3.1.0</string>
   <key>LSMinimumSystemVersion</key>
   <string>12.0</string>
   <key>NSHighResolutionCapable</key>
@@ -103,6 +103,10 @@ fi
 EOF
   chmod +x "${macos_dir}/launcher"
 
+  # Register updated bundle with macOS LaunchServices and update mtime
+  /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "${app_path}" >/dev/null 2>&1 || true
+  touch "${app_path}"
+
   # Also link in /Applications if writable
   if [ -w "/Applications" ]; then
     ln -sfn "${app_path}" "/Applications/${app_name}.app" || true
@@ -121,23 +125,23 @@ add_app_to_dock_idempotent() {
 
 echo "🎨 Creando paquetes .app con iconos Retina 1024x1024..."
 
-# 1. TheBestBrand
+# 1. TheBestBrand (Interactive Socratic Chat + Live 3D Aura Orb Studio)
 create_macos_app_bundle \
   "TheBestBrand" \
   "com.improbears.thebestbrand.dock" \
   "${ICONS_DIR}/TheBestBrand-1024.png" \
-  "https://thebestbrand-api-studio-production.up.railway.app/studio" \
-  "http://localhost:8000/studio"
+  "https://thebestbrand-studio.web.app/studio?studio=1" \
+  ""
 
-# 2. TheBestGrowth (Automatización de Marketing Omnicanal, Pauta y Zoho CRM)
+# 2. TheBestGrowth (Consola Directa de Automatización de Marketing Digital, Pauta 9:16 y Embudos Zoho CRM)
 create_macos_app_bundle \
   "TheBestGrowth" \
   "com.improbears.thebestgrowth.dock" \
   "${ICONS_DIR}/TheBestGrowth-1024.png" \
-  "https://improbears-com.web.app/ai#automatizacion-marketing" \
-  "http://localhost:5000/ai#automatizacion-marketing"
+  "https://improbears-com.web.app/consola-marketing#automatizacion-marketing" \
+  "http://localhost:5000/consola-marketing.html#automatizacion-marketing"
 
-# 3. Aura (Copiloto Ejecutivo de Voz & CarPlay)
+# 3. Aura (Copiloto Ejecutivo de Voz Neural Gemini, Orbe Radial 60fps & Chat en Vivo)
 create_macos_app_bundle \
   "Aura" \
   "com.improbears.aura.dock" \
@@ -145,16 +149,10 @@ create_macos_app_bundle \
   "https://improbears-com.web.app/voz" \
   "http://localhost:5000/voz"
 
-DOCK_CHANGED=0
 for app_title in "TheBestBrand" "TheBestGrowth" "Aura"; do
-  if add_app_to_dock_idempotent "${APPS_DIR}/${app_title}.app"; then
-    DOCK_CHANGED=1
-  fi
+  add_app_to_dock_idempotent "${APPS_DIR}/${app_title}.app" || true
 done
 
-if [ "${DOCK_CHANGED}" -eq 1 ]; then
-  killall Dock || true
-  echo "✅ Se anclaron TheBestBrand, TheBestGrowth y Aura en el Dock de tu Mac."
-else
-  echo "✅ Las 3 aplicaciones ya estaban ancladas en el Dock (iconos y URLs actualizados)."
-fi
+killall Dock || true
+echo "✅ Se actualizaron y refrescaron TheBestBrand, TheBestGrowth y Aura en el Dock de tu Mac."
+
