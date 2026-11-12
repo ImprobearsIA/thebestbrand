@@ -182,11 +182,21 @@ def serve_commercial_website():
 
 
 @app.get("/studio", response_class=HTMLResponse)
+@app.get("/studio.html", response_class=HTMLResponse)
 @app.get("/app", response_class=HTMLResponse)
 def serve_studio_direct():
-    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/index.html"))
+    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/studio.html"))
     with open(html_path, "r", encoding="utf-8") as f:
         return HTMLResponse(content=f.read(), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+
+
+@app.get("/{script_name}.js")
+def serve_web_root_js(script_name: str):
+    js_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"../web/{script_name}.js"))
+    if os.path.isfile(js_path):
+        with open(js_path, "r", encoding="utf-8") as f:
+            return Response(content=f.read(), media_type="application/javascript; charset=utf-8", headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+    return Response(content="// Not found", status_code=404, media_type="application/javascript")
 
 
 @app.get("/lab", response_class=HTMLResponse)
@@ -1631,6 +1641,106 @@ def api_export_quote_xlsx(req: ExportOfficeAssetRequest):
         content=xlsx_bytes,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={"Content-Disposition": f'attachment; filename="Cotizacion_Ejecutiva_{safe_slug}.xlsx"'}
+    )
+
+
+@app.post("/api/v1/office/export-brand-fonts-zip")
+def api_export_brand_fonts_zip(req: ExportOfficeAssetRequest):
+    """Exporta un paquete .ZIP con las 2 o 3 fuentes oficiales de código abierto (.TTF SIL OFL 1.1) utilizadas por la marca."""
+    import io
+    import zipfile
+
+    b = req.brand_profile or {}
+    raw_name = str(b.get("name") or "TheBestBrand").strip()
+    safe_slug = "".join([c if c.isalnum() else "_" for c in raw_name]) or "TheBestBrand"
+
+    pri_font = str(b.get("primaryFont") or b.get("primary_font") or "Montserrat").strip()
+    sec_font = str(b.get("secondaryFont") or b.get("secondary_font") or "Plus Jakarta Sans").strip()
+    mono_font = str(b.get("monoFont") or b.get("mono_font") or "JetBrains Mono").strip()
+
+    font_files_map = {
+        "montserrat": ["Montserrat-Regular.ttf", "Montserrat-Bold.ttf", "Montserrat-Black.ttf"],
+        "plus jakarta sans": ["PlusJakartaSans-Regular.ttf", "PlusJakartaSans-Bold.ttf", "PlusJakartaSans-ExtraBold.ttf"],
+        "outfit": ["Outfit-Regular.ttf", "Outfit-Bold.ttf"],
+        "league spartan": ["LeagueSpartan-Regular.ttf", "LeagueSpartan-Bold.ttf"],
+        "urbanist": ["Urbanist-Regular.ttf", "Urbanist-Bold.ttf"],
+        "space grotesk": ["SpaceGrotesk-Regular.ttf", "SpaceGrotesk-Bold.ttf"],
+        "inter": ["Inter-Regular.ttf", "Inter-Bold.ttf"],
+        "sora": ["Sora-Regular.ttf", "Sora-Bold.ttf"],
+        "manrope": ["Manrope-Regular.ttf", "Manrope-Bold.ttf"],
+        "playfair display": ["PlayfairDisplay-Regular.ttf", "PlayfairDisplay-Bold.ttf"],
+        "cormorant garamond": ["CormorantGaramond-Regular.ttf", "CormorantGaramond-Bold.ttf"],
+        "cinzel": ["Cinzel-Regular.ttf", "Cinzel-Bold.ttf"],
+        "libre baskerville": ["LibreBaskerville-Regular.ttf", "LibreBaskerville-Bold.ttf"],
+        "fraunces": ["Fraunces-Regular.ttf", "Fraunces-Bold.ttf"],
+        "syne": ["Syne-Regular.ttf", "Syne-Bold.ttf", "Syne-ExtraBold.ttf"],
+        "oswald": ["Oswald-Regular.ttf", "Oswald-Bold.ttf"],
+        "bebas neue": ["BebasNeue-Regular.ttf"],
+        "archivo black": ["ArchivoBlack-Regular.ttf"],
+        "dm sans": ["DMSans-Regular.ttf", "DMSans-Bold.ttf"],
+        "work sans": ["WorkSans-Regular.ttf", "WorkSans-Bold.ttf"],
+        "lato": ["Lato-Regular.ttf", "Lato-Bold.ttf"],
+        "jetbrains mono": ["JetBrainsMono-Regular.ttf", "JetBrainsMono-Bold.ttf"],
+        "ibm plex mono": ["IBMPlexMono-Regular.ttf", "IBMPlexMono-Bold.ttf"],
+        "space mono": ["SpaceMono-Regular.ttf", "SpaceMono-Bold.ttf"],
+        "avenir next": ["PlusJakartaSans-Regular.ttf", "PlusJakartaSans-Bold.ttf"],
+    }
+
+    FontGlyphMemoryCache.warmup()
+    fonts_dir = os.path.join(_ASSETS_DIR, "fonts")
+
+    def resolve_files(fam_name: str, fallback: str):
+        clean = fam_name.split(",")[0].replace("'", "").replace('"', "").strip().lower()
+        return font_files_map.get(clean) or font_files_map.get(fallback.lower()) or font_files_map["montserrat"]
+
+    groups = [
+        ("01_Titulares_y_Logomarca", pri_font, resolve_files(pri_font, "Montserrat")),
+        ("02_Cuerpo_y_Documentos", sec_font, resolve_files(sec_font, "Plus Jakarta Sans")),
+        ("03_Datos_Tecnicos_y_Tablas", mono_font, resolve_files(mono_font, "JetBrains Mono")),
+    ]
+
+    buf = io.BytesIO()
+    included_paths = []
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for role_prefix, fam_label, fnames in groups:
+            folder = f"{role_prefix}_{fam_label.replace(' ', '_')}"
+            for fn in fnames:
+                arcname = f"{folder}/{fn}"
+                data = FontGlyphMemoryCache._fonts_ram.get(fn)
+                if not data:
+                    disk_p = os.path.join(fonts_dir, fn)
+                    if os.path.isfile(disk_p):
+                        with open(disk_p, "rb") as f:
+                            data = f.read()
+                if data:
+                    zf.writestr(arcname, data)
+                    included_paths.append(f"   - {arcname} ({len(data) // 1024} KB)")
+
+        readme_txt = "\r\n".join([
+            "================================================================================",
+            f"KIT OFICIAL DE TIPOGRAFÍAS CORPORATIVAS · {raw_name.upper()}",
+            "Generado por The Best Brand — Algorithmic Visual Identity Atelier",
+            "================================================================================",
+            "",
+            "1. ARQUITECTURA TIPOGRÁFICA SELECCIONADA PARA TU MARCA:",
+            f"   • Tipografía Primaria (Titulares, Portadas y Logotipo): {pri_font}",
+            f"   • Tipografía Secundaria (Cuerpo de Lectura, Contratos y Presentaciones): {sec_font}",
+            f"   • Tipografía Técnica / Monoespaciada (Tablas, Folios, Cifras y Códigos): {mono_font}",
+            "",
+            "2. CONTENIDO DE ESTE PAQUETE (.TTF LISTOS PARA INSTALAR):",
+            *included_paths,
+            "",
+            "3. LICENCIA DE USO COMERCIAL ABIERTO (SIL OPEN FONT LICENSE 1.1):",
+            "   Todas las tipografías incluidas son de código abierto bajo licencia SIL OFL 1.1.",
+            "   Tu marca cuenta con autorización perpetua para usarlas en logotipos, imprenta, web y apps.",
+            ""
+        ])
+        zf.writestr("LEEME_GUIA_TIPOGRAFICA_E_INSTALACION.txt", readme_txt.encode("utf-8"))
+
+    return Response(
+        content=buf.getvalue(),
+        media_type="application/zip",
+        headers={"Content-Disposition": f'attachment; filename="Kit_Fuentes_Oficiales_{safe_slug}.zip"'}
     )
 
 

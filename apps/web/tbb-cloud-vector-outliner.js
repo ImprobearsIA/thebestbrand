@@ -11,23 +11,89 @@
   const FONT_URL_MAP = {
     "montserrat": "/assets/fonts/Montserrat-Black.ttf",
     "montserrat-bold": "/assets/fonts/Montserrat-Bold.ttf",
+    "montserrat-regular": "/assets/fonts/Montserrat-Regular.ttf",
     "plus jakarta sans": "/assets/fonts/PlusJakartaSans-ExtraBold.ttf",
+    "plus jakarta sans-bold": "/assets/fonts/PlusJakartaSans-Bold.ttf",
+    "plus jakarta sans-regular": "/assets/fonts/PlusJakartaSans-Regular.ttf",
+    "outfit": "/assets/fonts/Outfit-Bold.ttf",
+    "outfit-regular": "/assets/fonts/Outfit-Regular.ttf",
+    "league spartan": "/assets/fonts/LeagueSpartan-Bold.ttf",
+    "league spartan-regular": "/assets/fonts/LeagueSpartan-Regular.ttf",
+    "urbanist": "/assets/fonts/Urbanist-Bold.ttf",
+    "urbanist-regular": "/assets/fonts/Urbanist-Regular.ttf",
     "space grotesk": "/assets/fonts/SpaceGrotesk-Bold.ttf",
+    "space grotesk-regular": "/assets/fonts/SpaceGrotesk-Regular.ttf",
+    "inter": "/assets/fonts/Inter-Bold.ttf",
+    "inter-regular": "/assets/fonts/Inter-Regular.ttf",
+    "sora": "/assets/fonts/Sora-Bold.ttf",
+    "sora-regular": "/assets/fonts/Sora-Regular.ttf",
+    "manrope": "/assets/fonts/Manrope-Bold.ttf",
+    "manrope-regular": "/assets/fonts/Manrope-Regular.ttf",
     "playfair display": "/assets/fonts/PlayfairDisplay-Bold.ttf",
+    "playfair display-regular": "/assets/fonts/PlayfairDisplay-Regular.ttf",
     "cormorant garamond": "/assets/fonts/CormorantGaramond-Bold.ttf",
+    "cormorant garamond-regular": "/assets/fonts/CormorantGaramond-Regular.ttf",
+    "cinzel": "/assets/fonts/Cinzel-Bold.ttf",
+    "cinzel-regular": "/assets/fonts/Cinzel-Regular.ttf",
+    "libre baskerville": "/assets/fonts/LibreBaskerville-Bold.ttf",
+    "libre baskerville-regular": "/assets/fonts/LibreBaskerville-Regular.ttf",
+    "fraunces": "/assets/fonts/Fraunces-Bold.ttf",
+    "fraunces-regular": "/assets/fonts/Fraunces-Regular.ttf",
     "syne": "/assets/fonts/Syne-ExtraBold.ttf",
-    "outfit": "/assets/fonts/Outfit-Bold.ttf"
+    "syne-bold": "/assets/fonts/Syne-Bold.ttf",
+    "syne-regular": "/assets/fonts/Syne-Regular.ttf",
+    "oswald": "/assets/fonts/Oswald-Bold.ttf",
+    "oswald-regular": "/assets/fonts/Oswald-Regular.ttf",
+    "bebas neue": "/assets/fonts/BebasNeue-Regular.ttf",
+    "archivo black": "/assets/fonts/ArchivoBlack-Regular.ttf",
+    "dm sans": "/assets/fonts/DMSans-Bold.ttf",
+    "dm sans-regular": "/assets/fonts/DMSans-Regular.ttf",
+    "work sans": "/assets/fonts/WorkSans-Bold.ttf",
+    "work sans-regular": "/assets/fonts/WorkSans-Regular.ttf",
+    "lato": "/assets/fonts/Lato-Bold.ttf",
+    "lato-regular": "/assets/fonts/Lato-Regular.ttf",
+    "jetbrains mono": "/assets/fonts/JetBrainsMono-Bold.ttf",
+    "jetbrains mono-regular": "/assets/fonts/JetBrainsMono-Regular.ttf",
+    "ibm plex mono": "/assets/fonts/IBMPlexMono-Bold.ttf",
+    "ibm plex mono-regular": "/assets/fonts/IBMPlexMono-Regular.ttf",
+    "space mono": "/assets/fonts/SpaceMono-Bold.ttf",
+    "space mono-regular": "/assets/fonts/SpaceMono-Regular.ttf"
   };
 
   const _fontCache = new Map();
 
+  const ADOBE_TO_OFL_OUTLINE_MAP = {
+    "proxima nova": "montserrat",
+    "futura pt": "outfit",
+    "avenir next": "plus jakarta sans",
+    "brandon grotesque": "league spartan",
+    "neue haas grotesk": "inter",
+    "acumin pro": "space grotesk",
+    "aktiv grotesk": "manrope",
+    "din 2014": "oswald",
+    "adobe garamond pro": "cormorant garamond",
+    "minion pro": "libre baskerville",
+    "freight display pro": "playfair display",
+    "baskerville urw": "libre baskerville",
+    "mrs eaves": "cormorant garamond",
+    "bebas neue pro": "bebas neue",
+    "bodoni urw": "playfair display"
+  };
+
   function resolveFontUrl(fontFamilyStr, fontWeight) {
-    const clean = String(fontFamilyStr || "Montserrat")
+    let clean = String(fontFamilyStr || "Montserrat")
       .split(",")[0]
       .replace(/['"]/g, "")
       .trim()
       .toLowerCase();
-    if (clean === "montserrat" && Number(fontWeight) <= 700) {
+    if (ADOBE_TO_OFL_OUTLINE_MAP[clean]) {
+      clean = ADOBE_TO_OFL_OUTLINE_MAP[clean];
+    }
+    const w = Number(fontWeight) || 700;
+    if (w <= 500 && FONT_URL_MAP[clean + "-regular"]) {
+      return FONT_URL_MAP[clean + "-regular"];
+    }
+    if (clean === "montserrat" && w <= 700) {
       return FONT_URL_MAP["montserrat-bold"];
     }
     return FONT_URL_MAP[clean] || FONT_URL_MAP["montserrat"];

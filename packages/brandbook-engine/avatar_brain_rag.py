@@ -186,12 +186,27 @@ class GeminiNeuralVoiceSynthesizer:
     @classmethod
     def _synthesize_local_consistent_aura_wav_b64(cls, clean_text: str) -> Optional[str]:
         """
-        Primero intenta la voz neural humana es-MX-DaliaNeural (~1.1s). Solo si no hay red
-        recurre al motor local del sistema operativo.
+        Primero intenta la voz neural humana es-MX-DaliaNeural (~1.1s), luego Google TTS en español de México
+        (gTTS lang='es', tld='com.mx'), y finalmente el motor local del sistema operativo.
         """
         neural_b64 = cls._synthesize_edge_neural_dalia_b64(clean_text)
         if neural_b64:
             return neural_b64
+
+        try:
+            import io
+            from gtts import gTTS
+            mp3_buf = io.BytesIO()
+            tts_obj = gTTS(text=clean_text, lang="es", tld="com.mx", slow=False)
+            tts_obj.write_to_fp(mp3_buf)
+            mp3_bytes = mp3_buf.getvalue()
+            if mp3_bytes and len(mp3_bytes) > 200:
+                b64_out = base64.b64encode(mp3_bytes).decode("ascii")
+                if len(_TTS_MEMORY_CACHE) < 256:
+                    _TTS_MEMORY_CACHE[clean_text] = b64_out
+                return b64_out
+        except Exception:
+            pass
 
         import subprocess
         import tempfile

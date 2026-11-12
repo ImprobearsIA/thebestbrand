@@ -836,65 +836,65 @@
   const VIDEO_CAPSULES = [
     {
       step: 0,
-      title: "Recorrido Completo: Cómo Aura Construye tu Marca en 7 Pasos",
+      title: "Paso 0: Objetivo, Logo Base y Esencia del Giro",
       author: "Aura · Mentora de Marca con IA",
-      duration: "02:48",
-      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_aura_recorrido.mp4",
-      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_aura_recorrido.jpg",
-      quote: "«The Best Brand te da el control total: de tu propósito nuclear al Manual Oficial de Marca de 30 Hojas en Curvas listo para imprenta en minutos.»"
+      duration: "00:36",
+      url: "/assets/videos/capsula_teoria_paso_0.mp4?v=88.0",
+      poster: "/assets/videos/poster_paso_0.jpg?v=88.0",
+      quote: "«The Best Brand te da el control total: de tu propósito nuclear al Manual Oficial de Marca de 36 Láminas en Curvas listo para imprenta en minutos.»"
     },
     {
       step: 1,
       title: "Paso 1: Diálogo Socrático Nuclear (Círculo Dorado)",
       author: "Simon Sinek & Donald Miller",
-      duration: "00:44",
-      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_1.mp4",
-      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_1.jpg",
+      duration: "00:38",
+      url: "/assets/videos/capsula_teoria_paso_1.mp4?v=88.0",
+      poster: "/assets/videos/poster_paso_1.jpg?v=88.0",
       quote: "«La gente no compra lo que haces, sino el porqué lo haces (Start With Why).»"
     },
     {
       step: 2,
       title: "Paso 2: Ingeniería de Touchpoints (Antes · Durante · Después)",
       author: "Jan Carlzon & Don Norman",
-      duration: "00:43",
-      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_2.mp4",
-      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_2.jpg",
+      duration: "00:38",
+      url: "/assets/videos/capsula_teoria_paso_2.mp4?v=88.0",
+      poster: "/assets/videos/poster_paso_2.jpg?v=88.0",
       quote: "«En quince segundos de contacto tu cliente decide si confía para siempre en tu marca.»"
     },
     {
       step: 3,
       title: "Paso 3: Fonética y Naming Estratégico",
       author: "Alexandra Watkins & David Placek",
-      duration: "00:43",
-      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_3.mp4",
-      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_3.jpg",
+      duration: "00:38",
+      url: "/assets/videos/capsula_teoria_paso_3.mp4?v=88.0",
+      poster: "/assets/videos/poster_paso_3.jpg?v=88.0",
       quote: "«Un gran nombre reduce a la mitad tu costo de adquisición de clientes.»"
     },
     {
       step: 4,
       title: "Paso 4: Calibración Visual Kansei y Tipografías",
       author: "Mitsuo Nagamachi & Robert Bringhurst",
-      duration: "00:47",
-      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_4.mp4",
-      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_4.jpg",
+      duration: "00:38",
+      url: "/assets/videos/capsula_teoria_paso_4.mp4?v=88.0",
+      poster: "/assets/videos/poster_paso_4.jpg?v=88.0",
       quote: "«La tipografía y la geometría transmiten confianza visceral antes de que la razón intervenga.»"
     },
     {
       step: 5,
       title: "Paso 5: Síntesis Vectorial 3D y Logotipo",
       author: "Paul Rand & Jony Ive",
-      duration: "00:45",
-      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_5.mp4",
-      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_5.jpg",
+      duration: "00:38",
+      url: "/assets/videos/capsula_teoria_paso_5.mp4?v=88.0",
+      poster: "/assets/videos/poster_paso_5.jpg?v=88.0",
       quote: "«El diseño no es solo cómo se ve, sino cómo transforma la complejidad en belleza y función.»"
     },
     {
       step: 6,
-      title: "Paso 6: La Bóveda de Manual de Marca de 30 Hojas en Curvas",
+      title: "Paso 6: La Bóveda del Manual de Marca de 36 Láminas en Curvas",
       author: "Massimo Vignelli & Josef Müller-Brockmann",
-      duration: "00:48",
-      url: "https://storage.googleapis.com/thebestbrand-media-crm/videos/capsula_teoria_paso_6.mp4",
-      poster: "https://storage.googleapis.com/thebestbrand-media-crm/videos/poster_paso_6.jpg",
+      duration: "00:40",
+      url: "/assets/videos/capsula_teoria_paso_6.mp4?v=88.0",
+      poster: "/assets/videos/poster_paso_6.jpg?v=88.0",
       quote: "«El orden tipográfico y la disciplina de retícula convierten una idea en un imperio.»"
     }
   ];

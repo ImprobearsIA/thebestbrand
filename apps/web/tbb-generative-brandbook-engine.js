@@ -209,7 +209,7 @@
       }
     `;
     return `
-      @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Cormorant+Garamond:wght@600;700&family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&family=Montserrat:wght@400;500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Cinzel:wght@600;700;800;900&family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,700;9..144,900&family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Lato:wght@400;700;900&family=League+Spartan:wght@500;700;800;900&family=Libre+Baskerville:wght@400;700&family=Manrope:wght@400;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&family=Oswald:wght@500;600;700&family=Outfit:wght@500;600;700;800;900&family=Playfair+Display:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=Urbanist:wght@500;600;700;800;900&family=Work+Sans:wght@400;600;700&display=swap');
 
       ${bodyCss}
 
@@ -523,6 +523,155 @@
     `;
   }
 
+  // --- MOTOR DE SÍNTESIS EDITORIAL EJECUTIVA (CERO CUADROS GIGANTES DE TEXTO / CERO REDUNDANCIA) ---
+  function extractShortCategoryBadge(categoryRaw, giroRaw, bName) {
+    const combined = `${categoryRaw || ""} ${giroRaw || ""} ${bName || ""}`.toLowerCase();
+    const rawTrim = String(categoryRaw || "").trim();
+    if (rawTrim && rawTrim.split(/\s+/).length <= 5 && rawTrim.length <= 42) {
+      return rawTrim;
+    }
+    if (/inteligencia artificial|identidad de marca|saas|brandbook|logotipo|the\s*best\s*brand/i.test(combined)) {
+      return "Plataforma SaaS e Identidad de Marca con IA";
+    }
+    if (/constructora|obra civil|ingenier[ií]a civil|infraestructura|arquitectura/i.test(combined)) {
+      return "Ingeniería Civil, Arquitectura e Infraestructura";
+    }
+    if (/alimento|ingrediente|cervec|bebida|gastronom/i.test(combined)) {
+      return "Ingeniería de Ingredientes y Soluciones Alimentarias";
+    }
+    if (/deport|liga|marcador|torneo|broadcast/i.test(combined)) {
+      return "Tecnología Deportiva y Experiencia en Tiempo Real";
+    }
+    if (/consultor|estrategia|negocio/i.test(combined)) {
+      return "Consultoría Estratégica y Sistemas de Negocio";
+    }
+    const words = String(giroRaw || categoryRaw || "Servicios Especializados").replace(/[.,;:]+/g, "").trim().split(/\s+/).slice(0, 5).join(" ");
+    return words || "Soluciones Estratégicas y Servicios";
+  }
+
+  const DANGLING_SPANISH_WORDS = /^(?:de|del|a|al|en|con|por|para|sin|sobre|entre|hacia|hasta|desde|contra|según|segun|tras|mediante|durante|y|e|o|u|ni|que|quien|quienes|cual|cuales|cuyo|cuya|cuyos|cuyas|donde|cuando|como|pero|mas|sino|aunque|porque|pues|si|no|muy|tan|más|mas|menos|mi|mis|tu|tus|su|sus|nuestro|nuestra|nuestros|nuestras|el|la|los|las|un|una|unos|unas|lo|le|les|me|te|se|nos|ha|han|he|hemos|es|son|fue|fueron|ser|estar|está|estan|están|impulsada|impulsado|basada|basado|enfocada|enfocado|orientada|orientado|diseñada|diseñado|creada|creado|pensada|pensado)$/i;
+
+  function stripTrailingDanglingWords(text) {
+    let words = String(text || "").replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
+    while (words.length > 3) {
+      const last = words[words.length - 1].replace(/[.,;:\-–—!?]+$/, "");
+      if (DANGLING_SPANISH_WORDS.test(last)) {
+        words.pop();
+      } else {
+        break;
+      }
+    }
+    return words.join(" ").replace(/[,;:\-–—.]+$/, "");
+  }
+
+  function trimToWordBoundary(str, maxWords = 24) {
+    const clean = String(str || "").replace(/\s+/g, " ").trim();
+    if (!clean) return "";
+    // Si hay una oración completa antes o cerca de maxWords, preferir cortar en punto o punto y coma
+    const sentences = clean.split(/(?<=[.!?])\s+/);
+    if (sentences[0] && sentences[0].split(" ").length <= maxWords + 4) {
+      return sentences[0];
+    }
+    const words = clean.split(" ");
+    if (words.length <= maxWords) return clean;
+    // Buscar la última coma o punto y coma dentro del rango [Math.floor(maxWords*0.65), maxWords+2]
+    const subSlice = words.slice(0, maxWords + 2).join(" ");
+    const lastCommaIdx = Math.max(subSlice.lastIndexOf(", "), subSlice.lastIndexOf("; "), subSlice.lastIndexOf(" · "));
+    let candidate = "";
+    if (lastCommaIdx > subSlice.length * 0.55) {
+      candidate = subSlice.slice(0, lastCommaIdx);
+    } else {
+      candidate = words.slice(0, maxWords).join(" ");
+    }
+    let stripped = stripTrailingDanglingWords(candidate);
+    if (!/[.!?]$/.test(stripped)) stripped += ".";
+    return stripped;
+  }
+
+  function splitEditorialLeadAndBody(rawText, fallbackLead, fallbackBody, maxLeadWords = 12, maxBodyWords = 28) {
+    const clean = String(rawText || "").replace(/\s+/g, " ").trim();
+    if (!clean) {
+      return { lead: fallbackLead || "", body: fallbackBody || "", bullets: [] };
+    }
+    // Si tiene puntos numerados (ej. "1. ... · 2. ... · 3. ..."), separarlos limpiamente
+    if (/\b1[\.\)]\s+/.test(clean) && /\b2[\.\)]\s+/.test(clean)) {
+      const parts = clean
+        .split(/(?:\s*·\s*|\s+(?=\d[\.\)]\s+))/)
+        .map((s) => s.replace(/^\d+[\.\)]\s*/, "").trim())
+        .filter(Boolean);
+      const lead = fallbackLead || stripTrailingDanglingWords(trimToWordBoundary(parts[0], maxLeadWords));
+      const bullets = parts.slice(0, 3).map((p) => trimToWordBoundary(p, 18));
+      const body = bullets.join(" · ");
+      return { lead, body, bullets };
+    }
+
+    // Dividir primero por oraciones completas (. ! ? ; o ·)
+    const sentences = clean
+      .split(/(?<=[.!?])\s+|\s*[;:]\s+|\s+·\s+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    let lead = "";
+    let remainder = "";
+
+    const firstSent = sentences[0] || clean;
+    const firstSentWords = firstSent.split(" ").filter(Boolean);
+
+    // Si hay una oración de cierre o tesis clara (ej. "Creamos ... para ...") en sentences[1], usarla como lead ejecutivo y sentences[0] como contexto
+    const thesisSentenceIdx = sentences.findIndex((s, idx) => idx > 0 && /^(?:creamos|nuestra\s+promesa|transformamos|entregamos|profesionalizamos)/i.test(s));
+
+    if (firstSentWords.length >= 4 && firstSentWords.length <= maxLeadWords + 4) {
+      lead = stripTrailingDanglingWords(firstSent);
+      remainder = sentences.slice(1).join(" ");
+    } else if (thesisSentenceIdx > 0) {
+      lead = stripTrailingDanglingWords(sentences[thesisSentenceIdx].split(" ").slice(0, maxLeadWords + 3).join(" "));
+      remainder = sentences.filter((_, idx) => idx !== thesisSentenceIdx).join(" ");
+    } else {
+      // Si la primera oración es larga y conversacional, usar el titular ejecutivo sintetizado (fallbackLead) y poner la primera oración limpia en el cuerpo
+      lead = fallbackLead || stripTrailingDanglingWords(firstSentWords.slice(0, maxLeadWords).join(" "));
+      remainder = clean;
+    }
+
+    if (lead) {
+      lead = lead.charAt(0).toUpperCase() + lead.slice(1).replace(/[.,;:\-–—]+$/, "");
+    }
+
+    const bodySource = (remainder || clean).replace(/^[.,;:\s]+/, "").trim();
+    const body = bodySource
+      ? trimToWordBoundary(bodySource.charAt(0).toUpperCase() + bodySource.slice(1), maxBodyWords)
+      : (fallbackBody || trimToWordBoundary(clean, maxBodyWords));
+
+    const bulletCandidates = clean
+      .split(/(?<=[.!?])\s+|;\s+/)
+      .map((s) => s.replace(/^[,\s]+/, "").trim())
+      .filter((s) => s.split(" ").length >= 4);
+
+    const bullets = bulletCandidates.slice(0, 3).map((b) => {
+      const cap = b.charAt(0).toUpperCase() + b.slice(1);
+      return trimToWordBoundary(cap, 16);
+    });
+
+    return { lead, body, bullets };
+  }
+
+  function synthesizeCompactClause(rawText, fallbackText, maxWords = 12) {
+    const clean = String(rawText || "").replace(/\s+/g, " ").trim();
+    if (!clean) return fallbackText;
+    if (/^\d+[\.\)]/.test(clean)) {
+      return fallbackText;
+    }
+    const stripped = clean
+      .replace(/^(?:porque\s+a\s+m[ií]\s+como\s+[^,]+,\s*|porque\s+|la\s+diferencia\s+es\s+que\s+aqu[ií]\s+|somos\s+una\s+|como\s+un\s+)/i, "")
+      .trim();
+    const firstSentence = stripped.split(/[.;:]|\s+·\s+/)[0].trim();
+    const words = firstSentence.split(" ");
+    if (words.length > maxWords + 2 || words.length < 4) {
+      return fallbackText;
+    }
+    const short = stripTrailingDanglingWords(words.slice(0, maxWords).join(" "));
+    return short || fallbackText;
+  }
+
   // --- GENERADOR DE LAS 30 LÁMINAS DESDE CERO ---
   function generateBrandbook30Plates(brand) {
     const bName = brand.name || "The Best Brand";
@@ -530,7 +679,9 @@
     const slug = brand.slug || bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
     const tagline = brand.tagline || "BRAND IDENTITY ATELIER";
     const giro = brand.giro || "Servicios profesionales e identidad de marca";
-    const category = brand.category || "Servicios Generales";
+    const categoryRaw = brand.category || "Servicios Generales";
+    const shortCategory = extractShortCategoryBadge(categoryRaw, giro, bName);
+    const category = shortCategory;
     const buyer = brand.buyer || "Clientes y empresas que buscan excelencia";
     const why = brand.why || "Porque el propósito auténtico conecta con las personas y trasciende.";
     const how = brand.how || "Procesos rigurosos, atención cercana y tecnología de vanguardia.";
@@ -540,6 +691,50 @@
     const tpBefore = brand.tpBefore || ["Presencia digital clara", "Atención ágil", "Diagnóstico inicial", "Propuesta transparente"];
     const tpDuring = brand.tpDuring || ["Bienvenida cálida", "Ejecución profesional", "Acompañamiento en vivo", "Cobro y entrega clara"];
     const tpAfter = brand.tpAfter || ["Manual y garantía", "Seguimiento post-venta", "Beneficios leales", "Encuesta de calidad"];
+
+    // Síntesis editorial estructurada para evitar cajas gigantes de texto y textos duplicados entre láminas
+    const giroSplit = splitEditorialLeadAndBody(
+      giro,
+      `Ecosistema integral de identidad y estrategia para ${bName}`,
+      "Transformamos la visión del líder en un sistema visual y operativo listo para crecer.",
+      12,
+      26
+    );
+    const whySplit = splitEditorialLeadAndBody(
+      why,
+      "Pasar del caos al sistema liberando tiempo mental al líder",
+      "Erradicamos la improvisación visual y los procesos lentos mediante ingeniería de marca accesible y rigurosa.",
+      10,
+      22
+    );
+    const howSplit = splitEditorialLeadAndBody(
+      how,
+      "Co-creación guiada paso a paso con IA y geometría en curvas",
+      "1. Diagnóstico en lenguaje claro · 2. Iteración de logotipo en vivo · 3. Bóveda inmediata de entregables.",
+      10,
+      24
+    );
+    const whatSplit = splitEditorialLeadAndBody(
+      what,
+      "Identidad vectorial en curvas, kit tipográfico y manual de 36 láminas",
+      "Entregamos activos 100% editables (.SVG, .AI, .PDF, .DOCX, .PPTX y fuentes) listos para imprenta y operación.",
+      10,
+      22
+    );
+    const personaSplit = splitEditorialLeadAndBody(
+      persona,
+      "Socio leal con mente de ingeniero, fuerza tranquila y trato cálido",
+      `Si ${bName} fuera una persona, escucharía primero con atención la idea del cliente, hablaría claro sin tecnicismos rebuscados y profesionalizaría cada detalle hombro a hombro sin imponer su ego.`,
+      10,
+      26
+    );
+    const buyerSplit = splitEditorialLeadAndBody(
+      buyer,
+      "Fundadores, directores y empresarios que exigen orden y excelencia",
+      "Líderes prácticos que valoran su tiempo, buscan certeza técnica en sus entregables y quieren que su empresa proyecte confianza inmediata desde el primer contacto.",
+      10,
+      26
+    );
 
     const pri = (brand.colors && brand.colors.pri) || "#0D2540";
     const sec = (brand.colors && brand.colors.sec) || "#426EAE";
@@ -564,16 +759,23 @@
     // Generar la Terna de Logos Profesional
     const suite = generateTriFoldLogoSuite(brand);
 
-    // Resolver fotografías editoriales realistas 4:3 de capítulos (o Capturas Reales de la App para TheBestBrand)
-    const isTbbAppBrand = /^the_?best_?brand$/i.test(brand.slug || bName) && !brand.hasUploadedLogo;
-    const flowCacheKeyV86 = `photo_v86|${brand.slug || "marca"}|${(brand.giro || "").slice(0, 32)}`;
-    const flowCacheKeyV85 = `photo_v85|${brand.slug || "marca"}|${(brand.giro || "").slice(0, 32)}`;
-    const legacyFlowKey = `${brand.slug || "marca"}|${(brand.giro || "").slice(0, 32)}`;
-    const flowVisuals = (typeof window !== "undefined" && window._tbbFlowVisualsCache && (
+    // Resolver fotografías editoriales realistas 4:3 de capítulos con AISLAMIENTO ESTRICTO POR MARCA (Cero cruce con Arco)
+    const isArcoBrand = /^arco(_ingenier[ií]a)?$/i.test(slug);
+    const editorialPhotoPrefix = isArcoBrand ? "arco" : "tbb";
+    const flowCacheKeyV86 = `photo_v86|${slug}|${(brand.giro || "").slice(0, 32)}`;
+    const flowCacheKeyV85 = `photo_v85|${slug}|${(brand.giro || "").slice(0, 32)}`;
+    const rawFlowVisuals = (typeof window !== "undefined" && window._tbbFlowVisualsCache && (
       window._tbbFlowVisualsCache[flowCacheKeyV86] ||
-      window._tbbFlowVisualsCache[flowCacheKeyV85] ||
-      window._tbbFlowVisualsCache[legacyFlowKey]
+      window._tbbFlowVisualsCache[flowCacheKeyV85]
     )) || {};
+    // Filtrar cualquier URL residual que apunte a otra marca
+    const flowVisuals = {};
+    Object.keys(rawFlowVisuals).forEach((k) => {
+      const val = String(rawFlowVisuals[k] || "");
+      if (!isArcoBrand && /arco_/i.test(val)) return;
+      if (isArcoBrand && /tbb_0/i.test(val)) return;
+      flowVisuals[k] = val;
+    });
 
     const slotFallbackAlias = {
       step0_splash: "persona",
@@ -584,52 +786,30 @@
       step6_map: "environment"
     };
 
-    function renderChapterVisualFrame(slotKey, fallbackTitle, fallbackSub, appCapturePath) {
-      const safeCapture = typeof appCapturePath === "string" ? appCapturePath : "";
-      if (isTbbAppBrand && safeCapture) {
-        return `
-          <div class="tbb-visual-frame" style="border-bottom-color:${acc};">
-            <img src="${safeCapture}" alt="${esc(fallbackTitle)}" />
-            <div class="tbb-visual-caption" style="border-left-color:${acc};">
-              <span>${esc(fallbackTitle)}</span>
-              <span style="color:${pri};font-family:'JetBrains Mono',monospace;font-size:10.5px;">UI EN VIVO · 4:3</span>
-            </div>
-          </div>
-        `;
-      }
-      const resolvedSrc = (flowVisuals && (flowVisuals[slotKey] || (slotFallbackAlias[slotKey] && flowVisuals[slotFallbackAlias[slotKey]]))) || "";
-      if (resolvedSrc) {
-        return `
-          <div class="tbb-visual-frame" style="border-bottom-color:${acc};">
-            <img src="${resolvedSrc}" alt="${esc(fallbackTitle)}" />
-            <div class="tbb-visual-caption" style="border-left-color:${acc};">
-              <span>${esc(fallbackTitle)}</span>
-              <span style="color:${pri};font-family:'JetBrains Mono',monospace;font-size:10.5px;">FOTOGRAFÍA EDITORIAL · 4:3</span>
-            </div>
-          </div>
-        `;
-      }
-      // Lienzo editorial limpio con proporción exacta 4:3 mientras carga la fotografía realista
+    function renderChapterVisualFrame(slotKey, fallbackTitle, fallbackSub) {
+      const defaultEditorialPhotoMap = {
+        persona: `/assets/editorial_photos/${editorialPhotoPrefix}_01_persona.jpg`,
+        step0_splash: `/assets/editorial_photos/${editorialPhotoPrefix}_01_persona.jpg`,
+        buyer: `/assets/editorial_photos/${editorialPhotoPrefix}_02_buyer.jpg`,
+        step1_golden: `/assets/editorial_photos/${editorialPhotoPrefix}_02_buyer.jpg`,
+        tpBefore: `/assets/editorial_photos/${editorialPhotoPrefix}_03_tp_before.jpg`,
+        step3_touchpoints: `/assets/editorial_photos/${editorialPhotoPrefix}_03_tp_before.jpg`,
+        tpDuring: `/assets/editorial_photos/${editorialPhotoPrefix}_04_tp_during.jpg`,
+        step4_kansei: `/assets/editorial_photos/${editorialPhotoPrefix}_04_tp_during.jpg`,
+        tpAfter: `/assets/editorial_photos/${editorialPhotoPrefix}_05_tp_after.jpg`,
+        step5_atelier: `/assets/editorial_photos/${editorialPhotoPrefix}_05_tp_after.jpg`,
+        environment: `/assets/editorial_photos/${editorialPhotoPrefix}_06_environment.jpg`,
+        step6_map: `/assets/editorial_photos/${editorialPhotoPrefix}_06_environment.jpg`
+      };
+      const resolvedSrc = (flowVisuals && (flowVisuals[slotKey] || (slotFallbackAlias[slotKey] && flowVisuals[slotFallbackAlias[slotKey]])))
+        || defaultEditorialPhotoMap[slotKey]
+        || `/assets/editorial_photos/${editorialPhotoPrefix}_06_environment.jpg`;
       return `
-        <div class="tbb-visual-frame" style="border-bottom-color:${acc}; background:linear-gradient(135deg, #FFFFFF 0%, ${softBg} 100%); padding:22px; display:flex; flex-direction:column; justify-content:space-between;">
-          <svg viewBox="0 0 420 230" width="100%" height="205" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block;">
-            <path d="M 0 162 C 130 118, 270 196, 420 132 L 420 230 L 0 230 Z" fill="${pri}" fill-opacity="0.06"/>
-            <path d="M 0 186 C 155 152, 295 208, 420 162 L 420 230 L 0 230 Z" fill="${acc}" fill-opacity="0.14"/>
-            <circle cx="98" cy="108" r="58" fill="#FFFFFF" stroke="${lightGray}" stroke-width="1.5"/>
-            <g transform="translate(48, 58) scale(0.5)">
-              ${symCore}
-            </g>
-            <line x1="182" y1="68" x2="368" y2="68" stroke="${pri}" stroke-width="4" stroke-linecap="round"/>
-            <line x1="182" y1="92" x2="328" y2="92" stroke="${sec}" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="182" y1="114" x2="380" y2="114" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
-            <line x1="182" y1="132" x2="346" y2="132" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid ${lightGray};padding-top:10px;position:relative;z-index:2;">
-            <div>
-              <div style="font-family:'Montserrat',sans-serif;font-size:14px;font-weight:800;color:${darkInk};">${esc(fallbackTitle)}</div>
-              <div style="font-size:12.5px;color:#475569;">${esc(fallbackSub)}</div>
-            </div>
-            <span style="background:${pri};color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:999px;">4:3</span>
+        <div class="tbb-visual-frame" style="border-bottom-color:${acc};">
+          <img src="${resolvedSrc}" alt="${esc(fallbackTitle)}" />
+          <div class="tbb-visual-caption" style="border-left-color:${acc};">
+            <span>${esc(fallbackTitle)}</span>
+            <span style="color:${pri};font-family:'JetBrains Mono',monospace;font-size:10.5px;">FOTOGRAFÍA EDITORIAL · 4:3</span>
           </div>
         </div>
       `;
@@ -680,7 +860,7 @@
     const plates = [];
 
     // =========================================================================
-    // LÁMINA 01: PORTADA MONUMENTAL DE AUTOR EN CURVAS
+    // LÁMINA 01: PORTADA MONUMENTAL DE AUTOR EN CURVAS (JERARQUÍA LIMPIA SIN REDUNDANCIA)
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-01">
@@ -703,32 +883,35 @@
 
         <div style="position:relative; z-index:2; display:grid; grid-template-columns: 1.18fr 0.82fr; gap:44px; align-items:center; flex:1; padding:18px 0;">
           <div style="padding:10px 14px 10px 0;">
-            <span style="display:inline-block; border-left:4px solid ${acc}; padding:2px 0 2px 12px; font-family:'JetBrains Mono', monospace; font-size:13px; font-weight:800; color:${pri}; margin-bottom:14px;">
-              ${esc(category.toUpperCase())}
+            <span style="display:inline-block; border-left:4px solid ${acc}; padding:2px 0 2px 12px; font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:800; color:${pri}; margin-bottom:12px; letter-spacing:0.6px;">
+              ${esc(shortCategory.toUpperCase())}
             </span>
-            <h1 style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:54px; font-weight:900; line-height:1.04; color:${darkInk}; margin:0 0 12px 0; letter-spacing:0px;">
+            <h1 style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:52px; font-weight:900; line-height:1.04; color:${darkInk}; margin:0 0 10px 0; letter-spacing:0px;">
               ${esc(bUpper)}
             </h1>
-            <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:18px; font-weight:800; color:${pri}; letter-spacing:0px; margin-bottom:16px;">
+            <div style="font-family:'Plus Jakarta Sans', sans-serif; font-size:17.5px; font-weight:800; color:${pri}; letter-spacing:0px; margin-bottom:14px;">
               ${esc(tagline.toUpperCase())}
             </div>
-            <svg width="240" height="10" viewBox="0 0 240 10" xmlns="http://www.w3.org/2000/svg" style="display:block; margin-bottom:18px;">
+            <svg width="240" height="10" viewBox="0 0 240 10" xmlns="http://www.w3.org/2000/svg" style="display:block; margin-bottom:16px;">
               <line x1="0" y1="5" x2="102" y2="5" stroke="${acc}" stroke-width="3.8" stroke-linecap="round"/>
               <line x1="112" y1="5" x2="192" y2="5" stroke="${sec}" stroke-width="2.4" stroke-linecap="round"/>
               <circle cx="208" cy="5" r="4" fill="${pri}"/>
             </svg>
-            <p style="font-size:16.5px; line-height:1.65; color:#1E293B; margin:0 0 24px 0; max-width:560px;">
-              ${esc(giro)}
+            <div style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:17px; font-weight:800; color:${darkInk}; line-height:1.42; margin:0 0 8px 0; max-width:560px;">
+              ${esc(giroSplit.lead)}.
+            </div>
+            <p style="font-size:15px; line-height:1.62; color:#334155; margin:0 0 22px 0; max-width:560px;">
+              ${esc(giroSplit.body)}
             </p>
 
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; border-top:1.5px solid ${lightGray}; padding-top:16px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; border-top:1.5px solid ${lightGray}; padding-top:14px;">
               <div style="border-left:3.5px solid ${acc}; padding-left:14px;">
-                <div style="font-size:12px; font-weight:800; color:${acc};">PROPÓSITO NUCLEAR</div>
-                <div style="font-size:15px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.5;">${esc(why.slice(0, 110))}${why.length > 110 ? "…" : ""}</div>
+                <div style="font-size:11.5px; font-weight:800; color:${acc}; letter-spacing:0.5px;">PROPÓSITO NUCLEAR</div>
+                <div style="font-size:14px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.45;">${esc(whySplit.lead)}.</div>
               </div>
               <div style="border-left:3.5px solid ${sec}; padding-left:14px;">
-                <div style="font-size:12px; font-weight:800; color:${sec};">CLASIFICACIÓN NIZA</div>
-                <div style="font-size:15px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.5;">${esc(niza.slice(0, 64))}</div>
+                <div style="font-size:11.5px; font-weight:800; color:${sec}; letter-spacing:0.5px;">CLASIFICACIÓN NIZA</div>
+                <div style="font-size:14px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.45;">${esc(trimToWordBoundary(niza, 11))}</div>
               </div>
             </div>
           </div>
@@ -829,23 +1012,31 @@
     `);
 
     // =========================================================================
-    // LÁMINA 03: MANIFIESTO CENTRAL Y FILOSOFÍA OPERATIVA (FLUJO EDITORIAL ABIERTO)
+    // LÁMINA 03: MANIFIESTO CENTRAL Y FILOSOFÍA OPERATIVA (SIN REPETIR TEXTO DE PORTADA)
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-03">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 3, "Manifiesto Central y Filosofía Operativa")}
         <div style="display:grid; grid-template-columns: 1.12fr 0.88fr; gap:42px; flex:1; align-items:center;">
-          <div style="display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
+          <div style="display:flex; flex-direction:column; justify-content:space-between; gap:18px;">
             <div style="border-left:5px solid ${acc}; padding:4px 0 4px 22px;">
-              <span class="tbb-editorial-kicker" style="color:${acc};">DECLARACIÓN DE PRINCIPIOS</span>
-              <div style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:26px; font-weight:900; line-height:1.32; color:${darkInk};">
-                “El valor real no se impone: se demuestra con rigor técnico, calidez humana y certidumbre en cada interacción.”
+              <span class="tbb-editorial-kicker" style="color:${acc};">DECLARACIÓN DE PRINCIPIOS · FILOSOFÍA RECTORA</span>
+              <div style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:23px; font-weight:900; line-height:1.34; color:${darkInk};">
+                “El valor real no se impone: se construye escuchando primero al cliente y transformando el caos en un sistema claro, humano y medible.”
               </div>
             </div>
             <hr class="tbb-editorial-divider" />
-            <div>
-              <span class="tbb-editorial-kicker" style="color:${pri};">COMPROMISO INSTITUCIONAL DE ${esc(bUpper)}</span>
-              <p class="tbb-editorial-copy" style="font-size:17px;">${esc(giro)}</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+              <div style="border-left:3.5px solid ${pri}; padding-left:14px;">
+                <span class="tbb-editorial-kicker" style="color:${pri}; font-size:10.5px;">PROMESA DE VALOR</span>
+                <div style="font-size:15px; font-weight:800; color:${darkInk}; line-height:1.45; margin-bottom:4px;">${esc(whatSplit.lead)}.</div>
+                <div style="font-size:13.5px; color:#475569; line-height:1.5;">${esc(trimToWordBoundary(whatSplit.body, 18))}</div>
+              </div>
+              <div style="border-left:3.5px solid ${sec}; padding-left:14px;">
+                <span class="tbb-editorial-kicker" style="color:${sec}; font-size:10.5px;">SELLO METODOLÓGICO</span>
+                <div style="font-size:15px; font-weight:800; color:${darkInk}; line-height:1.45; margin-bottom:4px;">${esc(howSplit.lead)}.</div>
+                <div style="font-size:13.5px; color:#475569; line-height:1.5;">Co-creación ágil hombro a hombro con trazabilidad técnica de principio a fin.</div>
+              </div>
             </div>
             <div class="tbb-kpi-strip">
               <div class="tbb-kpi-pill" style="border-left-color:${pri};">
@@ -862,18 +1053,18 @@
               </div>
             </div>
           </div>
-          <div style="display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
+          <div style="display:flex; flex-direction:column; justify-content:space-between; gap:18px;">
             <div class="tbb-editorial-pillar" style="border-left-color:${pri};">
-              <div class="tbb-card-title" style="color:${pri};">1. Rigor Metodológico</div>
-              <div class="tbb-card-body">Cero atajos ni improvisaciones; cada entregable, servicio o producto responde a los más altos estándares técnicos de su categoría.</div>
+              <div class="tbb-card-title" style="color:${pri};">1. Del Caos al Sistema</div>
+              <div class="tbb-card-body">Toda decisión de diseño y operación elimina fricción, ordena los activos del negocio y libera tiempo mental al tomador de decisiones.</div>
             </div>
             <div class="tbb-editorial-pillar" style="border-left-color:${sec};">
               <div class="tbb-card-title" style="color:${sec};">2. Calidez de Socio Leal</div>
-              <div class="tbb-card-body">Escuchar activamente antes de prescribir; acompañamiento hombro con hombro con transparencia total.</div>
+              <div class="tbb-card-body">Escuchar activamente la idea original antes de prescribir; acompañamiento hombro con hombro con transparencia total.</div>
             </div>
             <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
-              <div class="tbb-card-title" style="color:${acc};">3. Certeza en el Tiempo</div>
-              <div class="tbb-card-body">Liberar tiempo mental y operativo a nuestros clientes asegurando resultados duraderos, claros y medibles.</div>
+              <div class="tbb-card-title" style="color:${acc};">3. Certeza Ejecutiva</div>
+              <div class="tbb-card-body">Entregables auditados bajo normas internacionales listos para operar en imprenta, medios digitales y contratos desde el día uno.</div>
             </div>
           </div>
         </div>
@@ -882,42 +1073,69 @@
     `);
 
     // =========================================================================
-    // LÁMINA 04: EL CÍRCULO DORADO (WHY · HOW · WHAT) EN FLUJO EDITORIAL ABIERTO
+    // LÁMINA 04: EL CÍRCULO DORADO (WHY · HOW · WHAT) CON TESIS + SÍNTESIS + PUNTOS CLAVE
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-04">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 4, "El Círculo Dorado: Propósito, Proceso y Resultado")}
-        <div class="tbb-grid-3col" style="align-items:stretch; padding-top:8px;">
+        <div class="tbb-grid-3col" style="align-items:stretch; padding-top:6px;">
           <div class="tbb-editorial-pillar" style="border-left-color:${acc}; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
               <span class="tbb-editorial-kicker" style="color:${acc};">01 · PROPÓSITO CENTRAL (WHY)</span>
-              <h3 style="font-family:'Montserrat', sans-serif; font-size:23px; font-weight:900; color:${darkInk}; margin:6px 0 14px 0;">¿POR QUÉ EXISTIMOS?</h3>
-              <p class="tbb-editorial-copy" style="font-size:16.2px;">${esc(why)}</p>
+              <h3 style="font-family:'Montserrat', sans-serif; font-size:20px; font-weight:900; color:${darkInk}; margin:4px 0 10px 0;">¿POR QUÉ EXISTIMOS?</h3>
+              <div style="font-size:15.5px; font-weight:800; color:${pri}; line-height:1.42; margin-bottom:10px; border-left:3px solid ${acc}; padding-left:10px;">
+                ${esc(whySplit.lead)}.
+              </div>
+              <p class="tbb-editorial-copy" style="font-size:14.2px; line-height:1.58; margin:0 0 12px 0;">
+                ${esc(whySplit.body)}
+              </p>
+              <ul style="margin:0; padding-left:18px; font-size:13.2px; line-height:1.55; color:#334155; font-weight:600;">
+                <li>Eliminar la brecha entre agencias costosas y diseños improvisados.</li>
+                <li>Devolver orden, certeza y orgullo institucional al líder.</li>
+              </ul>
             </div>
-            <div style="border-top:1.5px solid ${lightGray}; padding-top:12px; font-size:13.8px; color:#475569; font-weight:700; line-height:1.5;">
-              El corazón emocional y la causa raíz que guía todas las decisiones de ${esc(bName)}.
+            <div style="border-top:1.5px solid ${lightGray}; padding-top:10px; font-size:12.8px; color:#475569; font-weight:700; line-height:1.45;">
+              Causa raíz que guía cada decisión estratégica de ${esc(bName)}.
             </div>
           </div>
 
           <div class="tbb-editorial-pillar" style="border-left-color:${sec}; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
               <span class="tbb-editorial-kicker" style="color:${sec};">02 · METODOLOGÍA ÚNICA (HOW)</span>
-              <h3 style="font-family:'Montserrat', sans-serif; font-size:23px; font-weight:900; color:${darkInk}; margin:6px 0 14px 0;">¿CÓMO LO HACEMOS?</h3>
-              <p class="tbb-editorial-copy" style="font-size:16.2px;">${esc(how)}</p>
+              <h3 style="font-family:'Montserrat', sans-serif; font-size:20px; font-weight:900; color:${darkInk}; margin:4px 0 10px 0;">¿CÓMO LO HACEMOS?</h3>
+              <div style="font-size:15.5px; font-weight:800; color:${pri}; line-height:1.42; margin-bottom:10px; border-left:3px solid ${sec}; padding-left:10px;">
+                ${esc(howSplit.lead)}.
+              </div>
+              <ul style="margin:0 0 10px 0; padding-left:18px; font-size:13.6px; line-height:1.62; color:#1E293B; font-weight:600;">
+                ${(howSplit.bullets && howSplit.bullets.length >= 2 ? howSplit.bullets.slice(0, 3) : [
+                  "Diagnóstico conversacional paso a paso respetando tu esencia.",
+                  "Iteración visual en vivo con IA, colorimetría y tipografía híbrida.",
+                  "Compilación instantánea en curvas Bézier y manual ejecutivo."
+                ]).map((b) => `<li style="margin-bottom:4px;">${esc(b)}</li>`).join("")}
+              </ul>
             </div>
-            <div style="border-top:1.5px solid ${lightGray}; padding-top:12px; font-size:13.8px; color:#475569; font-weight:700; line-height:1.5;">
-              Disciplina operativa, procesos propietarios y diferenciación real frente al mercado.
+            <div style="border-top:1.5px solid ${lightGray}; padding-top:10px; font-size:12.8px; color:#475569; font-weight:700; line-height:1.45;">
+              Disciplina operativa en 3 fases sin fricción ni demoras.
             </div>
           </div>
 
           <div class="tbb-editorial-pillar" style="border-left-color:${pri}; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
               <span class="tbb-editorial-kicker" style="color:${pri};">03 · OFERTA TANGIBLE (WHAT)</span>
-              <h3 style="font-family:'Montserrat', sans-serif; font-size:23px; font-weight:900; color:${darkInk}; margin:6px 0 14px 0;">¿QUÉ ENTREGAMOS?</h3>
-              <p class="tbb-editorial-copy" style="font-size:16.2px;">${esc(what)}</p>
+              <h3 style="font-family:'Montserrat', sans-serif; font-size:20px; font-weight:900; color:${darkInk}; margin:4px 0 10px 0;">¿QUÉ ENTREGAMOS?</h3>
+              <div style="font-size:15.5px; font-weight:800; color:${pri}; line-height:1.42; margin-bottom:10px; border-left:3px solid ${pri}; padding-left:10px;">
+                ${esc(whatSplit.lead)}.
+              </div>
+              <p class="tbb-editorial-copy" style="font-size:14.2px; line-height:1.58; margin:0 0 12px 0;">
+                ${esc(whatSplit.body)}
+              </p>
+              <ul style="margin:0; padding-left:18px; font-size:13.2px; line-height:1.55; color:#334155; font-weight:600;">
+                <li>Terna de logotipos 100% en curvas (.SVG / .AI / .PNG).</li>
+                <li>Brandbook de 36 láminas, firma HTML y plantillas editables.</li>
+              </ul>
             </div>
-            <div style="border-top:1.5px solid ${lightGray}; padding-top:12px; font-size:13.8px; color:#475569; font-weight:700; line-height:1.5;">
-              Productos, servicios y entregables tangibles auditados con calidad superior.
+            <div style="border-top:1.5px solid ${lightGray}; padding-top:10px; font-size:12.8px; color:#475569; font-weight:700; line-height:1.45;">
+              Activos tangibles listos para operar desde el primer minuto.
             </div>
           </div>
         </div>
@@ -926,35 +1144,35 @@
     `);
 
     // =========================================================================
-    // LÁMINA 05: LA EMPRESA COMO PERSONA (REVISTA EDITORIAL + FOTOGRAFÍA 4:3)
+    // LÁMINA 05: LA EMPRESA COMO PERSONA (REVISTA EDITORIAL + FOTOGRAFÍA 4:3 DE LA MARCA)
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-05">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 5, "La Empresa como Persona: Identidad Humana y Arquetipo")}
         <div style="display:grid; grid-template-columns: 1.06fr 0.94fr; gap:34px; flex:1; align-items:center;">
-          <div style="display:flex; flex-direction:column; justify-content:center; gap:18px;">
+          <div style="display:flex; flex-direction:column; justify-content:center; gap:16px;">
             <div>
               <span class="tbb-editorial-kicker" style="color:${pri};">CARÁCTER HUMANO Y ARQUETIPO RECTOR</span>
-              <h3 class="tbb-editorial-lead" style="font-family:'${priFont}', 'Montserrat', sans-serif;">
-                ${esc(persona)}
+              <h3 class="tbb-editorial-lead" style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:21px; line-height:1.35; margin:4px 0 10px 0;">
+                ${esc(personaSplit.lead)}.
               </h3>
-              <p class="tbb-editorial-copy">
-                Si <strong>${esc(bName)}</strong> fuera una persona, proyectaría autoridad serena, dominio técnico y cercanía genuina: escucha primero la necesidad del cliente y la resuelve con precisión de relojería.
+              <p class="tbb-editorial-copy" style="font-size:15px; line-height:1.62; margin:0;">
+                ${esc(personaSplit.body)}
               </p>
             </div>
             <hr class="tbb-editorial-divider" />
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
               <div class="tbb-editorial-pillar" style="border-left-color:${pri};">
-                <div class="tbb-card-title" style="color:${pri}; font-size:17px;">Fuerza Tranquila</div>
-                <div class="tbb-card-body" style="font-size:15px;">Seguridad nacida de la maestría técnica; cero promesas vacías.</div>
+                <div class="tbb-card-title" style="color:${pri}; font-size:16px;">Fuerza Tranquila e Ingeniería</div>
+                <div class="tbb-card-body" style="font-size:14px; line-height:1.5;">Dominio técnico explicado con sencillez; estructura clara sin tecnicismos ni arrogancia.</div>
               </div>
               <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
-                <div class="tbb-card-title" style="color:${acc}; font-size:17px;">Socio Leal</div>
-                <div class="tbb-card-body" style="font-size:15px;">Acompañamiento empático que protege los intereses del cliente.</div>
+                <div class="tbb-card-title" style="color:${acc}; font-size:16px;">Socio Leal Hombro a Hombro</div>
+                <div class="tbb-card-body" style="font-size:14px; line-height:1.5;">Escucha primero la visión del cliente y la profesionaliza con respeto y calidez humana.</div>
               </div>
             </div>
           </div>
-          ${renderChapterVisualFrame("persona", `Personificación de ${bName}`, "Fuerza tranquila, mente estructurada y trato cálido", "/assets/app_captures/tbb_capture_01_aura_splash.jpg")}
+          ${renderChapterVisualFrame("persona", `Personificación de ${bName}`, "Fuerza tranquila, mente estructurada y trato cálido")}
         </div>
         ${ftr(5)}
       </article>
@@ -1004,33 +1222,35 @@
     `);
 
     // =========================================================================
-    // LÁMINA 07: BUYER PERSONA Y PERFIL IDEAL (REVISTA EDITORIAL + FOTOGRAFÍA 4:3)
+    // LÁMINA 07: BUYER PERSONA Y PERFIL IDEAL (REVISTA EDITORIAL + FOTOGRAFÍA 4:3 DE LA MARCA)
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-07">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 7, "Perfil del Cliente Ideal (Buyer Persona)")}
         <div style="display:grid; grid-template-columns: 1.06fr 0.94fr; gap:34px; flex:1; align-items:center;">
-          <div style="display:flex; flex-direction:column; justify-content:center; gap:18px;">
+          <div style="display:flex; flex-direction:column; justify-content:center; gap:16px;">
             <div>
               <span class="tbb-editorial-kicker" style="color:${sec};">SEGMENTO OBJETIVO PRIORITARIO</span>
-              <h3 class="tbb-editorial-lead">${esc(buyer)}</h3>
-              <p class="tbb-editorial-copy">
-                Tomadores de decisión y clientes exigentes que valoran su tiempo y buscan certeza técnica, estética impecable y un aliado que responda sin excusas.
+              <h3 class="tbb-editorial-lead" style="font-size:21px; line-height:1.35; margin:4px 0 10px 0;">
+                ${esc(buyerSplit.lead)}.
+              </h3>
+              <p class="tbb-editorial-copy" style="font-size:15px; line-height:1.62; margin:0;">
+                ${esc(buyerSplit.body)}
               </p>
             </div>
             <hr class="tbb-editorial-divider" />
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
               <div class="tbb-editorial-pillar" style="border-left-color:${pri};">
-                <div class="tbb-card-title" style="color:${pri}; font-size:17px;">Dolor que Resolvemos</div>
-                <div class="tbb-card-body" style="font-size:15px;">Proveedores lentos, entregas informales y pérdida de tiempo operativo.</div>
+                <div class="tbb-card-title" style="color:${pri}; font-size:16px;">Dolor que Resolvemos</div>
+                <div class="tbb-card-body" style="font-size:14px; line-height:1.5;">Procesos eternos, entregas informales sin vectores ni reglas claras y pérdida de tiempo directivo.</div>
               </div>
               <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
-                <div class="tbb-card-title" style="color:${acc}; font-size:17px;">Transformación</div>
-                <div class="tbb-card-body" style="font-size:15px;">Del caos y la incertidumbre al orgullo y control total de su marca.</div>
+                <div class="tbb-card-title" style="color:${acc}; font-size:16px;">Transformación Real</div>
+                <div class="tbb-card-body" style="font-size:14px; line-height:1.5;">Del caos y la incertidumbre al orgullo y control total de su marca en una sola bóveda.</div>
               </div>
             </div>
           </div>
-          ${renderChapterVisualFrame("buyer", `Cliente Ideal de ${bName}`, buyer.slice(0, 68), "/assets/app_captures/tbb_capture_02_golden_circle.jpg")}
+          ${renderChapterVisualFrame("buyer", `Cliente Ideal de ${bName}`, buyerSplit.lead)}
         </div>
         ${ftr(7)}
       </article>
@@ -1069,31 +1289,43 @@
     `);
 
     // =========================================================================
-    // LÁMINA 09: POSICIONAMIENTO ESTRATÉGICO (FLUJO EDITORIAL ABIERTO)
+    // LÁMINA 09: POSICIONAMIENTO ESTRATÉGICO (SÍNTESIS EJECUTIVA + MATRIZ DE 4 PILARES)
     // =========================================================================
+    const posBuyerClause = synthesizeCompactClause(buyer, "fundadores, directores y empresas exigentes", 11).toLowerCase();
+    const posWhatClause = synthesizeCompactClause(what, "un sistema integral de identidad en curvas y manual de 36 láminas", 14).toLowerCase();
+    const posHowClause = synthesizeCompactClause(how, "co-creamos hombro a hombro con Inteligencia Artificial y precisión matemática", 14).toLowerCase();
+
     plates.push(`
       <article class="tbb-plate" id="plate-09">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 9, "Declaración de Posicionamiento Competitivo")}
-        <div style="display:flex; flex-direction:column; justify-content:space-between; gap:24px; flex:1; padding-top:8px;">
-          <div style="border-left:6px solid ${pri}; padding:10px 10px 10px 26px;">
-            <span class="tbb-editorial-kicker" style="color:${pri};">FÓRMULA OFICIAL DE POSICIONAMIENTO</span>
-            <div style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:24px; font-weight:900; line-height:1.42; color:${darkInk};">
-              Para <u>${esc(buyer)}</u>, <strong>${esc(bName)}</strong> es el referente en <u>${esc(category)}</u> que entrega <u>${esc(what)}</u> porque, a diferencia de las opciones tradicionales, nosotros <u>${esc(how)}</u>.
+        <div style="display:flex; flex-direction:column; justify-content:space-between; gap:20px; flex:1; padding-top:6px;">
+          <div style="border-left:6px solid ${pri}; padding:10px 16px 10px 24px; background:rgba(13,37,64,0.025); border-radius:0 16px 16px 0;">
+            <span class="tbb-editorial-kicker" style="color:${acc};">DECLARACIÓN EJECUTIVA DE POSICIONAMIENTO</span>
+            <div style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:19.5px; font-weight:800; line-height:1.48; color:${darkInk};">
+              Para <strong style="color:${pri};">${esc(posBuyerClause)}</strong>, <strong style="color:${acc};">${esc(bName)}</strong> es el referente en <strong style="color:${pri};">${esc(shortCategory.toLowerCase())}</strong> que entrega <strong style="color:${sec};">${esc(posWhatClause)}</strong>; porque, a diferencia de las alternativas tradicionales, <strong style="color:${darkInk};">${esc(posHowClause)}</strong>.
             </div>
           </div>
-          <hr class="tbb-editorial-divider" />
-          <div class="tbb-grid-3col">
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px 28px;">
             <div class="tbb-editorial-pillar" style="border-left-color:${pri};">
-              <div class="tbb-card-title" style="color:${pri};">1. Diferencial Técnico</div>
-              <div class="tbb-card-body">Estándar de calidad auditable, geometría en curvas puras y cero plantillas genéricas.</div>
+              <span class="tbb-editorial-kicker" style="color:${pri}; font-size:10.5px;">01 · AUDIENCIA Y MERCADO META</span>
+              <div class="tbb-card-title" style="color:${darkInk}; font-size:16px;">${esc(buyerSplit.lead)}</div>
+              <div class="tbb-card-body" style="font-size:13.8px; line-height:1.5;">Enfoque directo en tomadores de decisión que requieren orden, velocidad y certeza técnica.</div>
             </div>
             <div class="tbb-editorial-pillar" style="border-left-color:${sec};">
-              <div class="tbb-card-title" style="color:${sec};">2. Velocidad y Claridad</div>
-              <div class="tbb-card-body">Procesos ágiles que eliminan burocracia y entregan valor inmediato al cliente.</div>
+              <span class="tbb-editorial-kicker" style="color:${sec}; font-size:10.5px;">02 · CATEGORÍA DE LIDERAZGO</span>
+              <div class="tbb-card-title" style="color:${darkInk}; font-size:16px;">${esc(shortCategory)}</div>
+              <div class="tbb-card-body" style="font-size:13.8px; line-height:1.5;">Estándar propietario que combina tecnología de vanguardia, diseño algorítmico y acompañamiento humano.</div>
             </div>
             <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
-              <div class="tbb-card-title" style="color:${acc};">3. Garantía Total</div>
-              <div class="tbb-card-body">Acompañamiento continuo Antes, Durante y Después de cada servicio.</div>
+              <span class="tbb-editorial-kicker" style="color:${acc}; font-size:10.5px;">03 · DIFERENCIAL TANGIBLE</span>
+              <div class="tbb-card-title" style="color:${darkInk}; font-size:16px;">${esc(whatSplit.lead)}</div>
+              <div class="tbb-card-body" style="font-size:13.8px; line-height:1.5;">Geometría 100% en curvas Bézier, gobernanza tipográfica híbrida y suite documental editable.</div>
+            </div>
+            <div class="tbb-editorial-pillar" style="border-left-color:#059669;">
+              <span class="tbb-editorial-kicker" style="color:#059669; font-size:10.5px;">04 · RAZÓN PARA CREER (EVIDENCIA)</span>
+              <div class="tbb-card-title" style="color:${darkInk}; font-size:16px;">${esc(howSplit.lead)}</div>
+              <div class="tbb-card-body" style="font-size:13.8px; line-height:1.5;">Proceso auditable Antes, Durante y Después que transforma ideas en activos listos en minutos.</div>
             </div>
           </div>
         </div>
@@ -1571,6 +1803,17 @@
       </article>
     `);
 
+    const adobeKitId = String(brand.adobeTypekitId || "").trim();
+    const adobeMap = (typeof window !== "undefined" && window.TBB_ADOBE_FONTS_EQUIVALENT_MAP) ? window.TBB_ADOBE_FONTS_EQUIVALENT_MAP : {};
+    const priAdobeInfo = adobeMap[String(priFont || "").toLowerCase()] || null;
+    const secAdobeInfo = adobeMap[String(secFont || "").toLowerCase()] || null;
+    const priLicenseLabel = priAdobeInfo
+      ? `Adobe Fonts (Typekit${adobeKitId ? " · Kit: " + adobeKitId : ""}) + Homólogo Open Source SIL OFL 1.1 (${priAdobeInfo.oflPartner}.ttf)`
+      : (adobeKitId ? `Licencia Híbrida: Open Source SIL OFL 1.1 (.TTF) + Adobe Typekit (${adobeKitId})` : "Licencia Comercial Abierta SIL OFL 1.1 (Archivos .TTF incluidos en tu Kit)");
+    const secLicenseLabel = secAdobeInfo
+      ? `Adobe Fonts (Typekit) + Homólogo Open Source SIL OFL 1.1 (${secAdobeInfo.oflPartner}.ttf)`
+      : "Licencia Comercial Abierta SIL OFL 1.1 (Archivos .TTF incluidos en tu Kit)";
+
     // =========================================================================
     // LÁMINA 22: JERARQUÍA TIPOGRÁFICA PRINCIPAL (TITULARES)
     // =========================================================================
@@ -1579,7 +1822,7 @@
         ${hdr("SECCIÓN 04", "COLORIMETRÍA Y TIPOGRAFÍA", 22, "Tipografía Institucional Primaria: Titulares y Logomarca")}
         <div class="tbb-grid-2col" style="align-items:center;">
           <div class="tbb-editorial-pillar" style="border-left-color:${pri}; border-left-width:5px; padding-left:24px;">
-            <span class="tbb-editorial-kicker" style="color:${pri};">FAMILIA DISPLAY PRINCIPAL</span>
+            <span class="tbb-editorial-kicker" style="color:${pri};">FAMILIA DISPLAY PRINCIPAL · SISTEMA HÍBRIDO</span>
             <h1 style="font-family:'${priFont}', 'Montserrat', sans-serif; font-size:44px; font-weight:900; color:${darkInk}; margin:0 0 12px 0;">${priFont}</h1>
             <p class="tbb-editorial-copy" style="margin:0 0 18px 0;">
               Tipografía con proporciones nobles, alta fuerza visual y trazos limpios que comunican solvencia técnica e impacto editorial.
@@ -1601,8 +1844,8 @@
               <div style="font-family:'${priFont}', sans-serif; font-size:19px; font-weight:800; color:${pri};">Rigor Técnico y Confianza</div>
             </div>
             <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
-              <div class="tbb-card-title">Uso Normativo</div>
-              <div class="tbb-card-body">Exclusiva para nombres de marca, portadas, encabezados y lemas. Evitar su uso en bloques densos de lectura.</div>
+              <div class="tbb-card-title">Gobernanza y Licenciamiento (100% Copyright)</div>
+              <div class="tbb-card-body">${esc(priLicenseLabel)}. Trazada a curvas Bézier puras en logotipos (.SVG/.AI).</div>
             </div>
           </div>
         </div>
@@ -1633,11 +1876,11 @@
           <div style="display:flex; flex-direction:column; gap:22px;">
             <div class="tbb-editorial-pillar" style="border-left-color:${sec};">
               <div class="tbb-card-title">Párrafo Editorial (Interlineado 1.66)</div>
-              <div class="tbb-card-body" style="font-family:'${secFont}';">La claridad en la comunicación escrita refleja la seriedad operativa de la organización en cada punto de contacto comercial y contractual.</div>
+              <div class="tbb-card-body" style="font-family:'${secFont}';">La claridad en la comunicación escrita refleja la seriedad operativa de la organización en cada punto de contacto comercial y contractual (${esc(secLicenseLabel)}).</div>
             </div>
             <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
-              <div class="tbb-card-title">Microcopy y Especificaciones Técnicas</div>
-              <div style="font-family:'JetBrains Mono', monospace; font-size:13.5px; font-weight:700; color:${pri};">CLASE NIZA OFICIAL · DIRECTIVA MAX C-00 · TRAZABILIDAD 100%</div>
+              <div class="tbb-card-title">Microcopy y Especificaciones Técnicas (${esc(brand.monoFont || "JetBrains Mono")})</div>
+              <div style="font-family:'${esc(brand.monoFont || "JetBrains Mono")}', 'JetBrains Mono', monospace; font-size:13.5px; font-weight:700; color:${pri};">CLASE NIZA OFICIAL · DIRECTIVA MAX C-00 · TRAZABILIDAD 100%</div>
             </div>
           </div>
         </div>
@@ -1838,17 +2081,24 @@
     // =========================================================================
     // LÁMINA 29: CLASIFICACIÓN DE NIZA Y GOBERNANZA LEGAL
     // =========================================================================
+    const nizaSplit = splitEditorialLeadAndBody(
+      niza,
+      "Clasificación Oficial de Propiedad Industrial",
+      `Cobertura marcaria recomendada ante el IMPI, USPTO y EUIPO acorde al giro real de ${bName}.`,
+      12,
+      28
+    );
     plates.push(`
       <article class="tbb-plate" id="plate-29">
         ${hdr("SECCIÓN 06", "GOBERNANZA Y BLINDAJE JURÍDICO", 29, "Registro de Marca y Clasificación Internacional de Niza")}
         <div class="tbb-grid-2col" style="align-items:center;">
           <div class="tbb-editorial-pillar" style="border-left-color:${pri}; border-left-width:5px; padding-left:24px;">
             <span class="tbb-editorial-kicker" style="color:${pri};">PROTECCIÓN DE PROPIEDAD INDUSTRIAL</span>
-            <h3 style="font-family:'Montserrat', sans-serif; font-size:25px; font-weight:900; color:${darkInk}; margin:4px 0 14px 0;">${esc(niza)}</h3>
-            <p class="tbb-editorial-copy" style="margin:0 0 18px 0;">
-              Clasificación oficial recomendada ante los institutos de propiedad intelectual (IMPI / USPTO / EUIPO) acorde al giro real de <strong>${esc(bName)}</strong>.
+            <h3 style="font-family:'Montserrat', sans-serif; font-size:21px; font-weight:900; color:${darkInk}; line-height:1.36; margin:4px 0 10px 0;">${esc(nizaSplit.lead)}.</h3>
+            <p class="tbb-editorial-copy" style="font-size:14.8px; line-height:1.62; margin:0 0 16px 0;">
+              ${esc(nizaSplit.body)}
             </p>
-            <div style="border-left:3.5px solid ${acc}; padding-left:14px; font-size:15px; color:#1E293B; font-weight:700;">
+            <div style="border-left:3.5px solid ${acc}; padding-left:14px; font-size:14.5px; color:#1E293B; font-weight:700;">
               Signo Distintivo: Marca Mixta (Denominación + Geometría en Curvas SVG).
             </div>
           </div>
@@ -2010,7 +2260,7 @@
             ${renderChapterVisualFrame("step6_map", "ESPACIO Y WAYFINDING", "Arquitectura ambiental de " + bName, "/assets/app_captures/tbb_capture_06_journey_map.jpg")}
             <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
               <div style="font-size:15px; font-weight:800; color:${darkInk};">06 · Entorno Arquitectónico</div>
-              <div style="font-size:13.8px; color:#475569; line-height:1.48;">presencia física coherente con la paleta y tipografía oficial.</div>
+              <div style="font-size:13.8px; color:#475569; line-height:1.48;">Presencia física coherente con la paleta y tipografía oficial.</div>
             </div>
           </div>
         </div>
@@ -2033,7 +2283,7 @@
               </div>
               <div>
                 <div style="font-family:'${priFont}', sans-serif; font-size:18px; font-weight:900; color:${darkInk};">${esc(bName)}</div>
-                <div style="font-size:12.5px; font-weight:800; color:${acc}; letter-spacing:0.6px; margin-bottom:4px;">DIRECCIÓN GENERAL · ${esc(category.toUpperCase().slice(0, 28))}</div>
+                <div style="font-size:12.5px; font-weight:800; color:${acc}; letter-spacing:0.6px; margin-bottom:4px;">DIRECCIÓN GENERAL · ${esc(shortCategory.toUpperCase().slice(0, 32))}</div>
                 <div style="font-size:13.5px; color:#334155; line-height:1.5;">
                   ✉ contacto@${esc(slug.replace(/_/g, ""))}.com &nbsp;|&nbsp; 🌐 www.${esc(slug.replace(/_/g, ""))}.com
                 </div>
@@ -2171,12 +2421,16 @@
     const bName = brand.name || "The Best Brand";
     const styles = getDynamicBrandbookStyles();
     const plates = generateBrandbook30Plates(brand);
+    const adobeKitId = String(brand.adobeTypekitId || "").replace(/[^a-zA-Z0-9_-]/g, "").trim();
+    const typekitLinkTag = adobeKitId
+      ? `\n  <link rel="stylesheet" href="https://use.typekit.net/${adobeKitId}.css">`
+      : "";
 
     return `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Manual Oficial de Identidad (${plates.length} Láminas) — ${esc(bName)}</title>
+  <title>Manual Oficial de Identidad (${plates.length} Láminas) — ${esc(bName)}</title>${typekitLinkTag}
   <style>${styles}</style>
 </head>
 <body>
@@ -2258,6 +2512,11 @@ Instrucciones obligatorias:
       }
       keysToPurge.forEach(k => localStorage.removeItem(k));
     } catch (e) {}
+
+    // Limpiar caché de visuales editoriales para evitar cualquier cruce entre proyectos
+    window._tbbFlowVisualsCache = {};
+    window._tbbFlowVisualsInFlight = {};
+    window.currentTriFoldSuite = null;
 
     // Limpiar estado en memoria de window mutando en el lugar (sin romper referencias léxicas en studio.html)
     const freshCanvasDefaults = {
@@ -2707,13 +2966,16 @@ Instrucciones obligatorias:
 
     const acc = (activeIt && activeIt.accentHex)
       || cs.accent_color
-      || (priColors[0] && !/^#(?:fff(?:fff)?|faf8f5|f8fafc)$/i.test(priColors[0]) ? priColors[0] : "#FF7A00");
+      || (Array.isArray(cs.uploaded_logo_colors) && cs.uploaded_logo_colors[2])
+      || (Array.isArray(s0.uploadedLogoColors) && s0.uploadedLogoColors[2])
+      || (hasUploadedLogo ? sec : (priColors[0] && !/^#(?:fff(?:fff)?|faf8f5|f8fafc)$/i.test(priColors[0]) ? priColors[0] : "#FF7A00"));
 
     const darkInk = (priColors[1] && !/^#fff/i.test(priColors[1])) ? priColors[1] : "#090D16";
 
     const mods = (activeIt && activeIt.mods) || {};
     const priFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || st.selectedFontFamily || cs.primary_font || "Montserrat";
-    const secFont = cs.secondary_font || "Plus Jakarta Sans";
+    const secFont = cs.secondary_font || st.selectedSecondaryFont || (priFont === "Plus Jakarta Sans" ? "Inter" : "Plus Jakarta Sans");
+    const monoFont = cs.mono_font || st.selectedMonoFont || "JetBrains Mono";
 
     // Símbolo central centrado en viewBox 0..200 (180x180 desplazado +10,+10)
     let pureSymbolPos = "";
@@ -2766,12 +3028,13 @@ Instrucciones obligatorias:
       : ["Entrega de manual y activos vectoriales", "Garantía de servicio y soporte activo", "Comunidad de clientes leales", "Encuesta breve de satisfacción"];
 
     const giroText = (cs.custom_business_type || s0.customBusinessType || cs.step0_short_essence || "Soluciones estratégicas, ingeniería de valor y experiencia de marca.").trim();
+    const shortCat = extractShortCategoryBadge(cs.custom_business_type || s0.customBusinessType || "", giroText, bName);
 
     return {
       name: bName,
       slug: slug,
       tagline: (cs.tagline || s0.tagline || cs.step0_short_essence || giroText || "SISTEMA INTEGRAL DE IDENTIDAD").trim(),
-      category: cs.custom_business_type || s0.customBusinessType || "Servicios Especializados",
+      category: shortCat,
       giro: giroText,
       buyer: (cs.ideal_customer || cs.step0_buyer_actor || "Clientes y empresas que exigen excelencia técnica y resultados.").trim(),
       why: (cs.golden_circle || "Porque el propósito auténtico conecta con las personas y trasciende.").trim(),
@@ -2799,6 +3062,9 @@ Instrucciones obligatorias:
       },
       primaryFont: priFont,
       secondaryFont: secFont,
+      monoFont: monoFont,
+      adobeTypekitId: String(cs.adobe_typekit_id || st.adobeTypekitId || "").trim(),
+      fontLicenseMode: st.fontLicenseMode || cs.font_license_mode || "open_source",
       isEstablished: hasUploadedLogo,
       hasUploadedLogo: hasUploadedLogo,
       uploadedLogoDataUrl: uploadedUrl || "",

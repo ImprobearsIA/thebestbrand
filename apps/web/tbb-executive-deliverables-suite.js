@@ -1835,7 +1835,25 @@
         console.warn("Flow chapter photo fallback:", e);
       }
     }
-    return buildEditorialSvgSceneDataUrl(slotKey || "environment", brand || {});
+    const slug = String(brand?.slug || "").toLowerCase();
+    const isArcoBrand = /^arco(_ingenier[ií]a)?$/i.test(slug);
+    const photoPrefix = isArcoBrand ? "arco" : "tbb";
+    const editorialFallbackMap = {
+      persona: `/assets/editorial_photos/${photoPrefix}_01_persona.jpg`,
+      step0_splash: `/assets/editorial_photos/${photoPrefix}_01_persona.jpg`,
+      buyer: `/assets/editorial_photos/${photoPrefix}_02_buyer.jpg`,
+      step1_golden: `/assets/editorial_photos/${photoPrefix}_02_buyer.jpg`,
+      tpBefore: `/assets/editorial_photos/${photoPrefix}_03_tp_before.jpg`,
+      step3_touchpoints: `/assets/editorial_photos/${photoPrefix}_03_tp_before.jpg`,
+      tpDuring: `/assets/editorial_photos/${photoPrefix}_04_tp_during.jpg`,
+      step4_kansei: `/assets/editorial_photos/${photoPrefix}_04_tp_during.jpg`,
+      tpAfter: `/assets/editorial_photos/${photoPrefix}_05_tp_after.jpg`,
+      step5_atelier: `/assets/editorial_photos/${photoPrefix}_05_tp_after.jpg`,
+      environment: `/assets/editorial_photos/${photoPrefix}_06_environment.jpg`,
+      step6_map: `/assets/editorial_photos/${photoPrefix}_06_environment.jpg`
+    };
+    const fallbackPhotoUrl = editorialFallbackMap[slotKey] || `/assets/editorial_photos/${photoPrefix}_06_environment.jpg`;
+    return await normalizePhotoToLocked4x3Canvas(fallbackPhotoUrl);
   }
 
   async function tbbGenerateChapterVisualsWithFlow(brandOrBtn, onProgress) {
@@ -1847,7 +1865,7 @@
       triggerBtn.textContent = "Fotografiando capítulos (0/6)...";
     }
     const brand = (!isDomButton && brandOrBtn && brandOrBtn.slug) ? brandOrBtn : window.buildActiveBrandProfileForV80();
-    const cacheKey = `photo_v86|${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
+    const cacheKey = `photo_v88|${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
     window._tbbFlowVisualsInFlight = window._tbbFlowVisualsInFlight || {};
     if (window._tbbFlowVisualsCache[cacheKey] && window._tbbFlowVisualsCache[cacheKey]._complete) {
       if (triggerBtn) {
@@ -1861,14 +1879,30 @@
       return window._tbbFlowVisualsInFlight[cacheKey];
     }
 
-    const isTbbApp = /^the_?best_?brand$/i.test(brand.slug) && !brand.hasUploadedLogo;
-    if (isTbbApp) {
+    const isTbbDedicatedPhotos = /^the_?best_?brand$/i.test(brand.slug);
+    if (isTbbDedicatedPhotos) {
+      const tbbEntry = {
+        persona: "/assets/editorial_photos/tbb_01_persona.jpg",
+        step0_splash: "/assets/editorial_photos/tbb_01_persona.jpg",
+        buyer: "/assets/editorial_photos/tbb_02_buyer.jpg",
+        step1_golden: "/assets/editorial_photos/tbb_02_buyer.jpg",
+        tpBefore: "/assets/editorial_photos/tbb_03_tp_before.jpg",
+        step3_touchpoints: "/assets/editorial_photos/tbb_03_tp_before.jpg",
+        tpDuring: "/assets/editorial_photos/tbb_04_tp_during.jpg",
+        step4_kansei: "/assets/editorial_photos/tbb_04_tp_during.jpg",
+        tpAfter: "/assets/editorial_photos/tbb_05_tp_after.jpg",
+        step5_atelier: "/assets/editorial_photos/tbb_05_tp_after.jpg",
+        environment: "/assets/editorial_photos/tbb_06_environment.jpg",
+        step6_map: "/assets/editorial_photos/tbb_06_environment.jpg",
+        _complete: true
+      };
+      window._tbbFlowVisualsCache[cacheKey] = tbbEntry;
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Capturas App Activas";
+        triggerBtn.textContent = "✓ Fotografía Editorial 4:3 de The Best Brand Lista";
         setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2200);
       }
-      return null; // TheBestBrand usa capturas reales en alta definición de la aplicación
+      return tbbEntry;
     }
 
     const pri = brand.colors?.pri || "#0D2540";
@@ -1964,27 +1998,69 @@
   async function tbbGenerateNanoBananaBrandSymbol(userHint) {
     const cs = (typeof window.canvasState === "object" && window.canvasState) ? window.canvasState : {};
     const st = window.tbbState || {};
+    const s0 = window.step0State || {};
     const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca";
     const giro = (cs.custom_business_type || cs.step0_short_essence || "Servicios profesionales").trim();
     const persona = (cs.brand_persona || "").trim();
     const seedIdea = String(userHint || cs.step4_logo_seed_idea || "").trim();
-    const pri = st.logoPriHex || (Array.isArray(cs.selected_colors_hex) && cs.selected_colors_hex[2]) || "#0D2540";
-    const sec = st.logoSecHex || (Array.isArray(cs.selected_colors_hex) && cs.selected_colors_hex[3]) || "#FF7A00";
+    const uploadedCols = (Array.isArray(cs.uploaded_logo_colors) && cs.uploaded_logo_colors.length)
+      ? cs.uploaded_logo_colors
+      : (Array.isArray(s0.uploadedLogoColors) ? s0.uploadedLogoColors : []);
+    const pri = (uploadedCols[0]) || st.logoPriHex || cs.primary_color || (Array.isArray(cs.selected_colors_hex) && cs.selected_colors_hex[2]) || "#0078C0";
+    const sec = (uploadedCols[1]) || st.logoSecHex || cs.secondary_color || (Array.isArray(cs.selected_colors_hex) && cs.selected_colors_hex[3]) || pri;
+    const acc = (uploadedCols[2]) || cs.accent_color || sec;
+
+    const firstIter = (Array.isArray(st.logoIterations) && st.logoIterations[0]) ? st.logoIterations[0] : null;
+    const baseLogoDataUrl = (firstIter && firstIter.isUploadedUserLogo && firstIter.uploadedLogoDataUrl)
+      || cs.base_uploaded_logo_data_url
+      || cs.uploaded_logo_data_url
+      || s0.uploadedLogoDataUrl
+      || "";
+    const isEvolveMode = Boolean(baseLogoDataUrl && (cs.existing_logo_mode === "evolve" || s0.existingLogoMode === "evolve" || userHint));
 
     st.geminiBusy = true;
-    st.geminiStatusText = "Nano Banana (Gemini Image) diseñando tu símbolo de agencia y trazando curvas Bézier...";
+    st.geminiStatusText = isEvolveMode
+      ? `NanoBanana PRO evolucionando tu logotipo base preservando su paleta original (${pri}, ${sec}, ${acc})...`
+      : "NanoBanana PRO diseñando tu símbolo de agencia y trazando curvas Bézier...";
     if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
 
-    const prompt = [
-      `Masterpiece minimalist corporate logo symbol (ICON MARK ONLY, ZERO TEXT, NO LETTERS, NO WORDS, NO TYPOGRAPHY) for brand "${bName}" in sector: ${giro}.`,
-      seedIdea ? `Visual concept & motif requested: ${seedIdea}.` : "",
-      persona ? `Brand personality: ${persona}.` : "",
-      `Pentagram / Chermayeff & Geismar / Sagi Haviv award-winning emblem design: crisp flat solid vector-style shapes, bold clean silhouette, balanced negative space, strictly using ONLY two flat colors (${pri} primary and ${sec} accent) centered on a pure solid stark white #FFFFFF background.`,
-      `No photorealism, no thin hairlines, no drop shadows, no mockups, no frames touching edges, generous white margin around the emblem.`
-    ].filter(Boolean).join(" ");
+    const wantsLiquidGlass = /liquid\s*glass|apple|vision\s*os|ios\s*27|cristal\s*l[ií]quido|transl[uú]cido|refracci[oó]n/i.test(`${seedIdea} ${persona} ${st.logoParadigm || ""}`);
+    const prompt = isEvolveMode
+      ? [
+          `Take the attached current base logo of "${bName}" (${giro}) as direct structural inspiration and evolve it into a world-class executive brand emblem (ICON MARK ONLY, ZERO TEXT, NO WORDS, NO LETTERS).`,
+          wantsLiquidGlass
+            ? `STYLE DIRECTION — APPLE LIQUID GLASS (visionOS / iOS 27 Optical Glass Masterpiece): Transform the exact motif of the attached base logo into a breathtaking Apple-grade 3D Liquid Glass icon mark. Render the outer ring, internal dark optical sphere, radial translucent petals/ellipses, and glowing core with physically accurate translucent crystal refraction, specular caustic highlights, frosted glass depth, subsurface scattering, and precision micro-bevels.`
+            : `Preserve the recognizable core motif and structural essence of the base logo, but elevate its geometry to mathematical perfection: golden-ratio architectural precision, clean bold dimensional facets, commanding presence, and timeless authority.`,
+          seedIdea ? `Specific evolution direction: ${seedIdea}.` : "",
+          persona ? `Brand character: ${persona}.` : "",
+          `STRICT COLOR RULE: Preserve 100% the original brand color palette from the base logo: primary (${pri}), secondary (${sec}), and structural accent (${acc}). Center the emblem on a pure solid stark white #FFFFFF background with generous margin.`
+        ].filter(Boolean).join(" ")
+      : [
+          `Masterpiece corporate logo symbol (ICON MARK ONLY, ZERO TEXT, NO LETTERS, NO WORDS, NO TYPOGRAPHY) for brand "${bName}" in sector: ${giro}.`,
+          seedIdea ? `Visual concept & motif requested: ${seedIdea}.` : "",
+          persona ? `Brand personality: ${persona}.` : "",
+          wantsLiquidGlass
+            ? `Apple visionOS / iOS 27 Liquid Glass emblem design: translucent optical glass geometry, specular caustic refractions, multi-layered 3D crystal depth, strictly using the brand palette (${pri} primary, ${sec} secondary, and ${acc} accent) centered on a pure solid stark white #FFFFFF background.`
+            : `Pentagram / Chermayeff & Geismar / Sagi Haviv award-winning emblem design: bold architectural vector geometry, balanced negative space, strictly using the brand palette (${pri} primary, ${sec} secondary, and ${acc} accent) centered on a pure solid stark white #FFFFFF background.`,
+          `No photorealistic clutter, no thin hairlines, no mockups, no frames touching edges, generous white margin around the emblem.`
+        ].filter(Boolean).join(" ");
+
+    const requestParts = [];
+    if (isEvolveMode && /^data:image\/(png|jpeg|jpg|webp);base64,/i.test(baseLogoDataUrl)) {
+      const m = baseLogoDataUrl.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,(.+)$/);
+      if (m) {
+        requestParts.push({
+          inlineData: {
+            mimeType: m[1],
+            data: m[2]
+          }
+        });
+      }
+    }
+    requestParts.push({ text: prompt });
 
     const proxyUrl = (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
-    const models = ["gemini-3.1-flash-image-preview", "gemini-2.5-flash-image", "gemini-3-pro-image-preview"];
+    const models = ["gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview", "gemini-2.5-flash-image"];
     let rawImgUrl = "";
 
     for (const model of models) {
@@ -1994,7 +2070,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             model: model,
-            contents: [{ parts: [{ text: prompt }] }],
+            contents: [{ parts: requestParts }],
             generationConfig: { responseModalities: ["IMAGE", "TEXT"] }
           })
         });
@@ -2015,29 +2091,66 @@
     }
 
     if (rawImgUrl) {
-      const centeredPng = await tbbAutoTrimAndCenterRasterLogo(rawImgUrl, 1024, 0.78);
+      const centeredPng = await tbbAutoTrimAndCenterRasterLogo(rawImgUrl, 1024, 0.80);
       const tracedCurves = await tbbVectorizeRasterLogoToSvgCurves(centeredPng);
 
       if (!window.step0State) window.step0State = {};
+      if (baseLogoDataUrl && !cs.base_uploaded_logo_data_url) {
+        cs.base_uploaded_logo_data_url = baseLogoDataUrl;
+        window.step0State.baseUploadedLogoDataUrl = baseLogoDataUrl;
+      }
       window.step0State.uploadedLogoDataUrl = centeredPng;
       window.step0State.uploadedLogoTracedCurvesSvg = tracedCurves || "";
       cs.uploaded_logo_data_url = centeredPng;
       cs.uploaded_logo_traced_curves_svg = tracedCurves || "";
       cs.existing_logo_mode = "evolve";
 
-      const nextIdx = (Array.isArray(st.logoIterations) ? st.logoIterations.length : 0) + 1;
+      if (!Array.isArray(st.logoIterations) || st.logoIterations.length === 0) {
+        if (baseLogoDataUrl) {
+          st.logoIterations = [{
+            idx: 1,
+            isInitialSystemic: false,
+            isUploadedUserLogo: true,
+            uploadedLogoDataUrl: baseLogoDataUrl,
+            uploadedLogoSvgMarkup: "",
+            paradigm: st.logoParadigm || "volumetric_glass",
+            archetype: "uploaded_user_logo",
+            conceptLabel: "Tu Logo Base Actual",
+            pri: pri,
+            sec: sec,
+            accentHex: acc,
+            scale: 1.0,
+            darkBg: Boolean(st.logoDarkBg),
+            fontFamily: cs.primary_font || st.selectedFontFamily || "Montserrat",
+            layout: "horizontal",
+            mods: {},
+            geminiCustomSvg: "",
+            svgOverlayAdditions: "",
+            note: `Logotipo actual tomado como base para ${bName}`,
+            prompt: `Logotipo actual subido como punto de partida para evolucionar la identidad de «${bName}».`,
+            geminiPrompt40w: `Logotipo actual subido como punto de partida para evolucionar la identidad de «${bName}».`
+          }];
+        } else {
+          st.logoIterations = [];
+        }
+      }
+
+      const nextIdx = st.logoIterations.length + 1;
+      const nbLabel = wantsLiquidGlass ? `Liquid Glass #${nextIdx}` : "Evolución NanoBanana PRO";
       const nbEntry = {
         idx: nextIdx,
         isInitialSystemic: false,
         isUploadedUserLogo: true,
         isNanoBananaGenerated: true,
         uploadedLogoDataUrl: centeredPng,
+        tracedCurvesSvg: tracedCurves || "",
         uploadedLogoSvgMarkup: "",
-        paradigm: st.logoParadigm || "detailed_emblem",
+        paradigm: st.logoParadigm || "volumetric_glass",
         archetype: "uploaded_user_logo",
-        conceptLabel: "Nano Banana IA · Curvas",
+        conceptLabel: nbLabel,
         pri: pri,
         sec: sec,
+        accentHex: acc,
         scale: 1.0,
         darkBg: Boolean(st.logoDarkBg),
         fontFamily: cs.primary_font || st.selectedFontFamily || "Montserrat",
@@ -2045,11 +2158,14 @@
         mods: {},
         geminiCustomSvg: "",
         svgOverlayAdditions: "",
-        note: seedIdea || `Símbolo Nano Banana para ${bName}`,
-        prompt: `Símbolo de agencia generado con Nano Banana para «${bName}» en tonos ${pri} y ${sec}, centrado a 0.00px y vectorizado a curvas Bézier.`,
-        geminiPrompt40w: `Símbolo de agencia generado con Nano Banana para «${bName}» en tonos ${pri} y ${sec}, centrado a 0.00px y vectorizado a curvas Bézier.`
+        note: seedIdea || `Evolución NanoBanana PRO desde tu Logo Base para ${bName}`,
+        prompt: wantsLiquidGlass
+          ? `Evolución Apple Liquid Glass sobre tu logo base de «${bName}» (${pri}, ${sec}, ${acc}) con refracción cáustica, pétalos translúcidos y centrado óptico a 0.00px.`
+          : `Evolución arquitectónica NanoBanana PRO tomando tu logo actual como base para «${bName}» (${pri}, ${sec}, ${acc}), centrado a 0.00px y vectorizado en curvas Bézier.`,
+        geminiPrompt40w: wantsLiquidGlass
+          ? `Evolución Apple Liquid Glass sobre tu logo base de «${bName}» (${pri}, ${sec}, ${acc}) con refracción cáustica, pétalos translúcidos y centrado óptico a 0.00px.`
+          : `Evolución arquitectónica NanoBanana PRO tomando tu logo actual como base para «${bName}» (${pri}, ${sec}, ${acc}), centrado a 0.00px y vectorizado en curvas Bézier.`
       };
-      if (!Array.isArray(st.logoIterations)) st.logoIterations = [];
       st.logoIterations.push(nbEntry);
       st.logoIterationIndex = st.logoIterations.length;
       if (typeof window.saveBrandSessionToLocalStorage === "function") window.saveBrandSessionToLocalStorage();
@@ -2059,6 +2175,276 @@
     st.geminiStatusText = "";
     if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
     return rawImgUrl;
+  }
+
+  // ==========================================================================
+  // 7. EXPORTADOR DE KIT DE FUENTES OFICIALES DE LA MARCA (.ZIP CON ARCHIVOS .TTF + LICENCIA SIL OFL + MODO HÍBRIDO ADOBE FONTS TYPEKIT)
+  // ==========================================================================
+  const TBB_FONT_FILES_INDEX = {
+    "montserrat": ["Montserrat-Regular.ttf", "Montserrat-Bold.ttf", "Montserrat-Black.ttf"],
+    "plus jakarta sans": ["PlusJakartaSans-Regular.ttf", "PlusJakartaSans-Bold.ttf", "PlusJakartaSans-ExtraBold.ttf"],
+    "outfit": ["Outfit-Regular.ttf", "Outfit-Bold.ttf"],
+    "league spartan": ["LeagueSpartan-Regular.ttf", "LeagueSpartan-Bold.ttf"],
+    "urbanist": ["Urbanist-Regular.ttf", "Urbanist-Bold.ttf"],
+    "space grotesk": ["SpaceGrotesk-Regular.ttf", "SpaceGrotesk-Bold.ttf"],
+    "inter": ["Inter-Regular.ttf", "Inter-Bold.ttf"],
+    "sora": ["Sora-Regular.ttf", "Sora-Bold.ttf"],
+    "manrope": ["Manrope-Regular.ttf", "Manrope-Bold.ttf"],
+    "playfair display": ["PlayfairDisplay-Regular.ttf", "PlayfairDisplay-Bold.ttf"],
+    "cormorant garamond": ["CormorantGaramond-Regular.ttf", "CormorantGaramond-Bold.ttf"],
+    "cinzel": ["Cinzel-Regular.ttf", "Cinzel-Bold.ttf"],
+    "libre baskerville": ["LibreBaskerville-Regular.ttf", "LibreBaskerville-Bold.ttf"],
+    "fraunces": ["Fraunces-Regular.ttf", "Fraunces-Bold.ttf"],
+    "syne": ["Syne-Regular.ttf", "Syne-Bold.ttf", "Syne-ExtraBold.ttf"],
+    "oswald": ["Oswald-Regular.ttf", "Oswald-Bold.ttf"],
+    "bebas neue": ["BebasNeue-Regular.ttf"],
+    "archivo black": ["ArchivoBlack-Regular.ttf"],
+    "dm sans": ["DMSans-Regular.ttf", "DMSans-Bold.ttf"],
+    "work sans": ["WorkSans-Regular.ttf", "WorkSans-Bold.ttf"],
+    "lato": ["Lato-Regular.ttf", "Lato-Bold.ttf"],
+    "jetbrains mono": ["JetBrainsMono-Regular.ttf", "JetBrainsMono-Bold.ttf"],
+    "ibm plex mono": ["IBMPlexMono-Regular.ttf", "IBMPlexMono-Bold.ttf"],
+    "space mono": ["SpaceMono-Regular.ttf", "SpaceMono-Bold.ttf"],
+    // Homólogos métricos 100% Open Source (SIL OFL 1.1) para cuando se selecciona una fuente Adobe Fonts:
+    // Cumple 100% el EULA de Adobe (que prohíbe empaquetar binarios comerciales en .ZIP para terceros)
+    // entregando los .TTF libres equivalentes + las instrucciones de activación en Creative Cloud y Typekit CSS.
+    "avenir next": ["PlusJakartaSans-Regular.ttf", "PlusJakartaSans-Bold.ttf", "PlusJakartaSans-ExtraBold.ttf"],
+    "proxima nova": ["Montserrat-Regular.ttf", "Montserrat-Bold.ttf", "Montserrat-Black.ttf"],
+    "futura pt": ["Outfit-Regular.ttf", "Outfit-Bold.ttf"],
+    "brandon grotesque": ["LeagueSpartan-Regular.ttf", "LeagueSpartan-Bold.ttf"],
+    "neue haas grotesk": ["Inter-Regular.ttf", "Inter-Bold.ttf"],
+    "acumin pro": ["SpaceGrotesk-Regular.ttf", "SpaceGrotesk-Bold.ttf"],
+    "aktiv grotesk": ["Manrope-Regular.ttf", "Manrope-Bold.ttf"],
+    "din 2014": ["Oswald-Regular.ttf", "Oswald-Bold.ttf"],
+    "adobe garamond pro": ["CormorantGaramond-Regular.ttf", "CormorantGaramond-Bold.ttf"],
+    "minion pro": ["LibreBaskerville-Regular.ttf", "LibreBaskerville-Bold.ttf"],
+    "freight display pro": ["PlayfairDisplay-Regular.ttf", "PlayfairDisplay-Bold.ttf"],
+    "baskerville urw": ["LibreBaskerville-Regular.ttf", "LibreBaskerville-Bold.ttf"]
+  };
+
+  const TBB_ADOBE_FONTS_EQUIVALENT_MAP = {
+    "proxima nova": { adobeName: "Proxima Nova", oflPartner: "Montserrat", adobeUrl: "https://fonts.adobe.com/fonts/proxima-nova" },
+    "futura pt": { adobeName: "Futura PT", oflPartner: "Outfit", adobeUrl: "https://fonts.adobe.com/fonts/futura-pt" },
+    "avenir next": { adobeName: "Avenir Next", oflPartner: "Plus Jakarta Sans", adobeUrl: "https://fonts.adobe.com/fonts/avenir-next" },
+    "brandon grotesque": { adobeName: "Brandon Grotesque", oflPartner: "League Spartan", adobeUrl: "https://fonts.adobe.com/fonts/brandon-grotesque" },
+    "neue haas grotesk": { adobeName: "Neue Haas Grotesk", oflPartner: "Inter", adobeUrl: "https://fonts.adobe.com/fonts/neue-haas-grotesk" },
+    "acumin pro": { adobeName: "Acumin Pro", oflPartner: "Space Grotesk", adobeUrl: "https://fonts.adobe.com/fonts/acumin" },
+    "aktiv grotesk": { adobeName: "Aktiv Grotesk", oflPartner: "Manrope", adobeUrl: "https://fonts.adobe.com/fonts/aktiv-grotesk" },
+    "din 2014": { adobeName: "DIN 2014", oflPartner: "Oswald", adobeUrl: "https://fonts.adobe.com/fonts/din-2014" },
+    "adobe garamond pro": { adobeName: "Adobe Garamond Pro", oflPartner: "Cormorant Garamond", adobeUrl: "https://fonts.adobe.com/fonts/adobe-garamond" },
+    "minion pro": { adobeName: "Minion Pro", oflPartner: "Libre Baskerville", adobeUrl: "https://fonts.adobe.com/fonts/minion" },
+    "freight display pro": { adobeName: "Freight Display Pro", oflPartner: "Playfair Display", adobeUrl: "https://fonts.adobe.com/fonts/freight-display" },
+    "baskerville urw": { adobeName: "Baskerville URW", oflPartner: "Libre Baskerville", adobeUrl: "https://fonts.adobe.com/fonts/baskerville-urw" }
+  };
+
+  function resolveFontFilesForFamily(famName, fallbackFam) {
+    const clean = String(famName || fallbackFam || "Montserrat")
+      .split(",")[0]
+      .replace(/['"]/g, "")
+      .trim()
+      .toLowerCase();
+    return TBB_FONT_FILES_INDEX[clean] || TBB_FONT_FILES_INDEX[String(fallbackFam || "montserrat").toLowerCase()] || TBB_FONT_FILES_INDEX["montserrat"];
+  }
+
+  async function tbbDownloadBrandFontsZip(triggerBtn) {
+    const origHtml = triggerBtn ? triggerBtn.innerHTML : "";
+    if (triggerBtn) {
+      triggerBtn.disabled = true;
+      triggerBtn.textContent = "Empaquetando Kit Híbrido de Fuentes (.TTF + Typekit)...";
+    }
+    try {
+      const brand = (typeof window.buildActiveBrandProfileForV80 === "function")
+        ? window.buildActiveBrandProfileForV80()
+        : {};
+      const cs = window.canvasState || {};
+      const st = window.tbbState || {};
+      const bName = brand.name || cs.brandName || "TheBestBrand";
+      const safeSlug = String(brand.slug || bName).replace(/[^a-zA-Z0-9_-]+/g, "_") || "Marca";
+
+      const priFont = brand.primaryFont || cs.primary_font || st.selectedFontFamily || "Montserrat";
+      const secFont = brand.secondaryFont || cs.secondary_font || st.selectedSecondaryFont || (priFont === "Plus Jakarta Sans" ? "Inter" : "Plus Jakarta Sans");
+      const monoFont = brand.monoFont || cs.mono_font || st.selectedMonoFont || "JetBrains Mono";
+      const adobeKitId = String(brand.adobeTypekitId || cs.adobe_typekit_id || st.adobeTypekitId || "").trim();
+      const priAdobeMeta = TBB_ADOBE_FONTS_EQUIVALENT_MAP[String(priFont).toLowerCase()] || null;
+      const secAdobeMeta = TBB_ADOBE_FONTS_EQUIVALENT_MAP[String(secFont).toLowerCase()] || null;
+      const isHybridAdobeActive = Boolean(adobeKitId || priAdobeMeta || secAdobeMeta || st.fontLicenseMode === "hybrid");
+
+      const familiesToPack = [
+        { role: "01_Titulares_y_Logomarca", family: priFont, files: resolveFontFilesForFamily(priFont, "Montserrat") },
+        { role: "02_Cuerpo_y_Documentos", family: secFont, files: resolveFontFilesForFamily(secFont, "Plus Jakarta Sans") },
+        { role: "03_Datos_Tecnicos_y_Tablas", family: monoFont, files: resolveFontFilesForFamily(monoFont, "JetBrains Mono") }
+      ];
+
+      const zipEntries = [];
+      const seenFiles = new Set();
+
+      for (const group of familiesToPack) {
+        for (const fname of group.files) {
+          const entryPath = `${group.role}_${group.family.replace(/\s+/g, "_")}/${fname}`;
+          if (seenFiles.has(entryPath)) continue;
+          seenFiles.add(entryPath);
+          try {
+            const resp = await fetch(`/assets/fonts/${fname}`);
+            if (resp.ok) {
+              const buf = await resp.arrayBuffer();
+              zipEntries.push({ name: entryPath, data: new Uint8Array(buf) });
+            }
+          } catch (fe) {
+            console.warn("Font fetch warning:", fname, fe);
+          }
+        }
+      }
+
+      const adobeSectionLines = isHybridAdobeActive
+        ? [
+            "",
+            "5. MODO HÍBRIDO ADOBE FONTS (TYPEKIT) · 100% CUMPLIMIENTO DE COPYRIGHT:",
+            `   • Estado del Proyecto Web Adobe Fonts (Typekit ID): ${adobeKitId ? adobeKitId + " (https://use.typekit.net/" + adobeKitId + ".css)" : "Activación vía Adobe Creative Cloud"}`,
+            priAdobeMeta
+              ? `   • Fuente Primaria Adobe Fonts: ${priAdobeMeta.adobeName} (${priAdobeMeta.adobeUrl}) -> Homólogo métrico Open Source incluido en este .ZIP: ${priAdobeMeta.oflPartner} (.TTF)`
+              : `   • Fuente Primaria: ${priFont}`,
+            secAdobeMeta
+              ? `   • Fuente Secundaria Adobe Fonts: ${secAdobeMeta.adobeName} (${secAdobeMeta.adobeUrl}) -> Homólogo métrico Open Source incluido en este .ZIP: ${secAdobeMeta.oflPartner} (.TTF)`
+              : `   • Fuente Secundaria: ${secFont}`,
+            "   • NOTA LEGAL DE COPYRIGHT (EULA ADOBE FONTS):",
+            "     1) Tus logotipos (.SVG y .AI) ya están convertidos 100% a curvas Bézier (<path>), y tu Manual (.PDF)",
+            "        lleva las fuentes incrustadas legalmente conforme a los Términos de Uso de Adobe Fonts.",
+            "     2) Para equipos de tu empresa que cuenten con suscripción Adobe Creative Cloud, activa la fuente en 1 clic",
+            "        desde https://fonts.adobe.com/.",
+            "     3) Para equipos o proveedores sin Creative Cloud, instala directamente los archivos .TTF Open Source (SIL OFL 1.1)",
+            "        incluidos en las carpetas de este paquete sin costo ni restricción de licencias."
+          ]
+        : [];
+
+      const readmeTxt = [
+        "================================================================================",
+        `KIT OFICIAL DE TIPOGRAFÍAS CORPORATIVAS (MODO HÍBRIDO) · ${bName.toUpperCase()}`,
+        "Generado por The Best Brand — Algorithmic Visual Identity Atelier",
+        "================================================================================",
+        "",
+        "1. ARQUITECTURA TIPOGRÁFICA SELECCIONADA PARA TU MARCA:",
+        `   • Tipografía Primaria (Titulares, Portadas y Logotipo): ${priFont}${priAdobeMeta ? ` [Adobe Fonts + Homólogo SIL OFL: ${priAdobeMeta.oflPartner}]` : " [Open Source SIL OFL 1.1]"}`,
+        `   • Tipografía Secundaria (Cuerpo de Lectura, Contratos y Presentaciones): ${secFont}${secAdobeMeta ? ` [Adobe Fonts + Homólogo SIL OFL: ${secAdobeMeta.oflPartner}]` : " [Open Source SIL OFL 1.1]"}`,
+        `   • Tipografía Técnica / Monoespaciada (Tablas, Folios, Cifras y Códigos): ${monoFont} [Open Source SIL OFL 1.1]`,
+        ...(adobeKitId ? [`   • Enlace Web CSS Adobe Fonts (Typekit): https://use.typekit.net/${adobeKitId}.css`] : []),
+        "",
+        "2. CONTENIDO DE ESTE PAQUETE (.TTF LISTOS PARA INSTALAR):",
+        ...zipEntries.map((e) => `   - ${e.name} (${Math.round(e.data.length / 1024)} KB)`),
+        "",
+        "3. CÓMO INSTALAR TUS FUENTES EN 30 SEGUNDOS:",
+        "   • En macOS (MacBook / iMac):",
+        "     Abre cada carpeta, haz doble clic sobre los archivos .ttf y pulsa «Instalar tipo de letra»",
+        "     en el Catálogo Tipográfico.",
+        "   • En Windows 10 / 11:",
+        "     Selecciona los archivos .ttf, haz clic derecho y elige «Instalar para todos los usuarios».",
+        "",
+        "4. LICENCIA DE USO COMERCIAL ABIERTO (SIL OPEN FONT LICENSE 1.1):",
+        "   Todos los archivos binarios .TTF incluidos en este paquete están licenciados bajo SIL OFL 1.1.",
+        "   Tu empresa cuenta con autorización perpetua y gratuita para instalarlos y utilizarlos en",
+        "   cualquier computadora, papelería impresa, empaques, sitios web, aplicaciones y documentos.",
+        ...adobeSectionLines,
+        ""
+      ].join("\r\n");
+
+      const licenseTxt = [
+        "SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007",
+        "-----------------------------------------------------------",
+        "PREAMBLE",
+        "The goals of the Open Font License (OFL) are to stimulate worldwide",
+        "development of collaborative font projects, to support the font creation",
+        "efforts of academic and linguistic communities, and to provide a free and",
+        "open framework in which fonts may be shared and improved in partnership",
+        "with others.",
+        "",
+        "The OFL allows the licensed fonts to be used, studied, modified and",
+        "redistributed freely as long as they are not sold by themselves. The",
+        "fonts, including any derivative works, can be bundled, embedded,",
+        "redistributed and/or sold with any software provided that any reserved",
+        "names are not used by derivative works."
+      ].join("\r\n");
+
+      const webCssSnippet = [
+        `/* ==========================================================================`,
+        `   SNIPPET CSS OFICIAL DE TIPOGRAFÍA HÍBRIDA — ${bName.toUpperCase()}`,
+        `   Compatible con Adobe Fonts (Typekit) + Respaldo Universal Open Source (SIL OFL)`,
+        `   ========================================================================== */`,
+        adobeKitId
+          ? `@import url("https://use.typekit.net/${adobeKitId}.css");`
+          : `/* Si creas un Proyecto Web en https://fonts.adobe.com/my_fonts#web_projects-section, descomenta la siguiente línea con tu ID: */\r\n/* @import url("https://use.typekit.net/TU_KIT_ID.css"); */`,
+        `@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap");`,
+        ``,
+        `:root {`,
+        `  --brand-font-primary: '${priFont}', '${priAdobeMeta ? priAdobeMeta.oflPartner : "Montserrat"}', sans-serif;`,
+        `  --brand-font-secondary: '${secFont}', '${secAdobeMeta ? secAdobeMeta.oflPartner : "Plus Jakarta Sans"}', sans-serif;`,
+        `  --brand-font-mono: '${monoFont}', 'JetBrains Mono', monospace;`,
+        `}`
+      ].join("\r\n");
+
+      zipEntries.unshift(
+        { name: "LEEME_GUIA_TIPOGRAFICA_E_INSTALACION.txt", data: readmeTxt },
+        { name: "SNIPPET_WEB_ADOBE_TYPEKIT_Y_GOOGLE_FONTS.css", data: webCssSnippet },
+        { name: "LICENCIA_COMERCIAL_SIL_OFL_1.1.txt", data: licenseTxt }
+      );
+
+      const blob = buildZipBlob(zipEntries, "application/zip");
+      const zipFileName = `Kit_Fuentes_Oficiales_${safeSlug}.zip`;
+      if (typeof window.tbbDeliverFileNativeOrDownload === "function") {
+        await window.tbbDeliverFileNativeOrDownload(blob, zipFileName, "application/zip", `Kit Híbrido de Fuentes — ${bName}`);
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = zipFileName;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          a.remove();
+          URL.revokeObjectURL(url);
+        }, 1200);
+      }
+
+      if (triggerBtn) {
+        triggerBtn.disabled = false;
+        triggerBtn.textContent = `✓ Kit Híbrido Descargado (${priFont} + ${secFont} + ${monoFont})`;
+        setTimeout(() => { if (origHtml) triggerBtn.innerHTML = origHtml; }, 2800);
+      }
+      return blob;
+    } catch (err) {
+      console.error("Error exportando Kit de Fuentes ZIP:", err);
+      if (triggerBtn) {
+        triggerBtn.disabled = false;
+        triggerBtn.innerHTML = origHtml || "Descargar Kit de Fuentes (.ZIP)";
+      }
+    }
+  }
+
+  function tbbEnsureAdobeTypekitCssInjected(kitIdOpt) {
+    if (typeof document === "undefined" || !document.head) return "";
+    const cs = window.canvasState || {};
+    const st = window.tbbState || {};
+    const rawId = String(kitIdOpt !== undefined ? kitIdOpt : (cs.adobe_typekit_id || st.adobeTypekitId || "")).trim();
+    const cleanId = rawId
+      .replace(/^https?:\/\/use\.typekit\.net\//i, "")
+      .replace(/\.css.*$/i, "")
+      .replace(/[^a-zA-Z0-9_-]/g, "")
+      .trim();
+
+    let linkEl = document.getElementById("tbbAdobeTypekitDynamicStylesheet");
+    if (!cleanId) {
+      if (linkEl) linkEl.remove();
+      return "";
+    }
+    const href = `https://use.typekit.net/${cleanId}.css`;
+    if (!linkEl) {
+      linkEl = document.createElement("link");
+      linkEl.id = "tbbAdobeTypekitDynamicStylesheet";
+      linkEl.rel = "stylesheet";
+      document.head.appendChild(linkEl);
+    }
+    if (linkEl.href !== href) {
+      linkEl.href = href;
+    }
+    return cleanId;
   }
 
   window.tbbGenerateNanoBananaBrandSymbol = tbbGenerateNanoBananaBrandSymbol;
@@ -2072,11 +2458,15 @@
   window.tbbOpenEmailSignatureModal = tbbOpenEmailSignatureModal;
   window.tbbDownloadEmailSignatureHTML = tbbDownloadEmailSignatureHTML;
   window.tbbGenerateChapterVisualsWithFlow = tbbGenerateChapterVisualsWithFlow;
+  window.tbbDownloadBrandFontsZip = tbbDownloadBrandFontsZip;
+  window.TBB_FONT_FILES_INDEX = TBB_FONT_FILES_INDEX;
+  window.TBB_ADOBE_FONTS_EQUIVALENT_MAP = TBB_ADOBE_FONTS_EQUIVALENT_MAP;
+  window.tbbEnsureAdobeTypekitCssInjected = tbbEnsureAdobeTypekitCssInjected;
 
   // Ejecutar centrado retroactivo al cargar si ya había un PNG en la sesión
   if (typeof window !== "undefined") {
     setTimeout(() => { tbbEnsureUploadedLogoCentered(); }, 350);
   }
 
-  console.log("✓ Suite Ejecutiva de Entregables (.SVG/.AI Curvas, .DOCX, .PPTX, Firma .HTML, Auto-Center & Google Flow Visuals V83.0) activa.");
+  console.log("✓ Suite Ejecutiva de Entregables (.SVG/.AI Curvas, .DOCX, .PPTX, Firma .HTML, Kit Fuentes .ZIP, Auto-Center & Google Flow Visuals V83.0) activa.");
 })();

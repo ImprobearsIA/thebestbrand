@@ -324,7 +324,7 @@
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='45' fill='%2318181B'/%3E%3Ctext x='90' y='115' font-family='sans-serif' font-weight='900' font-size='78' fill='%23FFFFFF' text-anchor='middle'%3ETB%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..700&family=Inter:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Cinzel:wght@600;700;800;900&family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..700&family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Lato:wght@400;700;900&family=League+Spartan:wght@500;700;800;900&family=Libre+Baskerville:wght@400;700&family=Manrope:wght@400;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&family=Oswald:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Sora:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&family=Urbanist:wght@500;600;700;800;900&family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   
   <style>
     /* ==========================================================================
@@ -5630,99 +5630,98 @@
     </div>
   </div>
 
-  <!-- CLOSING & TRANSITION VIDEO CAPSULE MODAL (1. RESUMEN DEL PASO ANTERIOR + 2. VIDEO DE TEORÍA, IMPORTANCIA Y EJEMPLO BREVE) -->
-  <div class="welcome-modal-overlay" id="phaseTransitionVideoModal" style="z-index: 9999; padding: 14px 18px; background: rgba(248, 250, 252, 0.94); backdrop-filter: blur(8px); overflow: hidden;">
-    <div class="welcome-modal-card tbb-atomic-card" style="max-width: 1120px; width: 100%; height: calc(100dvh - 28px); max-height: 770px; overflow: hidden; background: #FFFFFF; border: 2px solid #CBD5E1; border-radius: 24px; box-shadow: 0 16px 44px rgba(15, 23, 42, 0.10); color: #090D16; padding: 16px 22px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; text-align: left; box-sizing: border-box;" onclick="event.stopPropagation()">
-      <!-- 1. Cabecera Luminosa Homologada con el Sistema + Selector de los 7 Videos Animados con Personajes -->
-      <div style="display:flex; flex-direction:column; gap:5px; border-bottom:1.5px solid #E2E8F0; padding-bottom:8px; flex-shrink:0;">
+  <!-- CLOSING & TRANSITION VIDEO CAPSULE MODAL (FORMATO VERTICAL 9:16 CON TOMAS REALISTAS, B-ROLLS, VOZ HUMANA Y TEXTOS RESPONSIVOS JUNTO/DEBAJO) -->
+  <div class="welcome-modal-overlay" id="phaseTransitionVideoModal" style="z-index: 9999; padding: 10px 14px; background: rgba(15, 23, 42, 0.90); backdrop-filter: blur(10px); overflow: hidden;">
+    <div class="welcome-modal-card tbb-atomic-card" style="max-width: 1180px; width: 100%; height: calc(100dvh - 20px); max-height: 880px; overflow: hidden; background: #FFFFFF; border: 2px solid #CBD5E1; border-radius: 24px; box-shadow: 0 20px 56px rgba(9, 13, 22, 0.24); color: #090D16; padding: 14px 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; text-align: left; box-sizing: border-box;" onclick="event.stopPropagation()">
+      <!-- 1. Cabecera Luminosa + Selector de los 7 Videos Verticales 9:16 -->
+      <div style="display:flex; flex-direction:column; gap:4px; border-bottom:1.5px solid #E2E8F0; padding-bottom:6px; flex-shrink:0;">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
           <div style="display:flex; align-items:center; gap:8px;">
-            <span id="transitionVideoBadge" style="font-family:var(--font-mono); background:#FAF8F5; color:#0D2540; border:1.5px solid #426EAE; border-left:4px solid #FF7A00; font-size:0.70rem; font-weight:900; padding:3px 10px; border-radius:999px; letter-spacing:0.04em;">
-              CÁPSULA DE AGENCIA · ILUSTRACIÓN EDITORIAL C-00 & VOZ GEMINI
+            <span id="transitionVideoBadge" style="font-family:var(--font-mono); background:#FAF8F5; color:#0D2540; border:1.5px solid #0078C0; border-left:4px solid #10B981; font-size:0.68rem; font-weight:900; padding:3px 10px; border-radius:999px; letter-spacing:0.04em;">
+              VIDEO VERTICAL 9:16 · TOMAS REALISTAS + B-ROLLS & VOZ HUMANA
             </span>
-            <span id="transitionVideoChapterTag" style="font-family:var(--font-mono); font-size:0.70rem; color:#475569; font-weight:800;"></span>
+            <span id="transitionVideoChapterTag" style="font-family:var(--font-mono); font-size:0.68rem; color:#475569; font-weight:800;"></span>
           </div>
-          <span id="transitionVideoStatusPill" style="font-family:var(--font-mono); font-size:0.70rem; color:#059669; background:#F0FDF4; padding:3px 10px; border-radius:999px; border:1.5px solid #86EFAC; font-weight:800;">
-            Video Ilustrado HD Listo
+          <span id="transitionVideoStatusPill" style="font-family:var(--font-mono); font-size:0.68rem; color:#059669; background:#F0FDF4; padding:3px 10px; border-radius:999px; border:1.5px solid #86EFAC; font-weight:800;">
+            Video Vertical 9:16 + Voz Humana Activa
           </span>
         </div>
-        <h2 id="transitionVideoTitle" style="font-family:var(--font-display); font-size:1.18rem; font-weight:900; color:#0D2540; margin:1px 0 0 0; line-height:1.2;">
-          Resumen de Avance + Video Ilustrado con Identidad TheBestBrand
-        </h2>
-        <p id="transitionVideoSubtitle" style="font-size:0.78rem; color:#475569; font-weight:600; margin:0; line-height:1.28;">
-          Reproduce el video animado de este tema o selecciona cualquiera de los 7 episodios animados del recorrido:
-        </p>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;">
+          <h2 id="transitionVideoTitle" style="font-family:var(--font-display); font-size:1.12rem; font-weight:900; color:#0D2540; margin:0; line-height:1.2;">
+            Resumen de Avance + Video Vertical 9:16 con Tomas y B-Rolls
+          </h2>
+          <p id="transitionVideoSubtitle" style="font-size:0.74rem; color:#475569; font-weight:600; margin:0; line-height:1.25;">
+            Alterna tomas de mentora con B-rolls conceptuales y textos de apoyo responsivos:
+          </p>
+        </div>
         <div id="transitionVideoThemeSelectorRow" style="display:flex; gap:5px; overflow-x:auto; padding-top:2px;">
-          <button type="button" class="tbb-video-theme-pill" data-vstep="0" onclick="window.tbbSwitchVideoCapsuleTheme(0)" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 0 · Giro y Logo Base</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="1" onclick="window.tbbSwitchVideoCapsuleTheme(1)" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 1 · Sinek</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="2" onclick="window.tbbSwitchVideoCapsuleTheme(2)" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 2 · Touchpoints</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="3" onclick="window.tbbSwitchVideoCapsuleTheme(3)" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 3 · Naming</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="4" onclick="window.tbbSwitchVideoCapsuleTheme(4)" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 4 · Kansei</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="5" onclick="window.tbbSwitchVideoCapsuleTheme(5)" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 5 · Logo IA</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="6" onclick="window.tbbSwitchVideoCapsuleTheme(6)" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 6 · 30 Láminas C-00</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="0" onclick="window.tbbSwitchVideoCapsuleTheme(0)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 0 · Giro y Logo Base</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="1" onclick="window.tbbSwitchVideoCapsuleTheme(1)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 1 · Sinek</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="2" onclick="window.tbbSwitchVideoCapsuleTheme(2)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 2 · Touchpoints</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="3" onclick="window.tbbSwitchVideoCapsuleTheme(3)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 3 · Naming</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="4" onclick="window.tbbSwitchVideoCapsuleTheme(4)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 4 · Kansei & Fuentes</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="5" onclick="window.tbbSwitchVideoCapsuleTheme(5)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 5 · Logo IA</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="6" onclick="window.tbbSwitchVideoCapsuleTheme(6)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 6 · 36 Láminas</button>
         </div>
       </div>
 
-      <!-- 2. Cuerpo Central en 2 Columnas (Cero Scroll, Diseño Claro de Estudio) -->
-      <div class="tbb-video-modal-grid" style="flex:1; min-height:0; display:grid; grid-template-columns:1.05fr 0.95fr; gap:14px; align-items:stretch; overflow:hidden;">
-        <!-- Columna Izquierda: Video MP4 Introductorio + Ondas de Voz de Aura -->
-        <div id="transitionTheoryVideoContainer" style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:18px; padding:10px 12px; display:flex; flex-direction:column; justify-content:space-between; gap:8px; min-height:0; overflow:hidden;">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-shrink:0;">
-            <span id="transitionTheoryHeaderBadge" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#0284C7; text-transform:uppercase; letter-spacing:0.04em;">
-              PARTE 2 · VIDEO INTRODUCTORIO Y TEORÍA
+      <!-- 2. Cuerpo Central Responsivo: Video Vertical 9:16 a Toda Altura + Textos de Apoyo Junto (Escritorio) o Debajo (Móvil) -->
+      <div class="tbb-video-modal-grid" style="flex:1; min-height:0; display:grid; grid-template-columns:minmax(290px, 370px) 1fr; gap:16px; align-items:stretch; overflow:hidden;">
+        <!-- Columna del Video Vertical 9:16 a Pantalla Completa Vertical -->
+        <div id="transitionTheoryVideoContainer" style="background:#090D16; border:2px solid #0078C0; border-radius:20px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; gap:4px; min-height:0; overflow:hidden; position:relative;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; padding:2px 6px; flex-shrink:0;">
+            <span id="transitionTheoryHeaderBadge" style="font-family:var(--font-mono); font-size:0.63rem; font-weight:800; color:#88E0E0; text-transform:uppercase; letter-spacing:0.04em;">
+              REEL VERTICAL 9:16 · TOMAS + B-ROLL
             </span>
-            <span id="transitionTheoryFrameworkPill" style="font-family:var(--font-mono); font-size:0.64rem; background:#FFFFFF; color:#0F172A; padding:3px 9px; border-radius:999px; border:1.5px solid #CBD5E1; font-weight:800;">
-              HD 720p · Audio Narrado
+            <span id="transitionTheoryFrameworkPill" style="font-family:var(--font-mono); font-size:0.62rem; background:rgba(255,255,255,0.12); color:#FFFFFF; padding:2px 8px; border-radius:999px; font-weight:800;">
+              9:16 HD · Voz Humana
             </span>
           </div>
 
-          <div style="flex:1; min-height:0; position:relative; border-radius:14px; overflow:hidden; border:2px solid #CBD5E1; background:#FFFFFF; display:flex; flex-direction:column; justify-content:space-between;">
+          <div style="flex:1; min-height:0; position:relative; border-radius:14px; overflow:hidden; background:#090D16; display:flex; flex-direction:column; align-items:center; justify-content:center;">
             <video
               id="transitionTheoryVideoPlayer"
               controls
               playsinline
-              preload="metadata"
-              style="width:100%; flex:1; min-height:0; max-height:290px; display:block; background:#0F172A; object-fit:contain;"
+              preload="auto"
+              style="width:100%; height:100%; max-height:100%; aspect-ratio:9/16; display:block; background:#090D16; object-fit:cover; border-radius:12px;"
             >
               <source id="transitionTheoryVideoSource" src="/assets/videos/capsula_teoria_paso_1.mp4" type="video/mp4" />
               Tu navegador no soporta reproducción de video HTML5.
             </video>
-            <div style="flex-shrink:0;">
-              <canvas id="transitionVideoCanvas" width="380" height="36" style="width:100%; height:30px; display:block; border-top:1.5px solid #E2E8F0; background:#F8FAFC;"></canvas>
-              <div style="display:none;"><div id="transitionVideoCaptionText"></div></div>
-              <div style="height:4px; background:#E2E8F0;">
-                <div id="transitionVideoProgressBar" style="width:35%; height:100%; background:linear-gradient(90deg, #1CB0F6, #38BDF8, #58CC02); transition:width 0.35s ease;"></div>
-              </div>
-            </div>
           </div>
 
-          <div id="transitionVideoNextHint" style="font-size:0.74rem; color:#475569; font-weight:700; text-align:center; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:6px 10px; flex-shrink:0;">
-            Puedes reproducir el video completo o presionar el botón verde inferior para continuar en cualquier momento.
+          <div style="flex-shrink:0;">
+            <canvas id="transitionVideoCanvas" width="360" height="24" style="width:100%; height:22px; display:block; border-radius:6px; background:#0F172A;"></canvas>
+            <div style="display:none;"><div id="transitionVideoCaptionText"></div><div id="transitionVideoNextHint"></div></div>
+            <div style="height:4px; background:#1E293B; border-radius:999px; overflow:hidden; margin-top:3px;">
+              <div id="transitionVideoProgressBar" style="width:35%; height:100%; background:linear-gradient(90deg, #0078C0, #88E0E0, #10B981); transition:width 0.35s ease;"></div>
+            </div>
           </div>
         </div>
 
-        <!-- Columna Derecha: Parte 1 (Resumen de Cierre) + Parte 2 (3 Tarjetas de Síntesis) -->
-        <div style="display:flex; flex-direction:column; justify-content:space-between; gap:10px; min-height:0; overflow:hidden;">
+        <!-- Columna / Panel Responsivo de Textos de Apoyo (Junto al Video en Escritorio · Debajo del Video en Móvil) -->
+        <div class="tbb-video-support-texts-col" style="display:flex; flex-direction:column; justify-content:space-between; gap:10px; min-height:0; overflow-y:auto; padding-right:2px;">
           <!-- PARTE 1: RESUMEN DEL PASO ANTERIOR -->
-          <div id="transitionVideoReviewCard" style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:18px; padding:10px 14px; display:flex; flex-direction:column; gap:6px; flex-shrink:0;">
-            <div id="transitionSummaryHeadingLabel" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#059669; text-transform:uppercase; letter-spacing:0.04em;">
-              PARTE 1 · CIERRE Y RESUMEN DEL PASO COMPLETADO:
+          <div id="transitionVideoReviewCard" style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:18px; padding:12px 16px; display:flex; flex-direction:column; gap:7px; flex-shrink:0;">
+            <div id="transitionSummaryHeadingLabel" style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#059669; text-transform:uppercase; letter-spacing:0.04em;">
+              PARTE 1 · SÍNTESIS Y LOGROS DEL PASO COMPLETADO:
             </div>
-            <div id="transitionVideoDiscoveriesList" style="font-size:0.76rem; color:#0F172A; line-height:1.32; display:flex; flex-direction:column; gap:5px;">
+            <div id="transitionVideoDiscoveriesList" style="font-size:0.80rem; color:#0F172A; line-height:1.38; display:flex; flex-direction:column; gap:6px;">
               <!-- Dinámico según la fase completada -->
             </div>
           </div>
 
-          <!-- SÍNTESIS PEDAGÓGICA EN 3 TARJETAS CLARAS (TEORÍA + IMPORTANCIA + EJEMPLO BREVE) -->
-          <div id="transitionTheoryCardsGrid" style="flex:1; min-height:0; display:flex; flex-direction:column; justify-content:space-between; gap:6px; font-size:0.75rem; line-height:1.3;">
+          <!-- SÍNTESIS PEDAGÓGICA EN 3 TARJETAS CLARAS (TEORÍA + IMPORTANCIA + EJEMPLO BREVE DE APOYO AL VIDEO) -->
+          <div id="transitionTheoryCardsGrid" style="flex:1; min-height:0; display:flex; flex-direction:column; justify-content:space-between; gap:8px; font-size:0.79rem; line-height:1.36;">
             <!-- Se llena dinámicamente con Teoría, Importancia y Ejemplo Breve del paso destino -->
           </div>
         </div>
       </div>
 
-      <!-- 3. Barra Inferior de Botones Tamaño Duolingo Idéntica al Resto de la App -->
+      <!-- 3. Barra Inferior de Botones Tamaño Duolingo -->
       <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding-top:6px; border-top:1.5px solid #E2E8F0; flex-shrink:0;">
-        <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('phaseTransitionVideoModal').classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}" style="flex:0.45;">
+        <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('phaseTransitionVideoModal').classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}" style="flex:0.42;">
           <span>Cerrar Video</span>
         </button>
         <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" id="btnFinishTransitionVideo" onclick="finishTransitionVideoAndEnterNextStep()" style="flex:1;">
@@ -6269,12 +6268,12 @@
     window.AURA_ARCH_NAMES = AURA_ARCH_NAMES;
 
     const AURA_OFFICIAL_PALETTES = [
-      { id: "brandbook_1_0", label: "Brandbook 1.0 (Zafiro & Ámbar)", priHex: "#1D4ED8", secHex: "#0D2540", accentHex: "#0D2540", coreStyle: "dark" },
-      { id: "zafiro_claro_1_0", label: "Brandbook 1.0 Lienzo Claro", priHex: "#1D4ED8", secHex: "#0D2540", accentHex: "#1E40AF", coreStyle: "light" },
+      { id: "brandbook_1_0", label: "Brandbook 1.0 (Zafiro & Naranja Acción)", priHex: "#1D4ED8", secHex: "#FF7A00", accentHex: "#EA580C", coreStyle: "dark" },
+      { id: "zafiro_claro_1_0", label: "Brandbook 1.0 Lienzo Claro", priHex: "#1D4ED8", secHex: "#FF7A00", accentHex: "#EA580C", coreStyle: "light" },
       { id: "oro_imperial", label: "Oro Imperial", priHex: "#D4AF37", secHex: "#FDE68A", accentHex: "#B45309", coreStyle: "dark" },
-      { id: "cian_cuantico", label: "Cian Cuántico", priHex: "#1D4ED8", secHex: "#60A5FA", accentHex: "#0D2540", coreStyle: "dark" },
-      { id: "cobre_atelier", label: "Ámbar Atelier", priHex: "#0D2540", secHex: "#93C5FD", accentHex: "#1D4ED8", coreStyle: "light" },
-      { id: "violeta_neural", label: "Violeta Neural", priHex: "#7C3AED", secHex: "#C084FC", accentHex: "#4C1D95", coreStyle: "dark" }
+      { id: "cian_cuantico", label: "Cian Cuántico", priHex: "#1D4ED8", secHex: "#60A5FA", accentHex: "#FF7A00", coreStyle: "dark" },
+      { id: "cobre_atelier", label: "Ámbar Atelier", priHex: "#0D2540", secHex: "#FF7A00", accentHex: "#1D4ED8", coreStyle: "light" },
+      { id: "violeta_neural", label: "Violeta Neural", priHex: "#7C3AED", secHex: "#C084FC", accentHex: "#FF7A00", coreStyle: "dark" }
     ];
     window.AURA_OFFICIAL_PALETTES = AURA_OFFICIAL_PALETTES;
 
@@ -6301,10 +6300,10 @@
     window.tbbAuraOrbConfig = (() => {
       const defCfg = {
         paletteId: "brandbook_1_0",
-        paletteLabel: "Brandbook 1.0 (Zafiro & Ámbar)",
+        paletteLabel: "Brandbook 1.0 (Zafiro & Naranja Acción)",
         priHex: "#1D4ED8",
-        secHex: "#0D2540",
-        accentHex: "#0D2540",
+        secHex: "#FF7A00",
+        accentHex: "#EA580C",
         coreStyle: "dark",
         archIdx: 0,
         orbSpeed: 1.0,
@@ -6314,17 +6313,18 @@
         lockedByAdmin: false
       };
       try {
-        const rawVaultV49 = localStorage.getItem("tbb_vault_aura_orb_config_v56");
-        const rawV49 = rawVaultV49 || localStorage.getItem("tbb_aura_orb_config_v56");
-        if (rawV49) {
-          const parsed = JSON.parse(rawV49);
+        const rawVaultV60 = localStorage.getItem("tbb_vault_aura_orb_config_v60");
+        const rawV60 = rawVaultV60 || localStorage.getItem("tbb_aura_orb_config_v60");
+        if (rawV60) {
+          const parsed = JSON.parse(rawV60);
           if (parsed && typeof parsed === "object" && parsed.priHex) {
+            const isLegacyBlueOnly = /^#(0d2540|38bdf8|60a5fa|0284c7|1d4ed8)$/i.test(String(parsed.secHex || "").trim());
             return {
               paletteId: parsed.paletteId || "brandbook_1_0",
-              paletteLabel: parsed.paletteLabel || "Brandbook 1.0 (Zafiro & Ámbar)",
+              paletteLabel: parsed.paletteLabel || "Brandbook 1.0 (Zafiro & Naranja Acción)",
               priHex: parsed.priHex || defCfg.priHex,
-              secHex: parsed.secHex || defCfg.secHex,
-              accentHex: parsed.accentHex || defCfg.accentHex,
+              secHex: isLegacyBlueOnly ? "#FF7A00" : (parsed.secHex || defCfg.secHex),
+              accentHex: isLegacyBlueOnly ? "#EA580C" : (parsed.accentHex || defCfg.accentHex),
               coreStyle: parsed.coreStyle === "light" ? "light" : "dark",
               archIdx: Math.max(0, Math.min(4, parseInt(parsed.archIdx ?? 0, 10) || 0)),
               orbSpeed: Number(parsed.orbSpeed) > 0 ? Number(parsed.orbSpeed) : 1.0,
@@ -6346,29 +6346,33 @@
 
     function tbbApplyAuraOrbThemeToDOM() {
       const cfg = window.tbbAuraOrbConfig || AURA_OFFICIAL_PALETTES[0];
+      if (/^#(0d2540|38bdf8|60a5fa|0284c7|1d4ed8)$/i.test(String(cfg.secHex || "").trim())) {
+        cfg.secHex = "#FF7A00";
+        cfg.accentHex = "#EA580C";
+      }
       if (typeof cfg.archIdx === "number" && !isNaN(cfg.archIdx)) {
         activeAuraOrbArch = Math.max(0, Math.min(4, parseInt(cfg.archIdx, 10) || 0));
       }
       const [r1, g1, b1] = tbbHexToRgbTuple(cfg.priHex, [29, 78, 216]);
-      const [r2, g2, b2] = tbbHexToRgbTuple(cfg.secHex, [249, 115, 22]);
+      const [r2, g2, b2] = tbbHexToRgbTuple(cfg.secHex, [255, 122, 0]);
       const [r3, g3, b3] = tbbHexToRgbTuple(cfg.accentHex, [234, 88, 12]);
 
       const rowEl = document.getElementById("tbbAuraTopPresenceRow");
       if (rowEl) {
         rowEl.style.borderColor = `rgba(${r1}, ${g1}, ${b1}, 0.38)`;
-        rowEl.style.borderBottomColor = `rgba(${r2}, ${g2}, ${b2}, 0.92)`;
+        rowEl.style.borderBottomColor = `rgba(${r2}, ${g2}, ${b2}, 0.96)`;
       }
       const orbEl = document.getElementById("tbbLiveAuraOrbCanvas");
       if (orbEl) {
-        orbEl.style.borderColor = cfg.secHex || "#0D2540";
-        orbEl.style.boxShadow = `0 6px 22px rgba(${r1}, ${g1}, ${b1}, 0.30), 0 0 18px rgba(${r2}, ${g2}, ${b2}, 0.25)`;
+        orbEl.style.borderColor = cfg.secHex || "#FF7A00";
+        orbEl.style.boxShadow = `0 8px 26px rgba(${r1}, ${g1}, ${b1}, 0.36), 0 0 22px rgba(${r2}, ${g2}, ${b2}, 0.45)`;
         orbEl.style.background = cfg.coreStyle === "dark" ? "#090D16" : `rgba(${r1}, ${g1}, ${b1}, 0.08)`;
       }
       const badgeEl = document.getElementById("tbbAuraPresenceMetaBadge");
       if (badgeEl) {
         badgeEl.style.color = cfg.priHex;
         const dotEl = badgeEl.querySelector("span");
-        if (dotEl) dotEl.style.background = cfg.secHex || "#0D2540";
+        if (dotEl) dotEl.style.background = cfg.secHex || "#FF7A00";
       }
       if (cfg.customRoleTitle && String(cfg.customRoleTitle).trim()) {
         const roleEl = document.getElementById("tbbAuraPresenceRoleText");
@@ -6380,7 +6384,7 @@
       }
       const btnAdminTop = document.getElementById("tbbBtnTopAdminAuraColors");
       if (btnAdminTop) {
-        btnAdminTop.style.borderColor = cfg.priHex;
+        btnAdminTop.style.borderColor = cfg.secHex || "#FF7A00";
         btnAdminTop.style.color = cfg.priHex;
       }
     }
@@ -6398,12 +6402,12 @@
 
     // 6 Volumetric 3D Liquid-Light Lobes (Siri / visionOS style)
     const AURA_3D_LOBES = [
-      { rx: 1.0, ry: 0.72, rz: 0.85, speedX: 0.92, speedY: 1.18, phase: 0.0, rBase: 76, cInner: [253, 230, 138, 0.90], cMid: [212, 175, 55, 0.48], cOuter: [197, 155, 39, 0] },
-      { rx: 0.82, ry: 1.05, rz: 0.78, speedX: -1.12, speedY: 0.86, phase: 1.2, rBase: 72, cInner: [212, 175, 55, 0.85], cMid: [245, 158, 11, 0.42], cOuter: [180, 83, 9, 0] },
-      { rx: 0.95, ry: 0.88, rz: 1.02, speedX: 0.76, speedY: -1.24, phase: 2.4, rBase: 68, cInner: [251, 191, 36, 0.80], cMid: [251, 113, 133, 0.34], cOuter: [225, 29, 72, 0] },
-      { rx: 0.74, ry: 0.92, rz: 1.10, speedX: -0.84, speedY: -0.95, phase: 3.7, rBase: 64, cInner: [255, 251, 235, 0.94], cMid: [253, 230, 138, 0.45], cOuter: [212, 175, 55, 0] },
-      { rx: 1.08, ry: 0.68, rz: 0.90, speedX: 1.28, speedY: 0.64, phase: 4.9, rBase: 70, cInner: [245, 158, 11, 0.76], cMid: [168, 85, 247, 0.26], cOuter: [126, 34, 206, 0] },
-      { rx: 0.66, ry: 1.12, rz: 0.84, speedX: -0.68, speedY: 1.34, phase: 5.8, rBase: 62, cInner: [56, 189, 248, 0.44], cMid: [212, 175, 55, 0.32], cOuter: [14, 165, 233, 0] }
+      { rx: 1.0, ry: 0.72, rz: 0.85, speedX: 0.92, speedY: 1.18, phase: 0.0, rBase: 76, cInner: [255, 122, 0, 0.92], cMid: [234, 88, 12, 0.52], cOuter: [194, 65, 12, 0] },
+      { rx: 0.82, ry: 1.05, rz: 0.78, speedX: -1.12, speedY: 0.86, phase: 1.2, rBase: 72, cInner: [29, 78, 216, 0.88], cMid: [66, 110, 174, 0.46], cOuter: [13, 37, 64, 0] },
+      { rx: 0.95, ry: 0.88, rz: 1.02, speedX: 0.76, speedY: -1.24, phase: 2.4, rBase: 68, cInner: [255, 154, 46, 0.84], cMid: [255, 122, 0, 0.40], cOuter: [234, 88, 12, 0] },
+      { rx: 0.74, ry: 0.92, rz: 1.10, speedX: -0.84, speedY: -0.95, phase: 3.7, rBase: 64, cInner: [255, 251, 235, 0.94], cMid: [255, 165, 55, 0.48], cOuter: [255, 122, 0, 0] },
+      { rx: 1.08, ry: 0.68, rz: 0.90, speedX: 1.28, speedY: 0.64, phase: 4.9, rBase: 70, cInner: [76, 157, 230, 0.80], cMid: [29, 78, 216, 0.36], cOuter: [13, 37, 64, 0] },
+      { rx: 0.66, ry: 1.12, rz: 0.84, speedX: -0.68, speedY: 1.34, phase: 5.8, rBase: 62, cInner: [255, 122, 0, 0.64], cMid: [66, 110, 174, 0.38], cOuter: [29, 78, 216, 0] }
     ];
 
     function initAuraOrb() {
@@ -6418,7 +6422,7 @@
           baseRadius: 28 + (i / NUM_AURA_PARTICLES) * 92,
           speed: 0.008 + (i % 5) * 0.003,
           size: 1.4 + (i % 3) * 0.9,
-          hue: i % 3 === 0 ? 45 : (i % 3 === 1 ? 38 : 50),
+          hue: i % 3 === 0 ? 28 : (i % 3 === 1 ? 215 : 34),
           alpha: 0.35 + (i % 4) * 0.14
         });
       }
@@ -6444,22 +6448,22 @@
 
       if (targetCanvas.id === "tbbLiveAuraOrbCanvas" || targetCanvas.id === "tbbAdminAuraPreviewCanvas") {
         const cfg = window.tbbAuraOrbConfig || AURA_OFFICIAL_PALETTES[0];
-        const [r1, g1, b1] = tbbHexToRgbTuple(cfg.priHex, [2, 132, 199]);
-        const [r2, g2, b2] = tbbHexToRgbTuple(cfg.secHex, [56, 189, 248]);
-        const [r3, g3, b3] = tbbHexToRgbTuple(cfg.accentHex, [16, 185, 129]);
-        const isDarkCore = cfg.coreStyle === "dark";
-        const arch = Number(cfg.archIdx ?? 1);
+        const [r1, g1, b1] = tbbHexToRgbTuple(cfg.priHex, [29, 78, 216]);
+        const [r2, g2, b2] = tbbHexToRgbTuple(cfg.secHex, [255, 122, 0]);
+        const [r3, g3, b3] = tbbHexToRgbTuple(cfg.accentHex, [234, 88, 12]);
+        const isDarkCore = cfg.coreStyle !== "light";
+        const arch = Number(cfg.archIdx ?? 0);
 
-        // 1. Base de la Esfera (Cristal Claro o Obsidiana Profunda)
+        // 1. Base de la Esfera (Obsidiana Profunda #090D16 con refracción Zafiro + Naranja Acción idéntica a logo_Aura.png)
         const sphereBase = ctx.createRadialGradient(cx, cy * 0.82, maxR * 0.05, cx, cy, maxR);
         if (isDarkCore) {
-          sphereBase.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, 0.36)`);
-          sphereBase.addColorStop(0.55, "#0B101E");
-          sphereBase.addColorStop(1, "#04060B");
+          sphereBase.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, 0.42)`);
+          sphereBase.addColorStop(0.52, "#0B1120");
+          sphereBase.addColorStop(1, "#050811");
         } else {
           sphereBase.addColorStop(0, "#FFFFFF");
-          sphereBase.addColorStop(0.55, `rgba(${r2}, ${g2}, ${b2}, 0.22)`);
-          sphereBase.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0.36)`);
+          sphereBase.addColorStop(0.55, `rgba(${r2}, ${g2}, ${b2}, 0.24)`);
+          sphereBase.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0.38)`);
         }
         ctx.fillStyle = sphereBase;
         ctx.fillRect(0, 0, w, h);
@@ -6470,19 +6474,20 @@
 
         const pulseAmpLight = isSpeakingLive ? 1.25 + Math.sin(auraAngle * 4.2) * 0.15 : 1.0;
         const lobeColors = [
-          [r1, g1, b1, isDarkCore ? 0.72 : 0.58],
-          [r2, g2, b2, isDarkCore ? 0.78 : 0.65],
-          [r3, g3, b3, isDarkCore ? 0.64 : 0.50],
-          [r1, g1, b1, isDarkCore ? 0.68 : 0.54]
+          [r1, g1, b1, isDarkCore ? 0.78 : 0.62],
+          [r2, g2, b2, isDarkCore ? 0.88 : 0.72],
+          [r3, g3, b3, isDarkCore ? 0.76 : 0.60],
+          [r1, g1, b1, isDarkCore ? 0.74 : 0.58]
         ];
         for (let i = 0; i < 4; i++) {
           const ang = auraAngle * (i % 2 === 0 ? 1.1 : -0.9) + i * 1.57;
           const lx = cx + Math.cos(ang) * maxR * 0.28 * pulseAmpLight;
           const ly = cy + Math.sin(ang * 1.2) * maxR * 0.28 * pulseAmpLight;
-          const lr = maxR * 0.62 * (isSpeakingLive ? 1.15 : 1.0);
-          const lg = ctx.createRadialGradient(lx, ly, lr * 0.05, lx, ly, lr);
+          const lr = maxR * 0.65 * (isSpeakingLive ? 1.15 : 1.0);
+          const lg = ctx.createRadialGradient(lx, ly, lr * 0.04, lx, ly, lr);
           const [rC, gC, bC, aC] = lobeColors[i];
           lg.addColorStop(0, `rgba(${rC}, ${gC}, ${bC}, ${aC})`);
+          lg.addColorStop(0.55, `rgba(${rC}, ${gC}, ${bC}, ${aC * 0.45})`);
           lg.addColorStop(1, `rgba(${rC}, ${gC}, ${bC}, 0)`);
           ctx.fillStyle = lg;
           ctx.beginPath();
@@ -6490,24 +6495,30 @@
           ctx.fill();
         }
 
-        // 2. Geometría según Arquitectura 3D (0..4)
+        // 2. Geometría según Arquitectura 3D (0..4) — Por defecto Arch 0: 12 Pétalos Toroidales Zafiro & Naranja
         if (arch === 0) {
-          // 01 · Torus Cuántico 3D
           const rings = 12;
           for (let i = 0; i < rings; i++) {
-            const u = (i / rings) * Math.PI * 2 + auraAngle * 0.5;
+            const u = (i / rings) * Math.PI * 2 + auraAngle * 0.45;
             ctx.beginPath();
-            for (let j = 0; j <= 24; j++) {
-              const v = (j / 24) * Math.PI * 2;
-              const R = maxR * 0.52;
-              const rt = maxR * 0.22;
-              const sx = cx + (R + rt * Math.cos(v)) * Math.cos(u);
-              const sy = cy + (R + rt * Math.cos(v)) * Math.sin(u) * 0.74 + rt * Math.sin(v) * 0.48;
+            for (let j = 0; j <= 32; j++) {
+              const v = (j / 32) * Math.PI * 2;
+              const R = maxR * 0.48;
+              const rt = maxR * 0.24;
+              const sx = cx + (R + rt * Math.cos(v)) * Math.cos(u) - rt * 0.34 * Math.sin(v) * Math.sin(u);
+              const sy = cy + (R + rt * Math.cos(v)) * Math.sin(u) * 0.88 + rt * 0.34 * Math.sin(v) * Math.cos(u);
               if (j === 0) ctx.moveTo(sx, sy);
               else ctx.lineTo(sx, sy);
             }
-            ctx.strokeStyle = i % 2 === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.68)` : `rgba(${r3}, ${g3}, ${b3}, 0.58)`;
-            ctx.lineWidth = Math.max(1.1, 1.8 * scaleRatio);
+            ctx.closePath();
+            ctx.fillStyle = i % 3 === 0
+              ? `rgba(${r2}, ${g2}, ${b2}, 0.14)`
+              : `rgba(${r1}, ${g1}, ${b1}, 0.18)`;
+            ctx.fill();
+            ctx.strokeStyle = i % 3 === 0
+              ? `rgba(${r2}, ${g2}, ${b2}, 0.88)`
+              : `rgba(${r1}, ${g1}, ${b1}, 0.86)`;
+            ctx.lineWidth = Math.max(1.5, 2.3 * scaleRatio);
             ctx.stroke();
           }
         } else if (arch === 2) {
@@ -6518,7 +6529,7 @@
             const rad = (0.22 + (i / 18) * 0.58) * maxR;
             pts.push({ x: cx + Math.cos(a) * rad, y: cy + Math.sin(a * 1.15) * rad });
           }
-          ctx.strokeStyle = `rgba(${r2}, ${g2}, ${b2}, 0.55)`;
+          ctx.strokeStyle = `rgba(${r2}, ${g2}, ${b2}, 0.65)`;
           ctx.lineWidth = Math.max(1.0, 1.4 * scaleRatio);
           for (let i = 0; i < pts.length; i++) {
             const nxt = pts[(i + 1) % pts.length];
@@ -6528,7 +6539,7 @@
             ctx.stroke();
           }
           for (let i = 0; i < pts.length; i++) {
-            ctx.fillStyle = i % 2 === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.92)` : `rgba(${r3}, ${g3}, ${b3}, 0.88)`;
+            ctx.fillStyle = i % 2 === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.92)` : `rgba(${r2}, ${g2}, ${b2}, 0.92)`;
             ctx.beginPath();
             ctx.arc(pts[i].x, pts[i].y, Math.max(2.0, 3.2 * scaleRatio), 0, Math.PI * 2);
             ctx.fill();
@@ -6548,7 +6559,7 @@
               else ctx.lineTo(sx, sy);
             }
             ctx.closePath();
-            ctx.strokeStyle = rIdx % 2 === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.72)` : `rgba(${r3}, ${g3}, ${b3}, 0.65)`;
+            ctx.strokeStyle = rIdx % 2 === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.78)` : `rgba(${r2}, ${g2}, ${b2}, 0.78)`;
             ctx.lineWidth = Math.max(1.2, 1.9 * scaleRatio);
             ctx.stroke();
           }
@@ -6559,14 +6570,14 @@
             const ang = (i / ticks) * Math.PI * 2 + auraAngle * 0.2;
             const rIn = maxR * 0.66;
             const rOut = rIn + (i % 3 === 0 ? maxR * 0.16 : maxR * 0.08);
-            ctx.strokeStyle = i % 3 === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.90)` : `rgba(${r2}, ${g2}, ${b2}, 0.55)`;
+            ctx.strokeStyle = i % 3 === 0 ? `rgba(${r2}, ${g2}, ${b2}, 0.92)` : `rgba(${r1}, ${g1}, ${b1}, 0.65)`;
             ctx.lineWidth = Math.max(1.1, (i % 3 === 0 ? 2.2 : 1.2) * scaleRatio);
             ctx.beginPath();
             ctx.moveTo(cx + Math.cos(ang) * rIn, cy + Math.sin(ang) * rIn);
             ctx.lineTo(cx + Math.cos(ang) * rOut, cy + Math.sin(ang) * rOut);
             ctx.stroke();
           }
-          ctx.strokeStyle = `rgba(${r3}, ${g3}, ${b3}, 0.85)`;
+          ctx.strokeStyle = `rgba(${r2}, ${g2}, ${b2}, 0.88)`;
           ctx.lineWidth = Math.max(1.4, 2.2 * scaleRatio);
           ctx.beginPath();
           ctx.arc(cx, cy, maxR * 0.50, 0, Math.PI * 2);
@@ -6577,7 +6588,7 @@
             ctx.save();
             ctx.translate(cx, cy);
             ctx.rotate(auraAngle * (0.35 - waveIdx * 0.2) + waveIdx * (Math.PI / 2));
-            ctx.strokeStyle = waveIdx === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.78)` : `rgba(${r3}, ${g3}, ${b3}, 0.70)`;
+            ctx.strokeStyle = waveIdx === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.82)` : `rgba(${r2}, ${g2}, ${b2}, 0.82)`;
             ctx.lineWidth = (isSpeakingLive ? 2.8 : 2.0) * Math.max(0.75, scaleRatio);
             ctx.beginPath();
             for (let s = 0; s <= 36; s++) {
@@ -6594,17 +6605,26 @@
           }
         }
 
-        // 3. Núcleo Luminoso Central
+        // 3. Núcleo Luminoso Central con Halo Naranja Cálido (#FF7A00 -> #EA580C) y Centro Blanco Puro
         ctx.globalCompositeOperation = "source-over";
-        const coreLightR = (isSpeakingLive ? 34 : 26) * scaleRatio;
+        const coreLightR = (isSpeakingLive ? 44 : 36) * scaleRatio;
         const coreLightGrad = ctx.createRadialGradient(cx, cy, 1, cx, cy, coreLightR);
-        coreLightGrad.addColorStop(0, "rgba(255, 255, 255, 0.98)");
-        coreLightGrad.addColorStop(0.5, `rgba(${r2}, ${g2}, ${b2}, 0.62)`);
+        coreLightGrad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
+        coreLightGrad.addColorStop(0.28, "rgba(255, 247, 237, 0.96)");
+        coreLightGrad.addColorStop(0.56, `rgba(${r2}, ${g2}, ${b2}, 0.88)`);
+        coreLightGrad.addColorStop(0.82, `rgba(${r3}, ${g3}, ${b3}, 0.46)`);
         coreLightGrad.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0)`);
         ctx.fillStyle = coreLightGrad;
         ctx.beginPath();
         ctx.arc(cx, cy, coreLightR, 0, Math.PI * 2);
         ctx.fill();
+
+        // 4. Anillo Perimetral Naranja Acción (#FF7A00) de firma Aura
+        ctx.strokeStyle = cfg.secHex || "#FF7A00";
+        ctx.lineWidth = Math.max(2.2, 3.2 * scaleRatio);
+        ctx.beginPath();
+        ctx.arc(cx, cy, maxR - 1.5, 0, Math.PI * 2);
+        ctx.stroke();
 
         ctx.restore();
         return;
@@ -16516,15 +16536,16 @@
           localStorage.setItem("tbb_vault_state_" + cleanMailKey, JSON.stringify(remotePayload));
         }
 
-        // Si el otro dispositivo cambió de paso o sub-paso, cerrar modal de video si estaba abierto para reflejar la pantalla en tiempo real
+        // Si otro dispositivo distinto cambió de paso, cerrar modal de video sin bloquear display inline
         const newStep = window.tbbState ? Number(window.tbbState.step || 0) : 0;
         const newSubStep = window.tbbState ? Number(window.tbbState.subStep || 1) : 1;
-        if (newStep !== prevStep || newSubStep !== prevSubStep) {
+        const myDev = tbbGetThisDeviceIdentity();
+        if ((newStep !== prevStep || newSubStep !== prevSubStep) && remotePayload.updatedByDeviceId && remotePayload.updatedByDeviceId !== myDev.deviceId) {
           const vidModal = document.getElementById("phaseTransitionVideoModal");
           if (vidModal && vidModal.classList.contains("open")) {
             vidModal.classList.remove("open");
-            vidModal.style.display = "none";
-            const vidEl = document.getElementById("transitionCapsuleVideoPlayer");
+            vidModal.style.display = "";
+            const vidEl = document.getElementById("transitionTheoryVideoPlayer");
             if (vidEl && typeof vidEl.pause === "function") vidEl.pause();
           }
         }
@@ -20385,9 +20406,9 @@
       width: 168px;
       height: 168px;
       border-radius: 999px;
-      border: 3px solid #1D4ED8;
+      border: 3.5px solid #FF7A00;
       background: #090D16;
-      box-shadow: 0 10px 30px rgba(29, 78, 216, 0.32), 0 0 22px rgba(249, 115, 22, 0.24);
+      box-shadow: 0 10px 30px rgba(29, 78, 216, 0.38), 0 0 24px rgba(255, 122, 0, 0.45);
       flex-shrink: 0;
       display: block;
     }
@@ -20402,7 +20423,7 @@
       padding: 7px 14px;
       background: #FFFFFF;
       border: 2px solid #93C5FD;
-      border-bottom: 4px solid #0D2540;
+      border-bottom: 4px solid #FF7A00;
       border-radius: 18px;
       box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
       flex-shrink: 0;
@@ -20516,28 +20537,161 @@
       }
       .tbb-video-modal-grid {
         grid-template-columns: 1fr !important;
-        gap: 8px !important;
+        gap: 10px !important;
+        overflow-y: auto !important;
+        padding-right: 2px !important;
       }
       #phaseTransitionVideoModal .tbb-atomic-card {
-        padding: 12px 14px !important;
+        padding: 12px 12px !important;
         gap: 8px !important;
+        width: 95vw !important;
+        max-height: 92dvh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
       }
       #phaseTransitionVideoModal #transitionVideoTitle {
-        font-size: 1.04rem !important;
+        font-size: 0.98rem !important;
+        white-space: normal !important;
+        line-height: 1.25 !important;
       }
-      #phaseTransitionVideoModal #transitionVideoSubtitle,
-      #phaseTransitionVideoModal #transitionVideoChapterTag,
-      #phaseTransitionVideoModal #transitionVideoNextHint,
-      #phaseTransitionVideoModal #transitionTheoryCardsGrid {
-        display: none !important;
+      #phaseTransitionVideoModal #transitionVideoSubtitle {
+        font-size: 0.75rem !important;
+        display: block !important;
+        white-space: normal !important;
+        line-height: 1.3 !important;
       }
       #phaseTransitionVideoModal #transitionTheoryVideoPlayer {
-        max-height: 155px !important;
+        width: 100% !important;
+        max-width: 245px !important;
+        max-height: none !important;
+        height: auto !important;
+        aspect-ratio: 9 / 16 !important;
+        margin: 0 auto !important;
+      }
+      #phaseTransitionVideoModal #transitionTheoryCardsGrid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 6px !important;
       }
       #phaseTransitionVideoModal #transitionVideoDiscoveriesList > div {
-        padding: 5px 8px !important;
-        font-size: 0.72rem !important;
-        line-height: 1.25 !important;
+        padding: 6px 8px !important;
+        font-size: 0.74rem !important;
+        line-height: 1.3 !important;
+      }
+    }
+
+    /* ==========================================================================
+       PASO 4: EJES BIPOLARES ADAPTATIVOS (SLIDERS EN ESCRITORIO · EXTREMOS EN MÓVIL)
+       & SELECTOR DE TRÍADAS TIPOGRÁFICAS POR ESTILO
+       ========================================================================== */
+    .tbb-bipolar-row {
+      display: grid;
+      grid-template-columns: minmax(170px, 1.15fr) 1fr minmax(170px, 1.15fr);
+      align-items: center;
+      gap: 10px;
+    }
+    .tbb-bipolar-slider-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 0 4px;
+    }
+    .tbb-bipolar-pole-btn {
+      padding: 6px 10px !important;
+      gap: 8px !important;
+      min-width: 0 !important;
+      width: 100% !important;
+    }
+    .tbb-bipolar-hint-mobile {
+      display: none;
+    }
+    .tbb-bipolar-hint-desktop {
+      display: inline;
+    }
+    .tbb-font-cat-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      flex-shrink: 0;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tbb-font-cat-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .tbb-font-cat-pill {
+      min-height: 34px !important;
+      padding: 5px 11px !important;
+      border-radius: 999px !important;
+      font-size: 0.73rem !important;
+      font-weight: 800 !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+    }
+    .tbb-font-triad-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 8px;
+      flex: 1;
+      min-height: 0;
+      align-content: center;
+    }
+    .tbb-font-triad-card {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      justify-content: center !important;
+      padding: 8px 12px !important;
+      gap: 3px !important;
+      text-align: left !important;
+      min-height: 64px !important;
+      min-width: 0 !important;
+      width: 100% !important;
+      overflow: hidden !important;
+    }
+    @media (max-width: 768px) {
+      .tbb-bipolar-row {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        gap: 6px !important;
+      }
+      .tbb-bipolar-slider-col,
+      .tbb-bipolar-pct-badge {
+        display: none !important;
+      }
+      .tbb-bipolar-hint-desktop {
+        display: none !important;
+      }
+      .tbb-bipolar-hint-mobile {
+        display: inline !important;
+      }
+      .tbb-bipolar-pole-btn {
+        min-height: 44px !important;
+        padding: 5px 6px !important;
+        gap: 5px !important;
+      }
+      .tbb-bipolar-pole-btn .tbb-pole-icon-box {
+        width: 26px !important;
+        height: 26px !important;
+      }
+      .tbb-font-cat-pill {
+        min-height: 30px !important;
+        padding: 4px 9px !important;
+        font-size: 0.68rem !important;
+      }
+      .tbb-font-triad-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        gap: 6px !important;
+      }
+      .tbb-font-triad-card {
+        padding: 6px 8px !important;
+        min-height: 54px !important;
+        gap: 2px !important;
+      }
+      .tbb-font-triad-card .tbb-triad-brand-preview {
+        font-size: 0.86rem !important;
+      }
+      .tbb-font-triad-card .tbb-triad-role-desc {
+        display: none !important;
       }
     }
 
@@ -21637,35 +21791,49 @@
             const lum = (max + min) / 510;
             if (lum > 0.91 || lum < 0.07) continue; // Ignorar fondos casi blancos o casi negros
             const sat = max === min ? 0 : (max - min) / (255 - Math.abs(max + min - 255));
-            const qr = Math.min(255, Math.round(r / 24) * 24);
-            const qg = Math.min(255, Math.round(g / 24) * 24);
-            const qb = Math.min(255, Math.round(b / 24) * 24);
+            const qr = Math.min(255, Math.round(r / 16) * 16);
+            const qg = Math.min(255, Math.round(g / 16) * 16);
+            const qb = Math.min(255, Math.round(b / 16) * 16);
             const key = `${qr},${qg},${qb}`;
             const weight = 1 + sat * 2.4;
-            const prev = buckets.get(key) || { r: qr, g: qg, b: qb, score: 0 };
+            const prev = buckets.get(key) || { r: qr, g: qg, b: qb, score: 0, sat: sat };
             prev.score += weight;
             buckets.set(key, prev);
           }
           const sorted = Array.from(buckets.values()).sort((a, b) => b.score - a.score);
           const toHex = (c) => "#" + [c.r, c.g, c.b].map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join("").toUpperCase();
-          if (sorted.length === 0) return ["#1D4ED8", "#0D2540"];
-          const c1 = sorted[0];
+          if (sorted.length === 0) return ["#0078C0", "#88E0E0", "#585850"];
+          // Priorizar como primario el color cromático más representativo (sat >= 0.25) si el primero es muy grisáceo
+          let c1 = sorted[0];
+          const topChromatic = sorted.slice(0, 6).find(c => c.sat >= 0.28);
+          if (topChromatic && c1.sat < 0.20) {
+            c1 = topChromatic;
+          }
           const priHex = toHex(c1);
-          let secHex = "#0D2540";
-          for (let i = 1; i < sorted.length; i++) {
+          let c2 = null;
+          for (let i = 0; i < sorted.length; i++) {
             const cand = sorted[i];
             const dist = Math.hypot(cand.r - c1.r, cand.g - c1.g, cand.b - c1.b);
             if (dist >= 58) {
-              secHex = toHex(cand);
+              c2 = cand;
               break;
             }
           }
-          if (secHex === priHex) {
-            secHex = "#0D2540";
+          const secHex = c2 ? toHex(c2) : priHex;
+          let c3 = null;
+          for (let i = 0; i < sorted.length; i++) {
+            const cand = sorted[i];
+            const dist1 = Math.hypot(cand.r - c1.r, cand.g - c1.g, cand.b - c1.b);
+            const dist2 = c2 ? Math.hypot(cand.r - c2.r, cand.g - c2.g, cand.b - c2.b) : 999;
+            if (dist1 >= 52 && dist2 >= 52) {
+              c3 = cand;
+              break;
+            }
           }
-          return [priHex, secHex];
+          const accHex = c3 ? toHex(c3) : secHex;
+          return [priHex, secHex, accHex];
         } catch (e) {
-          return ["#1D4ED8", "#0D2540"];
+          return ["#0078C0", "#88E0E0", "#585850"];
         }
       };
 
@@ -21678,8 +21846,9 @@
         if (!dataUrl && !svgMarkup) return;
         if (!st) return;
         const mode = cs.existing_logo_mode || s0.existingLogoMode || "keep";
-        const pri = st.logoPriHex || (cs.uploaded_logo_colors && cs.uploaded_logo_colors[0]) || "#0D2540";
-        const sec = st.logoSecHex || (cs.uploaded_logo_colors && cs.uploaded_logo_colors[1]) || "#426EAE";
+        const pri = (cs.uploaded_logo_colors && cs.uploaded_logo_colors[0]) || st.logoPriHex || "#0078C0";
+        const sec = (cs.uploaded_logo_colors && cs.uploaded_logo_colors[1]) || st.logoSecHex || "#88E0E0";
+        const acc = (cs.uploaded_logo_colors && cs.uploaded_logo_colors[2]) || cs.accent_color || sec;
         const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca";
 
         const baseIterObj = {
@@ -21693,6 +21862,7 @@
           conceptLabel: "Mi Logotipo Oficial",
           pri: pri,
           sec: sec,
+          accentHex: acc,
           scale: 1.0,
           darkBg: Boolean(st.logoDarkBg),
           fontFamily: cs.primary_font || st.selectedFontFamily || "Montserrat",
@@ -21701,17 +21871,21 @@
           geminiCustomSvg: "",
           svgOverlayAdditions: "",
           note: `Logotipo oficial cargado por el usuario para ${bName}`,
-          prompt: `Logotipo oficial subido por el usuario para ${bName} con paleta ${pri} y ${sec}.`,
-          geminiPrompt40w: `Logotipo oficial subido por el usuario para ${bName} con paleta ${pri} y ${sec}.`
+          prompt: `Logotipo oficial subido por el usuario para ${bName} con paleta original ${pri}, ${sec} y ${acc}.`,
+          geminiPrompt40w: `Logotipo oficial subido por el usuario para ${bName} con paleta original ${pri}, ${sec} y ${acc}.`
         };
 
         if (!Array.isArray(st.logoIterations) || st.logoIterations.length === 0) {
           st.logoIterations = [baseIterObj];
           st.logoIterationIndex = 1;
         } else {
-          st.logoIterations[0] = Object.assign({}, st.logoIterations[0], baseIterObj);
-          // Si el usuario no está visualizando activamente una propuesta generada por Gemini, mantener en foco la Iteración #1
-          if (!st.logoIterations[st.logoIterationIndex - 1]?.geminiCustomSvg) {
+          const firstBaseUrl = cs.base_uploaded_logo_data_url || st.logoIterations[0]?.uploadedLogoDataUrl || dataUrl;
+          st.logoIterations[0] = Object.assign({}, st.logoIterations[0], baseIterObj, {
+            uploadedLogoDataUrl: firstBaseUrl
+          });
+          // Si el usuario no está visualizando activamente una propuesta generada por Gemini o NanoBanana, mantener en foco la Iteración #1
+          const curFocused = st.logoIterations[st.logoIterationIndex - 1];
+          if (!curFocused?.geminiCustomSvg && !curFocused?.isNanoBananaGenerated && st.logoIterations.length === 1) {
             st.logoIterationIndex = 1;
           }
         }
@@ -21742,24 +21916,29 @@
               const hexMatches = svgText.match(/#(?:[0-9a-fA-F]{3}){1,2}\b/g) || [];
               const uniqueHex = Array.from(new Set(hexMatches.map(h => h.toUpperCase())))
                 .filter(h => h !== "#FFFFFF" && h !== "#FFF" && h !== "#000000" && h !== "#000");
-              const extractedPri = uniqueHex[0] || "#0D2540";
-              const extractedSec = uniqueHex[1] || "#426EAE";
+              const extractedPri = uniqueHex[0] || "#0078C0";
+              const extractedSec = uniqueHex[1] || extractedPri;
+              const extractedAcc = uniqueHex[2] || extractedSec;
 
               const compactUrl = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgText)));
 
               if (!window.step0State) window.step0State = { goal: "redesign", assets: "has_name" };
               window.step0State.assets = "has_name";
-              window.step0State.existingLogoMode = "keep";
+              window.step0State.existingLogoMode = window.step0State.existingLogoMode || "keep";
               window.step0State.uploadedLogoDataUrl = compactUrl;
               window.step0State.uploadedLogoSvgMarkup = innerMarkup;
-              window.step0State.uploadedLogoColors = [extractedPri, extractedSec];
+              window.step0State.uploadedLogoColors = [extractedPri, extractedSec, extractedAcc];
 
               const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
               cs.uploaded_logo_data_url = compactUrl;
+              cs.base_uploaded_logo_data_url = compactUrl;
               cs.uploaded_logo_svg_markup = innerMarkup;
-              cs.existing_logo_mode = "keep";
-              cs.uploaded_logo_colors = [extractedPri, extractedSec];
-              cs.selected_colors_hex = ["#FAF8F5", "#090D16", extractedPri, extractedSec];
+              cs.existing_logo_mode = cs.existing_logo_mode || "keep";
+              cs.uploaded_logo_colors = [extractedPri, extractedSec, extractedAcc];
+              cs.primary_color = extractedPri;
+              cs.secondary_color = extractedSec;
+              cs.accent_color = extractedAcc;
+              cs.selected_colors_hex = ["#FFFFFF", "#090D16", extractedPri, extractedSec];
 
               const st = window.tbbState;
               if (st) {
@@ -21774,7 +21953,7 @@
               }
               window.triggerAuraEmpatheticFeedback(
                 "input_seed",
-                `Logotipo vectorial SVG oficial cargado exitosamente. Colores identificados: ${extractedPri} y ${extractedSec}.`,
+                `Logotipo vectorial SVG oficial cargado exitosamente. Colores originales preservados: ${extractedPri}, ${extractedSec} y ${extractedAcc}.`,
                 false
               );
               window.renderTbbZeroScrollStage();
@@ -21794,8 +21973,9 @@
           try {
             // Auto-recortar márgenes vacíos/blancos y centrar ópticamente a 0.00px en lienzo 1024x1024
             let centeredPngUrl = rawDataUrl;
-            let extractedPri = "#0D2540";
-            let extractedSec = "#426EAE";
+            let extractedPri = "#0078C0";
+            let extractedSec = "#88E0E0";
+            let extractedAcc = "#585850";
 
             if (typeof window.tbbAutoTrimAndCenterRasterLogo === "function") {
               centeredPngUrl = await window.tbbAutoTrimAndCenterRasterLogo(rawDataUrl);
@@ -21825,22 +22005,26 @@
             ctx.drawImage(img, dx, dy, dw, dh);
 
             const imgData = ctx.getImageData(0, 0, maxDim, maxDim);
-            [extractedPri, extractedSec] = window.tbbExtractDominantColorsFromImageData(imgData);
+            [extractedPri, extractedSec, extractedAcc] = window.tbbExtractDominantColorsFromImageData(imgData);
             const compactPngUrl = cnv.toDataURL("image/png");
 
             if (!window.step0State) window.step0State = { goal: "redesign", assets: "has_name" };
             window.step0State.assets = "has_name";
-            window.step0State.existingLogoMode = "keep";
+            window.step0State.existingLogoMode = window.step0State.existingLogoMode || "keep";
             window.step0State.uploadedLogoDataUrl = compactPngUrl;
             delete window.step0State.uploadedLogoSvgMarkup;
-            window.step0State.uploadedLogoColors = [extractedPri, extractedSec];
+            window.step0State.uploadedLogoColors = [extractedPri, extractedSec, extractedAcc];
 
             const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
             cs.uploaded_logo_data_url = compactPngUrl;
+            cs.base_uploaded_logo_data_url = compactPngUrl;
             delete cs.uploaded_logo_svg_markup;
-            cs.existing_logo_mode = "keep";
-            cs.uploaded_logo_colors = [extractedPri, extractedSec];
-            cs.selected_colors_hex = ["#FAF8F5", "#090D16", extractedPri, extractedSec];
+            cs.existing_logo_mode = cs.existing_logo_mode || "keep";
+            cs.uploaded_logo_colors = [extractedPri, extractedSec, extractedAcc];
+            cs.primary_color = extractedPri;
+            cs.secondary_color = extractedSec;
+            cs.accent_color = extractedAcc;
+            cs.selected_colors_hex = ["#FFFFFF", "#090D16", extractedPri, extractedSec];
 
             // Pre-trazar versión 100% en curvas Bézier para exportación inmediata en .SVG / .AI
             if (typeof window.tbbVectorizeRasterLogoToSvgCurves === "function") {
@@ -21865,7 +22049,7 @@
             }
             window.triggerAuraEmpatheticFeedback(
               "input_seed",
-              `Logotipo oficial centrado ópticamente (0.00px) y vectorizado en curvas. Colores: ${extractedPri} y ${extractedSec}.`,
+              `Logotipo oficial centrado ópticamente (0.00px) con paleta original preservada: ${extractedPri}, ${extractedSec} y ${extractedAcc}.`,
               false
             );
             window.renderTbbZeroScrollStage();
@@ -21920,11 +22104,19 @@
         window.renderTbbZeroScrollStage();
       };
 
-      window.tbbTriggerEvolutionFromUploadedLogo = function (customNote) {
+      window.tbbTriggerEvolutionFromUploadedLogo = async function (customNote) {
         const st = window.tbbState;
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const uploadedUrl = cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
         if (!uploadedUrl || !st || st.geminiBusy) return;
+        cs.existing_logo_mode = "evolve";
+        if (window.step0State) window.step0State.existingLogoMode = "evolve";
+        if (typeof window.tbbGenerateNanoBananaBrandSymbol === "function") {
+          const nbResult = await window.tbbGenerateNanoBananaBrandSymbol(
+            customNote || "Evolucionar logotipo base a nivel agencia arquitectónica internacional conservando su esencia estructural y paleta."
+          );
+          if (nbResult) return;
+        }
         const brandName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "The Best Brand";
         const giro = (cs.custom_business_type || cs.step0_short_essence || "Identidad corporativa").trim();
         const instruction = customNote || `Toma como base el logotipo actual subido por el usuario (imagen adjunta), conserva su esencia, símbolo reconocible y colores (${st.logoPriHex} y ${st.logoSecHex}), y diseña una evolución vectorial moderna, limpia y de alto impacto para "${brandName}" (${giro}).`;
@@ -23049,8 +23241,9 @@
               <div class="tbb-atomic-card" style="padding:${isCompact3 ? '8px 14px' : '12px 16px'}; gap:${isCompact3 ? '6px' : '10px'};">
                 <div>
                   <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#1D4ED8;">PASO 4 · ${st.subStep} DE 5 · CALIBRACIÓN VISUAL CON REFERENCIAS</div>
-                  <h2 style="font-family:var(--font-display); font-size:${isCompact3 ? '1.06rem' : '1.18rem'}; font-weight:900; color:#090D16; margin:2px 0 4px 0;">
-                    Desliza o toca las referencias visuales en los extremos para «${cs.brandName || "TheBestBrand"}»
+                  <h2 style="font-family:var(--font-display); font-size:${isCompact3 ? '1.04rem' : '1.16rem'}; font-weight:900; color:#090D16; margin:2px 0 4px 0;">
+                    <span class="tbb-bipolar-hint-desktop">Desliza o toca las referencias visuales en los extremos para «${cs.brandName || "TheBestBrand"}»</span>
+                    <span class="tbb-bipolar-hint-mobile">Toca cuál de los dos extremos representa mejor a «${cs.brandName || "TheBestBrand"}»</span>
                   </h2>
                 </div>
                 <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:${isCompact3 ? '8px' : '12px'}; min-height:0;">
@@ -23060,38 +23253,38 @@
                       ? (rawVal < 0 || rawVal > 1 ? Math.max(0, Math.min(1, (Number(rawVal) + 1) / 2)) : Number(rawVal))
                       : 0.6;
                     const pct = Math.round(normVal * 100);
-                    const leftSelected = normVal <= 0.35;
-                    const rightSelected = normVal >= 0.65;
+                    const leftSelected = normVal < 0.5;
+                    const rightSelected = normVal >= 0.5;
                     return `
                       <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:${isCompact3 ? '6px 10px' : '10px 12px'}; display:flex; flex-direction:column; gap:${isCompact3 ? '4px' : '8px'};">
                         <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; font-weight:800; color:#0F172A;">
                           <span>${spec.title}</span>
-                          <span style="color:#0D2540; font-weight:900; font-family:var(--font-mono);">${pct}%</span>
+                          <span class="tbb-bipolar-pct-badge" style="color:#0D2540; font-weight:900; font-family:var(--font-mono);">${pct}%</span>
                         </div>
-                        <div style="display:grid; grid-template-columns:minmax(170px, 1.15fr) 1fr minmax(170px, 1.15fr); align-items:center; gap:10px;">
+                        <div class="tbb-bipolar-row">
                           <!-- Extremo Izquierdo con Imagen Vectorial Representativa -->
-                          <button type="button" class="tbb-duo-btn ${leftSelected ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbUpdateSliderValue('${spec.id}', 0.15)" style="padding:6px 10px !important; justify-content:flex-start !important; gap:8px !important; text-align:left !important;">
-                            <span style="width:34px; height:34px; border-radius:8px; background:#090D16; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid #D4AF37;">
+                          <button type="button" class="tbb-duo-btn tbb-bipolar-pole-btn ${leftSelected ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbUpdateSliderValue('${spec.id}', 0.15)" style="justify-content:flex-start !important; text-align:left !important;">
+                            <span class="tbb-pole-icon-box" style="width:32px; height:32px; border-radius:8px; background:#090D16; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid #D4AF37;">
                               ${spec.leftSvg || ""}
                             </span>
-                            <span style="display:flex; flex-direction:column; line-height:1.15; overflow:hidden;">
-                              <span style="font-size:0.72rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${spec.leftBrand || spec.leftPole}</span>
-                              <span style="font-size:0.66rem; font-weight:700; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${spec.leftTrait || ""}</span>
+                            <span style="display:flex; flex-direction:column; line-height:1.15; overflow:hidden; min-width:0; flex:1;">
+                              <span style="font-size:0.70rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${spec.leftBrand || spec.leftPole}</span>
+                              <span style="font-size:0.63rem; font-weight:700; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${spec.leftTrait || ""}</span>
                             </span>
                           </button>
 
-                          <!-- Barra Deslizadora Central -->
-                          <div style="display:flex; flex-direction:column; align-items:center; gap:2px; padding:0 4px;">
+                          <!-- Barra Deslizadora Central (Visible en pantallas anchas; oculta en teléfonos para evitar encimamiento) -->
+                          <div class="tbb-bipolar-slider-col">
                             <input type="range" min="0" max="1" step="0.05" value="${normVal}" oninput="tbbUpdateSliderValue('${spec.id}', this.value)" style="width:100%; height:24px; cursor:pointer;" />
                           </div>
 
                           <!-- Extremo Derecho con Imagen Vectorial Representativa -->
-                          <button type="button" class="tbb-duo-btn ${rightSelected ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbUpdateSliderValue('${spec.id}', 0.85)" style="padding:6px 10px !important; justify-content:flex-end !important; gap:8px !important; text-align:right !important;">
-                            <span style="display:flex; flex-direction:column; line-height:1.15; overflow:hidden; align-items:flex-end;">
-                              <span style="font-size:0.72rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${spec.rightBrand || spec.rightPole}</span>
-                              <span style="font-size:0.66rem; font-weight:700; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${spec.rightTrait || ""}</span>
+                          <button type="button" class="tbb-duo-btn tbb-bipolar-pole-btn ${rightSelected ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbUpdateSliderValue('${spec.id}', 0.85)" style="justify-content:flex-end !important; text-align:right !important;">
+                            <span style="display:flex; flex-direction:column; line-height:1.15; overflow:hidden; align-items:flex-end; min-width:0; flex:1;">
+                              <span style="font-size:0.70rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${spec.rightBrand || spec.rightPole}</span>
+                              <span style="font-size:0.63rem; font-weight:700; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${spec.rightTrait || ""}</span>
                             </span>
-                            <span style="width:34px; height:34px; border-radius:8px; background:#090D16; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid #38BDF8;">
+                            <span class="tbb-pole-icon-box" style="width:32px; height:32px; border-radius:8px; background:#090D16; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid #38BDF8;">
                               ${spec.rightSvg || ""}
                             </span>
                           </button>
@@ -23106,35 +23299,143 @@
           }
 
           if (st.subStep === 4) {
-            const fontCatalog = [
-              { id: "Plus Jakarta Sans", role: "Editorial Moderna y Limpia" },
-              { id: "Space Grotesk", role: "Tecnológica y Precisión" },
-              { id: "Playfair Display", role: "Alta Costura y Serif Clásica" },
-              { id: "Cormorant Garamond", role: "Herencia y Lujo Atemporal" },
-              { id: "Syne", role: "Vanguardia Escultórica" },
-              { id: "Outfit", role: "Minimalismo Geométrico" }
+            const fontCategories = [
+              {
+                catId: "geometrica",
+                label: "1. Ingeniería & Geométrica",
+                triads: [
+                  { id: "Montserrat", sec: "Plus Jakarta Sans", mono: "JetBrains Mono", badge: "3 .TTF LIBRES", role: "Arquitectura, Obra Civil y Liderazgo Corporativo" },
+                  { id: "Plus Jakarta Sans", sec: "Inter", mono: "JetBrains Mono", badge: "3 .TTF LIBRES", role: "Editorial Contemporánea y Alta Claridad" },
+                  { id: "Outfit", sec: "DM Sans", mono: "Space Mono", badge: "3 .TTF LIBRES", role: "Minimalismo Geométrico y Cercanía" },
+                  { id: "League Spartan", sec: "Work Sans", mono: "IBM Plex Mono", badge: "3 .TTF LIBRES", role: "Fuerza Estructural e Impacto Monolítico" }
+                ]
+              },
+              {
+                catId: "suiza",
+                label: "2. Suiza & Tecnológica",
+                triads: [
+                  { id: "Space Grotesk", sec: "Inter", mono: "JetBrains Mono", badge: "3 .TTF LIBRES", role: "Ingeniería de Precisión, SaaS e Innovación" },
+                  { id: "Inter", sec: "Plus Jakarta Sans", mono: "IBM Plex Mono", badge: "3 .TTF LIBRES", role: "Rigor Suizo y Sistemas Digitales" },
+                  { id: "Sora", sec: "DM Sans", mono: "Space Mono", badge: "3 .TTF LIBRES", role: "Fintech, Futuro y Claridad Algorítmica" },
+                  { id: "Manrope", sec: "Work Sans", mono: "JetBrains Mono", badge: "3 .TTF LIBRES", role: "Consultoría Estratégica y Banca Moderna" }
+                ]
+              },
+              {
+                catId: "serif",
+                label: "3. Editorial & Lujo Serif",
+                triads: [
+                  { id: "Playfair Display", sec: "Plus Jakarta Sans", mono: "IBM Plex Mono", badge: "3 .TTF LIBRES", role: "Alta Costura, Inmobiliaria Premium y Autoridad" },
+                  { id: "Cormorant Garamond", sec: "Lato", mono: "Space Mono", badge: "3 .TTF LIBRES", role: "Herencia Clásica, Joyería y Hospitalidad" },
+                  { id: "Cinzel", sec: "Montserrat", mono: "JetBrains Mono", badge: "3 .TTF LIBRES", role: "Prestigio Institucional, Legal y Monumental" },
+                  { id: "Fraunces", sec: "DM Sans", mono: "Space Mono", badge: "3 .TTF LIBRES", role: "Gastronomía de Autor y Carácter Artesanal" }
+                ]
+              },
+              {
+                catId: "display",
+                label: "4. Vanguardia & Impacto",
+                triads: [
+                  { id: "Syne", sec: "Plus Jakarta Sans", mono: "Space Mono", badge: "3 .TTF LIBRES", role: "Estudio Creativo, Diseño y Cultura Visual" },
+                  { id: "Oswald", sec: "Inter", mono: "IBM Plex Mono", badge: "3 .TTF LIBRES", role: "Industrial, Deporte e Infraestructura Pesada" },
+                  { id: "Bebas Neue", sec: "Montserrat", mono: "JetBrains Mono", badge: "3 .TTF LIBRES", role: "Titulares de Alto Impacto y Gran Escala" },
+                  { id: "Urbanist", sec: "DM Sans", mono: "JetBrains Mono", badge: "3 .TTF LIBRES", role: "Movilidad, Urbanismo y Lifestyle" }
+                ]
+              },
+              {
+                catId: "adobe_hybrid",
+                label: "5. ✦ Adobe Fonts (Híbrido)",
+                triads: [
+                  { id: "Proxima Nova", sec: "Plus Jakarta Sans", mono: "JetBrains Mono", badge: "ADOBE + .TTF", oflFallback: "Montserrat", role: "Clásico Digital Adobe + Respaldo .TTF Montserrat" },
+                  { id: "Futura PT", sec: "DM Sans", mono: "Space Mono", badge: "ADOBE + .TTF", oflFallback: "Outfit", role: "Bauhaus Geométrico Adobe + Respaldo .TTF Outfit" },
+                  { id: "Acumin Pro", sec: "Inter", mono: "IBM Plex Mono", badge: "ADOBE + .TTF", oflFallback: "Space Grotesk", role: "Neo-Grotesca Técnica Adobe + Respaldo .TTF Space Grotesk" },
+                  { id: "Adobe Garamond Pro", sec: "Lato", mono: "Space Mono", badge: "ADOBE + .TTF", oflFallback: "Cormorant Garamond", role: "Editorial Renacentista Adobe + Respaldo .TTF Cormorant" }
+                ]
+              }
             ];
-            const curFont = cs.primary_font || "Plus Jakarta Sans";
+
+            // Inferir categoría inicial según el giro de la marca o sliders si el usuario aún no ha tocado una pestaña
+            if (!st.selectedFontCategory) {
+              const giroLow = String(cs.custom_business_type || cs.step0_short_essence || "").toLowerCase();
+              if (/abogad|legal|notar|joyer|vino|hotel|lujo|boutique|gastronom/i.test(giroLow)) {
+                st.selectedFontCategory = "serif";
+              } else if (/software|saas|app|ia|tecnolog|datos|fintech|cloud/i.test(giroLow)) {
+                st.selectedFontCategory = "suiza";
+              } else if (/deport|gym|fitness|festival|media| Entretenim/i.test(giroLow)) {
+                st.selectedFontCategory = "display";
+              } else {
+                st.selectedFontCategory = "geometrica";
+              }
+            }
+
+            const activeCatObj = fontCategories.find(c => c.catId === st.selectedFontCategory) || fontCategories[0];
+            const curFont = cs.primary_font || st.selectedFontFamily || "Montserrat";
+            const curSecFont = cs.secondary_font || st.selectedSecondaryFont || "Plus Jakarta Sans";
+            const curMonoFont = cs.mono_font || st.selectedMonoFont || "JetBrains Mono";
+            const curAdobeKitId = cs.adobe_typekit_id || st.adobeTypekitId || "";
             const previewBrand = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
 
+            if (curAdobeKitId && typeof window.tbbEnsureAdobeTypekitCssInjected === "function") {
+              window.tbbEnsureAdobeTypekitCssInjected(curAdobeKitId);
+            }
+
             stage.innerHTML = `
-              <div class="tbb-atomic-card">
+              <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#1D4ED8;">PASO 4 · 4 DE 5 · SELECCIÓN DE TIPOS DE FUENTES</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.20rem; font-weight:900; color:#090D16; margin:4px 0 8px 0;">
-                    Elige la tipografía oficial para el logotipo y manual de «${previewBrand}»
+                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 4 · 4 DE 5 · SISTEMA TIPOGRÁFICO HÍBRIDO (OPEN SOURCE .TTF + ADOBE FONTS TYPEKIT · 100% COPYRIGHT)</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.02rem; font-weight:900; color:#090D16; margin:2px 0 0 0;">
+                    1. Elige la familia de estilo (o conecta Adobe Fonts) y 2. Toca la tríada para «${previewBrand}»
                   </h2>
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1; align-content:center;">
-                  ${fontCatalog.map(f => `
-                    <button type="button" class="tbb-duo-btn ${curFont === f.id ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbSelectOfficialFontFamily('${f.id}')" style="flex-direction:column !important; align-items:flex-start !important; padding:10px 14px !important; gap:2px !important;">
-                      <span style="font-family:'${f.id}', sans-serif; font-size:1.18rem; font-weight:800; color:#090D16; letter-spacing:0.3px;">${previewBrand}</span>
-                      <span style="font-size:0.74rem; font-weight:700; color:#475569;">${f.id} · ${f.role}</span>
-                    </button>
-                  `).join("")}
+
+                <!-- Pestañas de Estilo para no abrumar al usuario (4 categorías Open Source + 1 pestaña Híbrida Adobe Fonts) -->
+                <div class="tbb-font-cat-bar">
+                  ${fontCategories.map(cat => {
+                    const isCatActive = cat.catId === activeCatObj.catId;
+                    return `
+                      <button type="button" class="tbb-duo-btn tbb-font-cat-pill ${isCatActive ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbSelectFontCategoryTab('${cat.catId}')">
+                        ${cat.label}
+                      </button>
+                    `;
+                  }).join("")}
                 </div>
-                <div style="font-size:0.80rem; color:#1D4ED8; background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:12px; padding:8px; text-align:center; font-weight:700;">
-                  Tipografía activa seleccionada: ${curFont} (aplicada en tiempo real al logotipo y a las 30 láminas)
+
+                <!-- Barra de Conexión Híbrida Adobe Fonts (Typekit Web Project ID) -->
+                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:10px; padding:5px 10px;">
+                  <span style="font-family:var(--font-mono); font-size:0.64rem; font-weight:900; color:#FFFFFF; background:#FF0000; border-radius:5px; padding:2px 6px; letter-spacing:0.4px; flex-shrink:0;">Ai · Adobe Fonts</span>
+                  <span style="font-size:0.70rem; font-weight:700; color:#0F172A;">Modo Híbrido (Opcional · Web Project ID):</span>
+                  <input type="text" id="tbbAdobeTypekitIdInput" value="${escapeHTML(curAdobeKitId)}" oninput="window.tbbUpdateAdobeTypekitId(this.value)" placeholder="Ej. xab1cde o URL https://use.typekit.net/xab1cde.css" style="flex:1; min-width:160px; height:28px; padding:2px 8px; border-radius:7px; border:1.5px solid #94A3B8; font-family:var(--font-mono); font-size:0.72rem; font-weight:700; color:#090D16; background:#FFFFFF;" />
+                  <span style="font-size:0.65rem; font-weight:700; color:#047857; background:#ECFDF5; border:1px solid #A7F3D0; border-radius:6px; padding:2px 7px;">
+                    ${curAdobeKitId ? `✓ Typekit Activo (${escapeHTML(curAdobeKitId)}) + .TTF SIL OFL` : "✓ 100% Legal: Web/Curvas/PDF + .TTF Libres en tu .ZIP"}
+                  </span>
+                </div>
+
+                <!-- 4 Tríadas Curadas de la Categoría Activa -->
+                <div class="tbb-font-triad-grid">
+                  ${activeCatObj.triads.map(f => {
+                    const isSel = curFont === f.id;
+                    const fallbackFam = f.oflFallback || "Montserrat";
+                    const isAdobe = Boolean(f.oflFallback);
+                    return `
+                      <button type="button" class="tbb-duo-btn tbb-font-triad-card ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbSelectOfficialFontFamily('${f.id}', '${f.sec}', '${f.mono}')">
+                        <div style="display:flex; justify-content:space-between; align-items:baseline; width:100%; gap:4px; min-width:0;">
+                          <span class="tbb-triad-brand-preview" style="font-family:'${f.id}', '${fallbackFam}', sans-serif; font-size:1.02rem; font-weight:800; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; flex:1;">${previewBrand}</span>
+                          <span style="font-family:var(--font-mono); font-size:0.56rem; font-weight:800; color:${isAdobe ? '#B91C1C' : '#059669'}; background:${isAdobe ? '#FEF2F2' : '#ECFDF5'}; border:1px solid ${isAdobe ? '#FECACA' : '#A7F3D0'}; border-radius:6px; padding:1px 4px; flex-shrink:0;">${f.badge || "3 .TTF"}</span>
+                        </div>
+                        <span style="font-family:'${f.sec}', sans-serif; font-size:0.66rem; font-weight:800; color:#0D2540; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">
+                          ${f.id} + ${f.sec}${isAdobe ? ` (Kit .TTF: ${fallbackFam})` : ""}
+                        </span>
+                        <span class="tbb-triad-role-desc" style="font-size:0.63rem; font-weight:600; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">
+                          ${f.role}
+                        </span>
+                      </button>
+                    `;
+                  }).join("")}
+                </div>
+
+                <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; font-size:0.72rem; color:#0D2540; background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:12px; padding:5px 12px; font-weight:700;">
+                  <span>✓ Sistema Híbrido Activo: <strong>${curFont}</strong> (Logo/Títulos) + <strong>${curSecFont}</strong> (Cuerpo) + <strong>${curMonoFont}</strong> (Datos)${curAdobeKitId ? ` · Typekit: <code>${escapeHTML(curAdobeKitId)}</code>` : ""}</span>
+                  <button type="button" onclick="if(window.tbbDownloadBrandFontsZip){window.tbbDownloadBrandFontsZip(this);}" style="background:#0D2540; color:#FFFFFF; border:none; border-radius:8px; padding:4px 10px; font-size:0.69rem; font-weight:800; cursor:pointer;">
+                    ↓ Descargar Kit Híbrido (.ZIP: .TTF + Typekit CSS)
+                  </button>
                 </div>
               </div>
             `;
@@ -23653,43 +23954,50 @@
             }, 30);
           } else {
             if (lblNext) lblNext.textContent = "Ver Mapa de Avance";
+            const activePriFont = cs.primary_font || st.selectedFontFamily || "Montserrat";
+            const activeSecFont = cs.secondary_font || st.selectedSecondaryFont || "Plus Jakarta Sans";
+            const activeMonoFont = cs.mono_font || st.selectedMonoFont || "JetBrains Mono";
+            const activeTypekitId = cs.adobe_typekit_id || st.adobeTypekitId || "";
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:12px 16px; gap:8px;">
+              <div class="tbb-atomic-card" style="padding:10px 16px; gap:6px;">
                 <div>
                   <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:900; color:#0D2540;">PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS Y PRODUCCIÓN EJECUTIVA V83.0</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.12rem; font-weight:900; color:#090D16; margin:2px 0 2px 0;">
-                    Manual Oficial (${totalPlates} Láminas en Curvas), Vectores (.SVG / .AI) y Suite Editable (.DOCX / .PPTX / .HTML) de «${escapeHTML(bName)}»
+                  <h2 style="font-family:var(--font-display); font-size:1.08rem; font-weight:900; color:#090D16; margin:2px 0 2px 0;">
+                    Manual Oficial (${totalPlates} Láminas), Vectores (.SVG / .AI), Kit Híbrido de Fuentes (.TTF + Typekit) y Suite Editable de «${escapeHTML(bName)}»
                   </h2>
-                  <div style="font-size:0.75rem; color:#475569; font-weight:600;">
-                    Todos tus activos listos para imprenta, Adobe Illustrator, Gmail/Outlook, Microsoft Word y PowerPoint con centrado óptico 0.00px.
+                  <div style="font-size:0.73rem; color:#475569; font-weight:600;">
+                    Todos tus activos listos para imprenta, Adobe Illustrator, Gmail/Outlook, Word, PowerPoint y tu sistema tipográfico híbrido 100% libre de riesgos de copyright.
                   </div>
                 </div>
-                <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:8px; align-content:center;">
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{downloadFullBrandbookPDFDirect(this);}" style="grid-column:1 / -1; min-height:42px !important;">
+                <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:6px; align-content:center;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{downloadFullBrandbookPDFDirect(this);}" style="grid-column:1 / -1; min-height:40px !important;">
                     1. Descargar Manual Oficial Completo en PDF Directo (${totalPlates} Láminas .PDF)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Logotipo SVG en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','svg',this);}else{window.exportActive3DLogoSVG(this);}" style="min-height:40px !important; font-size:0.77rem !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Logotipo SVG en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','svg',this);}else{window.exportActive3DLogoSVG(this);}" style="min-height:38px !important; font-size:0.75rem !important;">
                     2. Logotipo Horizontal 100% en Curvas (.SVG Vectorizado)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Archivo Illustrator AI', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','ai',this);}" style="min-height:40px !important; font-size:0.77rem !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Archivo Illustrator AI', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','ai',this);}" style="min-height:38px !important; font-size:0.75rem !important;">
                     3. Archivo Nativo Adobe Illustrator en Curvas (.AI)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Firma Corporativa HTML', false); if(window.tbbOpenEmailSignatureModal){window.tbbOpenEmailSignatureModal();}" style="min-height:40px !important; font-size:0.77rem !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Firma Corporativa HTML', false); if(window.tbbOpenEmailSignatureModal){window.tbbOpenEmailSignatureModal();}" style="min-height:38px !important; font-size:0.75rem !important;">
                     4. Firma Corporativa de Correo (.HTML Gmail / Outlook)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Hoja Membretada DOCX', false); if(window.tbbDownloadEditableLetterheadDOCX){window.tbbDownloadEditableLetterheadDOCX(this);}" style="min-height:40px !important; font-size:0.77rem !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Hoja Membretada DOCX', false); if(window.tbbDownloadEditableLetterheadDOCX){window.tbbDownloadEditableLetterheadDOCX(this);}" style="min-height:38px !important; font-size:0.75rem !important;">
                     5. Plantilla Editable Hoja Membretada (.DOCX Word / Docs)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Presentación Ejecutiva PPTX', false); if(window.tbbDownloadEditableDeckPPTX){window.tbbDownloadEditableDeckPPTX(this);}" style="min-height:40px !important; font-size:0.77rem !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Presentación Ejecutiva PPTX', false); if(window.tbbDownloadEditableDeckPPTX){window.tbbDownloadEditableDeckPPTX(this);}" style="min-height:38px !important; font-size:0.75rem !important;">
                     6. Presentación Ejecutiva Editable 16:9 (.PPTX PowerPoint)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Avatar y Sello en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('avatar','svg',this); setTimeout(()=>window.tbbExportLogoInCurves('seal','svg'), 450);}" style="min-height:40px !important; font-size:0.76rem !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Avatar y Sello en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('avatar','svg',this); setTimeout(()=>window.tbbExportLogoInCurves('seal','svg'), 450);}" style="min-height:38px !important; font-size:0.74rem !important;">
                     7. Avatar 1:1 + Sello Circular en Curvas (.SVG)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual Interactivo HTML', false); window.downloadCompleteBrandbookHTML()" style="min-height:40px !important; font-size:0.76rem !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual Interactivo HTML', false); window.downloadCompleteBrandbookHTML()" style="min-height:38px !important; font-size:0.74rem !important;">
                     8. Manual Web Interactivo Autónomo (.HTML ${totalPlates} Láminas)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.subStep=1; renderTbbZeroScrollStage();" style="grid-column:1 / -1; min-height:38px !important; font-size:0.75rem !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" id="tbbBtnDownloadBrandFontsKitZip" onclick="triggerAuraEmpatheticFeedback('input_font', '${escapeHTML(activePriFont)}', false); if(window.tbbDownloadBrandFontsZip){window.tbbDownloadBrandFontsZip(this);}" style="grid-column:1 / -1; min-height:40px !important; font-size:0.76rem !important;">
+                    9. Descargar Kit Híbrido de Fuentes (.ZIP: ${escapeHTML(activePriFont)} + ${escapeHTML(activeSecFont)} + ${escapeHTML(activeMonoFont)} .TTF SIL OFL${activeTypekitId ? ` + Typekit ${escapeHTML(activeTypekitId)}` : " + Snippet Adobe Typekit"})
+                  </button>
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.subStep=1; renderTbbZeroScrollStage();" style="grid-column:1 / -1; min-height:36px !important; font-size:0.74rem !important;">
                     ← Volver al Visor Interactivo de las ${totalPlates} Láminas (01 a ${totalPlates})
                   </button>
                 </div>
@@ -23824,11 +24132,48 @@
         window.renderTbbZeroScrollStage();
       };
 
-      window.tbbSelectOfficialFontFamily = function (fontId) {
+      window.tbbSelectFontCategoryTab = function (catId) {
+        if (!catId) return;
+        window.tbbState.selectedFontCategory = catId;
+        window.tbbState.fontLicenseMode = catId === "adobe_hybrid" ? "hybrid" : (window.tbbState.adobeTypekitId ? "hybrid" : "open_source");
+        if (typeof canvasState === "object" && canvasState) {
+          canvasState.font_license_mode = window.tbbState.fontLicenseMode;
+        }
+        window.renderTbbZeroScrollStage();
+      };
+
+      window.tbbUpdateAdobeTypekitId = function (rawVal) {
+        const cleanId = String(rawVal || "")
+          .replace(/^https?:\/\/use\.typekit\.net\//i, "")
+          .replace(/\.css.*$/i, "")
+          .replace(/[^a-zA-Z0-9_-]/g, "")
+          .trim();
+        window.tbbState.adobeTypekitId = cleanId;
+        window.tbbState.fontLicenseMode = cleanId ? "hybrid" : (window.tbbState.selectedFontCategory === "adobe_hybrid" ? "hybrid" : "open_source");
+        if (typeof canvasState === "object" && canvasState) {
+          canvasState.adobe_typekit_id = cleanId;
+          canvasState.font_license_mode = window.tbbState.fontLicenseMode;
+        }
+        if (typeof window.tbbEnsureAdobeTypekitCssInjected === "function") {
+          window.tbbEnsureAdobeTypekitCssInjected(cleanId);
+        }
+        if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
+      };
+
+      window.tbbSelectOfficialFontFamily = function (fontId, secFontId, monoFontId) {
         if (!fontId) return;
+        const resolvedSec = secFontId || (fontId === "Plus Jakarta Sans" ? "Inter" : "Plus Jakarta Sans");
+        const resolvedMono = monoFontId || "JetBrains Mono";
+        const isAdobeFont = Boolean(window.TBB_ADOBE_FONTS_EQUIVALENT_MAP && window.TBB_ADOBE_FONTS_EQUIVALENT_MAP[String(fontId).toLowerCase()]);
         window.tbbState.selectedFontFamily = fontId;
+        window.tbbState.selectedSecondaryFont = resolvedSec;
+        window.tbbState.selectedMonoFont = resolvedMono;
+        window.tbbState.fontLicenseMode = (isAdobeFont || window.tbbState.adobeTypekitId) ? "hybrid" : "open_source";
         if (typeof canvasState === "object" && canvasState) {
           canvasState.primary_font = fontId;
+          canvasState.secondary_font = resolvedSec;
+          canvasState.mono_font = resolvedMono;
+          canvasState.font_license_mode = window.tbbState.fontLicenseMode;
         }
         const st = window.tbbState;
         if (st.logoIterations && st.logoIterations.length > 0) {
@@ -23839,7 +24184,7 @@
           }
         }
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
-        window.triggerAuraEmpatheticFeedback("input_font", fontId, false);
+        window.triggerAuraEmpatheticFeedback("input_font", `${fontId} + ${resolvedSec}`, false);
         window.renderTbbZeroScrollStage();
       };
 
@@ -24106,6 +24451,16 @@
           st.selectedFontFamily = item.fontFamily;
           if (typeof canvasState === "object" && canvasState) canvasState.primary_font = item.fontFamily;
         }
+        if (typeof canvasState === "object" && canvasState) {
+          if (item.uploadedLogoDataUrl) {
+            canvasState.uploaded_logo_data_url = item.uploadedLogoDataUrl;
+            if (window.step0State) window.step0State.uploadedLogoDataUrl = item.uploadedLogoDataUrl;
+          }
+          if (item.tracedCurvesSvg !== undefined) {
+            canvasState.uploaded_logo_traced_curves_svg = item.tracedCurvesSvg || "";
+            if (window.step0State) window.step0State.uploadedLogoTracedCurvesSvg = item.tracedCurvesSvg || "";
+          }
+        }
         st.logoIterationIndex = idx + 1;
         window.triggerAuraEmpatheticFeedback("input_logo_done", item.conceptLabel || `Iteración #${idx + 1}`, false);
         window.renderTbbZeroScrollStage();
@@ -24146,41 +24501,39 @@
           .map((it, i) => `Iteración #${i + 1}: ${it.note || "Base inicial"}${it.conceptLabel ? " (" + it.conceptLabel + ")" : ""}`)
           .slice(-6);
 
-        const uploadedBaseDataUrl = cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
+        const uploadedBaseDataUrl = cs.base_uploaded_logo_data_url || cs.uploaded_logo_data_url || window.step0State?.baseUploadedLogoDataUrl || window.step0State?.uploadedLogoDataUrl || "";
         const existingLogoMode = cs.existing_logo_mode || window.step0State?.existingLogoMode || "evolve";
         const systemBrief = [
           "Eres el Motor Generativo Abierto de Logotipos e Iconografía Vectorial de TheBestBrand, impulsado por Google Gemini.",
           "FILOSOFÍA DEL SISTEMA: El paso anterior presentó una estructura base, pero A PARTIR DE ESTE MOMENTO EL USUARIO TIENE LIBERTAD CREATIVA ABSOLUTA Y SIN LÍMITES.",
           `Marca: "${brandName}". Giro: "${giro}". Propósito: "${purpose}".`,
-          `Color primario actual: "${targetIterationObj.pri || st.logoPriHex}". Color secundario actual: "${targetIterationObj.sec || st.logoSecHex}". Tipografía actual: "${targetIterationObj.fontFamily || st.selectedFontFamily || 'Plus Jakarta Sans'}". Layout actual: "${targetIterationObj.layout || 'horizontal'}".`,
+          `Color primario actual: "${targetIterationObj.pri || st.logoPriHex}". Color secundario actual: "${targetIterationObj.sec || st.logoSecHex}". Color de acento: "${targetIterationObj.accentHex || cs.accent_color || '#FF7A00'}". Tipografía actual: "${targetIterationObj.fontFamily || st.selectedFontFamily || 'Plus Jakarta Sans'}". Layout actual: "${targetIterationObj.layout || 'horizontal'}".`,
           uploadedBaseDataUrl
-            ? `IMPORTANTE — LOGOTIPO BASE SUBIDO POR EL USUARIO: Se adjunta como imagen el logotipo actual real de la marca (modo seleccionado: "${existingLogoMode}"). Analiza visualmente sus formas, símbolos, silueta, iniciales y proporciones, y tómalo como base directa para evolucionarlo y profesionalizarlo en curvas vectoriales de alta precisión dentro de custom_svg_g (respetando su identidad reconocible salvo que la instrucción pida cambiarla por completo).`
+            ? `IMPORTANTE — LOGOTIPO BASE SUBIDO POR EL USUARIO: Se adjunta como imagen el logotipo actual real de la marca (modo seleccionado: "${existingLogoMode}"). Analiza visualmente su anatomía exacta (formas, anillos, pétalos/elipses radiales, esfera óptica, núcleo luminoso, silueta y colores originales), y tómalo como base directa para evolucionarlo y profesionalizarlo en curvas vectoriales de alta precisión dentro de custom_svg_g.`
             : "",
           `Historial de evolución en esta sesión: ${historyNotes.length ? historyNotes.join(" -> ") : "Iteración #1 (Base inicial)"}.`,
           `SVG ACTUAL EN PANTALLA (viewBox="0 0 180 180", centro en 90,90):`,
           String(currentSvgInner || "").slice(0, 10000),
           `NUEVA INSTRUCCIÓN DEL USUARIO: "${userInstruction || 'Sorpréndeme con un rediseño creativo completamente distinto para esta marca'}".`,
           "REGLAS OBLIGATORIAS DE SÍNTESIS VECTORIAL SIN LÍMITES:",
-          "1. CERO LÍMITES DE OBJETO O FORMA: No estás atado a ninguna plantilla ni lista cerrada. El usuario puede pedir cambiar el objeto principal a CUALQUIER cosa en el universo (ej. un león, un águila, una taza de café, un cohete, un lobo, un árbol, un barco, una espada, un dragón, un cerebro, un átomo, una casa, una flor, un toro, una guitarra, un faro con forma distinta, un monograma caligráfico, una figura geométrica pura, etc.) tantas veces como quiera.",
+          "1. CERO LÍMITES DE OBJETO O FORMA: No estás atado a ninguna plantilla ni lista cerrada. El usuario puede pedir cambiar el objeto principal o refinar el logotipo subido con acabado Apple Liquid Glass / visionOS.",
           "2. CAMBIOS ESTRUCTURALES PROFUNDOS Y VISIBLES: Nunca hagas cambios tímidos o superficiales.",
-          "   - Si el usuario subió su logotipo actual como base, analiza la imagen adjunta y construye en `custom_svg_g` una versión evolucionada, limpia, simétrica y memorable de ese símbolo respetando sus colores y esencia.",
-          "   - Si el usuario pide cambiar el objeto principal, la forma o el concepto, DESCARTA por completo el SVG anterior y dibuja desde cero el nuevo objeto principal en `custom_svg_g`.",
-          "   - Si el usuario pide transformar la forma del objeto actual (ej. hacerlo curvo, triangular, más ancho, abrir las alas, cambiar la postura, fusionar dos objetos, quitar partes, cambiar el estilo a minimalista plano, degradado fluido, emblema grabado o 3D volumétrico), REESCRIBE y TRANSFORMA a fondo los trazos `<path>`, `<polygon>`, `<circle>`, `<ellipse>` de `custom_svg_g` para que el cambio geométrico sea contundente y exacto.",
-          "3. CALIDAD ARTÍSTICA PENTAGRAM / PROPORCIÓN ÁUREA DEL SVG (`custom_svg_g`):",
+          "   - Si el usuario subió su logotipo actual como base (ej. el orbe de Aura con aro exterior naranja #FF7A00, esfera azul obsidiana #0D2540, 12 pétalos elípticos radiales en azul cristal #426EAE / #4C9DE6 y núcleo incandescente blanco-ámbar), preserva fielmente esa anatomía y sus colores originales elevándolos al estilo solicitado.",
+          "   - Si el usuario solicita estilo Apple / Liquid Glass / visionOS / iOS 27, construye en `custom_svg_g` una joya óptica 3D con múltiples capas de refracción especular, biseles de cristal translúcido, caústicas luminosas (`stop-opacity`), pétalos de cristal líquido superpuestos, aro perimetral con reflejo metálico-vítreo y núcleo radiante.",
+          "3. CALIDAD ARTÍSTICA PENTAGRAM / APPLE DESIGN RESOURCES DEL SVG (`custom_svg_g`):",
           "   - `custom_svg_g` es OBLIGATORIO en todas las respuestas y NUNCA puede ir vacío.",
-          "   - Debe ser un bloque `<g>...</g>` autocontenido para un lienzo `viewBox=\"0 0 180 180\"` (centro en `90, 90`, ocupando aprox. de `16` a `164` en X e Y).",
-          "   - PROHIBIDO usar clip-art infantil, círculos o triángulos básicos sueltos. Construye curvas Bézier cúbicas de grado Pentagram (`<path d=\"M... C... Z\"/>`) con tensión geométrica áurea (phi = 1.618), equilibrio masa/vacío (espacio negativo Gestalt) y legibilidad perfecta desde 16px (favicon) hasta 180px.",
-          "   - Incluye dentro de `custom_svg_g` tu propio bloque `<defs>` con `<linearGradient>` y `<radialGradient>` ricos en matices (o usa también los shaders disponibles `url(#lgSapphire)`, `url(#lgAmberGlow)`, `url(#lgPearlRibbon)`, `url(#lgDeepCobalt)`), y construye la figura con entre 14 y 28 trazos vectoriales (`<path>`, `<polygon>`, `<circle>`, `<ellipse>`, `<rect>`) con volumen, silueta reconocible al instante, luces especulares y sombras.",
+          "   - Debe ser un bloque `<g>...</g>` autocontenido para un lienzo `viewBox=\"0 0 180 180\"` (centro en `90, 90`, ocupando aprox. de `14` a `166` en X e Y).",
+          "   - Incluye dentro de `custom_svg_g` tu propio bloque `<defs>` con `<linearGradient>` y `<radialGradient>` multicapa con transparencias (`stop-opacity`), y construye la figura con entre 16 y 32 trazos vectoriales (`<path>`, `<circle>`, `<ellipse>`) con volumen óptico, reflejos de lente (specular highlights) y sombras suaves.",
           "4. CONTROL DE TIPOGRAFÍA, TEXTO Y DISPOSICIÓN: Si el usuario pide cambiar colores (`pri_hex`, `sec_hex`), fondo oscuro/claro (`bg_dark`), posición del texto (`layout`: `\"horizontal\"`, `\"stacked\"` para texto abajo, o `\"icon_only\"` para dejar solo el símbolo sin texto), tipografía (`font_family`), o el texto/subtítulo de la marca (`brand_title_override`, `subtitle_override`), refléjalo en las claves correspondientes.",
           "Devuelve ÚNICAMENTE un objeto JSON válido con estas claves exactas:",
           "{",
-          '  "concept_label": "Nombre breve del nuevo diseño o transformación (ej. Águila Imperial Oro, Taza Esmeralda, Faro Espiral, etc.)",',
+          '  "concept_label": "Nombre breve del nuevo diseño o transformación (ej. Orbe Aura Liquid Glass, Cristal Óptico 12 Pétalos, etc.)",',
           '  "prompt_40w": "Un solo párrafo de máximo 38 palabras en español describiendo el logotipo resultante",',
           '  "pri_hex": "#HEX primario actualizado",',
           '  "sec_hex": "#HEX secundario actualizado",',
           '  "bg_dark": false,',
           '  "layout": "horizontal | stacked | icon_only",',
-          '  "font_family": "Plus Jakarta Sans | Space Grotesk | Playfair Display | Cormorant Garamond | Syne | Outfit",',
+          '  "font_family": "Montserrat | Plus Jakarta Sans | Space Grotesk | Playfair Display | Cormorant Garamond | Syne | Outfit",',
           '  "scale": 1.0,',
           '  "rotate_deg": 0,',
           '  "flip_x": false,',
