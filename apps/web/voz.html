@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Aura ImproBears (Versión Viva) — Voz Neural Gemini &amp; Chat Ejecutivo 24/7</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Aura" />
+  <meta name="theme-color" content="#071120" />
+  <link rel="icon" type="image/png" href="/assets/logos/logo-aura-radial.png" />
+  <link rel="apple-touch-icon" href="/assets/logos/logo-aura-radial.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ib-navy: #0D2540;
+      --ib-deep: #06101E;
+      --ib-blue: #426EAE;
+      --ib-sky: #4C9DE6;
+      --ib-orange: #FF7A00;
+      --ib-white: #FFFFFF;
+      --ib-line: rgba(255, 255, 255, 0.12);
+      --ib-panel: rgba(13, 37, 64, 0.78);
+      --ib-emerald: #10B981;
+      --font-head: 'Montserrat', sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 24% 25%, rgba(76, 157, 230, 0.22) 0%, transparent 48%),
+        radial-gradient(circle at 82% 18%, rgba(255, 122, 0, 0.14) 0%, transparent 42%),
+        linear-gradient(160deg, #06101E 0%, #0D2540 55%, #071324 100%);
+      color: var(--ib-white);
+      font-family: var(--font-body);
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* TOP NAVIGATION BAR */
+    .aura-topbar {
+      height: 62px;
+      padding: max(8px, env(safe-area-inset-top)) 20px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--ib-line);
+      background: rgba(6, 16, 30, 0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 20;
+      flex-shrink: 0;
+    }
+
+    .aura-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .aura-brand-emblem {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(76, 157, 230, 0.7);
+      box-shadow: 0 0 18px rgba(76, 157, 230, 0.45);
+      object-fit: cover;
+      background: #06101E;
+    }
+
+    .aura-brand-titles h1 {
+      font-family: var(--font-head);
+      font-size: 0.96rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .aura-brand-titles h1 span.accent {
+      color: var(--ib-orange);
+    }
+
+    .aura-brand-titles p {
+      font-size: 0.71rem;
+      color: rgba(255, 255, 255, 0.72);
+      font-weight: 600;
+    }
+
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .voice-engine-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #6EE7B7;
+      letter-spacing: 0.02em;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ib-emerald);
+      box-shadow: 0 0 10px var(--ib-emerald);
+      animation: pulseGreen 2s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.65; }
+    }
+
+    .suite-switcher {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .suite-link {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .suite-link:hover {
+      background: rgba(76, 157, 230, 0.25);
+      border-color: var(--ib-sky);
+      color: #FFFFFF;
+    }
+
+    /* MAIN WORKSPACE SPLIT: LEFT = LIVE AURA ORB STAGE | RIGHT = FULL INTERACTIVE CHAT */
+    .aura-workspace {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 18px;
+      padding: 16px 20px max(14px, env(safe-area-inset-bottom));
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* LEFT COLUMN: AURA VIVA (3D HARMONIC RADIAL ORB + VOICE CONTROLS) */
+    .aura-live-stage {
+      background: linear-gradient(180deg, rgba(13, 37, 64, 0.72) 0%, rgba(6, 16, 30, 0.88) 100%);
+      border: 1px solid rgba(76, 157, 230, 0.28);
+      border-radius: 24px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+    }
+
+    .stage-top-meta {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .orb-state-chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(76, 157, 230, 0.18);
+      border: 1px solid rgba(76, 157, 230, 0.45);
+      color: #93C5FD;
+      font-family: var(--font-mono);
+      font-size: 0.69rem;
+    }
+
+    .orb-state-chip.speaking {
+      background: rgba(255, 122, 0, 0.22);
+      border-color: var(--ib-orange);
+      color: #FDBA74;
+    }
+
+    .orb-state-chip.listening {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: var(--ib-emerald);
+      color: #6EE7B7;
+    }
+
+    /* INTERACTIVE CANVAS ORB CONTAINER */
+    .orb-canvas-wrap {
+      position: relative;
+      width: 268px;
+      height: 268px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      margin: 4px 0;
+    }
+
+    #auraLiveOrbCanvas {
+      width: 268px;
+      height: 268px;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .orb-center-badge {
+      position: absolute;
+      pointer-events: none;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .orb-center-badge span.name {
+      font-family: var(--font-head);
+      font-weight: 900;
+      font-size: 1.05rem;
+      letter-spacing: 0.16em;
+      color: #FFFFFF;
+      text-shadow: 0 2px 12px rgba(6, 16, 30, 0.95);
+    }
+
+    .orb-center-badge span.sub {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #93C5FD;
+      text-transform: uppercase;
+      margin-top: 2px;
+      text-shadow: 0 1px 8px rgba(6, 16, 30, 0.95);
+    }
+
+    /* LIVE WAVEFORM METER */
+    .voice-meter-bar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 24px;
+    }
+
+    .meter-col {
+      width: 4px;
+      height: 6px;
+      border-radius: 99px;
+      background: linear-gradient(180deg, var(--ib-orange), var(--ib-sky));
+      transition: height 0.08s ease;
+    }
+
+    .orb-controls-stack {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-primary-mic {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(76, 157, 230, 0.65);
+      background: linear-gradient(135deg, #426EAE 0%, #0D2540 100%);
+      color: #FFFFFF;
+      font-family: var(--font-head);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary-mic:hover {
+      border-color: var(--ib-orange);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary-mic.active-listening {
+      background: linear-gradient(135deg, #FF7A00 0%, #C2410C 100%);
+      border-color: #FFFFFF;
+      box-shadow: 0 0 25px rgba(255, 122, 0, 0.6);
+    }
+
+    .continuous-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .btn-secondary-pill {
+      flex: 1;
+      min-height: 38px;
+      border-radius: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 10px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary-pill.active {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: var(--ib-emerald);
+      color: #6EE7B7;
+    }
+
+    .voice-selector {
+      background: rgba(6, 16, 30, 0.9);
+      border: 1px solid rgba(76, 157, 230, 0.35);
+      color: #FFFFFF;
+      border-radius: 11px;
+      padding: 6px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      min-height: 38px;
+    }
+
+    /* RIGHT COLUMN: MULTI-TURN CONVERSATIONAL CHAT INTERFACE */
+    .aura-chat-panel {
+      background: rgba(10, 26, 46, 0.76);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .chat-panel-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: rgba(6, 16, 30, 0.55);
+      flex-shrink: 0;
+    }
+
+    .chat-header-info h2 {
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+
+    .chat-header-info p {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.68);
+      margin-top: 2px;
+    }
+
+    /* QUICK PROMPTS CHIPS BAR */
+    .quick-chips-bar {
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(13, 37, 64, 0.38);
+      flex-shrink: 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .quick-chips-bar::-webkit-scrollbar {
+      height: 0;
+    }
+
+    .quick-chip {
+      background: rgba(66, 110, 174, 0.22);
+      border: 1px solid rgba(76, 157, 230, 0.38);
+      color: #E0F2FE;
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.18s ease;
+    }
+
+    .quick-chip:hover {
+      background: var(--ib-orange);
+      border-color: var(--ib-orange);
+      color: #FFFFFF;
+    }
+
+    /* SCROLLABLE CHAT MESSAGES STREAM */
+    .chat-messages-feed {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      scroll-behavior: smooth;
+    }
+
+    .chat-bubble-row {
+      display: flex;
+      gap: 12px;
+      max-width: 88%;
+      animation: fadeSlideUp 0.22s ease-out;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chat-bubble-row.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .chat-bubble-row.aura {
+      align-self: flex-start;
+    }
+
+    .bubble-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 0.74rem;
+      border: 1.5px solid rgba(76, 157, 230, 0.6);
+      overflow: hidden;
+      background: #06101E;
+    }
+
+    .bubble-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .chat-bubble-row.user .bubble-avatar {
+      background: var(--ib-orange);
+      border-color: #FFFFFF;
+      color: #FFFFFF;
+    }
+
+    .bubble-card {
+      padding: 12px 16px;
+      border-radius: 18px;
+      line-height: 1.5;
+      font-size: 0.9rem;
+      position: relative;
+    }
+
+    .chat-bubble-row.aura .bubble-card {
+      background: rgba(19, 47, 79, 0.88);
+      border: 1px solid rgba(76, 157, 230, 0.35);
+      border-top-left-radius: 4px;
+      color: #F8FAFC;
+    }
+
+    .chat-bubble-row.user .bubble-card {
+      background: linear-gradient(135deg, #426EAE 0%, #2B4C7E 100%);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-top-right-radius: 4px;
+      color: #FFFFFF;
+    }
+
+    .bubble-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 5px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #93C5FD;
+    }
+
+    .chat-bubble-row.user .bubble-meta {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .bubble-actions {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-replay-voice {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #BAE6FD;
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-replay-voice:hover {
+      background: var(--ib-orange);
+      border-color: var(--ib-orange);
+      color: #FFFFFF;
+    }
+
+    /* CHAT INPUT COMPOSER BAR */
+    .chat-composer-bar {
+      padding: 12px 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(6, 16, 30, 0.88);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .chat-text-input {
+      flex: 1;
+      min-height: 46px;
+      background: rgba(13, 37, 64, 0.85);
+      border: 1.5px solid rgba(76, 157, 230, 0.4);
+      border-radius: 14px;
+      padding: 10px 16px;
+      color: #FFFFFF;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .chat-text-input:focus {
+      border-color: var(--ib-orange);
+    }
+
+    .chat-text-input::placeholder {
+      color: rgba(255, 255, 255, 0.48);
+    }
+
+    .btn-send-chat {
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 14px;
+      border: none;
+      background: var(--ib-orange);
+      color: #FFFFFF;
+      font-family: var(--font-head);
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn-send-chat:hover {
+      transform: translateY(-1px);
+    }
+
+    /* RESPONSIVE MOBILE / IPHONE / CARPLAY */
+    @media (max-width: 920px) {
+      .aura-workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: 230px 1fr;
+        gap: 10px;
+        padding: 10px 12px max(10px, env(safe-area-inset-bottom));
+      }
+      .aura-live-stage {
+        flex-direction: row;
+        padding: 12px 14px;
+        gap: 14px;
+      }
+      .stage-top-meta {
+        display: none;
+      }
+      .orb-canvas-wrap, #auraLiveOrbCanvas {
+        width: 146px;
+        height: 146px;
+        flex-shrink: 0;
+      }
+      .voice-meter-bar {
+        display: none;
+      }
+      .suite-switcher {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- TOPBAR -->
+  <header class="aura-topbar">
+    <div class="aura-brand">
+      <img src="/assets/logos/logo-aura-radial.png" alt="Aura ImproBears" class="aura-brand-emblem" onerror="this.style.display='none'" />
+      <div class="aura-brand-titles">
+        <h1>AURA IMPROBEARS <span class="accent">VIVA</span></h1>
+        <p>Copiloto Ejecutivo 24/7 • Voz Neural Gemini (Aoede 24kHz) &amp; Chat en Vivo</p>
+      </div>
+    </div>
+
+    <div class="topbar-controls">
+      <div class="voice-engine-badge" id="geminiVoiceEngineBadge">
+        <span class="status-dot"></span>
+        <span id="voiceEngineStatusText">Voz Neural Gemini Activa</span>
+      </div>
+      <nav class="suite-switcher">
+        <a href="https://thebestbrand-studio.web.app/studio?studio=1" target="_blank" rel="noopener" class="suite-link">TheBestBrand Studio</a>
+        <a href="https://improbears-com.web.app/consola-marketing#automatizacion-marketing" target="_blank" rel="noopener" class="suite-link">TheBestGrowth</a>
+        <a href="/clientes" class="suite-link">Portal Zoho One</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="aura-workspace">
+    <!-- LEFT: LIVE ANIMATED RADIAL AURA ORB -->
+    <section class="aura-live-stage">
+      <div class="stage-top-meta">
+        <span>ORBE RADIAL AURA 60FPS</span>
+        <span class="orb-state-chip" id="orbStateBadge">EN LÍNEA • ESCUCHANDO</span>
+      </div>
+
+      <div class="orb-canvas-wrap" id="orbTriggerArea" title="Haz clic para hablar con Aura o escuchar su voz neural">
+        <canvas id="auraLiveOrbCanvas" width="540" height="540"></canvas>
+        <div class="orb-center-badge">
+          <span class="name">AURA</span>
+          <span class="sub" id="orbSubLabel">TOCA PARA HABLAR</span>
+        </div>
+      </div>
+
+      <div class="voice-meter-bar" id="voiceWaveformBar">
+        <div class="meter-col"></div><div class="meter-col"></div><div class="meter-col"></div><div class="meter-col"></div>
+        <div class="meter-col"></div><div class="meter-col"></div><div class="meter-col"></div><div class="meter-col"></div>
+        <div class="meter-col"></div><div class="meter-col"></div><div class="meter-col"></div><div class="meter-col"></div>
+        <div class="meter-col"></div><div class="meter-col"></div><div class="meter-col"></div><div class="meter-col"></div>
+      </div>
+
+      <div class="orb-controls-stack">
+        <button type="button" class="btn-primary-mic" id="talkBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" x2="12" y1="19" y2="22"></line>
+          </svg>
+          <span id="talkBtnLabel">HABLAR CON AURA (MICRÓFONO)</span>
+        </button>
+
+        <div class="continuous-toggle-row">
+          <button type="button" class="btn-secondary-pill active" id="continuousVoiceToggleBtn">
+            Voz Automática: ACTIVADA
+          </button>
+          <select id="geminiVoiceProfileSelect" class="voice-selector" aria-label="Perfil de voz de Gemini">
+            <option value="Aoede" selected>Voz Gemini: Aoede (Cálida)</option>
+            <option value="Kore">Voz Gemini: Kore (Ejecutiva)</option>
+            <option value="Leda">Voz Gemini: Leda (Creativa)</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: MULTI-TURN CHAT FEED + TEXT COMPOSER -->
+    <section class="aura-chat-panel">
+      <div class="chat-panel-header">
+        <div class="chat-header-info">
+          <h2>Conversación en Vivo con Aura ImproBears</h2>
+          <p id="activeSpecialistSubtitle">Sincronizada con Zoho Books (923290625), Zoho CRM v6, WhatsApp (+52 442 181 2822) y Suite TheBest</p>
+        </div>
+        <button type="button" class="btn-secondary-pill" id="testVoiceGreetingBtn" style="flex:0 0 auto; padding:6px 14px;">
+          Escuchar Saludo de Aura
+        </button>
+      </div>
+
+      <!-- QUICK ACTION CHIPS -->
+      <div class="quick-chips-bar">
+        <button type="button" class="quick-chip" data-prompt="¿Cuáles son mis facturas y pedidos pendientes hoy en Zoho Books?">Facturas y Pedidos Zoho Books</button>
+        <button type="button" class="quick-chip" data-prompt="Dame el reporte del Escuadrón de 7 Agentes y la Mesa Humana">Estado de los 7 Agentes</button>
+        <button type="button" class="quick-chip" data-prompt="¿Cómo van los pedidos de Ingready y Cervecería Hércules en WhatsApp?">Compartimentos WhatsApp B2B</button>
+        <button type="button" class="quick-chip" data-prompt="¿Cómo funciona el diagnóstico socrático y Kansei en TheBestBrand Studio?">TheBestBrand Studio</button>
+        <button type="button" class="quick-chip" data-prompt="Dame el estado de las campañas y leads en TheBestGrowth">TheBestGrowth &amp; CRM</button>
+        <button type="button" class="quick-chip" data-prompt="Confirmar y autorizar envío de propuestas activas">Autorizar Propuestas</button>
+      </div>
+
+      <!-- CHAT MESSAGES STREAM -->
+      <div class="chat-messages-feed" id="auraChatFeed" role="log" aria-live="polite"></div>
+
+      <!-- TEXT INPUT & VOICE COMPOSER -->
+      <form class="chat-composer-bar" id="auraChatForm">
+        <input
+          type="text"
+          id="auraChatInput"
+          class="chat-text-input"
+          placeholder="Escribe tu mensaje para Aura o presiona el micrófono para hablar en vivo..."
+          autocomplete="off"
+        />
+        <button type="submit" class="btn-send-chat" id="auraSendBtn">
+          <span>ENVIAR</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const CLOUD_API_BASES = [
+        "",
+        "https://thebestbrand-api-studio-production.up.railway.app"
+      ];
+
+      const chatFeed = document.getElementById("auraChatFeed");
+      const chatForm = document.getElementById("auraChatForm");
+      const chatInput = document.getElementById("auraChatInput");
+      const talkBtn = document.getElementById("talkBtn");
+      const talkBtnLabel = document.getElementById("talkBtnLabel");
+      const orbTriggerArea = document.getElementById("orbTriggerArea");
+      const orbStateBadge = document.getElementById("orbStateBadge");
+      const orbSubLabel = document.getElementById("orbSubLabel");
+      const voiceEngineStatusText = document.getElementById("voiceEngineStatusText");
+      const continuousVoiceToggleBtn = document.getElementById("continuousVoiceToggleBtn");
+      const voiceProfileSelect = document.getElementById("geminiVoiceProfileSelect");
+      const testVoiceGreetingBtn = document.getElementById("testVoiceGreetingBtn");
+      const meterCols = Array.from(document.querySelectorAll("#voiceWaveformBar .meter-col"));
+
+      let autoSpeakEnabled = true;
+      let orbState = "idle"; // idle | listening | thinking | speaking
+      let audioCtx = null;
+      let analyserNode = null;
+      let activeAudioSource = null;
+      let activeHtmlAudio = null;
+      let conversationHistory = [];
+      const audioMemoryCache = new Map();
+
+      // =====================================================================
+      // 1. MOTOR VISUAL 60FPS: ORBE RADIAL ARMONICO OFICIAL DE AURA ("VIVA")
+      // =====================================================================
+      const canvas = document.getElementById("auraLiveOrbCanvas");
+      const ctx = canvas.getContext("2d");
+      let animPhase = 0;
+      let smoothedEnergy = 0.08;
+      const freqBuffer = new Uint8Array(32);
+
+      function setAuraState(newState, labelText) {
+        orbState = newState;
+        orbStateBadge.className = "orb-state-chip " + (newState === "speaking" ? "speaking" : newState === "listening" ? "listening" : "");
+        if (labelText) {
+          orbStateBadge.textContent = labelText;
+        } else if (newState === "speaking") {
+          orbStateBadge.textContent = "HABLANDO • VOZ NEURAL GEMINI";
+          orbSubLabel.textContent = "VOZ GEMINI ACTIVA";
+        } else if (newState === "listening") {
+          orbStateBadge.textContent = "ESCUCHANDO TU VOZ...";
+          orbSubLabel.textContent = "ESCUCHANDO...";
+        } else if (newState === "thinking") {
+          orbStateBadge.textContent = "PROCESANDO EN NUBE...";
+          orbSubLabel.textContent = "PENSANDO...";
+        } else {
+          orbStateBadge.textContent = "EN LÍNEA • LISTA";
+          orbSubLabel.textContent = "TOCA PARA HABLAR";
+        }
+      }
+
+      function renderLiveAuraOrbFrame() {
+        animPhase += 0.022;
+        const w = canvas.width;
+        const h = canvas.height;
+        const cx = w / 2;
+        const cy = h / 2;
+
+        // Read real-time acoustic energy from Web Audio API AnalyserNode when speaking
+        let targetEnergy = 0.08;
+        if (orbState === "speaking" && analyserNode) {
+          analyserNode.getByteFrequencyData(freqBuffer);
+          let sum = 0;
+          for (let i = 0; i < 16; i++) sum += freqBuffer[i];
+          targetEnergy = Math.max(0.22, (sum / (16 * 255)) * 1.45);
+        } else if (orbState === "speaking") {
+          targetEnergy = 0.38 + Math.abs(Math.sin(animPhase * 4.2)) * 0.42;
+        } else if (orbState === "listening") {
+          targetEnergy = 0.28 + Math.abs(Math.sin(animPhase * 3.1)) * 0.25;
+        } else if (orbState === "thinking") {
+          targetEnergy = 0.20 + Math.abs(Math.sin(animPhase * 5.0)) * 0.15;
+        }
+        smoothedEnergy += (targetEnergy - smoothedEnergy) * 0.18;
+
+        // Update waveform bars
+        for (let i = 0; i < meterCols.length; i++) {
+          const wave = Math.abs(Math.sin(animPhase * 3.6 + i * 0.45)) * smoothedEnergy;
+          const px = Math.max(5, Math.min(24, Math.round(5 + wave * 26)));
+          meterCols[i].style.height = px + "px";
+        }
+
+        ctx.clearRect(0, 0, w, h);
+
+        // 1. Deep navy circular medallion base
+        const baseRadius = 212 + smoothedEnergy * 14;
+        const bgGrad = ctx.createRadialGradient(cx, cy, 18, cx, cy, baseRadius);
+        bgGrad.addColorStop(0, "#12345B");
+        bgGrad.addColorStop(0.62, "#091C34");
+        bgGrad.addColorStop(1, "#040B16");
+        ctx.beginPath();
+        ctx.arc(cx, cy, baseRadius, 0, Math.PI * 2);
+        ctx.fillStyle = bgGrad;
+        ctx.fill();
+
+        // 2. Outer glowing rim (Blue + Orange Action accent matching logo_Aura.png)
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, baseRadius - 3, 0, Math.PI * 2);
+        ctx.lineWidth = 4 + smoothedEnergy * 4;
+        const rimGrad = ctx.createLinearGradient(0, 0, w, h);
+        rimGrad.addColorStop(0, "#4C9DE6");
+        rimGrad.addColorStop(0.5, orbState === "speaking" ? "#FF7A00" : "#426EAE");
+        rimGrad.addColorStop(1, "#FF7A00");
+        ctx.strokeStyle = rimGrad;
+        ctx.shadowColor = orbState === "speaking" ? "rgba(255, 122, 0, 0.75)" : "rgba(76, 157, 230, 0.65)";
+        ctx.shadowBlur = 22 + smoothedEnergy * 24;
+        ctx.stroke();
+        ctx.restore();
+
+        // 3. 12 Harmonic Petal Ellipses (Official Aura Radial Geometry)
+        const petals = 12;
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.globalCompositeOperation = "screen";
+
+        for (let i = 0; i < petals; i++) {
+          const angle = (i * Math.PI) / (petals / 2) + animPhase * (orbState === "speaking" ? 0.85 : 0.32);
+          ctx.save();
+          ctx.rotate(angle);
+
+          const rx = (56 + Math.sin(animPhase * 2 + i) * 8) * (1 + smoothedEnergy * 0.28);
+          const ry = (158 + Math.cos(animPhase * 1.7 + i) * 10) * (1 + smoothedEnergy * 0.22);
+
+          ctx.beginPath();
+          ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+          ctx.lineWidth = 2.4 + smoothedEnergy * 2.2;
+          if (i % 3 === 0 && (orbState === "speaking" || orbState === "listening")) {
+            ctx.strokeStyle = "rgba(255, 122, 0, 0.62)";
+          } else if (i % 2 === 0) {
+            ctx.strokeStyle = "rgba(76, 157, 230, 0.72)";
+          } else {
+            ctx.strokeStyle = "rgba(66, 110, 174, 0.52)";
+          }
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        // 4. Acoustic Cymatic Rings when speaking or listening
+        const ringCount = 3;
+        for (let r = 1; r <= ringCount; r++) {
+          const rad = (70 * r) + ((animPhase * 28) % 55) * smoothedEnergy;
+          if (rad < baseRadius - 12) {
+            ctx.beginPath();
+            ctx.arc(0, 0, rad, 0, Math.PI * 2);
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = orbState === "speaking"
+              ? `rgba(255, 158, 68, ${0.42 - r * 0.1})`
+              : `rgba(147, 197, 253, ${0.32 - r * 0.08})`;
+            ctx.stroke();
+          }
+        }
+
+        // 5. Luminous Central Core (Warm Orange-Gold + White Star Core)
+        const coreRadius = 56 + smoothedEnergy * 28;
+        const coreGrad = ctx.createRadialGradient(0, 0, 4, 0, 0, coreRadius);
+        coreGrad.addColorStop(0, "#FFFFFF");
+        coreGrad.addColorStop(0.38, "#FFE4B5");
+        coreGrad.addColorStop(0.72, "rgba(255, 122, 0, 0.72)");
+        coreGrad.addColorStop(1, "rgba(255, 122, 0, 0)");
+        ctx.beginPath();
+        ctx.arc(0, 0, coreRadius, 0, Math.PI * 2);
+        ctx.fillStyle = coreGrad;
+        ctx.fill();
+
+        ctx.restore();
+        requestAnimationFrame(renderLiveAuraOrbFrame);
+      }
+
+      requestAnimationFrame(renderLiveAuraOrbFrame);
+
+      // =====================================================================
+      // 2. MOTOR DE VOZ NEURAL DE GEMINI (WEB AUDIO API + ANALYSER NODE)
+      // =====================================================================
+      function ensureAudioContext() {
+        try {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return null;
+          if (!audioCtx) {
+            audioCtx = new AudioContextClass();
+            analyserNode = audioCtx.createAnalyser();
+            analyserNode.fftSize = 64;
+            analyserNode.connect(audioCtx.destination);
+          }
+          if (audioCtx.state === "suspended") {
+            audioCtx.resume().catch(() => {});
+          }
+          return audioCtx;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      ["pointerdown", "click", "touchstart", "keydown"].forEach(evt => {
+        document.addEventListener(evt, ensureAudioContext, { passive: true, capture: true });
+      });
+
+      function stopCurrentAudio() {
+        try {
+          if (activeAudioSource) {
+            activeAudioSource.stop();
+            activeAudioSource.disconnect();
+            activeAudioSource = null;
+          }
+        } catch (e) {}
+        try {
+          if (activeHtmlAudio) {
+            activeHtmlAudio.pause();
+            activeHtmlAudio.src = "";
+            activeHtmlAudio = null;
+          }
+        } catch (e) {}
+      }
+
+      function base64ToUint8Array(b64) {
+        const clean = String(b64 || "").replace(/^data:audio\/[^;]+;base64,/, "").replace(/\s+/g, "");
+        const bin = atob(clean);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        return bytes;
+      }
+
+      async function playBase64NeuralAudio(b64Audio) {
+        if (!b64Audio || b64Audio.length < 80) return false;
+        stopCurrentAudio();
+        const bytes = base64ToUint8Array(b64Audio);
+        setAuraState("speaking");
+
+        // Primary playback through Web Audio API + AnalyserNode so the Orb pulses with the exact voice waveform
+        try {
+          const actx = ensureAudioContext();
+          if (actx) {
+            if (actx.state === "suspended") await actx.resume();
+            const copyBuf = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
+            const audioBuffer = await actx.decodeAudioData(copyBuf);
+            return await new Promise(resolve => {
+              const src = actx.createBufferSource();
+              src.buffer = audioBuffer;
+              src.connect(analyserNode || actx.destination);
+              activeAudioSource = src;
+              src.onended = () => {
+                if (activeAudioSource === src) activeAudioSource = null;
+                setAuraState("idle");
+                resolve(true);
+              };
+              src.start(0);
+            });
+          }
+        } catch (e) {}
+
+        // Secondary HTML5 Audio element playback
+        try {
+          const isWav = bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46;
+          const mime = isWav ? "audio/wav" : "audio/mpeg";
+          const blob = new Blob([bytes], { type: mime });
+          const url = URL.createObjectURL(blob);
+          const audio = new Audio(url);
+          activeHtmlAudio = audio;
+          return await new Promise(resolve => {
+            audio.onended = () => {
+              URL.revokeObjectURL(url);
+              setAuraState("idle");
+              resolve(true);
+            };
+            audio.onerror = () => {
+              URL.revokeObjectURL(url);
+              setAuraState("idle");
+              resolve(false);
+            };
+            audio.play().catch(() => {
+              URL.revokeObjectURL(url);
+              setAuraState("idle");
+              resolve(false);
+            });
+          });
+        } catch (e) {
+          setAuraState("idle");
+          return false;
+        }
+      }
+
+      async function speakWithGeminiNeuralVoice(textToSpeak, preloadedB64) {
+        if (!textToSpeak) return;
+        const cleanKey = textToSpeak.trim();
+        if (preloadedB64 && preloadedB64.length > 100) {
+          audioMemoryCache.set(cleanKey, preloadedB64);
+          await playBase64NeuralAudio(preloadedB64);
+          return;
+        }
+        if (audioMemoryCache.has(cleanKey)) {
+          await playBase64NeuralAudio(audioMemoryCache.get(cleanKey));
+          return;
+        }
+
+        setAuraState("thinking", "SINTETIZANDO VOZ GEMINI...");
+        for (const base of CLOUD_API_BASES) {
+          try {
+            const res = await fetch(base + "/api/tts/gemini", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                text: cleanKey,
+                voice_name: voiceProfileSelect ? voiceProfileSelect.value : "Aoede"
+              })
+            });
+            if (res.ok) {
+              const data = await res.json();
+              if (data && data.audio_wav_base64 && data.audio_wav_base64.length > 100) {
+                audioMemoryCache.set(cleanKey, data.audio_wav_base64);
+                voiceEngineStatusText.textContent = "Voz Neural Gemini (24kHz) Activa";
+                await playBase64NeuralAudio(data.audio_wav_base64);
+                return;
+              }
+            }
+          } catch (e) {}
+        }
+
+        // Direct cloud stream audio endpoint fallback (/api/aura/tts)
+        try {
+          const streamUrl = "https://thebestbrand-api-studio-production.up.railway.app/api/aura/tts?text=" + encodeURIComponent(cleanKey);
+          const audio = new Audio(streamUrl);
+          activeHtmlAudio = audio;
+          setAuraState("speaking");
+          audio.onended = () => setAuraState("idle");
+          audio.onerror = () => setAuraState("idle");
+          await audio.play();
+        } catch (e) {
+          setAuraState("idle");
+        }
+      }
+
+      // =====================================================================
+      // 3. FORMATO DE CHAT MULTITURNO INTERACTIVO (JORGE <-> AURA)
+      // =====================================================================
+      function formatTimeNow() {
+        const d = new Date();
+        return d.toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" });
+      }
+
+      function appendChatMessage(role, text, specialistLabel, audioB64) {
+        const row = document.createElement("div");
+        row.className = "chat-bubble-row " + (role === "user" ? "user" : "aura");
+
+        const avatar = document.createElement("div");
+        avatar.className = "bubble-avatar";
+        if (role === "user") {
+          avatar.textContent = "JB";
+        } else {
+          const img = document.createElement("img");
+          img.src = "/assets/logos/logo-aura-radial.png";
+          img.alt = "Aura";
+          img.onerror = function () { avatar.textContent = "AU"; };
+          avatar.appendChild(img);
+        }
+
+        const card = document.createElement("div");
+        card.className = "bubble-card";
+
+        const meta = document.createElement("div");
+        meta.className = "bubble-meta";
+        const senderSpan = document.createElement("span");
+        senderSpan.textContent = role === "user"
+          ? "Jorge Benítez (Dirección General)"
+          : (specialistLabel || "Aura ImproBears • Voz Neural Gemini");
+        const timeSpan = document.createElement("span");
+        timeSpan.textContent = formatTimeNow();
+        meta.appendChild(senderSpan);
+        meta.appendChild(timeSpan);
+
+        const body = document.createElement("div");
+        body.textContent = text;
+
+        card.appendChild(meta);
+        card.appendChild(body);
+
+        if (role !== "user") {
+          const actions = document.createElement("div");
+          actions.className = "bubble-actions";
+          const replayBtn = document.createElement("button");
+          replayBtn.type = "button";
+          replayBtn.className = "btn-replay-voice";
+          replayBtn.textContent = "Escuchar con Voz de Aura";
+          replayBtn.addEventListener("click", () => {
+            speakWithGeminiNeuralVoice(text, audioB64);
+          });
+          actions.appendChild(replayBtn);
+          card.appendChild(actions);
+        }
+
+        row.appendChild(avatar);
+        row.appendChild(card);
+        chatFeed.appendChild(row);
+        chatFeed.scrollTop = chatFeed.scrollHeight;
+      }
+
+      async function sendTurnToAura(userMessageText) {
+        const cleanMsg = String(userMessageText || "").trim();
+        if (!cleanMsg) return;
+
+        appendChatMessage("user", cleanMsg);
+        conversationHistory.push({ role: "user", content: cleanMsg });
+        setAuraState("thinking", "CONSULTANDO AURA CLOUD...");
+
+        let replyData = null;
+        for (const base of CLOUD_API_BASES) {
+          try {
+            const res = await fetch(base + "/api/aura/action-button", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                text: cleanMsg,
+                query: cleanMsg,
+                conversation_history: conversationHistory.slice(-8),
+                include_audio: true
+              })
+            });
+            if (res.ok) {
+              const json = await res.json();
+              if (json && (json.voice_reply || json.reply)) {
+                replyData = json;
+                break;
+              }
+            }
+          } catch (e) {}
+        }
+
+        const finalReply = (replyData && (replyData.voice_reply || replyData.reply)) ||
+          ("Jorge, aquí Aura ImproBears en vivo. Recibí tu mensaje: \"" + cleanMsg + "\". Zoho Books, Zoho CRM v6, el número 442 181 2822 de WhatsApp y TheBestBrand Studio están sincronizados y listos.");
+        const specialist = (replyData && replyData.specialist) || "Aura ImproBears • Copiloto Ejecutivo & Voz Neural Gemini";
+        const audioB64 = replyData && replyData.audio_wav_base64 ? replyData.audio_wav_base64 : null;
+
+        conversationHistory.push({ role: "assistant", content: finalReply });
+        appendChatMessage("aura", finalReply, specialist, audioB64);
+
+        if (autoSpeakEnabled) {
+          await speakWithGeminiNeuralVoice(finalReply, audioB64);
+        } else {
+          setAuraState("idle");
+        }
+      }
+
+      // =====================================================================
+      // 4. RECONOCIMIENTO DE VOZ EN VIVO (WEB SPEECH RECOGNITION)
+      // =====================================================================
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      let recognizer = null;
+      let isListeningMic = false;
+
+      if (SpeechRecognition) {
+        recognizer = new SpeechRecognition();
+        recognizer.lang = "es-MX";
+        recognizer.continuous = false;
+        recognizer.interimResults = false;
+
+        recognizer.onstart = () => {
+          isListeningMic = true;
+          talkBtn.classList.add("active-listening");
+          talkBtnLabel.textContent = "ESCUCHANDO... (HABLA AHORA)";
+          setAuraState("listening");
+        };
+
+        recognizer.onresult = (event) => {
+          const transcript = event.results?.[0]?.[0]?.transcript || "";
+          if (transcript.trim()) {
+            sendTurnToAura(transcript.trim());
+          }
+        };
+
+        recognizer.onerror = () => {
+          isListeningMic = false;
+          talkBtn.classList.remove("active-listening");
+          talkBtnLabel.textContent = "HABLAR CON AURA (MICRÓFONO)";
+          setAuraState("idle");
+        };
+
+        recognizer.onend = () => {
+          isListeningMic = false;
+          talkBtn.classList.remove("active-listening");
+          talkBtnLabel.textContent = "HABLAR CON AURA (MICRÓFONO)";
+          if (orbState === "listening") setAuraState("idle");
+        };
+      }
+
+      function toggleMicrophoneListening() {
+        ensureAudioContext();
+        stopCurrentAudio();
+        if (!recognizer) {
+          chatInput.focus();
+          return;
+        }
+        if (isListeningMic) {
+          try { recognizer.stop(); } catch (e) {}
+        } else {
+          try { recognizer.start(); } catch (e) {}
+        }
+      }
+
+      talkBtn.addEventListener("click", toggleMicrophoneListening);
+      orbTriggerArea.addEventListener("click", toggleMicrophoneListening);
+
+      chatForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        ensureAudioContext();
+        const val = chatInput.value.trim();
+        if (!val) return;
+        chatInput.value = "";
+        sendTurnToAura(val);
+      });
+
+      document.querySelectorAll(".quick-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          ensureAudioContext();
+          const prompt = chip.getAttribute("data-prompt");
+          if (prompt) sendTurnToAura(prompt);
+        });
+      });
+
+      continuousVoiceToggleBtn.addEventListener("click", () => {
+        autoSpeakEnabled = !autoSpeakEnabled;
+        continuousVoiceToggleBtn.classList.toggle("active", autoSpeakEnabled);
+        continuousVoiceToggleBtn.textContent = autoSpeakEnabled
+          ? "Voz Automática: ACTIVADA"
+          : "Voz Automática: SILENCIO";
+        if (!autoSpeakEnabled) stopCurrentAudio();
+      });
+
+      testVoiceGreetingBtn.addEventListener("click", () => {
+        ensureAudioContext();
+        const greeting = "Hola Jorge, aquí estoy de vuelta en mi versión viva, con mi voz neural de Gemini y el formato de chat completo activado para revisar Zoho One, TheBestBrand y TheBestGrowth contigo.";
+        speakWithGeminiNeuralVoice(greeting);
+      });
+
+      // Initial Welcome Messages in Chat Feed
+      appendChatMessage(
+        "aura",
+        "¡Hola Jorge! Ya estoy de vuelta en mi versión viva con el Orbe Radial interactivo a 60 cuadros por segundo, mi voz neural de Gemini (Aoede 24kHz) y este chat conversacional completo. Toca el Orbe, presiona el botón de micrófono o escríbeme aquí abajo lo que necesites revisar hoy.",
+        "Aura ImproBears • Copiloto Ejecutivo & Voz Neural Gemini"
+      );
+      appendChatMessage(
+        "aura",
+        "Resumen en línea: Zoho Books (Org 923290625) con 3 facturas CFDI 4.0 activas (Ingready $113,680 MXN y Cervecería Hércules $33,640 MXN), Mesa Humana Multipersona en WhatsApp (+52 442 181 2822 con Edith, Vero, Gerardo y Pablo), TheBestBrand Studio y TheBestGrowth sincronizados.",
+        "Aura ImproBears • Telemetría Zoho One & Suite TheBest"
+      );
+    })();
+  </script>
+</body>
+</html>

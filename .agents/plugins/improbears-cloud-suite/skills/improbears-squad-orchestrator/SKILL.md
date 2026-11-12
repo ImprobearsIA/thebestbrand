@@ -16,7 +16,7 @@ Ejecutar proyectos, auditorías y lanzamientos digitales de inicio a fin coordin
 | `gina-la-socia` | **Gina ("La Socia")** | Directora General, FinOps (>60% Margen) & Orquestadora | WhatsApp/Telegram Voice Briefing, Zoho Books CFDI 4.0, Aduana del Cerebro |
 | `lab-avi-creative-director` | **AURA & LAB-AVI (`H-01`..`H-04`)** | Ingeniería Kansei, Identidad Visual Algorítmica & 3D | Google Stitch MCP (Gemini 3.1 Pro), Spline 3D WebGL, NanoBanana, NotebookLM MCP |
 | `chorch7-broadcast-lead` | **Chorch 7 & Scoreboard Lead** | Broadcast Deportivo 60fps, RefereeClip & DaVinci | Spline 3D Overlays OBS, CR-SQLite Offline-First, DaVinci Resolve Markers 60fps |
-| `openclaw-growth-creative` | **Nico + Mora + Tano** | Estrategia 50/20/15/15, Ideación >=90d y Guiones 5 Ingredientes | NotebookLM MCP (Bóveda de Objeciones), Whisper Groq, `revisar.mjs` |
+| `aura-improbears-growth-creative` | **Nico + Mora + Tano** | Estrategia 50/20/15/15, Ideación >=90d y Guiones 5 Ingredientes | NotebookLM MCP (Bóveda de Objeciones), Whisper Groq, `revisar.mjs` |
 | `critical-auditors-council` | **Steve Jobs (`C-00`) + Craig Federighi + Bruno + Fede** | Auditoría Implacable de Producto, 60fps, Atribución y Seguridad | REA v6.8.0 (`analyze_javascript_application`, `inspect_sqlite_database`), Doble Candado SHA-1 |
 
 ## 3. Protocolo de Ejecución en Paralelo (7 Pasos)

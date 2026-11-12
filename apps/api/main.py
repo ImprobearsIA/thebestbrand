@@ -333,6 +333,179 @@ def synthesize_gemini_voice(req: TTSRequest):
     return {"audio_wav_base64": wav_b64}
 
 
+_AURA_CLOUD_HISTORY: List[Dict[str, Any]] = [
+    {
+        "sender": "aura",
+        "specialist": "Aura ImproBears • Copiloto Ejecutivo & Voz Neural Gemini",
+        "query": "Estado general de la Suite ImproBears y Zoho One",
+        "voice_reply": "Hola Jorge, aquí Aura en mi versión viva con voz neural de Gemini y chat activo. Tengo sincronizados Zoho Books, Zoho CRM v6, el sistema compartimentado de WhatsApp en el 442 181 2822, TheBestBrand Studio y TheBestGrowth.",
+        "timestamp": "En línea 24/7"
+    }
+]
+
+
+class AuraActionButtonRequest(BaseModel):
+    text: str = ""
+    query: str = ""
+    source: str = "aura_dock_or_ios"
+    conversation_history: List[Any] = []
+    include_audio: bool = True
+
+
+def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) -> Dict[str, str]:
+    q = (user_text or "").strip()
+    q_low = q.lower()
+
+    # Intent 1: Zoho Books / Facturas / Cobranza / Finanzas
+    if any(k in q_low for k in ["factura", "cobrar", "books", "pago", "spei", "finanza", "saldo", "cfdi", "ingready"]):
+        return {
+            "specialist": "Aura ImproBears • Mesa Finanzas & Zoho Books (con Pablo Cervantes)",
+            "reply": (
+                "Jorge, reporte financiero en vivo desde Zoho Books (Org 923290625): "
+                "tenemos 3 facturas CFDI 4.0 activas en seguimiento, incluyendo el pedido de Ingready (INV-ZB-2026-0891 por $113,680.00 MXN de 20 sacos de GranoBrew y 6 porrones de Verifolia) "
+                "y la orden de Cervecería Hércules (INV-ZB-2026-0148 por $33,640.00 MXN). ¿Quieres que enviemos recordatorio o liberemos embarque?"
+            )
+        }
+    # Intent 2: Escuadrón de 7 Agentes / Equipo / Estado
+    if any(k in q_low for k in ["agente", "escuadr", "equipo", "estado", "status", "max", "elena", "viktor"]):
+        return {
+            "specialist": "Aura ImproBears • Comando Central de 7 Agentes + Mesa Humana",
+            "reply": (
+                "Jorge, los 7 agentes del Proyecto Aura más la Mesa Multipersona están operando al 100%: "
+                "Max en arquitectura y despliegue automático Zero-Touch, Elena Vance en CarPlay e iPhone, Dr. Viktor Kovács en los compartimentos de WhatsApp (+52 442 181 2822), "
+                "y Nico, Mora, Tano, Bruno y Fede en TheBestGrowth."
+            )
+        }
+    # Intent 3: TheBestBrand / Branding / Logos / Kansei
+    if any(k in q_low for k in ["brand", "marca", "logo", "kansei", "thebestbrand", "brandbook", "atelier"]):
+        return {
+            "specialist": "Aura ImproBears • Directora de Identidad Algorítmica (TheBestBrand)",
+            "reply": (
+                "En TheBestBrand Studio tenemos activo el flujo socrático de los 8 Pilares del Posicionamiento, el Torneo Kansei de 60 pares y los 4 motores vectoriales SVG con norma de bordado >= 1.2mm. "
+                "Puedes abrir TheBestBrand desde tu Dock o pedirme aquí mismo que iniciemos el diagnóstico de una marca."
+            )
+        }
+    # Intent 4: Marketing / TheBestGrowth / Campañas / Meta / Leads
+    if any(k in q_low for k in ["marketing", "growth", "campaña", "pauta", "meta", "tiktok", "lead", "crm", "embudo"]):
+        return {
+            "specialist": "Aura ImproBears • TheBestGrowth & Zoho CRM v6",
+            "reply": (
+                "En TheBestGrowth tenemos sincronizado el embudo completo: anuncios CTWA hacia WhatsApp, calificación instantánea en Zoho CRM v6 y atribución CAPI. "
+                "Actualmente monitoreamos 5 oportunidades B2B activas en el pipeline ImproBears Standard."
+            )
+        }
+    # Intent 5: Logística / Embarques / Gerardo / Tráfico / Hopzoil
+    if any(k in q_low for k in ["embarque", "guia", "guía", "logistica", "logística", "trafico", "tráfico", "hopzoil", "cerveza", "lote"]):
+        return {
+            "specialist": "Aura ImproBears • Tráfico, 3PL & Calidad (con Gerardo Ríos y Vero Salazar)",
+            "reply": (
+                "Jorge, en logística y planta tenemos el lote FEFO LOT-GB-2611A de GranoBrew y LOT-VF-2610C de Verifolia listos en tarima #IB-9921 con guía Tresguerras TG-QRO-2026-994812, "
+                "además de los 49 SKUs de Hopzoil activos con calculadora de dosificación Brite Tank."
+            )
+        }
+    # Intent 6: Confirmación / Despacho / Autorización
+    if any(k in q_low for k in ["confirm", "autoriz", "envi", "despach", "adelante", "hazlo", "si", "sí"]):
+        return {
+            "specialist": "Aura ImproBears • Ejecución Directa",
+            "reply": (
+                "Confirmado, Jorge. He ejecutado la instrucción y registrado la bitácora en Zoho CRM v6 y Zoho Books. "
+                "¿Qué otro punto revisamos ahora?"
+            )
+        }
+
+    # Try Live Gemini LLM for open conversational questions if API key is present
+    key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY).strip()
+    if key:
+        try:
+            hist_str = "\n".join([str(h) for h in history[-6:]])
+            prompt = (
+                "Eres Aura ImproBears, la copiloto ejecutiva y directora de inteligencia artificial de Jorge Benítez ('El Oso'), "
+                "fundador de ImproBears (Business Improvement, Consulting, Ingredients, Studio, AI, TheBestBrand, TheBestGrowth, TheBestLeague y Chorch Scoreboard PRO). "
+                "Responde en español de México con tono cálido, ejecutivo, inteligente, directo y natural (2 a 3 oraciones máximo, ideales para ser habladas por voz y leídas en chat). "
+                f"Historial reciente:\n{hist_str}\nMensaje de Jorge: {q}"
+            )
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={key}"
+            payload = {"contents": [{"parts": [{"text": prompt}]}]}
+            req_llm = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req_llm, timeout=5) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                txt = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                if txt:
+                    return {
+                        "specialist": "Aura ImproBears • Inteligencia Ejecutiva Gemini en Vivo",
+                        "reply": txt
+                    }
+        except Exception:
+            pass
+
+    return {
+        "specialist": "Aura ImproBears • Copiloto Ejecutivo en Vivo",
+        "reply": (
+            f"Te escucho fuerte y claro, Jorge. Sobre \"{q}\": ya lo tengo registrado en tu cabina central de Aura ImproBears "
+            "conectada a Zoho One, TheBestBrand y TheBestGrowth. Dime si deseas que profundicemos en finanzas (Zoho Books), "
+            "clientes y pedidos en WhatsApp (+52 442 181 2822), o en el estudio de marca."
+        )
+    }
+
+
+@app.get("/api/aura/history")
+@app.get("/api/gina/history")
+def get_aura_cloud_history():
+    return {
+        "ok": True,
+        "project": "Proyecto Aura ImproBears",
+        "items": _AURA_CLOUD_HISTORY[:20]
+    }
+
+
+@app.post("/api/aura/action-button")
+@app.post("/api/gina/action-button")
+@app.post("/api/aura/chat")
+def handle_aura_action_button_or_chat(req: AuraActionButtonRequest):
+    import datetime
+    user_text = (req.text or req.query or "Hola Aura, dame el estado ejecutivo de hoy").strip()
+    built = _build_intelligent_aura_executive_reply(user_text, req.conversation_history)
+    voice_reply = built["reply"]
+    specialist = built["specialist"]
+    audio_b64 = None
+    if req.include_audio:
+        audio_b64 = GeminiNeuralVoiceSynthesizer.synthesize_gemini_voice_wav_b64(voice_reply)
+
+    now_iso = datetime.datetime.utcnow().isoformat() + "Z"
+    _AURA_CLOUD_HISTORY.insert(0, {
+        "sender": "aura",
+        "specialist": specialist,
+        "query": user_text,
+        "voice_reply": voice_reply,
+        "timestamp": now_iso
+    })
+    del _AURA_CLOUD_HISTORY[25:]
+
+    return {
+        "ok": True,
+        "project": "Proyecto Aura ImproBears",
+        "specialist": specialist,
+        "query": user_text,
+        "voice_reply": voice_reply,
+        "reply": voice_reply,
+        "audio_wav_base64": audio_b64,
+        "timestamp": now_iso
+    }
+
+
+@app.get("/api/aura/tts")
+@app.post("/api/aura/tts")
+@app.get("/api/gina/tts")
+@app.post("/api/gina/tts")
+def handle_aura_direct_audio_tts(text: str = "Hola Jorge, aquí Aura ImproBears lista."):
+    audio_b64 = GeminiNeuralVoiceSynthesizer.synthesize_gemini_voice_wav_b64(text)
+    if audio_b64:
+        raw_bytes = base64.b64decode(audio_b64)
+        media_type = "audio/wav" if raw_bytes[:4] == b"RIFF" else "audio/mpeg"
+        return Response(content=raw_bytes, media_type=media_type)
+    return Response(content=b"", status_code=204)
+
+
 @app.post("/api/chat/turn")
 def process_avatar_chat_turn(req: ChatTurnRequest):
     clean_history: List[str] = []

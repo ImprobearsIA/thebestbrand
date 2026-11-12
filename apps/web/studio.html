@@ -295,7 +295,7 @@
     }
 
     // -------------------------------------------------------------------------
-    // 2. PARA EL RESTO DE ENDPOINTS (/api/...), PROBAR BACKEND REAL (CLOUD RUN / REPLIT)
+    // 2. PARA EL RESTO DE ENDPOINTS (/api/...), PROBAR BACKEND REAL (RAILWAY / CLOUD RUN)
     // -------------------------------------------------------------------------
     try {
       var realRes = await nativeFetch(input, init);
@@ -304,6 +304,15 @@
         return realRes;
       }
     } catch (netErr) {}
+
+    try {
+      var railwayUrl = "https://thebestbrand-api-studio-production.up.railway.app" + pathOnly;
+      var rwRes = await nativeFetch(railwayUrl, init);
+      var rwCtype = (rwRes.headers && rwRes.headers.get("content-type")) || "";
+      if (rwRes.ok && (rwCtype.indexOf("application/json") !== -1 || rwCtype.indexOf("application/pdf") !== -1 || rwCtype.indexOf("audio/") !== -1)) {
+        return rwRes;
+      }
+    } catch (rwErr) {}
 
     return jsonResponse({ error: "edge_fallback_mode", path: pathOnly }, 503);
   };
@@ -5836,28 +5845,8 @@
             <div id="accountActiveSecurityEmail" style="font-family:var(--font-mono); font-size:0.78rem; font-weight:800; color:#0369A1;"></div>
           </div>
 
-          <!-- PANEL EXCLUSIVO PARA ADMINISTRADOR AUTENTICADO (JORGE.BENITEZ@IMPROBEARS.COM) -->
-          <div id="accountAdminAuraColorsCard" style="display:none; background:#F0F9FF; border:2px solid #0284C7; border-radius:16px; padding:12px 14px; margin-bottom:12px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px;">
-              <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#0284C7;">
-                PANEL EXCLUSIVO DE ADMINISTRADOR IMPROBEARS
-              </div>
-              <span id="accountAdminStatusPill" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#065F46; background:#D1FAE5; border:1px solid #34D399; padding:3px 10px; border-radius:999px;">
-                ADMIN VERIFICADO
-              </span>
-            </div>
-            <div id="accountAdminCurrentAuraSummary" style="font-size:0.80rem; font-weight:800; color:#090D16; margin-bottom:8px; line-height:1.38;">
-              Combinación Fija de Aura: Cian Estudio · 02 · visionOS Siri Liquid
-            </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-              <button type="button" id="btnOpenAdminAuraModalFromVault" class="tbb-duo-btn tbb-duo-btn-primary" onclick="tbbOpenAdminAuraFromVerifiedSession()" style="font-size:0.80rem !important;">
-                Personalizar Aura y Colores
-              </button>
-              <button type="button" id="btnOpenAura3DLabFromVault" class="tbb-duo-btn tbb-duo-btn-gold" onclick="window.open('/aura_orb_3d_lab.html', '_blank')" style="font-size:0.80rem !important;">
-                Abrir Laboratorio 3D
-              </button>
-            </div>
-          </div>
+          <!-- IDENTIDAD OFICIAL FIJA DE AURA (ELEMENTO DE MARCA IMPROBEARS · CERO MODIFICACIÓN) -->
+          <div id="accountAdminAuraColorsCard" style="display:none !important;"></div>
 
           <!-- DISPOSITIVOS CONECTADOS AUTOMÁTICAMENTE CON TU CORREO -->
           <div id="accountConnectedDevicesCard" style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:12px 14px; margin-bottom:12px;">
@@ -5909,143 +5898,7 @@
       </div>
     </div>
   </div>
-
-  <!-- ========================================================================
-       MODAL EXCLUSIVO ADMINISTRADOR IMPROBEARS: ESTUDIO DE COLORES Y ORBE DE AURA
-       ======================================================================== -->
-  <div class="welcome-modal-overlay" id="tbbAdminAuraColorModal" style="z-index: 9999; background:rgba(15, 23, 42, 0.56); backdrop-filter:blur(8px);" onclick="if(event.target===this) tbbCloseAdminAuraColorModal()">
-    <div class="welcome-modal-card" onclick="event.stopPropagation()" style="max-width:680px; width:94%; max-height:90dvh; overflow-y:auto !important; overflow-x:hidden !important; align-items:stretch !important; background:#FFFFFF; color:#090D16; border:2px solid #0284C7; border-radius:24px; padding:18px 20px; text-align:left; box-sizing:border-box; box-shadow:0 24px 60px rgba(15, 23, 42, 0.22);">
-      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:12px;">
-        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-          <div style="width:36px; height:36px; border-radius:12px; background:#F0F9FF; border:1.5px solid #38BDF8; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="9" stroke="#0284C7" stroke-width="2.2"/>
-              <circle cx="9" cy="10" r="1.6" fill="#0284C7"/>
-              <circle cx="14.5" cy="9.5" r="1.6" fill="#10B981"/>
-              <circle cx="15" cy="14" r="1.6" fill="#D97706"/>
-              <circle cx="9.5" cy="14.5" r="1.6" fill="#E11D48"/>
-            </svg>
-          </div>
-          <div>
-            <span style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#0284C7; background:#F0F9FF; border:1.5px solid #BAE6FD; padding:3px 10px; border-radius:999px; display:inline-block;">
-              EXCLUSIVO ADMIN IMPROBEARS · COLORES Y ORBE DE AURA
-            </span>
-          </div>
-        </div>
-        <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbCloseAdminAuraColorModal()" style="min-height:50px !important; padding:8px 16px !important;">
-          Cerrar
-        </button>
-      </div>
-
-      <!-- CABECERA CON PREVIEW EN VIVO 60 FPS DEL ORBE DE AURA -->
-      <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:18px; padding:14px; margin-bottom:12px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-        <canvas id="tbbAdminAuraPreviewCanvas" width="136" height="136" style="width:76px; height:76px; border-radius:999px; border:2.5px solid #0284C7; background:#F0F9FF; flex-shrink:0; box-shadow:0 6px 18px rgba(2,132,199,0.22);"></canvas>
-        <div style="flex:1; min-width:190px;">
-          <div id="tbbAdminAuraActiveEmailBadge" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#15803D; margin-bottom:2px;">
-            ADMINISTRADOR VERIFICADO: jorge.benitez@improbears.com
-          </div>
-          <div id="tbbAdminAuraCurrentSummaryTitle" style="font-size:0.98rem; font-weight:900; color:#090D16; margin-bottom:4px;">
-            Paleta Activa: Cian Estudio · 02 · visionOS Siri Liquid
-          </div>
-          <div id="tbbAdminAuraSavedPersistenceBadge" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#166534; background:#DCFCE7; border:1px solid #86EFAC; padding:3px 9px; border-radius:999px; display:inline-block;">
-            COMBINACIÓN FIJADA PERMANENTEMENTE EN LA NUBE Y EN TUS DISPOSITIVOS
-          </div>
-        </div>
-      </div>
-
-      <!-- 1. PALETAS OFICIALES DE AURA (6 OPCIONES) -->
-      <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:12px 14px; margin-bottom:12px;">
-        <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#0284C7; margin-bottom:8px;">
-          1. PALETAS CROMÁTICAS OFICIALES DEL NÚCLEO DE AURA
-        </div>
-        <div id="tbbAdminAuraPalettesGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(175px, 1fr)); gap:8px;"></div>
-      </div>
-
-      <!-- 2. SELECTOR EXACTO DE 3 COLORES PERSONALIZADOS + MODO DE NÚCLEO -->
-      <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:12px 14px; margin-bottom:12px;">
-        <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#0284C7; margin-bottom:8px;">
-          2. CALIBRACIÓN EXACTA DE COLORES HEX Y ATMÓSFERA DEL ORBE
-        </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px; margin-bottom:10px;">
-          <div style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:12px; padding:8px 10px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
-            <div>
-              <div style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:#475569;">COLOR PRIMARIO</div>
-              <div id="lblAdminAuraPriHex" style="font-family:var(--font-mono); font-size:0.80rem; font-weight:900; color:#090D16;">#0284C7</div>
-            </div>
-            <input type="color" id="inpAdminAuraPriColor" value="#0284C7" oninput="tbbUpdateCustomAuraOrbColor('priHex', this.value)" style="width:42px; height:38px; border:none; background:transparent; cursor:pointer;" />
-          </div>
-          <div style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:12px; padding:8px 10px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
-            <div>
-              <div style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:#475569;">COLOR SECUNDARIO</div>
-              <div id="lblAdminAuraSecHex" style="font-family:var(--font-mono); font-size:0.80rem; font-weight:900; color:#090D16;">#38BDF8</div>
-            </div>
-            <input type="color" id="inpAdminAuraSecColor" value="#38BDF8" oninput="tbbUpdateCustomAuraOrbColor('secHex', this.value)" style="width:42px; height:38px; border:none; background:transparent; cursor:pointer;" />
-          </div>
-          <div style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:12px; padding:8px 10px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
-            <div>
-              <div style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:#475569;">ACENTO / ONDAS</div>
-              <div id="lblAdminAuraAccentHex" style="font-family:var(--font-mono); font-size:0.80rem; font-weight:900; color:#090D16;">#10B981</div>
-            </div>
-            <input type="color" id="inpAdminAuraAccentColor" value="#10B981" oninput="tbbUpdateCustomAuraOrbColor('accentHex', this.value)" style="width:42px; height:38px; border:none; background:transparent; cursor:pointer;" />
-          </div>
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <button type="button" id="btnAdminAuraCoreLight" class="tbb-duo-btn tbb-duo-btn-selected" onclick="tbbSetAdminAuraCoreStyle('light')" style="font-size:0.80rem !important;">
-            Esfera Cristal Luminoso (Claro)
-          </button>
-          <button type="button" id="btnAdminAuraCoreDark" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbSetAdminAuraCoreStyle('dark')" style="font-size:0.80rem !important;">
-            Esfera Obsidiana Profunda (3D)
-          </button>
-        </div>
-      </div>
-
-      <!-- 3. ARQUITECTURA GEOMÉTRICA 3D DEL ORBE (5 OPCIONES) -->
-      <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:12px 14px; margin-bottom:12px;">
-        <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#0284C7; margin-bottom:8px;">
-          3. ARQUITECTURA 3D DEL ORBE DE AURA
-        </div>
-        <div id="tbbAdminAuraArchGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(185px, 1fr)); gap:8px;"></div>
-      </div>
-
-      <!-- 4. MODIFICAR TÍTULO, MENSAJE Y DINÁMICA DE AURA -->
-      <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:12px 14px; margin-bottom:12px;">
-        <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#0284C7; margin-bottom:8px;">
-          4. PERSONALIZACIÓN EN VIVO DE AURA (TÍTULO, MENSAJE Y DINÁMICA)
-        </div>
-        <div style="display:grid; grid-template-columns:1fr; gap:8px; margin-bottom:10px;">
-          <div>
-            <label for="inpAdminAuraRoleTitle" style="display:block; font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:#475569; margin-bottom:4px;">TÍTULO / ROL DE AURA EN LA BARRA SUPERIOR</label>
-            <input type="text" id="inpAdminAuraRoleTitle" placeholder="Ej: AURA · MENTORA DE MARCA" oninput="tbbUpdateAdminAuraTextConfig('customRoleTitle', this.value)" style="width:100%; height:44px; padding:0 12px; border-radius:10px; border:1.5px solid #94A3B8; background:#FFFFFF; color:#090D16; font-size:0.84rem; font-weight:800; box-sizing:border-box;" />
-          </div>
-          <div>
-            <label for="inpAdminAuraCustomMessage" style="display:block; font-family:var(--font-mono); font-size:0.65rem; font-weight:800; color:#475569; margin-bottom:4px;">MENSAJE ACTIVO DE AURA EN PANTALLA</label>
-            <input type="text" id="inpAdminAuraCustomMessage" placeholder="Escribe un mensaje personalizado para Aura..." oninput="tbbUpdateAdminAuraTextConfig('customMessage', this.value)" style="width:100%; height:44px; padding:0 12px; border-radius:10px; border:1.5px solid #94A3B8; background:#FFFFFF; color:#090D16; font-size:0.84rem; font-weight:700; box-sizing:border-box;" />
-          </div>
-        </div>
-        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
-          <button type="button" id="btnAdminAuraSpeedSlow" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbSetAdminAuraOrbSpeed(0.7)" style="font-size:0.78rem !important;">
-            Órbita Serena (0.7x)
-          </button>
-          <button type="button" id="btnAdminAuraSpeedNormal" class="tbb-duo-btn tbb-duo-btn-selected" onclick="tbbSetAdminAuraOrbSpeed(1.0)" style="font-size:0.78rem !important;">
-            Órbita Equilibrada (1.0x)
-          </button>
-          <button type="button" id="btnAdminAuraSpeedFast" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbSetAdminAuraOrbSpeed(1.5)" style="font-size:0.78rem !important;">
-            Órbita Dinámica (1.5x)
-          </button>
-        </div>
-      </div>
-
-      <!-- ACCIONES FINALES DEL MODAL ADMIN -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-        <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="window.open('/aura_orb_3d_lab.html', '_blank');" style="font-size:0.82rem !important;">
-          Abrir Laboratorio 3D Completo
-        </button>
-        <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="tbbSaveAndLockAdminAuraCombination();" style="font-size:0.82rem !important;">
-          Fijar Combinación Permanente
-        </button>
-      </div>
-    </div>
-  </div>
+  <div id="tbbAdminAuraColorModal" style="display:none !important;"></div>
 
   <!-- ========================================================================
        JAVASCRIPT: 100% COMPATIBLE CON TODOS LOS MOTORES Y APIS
@@ -6339,7 +6192,7 @@
       return defCfg;
     })();
 
-    let activeAuraOrbArch = window.tbbAuraOrbConfig.archIdx;
+    let activeAuraOrbArch = 0;
     const NUM_AURA_PARTICLES = 36;
     const auraParticles = [];
     const GOLDEN_PHI = 1.61803398875;
@@ -6391,13 +6244,7 @@
     window.tbbApplyAuraOrbThemeToDOM = tbbApplyAuraOrbThemeToDOM;
 
     function cycleAuraOrbArchitecture() {
-      activeAuraOrbArch = (activeAuraOrbArch + 1) % 5;
-      if (window.tbbAuraOrbConfig) {
-        window.tbbAuraOrbConfig.archIdx = activeAuraOrbArch;
-      }
-      localStorage.setItem("tbb_aura_orb_architecture", String(activeAuraOrbArch));
-      const lbl = document.getElementById("lblActiveOrbMode");
-      if (lbl) lbl.textContent = AURA_ARCH_NAMES[activeAuraOrbArch];
+      activeAuraOrbArch = 0;
     }
 
     // 6 Volumetric 3D Liquid-Light Lobes (Siri / visionOS style)
@@ -6638,133 +6485,60 @@
       ctx.fillStyle = baseGrad;
       ctx.fillRect(0, 0, w, h);
 
-      // 2. Additive 3D Volumetric Liquid-Light Lobes
       ctx.globalCompositeOperation = "screen";
-      const fov = 260 * scaleRatio;
-      const pulseAmp = isSpeakingLive ? 1.24 + Math.sin(auraAngle * 4.2) * 0.14 : 1.0;
 
-      const projectedLobes = AURA_3D_LOBES.map((lobe) => {
-        const tX = auraAngle * lobe.speedX + lobe.phase;
-        const tY = auraAngle * lobe.speedY + lobe.phase * GOLDEN_PHI;
-        const orbitR = maxR * 0.34 * pulseAmp;
-        const x3d = Math.sin(tX) * Math.cos(tY * 0.7) * orbitR * lobe.rx;
-        const y3d = Math.cos(tX * 0.8) * Math.sin(tY) * orbitR * lobe.ry;
-        const z3d = Math.sin(tX + tY) * (orbitR * 0.85) * lobe.rz;
-        const persp = fov / Math.max(20, fov - z3d);
-        return {
-          lobe,
-          px: cx + x3d * persp,
-          py: cy + y3d * persp,
-          z3d,
-          radius: lobe.rBase * scaleRatio * persp * (isSpeakingLive ? 1.18 : 1.0)
-        };
-      }).sort((a, b) => a.z3d - b.z3d);
-
-      for (const item of projectedLobes) {
-        const { lobe, px, py, radius } = item;
-        const g = ctx.createRadialGradient(px, py, radius * 0.04, px, py, radius);
-        const [r1, g1, b1, a1] = lobe.cInner;
-        const [r2, g2, b2, a2] = lobe.cMid;
-        const [r3, g3, b3, a3] = lobe.cOuter;
-        const boost = isSpeakingLive ? 1.18 : 1.0;
-        g.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, ${Math.min(1, a1 * boost)})`);
-        g.addColorStop(0.46, `rgba(${r2}, ${g2}, ${b2}, ${Math.min(1, a2 * boost)})`);
-        g.addColorStop(1, `rgba(${r3}, ${g3}, ${b3}, ${a3})`);
-
-        ctx.fillStyle = g;
+      const pulseAmpLight = isSpeakingLive ? 1.25 + Math.sin(auraAngle * 4.2) * 0.15 : 1.0;
+      const lobeColors = [
+        [r1, g1, b1, 0.72],
+        [r2, g2, b2, 0.78],
+        [r3, g3, b3, 0.64],
+        [r1, g1, b1, 0.68]
+      ];
+      for (let i = 0; i < 4; i++) {
+        const ang = auraAngle * (i % 2 === 0 ? 1.1 : -0.9) + i * 1.57;
+        const lx = cx + Math.cos(ang) * maxR * 0.28 * pulseAmpLight;
+        const ly = cy + Math.sin(ang * 1.2) * maxR * 0.28 * pulseAmpLight;
+        const lr = maxR * 0.62 * (isSpeakingLive ? 1.15 : 1.0);
+        const lg = ctx.createRadialGradient(lx, ly, lr * 0.05, lx, ly, lr);
+        const [rC, gC, bC, aC] = lobeColors[i];
+        lg.addColorStop(0, `rgba(${rC}, ${gC}, ${bC}, ${aC})`);
+        lg.addColorStop(1, `rgba(${rC}, ${gC}, ${bC}, 0)`);
+        ctx.fillStyle = lg;
         ctx.beginPath();
-        ctx.arc(px, py, radius, 0, Math.PI * 2);
+        ctx.arc(lx, ly, lr, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      // 3. 3D Parametric Aureate Silk Ribbons
-      const rings = 14;
-      for (let r = 0; r < rings; r++) {
-        const u = (r / rings) * Math.PI * 2 + auraAngle * 0.4;
-        ctx.strokeStyle = r % 2 === 0 ? "rgba(253, 230, 138, 0.36)" : "rgba(212, 175, 55, 0.24)";
-        ctx.lineWidth = (isSpeakingLive ? 1.8 : 1.2) * Math.max(0.7, scaleRatio);
+      // 2. Geometría 01 · Torus Cuántico 3D (12 anillos paramétricos)
+      const rings = 12;
+      for (let i = 0; i < rings; i++) {
+        const u = (i / rings) * Math.PI * 2 + auraAngle * 0.5;
         ctx.beginPath();
-        for (let s = 0; s <= 28; s++) {
-          const v = (s / 28) * Math.PI * 2;
-          const R = maxR * 0.54;
+        for (let j = 0; j <= 24; j++) {
+          const v = (j / 24) * Math.PI * 2;
+          const R = maxR * 0.52;
           const rt = maxR * 0.22;
-          const px = cx + (R + rt * Math.cos(v)) * Math.cos(u);
-          const py = cy + (R + rt * Math.cos(v)) * Math.sin(u) * 0.72 + rt * Math.sin(v) * 0.5;
-          if (s === 0) ctx.moveTo(px, py);
-          else ctx.lineTo(px, py);
+          const sx = cx + (R + rt * Math.cos(v)) * Math.cos(u);
+          const sy = cy + (R + rt * Math.cos(v)) * Math.sin(u) * 0.74 + rt * Math.sin(v) * 0.48;
+          if (j === 0) ctx.moveTo(sx, sy);
+          else ctx.lineTo(sx, sy);
         }
+        ctx.strokeStyle = i % 2 === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.68)` : `rgba(${r3}, ${g3}, ${b3}, 0.58)`;
+        ctx.lineWidth = Math.max(1.1, 1.8 * scaleRatio);
         ctx.stroke();
       }
 
-      for (let waveIdx = 0; waveIdx < 3; waveIdx++) {
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.rotate(auraAngle * (0.32 - waveIdx * 0.18) + waveIdx * (Math.PI / 3));
-
-        const ribbonGrad = ctx.createLinearGradient(-maxR, -maxR * 0.4, maxR, maxR * 0.4);
-        ribbonGrad.addColorStop(0, "rgba(212, 175, 55, 0.0)");
-        ribbonGrad.addColorStop(0.28, isSpeakingLive ? "rgba(253, 230, 138, 0.85)" : "rgba(212, 175, 55, 0.58)");
-        ribbonGrad.addColorStop(0.5, isSpeakingLive ? "rgba(255, 251, 235, 0.98)" : "rgba(253, 230, 138, 0.82)");
-        ribbonGrad.addColorStop(0.72, isSpeakingLive ? "rgba(245, 158, 11, 0.82)" : "rgba(197, 155, 39, 0.54)");
-        ribbonGrad.addColorStop(1, "rgba(212, 175, 55, 0.0)");
-
-        ctx.strokeStyle = ribbonGrad;
-        ctx.lineWidth = (isSpeakingLive ? 3.2 - waveIdx * 0.5 : 2.2 - waveIdx * 0.4) * Math.max(0.75, scaleRatio);
-        ctx.beginPath();
-        const steps = 48;
-        for (let s = 0; s <= steps; s++) {
-          const theta = (s / steps) * Math.PI * 2;
-          const waveMod = Math.sin(theta * 3 + auraAngle * 2.2 + waveIdx * GOLDEN_PHI) * (isSpeakingLive ? 16 : 9) * scaleRatio;
-          const rX = (maxR * 0.74 + waveMod) * Math.cos(theta);
-          const rY = (maxR * 0.36 + waveMod * 0.65) * Math.sin(theta);
-          if (s === 0) ctx.moveTo(rX, rY);
-          else ctx.lineTo(rX, rY);
-        }
-        ctx.closePath();
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // 4. Central Luminous Aureate Singularity Core
-      const coreR = (isSpeakingLive ? 42 + Math.sin(auraAngle * 5) * 8 : 32 + Math.sin(auraAngle * 2) * 3) * scaleRatio;
-      const coreGrad = ctx.createRadialGradient(cx, cy, 1.5, cx, cy, coreR);
-      coreGrad.addColorStop(0, "rgba(255, 253, 244, 0.96)");
-      coreGrad.addColorStop(0.35, "rgba(253, 230, 138, 0.72)");
-      coreGrad.addColorStop(0.7, "rgba(212, 175, 55, 0.25)");
-      coreGrad.addColorStop(1, "rgba(212, 175, 55, 0)");
-      ctx.fillStyle = coreGrad;
-      ctx.beginPath();
-      ctx.arc(cx, cy, coreR, 0, Math.PI * 2);
-      ctx.fill();
-
-      // 5. Subtle Golden Fibonacci Shimmer Dust
-      for (let p of auraParticles) {
-        const orbitWobble = Math.sin(auraAngle * 1.6 + p.angle) * (isSpeakingLive ? 8 : 3) * scaleRatio;
-        const r = (p.baseRadius * 0.78 * scaleRatio) + orbitWobble;
-        const px = cx + Math.cos(p.angle) * r;
-        const py = cy + Math.sin(p.angle) * r * 0.86;
-        ctx.fillStyle = `hsla(${p.hue}, 92%, 78%, ${isSpeakingLive ? p.alpha * 1.15 : p.alpha * 0.78})`;
-        ctx.beginPath();
-        ctx.arc(px, py, (isSpeakingLive ? p.size * 1.15 : p.size * 0.9) * Math.max(0.75, scaleRatio), 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      // 6. 3D Curved Crystal Dome Specular Reflection & Inner Golden Rim Caustic
+      // 3. Núcleo Luminoso Central
       ctx.globalCompositeOperation = "source-over";
-      const specGrad = ctx.createRadialGradient(cx - maxR * 0.32, cy - maxR * 0.38, maxR * 0.04, cx - maxR * 0.2, cy - maxR * 0.25, maxR * 0.75);
-      specGrad.addColorStop(0, "rgba(255, 255, 255, 0.36)");
-      specGrad.addColorStop(0.35, "rgba(253, 230, 138, 0.12)");
-      specGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
-      ctx.fillStyle = specGrad;
+      const coreLightR = (isSpeakingLive ? 34 : 26) * scaleRatio;
+      const coreLightGrad = ctx.createRadialGradient(cx, cy, 1, cx, cy, coreLightR);
+      coreLightGrad.addColorStop(0, "rgba(255, 255, 255, 0.98)");
+      coreLightGrad.addColorStop(0.5, `rgba(${r2}, ${g2}, ${b2}, 0.62)`);
+      coreLightGrad.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0)`);
+      ctx.fillStyle = coreLightGrad;
       ctx.beginPath();
-      ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
+      ctx.arc(cx, cy, coreLightR, 0, Math.PI * 2);
       ctx.fill();
-
-      ctx.strokeStyle = isSpeakingLive ? "rgba(253, 230, 138, 0.78)" : "rgba(212, 175, 55, 0.48)";
-      ctx.lineWidth = Math.max(1.6, 2.4 * scaleRatio);
-      ctx.beginPath();
-      ctx.arc(cx, cy, maxR - 1.2, 0, Math.PI * 2);
-      ctx.stroke();
 
       ctx.restore();
     }
@@ -17293,94 +17067,27 @@
     window.tbbSaveGlobalAdminAuraConfigToCloud = tbbSaveGlobalAdminAuraConfigToCloud;
 
     async function tbbPullGlobalAdminAuraConfigFromCloud() {
-      try {
-        const res = await tbbNeonCloudSql(
-          `SELECT state_json, revision_ts FROM tbb_brand_workspaces
-           WHERE account_id = $1 AND brand_id = $2 LIMIT 1`,
-          [TBB_GLOBAL_ADMIN_AURA_ACCOUNT_ID, TBB_GLOBAL_ADMIN_AURA_BRAND_ID]
-        );
-        if (res && Array.isArray(res.rows) && res.rows[0] && res.rows[0].state_json) {
-          const remoteCfg = JSON.parse(res.rows[0].state_json);
-          const remoteTs = Number(remoteCfg.updatedAtTs || res.rows[0].revision_ts || 0);
-          const localTs = Number(window.tbbAuraOrbConfig?.updatedAtTs || 0);
-          if (remoteCfg && remoteCfg.priHex && remoteTs > localTs) {
-            window.tbbAuraOrbConfig = {
-              paletteId: remoteCfg.paletteId || "custom",
-              paletteLabel: remoteCfg.paletteLabel || "Personalizado",
-              priHex: remoteCfg.priHex || "#0284C7",
-              secHex: remoteCfg.secHex || "#38BDF8",
-              accentHex: remoteCfg.accentHex || "#10B981",
-              coreStyle: remoteCfg.coreStyle === "dark" ? "dark" : "light",
-              archIdx: Math.max(0, Math.min(4, parseInt(remoteCfg.archIdx ?? 1, 10) || 0)),
-              orbSpeed: Number(remoteCfg.orbSpeed) > 0 ? Number(remoteCfg.orbSpeed) : 1.0,
-              customRoleTitle: String(remoteCfg.customRoleTitle || ""),
-              customMessage: String(remoteCfg.customMessage || ""),
-              updatedAtTs: remoteTs,
-              lockedByAdmin: true
-            };
-            activeAuraOrbArch = window.tbbAuraOrbConfig.archIdx;
-            try {
-              localStorage.setItem("tbb_vault_aura_orb_config_v49", JSON.stringify(window.tbbAuraOrbConfig));
-              localStorage.setItem("tbb_aura_orb_config_v49", JSON.stringify(window.tbbAuraOrbConfig));
-              localStorage.setItem("tbb_vault_aura_orb_arch_v49", String(window.tbbAuraOrbConfig.archIdx));
-              localStorage.setItem("tbb_aura_orb_architecture", String(window.tbbAuraOrbConfig.archIdx));
-            } catch (e) {}
-            if (typeof tbbApplyAuraOrbThemeToDOM === "function") tbbApplyAuraOrbThemeToDOM();
-            if (typeof tbbRenderAdminAuraModalControls === "function") tbbRenderAdminAuraModalControls();
-          }
-        }
-      } catch (e) {}
+      window.tbbAuraOrbConfig = { ...AURA_CANONICAL_BRAND_CONFIG };
+      activeAuraOrbArch = 0;
+      if (typeof tbbApplyAuraOrbThemeToDOM === "function") tbbApplyAuraOrbThemeToDOM();
     }
     window.tbbPullGlobalAdminAuraConfigFromCloud = tbbPullGlobalAdminAuraConfigFromCloud;
 
-    function tbbOpenAdminAuraFromVerifiedSession() {
-      if (!tbbIsImproBearsAdminAccount()) {
-        openAccountVaultModal("auth");
-        return false;
-      }
-      const vaultModal = document.getElementById("accountVaultModal");
-      if (vaultModal && vaultModal.classList.contains("open")) {
-        vaultModal.classList.remove("open");
-      }
-      if (typeof tbbToggleGeneralMenu === "function") {
-        tbbToggleGeneralMenu(false);
-      }
-      return tbbOpenAdminAuraColorModal();
-    }
+    function tbbOpenAdminAuraFromVerifiedSession() { return false; }
     window.tbbOpenAdminAuraFromVerifiedSession = tbbOpenAdminAuraFromVerifiedSession;
     window.tbbInstantAdminLoginAndOpenAuraStudio = tbbOpenAdminAuraFromVerifiedSession;
 
     function tbbSyncAdminAuraColorControlsVisibility() {
-      const isAdminActive = tbbIsImproBearsAdminAccount();
       const topBtn = document.getElementById("tbbBtnTopAdminAuraColors");
       const menuSec = document.getElementById("tbbAdminAuraMenuSection");
       const vaultCard = document.getElementById("accountAdminAuraColorsCard");
       const topOrb = document.getElementById("tbbLiveAuraOrbCanvas");
-
-      if (topBtn) {
-        topBtn.classList.toggle("is-hidden", !isAdminActive);
-        topBtn.style.setProperty("display", isAdminActive ? "inline-flex" : "none", "important");
-      }
-      if (menuSec) {
-        menuSec.classList.toggle("is-hidden", !isAdminActive);
-        menuSec.style.setProperty("display", isAdminActive ? "flex" : "none", "important");
-      }
-      if (vaultCard) {
-        vaultCard.classList.toggle("is-hidden", !isAdminActive);
-        vaultCard.style.setProperty("display", isAdminActive ? "block" : "none", "important");
-      }
+      if (topBtn) topBtn.style.setProperty("display", "none", "important");
+      if (menuSec) menuSec.style.setProperty("display", "none", "important");
+      if (vaultCard) vaultCard.style.setProperty("display", "none", "important");
       if (topOrb) {
-        topOrb.style.cursor = isAdminActive ? "pointer" : "default";
-        topOrb.title = isAdminActive
-          ? "Administrador ImproBears: Toca para personalizar a Aura y sus colores"
-          : "Aura · Mentora de Marca";
-      }
-      if (!isAdminActive) {
-        const modal = document.getElementById("tbbAdminAuraColorModal");
-        if (modal && modal.classList.contains("open")) {
-          modal.classList.remove("open");
-          modal.style.display = "none";
-        }
+        topOrb.style.cursor = "default";
+        topOrb.title = "Aura · Mentora de Marca";
       }
       if (typeof tbbApplyAuraOrbThemeToDOM === "function") {
         tbbApplyAuraOrbThemeToDOM();
@@ -17388,265 +17095,39 @@
     }
     window.tbbSyncAdminAuraColorControlsVisibility = tbbSyncAdminAuraColorControlsVisibility;
 
-    function tbbPersistAuraOrbConfig(syncCloud = true) {
-      if (!tbbIsImproBearsAdminAccount()) return;
-      const cfg = window.tbbAuraOrbConfig;
-      if (!cfg) return;
-      cfg.updatedAtTs = Date.now();
-      cfg.lockedByAdmin = true;
-      activeAuraOrbArch = Math.max(0, Math.min(4, parseInt(cfg.archIdx ?? 1, 10) || 0));
-      cfg.archIdx = activeAuraOrbArch;
-      try {
-        localStorage.setItem("tbb_vault_aura_orb_config_v49", JSON.stringify(cfg));
-        localStorage.setItem("tbb_aura_orb_config_v49", JSON.stringify(cfg));
-        localStorage.setItem("tbb_vault_aura_orb_arch_v49", String(cfg.archIdx));
-        localStorage.setItem("tbb_aura_orb_architecture", String(cfg.archIdx));
-      } catch (e) {}
-      if (typeof tbbApplyAuraOrbThemeToDOM === "function") {
-        tbbApplyAuraOrbThemeToDOM();
-      }
-      tbbRenderAdminAuraModalControls();
-      if (syncCloud) {
-        tbbSaveGlobalAdminAuraConfigToCloud(cfg);
-        if (typeof saveBrandSessionToLocalStorage === "function") {
-          saveBrandSessionToLocalStorage(false, true);
-        }
-      }
+    function tbbPersistAuraOrbConfig() {
+      window.tbbAuraOrbConfig = { ...AURA_CANONICAL_BRAND_CONFIG };
     }
     window.tbbPersistAuraOrbConfig = tbbPersistAuraOrbConfig;
 
-    async function tbbSaveAndLockAdminAuraCombination() {
-      tbbPersistAuraOrbConfig(true);
-      await tbbSaveGlobalAdminAuraConfigToCloud(window.tbbAuraOrbConfig);
-      tbbCloseAdminAuraColorModal();
-      const archList = window.AURA_ARCH_NAMES || [
-        "01 · Torus Cuántico 3D",
-        "02 · visionOS Siri Liquid",
-        "03 · Constelación Kansei",
-        "04 · Cimática Chladni 24kHz",
-        "05 · Monolito Suizo C-00"
-      ];
-      const cfg = window.tbbAuraOrbConfig || {};
-      if (typeof showStepResetFeedbackToast === "function") {
-        showStepResetFeedbackToast(`Combinación fijada permanentemente: ${cfg.paletteLabel || "Personalizado"} · ${archList[cfg.archIdx] || archList[1]}`);
-      }
-    }
+    async function tbbSaveAndLockAdminAuraCombination() {}
     window.tbbSaveAndLockAdminAuraCombination = tbbSaveAndLockAdminAuraCombination;
 
-    function tbbRenderAdminAuraModalControls() {
-      const cfg = window.tbbAuraOrbConfig || (window.AURA_OFFICIAL_PALETTES && window.AURA_OFFICIAL_PALETTES[0]) || {
-        paletteId: "cian_estudio",
-        paletteLabel: "Cian Estudio",
-        priHex: "#0284C7",
-        secHex: "#38BDF8",
-        accentHex: "#10B981",
-        coreStyle: "light",
-        archIdx: 1,
-        orbSpeed: 1.0,
-        customRoleTitle: "",
-        customMessage: ""
-      };
-      const acc = window.tbbUserAccount || {};
-      const emailBadge = document.getElementById("tbbAdminAuraActiveEmailBadge");
-      if (emailBadge) {
-        emailBadge.textContent = `ADMINISTRADOR VERIFICADO: ${acc.email || "jorge.benitez@improbears.com"}`;
-      }
-      const archList = window.AURA_ARCH_NAMES || [
-        "01 · Torus Cuántico 3D",
-        "02 · visionOS Siri Liquid",
-        "03 · Constelación Kansei",
-        "04 · Cimática Chladni 24kHz",
-        "05 · Monolito Suizo C-00"
-      ];
-      const summaryLabel = `Paleta Activa: ${cfg.paletteLabel || "Personalizado"} · ${archList[cfg.archIdx] || archList[1]}`;
-      const sumTitle = document.getElementById("tbbAdminAuraCurrentSummaryTitle");
-      if (sumTitle) {
-        sumTitle.textContent = summaryLabel;
-      }
-      const vaultSum = document.getElementById("accountAdminCurrentAuraSummary");
-      if (vaultSum) {
-        vaultSum.textContent = `Combinación Fija de Aura: ${cfg.paletteLabel || "Personalizado"} · ${archList[cfg.archIdx] || archList[1]}`;
-      }
-      const prevCanvas = document.getElementById("tbbAdminAuraPreviewCanvas");
-      if (prevCanvas) {
-        prevCanvas.style.borderColor = cfg.priHex;
-        prevCanvas.style.background = cfg.coreStyle === "dark" ? "#090D16" : "#F0F9FF";
-      }
-
-      const palGrid = document.getElementById("tbbAdminAuraPalettesGrid");
-      if (palGrid && Array.isArray(window.AURA_OFFICIAL_PALETTES)) {
-        palGrid.innerHTML = window.AURA_OFFICIAL_PALETTES.map(p => {
-          const isSel = cfg.paletteId === p.id;
-          return `
-            <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbSelectAdminAuraPalette('${p.id}')" style="justify-content:flex-start !important; padding:8px 12px !important; font-size:0.78rem !important;">
-              <span style="width:20px; height:20px; border-radius:999px; background:linear-gradient(135deg, ${p.priHex} 0%, ${p.secHex} 55%, ${p.accentHex} 100%); border:1.5px solid #090D16; flex-shrink:0;"></span>
-              <span>${p.label}</span>
-            </button>
-          `;
-        }).join("");
-      }
-
-      const archGrid = document.getElementById("tbbAdminAuraArchGrid");
-      if (archGrid) {
-        archGrid.innerHTML = archList.map((name, idx) => {
-          const isSel = Number(cfg.archIdx) === idx;
-          return `
-            <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbSelectAdminAuraArch(${idx})" style="font-size:0.76rem !important; padding:8px 10px !important;">
-              ${name}
-            </button>
-          `;
-        }).join("");
-      }
-
-      const lblPri = document.getElementById("lblAdminAuraPriHex");
-      const inpPri = document.getElementById("inpAdminAuraPriColor");
-      const lblSec = document.getElementById("lblAdminAuraSecHex");
-      const inpSec = document.getElementById("inpAdminAuraSecColor");
-      const lblAcc = document.getElementById("lblAdminAuraAccentHex");
-      const inpAcc = document.getElementById("inpAdminAuraAccentColor");
-      if (lblPri) lblPri.textContent = String(cfg.priHex || "#0284C7").toUpperCase();
-      if (inpPri) inpPri.value = cfg.priHex || "#0284C7";
-      if (lblSec) lblSec.textContent = String(cfg.secHex || "#38BDF8").toUpperCase();
-      if (inpSec) inpSec.value = cfg.secHex || "#38BDF8";
-      if (lblAcc) lblAcc.textContent = String(cfg.accentHex || "#10B981").toUpperCase();
-      if (inpAcc) inpAcc.value = cfg.accentHex || "#10B981";
-
-      const btnLight = document.getElementById("btnAdminAuraCoreLight");
-      const btnDark = document.getElementById("btnAdminAuraCoreDark");
-      if (btnLight) btnLight.className = cfg.coreStyle === "light" ? "tbb-duo-btn tbb-duo-btn-selected" : "tbb-duo-btn tbb-duo-btn-secondary";
-      if (btnDark) btnDark.className = cfg.coreStyle === "dark" ? "tbb-duo-btn tbb-duo-btn-selected" : "tbb-duo-btn tbb-duo-btn-secondary";
-
-      const inpRole = document.getElementById("inpAdminAuraRoleTitle");
-      const inpMsg = document.getElementById("inpAdminAuraCustomMessage");
-      if (inpRole && document.activeElement !== inpRole) {
-        const curRoleDom = document.getElementById("tbbAuraPresenceRoleText");
-        inpRole.value = cfg.customRoleTitle || (curRoleDom ? curRoleDom.textContent.trim() : "AURA · MENTORA DE MARCA");
-      }
-      if (inpMsg && document.activeElement !== inpMsg) {
-        const curMsgDom = document.getElementById("tbbAuraEmpatheticText");
-        inpMsg.value = cfg.customMessage || (curMsgDom ? curMsgDom.textContent.trim() : "");
-      }
-
-      const spd = Number(cfg.orbSpeed || 1.0);
-      const btnSlow = document.getElementById("btnAdminAuraSpeedSlow");
-      const btnNorm = document.getElementById("btnAdminAuraSpeedNormal");
-      const btnFast = document.getElementById("btnAdminAuraSpeedFast");
-      if (btnSlow) btnSlow.className = spd < 0.85 ? "tbb-duo-btn tbb-duo-btn-selected" : "tbb-duo-btn tbb-duo-btn-secondary";
-      if (btnNorm) btnNorm.className = (spd >= 0.85 && spd <= 1.2) ? "tbb-duo-btn tbb-duo-btn-selected" : "tbb-duo-btn tbb-duo-btn-secondary";
-      if (btnFast) btnFast.className = spd > 1.2 ? "tbb-duo-btn tbb-duo-btn-selected" : "tbb-duo-btn tbb-duo-btn-secondary";
-    }
+    function tbbRenderAdminAuraModalControls() {}
     window.tbbRenderAdminAuraModalControls = tbbRenderAdminAuraModalControls;
 
-    function tbbOpenAdminAuraColorModal() {
-      if (!tbbIsImproBearsAdminAccount()) {
-        if (typeof showStepResetFeedbackToast === "function") {
-          showStepResetFeedbackToast("Inicia sesión con tu cuenta de Administrador ImproBears para personalizar a Aura");
-        }
-        openAccountVaultModal("auth");
-        return false;
-      }
-      playAcousticClick(880, 0.04);
-      const modal = document.getElementById("tbbAdminAuraColorModal");
-      if (!modal) return false;
-      tbbRenderAdminAuraModalControls();
-      modal.style.display = "";
-      modal.classList.add("open");
-      const cardEl = modal.querySelector(".welcome-modal-card");
-      if (cardEl) cardEl.scrollTop = 0;
-      return true;
-    }
+    function tbbOpenAdminAuraColorModal() { return false; }
     window.tbbOpenAdminAuraColorModal = tbbOpenAdminAuraColorModal;
 
-    function tbbCloseAdminAuraColorModal() {
-      playAcousticClick(680, 0.03);
-      const modal = document.getElementById("tbbAdminAuraColorModal");
-      if (modal) {
-        modal.classList.remove("open");
-      }
-    }
+    function tbbCloseAdminAuraColorModal() {}
     window.tbbCloseAdminAuraColorModal = tbbCloseAdminAuraColorModal;
 
-    function tbbSelectAdminAuraPalette(paletteId) {
-      if (!tbbIsImproBearsAdminAccount()) return;
-      playAcousticClick(840, 0.04);
-      const found = (window.AURA_OFFICIAL_PALETTES || []).find(p => p.id === paletteId);
-      if (!found) return;
-      window.tbbAuraOrbConfig = {
-        ...window.tbbAuraOrbConfig,
-        paletteId: found.id,
-        paletteLabel: found.label,
-        priHex: found.priHex,
-        secHex: found.secHex,
-        accentHex: found.accentHex,
-        coreStyle: found.coreStyle
-      };
-      tbbPersistAuraOrbConfig(true);
-    }
+    function tbbSelectAdminAuraPalette() {}
     window.tbbSelectAdminAuraPalette = tbbSelectAdminAuraPalette;
 
-    function tbbUpdateCustomAuraOrbColor(key, hexVal) {
-      if (!tbbIsImproBearsAdminAccount()) return;
-      const cleanHex = String(hexVal || "").trim();
-      if (!/^#[0-9a-fA-F]{6}$/.test(cleanHex)) return;
-      window.tbbAuraOrbConfig = {
-        ...window.tbbAuraOrbConfig,
-        paletteId: "custom",
-        paletteLabel: "Personalizado ImproBears",
-        [key]: cleanHex
-      };
-      tbbPersistAuraOrbConfig(true);
-    }
+    function tbbUpdateCustomAuraOrbColor() {}
     window.tbbUpdateCustomAuraOrbColor = tbbUpdateCustomAuraOrbColor;
 
-    function tbbSetAdminAuraCoreStyle(styleMode) {
-      if (!tbbIsImproBearsAdminAccount()) return;
-      playAcousticClick(820, 0.03);
-      window.tbbAuraOrbConfig = {
-        ...window.tbbAuraOrbConfig,
-        coreStyle: styleMode === "dark" ? "dark" : "light"
-      };
-      tbbPersistAuraOrbConfig(true);
-    }
+    function tbbSetAdminAuraCoreStyle() {}
     window.tbbSetAdminAuraCoreStyle = tbbSetAdminAuraCoreStyle;
 
-    function tbbSelectAdminAuraArch(archIdx) {
-      if (!tbbIsImproBearsAdminAccount()) return;
-      playAcousticClick(860, 0.04);
-      const cleanIdx = Math.max(0, Math.min(4, parseInt(archIdx, 10) || 0));
-      activeAuraOrbArch = cleanIdx;
-      window.tbbAuraOrbConfig = {
-        ...window.tbbAuraOrbConfig,
-        archIdx: cleanIdx
-      };
-      tbbPersistAuraOrbConfig(true);
-    }
+    function tbbSelectAdminAuraArch() {}
     window.tbbSelectAdminAuraArch = tbbSelectAdminAuraArch;
 
-    function tbbUpdateAdminAuraTextConfig(field, val) {
-      if (!tbbIsImproBearsAdminAccount()) return;
-      const cleanVal = String(val || "");
-      const targetKey = field === "roleTitle" ? "customRoleTitle" : field;
-      window.tbbAuraOrbConfig = {
-        ...window.tbbAuraOrbConfig,
-        [targetKey]: cleanVal
-      };
-      if (targetKey === "customMessage" && window.tbbState) {
-        window.tbbState.auraCurrentMessage = cleanVal;
-      }
-      tbbPersistAuraOrbConfig(true);
-    }
+    function tbbUpdateAdminAuraTextConfig() {}
     window.tbbUpdateAdminAuraTextConfig = tbbUpdateAdminAuraTextConfig;
 
-    function tbbSetAdminAuraOrbSpeed(speedMult) {
-      if (!tbbIsImproBearsAdminAccount()) return;
-      playAcousticClick(850, 0.03);
-      const spd = Math.max(0.4, Math.min(2.5, Number(speedMult) || 1.0));
-      window.tbbAuraOrbConfig = {
-        ...window.tbbAuraOrbConfig,
-        orbSpeed: spd
-      };
-      tbbPersistAuraOrbConfig(true);
-    }
+    function tbbSetAdminAuraOrbSpeed() {}
     window.tbbSetAdminAuraOrbSpeed = tbbSetAdminAuraOrbSpeed;
 
     function tbbSyncAccountVaultVerifiedUI() {
@@ -20877,21 +20358,12 @@
     <!-- 1.B. Presencia de Aura Grande, Centrada y Fuera del Cuadro en la Parte Superior -->
     <section id="tbbAuraTopOuterHeroSection" aria-label="Presencia de Aura y acompañamiento empático">
       <div id="tbbAuraOrbHeroOuterWrap">
-        <canvas id="tbbLiveAuraOrbCanvas" width="384" height="384" onclick="if(window.tbbIsImproBearsAdminAccount && window.tbbIsImproBearsAdminAccount()){ window.tbbOpenAdminAuraFromVerifiedSession(); }" style="cursor:default;" title="Aura · Mentora de Marca"></canvas>
-        <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary is-hidden" id="tbbBtnTopAdminAuraColors" onclick="window.tbbOpenAdminAuraFromVerifiedSession()" title="Exclusivo Administrador ImproBears: Personalizar a Aura y sus colores" style="display:none !important; position:absolute; right:0; top:50%; transform:translateY(-50%); min-height:42px !important; padding:0 11px !important; font-size:0.72rem !important; flex-shrink:0; border-color:#1D4ED8; color:#1D4ED8;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
-            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.2"/>
-            <circle cx="9" cy="10" r="1.5" fill="#1D4ED8"/>
-            <circle cx="14.5" cy="9.5" r="1.5" fill="#0D2540"/>
-            <circle cx="14.5" cy="14.5" r="1.5" fill="#090D16"/>
-          </svg>
-          <span class="tbb-admin-aura-btn-lbl">Admin Aura</span>
-        </button>
+        <canvas id="tbbLiveAuraOrbCanvas" width="384" height="384" style="cursor:default;" title="Aura · Mentora de Marca"></canvas>
       </div>
       <div id="tbbAuraTopPresenceRow" onclick="if(window.speakAuraBriefResponse){ window.voiceMuted=false; voiceMuted=false; const tEl=document.getElementById('tbbAuraEmpatheticText'); window.speakAuraBriefResponse((tEl && tEl.textContent) || window.tbbState?.auraCurrentMessage || ''); }" style="cursor:pointer;" title="Haz clic para escuchar a Aura con la voz de Gemini">
         <div id="tbbAuraEmpatheticBubble">
           <div id="tbbAuraPresenceMetaBadge">
-            <span style="width:7px; height:7px; border-radius:999px; background:#4C9DE6; display:inline-block; flex-shrink:0;"></span>
+            <span style="width:7px; height:7px; border-radius:999px; background:#E04700; display:inline-block; flex-shrink:0;"></span>
             <span id="tbbAuraPresenceRoleText">AURA · PASO 0 · INICIO · REF: PETER DRUCKER</span>
           </div>
           <div id="tbbAuraEmpatheticText">
@@ -20933,21 +20405,6 @@
         <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbToggleGeneralMenu(false)">
           Cerrar
         </button>
-      </div>
-
-      <!-- SECCIÓN EXCLUSIVA ADMINISTRADOR IMPROBEARS (VISIBLE SOLO CON SESIÓN ADMIN VERIFICADA) -->
-      <div id="tbbAdminAuraMenuSection" class="is-hidden" style="display:none !important; background:#F0F9FF; border:2px solid #0284C7; border-radius:16px; padding:12px; flex-direction:column; gap:8px;">
-        <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#0284C7;">
-          PANEL ADMINISTRADOR IMPROBEARS (JORGE.BENITEZ@IMPROBEARS.COM)
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-          <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbOpenAdminAuraFromVerifiedSession();" style="font-size:0.80rem !important;">
-            Modificar Aura y Colores
-          </button>
-          <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="window.open('/aura_orb_3d_lab.html', '_blank');" style="font-size:0.80rem !important;">
-            Laboratorio 3D de Aura
-          </button>
-        </div>
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
         <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="tbbToggleGeneralMenu(false); tbbOpenJourneyMap();">

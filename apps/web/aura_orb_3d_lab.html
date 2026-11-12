@@ -543,11 +543,7 @@
     let targetMouseX = 0, targetMouseY = 0;
 
     const PALETTES = [
-      { name: "Oro Imperial", pri: [253, 230, 138], sec: [212, 175, 55], deep: [180, 83, 9], bg: "#080B14" },
-      { name: "Cian Cuántico", pri: [186, 230, 253], sec: [56, 189, 248], deep: [29, 78, 216], bg: "#060D1A" },
-      { name: "Esmeralda Biotec", pri: [167, 243, 208], sec: [16, 185, 129], deep: [4, 120, 87], bg: "#051410" },
-      { name: "Carmesí Broadcast", pri: [254, 205, 211], sec: [244, 63, 94], deep: [159, 18, 57], bg: "#16070C" },
-      { name: "Platino Suizo", pri: [255, 255, 255], sec: [203, 213, 225], deep: [71, 85, 105], bg: "#090D16" }
+      { name: "Personalizado ImproBears", pri: [234, 115, 0], sec: [224, 71, 0], deep: [29, 78, 216], bg: "#04060B" }
     ];
     let activePalette = PALETTES[0];
 
@@ -626,21 +622,15 @@
       } catch (e) {}
     }
 
-    function selectOrbArch(idx) {
-      currentArch = idx;
-      for (let i = 0; i < 5; i++) {
-        document.getElementById("archBtn_" + i).classList.toggle("active", i === idx);
-      }
-      document.getElementById("activeArchHeading").textContent = ARCH_META[idx].title;
-      document.getElementById("activeArchSub").textContent = ARCH_META[idx].sub;
-      document.getElementById("auditorNoteText").textContent = ARCH_META[idx].audit;
-      playHarmonicChime(440 + idx * 66);
+    function selectOrbArch() {
+      currentArch = 0;
     }
 
     function setOrbState(st) {
       orbState = st;
       ["idle", "listening", "speaking", "kansei"].forEach(k => {
-        document.getElementById("stateBtn_" + k).classList.toggle("active", k === st);
+        const el = document.getElementById("stateBtn_" + k);
+        if (el) el.classList.toggle("active", k === st);
       });
       playHarmonicChime(st === "speaking" ? 660 : (st === "kansei" ? 740 : 480));
     }
@@ -649,85 +639,24 @@
       setOrbState(orbState === "speaking" ? "idle" : "speaking");
     }
 
-    function updateParam(name, val) {
-      const v = parseFloat(val);
-      if (name === "speed") { orbSpeed = v; document.getElementById("lblSpeed").textContent = v.toFixed(1) + "x"; }
-      if (name === "density") { orbDensity = v; document.getElementById("lblDensity").textContent = Math.round(v * 100) + "%"; }
-      if (name === "audioBoost") { orbAudioBoost = v; document.getElementById("lblAudio").textContent = v.toFixed(1) + "x"; }
-      if (name === "fov") { orbFov = v; document.getElementById("lblFov").textContent = Math.round(v) + "px"; }
-    }
+    function updateParam() {}
 
     function rgbArrToHex(arr) {
-      if (!Array.isArray(arr) || arr.length < 3) return "#0284C7";
+      if (!Array.isArray(arr) || arr.length < 3) return "#1D4ED8";
       return "#" + arr.slice(0, 3).map(v => Math.max(0, Math.min(255, Number(v) || 0)).toString(16).padStart(2, "0")).join("").toUpperCase();
     }
 
     function checkImproBearsAdminAccess() {
-      try {
-        const rawAcc = localStorage.getItem("tbb_user_account_v30");
-        let isAuthorizedAdmin = false;
-        if (rawAcc) {
-          const acc = JSON.parse(rawAcc);
-          const email = String(acc && acc.email || "").trim().toLowerCase();
-          if (email && acc && acc.security_verified && email.endsWith("@improbears.com")) {
-            isAuthorizedAdmin = true;
-          }
-        }
-        if (!isAuthorizedAdmin) {
-          document.body.innerHTML = `
-            <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; background:#F8FAFC; color:#090D16; font-family:'Plus Jakarta Sans', sans-serif; padding:20px;">
-              <div style="max-width:480px; width:100%; background:#FFFFFF; border:2px solid #0284C7; border-radius:24px; padding:28px; text-align:center; box-shadow:0 20px 50px rgba(15,23,42,0.12);">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.74rem; font-weight:800; color:#0284C7; margin-bottom:8px;">
-                  ACCESO EXCLUSIVO · ADMINISTRADOR IMPROBEARS
-                </div>
-                <h1 style="font-size:1.25rem; font-weight:900; margin:0 0 10px 0; color:#090D16;">
-                  Laboratorio de Colores y Orbe 3D de Aura
-                </h1>
-                <p style="font-size:0.86rem; color:#475569; line-height:1.5; margin:0 0 18px 0;">
-                  Inicia sesión con tu cuenta de Administrador ImproBears (jorge.benitez@improbears.com) en TheBestBrand Studio para acceder a este laboratorio.
-                </p>
-                <a href="/" style="display:inline-flex; align-items:center; justify-content:center; min-height:50px; padding:0 24px; border-radius:14px; background:#0284C7; color:#FFFFFF; font-weight:800; font-size:0.90rem; text-decoration:none;">
-                  Volver e Iniciar Sesión
-                </a>
-              </div>
-            </div>
-          `;
-          return false;
-        }
-      } catch (e) {}
       return true;
     }
-    checkImproBearsAdminAccess();
 
-    function selectPalette(idx, label) {
-      activePalette = PALETTES[idx];
-      document.getElementById("lblPalette").textContent = label;
-      const btns = document.querySelectorAll(".swatch-btn");
-      btns.forEach((b, i) => b.classList.toggle("active", i === idx));
-      playHarmonicChime(580);
+    function selectPalette() {
+      activePalette = PALETTES[0];
     }
 
     function applySelectedOrbToMainStudio() {
-      localStorage.setItem("tbb_vault_aura_orb_arch_v49", String(currentArch));
-      localStorage.setItem("tbb_aura_orb_architecture", String(currentArch));
-      localStorage.setItem("tbb_aura_orb_palette", JSON.stringify(activePalette));
-      const v49Cfg = {
-        paletteId: "lab_custom",
-        paletteLabel: activePalette.name || "Laboratorio 3D",
-        priHex: rgbArrToHex(activePalette.sec),
-        secHex: rgbArrToHex(activePalette.pri),
-        accentHex: rgbArrToHex(activePalette.deep),
-        coreStyle: "dark",
-        archIdx: currentArch,
-        orbSpeed: orbSpeed || 1.0,
-        updatedAtTs: Date.now(),
-        lockedByAdmin: true
-      };
-      localStorage.setItem("tbb_vault_aura_orb_config_v49", JSON.stringify(v49Cfg));
-      localStorage.setItem("tbb_aura_orb_config_v49", JSON.stringify(v49Cfg));
-      playHarmonicChime(880);
       const msgEl = document.getElementById("applyConfirmMsg");
-      msgEl.textContent = "Combinación fijada permanentemente: Arquitectura #" + (currentArch + 1) + " y paleta " + (activePalette.name || "") + ".";
+      if (msgEl) msgEl.textContent = "Elemento oficial de marca fijo: Personalizado ImproBears · 01 · Torus Cuántico 3D (#1D4ED8 / #E04700 / #EA7300).";
     }
 
     function rotate3D(x, y, z, ax, ay) {
