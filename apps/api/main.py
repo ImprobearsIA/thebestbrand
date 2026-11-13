@@ -156,46 +156,100 @@ class Step0InterpretRequest(BaseModel):
     llm_api_key: str = ""
 
 
-@app.get("/", response_class=HTMLResponse)
-@app.get("/web", response_class=HTMLResponse)
-def serve_web_app():
-    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/index.html"))
-    with open(html_path, "r", encoding="utf-8") as f:
-        return HTMLResponse(
-            content=f.read(),
-            headers={
-                "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
-                "Pragma": "no-cache",
-                "Expires": "0",
-                "X-TBB-Release": "v40.0-replit-clean"
-            }
-        )
+_GITHUB_RAW_WEB_BASE = "https://raw.githubusercontent.com/ImprobearsIA/thebestbrand/main/apps/web"
+_EDGE_WEB_CACHE: Dict[str, Dict[str, Any]] = {}
+_EDGE_WEB_TTL_SEC = 20.0
 
+
+def _read_web_file_with_github_sync(rel_path: str) -> str:
+    """Reads web file from GitHub main raw (with 20s memory cache + local disk write-through) and falls back to local disk."""
+    now = time.time()
+    cached = _EDGE_WEB_CACHE.get(rel_path)
+    if cached and (now - cached.get("ts", 0)) < _EDGE_WEB_TTL_SEC:
+        return cached["content"]
+
+    local_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"../web/{rel_path}"))
+    if os.environ.get("TBB_DISABLE_GITHUB_EDGE_SYNC") != "1":
+        try:
+            import urllib.request
+            url = f"{_GITHUB_RAW_WEB_BASE}/{rel_path}?t={int(now)}"
+            req = urllib.request.Request(url, headers={"Cache-Control": "no-cache", "User-Agent": "TheBestBrand-EdgeSync/1.0"})
+            with urllib.request.urlopen(req, timeout=2.5) as resp:
+                if resp.status == 200:
+                    text = resp.read().decode("utf-8")
+                    if text and len(text) > 64:
+                        _EDGE_WEB_CACHE[rel_path] = {"ts": now, "content": text}
+                        try:
+                            with open(local_path, "w", encoding="utf-8") as wf:
+                                wf.write(text)
+                        except Exception:
+                            pass
+                        return text
+        except Exception:
+            pass
+
+    with open(local_path, "r", encoding="utf-8") as f:
+        text = f.read()
+        _EDGE_WEB_CACHE[rel_path] = {"ts": now, "content": text}
+        return text
+
+
+@app.post("/api/v1/system/sync-github")
+@app.get("/api/v1/system/sync-github")
+def force_sync_from_github():
+    """Pulls latest origin/main on disk and clears edge web cache."""
+    _EDGE_WEB_CACHE.clear()
+    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+    git_out = ""
+    try:
+        res = subprocess.run(
+            ["sh", "-c", "git fetch origin main && git reset --hard origin/main"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            timeout=15
+        )
+        git_out = (res.stdout or "") + "\n" + (res.stderr or "")
+    except Exception as e:
+        git_out = str(e)
+    return {"ok": True, "synced_at": int(time.time()), "git_output": git_out.strip()}
+
+
+@app.get("/", response_class=HTMLResponse)
+def serve_web_app():
+    content = _read_web_file_with_github_sync("index.html")
+    return HTMLResponse(
+        content=content,
+        headers={
+            "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+            "Pragma": "no-cache",
+            "Expires": "0",
+            "X-TBB-Release": "v91.0-panoramic-light"
+        }
+    )
 
 
 @app.get("/web", response_class=HTMLResponse)
 @app.get("/site", response_class=HTMLResponse)
 def serve_commercial_website():
-    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/website.html"))
-    with open(html_path, "r", encoding="utf-8") as f:
-        return HTMLResponse(content=f.read(), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+    content = _read_web_file_with_github_sync("website.html")
+    return HTMLResponse(content=content, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
 @app.get("/studio", response_class=HTMLResponse)
 @app.get("/studio.html", response_class=HTMLResponse)
 @app.get("/app", response_class=HTMLResponse)
 def serve_studio_direct():
-    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/studio.html"))
-    with open(html_path, "r", encoding="utf-8") as f:
-        return HTMLResponse(content=f.read(), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+    content = _read_web_file_with_github_sync("studio.html")
+    return HTMLResponse(content=content, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
 @app.get("/{script_name}.js")
 def serve_web_root_js(script_name: str):
     js_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"../web/{script_name}.js"))
     if os.path.isfile(js_path):
-        with open(js_path, "r", encoding="utf-8") as f:
-            return Response(content=f.read(), media_type="application/javascript; charset=utf-8", headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+        content = _read_web_file_with_github_sync(f"{script_name}.js")
+        return Response(content=content, media_type="application/javascript; charset=utf-8", headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
     return Response(content="// Not found", status_code=404, media_type="application/javascript")
 
 
