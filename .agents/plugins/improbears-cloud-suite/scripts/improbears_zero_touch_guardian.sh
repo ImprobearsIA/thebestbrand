@@ -215,20 +215,25 @@ sync_all_repos_once() {
       fi
     fi
 
-    # Despliegue Cloud 24/7 garantizado (v91 P0 Replit Exit) para thebestbrand e ImproBears-Web aunque el commit ya haya sido descargado antes
-    if [ "${repo_name}" = "thebestbrand" ] && [ ! -f "${STATE_DIR}/.cloud_deploy_tbb_v91" ]; then
-      touch "${STATE_DIR}/.cloud_deploy_tbb_v91"
+    # Despliegue Cloud 24/7 garantizado (v92 P0 Replit Exit) para thebestbrand e ImproBears-Web:
+    # PRIMERO despliega Firebase Hosting (tarda 5 segundos) y DESPUÉS Cloud Run / Railway
+    if [ "${repo_name}" = "thebestbrand" ] && [ ! -f "${STATE_DIR}/.cloud_deploy_tbb_v92" ]; then
+      if command -v npx >/dev/null 2>&1; then
+        log_msg "🚀 [thebestbrand] Sincronizando Firebase Hosting (thebestbrand-studio v91.0)..."
+        if (cd "${repo}" && npx --yes firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears >> "${LOG_FILE}" 2>&1); then
+          touch "${STATE_DIR}/.cloud_deploy_tbb_v92"
+          log_msg "✅ [thebestbrand] Firebase Hosting (thebestbrand-studio v91.0) actualizado en vivo."
+        else
+          log_msg "⚠️ [thebestbrand] Falló firebase-tools deploy en ${repo} (ver detalle arriba en guardian.log)."
+        fi
+      fi
       if command -v gcloud >/dev/null 2>&1; then
         log_msg "☁️ [thebestbrand] Desplegando API FastAPI v91.0 en Google Cloud Run (thebestbrand-api, us-central1)..."
-        (cd "${repo}" && gcloud run deploy thebestbrand-api --source . --region us-central1 --project crm-improbears --allow-unauthenticated --quiet >> "${LOG_FILE}" 2>&1) || true
+        (cd "${repo}" && gcloud run deploy thebestbrand-api --source . --region us-central1 --project crm-improbears --allow-unauthenticated --quiet >> "${LOG_FILE}" 2>&1) &
       fi
       if command -v railway >/dev/null 2>&1; then
         log_msg "🚂 [thebestbrand] Sincronizando variables y desplegando API Cloud 24/7 en Railway (v91)..."
         (cd "${repo}" && railway up --detach >> "${LOG_FILE}" 2>&1) || true
-      fi
-      if command -v npx >/dev/null 2>&1; then
-        log_msg "🚀 [thebestbrand] Sincronizando Firebase Hosting (thebestbrand-studio v91.0)..."
-        (cd "${repo}" && npx --yes firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears >> "${LOG_FILE}" 2>&1) || true
       fi
     fi
 
@@ -240,6 +245,16 @@ sync_all_repos_once() {
       fi
     fi
   done < <(discover_repos)
+
+  if [ -f "${LOG_FILE}" ]; then
+    for d_out in \
+      "${HOME}/Desktop/guardian_live_status.log" \
+      "/Users/oso/Library/CloudStorage/GoogleDrive-jorge.benitez@improbears.com/Mi unidad/Desktop/guardian_live_status.log"; do
+      if [ -d "$(dirname "${d_out}")" ]; then
+        tail -n 100 "${LOG_FILE}" > "${d_out}" 2>/dev/null || true
+      fi
+    done
+  fi
 }
 
 install_macos_launch_agent() {
