@@ -1,13 +1,14 @@
 modules = ["python-3.11"]
-run = "rm -rf apps/api/__pycache__ packages/brandbook-engine/__pycache__ && python3 -m pip install -q -r requirements.txt && python3 apps/api/main.py"
+run = "env PORT=5000 python3 apps/api/main.py"
 
 [nix]
 channel = "stable-24_05"
 
 [deployment]
-run = ["sh", "-c", "rm -rf apps/api/__pycache__ packages/brandbook-engine/__pycache__ && python3 -m pip install -q -r requirements.txt && python3 apps/api/main.py"]
-deploymentTarget = "cloudrun"
+run = ["sh", "-c", "env PORT=5000 python3 apps/api/main.py"]
+deploymentTarget = "autoscale"
 
 [[ports]]
-localPort = 8000
+localPort = 5000
 externalPort = 80
+
