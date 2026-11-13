@@ -51,3 +51,25 @@ Acabamos de diagnosticar juntos los **7 problemas raíz** que hacían fallar la 
 **Protocolo de este Turno:**
 1. **Max (Antigravity)** respalda `tbb-generative-brandbook-engine.js` y `universal-brandbook-30-engine.js` en la bóveda SHA-256 y aplica el parche quirúrgico.
 2. **Claude Code (`ag_claude`)** recibe este prompt, audita el `git diff` resultante en `apps/web/tbb-generative-brandbook-engine.js`, ejecuta la verificación lógica y emite su **Certificación de Co-Auditoría (`PASS` / `OBSERVACIONES`)**.
+
+---
+
+## 🚀 4. PENDIENTE PRIORITARIO P0 (ASIGNADO POR JORGE A MAX Y CLAUDE CODE): SALIR DEL TODO DE REPLIT
+
+> **Instrucción directa de Jorge Benítez (13 Nov 2026):**
+> *"Me gustaría empujar esta actualización de la página, pero después hacer lo posible por salir del todo de Replit. Avísale a Max para que lo considere como un pendiente en su chat con Claude."*
+
+### Qué ya quedó resuelto hoy para destrabar el `Republish` de la actualización `v91.0`:
+1. **Causa del error `"There was an issue publishing your artifact"` en Replit:** El repositorio contenía ~344 MB de archivos HTML/PDF de simulaciones en `entregables_brandbooks/` y `apps/web/brandbooks/` (con archivos individuales de 50 MB y 52 MB), haciendo que el empaquetador de artefactos de Replit agotara tiempo/memoria al construir el snapshot.
+2. **Adelgazamiento inmediato del árbol Git:** Se ejecutó `git rm -r --cached entregables_brandbooks/ apps/web/brandbooks/` y se agregaron a `.gitignore`, reduciendo más de **170 MB** del snapshot de despliegue sin borrar un solo entregable oficial de `apps/web/assets/`.
+3. **Edge-Sync Automático desde GitHub Raw en `apps/api/main.py`:** Se integró `_read_web_file_with_github_sync()` + `POST /api/v1/system/sync-github` para que, una vez publicado este artefacto ligero, cualquier cambio futuro en `apps/web/` se sirva directamente desde `origin/main` de GitHub sin volver a requerir `Republish` en Replit.
+
+### Plan de Ejecución para Max (`ag_max`) + Claude Code (`ag_claude`) en la Mac de Jorge (Desconexión Total de Replit):
+1. **Paso 1 — Publicar `apps/api/main.py` en Google Cloud Run (`crm-improbears`):**
+   - Desplegar el contenedor oficial con `Dockerfile` en `us-central1` como servicio `thebestbrand-api` (ya configurado en `firebase.json` bajo `rewrites -> /api/** -> serviceId: thebestbrand-api`).
+2. **Paso 2 — Publicar `apps/web` en Firebase Hosting (`thebestbrand-studio`):**
+   - Ejecutar `npx firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears` y cargar el secret `FIREBASE_SERVICE_ACCOUNT` en GitHub Actions (`ImprobearsIA/thebestbrand`) para que `.github/workflows/zero-touch-deploy.yml` despliegue automáticamente en cada `git push`.
+3. **Paso 3 — Migrar el DNS de `thebestbrand.app` de Replit a Firebase Hosting y apagar Replit:**
+   - En el panel de Replit (`Domains`), desvincular `thebestbrand.app`.
+   - En Firebase Hosting (`thebestbrand-studio`), agregar el dominio personalizado `thebestbrand.app` (registros `A -> 199.36.158.100`) para quedar 100% sobre la infraestructura de Google Cloud/Firebase (igual que `improbears.com`) con costo fijo \$0 de intermediarios y cero fallos de `Republish`.
+

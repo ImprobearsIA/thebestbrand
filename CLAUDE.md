@@ -76,6 +76,27 @@ En `.claude/agents/` tienes configurados los **4 Subagentes Especialistas Espejo
 5. **Cumplimiento Impecable de las 30 Láminas en Curvas al Exportar a PDF / Impresión:**
    - Garantizar cero recortes de hoja, cero cajas rígidas o sombras grises, marcos fotográficos curvos que no corten cabezas (`object-position: center 10%`) y fidelidad 1:1 entre el visor del Paso 6 y el PDF descargado.
 6. **Puente Frontend Estático (`Firebase Hosting`) ↔ Backend Python (`FastAPI`):**
-   - `firebase.json` sirve `apps/web` como sitio estático sin rewrites hacia Cloud Run/FastAPI para `/api/*`, provocando que en producción muchas rutas caigan en fallbacks locales del navegador.
+   - `firebase.json` sirve `apps/web` como sitio estático con rewrites hacia Cloud Run (`thebestbrand-api`) para `/api/*`.
 7. **Monolito de `studio.html` (24,603 líneas) Invisible para Analizadores Estáticos:**
    - `REA v6.8.0` reporta `4 inline JavaScript bodies starting at lines 4, 28, 6007, 20847 that were not analyzed` y `16,196 semantic graph unknowns` por el acoplamiento dinámico en `window`.
+
+---
+
+## 🚨 5. PENDIENTE PRIORITARIO P0 (SOLICITUD EXPRESA DE JORGE): SALIR 100% DE REPLIT Y MIGRAR `thebestbrand.app` A GOOGLE CLOUD RUN + FIREBASE HOSTING
+
+- **Contexto reportado por Jorge Benítez (13 Nov 2026):**
+  - El empaquetador de artefactos de Replit (`Publishing -> Republish`) falla reiteradamente con *"There was an issue publishing your artifact"* cuando el workspace supera el umbral de tamaño o por bloqueos de `PEP 668 / externally-managed-environment`, obligando a hacer pasos manuales en la consola de Replit.
+  - Se limpiaron del índice de Git (`git rm --cached`) 344 MB de carpetas de simulación (`entregables_brandbooks/` y `apps/web/brandbooks/`) y se activó el **Edge-Sync automático desde GitHub Raw** en `apps/api/main.py` (`_read_web_file_with_github_sync` + `/api/v1/system/sync-github`) para que esta actualización `v91.0` suba de inmediato en Replit.
+- **Acción Inmediata para Max (`ag_max`) y Claude Code (`ag_claude`) en la Mac de Jorge:**
+  1. **Desplegar Backend FastAPI en Google Cloud Run (`thebestbrand-api`, región `us-central1`, proyecto `crm-improbears`):**
+     ```bash
+     gcloud run deploy thebestbrand-api --source . --region us-central1 --project crm-improbears --allow-unauthenticated
+     ```
+  2. **Desplegar Frontend Estático + Rewrites en Firebase Hosting (`thebestbrand-studio`):**
+     ```bash
+     npx firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears
+     ```
+  3. **Apuntar DNS de `thebestbrand.app` directamente a Firebase Hosting (`199.36.158.100`) y dar de baja Replit definitivamente:**
+     - Desvincular `thebestbrand.app` del panel *Domains* de Replit y conectarlo al sitio `thebestbrand-studio` en Firebase Hosting (con certificado SSL automático y CDN global de Google).
+     - Activar `FIREBASE_SERVICE_ACCOUNT` en GitHub Actions (`.github/workflows/zero-touch-deploy.yml`) para que cada `git push origin main` publique en segundos sin intervención humana y **cero dependencia de Replit**.
+

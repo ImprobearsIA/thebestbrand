@@ -50,3 +50,5 @@ entregables_brandbooks/entrepreneurs_30/*.png
 entregables_brandbooks/evidences/
 .firebase/
 .env.local
+entregables_brandbooks/
+apps/web/brandbooks/
