@@ -1210,6 +1210,8 @@ def cloud_whatsapp_compartment_status():
 @app.post("/api/whatsapp-compartment/webhook")
 async def cloud_whatsapp_compartment_webhook(request: Request):
     import datetime
+    import urllib.request
+    import json
     if request.method == "GET":
         params = dict(request.query_params)
         if params.get("hub.mode") == "subscribe" and params.get("hub.challenge"):
@@ -1221,13 +1223,41 @@ async def cloud_whatsapp_compartment_webhook(request: Request):
     except Exception:
         body = {}
 
-    contact_key = str(body.get("contactKey") or "lilian_ingready").strip()
-    action_type = str(body.get("actionType") or "NATURAL_ORDER").strip().upper()
+    meta_val = (((body.get("entry") or [{}])[0].get("changes") or [{}])[0].get("value")) or {}
+    meta_msg = (meta_val.get("messages") or [None])[0] or {}
+    meta_contact = (meta_val.get("contacts") or [None])[0] or {}
+
+    raw_phone = "".join(
+        ch for ch in str(
+            body.get("phone")
+            or body.get("from")
+            or body.get("From")
+            or meta_msg.get("from")
+            or meta_contact.get("wa_id")
+            or ""
+        ) if ch.isdigit()
+    )
+    sender_name = str(
+        body.get("senderName")
+        or body.get("ProfileName")
+        or (meta_contact.get("profile") or {}).get("name")
+        or ""
+    ).strip()
+    message_text = str(
+        body.get("messageText")
+        or body.get("Body")
+        or (meta_msg.get("text") or {}).get("body")
+        or ""
+    ).strip()
+
+    contact_key = str(body.get("contactKey") or "").strip()
+    action_type = str(body.get("actionType") or "").strip().upper()
+
+    zoho_live = _fetch_live_zoho_telemetry()
+    wa_live = _fetch_live_openclaw_whatsapp_cloud()
+    now_str = datetime.datetime.utcnow().strftime("%H:%M:%S")
 
     if action_type == "AUDIT_UNREGISTERED_CRM_TASKS":
-        zoho_live = _fetch_live_zoho_telemetry()
-        wa_live = _fetch_live_openclaw_whatsapp_cloud()
-        now_str = datetime.datetime.utcnow().strftime("%H:%M:%S")
         return {
             "ok": True,
             "cloud_24x7": True,
@@ -1286,12 +1316,99 @@ async def cloud_whatsapp_compartment_webhook(request: Request):
                     "zohoCrmLiveDealsCount": zoho_live.get("deals_count", 0),
                     "zohoBooksLiveInvoicesCount": zoho_live.get("invoices_count", 0)
                 },
+                "zohoLiveTasks": zoho_live.get("tasks", []),
                 "tasks": []
             },
             "auditEntry": {"auditId": f"AUD-CLOUD-{int(datetime.datetime.utcnow().timestamp())}"}
         }
 
-    return {"ok": True, "cloud_24x7": True, "contactKey": contact_key, "actionType": action_type}
+    # Match real Zoho CRM v6 Contact by last 10 digits of phone or name
+    matched_contact = None
+    last10 = raw_phone[-10:] if len(raw_phone) >= 10 else ""
+    for c in (zoho_live.get("contacts") or []):
+        c_phone = "".join(ch for ch in str(c.get("phone") or "") if ch.isdigit())
+        if last10 and c_phone and c_phone[-10:] == last10:
+            matched_contact = c
+            break
+        if sender_name and sender_name.lower() in str(c.get("name") or "").lower():
+            matched_contact = c
+            break
+
+    is_registered = bool(matched_contact) or (contact_key and contact_key != "prospecto_nuevo")
+    contact_name = (matched_contact or {}).get("name") or sender_name or "Contacto Entrante"
+    short_name = contact_name.split(" ")[0] if contact_name else "qué tal"
+    company_name = (matched_contact or {}).get("account") or "Prospecto por Identificar"
+    low_msg = message_text.lower()
+
+    if not is_registered or action_type == "NEW_CONTACT_GREETING":
+        specialist_name = "Edith Morales — Customer Service ImproBears • 4421812822"
+        reply_text = (
+            f"¡Hola, muy buenos días! Qué gusto saludarte, soy Edith de Customer Service aquí en ImproBears.\n\n"
+            f"Vi que es la primera vez que nos escribes desde este número. Para poder atenderte como te mereces y pasarte con el especialista indicado de nuestro equipo (o con Jorge directamente), ¿me compartes tu nombre, de qué empresa nos escribes y cómo podemos ayudarte hoy?"
+        )
+    elif any(w in low_msg for w in ["coa", "ficha", "temperatura", "enzim", "lote", "calidad", "dosific"]):
+        specialist_name = "Ing. Vero Salazar — Ingeniería Técnica ImproBears • 4421812822"
+        reply_text = (
+            f"¡Hola {short_name}! Te saluda Vero aquí de Ingeniería Técnica en ImproBears. "
+            f"En lo que se desocupa Jorge, ya revisé tu consulta técnica de {company_name} y te comparto los parámetros y certificados de lote correspondientes. ¿Necesitas que validemos algún otro parámetro para tu corrida?"
+        )
+    elif any(w in low_msg for w in ["guia", "guía", "embarque", "chofer", "anden", "andén", "entrega", "ruta"]):
+        specialist_name = "Gerardo Ríos — Tráfico y Logística ImproBears • 4421812822"
+        reply_text = (
+            f"¡Qué tal {short_name}! Te habla Gerardo aquí de Tráfico y Logística en ImproBears. "
+            f"Estoy monitoreando el estatus de ruta y almacén para {company_name}; en un momento te confirmo aquí mismo los datos exactos de guía y arribo a tu andén."
+        )
+    elif any(w in low_msg for w in ["factura", "pago", "spei", "transferencia", "xml", "cfdi", "saldo", "cuenta"]):
+        specialist_name = "Lic. Pablo Cervantes — Finanzas ImproBears • 4421812822"
+        reply_text = (
+            f"¡Qué tal {short_name}! Te saluda Pablo de Finanzas aquí en ImproBears. "
+            f"Ya estoy revisando tu cuenta de {company_name} en Zoho Books para apoyarte de inmediato con tu factura CFDI 4.0 o aplicación de pago."
+        )
+    elif any(w in low_msg for w in ["cotiza", "pedido", "sacos", "porrones", "precio", "orden", "comprar"]):
+        specialist_name = "Edith Morales — Customer Service ImproBears • 4421812822"
+        reply_text = (
+            f"¡Hola {short_name}! Qué gusto saludarte, aquí Edith de Customer Service en ImproBears. "
+            f"Con todo gusto te apoyo ahorita mismo con tu requerimiento comercial para {company_name} en lo que se desocupa Jorge."
+        )
+    else:
+        specialist_name = "Jorge Benítez — Dirección ImproBears • 4421812822"
+        reply_text = (
+            f"¡Hola {short_name}! ¿Cómo estás? Fíjate que ahorita estoy un poco ocupado por aquí, ¿me das un momento?\n\n"
+            f"Si quieres veme adelantando por aquí qué necesitas (o mándame un audio con toda confianza); si es algo para platicar conmigo te contesto personalmente en cuanto me desocupe en unos minutos, y si requieres algún dato o documento puntual, de inmediato le pido a Edith, Vero, Pablo o Gerardo que te apoyen ahorita mismo."
+        )
+
+    dispatch_status = None
+    if (body.get("liveInbound") or meta_msg or body.get("dispatchToRealWhatsapp")) and raw_phone:
+        try:
+            oc_base = os.environ.get("AURA_OPENCLAW_URL", "http://34.121.182.185:4747").rstrip("/")
+            req_oc = urllib.request.Request(
+                f"{oc_base}/api/gina/action-button",
+                data=json.dumps({
+                    "action": "send_whatsapp_compartment_reply",
+                    "to": raw_phone,
+                    "contactName": contact_name,
+                    "specialist": specialist_name,
+                    "replyText": reply_text,
+                    "text": f"Envía por WhatsApp a {contact_name} ({raw_phone}) este mensaje exacto: {reply_text}"
+                }).encode("utf-8"),
+                headers={"Content-Type": "application/json"}
+            )
+            with urllib.request.urlopen(req_oc, timeout=4.0) as r_oc:
+                dispatch_status = {"attempted": True, "dispatched": True, "status": r_oc.status}
+        except Exception as e_oc:
+            dispatch_status = {"attempted": True, "dispatched": False, "error": str(e_oc)}
+
+    return {
+        "ok": True,
+        "cloud_24x7": True,
+        "contactKey": contact_key or (f"zcrm_{matched_contact['id']}" if matched_contact else "prospecto_nuevo"),
+        "actionType": action_type or "AUTO_ROUTED",
+        "isRegisteredInCrm": is_registered,
+        "matchedContact": matched_contact,
+        "specialist": specialist_name,
+        "replyText": reply_text,
+        "liveWhatsappDispatchStatus": dispatch_status
+    }
 
 
 @app.get("/api/whatsapp-compartment/audit-unregistered-tasks")
