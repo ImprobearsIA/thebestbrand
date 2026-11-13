@@ -825,9 +825,11 @@ async function main() {
     // -------------------------------------------------------------------------
     const platesToCapture = [
       { idx: 0, file: "tbb_sim_36_step6_1_lamina_01_portada.png", name: "Lámina 01 Portada" },
+      { idx: 1, file: "tbb_sim_36a_step6_1_lamina_02_indice_una_linea.png", name: "Lámina 02 Índice Rector (1 Línea por Hoja + Paleta Oficial)" },
       { idx: 2, file: "tbb_sim_36b_step6_1_lamina_03_manifiesto.png", name: "Lámina 03 Manifiesto" },
       { idx: 3, file: "tbb_sim_37_step6_1_lamina_04_circulo_dorado.png", name: "Lámina 04 Círculo Dorado" },
       { idx: 4, file: "tbb_sim_37b_step6_1_lamina_05_persona_foto_tbb.png", name: "Lámina 05 La Empresa como Persona + Foto TBB" },
+      { idx: 5, file: "tbb_sim_37c_step6_1_lamina_06_tono_voz_paleta_oficial.png", name: "Lámina 06 Tono de Voz (Paleta Oficial)" },
       { idx: 6, file: "tbb_sim_38_step6_1_lamina_07_arquetipo.png", name: "Lámina 07 Buyer Persona + Foto TBB" },
       { idx: 8, file: "tbb_sim_38b_step6_1_lamina_09_posicionamiento.png", name: "Lámina 09 Posicionamiento Competitivo" },
       { idx: 9, file: "tbb_sim_38c_step6_1_lamina_10_touchpoints_antes.png", name: "Lámina 10 Touchpoints Antes + Foto TBB" },

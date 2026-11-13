@@ -807,9 +807,13 @@
       return `
         <div class="tbb-visual-frame" style="border-bottom-color:${acc};">
           <img src="${resolvedSrc}" alt="${esc(fallbackTitle)}" />
+          <div style="position:absolute; top:12px; right:14px; z-index:4; background:rgba(255,255,255,0.95); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border:1.5px solid ${lightGray}; border-left:3.5px solid ${pri}; border-radius:999px; padding:4px 11px 4px 6px; display:flex; align-items:center; gap:7px;">
+            <svg viewBox="0 0 200 200" width="22" height="22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="flex-shrink:0; display:block;">${symCore}</svg>
+            <span style="font-family:'${priFont}','Montserrat',sans-serif; font-size:9.5px; font-weight:900; color:${darkInk}; letter-spacing:0.3px; white-space:nowrap;">${esc(bUpper)}</span>
+          </div>
           <div class="tbb-visual-caption" style="border-left-color:${acc};">
             <span>${esc(fallbackTitle)}</span>
-            <span style="color:${pri};font-family:'JetBrains Mono',monospace;font-size:10.5px;">FOTOGRAFÍA EDITORIAL · 4:3</span>
+            <span style="color:${pri};font-family:'JetBrains Mono',monospace;font-size:10.5px;">MOCKUP REAL · 4:3</span>
           </div>
         </div>
       `;
@@ -940,71 +944,85 @@
     `);
 
     // =========================================================================
-    // LÁMINA 02: ÍNDICE GENERAL Y ARQUITECTURA EXTENDIDA DE LA MARCA
+    // LÁMINA 02: ÍNDICE GENERAL Y ARQUITECTURA EXTENDIDA DE LA MARCA (1 SOLA LÍNEA POR HOJA + 100% PALETA OFICIAL)
     // =========================================================================
+    const idxRow = (num, label, colorHex, isBold = false) => `
+      <div style="display:flex; align-items:center; gap:7px; padding:3.8px 0; border-bottom:1px solid rgba(230,230,230,0.65); white-space:nowrap; overflow:hidden;">
+        <span style="font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:800; color:${colorHex}; min-width:20px; flex-shrink:0;">${num}</span>
+        <span style="font-size:12.4px; font-weight:${isBold ? "800" : "600"}; color:${darkInk}; letter-spacing:-0.1px; overflow:hidden; text-overflow:ellipsis;">${label}</span>
+      </div>
+    `;
+
     plates.push(`
       <article class="tbb-plate" id="plate-02">
         ${hdr("SECCIÓN 01", "ESTRUCTURA EDITORIAL Y TEMARIO RECTOR", 2, "Índice General de Constitución de Marca y Suite de Entregables Ejecutivos")}
-        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:24px; flex:1; align-items:start; padding-top:8px;">
-          <div class="tbb-editorial-pillar" style="border-left-color:${pri};">
-            <span class="tbb-editorial-kicker" style="color:${pri};">BLOQUE I · CAPÍTULOS 01–09</span>
-            <div class="tbb-card-title" style="color:${pri}; font-size:17px; margin-bottom:12px;">ADN Y ESTRATEGIA</div>
-            <ul style="margin:0; padding-left:18px; font-size:14.2px; line-height:1.86; color:#1E293B; font-weight:600;">
-              <li>01. Portada Monumental en Curvas</li>
-              <li>02. Índice Rector y Arquitectura</li>
-              <li>03. Manifiesto y Filosofía Operativa</li>
-              <li>04. Círculo Dorado (Why · How · What)</li>
-              <li>05. La Empresa como Persona + Foto</li>
-              <li>06. Tono de Voz y Criterios Verbales</li>
-              <li>07. Buyer Persona Ideal + Escena</li>
-              <li>08. Mapa de Empatía del Cliente</li>
-              <li>09. Posicionamiento Competitivo</li>
-            </ul>
+        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:20px; flex:1; align-items:start; padding-top:6px;">
+          <div class="tbb-editorial-pillar" style="border-left-color:${pri}; padding:4px 2px 4px 13px;">
+            <span class="tbb-editorial-kicker" style="color:${pri}; font-size:10.5px; margin-bottom:3px;">BLOQUE I · LÁMINAS 01–09</span>
+            <div class="tbb-card-title" style="color:${pri}; font-size:15.5px; margin-bottom:8px; padding-bottom:5px; border-bottom:2px solid ${pri};">ADN Y ESTRATEGIA</div>
+            <div style="display:flex; flex-direction:column;">
+              ${idxRow("01", "Portada Oficial en Curvas", pri)}
+              ${idxRow("02", "Índice Rector de 36 Láminas", pri)}
+              ${idxRow("03", "Manifiesto y Filosofía", pri)}
+              ${idxRow("04", "Círculo Dorado (Why·How·What)", pri)}
+              ${idxRow("05", "La Empresa como Persona", pri)}
+              ${idxRow("06", "Tono de Voz y Criterios", pri)}
+              ${idxRow("07", "Perfil del Cliente Ideal", pri)}
+              ${idxRow("08", "Mapa de Empatía del Cliente", pri)}
+              ${idxRow("09", "Posicionamiento Competitivo", pri)}
+            </div>
           </div>
-          <div class="tbb-editorial-pillar" style="border-left-color:${sec};">
-            <span class="tbb-editorial-kicker" style="color:${sec};">BLOQUE II · CAPÍTULOS 10–20</span>
-            <div class="tbb-card-title" style="color:${sec}; font-size:17px; margin-bottom:12px;">TOUCHPOINTS Y LOGOS</div>
-            <ul style="margin:0; padding-left:18px; font-size:14.2px; line-height:1.86; color:#1E293B; font-weight:600;">
-              <li>10. Touchpoints Fase 1: Antes + Foto</li>
-              <li>11. Touchpoints Fase 2: Durante + Foto</li>
-              <li>12. Touchpoints Fase 3: Después + Foto</li>
-              <li>13. <strong>Terna Oficial de Logotipos</strong></li>
-              <li>14. Anatomía y Síntesis del Símbolo</li>
-              <li>15. Retícula Áurea y Centrado (0.00px)</li>
-              <li>16. Área de Aislamiento y Escala</li>
-              <li>17. Versión Oficial en Positivo</li>
-              <li>18. Versión en Negativo / Cápsula</li>
-              <li>19. Monocromo y Grabado Láser</li>
-              <li>20. Usos Incorrectos y Normativa</li>
-            </ul>
+
+          <div class="tbb-editorial-pillar" style="border-left-color:${sec}; padding:4px 2px 4px 13px;">
+            <span class="tbb-editorial-kicker" style="color:${sec}; font-size:10.5px; margin-bottom:3px;">BLOQUE II · LÁMINAS 10–20</span>
+            <div class="tbb-card-title" style="color:${sec}; font-size:15.5px; margin-bottom:8px; padding-bottom:5px; border-bottom:2px solid ${sec};">TOUCHPOINTS Y LOGOS</div>
+            <div style="display:flex; flex-direction:column;">
+              ${idxRow("10", "Touchpoints 1: Antes", sec)}
+              ${idxRow("11", "Touchpoints 2: Durante", sec)}
+              ${idxRow("12", "Touchpoints 3: Después", sec)}
+              ${idxRow("13", "Terna Oficial de Logotipos", sec, true)}
+              ${idxRow("14", "Anatomía del Símbolo", sec)}
+              ${idxRow("15", "Retícula Áurea (0.00px)", sec)}
+              ${idxRow("16", "Aislamiento y Escala Mínima", sec)}
+              ${idxRow("17", "Versión en Positivo Claro", sec)}
+              ${idxRow("18", "Versión en Negativo Oscuro", sec)}
+              ${idxRow("19", "Monocromo y Grabado Láser", sec)}
+              ${idxRow("20", "Usos Prohibidos y Reglas", sec)}
+            </div>
           </div>
-          <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
-            <span class="tbb-editorial-kicker" style="color:${acc};">BLOQUE III · CAPÍTULOS 21–30</span>
-            <div class="tbb-card-title" style="color:${acc}; font-size:17px; margin-bottom:12px;">SISTEMA Y APLICACIONES</div>
-            <ul style="margin:0; padding-left:18px; font-size:14.2px; line-height:1.86; color:#1E293B; font-weight:600;">
-              <li>21. Paleta Cromática (HEX/CMYK/PMS)</li>
-              <li>22. Tipografía Institucional Primaria</li>
-              <li>23. Tipografía de Lectura y Contratos</li>
-              <li>24. Ecosistema Web, App y Avatar</li>
-              <li>25. Papelería Ejecutiva y Tarjetas</li>
-              <li>26. Packaging y Sello de Clausura</li>
-              <li>27. Indumentaria y Bordado Textil</li>
-              <li>28. Fachada y Arquitectura + Foto</li>
-              <li>29. Registro de Marca y Clase Niza</li>
-              <li>30. Gobernanza / División Corporativa</li>
-            </ul>
+
+          <div class="tbb-editorial-pillar" style="border-left-color:${acc}; padding:4px 2px 4px 13px;">
+            <span class="tbb-editorial-kicker" style="color:${acc}; font-size:10.5px; margin-bottom:3px;">BLOQUE III · LÁMINAS 21–30</span>
+            <div class="tbb-card-title" style="color:${acc}; font-size:15.5px; margin-bottom:8px; padding-bottom:5px; border-bottom:2px solid ${acc};">SISTEMA VISUAL</div>
+            <div style="display:flex; flex-direction:column;">
+              ${idxRow("21", "Paleta Cromática Oficial", acc)}
+              ${idxRow("22", "Tipografía Primaria Titular", acc)}
+              ${idxRow("23", "Tipografía de Lectura y UI", acc)}
+              ${idxRow("24", "Ecosistema Web y Avatar", acc)}
+              ${idxRow("25", "Papelería y Tarjetas", acc)}
+              ${idxRow("26", "Packaging y Sello Circular", acc)}
+              ${idxRow("27", "Indumentaria y Bordado", acc)}
+              ${idxRow("28", "Fachada y Señalética", acc)}
+              ${idxRow("29", "Registro y Clase Niza", acc)}
+              ${idxRow("30", "Certificado de Constitución", acc)}
+            </div>
           </div>
-          <div class="tbb-editorial-pillar" style="border-left-color:#059669;">
-            <span class="tbb-editorial-kicker" style="color:#059669;">BLOQUE IV · CAPÍTULOS 31–36</span>
-            <div class="tbb-card-title" style="color:#047857; font-size:17px; margin-bottom:12px;">SUITE EJECUTIVA</div>
-            <ul style="margin:0; padding-left:18px; font-size:14.2px; line-height:1.86; color:#1E293B; font-weight:600;">
-              <li>31. <strong>Showcase Visual (Pasos 0–3)</strong></li>
-              <li>32. <strong>Showcase Visual (Pasos 4–6)</strong></li>
-              <li>33. <strong>Firma Corporativa en .HTML</strong></li>
-              <li>34. <strong>Hoja Membretada (.DOCX)</strong></li>
-              <li>35. <strong>Presentación Ejecutiva (.PPTX)</strong></li>
-              <li>36. <strong>Certificado de Vectores (.SVG/.AI)</strong></li>
-            </ul>
+
+          <div class="tbb-editorial-pillar" style="border-left-color:${darkInk}; padding:4px 2px 4px 13px;">
+            <span class="tbb-editorial-kicker" style="color:${pri}; font-size:10.5px; margin-bottom:3px;">BLOQUE IV · LÁMINAS 31–36</span>
+            <div class="tbb-card-title" style="color:${darkInk}; font-size:15.5px; margin-bottom:8px; padding-bottom:5px; border-bottom:2px solid ${darkInk};">SUITE EJECUTIVA</div>
+            <div style="display:flex; flex-direction:column;">
+              ${idxRow("31", "Showcase Visual (Pasos 0–3)", pri, true)}
+              ${idxRow("32", "Showcase Visual (Pasos 4–6)", pri, true)}
+              ${idxRow("33", "Firma de Correo (.HTML)", acc, true)}
+              ${idxRow("34", "Hoja Membretada (.DOCX)", pri, true)}
+              ${idxRow("35", "Presentación 16:9 (.PPTX)", sec, true)}
+              ${idxRow("36", "Vectores en Curvas (.SVG/.AI)", acc, true)}
+            </div>
+            <div style="margin-top:14px; padding:10px 12px; border-left:3.5px solid ${acc}; background:rgba(13,37,64,0.03);">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:800; color:${pri}; margin-bottom:3px;">GOBERNANZA CROMÁTICA</div>
+              <div style="font-size:11.5px; line-height:1.45; color:${darkInk}; font-weight:600;">100% homologado bajo la paleta oficial de la marca y lienzo claro (#FFFFFF).</div>
+            </div>
           </div>
         </div>
         ${ftr(2)}
@@ -1179,16 +1197,16 @@
     `);
 
     // =========================================================================
-    // LÁMINA 06: TONO DE VOZ VERBAL Y CRITERIOS EDITORIALES (FLUJO ABIERTO)
+    // LÁMINA 06: TONO DE VOZ VERBAL Y CRITERIOS EDITORIALES (FLUJO ABIERTO · 100% PALETA OFICIAL)
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-06">
         ${hdr("SECCIÓN 01", "ADN Y ESTRATEGIA DE MARCA", 6, "Tono de Voz Verbal: Lo que Somos y lo que Jamás Seremos")}
         <div class="tbb-grid-2col" style="align-items:stretch; padding-top:6px;">
-          <div class="tbb-editorial-pillar" style="border-left-color:#10B981; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="tbb-editorial-pillar" style="border-left-color:${pri}; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-              <span class="tbb-editorial-kicker" style="color:#059669;">ESTÁNDAR COMUNICACIONAL APROBADO</span>
-              <div class="tbb-card-title" style="color:#059669; font-size:20px;">✓ SÍ HABLAMOS ASÍ</div>
+              <span class="tbb-editorial-kicker" style="color:${pri};">ESTÁNDAR COMUNICACIONAL APROBADO</span>
+              <div class="tbb-card-title" style="color:${pri}; font-size:20px;">✓ SÍ HABLAMOS ASÍ</div>
               <ul style="margin:14px 0 0 0; padding-left:20px; font-size:15.8px; line-height:1.82; color:#1E293B;">
                 <li><strong>Claro y Ejecutivo:</strong> Frases concisas que aportan valor desde el primer renglón.</li>
                 <li><strong>Didáctico y Cercano:</strong> Dominio técnico explicado en lenguaje humano y transparente.</li>
@@ -1196,15 +1214,15 @@
                 <li><strong>Respetuoso del Tiempo:</strong> Comunicación estructurada que facilita tomar decisiones.</li>
               </ul>
             </div>
-            <div style="border-left:4px solid #10B981; padding:8px 0 8px 16px; font-size:14.5px; font-weight:700; color:#065F46;">
+            <div style="border-left:4px solid ${sec}; padding:8px 0 8px 16px; font-size:14.5px; font-weight:700; color:${pri};">
               Ejemplo: “Tu proyecto queda garantizado y entregado este viernes con trazabilidad completa.”
             </div>
           </div>
 
-          <div class="tbb-editorial-pillar" style="border-left-color:#EF4444; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="tbb-editorial-pillar" style="border-left-color:${acc}; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-              <span class="tbb-editorial-kicker" style="color:#DC2626;">RESTRICCIÓN DE ESTILO VERBAL</span>
-              <div class="tbb-card-title" style="color:#DC2626; font-size:20px;">✕ JAMÁS HABLAMOS ASÍ</div>
+              <span class="tbb-editorial-kicker" style="color:${acc};">RESTRICCIÓN DE ESTILO VERBAL</span>
+              <div class="tbb-card-title" style="color:${darkInk}; font-size:20px;">✕ JAMÁS HABLAMOS ASÍ</div>
               <ul style="margin:14px 0 0 0; padding-left:20px; font-size:15.8px; line-height:1.82; color:#1E293B;">
                 <li><strong>Cero Arrogancia:</strong> Prohibido usar tecnicismos rebuscados para confundir al cliente.</li>
                 <li><strong>Cero Clichés Vacíos:</strong> Evitar muletillas genéricas sin sustento operativo real.</li>
@@ -1212,7 +1230,7 @@
                 <li><strong>Cero Respuestas Robóticas:</strong> Trato cálido y personalizado en cada contacto.</li>
               </ul>
             </div>
-            <div style="border-left:4px solid #EF4444; padding:8px 0 8px 16px; font-size:14.5px; font-weight:700; color:#991B1B;">
+            <div style="border-left:4px solid ${acc}; padding:8px 0 8px 16px; font-size:14.5px; font-weight:700; color:${darkInk};">
               Prohibido: “Ofrecemos sinergias holísticas 360° más o menos la próxima semana.”
             </div>
           </div>
@@ -1322,8 +1340,8 @@
               <div class="tbb-card-title" style="color:${darkInk}; font-size:16px;">${esc(whatSplit.lead)}</div>
               <div class="tbb-card-body" style="font-size:13.8px; line-height:1.5;">Geometría 100% en curvas Bézier, gobernanza tipográfica híbrida y suite documental editable.</div>
             </div>
-            <div class="tbb-editorial-pillar" style="border-left-color:#059669;">
-              <span class="tbb-editorial-kicker" style="color:#059669; font-size:10.5px;">04 · RAZÓN PARA CREER (EVIDENCIA)</span>
+            <div class="tbb-editorial-pillar" style="border-left-color:${darkInk};">
+              <span class="tbb-editorial-kicker" style="color:${pri}; font-size:10.5px;">04 · RAZÓN PARA CREER (EVIDENCIA)</span>
               <div class="tbb-card-title" style="color:${darkInk}; font-size:16px;">${esc(howSplit.lead)}</div>
               <div class="tbb-card-body" style="font-size:13.8px; line-height:1.5;">Proceso auditable Antes, Durante y Después que transforma ideas en activos listos en minutos.</div>
             </div>
@@ -1686,57 +1704,57 @@
     `);
 
     // =========================================================================
-    // LÁMINA 20: USOS PROHIBIDOS Y DEFORMACIONES
+    // LÁMINA 20: USOS PROHIBIDOS Y DEFORMACIONES (100% PALETA OFICIAL)
     // =========================================================================
     plates.push(`
       <article class="tbb-plate" id="plate-20">
         ${hdr("SECCIÓN 03", "ARQUITECTURA DE IDENTIDAD VISUAL", 20, "Usos Prohibidos y Deformaciones Gráficas No Permitidas")}
         <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:24px 30px; flex:1; align-items:center; position:relative; z-index:2;">
-          <div class="tbb-editorial-pillar" style="border-left-color:#EF4444;">
+          <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
             <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; padding-left:14px; transform:scaleX(1.35); transform-origin:left center; opacity:0.85;">
               <div style="width:56px; height:56px;"><svg viewBox="0 0 200 200" width="56" height="56" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
-            <div style="color:#DC2626; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO DEFORMAR PROPORCIÓN</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO DEFORMAR PROPORCIÓN</div>
             <div style="font-size:13.5px; color:#475569; line-height:1.45;">Prohibido estirar horizontal o verticalmente fuera de 1:1.</div>
           </div>
 
-          <div class="tbb-editorial-pillar" style="border-left-color:#EF4444;">
+          <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
             <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; padding-left:14px; filter:drop-shadow(4px 4px 6px #000);">
               <div style="width:56px; height:56px;"><svg viewBox="0 0 200 200" width="56" height="56" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
-            <div style="color:#DC2626; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO SOMBRAS GRISES</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO SOMBRAS GRISES</div>
             <div style="font-size:13.5px; color:#475569; line-height:1.45;">Prohibido añadir sombras paralelas o resplandores.</div>
           </div>
 
-          <div class="tbb-editorial-pillar" style="border-left-color:#EF4444;">
-            <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; padding-left:14px; filter:hue-rotate(140deg);">
+          <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
+            <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; padding-left:14px; opacity:0.35; filter:grayscale(80%);">
               <div style="width:56px; height:56px;"><svg viewBox="0 0 200 200" width="56" height="56" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
-            <div style="color:#DC2626; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO ALTERAR PALETA</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO ALTERAR PALETA</div>
             <div style="font-size:13.5px; color:#475569; line-height:1.45;">Usar exclusivamente los códigos cromáticos oficiales.</div>
           </div>
 
-          <div class="tbb-editorial-pillar" style="border-left-color:#EF4444;">
+          <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
             <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; padding-left:14px; transform:rotate(24deg); transform-origin:left center;">
               <div style="width:56px; height:56px;"><svg viewBox="0 0 200 200" width="56" height="56" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
-            <div style="color:#DC2626; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO INCLINAR EN ÁNGULO</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO INCLINAR EN ÁNGULO</div>
             <div style="font-size:13.5px; color:#475569; line-height:1.45;">El símbolo siempre se asienta sobre su eje ortogonal.</div>
           </div>
 
-          <div class="tbb-editorial-pillar" style="border-left-color:#EF4444;">
-            <div style="height:72px; width:110px; display:flex; align-items:center; justify-content:center; background:#E11D48; border-radius:8px 20px 8px 8px;">
-              <div style="width:52px; height:52px;"><svg viewBox="0 0 200 200" width="52" height="52" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
+          <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
+            <div style="height:72px; width:110px; display:flex; align-items:center; justify-content:center; background:${sec}; border-radius:8px 20px 8px 8px;">
+              <div style="width:52px; height:52px; opacity:0.45;"><svg viewBox="0 0 200 200" width="52" height="52" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
-            <div style="color:#DC2626; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO FONDOS ESTRIDENTES</div>
-            <div style="font-size:13.5px; color:#475569; line-height:1.45;">Jamás montar sobre colores saturados sin contraste.</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO BAJO CONTRASTE</div>
+            <div style="font-size:13.5px; color:#475569; line-height:1.45;">Jamás montar sobre fondos sin contraste óptico suficiente.</div>
           </div>
 
-          <div class="tbb-editorial-pillar" style="border-left-color:#EF4444;">
-            <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; font-family:'Comic Sans MS', cursive; font-size:19px; font-weight:bold; color:${pri};">
+          <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
+            <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; font-family:serif; font-style:italic; font-size:20px; font-weight:400; color:${midGray};">
               ${esc(bUpper)}
             </div>
-            <div style="color:#DC2626; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO SUSTITUIR TIPOGRAFÍA</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO SUSTITUIR TIPOGRAFÍA</div>
             <div style="font-size:13.5px; color:#475569; line-height:1.45;">Respetar siempre la familia tipográfica institucional.</div>
           </div>
         </div>
@@ -2621,7 +2639,7 @@ Instrucciones obligatorias:
     const bName = brandNameOpt || (activeBrand && activeBrand.name) || ((window.canvasState && window.canvasState.brandName) ? window.canvasState.brandName : "The Best Brand");
     return [
       { num: "01", sec: "PORTADA MONUMENTAL", title: `Portada Oficial de Marca: ${bName}`, leadAuthor: "Massimo Vignelli & Paul Rand", auditVerdict: "LIENZO CLARO C-00 CERTIFICADO" },
-      { num: "02", sec: "01 · ESTRUCTURA EDITORIAL", title: "Índice General de las 30 Láminas de Constitución", leadAuthor: "Josef Müller-Brockmann", auditVerdict: "ARQUITECTURA EDITORIAL APROBADA" },
+      { num: "02", sec: "01 · ESTRUCTURA EDITORIAL", title: "Índice General de las 36 Láminas de Constitución", leadAuthor: "Josef Müller-Brockmann", auditVerdict: "ARQUITECTURA EDITORIAL APROBADA" },
       { num: "03", sec: "01 · ADN Y ESTRATEGIA", title: "Manifiesto Central y Filosofía Operativa", leadAuthor: "David Aaker & Marty Neumeier", auditVerdict: "COHERENCIA FILOSÓFICA APROBADA" },
       { num: "04", sec: "01 · ADN Y ESTRATEGIA", title: "El Círculo Dorado (Why · How · What)", leadAuthor: "Simon Sinek", auditVerdict: "PROPÓSITO NUCLEAR VALIDADO" },
       { num: "05", sec: "01 · ADN Y ESTRATEGIA", title: "La Empresa como Persona: Identidad Humana", leadAuthor: "Jennifer Aaker & Carl Jung", auditVerdict: "CARÁCTER CORPORATIVO DEFINIDO" },
