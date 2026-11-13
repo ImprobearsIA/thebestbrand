@@ -35,7 +35,7 @@ jobs:
           node --check apps/web/tbb-executive-deliverables-suite.js
           node --check apps/web/tbb-commercial-experience-and-payments.js
 
-      - name: Deploy to Firebase Hosting (thebestbrand-studio)
+      - name: Deploy Backend API to Google Cloud Run (thebestbrand-api) & Frontend to Firebase Hosting (thebestbrand-studio)
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
@@ -43,19 +43,16 @@ jobs:
           if [ -n "$GOOGLE_APPLICATION_CREDENTIALS_JSON" ]; then
             echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/firebase-sa.json
             export GOOGLE_APPLICATION_CREDENTIALS="/tmp/firebase-sa.json"
+            if command -v gcloud >/dev/null 2>&1; then
+              gcloud auth activate-service-account --key-file=/tmp/firebase-sa.json --quiet || true
+              gcloud run deploy thebestbrand-api --source . --region us-central1 --project crm-improbears --allow-unauthenticated --quiet || true
+            fi
             npx --yes firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears
             rm -f /tmp/firebase-sa.json
           elif [ -n "$FIREBASE_TOKEN" ]; then
             npx --yes firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears --token "$FIREBASE_TOKEN"
           else
-            echo "✅ V86 Engines Verified. Local macOS Zero-Touch Guardian handles Firebase Hosting sync."
+            echo "✅ V91.0 Engines Verified. Local macOS Zero-Touch Guardian handles Cloud Run & Firebase Hosting sync."
           fi
 
-      - name: Deploy Backend to Railway Cloud 24/7 (if RAILWAY_TOKEN configured)
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: |
-          if [ -n "$RAILWAY_TOKEN" ]; then
-            npx --yes @railway/cli up --detach || true
-          fi
 
