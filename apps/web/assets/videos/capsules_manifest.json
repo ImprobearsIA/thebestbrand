@@ -3,7 +3,7 @@
     "step": 0,
     "video_url": "/assets/videos/capsula_teoria_paso_0.mp4",
     "duration_sec": 59.4,
-    "size_kb": 2911.4,
+    "size_kb": 8801.6,
     "title": "Paso 0: Objetivo, Evolución de Logo Actual y Giro del Negocio",
     "author_name": "David Aaker & Sagi Haviv",
     "author_role": "Capital de Marca y Evolución de Símbolos",
@@ -38,13 +38,14 @@
         "narration": "Además, tu sesión se sincroniza en tiempo real entre tu teléfono y tu computadora. En cada decisión escucharás mi respuesta breve de menos de diez segundos con el respaldo de los grandes autores."
       }
     ],
-    "aspect_ratio": "9:16"
+    "aspect_ratio": "9:16",
+    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
   },
   {
     "step": 1,
     "video_url": "/assets/videos/capsula_teoria_paso_1.mp4",
     "duration_sec": 53.1,
-    "size_kb": 2863.7,
+    "size_kb": 6933.5,
     "title": "Paso 1: El Círculo Dorado y la Promesa de Valor",
     "author_name": "Simon Sinek",
     "author_role": "Autor de Start With Why (El Círculo Dorado)",
@@ -79,13 +80,14 @@
         "narration": "Observa a Nubank: su propósito fue liberar a las personas de la burocracia financiera con calidez y transparencia. Entra ahora al Paso uno y construyamos tus pilares estratégicos."
       }
     ],
-    "aspect_ratio": "9:16"
+    "aspect_ratio": "9:16",
+    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
   },
   {
     "step": 2,
     "video_url": "/assets/videos/capsula_teoria_paso_2.mp4",
-    "duration_sec": 51.6,
-    "size_kb": 2806.5,
+    "duration_sec": 51.5,
+    "size_kb": 8227.1,
     "title": "Paso 2: Arquitectura de Touchpoints (Antes, Durante y Después)",
     "author_name": "Don Norman & K. Lemon",
     "author_role": "Diseño de Experiencia y Service Blueprint",
@@ -120,13 +122,14 @@
         "narration": "Cuando articulas atención ágil antes, servicio impecable durante y acompañamiento leal después, tus clientes se vuelven promotores. Seleccionemos ahora tus puntos de contacto en el Paso dos."
       }
     ],
-    "aspect_ratio": "9:16"
+    "aspect_ratio": "9:16",
+    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
   },
   {
     "step": 3,
     "video_url": "/assets/videos/capsula_teoria_paso_3.mp4",
     "duration_sec": 48.3,
-    "size_kb": 2963.7,
+    "size_kb": 7015.8,
     "title": "Paso 3: Ingeniería de Naming, Fonética y Clases de Niza",
     "author_name": "Alexandra Watkins",
     "author_role": "Creadora del Método SMILE & SCRATCH",
@@ -161,13 +164,14 @@
         "narration": "Piensa en Rolex o Stripe: nombres breves cuyas iniciales forman un monograma inconfundible. Entremos al Paso tres para confirmar el nombre y eslogan de tu marca."
       }
     ],
-    "aspect_ratio": "9:16"
+    "aspect_ratio": "9:16",
+    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
   },
   {
     "step": 4,
     "video_url": "/assets/videos/capsula_teoria_paso_4.mp4",
     "duration_sec": 53.3,
-    "size_kb": 3045.6,
+    "size_kb": 5643.5,
     "title": "Paso 4: Ingeniería Kansei, 7 Ejes Visuales y Tipografía",
     "author_name": "Prof. Mitsuo Nagamachi",
     "author_role": "Fundador de la Ingeniería Kansei & Semiótica",
@@ -202,13 +206,14 @@
         "narration": "Mira cómo Airbnb usa un lazo curvo para transmitir pertenencia, mientras Tesla usa ángulos de ingeniería. Calibra ahora el carácter visual de tu marca en el Paso cuatro."
       }
     ],
-    "aspect_ratio": "9:16"
+    "aspect_ratio": "9:16",
+    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
   },
   {
     "step": 5,
     "video_url": "/assets/videos/capsula_teoria_paso_5.mp4",
     "duration_sec": 57.9,
-    "size_kb": 3137.1,
+    "size_kb": 7743.1,
     "title": "Paso 5: Estudio de Logotipo con Gemini Vision y Evolución de Base",
     "author_name": "Paul Rand & Jony Ive",
     "author_role": "Maestros de Identidad Visual y Liquid Glass",
@@ -243,13 +248,14 @@
         "narration": "Inspirados en el rigor industrial de Jony Ive, visualizas al mismo tiempo tu logotipo completo y su ícono uno a uno. Cuando te enamore el resultado, confírmalo para generar tu manual."
       }
     ],
-    "aspect_ratio": "9:16"
+    "aspect_ratio": "9:16",
+    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
   },
   {
     "step": 6,
     "video_url": "/assets/videos/capsula_teoria_paso_6.mp4",
-    "duration_sec": 56.1,
-    "size_kb": 2993.6,
+    "duration_sec": 56.0,
+    "size_kb": 9416.3,
     "title": "Paso 6: Brandbook Maestro de 30 Láminas en Curvas (Guía C-00)",
     "author_name": "Massimo Vignelli & El Oso",
     "author_role": "Sistemas de Retículas y Constitución C-00 ImproBears",
@@ -284,6 +290,7 @@
         "narration": "Con un solo toque puedes descargar tu PDF de treinta láminas en menos de dos segundos, compartirlo desde tu iPhone o exportar tu logotipo en curvas. Tu marca está lista para conquistar el mundo."
       }
     ],
-    "aspect_ratio": "9:16"
+    "aspect_ratio": "9:16",
+    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
   }
 ]
