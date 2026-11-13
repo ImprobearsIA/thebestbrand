@@ -573,21 +573,238 @@ def _fetch_live_dof_fx() -> Dict[str, Any]:
     return {"connected": False}
 
 
-def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target: str = "F-00011") -> Dict[str, Any]:
+def _sync_active_whatsapp_phones_to_zoho_single_phone(user_text: str = "") -> Dict[str, Any]:
     """
-    Ejecuta en vivo en Zoho Books (Org 923290625) + OpenClaw (34.121.182.185:4747):
-    1. Localiza la factura objetivo (por defecto F-00011 de Ingready).
-    2. Registra/verifica a Miguel Ángel Mazatán (mmazatan@ingready.com.mx, +52 442 221 5925)
-       y Lilian Maldonado (lmaldonado@ingready.com.mx, +52 442 258 5037) como contact_persons del cliente Ingready.
-    3. Dispara el timbrado CFDI 4.0 ante el SAT (/books/v3/invoices/{invoice_id}/einvoice/push y /books/v3/invoices/einvoice/push).
-    4. Envía la factura por correo desde Zoho Books (/books/v3/invoices/{invoice_id}/email) a ambos correos:
-       mmazatan@ingready.com.mx y lmaldonado@ingready.com.mx.
-    5. Dispara el envío por WhatsApp a Miguel (524422215925) y Lilian (524422585037) vía OpenClaw.
+    1. Consulta en vivo a OpenClaw (34.121.182.185:4747) y/o el texto de Jorge para obtener los números
+       activos reales en WhatsApp de Miguel Ángel Mazatán y Lilian Maldonado (Ingready).
+    2. Actualiza en Zoho CRM v6 (Contacts) a Miguel y Lilian dejando ESE número como el ÚNICO teléfono
+       (Mobile = +52..., Phone = None, Home_Phone = None, Other_Phone = None, Assistant = None, Fax = None).
+    3. Actualiza en Zoho Books v3 (Org 923290625 -> contact_persons de Ingready) dejando ESE número como
+       el ÚNICO teléfono (mobile = +52..., phone = "").
     """
     import urllib.request
     import urllib.parse
     import urllib.error
     import json
+    import re
+
+    oc_base = os.environ.get("AURA_OPENCLAW_URL", "http://34.121.182.185:4747").rstrip("/")
+    client_id = os.environ.get("ZOHO_CLIENT_ID", "").strip()
+    client_secret = os.environ.get("ZOHO_CLIENT_SECRET", "").strip()
+    refresh_token = os.environ.get("ZOHO_REFRESH_TOKEN", "").strip()
+    accounts_url = os.environ.get("ZOHO_ACCOUNTS_URL", "https://accounts.zoho.com").strip()
+    api_domain = os.environ.get("ZOHO_API_DOMAIN", "https://www.zohoapis.com").strip()
+    org_id = os.environ.get("ZOHO_BOOKS_ORG_ID", "923290625").strip()
+
+    def _norm_mx_phone(raw: str) -> str:
+        digits = "".join([c for c in str(raw or "") if c.isdigit()])
+        if len(digits) == 10:
+            return f"+52{digits}"
+        if len(digits) == 13 and digits.startswith("521"):
+            return f"+52{digits[3:]}"
+        if len(digits) == 12 and digits.startswith("52"):
+            return f"+{digits}"
+        if len(digits) >= 10:
+            return f"+{digits}"
+        return ""
+
+    miguel_wa = ""
+    lilian_wa = ""
+
+    # A) Si Jorge dictó o escribió explícitamente el número en su mensaje, extraerlo primero
+    for line in (user_text or "").splitlines():
+        low_l = line.lower()
+        found_nums = re.findall(r"(?:\+?52\s*1?\s*)?(?:\d[\s\-]*){10}", line)
+        for fn in found_nums:
+            norm = _norm_mx_phone(fn)
+            if norm:
+                if "miguel" in low_l or "mazat" in low_l:
+                    miguel_wa = norm
+                elif "lilian" in low_l or "lili" in low_l or "maldonado" in low_l:
+                    lilian_wa = norm
+
+    # B) Consultar a OpenClaw (34.121.182.185:4747) los chats activos de WhatsApp de Miguel y Lilian
+    if not (miguel_wa and lilian_wa):
+        try:
+            oc_prompt = (
+                "Busca en los chats activos y contactos de WhatsApp los números telefónicos actuales de "
+                "Miguel (Miguel Mazatán / Ingready) y de Lilian (Lilian Maldonado / Lili Ingready). "
+                "Devuelve exactamente sus números activos de WhatsApp en formato MIGUEL=+52... y LILIAN=+52..., "
+                "y si tienes acceso a Zoho actualiza ambos contactos dejando ese número como su único teléfono."
+            )
+            oc_req = urllib.request.Request(
+                f"{oc_base}/api/gina/action-button",
+                data=json.dumps({"text": oc_prompt, "query": oc_prompt, "include_audio": False}).encode("utf-8"),
+                headers={"Content-Type": "application/json"},
+                method="POST"
+            )
+            with urllib.request.urlopen(oc_req, timeout=8.0) as ocr:
+                oc_json = json.loads(ocr.read().decode("utf-8"))
+                oc_reply = str(oc_json.get("voice_reply") or oc_json.get("full_reply") or oc_json.get("reply") or "")
+                for line in oc_reply.splitlines():
+                    low_l = line.lower()
+                    for fn in re.findall(r"(?:\+?52\s*1?\s*)?(?:\d[\s\-]*){10}", line):
+                        norm = _norm_mx_phone(fn)
+                        if norm:
+                            if ("miguel" in low_l or "mazat" in low_l) and not miguel_wa:
+                                miguel_wa = norm
+                            elif ("lilian" in low_l or "lili" in low_l or "maldonado" in low_l) and not lilian_wa:
+                                lilian_wa = norm
+        except Exception:
+            pass
+
+    # C) Revisar también /api/gina/history en OpenClaw por si los números aparecen en los mensajes recientes
+    if not (miguel_wa and lilian_wa):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(f"{oc_base}/api/gina/history"), timeout=4.5) as hr:
+                h_json = json.loads(hr.read().decode("utf-8"))
+                for item in (h_json.get("items") or []):
+                    blob = f"{item.get('query', '')}\n{item.get('voice_reply', '')}\n{item.get('full_reply', '')}"
+                    for line in blob.splitlines():
+                        low_l = line.lower()
+                        for fn in re.findall(r"(?:\+?52\s*1?\s*)?(?:\d[\s\-]*){10}", line):
+                            norm = _norm_mx_phone(fn)
+                            if norm:
+                                if ("miguel" in low_l or "mazat" in low_l) and not miguel_wa:
+                                    miguel_wa = norm
+                                elif ("lilian" in low_l or "lili" in low_l or "maldonado" in low_l) and not lilian_wa:
+                                    lilian_wa = norm
+        except Exception:
+            pass
+
+    result = {
+        "miguel_whatsapp_active": miguel_wa,
+        "lilian_whatsapp_active": lilian_wa,
+        "zoho_crm_updated": [],
+        "zoho_books_updated": []
+    }
+
+    if client_id and client_secret and refresh_token and (miguel_wa or lilian_wa):
+        try:
+            form = urllib.parse.urlencode({
+                "refresh_token": refresh_token,
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "grant_type": "refresh_token",
+            }).encode("utf-8")
+            with urllib.request.urlopen(urllib.request.Request(f"{accounts_url}/oauth/v2/token", data=form, method="POST"), timeout=5.0) as r:
+                access_token = json.loads(r.read().decode("utf-8")).get("access_token", "")
+            if access_token:
+                headers = {"Authorization": f"Zoho-oauthtoken {access_token}", "Content-Type": "application/json"}
+
+                # 1. Actualizar en Zoho CRM v6 (Contacts): dejar el WhatsApp activo como ÚNICO teléfono (limpiando Phone, Home_Phone, Other_Phone, Assistant)
+                try:
+                    with urllib.request.urlopen(urllib.request.Request(f"{api_domain}/crm/v6/Contacts?fields=id,Full_Name,First_Name,Last_Name,Email,Mobile,Phone,Home_Phone,Other_Phone&per_page=200", headers=headers), timeout=5.0) as cr:
+                        crm_contacts = json.loads(cr.read().decode("utf-8")).get("data") or []
+                    updates_crm = []
+                    for c in crm_contacts:
+                        cname = str(c.get("Full_Name") or "").lower()
+                        cmail = str(c.get("Email") or "").lower()
+                        if miguel_wa and ("mmazatan" in cmail or ("miguel" in cname and "mazat" in cname)):
+                            updates_crm.append({
+                                "id": c["id"],
+                                "Mobile": miguel_wa,
+                                "Phone": None,
+                                "Home_Phone": None,
+                                "Other_Phone": None,
+                                "Assistant": None,
+                                "Fax": None
+                            })
+                            result["zoho_crm_updated"].append(f"Miguel Ángel Mazatán -> único teléfono {miguel_wa}")
+                        elif lilian_wa and ("lmaldonado" in cmail or "lilian@ingready" in cmail or ("lilian" in cname and "maldonado" in cname)):
+                            updates_crm.append({
+                                "id": c["id"],
+                                "Mobile": lilian_wa,
+                                "Phone": None,
+                                "Home_Phone": None,
+                                "Other_Phone": None,
+                                "Assistant": None,
+                                "Fax": None
+                            })
+                            result["zoho_crm_updated"].append(f"Lilian Maldonado -> único teléfono {lilian_wa}")
+                    if updates_crm:
+                        put_req = urllib.request.Request(
+                            f"{api_domain}/crm/v6/Contacts",
+                            data=json.dumps({"data": updates_crm}).encode("utf-8"),
+                            headers=headers,
+                            method="PUT"
+                        )
+                        urllib.request.urlopen(put_req, timeout=5.0).read()
+                except Exception:
+                    pass
+
+                # 2. Actualizar en Zoho Books v3 (contact_persons de Ingready): dejar el WhatsApp activo como ÚNICO teléfono (mobile=wa, phone="")
+                try:
+                    with urllib.request.urlopen(urllib.request.Request(f"{api_domain}/books/v3/contacts?organization_id={org_id}&contact_name_contains=Ingready", headers=headers), timeout=5.0) as br:
+                        b_contacts = json.loads(br.read().decode("utf-8")).get("contacts") or []
+                    for bc in b_contacts:
+                        cid = str(bc.get("contact_id"))
+                        with urllib.request.urlopen(urllib.request.Request(f"{api_domain}/books/v3/contacts/{cid}?organization_id={org_id}", headers=headers), timeout=5.0) as cd_r:
+                            c_detail = json.loads(cd_r.read().decode("utf-8")).get("contact") or {}
+                        cps = c_detail.get("contact_persons") or []
+                        for cp in cps:
+                            cp_id = str(cp.get("contact_person_id"))
+                            cp_mail = str(cp.get("email") or "").lower()
+                            cp_name = f"{cp.get('first_name', '')} {cp.get('last_name', '')}".lower()
+                            if miguel_wa and ("mmazatan" in cp_mail or "miguel" in cp_name):
+                                up_body = {
+                                    "contact_id": cid,
+                                    "first_name": cp.get("first_name") or "Miguel Ángel",
+                                    "last_name": cp.get("last_name") or "Mazatán Gutiérrez",
+                                    "email": "mmazatan@ingready.com.mx",
+                                    "mobile": miguel_wa,
+                                    "phone": ""
+                                }
+                                urllib.request.urlopen(urllib.request.Request(
+                                    f"{api_domain}/books/v3/contacts/contactpersons/{cp_id}?organization_id={org_id}",
+                                    data=json.dumps(up_body).encode("utf-8"),
+                                    headers=headers,
+                                    method="PUT"
+                                ), timeout=5.0).read()
+                                result["zoho_books_updated"].append(f"Miguel Mazatán (Zoho Books) -> único teléfono {miguel_wa}")
+                            elif lilian_wa and ("lmaldonado" in cp_mail or "lilian" in cp_name):
+                                up_body = {
+                                    "contact_id": cid,
+                                    "first_name": cp.get("first_name") or "Lilian",
+                                    "last_name": cp.get("last_name") or "Maldonado Mandujano",
+                                    "email": "lmaldonado@ingready.com.mx",
+                                    "mobile": lilian_wa,
+                                    "phone": ""
+                                }
+                                urllib.request.urlopen(urllib.request.Request(
+                                    f"{api_domain}/books/v3/contacts/contactpersons/{cp_id}?organization_id={org_id}",
+                                    data=json.dumps(up_body).encode("utf-8"),
+                                    headers=headers,
+                                    method="PUT"
+                                ), timeout=5.0).read()
+                                result["zoho_books_updated"].append(f"Lilian Maldonado (Zoho Books) -> único teléfono {lilian_wa}")
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    return result
+
+
+def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target: str = "F-00011", user_text: str = "") -> Dict[str, Any]:
+    """
+    Ejecuta en vivo en Zoho Books (Org 923290625) + OpenClaw (34.121.182.185:4747):
+    0. Sincroniza primero los teléfonos activos de WhatsApp de Miguel y Lilian hacia Zoho CRM y Zoho Books como teléfonos únicos.
+    1. Localiza la factura objetivo (por defecto F-00011 de Ingready).
+    2. Registra/verifica a Miguel Ángel Mazatán (mmazatan@ingready.com.mx) y Lilian Maldonado (lmaldonado@ingready.com.mx).
+    3. Dispara el timbrado CFDI 4.0 ante el SAT (/books/v3/invoices/{invoice_id}/einvoice/push y /books/v3/invoices/einvoice/push).
+    4. Envía la factura por correo desde Zoho Books (/books/v3/invoices/{invoice_id}/email) a ambos correos:
+       mmazatan@ingready.com.mx y lmaldonado@ingready.com.mx.
+    5. Dispara el envío por WhatsApp a los números activos en WhatsApp de Miguel y Lilian vía OpenClaw.
+    """
+    import urllib.request
+    import urllib.parse
+    import urllib.error
+    import json
+
+    phone_sync = _sync_active_whatsapp_phones_to_zoho_single_phone(user_text)
+    miguel_wa = phone_sync.get("miguel_whatsapp_active") or ""
+    lilian_wa = phone_sync.get("lilian_whatsapp_active") or ""
 
     client_id = os.environ.get("ZOHO_CLIENT_ID", "").strip()
     client_secret = os.environ.get("ZOHO_CLIENT_SECRET", "").strip()
@@ -599,6 +816,7 @@ def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target:
 
     report: Dict[str, Any] = {
         "invoice_number": invoice_number_target,
+        "phone_sync": phone_sync,
         "zoho_oauth_connected": False,
         "invoice_found": False,
         "invoice_id": None,
@@ -607,8 +825,8 @@ def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target:
         "sat_einvoice_push": {"attempted": False, "ok": False, "message": ""},
         "email_dispatch": {"attempted": False, "ok": False, "recipients": ["mmazatan@ingready.com.mx", "lmaldonado@ingready.com.mx"], "message": ""},
         "whatsapp_dispatch": {
-            "miguel": {"phone": "524422215925", "ok": False, "message": ""},
-            "lilian": {"phone": "524422585037", "ok": False, "message": ""}
+            "miguel": {"phone": miguel_wa, "ok": False, "message": ""},
+            "lilian": {"phone": lilian_wa, "ok": False, "message": ""}
         }
     }
 
@@ -660,7 +878,7 @@ def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target:
                     report["date"] = target_inv.get("date")
                     report["due_date"] = target_inv.get("due_date")
 
-                    # 2. Asegurar que Lilian (lmaldonado@ingready.com.mx) y Miguel (mmazatan@ingready.com.mx) estén en contact_persons de Ingready
+                    # 2. Asegurar que Lilian (lmaldonado@ingready.com.mx) y Miguel (mmazatan@ingready.com.mx) estén en contact_persons con su único teléfono de WhatsApp
                     if cust_id:
                         try:
                             cp_url = f"{api_domain}/books/v3/contacts/contactpersons?organization_id={org_id}&contact_id={cust_id}"
@@ -671,8 +889,8 @@ def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target:
                                 for p in (cp_json.get("contact_persons") or [])
                             }
                             for person in [
-                                {"first_name": "Miguel Ángel", "last_name": "Mazatán Gutiérrez", "email": "mmazatan@ingready.com.mx", "mobile": "+52 442 221 5925", "phone": "+52 442 252 3834"},
-                                {"first_name": "Lilian", "last_name": "Maldonado Mandujano", "email": "lmaldonado@ingready.com.mx", "mobile": "+52 442 258 5037", "phone": "+52 442 258 6037"}
+                                {"first_name": "Miguel Ángel", "last_name": "Mazatán Gutiérrez", "email": "mmazatan@ingready.com.mx", "mobile": miguel_wa, "phone": ""},
+                                {"first_name": "Lilian", "last_name": "Maldonado Mandujano", "email": "lmaldonado@ingready.com.mx", "mobile": lilian_wa, "phone": ""}
                             ]:
                                 if person["email"].lower() not in existing_emails:
                                     add_cp_req = urllib.request.Request(
@@ -758,20 +976,22 @@ def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target:
         except Exception as ze:
             report["zoho_error"] = str(ze)
 
-    # 5. Enviar WhatsApp a Miguel (524422215925) y Lilian (524422585037) a través de OpenClaw (34.121.182.185:4747)
+    # 5. Enviar WhatsApp a Miguel y Lilian a través de OpenClaw (usando sus números activos de WhatsApp)
     wa_targets = [
         (
             "miguel",
-            "524422215925",
+            miguel_wa.lstrip("+"),
             "Hola Miguel, ¿cómo estás? Te comparto que ya generamos y enviamos a tu correo (mmazatan@ingready.com.mx) la factura F-00011 de ImproBears por $5,220.00 MXN (IVA incluido) correspondiente a 3 sesiones de Coaching Comercial Ilse - Ingready (fecha 13 nov 2026, vence 20 nov 2026). ¡Te mando un abrazo! — Jorge Benítez"
         ),
         (
             "lilian",
-            "524422585037",
+            lilian_wa.lstrip("+"),
             "Hola Lili, ¿cómo estás? Te comparto que ya generamos y enviamos a tu correo (lmaldonado@ingready.com.mx) y al de Miguel la factura F-00011 de ImproBears por $5,220.00 MXN (IVA incluido) correspondiente a 3 sesiones de Coaching Comercial Ilse - Ingready (fecha 13 nov 2026, vence 20 nov 2026). ¡Muchas gracias! — Jorge Benítez"
         )
     ]
     for key_name, phone_num, wa_text in wa_targets:
+        if not phone_num:
+            continue
         for wa_ep in ["/api/whatsapp/send", "/api/gina/whatsapp-send", "/api/aura/whatsapp-send"]:
             try:
                 wreq = urllib.request.Request(
@@ -783,7 +1003,7 @@ def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target:
                 with urllib.request.urlopen(wreq, timeout=4.5) as wr:
                     if wr.status == 200:
                         report["whatsapp_dispatch"][key_name]["ok"] = True
-                        report["whatsapp_dispatch"][key_name]["message"] = f"Enviado vía {wa_ep}"
+                        report["whatsapp_dispatch"][key_name]["message"] = f"Enviado vía {wa_ep} a +{phone_num}"
                         break
             except Exception as we:
                 report["whatsapp_dispatch"][key_name]["message"] = str(we)
@@ -799,17 +1019,40 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
     low_q = q.lower()
     hist_joined = " ".join([str(h) for h in (history or [])]).lower()
 
+    # Caso 0: Jorge pide tomar los números activos en WhatsApp de Miguel y Lilian y dejarlos como los únicos teléfonos en Zoho
+    is_phone_cleanup_cmd = (
+        ("miguel" in low_q or "lilian" in low_q or "ingready" in low_q)
+        and any(w in low_q for w in ["numero", "número", "telefono", "teléfono", "whatsapp", "unico", "único", "actualiza"])
+        and not any(w in low_q for w in ["déjame verlo", "dejame verlo"])
+    )
+    if is_phone_cleanup_cmd and not ("sat" in low_q or "timbra" in low_q):
+        sync_res = _sync_active_whatsapp_phones_to_zoho_single_phone(q)
+        m_num = sync_res.get("miguel_whatsapp_active") or "pendiente de lectura en OpenClaw"
+        l_num = sync_res.get("lilian_whatsapp_active") or "pendiente de lectura en OpenClaw"
+        crm_list = ", ".join(sync_res.get("zoho_crm_updated") or []) or "actualizado al sincronizar con Zoho CRM"
+        books_list = ", ".join(sync_res.get("zoho_books_updated") or []) or "actualizado en contact_persons de Ingready"
+        return {
+            "specialist": "Aura ImproBears • Sincronización WhatsApp Activo -> Único Teléfono en Zoho One",
+            "reply": (
+                f"Listo Jorge. Tomé los números activos de WhatsApp para Ingready (Miguel: {m_num} | Lilian: {l_num}) "
+                f"y limpié los teléfonos anteriores para dejar únicamente el celular activo de WhatsApp en Zoho CRM ({crm_list}) y en Zoho Books ({books_list})."
+            )
+        }
+
     # Caso A: Jorge pide ver el borrador ("Déjame verlo", "Muéstrame el mensaje/borrador")
     if any(p in low_q for p in ["déjame verlo", "dejame verlo", "muéstrame el borrador", "muestrame el borrador", "ver el borrador", "enséñame el correo", "enseñame el correo"]):
+        sync_res = _sync_active_whatsapp_phones_to_zoho_single_phone(q)
+        m_num = sync_res.get("miguel_whatsapp_active") or "número activo en WhatsApp"
+        l_num = sync_res.get("lilian_whatsapp_active") or "número activo en WhatsApp"
         return {
             "specialist": "Aura ImproBears • Vista Previa Verificada (Sin Enviar Aún)",
             "reply": (
                 "Jorge, aquí tienes el borrador exacto para Ingready antes de enviarlo:\n\n"
                 "• Factura Zoho Books: F-00011 | Total: $5,220.00 MXN (3.0 x $1,500.00 MXN Sesión Coaching Comercial Ilse - Ingready + IVA) | Fecha: 13 nov 2026 | Vence: 20 nov 2026.\n"
                 "• Correos destino: Miguel Ángel Mazatán (mmazatan@ingready.com.mx) y Lilian Maldonado (lmaldonado@ingready.com.mx).\n"
-                "• WhatsApp destino: Miguel (+52 442 221 5925) y Lilian (+52 442 258 5037).\n"
+                f"• WhatsApp destino (únicos teléfonos activos): Miguel ({m_num}) y Lilian ({l_num}).\n"
                 "• Mensaje: \"Hola Miguel y Lili, les comparto la factura F-00011 de ImproBears por $5,220.00 MXN (IVA incluido) correspondiente a las 3 sesiones de Coaching Comercial Ilse - Ingready (emisión 13 nov 2026, vence 20 nov 2026). También se las enviamos a mmazatan@ingready.com.mx y lmaldonado@ingready.com.mx. ¡Un abrazo! — Jorge Benítez\".\n\n"
-                "Dime \"Confirmo timbrar y enviar F-00011\" o usa los botones directos debajo de este mensaje."
+                "Dime \"Confirmo timbrar y enviar F-00011\" para ejecutarlo."
             )
         }
 
@@ -819,7 +1062,7 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
         and any(w in low_q for w in ["sat", "timbra", "genera", "envía", "envia", "manda", "correo", "whatsapp", "confirmo", "f-00011"])
     )
     if is_ingready_invoice_action:
-        wf = _execute_ingready_invoice_sat_email_whatsapp_workflow("F-00011")
+        wf = _execute_ingready_invoice_sat_email_whatsapp_workflow("F-00011", q)
         sat_status = (
             f"TIMBRADA EN SAT ({wf['sat_einvoice_push']['message']})"
             if wf["sat_einvoice_push"]["ok"]
@@ -832,10 +1075,12 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
         )
         wa_m = wf["whatsapp_dispatch"]["miguel"]["ok"]
         wa_l = wf["whatsapp_dispatch"]["lilian"]["ok"]
+        m_phone = wf["whatsapp_dispatch"]["miguel"].get("phone") or "WhatsApp activo"
+        l_phone = wf["whatsapp_dispatch"]["lilian"].get("phone") or "WhatsApp activo"
         wa_status = (
-            "ENVIADO automáticamente a Miguel (+52 442 221 5925) y Lilian (+52 442 258 5037)"
+            f"ENVIADO automáticamente a Miguel ({m_phone}) y Lilian ({l_phone})"
             if (wa_m and wa_l)
-            else "Te dejé los botones de 1 toque aquí abajo para abrir el WhatsApp de Miguel (442 221 5925) y Lilian (442 258 5037) con el mensaje ya escrito"
+            else f"Teléfonos sincronizados en Zoho (Miguel: {m_phone}, Lilian: {l_phone}); usa los botones de 1 toque abajo si deseas abrir su chat"
         )
         return {
             "specialist": "Aura ImproBears • Ejecución Real Zoho Books SAT + Correo + WhatsApp",
@@ -843,7 +1088,7 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
                 f"Jorge, reporte real de ejecución para la factura {wf['invoice_number']} de Ingready ($5,220.00 MXN):\n"
                 f"1. SAT CFDI 4.0 (/einvoice/push): {sat_status}.\n"
                 f"2. Correo Zoho Books (Miguel y Lilian): {mail_status}.\n"
-                f"3. WhatsApp (Miguel y Lilian): {wa_status}."
+                f"3. WhatsApp y Teléfonos Únicos Zoho: {wa_status}."
             )
         }
 
