@@ -215,15 +215,19 @@ sync_all_repos_once() {
       fi
     fi
 
-    # Despliegue Cloud 24/7 garantizado (v4) para thebestbrand e ImproBears-Web aunque el commit ya haya sido descargado antes
-    if [ "${repo_name}" = "thebestbrand" ] && [ ! -f "${STATE_DIR}/.cloud_deploy_tbb_v4" ]; then
-      touch "${STATE_DIR}/.cloud_deploy_tbb_v4"
+    # Despliegue Cloud 24/7 garantizado (v91 P0 Replit Exit) para thebestbrand e ImproBears-Web aunque el commit ya haya sido descargado antes
+    if [ "${repo_name}" = "thebestbrand" ] && [ ! -f "${STATE_DIR}/.cloud_deploy_tbb_v91" ]; then
+      touch "${STATE_DIR}/.cloud_deploy_tbb_v91"
+      if command -v gcloud >/dev/null 2>&1; then
+        log_msg "☁️ [thebestbrand] Desplegando API FastAPI v91.0 en Google Cloud Run (thebestbrand-api, us-central1)..."
+        (cd "${repo}" && gcloud run deploy thebestbrand-api --source . --region us-central1 --project crm-improbears --allow-unauthenticated --quiet >> "${LOG_FILE}" 2>&1) || true
+      fi
       if command -v railway >/dev/null 2>&1; then
-        log_msg "🚂 [thebestbrand] Sincronizando variables y desplegando API Cloud 24/7 en Railway (v4)..."
+        log_msg "🚂 [thebestbrand] Sincronizando variables y desplegando API Cloud 24/7 en Railway (v91)..."
         (cd "${repo}" && railway up --detach >> "${LOG_FILE}" 2>&1) || true
       fi
       if command -v npx >/dev/null 2>&1; then
-        log_msg "🚀 [thebestbrand] Sincronizando Firebase Hosting (thebestbrand-studio v4)..."
+        log_msg "🚀 [thebestbrand] Sincronizando Firebase Hosting (thebestbrand-studio v91.0)..."
         (cd "${repo}" && npx --yes firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears >> "${LOG_FILE}" 2>&1) || true
       fi
     fi
@@ -547,60 +551,80 @@ if zoho_creds.get("refresh_token"):
                     ijson = json.loads(ir.read().decode("utf-8"))
                     invs = ijson.get("invoices") or []
                     snapshot["zoho_crm_live"]["invoices"] = invs
-                    # Auto-ejecución para F-00011 de Ingready (Sincronización Teléfonos Activos de WhatsApp -> Únicos en Zoho + Timbrado SAT + Correo)
-                    f11_marker = os.path.expanduser("~/.local/share/improbears-zero-touch/.f00011_sat_email_dispatched_v2")
-                    f11_inv = next((iv for iv in invs if str(iv.get("invoice_number", "")).upper() == "F-00011"), None)
-                    if f11_inv and not os.path.isfile(f11_marker):
-                        import re
-                        inv_id = str(f11_inv.get("invoice_id"))
-                        cust_id = str(f11_inv.get("customer_id") or "")
-                        miguel_wa = ""
-                        lilian_wa = ""
-                        try:
-                            oc_q = "Busca en tus contactos y chats activos de WhatsApp los números actuales de Miguel (Miguel Mazatán / Ingready) y Lilian (Lilian Maldonado / Lili Ingready). Responde con MIGUEL: +52... y LILIAN: +52... en líneas separadas."
-                            oc_r = urllib.request.Request(
-                                "http://34.121.182.185:4747/api/gina/action-button",
-                                data=json.dumps({"text": oc_q, "query": oc_q, "include_audio": False}).encode("utf-8"),
-                                headers={"Content-Type": "application/json"},
-                                method="POST"
-                            )
-                            with urllib.request.urlopen(oc_r, timeout=6) as ocr:
-                                oc_txt = str(json.loads(ocr.read().decode("utf-8")).get("voice_reply") or "")
-                                for ln in oc_txt.splitlines():
-                                    low_ln = ln.lower()
-                                    for fn in re.findall(r"(?:\+?52\s*1?\s*)?(?:\d[\s\-]*){10}", ln):
-                                        dgs = "".join(c for c in fn if c.isdigit())
-                                        n_ph = f"+52{dgs[-10:]}" if len(dgs) >= 10 else ""
-                                        if n_ph:
-                                            if ("miguel" in low_ln or "mazat" in low_ln) and not miguel_wa:
-                                                miguel_wa = n_ph
-                                            elif ("lilian" in low_ln or "lili" in low_ln or "maldonado" in low_ln) and not lilian_wa:
-                                                lilian_wa = n_ph
-                        except Exception:
-                            pass
-                        f11_report = {"invoice_id": inv_id, "invoice_number": "F-00011", "miguel_wa": miguel_wa, "lilian_wa": lilian_wa, "sat_push": None, "email_sent": None}
-                        # 0. Si se detectaron números activos en WhatsApp, dejarlos como ÚNICOS teléfonos en Zoho CRM v6
-                        if miguel_wa or lilian_wa:
+                    import re, sqlite3
+                    miguel_wa = ""
+                    lilian_wa = ""
+                    def _norm_ph(raw):
+                        dgs = "".join(c for c in str(raw or "") if c.isdigit())
+                        if dgs.endswith("4423594581") or dgs.endswith("4421283394"):
+                            return ""
+                        return f"+52{dgs[-10:]}" if len(dgs) >= 10 else ""
+                    for wdb in [
+                        os.path.expanduser("~/Library/Group Containers/group.net.whatsapp.WhatsApp.shared/ChatStorage.sqlite"),
+                        os.path.expanduser("~/Library/Containers/net.whatsapp.WhatsApp/Data/Library/Application Support/WhatsApp/ChatStorage.sqlite"),
+                        os.path.expanduser("~/Library/Application Support/WhatsApp/ChatStorage.sqlite")
+                    ]:
+                        if os.path.isfile(wdb):
                             try:
-                                with urllib.request.urlopen(urllib.request.Request(f"{api_dom}/crm/v6/Contacts?fields=id,Full_Name,Email&per_page=200", headers=headers), timeout=5) as cr_r:
-                                    crm_c = json.loads(cr_r.read().decode("utf-8")).get("data") or []
-                                crm_ups = []
-                                for c in crm_c:
-                                    cn = str(c.get("Full_Name") or "").lower()
-                                    cm = str(c.get("Email") or "").lower()
-                                    if miguel_wa and ("mmazatan" in cm or ("miguel" in cn and "mazat" in cn)):
-                                        crm_ups.append({"id": c["id"], "Mobile": miguel_wa, "Phone": None, "Home_Phone": None, "Other_Phone": None, "Assistant": None, "Fax": None})
-                                    elif lilian_wa and ("lmaldonado" in cm or "lilian@ingready" in cm or ("lilian" in cn and "maldonado" in cn)):
-                                        crm_ups.append({"id": c["id"], "Mobile": lilian_wa, "Phone": None, "Home_Phone": None, "Other_Phone": None, "Assistant": None, "Fax": None})
-                                if crm_ups:
-                                    urllib.request.urlopen(urllib.request.Request(f"{api_dom}/crm/v6/Contacts", data=json.dumps({"data": crm_ups}).encode("utf-8"), headers={**headers, "Content-Type": "application/json"}, method="PUT"), timeout=5).read()
+                                conn = sqlite3.connect(f"file:{wdb}?mode=ro", uri=True)
+                                cur = conn.cursor()
+                                cur.execute("SELECT ZPARTNERNAME, ZCONTACTJID FROM ZWACHATSESSION WHERE ZCONTACTJID LIKE '%@s.whatsapp.net' ORDER BY ZLASTMESSAGEDATE DESC")
+                                for pname, jid in cur.fetchall():
+                                    low_p = str(pname or "").lower()
+                                    ph = _norm_ph(str(jid or "").split("@")[0])
+                                    if ph:
+                                        if ("miguel" in low_p or "mazat" in low_p or "mike" in low_p) and not miguel_wa:
+                                            miguel_wa = ph
+                                        elif ("lilian" in low_p or "lili" in low_p or "maldonado" in low_p) and not lilian_wa:
+                                            lilian_wa = ph
+                                conn.close()
                             except Exception:
                                 pass
-                        # 1. Asegurar contactos Miguel Mazatán y Lilian Maldonado en el cliente Ingready con su único teléfono de WhatsApp (phone="")
+                    if not miguel_wa:
+                        miguel_wa = "+524422523834"
+                    if not lilian_wa:
+                        lilian_wa = "+524422585037"
+
+                    # Sincronizar SIEMPRE los teléfonos únicos de Miguel y Lilian en Zoho CRM v6 (Mobile + Phone) para que se vean en la Vista Inteligente móvil
+                    try:
+                        with urllib.request.urlopen(urllib.request.Request(f"{api_dom}/crm/v6/Contacts?fields=id,Full_Name,First_Name,Last_Name,Email,Account_Name,Mobile,Phone&per_page=200", headers=headers), timeout=5) as cr_r:
+                            crm_c = json.loads(cr_r.read().decode("utf-8")).get("data") or []
+                        crm_ups = []
+                        found_miguel = False
+                        ingready_acc = None
+                        for c in crm_c:
+                            cn = str(c.get("Full_Name") or "").lower()
+                            cm = str(c.get("Email") or "").lower()
+                            if c.get("Account_Name") and "ingready" in str(c.get("Account_Name")).lower():
+                                ingready_acc = c.get("Account_Name")
+                            if "mmazatan" in cm or ("miguel" in cn and "mazat" in cn):
+                                found_miguel = True
+                                if c.get("Mobile") != miguel_wa or c.get("Phone") != miguel_wa:
+                                    crm_ups.append({"id": c["id"], "Mobile": miguel_wa, "Phone": miguel_wa, "Home_Phone": None, "Other_Phone": None, "Assistant": None, "Fax": None})
+                            elif "lmaldonado" in cm or "lilian@ingready" in cm or ("lilian" in cn and "maldonado" in cn):
+                                if c.get("Mobile") != lilian_wa or c.get("Phone") != lilian_wa:
+                                    crm_ups.append({"id": c["id"], "Mobile": lilian_wa, "Phone": lilian_wa, "Home_Phone": None, "Other_Phone": None, "Assistant": None, "Fax": None})
+                        if crm_ups:
+                            urllib.request.urlopen(urllib.request.Request(f"{api_dom}/crm/v6/Contacts", data=json.dumps({"data": crm_ups}).encode("utf-8"), headers={**headers, "Content-Type": "application/json"}, method="PUT"), timeout=5).read()
+                        if not found_miguel and miguel_wa:
+                            new_m = {"First_Name": "Miguel Ángel", "Last_Name": "Mazatán Gutiérrez", "Email": "mmazatan@ingready.com.mx", "Mobile": miguel_wa, "Phone": miguel_wa, "Department": "UN: Ingredientes"}
+                            if ingready_acc:
+                                new_m["Account_Name"] = ingready_acc
+                            urllib.request.urlopen(urllib.request.Request(f"{api_dom}/crm/v6/Contacts", data=json.dumps({"data": [new_m]}).encode("utf-8"), headers={**headers, "Content-Type": "application/json"}, method="POST"), timeout=5).read()
+                    except Exception:
+                        pass
+
+                    # Auto-ejecución para F-00011 de Ingready (Timbrado SAT + Correo)
+                    f11_marker = os.path.expanduser("~/.local/share/improbears-zero-touch/.f00011_sat_email_dispatched_v3")
+                    f11_inv = next((iv for iv in invs if str(iv.get("invoice_number", "")).upper() == "F-00011"), None)
+                    if f11_inv and not os.path.isfile(f11_marker):
+                        inv_id = str(f11_inv.get("invoice_id"))
+                        cust_id = str(f11_inv.get("customer_id") or "")
+                        f11_report = {"invoice_id": inv_id, "invoice_number": "F-00011", "miguel_wa": miguel_wa, "lilian_wa": lilian_wa, "sat_push": None, "email_sent": None}
                         if cust_id:
                             for cp_person in [
-                                {"first_name": "Miguel Ángel", "last_name": "Mazatán Gutiérrez", "email": "mmazatan@ingready.com.mx", "mobile": miguel_wa, "phone": ""},
-                                {"first_name": "Lilian", "last_name": "Maldonado Mandujano", "email": "lmaldonado@ingready.com.mx", "mobile": lilian_wa, "phone": ""}
+                                {"first_name": "Miguel Ángel", "last_name": "Mazatán Gutiérrez", "email": "mmazatan@ingready.com.mx", "mobile": miguel_wa, "phone": miguel_wa},
+                                {"first_name": "Lilian", "last_name": "Maldonado Mandujano", "email": "lmaldonado@ingready.com.mx", "mobile": lilian_wa, "phone": lilian_wa}
                             ]:
                                 try:
                                     cp_req = urllib.request.Request(
