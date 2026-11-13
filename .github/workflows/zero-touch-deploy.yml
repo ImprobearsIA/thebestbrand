@@ -54,5 +54,7 @@ jobs:
           else
             echo "✅ V91.0 Engines Verified. Local macOS Zero-Touch Guardian handles Cloud Run & Firebase Hosting sync."
           fi
+          curl -fsSL -X POST "https://thebestbrand.app/api/v1/system/sync-github" || true
+
 
 
