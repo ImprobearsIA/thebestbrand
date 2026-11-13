@@ -70,8 +70,8 @@
     .tbb-scroll-progress-bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #0D2540 0%, #426EAE 50%, #4C9DE6 100%);
-      box-shadow: 0 0 12px rgba(76, 157, 230, 0.75);
+      background: linear-gradient(90deg, #0D2540 0%, #426EAE 50%, #4C9DE6 82%, #FF7A00 100%);
+      box-shadow: 0 0 12px rgba(255, 122, 0, 0.65);
       transition: width 0.08s linear;
     }
 
@@ -95,27 +95,31 @@
 
   <footer class="tbb-comm-footer">
     <div style="max-width:1120px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:12px;">
-      <div style="font-family:var(--font-heading); font-weight:900; font-size:1.08rem; color:#090D16; letter-spacing:0.02em;">
-        THE BEST BRAND — <span style="color:#FF7A00;">YOUR BRAND, NOW!!!</span> · <span style="color:#0D2540;">EDICIÓN OFICIAL 1.0</span>
+      <div style="font-family:var(--font-heading); font-weight:600; font-size:1.02rem; color:#0F172A; letter-spacing:0.01em;">
+        THE BEST BRAND — <span style="color:#426EAE;">YOUR BRAND, NOW</span> · <span style="color:#64748B;">EDICIÓN OFICIAL 1.0</span>
       </div>
-      <div style="color:#64748B; font-weight:500; max-width:720px; line-height:1.55;">
+      <div style="color:#64748B; font-weight:400; max-width:720px; line-height:1.6;">
         Plataforma para crear la identidad visual, los 9 entregables oficiales y el Manual de Marca de 36 Láminas en Curvas de tu empresa con inteligencia artificial y guía por voz de Aura en 6 idiomas.
       </div>
-      <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:6px;">
-        <a href="/studio" style="color:#FF7A00; font-weight:800; text-decoration:none;">Abrir Estudio Completo ↗</a>
+      <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-top:6px;">
+        <a href="#inicio" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('inicio'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Inicio</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="#tbbCommDeliverablesFullSection" style="color:#475569; font-weight:800; text-decoration:none;">Los 9 Entregables Oficiales</a>
+        <a href="#demo" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('demo'); return false;}" style="color:#16A34A; font-weight:500; text-decoration:none;">Demo en vivo</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="#tbbHeroLeftInteractiveDemoWrap" style="color:#090D16; font-weight:800; text-decoration:none;">Demo Interactiva + 6 Idiomas</a>
+        <a href="#app-tour" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('app-tour'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">App Tour</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="#tbbCommPricingSection" onclick="if(window.tbbOpenBuyAppCheckoutModal){window.tbbOpenBuyAppCheckoutModal('pro_atelier'); return false;}" style="color:#090D16; font-weight:800; text-decoration:none;">Comprar la App (Tarjeta · Apple Pay · Google Pay · PayPal)</a>
+        <a href="#bases-teoricas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('bases-teoricas'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Bases teóricas</a>
+        <span style="color:#CBD5E1;">·</span>
+        <a href="#pack-descargas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('pack-descargas'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Pack de descargas</a>
+        <span style="color:#CBD5E1;">·</span>
+        <a href="#comprar" onclick="if(window.tbbOpenBuyAppCheckoutModal){window.tbbOpenBuyAppCheckoutModal('pro_atelier'); return false;}" style="color:#0D2540; font-weight:600; text-decoration:none;">Comprar la App ($49 USD)</a>
       </div>
     </div>
   </footer>
 
-  <script src="/tbb-v80-brandbook-plates.js?v=90.0"></script>
-  <script src="/universal-brandbook-30-engine.js?v=90.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=90.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=90.0"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=91.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=91.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=91.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=91.0"></script>
 </body>
 </html>
