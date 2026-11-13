@@ -43,6 +43,18 @@ log_msg() {
   echo "[${ts}] $*" | tee -a "${LOG_FILE}"
 }
 
+notify_git_event() {
+  local title="$1"
+  local subtitle="$2"
+  local message="$3"
+  log_msg "🔔 [GIT-CONFIRM] ${title} | ${subtitle} — ${message}"
+  if [ "$(uname -s)" = "Darwin" ] && command -v osascript >/dev/null 2>&1; then
+    osascript -e "display notification \"${message//\"/\'}\" with title \"${title//\"/\'}\" subtitle \"${subtitle//\"/\'}\" sound name \"Glass\"" >/dev/null 2>&1 || true
+  fi
+  local confirm_file="${HOME}/Desktop/git_sync_confirmations.txt"
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] ${title} | ${subtitle} | ${message}" >> "${confirm_file}" 2>/dev/null || true
+}
+
 # Candidate workspace roots on Jorge's Mac (SSD + Google Drive)
 CANDIDATE_ROOTS=(
   "/Users/oso/Proyectos_ImproBears_SSD"
@@ -74,8 +86,10 @@ run_post_update_hooks() {
 
   local changed_files
   changed_files="$(git -C "${repo_dir}" diff --name-only "${old_sha}" "${new_sha}" 2>/dev/null || true)"
+  local commit_subj
+  commit_subj="$(git -C "${repo_dir}" log -1 --pretty=format:'%s' "${new_sha}" 2>/dev/null || true)"
 
-  log_msg "⚡ [${repo_name}] Actualizado ${old_sha:0:7} -> ${new_sha:0:7}. Verificando hooks Zero-Touch..."
+  notify_git_event "✅ Git Pull Exitoso: ${repo_name}" "${old_sha:0:7} → ${new_sha:0:7}" "${commit_subj}"
 
   # 1. ImproBears-Web: Auto-deploy Firebase Hosting + Aura CarPlay Xcode build
   if [ -f "${repo_dir}/firebase.json" ] && grep -q "improbears-com" "${repo_dir}/firebase.json" 2>/dev/null; then
@@ -83,8 +97,8 @@ run_post_update_hooks() {
       if command -v npx >/dev/null 2>&1; then
         log_msg "🚀 [${repo_name}] Desplegando cambios de public/ a Firebase Hosting (improbears-com)..."
         (cd "${repo_dir}" && npx --yes firebase-tools deploy --only hosting:improbears-com --project crm-improbears >> "${LOG_FILE}" 2>&1) \
-          && log_msg "✅ [${repo_name}] Firebase Hosting (improbears-com) actualizado en vivo." \
-          || log_msg "⚠️ [${repo_name}] Firebase CLI local no pudo desplegar (revisar sesión o GitHub Actions)."
+          && notify_git_event "🚀 Deploy En Vivo: ${repo_name}" "improbears.com (${new_sha:0:7})" "Sitio Web, Aura y TheBestGrowth actualizados en Firebase Hosting." \
+          || notify_git_event "⚠️ Aviso Deploy: ${repo_name}" "Firebase CLI (${new_sha:0:7})" "Revisar sesión Firebase local o GitHub Actions."
       fi
     fi
 
@@ -122,7 +136,7 @@ run_post_update_hooks() {
       if command -v gcloud >/dev/null 2>&1; then
         log_msg "☁️ [${repo_name}] Desplegando apps/api/main.py en Google Cloud Run (thebestbrand-api, us-central1)..."
         (cd "${repo_dir}" && gcloud run deploy thebestbrand-api --source . --region us-central1 --project crm-improbears --allow-unauthenticated --quiet >> "${LOG_FILE}" 2>&1) \
-          && log_msg "✅ [${repo_name}] Google Cloud Run (thebestbrand-api) actualizado en vivo." \
+          && notify_git_event "☁️ Cloud Run En Vivo: ${repo_name}" "thebestbrand-api (${new_sha:0:7})" "Backend FastAPI actualizado en Google Cloud Run." \
           || log_msg "⚠️ [${repo_name}] gcloud run deploy no pudo completar (verificar gcloud auth)."
       fi
     fi
@@ -130,7 +144,7 @@ run_post_update_hooks() {
       if command -v npx >/dev/null 2>&1; then
         log_msg "🚀 [${repo_name}] Desplegando apps/web/ a Firebase Hosting (thebestbrand-studio)..."
         (cd "${repo_dir}" && npx --yes firebase-tools deploy --only hosting:thebestbrand-studio --project crm-improbears >> "${LOG_FILE}" 2>&1) \
-          && log_msg "✅ [${repo_name}] Firebase Hosting (thebestbrand-studio) actualizado en vivo." \
+          && notify_git_event "🚀 Deploy En Vivo: ${repo_name}" "thebestbrand-studio (${new_sha:0:7})" "Atelier TheBestBrand actualizado en Firebase Hosting." \
           || log_msg "⚠️ [${repo_name}] Firebase CLI local no pudo desplegar (revisar sesión o GitHub Actions)."
       fi
     fi
@@ -150,7 +164,7 @@ run_post_update_hooks() {
       if command -v pnpm >/dev/null 2>&1; then
         log_msg "🌊 [${repo_name}] Compilando y desplegando Acqua Ixtapa en Cloudflare Workers..."
         (cd "${repo_dir}" && pnpm install --frozen-lockfile && pnpm run build && npx --yes wrangler deploy >> "${LOG_FILE}" 2>&1) \
-          && log_msg "✅ [${repo_name}] Cloudflare Workers (acquaixtapa) actualizado en vivo." \
+          && notify_git_event "🌊 Deploy En Vivo: ${repo_name}" "Cloudflare Workers (${new_sha:0:7})" "Sitio Acqua Ixtapa actualizado en producción." \
           || log_msg "⚠️ [${repo_name}] Wrangler local no pudo desplegar."
       fi
     fi
