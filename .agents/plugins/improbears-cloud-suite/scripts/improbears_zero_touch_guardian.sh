@@ -445,7 +445,7 @@ snapshot = {
     "cloud_bootstrap_tokens": {}
 }
 
-# 1. Capture Firebase CLI refresh token & Railway token & Zoho creds so Cloud VM can set GitHub Secrets using its own authenticated gh CLI!
+# 1. Capture Firebase CLI refresh token, GCP service account / ADC & Railway token & Zoho creds so Cloud VM can set GitHub Secrets and deploy directly!
 for fb_cfg in [os.path.expanduser("~/.config/configstore/firebase-tools.json"), "/Users/oso/.config/configstore/firebase-tools.json"]:
     if os.path.isfile(fb_cfg):
         try:
@@ -456,6 +456,29 @@ for fb_cfg in [os.path.expanduser("~/.config/configstore/firebase-tools.json"), 
                 break
         except Exception:
             pass
+
+for adc_cfg in [
+    os.path.expanduser("~/.config/gcloud/application_default_credentials.json"),
+    "/Users/oso/.config/gcloud/application_default_credentials.json",
+    os.path.expanduser("~/.config/improbears/firebase-service-account.json"),
+    "/Users/oso/Proyectos_ImproBears_SSD/.firebase-service-account.json"
+] + glob.glob("/Users/oso/Proyectos_ImproBears_SSD/**/*crm-improbears*.json", recursive=True) + glob.glob("/Users/oso/Downloads/*crm-improbears*.json"):
+    if os.path.isfile(adc_cfg):
+        try:
+            raw_json = open(adc_cfg, "r", encoding="utf-8").read().strip()
+            if '"client_id"' in raw_json or '"private_key"' in raw_json:
+                snapshot["cloud_bootstrap_tokens"]["FIREBASE_SERVICE_ACCOUNT"] = raw_json
+                break
+        except Exception:
+            pass
+
+try:
+    import subprocess as _sp
+    gtok = _sp.check_output(["gcloud", "auth", "print-access-token"], stderr=_sp.DEVNULL, timeout=4).decode("utf-8").strip()
+    if gtok:
+        snapshot["cloud_bootstrap_tokens"]["GCLOUD_ACCESS_TOKEN"] = gtok
+except Exception:
+    pass
 
 for rw_cfg in [os.path.expanduser("~/.railway/config.json"), "/Users/oso/.railway/config.json"]:
     if os.path.isfile(rw_cfg):
