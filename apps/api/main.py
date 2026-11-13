@@ -64,14 +64,14 @@ app = FastAPI(
 _ALLOWED_CORS_ORIGINS = [
     o.strip() for o in os.environ.get(
         "TBB_CORS_ORIGINS",
-        "https://thebestbrand-studio.web.app,https://crm-improbears.web.app,https://improbears.com,http://localhost:8000,http://127.0.0.1:8000,http://localhost:5173,http://127.0.0.1:5173,null"
+        "https://thebestbrand.app,https://www.thebestbrand.app,https://thebestbrand-studio.web.app,https://crm-improbears.web.app,https://improbears.com,http://localhost:8000,http://127.0.0.1:8000,http://localhost:5173,http://127.0.0.1:5173,null"
     ).split(",") if o.strip()
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_ALLOWED_CORS_ORIGINS if os.environ.get("TBB_STRICT_CORS") == "1" else ["*"],
-    allow_origin_regex=r"https://.*\.(web\.app|firebaseapp\.com|improbears\.com)|http://(localhost|127\.0\.0\.1)(:\d+)?",
+    allow_origin_regex=r"https://.*\.(thebestbrand\.app|web\.app|firebaseapp\.com|improbears\.com|replit\.app)|http://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_methods=["*"],
     allow_headers=["*"],
 )
