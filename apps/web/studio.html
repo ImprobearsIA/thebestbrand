@@ -6120,8 +6120,24 @@
     ];
     window.AURA_ARCH_NAMES = AURA_ARCH_NAMES;
 
+    const AURA_CANONICAL_BRAND_CONFIG = {
+      paletteId: "brandbook_1_0",
+      paletteLabel: "Personalizado ImproBears · 01 · Torus Cuántico 3D",
+      priHex: "#1D4ED8",
+      secHex: "#E04700",
+      accentHex: "#EA7300",
+      coreStyle: "dark",
+      archIdx: 0,
+      orbSpeed: 1.0,
+      customRoleTitle: "",
+      customMessage: "",
+      updatedAtTs: 0,
+      lockedByAdmin: true
+    };
+    window.AURA_CANONICAL_BRAND_CONFIG = AURA_CANONICAL_BRAND_CONFIG;
+
     const AURA_OFFICIAL_PALETTES = [
-      { id: "brandbook_1_0", label: "Brandbook 1.0 (Zafiro & Naranja Acción)", priHex: "#1D4ED8", secHex: "#FF7A00", accentHex: "#EA580C", coreStyle: "dark" },
+      { id: "brandbook_1_0", label: "Personalizado ImproBears · Torus Cuántico 3D", priHex: "#1D4ED8", secHex: "#E04700", accentHex: "#EA7300", coreStyle: "dark" },
       { id: "zafiro_claro_1_0", label: "Brandbook 1.0 Lienzo Claro", priHex: "#1D4ED8", secHex: "#FF7A00", accentHex: "#EA580C", coreStyle: "light" },
       { id: "oro_imperial", label: "Oro Imperial", priHex: "#D4AF37", secHex: "#FDE68A", accentHex: "#B45309", coreStyle: "dark" },
       { id: "cian_cuantico", label: "Cian Cuántico", priHex: "#1D4ED8", secHex: "#60A5FA", accentHex: "#FF7A00", coreStyle: "dark" },
@@ -6151,40 +6167,21 @@
     window.tbbHexToRgbTuple = tbbHexToRgbTuple;
 
     window.tbbAuraOrbConfig = (() => {
-      const defCfg = {
-        paletteId: "brandbook_1_0",
-        paletteLabel: "Brandbook 1.0 (Zafiro & Naranja Acción)",
-        priHex: "#1D4ED8",
-        secHex: "#FF7A00",
-        accentHex: "#EA580C",
-        coreStyle: "dark",
-        archIdx: 0,
-        orbSpeed: 1.0,
-        customRoleTitle: "",
-        customMessage: "",
-        updatedAtTs: 0,
-        lockedByAdmin: false
-      };
+      const defCfg = { ...AURA_CANONICAL_BRAND_CONFIG };
       try {
         const rawVaultV60 = localStorage.getItem("tbb_vault_aura_orb_config_v60");
         const rawV60 = rawVaultV60 || localStorage.getItem("tbb_aura_orb_config_v60");
         if (rawV60) {
           const parsed = JSON.parse(rawV60);
           if (parsed && typeof parsed === "object" && parsed.priHex) {
-            const isLegacyBlueOnly = /^#(0d2540|38bdf8|60a5fa|0284c7|1d4ed8)$/i.test(String(parsed.secHex || "").trim());
             return {
-              paletteId: parsed.paletteId || "brandbook_1_0",
-              paletteLabel: parsed.paletteLabel || "Brandbook 1.0 (Zafiro & Naranja Acción)",
-              priHex: parsed.priHex || defCfg.priHex,
-              secHex: isLegacyBlueOnly ? "#FF7A00" : (parsed.secHex || defCfg.secHex),
-              accentHex: isLegacyBlueOnly ? "#EA580C" : (parsed.accentHex || defCfg.accentHex),
-              coreStyle: parsed.coreStyle === "light" ? "light" : "dark",
-              archIdx: Math.max(0, Math.min(4, parseInt(parsed.archIdx ?? 0, 10) || 0)),
-              orbSpeed: Number(parsed.orbSpeed) > 0 ? Number(parsed.orbSpeed) : 1.0,
-              customRoleTitle: String(parsed.customRoleTitle || ""),
-              customMessage: String(parsed.customMessage || ""),
-              updatedAtTs: Number(parsed.updatedAtTs || 1),
-              lockedByAdmin: Boolean(parsed.lockedByAdmin ?? true)
+              ...defCfg,
+              priHex: "#1D4ED8",
+              secHex: "#E04700",
+              accentHex: "#EA7300",
+              coreStyle: "dark",
+              archIdx: 0,
+              orbSpeed: Number(parsed.orbSpeed) > 0 ? Number(parsed.orbSpeed) : 1.0
             };
           }
         }
@@ -6198,34 +6195,33 @@
     const GOLDEN_PHI = 1.61803398875;
 
     function tbbApplyAuraOrbThemeToDOM() {
-      const cfg = window.tbbAuraOrbConfig || AURA_OFFICIAL_PALETTES[0];
-      if (/^#(0d2540|38bdf8|60a5fa|0284c7|1d4ed8)$/i.test(String(cfg.secHex || "").trim())) {
-        cfg.secHex = "#FF7A00";
-        cfg.accentHex = "#EA580C";
-      }
-      if (typeof cfg.archIdx === "number" && !isNaN(cfg.archIdx)) {
-        activeAuraOrbArch = Math.max(0, Math.min(4, parseInt(cfg.archIdx, 10) || 0));
-      }
-      const [r1, g1, b1] = tbbHexToRgbTuple(cfg.priHex, [29, 78, 216]);
-      const [r2, g2, b2] = tbbHexToRgbTuple(cfg.secHex, [255, 122, 0]);
-      const [r3, g3, b3] = tbbHexToRgbTuple(cfg.accentHex, [234, 88, 12]);
+      const cfg = window.tbbAuraOrbConfig || AURA_CANONICAL_BRAND_CONFIG;
+      cfg.priHex = "#1D4ED8";
+      cfg.secHex = "#E04700";
+      cfg.accentHex = "#EA7300";
+      cfg.coreStyle = "dark";
+      cfg.archIdx = 0;
+      activeAuraOrbArch = 0;
+      const [r1, g1, b1] = [29, 78, 216];   // #1D4ED8
+      const [r2, g2, b2] = [224, 71, 0];    // #E04700
+      const [r3, g3, b3] = [234, 115, 0];   // #EA7300
 
       const rowEl = document.getElementById("tbbAuraTopPresenceRow");
       if (rowEl) {
         rowEl.style.borderColor = `rgba(${r1}, ${g1}, ${b1}, 0.38)`;
-        rowEl.style.borderBottomColor = `rgba(${r2}, ${g2}, ${b2}, 0.96)`;
+        rowEl.style.borderBottomColor = `rgba(${r3}, ${g3}, ${b3}, 0.96)`;
       }
       const orbEl = document.getElementById("tbbLiveAuraOrbCanvas");
       if (orbEl) {
-        orbEl.style.borderColor = cfg.secHex || "#FF7A00";
-        orbEl.style.boxShadow = `0 8px 26px rgba(${r1}, ${g1}, ${b1}, 0.36), 0 0 22px rgba(${r2}, ${g2}, ${b2}, 0.45)`;
-        orbEl.style.background = cfg.coreStyle === "dark" ? "#090D16" : `rgba(${r1}, ${g1}, ${b1}, 0.08)`;
+        orbEl.style.borderColor = "#1D4ED8";
+        orbEl.style.boxShadow = `0 10px 28px rgba(${r1}, ${g1}, ${b1}, 0.42), 0 0 24px rgba(${r3}, ${g3}, ${b3}, 0.45)`;
+        orbEl.style.background = "#04060B";
       }
       const badgeEl = document.getElementById("tbbAuraPresenceMetaBadge");
       if (badgeEl) {
-        badgeEl.style.color = cfg.priHex;
+        badgeEl.style.color = "#1D4ED8";
         const dotEl = badgeEl.querySelector("span");
-        if (dotEl) dotEl.style.background = cfg.secHex || "#FF7A00";
+        if (dotEl) dotEl.style.background = "#E04700";
       }
       if (cfg.customRoleTitle && String(cfg.customRoleTitle).trim()) {
         const roleEl = document.getElementById("tbbAuraPresenceRoleText");
@@ -6237,8 +6233,8 @@
       }
       const btnAdminTop = document.getElementById("tbbBtnTopAdminAuraColors");
       if (btnAdminTop) {
-        btnAdminTop.style.borderColor = cfg.secHex || "#FF7A00";
-        btnAdminTop.style.color = cfg.priHex;
+        btnAdminTop.style.borderColor = "#EA7300";
+        btnAdminTop.style.color = "#1D4ED8";
       }
     }
     window.tbbApplyAuraOrbThemeToDOM = tbbApplyAuraOrbThemeToDOM;
@@ -6249,18 +6245,19 @@
 
     // 6 Volumetric 3D Liquid-Light Lobes (Siri / visionOS style)
     const AURA_3D_LOBES = [
-      { rx: 1.0, ry: 0.72, rz: 0.85, speedX: 0.92, speedY: 1.18, phase: 0.0, rBase: 76, cInner: [255, 122, 0, 0.92], cMid: [234, 88, 12, 0.52], cOuter: [194, 65, 12, 0] },
+      { rx: 1.0, ry: 0.72, rz: 0.85, speedX: 0.92, speedY: 1.18, phase: 0.0, rBase: 76, cInner: [234, 115, 0, 0.92], cMid: [224, 71, 0, 0.52], cOuter: [194, 65, 12, 0] },
       { rx: 0.82, ry: 1.05, rz: 0.78, speedX: -1.12, speedY: 0.86, phase: 1.2, rBase: 72, cInner: [29, 78, 216, 0.88], cMid: [66, 110, 174, 0.46], cOuter: [13, 37, 64, 0] },
-      { rx: 0.95, ry: 0.88, rz: 1.02, speedX: 0.76, speedY: -1.24, phase: 2.4, rBase: 68, cInner: [255, 154, 46, 0.84], cMid: [255, 122, 0, 0.40], cOuter: [234, 88, 12, 0] },
-      { rx: 0.74, ry: 0.92, rz: 1.10, speedX: -0.84, speedY: -0.95, phase: 3.7, rBase: 64, cInner: [255, 251, 235, 0.94], cMid: [255, 165, 55, 0.48], cOuter: [255, 122, 0, 0] },
+      { rx: 0.95, ry: 0.88, rz: 1.02, speedX: 0.76, speedY: -1.24, phase: 2.4, rBase: 68, cInner: [234, 115, 0, 0.84], cMid: [224, 71, 0, 0.40], cOuter: [234, 88, 12, 0] },
+      { rx: 0.74, ry: 0.92, rz: 1.10, speedX: -0.84, speedY: -0.95, phase: 3.7, rBase: 64, cInner: [255, 251, 235, 0.94], cMid: [234, 115, 0, 0.48], cOuter: [224, 71, 0, 0] },
       { rx: 1.08, ry: 0.68, rz: 0.90, speedX: 1.28, speedY: 0.64, phase: 4.9, rBase: 70, cInner: [76, 157, 230, 0.80], cMid: [29, 78, 216, 0.36], cOuter: [13, 37, 64, 0] },
-      { rx: 0.66, ry: 1.12, rz: 0.84, speedX: -0.68, speedY: 1.34, phase: 5.8, rBase: 62, cInner: [255, 122, 0, 0.64], cMid: [66, 110, 174, 0.38], cOuter: [29, 78, 216, 0] }
+      { rx: 0.66, ry: 1.12, rz: 0.84, speedX: -0.68, speedY: 1.34, phase: 5.8, rBase: 62, cInner: [224, 71, 0, 0.64], cMid: [66, 110, 174, 0.38], cOuter: [29, 78, 216, 0] }
     ];
 
     function initAuraOrb() {
       auraCanvas = document.getElementById("avatarCanvas");
-      if (!auraCanvas) return;
-      auraCtx = auraCanvas.getContext("2d");
+      if (auraCanvas) {
+        auraCtx = auraCanvas.getContext("2d");
+      }
       auraParticles.length = 0;
       for (let i = 0; i < NUM_AURA_PARTICLES; i++) {
         auraParticles.push({
@@ -6277,6 +6274,10 @@
       requestAnimationFrame(renderAuraLoop);
     }
 
+    // =========================================================================
+    // IDENTIDAD CANÓNICA FIJA: Personalizado ImproBears · 01 · Torus Cuántico 3D
+    // Colores Hex Exactos: Primario #1D4ED8 (29,78,216), Secundario #E04700 (224,71,0), Acento #EA7300 (234,115,0)
+    // =========================================================================
     function drawAura3DFrameOnCanvas(targetCanvas, targetCtx) {
       if (!targetCanvas || !targetCtx) return;
       const ctx = targetCtx;
@@ -6284,7 +6285,7 @@
       const h = targetCanvas.height;
       const cx = w / 2;
       const cy = h / 2;
-      const maxR = Math.min(cx, cy) - 3;
+      const maxR = Math.min(cx, cy) - 4;
       const scaleRatio = maxR / 106;
 
       ctx.clearRect(0, 0, w, h);
@@ -6293,200 +6294,21 @@
       ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
       ctx.clip();
 
-      if (targetCanvas.id === "tbbLiveAuraOrbCanvas" || targetCanvas.id === "tbbAdminAuraPreviewCanvas") {
-        const cfg = window.tbbAuraOrbConfig || AURA_OFFICIAL_PALETTES[0];
-        const [r1, g1, b1] = tbbHexToRgbTuple(cfg.priHex, [29, 78, 216]);
-        const [r2, g2, b2] = tbbHexToRgbTuple(cfg.secHex, [255, 122, 0]);
-        const [r3, g3, b3] = tbbHexToRgbTuple(cfg.accentHex, [234, 88, 12]);
-        const isDarkCore = cfg.coreStyle !== "light";
-        const arch = Number(cfg.archIdx ?? 0);
+      const r1 = 29, g1 = 78, b1 = 216;   // #1D4ED8
+      const r2 = 224, g2 = 71, b2 = 0;    // #E04700
+      const r3 = 234, g3 = 115, b3 = 0;   // #EA7300
 
-        // 1. Base de la Esfera (Obsidiana Profunda #090D16 con refracción Zafiro + Naranja Acción idéntica a logo_Aura.png)
-        const sphereBase = ctx.createRadialGradient(cx, cy * 0.82, maxR * 0.05, cx, cy, maxR);
-        if (isDarkCore) {
-          sphereBase.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, 0.42)`);
-          sphereBase.addColorStop(0.52, "#0B1120");
-          sphereBase.addColorStop(1, "#050811");
-        } else {
-          sphereBase.addColorStop(0, "#FFFFFF");
-          sphereBase.addColorStop(0.55, `rgba(${r2}, ${g2}, ${b2}, 0.24)`);
-          sphereBase.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0.38)`);
-        }
-        ctx.fillStyle = sphereBase;
-        ctx.fillRect(0, 0, w, h);
-
-        if (isDarkCore) {
-          ctx.globalCompositeOperation = "screen";
-        }
-
-        const pulseAmpLight = isSpeakingLive ? 1.25 + Math.sin(auraAngle * 4.2) * 0.15 : 1.0;
-        const lobeColors = [
-          [r1, g1, b1, isDarkCore ? 0.78 : 0.62],
-          [r2, g2, b2, isDarkCore ? 0.88 : 0.72],
-          [r3, g3, b3, isDarkCore ? 0.76 : 0.60],
-          [r1, g1, b1, isDarkCore ? 0.74 : 0.58]
-        ];
-        for (let i = 0; i < 4; i++) {
-          const ang = auraAngle * (i % 2 === 0 ? 1.1 : -0.9) + i * 1.57;
-          const lx = cx + Math.cos(ang) * maxR * 0.28 * pulseAmpLight;
-          const ly = cy + Math.sin(ang * 1.2) * maxR * 0.28 * pulseAmpLight;
-          const lr = maxR * 0.65 * (isSpeakingLive ? 1.15 : 1.0);
-          const lg = ctx.createRadialGradient(lx, ly, lr * 0.04, lx, ly, lr);
-          const [rC, gC, bC, aC] = lobeColors[i];
-          lg.addColorStop(0, `rgba(${rC}, ${gC}, ${bC}, ${aC})`);
-          lg.addColorStop(0.55, `rgba(${rC}, ${gC}, ${bC}, ${aC * 0.45})`);
-          lg.addColorStop(1, `rgba(${rC}, ${gC}, ${bC}, 0)`);
-          ctx.fillStyle = lg;
-          ctx.beginPath();
-          ctx.arc(lx, ly, lr, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        // 2. Geometría según Arquitectura 3D (0..4) — Por defecto Arch 0: 12 Pétalos Toroidales Zafiro & Naranja
-        if (arch === 0) {
-          const rings = 12;
-          for (let i = 0; i < rings; i++) {
-            const u = (i / rings) * Math.PI * 2 + auraAngle * 0.45;
-            ctx.beginPath();
-            for (let j = 0; j <= 32; j++) {
-              const v = (j / 32) * Math.PI * 2;
-              const R = maxR * 0.48;
-              const rt = maxR * 0.24;
-              const sx = cx + (R + rt * Math.cos(v)) * Math.cos(u) - rt * 0.34 * Math.sin(v) * Math.sin(u);
-              const sy = cy + (R + rt * Math.cos(v)) * Math.sin(u) * 0.88 + rt * 0.34 * Math.sin(v) * Math.cos(u);
-              if (j === 0) ctx.moveTo(sx, sy);
-              else ctx.lineTo(sx, sy);
-            }
-            ctx.closePath();
-            ctx.fillStyle = i % 3 === 0
-              ? `rgba(${r2}, ${g2}, ${b2}, 0.14)`
-              : `rgba(${r1}, ${g1}, ${b1}, 0.18)`;
-            ctx.fill();
-            ctx.strokeStyle = i % 3 === 0
-              ? `rgba(${r2}, ${g2}, ${b2}, 0.88)`
-              : `rgba(${r1}, ${g1}, ${b1}, 0.86)`;
-            ctx.lineWidth = Math.max(1.5, 2.3 * scaleRatio);
-            ctx.stroke();
-          }
-        } else if (arch === 2) {
-          // 03 · Constelación Kansei Fibonacci
-          const pts = [];
-          for (let i = 0; i < 18; i++) {
-            const a = i * GOLDEN_PHI * Math.PI * 2 + auraAngle * 0.6;
-            const rad = (0.22 + (i / 18) * 0.58) * maxR;
-            pts.push({ x: cx + Math.cos(a) * rad, y: cy + Math.sin(a * 1.15) * rad });
-          }
-          ctx.strokeStyle = `rgba(${r2}, ${g2}, ${b2}, 0.65)`;
-          ctx.lineWidth = Math.max(1.0, 1.4 * scaleRatio);
-          for (let i = 0; i < pts.length; i++) {
-            const nxt = pts[(i + 1) % pts.length];
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(nxt.x, nxt.y);
-            ctx.stroke();
-          }
-          for (let i = 0; i < pts.length; i++) {
-            ctx.fillStyle = i % 2 === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.92)` : `rgba(${r2}, ${g2}, ${b2}, 0.92)`;
-            ctx.beginPath();
-            ctx.arc(pts[i].x, pts[i].y, Math.max(2.0, 3.2 * scaleRatio), 0, Math.PI * 2);
-            ctx.fill();
-          }
-        } else if (arch === 3) {
-          // 04 · Cimática Acústica Chladni 24kHz
-          for (let rIdx = 1; rIdx <= 5; rIdx++) {
-            const baseR = (rIdx / 5) * maxR * 0.80;
-            ctx.beginPath();
-            for (let s = 0; s <= 48; s++) {
-              const ang = (s / 48) * Math.PI * 2;
-              const harm = 3 + (rIdx % 3);
-              const amp = (isSpeakingLive ? 9 : 4.5) * scaleRatio * Math.sin(harm * ang + auraAngle * 2.6);
-              const sx = cx + Math.cos(ang) * (baseR + amp);
-              const sy = cy + Math.sin(ang) * (baseR + amp);
-              if (s === 0) ctx.moveTo(sx, sy);
-              else ctx.lineTo(sx, sy);
-            }
-            ctx.closePath();
-            ctx.strokeStyle = rIdx % 2 === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.78)` : `rgba(${r2}, ${g2}, ${b2}, 0.78)`;
-            ctx.lineWidth = Math.max(1.2, 1.9 * scaleRatio);
-            ctx.stroke();
-          }
-        } else if (arch === 4) {
-          // 05 · Monolito Relojero Suizo C-00
-          const ticks = 36;
-          for (let i = 0; i < ticks; i++) {
-            const ang = (i / ticks) * Math.PI * 2 + auraAngle * 0.2;
-            const rIn = maxR * 0.66;
-            const rOut = rIn + (i % 3 === 0 ? maxR * 0.16 : maxR * 0.08);
-            ctx.strokeStyle = i % 3 === 0 ? `rgba(${r2}, ${g2}, ${b2}, 0.92)` : `rgba(${r1}, ${g1}, ${b1}, 0.65)`;
-            ctx.lineWidth = Math.max(1.1, (i % 3 === 0 ? 2.2 : 1.2) * scaleRatio);
-            ctx.beginPath();
-            ctx.moveTo(cx + Math.cos(ang) * rIn, cy + Math.sin(ang) * rIn);
-            ctx.lineTo(cx + Math.cos(ang) * rOut, cy + Math.sin(ang) * rOut);
-            ctx.stroke();
-          }
-          ctx.strokeStyle = `rgba(${r2}, ${g2}, ${b2}, 0.88)`;
-          ctx.lineWidth = Math.max(1.4, 2.2 * scaleRatio);
-          ctx.beginPath();
-          ctx.arc(cx, cy, maxR * 0.50, 0, Math.PI * 2);
-          ctx.stroke();
-        } else {
-          // 02 · visionOS Siri Liquid (Ondas Elípticas Armónicas)
-          for (let waveIdx = 0; waveIdx < 2; waveIdx++) {
-            ctx.save();
-            ctx.translate(cx, cy);
-            ctx.rotate(auraAngle * (0.35 - waveIdx * 0.2) + waveIdx * (Math.PI / 2));
-            ctx.strokeStyle = waveIdx === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.82)` : `rgba(${r2}, ${g2}, ${b2}, 0.82)`;
-            ctx.lineWidth = (isSpeakingLive ? 2.8 : 2.0) * Math.max(0.75, scaleRatio);
-            ctx.beginPath();
-            for (let s = 0; s <= 36; s++) {
-              const theta = (s / 36) * Math.PI * 2;
-              const waveMod = Math.sin(theta * 3 + auraAngle * 2.4 + waveIdx) * (isSpeakingLive ? 12 : 6) * scaleRatio;
-              const rX = (maxR * 0.68 + waveMod) * Math.cos(theta);
-              const rY = (maxR * 0.36 + waveMod * 0.6) * Math.sin(theta);
-              if (s === 0) ctx.moveTo(rX, rY);
-              else ctx.lineTo(rX, rY);
-            }
-            ctx.closePath();
-            ctx.stroke();
-            ctx.restore();
-          }
-        }
-
-        // 3. Núcleo Luminoso Central con Halo Naranja Cálido (#FF7A00 -> #EA580C) y Centro Blanco Puro
-        ctx.globalCompositeOperation = "source-over";
-        const coreLightR = (isSpeakingLive ? 44 : 36) * scaleRatio;
-        const coreLightGrad = ctx.createRadialGradient(cx, cy, 1, cx, cy, coreLightR);
-        coreLightGrad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
-        coreLightGrad.addColorStop(0.28, "rgba(255, 247, 237, 0.96)");
-        coreLightGrad.addColorStop(0.56, `rgba(${r2}, ${g2}, ${b2}, 0.88)`);
-        coreLightGrad.addColorStop(0.82, `rgba(${r3}, ${g3}, ${b3}, 0.46)`);
-        coreLightGrad.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0)`);
-        ctx.fillStyle = coreLightGrad;
-        ctx.beginPath();
-        ctx.arc(cx, cy, coreLightR, 0, Math.PI * 2);
-        ctx.fill();
-
-        // 4. Anillo Perimetral Naranja Acción (#FF7A00) de firma Aura
-        ctx.strokeStyle = cfg.secHex || "#FF7A00";
-        ctx.lineWidth = Math.max(2.2, 3.2 * scaleRatio);
-        ctx.beginPath();
-        ctx.arc(cx, cy, maxR - 1.5, 0, Math.PI * 2);
-        ctx.stroke();
-
-        ctx.restore();
-        return;
-      }
-
-      // 1. Deep Obsidian-Gold 3D Ambient Core Base
-      const baseGrad = ctx.createRadialGradient(cx, cy * 0.85, maxR * 0.05, cx, cy, maxR);
-      baseGrad.addColorStop(0, "#1E1910");
-      baseGrad.addColorStop(0.55, "#0D0F17");
-      baseGrad.addColorStop(1, "#05070B");
-      ctx.fillStyle = baseGrad;
+      // 1. Base de la Esfera Obsidiana Profunda (3D)
+      const sphereBase = ctx.createRadialGradient(cx, cy * 0.82, maxR * 0.05, cx, cy, maxR);
+      sphereBase.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, 0.36)`);
+      sphereBase.addColorStop(0.55, "#0B101E");
+      sphereBase.addColorStop(1, "#04060B");
+      ctx.fillStyle = sphereBase;
       ctx.fillRect(0, 0, w, h);
 
       ctx.globalCompositeOperation = "screen";
 
+      // 2. 4 Lóbulos Volumétricos de Luz Líquida (#1D4ED8, #E04700, #EA7300)
       const pulseAmpLight = isSpeakingLive ? 1.25 + Math.sin(auraAngle * 4.2) * 0.15 : 1.0;
       const lobeColors = [
         [r1, g1, b1, 0.72],
@@ -6509,7 +6331,7 @@
         ctx.fill();
       }
 
-      // 2. Geometría 01 · Torus Cuántico 3D (12 anillos paramétricos)
+      // 3. Geometría 01 · Torus Cuántico 3D (12 anillos paramétricos)
       const rings = 12;
       for (let i = 0; i < rings; i++) {
         const u = (i / rings) * Math.PI * 2 + auraAngle * 0.5;
@@ -6523,12 +6345,14 @@
           if (j === 0) ctx.moveTo(sx, sy);
           else ctx.lineTo(sx, sy);
         }
-        ctx.strokeStyle = i % 2 === 0 ? `rgba(${r1}, ${g1}, ${b1}, 0.68)` : `rgba(${r3}, ${g3}, ${b3}, 0.58)`;
+        ctx.strokeStyle = i % 2 === 0
+          ? `rgba(${r1}, ${g1}, ${b1}, 0.68)`
+          : `rgba(${r3}, ${g3}, ${b3}, 0.58)`;
         ctx.lineWidth = Math.max(1.1, 1.8 * scaleRatio);
         ctx.stroke();
       }
 
-      // 3. Núcleo Luminoso Central
+      // 4. Núcleo Luminoso Central
       ctx.globalCompositeOperation = "source-over";
       const coreLightR = (isSpeakingLive ? 34 : 26) * scaleRatio;
       const coreLightGrad = ctx.createRadialGradient(cx, cy, 1, cx, cy, coreLightR);
@@ -6541,6 +6365,13 @@
       ctx.fill();
 
       ctx.restore();
+
+      // 5. Aro Exterior Oficial #1D4ED8
+      ctx.beginPath();
+      ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
+      ctx.strokeStyle = "#1D4ED8";
+      ctx.lineWidth = Math.max(2.4, 3.2 * scaleRatio);
+      ctx.stroke();
     }
 
     function renderAuraLoop() {
@@ -19887,9 +19718,9 @@
       width: 168px;
       height: 168px;
       border-radius: 999px;
-      border: 3.5px solid #FF7A00;
-      background: #090D16;
-      box-shadow: 0 10px 30px rgba(29, 78, 216, 0.38), 0 0 24px rgba(255, 122, 0, 0.45);
+      border: 3px solid #1D4ED8;
+      background: #04060B;
+      box-shadow: 0 10px 30px rgba(29, 78, 216, 0.42), 0 0 24px rgba(234, 115, 0, 0.45);
       flex-shrink: 0;
       display: block;
     }
@@ -24565,57 +24396,92 @@
         let t = 0;
 
         const renderSplashFrame = () => {
-          t += 0.045;
+          t += 0.024;
+          const maxR = Math.min(cx, cy) - 6;
+          const scaleRatio = maxR / 106;
           ctx.clearRect(0, 0, W, H);
-
-          // Halo cósmico exterior (Brandbook 1.0: Azul Real #1D4ED8 + Naranja Ámbar #0D2540)
-          const bgGrad = ctx.createRadialGradient(cx, cy, 18, cx, cy, 210);
-          bgGrad.addColorStop(0, "rgba(249, 115, 22, 0.92)");
-          bgGrad.addColorStop(0.38, "rgba(29, 78, 216, 0.58)");
-          bgGrad.addColorStop(0.72, "rgba(234, 88, 12, 0.28)");
-          bgGrad.addColorStop(1, "rgba(9, 13, 22, 0)");
-          ctx.fillStyle = bgGrad;
+          ctx.save();
           ctx.beginPath();
-          ctx.arc(cx, cy, 210, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
+          ctx.clip();
 
-          // 3 Anillos toroidales cuánticos en rotación
-          for (let ring = 0; ring < 3; ring++) {
-            ctx.save();
-            ctx.translate(cx, cy);
-            ctx.rotate(t * (0.7 + ring * 0.35) + ring * 1.05);
-            ctx.scale(1, 0.46 + 0.14 * Math.sin(t + ring));
-            ctx.beginPath();
-            ctx.arc(0, 0, 128 + ring * 18, 0, Math.PI * 2);
-            ctx.strokeStyle = ring === 0 ? "rgba(249, 115, 22, 0.92)" : (ring === 1 ? "rgba(59, 130, 246, 0.88)" : "rgba(251, 146, 60, 0.82)");
-            ctx.lineWidth = 4.2 - ring * 0.7;
-            ctx.stroke();
-            ctx.restore();
-          }
+          const r1 = 29, g1 = 78, b1 = 216;   // #1D4ED8
+          const r2 = 224, g2 = 71, b2 = 0;    // #E04700
+          const r3 = 234, g3 = 115, b3 = 0;   // #EA7300
 
-          // Partículas orbitales luminosas
-          for (let p = 0; p < 18; p++) {
-            const ang = (p / 18) * Math.PI * 2 + t * 0.9;
-            const rad = 112 + 28 * Math.sin(t * 1.6 + p);
-            const px = cx + Math.cos(ang) * rad;
-            const py = cy + Math.sin(ang) * rad * 0.78;
-            ctx.fillStyle = p % 2 === 0 ? "#93C5FD" : "#93C5FD";
+          // 1. Base de la Esfera Obsidiana Profunda (3D)
+          const sphereBase = ctx.createRadialGradient(cx, cy * 0.82, maxR * 0.05, cx, cy, maxR);
+          sphereBase.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, 0.36)`);
+          sphereBase.addColorStop(0.55, "#0B101E");
+          sphereBase.addColorStop(1, "#04060B");
+          ctx.fillStyle = sphereBase;
+          ctx.fillRect(0, 0, W, H);
+
+          ctx.globalCompositeOperation = "screen";
+
+          // 2. 4 Lóbulos Volumétricos
+          const lobeColors = [
+            [r1, g1, b1, 0.72],
+            [r2, g2, b2, 0.78],
+            [r3, g3, b3, 0.64],
+            [r1, g1, b1, 0.68]
+          ];
+          for (let i = 0; i < 4; i++) {
+            const ang = t * (i % 2 === 0 ? 1.1 : -0.9) + i * 1.57;
+            const lx = cx + Math.cos(ang) * maxR * 0.28;
+            const ly = cy + Math.sin(ang * 1.2) * maxR * 0.28;
+            const lr = maxR * 0.62;
+            const lg = ctx.createRadialGradient(lx, ly, lr * 0.05, lx, ly, lr);
+            const [rC, gC, bC, aC] = lobeColors[i];
+            lg.addColorStop(0, `rgba(${rC}, ${gC}, ${bC}, ${aC})`);
+            lg.addColorStop(1, `rgba(${rC}, ${gC}, ${bC}, 0)`);
+            ctx.fillStyle = lg;
             ctx.beginPath();
-            ctx.arc(px, py, 3.4, 0, Math.PI * 2);
+            ctx.arc(lx, ly, lr, 0, Math.PI * 2);
             ctx.fill();
           }
 
-          // Núcleo estelar de Aura
-          const pulseR = 64 + 7 * Math.sin(t * 2.4);
-          const coreGrad = ctx.createRadialGradient(cx - 12, cy - 12, 6, cx, cy, pulseR);
-          coreGrad.addColorStop(0, "#FFFFFF");
-          coreGrad.addColorStop(0.35, "#FF7A00");
-          coreGrad.addColorStop(0.72, "#426EAE");
-          coreGrad.addColorStop(1, "#0D2540");
-          ctx.fillStyle = coreGrad;
+          // 3. Geometría 01 · Torus Cuántico 3D (12 anillos paramétricos)
+          const rings = 12;
+          for (let i = 0; i < rings; i++) {
+            const u = (i / rings) * Math.PI * 2 + t * 0.5;
+            ctx.beginPath();
+            for (let j = 0; j <= 24; j++) {
+              const v = (j / 24) * Math.PI * 2;
+              const R = maxR * 0.52;
+              const rt = maxR * 0.22;
+              const sx = cx + (R + rt * Math.cos(v)) * Math.cos(u);
+              const sy = cy + (R + rt * Math.cos(v)) * Math.sin(u) * 0.74 + rt * Math.sin(v) * 0.48;
+              if (j === 0) ctx.moveTo(sx, sy);
+              else ctx.lineTo(sx, sy);
+            }
+            ctx.strokeStyle = i % 2 === 0
+              ? `rgba(${r1}, ${g1}, ${b1}, 0.68)`
+              : `rgba(${r3}, ${g3}, ${b3}, 0.58)`;
+            ctx.lineWidth = Math.max(1.2, 1.8 * scaleRatio);
+            ctx.stroke();
+          }
+
+          // 4. Núcleo Luminoso Central
+          ctx.globalCompositeOperation = "source-over";
+          const coreLightR = 28 * scaleRatio;
+          const coreLightGrad = ctx.createRadialGradient(cx, cy, 1, cx, cy, coreLightR);
+          coreLightGrad.addColorStop(0, "rgba(255, 255, 255, 0.98)");
+          coreLightGrad.addColorStop(0.5, `rgba(${r2}, ${g2}, ${b2}, 0.62)`);
+          coreLightGrad.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0)`);
+          ctx.fillStyle = coreLightGrad;
           ctx.beginPath();
-          ctx.arc(cx, cy, pulseR, 0, Math.PI * 2);
+          ctx.arc(cx, cy, coreLightR, 0, Math.PI * 2);
           ctx.fill();
+
+          ctx.restore();
+
+          // 5. Aro Exterior Oficial #1D4ED8
+          ctx.beginPath();
+          ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
+          ctx.strokeStyle = "#1D4ED8";
+          ctx.lineWidth = Math.max(2.6, 3.2 * scaleRatio);
+          ctx.stroke();
 
           _splashRafId = requestAnimationFrame(renderSplashFrame);
         };
