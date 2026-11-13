@@ -526,6 +526,9 @@
   // --- MOTOR DE SÍNTESIS EDITORIAL EJECUTIVA (CERO CUADROS GIGANTES DE TEXTO / CERO REDUNDANCIA) ---
   function extractShortCategoryBadge(categoryRaw, giroRaw, bName) {
     const combined = `${categoryRaw || ""} ${giroRaw || ""} ${bName || ""}`.toLowerCase();
+    if (/improbears/i.test(bName || "")) {
+      return "Business Improvement · 4 Divisiones Homologadas";
+    }
     const rawTrim = String(categoryRaw || "").trim();
     if (rawTrim && rawTrim.split(/\s+/).length <= 5 && rawTrim.length <= 42) {
       return rawTrim;
@@ -759,9 +762,10 @@
     // Generar la Terna de Logos Profesional
     const suite = generateTriFoldLogoSuite(brand);
 
-    // Resolver fotografías editoriales realistas 4:3 de capítulos con AISLAMIENTO ESTRICTO POR MARCA (Cero cruce con Arco)
+    // Resolver fotografías editoriales realistas 4:3 de capítulos con AISLAMIENTO ESTRICTO POR MARCA (Cero cruce entre marcas)
     const isArcoBrand = /^arco(_ingenier[ií]a)?$/i.test(slug);
-    const editorialPhotoPrefix = isArcoBrand ? "arco" : "tbb";
+    const isImproBearsBrand = /improbears/i.test(slug) || /improbears/i.test(bName);
+    const editorialPhotoPrefix = isArcoBrand ? "arco" : (isImproBearsBrand ? "improbears" : "tbb");
     const flowCacheKeyV86 = `photo_v86|${slug}|${(brand.giro || "").slice(0, 32)}`;
     const flowCacheKeyV85 = `photo_v85|${slug}|${(brand.giro || "").slice(0, 32)}`;
     const rawFlowVisuals = (typeof window !== "undefined" && window._tbbFlowVisualsCache && (
@@ -773,7 +777,8 @@
     Object.keys(rawFlowVisuals).forEach((k) => {
       const val = String(rawFlowVisuals[k] || "");
       if (!isArcoBrand && /arco_/i.test(val)) return;
-      if (isArcoBrand && /tbb_0/i.test(val)) return;
+      if (!isImproBearsBrand && /improbears_0/i.test(val)) return;
+      if ((isArcoBrand || isImproBearsBrand) && /tbb_0/i.test(val)) return;
       flowVisuals[k] = val;
     });
 
@@ -2140,48 +2145,58 @@
     // LÁMINA 30: CLAUSURA Y ARQUITECTURA MULTIMARCA / MONOLÍTICA
     // =========================================================================
     if (isMultibrand) {
-      // HOLDING MULTIMARCA (Ej: Grupo Corporativo ImproBears con 4 Divisiones Homologadas)
+      // HOLDING MULTIMARCA (Grupo Corporativo ImproBears: Marca Madre + 4 Submarcas Homologadas)
       plates.push(`
         <article class="tbb-plate" id="plate-30">
-          ${hdr("SECCIÓN 06", "GOBERNANZA Y ARQUITECTURA", 30, "Arquitectura Corporativa Multimarca: 4 Divisiones Homologadas")}
-          <div style="margin-bottom:14px; font-size:15.5px; color:#334155;">
-            Ecosistema empresarial homologado bajo la Directiva Max C-00 (Descriptor en <strong>#FF7A00</strong> y Marca Madre en Positivo):
-          </div>
-          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:22px; flex:1; align-items:center;">
-            <!-- Consulting -->
-            <div class="tbb-editorial-pillar" style="border-left-color:${pri}; text-align:left;">
-              <div style="width:76px; height:76px; margin-bottom:10px;"><svg viewBox="0 0 200 200" width="76" height="76" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
-              <div style="font-family:'Montserrat', sans-serif; font-size:15px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
-              <div style="font-size:13px; font-weight:800; color:#FF7A00; letter-spacing:1px; margin-top:2px;">CONSULTING</div>
-              <div style="font-size:13.5px; color:#475569; margin-top:6px;">Estrategia &amp; Negocios</div>
+          ${hdr("SECCIÓN 06", "GOBERNANZA Y ARQUITECTURA", 30, "Arquitectura Maestra de Marca: Marca Madre y 4 Submarcas Homologadas")}
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:22px; padding:10px 18px; border-left:5px solid ${pri}; border-bottom:1.5px solid ${lightGray}; margin-bottom:14px;">
+            <div style="display:flex; align-items:center; gap:16px;">
+              <img src="/assets/improbears/logo-improbears-master.png" alt="IMPROBEARS Business Improvement" style="width:74px; height:74px; object-fit:contain; display:block; flex-shrink:0;" />
+              <div>
+                <span class="tbb-editorial-kicker" style="color:${acc}; margin-bottom:2px;">MARCA MADRE OFICIAL · DIRECTIVA MAX C-00</span>
+                <div style="font-family:'Montserrat', sans-serif; font-size:19px; font-weight:900; color:${darkInk}; letter-spacing:0.5px;">IMPROBEARS — <span style="color:${sec};">BUSINESS IMPROVEMENT</span></div>
+                <div style="font-size:13.5px; color:#334155; margin-top:2px;">Del Caos al Sistema: Conecta estrategia, operación, ciencia, producción audiovisual e Inteligencia Artificial.</div>
+              </div>
             </div>
-
-            <!-- Ingredients -->
-            <div class="tbb-editorial-pillar" style="border-left-color:${sec}; text-align:left;">
-              <div style="width:76px; height:76px; margin-bottom:10px;"><svg viewBox="0 0 200 200" width="76" height="76" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
-              <div style="font-family:'Montserrat', sans-serif; font-size:15px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
-              <div style="font-size:13px; font-weight:800; color:#FF7A00; letter-spacing:1px; margin-top:2px;">INGREDIENTS</div>
-              <div style="font-size:13.5px; color:#475569; margin-top:6px;">Ingeniería de Valor</div>
-            </div>
-
-            <!-- Studio -->
-            <div class="tbb-editorial-pillar" style="border-left-color:${acc}; text-align:left;">
-              <div style="width:76px; height:76px; margin-bottom:10px;"><svg viewBox="0 0 200 200" width="76" height="76" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
-              <div style="font-family:'Montserrat', sans-serif; font-size:15px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
-              <div style="font-size:13px; font-weight:800; color:#FF7A00; letter-spacing:1px; margin-top:2px;">STUDIO</div>
-              <div style="font-size:13.5px; color:#475569; margin-top:6px;">Medios &amp; Marca</div>
-            </div>
-
-            <!-- AI -->
-            <div class="tbb-editorial-pillar" style="border-left-color:${darkInk}; text-align:left;">
-              <div style="width:76px; height:76px; margin-bottom:10px;"><svg viewBox="0 0 200 200" width="76" height="76" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
-              <div style="font-family:'Montserrat', sans-serif; font-size:15px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
-              <div style="font-size:13px; font-weight:800; color:#FF7A00; letter-spacing:1px; margin-top:2px;">AI</div>
-              <div style="font-size:13.5px; color:#475569; margin-top:6px;">Soluciones Autónomas</div>
+            <div style="text-align:right; flex-shrink:0;">
+              <span style="background:${pri}; color:#FFFFFF; font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:800; padding:5px 12px; border-radius:999px;">5 LOGOS OFICIALES CONSERVADOS</span>
             </div>
           </div>
-          <div style="border-top:1.5px solid ${lightGray}; padding-top:12px; margin-top:12px; font-size:14px; color:#334155;">
-            <strong>Regla Maestra de Convivencia:</strong> Cada división mantiene el imagotipo unificado en azul corporativo, diferenciándose por el descriptor tipográfico en naranja (#FF7A00).
+          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; flex:1; align-items:stretch;">
+            <!-- 1. Consulting -->
+            <div class="tbb-editorial-pillar" style="border-left-color:${pri}; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px 10px;">
+              <img src="/assets/improbears/logo-improbears-consulting.png" alt="ImproBears Consulting" style="width:108px; height:108px; object-fit:contain; margin-bottom:8px; display:block;" />
+              <div style="font-family:'Montserrat', sans-serif; font-size:14.5px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
+              <div style="font-family:'Montserrat', sans-serif; font-size:12.5px; font-weight:800; color:#FF7A00; letter-spacing:1.2px; margin-top:2px;">CONSULTING</div>
+              <div style="font-size:12.5px; color:#334155; margin-top:6px; line-height:1.4;">Consultoría Estratégica, Procesos, Zoho One &amp; Productividad</div>
+            </div>
+
+            <!-- 2. Ingredients -->
+            <div class="tbb-editorial-pillar" style="border-left-color:${sec}; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px 10px;">
+              <img src="/assets/improbears/logo-improbears-ingredients.png" alt="ImproBears Ingredients" style="width:108px; height:108px; object-fit:contain; margin-bottom:8px; display:block;" />
+              <div style="font-family:'Montserrat', sans-serif; font-size:14.5px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
+              <div style="font-family:'Montserrat', sans-serif; font-size:12.5px; font-weight:800; color:#FF7A00; letter-spacing:1.2px; margin-top:2px;">INGREDIENTS</div>
+              <div style="font-size:12.5px; color:#334155; margin-top:6px; line-height:1.4;">Biotecnología, Hopzoil® &amp; Soluciones Funcionales B2B</div>
+            </div>
+
+            <!-- 3. Studio -->
+            <div class="tbb-editorial-pillar" style="border-left-color:${acc}; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px 10px;">
+              <img src="/assets/improbears/logo-improbears-studio.png" alt="ImproBears Studio" style="width:108px; height:108px; object-fit:contain; margin-bottom:8px; display:block;" />
+              <div style="font-family:'Montserrat', sans-serif; font-size:14.5px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
+              <div style="font-family:'Montserrat', sans-serif; font-size:12.5px; font-weight:800; color:#FF7A00; letter-spacing:1.2px; margin-top:2px;">STUDIO</div>
+              <div style="font-size:12.5px; color:#334155; margin-top:6px; line-height:1.4;">Producción Audiovisual, Cine Corporativo &amp; Diseño de Marca</div>
+            </div>
+
+            <!-- 4. AI -->
+            <div class="tbb-editorial-pillar" style="border-left-color:${darkInk}; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:12px 10px;">
+              <img src="/assets/improbears/logo-improbears-ai.png" alt="ImproBears AI" style="width:108px; height:108px; object-fit:contain; margin-bottom:8px; display:block;" />
+              <div style="font-family:'Montserrat', sans-serif; font-size:14.5px; font-weight:900; color:${darkInk};">IMPROBEARS</div>
+              <div style="font-family:'Montserrat', sans-serif; font-size:12.5px; font-weight:800; color:#FF7A00; letter-spacing:1.2px; margin-top:2px;">AI</div>
+              <div style="font-size:12.5px; color:#334155; margin-top:6px; line-height:1.4;">Asistentes WhatsApp 24/7, Copilotos Ejecutivos &amp; Suite The Best</div>
+            </div>
+          </div>
+          <div style="border-top:1.5px solid ${lightGray}; padding-top:10px; margin-top:10px; font-size:13.2px; color:#334155;">
+            <strong>Regla Maestra de Convivencia (Directiva Max C-00):</strong> Las 4 submarcas conservan íntegro su nombre y su símbolo especializado (Barras, Molécula, Cámara y Grafo Neuronal) con el descriptor oficial en Naranja Acción (<strong>#FF7A00</strong>).
           </div>
           ${ftr(30)}
         </article>

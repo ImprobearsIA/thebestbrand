@@ -10,8 +10,9 @@
 
   window.isImproBearsActiveBrand = function () {
     const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+    if (cs.useGenerative36Plates === true) return false;
     const bName = String(cs.brandName || "").trim();
-    return /improbears/i.test(bName);
+    return Boolean(cs.isStaticImproBears30Preset && /improbears/i.test(bName));
   };
 
   const styleEl = document.createElement("style");
