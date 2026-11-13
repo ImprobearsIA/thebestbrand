@@ -625,8 +625,6 @@
     }
   ];
 
-  // Recorrido completo de la App para el Menú 3 (App Tour):
-  // Incluye cada paso desde el inicio hasta el final + los pop-ups de video + los descargables finales
   const APP_TOUR_FLOW_ITEMS = [
     {
       id: "step0_1",
@@ -1207,37 +1205,11 @@
   // ---------------------------------------------------------------------------
   // 4. CONTROLADOR DE NAVEGACIÓN ENTRE LAS 5 SUBPÁGINAS (COMPRAR SIEMPRE VISIBLE)
   // ---------------------------------------------------------------------------
-  const SECTION_SLUG_MAP = {
-    1: "inicio",
-    2: "demo",
-    3: "app-tour",
-    4: "bases-teoricas",
-    5: "pack-descargas"
-  };
-
-  function resolveSectionFromSlugOrHash(val) {
-    if (typeof val === "number" && val >= 1 && val <= 5) return val;
-    const raw = String(val || "").toLowerCase().replace(/^#/, "").trim();
-    if (raw === "2" || raw === "demo" || raw === "demo-en-vivo") return 2;
-    if (raw === "3" || raw === "app-tour" || raw === "tour" || raw === "recorrido") return 3;
-    if (raw === "4" || raw === "bases-teoricas" || raw === "teoria" || raw === "bases") return 4;
-    if (raw === "5" || raw === "pack-descargas" || raw === "descargas" || raw === "entregables") return 5;
-    if (raw === "1" || raw === "inicio" || raw === "top" || raw === "home") return 1;
-    const num = Number(raw);
-    if (num >= 1 && num <= 5) return num;
-    return 1;
-  }
-
-  window.tbbSwitchMainSection = function (secNumberOrSlug, skipHashUpdate) {
-    const s = resolveSectionFromSlugOrHash(secNumberOrSlug);
+  window.tbbSwitchMainSection = function (secNumber) {
+    const s = Math.max(1, Math.min(5, Number(secNumber || 1)));
     if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
     window.tbbCommercialDemoState.activeMainSection = s;
     document.body.classList.remove("tbb-is-demo-section");
-
-    if (!skipHashUpdate && window.history && window.history.replaceState) {
-      const slug = SECTION_SLUG_MAP[s] || "inicio";
-      window.history.replaceState(null, "", `#${slug}`);
-    }
 
     for (let i = 1; i <= 5; i++) {
       const pane = document.getElementById(`tbbMainSectionPane_${i}`);
@@ -1249,7 +1221,6 @@
       });
     }
 
-    // Mantener la barra flotante de compra siempre visible en standalone web
     const floatBar = document.getElementById("tbbAlwaysOnBuyFloatingBar");
     if (floatBar) {
       const isStandalone = document.body.getAttribute("data-tbb-standalone-web") === "true" && window.location.pathname !== "/studio" && !window.location.pathname.endsWith("studio.html");
@@ -1262,10 +1233,6 @@
         window.tbbInitAwwwardsInteractions();
       }
     }, 60);
-  };
-
-  window.tbbSetActiveMainTab = function (slugOrNum) {
-    window.tbbSwitchMainSection(slugOrNum);
   };
 
   window.tbbSetHeroVisualMode = function (mode) {
@@ -1572,7 +1539,6 @@
     const step0Loc = APP_TOUR_FLOW_ITEMS[0].i18n[lang] || APP_TOUR_FLOW_ITEMS[0].i18n.es;
 
     return `
-      <!-- HERO PANORÁMICO SOBRE LIENZO CLARO (UN SOLO FOCO A LA VEZ) -->
       <section style="padding:64px 24px 56px 24px; background:linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); text-align:center;">
         <div style="max-width:980px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:22px;">
           <div style="display:inline-flex; align-items:center; gap:10px; padding:6px 16px; border-radius:999px; background:#F1F5F9; color:#0D2540; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; letter-spacing:0.04em;">
@@ -1588,7 +1554,6 @@
             ${escHtml(t("heroSub"))}
           </p>
 
-          <!-- LAS 2 OPCIONES PRINCIPALES EN BOTONES PEDIDAS POR EL USUARIO -->
           <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin-top:8px; width:100%;">
             <button type="button" onclick="window.tbbSwitchMainSection(2)" class="tbb-comm-btn-blue" style="padding:16px 28px; font-size:0.98rem; font-weight:600; display:inline-flex; align-items:center; gap:12px;">
               <span class="tbb-live-pulse-dot"></span>
@@ -1603,7 +1568,6 @@
         </div>
       </section>
 
-      <!-- ESCENARIO PANORÁMICO LIMPIO: CAPTURA REAL DE LA APP O LÁMINA REAL DEL BRANDBOOK -->
       <section style="padding:20px 24px 80px 24px; background:#F8FAFC;">
         <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:28px;">
           <div style="text-align:center; max-width:760px;">
@@ -1618,7 +1582,6 @@
             </p>
           </div>
 
-          <!-- Conmutador limpio entre Captura de la App y Lámina del Brandbook -->
           <div style="display:inline-flex; background:#E2E8F0; padding:5px; border-radius:999px; gap:6px;">
             <button type="button" onclick="window.tbbSetHeroVisualMode('app')" style="padding:9px 20px; border-radius:999px; border:none; background:${!isManual ? '#FFFFFF' : 'transparent'}; color:${!isManual ? '#0F172A' : '#475569'}; font-size:0.84rem; font-weight:500; cursor:pointer; box-shadow:${!isManual ? '0 4px 12px rgba(15,23,42,0.08)' : 'none'};">
               ${escHtml(t("heroSwitchApp"))}
@@ -1628,7 +1591,6 @@
             </button>
           </div>
 
-          <!-- Imagen Panorámica Única sin cajas anidadas -->
           <div style="width:100%; position:relative; border-radius:24px; overflow:hidden; box-shadow:0 30px 80px rgba(15,23,42,0.12); background:#FFFFFF; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(1, '${isManual ? '/assets/brandbook_plates_tbb/plate-01.jpg' : '/assets/app_captures/step0_logo_aura.png'}', '${escHtml(step0Loc.title)}')">
             <img src="${isManual ? '/assets/brandbook_plates_tbb/plate-01.jpg' : '/assets/app_captures/step0_logo_aura.png'}" alt="The Best Brand Showcase" style="width:100%; height:auto; display:block;" />
             <div style="position:absolute; top:18px; left:18px; background:rgba(255,255,255,0.94); backdrop-filter:blur(10px); padding:8px 16px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#0F172A; box-shadow:0 8px 24px rgba(15,23,42,0.12);">
@@ -1636,7 +1598,6 @@
             </div>
           </div>
 
-          <!-- Botones de flujo secuencial al final de la Portada -->
           <div style="padding-top:28px; display:flex; flex-wrap:wrap; justify-content:center; gap:14px;">
             <button type="button" onclick="window.tbbSwitchMainSection(2)" class="tbb-comm-btn-blue" style="padding:15px 26px; font-size:0.94rem; font-weight:600;">
               <span class="tbb-live-pulse-dot"></span>
@@ -1684,7 +1645,6 @@
     return `
       <section style="padding:56px 24px 84px 24px; background:#FFFFFF;">
         <div style="max-width:1240px; margin:0 auto; display:flex; flex-direction:column; gap:36px;">
-          <!-- Encabezado limpio de la Demo -->
           <div style="text-align:center; max-width:820px; margin:0 auto;">
             <div style="display:inline-flex; align-items:center; gap:8px; padding:5px 14px; border-radius:999px; background:#FFF7ED; color:#EA580C; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; margin-bottom:10px;">
               <span class="tbb-live-pulse-dot"></span>
@@ -1698,7 +1658,6 @@
             </p>
           </div>
 
-          <!-- Presets rápidos sin bordes pesados -->
           <div style="display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap;">
             ${DEMO_QUICK_PRESETS.map(p => {
               const active = st.brandName === p.brandName;
@@ -1710,7 +1669,6 @@
             }).join("")}
           </div>
 
-          <!-- Selector de Paso 0, Paso 1 y Paso 2 -->
           <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; border-bottom:1px solid #E2E8F0; padding-bottom:18px;">
             <button type="button" onclick="window.tbbSwitchCommercialDemoStep(0)" style="padding:12px 22px; border-radius:999px; border:1px solid ${step === 0 ? '#1D4ED8' : '#E2E8F0'}; background:${step === 0 ? '#EFF6FF' : '#FFFFFF'}; color:${step === 0 ? '#1D4ED8' : '#475569'}; font-size:0.88rem; font-weight:${step === 0 ? '600' : '500'}; cursor:pointer;">
               ${escHtml(t("demoStep0Tab"))}
@@ -1723,7 +1681,6 @@
             </button>
           </div>
 
-          <!-- Área Panorámica de Trabajo: Controles Limpios a la Izquierda + Vista En Vivo y Captura Real a la Derecha -->
           <div class="tbb-comm-grid-2" style="align-items:start; gap:48px;">
             <div style="display:flex; flex-direction:column; gap:20px;">
               ${step === 0 ? `
@@ -1805,14 +1762,13 @@
                 }).join("")}
 
                 <div style="display:flex; gap:12px; flex-wrap:wrap; padding-top:6px;">
-                  <a href="/studio" onclick="window.tbbSyncCommercialDemoToAppState()" class="tbb-comm-btn-blue" style="padding:13px 24px; font-size:0.9rem; font-weight:600;">
+                  <a href="/studio" onclick="window.tbbSyncCommercialDemoToAppState()" class="tbb-comm-btn-blue" style="padding:13px 24px; font-size:0.9rem; font-weight:600; text-decoration:none;">
                     Continuar al Paso 3 en el Estudio Completo ↗
                   </a>
                 </div>
               `}
             </div>
 
-            <!-- Vista Derecha: Síntesis Visual en Vivo + Captura Real del Paso Activo -->
             <div style="display:flex; flex-direction:column; gap:24px;">
               <div style="background:#F8FAFC; border-radius:24px; padding:24px; text-align:center;">
                 <div id="tbbDemoLiveBrandTitle" style="font-family:'Montserrat', sans-serif; font-size:1.35rem; font-weight:600; color:#0F172A;">${escHtml(st.brandName)}</div>
@@ -1828,7 +1784,6 @@
             </div>
           </div>
 
-          <!-- Botones de navegación al final de la subpágina Demo hacia App Tour y Bases teóricas -->
           <div style="margin-top:24px; padding-top:32px; border-top:1px solid #E2E8F0; display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
             <button type="button" onclick="window.tbbSwitchMainSection(3)" class="tbb-btn-light-surface" style="padding:15px 28px; font-size:0.94rem; font-weight:500;">
               ${escHtml(t("nextToTourBtn"))}
@@ -1847,7 +1802,6 @@
     const lang = getLang();
 
     return `
-      <!-- ENCABEZADO CON PARALLAX SUAVE SOBRE LIENZO CLARO -->
       <section style="padding:68px 24px 48px 24px; background:linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); text-align:center;">
         <div style="max-width:900px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:16px;">
           <div style="font-family:'JetBrains Mono', monospace; font-size:0.74rem; font-weight:500; color:#1D4ED8; letter-spacing:0.06em;">
@@ -1862,7 +1816,6 @@
         </div>
       </section>
 
-      <!-- STORYTELLING STICKY STACKING & DEPTH SCROLL: CADA PASO Y CADA POP-UP DE VIDEO -->
       <section style="padding:20px 24px 72px 24px; background:#F8FAFC;">
         <div style="max-width:1220px; margin:0 auto; display:flex; flex-direction:column; gap:72px;">
           ${APP_TOUR_FLOW_ITEMS.map((item, idx) => {
@@ -1874,7 +1827,6 @@
             return `
               <article class="tbb-tour-sticky-stage" style="position:sticky; top:${stickyTop}px; background:#FFFFFF; border-radius:28px; padding:clamp(24px, 4vw, 44px); box-shadow:0 28px 70px rgba(15,23,42,0.08); border:1px solid ${isPopup ? '#FDBA74' : '#E2E8F0'};">
                 <div style="display:flex; flex-direction:column; gap:28px;">
-                  <!-- Encabezado de la etapa (Un solo foco claro) -->
                   <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;">
                     <div style="max-width:780px;">
                       <div style="display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:${isPopup ? '#EA580C' : '#1D4ED8'}; margin-bottom:8px;">
@@ -1901,7 +1853,6 @@
                     `}
                   </div>
 
-                  <!-- Captura Panorámica Real (Con banda traducida al idioma de la página) -->
                   <div style="position:relative; border-radius:20px; overflow:hidden; background:#0F172A; box-shadow:0 18px 48px rgba(15,23,42,0.12); cursor:pointer;" onclick="${isPopup ? `window.tbbOpenVideoPopupModal(${item.videoIdx})` : `window.tbbOpenPlateLightboxModal(1, '${item.img}', '${escHtml(loc.title)}')`}">
                     <img src="${item.img}" alt="${escHtml(loc.title)}" style="width:100%; max-height:600px; object-fit:contain; display:block; margin:0 auto; background:#0F172A;" />
                     <div style="position:absolute; bottom:14px; left:14px; right:14px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; background:rgba(255,255,255,0.95); backdrop-filter:blur(12px); padding:10px 18px; border-radius:14px;">
@@ -1915,7 +1866,6 @@
                   </div>
 
                   ${isFinale ? `
-                    <!-- RIEL DE SCROLL HORIZONTAL CON LOS DESCARGABLES AL FINAL DEL APP TOUR -->
                     <div style="padding-top:12px;">
                       <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#0D2540; margin-bottom:12px;">
                         DESLIZA HORIZONTALMENTE · LOS 9 DESCARGABLES QUE OBTIENES AL FINALIZAR:
@@ -1941,7 +1891,6 @@
             `;
           }).join("")}
 
-          <!-- BOTÓN AL FINAL DEL APP TOUR QUE LLEVA A "BASES TEÓRICAS" (MENÚ 4) -->
           <div style="text-align:center; padding-top:24px;">
             <button type="button" onclick="window.tbbSwitchMainSection(4)" class="tbb-comm-btn-blue" style="padding:18px 34px; font-size:1.02rem; font-weight:600;">
               ${escHtml(t("nextToTheoryBtn"))}
@@ -1959,7 +1908,6 @@
     return `
       <section style="padding:64px 24px 88px 24px; background:#FFFFFF;">
         <div style="max-width:1240px; margin:0 auto; display:flex; flex-direction:column; gap:64px;">
-          <!-- Encabezado limpio sobre fondo claro -->
           <div style="text-align:center; max-width:820px; margin:0 auto;">
             <div style="font-family:'JetBrains Mono', monospace; font-size:0.74rem; font-weight:500; color:#EA580C; letter-spacing:0.06em; margin-bottom:8px;">
               ${escHtml(t("theoryEyebrow"))}
@@ -1972,7 +1920,6 @@
             </p>
           </div>
 
-          <!-- 1. CÁPSULAS DE VIDEO DEL TALLER CON MINIATURAS -->
           <div>
             <h2 style="font-family:'Montserrat', sans-serif; font-size:1.5rem; font-weight:600; color:#0F172A; margin:0 0 24px 0;">
               ${escHtml(t("theoryCapsulesTitle"))}
@@ -2005,7 +1952,6 @@
             </div>
           </div>
 
-          <!-- 2. CONFERENCIAS MAGISTRALES DE LOS AUTORES (CON MINIATURAS Y ENLACE DIRECTO) -->
           <div>
             <h2 style="font-family:'Montserrat', sans-serif; font-size:1.5rem; font-weight:600; color:#0F172A; margin:0 0 24px 0;">
               ${escHtml(t("theoryAuthorsTitle"))}
@@ -2035,7 +1981,6 @@
             </div>
           </div>
 
-          <!-- 3. LIBROS FUNDAMENTALES CON PORTADAS Y LINKS DIRECTOS -->
           <div>
             <h2 style="font-family:'Montserrat', sans-serif; font-size:1.5rem; font-weight:600; color:#0F172A; margin:0 0 24px 0;">
               ${escHtml(t("theoryBooksTitle"))}
@@ -2059,7 +2004,6 @@
             </div>
           </div>
 
-          <!-- BOTÓN AL FINAL DE BASES TEÓRICAS QUE LLEVA A "PACK DE DESCARGAS" (MENÚ 5) -->
           <div style="text-align:center; padding-top:16px;">
             <button type="button" onclick="window.tbbSwitchMainSection(5)" class="tbb-comm-btn-blue" style="padding:18px 34px; font-size:1.02rem; font-weight:600;">
               ${escHtml(t("nextToDownloadsBtn"))}
@@ -2081,7 +2025,6 @@
     return `
       <section style="padding:64px 24px 88px 24px; background:#FFFFFF;">
         <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:56px;">
-          <!-- Encabezado limpio del Pack de Descargas -->
           <div style="text-align:center; max-width:840px; margin:0 auto;">
             <div style="font-family:'JetBrains Mono', monospace; font-size:0.74rem; font-weight:500; color:#1D4ED8; letter-spacing:0.06em; margin-bottom:8px;">
               ${escHtml(t("packEyebrow"))}
@@ -2094,7 +2037,6 @@
             </p>
           </div>
 
-          <!-- ESCENARIO PRINCIPAL DEL ENTREGABLE ACTIVO (CLIC ABRE A MÁXIMA RESOLUCIÓN EN PANTALLA CASI COMPLETA) -->
           <div class="tbb-comm-grid-2" style="background:#F8FAFC; border-radius:28px; padding:clamp(24px, 3.5vw, 40px); gap:36px; align-items:center;">
             <div style="position:relative; border-radius:20px; overflow:hidden; background:#FFFFFF; box-shadow:0 20px 50px rgba(15,23,42,0.10); cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(${activeItem.plateNum}, '${activeItem.thumb}', '${escHtml(activeLoc.title)}', '${activeItem.sampleUrl}')">
               <img src="${activeItem.thumb}" alt="${escHtml(activeLoc.title)}" style="width:100%; max-height:440px; object-fit:contain; display:block; margin:0 auto;" />
@@ -2130,7 +2072,6 @@
             </div>
           </div>
 
-          <!-- CARRUSEL MODERNO DE MINIATURAS DE TODOS LOS 9 DESCARGABLES -->
           <div>
             <div id="tbbModernDeliverablesCarouselTrack" style="display:flex; gap:18px; overflow-x:auto; padding:8px 4px 20px 4px; scroll-snap-type:x mandatory;">
               ${OFFICIAL_9_DELIVERABLES.map((item, idx) => {
@@ -2154,7 +2095,6 @@
             </div>
           </div>
 
-          <!-- SECCIÓN DEBAJO DEL CARRUSEL: "PRÓXIMAMENTE" (CREACIÓN DE PÁGINA WEB + PUBLICACIONES EN REDES SOCIALES) -->
           <div style="padding-top:36px; border-top:1px solid #E2E8F0;">
             <div style="text-align:center; max-width:780px; margin:0 auto 36px auto;">
               <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#EA580C; letter-spacing:0.06em; margin-bottom:8px;">
@@ -2169,7 +2109,6 @@
             </div>
 
             <div class="tbb-comm-grid-2" style="gap:28px; align-items:stretch;">
-              <!-- Opción 1: Creación de Página Web -->
               <div style="background:#F8FAFC; border-radius:24px; padding:32px; display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
                 <div>
                   <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px;">
@@ -2191,7 +2130,6 @@
                 </div>
               </div>
 
-              <!-- Opción 2: Publicaciones en Redes Sociales -->
               <div style="background:#F8FAFC; border-radius:24px; padding:32px; display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
                 <div>
                   <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px;">
@@ -2230,18 +2168,16 @@
     const sec = st.activeMainSection || 1;
 
     return `
-      <!-- BARRA SUPERIOR DE NAVEGACIÓN (FONDO CLARO, ELEGANTE, 5 MENÚS + COMPRAR SIEMPRE VISIBLE) -->
       <header class="tbb-awwwards-nav">
-        <a href="#inicio" onclick="window.tbbSwitchMainSection(1); return false;" style="display:flex; align-items:center; gap:10px; text-decoration:none; min-width:0;">
-          <img src="/assets/logos/tbb_official_liquid_glass_logo.jpg" alt="The Best Brand" style="width:36px; height:36px; border-radius:10px; object-fit:cover; flex-shrink:0;" />
-          <div style="min-width:0;">
-            <div class="tbb-brand-title-text" style="font-family:'Montserrat', sans-serif; font-size:0.95rem; font-weight:600; color:#0F172A; letter-spacing:-0.02em; white-space:nowrap;">
+        <a href="#top" onclick="window.tbbSwitchMainSection(1); return false;" style="display:flex; align-items:center; gap:12px; text-decoration:none; min-width:0;">
+          <img src="/assets/logos/tbb_official_liquid_glass_logo.jpg" alt="The Best Brand" style="width:38px; height:38px; border-radius:10px; object-fit:cover; flex-shrink:0;" />
+          <div class="tbb-header-brand-text-wrap" style="min-width:0;">
+            <div style="font-family:'Montserrat', sans-serif; font-size:0.98rem; font-weight:600; color:#0F172A; letter-spacing:-0.02em; white-space:nowrap;">
               THE BEST BRAND <span class="tbb-brand-inline-tagline" style="color:#EA580C; font-size:0.7rem; font-weight:500; margin-left:4px;">YOUR BRAND, NOW!!!</span>
             </div>
           </div>
         </a>
 
-        <!-- LOS 5 MENÚS PRINCIPALES EN ORDEN SECUENCIAL -->
         <nav class="tbb-desktop-nav-links" aria-label="Menú Principal">
           <button type="button" id="tbbSecTab_1" class="tbb-nav-menu-item ${sec === 1 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(1)">
             <span>${escHtml(t("menu1"))}</span>
@@ -2262,7 +2198,6 @@
           </button>
         </nav>
 
-        <!-- CONTROLES DERECHA: SELECTOR MULTILINGÜE + COMPRAR SIEMPRE VISIBLE + ABRIR ESTUDIO -->
         <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
           <select id="tbbCommercialLangSelect" aria-label="Idioma" onchange="window.tbbChangeCommercialLanguage(this.value)" style="height:36px; padding:0 10px; border-radius:999px; background:#F8FAFC; color:#0F172A; border:1px solid #CBD5E1; font-size:0.78rem; font-weight:500; cursor:pointer;">
             <option value="es" ${curLang === "es" ? "selected" : ""}>🇪🇸 ES</option>
@@ -2291,7 +2226,6 @@
         </div>
       </header>
 
-      <!-- BARRA COMPACTA DE LAS 5 SUBPÁGINAS EN MÓVIL / TABLET -->
       <nav class="tbb-mobile-subpages-bar" aria-label="Subpáginas">
         <button type="button" class="tbb-mob-pill tbb-tab-sec-1 ${sec === 1 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(1)">${escHtml(t("menu1"))}</button>
         <button type="button" class="tbb-mob-pill tbb-tab-sec-2 ${sec === 2 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(2)">
@@ -2302,7 +2236,6 @@
         <button type="button" class="tbb-mob-pill tbb-tab-sec-5 ${sec === 5 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(5)">${escHtml(t("menu5"))}</button>
       </nav>
 
-      <!-- DRAWER MÓVIL RESPONSIVO -->
       <div id="tbbMobileDrawerBackdrop" class="tbb-mobile-drawer-backdrop" onclick="window.tbbToggleMobileDrawer(false)"></div>
       <aside id="tbbMobileSlideDrawer" class="tbb-mobile-slide-drawer" aria-label="Menú Móvil">
         <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid #E2E8F0;">
@@ -2320,7 +2253,6 @@
         </div>
       </aside>
 
-      <!-- CONTENEDORES DE LAS 5 SUBPÁGINAS -->
       <main style="background:#FFFFFF; min-height:82vh;">
         <div id="tbbMainSectionPane_1" style="display:${sec === 1 ? 'block' : 'none'};">
           ${window.tbbBuildSubpage1HomeHTML()}
@@ -2555,7 +2487,6 @@
         <button type="button" class="tbb-btn-light-surface" onclick="window.tbbCloseBuyAppCheckoutModal()" style="padding:6px 12px;">✕</button>
       </div>
 
-      <!-- Selección de Plan -->
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px;">
         <button type="button" onclick="window.tbbSelectCheckoutPlan('pro_atelier')" style="padding:14px; border-radius:14px; border:1.5px solid ${!isAgency ? '#1D4ED8' : '#CBD5E1'}; background:${!isAgency ? '#EFF6FF' : '#FFFFFF'}; text-align:left; cursor:pointer;">
           <div style="font-size:0.86rem; font-weight:600; color:#0F172A;">${escHtml(t("planSingleName"))}</div>
@@ -2569,7 +2500,6 @@
         </button>
       </div>
 
-      <!-- Métodos de Pago -->
       <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-top:16px;">
         ${[
           { id: "card", lbl: "💳 Tarjeta" },
@@ -2807,30 +2737,12 @@
         }
         .tbb-mobile-subpages-bar {
           display: flex !important;
-          scrollbar-width: none;
-        }
-        .tbb-mobile-subpages-bar::-webkit-scrollbar {
-          display: none;
         }
         .tbb-mobile-hamburger-btn {
           display: inline-flex !important;
         }
         .tbb-awwwards-nav {
-          padding: 10px 14px;
-        }
-      }
-      @media (max-width: 560px) {
-        .tbb-brand-title-text {
-          display: none !important;
-        }
-        #tbbBtnTopBuyAppNow {
-          padding: 7px 14px !important;
-          font-size: 0.76rem !important;
-        }
-        #tbbCommercialLangSelect {
-          height: 34px !important;
-          padding: 0 8px !important;
-          font-size: 0.74rem !important;
+          padding: 10px 16px;
         }
       }
       @media (max-width: 920px) {
@@ -2841,6 +2753,17 @@
         .tbb-tour-sticky-stage {
           position: relative !important;
           top: auto !important;
+        }
+      }
+      @media (max-width: 560px) {
+        .tbb-header-brand-text-wrap {
+          display: none !important;
+        }
+        #tbbAlwaysOnBuyFloatingBar {
+          left: 12px !important;
+          right: 12px !important;
+          bottom: 10px !important;
+          justify-content: space-between !important;
         }
       }
       .tbb-mobile-drawer-backdrop {
@@ -2887,15 +2810,6 @@
         border: 1px solid #CBD5E1;
         box-shadow: 0 14px 36px rgba(15, 23, 42, 0.16);
         border-radius: 999px;
-      }
-      @media (max-width: 560px) {
-        #tbbAlwaysOnBuyFloatingBar {
-          left: 12px;
-          right: 12px;
-          bottom: 10px;
-          justify-content: space-between;
-          padding: 7px 14px;
-        }
       }
       .tbb-float-buy-cta {
         background: #0D2540;
@@ -2953,9 +2867,6 @@
 
   function ensureModalsAndFloatingBarMounted() {
     tbbInjectAwwwardsStyles();
-    if (window.location.hash && window.location.hash.length > 1) {
-      window.tbbCommercialDemoState.activeMainSection = resolveSectionFromSlugOrHash(window.location.hash);
-    }
     const isStandalone = document.body.getAttribute("data-tbb-standalone-web") === "true" && window.location.pathname !== "/studio" && !window.location.pathname.endsWith("studio.html");
 
     if (isStandalone) {
@@ -3045,19 +2956,42 @@
     if (ov) ov.classList.remove("open");
   };
 
-  window.addEventListener("hashchange", () => {
-    if (window.location.hash && window.location.hash.length > 1) {
-      window.tbbSwitchMainSection(window.location.hash, true);
-    }
-  });
+  function applyUrlParamsState() {
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      const langParam = sp.get("lang");
+      if (langParam && I18N[langParam]) {
+        localStorage.setItem(LANG_STORAGE_KEY, langParam);
+      }
+      const secParam = sp.get("sec");
+      if (secParam) {
+        const map = { inicio: 1, demo: 2, tour: 3, bases: 4, pack: 5, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5 };
+        if (map[secParam.toLowerCase()]) {
+          window.tbbCommercialDemoState.activeMainSection = map[secParam.toLowerCase()];
+        }
+      }
+    } catch (e) {}
+  }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      ensureModalsAndFloatingBarMounted();
-      window.tbbRefreshCommercialPortalDOM();
-    });
-  } else {
+  function bootCommercialExperience() {
+    applyUrlParamsState();
     ensureModalsAndFloatingBarMounted();
     window.tbbRefreshCommercialPortalDOM();
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      const viewerIdx = sp.get("viewer");
+      if (viewerIdx !== null && typeof window.tbbOpenPlateLightboxModal === "function") {
+        const idx = Math.max(0, Math.min(OFFICIAL_9_DELIVERABLES.length - 1, parseInt(viewerIdx, 10) || 0));
+        const item = OFFICIAL_9_DELIVERABLES[idx];
+        const loc = item.i18n[getLang()] || item.i18n.es;
+        setTimeout(() => window.tbbOpenPlateLightboxModal(item.plateNum, item.thumb, loc.title, item.sampleUrl), 250);
+      }
+    } catch (e) {}
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootCommercialExperience);
+  } else {
+    bootCommercialExperience();
   }
 })();
