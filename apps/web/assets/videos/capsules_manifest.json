@@ -2,8 +2,8 @@
   {
     "step": 0,
     "video_url": "/assets/videos/capsula_teoria_paso_0.mp4",
-    "duration_sec": 59.4,
-    "size_kb": 8801.6,
+    "duration_sec": 54.4,
+    "size_kb": 8030.4,
     "title": "Paso 0: Objetivo, Evolución de Logo Actual y Giro del Negocio",
     "author_name": "David Aaker & Sagi Haviv",
     "author_role": "Capital de Marca y Evolución de Símbolos",
@@ -14,7 +14,7 @@
         "headline": "¿Crear desde Cero, Evolucionar o Crear una Sub-marca?",
         "bullet_title": "Cita de Autor: Peter Drucker & Marty Neumeier",
         "body_text": "Como enseñó Peter Drucker, toda gran transformación empieza definiendo la misión actual. Elige tu objetivo mientras Aura te responde en menos de 10 segundos.",
-        "narration": "Hola, soy Aura. Como afirma Peter Drucker, la mejor forma de predecir el futuro es creándolo. En el Paso cero eliges si construyes tu marca desde cero, evolucionas la actual o creas una sub-marca."
+        "narration": "Hola, soy Jorge Benítez. Como afirma Peter Drucker, la mejor forma de predecir el futuro es creándolo. En el Paso cero eliges si construyes tu marca desde cero, evolucionas la actual o creas una sub-marca."
       },
       {
         "phase_tag": "CLIP 2/4 · SUBE TU LOGO ACTUAL: MANTENER O EVOLUCIONAR",
@@ -39,13 +39,13 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
+    "production_engine": "HeyGen Founder Avatar (Jorge Improbears) + Google Flow Dynamic B-Rolls + Synchronized Founder Audio"
   },
   {
     "step": 1,
     "video_url": "/assets/videos/capsula_teoria_paso_1.mp4",
-    "duration_sec": 53.1,
-    "size_kb": 6933.5,
+    "duration_sec": 47.8,
+    "size_kb": 5767.5,
     "title": "Paso 1: El Círculo Dorado y la Promesa de Valor",
     "author_name": "Simon Sinek",
     "author_role": "Autor de Start With Why (El Círculo Dorado)",
@@ -81,13 +81,13 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
+    "production_engine": "HeyGen Founder Avatar (Jorge Improbears) + Google Flow Dynamic B-Rolls + Synchronized Founder Audio"
   },
   {
     "step": 2,
     "video_url": "/assets/videos/capsula_teoria_paso_2.mp4",
-    "duration_sec": 51.5,
-    "size_kb": 8227.1,
+    "duration_sec": 47.1,
+    "size_kb": 7533.1,
     "title": "Paso 2: Arquitectura de Touchpoints (Antes, Durante y Después)",
     "author_name": "Don Norman & K. Lemon",
     "author_role": "Diseño de Experiencia y Service Blueprint",
@@ -123,13 +123,13 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
+    "production_engine": "HeyGen Founder Avatar (Jorge Improbears) + Google Flow Dynamic B-Rolls + Synchronized Founder Audio"
   },
   {
     "step": 3,
     "video_url": "/assets/videos/capsula_teoria_paso_3.mp4",
-    "duration_sec": 48.3,
-    "size_kb": 7015.8,
+    "duration_sec": 44.6,
+    "size_kb": 6494.4,
     "title": "Paso 3: Ingeniería de Naming, Fonética y Clases de Niza",
     "author_name": "Alexandra Watkins",
     "author_role": "Creadora del Método SMILE & SCRATCH",
@@ -165,13 +165,13 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
+    "production_engine": "HeyGen Founder Avatar (Jorge Improbears) + Google Flow Dynamic B-Rolls + Synchronized Founder Audio"
   },
   {
     "step": 4,
     "video_url": "/assets/videos/capsula_teoria_paso_4.mp4",
-    "duration_sec": 53.3,
-    "size_kb": 5643.5,
+    "duration_sec": 51.0,
+    "size_kb": 5130.9,
     "title": "Paso 4: Ingeniería Kansei, 7 Ejes Visuales y Tipografía",
     "author_name": "Prof. Mitsuo Nagamachi",
     "author_role": "Fundador de la Ingeniería Kansei & Semiótica",
@@ -207,13 +207,13 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
+    "production_engine": "HeyGen Founder Avatar (Jorge Improbears) + Google Flow Dynamic B-Rolls + Synchronized Founder Audio"
   },
   {
     "step": 5,
     "video_url": "/assets/videos/capsula_teoria_paso_5.mp4",
-    "duration_sec": 57.9,
-    "size_kb": 7743.1,
+    "duration_sec": 53.9,
+    "size_kb": 6835.8,
     "title": "Paso 5: Estudio de Logotipo con Gemini Vision y Evolución de Base",
     "author_name": "Paul Rand & Jony Ive",
     "author_role": "Maestros de Identidad Visual y Liquid Glass",
@@ -249,13 +249,13 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
+    "production_engine": "HeyGen Founder Avatar (Jorge Improbears) + Google Flow Dynamic B-Rolls + Synchronized Founder Audio"
   },
   {
     "step": 6,
     "video_url": "/assets/videos/capsula_teoria_paso_6.mp4",
-    "duration_sec": 56.0,
-    "size_kb": 9416.3,
+    "duration_sec": 52.5,
+    "size_kb": 9426.1,
     "title": "Paso 6: Brandbook Maestro de 30 Láminas en Curvas (Guía C-00)",
     "author_name": "Massimo Vignelli & El Oso",
     "author_role": "Sistemas de Retículas y Constitución C-00 ImproBears",
@@ -291,6 +291,6 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "Google Flow + HeyGen Avatars & Dynamic B-Rolls"
+    "production_engine": "HeyGen Founder Avatar (Jorge Improbears) + Google Flow Dynamic B-Rolls + Synchronized Founder Audio"
   }
 ]

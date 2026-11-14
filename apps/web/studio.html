@@ -8828,6 +8828,57 @@
       }
     }
 
+    window.tbbHasActiveProLicense = function () {
+      try {
+        return Boolean(
+          localStorage.getItem("tbb_pro_license_v56") ||
+          localStorage.getItem("tbb_license_active_pro_atelier") === "true" ||
+          localStorage.getItem("thebestbrand_pro_license")
+        );
+      } catch (e) {
+        return false;
+      }
+    };
+
+    window.tbbBuildProgressMigrationSnapshot = function () {
+      const snap = {
+        savedAt: new Date().toISOString(),
+        currentStep: (window.tbbState && typeof window.tbbState.step === "number") ? window.tbbState.step : (typeof currentStep !== "undefined" ? currentStep : 3),
+        subStep: (window.tbbState && window.tbbState.subStep) || 1,
+        step0State: window.step0State ? JSON.parse(JSON.stringify(window.step0State)) : {},
+        canvasState: (typeof canvasState === "object" && canvasState) ? JSON.parse(JSON.stringify(canvasState)) : {},
+        tpExtractedItems: (typeof tpExtractedItems === "object" && tpExtractedItems) ? JSON.parse(JSON.stringify(tpExtractedItems)) : {},
+        acceptedNamingVault: Array.isArray(window.acceptedNamingVault) ? JSON.parse(JSON.stringify(window.acceptedNamingVault)) : [],
+        tbbState: window.tbbState ? JSON.parse(JSON.stringify(window.tbbState)) : {}
+      };
+      try {
+        localStorage.setItem("tbb_demo_steps0to3_migration_v92", JSON.stringify(snap));
+        if (typeof saveBrandSessionToLocalStorage === "function") {
+          saveBrandSessionToLocalStorage(false, true);
+        }
+      } catch (e) {}
+      return snap;
+    };
+
+    window.tbbTriggerStep4PaywallAndNotifyParent = function (fromStep, targetStep) {
+      const stateSnapshot = window.tbbBuildProgressMigrationSnapshot();
+      if (window.parent && window.parent !== window) {
+        try {
+          window.parent.postMessage({
+            type: "TBB_TRIGGER_STEP4_PAYWALL",
+            fromStep: typeof fromStep === "number" ? fromStep : 3,
+            targetStep: typeof targetStep === "number" ? targetStep : 4,
+            stateSnapshot
+          }, "*");
+        } catch (e) {}
+      }
+      if (typeof window.tbbOpenBuyAppCheckoutModal === "function") {
+        window.tbbOpenBuyAppCheckoutModal("pro_atelier");
+      } else {
+        showDemoCompletionPaywallModal();
+      }
+    };
+
     function showDemoCompletionPaywallModal() {
       let modal = document.getElementById("tbbDemoCompletionPaywallModal");
       if (!modal) {
@@ -8837,20 +8888,20 @@
         modal.innerHTML = `
           <div style="background:#FFFFFF; border:2.5px solid #1D4ED8; border-top:6px solid #0D2540; border-radius:24px; padding:32px 28px; max-width:540px; width:100%; box-shadow:0 30px 80px rgba(0,0,0,0.6); text-align:center; position:relative; font-family:'Plus Jakarta Sans',sans-serif;">
             <div style="display:inline-flex; align-items:center; gap:8px; background:#EFF6FF; border:1px solid #93C5FD; border-radius:999px; padding:5px 14px; font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#1D4ED8; margin-bottom:12px;">
-              ★ PASO 1 Y 2 COMPLETADOS CON ÉXITO
+              ★ PASOS 1, 2 Y 3 COMPLETADOS SIN COSTO
             </div>
             <h3 style="font-family:'Montserrat',sans-serif; font-size:1.45rem; font-weight:900; color:#090D16; margin:0 0 10px 0; line-height:1.2;">
-              ¡Tu Estrategia de Marca está Lista!
+              ¡Tu Estrategia y Naming Oficial están Listos!
             </h3>
             <p style="font-size:0.88rem; color:#475569; line-height:1.55; margin:0 0 20px 0;">
-              Has definido tu Círculo Dorado y tus Touchpoints Antes · Durante · Después. Para desbloquear el <strong>Paso 3 (Naming Fonético)</strong>, <strong>Pasos 4 y 5 (Logotipos en Curvas)</strong> y descargar tu <strong>Manual de Marca de 30 Hojas</strong> oficial, adquiere tu Licencia Pro.
+              Has completado tu Objetivo, Círculo Dorado, Touchpoints y Naming Fonético. Para desbloquear el <strong>Paso 4 (Ingeniería Kansei y Tipografía)</strong>, el <strong>Paso 5 (Logotipo Vectorial Liquid Glass)</strong> y el <strong>Paso 6 (Brandbook de 36 Láminas + 9 Entregables)</strong>, activa tu Licencia Pro de <strong>$49 USD</strong>. Tus respuestas se migrarán automáticamente a tu nueva cuenta.
             </p>
             <div style="display:flex; flex-direction:column; gap:10px;">
-              <button type="button" onclick="if(window.parent && window.parent !== window){window.parent.postMessage({type:'TBB_DEMO_COMPLETED_STEP_2'},'*');} if(window.tbbOpenBuyAppCheckoutModal){window.tbbOpenBuyAppCheckoutModal('pro_atelier');} document.getElementById('tbbDemoCompletionPaywallModal').style.display='none';" style="background:#0D2540; color:#FFFFFF; border:none; border-radius:999px; padding:14px 24px; font-size:0.94rem; font-weight:800; cursor:pointer; box-shadow:0 8px 24px rgba(13,37,64,0.4); border:1.5px solid #4C9DE6;">
-                Comprar Licencia Pro · $49 USD (Pago Único) →
+              <button type="button" onclick="document.getElementById('tbbDemoCompletionPaywallModal').style.display='none'; window.tbbTriggerStep4PaywallAndNotifyParent(3, 4);" style="background:#0D2540; color:#FFFFFF; border:none; border-radius:999px; padding:14px 24px; font-size:0.94rem; font-weight:800; cursor:pointer; box-shadow:0 8px 24px rgba(13,37,64,0.4); border:1.5px solid #4C9DE6;">
+                Desbloquear Paso 4 al 6 + Crear Cuenta · $49 USD →
               </button>
-              <button type="button" onclick="document.getElementById('tbbDemoCompletionPaywallModal').style.display='none'; switchStep(2);" style="background:#F8FAFC; border:1.5px solid #CBD5E1; color:#090D16; border-radius:999px; padding:10px 20px; font-size:0.82rem; font-weight:700; cursor:pointer;">
-                ← Regresar a Revisar Touchpoints (Paso 2)
+              <button type="button" onclick="document.getElementById('tbbDemoCompletionPaywallModal').style.display='none'; switchStep(3);" style="background:#F8FAFC; border:1.5px solid #CBD5E1; color:#090D16; border-radius:999px; padding:10px 20px; font-size:0.82rem; font-weight:700; cursor:pointer;">
+                ← Regresar a Revisar Naming (Paso 3)
               </button>
             </div>
           </div>
@@ -8865,16 +8916,9 @@
       if (typeof stopContinuousVoice === "function") stopContinuousVoice();
       if (typeof dismissWelcomeModal === "function") dismissWelcomeModal();
 
-      const isDemoSession = new URLSearchParams(window.location.search).get("demo") === "true" || window.tbbIsDemoMode === true;
-      if (isDemoSession && stepNum >= 3) {
-        if (window.parent && window.parent !== window) {
-          window.parent.postMessage({ type: "TBB_DEMO_COMPLETED_STEP_2", fromStep: currentStep, targetStep: stepNum }, "*");
-        }
-        if (typeof window.tbbOpenBuyAppCheckoutModal === "function") {
-          window.tbbOpenBuyAppCheckoutModal("pro_atelier");
-        } else {
-          showDemoCompletionPaywallModal();
-        }
+      const isDemoSession = (new URLSearchParams(window.location.search).get("demo") === "true" || window.tbbIsDemoMode === true) && !window.tbbHasActiveProLicense();
+      if (isDemoSession && stepNum >= 4) {
+        window.tbbTriggerStep4PaywallAndNotifyParent(currentStep, stepNum);
         return false;
       }
 
@@ -9475,81 +9519,81 @@
 
     const STEP_THEORY_CAPSULES_SPEC = {
       0: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_0.mp4?v=87.0",
+        videoUrl: "/assets/videos/capsula_teoria_paso_0.mp4?v=92.0",
         frameworkBadge: "TEORÍA 00 · DAVID AAKER, SAGI HAVIV & PETER DRUCKER",
-        headerLabel: "PARTE 2 · REEL HEYGEN + GOOGLE FLOW DEL PASO 0: OBJETIVO, LOGO BASE Y GIRO",
-        theoryTitle: "La Teoría: Capital de Marca y Evolución (David Aaker & Sagi Haviv)",
-        theoryBody: "David Aaker y Sagi Haviv demuestran que cuando ya tienes un nombre o logotipo actual, puedes conservarlo intacto o evolucionarlo como base extrayendo sus colores dominantes.",
-        importanceTitle: "Por qué es Importante (Peter Drucker & Al Ries)",
-        importanceBody: "Definir tu objetivo inicial, subir tu logo base opcional y describir tu giro permite que el motor adapte cada pregunta, touchpoint y las 30 láminas de tu Brandbook.",
-        exampleTitle: "Ejemplo Breve: Evolución de Símbolos y Sincronización",
-        exampleBody: "Grandes marcas evolucionan su símbolo base sin perder reconocimiento, mientras su sesión se sincroniza en tiempo real entre móvil y escritorio."
+        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 0): OBJETIVO, LOGO BASE Y GIRO",
+        theoryTitle: "Clip 1 & 2 · Punto de Partida y Capital Visual (Peter Drucker, David Aaker & Sagi Haviv)",
+        theoryBody: "«Hola, soy Jorge Benítez. Como afirma Peter Drucker, la mejor forma de predecir el futuro es creándolo. En el Paso cero eliges si construyes tu marca desde cero, evolucionas la actual o creas una sub-marca. Si ya tienes nombre y logotipo, David Aaker y Sagi Haviv recomiendan proteger tu capital visual.»",
+        importanceTitle: "Clip 3 · Giro Comercial que Alimenta el Sistema (Al Ries & Jack Trout)",
+        importanceBody: "«Siguiendo a Al Ries y Jack Trout en Posicionamiento, cuando describes tu giro con claridad en el tercer sub-paso, el sistema adapta automáticamente tus preguntas, puntos de contacto y propuestas.»",
+        exampleTitle: "Clip 4 · Sincronización en Vivo y Respuestas de Aura",
+        exampleBody: "«Además, tu sesión se sincroniza en tiempo real entre tu teléfono y tu computadora. En cada decisión escucharás mi respuesta breve de menos de diez segundos con el respaldo de los grandes autores.»"
       },
       1: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_1.mp4?v=87.0",
+        videoUrl: "/assets/videos/capsula_teoria_paso_1.mp4?v=92.0",
         frameworkBadge: "TEORÍA 01 · CÍRCULO DORADO (SIMON SINEK)",
-        headerLabel: "PARTE 2 · REEL HEYGEN + GOOGLE FLOW DEL PASO 1: PROPÓSITO Y PROMESA DE VALOR",
-        theoryTitle: "La Teoría: El Círculo Dorado (Simon Sinek)",
-        theoryBody: "Simon Sinek demostró que las marcas líderes comunican de adentro hacia afuera: 1° ¿Por qué existes?, 2° ¿Cómo lo haces único?, y 3° ¿Qué entregas?",
-        importanceTitle: "Por qué es Importante (Alex Osterwalder & Donald Miller)",
-        importanceBody: "Definir tus 6 pilares estratégicos evita competir por precio y alimenta directamente tus touchpoints, tu nombre y el diseño de tu logotipo.",
-        exampleTitle: "Ejemplo Breve: Nubank y Apple",
-        exampleBody: "Nubank no se presentó como 'una tarjeta más', sino con el propósito de liberar a las personas de la burocracia bancaria mediante una app transparente."
+        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 1): EL CÍRCULO DORADO Y PROMESA DE VALOR",
+        theoryTitle: "Clip 1 & 2 · El Círculo Dorado (Jim Collins & Simon Sinek)",
+        theoryBody: "«Bienvenido al Paso uno. Como demostró Jim Collins en Empresas que Sobresalen, toda marca duradera nace de cimientos estratégicos claros antes de diseñar su identidad visual. La teoría del Círculo Dorado de Simon Sinek enseña que la gente no compra lo que haces, sino el porqué lo haces.»",
+        importanceTitle: "Clip 3 · Oferta de Valor y Método en 3 Pasos (Alex Osterwalder & Donald Miller)",
+        importanceBody: "«Combinamos el Lienzo de Propuesta de Valor de Alex Osterwalder con el método StoryBrand de Donald Miller: al explicar tu proceso en tres pasos claros, tu cliente confía sin dudar.»",
+        exampleTitle: "Clip 4 · Caso Real: Apple y Nubank",
+        exampleBody: "«Observa a Nubank: su propósito fue liberar a las personas de la burocracia financiera con calidez y transparencia. Entra ahora al Paso uno y construyamos tus pilares estratégicos.»"
       },
       2: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_2.mp4?v=87.0",
+        videoUrl: "/assets/videos/capsula_teoria_paso_2.mp4?v=92.0",
         frameworkBadge: "TEORÍA 02 · LEMON & VERHOEF · SERVICE BLUEPRINT",
-        headerLabel: "PARTE 2 · REEL HEYGEN + GOOGLE FLOW DEL PASO 2: TOUCHPOINTS (ANTES, DURANTE Y DESPUÉS)",
-        theoryTitle: "La Teoría: Los 3 Momentos de Verdad (Jan Carlzon & Lemon/Verhoef)",
-        theoryBody: "La Arquitectura de Experiencia divide el viaje del cliente en 3 etapas: Antes (atracción y confianza), Durante (uso o compra sin fricción) y Después (retención).",
-        importanceTitle: "Por qué es Importante (Don Norman)",
-        importanceBody: "Tus touchpoints deben corresponder 100% a tu giro real (pantallas y micro-interacciones si es App digital, o experiencia sensorial si es físico).",
-        exampleTitle: "Ejemplo Breve: ImproBears y Spotify Wrapped",
-        exampleBody: "Articular atención ágil Antes, entrega impecable sin fricción Durante y acompañamiento leal Después convierte a cada cliente en embajador."
+        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 2): TOUCHPOINTS (ANTES, DURANTE Y DESPUÉS)",
+        theoryTitle: "Clip 1 & 2 · Los Momentos de la Verdad (Jan Carlzon & Lemon/Verhoef)",
+        theoryBody: "«Excelente avance en el Paso uno. Como enseñó Jan Carlzon en los Momentos de la Verdad, cada contacto de quince segundos con tu cliente define si confía en tu marca. Según Katherine Lemon y Peter Verhoef, toda experiencia se divide en tres etapas: Antes, Durante y Después.»",
+        importanceTitle: "Clip 3 · Eliminar Fricciones Operativas (Don Norman)",
+        importanceBody: "«Don Norman explica que el diseño excelente elimina la fricción operativa. Los puntos de contacto reales que selecciones aquí alimentarán directamente las láminas de tu manual final.»",
+        exampleTitle: "Clip 4 · Caso Real y Paso a la Acción",
+        exampleBody: "«Cuando articulas atención ágil antes, servicio impecable durante y acompañamiento leal después, tus clientes se vuelven promotores. Seleccionemos ahora tus puntos de contacto en el Paso dos.»"
       },
       3: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_3.mp4?v=87.0",
+        videoUrl: "/assets/videos/capsula_teoria_paso_3.mp4?v=92.0",
         frameworkBadge: "TEORÍA 03 · SMILE & SCRATCH + CLASES DE NIZA",
-        headerLabel: "PARTE 2 · REEL HEYGEN + GOOGLE FLOW DEL PASO 3: INGENIERÍA DE NAMING Y REGISTRO",
-        theoryTitle: "La Teoría: Modelo SMILE y Simbolismo Fonético (Watkins & Placek)",
-        theoryBody: "Alexandra Watkins evalúa que el nombre sea Sugerente, Memorable, con Imagen mental y Emoción, mientras David Placek optimiza su sonoridad en 2 a 3 sílabas.",
-        importanceTitle: "Por qué es Importante (Alina Wheeler & Al Ries)",
-        importanceBody: "Un nombre de 2 a 3 sílabas alineado a tu oferta y verificado en su Clase Internacional de Niza evita rechazos legales y facilita la recomendación de boca en boca.",
-        exampleTitle: "Ejemplo Breve: Stripe, Notion y Rolex",
-        exampleBody: "Nombres breves con consonantes firmes como 'Stripe' o 'Rolex' se recuerdan al primer impacto y sus iniciales crean un monograma perfecto para ícono de app."
+        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 3): INGENIERÍA DE NAMING Y REGISTRO",
+        theoryTitle: "Clip 1 & 2 · Modelo SMILE y Simbolismo Fonético (Wally Olins, Watkins & Placek)",
+        theoryBody: "«Ya tienes el mapa de experiencia de tu cliente. Como afirma Wally Olins, el nombre es el primer activo verbal que pronunciarán tus clientes en cada canal. Aplicamos el modelo SMILE de Alexandra Watkins y el simbolismo fonético de David Placek: buscamos un nombre de dos a tres sílabas, fácil de recordar y con iniciales potentes.»",
+        importanceTitle: "Clip 3 · Blindaje en Clases de Niza y Descriptor (Alina Wheeler)",
+        importanceBody: "«Siguiendo a Alina Wheeler, acompañamos tu nombre oficial con un descriptor claro y verificamos sus clases internacionales de Niza para proteger tu registro legal.»",
+        exampleTitle: "Clip 4 · Ejemplo Real: Stripe, Notion y Rolex",
+        exampleBody: "«Piensa en Rolex o Stripe: nombres breves cuyas iniciales forman un monograma inconfundible. Entremos al Paso tres para confirmar el nombre y eslogan de tu marca.»"
       },
       4: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_4.mp4?v=87.0",
+        videoUrl: "/assets/videos/capsula_teoria_paso_4.mp4?v=92.0",
         frameworkBadge: "TEORÍA 04 · INGENIERÍA KANSEI & SEMIÓTICA",
-        headerLabel: "PARTE 2 · REEL HEYGEN + GOOGLE FLOW DEL PASO 4: PSICOLOGÍA DE LA FORMA Y 7 EJES",
-        theoryTitle: "La Teoría: Kansei, Bouba/Kiki y Osgood (Nagamachi & Ramachandran)",
-        theoryBody: "La neurociencia visual y la Ingeniería Kansei demuestran que las curvas orgánicas transmiten cercanía humana, mientras que los ángulos geométricos proyectan precisión técnica.",
-        importanceTitle: "Por qué es Importante (Robert Bringhurst & Adrian Frutiger)",
-        importanceBody: "Calibrar los 7 ejes bipolares, elegir la tipografía (voz visible según Bringhurst) y tu Familia Arquitectónica Base define el plano maestro antes de dibujar el logo.",
-        exampleTitle: "Ejemplo Breve: Airbnb vs. Tesla",
-        exampleBody: "Airbnb emplea un lazo curvo continuo para evocar pertenencia y hospitalidad; Tesla utiliza vértices agudos y simetría axial para proyectar ingeniería eléctrica."
+        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 4): PSICOLOGÍA DE LA FORMA Y 7 EJES",
+        theoryTitle: "Clip 1 & 2 · Ingeniería Kansei y 7 Ejes (Mitsuo Nagamachi, Ramachandran & Osgood)",
+        theoryBody: "«Con tu nombre oficial listo, entramos al Paso cuatro. El profesor Mitsuo Nagamachi creó la Ingeniería Kansei para traducir sentimientos humanos en parámetros de diseño exactos. Nuestro cerebro asocia curvas suaves con cercanía humana y ángulos rectos con precisión técnica.»",
+        importanceTitle: "Clip 3 · La Tipografía es el Lenguaje Hecho Visible (Bringhurst & Frutiger)",
+        importanceBody: "«Robert Bringhurst afirma que la tipografía es el lenguaje hecho visible, y Adrian Frutiger demostró el poder de la estructura base. Aquí elegirás tu fuente oficial y tu familia constructiva.»",
+        exampleTitle: "Clip 4 · Ejemplo Real: Airbnb vs. Tesla",
+        exampleBody: "«Mira cómo Airbnb usa un lazo curvo para transmitir pertenencia, mientras Tesla usa ángulos de ingeniería. Calibra ahora el carácter visual de tu marca en el Paso cuatro.»"
       },
       5: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_5.mp4?v=87.0",
+        videoUrl: "/assets/videos/capsula_teoria_paso_5.mp4?v=92.0",
         frameworkBadge: "TEORÍA 05 · PAUL RAND, SAGI HAVIV, JONY IVE & GESTALT",
-        headerLabel: "PARTE 2 · REEL HEYGEN + GOOGLE FLOW DEL PASO 5: TALLER DE LOGOTIPO Y EVOLUCIÓN IA",
-        theoryTitle: "La Teoría: Simplicidad, Evolución Base y Gestalt (Rand & Haviv)",
-        theoryBody: "Paul Rand y Sagi Haviv enseñan que un símbolo icónico funciona en B/N y a color; si subiste tu logo actual, Gemini Vision lo toma como base para evolucionarlo.",
-        importanceTitle: "Por qué es Importante (Jony Ive & Josef Albers)",
-        importanceBody: "Visualizar simultáneamente tu lockup principal y tu ícono App 1:1 con libertad creativa abierta garantiza que tu logotipo brille en pantallas e imprenta.",
-        exampleTitle: "Ejemplo Breve: FedEx, Apple y Pentagram",
-        exampleBody: "Iterar libremente formas, proporciones, tipografía y acabados en tiempo real te permite elegir la versión exacta que encabezará tus 30 láminas."
+        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 5): TALLER DE LOGOTIPO Y EVOLUCIÓN IA",
+        theoryTitle: "Clip 1 & 2 · Simplicidad y Evolución Vectorial (Paul Rand, Josef Albers & Sagi Haviv)",
+        theoryBody: "«Bienvenido al Paso cinco. Como enseñó el legendario Paul Rand, un logotipo extraordinario combina simplicidad geométrica y recordación inmediata, potenciado por la armonía cromática de Josef Albers. Si subiste tu logotipo actual, seguimos la máxima de Sagi Haviv: respetar la esencia reconocible mientras perfeccionamos sus trazos.»",
+        importanceTitle: "Clip 3 · Libertad Creativa Abierta (Max Wertheimer & Dieter Rams)",
+        importanceBody: "«Bajo las leyes de la Gestalt de Max Wertheimer y la pureza de Dieter Rams, tienes libertad total: pide cualquier símbolo u objeto nuevo en el cuadro inferior y compara tus iteraciones arriba.»",
+        exampleTitle: "Clip 4 · Lockup Principal + Ícono App 1:1 (Jony Ive)",
+        exampleBody: "«Inspirados en el rigor industrial de Jony Ive, visualizas al mismo tiempo tu logotipo completo y su ícono uno a uno. Cuando te enamore el resultado, confírmalo para generar tu manual.»"
       },
       6: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_6.mp4?v=87.0",
+        videoUrl: "/assets/videos/capsula_teoria_paso_6.mp4?v=92.0",
         frameworkBadge: "TEORÍA 06 · MASSIMO VIGNELLI, MÜLLER-BROCKMANN & GUÍA C-00",
-        headerLabel: "PARTE 2 · REEL HEYGEN + GOOGLE FLOW DEL PASO 6: BRANDBOOK MAESTRO DE 30 LÁMINAS",
-        theoryTitle: "La Teoría: Sistemas de Identidad y Retículas (Vignelli & C-00)",
-        theoryBody: "Siguiendo a Massimo Vignelli, Josef Müller-Brockmann y la Guía Oficial C-00 de ImproBears, tus 30 láminas en curvas abiertas protegen la ejecución de tu marca.",
-        importanceTitle: "Por qué es Importante (Danne & Blackburn · Alina Wheeler)",
-        importanceBody: "Garantiza continuidad absoluta del Paso 0 al 6 con logotipo en positivo por defecto, acentos reales de tu logo y descarga instantánea en PDF, HTML y SVG.",
-        exampleTitle: "Ejemplo Breve: Manual NASA y Guía ImproBears 30 Láminas",
-        exampleBody: "Con 30 láminas horizontales ilustradas listas para descargar en iPhone o escritorio en menos de 2 segundos, tu marca queda lista para producción."
+        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 6): BRANDBOOK MAESTRO EN CURVAS",
+        theoryTitle: "Clip 1 & 2 · La Constitución Visual de tu Marca (Massimo Vignelli & Müller-Brockmann)",
+        theoryBody: "«Felicidades por llegar al Paso seis. Como estableció Massimo Vignelli en su Canon, un manual de identidad es la constitución que protege la coherencia de tu marca en todo momento. Aplicamos los sistemas de retículas de Josef Müller-Brockmann y la Guía Oficial C-Cero-Cero de ImproBears.»",
+        importanceTitle: "Clip 3 · De la Filosofía a la Imprenta (Danne & Blackburn · Alina Wheeler)",
+        importanceBody: "«Al igual que el manual de la NASA de Danne y Blackburn y la metodología de Alina Wheeler, tus láminas cubren desde la filosofía y geometría hasta papelería, uniformes y firma digital.»",
+        exampleTitle: "Clip 4 · Descarga Instantánea en iPhone, iPad y Escritorio",
+        exampleBody: "«Con un solo toque puedes descargar tu PDF en menos de dos segundos, compartirlo desde tu iPhone o exportar tu logotipo en curvas. Tu marca está lista para conquistar el mundo.»"
       }
     };
 
@@ -24058,17 +24102,25 @@
         if (st.subStep < maxSub) {
           st.subStep += 1;
           window.renderTbbZeroScrollStage();
+          if (typeof window.tbbPostDemoProgressToParent === "function") window.tbbPostDemoProgressToParent();
           return;
         }
         if (st.step < 6) {
           const prevStep = st.step;
-          st.step += 1;
+          const nextStep = st.step + 1;
+          const isDemoSession = (new URLSearchParams(window.location.search).get("demo") === "true" || window.tbbIsDemoMode === true) && !window.tbbHasActiveProLicense();
+          if (isDemoSession && nextStep >= 4) {
+            window.tbbTriggerStep4PaywallAndNotifyParent(prevStep, nextStep);
+            return;
+          }
+          st.step = nextStep;
           window.currentStep = st.step;
           if (typeof unlockedStepMax !== "undefined" && st.step > unlockedStepMax) {
             unlockedStepMax = st.step;
           }
           st.subStep = 1;
           window.renderTbbZeroScrollStage();
+          if (typeof window.tbbPostDemoProgressToParent === "function") window.tbbPostDemoProgressToParent();
           if (typeof openPhaseTransitionVideoCapsule === "function") {
             openPhaseTransitionVideoCapsule(prevStep, st.step);
           }
@@ -24259,18 +24311,25 @@
       };
 
       window.tbbJumpToStep = function (stepNum, subStepNum = 1) {
+        const target = Number(stepNum || 0);
+        const isDemoSession = (new URLSearchParams(window.location.search).get("demo") === "true" || window.tbbIsDemoMode === true) && !window.tbbHasActiveProLicense();
+        if (isDemoSession && target >= 4) {
+          window.tbbTriggerStep4PaywallAndNotifyParent(window.tbbState ? window.tbbState.step : 3, target);
+          return;
+        }
         const prevStep = window.tbbState.step;
         window.tbbState.activeMode = "step";
-        window.tbbState.step = Number(stepNum || 0);
+        window.tbbState.step = target;
         window.tbbState.subStep = Number(subStepNum || 1);
-        if (Number(stepNum) === 6 && Number(subStepNum || 1) === 1) {
+        if (target === 6 && Number(subStepNum || 1) === 1) {
           if (prevStep !== 6) window.tbbState.plateIdx = 0;
           window._tbbStep6PendingCeremony = true;
         }
-        if (stepNum >= 1) {
-          window.currentStep = stepNum;
+        if (target >= 1) {
+          window.currentStep = target;
         }
         window.renderTbbZeroScrollStage();
+        if (typeof window.tbbPostDemoProgressToParent === "function") window.tbbPostDemoProgressToParent();
       };
 
       window.tbbOpenJourneyMap = function () {
@@ -24352,7 +24411,74 @@
           window.tbbSaveStep1Answer(fieldRole, refined);
         }
         window.triggerAuraEmpatheticFeedback("input_step1", refined, false, true);
+        if (typeof window.tbbPostDemoProgressToParent === "function") window.tbbPostDemoProgressToParent();
       };
+
+      window.tbbPostDemoProgressToParent = function () {
+        if (!window.parent || window.parent === window) return;
+        try {
+          const snap = window.tbbBuildProgressMigrationSnapshot();
+          window.parent.postMessage({
+            type: "TBB_DEMO_PROGRESS_SYNC",
+            step: snap.currentStep,
+            subStep: snap.subStep,
+            brandName: (canvasState && canvasState.brandName) || "TheBestBrand",
+            tagline: (canvasState && canvasState.tagline) || "YOUR BRAND, NOW!!!",
+            businessGiro: (canvasState && canvasState.custom_business_type) || "",
+            whyPurpose: (canvasState && canvasState.golden_circle) || "",
+            whatOffer: (canvasState && canvasState.value_offer) || "",
+            stateSnapshot: snap
+          }, "*");
+        } catch (e) {}
+      };
+
+      // Escuchar eventos desde el marco padre (iPhone Mockup en Landing Comercial: desbloqueo tras compra y presets)
+      window.addEventListener("message", function (ev) {
+        const msg = ev && ev.data;
+        if (!msg || typeof msg !== "object") return;
+        if (msg.type === "TBB_LICENSE_UNLOCKED_CONTINUE_STEP4") {
+          try {
+            if (msg.receipt) {
+              localStorage.setItem("tbb_pro_license_v56", JSON.stringify(msg.receipt));
+              if (msg.receipt.licenseCode) {
+                localStorage.setItem("thebestbrand_pro_license", msg.receipt.licenseCode);
+              }
+            }
+            localStorage.setItem("tbb_license_active_pro_atelier", "true");
+            if (msg.account) {
+              window.tbbUserAccount = msg.account;
+              localStorage.setItem("tbb_user_account_v30", JSON.stringify(msg.account));
+              if (typeof updateAccountHeaderBadges === "function") updateAccountHeaderBadges();
+            }
+            if (msg.migratedState && typeof msg.migratedState === "object") {
+              if (msg.migratedState.step0State && window.step0State) Object.assign(window.step0State, msg.migratedState.step0State);
+              if (msg.migratedState.canvasState && typeof canvasState === "object") Object.assign(canvasState, msg.migratedState.canvasState);
+              if (msg.migratedState.tpExtractedItems && typeof tpExtractedItems === "object") Object.assign(tpExtractedItems, msg.migratedState.tpExtractedItems);
+              if (Array.isArray(msg.migratedState.acceptedNamingVault) && msg.migratedState.acceptedNamingVault.length > 0) {
+                window.acceptedNamingVault = msg.migratedState.acceptedNamingVault;
+              }
+            }
+            window.tbbIsDemoMode = false;
+            const paywallModal = document.getElementById("tbbDemoCompletionPaywallModal");
+            if (paywallModal) paywallModal.style.display = "none";
+            if (typeof saveBrandSessionToLocalStorage === "function") {
+              saveBrandSessionToLocalStorage(false, true);
+            }
+            window.tbbJumpToStep(4, 1);
+            if (typeof openPhaseTransitionVideoCapsule === "function") {
+              openPhaseTransitionVideoCapsule(3, 4);
+            }
+          } catch (e) {}
+        } else if (msg.type === "TBB_IPHONE_JUMP_STEP") {
+          const targetS = Number(msg.step ?? 0);
+          window.tbbJumpToStep(targetS, Number(msg.subStep || 1));
+        } else if (msg.type === "TBB_IPHONE_OPEN_STEP_VIDEO") {
+          const vStep = Number(msg.step ?? (window.tbbState ? window.tbbState.step : 0));
+          if (typeof openPhaseTransitionVideoCapsule === "function") {
+            openPhaseTransitionVideoCapsule(Math.max(0, vStep - 1), vStep, { keepCurrentSubStep: true });
+          }
+        }
+      });
 
       // =========================================================================
       // MOTOR DE INTRO VISUAL SPLASHBOOT CON AURA (3D QUANTUM ORB 60 FPS)
@@ -24376,6 +24502,15 @@
           }
           ov.style.display = "none";
         }, 520);
+        // Requerimiento A: Mostrar el video del fundador en HeyGen como Video de Introducción al iniciar el Paso 0
+        const params = new URLSearchParams(window.location.search);
+        const isIphoneEmbed = params.get("embed") === "iphone";
+        const skipIntroVideo = params.get("novideo") === "1" || isIphoneEmbed;
+        if (!skipIntroVideo && !window._tbbFounderIntroVideoShown && window.tbbState && window.tbbState.step === 0 && typeof openPhaseTransitionVideoCapsule === "function") {
+          window._tbbFounderIntroVideoShown = true;
+          openPhaseTransitionVideoCapsule(0, 0, { keepCurrentSubStep: true });
+          return;
+        }
         if (speakWelcome && typeof window.speakAuraBriefResponse === "function") {
           const curMsg = (document.getElementById("tbbAuraEmpatheticText")?.textContent || "").trim();
           if (curMsg) window.speakAuraBriefResponse(curMsg, 9000);
@@ -24386,6 +24521,12 @@
         const ov = document.getElementById("tbbAuraSplashBootOverlay");
         const cnv = document.getElementById("tbbSplashAuraCanvas");
         if (!ov || !cnv) return;
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("embed") === "iphone") {
+          document.body.classList.add("tbb-embed-iphone-mode");
+          ov.style.display = "none";
+          return;
+        }
         ov.style.display = "flex";
         ov.classList.remove("is-dismissed");
         const ctx = cnv.getContext("2d");
@@ -24517,17 +24658,40 @@
       setTimeout(() => {
         try {
           const params = new URLSearchParams(window.location.search);
+          if (params.get("embed") === "iphone") {
+            document.body.classList.add("tbb-embed-iphone-mode");
+          }
           const brandParam = (params.get("brand") || params.get("admin") || "").toLowerCase();
           if (brandParam === "thebestbrand" || brandParam === "tbb" || params.get("admin") === "1" || params.get("admin") === "true") {
             const stepParam = parseInt(params.get("step") || "6", 10);
             window.tbbLoadOfficialAdminTheBestBrandData(isNaN(stepParam) ? 6 : stepParam);
+          } else if (params.get("step") !== null) {
+            const initStep = parseInt(params.get("step") || "0", 10);
+            if (!isNaN(initStep) && initStep >= 0 && initStep <= 3) {
+              window.tbbState.step = initStep;
+              window.tbbState.subStep = 1;
+            }
           }
         } catch (e) {}
         window.renderTbbZeroScrollStage();
         window.tbbStartAuraSplashBootEngine();
+        if (typeof window.tbbPostDemoProgressToParent === "function") {
+          setTimeout(() => window.tbbPostDemoProgressToParent(), 300);
+        }
       }, 90);
     })();
   </script>
+  <style>
+    body.tbb-embed-iphone-mode .tbb-topbar {
+      padding: 6px 10px !important;
+    }
+    body.tbb-embed-iphone-mode .tbb-brand-title-sub {
+      display: none !important;
+    }
+    body.tbb-embed-iphone-mode #tbbAlwaysOnBuyFloatingBar {
+      display: none !important;
+    }
+  </style>
   <script src="/assets/vendor/opentype.min.js?v=1.3.4"></script>
   <script src="/assets/vendor/html2canvas.min.js?v=1.4.1"></script>
   <script src="/tbb-executive-deliverables-suite.js?v=86.0"></script>
@@ -24537,6 +24701,6 @@
   <script src="/tbb-generative-brandbook-engine.js?v=86.0"></script>
   <script src="/improbears-preset-engine.js?v=86.0"></script>
   <script src="/tbb-multilingual-gemini-voice.js?v=86.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=91.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=92.0"></script>
 </body>
 </html>

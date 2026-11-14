@@ -513,114 +513,121 @@
   const VIDEO_CAPSULES = [
     {
       step: 0,
-      url: "/assets/videos/capsula_teoria_paso_0.mp4?v=91.0",
-      poster: "/assets/videos/poster_paso_0.jpg?v=91.0",
+      url: "/assets/videos/capsula_teoria_paso_0.mp4?v=92.0",
+      poster: "/assets/videos/poster_paso_0.jpg?v=92.0",
       popupCapture: "/assets/app_captures/popup_video_paso_0_a_1.png",
-      duration: "00:36",
-      author: "Aura · Mentora Estratégica IA",
+      duration: "00:54",
+      author: "Jorge Benítez (HeyGen) · David Aaker & Peter Drucker",
+      exactScript: "Hola, soy Jorge Benítez. Como afirma Peter Drucker, la mejor forma de predecir el futuro es creándolo. En el Paso cero eliges si construyes tu marca desde cero, evolucionas la actual o creas una sub-marca. Si ya tienes nombre y logotipo, David Aaker y Sagi Haviv recomiendan proteger tu capital visual. Siguiendo a Al Ries y Jack Trout en Posicionamiento, cuando describes tu giro con claridad en el tercer sub-paso, el sistema adapta automáticamente tus preguntas, puntos de contacto y propuestas.",
       i18n: {
-        es: { title: "Paso 0 · Objetivo, Logo Base y Esencia del Giro", desc: "Cómo elegir entre crear una marca desde cero o evolucionar tu logotipo actual respetando la esencia de tu negocio." },
-        en: { title: "Step 0 · Goal, Base Logo & Core Business Essence", desc: "How to choose between creating a brand from scratch or evolving your current logo while honoring your business core." },
-        fr: { title: "Étape 0 · Objectif, Logo de Base et Essence du Secteur", desc: "Comment choisir entre créer une marque de zéro ou faire évoluer votre logo actuel." },
-        pt: { title: "Passo 0 · Objetivo, Logo Base e Essência do Negócio", desc: "Como escolher entre criar uma marca do zero ou evoluir seu logotipo atual." },
-        de: { title: "Schritt 0 · Ziel, Basis-Logo & Unternehmenskern", desc: "Wie Sie zwischen einer Neuerstellung oder der Evolution Ihres bestehenden Logos wählen." },
-        it: { title: "Passo 0 · Obiettivo, Logo Base ed Essenza del Business", desc: "Come scegliere tra creare un brand da zero o evolvere il tuo logo attuale." }
+        es: { title: "Video Introductorio y Paso 0 · Objetivo, Logo Base y Giro", desc: "Guion sincronizado en HeyGen con el fundador: cómo elegir entre crear una marca desde cero o evolucionar tu logotipo actual respetando tu capital visual (Peter Drucker, David Aaker y Sagi Haviv)." },
+        en: { title: "Intro & Step 0 · Goal, Base Logo & Core Business Essence", desc: "Synchronized HeyGen founder video: how to choose between creating a brand from scratch or evolving your current logo while honoring your brand equity." },
+        fr: { title: "Intro & Étape 0 · Objectif, Logo de Base et Essence du Secteur", desc: "Vidéo HeyGen synchronisée du fondateur : choisir entre créer une marque de zéro ou faire évoluer votre logo actuel." },
+        pt: { title: "Intro & Passo 0 · Objetivo, Logo Base e Essência do Negócio", desc: "Vídeo HeyGen sincronizado do fundador: como escolher entre criar uma marca do zero ou evoluir seu logotipo atual." },
+        de: { title: "Intro & Schritt 0 · Ziel, Basis-Logo & Unternehmenskern", desc: "Synchronisiertes HeyGen-Gründervideo: Wahl zwischen Neuerstellung oder Evolution Ihres bestehenden Logos." },
+        it: { title: "Intro & Passo 0 · Obiettivo, Logo Base ed Essenza del Business", desc: "Video HeyGen sincronizzato del fondatore: come scegliere tra creare un brand da zero o evolvere il tuo logo attuale." }
       }
     },
     {
       step: 1,
-      url: "/assets/videos/capsula_teoria_paso_1.mp4?v=91.0",
-      poster: "/assets/videos/poster_paso_1.jpg?v=91.0",
+      url: "/assets/videos/capsula_teoria_paso_1.mp4?v=92.0",
+      poster: "/assets/videos/poster_paso_1.jpg?v=92.0",
       popupCapture: "/assets/app_captures/popup_video_paso_0_a_1.png",
-      duration: "00:38",
-      author: "Simon Sinek & Donald Miller",
+      duration: "00:48",
+      author: "Jorge Benítez (HeyGen) · Simon Sinek & Donald Miller",
+      exactScript: "Bienvenido al Paso uno. Como demostró Jim Collins en Empresas que Sobresalen, toda marca duradera nace de cimientos estratégicos claros antes de diseñar su identidad visual. La teoría del Círculo Dorado de Simon Sinek enseña que la gente no compra lo que haces, sino el porqué lo haces. Combinamos el Lienzo de Propuesta de Valor de Alex Osterwalder con el método StoryBrand de Donald Miller: al explicar tu proceso en tres pasos claros, tu cliente confía sin dudar.",
       i18n: {
-        es: { title: "Paso 1 · El Círculo Dorado y la Claridad Narrativa", desc: "Por qué la gente no compra lo que haces, sino el propósito por el que lo haces (Por qué, Cómo y Qué)." },
-        en: { title: "Step 1 · The Golden Circle & Narrative Clarity", desc: "Why people don't buy what you do, they buy why you do it (Why, How, and What)." },
-        fr: { title: "Étape 1 · Le Cercle d'Or et la Clarté Narrative", desc: "Pourquoi les clients n'achètent pas ce que vous faites, mais pourquoi vous le faites." },
-        pt: { title: "Passo 1 · O Círculo Dourado e a Clareza Narrativa", desc: "Por que as pessoas não compram o que você faz, mas o porquê você faz." },
-        de: { title: "Schritt 1 · Der Golden Circle & Narrative Klarheit", desc: "Warum Menschen nicht kaufen, was Sie tun, sondern warum Sie es tun." },
-        it: { title: "Passo 1 · Il Cerchio d'Oro e la Chiarezza Narrativa", desc: "Perché le persone non comprano ciò che fai, ma il perché lo fai." }
+        es: { title: "Transición al Paso 1 · El Círculo Dorado y la Promesa de Valor", desc: "Por qué la gente no compra lo que haces, sino el propósito por el que lo haces (Simon Sinek, Jim Collins, Alex Osterwalder y Donald Miller)." },
+        en: { title: "Transition to Step 1 · The Golden Circle & Value Promise", desc: "Why people don't buy what you do, they buy why you do it (Simon Sinek, Jim Collins, Alex Osterwalder & Donald Miller)." },
+        fr: { title: "Transition vers l'Étape 1 · Le Cercle d'Or et la Promesse de Valeur", desc: "Pourquoi les clients n'achètent pas ce que vous faites, mais pourquoi vous le faites." },
+        pt: { title: "Transição ao Passo 1 · O Círculo Dourado e a Promessa de Valor", desc: "Por que as pessoas não compram o que você faz, mas o porquê você faz." },
+        de: { title: "Übergang zu Schritt 1 · Der Golden Circle & Wertversprechen", desc: "Warum Menschen nicht kaufen, was Sie tun, sondern warum Sie es tun." },
+        it: { title: "Transizione al Passo 1 · Il Cerchio d'Oro e la Promessa di Valore", desc: "Perché le persone non comprano ciò che fai, ma il perché lo fai." }
       }
     },
     {
       step: 2,
-      url: "/assets/videos/capsula_teoria_paso_2.mp4?v=91.0",
-      poster: "/assets/videos/poster_paso_2.jpg?v=91.0",
+      url: "/assets/videos/capsula_teoria_paso_2.mp4?v=92.0",
+      poster: "/assets/videos/poster_paso_2.jpg?v=92.0",
       popupCapture: "/assets/app_captures/popup_video_paso_1_a_2.png",
-      duration: "00:38",
-      author: "Jan Carlzon & Don Norman",
+      duration: "00:47",
+      author: "Jorge Benítez (HeyGen) · Jan Carlzon & Don Norman",
+      exactScript: "Excelente avance en el Paso uno. Como enseñó Jan Carlzon en los Momentos de la Verdad, cada contacto de quince segundos con tu cliente define si confía en tu marca. Según Katherine Lemon y Peter Verhoef, toda experiencia se divide en tres etapas: cómo te descubren Antes, cómo entregas valor Durante, y cómo fidelizas Después. Don Norman explica que el diseño excelente elimina la fricción operativa.",
       i18n: {
-        es: { title: "Paso 2 · Ingeniería de Touchpoints (Momentos de la Verdad)", desc: "En 15 segundos de contacto tu cliente decide si confía en tu marca antes, durante y después de comprar." },
-        en: { title: "Step 2 · Touchpoint Engineering (Moments of Truth)", desc: "In 15 seconds of contact, your customer decides whether to trust your brand before, during, and after purchase." },
-        fr: { title: "Étape 2 · Ingénierie des Touchpoints (Moments de Vérité)", desc: "En 15 secondes de contact, votre client décide s'il fait confiance à votre marque." },
-        pt: { title: "Passo 2 · Engenharia de Touchpoints (Momentos da Verdade)", desc: "Em 15 segundos de contato seu cliente decide se confia na sua marca antes, durante e depois da compra." },
-        de: { title: "Schritt 2 · Touchpoint-Engineering (Momente der Wahrheit)", desc: "In 15 Sekunden Kontakt entscheidet Ihr Kunde über Vertrauen vor, während und nach dem Kauf." },
-        it: { title: "Passo 2 · Ingegneria dei Touchpoint (Momenti della Verità)", desc: "In 15 secondi di contatto il cliente decide se fidarsi del tuo brand prima, durante e dopo l'acquisto." }
+        es: { title: "Transición al Paso 2 · Ingeniería de Touchpoints (Momentos de la Verdad)", desc: "En 15 segundos de contacto tu cliente decide si confía en tu marca antes, durante y después de comprar (Jan Carlzon, Lemon/Verhoef y Don Norman)." },
+        en: { title: "Transition to Step 2 · Touchpoint Engineering (Moments of Truth)", desc: "In 15 seconds of contact, your customer decides whether to trust your brand before, during, and after purchase." },
+        fr: { title: "Transition vers l'Étape 2 · Ingénierie des Touchpoints (Moments de Vérité)", desc: "En 15 secondes de contact, votre client décide s'il fait confiance à votre marque." },
+        pt: { title: "Transição ao Passo 2 · Engenharia de Touchpoints (Momentos da Verdade)", desc: "Em 15 segundos de contato seu cliente decide se confia na sua marca antes, durante e depois da compra." },
+        de: { title: "Übergang zu Schritt 2 · Touchpoint-Engineering (Momente der Wahrheit)", desc: "In 15 Sekunden Kontakt entscheidet Ihr Kunde über Vertrauen vor, während und nach dem Kauf." },
+        it: { title: "Transizione al Passo 2 · Ingegneria dei Touchpoint (Momenti della Verità)", desc: "In 15 secondi di contatto il cliente decide se fidarsi del tuo brand prima, durante e dopo l'acquisto." }
       }
     },
     {
       step: 3,
-      url: "/assets/videos/capsula_teoria_paso_3.mp4?v=91.0",
-      poster: "/assets/videos/poster_paso_3.jpg?v=91.0",
+      url: "/assets/videos/capsula_teoria_paso_3.mp4?v=92.0",
+      poster: "/assets/videos/poster_paso_3.jpg?v=92.0",
       popupCapture: "/assets/app_captures/popup_video_paso_2_a_3.png",
-      duration: "00:38",
-      author: "Al Ries, Jack Trout & Alexandra Watkins",
+      duration: "00:45",
+      author: "Jorge Benítez (HeyGen) · Alexandra Watkins & Al Ries",
+      exactScript: "Ya tienes el mapa de experiencia de tu cliente. Como afirma Wally Olins, el nombre es el primer activo verbal que pronunciarán tus clientes en cada canal. Aplicamos el modelo SMILE de Alexandra Watkins y el simbolismo fonético de David Placek: buscamos un nombre de dos a tres sílabas, fácil de recordar y con iniciales potentes. Siguiendo a Alina Wheeler, acompañamos tu nombre oficial con un descriptor claro y verificamos sus clases internacionales de Niza.",
       i18n: {
-        es: { title: "Paso 3 · Fonética, Naming Estratégico y Clases de Niza", desc: "Cómo elegir un nombre memorable y vincularlo con las Clases Internacionales de Niza para registro marcario." },
-        en: { title: "Step 3 · Phonetics, Strategic Naming & Nice Classes", desc: "How to lock in a memorable name and match it with international Nice Classification trademark classes." },
-        fr: { title: "Étape 3 · Phonétique, Naming Stratégique et Classes de Nice", desc: "Comment valider un nom mémorable et l'associer aux classes internationales de Nice." },
-        pt: { title: "Passo 3 · Fonética, Naming Estratégico e Classes de Nice", desc: "Como escolher um nome memorável e vinculá-lo às Classes Internacionais de Nice." },
-        de: { title: "Schritt 3 · Phonetik, Naming & Nizza-Klassen", desc: "Wie Sie einen einprägsamen Markennamen wählen und rechtlich in Nizza-Klassen einordnen." },
-        it: { title: "Passo 3 · Fonetica, Naming Strategico e Classi di Nizza", desc: "Come scegliere un nome memorabile e abbinarlo alle Classi Internazionali di Nizza." }
+        es: { title: "Transición al Paso 3 · Fonética, Naming SMILE y Clases de Niza", desc: "Cómo elegir un nombre memorable de 2 a 3 sílabas y vincularlo con las Clases Internacionales de Niza (Watkins, Placek y Alina Wheeler)." },
+        en: { title: "Transition to Step 3 · Phonetics, SMILE Naming & Nice Classes", desc: "How to lock in a memorable name and match it with international Nice Classification trademark classes." },
+        fr: { title: "Transition vers l'Étape 3 · Phonétique, Naming SMILE et Classes de Nice", desc: "Comment valider un nom mémorable et l'associer aux classes internationales de Nice." },
+        pt: { title: "Transição ao Passo 3 · Fonética, Naming SMILE e Classes de Nice", desc: "Como escolher um nome memorável e vinculá-lo às Classes Internacionais de Nice." },
+        de: { title: "Übergang zu Schritt 3 · Phonetik, SMILE-Naming & Nizza-Klassen", desc: "Wie Sie einen einprägsamen Markennamen wählen und rechtlich in Nizza-Klassen einordnen." },
+        it: { title: "Transizione al Passo 3 · Fonetica, Naming SMILE e Classi di Nizza", desc: "Come scegliere un nome memorabile e abbinarlo alle Classi Internazionali di Nizza." }
       }
     },
     {
       step: 4,
-      url: "/assets/videos/capsula_teoria_paso_4.mp4?v=91.0",
-      poster: "/assets/videos/poster_paso_4.jpg?v=91.0",
+      url: "/assets/videos/capsula_teoria_paso_4.mp4?v=92.0",
+      poster: "/assets/videos/poster_paso_4.jpg?v=92.0",
       popupCapture: "/assets/app_captures/popup_video_paso_3_a_4.png",
-      duration: "00:38",
-      author: "Mitsuo Nagamachi & Robert Bringhurst",
+      duration: "00:51",
+      author: "Jorge Benítez (HeyGen) · Mitsuo Nagamachi & R. Bringhurst",
+      exactScript: "Con tu nombre oficial listo, entramos al Paso cuatro. El profesor Mitsuo Nagamachi creó la Ingeniería Kansei para traducir sentimientos humanos en parámetros de diseño exactos. Como demostraron Ramachandran y Charles Osgood, nuestro cerebro asocia curvas suaves con cercanía humana y ángulos rectos con precisión técnica. Robert Bringhurst afirma que la tipografía es el lenguaje hecho visible.",
       i18n: {
-        es: { title: "Paso 4 · Brújula Kansei y Gobernanza Tipográfica", desc: "Traducción de emociones a parámetros geométricos y selección del par tipográfico oficial con licencia abierta." },
-        en: { title: "Step 4 · Kansei Compass & Typographic Governance", desc: "Translating sensory emotion into geometry and selecting your official open-license font pairing." },
-        fr: { title: "Étape 4 · Boussole Kansei et Gouvernance Typographique", desc: "Traduction des émotions en géométrie et sélection du duo typographique officiel." },
-        pt: { title: "Passo 4 · Bússola Kansei e Governança Tipográfica", desc: "Tradução de emoções em parâmetros visuais e escolha do par tipográfico oficial." },
-        de: { title: "Schritt 4 · Kansei-Kompass & Typografie-Governance", desc: "Übersetzung sensorischer Eindrücke in Geometrie und Auswahl Ihres offiziellen Schriftpaares." },
-        it: { title: "Passo 4 · Bussola Kansei e Governance Tipografica", desc: "Traduzione delle emozioni in geometria e scelta della coppia tipografica ufficiale." }
+        es: { title: "Transición al Paso 4 · Ingeniería Kansei y Gobernanza Tipográfica", desc: "Traducción de emociones a parámetros geométricos en 7 ejes y selección del par tipográfico oficial (Mitsuo Nagamachi, Osgood y Bringhurst)." },
+        en: { title: "Transition to Step 4 · Kansei Engineering & Typographic Governance", desc: "Translating sensory emotion into geometry and selecting your official open-license font pairing." },
+        fr: { title: "Transition vers l'Étape 4 · Ingénierie Kansei et Gouvernance Typographique", desc: "Traduction des émotions en géométrie et sélection du duo typographique officiel." },
+        pt: { title: "Transição ao Passo 4 · Engenharia Kansei e Governança Tipográfica", desc: "Tradução de emoções em parâmetros visuais e escolha do par tipográfico oficial." },
+        de: { title: "Übergang zu Schritt 4 · Kansei-Engineering & Typografie-Governance", desc: "Übersetzung sensorischer Eindrücke in Geometrie und Auswahl Ihres offiziellen Schriftpaares." },
+        it: { title: "Transizione al Passo 4 · Ingegneria Kansei e Governance Tipografica", desc: "Traduzione delle emozioni in geometria e scelta della coppia tipografica ufficiale." }
       }
     },
     {
       step: 5,
-      url: "/assets/videos/capsula_teoria_paso_5.mp4?v=91.0",
-      poster: "/assets/videos/poster_paso_5.jpg?v=91.0",
+      url: "/assets/videos/capsula_teoria_paso_5.mp4?v=92.0",
+      poster: "/assets/videos/poster_paso_5.jpg?v=92.0",
       popupCapture: "/assets/app_captures/popup_video_paso_4_a_5.png",
-      duration: "00:38",
-      author: "Paul Rand & Jony Ive",
+      duration: "00:54",
+      author: "Jorge Benítez (HeyGen) · Paul Rand, Sagi Haviv & Jony Ive",
+      exactScript: "Bienvenido al Paso cinco. Como enseñó el legendario Paul Rand, un logotipo extraordinario combina simplicidad geométrica y recordación inmediata, potenciado por la armonía cromática de Josef Albers. Si subiste tu logotipo actual, seguimos la máxima de Sagi Haviv: respetar la esencia reconocible mientras perfeccionamos sus trazos. Inspirados en el rigor industrial de Jony Ive, visualizas al mismo tiempo tu logotipo completo y su ícono uno a uno.",
       i18n: {
-        es: { title: "Paso 5 · Síntesis Vectorial en Curvas y Taller de Logotipo", desc: "Iteración asistida por IA y trazado matemático Bézier sobre fondo claro y oscuro sin píxeles." },
-        en: { title: "Step 5 · Vector Curve Synthesis & Logo Atelier", desc: "AI-assisted iteration and mathematical Bézier vector tracing on light and dark canvases." },
-        fr: { title: "Étape 5 · Synthèse Vectorielle en Courbes et Atelier Logo", desc: "Itération assistée par IA et tracé mathématique de Bézier sur fond clair et sombre." },
-        pt: { title: "Passo 5 · Síntese Vetorial em Curvas e Atelier de Logo", desc: "Iteração assistida por IA e traçado matemático Bézier sobre fundo claro e escuro." },
-        de: { title: "Schritt 5 · Vektorkurven-Synthese & Logo-Atelier", desc: "KI-gestützte Iteration und mathematische Bézier-Vektorisierung auf hellem und dunklem Grund." },
-        it: { title: "Passo 5 · Sintesi Vettoriale in Curve e Atelier del Logo", desc: "Iterazione assistita da IA e tracciato matematico di Bézier su sfondo chiaro e scuro." }
+        es: { title: "Transición al Paso 5 · Síntesis Vectorial en Curvas y Taller de Logotipo", desc: "Iteración asistida por IA y trazado matemático Bézier Liquid Glass sobre fondo claro y oscuro sin píxeles (Paul Rand, Sagi Haviv y Jony Ive)." },
+        en: { title: "Transition to Step 5 · Vector Curve Synthesis & Logo Atelier", desc: "AI-assisted iteration and mathematical Bézier vector tracing on light and dark canvases." },
+        fr: { title: "Transition vers l'Étape 5 · Synthèse Vectorielle en Courbes et Atelier Logo", desc: "Itération assistée par IA et tracé mathématique de Bézier sur fond clair et sombre." },
+        pt: { title: "Transição ao Passo 5 · Síntese Vetorial em Curvas e Atelier de Logo", desc: "Iteração assistida por IA e traçado matemático Bézier sobre fundo claro e escuro." },
+        de: { title: "Übergang zu Schritt 5 · Vektorkurven-Synthese & Logo-Atelier", desc: "KI-gestützte Iteration und mathematische Bézier-Vektorisierung auf hellem und dunklem Grund." },
+        it: { title: "Transizione al Passo 5 · Sintesi Vettoriale in Curve e Atelier del Logo", desc: "Iterazione assistita da IA e tracciato matematico di Bézier su sfondo chiaro e scuro." }
       }
     },
     {
       step: 6,
-      url: "/assets/videos/capsula_teoria_paso_6.mp4?v=91.0",
-      poster: "/assets/videos/poster_paso_6.jpg?v=91.0",
+      url: "/assets/videos/capsula_teoria_paso_6.mp4?v=92.0",
+      poster: "/assets/videos/poster_paso_6.jpg?v=92.0",
       popupCapture: "/assets/app_captures/popup_video_paso_5_a_6.png",
-      duration: "00:40",
-      author: "Massimo Vignelli & Josef Müller-Brockmann",
+      duration: "00:52",
+      author: "Jorge Benítez (HeyGen) · Massimo Vignelli & Müller-Brockmann",
+      exactScript: "Felicidades por llegar al Paso seis. Como estableció Massimo Vignelli en su Canon, un manual de identidad es la constitución que protege la coherencia de tu marca en todo momento. Aplicamos los sistemas de retículas de Josef Müller-Brockmann y la Guía Oficial C-Cero-Cero de ImproBears: láminas en curvas abiertas sobre lienzo claro, siguiendo exactamente los colores de tu logotipo.",
       i18n: {
-        es: { title: "Paso 6 · El Manual Oficial de 36 Láminas y los 9 Entregables", desc: "Cómo la disciplina de retícula y tus 9 archivos ejecutivos convierten tu marca en un sistema escalable." },
-        en: { title: "Step 6 · The 36-Plate Official Brandbook & 9 Deliverables", desc: "How grid discipline and your 9 production files turn your brand into a scalable enterprise asset." },
-        fr: { title: "Étape 6 · Le Manuel Officiel de 36 Planches et les 9 Livrables", desc: "Comment la rigueur de grille et vos 9 fichiers transforment votre marque en système durable." },
-        pt: { title: "Passo 6 · O Manual Oficial de 36 Lâminas e os 9 Entregáveis", desc: "Como a disciplina de grid e seus 9 arquivos transformam sua marca em um sistema escalável." },
-        de: { title: "Schritt 6 · Das 36-Tafeln-Markenhandbuch & 9 Deliverables", desc: "Wie Rasterdisziplin und Ihre 9 Produktionsdateien Ihre Marke in ein skalierbares System verwandeln." },
-        it: { title: "Passo 6 · Il Manuale Ufficiale di 36 Tavole e i 9 Deliverable", desc: "Come la disciplina della griglia e i tuoi 9 file trasformano il brand in un sistema scalabile." }
+        es: { title: "Transición al Paso 6 · El Manual Oficial de 36 Láminas y los 9 Entregables", desc: "Cómo la disciplina de retícula de Massimo Vignelli y tus 9 archivos ejecutivos convierten tu marca en un sistema escalable." },
+        en: { title: "Transition to Step 6 · The 36-Plate Official Brandbook & 9 Deliverables", desc: "How grid discipline and your 9 production files turn your brand into a scalable enterprise asset." },
+        fr: { title: "Transition vers l'Étape 6 · Le Manuel Officiel de 36 Planches et les 9 Livrables", desc: "Comment la rigueur de grille et vos 9 fichiers transforment votre marque en système durable." },
+        pt: { title: "Transição ao Passo 6 · O Manual Oficial de 36 Lâminas e os 9 Entregáveis", desc: "Como a disciplina de grid e seus 9 arquivos transformam sua marca em um sistema escalável." },
+        de: { title: "Übergang zu Schritt 6 · Das 36-Tafeln-Markenhandbuch & 9 Deliverables", desc: "Wie Rasterdisziplin und Ihre 9 Produktionsdateien Ihre Marke in ein skalierbares System verwandeln." },
+        it: { title: "Transizione al Passo 6 · Il Manuale Ufficiale di 36 Tavole e i 9 Deliverable", desc: "Come la disciplina della griglia e i tuoi 9 file trasformano il brand in un sistema scalabile." }
       }
     }
   ];
@@ -1414,9 +1421,15 @@
             <div style="font-size:0.84rem; font-weight:500; color:#1D4ED8; margin-bottom:14px;">
               ${escHtml(cap.author)}
             </div>
-            <p style="font-size:0.95rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
+            <p style="font-size:0.93rem; font-weight:400; color:#475569; line-height:1.62; margin:0 0 12px 0;">
               ${escHtml(loc.desc)}
             </p>
+            ${cap.exactScript ? `
+              <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-left:3.5px solid #1D4ED8; border-radius:12px; padding:10px 14px; font-size:0.82rem; color:#0F172A; line-height:1.52;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:600; color:#1D4ED8; margin-bottom:4px;">GUION HABLADO EXACTO (SINCRONIZADO EN HEYGEN):</div>
+                «${escHtml(cap.exactScript)}»
+              </div>
+            ` : ''}
           </div>
           <div style="display:flex; flex-direction:column; gap:10px; padding-top:16px; border-top:1px solid #E2E8F0;">
             <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbCloseVideoPopupModal(); window.tbbOpenBuyAppCheckoutModal('pro_atelier');" style="width:100%; padding:12px; font-size:0.88rem;">
@@ -1531,44 +1544,245 @@
   // 8. CONSTRUCCIÓN DE CADA UNA DE LAS 5 SUBPÁGINAS (PANORÁMICAS, CLARAS, LIMPIAS)
   // ---------------------------------------------------------------------------
 
-  // SUBPÁGINA 1: PORTADA / INICIO (HOOK + 2 OPCIONES VISUALES + SHOWCASE PANORÁMICO)
+  window.tbbBuildIphoneLiveStudioFrameHTML = function (frameId = "tbbLiveIphoneStudioFrame") {
+    const st = window.tbbCommercialDemoState;
+    const isLicensed = Boolean(localStorage.getItem(LICENSE_STORAGE_KEY));
+    const curStep = Math.max(0, Math.min(6, Number(st.activeDemoStep || 0)));
+
+    return `
+      <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+          ${[
+            { s: 0, lbl: "Paso 0 · Giro (Gratis)" },
+            { s: 1, lbl: "Paso 1 · Círculo Dorado (Gratis)" },
+            { s: 2, lbl: "Paso 2 · Touchpoints (Gratis)" },
+            { s: 3, lbl: "Paso 3 · Naming SMILE (Gratis)" },
+            { s: 4, lbl: isLicensed ? "Paso 4 · Kansei ✓" : "🔒 Paso 4 · Desbloquear ($49 USD)" }
+          ].map(item => {
+            const isAct = curStep === item.s;
+            return `
+              <button type="button" onclick="window.tbbIphoneJumpToStep(${item.s})" style="padding:7px 14px; border-radius:999px; border:1px solid ${isAct ? '#1D4ED8' : (item.s === 4 && !isLicensed ? '#FDBA74' : '#CBD5E1')}; background:${isAct ? '#0D2540' : (item.s === 4 && !isLicensed ? '#FFF7ED' : '#FFFFFF')}; color:${isAct ? '#FFFFFF' : (item.s === 4 && !isLicensed ? '#EA580C' : '#0F172A')}; font-size:0.76rem; font-weight:500; cursor:pointer; transition:all 0.2s ease;">
+                ${escHtml(item.lbl)}
+              </button>
+            `;
+          }).join("")}
+          <button type="button" onclick="window.tbbIphoneOpenActiveStepVideo()" style="padding:7px 14px; border-radius:999px; border:1px solid #1D4ED8; background:#EFF6FF; color:#1D4ED8; font-size:0.76rem; font-weight:600; cursor:pointer;">
+            ▶ Video HeyGen del Paso
+          </button>
+        </div>
+
+        <!-- Mockup Real de iPhone 16 Pro Titanium con la App Real (/studio) y Aura en Vivo -->
+        <div style="position:relative; width:392px; max-width:94vw; height:790px; background:linear-gradient(145deg, #1E293B 0%, #0F172A 50%, #334155 100%); border-radius:54px; padding:13px; box-shadow:0 34px 90px rgba(15,23,42,0.26), inset 0 0 0 2px rgba(255,255,255,0.22); display:flex; flex-direction:column;">
+          <!-- Dynamic Island -->
+          <div style="position:absolute; top:21px; left:50%; transform:translateX(-50%); width:116px; height:27px; background:#000000; border-radius:999px; z-index:20; display:flex; align-items:center; justify-content:space-between; padding:0 12px; box-shadow:0 2px 8px rgba(0,0,0,0.45);">
+            <span class="tbb-live-pulse-dot" style="width:7px; height:7px;"></span>
+            <span style="font-family:'JetBrains Mono', monospace; font-size:0.56rem; color:#FFFFFF; letter-spacing:0.04em;">AURA LIVE</span>
+            <span style="width:9px; height:9px; border-radius:50%; background:radial-gradient(circle, #38BDF8 0%, #1E3A8A 80%);"></span>
+          </div>
+
+          <!-- Pantalla iOS con App Real Ejecutándose en Vivo -->
+          <div style="flex:1; width:100%; height:100%; background:#090D16; border-radius:42px; overflow:hidden; position:relative; display:flex; flex-direction:column;">
+            <div style="height:34px; background:#090D16; color:#FFFFFF; display:flex; align-items:center; justify-content:space-between; padding:6px 22px 0 22px; font-family:'Plus Jakarta Sans', sans-serif; font-size:0.7rem; font-weight:600; flex-shrink:0;">
+              <span>9:41</span>
+              <span style="font-family:'JetBrains Mono', monospace; font-size:0.6rem; color:#38BDF8;">5G · TBB OS</span>
+            </div>
+            <iframe
+              id="${frameId}"
+              class="tbb-live-iphone-studio-iframe"
+              src="/studio?demo=true&embed=iphone"
+              title="The Best Brand Studio Real App con Aura en Vivo"
+              allow="microphone; autoplay; clipboard-write"
+              style="flex:1; width:100%; height:100%; border:none; display:block; background:#090D16;"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    `;
+  };
+
+  window.tbbIphoneJumpToStep = function (stepNum) {
+    const target = Number(stepNum || 0);
+    const isLicensed = Boolean(localStorage.getItem(LICENSE_STORAGE_KEY));
+    if (target >= 4 && !isLicensed) {
+      window.tbbOpenBuyAppCheckoutModal("pro_atelier");
+      return;
+    }
+    window.tbbCommercialDemoState.activeDemoStep = target;
+    document.querySelectorAll(".tbb-live-iphone-studio-iframe").forEach(fr => {
+      try {
+        if (fr && fr.contentWindow) {
+          fr.contentWindow.postMessage({ type: "TBB_IPHONE_JUMP_STEP", step: target, subStep: 1 }, "*");
+        }
+      } catch (e) {}
+    });
+  };
+
+  window.tbbIphoneOpenActiveStepVideo = function () {
+    const curStep = Number(window.tbbCommercialDemoState.activeDemoStep || 0);
+    let sent = false;
+    document.querySelectorAll(".tbb-live-iphone-studio-iframe").forEach(fr => {
+      try {
+        if (fr && fr.contentWindow) {
+          fr.contentWindow.postMessage({ type: "TBB_IPHONE_OPEN_STEP_VIDEO", step: curStep }, "*");
+          sent = true;
+        }
+      } catch (e) {}
+    });
+    if (!sent) {
+      window.tbbOpenVideoPopupModal(curStep);
+    }
+  };
+
+  // SUBPÁGINA 1: PORTADA / INICIO (REQUERIMIENTO B: VIDEO DE CONVERGENCIA TEÓRICA + REQUERIMIENTO C: DEMO IPHONE EN VIVO)
   window.tbbBuildSubpage1HomeHTML = function () {
     const st = window.tbbCommercialDemoState;
     const lang = getLang();
     const isManual = st.heroVisualMode === "manual";
     const step0Loc = APP_TOUR_FLOW_ITEMS[0].i18n[lang] || APP_TOUR_FLOW_ITEMS[0].i18n.es;
 
+    const theoryPillars = [
+      { step: "PASO 1", author: "Simon Sinek", theory: "El Círculo Dorado (Why · How · What)" },
+      { step: "PASO 2", author: "Jan Carlzon & Don Norman", theory: "Momentos de la Verdad & Touchpoints" },
+      { step: "PASO 3", author: "Al Ries, Trout & A. Watkins", theory: "Posicionamiento, Modelo SMILE & Clases Niza" },
+      { step: "PASO 4", author: "Prof. Mitsuo Nagamachi", theory: "Ingeniería Kansei & Diferencial de Osgood" },
+      { step: "PASO 5", author: "Paul Rand, Sagi Haviv & Jony Ive", theory: "Síntesis Vectorial Bézier & Liquid Glass" },
+      { step: "PASO 6", author: "Massimo Vignelli & Müller-Brockmann", theory: "Canon de Retícula en 36 Láminas y 9 Entregables" }
+    ];
+
     return `
-      <section style="padding:64px 24px 56px 24px; background:linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); text-align:center;">
-        <div style="max-width:980px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:22px;">
-          <div style="display:inline-flex; align-items:center; gap:10px; padding:6px 16px; border-radius:999px; background:#F1F5F9; color:#0D2540; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; letter-spacing:0.04em;">
-            <img src="/assets/logos/tbb_official_liquid_glass_logo.jpg" alt="Aura" style="width:22px; height:22px; border-radius:50%; object-fit:cover;" />
-            <span>${escHtml(t("heroEyebrow"))}</span>
+      <section style="padding:52px 24px 56px 24px; background:linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);">
+        <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:26px;">
+          <div style="text-align:center; max-width:980px; display:flex; flex-direction:column; align-items:center; gap:18px;">
+            <div style="display:inline-flex; align-items:center; gap:10px; padding:6px 16px; border-radius:999px; background:#F1F5F9; color:#0D2540; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; letter-spacing:0.04em;">
+              <img src="/assets/logos/tbb_official_liquid_glass_logo.jpg" alt="Aura" style="width:22px; height:22px; border-radius:50%; object-fit:cover;" />
+              <span>${escHtml(t("heroEyebrow"))}</span>
+            </div>
+
+            <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(2.1rem, 4.3vw, 3.55rem); font-weight:600; color:#0F172A; line-height:1.12; letter-spacing:-0.03em; margin:0;">
+              ${escHtml(t("heroHook"))}
+            </h1>
+
+            <p style="font-size:clamp(1.0rem, 1.45vw, 1.16rem); font-weight:400; color:#475569; line-height:1.66; max-width:860px; margin:0;">
+              Respaldado científicamente por las teorías de <strong>Simon Sinek (Círculo Dorado)</strong>, <strong>Jan Carlzon (Momentos de la Verdad)</strong>, <strong>Al Ries, Jack Trout &amp; Alexandra Watkins (Posicionamiento y SMILE)</strong>, <strong>Mitsuo Nagamachi (Ingeniería Kansei)</strong>, <strong>Paul Rand &amp; Jony Ive (Geometría Vectorial Liquid Glass)</strong> y <strong>Massimo Vignelli (Canon de 36 Láminas)</strong>.
+            </p>
+
+            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-top:4px; width:100%;">
+              <button type="button" onclick="document.getElementById('tbbHomeLiveIphoneDemoAnchor')?.scrollIntoView({behavior:'smooth'});" class="tbb-comm-btn-blue" style="padding:15px 26px; font-size:0.96rem; font-weight:600; display:inline-flex; align-items:center; gap:12px;">
+                <span class="tbb-live-pulse-dot"></span>
+                <span>Probar App Real con Aura (Pasos 1 al 3 Gratis)</span>
+                <span class="tbb-live-pill-badge">${escHtml(t("menu2Live"))}</span>
+              </button>
+
+              <button type="button" onclick="window.tbbOpenVideoPopupModal(0)" class="tbb-btn-light-surface" style="padding:15px 24px; font-size:0.95rem; font-weight:500;">
+                <span>▶ Ver Video Introductorio del Fundador (HeyGen)</span>
+              </button>
+
+              <button type="button" onclick="window.tbbSwitchMainSection(3)" class="tbb-btn-light-surface" style="padding:15px 24px; font-size:0.95rem; font-weight:500;">
+                <span>${escHtml(t("heroBtnTour"))}</span>
+              </button>
+            </div>
           </div>
 
-          <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(2.1rem, 4.4vw, 3.65rem); font-weight:600; color:#0F172A; line-height:1.12; letter-spacing:-0.03em; margin:0;">
-            ${escHtml(t("heroHook"))}
-          </h1>
+          <!-- REQUERIMIENTO B: VIDEO ANIMADO DE CONVERGENCIA DE LAS 6 TEORÍAS HACIA LA APP Y SU LOGOTIPO -->
+          <div style="width:100%; max-width:1160px; border-radius:26px; overflow:hidden; background:#FFFFFF; border:1px solid #CBD5E1; box-shadow:0 28px 75px rgba(15,23,42,0.12); position:relative;">
+            <video
+              id="tbbHeroConvergenceVideoPlayer"
+              src="/assets/videos/hero_convergence_thebestbrand.mp4?v=92.0"
+              poster="/assets/videos/poster_hero_convergence.jpg?v=92.0"
+              autoplay
+              muted
+              loop
+              playsinline
+              controls
+              style="width:100%; height:auto; max-height:580px; object-fit:cover; display:block; background:#F8FAFC;"
+            ></video>
+          </div>
 
-          <p style="font-size:clamp(1.02rem, 1.5vw, 1.2rem); font-weight:400; color:#475569; line-height:1.68; max-width:780px; margin:0;">
-            ${escHtml(t("heroSub"))}
-          </p>
-
-          <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin-top:8px; width:100%;">
-            <button type="button" onclick="window.tbbSwitchMainSection(2)" class="tbb-comm-btn-blue" style="padding:16px 28px; font-size:0.98rem; font-weight:600; display:inline-flex; align-items:center; gap:12px;">
-              <span class="tbb-live-pulse-dot"></span>
-              <span>${escHtml(t("heroBtnDemo"))}</span>
-              <span class="tbb-live-pill-badge">${escHtml(t("menu2Live"))}</span>
-            </button>
-
-            <button type="button" onclick="window.tbbSwitchMainSection(3)" class="tbb-btn-light-surface" style="padding:16px 28px; font-size:0.98rem; font-weight:500;">
-              <span>${escHtml(t("heroBtnTour"))}</span>
-            </button>
+          <!-- Píldoras de Autoridad Teórica que Respaldan el Proceso -->
+          <div style="width:100%; max-width:1160px; display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px;">
+            ${theoryPillars.map((p, idx) => `
+              <div onclick="window.tbbOpenVideoPopupModal(${idx + 1})" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:16px; padding:12px 14px; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; gap:4px;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; font-weight:600; color:#EA580C;">${escHtml(p.step)} · ▶ VIDEO HEYGEN</div>
+                <div style="font-family:'Montserrat', sans-serif; font-size:0.84rem; font-weight:600; color:#0F172A;">${escHtml(p.author)}</div>
+                <div style="font-size:0.76rem; color:#475569; line-height:1.35;">${escHtml(p.theory)}</div>
+              </div>
+            `).join("")}
           </div>
         </div>
       </section>
 
-      <section style="padding:20px 24px 80px 24px; background:#F8FAFC;">
+      <!-- REQUERIMIENTO C EN PORTADA: MOCKUP DE IPHONE CON LA APLICACIÓN REAL CONECTADA A AURA (PASOS 0 AL 3 GRATIS, PAYWALL EN PASO 4) -->
+      <section id="tbbHomeLiveIphoneDemoAnchor" style="padding:44px 24px 68px 24px; background:#FFFFFF; border-top:1px solid #F1F5F9;">
+        <div style="max-width:1260px; margin:0 auto; display:flex; flex-direction:column; gap:36px;">
+          <div style="text-align:center; max-width:860px; margin:0 auto;">
+            <div style="display:inline-flex; align-items:center; gap:8px; padding:5px 14px; border-radius:999px; background:#FFF7ED; color:#EA580C; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; margin-bottom:10px;">
+              <span class="tbb-live-pulse-dot"></span>
+              <span>APLICACIÓN REAL EN VIVO · CONECTADA AL MOTOR DE AURA</span>
+            </div>
+            <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.75rem, 3.2vw, 2.55rem); font-weight:600; color:#0F172A; margin:0 0 10px 0; letter-spacing:-0.02em;">
+              Interactúa aquí mismo con la aplicación real: avanza gratis en los primeros 3 pasos
+            </h2>
+            <p style="font-size:0.98rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
+              Escribe o habla con Aura dentro del iPhone. Completa sin costo hasta el <strong>Paso 3 (Naming y Clases de Niza)</strong>; al pasar al <strong>Paso 4</strong> se activa el desbloqueo de <strong>$49 USD</strong> y tus respuestas se migran automáticamente a tu nueva cuenta.
+            </p>
+          </div>
+
+          <div class="tbb-comm-grid-2" style="align-items:start; gap:44px;">
+            <div>
+              ${window.tbbBuildIphoneLiveStudioFrameHTML("tbbHomeIphoneStudioFrame")}
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:22px;">
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:26px; display:flex; flex-direction:column; gap:16px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+                  <span style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; font-weight:600; color:#1D4ED8; background:#EFF6FF; padding:4px 12px; border-radius:999px;">
+                    SINCRONIZACIÓN Y RETENCIÓN AUTOMÁTICA DE PROGRESO
+                  </span>
+                  <span id="tbbLiveSyncStepBadge" style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; color:#16A34A; font-weight:600;">
+                    ● AURA CONECTADA EN VIVO
+                  </span>
+                </div>
+                <h3 style="font-family:'Montserrat', sans-serif; font-size:1.25rem; font-weight:600; color:#0F172A; margin:0;">
+                  Tu avance en los Pasos 1 al 3 se guarda en tiempo real
+                </h3>
+                <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:#334155;">
+                  <div style="padding:10px 14px; background:#FFFFFF; border-radius:12px; border:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
+                    <span><strong>Paso 0 y Paso 1:</strong> Giro + Círculo Dorado (Simon Sinek)</span>
+                    <span style="color:#16A34A; font-weight:600; font-size:0.78rem;">✓ Acceso Libre</span>
+                  </div>
+                  <div style="padding:10px 14px; background:#FFFFFF; border-radius:12px; border:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
+                    <span><strong>Paso 2:</strong> Touchpoints Antes, Durante y Después (Carlzon)</span>
+                    <span style="color:#16A34A; font-weight:600; font-size:0.78rem;">✓ Acceso Libre</span>
+                  </div>
+                  <div style="padding:10px 14px; background:#FFFFFF; border-radius:12px; border:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
+                    <span><strong>Paso 3:</strong> Naming SMILE y Clases de Niza (Watkins)</span>
+                    <span style="color:#16A34A; font-weight:600; font-size:0.78rem;">✓ Acceso Libre</span>
+                  </div>
+                  <div style="padding:12px 14px; background:#FFF7ED; border-radius:12px; border:1px solid #FDBA74; display:flex; justify-content:space-between; align-items:center;">
+                    <span><strong>Paso 4 al 6:</strong> Kansei, Logotipo Vectorial y 9 Entregables</span>
+                    <button type="button" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')" style="background:#0D2540; color:#FFFFFF; border:none; border-radius:999px; padding:6px 14px; font-size:0.75rem; font-weight:600; cursor:pointer;">
+                      Desbloquear · $49 USD
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:22px; text-align:center;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#EA580C; margin-bottom:6px;">
+                  VISTA EN VIVO DEL CÍRCULO DORADO DE TU MARCA
+                </div>
+                <div id="tbbDemoLiveBrandTitle" style="font-family:'Montserrat', sans-serif; font-size:1.25rem; font-weight:600; color:#0F172A;">${escHtml(st.brandName)}</div>
+                <div id="tbbDemoLiveBrandTagline" style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#1D4ED8; margin-top:2px; margin-bottom:8px;">${escHtml(st.tagline)}</div>
+                <div id="tbbDemoLiveGoldenCircleWrap">
+                  ${window.tbbBuildCircularGoldenCircleSVG()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section style="padding:28px 24px 80px 24px; background:#F8FAFC;">
         <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:28px;">
           <div style="text-align:center; max-width:760px;">
             <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#1D4ED8; letter-spacing:0.06em; margin-bottom:6px;">
@@ -1615,171 +1829,79 @@
     `;
   };
 
-  // SUBPÁGINA 2: DEMO EN VIVO CON EL PASO 0, PASO 1 Y PASO 2 (FONDO CLARO, SIN CAJAS ANIDADAS)
+  // SUBPÁGINA 2: DEMO INTERACTIVA REAL EN MOCKUP DE IPHONE (PASOS 0 AL 3 GRATIS + PAYWALL EN PASO 4)
   window.tbbBuildSubpage2DemoHTML = function () {
     const st = window.tbbCommercialDemoState;
-    const step = [0, 1, 2].includes(st.activeDemoStep) ? st.activeDemoStep : 0;
-    const tpCatalog = {
-      before: [
-        "Búsqueda Web y App Store",
-        "Demostración Interactiva en Línea (Pasos 0, 1 y 2)",
-        "Recomendación Directa de Empresarios",
-        "Contenido Ejecutivo en LinkedIn / Instagram"
-      ],
-      during: [
-        "Taller Guiado por Voz con Aura",
-        "Lienzo Generativo de Logotipo en Tiempo Real",
-        "Checkout Directo con Tarjeta, Apple Pay, Google Pay y PayPal"
-      ],
-      after: [
-        "Bóveda Digital del Manual de 36 Láminas en PDF y HTML",
-        "Suite Editable (.SVG, .AI, .DOCX, .PPTX, .HTML, .ZIP)",
-        "Seguimiento de Satisfacción y Expansión Web"
-      ]
-    };
-
-    const stepCaptureImg = step === 0
-      ? "/assets/app_captures/tour_step0_1_objetivo.png"
-      : (step === 1 ? "/assets/app_captures/step1_proposito_sinek.png" : "/assets/app_captures/step2_touchpoints_carlzon.png");
+    const step = [0, 1, 2, 3].includes(st.activeDemoStep) ? st.activeDemoStep : 0;
 
     return `
-      <section style="padding:56px 24px 84px 24px; background:#FFFFFF;">
-        <div style="max-width:1240px; margin:0 auto; display:flex; flex-direction:column; gap:36px;">
-          <div style="text-align:center; max-width:820px; margin:0 auto;">
+      <section style="padding:52px 24px 84px 24px; background:#FFFFFF;">
+        <div style="max-width:1260px; margin:0 auto; display:flex; flex-direction:column; gap:36px;">
+          <div style="text-align:center; max-width:860px; margin:0 auto;">
             <div style="display:inline-flex; align-items:center; gap:8px; padding:5px 14px; border-radius:999px; background:#FFF7ED; color:#EA580C; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; margin-bottom:10px;">
               <span class="tbb-live-pulse-dot"></span>
-              <span>${escHtml(t("demoEyebrow"))}</span>
+              <span>${escHtml(t("demoEyebrow"))} · IPHONE REAL CONECTADO A AURA</span>
             </div>
             <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.85rem, 3.4vw, 2.75rem); font-weight:600; color:#0F172A; margin:0 0 12px 0; letter-spacing:-0.02em;">
-              ${escHtml(t("demoTitle"))}
+              Avanza gratis a lo largo de los primeros 3 pasos reales con Aura en vivo
             </h1>
             <p style="font-size:1.0rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
-              ${escHtml(t("demoDesc"))}
+              Ejecuta la aplicación real en el iPhone: responde el <strong>Paso 0 (Giro)</strong>, <strong>Paso 1 (Círculo Dorado)</strong>, <strong>Paso 2 (Touchpoints)</strong> y <strong>Paso 3 (Naming y Clases de Niza)</strong>. Al avanzar al <strong>Paso 4</strong>, desbloquea tu licencia de <strong>$49 USD</strong> y tus respuestas se migran automáticamente a tu cuenta.
             </p>
           </div>
 
-          <div style="display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap;">
-            ${DEMO_QUICK_PRESETS.map(p => {
-              const active = st.brandName === p.brandName;
-              return `
-                <button type="button" onclick="window.tbbApplyCommercialDemoPreset('${p.id}')" style="padding:8px 18px; border-radius:999px; border:1px solid ${active ? '#0D2540' : '#CBD5E1'}; background:${active ? '#0D2540' : '#F8FAFC'}; color:${active ? '#FFFFFF' : '#334155'}; font-size:0.82rem; font-weight:500; cursor:pointer; transition:all 0.2s ease;">
-                  ${escHtml(p.label)}
-                </button>
-              `;
-            }).join("")}
-          </div>
-
-          <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; border-bottom:1px solid #E2E8F0; padding-bottom:18px;">
-            <button type="button" onclick="window.tbbSwitchCommercialDemoStep(0)" style="padding:12px 22px; border-radius:999px; border:1px solid ${step === 0 ? '#1D4ED8' : '#E2E8F0'}; background:${step === 0 ? '#EFF6FF' : '#FFFFFF'}; color:${step === 0 ? '#1D4ED8' : '#475569'}; font-size:0.88rem; font-weight:${step === 0 ? '600' : '500'}; cursor:pointer;">
-              ${escHtml(t("demoStep0Tab"))}
-            </button>
-            <button type="button" onclick="window.tbbSwitchCommercialDemoStep(1)" style="padding:12px 22px; border-radius:999px; border:1px solid ${step === 1 ? '#1D4ED8' : '#E2E8F0'}; background:${step === 1 ? '#EFF6FF' : '#FFFFFF'}; color:${step === 1 ? '#1D4ED8' : '#475569'}; font-size:0.88rem; font-weight:${step === 1 ? '600' : '500'}; cursor:pointer;">
-              ${escHtml(t("demoStep1Tab"))}
-            </button>
-            <button type="button" onclick="window.tbbSwitchCommercialDemoStep(2)" style="padding:12px 22px; border-radius:999px; border:1px solid ${step === 2 ? '#1D4ED8' : '#E2E8F0'}; background:${step === 2 ? '#EFF6FF' : '#FFFFFF'}; color:${step === 2 ? '#1D4ED8' : '#475569'}; font-size:0.88rem; font-weight:${step === 2 ? '600' : '500'}; cursor:pointer;">
-              ${escHtml(t("demoStep2Tab"))}
-            </button>
-          </div>
-
-          <div class="tbb-comm-grid-2" style="align-items:start; gap:48px;">
-            <div style="display:flex; flex-direction:column; gap:20px;">
-              ${step === 0 ? `
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                  <button type="button" onclick="window.tbbSetDemoObjective('create')" style="padding:16px; border-radius:16px; border:1.5px solid ${st.demoObjective !== 'redesign' ? '#1D4ED8' : '#E2E8F0'}; background:${st.demoObjective !== 'redesign' ? '#F8FAFC' : '#FFFFFF'}; text-align:left; cursor:pointer;">
-                    <div style="font-size:0.92rem; font-weight:600; color:#0F172A;">✦ ${escHtml(t("demoObjCreate"))}</div>
-                  </button>
-                  <button type="button" onclick="window.tbbSetDemoObjective('redesign')" style="padding:16px; border-radius:16px; border:1.5px solid ${st.demoObjective === 'redesign' ? '#1D4ED8' : '#E2E8F0'}; background:${st.demoObjective === 'redesign' ? '#F8FAFC' : '#FFFFFF'}; text-align:left; cursor:pointer;">
-                    <div style="font-size:0.92rem; font-weight:600; color:#0F172A;">↻ ${escHtml(t("demoObjRedesign"))}</div>
-                  </button>
-                </div>
-
-                <div>
-                  <label style="display:block; font-size:0.84rem; font-weight:500; color:#334155; margin-bottom:6px;">${escHtml(t("demoBrandLabel"))}</label>
-                  <input type="text" value="${escHtml(st.brandName)}" oninput="window.tbbUpdateCommercialDemoField('brandName', this.value)" style="width:100%; height:46px; padding:0 14px; border-radius:12px; border:1px solid #CBD5E1; font-size:0.96rem; font-weight:500; color:#0F172A; background:#FFFFFF;" />
-                </div>
-
-                <div>
-                  <label style="display:block; font-size:0.84rem; font-weight:500; color:#334155; margin-bottom:6px;">${escHtml(t("demoTaglineLabel"))}</label>
-                  <input type="text" value="${escHtml(st.tagline)}" oninput="window.tbbUpdateCommercialDemoField('tagline', this.value)" style="width:100%; height:46px; padding:0 14px; border-radius:12px; border:1px solid #CBD5E1; font-size:0.94rem; font-weight:500; color:#0F172A; background:#FFFFFF;" />
-                </div>
-
-                <div>
-                  <label style="display:block; font-size:0.84rem; font-weight:500; color:#334155; margin-bottom:6px;">${escHtml(t("demoGiroLabel"))}</label>
-                  <textarea rows="3" oninput="window.tbbUpdateCommercialDemoField('businessGiro', this.value)" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid #CBD5E1; font-size:0.92rem; font-weight:400; color:#0F172A; line-height:1.55; background:#FFFFFF;">${escHtml(st.businessGiro)}</textarea>
-                </div>
-
-                <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                  <button type="button" onclick="window.tbbSwitchCommercialDemoStep(1)" class="tbb-comm-btn-blue" style="padding:13px 24px; font-size:0.9rem; font-weight:600;">
-                    ${escHtml(t("demoNextStepBtn"))} (Paso 1)
-                  </button>
-                </div>
-              ` : step === 1 ? `
-                <div>
-                  <label style="display:block; font-size:0.84rem; font-weight:500; color:#0D2540; margin-bottom:6px;">${escHtml(t("demoWhyLabel"))}</label>
-                  <textarea rows="2" oninput="window.tbbUpdateCommercialDemoField('whyPurpose', this.value)" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid #93C5FD; font-size:0.92rem; font-weight:400; color:#0F172A; line-height:1.55; background:#F8FAFC;">${escHtml(st.whyPurpose)}</textarea>
-                </div>
-
-                <div>
-                  <label style="display:block; font-size:0.84rem; font-weight:500; color:#1D4ED8; margin-bottom:6px;">${escHtml(t("demoHowLabel"))}</label>
-                  <textarea rows="2" oninput="window.tbbUpdateCommercialDemoField('howMethod', this.value)" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid #CBD5E1; font-size:0.92rem; font-weight:400; color:#0F172A; line-height:1.55; background:#FFFFFF;">${escHtml(st.howMethod)}</textarea>
-                </div>
-
-                <div>
-                  <label style="display:block; font-size:0.84rem; font-weight:500; color:#EA580C; margin-bottom:6px;">${escHtml(t("demoWhatLabel"))}</label>
-                  <textarea rows="2" oninput="window.tbbUpdateCommercialDemoField('whatOffer', this.value)" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid #CBD5E1; font-size:0.92rem; font-weight:400; color:#0F172A; line-height:1.55; background:#FFFFFF;">${escHtml(st.whatOffer)}</textarea>
-                </div>
-
-                <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                  <button type="button" onclick="window.tbbPolishCommercialDemoStep1()" class="tbb-btn-light-surface" style="padding:12px 20px; font-size:0.86rem; font-weight:500;">
-                    ✨ ${escHtml(t("demoPolishBtn"))}
-                  </button>
-                  <button type="button" onclick="window.tbbSwitchCommercialDemoStep(2)" class="tbb-comm-btn-blue" style="padding:12px 22px; font-size:0.88rem; font-weight:600;">
-                    ${escHtml(t("demoNextStepBtn"))} (Paso 2)
-                  </button>
-                </div>
-              ` : `
-                ${["before", "during", "after"].map((phaseKey, pIdx) => {
-                  const phaseTitle = pIdx === 0 ? "1. Antes de la compra (Descubrimiento)" : (pIdx === 1 ? "2. Durante la compra (Experiencia central)" : "3. Después de la compra (Lealtad)");
-                  const stateKey = pIdx === 0 ? "tpBefore" : (pIdx === 1 ? "tpDuring" : "tpAfter");
-                  const selectedArr = st[stateKey] || [];
-                  const allOpts = [...new Set([...tpCatalog[phaseKey], ...selectedArr])];
-                  return `
-                    <div style="padding-bottom:14px; border-bottom:1px solid #F1F5F9;">
-                      <div style="font-size:0.84rem; font-weight:600; color:#0F172A; margin-bottom:10px;">${phaseTitle}</div>
-                      <div style="display:flex; flex-wrap:wrap; gap:8px;">
-                        ${allOpts.map(opt => {
-                          const isSel = selectedArr.includes(opt);
-                          const safeOpt = opt.replace(/'/g, "\\'");
-                          return `
-                            <button type="button" onclick="window.tbbToggleCommercialDemoTouchpoint('${stateKey}', '${safeOpt}')" style="padding:7px 14px; border-radius:999px; border:1px solid ${isSel ? '#1D4ED8' : '#CBD5E1'}; background:${isSel ? '#EFF6FF' : '#FFFFFF'}; color:${isSel ? '#1D4ED8' : '#475569'}; font-size:0.82rem; font-weight:500; cursor:pointer;">
-                              ${isSel ? "✓ " : "+ "}${escHtml(opt)}
-                            </button>
-                          `;
-                        }).join("")}
-                      </div>
-                    </div>
-                  `;
-                }).join("")}
-
-                <div style="display:flex; gap:12px; flex-wrap:wrap; padding-top:6px;">
-                  <a href="/studio" onclick="window.tbbSyncCommercialDemoToAppState()" class="tbb-comm-btn-blue" style="padding:13px 24px; font-size:0.9rem; font-weight:600; text-decoration:none;">
-                    Continuar al Paso 3 en el Estudio Completo ↗
-                  </a>
-                </div>
-              `}
+          <div class="tbb-comm-grid-2" style="align-items:start; gap:44px;">
+            <div>
+              ${window.tbbBuildIphoneLiveStudioFrameHTML("tbbSubpage2IphoneStudioFrame")}
             </div>
 
-            <div style="display:flex; flex-direction:column; gap:24px;">
-              <div style="background:#F8FAFC; border-radius:24px; padding:24px; text-align:center;">
-                <div id="tbbDemoLiveBrandTitle" style="font-family:'Montserrat', sans-serif; font-size:1.35rem; font-weight:600; color:#0F172A;">${escHtml(st.brandName)}</div>
-                <div id="tbbDemoLiveBrandTagline" style="font-family:'JetBrains Mono', monospace; font-size:0.75rem; font-weight:500; color:#EA580C; margin-top:4px; margin-bottom:14px;">${escHtml(st.tagline)}</div>
-                <div id="tbbDemoLiveGoldenCircleWrap">
-                  ${window.tbbBuildCircularGoldenCircleSVG()}
+            <div style="display:flex; flex-direction:column; gap:22px;">
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:26px; display:flex; flex-direction:column; gap:16px;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:600; color:#1D4ED8;">
+                  FLUJO DE RETENCIÓN Y MIGRACIÓN AUTOMÁTICA DE DATOS
+                </div>
+                <h3 style="font-family:'Montserrat', sans-serif; font-size:1.25rem; font-weight:600; color:#0F172A; margin:0;">
+                  ¿Cómo funciona tu progreso en esta Demo Real?
+                </h3>
+                <p style="font-size:0.9rem; color:#475569; line-height:1.6; margin:0;">
+                  A diferencia de un formulario estático, el iPhone de la izquierda ejecuta el motor real de <strong>The Best Brand Studio</strong> con <strong>Aura</strong> respondiendo en vivo y los videos del fundador en <strong>HeyGen</strong> entre cada paso.
+                </p>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                  <button type="button" onclick="window.tbbIphoneJumpToStep(0)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 0 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.88rem; font-weight:600; color:#0F172A;">Paso 0 · Objetivo, Logo Actual y Giro</span>
+                    <span style="font-size:0.75rem; color:#16A34A; font-weight:600;">Gratis en iPhone →</span>
+                  </button>
+                  <button type="button" onclick="window.tbbIphoneJumpToStep(1)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 1 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.88rem; font-weight:600; color:#0F172A;">Paso 1 · El Círculo Dorado (Simon Sinek)</span>
+                    <span style="font-size:0.75rem; color:#16A34A; font-weight:600;">Gratis en iPhone →</span>
+                  </button>
+                  <button type="button" onclick="window.tbbIphoneJumpToStep(2)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 2 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.88rem; font-weight:600; color:#0F172A;">Paso 2 · Touchpoints Antes, Durante y Después</span>
+                    <span style="font-size:0.75rem; color:#16A34A; font-weight:600;">Gratis en iPhone →</span>
+                  </button>
+                  <button type="button" onclick="window.tbbIphoneJumpToStep(3)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 3 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.88rem; font-weight:600; color:#0F172A;">Paso 3 · Naming SMILE y Clases de Niza</span>
+                    <span style="font-size:0.75rem; color:#16A34A; font-weight:600;">Gratis en iPhone →</span>
+                  </button>
+                  <button type="button" onclick="window.tbbIphoneJumpToStep(4)" style="padding:14px 16px; border-radius:14px; border:1.5px solid #FDBA74; background:#FFF7ED; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.88rem; font-weight:600; color:#0F172A;">🔒 Paso 4 al 6 · Kansei, Logotipo y 9 Entregables</span>
+                    <span style="font-size:0.76rem; color:#EA580C; font-weight:600;">Paywall $49 USD + Migrar Cuenta →</span>
+                  </button>
                 </div>
               </div>
 
-              <div style="border-radius:20px; overflow:hidden; box-shadow:0 20px 50px rgba(15,23,42,0.10); cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(1, '${stepCaptureImg}', 'Captura Real · Paso ${step}')">
-                <img src="${stepCaptureImg}" alt="Captura Real Paso ${step}" style="width:100%; height:auto; display:block;" />
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:22px; display:flex; flex-direction:column; gap:12px;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; font-weight:600; color:#EA580C;">
+                  VIDEOS EXPLICATIVOS DEL FUNDADOR (HEYGEN SINCRONIZADOS)
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                  ${VIDEO_CAPSULES.slice(0, 4).map((cap, idx) => `
+                    <button type="button" onclick="window.tbbOpenVideoPopupModal(${idx})" style="padding:10px 12px; border-radius:12px; border:1px solid #CBD5E1; background:#FFFFFF; text-align:left; cursor:pointer;">
+                      <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; color:#1D4ED8; font-weight:600;">▶ PASO ${idx} · ${cap.duration}</div>
+                      <div style="font-size:0.78rem; font-weight:600; color:#0F172A; margin-top:2px;">Video HeyGen Paso ${idx}</div>
+                    </button>
+                  `).join("")}
+                </div>
               </div>
             </div>
           </div>
@@ -2345,6 +2467,36 @@
     window.tbbRenderCheckoutModalContent();
   };
 
+  window.tbbGetPendingDemoMigrationSnapshot = function () {
+    const st = window.tbbCommercialDemoState || {};
+    if (st.migratedSteps0to3Snapshot && typeof st.migratedSteps0to3Snapshot === "object") {
+      return st.migratedSteps0to3Snapshot;
+    }
+    try {
+      const raw = localStorage.getItem("tbb_demo_steps0to3_migration_v92");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") return parsed;
+      }
+    } catch (e) {}
+    if (typeof window.tbbBuildProgressMigrationSnapshot === "function") {
+      try {
+        return window.tbbBuildProgressMigrationSnapshot();
+      } catch (e) {}
+    }
+    return {
+      migratedAt: new Date().toISOString(),
+      completedDemoSteps: [0, 1, 2, 3],
+      targetStepAfterPaywall: 4,
+      brandName: st.brandName || "THE BEST BRAND",
+      sector: st.sector || "",
+      whyPurpose: st.whyPurpose || "",
+      howMethod: st.howMethod || "",
+      whatOffer: st.whatOffer || "",
+      touchpoints: Array.isArray(st.touchpoints) ? st.touchpoints : []
+    };
+  };
+
   window.tbbProcessCheckoutPayment = async function (methodId) {
     const st = window.tbbCommercialDemoState;
     const planPrice = st.selectedPlan === "agency_suite" ? 149.00 : 49.00;
@@ -2356,6 +2508,7 @@
     const expVal = (document.getElementById("tbbCardExpiryInput")?.value || "08/29").trim();
     const cvcVal = (document.getElementById("tbbCardCvcInput")?.value || "842").replace(/\D/g, "");
     const emailVal = (document.getElementById("tbbCardEmailInput")?.value || "cliente@thebestbrand.app").trim();
+    const pwdVal = (document.getElementById("tbbAccountPasswordInput")?.value || "TheBestBrand2026!").trim();
 
     if (methodId === "card" && (nameVal.length < 3 || numVal.length < 13 || expVal.length < 4 || cvcVal.length < 3)) {
       if (statusBox) {
@@ -2367,11 +2520,14 @@
       return;
     }
 
+    const migrationSnapshot = window.tbbGetPendingDemoMigrationSnapshot();
+    const effectiveBrandName = (migrationSnapshot && migrationSnapshot.brandName) || st.brandName || "THE BEST BRAND";
+
     if (statusBox) {
       statusBox.style.display = "block";
       statusBox.style.background = "#EFF6FF";
       statusBox.style.color = "#1E3A8A";
-      statusBox.textContent = `Procesando autorización criptográfica por $${planPrice.toFixed(2)} USD...`;
+      statusBox.textContent = `Procesando pago de $${planPrice.toFixed(2)} USD, creando tu cuenta y migrando tus respuestas de los Pasos 1–3...`;
     }
 
     try {
@@ -2381,10 +2537,13 @@
         body: JSON.stringify({
           plan_id: st.selectedPlan,
           payment_method: methodId,
-          brand_name: st.brandName || "THE BEST BRAND",
+          brand_name: effectiveBrandName,
           customer_email: emailVal,
           card_holder: nameVal,
-          card_last4: numVal.slice(-4) || "8890"
+          card_last4: numVal.slice(-4) || "8890",
+          account_password: pwdVal,
+          current_step: 4,
+          state_snapshot: migrationSnapshot
         })
       });
       const data = await resp.json();
@@ -2394,6 +2553,15 @@
         return;
       }
 
+      const accountObj = (data && data.account) || {
+        account_id: "acct_live_" + Date.now().toString(36),
+        email: emailVal,
+        full_name: nameVal,
+        plan_tier: st.selectedPlan === "agency_suite" ? "ENTERPRISE_UNLIMITED" : "PRO_ATELIER_49",
+        migrated_steps_1_to_3: true,
+        unlocked_step: 4
+      };
+
       const receiptObj = {
         licenseCode: (data && data.license_code) || ("TBB-PRO-" + Date.now().toString(36).toUpperCase()),
         orderFolio: (data && data.order_folio) || "TBB-LIVE-001",
@@ -2402,21 +2570,36 @@
         planLabel,
         amountUSD: planPrice,
         paymentMethod: methodId,
-        brandName: st.brandName || "THE BEST BRAND",
+        brandName: effectiveBrandName,
+        customerEmail: emailVal,
+        accountId: accountObj.account_id,
+        migratedSteps: "Pasos 0, 1, 2 y 3 → Paso 4 Desbloqueado",
         activatedAt: (data && data.authorized_at) || new Date().toISOString()
       };
 
       localStorage.setItem(LICENSE_STORAGE_KEY, JSON.stringify(receiptObj));
+      localStorage.setItem("tbb_license_active_pro_atelier", "true");
       localStorage.setItem("thebestbrand_pro_license", receiptObj.licenseCode);
+      localStorage.setItem("tbb_user_account_v30", JSON.stringify(accountObj));
+      localStorage.setItem("tbb_demo_steps0to3_migration_v92", JSON.stringify(migrationSnapshot));
       if (receiptObj.downloadGrantToken) {
         localStorage.setItem("tbb_hmac_download_grant_v82", receiptObj.downloadGrantToken);
       }
 
       window.tbbSyncCommercialDemoToAppState();
-      window.tbbRenderCheckoutSuccessView(receiptObj);
+      window.tbbBroadcastLicenseUnlockedToStudio(receiptObj, accountObj, migrationSnapshot);
+      window.tbbRenderCheckoutSuccessView(receiptObj, accountObj);
       window.tbbUpdateAlwaysOnFloatingBarText();
       window.tbbRefreshCommercialPortalDOM();
     } catch (err) {
+      const fallbackAccount = {
+        account_id: "acct_local_" + Date.now().toString(36),
+        email: emailVal,
+        full_name: nameVal,
+        plan_tier: "PRO_ATELIER_49",
+        migrated_steps_1_to_3: true,
+        unlocked_step: 4
+      };
       const fallbackReceipt = {
         licenseCode: "TBB-PRO-" + Math.random().toString(36).substring(2, 6).toUpperCase(),
         orderFolio: "TBB-LIVE-LOCAL",
@@ -2424,43 +2607,79 @@
         planLabel,
         amountUSD: planPrice,
         paymentMethod: methodId,
-        brandName: st.brandName || "THE BEST BRAND",
+        brandName: effectiveBrandName,
+        customerEmail: emailVal,
+        accountId: fallbackAccount.account_id,
+        migratedSteps: "Pasos 0, 1, 2 y 3 → Paso 4 Desbloqueado",
         activatedAt: new Date().toISOString()
       };
       try {
         localStorage.setItem(LICENSE_STORAGE_KEY, JSON.stringify(fallbackReceipt));
+        localStorage.setItem("tbb_license_active_pro_atelier", "true");
         localStorage.setItem("thebestbrand_pro_license", fallbackReceipt.licenseCode);
+        localStorage.setItem("tbb_user_account_v30", JSON.stringify(fallbackAccount));
       } catch (e) {}
-      window.tbbRenderCheckoutSuccessView(fallbackReceipt);
+      window.tbbBroadcastLicenseUnlockedToStudio(fallbackReceipt, fallbackAccount, migrationSnapshot);
+      window.tbbRenderCheckoutSuccessView(fallbackReceipt, fallbackAccount);
       window.tbbUpdateAlwaysOnFloatingBarText();
       window.tbbRefreshCommercialPortalDOM();
     }
   };
 
-  window.tbbRenderCheckoutSuccessView = function (receipt) {
+  window.tbbBroadcastLicenseUnlockedToStudio = function (receiptObj, accountObj, migrationSnapshot) {
+    // 1. Notificar a todos los iframes de iPhone en vivo en la landing
+    try {
+      const frames = document.querySelectorAll(".tbb-live-iphone-studio-iframe");
+      frames.forEach(fr => {
+        if (fr && fr.contentWindow) {
+          fr.contentWindow.postMessage({
+            type: "TBB_LICENSE_UNLOCKED_CONTINUE_STEP4",
+            receipt: receiptObj,
+            account: accountObj,
+            migratedState: migrationSnapshot
+          }, "*");
+        }
+      });
+    } catch (e) {}
+
+    // 2. Si estamos ejecutando dentro de studio.html directamente, desbloquear y saltar al Paso 4
+    try {
+      if (typeof window.switchStep === "function" && (window.location.pathname === "/studio" || window.location.pathname.endsWith("studio.html"))) {
+        if (typeof window.state === "object" && window.state) {
+          window.state.account = accountObj;
+        }
+        window.switchStep(4);
+      }
+    } catch (e) {}
+  };
+
+  window.tbbRenderCheckoutSuccessView = function (receipt, account) {
     const container = document.getElementById("tbbCheckoutSheetInner");
     if (!container) return;
     container.innerHTML = `
-      <div style="display:flex; flex-direction:column; gap:16px; text-align:center; padding:16px 8px;">
-        <div style="margin:0 auto;">${window.tbbBuildOfficialBrandbook1EmblemSVG(68)}</div>
-        <div style="font-family:'JetBrains Mono', monospace; font-size:0.74rem; font-weight:500; color:#16A34A;">
-          PAGO AUTORIZADO · LICENCIA OFICIAL ACTIVADA
+      <div style="display:flex; flex-direction:column; gap:14px; text-align:center; padding:14px 8px;">
+        <div style="margin:0 auto;">${window.tbbBuildOfficialBrandbook1EmblemSVG(64)}</div>
+        <div style="font-family:'JetBrains Mono', monospace; font-size:0.74rem; font-weight:600; color:#16A34A;">
+          ✓ PAGO AUTORIZADO · CUENTA CREADA Y PROGRESO MIGRADO AL PASO 4
         </div>
-        <h3 style="font-family:'Montserrat', sans-serif; font-size:1.45rem; font-weight:600; color:#0F172A; margin:0;">
-          ¡Bienvenido a The Best Brand Pro!
+        <h3 style="font-family:'Montserrat', sans-serif; font-size:1.38rem; font-weight:600; color:#0F172A; margin:0;">
+          ¡Cuenta Activada y Pasos 1–3 Vinculados!
         </h3>
-        <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:16px; padding:16px; text-align:left; font-size:0.86rem; line-height:1.7; color:#334155;">
-          <div>Licencia: <span style="font-family:'JetBrains Mono', monospace; color:#1D4ED8; font-weight:600;">${escHtml(receipt.licenseCode)}</span></div>
+        <p style="font-size:0.86rem; font-weight:400; color:#475569; margin:0;">
+          Tus respuestas de los Pasos 0, 1, 2 y 3 para <strong>${escHtml(receipt.brandName)}</strong> han sido migradas automáticamente a tu nueva cuenta. El <strong>Paso 4 (Ingeniería Kansei y Vectorial)</strong> ya está desbloqueado.
+        </p>
+        <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:16px; padding:14px; text-align:left; font-size:0.84rem; line-height:1.65; color:#334155;">
+          <div>Cuenta vinculada: <span style="font-family:'JetBrains Mono', monospace; color:#0F172A; font-weight:600;">${escHtml(receipt.customerEmail || account?.email || "cliente@thebestbrand.app")}</span></div>
+          <div>Licencia Pro: <span style="font-family:'JetBrains Mono', monospace; color:#1D4ED8; font-weight:600;">${escHtml(receipt.licenseCode)}</span></div>
           <div>Folio de Orden: <span style="font-family:'JetBrains Mono', monospace;">${escHtml(receipt.orderFolio || "TBB-LIVE")}</span></div>
-          <div>Plan: ${escHtml(receipt.planLabel)} ($${receipt.amountUSD.toFixed(2)} USD)</div>
-          <div>Marca: ${escHtml(receipt.brandName)}</div>
+          <div>Estado de Migración: <span style="color:#15803D; font-weight:600;">✓ ${escHtml(receipt.migratedSteps || "Pasos 1–3 migrados → Paso 4 activo")}</span></div>
         </div>
-        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:6px;">
-          <a href="/studio" onclick="window.tbbCloseBuyAppCheckoutModal();" class="tbb-comm-btn-blue" style="flex:1; padding:14px; text-decoration:none;">
-            Entrar al Estudio Completo con mi Marca →
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;">
+          <a href="/studio?step=4&continue=true" onclick="window.tbbCloseBuyAppCheckoutModal();" class="tbb-comm-btn-blue" style="flex:1; padding:14px; text-decoration:none;">
+            Continuar en Paso 4 con mi Progreso →
           </a>
-          <button type="button" class="tbb-btn-light-surface" onclick="window.tbbCloseBuyAppCheckoutModal()" style="padding:14px 20px;">
-            Cerrar
+          <button type="button" class="tbb-btn-light-surface" onclick="window.tbbCloseBuyAppCheckoutModal()" style="padding:14px 18px;">
+            Seguir en el iPhone en Vivo
           </button>
         </div>
       </div>
@@ -2474,81 +2693,99 @@
     const isAgency = st.selectedPlan === "agency_suite";
     const priceTxt = isAgency ? "$149.00 USD" : "$49.00 USD";
     const method = st.selectedPaymentMethod || "card";
+    const mig = window.tbbGetPendingDemoMigrationSnapshot();
+    const migBrand = (mig && mig.brandName) || st.brandName || "Tu Marca";
 
     container.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; border-bottom:1px solid #E2E8F0; padding-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; border-bottom:1px solid #E2E8F0; padding-bottom:12px;">
         <div style="display:flex; align-items:center; gap:12px;">
           <img src="/assets/logos/tbb_official_liquid_glass_logo.jpg" alt="The Best Brand" style="width:38px; height:38px; border-radius:10px; object-fit:cover;" />
           <div>
-            <div style="font-family:'Montserrat', sans-serif; font-size:1.1rem; font-weight:600; color:#0F172A;">${escHtml(t("checkoutTitle"))}</div>
-            <div style="font-size:0.8rem; font-weight:400; color:#475569;">${escHtml(t("checkoutSub"))}</div>
+            <div style="font-family:'Montserrat', sans-serif; font-size:1.06rem; font-weight:600; color:#0F172A;">Desbloquea el Paso 4 al 6 y tus 9 Entregables</div>
+            <div style="font-size:0.78rem; font-weight:400; color:#475569;">Crea tu cuenta y conserva intacto todo tu avance de los Pasos 1 al 3</div>
           </div>
         </div>
         <button type="button" class="tbb-btn-light-surface" onclick="window.tbbCloseBuyAppCheckoutModal()" style="padding:6px 12px;">✕</button>
       </div>
 
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px;">
-        <button type="button" onclick="window.tbbSelectCheckoutPlan('pro_atelier')" style="padding:14px; border-radius:14px; border:1.5px solid ${!isAgency ? '#1D4ED8' : '#CBD5E1'}; background:${!isAgency ? '#EFF6FF' : '#FFFFFF'}; text-align:left; cursor:pointer;">
-          <div style="font-size:0.86rem; font-weight:600; color:#0F172A;">${escHtml(t("planSingleName"))}</div>
-          <div style="font-size:1.15rem; font-weight:600; color:#1D4ED8; margin-top:2px;">$49 USD</div>
-          <div style="font-size:0.74rem; font-weight:400; color:#475569;">${escHtml(t("planSingleDesc"))}</div>
+      <!-- Banner de Retención y Migración Automática de Datos (Pasos 1 al 3) -->
+      <div style="margin-top:12px; padding:10px 14px; border-radius:12px; background:#F0FDF4; border:1px solid #BBF7D0; display:flex; align-items:center; gap:10px; font-size:0.78rem; color:#166534;">
+        <span style="font-size:1rem;">🔄</span>
+        <div>
+          <strong>Migración Automática Activada:</strong> Tus respuestas de los Pasos 1 al 3 para <strong>${escHtml(migBrand)}</strong> se vincularán automáticamente a tu nueva cuenta para continuar en el Paso 4 sin perder tu progreso.
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px;">
+        <button type="button" onclick="window.tbbSelectCheckoutPlan('pro_atelier')" style="padding:12px; border-radius:14px; border:1.5px solid ${!isAgency ? '#1D4ED8' : '#CBD5E1'}; background:${!isAgency ? '#EFF6FF' : '#FFFFFF'}; text-align:left; cursor:pointer;">
+          <div style="font-size:0.84rem; font-weight:600; color:#0F172A;">${escHtml(t("planSingleName"))}</div>
+          <div style="font-size:1.12rem; font-weight:600; color:#1D4ED8; margin-top:2px;">$49 USD</div>
+          <div style="font-size:0.72rem; font-weight:400; color:#475569;">${escHtml(t("planSingleDesc"))}</div>
         </button>
-        <button type="button" onclick="window.tbbSelectCheckoutPlan('agency_suite')" style="padding:14px; border-radius:14px; border:1.5px solid ${isAgency ? '#1D4ED8' : '#CBD5E1'}; background:${isAgency ? '#EFF6FF' : '#FFFFFF'}; text-align:left; cursor:pointer;">
-          <div style="font-size:0.86rem; font-weight:600; color:#0F172A;">${escHtml(t("planAgencyName"))}</div>
-          <div style="font-size:1.15rem; font-weight:600; color:#1D4ED8; margin-top:2px;">$149 USD</div>
-          <div style="font-size:0.74rem; font-weight:400; color:#475569;">${escHtml(t("planAgencyDesc"))}</div>
+        <button type="button" onclick="window.tbbSelectCheckoutPlan('agency_suite')" style="padding:12px; border-radius:14px; border:1.5px solid ${isAgency ? '#1D4ED8' : '#CBD5E1'}; background:${isAgency ? '#EFF6FF' : '#FFFFFF'}; text-align:left; cursor:pointer;">
+          <div style="font-size:0.84rem; font-weight:600; color:#0F172A;">${escHtml(t("planAgencyName"))}</div>
+          <div style="font-size:1.12rem; font-weight:600; color:#1D4ED8; margin-top:2px;">$149 USD</div>
+          <div style="font-size:0.72rem; font-weight:400; color:#475569;">${escHtml(t("planAgencyDesc"))}</div>
         </button>
       </div>
 
-      <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-top:16px;">
+      <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-top:12px;">
         ${[
           { id: "card", lbl: "💳 Tarjeta" },
           { id: "apple_pay", lbl: " Apple Pay" },
           { id: "google_pay", lbl: "G Pay" },
           { id: "paypal", lbl: "PayPal" }
         ].map(m => `
-          <button type="button" onclick="window.tbbSelectPaymentMethod('${m.id}')" style="padding:10px 8px; border-radius:10px; border:1px solid ${method === m.id ? '#0D2540' : '#CBD5E1'}; background:${method === m.id ? '#0D2540' : '#F8FAFC'}; color:${method === m.id ? '#FFFFFF' : '#0F172A'}; font-size:0.8rem; font-weight:500; cursor:pointer;">
+          <button type="button" onclick="window.tbbSelectPaymentMethod('${m.id}')" style="padding:9px 8px; border-radius:10px; border:1px solid ${method === m.id ? '#0D2540' : '#CBD5E1'}; background:${method === m.id ? '#0D2540' : '#F8FAFC'}; color:${method === m.id ? '#FFFFFF' : '#0F172A'}; font-size:0.78rem; font-weight:500; cursor:pointer;">
             ${m.lbl}
           </button>
         `).join("")}
       </div>
 
-      <div style="margin-top:16px; background:#F8FAFC; border-radius:16px; padding:18px;">
+      <div style="margin-top:12px; background:#F8FAFC; border-radius:16px; padding:16px;">
+        <!-- Datos de creación de cuenta para vincular Pasos 1-3 -->
+        <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:10px; margin-bottom:10px;">
+          <div>
+            <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">Correo de tu nueva cuenta</label>
+            <input type="email" id="tbbCardEmailInput" value="cliente@thebestbrand.app" style="width:100%; height:40px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-size:0.84rem; color:#0F172A; background:#FFFFFF;" />
+          </div>
+          <div>
+            <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">Contraseña (migrar Pasos 1–3)</label>
+            <input type="password" id="tbbAccountPasswordInput" value="TheBestBrand2026!" style="width:100%; height:40px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-size:0.84rem; color:#0F172A; background:#FFFFFF;" />
+          </div>
+        </div>
+
         ${method === "card" ? `
-          <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; flex-direction:column; gap:10px;">
             <div>
-              <label style="display:block; font-size:0.76rem; font-weight:500; color:#334155; margin-bottom:4px;">Nombre del titular</label>
-              <input type="text" id="tbbCardHolderInput" value="Jorge Benítez" style="width:100%; height:42px; padding:0 12px; border-radius:10px; border:1px solid #CBD5E1; font-size:0.88rem; color:#0F172A; background:#FFFFFF;" />
+              <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">Nombre del titular</label>
+              <input type="text" id="tbbCardHolderInput" value="Jorge Benítez" style="width:100%; height:40px; padding:0 12px; border-radius:10px; border:1px solid #CBD5E1; font-size:0.86rem; color:#0F172A; background:#FFFFFF;" />
             </div>
-            <div>
-              <label style="display:block; font-size:0.76rem; font-weight:500; color:#334155; margin-bottom:4px;">Número de tarjeta (Visa, Mastercard, Amex)</label>
-              <input type="text" id="tbbCardNumberInput" oninput="window.tbbFormatCardInput(this)" value="4532 8910 4421 8890" maxlength="19" style="width:100%; height:42px; padding:0 12px; border-radius:10px; border:1px solid #CBD5E1; font-family:'JetBrains Mono', monospace; font-size:0.9rem; color:#0F172A; background:#FFFFFF;" />
-            </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr 1.4fr; gap:10px;">
+            <div style="display:grid; grid-template-columns:1.8fr 0.8fr 0.7fr; gap:10px;">
+              <div>
+                <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">Número de tarjeta</label>
+                <input type="text" id="tbbCardNumberInput" oninput="window.tbbFormatCardInput(this)" value="4532 8910 4421 8890" maxlength="19" style="width:100%; height:40px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-family:'JetBrains Mono', monospace; font-size:0.86rem; color:#0F172A; background:#FFFFFF;" />
+              </div>
               <div>
                 <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">MM/AA</label>
-                <input type="text" id="tbbCardExpiryInput" oninput="window.tbbFormatExpiryInput(this)" value="08/29" maxlength="5" style="width:100%; height:42px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-family:'JetBrains Mono', monospace; font-size:0.86rem; color:#0F172A; background:#FFFFFF;" />
+                <input type="text" id="tbbCardExpiryInput" oninput="window.tbbFormatExpiryInput(this)" value="08/29" maxlength="5" style="width:100%; height:40px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-family:'JetBrains Mono', monospace; font-size:0.84rem; color:#0F172A; background:#FFFFFF;" />
               </div>
               <div>
                 <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">CVC</label>
-                <input type="password" id="tbbCardCvcInput" value="842" maxlength="4" style="width:100%; height:42px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-family:'JetBrains Mono', monospace; font-size:0.86rem; color:#0F172A; background:#FFFFFF;" />
-              </div>
-              <div>
-                <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">Correo para licencia</label>
-                <input type="email" id="tbbCardEmailInput" value="cliente@thebestbrand.app" style="width:100%; height:42px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-size:0.84rem; color:#0F172A; background:#FFFFFF;" />
+                <input type="password" id="tbbCardCvcInput" value="842" maxlength="4" style="width:100%; height:40px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-family:'JetBrains Mono', monospace; font-size:0.84rem; color:#0F172A; background:#FFFFFF;" />
               </div>
             </div>
-            <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbProcessCheckoutPayment('card')" style="width:100%; padding:14px; font-size:0.92rem; font-weight:600; margin-top:4px;">
-              ${escHtml(t("payNowBtn"))} · ${priceTxt}
+            <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbProcessCheckoutPayment('card')" style="width:100%; padding:14px; font-size:0.9rem; font-weight:600; margin-top:4px;">
+              Crear Cuenta, Migrar Pasos 1–3 y Pagar · ${priceTxt}
             </button>
           </div>
         ` : `
-          <div style="text-align:center; padding:12px;">
-            <p style="font-size:0.9rem; font-weight:400; color:#334155; margin:0 0 14px 0;">
-              Autorización instantánea con <strong>${method.toUpperCase().replace("_", " ")}</strong> por ${priceTxt}.
+          <div style="text-align:center; padding:10px;">
+            <p style="font-size:0.86rem; font-weight:400; color:#334155; margin:0 0 12px 0;">
+              Autorización instantánea con <strong>${method.toUpperCase().replace("_", " ")}</strong> por ${priceTxt} y migración automática de tus Pasos 1–3.
             </p>
-            <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbProcessCheckoutPayment('${method}')" style="width:100%; padding:14px; font-size:0.92rem; font-weight:600;">
-              ${escHtml(t("payNowBtn"))} · ${priceTxt}
+            <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbProcessCheckoutPayment('${method}')" style="width:100%; padding:14px; font-size:0.9rem; font-weight:600;">
+              Crear Cuenta, Migrar Pasos 1–3 y Pagar · ${priceTxt}
             </button>
           </div>
         `}
@@ -2973,6 +3210,50 @@
     } catch (e) {}
   }
 
+  window.addEventListener("message", function (ev) {
+    if (!ev || !ev.data || typeof ev.data !== "object") return;
+    const msg = ev.data;
+
+    if (msg.type === "TBB_DEMO_PROGRESS_SYNC" && msg.stateSnapshot) {
+      const snap = msg.stateSnapshot;
+      const st = window.tbbCommercialDemoState;
+      st.migratedSteps0to3Snapshot = snap;
+      if (snap.brandName) st.brandName = snap.brandName;
+      if (snap.sector) st.sector = snap.sector;
+      if (snap.whyPurpose) st.whyPurpose = snap.whyPurpose;
+      if (snap.howMethod) st.howMethod = snap.howMethod;
+      if (snap.whatOffer) st.whatOffer = snap.whatOffer;
+      if (Array.isArray(snap.touchpoints) && snap.touchpoints.length) {
+        st.touchpoints = snap.touchpoints;
+      }
+      try {
+        localStorage.setItem("tbb_demo_steps0to3_migration_v92", JSON.stringify(snap));
+      } catch (e) {}
+
+      // Actualizar texto de estado en vivo junto al iPhone y el Círculo Dorado SVG
+      try {
+        document.querySelectorAll(".tbb-live-migration-status-txt").forEach(el => {
+          el.innerHTML = `<span style="color:#16A34A; font-weight:600;">● Sincronizado en Vivo (${escHtml(snap.brandName || "Tu Marca")})</span> · Paso ${Number(msg.currentStep || 0)} guardado para migración automática.`;
+        });
+        const gcBox = document.getElementById("tbbDemoGoldenCircleBox");
+        if (gcBox && typeof window.tbbBuildDynamicGoldenCircleSVG === "function") {
+          gcBox.innerHTML = window.tbbBuildDynamicGoldenCircleSVG(st);
+        }
+      } catch (e) {}
+    } else if (msg.type === "TBB_TRIGGER_STEP4_PAYWALL" || msg.type === "TBB_DEMO_COMPLETED_STEP_2") {
+      if (msg.stateSnapshot) {
+        window.tbbCommercialDemoState.migratedSteps0to3Snapshot = msg.stateSnapshot;
+        if (msg.stateSnapshot.brandName) {
+          window.tbbCommercialDemoState.brandName = msg.stateSnapshot.brandName;
+        }
+        try {
+          localStorage.setItem("tbb_demo_steps0to3_migration_v92", JSON.stringify(msg.stateSnapshot));
+        } catch (e) {}
+      }
+      window.tbbOpenBuyAppCheckoutModal("pro_atelier");
+    }
+  });
+
   function bootCommercialExperience() {
     applyUrlParamsState();
     ensureModalsAndFloatingBarMounted();
@@ -2985,6 +3266,14 @@
         const item = OFFICIAL_9_DELIVERABLES[idx];
         const loc = item.i18n[getLang()] || item.i18n.es;
         setTimeout(() => window.tbbOpenPlateLightboxModal(item.plateNum, item.thumb, loc.title, item.sampleUrl), 250);
+      }
+      const paywallParam = sp.get("paywall");
+      if (paywallParam === "1" || paywallParam === "step4") {
+        setTimeout(() => window.tbbOpenBuyAppCheckoutModal("pro_atelier"), 250);
+      }
+      const videoParam = sp.get("video");
+      if (videoParam && typeof window.tbbOpenVideoPopupModal === "function") {
+        setTimeout(() => window.tbbOpenVideoPopupModal(videoParam), 250);
       }
     } catch (e) {}
   }

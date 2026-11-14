@@ -162,14 +162,15 @@ _EDGE_WEB_TTL_SEC = 20.0
 
 
 def _read_web_file_with_github_sync(rel_path: str) -> str:
-    """Reads web file from GitHub main raw (with 20s memory cache + local disk write-through) and falls back to local disk."""
-    now = time.time()
-    cached = _EDGE_WEB_CACHE.get(rel_path)
-    if cached and (now - cached.get("ts", 0)) < _EDGE_WEB_TTL_SEC:
-        return cached["content"]
-
+    """Reads web file from local disk (or GitHub main raw when TBB_ENABLE_GITHUB_RAW_SYNC=1)."""
+    import time as _time
+    now = _time.time()
     local_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"../web/{rel_path}"))
-    if os.environ.get("TBB_DISABLE_GITHUB_EDGE_SYNC") != "1":
+
+    if os.environ.get("TBB_ENABLE_GITHUB_RAW_SYNC") == "1" and os.environ.get("TBB_DISABLE_GITHUB_EDGE_SYNC") != "1":
+        cached = _EDGE_WEB_CACHE.get(rel_path)
+        if cached and (now - cached.get("ts", 0)) < _EDGE_WEB_TTL_SEC:
+            return cached["content"]
         try:
             import urllib.request
             url = f"{_GITHUB_RAW_WEB_BASE}/{rel_path}?t={int(now)}"
@@ -179,11 +180,6 @@ def _read_web_file_with_github_sync(rel_path: str) -> str:
                     text = resp.read().decode("utf-8")
                     if text and len(text) > 64:
                         _EDGE_WEB_CACHE[rel_path] = {"ts": now, "content": text}
-                        try:
-                            with open(local_path, "w", encoding="utf-8") as wf:
-                                wf.write(text)
-                        except Exception:
-                            pass
                         return text
         except Exception:
             pass
@@ -213,7 +209,7 @@ def force_sync_from_github():
         git_out = (res.stdout or "") + "\n" + (res.stderr or "")
     except Exception as e:
         git_out = str(e)
-    return {"ok": True, "synced_at": int(time.time()), "git_output": git_out.strip()}
+    return {"ok": True, "synced_at": int(_time.time()), "git_output": git_out.strip()}
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -225,7 +221,7 @@ def serve_web_app():
             "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
             "Pragma": "no-cache",
             "Expires": "0",
-            "X-TBB-Release": "v91.0-panoramic-light"
+            "X-TBB-Release": "v92.0-heygen-iphone-live"
         }
     )
 
@@ -3048,6 +3044,9 @@ class PaymentCheckoutLiveRequest(BaseModel):
     customer_email: str = "cliente@thebestbrand.app"
     card_holder: str = "Jorge Benítez"
     card_last4: str = "8890"
+    account_password: str = ""
+    current_step: int = 4
+    state_snapshot: Dict[str, Any] = {}
 
 
 @app.post("/api/v1/payments/issue-download-grant")
@@ -3068,13 +3067,17 @@ def api_issue_payment_download_grant(req: PaymentDownloadGrantRequest):
 
 @app.post("/api/v1/payments/checkout-live")
 def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
-    """Procesa la orden de compra real (Tarjeta 3DS, Apple Pay, Google Pay o PayPal), emite folio oficial y firma token HMAC-SHA256 de desbloqueo."""
+    """Procesa la orden de compra real (Tarjeta 3DS, Apple Pay, Google Pay o PayPal), emite folio oficial, firma token HMAC-SHA256 y crea/migra automáticamente la cuenta y progreso de los Pasos 1-3."""
     secret = os.environ.get("TBB_GRANT_SECRET", "improbears-c00-default-grant-secret-v82")
     now_ts = int(_tbb_time.time())
     exp = now_ts + 86400 * 365
     amount_usd = 149.00 if req.plan_id == "agency_suite" else 49.00
     tier_code = "agency_suite" if req.plan_id == "agency_suite" else "atelier_pro"
-    raw_seed = f"{req.brand_name}|{req.customer_email}|{now_ts}"
+    clean_email = (req.customer_email or "cliente@thebestbrand.app").strip().lower()
+    if "@" not in clean_email:
+        clean_email = f"{clean_email}@thebestbrand.app"
+    clean_name = (req.card_holder or "Fundador").strip() or "Fundador"
+    raw_seed = f"{req.brand_name}|{clean_email}|{now_ts}"
     short_hash = _tbb_hashlib.sha256(raw_seed.encode("utf-8")).hexdigest()[:8].upper()
     order_folio = f"TBB-LIVE-{short_hash}"
     license_code = f"TBB-PRO-{short_hash[:4]}-{short_hash[4:]}"
@@ -3082,6 +3085,50 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
     msg = f"{req.brand_name}|{order_folio}|{tier_code}|{exp}"
     sig = _tbb_hmac.new(secret.encode("utf-8"), msg.encode("utf-8"), _tbb_hashlib.sha256).hexdigest()
     grant_token = f"{exp}.{sig}"
+
+    # Crear cuenta automáticamente y migrar respuestas de los Pasos 0 al 3
+    account_id = "acc_" + hashlib.sha256(clean_email.encode("utf-8")).hexdigest()[:16]
+    now_iso = datetime.now(timezone.utc).isoformat()
+    raw_pwd = (req.account_password or "").strip()
+    brand_slug = "".join([c.lower() if c.isalnum() else "_" for c in (req.brand_name or "thebestbrand").strip()])[:40] or "active_brand_default"
+    brand_id = f"brand_{brand_slug}"
+    mig_code = _build_migration_code(clean_email, account_id)
+
+    try:
+        with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            row = conn.execute("SELECT * FROM accounts WHERE email = ?", (clean_email,)).fetchone()
+            if not row:
+                salt = hashlib.sha256(f"salt:{clean_email}".encode("utf-8")).hexdigest()[:24]
+                pwd_hash = _hash_account_password(raw_pwd, salt) if raw_pwd else ""
+                mig_code = _build_migration_code(clean_email, pwd_hash or account_id)
+                conn.execute(
+                    "INSERT INTO accounts (account_id, email, name, password_hash, password_salt, migration_code, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    (account_id, clean_email, clean_name, pwd_hash, salt, mig_code, now_iso)
+                )
+            else:
+                account_id = row["account_id"]
+                mig_code = (row["migration_code"] if "migration_code" in row.keys() and row["migration_code"] else mig_code)
+            state_payload = dict(req.state_snapshot or {})
+            state_payload["license_code"] = license_code
+            state_payload["order_folio"] = order_folio
+            state_payload["migrated_steps_0_to_3"] = True
+            state_str = json.dumps(state_payload, ensure_ascii=False)
+            conn.execute(
+                """
+                INSERT INTO brand_workspaces (brand_id, account_id, brand_name, current_step, state_json, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?)
+                ON CONFLICT(account_id, brand_id) DO UPDATE SET
+                    brand_name = excluded.brand_name,
+                    current_step = excluded.current_step,
+                    state_json = excluded.state_json,
+                    updated_at = excluded.updated_at
+                """,
+                (brand_id, account_id, req.brand_name or "THE BEST BRAND", max(4, int(req.current_step or 4)), state_str, now_iso)
+            )
+            conn.commit()
+    except Exception:
+        pass
 
     stripe_checkout_url = (
         os.environ.get("STRIPE_CHECKOUT_URL_AGENCY", "")
@@ -3100,7 +3147,18 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
         "currency": "USD",
         "payment_method": req.payment_method,
         "brand_name": req.brand_name,
-        "customer_email": req.customer_email,
+        "customer_email": clean_email,
+        "account": {
+            "account_id": account_id,
+            "email": clean_email,
+            "name": clean_name,
+            "brand_id": brand_id,
+            "migration_code": mig_code,
+            "security_verified": True,
+            "license_tier": tier_code,
+            "unlocked_step": 4,
+            "migrated_steps_0_to_3": True
+        },
         "expires_at_unix": exp,
         "download_grant_token": grant_token,
         "stripe_checkout_url": stripe_checkout_url,
@@ -3113,4 +3171,5 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     print(f" Starting TheBestBrand Studio on http://{host}:{port}")
     uvicorn.run(app, host=host, port=port)
+
 
