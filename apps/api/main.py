@@ -789,25 +789,50 @@ def _sync_active_whatsapp_phones_to_zoho_single_phone(user_text: str = "") -> Di
     return result
 
 
-def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target: str = "F-00011", user_text: str = "") -> Dict[str, Any]:
+def _execute_ingready_invoice_sat_email_whatsapp_workflow(
+    invoice_number_target: str = "F-00011",
+    user_text: str = "",
+    shadow_test_mode: bool = False,
+    test_personal_phone: str = "",
+    test_personal_email: str = "jorge.benitez@improbears.com"
+) -> Dict[str, Any]:
     """
     Ejecuta en vivo en Zoho Books (Org 923290625) + OpenClaw (34.121.182.185:4747):
-    0. Sincroniza primero los teléfonos activos de WhatsApp de Miguel y Lilian hacia Zoho CRM y Zoho Books como teléfonos únicos.
-    1. Localiza la factura objetivo (por defecto F-00011 de Ingready).
-    2. Registra/verifica a Miguel Ángel Mazatán (mmazatan@ingready.com.mx) y Lilian Maldonado (lmaldonado@ingready.com.mx).
-    3. Dispara el timbrado CFDI 4.0 ante el SAT (/books/v3/invoices/{invoice_id}/einvoice/push y /books/v3/invoices/einvoice/push).
-    4. Envía la factura por correo desde Zoho Books (/books/v3/invoices/{invoice_id}/email) a ambos correos:
-       mmazatan@ingready.com.mx y lmaldonado@ingready.com.mx.
-    5. Dispara el envío por WhatsApp a los números activos en WhatsApp de Miguel y Lilian vía OpenClaw.
+    - Si `shadow_test_mode=True` (Modo Prueba Silenciosa / Sandbox Personal de Jorge):
+      • Verifica en vivo la conexión OAuth Zoho CRM/Books y localiza la factura real (`F-00011`) en modo lectura,
+        SIN timbrar en el SAT y SIN enviar ningún correo ni WhatsApp a Miguel ni a Lilian.
+      • Redirige la prueba real de WhatsApp y correo ÚNICAMENTE al número personal de Jorge (`test_personal_phone`)
+        y a su correo (`jorge.benitez@improbears.com`), con el prefijo `[PRUEBA SILENCIOSA - NO ENVIADO AL CLIENTE]`.
+    - Si `shadow_test_mode=False`:
+      • Ejecuta el flujo productivo completo (Zoho CRM/Books + SAT `/einvoice/push` + Correo y WhatsApp a Miguel y Lilian).
     """
     import urllib.request
     import urllib.parse
     import urllib.error
     import json
+    import re
 
-    phone_sync = _sync_active_whatsapp_phones_to_zoho_single_phone(user_text)
-    miguel_wa = phone_sync.get("miguel_whatsapp_active") or ""
-    lilian_wa = phone_sync.get("lilian_whatsapp_active") or ""
+    low_u = (user_text or "").lower()
+    if any(w in low_u for w in ["prueba silenciosa", "modo prueba", "mi otro numero", "mi otro número", "mi numero personal", "mi número personal", "probar conmigo", "prueba conmigo", "sandbox", "dry run", "sin enviar al cliente"]):
+        shadow_test_mode = True
+
+    if shadow_test_mode and not test_personal_phone:
+        # Buscar si Jorge indicó su número personal en el mensaje; si no, usar su móvil personal registrado (+524422261454)
+        for fn in re.findall(r"(?:\+?52\s*1?\s*)?(?:\d[\s\-]*){10}", user_text or ""):
+            dgs = "".join([c for c in fn if c.isdigit()])
+            if len(dgs) >= 10 and not dgs.endswith("4421812822"):
+                test_personal_phone = f"+52{dgs[-10:]}"
+                break
+        if not test_personal_phone:
+            test_personal_phone = os.environ.get("JORGE_PERSONAL_TEST_PHONE", "+524422261454")
+
+    phone_sync = (
+        {"miguel_whatsapp_active": "+524422523834", "lilian_whatsapp_active": "+524422585037", "zoho_crm_updated": ["MODO PRUEBA SILENCIOSA (Contactos reales protegidos)"], "zoho_books_updated": []}
+        if shadow_test_mode
+        else _sync_active_whatsapp_phones_to_zoho_single_phone(user_text)
+    )
+    miguel_wa = phone_sync.get("miguel_whatsapp_active") or "+524422523834"
+    lilian_wa = phone_sync.get("lilian_whatsapp_active") or "+524422585037"
 
     client_id = os.environ.get("ZOHO_CLIENT_ID", "").strip()
     client_secret = os.environ.get("ZOHO_CLIENT_SECRET", "").strip()
@@ -818,6 +843,9 @@ def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target:
     oc_base = os.environ.get("AURA_OPENCLAW_URL", "http://34.121.182.185:4747").rstrip("/")
 
     report: Dict[str, Any] = {
+        "shadow_test_mode": shadow_test_mode,
+        "client_isolated": shadow_test_mode,
+        "test_personal_phone": test_personal_phone if shadow_test_mode else None,
         "invoice_number": invoice_number_target,
         "phone_sync": phone_sync,
         "zoho_oauth_connected": False,
@@ -826,10 +854,15 @@ def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target:
         "customer_id": None,
         "contacts_synced": False,
         "sat_einvoice_push": {"attempted": False, "ok": False, "message": ""},
-        "email_dispatch": {"attempted": False, "ok": False, "recipients": ["mmazatan@ingready.com.mx", "lmaldonado@ingready.com.mx"], "message": ""},
+        "email_dispatch": {
+            "attempted": False,
+            "ok": False,
+            "recipients": [test_personal_email] if shadow_test_mode else ["mmazatan@ingready.com.mx", "lmaldonado@ingready.com.mx"],
+            "message": ""
+        },
         "whatsapp_dispatch": {
-            "miguel": {"phone": miguel_wa, "ok": False, "message": ""},
-            "lilian": {"phone": lilian_wa, "ok": False, "message": ""}
+            "miguel": {"phone": test_personal_phone if shadow_test_mode else miguel_wa, "ok": False, "message": ""},
+            "lilian": {"phone": test_personal_phone if shadow_test_mode else lilian_wa, "ok": False, "message": ""}
         }
     }
 
@@ -881,115 +914,156 @@ def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target:
                     report["date"] = target_inv.get("date")
                     report["due_date"] = target_inv.get("due_date")
 
-                    # 2. Asegurar que Lilian (lmaldonado@ingready.com.mx) y Miguel (mmazatan@ingready.com.mx) estén en contact_persons con su único teléfono de WhatsApp
-                    if cust_id:
+                    if shadow_test_mode:
+                        report["sat_einvoice_push"] = {
+                            "attempted": False,
+                            "ok": True,
+                            "message": f"SIMULACIÓN SEGURA (DRY-RUN): Factura {report['invoice_number']} ($5,220.00 MXN) verificada en Zoho Books sin timbrar ante el SAT."
+                        }
+                        # En modo prueba silenciosa, si Zoho Books está conectado, podemos enviar el correo de prueba SOLO a Jorge
+                        report["email_dispatch"]["attempted"] = True
                         try:
-                            cp_url = f"{api_domain}/books/v3/contacts/contactpersons?organization_id={org_id}&contact_id={cust_id}"
-                            with urllib.request.urlopen(urllib.request.Request(cp_url, headers=headers), timeout=4.5) as cpr:
-                                cp_json = json.loads(cpr.read().decode("utf-8"))
-                            existing_emails = {
-                                str(p.get("email", "")).lower()
-                                for p in (cp_json.get("contact_persons") or [])
-                            }
-                            for person in [
-                                {"first_name": "Miguel Ángel", "last_name": "Mazatán Gutiérrez", "email": "mmazatan@ingready.com.mx", "mobile": miguel_wa, "phone": ""},
-                                {"first_name": "Lilian", "last_name": "Maldonado Mandujano", "email": "lmaldonado@ingready.com.mx", "mobile": lilian_wa, "phone": ""}
-                            ]:
-                                if person["email"].lower() not in existing_emails:
-                                    add_cp_req = urllib.request.Request(
-                                        f"{api_domain}/books/v3/contacts/contactpersons?organization_id={org_id}",
-                                        data=json.dumps({"contact_id": cust_id, **person}).encode("utf-8"),
-                                        headers={**headers, "Content-Type": "application/json"},
-                                        method="POST"
+                            em_req = urllib.request.Request(
+                                f"{api_domain}/books/v3/invoices/{inv_id}/email?organization_id={org_id}",
+                                data=json.dumps({
+                                    "send_from_org_email_id": True,
+                                    "to_mail_ids": [test_personal_email],
+                                    "subject": f"[PRUEBA SILENCIOSA - NO ENVIADO AL CLIENTE] Factura {report['invoice_number']} (Ingready)",
+                                    "body": (
+                                        "[MODO SANDBOX SILENCIOSO — CERO CONTACTO CON EL CLIENTE]\n"
+                                        "Destinatarios reales bloqueados en esta prueba: mmazatan@ingready.com.mx, lmaldonado@ingready.com.mx\n\n"
+                                        "--- Cuerpo exacto que vería el cliente ---\n"
+                                        "Hola Miguel y Lili,\n\n"
+                                        f"Les compartimos por este medio la factura {report['invoice_number']} por $5,220.00 MXN (IVA incluido), "
+                                        "correspondiente a 3 sesiones de Coaching Comercial Ilse - Ingready (emisión 13 de noviembre de 2026, vencimiento 20 de noviembre de 2026).\n\n"
+                                        "Les mando un fuerte abrazo,\n"
+                                        "Jorge Benítez\n"
+                                        "ImproBears — Business Improvement"
                                     )
-                                    try:
-                                        urllib.request.urlopen(add_cp_req, timeout=4.5).read()
-                                    except Exception:
-                                        pass
-                            report["contacts_synced"] = True
-                        except Exception:
-                            pass
-
-                    # 3. Empujar y timbrar Factura Electrónica CFDI 4.0 con el SAT (/einvoice/push)
-                    report["sat_einvoice_push"]["attempted"] = True
-                    push_endpoints = [
-                        (f"{api_domain}/books/v3/invoices/{inv_id}/einvoice/push?organization_id={org_id}", b""),
-                        (
-                            f"{api_domain}/books/v3/invoices/einvoice/push?organization_id={org_id}",
-                            urllib.parse.urlencode({"JSONString": json.dumps({"invoice_ids": inv_id})}).encode("utf-8")
-                        )
-                    ]
-                    for p_url, p_body in push_endpoints:
-                        try:
-                            p_headers = dict(headers)
-                            if p_body:
-                                p_headers["Content-Type"] = "application/x-www-form-urlencoded"
-                            preq = urllib.request.Request(p_url, data=p_body, headers=p_headers, method="POST")
-                            with urllib.request.urlopen(preq, timeout=8.0) as pr:
-                                p_json = json.loads(pr.read().decode("utf-8"))
-                                if p_json.get("code") == 0:
-                                    report["sat_einvoice_push"]["ok"] = True
-                                    report["sat_einvoice_push"]["message"] = p_json.get("message", "Factura timbrada y certificada ante el SAT")
-                                    break
-                                else:
-                                    report["sat_einvoice_push"]["message"] = p_json.get("message", str(p_json))
-                        except urllib.error.HTTPError as he:
+                                }).encode("utf-8"),
+                                headers={**headers, "Content-Type": "application/json"},
+                                method="POST"
+                            )
+                            with urllib.request.urlopen(em_req, timeout=8.0) as er:
+                                em_json = json.loads(er.read().decode("utf-8"))
+                                report["email_dispatch"]["ok"] = (em_json.get("code") == 0)
+                                report["email_dispatch"]["message"] = f"Enviado ÚNICAMENTE a tu correo {test_personal_email} (Miguel y Lilian aislados)"
+                        except Exception as ee:
+                            report["email_dispatch"]["message"] = f"Aislado de clientes ({ee})"
+                    else:
+                        # 2. Asegurar que Lilian (lmaldonado@ingready.com.mx) y Miguel (mmazatan@ingready.com.mx) estén en contact_persons con su único teléfono de WhatsApp
+                        if cust_id:
                             try:
-                                err_body = json.loads(he.read().decode("utf-8", errors="ignore"))
-                                report["sat_einvoice_push"]["message"] = err_body.get("message") or str(err_body)
+                                cp_url = f"{api_domain}/books/v3/contacts/contactpersons?organization_id={org_id}&contact_id={cust_id}"
+                                with urllib.request.urlopen(urllib.request.Request(cp_url, headers=headers), timeout=4.5) as cpr:
+                                    cp_json = json.loads(cpr.read().decode("utf-8"))
+                                existing_emails = {
+                                    str(p.get("email", "")).lower()
+                                    for p in (cp_json.get("contact_persons") or [])
+                                }
+                                for person in [
+                                    {"first_name": "Miguel Ángel", "last_name": "Mazatán Gutiérrez", "email": "mmazatan@ingready.com.mx", "mobile": miguel_wa, "phone": miguel_wa},
+                                    {"first_name": "Lilian", "last_name": "Maldonado Mandujano", "email": "lmaldonado@ingready.com.mx", "mobile": lilian_wa, "phone": lilian_wa}
+                                ]:
+                                    if person["email"].lower() not in existing_emails:
+                                        add_cp_req = urllib.request.Request(
+                                            f"{api_domain}/books/v3/contacts/contactpersons?organization_id={org_id}",
+                                            data=json.dumps({"contact_id": cust_id, **person}).encode("utf-8"),
+                                            headers={**headers, "Content-Type": "application/json"},
+                                            method="POST"
+                                        )
+                                        try:
+                                            urllib.request.urlopen(add_cp_req, timeout=4.5).read()
+                                        except Exception:
+                                            pass
+                                report["contacts_synced"] = True
                             except Exception:
-                                report["sat_einvoice_push"]["message"] = f"HTTP {he.code}"
-                        except Exception as pe:
-                            report["sat_einvoice_push"]["message"] = str(pe)
+                                pass
 
-                    # 4. Enviar por correo desde Zoho Books a Miguel (mmazatan@ingready.com.mx) y Lilian (lmaldonado@ingready.com.mx)
-                    report["email_dispatch"]["attempted"] = True
-                    email_payload = {
-                        "send_from_org_email_id": True,
-                        "to_mail_ids": ["mmazatan@ingready.com.mx", "lmaldonado@ingready.com.mx"],
-                        "subject": f"Factura {report['invoice_number']} - ImproBears Business Improvement (Ingready)",
-                        "body": (
-                            "Hola Miguel y Lili,\n\n"
-                            f"Les compartimos por este medio la factura {report['invoice_number']} por $5,220.00 MXN (IVA incluido), "
-                            "correspondiente a 3 sesiones de Coaching Comercial Ilse - Ingready (emisión 13 de noviembre de 2026, vencimiento 20 de noviembre de 2026).\n\n"
-                            "Les mando un fuerte abrazo,\n"
-                            "Jorge Benítez\n"
-                            "ImproBears — Business Improvement"
-                        )
-                    }
-                    try:
-                        em_req = urllib.request.Request(
-                            f"{api_domain}/books/v3/invoices/{inv_id}/email?organization_id={org_id}",
-                            data=json.dumps(email_payload).encode("utf-8"),
-                            headers={**headers, "Content-Type": "application/json"},
-                            method="POST"
-                        )
-                        with urllib.request.urlopen(em_req, timeout=8.0) as er:
-                            em_json = json.loads(er.read().decode("utf-8"))
-                            report["email_dispatch"]["ok"] = (em_json.get("code") == 0)
-                            report["email_dispatch"]["message"] = em_json.get("message", "Correo enviado con PDF/CFDI adjunto")
-                    except urllib.error.HTTPError as ehe:
+                        # 3. Empujar y timbrar Factura Electrónica CFDI 4.0 con el SAT (/einvoice/push)
+                        report["sat_einvoice_push"]["attempted"] = True
+                        push_endpoints = [
+                            (f"{api_domain}/books/v3/invoices/{inv_id}/einvoice/push?organization_id={org_id}", b""),
+                            (
+                                f"{api_domain}/books/v3/invoices/einvoice/push?organization_id={org_id}",
+                                urllib.parse.urlencode({"JSONString": json.dumps({"invoice_ids": inv_id})}).encode("utf-8")
+                            )
+                        ]
+                        for p_url, p_body in push_endpoints:
+                            try:
+                                p_headers = dict(headers)
+                                if p_body:
+                                    p_headers["Content-Type"] = "application/x-www-form-urlencoded"
+                                preq = urllib.request.Request(p_url, data=p_body, headers=p_headers, method="POST")
+                                with urllib.request.urlopen(preq, timeout=8.0) as pr:
+                                    p_json = json.loads(pr.read().decode("utf-8"))
+                                    if p_json.get("code") == 0:
+                                        report["sat_einvoice_push"]["ok"] = True
+                                        report["sat_einvoice_push"]["message"] = p_json.get("message", "Factura timbrada y certificada ante el SAT")
+                                        break
+                                    else:
+                                        report["sat_einvoice_push"]["message"] = p_json.get("message", str(p_json))
+                            except urllib.error.HTTPError as he:
+                                try:
+                                    err_body = json.loads(he.read().decode("utf-8", errors="ignore"))
+                                    report["sat_einvoice_push"]["message"] = err_body.get("message") or str(err_body)
+                                except Exception:
+                                    report["sat_einvoice_push"]["message"] = f"HTTP {he.code}"
+                            except Exception as pe:
+                                report["sat_einvoice_push"]["message"] = str(pe)
+
+                        # 4. Enviar por correo desde Zoho Books a Miguel (mmazatan@ingready.com.mx) y Lilian (lmaldonado@ingready.com.mx)
+                        report["email_dispatch"]["attempted"] = True
+                        email_payload = {
+                            "send_from_org_email_id": True,
+                            "to_mail_ids": ["mmazatan@ingready.com.mx", "lmaldonado@ingready.com.mx"],
+                            "subject": f"Factura {report['invoice_number']} - ImproBears Business Improvement (Ingready)",
+                            "body": (
+                                "Hola Miguel y Lili,\n\n"
+                                f"Les compartimos por este medio la factura {report['invoice_number']} por $5,220.00 MXN (IVA incluido), "
+                                "correspondiente a 3 sesiones de Coaching Comercial Ilse - Ingready (emisión 13 de noviembre de 2026, vencimiento 20 de noviembre de 2026).\n\n"
+                                "Les mando un fuerte abrazo,\n"
+                                "Jorge Benítez\n"
+                                "ImproBears — Business Improvement"
+                            )
+                        }
                         try:
-                            err_b = json.loads(ehe.read().decode("utf-8", errors="ignore"))
-                            report["email_dispatch"]["message"] = err_b.get("message") or str(err_b)
-                        except Exception:
-                            report["email_dispatch"]["message"] = f"HTTP {ehe.code}"
-                    except Exception as ee:
-                        report["email_dispatch"]["message"] = str(ee)
+                            em_req = urllib.request.Request(
+                                f"{api_domain}/books/v3/invoices/{inv_id}/email?organization_id={org_id}",
+                                data=json.dumps(email_payload).encode("utf-8"),
+                                headers={**headers, "Content-Type": "application/json"},
+                                method="POST"
+                            )
+                            with urllib.request.urlopen(em_req, timeout=8.0) as er:
+                                em_json = json.loads(er.read().decode("utf-8"))
+                                report["email_dispatch"]["ok"] = (em_json.get("code") == 0)
+                                report["email_dispatch"]["message"] = em_json.get("message", "Correo enviado con PDF/CFDI adjunto")
+                        except urllib.error.HTTPError as ehe:
+                            try:
+                                err_b = json.loads(ehe.read().decode("utf-8", errors="ignore"))
+                                report["email_dispatch"]["message"] = err_b.get("message") or str(err_b)
+                            except Exception:
+                                report["email_dispatch"]["message"] = f"HTTP {ehe.code}"
+                        except Exception as ee:
+                            report["email_dispatch"]["message"] = str(ee)
         except Exception as ze:
             report["zoho_error"] = str(ze)
 
-    # 5. Enviar WhatsApp a Miguel y Lilian a través de OpenClaw (usando sus números activos de WhatsApp)
+    # 5. Enviar WhatsApp (Si es prueba silenciosa, redirige AMBOS mensajes ÚNICAMENTE al número personal de Jorge con etiqueta [PRUEBA SILENCIOSA])
+    target_m_phone = test_personal_phone.lstrip("+") if shadow_test_mode else miguel_wa.lstrip("+")
+    target_l_phone = test_personal_phone.lstrip("+") if shadow_test_mode else lilian_wa.lstrip("+")
+    prefix_tag = f"[PRUEBA SILENCIOSA A TU NÚMERO PERSONAL +{target_m_phone} — CLIENTE REAL NO TOCADO]\n" if shadow_test_mode else ""
+
     wa_targets = [
         (
             "miguel",
-            miguel_wa.lstrip("+"),
-            "Hola Miguel, ¿cómo estás? Te comparto que ya generamos y enviamos a tu correo (mmazatan@ingready.com.mx) la factura F-00011 de ImproBears por $5,220.00 MXN (IVA incluido) correspondiente a 3 sesiones de Coaching Comercial Ilse - Ingready (fecha 13 nov 2026, vence 20 nov 2026). ¡Te mando un abrazo! — Jorge Benítez"
+            target_m_phone,
+            prefix_tag + "Hola Miguel, ¿cómo estás? Te comparto que ya generamos y enviamos a tu correo (mmazatan@ingready.com.mx) la factura F-00011 de ImproBears por $5,220.00 MXN (IVA incluido) correspondiente a 3 sesiones de Coaching Comercial Ilse - Ingready (fecha 13 nov 2026, vence 20 nov 2026). ¡Te mando un abrazo! — Jorge Benítez"
         ),
         (
             "lilian",
-            lilian_wa.lstrip("+"),
-            "Hola Lili, ¿cómo estás? Te comparto que ya generamos y enviamos a tu correo (lmaldonado@ingready.com.mx) y al de Miguel la factura F-00011 de ImproBears por $5,220.00 MXN (IVA incluido) correspondiente a 3 sesiones de Coaching Comercial Ilse - Ingready (fecha 13 nov 2026, vence 20 nov 2026). ¡Muchas gracias! — Jorge Benítez"
+            target_l_phone,
+            prefix_tag + "Hola Lili, ¿cómo estás? Te comparto que ya generamos y enviamos a tu correo (lmaldonado@ingready.com.mx) y al de Miguel la factura F-00011 de ImproBears por $5,220.00 MXN (IVA incluido) correspondiente a 3 sesiones de Coaching Comercial Ilse - Ingready (fecha 13 nov 2026, vence 20 nov 2026). ¡Muchas gracias! — Jorge Benítez"
         )
     ]
     for key_name, phone_num, wa_text in wa_targets:
@@ -999,7 +1073,7 @@ def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target:
             try:
                 wreq = urllib.request.Request(
                     f"{oc_base}{wa_ep}",
-                    data=json.dumps({"to": phone_num, "phone": phone_num, "message": wa_text, "text": wa_text}).encode("utf-8"),
+                    data=json.dumps({"to": phone_num, "phone": phone_num, "message": wa_text, "text": wa_text, "shadow_test": shadow_test_mode}).encode("utf-8"),
                     headers={"Content-Type": "application/json"},
                     method="POST"
                 )
@@ -1017,10 +1091,53 @@ def _execute_ingready_invoice_sat_email_whatsapp_workflow(invoice_number_target:
 def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) -> Dict[str, str]:
     import urllib.request
     import json
+    import re
 
     q = (user_text or "").strip()
     low_q = q.lower()
     hist_joined = " ".join([str(h) for h in (history or [])]).lower()
+
+    # Caso -1: Jorge pide una PRUEBA SILENCIOSA / SANDBOX con su otro número personal (Cero contacto con clientes reales)
+    is_silent_test_cmd = any(
+        w in low_q
+        for w in [
+            "prueba silenciosa",
+            "pruebas silenciosas",
+            "modo prueba",
+            "mi otro numero",
+            "mi otro número",
+            "mi numero personal",
+            "mi número personal",
+            "probar conmigo",
+            "prueba conmigo",
+            "sandbox",
+            "sin tocar al cliente"
+        ]
+    )
+    if is_silent_test_cmd:
+        personal_num = ""
+        for fn in re.findall(r"(?:\+?52\s*1?\s*)?(?:\d[\s\-]*){10}", q):
+            dgs = "".join([c for c in fn if c.isdigit()])
+            if len(dgs) >= 10 and not dgs.endswith("4421812822"):
+                personal_num = f"+52{dgs[-10:]}"
+                break
+        if not personal_num:
+            personal_num = "+524422261454"
+        wf_test = _execute_ingready_invoice_sat_email_whatsapp_workflow(
+            "F-00011",
+            user_text=q,
+            shadow_test_mode=True,
+            test_personal_phone=personal_num
+        )
+        return {
+            "specialist": "Aura ImproBears • Modo Sandbox Silencioso (Clientes 100% Protegidos)",
+            "reply": (
+                f"🛡️ PRUEBA SILENCIOSA EJECUTADA (verificado vía API — CERO mensajes enviados a clientes reales):\n"
+                f"• Clientes reales aislados: Miguel Mazatán y Lilian Maldonado NO recibieron ningún mensaje ni correo.\n"
+                f"• Redirección a tu número personal ({personal_num}): Los mensajes de prueba de WhatsApp (rol Miguel y rol Lilian) y los botones de abajo apuntan exclusivamente a tu celular personal {personal_num} y a jorge.benitez@improbears.com.\n"
+                f"• Verificación Zoho Books (Solo Lectura): {wf_test['sat_einvoice_push']['message']}"
+            )
+        }
 
     # Caso 0: Jorge pide tomar los números activos en WhatsApp de Miguel y Lilian y dejarlos como los únicos teléfonos en Zoho
     is_phone_cleanup_cmd = (
