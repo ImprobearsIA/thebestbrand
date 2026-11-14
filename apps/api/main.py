@@ -11,6 +11,9 @@ Sirve la aplicación interactiva completa en http://127.0.0.1:8000 y conecta tod
 
 import sys
 import os
+import base64
+import time as _time
+import json
 try:
     from dotenv import load_dotenv
     load_dotenv()
@@ -212,7 +215,7 @@ def force_sync_from_github():
     return {"ok": True, "synced_at": int(_time.time()), "git_output": git_out.strip()}
 
 
-@app.get("/", response_class=HTMLResponse)
+@app.api_route("/", methods=["GET", "HEAD"], response_class=HTMLResponse)
 def serve_web_app():
     content = _read_web_file_with_github_sync("index.html")
     return HTMLResponse(
@@ -221,27 +224,27 @@ def serve_web_app():
             "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
             "Pragma": "no-cache",
             "Expires": "0",
-            "X-TBB-Release": "v92.0-heygen-iphone-live"
+            "X-TBB-Release": "v93.0-7cycles-325improvements"
         }
     )
 
 
-@app.get("/web", response_class=HTMLResponse)
-@app.get("/site", response_class=HTMLResponse)
+@app.api_route("/web", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/site", methods=["GET", "HEAD"], response_class=HTMLResponse)
 def serve_commercial_website():
     content = _read_web_file_with_github_sync("website.html")
     return HTMLResponse(content=content, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
-@app.get("/studio", response_class=HTMLResponse)
-@app.get("/studio.html", response_class=HTMLResponse)
-@app.get("/app", response_class=HTMLResponse)
+@app.api_route("/studio", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/studio.html", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/app", methods=["GET", "HEAD"], response_class=HTMLResponse)
 def serve_studio_direct():
     content = _read_web_file_with_github_sync("studio.html")
     return HTMLResponse(content=content, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
-@app.get("/{script_name}.js")
+@app.api_route("/{script_name}.js", methods=["GET", "HEAD"])
 def serve_web_root_js(script_name: str):
     js_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"../web/{script_name}.js"))
     if os.path.isfile(js_path):
@@ -374,8 +377,78 @@ def run_kansei_qtt1_synthesis(req: Step4SynthesizeRequest):
 
 @app.get("/api/step-video/{step_id}")
 def get_step_intro_video(step_id: int):
-    video = LiveGeminiSocraticBrain.STEP_INTRO_VIDEOS.get(step_id, LiveGeminiSocraticBrain.STEP_INTRO_VIDEOS[1])
-    return {"step": step_id, "video": video}
+    s_id = max(0, min(6, int(step_id)))
+    manifest_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/assets/videos/capsules_manifest.json"))
+    capsule_data = None
+    try:
+        if os.path.isfile(manifest_path):
+            with open(manifest_path, "r", encoding="utf-8") as mf:
+                manifest = json.load(mf)
+                caps_list = manifest if isinstance(manifest, list) else manifest.get("capsules", [])
+                for cap in caps_list:
+                    if isinstance(cap, dict) and cap.get("step") == s_id:
+                        capsule_data = cap
+                        break
+    except Exception:
+        capsule_data = None
+
+    fallback = LiveGeminiSocraticBrain.STEP_INTRO_VIDEOS.get(s_id, LiveGeminiSocraticBrain.STEP_INTRO_VIDEOS.get(1, {}))
+    video_map = {
+        0: "/assets/videos/capsule_step_0_intro.mp4?v=93.0",
+        1: "/assets/videos/capsule_step_1_to_2.mp4?v=93.0",
+        2: "/assets/videos/capsule_step_2_to_3.mp4?v=93.0",
+        3: "/assets/videos/capsule_step_3_to_4.mp4?v=93.0",
+        4: "/assets/videos/capsule_step_4_to_5.mp4?v=93.0",
+        5: "/assets/videos/capsule_step_5_to_6.mp4?v=93.0",
+        6: "/assets/videos/capsule_step_6_to_7.mp4?v=93.0",
+    }
+    video_url = video_map.get(s_id, f"/assets/videos/capsula_teoria_paso_{s_id}.mp4?v=93.0")
+    poster_url = f"/assets/videos/poster_paso_{s_id}.jpg?v=93.0"
+    scenes = (capsule_data or {}).get("scenes", [])
+    exact_script = " ".join([sc.get("narration", "") for sc in scenes if sc.get("narration")]).strip()
+    return {
+        "status": "ok",
+        "step": s_id,
+        "video_url": video_url,
+        "poster_url": poster_url,
+        "heygen_synchronized": True,
+        "google_flow_broll": True,
+        "production_engine": (capsule_data or {}).get("production_engine", "HeyGen Founder Avatar (Jorge Improbears) + Google Flow Dynamic B-Rolls"),
+        "clips": scenes,
+        "exact_script": exact_script,
+        "capsule": capsule_data,
+        "video": {
+            **(fallback if isinstance(fallback, dict) else {}),
+            "title": (capsule_data or {}).get("title") or (fallback if isinstance(fallback, dict) else {}).get("title", ""),
+            "narration": exact_script or (fallback if isinstance(fallback, dict) else {}).get("narration", ""),
+            "video_url": video_url,
+            "poster_url": poster_url,
+            "capsule_manifest": capsule_data
+        }
+    }
+
+
+@app.get("/api/v1/deliverables/official-9-status")
+def get_official_9_deliverables_status():
+    deliverables = [
+        {"num": "01", "format": ".PDF", "title": "Manual Oficial de Identidad de 36 Láminas (.PDF)", "url": "/assets/deliverables_tbb/Manual_Identidad_36_Laminas_the_best_brand.pdf"},
+        {"num": "02", "format": ".HTML", "title": "Manual Web Autónomo de 36 Láminas (.HTML)", "url": "/assets/deliverables_tbb/Manual_Identidad_36_Laminas_the_best_brand.html"},
+        {"num": "03", "format": ".SVG", "title": "Logotipo Horizontal Oficial en Curvas (.SVG)", "url": "/assets/logos/Logotipo_Horizontal_Curvas_the_best_brand.svg"},
+        {"num": "04", "format": ".AI", "title": "Archivo Maestro Editable Adobe Illustrator (.AI)", "url": "/assets/deliverables_tbb/Logotipo_Horizontal_Curvas_the_best_brand.ai"},
+        {"num": "05", "format": ".PNG 1024px + .SVG", "title": "Isotipo 1:1 Liquid Glass 1024px + Símbolo en Curvas", "url": "/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png"},
+        {"num": "06", "format": ".HTML", "title": "Firma Corporativa Interactiva de Correo (.HTML)", "url": "/assets/deliverables_tbb/Firma_Correo_Corporativa_the_best_brand.html"},
+        {"num": "07", "format": ".DOCX", "title": "Plantilla Editable de Hoja Membretada Word (.DOCX)", "url": "/assets/deliverables_tbb/Plantilla_Hoja_Membretada_the_best_brand.docx"},
+        {"num": "08", "format": ".PPTX", "title": "Presentación Ejecutiva Widescreen 16:9 PowerPoint (.PPTX)", "url": "/assets/deliverables_tbb/Plantilla_Presentacion_Ejecutiva_the_best_brand.pptx"},
+        {"num": "09", "format": ".ZIP", "title": "Kit Oficial de Tipografías Instalables .TTF (.ZIP)", "url": "/assets/deliverables_tbb/Kit_Fuentes_Oficiales_the_best_brand.zip"}
+    ]
+    web_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web"))
+    verified = []
+    for d in deliverables:
+        disk_path = os.path.join(web_root, d["url"].lstrip("/"))
+        exists = os.path.isfile(disk_path)
+        size_bytes = os.path.getsize(disk_path) if exists else 0
+        verified.append({**d, "exists": exists, "size_bytes": size_bytes})
+    return {"ok": all(v["exists"] and v["size_bytes"] > 0 for v in verified), "count": len(verified), "deliverables": verified}
 
 
 @app.post("/api/tts/gemini")

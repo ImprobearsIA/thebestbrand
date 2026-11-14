@@ -73,7 +73,7 @@ def main():
     plate1_path = PLATES_DIR / "plate-01.jpg"
     plate1 = Image.open(plate1_path).convert("RGBA") if plate1_path.exists() else None
 
-    cx, cy = W // 2, H // 2 + 18
+    cx, cy = W // 2, 338
 
     print(f"Generando {TOTAL_FRAMES} cuadros HD (1280x720) del Video Hero de Convergencia Teórica...")
     for fidx in range(TOTAL_FRAMES):
@@ -88,7 +88,7 @@ def main():
             draw.line([(0, gy), (W, gy)], fill=(226, 232, 240, 110), width=1)
 
         # Círculos concéntricos del Círculo Dorado en el centro
-        for r_idx, rad in enumerate([270, 200, 130]):
+        for r_idx, rad in enumerate([245, 180, 118]):
             pulse = math.sin(t * 2.2 + r_idx) * 4
             col = (203, 213, 225, 160) if r_idx < 2 else (147, 197, 253, 210)
             draw.ellipse([cx - rad - pulse, cy - rad - pulse, cx + rad + pulse, cy + rad + pulse], outline=col, width=2)
@@ -106,12 +106,12 @@ def main():
 
         # Dibujar los 6 nodos teóricos
         if conv_p < 0.99:
-            base_rx = 420 * (1.0 - conv_p * 0.88)
-            base_ry = 225 * (1.0 - conv_p * 0.88)
+            base_rx = 415 * (1.0 - conv_p * 0.88)
+            base_ry = 185 * (1.0 - conv_p * 0.88)
             node_alpha = int(255 * (1.0 - max(0.0, (conv_p - 0.72) / 0.28)))
 
             for i, (t_code, t_author, t_rgb, t_pill) in enumerate(THEORIES):
-                angle = (i / 6.0) * math.pi * 2 - math.pi / 2 + t * 0.32 + conv_p * 1.8
+                angle = (i / 6.0) * math.pi * 2 - math.pi / 3 + t * 0.28 + conv_p * 1.8
                 nx = int(cx + math.cos(angle) * base_rx)
                 ny = int(cy + math.sin(angle) * base_ry)
 
@@ -149,13 +149,13 @@ def main():
         # Fase 3: Despliegue de la Aplicación Real (Izquierda) + Manual de 36 Láminas (Derecha) + Logo Central
         if reveal_p > 0.01:
             alpha_rev = int(255 * reveal_p)
-            slide_offset = int((1.0 - reveal_p) * 90)
+            slide_offset = int((1.0 - reveal_p) * 60)
 
-            # Tarjeta izquierda: La Aplicación Real (Pasos 0 al 6 con Aura)
+            # Tarjeta izquierda: La Aplicación Real (Pasos 0 al 6 con Aura) — sin traslape con el logo central
             if app_cap is not None:
-                card_w, card_h = 400, 255
-                lx = cx - 490 - slide_offset // 2
-                ly = cy - card_h // 2 - 10
+                card_w, card_h = 375, 240
+                lx = 55 - slide_offset // 2
+                ly = cy - card_h // 2 - 14
                 draw.rounded_rectangle(
                     [lx - 6, ly - 34, lx + card_w + 6, ly + card_h + 6],
                     radius=18,
@@ -169,11 +169,11 @@ def main():
                     cap_resized.putalpha(alpha_rev)
                 img.alpha_composite(cap_resized, (lx, ly))
 
-            # Tarjeta derecha: Manual de 36 Láminas + 9 Entregables
+            # Tarjeta derecha: Manual de 36 Láminas + 9 Entregables — sin traslape con el logo central
             if plate1 is not None:
-                card_w, card_h = 400, 255
-                rx = cx + 90 + slide_offset // 2
-                ry = cy - card_h // 2 - 10
+                card_w, card_h = 375, 240
+                rx = 850 + slide_offset // 2
+                ry = cy - card_h // 2 - 14
                 draw.rounded_rectangle(
                     [rx - 6, ry - 34, rx + card_w + 6, ry + card_h + 6],
                     radius=18,
@@ -189,7 +189,7 @@ def main():
 
         # Símbolo oficial Apple Liquid Glass en el centro
         if logo_img is not None:
-            logo_sz = int(116 + conv_p * 42)
+            logo_sz = int(116 + conv_p * 38)
             l_resized = logo_img.resize((logo_sz, logo_sz), Image.Resampling.LANCZOS)
             # Máscara circular limpia
             mask = Image.new("L", (logo_sz, logo_sz), 0)
@@ -228,9 +228,13 @@ def main():
         "ffmpeg", "-y",
         "-framerate", str(FPS),
         "-i", str(TMP_DIR / "frame_%04d.jpg"),
-        "-c:v", "libx264", "-preset", "veryfast", "-crf", "21",
+        "-f", "lavfi",
+        "-i", "aevalsrc='0.03*sin(2*PI*220*t)+0.02*sin(2*PI*330*t)+0.015*sin(2*PI*440*t)':s=44100:c=stereo:d=12",
+        "-c:v", "libx264", "-preset", "veryfast", "-crf", "20",
+        "-c:a", "aac", "-b:a", "128k",
         "-pix_fmt", "yuv420p",
         "-movflags", "+faststart",
+        "-shortest",
         str(out_mp4)
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 

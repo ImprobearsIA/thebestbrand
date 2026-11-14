@@ -319,6 +319,10 @@
       window.tbbState.plateIdx = 0;
     }
 
+    if (typeof window.tbbSyncImproBearsLogoDarkVariant === "function") {
+      window.tbbSyncImproBearsLogoDarkVariant();
+    }
+
     if (typeof saveBrandSessionToLocalStorage === "function") {
       saveBrandSessionToLocalStorage();
     }
@@ -332,12 +336,35 @@
     }
   };
 
+  // Directiva Max C-00 Regla 1: Intercambiar automáticamente entre logo positivo y versión -negativo.png calada según soporte claro/oscuro
+  window.tbbSyncImproBearsLogoDarkVariant = function () {
+    const st = window.tbbState;
+    if (!st || !Array.isArray(st.logoIterations)) return;
+    const isDark = Boolean(st.logoDarkBg);
+    st.logoIterations.forEach((it) => {
+      if (!it || typeof it.geminiCustomSvg !== "string") return;
+      if (it.geminiCustomSvg.includes("/assets/improbears/logo-improbears-")) {
+        if (isDark) {
+          it.geminiCustomSvg = it.geminiCustomSvg.replace(/\/assets\/improbears\/(logo-improbears-[a-z]+)(?:-negativo)?\.png/g, "/assets/improbears/$1-negativo.png");
+        } else {
+          it.geminiCustomSvg = it.geminiCustomSvg.replace(/\/assets\/improbears\/(logo-improbears-[a-z]+)-negativo\.png/g, "/assets/improbears/$1.png");
+        }
+        it.darkBg = isDark;
+      }
+    });
+  };
+
   setTimeout(() => {
     try {
       const params = new URLSearchParams(window.location.search);
       if (/improbears/i.test(params.get("brand") || "")) {
-        window.loadImproBearsMasterArchitecturePreset(true);
+        const stepP = parseInt(params.get("step") || "6", 10);
+        window.loadImproBearsMasterArchitecturePreset(isNaN(stepP) || stepP === 6);
+        if (!isNaN(stepP) && stepP !== 6 && typeof window.tbbJumpToStep === "function") {
+          window.tbbJumpToStep(stepP, 1);
+        }
       }
     } catch (e) {}
   }, 250);
 })();
+

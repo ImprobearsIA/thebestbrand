@@ -28,6 +28,27 @@
   // ---------------------------------------------------------------------------
   const I18N = {
     es: {
+      bento9Kicker: "SUITE EJECUTIVA COMPLETA · LOS 9 ENTREGABLES OFICIALES",
+      carouselPrev: "← Anterior",
+      carouselNext: "Siguiente →",
+      gcLiveKicker: "VISTA PREVIA EN VIVO DEL CÍRCULO DORADO DE TU MARCA",
+      iphoneSectionKicker: "APLICACIÓN REAL EN VIVO · CONECTADA CON AURA",
+      iphoneStep0Free: "Paso 0 · Giro (Gratis)",
+      iphoneStep1Free: "Paso 1 · Círculo Dorado (Gratis)",
+      iphoneStep2Free: "Paso 2 · Touchpoints (Gratis)",
+      iphoneStep3Free: "Paso 3 · Naming SMILE (Gratis)",
+      iphoneStep4Unlock: "🔒 Paso 4 · Desbloquear ($49 USD)",
+      iphoneVideoBtn: "▶ Video HeyGen del Paso",
+      nanoAfterLabel: "DESPUÉS · EVOLUCIÓN NANO BANANA PRO 4K + TRAZADO VECTORIAL EN CURVAS (.SVG / .AI)",
+      nanoBeforeLabel: "ANTES · LOGOTIPO SUBIDO POR EL CLIENTE (PASO 0.2)",
+      nanoKicker: "MOTOR VISUAL NANO BANANA PRO 4K + VECTORES BÉZIER PUROS",
+      plates36Kicker: "MANUAL OFICIAL DE IDENTIDAD · LAS 36 LÁMINAS EN CURVAS (16:9)",
+      syncFreeBadge: "✓ Acceso Libre",
+      syncLiveConnected: "● AURA EN VIVO CONECTADA",
+      syncUnlockBtn: "Desbloquear · $49 USD",
+      videoPopupContinue: "Continuar explorando",
+      videoPopupScriptLabel: "GUION EXACTO HABLADO (SINCRONIZADO EN HEYGEN):",
+      ytWatchHere: "▶ Reproducir Conferencia Aquí",
       menu1: "Inicio",
       menu2: "Demo",
       menu2Live: "EN VIVO",
@@ -101,9 +122,74 @@
       planSingleDesc: "1 Marca Completa · 36 Láminas + 9 Entregables",
       planAgencyName: "Licencia Atelier Multi-Marca",
       planAgencyDesc: "Marcas Ilimitadas · Para Agencias y Grupos",
-      payNowBtn: "Autorizar Pago Seguro y Activar Licencia"
+      payNowBtn: "Autorizar Pago Seguro y Activar Licencia",
+      heroTheoriesCopy: "Respaldado científicamente por las teorías de Simon Sinek (Círculo Dorado), Jan Carlzon (Momentos de la Verdad), Al Ries, Jack Trout y Alexandra Watkins (Posicionamiento y SMILE), Mitsuo Nagamachi (Ingeniería Kansei), Paul Rand y Jony Ive (Geometría Vectorial Liquid Glass) y Massimo Vignelli (Canon de 36 Láminas).",
+      heroBtnTryIphone: "Usa nuestra demo con el paso 0, 1 y 2",
+      heroBtnIntroVideo: "▶ Ver Video Introductorio del Fundador (HeyGen)",
+      iphoneSectionEyebrow: "APLICACIÓN REAL EN VIVO · CONECTADA AL MOTOR DE AURA",
+      iphoneSectionTitle: "Interactúa aquí mismo con la aplicación real: avanza sin costo en los primeros 3 pasos",
+      iphoneSectionDesc: "Escribe o habla con Aura dentro del iPhone. Completa gratis hasta el Paso 3 (Naming y Clases de Niza); al pasar al Paso 4 se activa el desbloqueo de $49 USD y tus respuestas se migran automáticamente a tu nueva cuenta.",
+      iphoneStep0Btn: "Paso 0 · Giro (Gratis)",
+      iphoneStep1Btn: "Paso 1 · Círculo Dorado (Gratis)",
+      iphoneStep2Btn: "Paso 2 · Touchpoints (Gratis)",
+      iphoneStep3Btn: "Paso 3 · Naming SMILE (Gratis)",
+      iphoneStep4BtnLocked: "🔒 Paso 4 · Desbloquear ($49 USD)",
+      iphoneStep4BtnUnlocked: "Paso 4 · Kansei ✓",
+      iphoneVideoStepBtn: "▶ Video HeyGen del Paso",
+      syncBadgeTitle: "SINCRONIZACIÓN Y RETENCIÓN AUTOMÁTICA DE PROGRESO",
+      syncLiveStatus: "● AURA CONECTADA EN VIVO",
+      syncCardHeading: "Tu avance en los Pasos 1 al 3 se guarda en tiempo real",
+      syncRow1: "Paso 0 y Paso 1 · Giro + Círculo Dorado (Simon Sinek)",
+      syncRow2: "Paso 2 · Touchpoints Antes, Durante y Después (Carlzon)",
+      syncRow3: "Paso 3 · Naming SMILE y Clases de Niza (Watkins)",
+      syncRow4: "Paso 4 al 6 · Kansei, Logotipo Nano Banana Pro y 9 Entregables",
+      freeAccessLabel: "✓ Acceso Libre",
+      unlock49Label: "Desbloquear · $49 USD",
+      presetsLabel: "Cargar Caso de Éxito Real:",
+      gcLiveHeading: "VISTA EN VIVO DEL CÍRCULO DORADO DE TU MARCA",
+      nanoEyebrow: "MOTOR VISUAL NANO BANANA PRO 4K + VECTORES MATEMÁTICOS BÉZIER",
+      nanoTitle: "De un boceto o logo antiguo a un símbolo Apple Liquid Glass y curvas .SVG / .AI",
+      nanoDesc: "En el Paso 5 iteras tu logotipo con el modelo más avanzado de Nano Banana Pro y nuestro trazador matemático en curvas Bézier puras sobre lienzo claro (#FFFFFF) y oscuro (#090D16).",
+      plates36Eyebrow: "MANUAL OFICIAL DE IDENTIDAD · LAS 36 LÁMINAS EN CURVAS (16:9)",
+      plates36Title: "Explora las 36 Láminas reales que el sistema compila para tu empresa",
+      plates36Desc: "Haz clic en cualquier lámina para inspeccionarla a máxima resolución en pantalla casi completa y navegar de la Lámina 01 a la 36.",
+      bento9Eyebrow: "SUITE EJECUTIVA COMPLETA · LOS 9 ENTREGABLES OFICIALES",
+      bento9Title: "Todo lo que descargas al finalizar tus 7 pasos en 30 minutos",
+      bento9Desc: "Haz clic en cualquier entregable para verlo en pantalla casi completa o ir al Pack de Descargas.",
+      lightboxKicker: "VISTA A MÁXIMA RESOLUCIÓN · PANTALLA CASI COMPLETA",
+      lightboxPrev: "← Lámina",
+      lightboxNext: "Lámina →",
+      lightboxClose: "✕ Cerrar",
+      videoCapsuleBadge: "CÁPSULA HEYGEN + GOOGLE FLOW",
+      videoScriptHeading: "GUION HABLADO EXACTO (SINCRONIZADO EN HEYGEN):",
+      videoContinueBtn: "Continuar explorando",
+      tourAmplifyBtn: "⤢ Ampliar captura",
+      tourQuickJumpLabel: "Saltar al paso:",
+      footerHeadlineSub: "EDICIÓN OFICIAL 1.0 · SUITE THE BEST",
+      footerDesc: "Plataforma para crear la identidad visual, los 9 entregables oficiales y el Manual de Marca de 36 Láminas en Curvas de tu empresa con inteligencia artificial y guía por voz de Aura en 6 idiomas."
     },
     en: {
+      bento9Kicker: "COMPLETE EXECUTIVE SUITE · ALL 9 OFFICIAL DELIVERABLES",
+      carouselPrev: "← Previous",
+      carouselNext: "Next →",
+      gcLiveKicker: "LIVE PREVIEW OF YOUR BRAND GOLDEN CIRCLE",
+      iphoneSectionKicker: "REAL LIVE APPLICATION · CONNECTED WITH AURA",
+      iphoneStep0Free: "Step 0 · Sector (Free)",
+      iphoneStep1Free: "Step 1 · Golden Circle (Free)",
+      iphoneStep2Free: "Step 2 · Touchpoints (Free)",
+      iphoneStep3Free: "Step 3 · SMILE Naming (Free)",
+      iphoneStep4Unlock: "🔒 Step 4 · Unlock ($49 USD)",
+      iphoneVideoBtn: "▶ HeyGen Step Video",
+      nanoAfterLabel: "AFTER · NANO BANANA PRO 4K EVOLUTION + VECTOR CURVES (.SVG / .AI)",
+      nanoBeforeLabel: "BEFORE · ORIGINAL CLIENT LOGO UPLOADED (STEP 0.2)",
+      nanoKicker: "NANO BANANA PRO 4K VISUAL ENGINE + PURE BÉZIER VECTORS",
+      plates36Kicker: "OFFICIAL IDENTITY MANUAL · ALL 36 VECTOR PLATES (16:9)",
+      syncFreeBadge: "✓ Free Access",
+      syncLiveConnected: "● AURA LIVE CONNECTED",
+      syncUnlockBtn: "Unlock · $49 USD",
+      videoPopupContinue: "Continue exploring",
+      videoPopupScriptLabel: "EXACT SPOKEN SCRIPT (SYNCHRONIZED IN HEYGEN):",
+      ytWatchHere: "▶ Watch Keynote Here",
       menu1: "Home",
       menu2: "Demo",
       menu2Live: "LIVE",
@@ -177,9 +263,74 @@
       planSingleDesc: "1 Full Brand · 36 Plates + 9 Deliverables",
       planAgencyName: "Multi-Brand Atelier License",
       planAgencyDesc: "Unlimited Brands · For Agencies & Groups",
-      payNowBtn: "Authorize Secure Payment & Activate License"
+      payNowBtn: "Authorize Secure Payment & Activate License",
+      heroTheoriesCopy: "Scientifically backed by the theories of Simon Sinek (Golden Circle), Jan Carlzon (Moments of Truth), Al Ries, Jack Trout & Alexandra Watkins (Positioning & SMILE), Mitsuo Nagamachi (Kansei Engineering), Paul Rand & Jony Ive (Liquid Glass Vector Geometry), and Massimo Vignelli (36-Plate Canon).",
+      heroBtnTryIphone: "Use our live demo with Step 0, 1 & 2",
+      heroBtnIntroVideo: "▶ Watch Founder Intro Video (HeyGen)",
+      iphoneSectionEyebrow: "LIVE REAL APPLICATION · CONNECTED TO AURA ENGINE",
+      iphoneSectionTitle: "Interact right here with the real app: advance free through the first 3 steps",
+      iphoneSectionDesc: "Type or speak with Aura inside the iPhone. Complete up to Step 3 (Naming & Nice Classes) for free; advancing to Step 4 activates the $49 USD unlock and migrates your answers to your new account.",
+      iphoneStep0Btn: "Step 0 · Sector (Free)",
+      iphoneStep1Btn: "Step 1 · Golden Circle (Free)",
+      iphoneStep2Btn: "Step 2 · Touchpoints (Free)",
+      iphoneStep3Btn: "Step 3 · SMILE Naming (Free)",
+      iphoneStep4BtnLocked: "🔒 Step 4 · Unlock ($49 USD)",
+      iphoneStep4BtnUnlocked: "Step 4 · Kansei ✓",
+      iphoneVideoStepBtn: "▶ HeyGen Step Video",
+      syncBadgeTitle: "REAL-TIME PROGRESS RETENTION & MIGRATION",
+      syncLiveStatus: "● AURA CONNECTED LIVE",
+      syncCardHeading: "Your progress across Steps 1 to 3 is saved in real time",
+      syncRow1: "Step 0 & Step 1 · Sector + Golden Circle (Simon Sinek)",
+      syncRow2: "Step 2 · Before, During & After Touchpoints (Carlzon)",
+      syncRow3: "Step 3 · SMILE Naming & Nice Classes (Watkins)",
+      syncRow4: "Steps 4 to 6 · Kansei, Nano Banana Pro Logo & 9 Deliverables",
+      freeAccessLabel: "✓ Free Access",
+      unlock49Label: "Unlock · $49 USD",
+      presetsLabel: "Load Real Case Study:",
+      gcLiveHeading: "LIVE GOLDEN CIRCLE PREVIEW OF YOUR BRAND",
+      nanoEyebrow: "NANO BANANA PRO 4K ENGINE + PURE BÉZIER VECTORS",
+      nanoTitle: "From an initial sketch or legacy logo to an Apple Liquid Glass emblem & .SVG / .AI curves",
+      nanoDesc: "In Step 5 you iterate your logo with the most advanced Nano Banana Pro model and our mathematical Bézier vector tracer on light (#FFFFFF) and dark (#090D16) canvases.",
+      plates36Eyebrow: "OFFICIAL BRAND IDENTITY MANUAL · ALL 36 PLATES IN CURVES (16:9)",
+      plates36Title: "Explore all 36 real Brandbook Plates compiled for your company",
+      plates36Desc: "Click any plate to inspect it at maximum resolution in near-fullscreen and navigate from Plate 01 to 36.",
+      bento9Eyebrow: "COMPLETE EXECUTIVE SUITE · THE 9 OFFICIAL DELIVERABLES",
+      bento9Title: "Everything you download upon completing your 7 steps in 30 minutes",
+      bento9Desc: "Click any deliverable to inspect it in near-fullscreen or jump to the Download Pack.",
+      lightboxKicker: "MAXIMUM RESOLUTION · NEAR-FULLSCREEN VIEWER",
+      lightboxPrev: "← Plate",
+      lightboxNext: "Plate →",
+      lightboxClose: "✕ Close",
+      videoCapsuleBadge: "HEYGEN + GOOGLE FLOW CAPSULE",
+      videoScriptHeading: "EXACT SPOKEN SCRIPT (SYNCHRONIZED IN HEYGEN):",
+      videoContinueBtn: "Continue exploring",
+      tourAmplifyBtn: "⤢ Expand screenshot",
+      tourQuickJumpLabel: "Jump to step:",
+      footerHeadlineSub: "OFFICIAL EDITION 1.0 · THE BEST SUITE",
+      footerDesc: "Platform to create your brand identity, 9 official deliverables, and 36-Plate Vector Brandbook with AI and live voice guidance from Aura in 6 languages."
     },
     fr: {
+      bento9Kicker: "SUITE EXÉCUTIVE COMPLÈTE · LES 9 LIVRABLES OFFICIELS",
+      carouselPrev: "← Précédent",
+      carouselNext: "Suivant →",
+      gcLiveKicker: "APERÇU EN DIRECT DU CERCLE D'OR DE VOTRE MARQUE",
+      iphoneSectionKicker: "APPLICATION RÉELLE EN DIRECT · CONNECTÉE À AURA",
+      iphoneStep0Free: "Étape 0 · Secteur (Gratuit)",
+      iphoneStep1Free: "Étape 1 · Cercle d'Or (Gratuit)",
+      iphoneStep2Free: "Étape 2 · Touchpoints (Gratuit)",
+      iphoneStep3Free: "Étape 3 · Naming SMILE (Gratuit)",
+      iphoneStep4Unlock: "🔒 Étape 4 · Débloquer (49 $ USD)",
+      iphoneVideoBtn: "▶ Vidéo HeyGen de l'Étape",
+      nanoAfterLabel: "APRÈS · ÉVOLUTION NANO BANANA PRO 4K + COURBES VECTORIELLES (.SVG / .AI)",
+      nanoBeforeLabel: "AVANT · LOGO CLIENT TÉLÉVERSÉ (ÉTAPE 0.2)",
+      nanoKicker: "MOTEUR VISUEL NANO BANANA PRO 4K + VECTEURS DE BÉZIER PURS",
+      plates36Kicker: "MANUEL OFFICIEL D'IDENTITÉ · LES 36 PLANCHES EN COURBES (16:9)",
+      syncFreeBadge: "✓ Accès Libre",
+      syncLiveConnected: "● AURA CONNECTÉE EN DIRECT",
+      syncUnlockBtn: "Débloquer · 49 $ USD",
+      videoPopupContinue: "Continuer l'exploration",
+      videoPopupScriptLabel: "SCRIPT PARLÉ EXACT (SYNCHRONISÉ DANS HEYGEN) :",
+      ytWatchHere: "▶ Regarder la Conférence Ici",
       menu1: "Accueil",
       menu2: "Démo",
       menu2Live: "EN DIRECT",
@@ -253,9 +404,74 @@
       planSingleDesc: "1 Marque Complète · 36 Planches + 9 Livrables",
       planAgencyName: "Licence Atelier Multi-Marques",
       planAgencyDesc: "Marques Illimitées · Pour Agences & Groupes",
-      payNowBtn: "Autoriser le Paiement Sécurisé et Activer"
+      payNowBtn: "Autoriser le Paiement Sécurisé et Activer",
+      heroTheoriesCopy: "Fondé scientifiquement sur les théories de Simon Sinek (Cercle d'Or), Jan Carlzon (Moments de Vérité), Al Ries, Jack Trout & Alexandra Watkins (Positionnement & SMILE), Mitsuo Nagamachi (Ingénierie Kansei), Paul Rand & Jony Ive (Géométrie Vectorielle Liquid Glass) et Massimo Vignelli (Canon de 36 Planches).",
+      heroBtnTryIphone: "Utiliser notre démo avec les étapes 0, 1 et 2",
+      heroBtnIntroVideo: "▶ Voir la Vidéo d'Introduction du Fondateur (HeyGen)",
+      iphoneSectionEyebrow: "APPLICATION RÉELLE EN DIRECT · CONNECTÉE À AURA",
+      iphoneSectionTitle: "Interagissez ici même avec l'application réelle : avancez gratuitement sur les 3 premières étapes",
+      iphoneSectionDesc: "Écrivez ou parlez avec Aura dans l'iPhone. Complétez gratuitement jusqu'à l'Étape 3 ; le passage à l'Étape 4 active le déblocage à 49 $ USD et migre automatiquement vos réponses.",
+      iphoneStep0Btn: "Étape 0 · Secteur (Gratuit)",
+      iphoneStep1Btn: "Étape 1 · Cercle d'Or (Gratuit)",
+      iphoneStep2Btn: "Étape 2 · Touchpoints (Gratuit)",
+      iphoneStep3Btn: "Étape 3 · Naming SMILE (Gratuit)",
+      iphoneStep4BtnLocked: "🔒 Étape 4 · Débloquer ($49 USD)",
+      iphoneStep4BtnUnlocked: "Étape 4 · Kansei ✓",
+      iphoneVideoStepBtn: "▶ Vidéo HeyGen de l'Étape",
+      syncBadgeTitle: "SYNCHRONISATION ET RÉTENTION AUTOMATIQUE",
+      syncLiveStatus: "● AURA CONNECTÉE EN DIRECT",
+      syncCardHeading: "Votre progression sur les Étapes 1 à 3 est sauvegardée en temps réel",
+      syncRow1: "Étape 0 et 1 · Secteur + Cercle d'Or (Simon Sinek)",
+      syncRow2: "Étape 2 · Touchpoints Avant, Pendant et Après (Carlzon)",
+      syncRow3: "Étape 3 · Naming SMILE et Classes de Nice (Watkins)",
+      syncRow4: "Étapes 4 à 6 · Kansei, Logo Nano Banana Pro et 9 Livrables",
+      freeAccessLabel: "✓ Accès Libre",
+      unlock49Label: "Débloquer · $49 USD",
+      presetsLabel: "Charger un Cas Réel :",
+      gcLiveHeading: "APERÇU EN DIRECT DU CERCLE D'OR DE VOTRE MARQUE",
+      nanoEyebrow: "MOTEUR NANO BANANA PRO 4K + VECTEURS BÉZIER PURS",
+      nanoTitle: "D'une esquisse ou logo existant à un emblème Apple Liquid Glass en courbes .SVG / .AI",
+      nanoDesc: "À l'Étape 5, faites évoluer votre logo avec le modèle Nano Banana Pro le plus avancé et notre traceur vectoriel de Bézier sur fond clair et sombre.",
+      plates36Eyebrow: "MANUEL OFFICIEL D'IDENTITÉ · LES 36 PLANCHES EN COURBES (16:9)",
+      plates36Title: "Explorez les 36 planches réelles compilées pour votre entreprise",
+      plates36Desc: "Cliquez sur n'importe quelle planche pour l'inspecter en haute résolution et naviguer de la Planche 01 à 36.",
+      bento9Eyebrow: "SUITE EXÉCUTIVE COMPLÈTE · LES 9 LIVRABLES OFFICIELS",
+      bento9Title: "Tout ce que vous téléchargez en terminant vos 7 étapes en 30 minutes",
+      bento9Desc: "Cliquez sur un livrable pour l'afficher en plein écran ou accéder au Pack de Téléchargements.",
+      lightboxKicker: "RÉSOLUTION MAXIMALE · PLEIN ÉCRAN",
+      lightboxPrev: "← Planche",
+      lightboxNext: "Planche →",
+      lightboxClose: "✕ Fermer",
+      videoCapsuleBadge: "CAPSULE HEYGEN + GOOGLE FLOW",
+      videoScriptHeading: "SCRIPT PARLÉ EXACT (SYNCHRONISÉ DANS HEYGEN) :",
+      videoContinueBtn: "Continuer l'exploration",
+      tourAmplifyBtn: "⤢ Agrandir la capture",
+      tourQuickJumpLabel: "Aller à l'étape :",
+      footerHeadlineSub: "ÉDITION OFFICIELLE 1.0 · SUITE THE BEST",
+      footerDesc: "Plateforme pour créer l'identité visuelle, les 9 livrables officiels et le Manuel de Marque de 36 Planches avec IA et guidage vocal d'Aura en 6 langues."
     },
     pt: {
+      bento9Kicker: "SUÍTE EXECUTIVA COMPLETA · OS 9 ENTREGÁVEIS OFICIAIS",
+      carouselPrev: "← Anterior",
+      carouselNext: "Próximo →",
+      gcLiveKicker: "PRÉVIA AO VIVO DO CÍRCULO DOURADO DA SUA MARCA",
+      iphoneSectionKicker: "APLICAÇÃO REAL AO VIVO · CONECTADA COM A AURA",
+      iphoneStep0Free: "Passo 0 · Ramo (Grátis)",
+      iphoneStep1Free: "Passo 1 · Círculo Dourado (Grátis)",
+      iphoneStep2Free: "Passo 2 · Touchpoints (Grátis)",
+      iphoneStep3Free: "Passo 3 · Naming SMILE (Grátis)",
+      iphoneStep4Unlock: "🔒 Passo 4 · Desbloquear ($49 USD)",
+      iphoneVideoBtn: "▶ Vídeo HeyGen do Passo",
+      nanoAfterLabel: "DEPOIS · EVOLUÇÃO NANO BANANA PRO 4K + CURVAS VETORIAIS (.SVG / .AI)",
+      nanoBeforeLabel: "ANTES · LOGOTIPO ENVIADO PELO CLIENTE (PASSO 0.2)",
+      nanoKicker: "MOTOR VISUAL NANO BANANA PRO 4K + VETORES BÉZIER PUROS",
+      plates36Kicker: "MANUAL OFICIAL DE IDENTIDADE · AS 36 LÂMINAS EM CURVAS (16:9)",
+      syncFreeBadge: "✓ Acesso Livre",
+      syncLiveConnected: "● AURA CONECTADA AO VIVO",
+      syncUnlockBtn: "Desbloquear · $49 USD",
+      videoPopupContinue: "Continuar explorando",
+      videoPopupScriptLabel: "ROTEIRO EXATO FALADO (SINCRONIZADO NO HEYGEN):",
+      ytWatchHere: "▶ Assistir Conferência Aqui",
       menu1: "Início",
       menu2: "Demo",
       menu2Live: "AO VIVO",
@@ -329,9 +545,74 @@
       planSingleDesc: "1 Marca Completa · 36 Lâminas + 9 Entregáveis",
       planAgencyName: "Licença Atelier Multi-Marca",
       planAgencyDesc: "Marcas Ilimitadas · Para Agências e Grupos",
-      payNowBtn: "Autorizar Pagamento Seguro e Ativar Licença"
+      payNowBtn: "Autorizar Pagamento Seguro e Ativar Licença",
+      heroTheoriesCopy: "Respaldado cientificamente pelas teorias de Simon Sinek (Círculo Dourado), Jan Carlzon (Momentos da Verdade), Al Ries, Jack Trout e Alexandra Watkins (Posicionamento e SMILE), Mitsuo Nagamachi (Engenharia Kansei), Paul Rand e Jony Ive (Geometria Vetorial Liquid Glass) e Massimo Vignelli (Cânone de 36 Lâminas).",
+      heroBtnTryIphone: "Use nossa demo com o passo 0, 1 e 2",
+      heroBtnIntroVideo: "▶ Ver Vídeo Introdutório do Fundador (HeyGen)",
+      iphoneSectionEyebrow: "APLICATIVO REAL AO VIVO · CONECTADO AO MOTOR DA AURA",
+      iphoneSectionTitle: "Interaja aqui mesmo com o aplicativo real: avance grátis nos 3 primeiros passos",
+      iphoneSectionDesc: "Escreva ou fale com a Aura dentro do iPhone. Complete sem custo até o Passo 3; ao avançar para o Passo 4 ativa-se o desbloqueio de $49 USD e suas respostas migram automaticamente.",
+      iphoneStep0Btn: "Passo 0 · Ramo (Grátis)",
+      iphoneStep1Btn: "Passo 1 · Círculo Dourado (Grátis)",
+      iphoneStep2Btn: "Passo 2 · Touchpoints (Grátis)",
+      iphoneStep3Btn: "Passo 3 · Naming SMILE (Grátis)",
+      iphoneStep4BtnLocked: "🔒 Passo 4 · Desbloquear ($49 USD)",
+      iphoneStep4BtnUnlocked: "Passo 4 · Kansei ✓",
+      iphoneVideoStepBtn: "▶ Vídeo HeyGen do Passo",
+      syncBadgeTitle: "SINCRONIZAÇÃO E RETENÇÃO AUTOMÁTICA DE PROGRESSO",
+      syncLiveStatus: "● AURA CONECTADA AO VIVO",
+      syncCardHeading: "Seu avanço nos Passos 1 a 3 é salvo em tempo real",
+      syncRow1: "Passo 0 e Passo 1 · Ramo + Círculo Dourado (Simon Sinek)",
+      syncRow2: "Passo 2 · Touchpoints Antes, Durante e Depois (Carlzon)",
+      syncRow3: "Passo 3 · Naming SMILE e Classes de Nice (Watkins)",
+      syncRow4: "Passo 4 ao 6 · Kansei, Logotipo Nano Banana Pro e 9 Entregáveis",
+      freeAccessLabel: "✓ Acesso Livre",
+      unlock49Label: "Desbloquear · $49 USD",
+      presetsLabel: "Carregar Caso de Sucesso:",
+      gcLiveHeading: "VISÃO AO VIVO DO CÍRCULO DOURADO DA SUA MARCA",
+      nanoEyebrow: "MOTOR VISUAL NANO BANANA PRO 4K + VETORES BÉZIER PUROS",
+      nanoTitle: "De um esboço ou logo antigo a um símbolo Apple Liquid Glass em curvas .SVG / .AI",
+      nanoDesc: "No Passo 5 você evolui seu logotipo com o modelo mais avançado do Nano Banana Pro e nosso traçador matemático em curvas Bézier puras em fundo claro e escuro.",
+      plates36Eyebrow: "MANUAL OFICIAL DE IDENTIDADE · AS 36 LÂMINAS EM CURVAS (16:9)",
+      plates36Title: "Explore as 36 Lâminas reais que o sistema compila para sua empresa",
+      plates36Desc: "Clique em qualquer lâmina para inspecioná-la em resolução máxima e navegar da Lâmina 01 à 36.",
+      bento9Eyebrow: "SUÍTE EXECUTIVA COMPLETA · OS 9 ENTREGÁVEIS OFICIAIS",
+      bento9Title: "Tudo o que você baixa ao finalizar seus 7 passos em 30 minutos",
+      bento9Desc: "Clique em qualquer entregável para vê-lo em tela cheia ou ir ao Pack de Downloads.",
+      lightboxKicker: "RESOLUÇÃO MÁXIMA · TELA QUASE CHEIA",
+      lightboxPrev: "← Lâmina",
+      lightboxNext: "Lâmina →",
+      lightboxClose: "✕ Fechar",
+      videoCapsuleBadge: "CÁPSULA HEYGEN + GOOGLE FLOW",
+      videoScriptHeading: "ROTEIRO FALADO EXATO (SINCRONIZADO NO HEYGEN):",
+      videoContinueBtn: "Continuar explorando",
+      tourAmplifyBtn: "⤢ Ampliar captura",
+      tourQuickJumpLabel: "Ir para o passo:",
+      footerHeadlineSub: "EDIÇÃO OFICIAL 1.0 · SUÍTE THE BEST",
+      footerDesc: "Plataforma para criar a identidade visual, os 9 entregáveis oficiais e o Manual de Marca de 36 Lâminas em Curvas da sua empresa com IA e voz da Aura em 6 idiomas."
     },
     de: {
+      bento9Kicker: "KOMPLETTE EXECUTIVE-SUITE · DIE 9 OFFIZIELLEN DELIVERABLES",
+      carouselPrev: "← Zurück",
+      carouselNext: "Weiter →",
+      gcLiveKicker: "LIVE-VORSCHAU DES GOLDEN CIRCLE IHRER MARKE",
+      iphoneSectionKicker: "ECHTE LIVE-APPLIKATION · MIT AURA VERBUNDEN",
+      iphoneStep0Free: "Schritt 0 · Branche (Gratis)",
+      iphoneStep1Free: "Schritt 1 · Golden Circle (Gratis)",
+      iphoneStep2Free: "Schritt 2 · Touchpoints (Gratis)",
+      iphoneStep3Free: "Schritt 3 · SMILE-Naming (Gratis)",
+      iphoneStep4Unlock: "🔒 Schritt 4 · Freischalten ($49 USD)",
+      iphoneVideoBtn: "▶ HeyGen-Schritt-Video",
+      nanoAfterLabel: "NACHHER · NANO BANANA PRO 4K EVOLUTION + VEKTORKURVEN (.SVG / .AI)",
+      nanoBeforeLabel: "VORHER · VOM KUNDEN HOCHGELADENES LOGO (SCHRITT 0.2)",
+      nanoKicker: "NANO BANANA PRO 4K ENGINE + REINE BÉZIER-VEKTOREN",
+      plates36Kicker: "OFFIZIELLES MARKENHANDBUCH · ALLE 36 TAFELN IN KURVEN (16:9)",
+      syncFreeBadge: "✓ Freier Zugang",
+      syncLiveConnected: "● AURA LIVE VERBUNDEN",
+      syncUnlockBtn: "Freischalten · $49 USD",
+      videoPopupContinue: "Weiter erkunden",
+      videoPopupScriptLabel: "EXAKTES SPRECHSKRIPT (SYNCHRONISIERT IN HEYGEN):",
+      ytWatchHere: "▶ Vortrag hier ansehen",
       menu1: "Startseite",
       menu2: "Demo",
       menu2Live: "LIVE",
@@ -405,9 +686,74 @@
       planSingleDesc: "1 komplette Marke · 36 Tafeln + 9 Deliverables",
       planAgencyName: "Multi-Marken Atelier-Lizenz",
       planAgencyDesc: "Unbegrenzte Marken · Für Agenturen & Gruppen",
-      payNowBtn: "Sichere Zahlung autorisieren & Lizenz aktivieren"
+      payNowBtn: "Sichere Zahlung autorisieren & Lizenz aktivieren",
+      heroTheoriesCopy: "Wissenschaftlich fundiert durch die Theorien von Simon Sinek (Golden Circle), Jan Carlzon (Momente der Wahrheit), Al Ries, Jack Trout & Alexandra Watkins (Positionierung & SMILE), Mitsuo Nagamachi (Kansei-Engineering), Paul Rand & Jony Ive (Liquid Glass Vektorgeometrie) und Massimo Vignelli (36-Tafeln-Kanon).",
+      heroBtnTryIphone: "Unsere Live-Demo mit Schritt 0, 1 und 2 nutzen",
+      heroBtnIntroVideo: "▶ Gründer-Intro-Video ansehen (HeyGen)",
+      iphoneSectionEyebrow: "ECHTE LIVE-APPLIKATION · MIT AURA VERBUNDEN",
+      iphoneSectionTitle: "Interagieren Sie direkt hier mit der echten App: die ersten 3 Schritte kostenlos",
+      iphoneSectionDesc: "Schreiben oder sprechen Sie mit Aura im iPhone. Bis Schritt 3 kostenlos; beim Wechsel zu Schritt 4 wird die $49-USD-Freischaltung mit automatischer Datenmigration aktiviert.",
+      iphoneStep0Btn: "Schritt 0 · Branche (Gratis)",
+      iphoneStep1Btn: "Schritt 1 · Golden Circle (Gratis)",
+      iphoneStep2Btn: "Schritt 2 · Touchpoints (Gratis)",
+      iphoneStep3Btn: "Schritt 3 · SMILE-Naming (Gratis)",
+      iphoneStep4BtnLocked: "🔒 Schritt 4 · Freischalten ($49 USD)",
+      iphoneStep4BtnUnlocked: "Schritt 4 · Kansei ✓",
+      iphoneVideoStepBtn: "▶ HeyGen-Schritt-Video",
+      syncBadgeTitle: "AUTOMATISCHE FORTSCHRITTS-SPEICHERUNG & MIGRATION",
+      syncLiveStatus: "● AURA LIVE VERBUNDEN",
+      syncCardHeading: "Ihr Fortschritt in den Schritten 1 bis 3 wird in Echtzeit gespeichert",
+      syncRow1: "Schritt 0 & 1 · Branche + Golden Circle (Simon Sinek)",
+      syncRow2: "Schritt 2 · Touchpoints Vor, Während & Nach (Carlzon)",
+      syncRow3: "Schritt 3 · SMILE-Naming & Nizza-Klassen (Watkins)",
+      syncRow4: "Schritt 4 bis 6 · Kansei, Nano Banana Pro Logo & 9 Deliverables",
+      freeAccessLabel: "✓ Freier Zugang",
+      unlock49Label: "Freischalten · $49 USD",
+      presetsLabel: "Echtes Fallbeispiel laden:",
+      gcLiveHeading: "LIVE-VORSCHAU DES GOLDEN CIRCLE IHRER MARKE",
+      nanoEyebrow: "NANO BANANA PRO 4K ENGINE + REINE BÉZIER-VEKTOREN",
+      nanoTitle: "Vom Entwurf oder Alt-Logo zum Apple Liquid Glass Emblem in .SVG / .AI Kurven",
+      nanoDesc: "In Schritt 5 entwickeln Sie Ihr Logo mit dem neuesten Nano Banana Pro Modell und unserem mathematischen Bézier-Vektor-Tracer auf hellem und dunklem Grund.",
+      plates36Eyebrow: "OFFIZIELLES MARKENHANDBUCH · ALLE 36 TAFELN IN KURVEN (16:9)",
+      plates36Title: "Entdecken Sie alle 36 echten Brandbook-Tafeln für Ihr Unternehmen",
+      plates36Desc: "Klicken Sie auf eine Tafel für die Fast-Vollbild-Ansicht und blättern Sie von Tafel 01 bis 36.",
+      bento9Eyebrow: "KOMPLETTE EXECUTIVE-SUITE · DIE 9 OFFIZIELLEN DELIVERABLES",
+      bento9Title: "Alles, was Sie nach den 7 Schritten in 30 Minuten herunterladen",
+      bento9Desc: "Klicken Sie auf ein Deliverable für die Vollbild-Vorschau oder das Download-Paket.",
+      lightboxKicker: "MAXIMALE AUFLÖSUNG · FAST-VOLLBILD-ANSICHT",
+      lightboxPrev: "← Tafel",
+      lightboxNext: "Tafel →",
+      lightboxClose: "✕ Schließen",
+      videoCapsuleBadge: "HEYGEN + GOOGLE FLOW KAPSEL",
+      videoScriptHeading: "EXAKTES SPRECHSKRIPT (SYNCHRONISIERT IN HEYGEN):",
+      videoContinueBtn: "Weiter erkunden",
+      tourAmplifyBtn: "⤢ Screenshot vergrößern",
+      tourQuickJumpLabel: "Springe zu Schritt:",
+      footerHeadlineSub: "OFFIZIELLE EDITION 1.0 · THE BEST SUITE",
+      footerDesc: "Plattform zur Erstellung Ihrer Markenidentität, der 9 offiziellen Deliverables und des 36-Tafeln-Vektor-Brandbooks mit KI und Auras Sprachführung in 6 Sprachen."
     },
     it: {
+      bento9Kicker: "SUITE ESECUTIVA COMPLETA · I 9 DELIVERABLE UFFICIALI",
+      carouselPrev: "← Precedente",
+      carouselNext: "Successivo →",
+      gcLiveKicker: "ANTEPRIMA DAL VIVO DEL CERCHIO D'ORO DEL TUO BRAND",
+      iphoneSectionKicker: "APPLICAZIONE REALE DAL VIVO · CONNESSA AD AURA",
+      iphoneStep0Free: "Passo 0 · Settore (Gratis)",
+      iphoneStep1Free: "Passo 1 · Cerchio d'Oro (Gratis)",
+      iphoneStep2Free: "Passo 2 · Touchpoint (Gratis)",
+      iphoneStep3Free: "Passo 3 · Naming SMILE (Gratis)",
+      iphoneStep4Unlock: "🔒 Passo 4 · Sblocca ($49 USD)",
+      iphoneVideoBtn: "▶ Video HeyGen del Passo",
+      nanoAfterLabel: "DOPO · EVOLUZIONE NANO BANANA PRO 4K + CURVE VETTORIALI (.SVG / .AI)",
+      nanoBeforeLabel: "PRIMA · LOGO CARICATO DAL CLIENTE (PASSO 0.2)",
+      nanoKicker: "MOTORE VISIVO NANO BANANA PRO 4K + VETTORI BÉZIER PURI",
+      plates36Kicker: "MANUALE UFFICIALE D'IDENTITÀ · LE 36 TAVOLE IN CURVE (16:9)",
+      syncFreeBadge: "✓ Accesso Libero",
+      syncLiveConnected: "● AURA CONNESSA DAL VIVO",
+      syncUnlockBtn: "Sblocca · $49 USD",
+      videoPopupContinue: "Continua a esplorare",
+      videoPopupScriptLabel: "COPIONE PARLATO ESATTO (SINCRONIZZATO IN HEYGEN):",
+      ytWatchHere: "▶ Guarda la Conferenza Qui",
       menu1: "Home",
       menu2: "Demo",
       menu2Live: "LIVE",
@@ -481,7 +827,51 @@
       planSingleDesc: "1 Brand Completo · 36 Tavole + 9 Deliverable",
       planAgencyName: "Licenza Atelier Multi-Brand",
       planAgencyDesc: "Brand Illimitati · Per Agenzie e Gruppi",
-      payNowBtn: "Autorizza Pagamento Sicuro e Attiva Licenza"
+      payNowBtn: "Autorizza Pagamento Sicuro e Attiva Licenza",
+      heroTheoriesCopy: "Scientificamente fondato sulle teorie di Simon Sinek (Cerchio d'Oro), Jan Carlzon (Momenti della Verità), Al Ries, Jack Trout e Alexandra Watkins (Posizionamento e SMILE), Mitsuo Nagamachi (Ingegneria Kansei), Paul Rand e Jony Ive (Geometria Vettoriale Liquid Glass) e Massimo Vignelli (Canone di 36 Tavole).",
+      heroBtnTryIphone: "Usa la nostra demo con il passo 0, 1 e 2",
+      heroBtnIntroVideo: "▶ Guarda il Video Introduttivo del Fondatore (HeyGen)",
+      iphoneSectionEyebrow: "APPLICAZIONE REALE DAL VIVO · CONNESSA AD AURA",
+      iphoneSectionTitle: "Interagisci qui stesso con l'applicazione reale: avanza gratis nei primi 3 passi",
+      iphoneSectionDesc: "Scrivi o parla con Aura dentro l'iPhone. Completa gratis fino al Passo 3; passando al Passo 4 si attiva lo sblocco da $49 USD e le tue risposte migrano automaticamente.",
+      iphoneStep0Btn: "Passo 0 · Settore (Gratis)",
+      iphoneStep1Btn: "Passo 1 · Cerchio d'Oro (Gratis)",
+      iphoneStep2Btn: "Passo 2 · Touchpoint (Gratis)",
+      iphoneStep3Btn: "Passo 3 · Naming SMILE (Gratis)",
+      iphoneStep4BtnLocked: "🔒 Passo 4 · Sblocca ($49 USD)",
+      iphoneStep4BtnUnlocked: "Passo 4 · Kansei ✓",
+      iphoneVideoStepBtn: "▶ Video HeyGen del Passo",
+      syncBadgeTitle: "SINCRONIZZAZIONE E CONSERVAZIONE AUTOMATICA",
+      syncLiveStatus: "● AURA CONNESSA DAL VIVO",
+      syncCardHeading: "Il tuo progresso nei Passi 1 a 3 è salvato in tempo reale",
+      syncRow1: "Passo 0 e Passo 1 · Settore + Cerchio d'Oro (Simon Sinek)",
+      syncRow2: "Passo 2 · Touchpoint Prima, Durante e Dopo (Carlzon)",
+      syncRow3: "Passo 3 · Naming SMILE e Classi di Nizza (Watkins)",
+      syncRow4: "Passi 4 a 6 · Kansei, Logo Nano Banana Pro e 9 Deliverable",
+      freeAccessLabel: "✓ Accesso Libero",
+      unlock49Label: "Sblocca · $49 USD",
+      presetsLabel: "Carica Caso Studio Reale:",
+      gcLiveHeading: "ANTEPRIMA DAL VIVO DEL CERCHIO D'ORO DEL TUO BRAND",
+      nanoEyebrow: "MOTORE VISIVO NANO BANANA PRO 4K + VETTORI BÉZIER PURI",
+      nanoTitle: "Da uno schizzo o logo esistente a un simbolo Apple Liquid Glass in curve .SVG / .AI",
+      nanoDesc: "Nel Passo 5 fai evolvere il tuo logo con il modello più avanzato di Nano Banana Pro e il nostro tracciatore matematico in curve di Bézier su sfondo chiaro e scuro.",
+      plates36Eyebrow: "MANUALE UFFICIALE D'IDENTITÀ · LE 36 TAVOLE IN CURVE (16:9)",
+      plates36Title: "Esplora le 36 Tavole reali compilate dal sistema per la tua azienda",
+      plates36Desc: "Clicca su qualsiasi tavola per ispezionarla a massima risoluzione e navigare dalla Tavola 01 alla 36.",
+      bento9Eyebrow: "SUITE ESECUTIVA COMPLETA · I 9 DELIVERABLE UFFICIALI",
+      bento9Title: "Tutto ciò che scarichi completando i 7 passi in 30 minuti",
+      bento9Desc: "Clicca su qualsiasi deliverable per vederlo a quasi tutto schermo o andare al Pack di Download.",
+      lightboxKicker: "MASSIMA RISOLUZIONE · QUASI TUTTO SCHERMO",
+      lightboxPrev: "← Tavola",
+      lightboxNext: "Tavola →",
+      lightboxClose: "✕ Chiudi",
+      videoCapsuleBadge: "CAPSULA HEYGEN + GOOGLE FLOW",
+      videoScriptHeading: "COPIONE PARLATO ESATTO (SINCRONIZZATO IN HEYGEN):",
+      videoContinueBtn: "Continua a esplorare",
+      tourAmplifyBtn: "⤢ Ingrandisci screenshot",
+      tourQuickJumpLabel: "Vai al passo:",
+      footerHeadlineSub: "EDIZIONE UFFICIALE 1.0 · SUITE THE BEST",
+      footerDesc: "Piattaforma per creare l'identità visiva, i 9 deliverable ufficiali e il Manuale di Brand di 36 Tavole in Curve con IA e guida vocale di Aura in 6 lingue."
     }
   };
 
@@ -513,29 +903,29 @@
   const VIDEO_CAPSULES = [
     {
       step: 0,
-      url: "/assets/videos/capsula_teoria_paso_0.mp4?v=92.0",
-      poster: "/assets/videos/poster_paso_0.jpg?v=92.0",
+      url: "/assets/videos/capsula_teoria_paso_0.mp4?v=93.0",
+      poster: "/assets/videos/poster_paso_0.jpg?v=93.0",
       popupCapture: "/assets/app_captures/popup_video_paso_0_a_1.png",
       duration: "00:54",
-      author: "Jorge Benítez (HeyGen) · David Aaker & Peter Drucker",
-      exactScript: "Hola, soy Jorge Benítez. Como afirma Peter Drucker, la mejor forma de predecir el futuro es creándolo. En el Paso cero eliges si construyes tu marca desde cero, evolucionas la actual o creas una sub-marca. Si ya tienes nombre y logotipo, David Aaker y Sagi Haviv recomiendan proteger tu capital visual. Siguiendo a Al Ries y Jack Trout en Posicionamiento, cuando describes tu giro con claridad en el tercer sub-paso, el sistema adapta automáticamente tus preguntas, puntos de contacto y propuestas.",
+      author: "Jorge Benítez (HeyGen) + Google Flow · David Aaker, Peter Drucker & Sagi Haviv",
+      exactScript: "Hola, soy Jorge Benítez. Como afirma Peter Drucker, la mejor forma de predecir el futuro es creándolo. En el Paso cero eliges si construyes tu marca desde cero, evolucionas la actual o creas una sub-marca. Si ya tienes nombre y logotipo, David Aaker y Sagi Haviv recomiendan proteger tu capital visual. Aquí puedes conservar tu logo intacto, pedir sugerencias o evolucionarlo con inteligencia artificial. Siguiendo a Al Ries y Jack Trout en Posicionamiento, cuando describes tu giro con claridad en el tercer sub-paso, el sistema adapta automáticamente tus preguntas, puntos de contacto y propuestas. Y con el esquema Brand Relationship Spectrum de David Aaker, defines desde hoy si tu empresa operará como marca única o si tendrá sub-marcas listas para crecer.",
       i18n: {
-        es: { title: "Video Introductorio y Paso 0 · Objetivo, Logo Base y Giro", desc: "Guion sincronizado en HeyGen con el fundador: cómo elegir entre crear una marca desde cero o evolucionar tu logotipo actual respetando tu capital visual (Peter Drucker, David Aaker y Sagi Haviv)." },
-        en: { title: "Intro & Step 0 · Goal, Base Logo & Core Business Essence", desc: "Synchronized HeyGen founder video: how to choose between creating a brand from scratch or evolving your current logo while honoring your brand equity." },
-        fr: { title: "Intro & Étape 0 · Objectif, Logo de Base et Essence du Secteur", desc: "Vidéo HeyGen synchronisée du fondateur : choisir entre créer une marque de zéro ou faire évoluer votre logo actuel." },
-        pt: { title: "Intro & Passo 0 · Objetivo, Logo Base e Essência do Negócio", desc: "Vídeo HeyGen sincronizado do fundador: como escolher entre criar uma marca do zero ou evoluir seu logotipo atual." },
-        de: { title: "Intro & Schritt 0 · Ziel, Basis-Logo & Unternehmenskern", desc: "Synchronisiertes HeyGen-Gründervideo: Wahl zwischen Neuerstellung oder Evolution Ihres bestehenden Logos." },
-        it: { title: "Intro & Passo 0 · Obiettivo, Logo Base ed Essenza del Business", desc: "Video HeyGen sincronizzato del fondatore: come scegliere tra creare un brand da zero o evolvere il tuo logo attuale." }
+        es: { title: "Video Introductorio y Paso 0 · Objetivo, Logo Base y Giro", desc: "Guion sincronizado en HeyGen con el fundador y B-Roll Google Flow: cómo elegir entre crear una marca desde cero o evolucionar tu logotipo actual respetando tu capital visual (Peter Drucker, David Aaker y Sagi Haviv)." },
+        en: { title: "Intro & Step 0 · Goal, Base Logo & Core Business Essence", desc: "Synchronized HeyGen founder video + Google Flow B-Roll: how to choose between creating a brand from scratch or evolving your current logo while honoring your brand equity." },
+        fr: { title: "Intro & Étape 0 · Objectif, Logo de Base et Essence du Secteur", desc: "Vidéo HeyGen synchronisée du fondateur + B-Roll Google Flow : choisir entre créer une marque de zéro ou faire évoluer votre logo actuel." },
+        pt: { title: "Intro & Passo 0 · Objetivo, Logo Base e Essência do Negócio", desc: "Vídeo HeyGen sincronizado do fundador + B-Roll Google Flow: como escolher entre criar uma marca do zero ou evoluir seu logotipo atual." },
+        de: { title: "Intro & Schritt 0 · Ziel, Basis-Logo & Unternehmenskern", desc: "Synchronisiertes HeyGen-Gründervideo + Google Flow B-Roll: Wahl zwischen Neuerstellung oder Evolution Ihres bestehenden Logos." },
+        it: { title: "Intro & Passo 0 · Obiettivo, Logo Base ed Essenza del Business", desc: "Video HeyGen sincronizzato del fondatore + B-Roll Google Flow: come scegliere tra creare un brand da zero o evolvere il tuo logo attuale." }
       }
     },
     {
       step: 1,
-      url: "/assets/videos/capsula_teoria_paso_1.mp4?v=92.0",
-      poster: "/assets/videos/poster_paso_1.jpg?v=92.0",
+      url: "/assets/videos/capsula_teoria_paso_1.mp4?v=93.0",
+      poster: "/assets/videos/poster_paso_1.jpg?v=93.0",
       popupCapture: "/assets/app_captures/popup_video_paso_0_a_1.png",
       duration: "00:48",
-      author: "Jorge Benítez (HeyGen) · Simon Sinek & Donald Miller",
-      exactScript: "Bienvenido al Paso uno. Como demostró Jim Collins en Empresas que Sobresalen, toda marca duradera nace de cimientos estratégicos claros antes de diseñar su identidad visual. La teoría del Círculo Dorado de Simon Sinek enseña que la gente no compra lo que haces, sino el porqué lo haces. Combinamos el Lienzo de Propuesta de Valor de Alex Osterwalder con el método StoryBrand de Donald Miller: al explicar tu proceso en tres pasos claros, tu cliente confía sin dudar.",
+      author: "Jorge Benítez (HeyGen) + Google Flow · Simon Sinek, Jim Collins & Donald Miller",
+      exactScript: "Bienvenido al Paso uno. Como demostró Jim Collins en Empresas que Sobresalen, toda marca duradera nace de cimientos estratégicos claros antes de diseñar su identidad visual. La teoría del Círculo Dorado de Simon Sinek enseña que la gente no compra lo que haces, sino el porqué lo haces. En los primeros sub-pasos descubrirás tu propósito nuclear. Combinamos el Lienzo de Propuesta de Valor de Alex Osterwalder con el método StoryBrand de Donald Miller: al explicar tu proceso en tres pasos claros, tu cliente confía sin dudar. Finalmente, con los arquetipos de Carl Jung y la escala de Jennifer Aaker, definimos la personalidad humana de tu marca y el perfil exacto de tu cliente ideal.",
       i18n: {
         es: { title: "Transición al Paso 1 · El Círculo Dorado y la Promesa de Valor", desc: "Por qué la gente no compra lo que haces, sino el propósito por el que lo haces (Simon Sinek, Jim Collins, Alex Osterwalder y Donald Miller)." },
         en: { title: "Transition to Step 1 · The Golden Circle & Value Promise", desc: "Why people don't buy what you do, they buy why you do it (Simon Sinek, Jim Collins, Alex Osterwalder & Donald Miller)." },
@@ -547,12 +937,12 @@
     },
     {
       step: 2,
-      url: "/assets/videos/capsula_teoria_paso_2.mp4?v=92.0",
-      poster: "/assets/videos/poster_paso_2.jpg?v=92.0",
+      url: "/assets/videos/capsula_teoria_paso_2.mp4?v=93.0",
+      poster: "/assets/videos/poster_paso_2.jpg?v=93.0",
       popupCapture: "/assets/app_captures/popup_video_paso_1_a_2.png",
       duration: "00:47",
-      author: "Jorge Benítez (HeyGen) · Jan Carlzon & Don Norman",
-      exactScript: "Excelente avance en el Paso uno. Como enseñó Jan Carlzon en los Momentos de la Verdad, cada contacto de quince segundos con tu cliente define si confía en tu marca. Según Katherine Lemon y Peter Verhoef, toda experiencia se divide en tres etapas: cómo te descubren Antes, cómo entregas valor Durante, y cómo fidelizas Después. Don Norman explica que el diseño excelente elimina la fricción operativa.",
+      author: "Jorge Benítez (HeyGen) + Google Flow · Jan Carlzon, Lemon/Verhoef & Don Norman",
+      exactScript: "Excelente avance en el Paso uno. Como enseñó Jan Carlzon en los Momentos de la Verdad, cada contacto de quince segundos con tu cliente define si confía en tu marca. Según Katherine Lemon y Peter Verhoef en Journal of Marketing, toda experiencia se divide en tres etapas: cómo te descubren Antes, cómo entregas valor Durante, y cómo fidelizas Después. Don Norman explica en el Diseño de las Cosas Cotidianas que el diseño excelente elimina la fricción. Aquí elegirás los puntos de contacto clave de tu negocio en tres clics. Al terminar el Paso dos, el sistema vinculará tus canales reales con los entregables y fotografías de tu manual para que tu marca viva en cada interacción.",
       i18n: {
         es: { title: "Transición al Paso 2 · Ingeniería de Touchpoints (Momentos de la Verdad)", desc: "En 15 segundos de contacto tu cliente decide si confía en tu marca antes, durante y después de comprar (Jan Carlzon, Lemon/Verhoef y Don Norman)." },
         en: { title: "Transition to Step 2 · Touchpoint Engineering (Moments of Truth)", desc: "In 15 seconds of contact, your customer decides whether to trust your brand before, during, and after purchase." },
@@ -564,12 +954,12 @@
     },
     {
       step: 3,
-      url: "/assets/videos/capsula_teoria_paso_3.mp4?v=92.0",
-      poster: "/assets/videos/poster_paso_3.jpg?v=92.0",
+      url: "/assets/videos/capsula_teoria_paso_3.mp4?v=93.0",
+      poster: "/assets/videos/poster_paso_3.jpg?v=93.0",
       popupCapture: "/assets/app_captures/popup_video_paso_2_a_3.png",
       duration: "00:45",
-      author: "Jorge Benítez (HeyGen) · Alexandra Watkins & Al Ries",
-      exactScript: "Ya tienes el mapa de experiencia de tu cliente. Como afirma Wally Olins, el nombre es el primer activo verbal que pronunciarán tus clientes en cada canal. Aplicamos el modelo SMILE de Alexandra Watkins y el simbolismo fonético de David Placek: buscamos un nombre de dos a tres sílabas, fácil de recordar y con iniciales potentes. Siguiendo a Alina Wheeler, acompañamos tu nombre oficial con un descriptor claro y verificamos sus clases internacionales de Niza.",
+      author: "Jorge Benítez (HeyGen) + Google Flow · Alexandra Watkins, David Placek & Alina Wheeler",
+      exactScript: "Ya tienes el mapa de experiencia de tu cliente. Como afirma Wally Olins, el nombre es el primer activo verbal que pronunciarán tus clientes en cada canal. Aplicamos el modelo SMILE de Alexandra Watkins y el simbolismo fonético de David Placek, creador de Lexicon Branding: buscamos un nombre de dos a tres sílabas, fácil de recordar y con iniciales potentes. Siguiendo a Alina Wheeler en Designing Brand Identity, acompañamos tu nombre oficial con un descriptor claro y un eslogan que comunique tu promesa en tres segundos. Y para blindar tu patrimonio, el Paso tres verifica automáticamente las clases internacionales de Niza para el registro legal de tu marca ante la autoridad.",
       i18n: {
         es: { title: "Transición al Paso 3 · Fonética, Naming SMILE y Clases de Niza", desc: "Cómo elegir un nombre memorable de 2 a 3 sílabas y vincularlo con las Clases Internacionales de Niza (Watkins, Placek y Alina Wheeler)." },
         en: { title: "Transition to Step 3 · Phonetics, SMILE Naming & Nice Classes", desc: "How to lock in a memorable name and match it with international Nice Classification trademark classes." },
@@ -581,12 +971,12 @@
     },
     {
       step: 4,
-      url: "/assets/videos/capsula_teoria_paso_4.mp4?v=92.0",
-      poster: "/assets/videos/poster_paso_4.jpg?v=92.0",
+      url: "/assets/videos/capsula_teoria_paso_4.mp4?v=93.0",
+      poster: "/assets/videos/poster_paso_4.jpg?v=93.0",
       popupCapture: "/assets/app_captures/popup_video_paso_3_a_4.png",
       duration: "00:51",
-      author: "Jorge Benítez (HeyGen) · Mitsuo Nagamachi & R. Bringhurst",
-      exactScript: "Con tu nombre oficial listo, entramos al Paso cuatro. El profesor Mitsuo Nagamachi creó la Ingeniería Kansei para traducir sentimientos humanos en parámetros de diseño exactos. Como demostraron Ramachandran y Charles Osgood, nuestro cerebro asocia curvas suaves con cercanía humana y ángulos rectos con precisión técnica. Robert Bringhurst afirma que la tipografía es el lenguaje hecho visible.",
+      author: "Jorge Benítez (HeyGen) + Google Flow · Mitsuo Nagamachi, Osgood & R. Bringhurst",
+      exactScript: "Con tu nombre oficial listo, entramos al Paso cuatro. El profesor Mitsuo Nagamachi creó la Ingeniería Kansei para traducir sentimientos humanos en parámetros de diseño exactos. Como demostraron Ramachandran y Charles Osgood con el diferencial semántico, nuestro cerebro asocia curvas suaves con cercanía humana y ángulos rectos con precisión técnica. Robert Bringhurst afirma que la tipografía es el lenguaje hecho visible. Por eso elegirás tu fuente por estilo visual y recibirás el paquete instalable para tu equipo. Finalmente, con la taxonomía de Per Mollerup y Wheeler, eliges la estructura de tu marca: logotipo con símbolo integrado, monograma de iniciales o emblema.",
       i18n: {
         es: { title: "Transición al Paso 4 · Ingeniería Kansei y Gobernanza Tipográfica", desc: "Traducción de emociones a parámetros geométricos en 7 ejes y selección del par tipográfico oficial (Mitsuo Nagamachi, Osgood y Bringhurst)." },
         en: { title: "Transition to Step 4 · Kansei Engineering & Typographic Governance", desc: "Translating sensory emotion into geometry and selecting your official open-license font pairing." },
@@ -598,29 +988,29 @@
     },
     {
       step: 5,
-      url: "/assets/videos/capsula_teoria_paso_5.mp4?v=92.0",
-      poster: "/assets/videos/poster_paso_5.jpg?v=92.0",
+      url: "/assets/videos/capsula_teoria_paso_5.mp4?v=93.0",
+      poster: "/assets/videos/poster_paso_5.jpg?v=93.0",
       popupCapture: "/assets/app_captures/popup_video_paso_4_a_5.png",
       duration: "00:54",
-      author: "Jorge Benítez (HeyGen) · Paul Rand, Sagi Haviv & Jony Ive",
-      exactScript: "Bienvenido al Paso cinco. Como enseñó el legendario Paul Rand, un logotipo extraordinario combina simplicidad geométrica y recordación inmediata, potenciado por la armonía cromática de Josef Albers. Si subiste tu logotipo actual, seguimos la máxima de Sagi Haviv: respetar la esencia reconocible mientras perfeccionamos sus trazos. Inspirados en el rigor industrial de Jony Ive, visualizas al mismo tiempo tu logotipo completo y su ícono uno a uno.",
+      author: "Jorge Benítez (HeyGen) + Google Flow · Paul Rand, Sagi Haviv & Jony Ive",
+      exactScript: "Bienvenido al Paso cinco. Como enseñó el legendario Paul Rand, un logotipo extraordinario combina simplicidad geométrica y recordación inmediata, potenciado por la armonía cromática de Josef Albers. Si subiste tu logotipo actual, seguimos la máxima de Sagi Haviv en Chermayeff & Geismar: respetar la esencia reconocible mientras perfeccionamos sus trazos y acabados. Inspirados en el rigor industrial de Jony Ive, visualizas al mismo tiempo tu logotipo completo y su ícono cuadrado uno a uno sobre fondo claro y oscuro. Puedes iterar con el motor visual de inteligencia artificial, refinar detalles en tiempo real y aprobar la versión maestra que se compilará en curvas vectoriales puras.",
       i18n: {
-        es: { title: "Transición al Paso 5 · Síntesis Vectorial en Curvas y Taller de Logotipo", desc: "Iteración asistida por IA y trazado matemático Bézier Liquid Glass sobre fondo claro y oscuro sin píxeles (Paul Rand, Sagi Haviv y Jony Ive)." },
-        en: { title: "Transition to Step 5 · Vector Curve Synthesis & Logo Atelier", desc: "AI-assisted iteration and mathematical Bézier vector tracing on light and dark canvases." },
-        fr: { title: "Transition vers l'Étape 5 · Synthèse Vectorielle en Courbes et Atelier Logo", desc: "Itération assistée par IA et tracé mathématique de Bézier sur fond clair et sombre." },
-        pt: { title: "Transição ao Passo 5 · Síntese Vetorial em Curvas e Atelier de Logo", desc: "Iteração assistida por IA e traçado matemático Bézier sobre fundo claro e escuro." },
-        de: { title: "Übergang zu Schritt 5 · Vektorkurven-Synthese & Logo-Atelier", desc: "KI-gestützte Iteration und mathematische Bézier-Vektorisierung auf hellem und dunklem Grund." },
-        it: { title: "Transizione al Passo 5 · Sintesi Vettoriale in Curve e Atelier del Logo", desc: "Iterazione assistita da IA e tracciato matematico di Bézier su sfondo chiaro e scuro." }
+        es: { title: "Transición al Paso 5 · Síntesis Vectorial Nano Banana Pro y Taller de Logotipo", desc: "Iteración asistida por Nano Banana Pro 4K y trazado matemático Bézier Liquid Glass sobre fondo claro y oscuro sin píxeles (Paul Rand, Sagi Haviv y Jony Ive)." },
+        en: { title: "Transition to Step 5 · Nano Banana Pro Vector Synthesis & Logo Atelier", desc: "Nano Banana Pro AI-assisted iteration and mathematical Bézier vector tracing on light and dark canvases." },
+        fr: { title: "Transition vers l'Étape 5 · Synthèse Vectorielle Nano Banana Pro et Atelier Logo", desc: "Itération assistée par Nano Banana Pro et tracé mathématique de Bézier sur fond clair et sombre." },
+        pt: { title: "Transição ao Passo 5 · Síntese Vetorial Nano Banana Pro e Atelier de Logo", desc: "Iteração assistida por Nano Banana Pro e traçado matemático Bézier sobre fundo claro e escuro." },
+        de: { title: "Übergang zu Schritt 5 · Nano Banana Pro Vektorsynthese & Logo-Atelier", desc: "KI-gestützte Nano Banana Pro Iteration und mathematische Bézier-Vektorisierung auf hellem und dunklem Grund." },
+        it: { title: "Transizione al Passo 5 · Sintesi Vettoriale Nano Banana Pro e Atelier del Logo", desc: "Iterazione assistita da Nano Banana Pro e tracciato matematico di Bézier su sfondo chiaro e scuro." }
       }
     },
     {
       step: 6,
-      url: "/assets/videos/capsula_teoria_paso_6.mp4?v=92.0",
-      poster: "/assets/videos/poster_paso_6.jpg?v=92.0",
+      url: "/assets/videos/capsula_teoria_paso_6.mp4?v=93.0",
+      poster: "/assets/videos/poster_paso_6.jpg?v=93.0",
       popupCapture: "/assets/app_captures/popup_video_paso_5_a_6.png",
       duration: "00:52",
-      author: "Jorge Benítez (HeyGen) · Massimo Vignelli & Müller-Brockmann",
-      exactScript: "Felicidades por llegar al Paso seis. Como estableció Massimo Vignelli en su Canon, un manual de identidad es la constitución que protege la coherencia de tu marca en todo momento. Aplicamos los sistemas de retículas de Josef Müller-Brockmann y la Guía Oficial C-Cero-Cero de ImproBears: láminas en curvas abiertas sobre lienzo claro, siguiendo exactamente los colores de tu logotipo.",
+      author: "Jorge Benítez (HeyGen) + Google Flow · Massimo Vignelli & Josef Müller-Brockmann",
+      exactScript: "Felicidades por llegar al Paso seis. Como estableció Massimo Vignelli en su Canon, un manual de identidad es la constitución que protege la coherencia de tu marca en todo momento. Aplicamos los sistemas de retículas de Josef Müller-Brockmann y la Guía Oficial C-Cero-Cero de ImproBears: láminas en curvas abiertas sobre lienzo claro, siguiendo exactamente los colores de tu logotipo. Tu manual incluye la terna oficial de tu marca, pruebas de legibilidad, códigos de color para imprenta y pantalla, y fotografías de aplicación en el mundo real. Desde la Bóveda descargas tus nueve entregables oficiales: Manual en PDF y Web, vectores editables, firma de correo, plantillas de Word y PowerPoint y tu kit de fuentes.",
       i18n: {
         es: { title: "Transición al Paso 6 · El Manual Oficial de 36 Láminas y los 9 Entregables", desc: "Cómo la disciplina de retícula de Massimo Vignelli y tus 9 archivos ejecutivos convierten tu marca en un sistema escalable." },
         en: { title: "Transition to Step 6 · The 36-Plate Official Brandbook & 9 Deliverables", desc: "How grid discipline and your 9 production files turn your brand into a scalable enterprise asset." },
@@ -653,6 +1043,7 @@
       type: "step",
       badge: "PASO 0.3 · GIRO Y ARQUITECTURA",
       img: "/assets/app_captures/tour_step0_3_giro.png",
+      secondaryImg: "/assets/app_captures/step0_logo_aura.png",
       i18n: {
         es: { title: "Defines tu giro empresarial por voz o texto", desc: "Describes con tus propias palabras qué hace tu empresa. El motor comprende el contexto industrial y configura si tu marca será monolítica o con submarcas." },
         en: { title: "Define your business sector by voice or text", desc: "Describe what your company does in your own words. The engine understands your industry context and configures a monolithic or multi-brand architecture." },
@@ -669,12 +1060,12 @@
       img: "/assets/app_captures/popup_video_paso_0_a_1.png",
       videoIdx: 1,
       i18n: {
-        es: { title: "Cápsula emergente: El Círculo Dorado antes del Paso 1", desc: "Al avanzar de etapa, la aplicación despliega un pop-up cinematográfico 9:16 con avatar y B-Roll que te explica en 38 segundos cómo definir el Porqué de tu empresa." },
-        en: { title: "Pop-up Capsule: The Golden Circle before Step 1", desc: "When advancing stages, the app presents a 9:16 cinematic pop-up with avatar and B-Roll explaining in 38 seconds how to articulate your company's Why." },
-        fr: { title: "Pop-up Vidéo : Le Cercle d'Or avant l'Étape 1", desc: "À chaque transition, un pop-up vidéo 9:16 avec avatar et B-Roll explique en 38 secondes la théorie de l'étape suivante." },
-        pt: { title: "Pop-up de Vídeo: O Círculo Dourado antes do Passo 1", desc: "Ao avançar de etapa, o app exibe um pop-up 9:16 com avatar e B-Roll explicando em 38 segundos como definir seu Porquê." },
-        de: { title: "Video-Pop-up: Der Golden Circle vor Schritt 1", desc: "Beim Phasenwechsel öffnet sich ein 9:16-Video-Pop-up mit Avatar und B-Roll zur Einführung in den Golden Circle." },
-        it: { title: "Pop-up Video: Il Cerchio d'Oro prima del Passo 1", desc: "Al cambio di fase, l'app mostra un pop-up video 9:16 con avatar e B-Roll che spiega come definire il tuo Perché." }
+        es: { title: "Cápsula emergente: El Círculo Dorado antes del Paso 1", desc: "Al avanzar de etapa, la aplicación despliega un pop-up cinematográfico 9:16 con el fundador en HeyGen y B-Roll Google Flow que te explica cómo definir el Porqué de tu empresa." },
+        en: { title: "Pop-up Capsule: The Golden Circle before Step 1", desc: "When advancing stages, the app presents a 9:16 cinematic pop-up with HeyGen founder avatar and Google Flow B-Roll explaining how to articulate your company's Why." },
+        fr: { title: "Pop-up Vidéo : Le Cercle d'Or avant l'Étape 1", desc: "À chaque transition, un pop-up vidéo 9:16 avec avatar HeyGen et B-Roll Google Flow explique la théorie de l'étape suivante." },
+        pt: { title: "Pop-up de Vídeo: O Círculo Dourado antes do Passo 1", desc: "Ao avançar de etapa, o app exibe um pop-up 9:16 com avatar HeyGen e B-Roll Google Flow explicando como definir seu Porquê." },
+        de: { title: "Video-Pop-up: Der Golden Circle vor Schritt 1", desc: "Beim Phasenwechsel öffnet sich ein 9:16-Video-Pop-up mit HeyGen-Avatar und Google Flow B-Roll zur Einführung in den Golden Circle." },
+        it: { title: "Pop-up Video: Il Cerchio d'Oro prima del Passo 1", desc: "Al cambio di fase, l'app mostra un pop-up video 9:16 con avatar HeyGen e B-Roll Google Flow che spiega come definire il tuo Perché." }
       }
     },
     {
@@ -729,10 +1120,10 @@
       img: "/assets/app_captures/popup_video_paso_2_a_3.png",
       videoIdx: 3,
       i18n: {
-        es: { title: "Cápsula emergente: Naming Estratégico y Posicionamiento", desc: "El pop-up de video introduce las leyes de posicionamiento de Al Ries & Jack Trout y la fonética comercial antes de bautizar o confirmar el nombre de tu marca." },
-        en: { title: "Pop-up Capsule: Strategic Naming & Positioning", desc: "This video pop-up introduces Al Ries & Jack Trout's positioning laws and commercial phonetics before confirming your brand name." },
-        fr: { title: "Pop-up Vidéo : Naming Stratégique et Positionnement", desc: "Introduction aux lois du positionnement et à la phonétique de marque." },
-        pt: { title: "Pop-up de Vídeo: Naming Estratégico e Posicionamento", desc: "Introdução às leis de posicionamento e fonética comercial antes de confirmar seu nome." },
+        es: { title: "Cápsula emergente: Naming Estratégico y Posicionamiento", desc: "El pop-up de video introduce las leyes de posicionamiento de Al Ries & Jack Trout y la fonética comercial SMILE antes de bautizar o confirmar el nombre de tu marca." },
+        en: { title: "Pop-up Capsule: Strategic Naming & Positioning", desc: "This video pop-up introduces Al Ries & Jack Trout's positioning laws and SMILE commercial phonetics before confirming your brand name." },
+        fr: { title: "Pop-up Vidéo : Naming Stratégique et Positionnement", desc: "Introduction aux lois du positionnement et à la phonétique de marque SMILE." },
+        pt: { title: "Pop-up de Vídeo: Naming Estratégico e Posicionamento", desc: "Introdução às leis de posicionamento e fonética comercial SMILE antes de confirmar seu nome." },
         de: { title: "Video-Pop-up: Strategisches Naming & Positionierung", desc: "Einführung in die Gesetze der Markenpositionierung und kommerziellen Phonetik." },
         it: { title: "Pop-up Video: Naming Strategico e Posizionamento", desc: "Introduzione alle leggi del posizionamento e alla fonetica commerciale." }
       }
@@ -789,27 +1180,27 @@
       img: "/assets/app_captures/popup_video_paso_4_a_5.png",
       videoIdx: 5,
       i18n: {
-        es: { title: "Cápsula emergente: Síntesis Vectorial y Colorimetría", desc: "El video explica cómo la simplicidad geométrica de Paul Rand y Jony Ive permite que un símbolo funcione desde el ícono de una app hasta la fachada de un edificio." },
-        en: { title: "Pop-up Capsule: Vector Synthesis & Colorimetry", desc: "This video explains how geometric simplicity lets your emblem scale effortlessly from a mobile app icon to a building facade." },
-        fr: { title: "Pop-up Vidéo : Synthèse Vectorielle et Colorimétrie", desc: "Comment la simplicité géométrique permet à votre emblème de fonctionner à toutes les échelles." },
-        pt: { title: "Pop-up de Vídeo: Síntese Vetorial e Colorimetria", desc: "Como a simplicidade geométrica permite que seu símbolo funcione de um ícone de app até uma fachada." },
-        de: { title: "Video-Pop-up: Vektorsynthese & Farbarchitektur", desc: "Wie geometrische Präzision dafür sorgt, dass Ihr Markenzeichen vom App-Icon bis zur Gebäudefassade wirkt." },
-        it: { title: "Pop-up Video: Sintesi Vettoriale e Colorimetria", desc: "Come la semplicità geometrica permette al tuo simbolo di funzionare da un'icona app fino a una facciata." }
+        es: { title: "Cápsula emergente: Síntesis Vectorial Nano Banana Pro y Colorimetría", desc: "El video explica cómo la simplicidad geométrica de Paul Rand y Jony Ive permite que un símbolo funcione desde el ícono de una app hasta la fachada de un edificio." },
+        en: { title: "Pop-up Capsule: Nano Banana Pro Vector Synthesis & Colorimetry", desc: "This video explains how geometric simplicity lets your emblem scale effortlessly from a mobile app icon to a building facade." },
+        fr: { title: "Pop-up Vidéo : Synthèse Vectorielle Nano Banana Pro et Colorimétrie", desc: "Comment la simplicité géométrique permet à votre emblème de fonctionner à toutes les échelles." },
+        pt: { title: "Pop-up de Vídeo: Síntese Vetorial Nano Banana Pro e Colorimetria", desc: "Como a simplicidade geométrica permite que seu símbolo funcione de um ícone de app até uma fachada." },
+        de: { title: "Video-Pop-up: Nano Banana Pro Vektorsynthese & Farbarchitektur", desc: "Wie geometrische Präzision dafür sorgt, dass Ihr Markenzeichen vom App-Icon bis zur Gebäudefassade wirkt." },
+        it: { title: "Pop-up Video: Sintesi Vettoriale Nano Banana Pro e Colorimetria", desc: "Come la semplicità geometrica permette al tuo simbolo di funzionare da un'icona app fino a una facciata." }
       }
     },
     {
       id: "step5_main",
       type: "step",
-      badge: "PASO 5 · TALLER DE LOGOTIPO Y ACABADO LIQUID GLASS",
+      badge: "PASO 5 · TALLER DE LOGOTIPO NANO BANANA PRO Y LIQUID GLASS",
       img: "/assets/app_captures/step5_taller_logo_liquid_glass.png",
       secondaryImg: "/assets/app_captures/tour_step5_2_iter6_claro.png",
       i18n: {
-        es: { title: "Evolucionas y apruebas tu Logotipo Oficial en Curvas", desc: "Visualizas tus iteraciones sobre lienzo claro (#FFFFFF) y soporte oscuro (#090D16), ajustas tu paleta HEX/CMYK/Pantone y bloqueas la versión maestra en vectores matemáticos." },
-        en: { title: "Evolve and approve your Official Vector Logo", desc: "Preview iterations on light (#FFFFFF) and dark (#090D16) canvases, fine-tune your HEX/CMYK/Pantone palette, and lock in your master vector emblem." },
-        fr: { title: "Faites évoluer et validez votre Logotype Officiel en Courbes", desc: "Prévisualisez vos itérations sur fond clair et sombre, ajustez votre palette HEX/CMYK/Pantone et validez le vecteur maître." },
-        pt: { title: "Evolua e aprove seu Logotipo Oficial em Curvas", desc: "Visualize suas iterações em fundo claro e escuro, ajuste sua paleta HEX/CMYK/Pantone e aprove o vetor mestre." },
-        de: { title: "Offizielles Vektor-Logo entwickeln und freigeben", desc: "Prüfen Sie Varianten auf hellem und dunklem Grund, kalibrieren Sie HEX/CMYK/Pantone und bestätigen Sie das Master-Logo." },
-        it: { title: "Evolvi e approva il tuo Logo Ufficiale in Curve", desc: "Visualizza le iterazioni su sfondo chiaro e scuro, regola la palette HEX/CMYK/Pantone e approva il vettore master." }
+        es: { title: "Evolucionas con Nano Banana Pro y apruebas tu Logotipo en Curvas", desc: "Visualizas tus iteraciones sobre lienzo claro (#FFFFFF) y soporte oscuro (#090D16), ajustas tu paleta HEX/CMYK/Pantone y bloqueas la versión maestra en vectores matemáticos." },
+        en: { title: "Evolve with Nano Banana Pro and approve your Official Vector Logo", desc: "Preview iterations on light (#FFFFFF) and dark (#090D16) canvases, fine-tune your HEX/CMYK/Pantone palette, and lock in your master vector emblem." },
+        fr: { title: "Faites évoluer avec Nano Banana Pro et validez votre Logotype", desc: "Prévisualisez vos itérations sur fond clair et sombre, ajustez votre palette HEX/CMYK/Pantone et validez le vecteur maître." },
+        pt: { title: "Evolua com Nano Banana Pro e aprove seu Logotipo Oficial", desc: "Visualize suas iterações em fundo claro e escuro, ajuste sua paleta HEX/CMYK/Pantone e aprove o vetor mestre." },
+        de: { title: "Mit Nano Banana Pro Vektor-Logo entwickeln und freigeben", desc: "Prüfen Sie Varianten auf hellem und dunklem Grund, kalibrieren Sie HEX/CMYK/Pantone und bestätigen Sie das Master-Logo." },
+        it: { title: "Evolvi con Nano Banana Pro e approva il tuo Logo in Curve", desc: "Visualizza le iterazioni su sfondo chiaro e scuro, regola la palette HEX/CMYK/Pantone e approva il vettore master." }
       }
     },
     {
@@ -880,7 +1271,7 @@
       format: ".HTML · VISOR INTERACTIVO",
       plateNum: 2,
       thumb: "/assets/brandbook_plates_tbb/plate-02.jpg",
-      sampleUrl: "/assets/deliverables_tbb/Manual_Identidad_36_Laminas_the_best_brand.pdf",
+      sampleUrl: "/assets/deliverables_tbb/Manual_Identidad_36_Laminas_the_best_brand.html",
       i18n: {
         es: { title: "Manual Web Autónomo de 36 Láminas (.HTML)", desc: "Archivo interactivo autónomo con navegación instantánea entre las 36 láminas, ideal para compartir con tu equipo directivo, diseñadores y proveedores." },
         en: { title: "Standalone Interactive 36-Plate Web Brandbook (.HTML)", desc: "Self-contained interactive file with instant navigation across all 36 plates, ideal for sharing with your executive team, designers, and vendors." },
@@ -910,7 +1301,7 @@
       format: ".AI · ADOBE ILLUSTRATOR",
       plateNum: 14,
       thumb: "/assets/brandbook_plates_tbb/plate-14.jpg",
-      sampleUrl: "/assets/logos/Isotipo_Simbolo_Curvas_the_best_brand.ai",
+      sampleUrl: "/assets/deliverables_tbb/Logotipo_Horizontal_Curvas_the_best_brand.ai",
       i18n: {
         es: { title: "Archivo Maestro Editable en Capas (.AI)", desc: "Código nativo Adobe Illustrator con trazos Bézier puros, retícula constructiva y capas organizadas para imprentas offset y diseñadores." },
         en: { title: "Layered Native Master Vector File (.AI)", desc: "Native Adobe Illustrator file with pure Bézier paths, construction grid, and organized layers for offset printers and designers." },
@@ -925,7 +1316,7 @@
       format: ".SVG + .PNG 1024px · APP ICON",
       plateNum: 18,
       thumb: "/assets/brandbook_plates_tbb/plate-18.jpg",
-      sampleUrl: "/assets/logos/Isotipo_Simbolo_Curvas_the_best_brand.svg",
+      sampleUrl: "/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png",
       i18n: {
         es: { title: "Isotipo 1:1, Avatar Social y Sello Circular", desc: "Símbolo cuadrado en alta resolución (1024×1024px) y curvas .SVG calibrado para App Store, WhatsApp Business, LinkedIn, Instagram y sello institucional." },
         en: { title: "1:1 App Icon, Social Avatar & Circular Seal", desc: "High-resolution 1024×1024px square symbol and .SVG curves calibrated for App Store, WhatsApp Business, LinkedIn, Instagram, and official seal." },
@@ -1004,7 +1395,7 @@
       step: "Paso 1 · Círculo Dorado",
       title: "How Great Leaders Inspire Action (Start With Why)",
       duration: "18:04",
-      thumb: "https://img.youtube.com/vi/qp0HIF3SfI4/hqdefault.jpg",
+      thumb: "/assets/videos/poster_paso_1.jpg?v=93.0",
       url: "https://www.youtube.com/watch?v=qp0HIF3SfI4"
     },
     {
@@ -1013,7 +1404,7 @@
       step: "Paso 2 · Touchpoints",
       title: "Moments of Truth: Customer Experience Leadership",
       duration: "14:22",
-      thumb: "https://img.youtube.com/vi/7X_WvGAhMlQ/hqdefault.jpg",
+      thumb: "/assets/videos/poster_paso_2.jpg?v=93.0",
       url: "https://www.youtube.com/watch?v=7X_WvGAhMlQ"
     },
     {
@@ -1022,7 +1413,7 @@
       step: "Paso 3 · Naming & Posicionamiento",
       title: "The 22 Immutable Laws of Branding & Positioning",
       duration: "24:15",
-      thumb: "https://img.youtube.com/vi/W_K_0rM9q38/hqdefault.jpg",
+      thumb: "/assets/videos/poster_paso_3.jpg?v=93.0",
       url: "https://www.youtube.com/watch?v=W_K_0rM9q38"
     },
     {
@@ -1031,7 +1422,7 @@
       step: "Paso 4 · Ingeniería Kansei",
       title: "Kansei Engineering & Sensory Design Architecture",
       duration: "19:40",
-      thumb: "https://img.youtube.com/vi/rDkaXDDg88c/hqdefault.jpg",
+      thumb: "/assets/videos/poster_paso_4.jpg?v=93.0",
       url: "https://www.youtube.com/watch?v=rDkaXDDg88c"
     },
     {
@@ -1040,7 +1431,7 @@
       step: "Paso 5 · Identidad Visual",
       title: "The Brand Gap: Bridging Strategy and Design",
       duration: "32:10",
-      thumb: "https://img.youtube.com/vi/ybuT4EsqU3A/hqdefault.jpg",
+      thumb: "/assets/videos/poster_paso_5.jpg?v=93.0",
       url: "https://www.youtube.com/watch?v=ybuT4EsqU3A"
     },
     {
@@ -1049,7 +1440,7 @@
       step: "Paso 6 · Modelo y Propuesta de Valor",
       title: "Value Proposition Design & Business Model Canvas",
       duration: "22:18",
-      thumb: "https://img.youtube.com/vi/bU22pUq2eUQ/hqdefault.jpg",
+      thumb: "/assets/videos/poster_paso_6.jpg?v=93.0",
       url: "https://www.youtube.com/watch?v=bU22pUq2eUQ"
     }
   ];
@@ -1076,9 +1467,9 @@
     {
       title: "Positioning: The Battle for Your Mind",
       author: "Al Ries & Jack Trout",
-      step: "Paso 3 · Naming Estratégico",
-      coverImg: "ries_positioning.jpg",
-      takeaway: "Cómo ocupar un lugar único e indiscutible en la mente de tu cliente ideal desde el nombre.",
+      step: "Paso 0 y 3 · Posicionamiento y Naming",
+      coverImg: "ries_lean.jpg",
+      takeaway: "Cómo ocupar un lugar único e indiscutible en la mente de tu cliente ideal desde el nombre y giro.",
       kindleUrl: "https://www.amazon.com/dp/B000OI0F4K",
       appleBooksUrl: "https://books.apple.com/us/book/positioning-the-battle-for-your-mind/id496277918"
     },
@@ -1086,15 +1477,42 @@
       title: "The Brand Gap",
       author: "Marty Neumeier",
       step: "Paso 4 y 5 · Estrategia y Diseño",
-      coverImg: "neumeier_gap.jpg",
+      coverImg: "neumeier_brandgap.jpg",
       takeaway: "El puente ejecutivo entre la estrategia de negocio analítica y la expresión visual carismática.",
       kindleUrl: "https://www.amazon.com/dp/B000SEI7P8",
       appleBooksUrl: "https://books.apple.com/us/book/the-brand-gap/id496263434"
     },
     {
+      title: "Building Strong Brands",
+      author: "David A. Aaker",
+      step: "Paso 0 · Arquitectura y Capital de Marca",
+      coverImg: "aaker_branding.jpg",
+      takeaway: "El modelo Brand Relationship Spectrum para proteger tu capital de marca y estructurar submarcas.",
+      kindleUrl: "https://www.amazon.com/dp/B003L77VSC",
+      appleBooksUrl: "https://books.apple.com/us/book/building-strong-brands/id381482832"
+    },
+    {
+      title: "Identify: Basic Principles of Identity Design",
+      author: "Sagi Haviv, Tom Geismar & Ivan Chermayeff",
+      step: "Paso 5 · Síntesis Vectorial y Rediseño",
+      coverImg: "haviv_identify.jpg",
+      takeaway: "Por qué un símbolo memorable debe ser simple, apropiado y distintivo en blanco y negro.",
+      kindleUrl: "https://www.amazon.com/dp/1440310327",
+      appleBooksUrl: "https://books.apple.com/us/book/identify/id540656455"
+    },
+    {
+      title: "Building a StoryBrand",
+      author: "Donald Miller",
+      step: "Paso 1.4 · Método en 3 Pasos Claros",
+      coverImg: "miller_storybrand.jpg",
+      takeaway: "Cómo posicionar a tu cliente como el héroe y presentar tu método en 3 pasos libres de fricción.",
+      kindleUrl: "https://www.amazon.com/dp/B06XCFV93Z",
+      appleBooksUrl: "https://books.apple.com/us/book/building-a-storybrand/id1209119036"
+    },
+    {
       title: "Generación de Modelos de Negocio",
       author: "Alexander Osterwalder & Yves Pigneur",
-      step: "Arquitectura de Valor",
+      step: "Paso 6 · Arquitectura de Valor",
       coverImg: "osterwalder_bmg.jpg",
       takeaway: "El estándar global para estructurar tu modelo de negocio en un sistema visual coherente.",
       kindleUrl: "https://www.amazon.com.mx/dp/B01B3J471E",
@@ -1103,7 +1521,7 @@
     {
       title: "Diseñando la Propuesta de Valor",
       author: "Alexander Osterwalder & Yves Pigneur",
-      step: "Oferta Comercial",
+      step: "Paso 1.2 · Oferta Comercial",
       coverImg: "osterwalder_vpd.jpg",
       takeaway: "Cómo alinear exactamente lo que entregas con los dolores y aspiraciones reales de tu cliente.",
       kindleUrl: "https://www.amazon.com.mx/dp/B00P0L6W7A",
@@ -1135,15 +1553,15 @@
       whatOffer: "Diseño estructural, construcción de naves industriales y gerencia de proyectos llave en mano."
     },
     {
-      id: "boreal",
-      label: "Café Boreal (Especialidad)",
-      objective: "create",
-      brandName: "CAFÉ BOREAL",
-      tagline: "ORIGEN DE ALTURA EN CADA TAZA",
-      businessGiro: "Tostaduría artesanal y barras de café de especialidad con grano trazable de microlotes de estricta altura.",
-      whyPurpose: "Porque creemos que el productor de montaña merece comercio justo y el consumidor merece una pausa memorable.",
-      howMethod: "Seleccionamos microlotes de +1,600 msnm, tostamos cada semana y diseñamos barras cálidas de hospitalidad.",
-      whatOffer: "Café de especialidad en grano, suscripciones corporativas y barras de experiencia sensorial."
+      id: "improbears",
+      label: "ImproBears (4 Submarcas)",
+      objective: "redesign",
+      brandName: "IMPROBEARS",
+      tagline: "DEL CAOS AL SISTEMA",
+      businessGiro: "Firma de ingeniería de negocios, ingredientes especializados, producción audiovisual e inteligencia artificial aplicada con 4 submarcas homologadas.",
+      whyPurpose: "Porque creemos en acompañar hombro a hombro al líder para transformar el caos operativo en sistemas rentables que liberan tiempo mental.",
+      howMethod: "Escuchamos primero la visión del cliente, estructuramos procesos claros y desplegamos tecnología e identidad sin imponer.",
+      whatOffer: "Consultoría estratégica (Consulting), insumos cerveceros (Ingredients), producción visual (Studio) y agentes digitales (AI)."
     }
   ];
 
@@ -1212,6 +1630,59 @@
   // ---------------------------------------------------------------------------
   // 4. CONTROLADOR DE NAVEGACIÓN ENTRE LAS 5 SUBPÁGINAS (COMPRAR SIEMPRE VISIBLE)
   // ---------------------------------------------------------------------------
+  window.tbbSetActiveMainTab = function (slugOrNum) {
+    const map = {
+      inicio: 1,
+      home: 1,
+      demo: 2,
+      "app-tour": 3,
+      tour: 3,
+      "bases-teoricas": 4,
+      bases: 4,
+      theory: 4,
+      "pack-descargas": 5,
+      pack: 5,
+      downloads: 5
+    };
+    const key = String(slugOrNum || "1").toLowerCase().trim();
+    const sec = map[key] || Number(slugOrNum) || 1;
+    window.tbbSwitchMainSection(sec);
+  };
+
+  window.tbbMountSingleActiveIphoneStudioFrame = function () {
+    const st = window.tbbCommercialDemoState || {};
+    const sec = Number(st.activeMainSection || 1);
+    const homeMount = document.getElementById("tbbHomeIphoneMount");
+    const sub2Mount = document.getElementById("tbbSubpage2IphoneMount");
+
+    if (sec === 2 && sub2Mount) {
+      if (homeMount) homeMount.innerHTML = "";
+      if (!sub2Mount.querySelector("iframe")) {
+        sub2Mount.innerHTML = window.tbbBuildIphoneLiveStudioFrameHTML("tbbSubpage2IphoneStudioFrame");
+      }
+    } else if (homeMount) {
+      if (sub2Mount) sub2Mount.innerHTML = "";
+      if (!homeMount.querySelector("iframe")) {
+        homeMount.innerHTML = window.tbbBuildIphoneLiveStudioFrameHTML("tbbHomeIphoneStudioFrame");
+      }
+    }
+  };
+
+  window.tbbFilterHome36PlatesChapter = function (chapFilter) {
+    window.tbbCommercialDemoState.activePlateChapterFilter = chapFilter || "all";
+    document.querySelectorAll(".tbb-plate36-filter-btn").forEach(btn => {
+      const isAct = btn.getAttribute("data-chapter") === (chapFilter || "all");
+      btn.style.background = isAct ? "#0D2540" : "#FFFFFF";
+      btn.style.color = isAct ? "#FFFFFF" : "#334155";
+      btn.style.borderColor = isAct ? "#0D2540" : "#CBD5E1";
+    });
+    document.querySelectorAll(".tbb-plate36-thumb-card").forEach(card => {
+      const ch = card.getAttribute("data-chapter");
+      const show = !chapFilter || chapFilter === "all" || ch === chapFilter;
+      card.style.display = show ? "flex" : "none";
+    });
+  };
+
   window.tbbSwitchMainSection = function (secNumber) {
     const s = Math.max(1, Math.min(5, Number(secNumber || 1)));
     if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
@@ -1227,6 +1698,8 @@
         btn.classList.toggle("is-active", i === s);
       });
     }
+
+    window.tbbMountSingleActiveIphoneStudioFrame();
 
     const floatBar = document.getElementById("tbbAlwaysOnBuyFloatingBar");
     if (floatBar) {
@@ -1336,8 +1809,9 @@
   window.tbbOpenPlateLightboxModal = function (plateNum, customImgUrl, customTitle, customSampleUrl) {
     const pNum = Math.max(1, Math.min(36, Number(plateNum) || 1));
     const padNum = String(pNum).padStart(2, "0");
+    const isBrandbookPlate = !customImgUrl || String(customImgUrl).includes("/assets/brandbook_plates_tbb/plate-");
     const imgSrc = customImgUrl || `/assets/brandbook_plates_tbb/plate-${padNum}.jpg`;
-    const titleTxt = customTitle || `Lámina ${padNum} / 36 · Manual Oficial The Best Brand`;
+    const titleTxt = customTitle || `${t("lightboxPrev")} ${padNum} / 36 · Manual Oficial The Best Brand`;
     const downloadHref = customSampleUrl || "/assets/deliverables_tbb/Manual_Identidad_36_Laminas_the_best_brand.pdf";
 
     let ov = document.getElementById("tbbPlateLightboxModalOverlay");
@@ -1358,17 +1832,17 @@
           <div style="display:flex; align-items:center; gap:12px;">
             <img src="/assets/logos/tbb_official_liquid_glass_logo.jpg" alt="The Best Brand" style="width:34px; height:34px; border-radius:50%; object-fit:cover;" />
             <div>
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#EA580C;">VISTA A MÁXIMA RESOLUCIÓN · PANTALLA CASI COMPLETA</div>
+              <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#EA580C;">${escHtml(t("lightboxKicker"))}</div>
               <div style="font-family:'Montserrat', sans-serif; font-size:1.02rem; font-weight:600; color:#0F172A;">${escHtml(titleTxt)}</div>
             </div>
           </div>
           <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-            ${!customImgUrl ? `
-              <button type="button" onclick="window.tbbOpenPlateLightboxModal(${prevNum})" class="tbb-btn-light-surface" style="padding:7px 14px; font-size:0.78rem;">← Lámina ${String(prevNum).padStart(2, '0')}</button>
-              <button type="button" onclick="window.tbbOpenPlateLightboxModal(${nextNum})" class="tbb-btn-light-surface" style="padding:7px 14px; font-size:0.78rem;">Lámina ${String(nextNum).padStart(2, '0')} →</button>
+            ${isBrandbookPlate ? `
+              <button type="button" onclick="window.tbbOpenPlateLightboxModal(${prevNum})" class="tbb-btn-light-surface" style="padding:7px 14px; font-size:0.78rem;">← ${escHtml(t("lightboxPrev"))} ${String(prevNum).padStart(2, '0')}</button>
+              <button type="button" onclick="window.tbbOpenPlateLightboxModal(${nextNum})" class="tbb-btn-light-surface" style="padding:7px 14px; font-size:0.78rem;">${escHtml(t("lightboxNext"))} ${String(nextNum).padStart(2, '0')} →</button>
             ` : ''}
-            <a href="${downloadHref}" target="_blank" rel="noopener" class="tbb-comm-btn-blue" style="padding:8px 16px; font-size:0.78rem;">${t("packDownloadSample")}</a>
-            <button type="button" onclick="window.tbbClosePlateLightboxModal()" class="tbb-btn-light-surface" style="padding:7px 14px; font-size:0.86rem;">✕ Cerrar</button>
+            <a href="${downloadHref}" target="_blank" rel="noopener" class="tbb-comm-btn-blue" style="padding:8px 16px; font-size:0.78rem; text-decoration:none;">${escHtml(t("packDownloadSample"))}</a>
+            <button type="button" onclick="window.tbbClosePlateLightboxModal()" class="tbb-btn-light-surface" style="padding:7px 14px; font-size:0.86rem;">${escHtml(t("lightboxClose"))}</button>
           </div>
         </div>
         <div style="flex:1; padding:18px; background:#F8FAFC; display:flex; justify-content:center; align-items:center; overflow:auto;">
@@ -1403,40 +1877,40 @@
     }
 
     ov.innerHTML = `
-      <div style="background:#FFFFFF; border-radius:24px; width:100%; max-width:920px; overflow:hidden; box-shadow:0 30px 90px rgba(0,0,0,0.45); display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));">
+      <div style="background:#FFFFFF; border-radius:24px; width:100%; max-width:960px; overflow:hidden; box-shadow:0 30px 90px rgba(0,0,0,0.45); display:grid; grid-template-columns:repeat(auto-fit, minmax(310px, 1fr));">
         <div style="background:#0F172A; display:flex; align-items:center; justify-content:center; padding:16px;">
-          <video src="${cap.url}" poster="${cap.poster}" controls autoplay playsinline style="max-height:74vh; width:auto; max-width:100%; border-radius:16px; box-shadow:0 16px 40px rgba(0,0,0,0.5);"></video>
+          <video src="${cap.url}" poster="${cap.poster}" controls autoplay playsinline style="max-height:76vh; width:auto; max-width:100%; border-radius:16px; box-shadow:0 16px 40px rgba(0,0,0,0.5);"></video>
         </div>
-        <div style="padding:32px 28px; display:flex; flex-direction:column; justify-content:space-between; gap:20px; background:#FFFFFF; color:#0F172A;">
+        <div style="padding:30px 28px; display:flex; flex-direction:column; justify-content:space-between; gap:18px; background:#FFFFFF; color:#0F172A;">
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:12px;">
-              <span style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#EA580C; background:#FFF7ED; padding:4px 10px; border-radius:999px;">
-                CÁPSULA DE VIDEO · ${lang.toUpperCase()} · ${cap.duration}
+              <span style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:500; color:#EA580C; background:#FFF7ED; padding:4px 10px; border-radius:999px;">
+                HEYGEN + GOOGLE FLOW · ${lang.toUpperCase()} · ${cap.duration}
               </span>
               <button type="button" onclick="window.tbbCloseVideoPopupModal()" class="tbb-btn-light-surface" style="padding:5px 12px; font-size:0.82rem;">✕</button>
             </div>
-            <h3 style="font-family:'Montserrat', sans-serif; font-size:1.35rem; font-weight:600; color:#0F172A; margin:0 0 10px 0; line-height:1.25;">
+            <h3 style="font-family:'Montserrat', sans-serif; font-size:1.3rem; font-weight:600; color:#0F172A; margin:0 0 8px 0; line-height:1.25;">
               ${escHtml(loc.title)}
             </h3>
-            <div style="font-size:0.84rem; font-weight:500; color:#1D4ED8; margin-bottom:14px;">
+            <div style="font-size:0.82rem; font-weight:500; color:#1D4ED8; margin-bottom:12px;">
               ${escHtml(cap.author)}
             </div>
-            <p style="font-size:0.93rem; font-weight:400; color:#475569; line-height:1.62; margin:0 0 12px 0;">
+            <p style="font-size:0.9rem; font-weight:400; color:#475569; line-height:1.6; margin:0 0 12px 0;">
               ${escHtml(loc.desc)}
             </p>
             ${cap.exactScript ? `
-              <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-left:3.5px solid #1D4ED8; border-radius:12px; padding:10px 14px; font-size:0.82rem; color:#0F172A; line-height:1.52;">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:600; color:#1D4ED8; margin-bottom:4px;">GUION HABLADO EXACTO (SINCRONIZADO EN HEYGEN):</div>
+              <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-left:3.5px solid #1D4ED8; border-radius:12px; padding:10px 14px; font-size:0.8rem; color:#0F172A; line-height:1.5; max-height:175px; overflow-y:auto;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; font-weight:600; color:#1D4ED8; margin-bottom:4px;">${escHtml(t("videoPopupScriptLabel"))}</div>
                 «${escHtml(cap.exactScript)}»
               </div>
             ` : ''}
           </div>
-          <div style="display:flex; flex-direction:column; gap:10px; padding-top:16px; border-top:1px solid #E2E8F0;">
+          <div style="display:flex; flex-direction:column; gap:10px; padding-top:14px; border-top:1px solid #E2E8F0;">
             <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbCloseVideoPopupModal(); window.tbbOpenBuyAppCheckoutModal('pro_atelier');" style="width:100%; padding:12px; font-size:0.88rem;">
-              ${t("buyNowFloating")}
+              ${escHtml(t("buyNowFloating"))}
             </button>
             <button type="button" class="tbb-btn-light-surface" onclick="window.tbbCloseVideoPopupModal()" style="width:100%; padding:10px; font-size:0.82rem;">
-              Continuar explorando
+              ${escHtml(t("videoPopupContinue"))}
             </button>
           </div>
         </div>
@@ -1459,6 +1933,7 @@
   window.tbbApplyCommercialDemoPreset = function (presetId) {
     const p = DEMO_QUICK_PRESETS.find(item => item.id === presetId) || DEMO_QUICK_PRESETS[0];
     const st = window.tbbCommercialDemoState;
+    st.activePresetId = p.id;
     st.demoObjective = p.objective || "create";
     st.brandName = p.brandName;
     st.tagline = p.tagline;
@@ -1467,7 +1942,30 @@
     st.howMethod = p.howMethod;
     st.whatOffer = p.whatOffer;
     window.tbbSyncCommercialDemoToAppState();
-    window.tbbRefreshCommercialPortalDOM();
+
+    // Actualizar tarjeta del Círculo Dorado y título sin recargar el iframe del iPhone
+    const gcWrap = document.getElementById("tbbDemoLiveGoldenCircleWrap");
+    if (gcWrap) gcWrap.innerHTML = window.tbbBuildCircularGoldenCircleSVG();
+    const bTitleEl = document.getElementById("tbbDemoLiveBrandTitle");
+    if (bTitleEl) bTitleEl.textContent = st.brandName;
+    const bTagEl = document.getElementById("tbbDemoLiveBrandTagline");
+    if (bTagEl) bTagEl.textContent = st.tagline;
+
+    document.querySelectorAll(".tbb-demo-preset-pill-btn").forEach(btn => {
+      const isAct = btn.getAttribute("data-preset-id") === p.id;
+      btn.style.background = isAct ? "#0D2540" : "#FFFFFF";
+      btn.style.color = isAct ? "#FFFFFF" : "#0F172A";
+      btn.style.borderColor = isAct ? "#0D2540" : "#CBD5E1";
+    });
+
+    // Enviar preset al iframe real de Studio en el iPhone
+    document.querySelectorAll(".tbb-live-iphone-studio-iframe").forEach(fr => {
+      try {
+        if (fr && fr.contentWindow) {
+          fr.contentWindow.postMessage({ type: "TBB_LOAD_PRESET", presetId: p.id, presetData: p }, "*");
+        }
+      } catch (e) {}
+    });
   };
 
   window.tbbSwitchCommercialDemoStep = function (stepNum) {
@@ -1548,48 +2046,49 @@
     const st = window.tbbCommercialDemoState;
     const isLicensed = Boolean(localStorage.getItem(LICENSE_STORAGE_KEY));
     const curStep = Math.max(0, Math.min(6, Number(st.activeDemoStep || 0)));
+    const curLang = getLang();
 
     return `
       <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
         <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
           ${[
-            { s: 0, lbl: "Paso 0 · Giro (Gratis)" },
-            { s: 1, lbl: "Paso 1 · Círculo Dorado (Gratis)" },
-            { s: 2, lbl: "Paso 2 · Touchpoints (Gratis)" },
-            { s: 3, lbl: "Paso 3 · Naming SMILE (Gratis)" },
-            { s: 4, lbl: isLicensed ? "Paso 4 · Kansei ✓" : "🔒 Paso 4 · Desbloquear ($49 USD)" }
+            { s: 0, lbl: t("iphoneStep0Free") },
+            { s: 1, lbl: t("iphoneStep1Free") },
+            { s: 2, lbl: t("iphoneStep2Free") },
+            { s: 3, lbl: t("iphoneStep3Free") },
+            { s: 4, lbl: isLicensed ? "Paso 4 · Kansei ✓" : t("iphoneStep4Unlock") }
           ].map(item => {
             const isAct = curStep === item.s;
             return `
-              <button type="button" onclick="window.tbbIphoneJumpToStep(${item.s})" style="padding:7px 14px; border-radius:999px; border:1px solid ${isAct ? '#1D4ED8' : (item.s === 4 && !isLicensed ? '#FDBA74' : '#CBD5E1')}; background:${isAct ? '#0D2540' : (item.s === 4 && !isLicensed ? '#FFF7ED' : '#FFFFFF')}; color:${isAct ? '#FFFFFF' : (item.s === 4 && !isLicensed ? '#EA580C' : '#0F172A')}; font-size:0.76rem; font-weight:500; cursor:pointer; transition:all 0.2s ease;">
+              <button type="button" onclick="window.tbbIphoneJumpToStep(${item.s})" style="padding:7px 13px; border-radius:999px; border:1px solid ${isAct ? '#1D4ED8' : (item.s === 4 && !isLicensed ? '#FDBA74' : '#CBD5E1')}; background:${isAct ? '#0D2540' : (item.s === 4 && !isLicensed ? '#FFF7ED' : '#FFFFFF')}; color:${isAct ? '#FFFFFF' : (item.s === 4 && !isLicensed ? '#EA580C' : '#0F172A')}; font-size:0.75rem; font-weight:500; cursor:pointer; transition:all 0.2s ease;">
                 ${escHtml(item.lbl)}
               </button>
             `;
           }).join("")}
-          <button type="button" onclick="window.tbbIphoneOpenActiveStepVideo()" style="padding:7px 14px; border-radius:999px; border:1px solid #1D4ED8; background:#EFF6FF; color:#1D4ED8; font-size:0.76rem; font-weight:600; cursor:pointer;">
-            ▶ Video HeyGen del Paso
+          <button type="button" onclick="window.tbbIphoneOpenActiveStepVideo()" style="padding:7px 13px; border-radius:999px; border:1px solid #1D4ED8; background:#EFF6FF; color:#1D4ED8; font-size:0.75rem; font-weight:500; cursor:pointer;">
+            ${escHtml(t("iphoneVideoBtn"))}
           </button>
         </div>
 
         <!-- Mockup Real de iPhone 16 Pro Titanium con la App Real (/studio) y Aura en Vivo -->
-        <div style="position:relative; width:392px; max-width:94vw; height:790px; background:linear-gradient(145deg, #1E293B 0%, #0F172A 50%, #334155 100%); border-radius:54px; padding:13px; box-shadow:0 34px 90px rgba(15,23,42,0.26), inset 0 0 0 2px rgba(255,255,255,0.22); display:flex; flex-direction:column;">
+        <div style="position:relative; width:392px; max-width:94vw; height:790px; background:linear-gradient(145deg, #1E293B 0%, #0F172A 50%, #334155 100%); border-radius:54px; padding:13px; box-shadow:0 34px 90px rgba(15,23,42,0.22), inset 0 0 0 2px rgba(255,255,255,0.22); display:flex; flex-direction:column;">
           <!-- Dynamic Island -->
-          <div style="position:absolute; top:21px; left:50%; transform:translateX(-50%); width:116px; height:27px; background:#000000; border-radius:999px; z-index:20; display:flex; align-items:center; justify-content:space-between; padding:0 12px; box-shadow:0 2px 8px rgba(0,0,0,0.45);">
+          <div style="position:absolute; top:21px; left:50%; transform:translateX(-50%); width:116px; height:26px; background:#000000; border-radius:999px; z-index:20; display:flex; align-items:center; justify-content:space-between; padding:0 12px; box-shadow:0 2px 8px rgba(0,0,0,0.45);">
             <span class="tbb-live-pulse-dot" style="width:7px; height:7px;"></span>
-            <span style="font-family:'JetBrains Mono', monospace; font-size:0.56rem; color:#FFFFFF; letter-spacing:0.04em;">AURA LIVE</span>
+            <span style="font-family:'JetBrains Mono', monospace; font-size:0.55rem; color:#FFFFFF; letter-spacing:0.04em;">AURA LIVE</span>
             <span style="width:9px; height:9px; border-radius:50%; background:radial-gradient(circle, #38BDF8 0%, #1E3A8A 80%);"></span>
           </div>
 
           <!-- Pantalla iOS con App Real Ejecutándose en Vivo -->
           <div style="flex:1; width:100%; height:100%; background:#090D16; border-radius:42px; overflow:hidden; position:relative; display:flex; flex-direction:column;">
-            <div style="height:34px; background:#090D16; color:#FFFFFF; display:flex; align-items:center; justify-content:space-between; padding:6px 22px 0 22px; font-family:'Plus Jakarta Sans', sans-serif; font-size:0.7rem; font-weight:600; flex-shrink:0;">
+            <div style="height:34px; background:#090D16; color:#FFFFFF; display:flex; align-items:center; justify-content:space-between; padding:6px 22px 0 22px; font-family:'Plus Jakarta Sans', sans-serif; font-size:0.7rem; font-weight:500; flex-shrink:0;">
               <span>9:41</span>
               <span style="font-family:'JetBrains Mono', monospace; font-size:0.6rem; color:#38BDF8;">5G · TBB OS</span>
             </div>
             <iframe
               id="${frameId}"
               class="tbb-live-iphone-studio-iframe"
-              src="/studio?demo=true&embed=iphone"
+              src="/studio?demo=true&embed=iphone&lang=${encodeURIComponent(curLang)}"
               title="The Best Brand Studio Real App con Aura en Vivo"
               allow="microphone; autoplay; clipboard-write"
               style="flex:1; width:100%; height:100%; border:none; display:block; background:#090D16;"
@@ -1619,26 +2118,16 @@
 
   window.tbbIphoneOpenActiveStepVideo = function () {
     const curStep = Number(window.tbbCommercialDemoState.activeDemoStep || 0);
-    let sent = false;
-    document.querySelectorAll(".tbb-live-iphone-studio-iframe").forEach(fr => {
-      try {
-        if (fr && fr.contentWindow) {
-          fr.contentWindow.postMessage({ type: "TBB_IPHONE_OPEN_STEP_VIDEO", step: curStep }, "*");
-          sent = true;
-        }
-      } catch (e) {}
-    });
-    if (!sent) {
-      window.tbbOpenVideoPopupModal(curStep);
-    }
+    window.tbbOpenVideoPopupModal(curStep);
   };
 
-  // SUBPÁGINA 1: PORTADA / INICIO (REQUERIMIENTO B: VIDEO DE CONVERGENCIA TEÓRICA + REQUERIMIENTO C: DEMO IPHONE EN VIVO)
+  // SUBPÁGINA 1: PORTADA / INICIO (VIDEO CONVERGENCIA 6 TEORÍAS + IPHONE REAL + NANOBANANA PRO 4K + 36 LÁMINAS + 9 ENTREGABLES)
   window.tbbBuildSubpage1HomeHTML = function () {
     const st = window.tbbCommercialDemoState;
     const lang = getLang();
     const isManual = st.heroVisualMode === "manual";
     const step0Loc = APP_TOUR_FLOW_ITEMS[0].i18n[lang] || APP_TOUR_FLOW_ITEMS[0].i18n.es;
+    const activePreset = st.activePresetId || "tbb";
 
     const theoryPillars = [
       { step: "PASO 1", author: "Simon Sinek", theory: "El Círculo Dorado (Why · How · What)" },
@@ -1649,8 +2138,20 @@
       { step: "PASO 6", author: "Massimo Vignelli & Müller-Brockmann", theory: "Canon de Retícula en 36 Láminas y 9 Entregables" }
     ];
 
+    const plates36Meta = Array.from({ length: 36 }, (_, idx) => {
+      const n = idx + 1;
+      const pad = String(n).padStart(2, "0");
+      let chap = "c1";
+      let chapLabel = "Cap. I · Estrategia";
+      if (n >= 10 && n <= 12) { chap = "c2"; chapLabel = "Cap. II · Touchpoints"; }
+      else if (n >= 13 && n <= 20) { chap = "c3"; chapLabel = "Cap. III · Logotipo & Geometría"; }
+      else if (n >= 21 && n <= 26) { chap = "c4"; chapLabel = "Cap. IV · Color & Tipografía"; }
+      else if (n >= 27) { chap = "c5"; chapLabel = "Cap. V · Aplicaciones & Cierre"; }
+      return { n, pad, chap, chapLabel, img: `/assets/brandbook_plates_tbb/plate-${pad}.jpg` };
+    });
+
     return `
-      <section style="padding:52px 24px 56px 24px; background:linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);">
+      <section style="padding:48px 24px 52px 24px; background:linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);">
         <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:26px;">
           <div style="text-align:center; max-width:980px; display:flex; flex-direction:column; align-items:center; gap:18px;">
             <div style="display:inline-flex; align-items:center; gap:10px; padding:6px 16px; border-radius:999px; background:#F1F5F9; color:#0D2540; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; letter-spacing:0.04em;">
@@ -1658,53 +2159,53 @@
               <span>${escHtml(t("heroEyebrow"))}</span>
             </div>
 
-            <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(2.1rem, 4.3vw, 3.55rem); font-weight:600; color:#0F172A; line-height:1.12; letter-spacing:-0.03em; margin:0;">
+            <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(2.1rem, 4.3vw, 3.5rem); font-weight:600; color:#0F172A; line-height:1.12; letter-spacing:-0.03em; margin:0;">
               ${escHtml(t("heroHook"))}
             </h1>
 
-            <p style="font-size:clamp(1.0rem, 1.45vw, 1.16rem); font-weight:400; color:#475569; line-height:1.66; max-width:860px; margin:0;">
-              Respaldado científicamente por las teorías de <strong>Simon Sinek (Círculo Dorado)</strong>, <strong>Jan Carlzon (Momentos de la Verdad)</strong>, <strong>Al Ries, Jack Trout &amp; Alexandra Watkins (Posicionamiento y SMILE)</strong>, <strong>Mitsuo Nagamachi (Ingeniería Kansei)</strong>, <strong>Paul Rand &amp; Jony Ive (Geometría Vectorial Liquid Glass)</strong> y <strong>Massimo Vignelli (Canon de 36 Láminas)</strong>.
+            <p style="font-size:clamp(0.98rem, 1.38vw, 1.12rem); font-weight:400; color:#475569; line-height:1.68; max-width:880px; margin:0;">
+              ${escHtml(t("heroTheoriesCopy"))}
             </p>
 
             <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-top:4px; width:100%;">
-              <button type="button" onclick="document.getElementById('tbbHomeLiveIphoneDemoAnchor')?.scrollIntoView({behavior:'smooth'});" class="tbb-comm-btn-blue" style="padding:15px 26px; font-size:0.96rem; font-weight:600; display:inline-flex; align-items:center; gap:12px;">
+              <button type="button" onclick="document.getElementById('tbbHomeLiveIphoneDemoAnchor')?.scrollIntoView({behavior:'smooth'});" class="tbb-comm-btn-blue" style="padding:15px 26px; font-size:0.95rem; font-weight:600; display:inline-flex; align-items:center; gap:12px;">
                 <span class="tbb-live-pulse-dot"></span>
-                <span>Probar App Real con Aura (Pasos 1 al 3 Gratis)</span>
+                <span>${escHtml(t("heroBtnDemo"))}</span>
                 <span class="tbb-live-pill-badge">${escHtml(t("menu2Live"))}</span>
               </button>
 
-              <button type="button" onclick="window.tbbOpenVideoPopupModal(0)" class="tbb-btn-light-surface" style="padding:15px 24px; font-size:0.95rem; font-weight:500;">
-                <span>▶ Ver Video Introductorio del Fundador (HeyGen)</span>
+              <button type="button" onclick="window.tbbOpenVideoPopupModal(0)" class="tbb-btn-light-surface" style="padding:15px 24px; font-size:0.94rem; font-weight:500;">
+                <span>${escHtml(t("heroBtnIntroVideo"))}</span>
               </button>
 
-              <button type="button" onclick="window.tbbSwitchMainSection(3)" class="tbb-btn-light-surface" style="padding:15px 24px; font-size:0.95rem; font-weight:500;">
+              <button type="button" onclick="window.tbbSwitchMainSection(3)" class="tbb-btn-light-surface" style="padding:15px 24px; font-size:0.94rem; font-weight:500;">
                 <span>${escHtml(t("heroBtnTour"))}</span>
               </button>
             </div>
           </div>
 
-          <!-- REQUERIMIENTO B: VIDEO ANIMADO DE CONVERGENCIA DE LAS 6 TEORÍAS HACIA LA APP Y SU LOGOTIPO -->
-          <div style="width:100%; max-width:1160px; border-radius:26px; overflow:hidden; background:#FFFFFF; border:1px solid #CBD5E1; box-shadow:0 28px 75px rgba(15,23,42,0.12); position:relative;">
+          <!-- REQUERIMIENTO B: VIDEO ANIMADO DE CONVERGENCIA DE LAS 6 TEORÍAS HACIA LA APP Y SU LOGOTIPO (16:9 SIN RECORTE) -->
+          <div style="width:100%; max-width:1160px; border-radius:26px; overflow:hidden; background:#F8FAFC; border:1px solid #CBD5E1; box-shadow:0 28px 75px rgba(15,23,42,0.10); position:relative;">
             <video
               id="tbbHeroConvergenceVideoPlayer"
-              src="/assets/videos/hero_convergence_thebestbrand.mp4?v=92.0"
-              poster="/assets/videos/poster_hero_convergence.jpg?v=92.0"
+              src="/assets/videos/hero_convergence_thebestbrand.mp4?v=93.0"
+              poster="/assets/videos/poster_hero_convergence.jpg?v=93.0"
               autoplay
               muted
               loop
               playsinline
               controls
-              style="width:100%; height:auto; max-height:580px; object-fit:cover; display:block; background:#F8FAFC;"
+              style="width:100%; height:auto; aspect-ratio:16/9; max-height:652px; object-fit:contain; display:block; background:#F8FAFC;"
             ></video>
           </div>
 
-          <!-- Píldoras de Autoridad Teórica que Respaldan el Proceso -->
+          <!-- Píldoras de Autoridad Teórica que Respaldan el Proceso (1 clic = Video HeyGen + Google Flow) -->
           <div style="width:100%; max-width:1160px; display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px;">
             ${theoryPillars.map((p, idx) => `
               <div onclick="window.tbbOpenVideoPopupModal(${idx + 1})" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:16px; padding:12px 14px; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; gap:4px;">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; font-weight:600; color:#EA580C;">${escHtml(p.step)} · ▶ VIDEO HEYGEN</div>
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; font-weight:500; color:#EA580C;">${escHtml(p.step)} · ▶ HEYGEN + FLOW</div>
                 <div style="font-family:'Montserrat', sans-serif; font-size:0.84rem; font-weight:600; color:#0F172A;">${escHtml(p.author)}</div>
-                <div style="font-size:0.76rem; color:#475569; line-height:1.35;">${escHtml(p.theory)}</div>
+                <div style="font-size:0.76rem; font-weight:400; color:#475569; line-height:1.38;">${escHtml(p.theory)}</div>
               </div>
             `).join("")}
           </div>
@@ -1712,67 +2213,84 @@
       </section>
 
       <!-- REQUERIMIENTO C EN PORTADA: MOCKUP DE IPHONE CON LA APLICACIÓN REAL CONECTADA A AURA (PASOS 0 AL 3 GRATIS, PAYWALL EN PASO 4) -->
-      <section id="tbbHomeLiveIphoneDemoAnchor" style="padding:44px 24px 68px 24px; background:#FFFFFF; border-top:1px solid #F1F5F9;">
-        <div style="max-width:1260px; margin:0 auto; display:flex; flex-direction:column; gap:36px;">
+      <section id="tbbHomeLiveIphoneDemoAnchor" style="padding:52px 24px 68px 24px; background:#FFFFFF; border-top:1px solid #F1F5F9;">
+        <div style="max-width:1260px; margin:0 auto; display:flex; flex-direction:column; gap:34px;">
           <div style="text-align:center; max-width:860px; margin:0 auto;">
             <div style="display:inline-flex; align-items:center; gap:8px; padding:5px 14px; border-radius:999px; background:#FFF7ED; color:#EA580C; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; margin-bottom:10px;">
               <span class="tbb-live-pulse-dot"></span>
-              <span>APLICACIÓN REAL EN VIVO · CONECTADA AL MOTOR DE AURA</span>
+              <span>${escHtml(t("iphoneSectionKicker"))}</span>
             </div>
-            <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.75rem, 3.2vw, 2.55rem); font-weight:600; color:#0F172A; margin:0 0 10px 0; letter-spacing:-0.02em;">
-              Interactúa aquí mismo con la aplicación real: avanza gratis en los primeros 3 pasos
+            <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.75rem, 3.2vw, 2.5rem); font-weight:600; color:#0F172A; margin:0 0 10px 0; letter-spacing:-0.02em;">
+              ${escHtml(t("iphoneSectionTitle"))}
             </h2>
-            <p style="font-size:0.98rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
-              Escribe o habla con Aura dentro del iPhone. Completa sin costo hasta el <strong>Paso 3 (Naming y Clases de Niza)</strong>; al pasar al <strong>Paso 4</strong> se activa el desbloqueo de <strong>$49 USD</strong> y tus respuestas se migran automáticamente a tu nueva cuenta.
+            <p style="font-size:0.98rem; font-weight:400; color:#475569; line-height:1.68; margin:0;">
+              ${escHtml(t("iphoneSectionDesc"))}
             </p>
           </div>
 
           <div class="tbb-comm-grid-2" style="align-items:start; gap:44px;">
-            <div>
-              ${window.tbbBuildIphoneLiveStudioFrameHTML("tbbHomeIphoneStudioFrame")}
+            <div id="tbbHomeIphoneMount">
+              ${(st.activeMainSection || 1) === 1 ? window.tbbBuildIphoneLiveStudioFrameHTML("tbbHomeIphoneStudioFrame") : ""}
             </div>
 
-            <div style="display:flex; flex-direction:column; gap:22px;">
-              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:26px; display:flex; flex-direction:column; gap:16px;">
+            <div style="display:flex; flex-direction:column; gap:20px;">
+              <!-- Selector rápido de 3 Casos de Estudio Reales -->
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:20px; padding:18px 22px; display:flex; flex-direction:column; gap:10px;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#1D4ED8;">
+                  ${escHtml(t("presetsLabel"))}
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                  ${DEMO_QUICK_PRESETS.map(p => {
+                    const isAct = activePreset === p.id;
+                    return `
+                      <button type="button" data-preset-id="${p.id}" class="tbb-demo-preset-pill-btn" onclick="window.tbbApplyCommercialDemoPreset('${p.id}')" style="padding:8px 14px; border-radius:999px; border:1px solid ${isAct ? '#0D2540' : '#CBD5E1'}; background:${isAct ? '#0D2540' : '#FFFFFF'}; color:${isAct ? '#FFFFFF' : '#0F172A'}; font-size:0.78rem; font-weight:500; cursor:pointer; transition:all 0.2s ease;">
+                        ${escHtml(p.label)}
+                      </button>
+                    `;
+                  }).join("")}
+                </div>
+              </div>
+
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:24px; display:flex; flex-direction:column; gap:14px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-                  <span style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; font-weight:600; color:#1D4ED8; background:#EFF6FF; padding:4px 12px; border-radius:999px;">
-                    SINCRONIZACIÓN Y RETENCIÓN AUTOMÁTICA DE PROGRESO
+                  <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#1D4ED8; background:#EFF6FF; padding:4px 12px; border-radius:999px;">
+                    ${escHtml(t("syncBadgeTitle"))}
                   </span>
-                  <span id="tbbLiveSyncStepBadge" style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; color:#16A34A; font-weight:600;">
-                    ● AURA CONECTADA EN VIVO
+                  <span id="tbbLiveSyncStepBadge" class="tbb-live-migration-status-txt" style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; color:#16A34A; font-weight:500;">
+                    ${escHtml(t("syncLiveConnected"))}
                   </span>
                 </div>
-                <h3 style="font-family:'Montserrat', sans-serif; font-size:1.25rem; font-weight:600; color:#0F172A; margin:0;">
-                  Tu avance en los Pasos 1 al 3 se guarda en tiempo real
+                <h3 style="font-family:'Montserrat', sans-serif; font-size:1.2rem; font-weight:600; color:#0F172A; margin:0;">
+                  ${escHtml(t("syncCardHeading"))}
                 </h3>
-                <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem; color:#334155;">
-                  <div style="padding:10px 14px; background:#FFFFFF; border-radius:12px; border:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
-                    <span><strong>Paso 0 y Paso 1:</strong> Giro + Círculo Dorado (Simon Sinek)</span>
-                    <span style="color:#16A34A; font-weight:600; font-size:0.78rem;">✓ Acceso Libre</span>
+                <div style="display:flex; flex-direction:column; gap:9px; font-size:0.86rem; font-weight:400; color:#334155;">
+                  <div style="padding:10px 14px; background:#FFFFFF; border-radius:12px; border:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    <span>${escHtml(t("syncRow1"))}</span>
+                    <span style="color:#16A34A; font-weight:500; font-size:0.76rem; white-space:nowrap;">${escHtml(t("syncFreeBadge"))}</span>
                   </div>
-                  <div style="padding:10px 14px; background:#FFFFFF; border-radius:12px; border:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
-                    <span><strong>Paso 2:</strong> Touchpoints Antes, Durante y Después (Carlzon)</span>
-                    <span style="color:#16A34A; font-weight:600; font-size:0.78rem;">✓ Acceso Libre</span>
+                  <div style="padding:10px 14px; background:#FFFFFF; border-radius:12px; border:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    <span>${escHtml(t("syncRow2"))}</span>
+                    <span style="color:#16A34A; font-weight:500; font-size:0.76rem; white-space:nowrap;">${escHtml(t("syncFreeBadge"))}</span>
                   </div>
-                  <div style="padding:10px 14px; background:#FFFFFF; border-radius:12px; border:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
-                    <span><strong>Paso 3:</strong> Naming SMILE y Clases de Niza (Watkins)</span>
-                    <span style="color:#16A34A; font-weight:600; font-size:0.78rem;">✓ Acceso Libre</span>
+                  <div style="padding:10px 14px; background:#FFFFFF; border-radius:12px; border:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    <span>${escHtml(t("syncRow3"))}</span>
+                    <span style="color:#16A34A; font-weight:500; font-size:0.76rem; white-space:nowrap;">${escHtml(t("syncFreeBadge"))}</span>
                   </div>
-                  <div style="padding:12px 14px; background:#FFF7ED; border-radius:12px; border:1px solid #FDBA74; display:flex; justify-content:space-between; align-items:center;">
-                    <span><strong>Paso 4 al 6:</strong> Kansei, Logotipo Vectorial y 9 Entregables</span>
-                    <button type="button" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')" style="background:#0D2540; color:#FFFFFF; border:none; border-radius:999px; padding:6px 14px; font-size:0.75rem; font-weight:600; cursor:pointer;">
-                      Desbloquear · $49 USD
+                  <div style="padding:11px 14px; background:#FFF7ED; border-radius:12px; border:1px solid #FDBA74; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    <span>${escHtml(t("syncRow4"))}</span>
+                    <button type="button" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')" style="background:#0D2540; color:#FFFFFF; border:none; border-radius:999px; padding:6px 14px; font-size:0.74rem; font-weight:600; cursor:pointer; white-space:nowrap;">
+                      ${escHtml(t("syncUnlockBtn"))}
                     </button>
                   </div>
                 </div>
               </div>
 
-              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:22px; text-align:center;">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#EA580C; margin-bottom:6px;">
-                  VISTA EN VIVO DEL CÍRCULO DORADO DE TU MARCA
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:20px; text-align:center;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#EA580C; margin-bottom:4px;">
+                  ${escHtml(t("gcLiveKicker"))}
                 </div>
-                <div id="tbbDemoLiveBrandTitle" style="font-family:'Montserrat', sans-serif; font-size:1.25rem; font-weight:600; color:#0F172A;">${escHtml(st.brandName)}</div>
-                <div id="tbbDemoLiveBrandTagline" style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#1D4ED8; margin-top:2px; margin-bottom:8px;">${escHtml(st.tagline)}</div>
+                <div id="tbbDemoLiveBrandTitle" style="font-family:'Montserrat', sans-serif; font-size:1.2rem; font-weight:600; color:#0F172A;">${escHtml(st.brandName)}</div>
+                <div id="tbbDemoLiveBrandTagline" style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; font-weight:500; color:#1D4ED8; margin-top:2px; margin-bottom:6px;">${escHtml(st.tagline)}</div>
                 <div id="tbbDemoLiveGoldenCircleWrap">
                   ${window.tbbBuildCircularGoldenCircleSVG()}
                 </div>
@@ -1782,21 +2300,100 @@
         </div>
       </section>
 
-      <section style="padding:28px 24px 80px 24px; background:#F8FAFC;">
-        <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:28px;">
-          <div style="text-align:center; max-width:760px;">
-            <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#1D4ED8; letter-spacing:0.06em; margin-bottom:6px;">
-              ${escHtml(t("heroShowcaseTag"))}
+      <!-- SHOWCASE DE LOGOTIPOS NANO BANANA PRO 4K + VECTORES BÉZIER 100% EN CURVAS -->
+      <section style="padding:60px 24px 64px 24px; background:#F8FAFC; border-top:1px solid #E2E8F0;">
+        <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:36px;">
+          <div style="text-align:center; max-width:860px; margin:0 auto;">
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#EA580C; letter-spacing:0.06em; margin-bottom:8px;">
+              ${escHtml(t("nanoKicker"))}
             </div>
-            <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.55rem, 2.8vw, 2.25rem); font-weight:600; color:#0F172A; margin:0 0 10px 0;">
-              ${escHtml(t("heroShowcaseTitle"))}
+            <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.7rem, 3.1vw, 2.45rem); font-weight:600; color:#0F172A; margin:0 0 10px 0; letter-spacing:-0.02em;">
+              ${escHtml(t("nanoTitle"))}
             </h2>
-            <p style="font-size:0.98rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
-              ${escHtml(t("heroShowcaseDesc"))}
+            <p style="font-size:0.98rem; font-weight:400; color:#475569; line-height:1.68; margin:0;">
+              ${escHtml(t("nanoDesc"))}
             </p>
           </div>
 
-          <div style="display:inline-flex; background:#E2E8F0; padding:5px; border-radius:999px; gap:6px;">
+          <!-- Comparativa Interactiva Antes / Después (ARCO Ingeniería + The Best Brand Liquid Glass) -->
+          <div class="tbb-comm-grid-2" style="gap:28px; align-items:stretch;">
+            <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:24px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; gap:16px; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(14, '/assets/app_captures/step5_arco_despues_nanobanana.png', 'ARCO Ingeniería · Evolución Nano Banana Pro 4K + Bézier')">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#1D4ED8; background:#EFF6FF; padding:4px 10px; border-radius:999px;">CASO REAL 01 · REDISEÑO INDUSTRIAL</span>
+                <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:#EA580C;">10 ITERACIONES NANO BANANA PRO</span>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:center;">
+                <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:14px; text-align:center;">
+                  <div style="font-family:'JetBrains Mono', monospace; font-size:0.64rem; color:#64748B; margin-bottom:8px;">${escHtml(t("nanoBeforeLabel"))}</div>
+                  <img src="/assets/logos/arco_ingenieria_base_actual.png" alt="ARCO Base" style="width:100%; height:136px; object-fit:contain; display:block;" />
+                </div>
+                <div style="background:#FFFFFF; border:1.5px solid #93C5FD; border-radius:16px; padding:14px; text-align:center; box-shadow:0 12px 28px rgba(29,78,216,0.08);">
+                  <div style="font-family:'JetBrains Mono', monospace; font-size:0.64rem; color:#1D4ED8; margin-bottom:8px;">${escHtml(t("nanoAfterLabel"))}</div>
+                  <img src="/assets/logos/arco_ingenieria_nanobanana_logo.png" alt="ARCO Nano Banana Pro" style="width:100%; height:136px; object-fit:contain; display:block;" />
+                </div>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.84rem; color:#475569;">
+                <span>ARCO Ingeniería · Paleta Institucional Respetada + Vector .SVG y .AI</span>
+                <span style="color:#1D4ED8; font-weight:500;">⤢ Ver en estudio</span>
+              </div>
+            </div>
+
+            <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:24px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; gap:16px; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(13, '/assets/app_captures/step5_tbb_liquid_glass.png', 'The Best Brand · 6 Iteraciones Apple Liquid Glass + Vector Bézier')">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#EA580C; background:#FFF7ED; padding:4px 10px; border-radius:999px;">CASO REAL 02 · APPLE LIQUID GLASS 4K</span>
+                <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:#1D4ED8;">6 ITERACIONES + CURVAS BÉZIER</span>
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; align-items:center;">
+                ${[1, 2, 3, 4].map(n => `
+                  <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:8px; text-align:center;">
+                    <img src="/assets/brandbook/step5b_master_logo_0${n}.jpg" alt="Master Lockup 0${n}" style="width:100%; height:118px; object-fit:contain; border-radius:10px; display:block;" />
+                    <div style="font-family:'JetBrains Mono', monospace; font-size:0.6rem; color:#475569; margin-top:6px;">LOCKUP 0${n}</div>
+                  </div>
+                `).join("")}
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.84rem; color:#475569;">
+                <span>4 Configuraciones Oficiales: Horizontal, Apilado, Símbolo 1:1 y Sello Circular</span>
+                <span style="color:#1D4ED8; font-weight:500;">⤢ Ampliar</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tira de identidades adicionales creadas con Nano Banana Pro -->
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+            ${[
+              { img: "/assets/logos/tbb_official_liquid_glass_logo.jpg", name: "The Best Brand · Aura Liquid Glass", tag: "SaaS IA · 36 Láminas" },
+              { img: "/assets/logos/improbears_oficial_positivo.png", name: "ImproBears · Marca Madre + 4 Submarcas", tag: "Arquitectura Homologada" },
+              { img: "/assets/showcase/logo_coffee.jpg", name: "Kanso Roasters · Specialty Coffee", tag: "Síntesis Kansei Minimalista" },
+              { img: "/assets/showcase/logo_fintech.jpg", name: "Vortex Pay · Wealth & Fintech", tag: "Geometría Vectorial Precisa" }
+            ].map(card => `
+              <div onclick="window.tbbOpenPlateLightboxModal(13, '${card.img}', '${escHtml(card.name)}')" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:18px; padding:16px; display:flex; align-items:center; gap:14px; cursor:pointer;">
+                <img src="${card.img}" alt="${escHtml(card.name)}" style="width:62px; height:62px; object-fit:contain; border-radius:14px; background:#F8FAFC; padding:4px; flex-shrink:0;" />
+                <div>
+                  <div style="font-family:'Montserrat', sans-serif; font-size:0.86rem; font-weight:600; color:#0F172A; line-height:1.25;">${escHtml(card.name)}</div>
+                  <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; color:#64748B; margin-top:4px;">${escHtml(card.tag)}</div>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      </section>
+
+      <!-- CONMUTADOR INTERACTIVO CAPTURA REAL DE LA APP VS MANUAL DE 36 LÁMINAS + FILMSTRIP DE LAS 36 LÁMINAS -->
+      <section style="padding:60px 24px 68px 24px; background:#FFFFFF; border-top:1px solid #E2E8F0;">
+        <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:28px;">
+          <div style="text-align:center; max-width:820px;">
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#1D4ED8; letter-spacing:0.06em; margin-bottom:6px;">
+              ${escHtml(t("plates36Kicker"))}
+            </div>
+            <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.65rem, 2.9vw, 2.35rem); font-weight:600; color:#0F172A; margin:0 0 10px 0;">
+              ${escHtml(t("plates36Title"))}
+            </h2>
+            <p style="font-size:0.98rem; font-weight:400; color:#475569; line-height:1.68; margin:0;">
+              ${escHtml(t("plates36Desc"))}
+            </p>
+          </div>
+
+          <div style="display:inline-flex; background:#F1F5F9; padding:5px; border-radius:999px; gap:6px; border:1px solid #E2E8F0;">
             <button type="button" onclick="window.tbbSetHeroVisualMode('app')" style="padding:9px 20px; border-radius:999px; border:none; background:${!isManual ? '#FFFFFF' : 'transparent'}; color:${!isManual ? '#0F172A' : '#475569'}; font-size:0.84rem; font-weight:500; cursor:pointer; box-shadow:${!isManual ? '0 4px 12px rgba(15,23,42,0.08)' : 'none'};">
               ${escHtml(t("heroSwitchApp"))}
             </button>
@@ -1805,14 +2402,87 @@
             </button>
           </div>
 
-          <div style="width:100%; position:relative; border-radius:24px; overflow:hidden; box-shadow:0 30px 80px rgba(15,23,42,0.12); background:#FFFFFF; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(1, '${isManual ? '/assets/brandbook_plates_tbb/plate-01.jpg' : '/assets/app_captures/step0_logo_aura.png'}', '${escHtml(step0Loc.title)}')">
+          <div style="width:100%; position:relative; border-radius:24px; overflow:hidden; box-shadow:0 24px 64px rgba(15,23,42,0.10); border:1px solid #E2E8F0; background:#FFFFFF; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(1, '${isManual ? '/assets/brandbook_plates_tbb/plate-01.jpg' : '/assets/app_captures/step0_logo_aura.png'}', '${escHtml(step0Loc.title)}')">
             <img src="${isManual ? '/assets/brandbook_plates_tbb/plate-01.jpg' : '/assets/app_captures/step0_logo_aura.png'}" alt="The Best Brand Showcase" style="width:100%; height:auto; display:block;" />
             <div style="position:absolute; top:18px; left:18px; background:rgba(255,255,255,0.94); backdrop-filter:blur(10px); padding:8px 16px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#0F172A; box-shadow:0 8px 24px rgba(15,23,42,0.12);">
               ${isManual ? 'BRANDBOOK OFICIAL · LÁMINA 01 / 36' : escHtml(step0Loc.title)} · (${lang.toUpperCase()})
             </div>
           </div>
 
-          <div style="padding-top:28px; display:flex; flex-wrap:wrap; justify-content:center; gap:14px;">
+          <!-- Filtros por Capítulo + Filmstrip Interactivo de las 36 Láminas -->
+          <div style="width:100%; display:flex; flex-direction:column; gap:14px; padding-top:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+              <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                ${[
+                  { id: "all", lbl: "Todas las 36 Láminas (01–36)" },
+                  { id: "c1", lbl: "Cap. I · Estrategia (01–09)" },
+                  { id: "c2", lbl: "Cap. II · Touchpoints (10–12)" },
+                  { id: "c3", lbl: "Cap. III · Logotipo & Curvas (13–20)" },
+                  { id: "c4", lbl: "Cap. IV · Color & Fuentes (21–26)" },
+                  { id: "c5", lbl: "Cap. V · Mockups & Cierre (27–36)" }
+                ].map((ch, idx) => `
+                  <button type="button" data-chapter="${ch.id}" class="tbb-plate36-filter-btn" onclick="window.tbbFilterHome36PlatesChapter('${ch.id}')" style="padding:7px 14px; border-radius:999px; border:1px solid ${idx === 0 ? '#0D2540' : '#CBD5E1'}; background:${idx === 0 ? '#0D2540' : '#FFFFFF'}; color:${idx === 0 ? '#FFFFFF' : '#334155'}; font-size:0.76rem; font-weight:500; cursor:pointer;">
+                    ${escHtml(ch.lbl)}
+                  </button>
+                `).join("")}
+              </div>
+              <a href="/assets/deliverables_tbb/Manual_Identidad_36_Laminas_the_best_brand.pdf" target="_blank" rel="noopener" class="tbb-btn-light-surface" style="padding:7px 16px; font-size:0.78rem; text-decoration:none;">
+                ⬇ PDF 36 Láminas
+              </a>
+            </div>
+
+            <div style="display:flex; gap:14px; overflow-x:auto; padding:6px 2px 16px 2px; scroll-snap-type:x mandatory;">
+              ${plates36Meta.map(p => `
+                <div data-chapter="${p.chap}" class="tbb-plate36-thumb-card" onclick="window.tbbOpenPlateLightboxModal(${p.n})" style="min-width:230px; max-width:230px; scroll-snap-align:start; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:10px; display:flex; flex-direction:column; gap:8px; cursor:pointer; flex-shrink:0;">
+                  <img src="${p.img}" alt="Lámina ${p.pad}" loading="lazy" style="width:100%; height:132px; object-fit:cover; border-radius:10px; background:#FFFFFF; border:1px solid #E2E8F0;" />
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:600; color:#0F172A;">LÁMINA ${p.pad} / 36</span>
+                    <span style="font-size:0.68rem; color:#1D4ED8;">⤢ Max Res</span>
+                  </div>
+                  <div style="font-size:0.72rem; color:#64748B;">${escHtml(p.chapLabel)}</div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BENTO GRID DE LOS 9 ENTREGABLES EJECUTIVOS EN PORTADA -->
+      <section style="padding:56px 24px 80px 24px; background:#F8FAFC; border-top:1px solid #E2E8F0;">
+        <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:32px;">
+          <div style="text-align:center; max-width:820px; margin:0 auto;">
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#EA580C; letter-spacing:0.06em; margin-bottom:6px;">
+              ${escHtml(t("bento9Kicker"))}
+            </div>
+            <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.65rem, 2.9vw, 2.35rem); font-weight:600; color:#0F172A; margin:0 0 10px 0;">
+              ${escHtml(t("bento9Title"))}
+            </h2>
+            <p style="font-size:0.98rem; font-weight:400; color:#475569; line-height:1.68; margin:0;">
+              ${escHtml(t("bento9Desc"))}
+            </p>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(275px, 1fr)); gap:18px;">
+            ${OFFICIAL_9_DELIVERABLES.map(item => {
+              const loc = item.i18n[lang] || item.i18n.es;
+              return `
+                <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:20px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+                  <div onclick="window.tbbOpenPlateLightboxModal(${item.plateNum}, '${item.thumb}', '${escHtml(loc.title)}', '${item.sampleUrl}')" style="cursor:pointer;">
+                    <img src="${item.thumb}" alt="${escHtml(loc.title)}" loading="lazy" style="width:100%; height:144px; object-fit:cover; object-position:top center; border-radius:12px; background:#F8FAFC; border:1px solid #F1F5F9; margin-bottom:10px;" />
+                    <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:500; color:#EA580C;">#${item.num} · ${escHtml(item.format)}</div>
+                    <h3 style="font-family:'Montserrat', sans-serif; font-size:0.95rem; font-weight:600; color:#0F172A; margin:4px 0 6px 0; line-height:1.3;">${escHtml(loc.title)}</h3>
+                    <p style="font-size:0.82rem; font-weight:400; color:#64748B; line-height:1.5; margin:0;">${escHtml(loc.desc)}</p>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; padding-top:10px; border-top:1px solid #F1F5F9;">
+                    <button type="button" onclick="window.tbbOpenPlateLightboxModal(${item.plateNum}, '${item.thumb}', '${escHtml(loc.title)}', '${item.sampleUrl}')" class="tbb-btn-light-surface" style="padding:6px 12px; font-size:0.75rem;">⤢ Max Res</button>
+                    <a href="${item.sampleUrl}" target="_blank" rel="noopener" style="font-size:0.76rem; font-weight:500; color:#1D4ED8; text-decoration:none;">${escHtml(t("packDownloadSample"))} →</a>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+
+          <div style="padding-top:16px; display:flex; flex-wrap:wrap; justify-content:center; gap:14px;">
             <button type="button" onclick="window.tbbSwitchMainSection(2)" class="tbb-comm-btn-blue" style="padding:15px 26px; font-size:0.94rem; font-weight:600;">
               <span class="tbb-live-pulse-dot"></span>
               <span>${escHtml(t("nextToDemoBtn"))}</span>
@@ -1833,6 +2503,7 @@
   window.tbbBuildSubpage2DemoHTML = function () {
     const st = window.tbbCommercialDemoState;
     const step = [0, 1, 2, 3].includes(st.activeDemoStep) ? st.activeDemoStep : 0;
+    const activePreset = st.activePresetId || "tbb";
 
     return `
       <section style="padding:52px 24px 84px 24px; background:#FFFFFF;">
@@ -1842,63 +2513,84 @@
               <span class="tbb-live-pulse-dot"></span>
               <span>${escHtml(t("demoEyebrow"))} · IPHONE REAL CONECTADO A AURA</span>
             </div>
-            <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.85rem, 3.4vw, 2.75rem); font-weight:600; color:#0F172A; margin:0 0 12px 0; letter-spacing:-0.02em;">
-              Avanza gratis a lo largo de los primeros 3 pasos reales con Aura en vivo
+            <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.85rem, 3.4vw, 2.7rem); font-weight:600; color:#0F172A; margin:0 0 12px 0; letter-spacing:-0.02em;">
+              ${escHtml(t("demoTitle"))}
             </h1>
-            <p style="font-size:1.0rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
-              Ejecuta la aplicación real en el iPhone: responde el <strong>Paso 0 (Giro)</strong>, <strong>Paso 1 (Círculo Dorado)</strong>, <strong>Paso 2 (Touchpoints)</strong> y <strong>Paso 3 (Naming y Clases de Niza)</strong>. Al avanzar al <strong>Paso 4</strong>, desbloquea tu licencia de <strong>$49 USD</strong> y tus respuestas se migran automáticamente a tu cuenta.
+            <p style="font-size:1.0rem; font-weight:400; color:#475569; line-height:1.68; margin:0;">
+              ${escHtml(t("demoDesc"))}
             </p>
           </div>
 
           <div class="tbb-comm-grid-2" style="align-items:start; gap:44px;">
-            <div>
-              ${window.tbbBuildIphoneLiveStudioFrameHTML("tbbSubpage2IphoneStudioFrame")}
+            <div id="tbbSubpage2IphoneMount">
+              ${(st.activeMainSection || 1) === 2 ? window.tbbBuildIphoneLiveStudioFrameHTML("tbbSubpage2IphoneStudioFrame") : ""}
             </div>
 
-            <div style="display:flex; flex-direction:column; gap:22px;">
-              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:26px; display:flex; flex-direction:column; gap:16px;">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:600; color:#1D4ED8;">
-                  FLUJO DE RETENCIÓN Y MIGRACIÓN AUTOMÁTICA DE DATOS
+            <div style="display:flex; flex-direction:column; gap:20px;">
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:20px; padding:18px 22px; display:flex; flex-direction:column; gap:10px;">
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#1D4ED8;">
+                  ${escHtml(t("presetsLabel"))}
                 </div>
-                <h3 style="font-family:'Montserrat', sans-serif; font-size:1.25rem; font-weight:600; color:#0F172A; margin:0;">
-                  ¿Cómo funciona tu progreso en esta Demo Real?
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                  ${DEMO_QUICK_PRESETS.map(p => {
+                    const isAct = activePreset === p.id;
+                    return `
+                      <button type="button" data-preset-id="${p.id}" class="tbb-demo-preset-pill-btn" onclick="window.tbbApplyCommercialDemoPreset('${p.id}')" style="padding:8px 14px; border-radius:999px; border:1px solid ${isAct ? '#0D2540' : '#CBD5E1'}; background:${isAct ? '#0D2540' : '#FFFFFF'}; color:${isAct ? '#FFFFFF' : '#0F172A'}; font-size:0.78rem; font-weight:500; cursor:pointer; transition:all 0.2s ease;">
+                        ${escHtml(p.label)}
+                      </button>
+                    `;
+                  }).join("")}
+                </div>
+              </div>
+
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:26px; display:flex; flex-direction:column; gap:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                  <div style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; font-weight:500; color:#1D4ED8;">
+                    ${escHtml(t("syncBadgeTitle"))}
+                  </div>
+                  <span class="tbb-live-migration-status-txt" style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; color:#16A34A; font-weight:500;">
+                    ${escHtml(t("syncLiveConnected"))}
+                  </span>
+                </div>
+                <h3 style="font-family:'Montserrat', sans-serif; font-size:1.22rem; font-weight:600; color:#0F172A; margin:0;">
+                  ${escHtml(t("syncCardHeading"))}
                 </h3>
-                <p style="font-size:0.9rem; color:#475569; line-height:1.6; margin:0;">
-                  A diferencia de un formulario estático, el iPhone de la izquierda ejecuta el motor real de <strong>The Best Brand Studio</strong> con <strong>Aura</strong> respondiendo en vivo y los videos del fundador en <strong>HeyGen</strong> entre cada paso.
+                <p style="font-size:0.9rem; font-weight:400; color:#475569; line-height:1.62; margin:0;">
+                  ${escHtml(t("iphoneSectionDesc"))}
                 </p>
                 <div style="display:flex; flex-direction:column; gap:10px;">
-                  <button type="button" onclick="window.tbbIphoneJumpToStep(0)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 0 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:0.88rem; font-weight:600; color:#0F172A;">Paso 0 · Objetivo, Logo Actual y Giro</span>
-                    <span style="font-size:0.75rem; color:#16A34A; font-weight:600;">Gratis en iPhone →</span>
+                  <button type="button" onclick="window.tbbIphoneJumpToStep(0)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 0 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    <span style="font-size:0.86rem; font-weight:500; color:#0F172A;">${escHtml(t("syncRow1"))}</span>
+                    <span style="font-size:0.74rem; color:#16A34A; font-weight:500; white-space:nowrap;">${escHtml(t("syncFreeBadge"))} →</span>
                   </button>
-                  <button type="button" onclick="window.tbbIphoneJumpToStep(1)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 1 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:0.88rem; font-weight:600; color:#0F172A;">Paso 1 · El Círculo Dorado (Simon Sinek)</span>
-                    <span style="font-size:0.75rem; color:#16A34A; font-weight:600;">Gratis en iPhone →</span>
+                  <button type="button" onclick="window.tbbIphoneJumpToStep(1)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 1 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    <span style="font-size:0.86rem; font-weight:500; color:#0F172A;">Paso 1 · Círculo Dorado (Simon Sinek)</span>
+                    <span style="font-size:0.74rem; color:#16A34A; font-weight:500; white-space:nowrap;">${escHtml(t("syncFreeBadge"))} →</span>
                   </button>
-                  <button type="button" onclick="window.tbbIphoneJumpToStep(2)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 2 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:0.88rem; font-weight:600; color:#0F172A;">Paso 2 · Touchpoints Antes, Durante y Después</span>
-                    <span style="font-size:0.75rem; color:#16A34A; font-weight:600;">Gratis en iPhone →</span>
+                  <button type="button" onclick="window.tbbIphoneJumpToStep(2)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 2 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    <span style="font-size:0.86rem; font-weight:500; color:#0F172A;">${escHtml(t("syncRow2"))}</span>
+                    <span style="font-size:0.74rem; color:#16A34A; font-weight:500; white-space:nowrap;">${escHtml(t("syncFreeBadge"))} →</span>
                   </button>
-                  <button type="button" onclick="window.tbbIphoneJumpToStep(3)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 3 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:0.88rem; font-weight:600; color:#0F172A;">Paso 3 · Naming SMILE y Clases de Niza</span>
-                    <span style="font-size:0.75rem; color:#16A34A; font-weight:600;">Gratis en iPhone →</span>
+                  <button type="button" onclick="window.tbbIphoneJumpToStep(3)" style="padding:12px 16px; border-radius:14px; border:1px solid ${step === 3 ? '#1D4ED8' : '#E2E8F0'}; background:#FFFFFF; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    <span style="font-size:0.86rem; font-weight:500; color:#0F172A;">${escHtml(t("syncRow3"))}</span>
+                    <span style="font-size:0.74rem; color:#16A34A; font-weight:500; white-space:nowrap;">${escHtml(t("syncFreeBadge"))} →</span>
                   </button>
-                  <button type="button" onclick="window.tbbIphoneJumpToStep(4)" style="padding:14px 16px; border-radius:14px; border:1.5px solid #FDBA74; background:#FFF7ED; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:0.88rem; font-weight:600; color:#0F172A;">🔒 Paso 4 al 6 · Kansei, Logotipo y 9 Entregables</span>
-                    <span style="font-size:0.76rem; color:#EA580C; font-weight:600;">Paywall $49 USD + Migrar Cuenta →</span>
+                  <button type="button" onclick="window.tbbIphoneJumpToStep(4)" style="padding:13px 16px; border-radius:14px; border:1.5px solid #FDBA74; background:#FFF7ED; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    <span style="font-size:0.86rem; font-weight:500; color:#0F172A;">🔒 ${escHtml(t("syncRow4"))}</span>
+                    <span style="font-size:0.75rem; color:#EA580C; font-weight:600; white-space:nowrap;">${escHtml(t("syncUnlockBtn"))} →</span>
                   </button>
                 </div>
               </div>
 
               <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:22px; display:flex; flex-direction:column; gap:12px;">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; font-weight:600; color:#EA580C;">
-                  VIDEOS EXPLICATIVOS DEL FUNDADOR (HEYGEN SINCRONIZADOS)
+                <div style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; font-weight:500; color:#EA580C;">
+                  ${escHtml(t("theoryCapsulesTitle"))}
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                  ${VIDEO_CAPSULES.slice(0, 4).map((cap, idx) => `
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px;">
+                  ${VIDEO_CAPSULES.map((cap, idx) => `
                     <button type="button" onclick="window.tbbOpenVideoPopupModal(${idx})" style="padding:10px 12px; border-radius:12px; border:1px solid #CBD5E1; background:#FFFFFF; text-align:left; cursor:pointer;">
-                      <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; color:#1D4ED8; font-weight:600;">▶ PASO ${idx} · ${cap.duration}</div>
-                      <div style="font-size:0.78rem; font-weight:600; color:#0F172A; margin-top:2px;">Video HeyGen Paso ${idx}</div>
+                      <div style="font-family:'JetBrains Mono', monospace; font-size:0.64rem; color:#1D4ED8; font-weight:500;">▶ PASO ${idx} · ${cap.duration}</div>
+                      <div style="font-size:0.76rem; font-weight:500; color:#0F172A; margin-top:2px;">HeyGen + Flow Paso ${idx}</div>
                     </button>
                   `).join("")}
                 </div>
@@ -1919,47 +2611,66 @@
     `;
   };
 
-  // SUBPÁGINA 3: APP TOUR (SCROLLING STORYTELLING: PARALLAX, STICKY STACKING, HORIZONTAL TRACK Y POP-UPS DE VIDEO)
+  // SUBPÁGINA 3: APP TOUR (RECORRIDO PANORÁMICO LIMPIO SIN SOLAPAMIENTO + COMPARATIVAS 2-UP + POP-UPS HEYGEN + 9 DESCARGABLES)
   window.tbbBuildSubpage3AppTourHTML = function () {
     const lang = getLang();
 
+    const quickSteps = [
+      { id: "tbbTourItem_0", lbl: "Paso 0 · Giro" },
+      { id: "tbbTourItem_2", lbl: "Paso 1 · Círculo Dorado" },
+      { id: "tbbTourItem_4", lbl: "Paso 2 · Touchpoints" },
+      { id: "tbbTourItem_6", lbl: "Paso 3 · Naming SMILE" },
+      { id: "tbbTourItem_8", lbl: "Paso 4 · Kansei & Fuentes" },
+      { id: "tbbTourItem_10", lbl: "Paso 5 · Nano Banana Pro" },
+      { id: "tbbTourItem_12", lbl: "Paso 6 · 36 Láminas & 9 Entregables" }
+    ];
+
     return `
-      <section style="padding:68px 24px 48px 24px; background:linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); text-align:center;">
+      <section style="padding:60px 24px 36px 24px; background:linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); text-align:center;">
         <div style="max-width:900px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:16px;">
           <div style="font-family:'JetBrains Mono', monospace; font-size:0.74rem; font-weight:500; color:#1D4ED8; letter-spacing:0.06em;">
             ${escHtml(t("tourEyebrow"))} · (${lang.toUpperCase()})
           </div>
-          <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(2rem, 3.8vw, 3.1rem); font-weight:600; color:#0F172A; margin:0; line-height:1.15; letter-spacing:-0.02em;">
+          <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(2rem, 3.8vw, 3.05rem); font-weight:600; color:#0F172A; margin:0; line-height:1.15; letter-spacing:-0.02em;">
             ${escHtml(t("tourTitle"))}
           </h1>
-          <p style="font-size:1.05rem; font-weight:400; color:#475569; line-height:1.68; margin:0; max-width:760px;">
+          <p style="font-size:1.02rem; font-weight:400; color:#475569; line-height:1.68; margin:0; max-width:760px;">
             ${escHtml(t("tourDesc"))}
           </p>
+
+          <!-- Barra Rápida de Salto por Paso (Sticky Friendly) -->
+          <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:10px;">
+            ${quickSteps.map(qs => `
+              <button type="button" onclick="document.getElementById('${qs.id}')?.scrollIntoView({behavior:'smooth', block:'start'});" class="tbb-btn-light-surface" style="padding:7px 14px; font-size:0.76rem; font-weight:500;">
+                ${escHtml(qs.lbl)}
+              </button>
+            `).join("")}
+          </div>
         </div>
       </section>
 
       <section style="padding:20px 24px 72px 24px; background:#F8FAFC;">
-        <div style="max-width:1220px; margin:0 auto; display:flex; flex-direction:column; gap:72px;">
+        <div style="max-width:1220px; margin:0 auto; display:flex; flex-direction:column; gap:44px;">
           ${APP_TOUR_FLOW_ITEMS.map((item, idx) => {
             const loc = item.i18n[lang] || item.i18n.es;
             const isPopup = item.type === "video_popup";
             const isFinale = item.type === "deliverables_finale";
-            const stickyTop = 86 + (idx % 4) * 10;
+            const hasSecondary = Boolean(item.secondaryImg);
 
             return `
-              <article class="tbb-tour-sticky-stage" style="position:sticky; top:${stickyTop}px; background:#FFFFFF; border-radius:28px; padding:clamp(24px, 4vw, 44px); box-shadow:0 28px 70px rgba(15,23,42,0.08); border:1px solid ${isPopup ? '#FDBA74' : '#E2E8F0'};">
-                <div style="display:flex; flex-direction:column; gap:28px;">
+              <article id="tbbTourItem_${idx}" class="tbb-tour-clean-stage" style="background:#FFFFFF; border-radius:26px; padding:clamp(24px, 3.8vw, 40px); box-shadow:0 20px 55px rgba(15,23,42,0.06); border:1px solid ${isPopup ? '#FDBA74' : '#E2E8F0'};">
+                <div style="display:flex; flex-direction:column; gap:24px;">
                   <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;">
                     <div style="max-width:780px;">
                       <div style="display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:${isPopup ? '#EA580C' : '#1D4ED8'}; margin-bottom:8px;">
                         <span>${escHtml(item.badge)}</span>
                         <span>·</span>
-                        <span>IDIOMA ACTIVO: ${lang.toUpperCase()}</span>
+                        <span>${lang.toUpperCase()}</span>
                       </div>
-                      <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.45rem, 2.5vw, 2.05rem); font-weight:600; color:#0F172A; margin:0 0 10px 0; line-height:1.2;">
+                      <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.4rem, 2.4vw, 1.95rem); font-weight:600; color:#0F172A; margin:0 0 10px 0; line-height:1.22;">
                         ${escHtml(loc.title)}
                       </h2>
-                      <p style="font-size:1.0rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
+                      <p style="font-size:0.98rem; font-weight:400; color:#475569; line-height:1.66; margin:0;">
                         ${escHtml(loc.desc)}
                       </p>
                     </div>
@@ -1970,34 +2681,53 @@
                       </button>
                     ` : `
                       <button type="button" onclick="window.tbbOpenPlateLightboxModal(1, '${item.img}', '${escHtml(loc.title)}')" class="tbb-btn-light-surface" style="padding:10px 18px; font-size:0.82rem; font-weight:500; flex-shrink:0;">
-                        ⤢ Ampliar captura
+                        ⤢ ${escHtml(t("packOpenFullscreen"))}
                       </button>
                     `}
                   </div>
 
-                  <div style="position:relative; border-radius:20px; overflow:hidden; background:#0F172A; box-shadow:0 18px 48px rgba(15,23,42,0.12); cursor:pointer;" onclick="${isPopup ? `window.tbbOpenVideoPopupModal(${item.videoIdx})` : `window.tbbOpenPlateLightboxModal(1, '${item.img}', '${escHtml(loc.title)}')`}">
-                    <img src="${item.img}" alt="${escHtml(loc.title)}" style="width:100%; max-height:600px; object-fit:contain; display:block; margin:0 auto; background:#0F172A;" />
-                    <div style="position:absolute; bottom:14px; left:14px; right:14px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; background:rgba(255,255,255,0.95); backdrop-filter:blur(12px); padding:10px 18px; border-radius:14px;">
-                      <div style="font-size:0.84rem; font-weight:500; color:#0F172A;">
-                        ${escHtml(loc.title)}
+                  ${hasSecondary ? `
+                    <div class="tbb-comm-grid-2" style="gap:20px; align-items:stretch;">
+                      <div style="border-radius:18px; overflow:hidden; background:#F8FAFC; border:1px solid #E2E8F0; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between;" onclick="window.tbbOpenPlateLightboxModal(1, '${item.img}', '${escHtml(loc.title)} (Vista 01)')">
+                        <img src="${item.img}" alt="${escHtml(loc.title)} 1" loading="lazy" style="width:100%; max-height:460px; object-fit:contain; display:block; background:#F8FAFC;" />
+                        <div style="padding:10px 16px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:#475569;">
+                          <span>Vista Principal en Studio</span>
+                          <span style="color:#1D4ED8; font-family:'JetBrains Mono', monospace;">⤢ Ampliar</span>
+                        </div>
                       </div>
-                      <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:${isPopup ? '#EA580C' : '#1D4ED8'};">
-                        ${isPopup ? '▶ CLIC PARA REPRODUCIR VIDEO 9:16' : '⤢ CLIC PARA PANTALLA COMPLETA'}
+                      <div style="border-radius:18px; overflow:hidden; background:#F8FAFC; border:1px solid #E2E8F0; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between;" onclick="window.tbbOpenPlateLightboxModal(1, '${item.secondaryImg}', '${escHtml(loc.title)} (Vista 02)')">
+                        <img src="${item.secondaryImg}" alt="${escHtml(loc.title)} 2" loading="lazy" style="width:100%; max-height:460px; object-fit:contain; display:block; background:#F8FAFC;" />
+                        <div style="padding:10px 16px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:#475569;">
+                          <span>Vista Complementaria / Evolución Nano Banana Pro</span>
+                          <span style="color:#1D4ED8; font-family:'JetBrains Mono', monospace;">⤢ Ampliar</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ` : `
+                    <div style="border-radius:20px; overflow:hidden; background:#F8FAFC; border:1px solid #E2E8F0; cursor:pointer;" onclick="${isPopup ? `window.tbbOpenVideoPopupModal(${item.videoIdx})` : `window.tbbOpenPlateLightboxModal(1, '${item.img}', '${escHtml(loc.title)}')`}">
+                      <img src="${item.img}" alt="${escHtml(loc.title)}" loading="lazy" style="width:100%; max-height:560px; object-fit:contain; display:block; margin:0 auto; background:#F8FAFC;" />
+                      <div style="padding:12px 18px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                        <div style="font-size:0.84rem; font-weight:500; color:#0F172A;">
+                          ${escHtml(loc.title)}
+                        </div>
+                        <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:${isPopup ? '#EA580C' : '#1D4ED8'};">
+                          ${isPopup ? '▶ CLIC PARA REPRODUCIR VIDEO 9:16 HEYGEN + FLOW' : '⤢ CLIC PARA PANTALLA CASI COMPLETA'}
+                        </div>
+                      </div>
+                    </div>
+                  `}
 
                   ${isFinale ? `
                     <div style="padding-top:12px;">
                       <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#0D2540; margin-bottom:12px;">
-                        DESLIZA HORIZONTALMENTE · LOS 9 DESCARGABLES QUE OBTIENES AL FINALIZAR:
+                        ${escHtml(t("bento9Kicker"))} · LOS 9 DESCARGABLES QUE OBTIENES AL FINALIZAR:
                       </div>
                       <div style="display:flex; gap:16px; overflow-x:auto; padding-bottom:12px; scroll-snap-type:x mandatory;">
                         ${OFFICIAL_9_DELIVERABLES.map((deliv) => {
                           const dLoc = deliv.i18n[lang] || deliv.i18n.es;
                           return `
-                            <div style="min-width:290px; max-width:290px; scroll-snap-align:start; background:#F8FAFC; border-radius:18px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(${deliv.plateNum}, '${deliv.thumb}', '${escHtml(dLoc.title)}', '${deliv.sampleUrl}')">
-                              <img src="${deliv.thumb}" alt="${escHtml(dLoc.title)}" style="width:100%; height:150px; object-fit:cover; object-position:top center; border-radius:12px; background:#FFFFFF;" />
+                            <div style="min-width:290px; max-width:290px; scroll-snap-align:start; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:18px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(${deliv.plateNum}, '${deliv.thumb}', '${escHtml(dLoc.title)}', '${deliv.sampleUrl}')">
+                              <img src="${deliv.thumb}" alt="${escHtml(dLoc.title)}" loading="lazy" style="width:100%; height:150px; object-fit:cover; object-position:top center; border-radius:12px; background:#FFFFFF;" />
                               <div>
                                 <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:500; color:#EA580C;">#${deliv.num} · ${escHtml(deliv.format)}</div>
                                 <div style="font-size:0.9rem; font-weight:600; color:#0F172A; margin-top:3px;">${escHtml(dLoc.title)}</div>
@@ -2023,7 +2753,7 @@
     `;
   };
 
-  // SUBPÁGINA 4: BASES TEÓRICAS (VIDEOS CON MINIATURAS Y LIBROS CON LINKS DIRECTOS)
+  // SUBPÁGINA 4: BASES TEÓRICAS (VIDEOS 9:16 HEYGEN + GOOGLE FLOW SIN CORTAR CABEZAS Y 9 LIBROS CON LINKS DIRECTOS)
   window.tbbBuildSubpage4TheoryHTML = function () {
     const lang = getLang();
 
@@ -2046,18 +2776,19 @@
             <h2 style="font-family:'Montserrat', sans-serif; font-size:1.5rem; font-weight:600; color:#0F172A; margin:0 0 24px 0;">
               ${escHtml(t("theoryCapsulesTitle"))}
             </h2>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:24px;">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(265px, 1fr)); gap:24px;">
               ${VIDEO_CAPSULES.map((cap, idx) => {
                 const loc = cap.i18n[lang] || cap.i18n.es;
                 return `
-                  <div style="background:#F8FAFC; border-radius:20px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.25s ease; cursor:pointer;" onclick="window.tbbOpenVideoPopupModal(${idx})">
+                  <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:22px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.25s ease; cursor:pointer;" onclick="window.tbbOpenVideoPopupModal(${idx})">
                     <div>
-                      <div style="position:relative; aspect-ratio:16/10; background:#0F172A; overflow:hidden;">
-                        <img src="${cap.poster}" alt="${escHtml(loc.title)}" style="width:100%; height:100%; object-fit:cover; display:block;" />
-                        <div style="position:absolute; inset:0; background:rgba(15,23,42,0.28); display:flex; align-items:center; justify-content:center;">
-                          <div style="width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,0.94); color:#0D2540; display:flex; align-items:center; justify-content:center; font-size:1.1rem; box-shadow:0 10px 25px rgba(0,0,0,0.25);">▶</div>
+                      <div style="position:relative; height:320px; background:#0F172A; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+                        <img src="${cap.poster}" alt="${escHtml(loc.title)}" loading="lazy" style="width:100%; height:100%; object-fit:contain; object-position:top center; display:block; background:#0F172A;" />
+                        <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(15,23,42,0.05) 0%, rgba(15,23,42,0.38) 100%); display:flex; align-items:center; justify-content:center;">
+                          <div style="width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,0.94); color:#0D2540; display:flex; align-items:center; justify-content:center; font-size:1.1rem; box-shadow:0 10px 25px rgba(0,0,0,0.28);">▶</div>
                         </div>
-                        <span style="position:absolute; bottom:10px; right:10px; background:rgba(15,23,42,0.85); color:#FFFFFF; padding:3px 9px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.68rem;">${cap.duration}</span>
+                        <span style="position:absolute; top:10px; left:10px; background:rgba(255,255,255,0.92); color:#0D2540; padding:3px 9px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.64rem; font-weight:600;">PASO ${cap.step} · 9:16</span>
+                        <span style="position:absolute; bottom:10px; right:10px; background:rgba(15,23,42,0.88); color:#FFFFFF; padding:3px 9px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.68rem;">${cap.duration}</span>
                       </div>
                       <div style="padding:18px 18px 10px 18px;">
                         <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#1D4ED8; margin-bottom:4px;">${escHtml(cap.author)}</div>
@@ -2080,10 +2811,10 @@
             </h2>
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:24px;">
               ${YOUTUBE_METHODOLOGY_AUTHORS.map(a => `
-                <div style="background:#F8FAFC; border-radius:20px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
+                <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:20px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
                   <div>
                     <div style="position:relative; aspect-ratio:16/9; background:#0F172A; cursor:pointer;" onclick="window.tbbPlayYouTubeAuthorVideo('${a.id}')">
-                      <img src="${a.thumb}" alt="${escHtml(a.title)}" style="width:100%; height:100%; object-fit:cover; display:block;" />
+                      <img src="${a.thumb}" alt="${escHtml(a.title)}" loading="lazy" style="width:100%; height:100%; object-fit:cover; display:block;" />
                       <div style="position:absolute; inset:0; background:rgba(15,23,42,0.25); display:flex; align-items:center; justify-content:center;">
                         <div style="width:50px; height:50px; border-radius:50%; background:#FFFFFF; color:#0F172A; display:flex; align-items:center; justify-content:center; font-size:1.05rem;">▶</div>
                       </div>
@@ -2095,7 +2826,7 @@
                     </div>
                   </div>
                   <div style="padding:0 18px 18px 18px; display:flex; gap:10px;">
-                    <button type="button" onclick="window.tbbPlayYouTubeAuthorVideo('${a.id}')" class="tbb-btn-light-surface" style="padding:8px 14px; font-size:0.8rem; font-weight:500;">▶ Ver aquí</button>
+                    <button type="button" onclick="window.tbbPlayYouTubeAuthorVideo('${a.id}')" class="tbb-btn-light-surface" style="padding:8px 14px; font-size:0.8rem; font-weight:500;">${escHtml(t("ytWatchHere"))}</button>
                     <a href="${a.url}" target="_blank" rel="noopener" class="tbb-btn-light-surface" style="padding:8px 14px; font-size:0.8rem; font-weight:500; text-decoration:none;">YouTube ↗</a>
                   </div>
                 </div>
@@ -2109,8 +2840,8 @@
             </h2>
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(340px, 1fr)); gap:24px;">
               ${FOUNDER_ESSENTIAL_BOOKS.map(b => `
-                <div style="background:#F8FAFC; border-radius:20px; padding:20px; display:flex; gap:18px; align-items:center;">
-                  <img src="/assets/books/${b.coverImg}" alt="${escHtml(b.title)}" style="width:88px; height:128px; object-fit:cover; border-radius:10px; box-shadow:0 8px 20px rgba(15,23,42,0.12); flex-shrink:0;" />
+                <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:20px; padding:20px; display:flex; gap:18px; align-items:center;">
+                  <img src="/assets/books/${b.coverImg}" alt="${escHtml(b.title)}" loading="lazy" style="width:88px; height:128px; object-fit:cover; border-radius:10px; box-shadow:0 8px 20px rgba(15,23,42,0.12); flex-shrink:0;" />
                   <div style="display:flex; flex-direction:column; gap:6px;">
                     <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:500; color:#1D4ED8;">${escHtml(b.step)}</div>
                     <h3 style="font-family:'Montserrat', sans-serif; font-size:1.0rem; font-weight:600; color:#0F172A; margin:0;">${escHtml(b.title)}</h3>
@@ -2159,7 +2890,7 @@
             </p>
           </div>
 
-          <div class="tbb-comm-grid-2" style="background:#F8FAFC; border-radius:28px; padding:clamp(24px, 3.5vw, 40px); gap:36px; align-items:center;">
+          <div class="tbb-comm-grid-2" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:28px; padding:clamp(24px, 3.5vw, 40px); gap:36px; align-items:center;">
             <div style="position:relative; border-radius:20px; overflow:hidden; background:#FFFFFF; box-shadow:0 20px 50px rgba(15,23,42,0.10); cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(${activeItem.plateNum}, '${activeItem.thumb}', '${escHtml(activeLoc.title)}', '${activeItem.sampleUrl}')">
               <img src="${activeItem.thumb}" alt="${escHtml(activeLoc.title)}" style="width:100%; max-height:440px; object-fit:contain; display:block; margin:0 auto;" />
               <div style="position:absolute; bottom:12px; right:12px; background:rgba(15,23,42,0.88); color:#FFFFFF; padding:6px 14px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.7rem;">
@@ -2169,7 +2900,7 @@
 
             <div style="display:flex; flex-direction:column; gap:18px;">
               <div style="display:inline-flex; align-items:center; gap:8px; align-self:flex-start; padding:5px 14px; border-radius:999px; background:#EFF6FF; color:#1D4ED8; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500;">
-                ENTREGABLE #${activeItem.num} DE 09 · ${escHtml(activeItem.format)}
+                #${activeItem.num} / 09 · ${escHtml(activeItem.format)}
               </div>
               <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.4rem, 2.4vw, 1.95rem); font-weight:600; color:#0F172A; margin:0; line-height:1.22;">
                 ${escHtml(activeLoc.title)}
@@ -2188,8 +2919,8 @@
               </div>
 
               <div style="display:flex; gap:10px; padding-top:8px;">
-                <button type="button" onclick="window.tbbSelectDeliverableCarousel(${activeIdx - 1})" class="tbb-btn-light-surface" style="padding:8px 16px; font-size:0.82rem;">← Anterior</button>
-                <button type="button" onclick="window.tbbSelectDeliverableCarousel(${activeIdx + 1})" class="tbb-btn-light-surface" style="padding:8px 16px; font-size:0.82rem;">Siguiente →</button>
+                <button type="button" onclick="window.tbbSelectDeliverableCarousel(${activeIdx - 1})" class="tbb-btn-light-surface" style="padding:8px 16px; font-size:0.82rem;">${escHtml(t("carouselPrev"))}</button>
+                <button type="button" onclick="window.tbbSelectDeliverableCarousel(${activeIdx + 1})" class="tbb-btn-light-surface" style="padding:8px 16px; font-size:0.82rem;">${escHtml(t("carouselNext"))}</button>
               </div>
             </div>
           </div>
@@ -2200,10 +2931,10 @@
                 const loc = item.i18n[lang] || item.i18n.es;
                 const isSel = idx === activeIdx;
                 return `
-                  <div id="tbbCarouselDelivCard_${idx}" onclick="window.tbbSelectDeliverableCarousel(${idx})" style="min-width:265px; max-width:265px; scroll-snap-align:center; background:${isSel ? '#FFFFFF' : '#F8FAFC'}; border-radius:20px; padding:14px; border:2px solid ${isSel ? '#1D4ED8' : 'transparent'}; box-shadow:${isSel ? '0 16px 36px rgba(29,78,216,0.14)' : '0 4px 12px rgba(15,23,42,0.04)'}; cursor:pointer; transition:all 0.22s ease; display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+                  <div id="tbbCarouselDelivCard_${idx}" onclick="window.tbbSelectDeliverableCarousel(${idx})" style="min-width:265px; max-width:265px; scroll-snap-align:center; background:${isSel ? '#FFFFFF' : '#F8FAFC'}; border-radius:20px; padding:14px; border:2px solid ${isSel ? '#1D4ED8' : '#E2E8F0'}; box-shadow:${isSel ? '0 16px 36px rgba(29,78,216,0.14)' : '0 4px 12px rgba(15,23,42,0.04)'}; cursor:pointer; transition:all 0.22s ease; display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
                     <div>
                       <div style="position:relative; border-radius:12px; overflow:hidden; background:#FFFFFF; margin-bottom:10px;">
-                        <img src="${item.thumb}" alt="${escHtml(loc.title)}" style="width:100%; height:148px; object-fit:cover; object-position:top center; display:block;" />
+                        <img src="${item.thumb}" alt="${escHtml(loc.title)}" loading="lazy" style="width:100%; height:148px; object-fit:cover; object-position:top center; display:block;" />
                         <button type="button" onclick="event.stopPropagation(); window.tbbOpenPlateLightboxModal(${item.plateNum}, '${item.thumb}', '${escHtml(loc.title)}', '${item.sampleUrl}');" style="position:absolute; top:8px; right:8px; background:rgba(15,23,42,0.82); color:#FFFFFF; border:none; border-radius:999px; padding:4px 10px; font-size:0.68rem; cursor:pointer;">
                           ⤢ Max Res
                         </button>
@@ -2231,7 +2962,7 @@
             </div>
 
             <div class="tbb-comm-grid-2" style="gap:28px; align-items:stretch;">
-              <div style="background:#F8FAFC; border-radius:24px; padding:32px; display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:32px; display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
                 <div>
                   <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px;">
                     <span style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; font-weight:500; color:#1D4ED8; background:#EFF6FF; padding:5px 12px; border-radius:999px;">
@@ -2252,7 +2983,7 @@
                 </div>
               </div>
 
-              <div style="background:#F8FAFC; border-radius:24px; padding:32px; display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:32px; display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
                 <div>
                   <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px;">
                     <span style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; font-weight:500; color:#EA580C; background:#FFF7ED; padding:5px 12px; border-radius:999px;">
@@ -2431,10 +3162,27 @@
     if (bkp) bkp.classList.toggle("open", next);
   };
 
+  window.tbbUpdateLocalizedFooterDOM = function () {
+    const fDesc = document.getElementById("tbbFooterBrandDesc");
+    if (fDesc) fDesc.textContent = t("footerDesc");
+    const fNav = document.getElementById("tbbFooterNavLinks");
+    if (fNav) {
+      fNav.innerHTML = `
+        <a href="#inicio" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('inicio');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">01 · ${escHtml(t("menu1"))}</a>
+        <a href="#demo" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('demo');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">02 · ${escHtml(t("menu2"))}</a>
+        <a href="#app-tour" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('app-tour');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">03 · ${escHtml(t("menu3"))}</a>
+        <a href="#bases-teoricas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('bases-teoricas');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">04 · ${escHtml(t("menu4"))}</a>
+        <a href="#pack-descargas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('pack-descargas');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">05 · ${escHtml(t("menu5"))}</a>
+        <a href="/studio" style="font-size:0.84rem; color:#1D4ED8; text-decoration:none; font-weight:600;">${escHtml(t("openStudio"))}</a>
+      `;
+    }
+  };
+
   window.tbbChangeCommercialLanguage = function (langCode) {
     const clean = String(langCode || "es").toLowerCase().trim();
     try {
       localStorage.setItem(LANG_STORAGE_KEY, clean);
+      document.documentElement.lang = clean;
     } catch (e) {}
     if (typeof window.tbbSetApplicationLanguage === "function") {
       window.tbbSetApplicationLanguage(clean);
@@ -2442,6 +3190,14 @@
     window.tbbRefreshCommercialPortalDOM();
     window.tbbRenderCheckoutModalContent();
     window.tbbUpdateAlwaysOnFloatingBarText();
+    window.tbbUpdateLocalizedFooterDOM();
+    document.querySelectorAll(".tbb-live-iphone-studio-iframe").forEach(fr => {
+      try {
+        if (fr && fr.contentWindow) {
+          fr.contentWindow.postMessage({ type: "TBB_SET_LANGUAGE", lang: clean }, "*");
+        }
+      } catch (e) {}
+    });
   };
 
   window.tbbFormatCardInput = function (inputEl) {
@@ -3218,7 +3974,9 @@
       const snap = msg.stateSnapshot;
       const st = window.tbbCommercialDemoState;
       st.migratedSteps0to3Snapshot = snap;
+      st.activeDemoStep = Number(msg.currentStep || st.activeDemoStep || 0);
       if (snap.brandName) st.brandName = snap.brandName;
+      if (snap.tagline) st.tagline = snap.tagline;
       if (snap.sector) st.sector = snap.sector;
       if (snap.whyPurpose) st.whyPurpose = snap.whyPurpose;
       if (snap.howMethod) st.howMethod = snap.howMethod;
@@ -3233,11 +3991,15 @@
       // Actualizar texto de estado en vivo junto al iPhone y el Círculo Dorado SVG
       try {
         document.querySelectorAll(".tbb-live-migration-status-txt").forEach(el => {
-          el.innerHTML = `<span style="color:#16A34A; font-weight:600;">● Sincronizado en Vivo (${escHtml(snap.brandName || "Tu Marca")})</span> · Paso ${Number(msg.currentStep || 0)} guardado para migración automática.`;
+          el.innerHTML = `<span style="color:#16A34A; font-weight:600;">● ${escHtml(snap.brandName || "Tu Marca")}</span> · Paso ${Number(msg.currentStep || 0)} sincronizado`;
         });
-        const gcBox = document.getElementById("tbbDemoGoldenCircleBox");
-        if (gcBox && typeof window.tbbBuildDynamicGoldenCircleSVG === "function") {
-          gcBox.innerHTML = window.tbbBuildDynamicGoldenCircleSVG(st);
+        const bTitleEl = document.getElementById("tbbDemoLiveBrandTitle");
+        if (bTitleEl && st.brandName) bTitleEl.textContent = st.brandName;
+        const bTagEl = document.getElementById("tbbDemoLiveBrandTagline");
+        if (bTagEl && st.tagline) bTagEl.textContent = st.tagline;
+        const gcWrap = document.getElementById("tbbDemoLiveGoldenCircleWrap");
+        if (gcWrap && typeof window.tbbBuildCircularGoldenCircleSVG === "function") {
+          gcWrap.innerHTML = window.tbbBuildCircularGoldenCircleSVG();
         }
       } catch (e) {}
     } else if (msg.type === "TBB_TRIGGER_STEP4_PAYWALL" || msg.type === "TBB_DEMO_COMPLETED_STEP_2") {
@@ -3258,6 +4020,9 @@
     applyUrlParamsState();
     ensureModalsAndFloatingBarMounted();
     window.tbbRefreshCommercialPortalDOM();
+    if (typeof window.tbbUpdateLocalizedFooterDOM === "function") {
+      window.tbbUpdateLocalizedFooterDOM();
+    }
     try {
       const sp = new URLSearchParams(window.location.search);
       const viewerIdx = sp.get("viewer");

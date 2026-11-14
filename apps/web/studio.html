@@ -4,21 +4,28 @@
 <script>
   (function() {
     var isEmbedded = window.self !== window.top;
-    var isDemoParam = new URLSearchParams(window.location.search).get("demo") === "true";
+    var params = new URLSearchParams(window.location.search);
+    var isDemoParam = params.get("demo") === "true";
+    var isIphoneEmbed = params.get("embed") === "iphone";
     var isDemo = isEmbedded || isDemoParam;
+    if (isIphoneEmbed || isEmbedded) {
+      document.documentElement.classList.add("tbb-embed-iphone-mode");
+    }
     if (isDemo) {
+      window.tbbIsDemoMode = true;
       document.documentElement.classList.add("tbb-is-demo-mode");
       var hideStyle = document.createElement("style");
-      hideStyle.textContent = "#tbbBtnTopCommercialWeb, #tbbBtnTopBuyAppNow, #tbbAlwaysOnBuyFloatingBar { display: none !important; }";
+      hideStyle.textContent = "#tbbBtnTopCommercialWeb, #tbbBtnTopBuyAppNow, #tbbAlwaysOnBuyFloatingBar, #tbbBtnTopAdminTbb, #tbbTopDiscreteBar a[href='/'], #tbbTopQuickStepJumper option[value='admin_tbb'] { display: none !important; }";
       document.head.appendChild(hideStyle);
       window.addEventListener("DOMContentLoaded", function() {
-        if (document.body) document.body.classList.add("tbb-is-demo-mode");
-        var b1 = document.getElementById("tbbBtnTopCommercialWeb");
-        var b2 = document.getElementById("tbbBtnTopBuyAppNow");
-        var fb = document.getElementById("tbbAlwaysOnBuyFloatingBar");
-        if (b1) b1.style.setProperty("display", "none", "important");
-        if (b2) b2.style.setProperty("display", "none", "important");
-        if (fb) fb.style.setProperty("display", "none", "important");
+        if (document.body) {
+          document.body.classList.add("tbb-is-demo-mode");
+          if (isIphoneEmbed || isEmbedded) document.body.classList.add("tbb-embed-iphone-mode");
+        }
+        ["tbbBtnTopCommercialWeb", "tbbBtnTopBuyAppNow", "tbbAlwaysOnBuyFloatingBar", "tbbBtnTopAdminTbb"].forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) el.style.setProperty("display", "none", "important");
+        });
       });
     }
   })();
@@ -8841,13 +8848,27 @@
     };
 
     window.tbbBuildProgressMigrationSnapshot = function () {
+      const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+      const s0 = window.step0State || {};
+      const tps = (typeof tpExtractedItems === "object" && tpExtractedItems) ? tpExtractedItems : {};
+      const allTps = [
+        ...(Array.isArray(tps.before) ? tps.before : []),
+        ...(Array.isArray(tps.during) ? tps.during : []),
+        ...(Array.isArray(tps.after) ? tps.after : [])
+      ];
       const snap = {
         savedAt: new Date().toISOString(),
         currentStep: (window.tbbState && typeof window.tbbState.step === "number") ? window.tbbState.step : (typeof currentStep !== "undefined" ? currentStep : 3),
         subStep: (window.tbbState && window.tbbState.subStep) || 1,
-        step0State: window.step0State ? JSON.parse(JSON.stringify(window.step0State)) : {},
-        canvasState: (typeof canvasState === "object" && canvasState) ? JSON.parse(JSON.stringify(canvasState)) : {},
-        tpExtractedItems: (typeof tpExtractedItems === "object" && tpExtractedItems) ? JSON.parse(JSON.stringify(tpExtractedItems)) : {},
+        brandName: cs.brandName || s0.existingBrandName || "TheBestBrand",
+        sector: cs.custom_business_type || cs.step0_short_essence || s0.customBusinessType || "",
+        whyPurpose: cs.golden_circle || "",
+        howMethod: cs.process_steps_text || cs.brand_persona || "",
+        whatOffer: cs.value_offer || cs.core_message || "",
+        touchpoints: allTps,
+        step0State: s0 ? JSON.parse(JSON.stringify(s0)) : {},
+        canvasState: cs ? JSON.parse(JSON.stringify(cs)) : {},
+        tpExtractedItems: tps ? JSON.parse(JSON.stringify(tps)) : {},
         acceptedNamingVault: Array.isArray(window.acceptedNamingVault) ? JSON.parse(JSON.stringify(window.acceptedNamingVault)) : [],
         tbbState: window.tbbState ? JSON.parse(JSON.stringify(window.tbbState)) : {}
       };
@@ -8870,6 +8891,7 @@
             targetStep: typeof targetStep === "number" ? targetStep : 4,
             stateSnapshot
           }, "*");
+          return;
         } catch (e) {}
       }
       if (typeof window.tbbOpenBuyAppCheckoutModal === "function") {
@@ -18760,7 +18782,8 @@
 
       let restoredAny = false;
       const urlParams = new URLSearchParams(window.location.search);
-      const shouldResume = urlParams.get("resume") === "true" || !!urlParams.get("brand");
+      const hasExplicitBrandPreset = !!urlParams.get("brand") || urlParams.get("admin") === "1" || urlParams.get("admin") === "true";
+      const shouldResume = urlParams.get("resume") === "true" && !hasExplicitBrandPreset;
       if (shouldResume) {
         try {
           const savedRaw = localStorage.getItem(TBB_ACTIVE_SESSION_STORAGE_KEY);
@@ -18771,7 +18794,7 @@
             }
           }
         } catch (e) {}
-      } else {
+      } else if (!hasExplicitBrandPreset) {
         // Sesión 100% aislada e independiente por defecto (Directiva Max C-00)
         console.log("Iniciando con lienzo limpio (Directiva Max C-00 · Cero contaminación entre marcas)...");
         if (typeof window.startFreshBrandSession === "function") {
@@ -18779,7 +18802,7 @@
         }
       }
 
-      if (!restoredAny) {
+      if (!restoredAny && !hasExplicitBrandPreset) {
         try {
           const acc = window.tbbUserAccount || {};
           const res = await fetch(`/api/v1/account/load-state?account_id=${encodeURIComponent(acc.account_id || "guest_default")}&brand_id=${encodeURIComponent(acc.brand_id || "active_brand_default")}`);
@@ -19632,7 +19655,8 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      overflow: hidden !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
       box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
     }
 
@@ -20940,8 +20964,8 @@
           `;
         }
 
-        // Si la marca es The Best Brand y NO hay logo subido por el usuario, emitir el Isotipo Maestro Oficial: Alas de Convergencia & Núcleo Central TB
-        const isTBB = (/the\s*best\s*brand/i.test(brandName) || !cs.brandName || /^mi nueva marca$/i.test(cs.brandName)) && !hasUploadedLogo;
+        // Si la marca es The Best Brand, NO hay logo subido por el usuario y es la Iteración #1 base sin evolución Gemini ni cambio de arquetipo, emitir el Isotipo Maestro Oficial: Alas de Convergencia & Núcleo Central TB
+        const isTBB = (/the\s*best\s*brand/i.test(brandName) || !cs.brandName || /^mi nueva marca$/i.test(cs.brandName)) && !hasUploadedLogo && !hasGeminiEvolution && (!activeIt || (Number(activeIt.idx || 1) === 1 && !activeIt.archetypeCycled));
         if (isTBB) {
           const uidTbb = "tbb_def_" + uid;
           return `
@@ -21571,18 +21595,18 @@
                 <stop offset="0%" stop-color="${bgTop}"/>
                 <stop offset="100%" stop-color="${bgBot}"/>
               </linearGradient>
-              <!-- Superficie Squircle Apple iOS 27 Liquid Glass con Refracción Caústica -->
+              <!-- Superficie Squircle Apple iOS 27 Liquid Glass con Refracción Caústica (Adaptativa Claro / Oscuro) -->
               <linearGradient id="sqSurf_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FFFFFF"/>
-                <stop offset="48%" stop-color="#F1F5F9"/>
-                <stop offset="82%" stop-color="#E2E8F0"/>
-                <stop offset="100%" stop-color="#CBD5E1"/>
+                <stop offset="0%" stop-color="${isDark ? '#1E293B' : '#FFFFFF'}"/>
+                <stop offset="48%" stop-color="${isDark ? '#0F172A' : '#F1F5F9'}"/>
+                <stop offset="82%" stop-color="${isDark ? '#090D16' : '#E2E8F0'}"/>
+                <stop offset="100%" stop-color="${isDark ? '#020617' : '#CBD5E1'}"/>
               </linearGradient>
               <linearGradient id="sqRimBevel_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1"/>
-                <stop offset="35%" stop-color="#E2E8F0" stop-opacity="0.7"/>
-                <stop offset="70%" stop-color="#94A3B8" stop-opacity="0.5"/>
-                <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+                <stop offset="0%" stop-color="${isDark ? '#60A5FA' : '#FFFFFF'}" stop-opacity="1"/>
+                <stop offset="35%" stop-color="${isDark ? '#334155' : '#E2E8F0'}" stop-opacity="0.7"/>
+                <stop offset="70%" stop-color="${isDark ? '#1E293B' : '#94A3B8'}" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="${isDark ? '#FF7A00' : '#FFFFFF'}" stop-opacity="0.95"/>
               </linearGradient>
               <linearGradient id="sqCausticRay_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95"/>
@@ -22139,6 +22163,14 @@
 
         const stepJumper = document.getElementById("tbbTopQuickStepJumper");
         if (stepJumper && !isJourney) {
+          const isUnpaidDemo = (new URLSearchParams(window.location.search).get("demo") === "true" || window.tbbIsDemoMode === true) && !(typeof window.tbbHasActiveProLicense === "function" && window.tbbHasActiveProLicense());
+          Array.from(stepJumper.options).forEach(opt => {
+            const vNum = parseInt(opt.value, 10);
+            if (!isNaN(vNum) && vNum >= 4 && vNum <= 6) {
+              const cleanTxt = opt.textContent.replace(/^🔒\s*/, "");
+              opt.textContent = isUnpaidDemo ? `🔒 ${cleanTxt}` : cleanTxt;
+            }
+          });
           stepJumper.value = String(st.step);
         }
 
@@ -22956,36 +22988,36 @@
 
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:8px;">
-                <!-- Fila Superior del Lienzo: Historial de Iteraciones, Evolución de Logo Base y Fondo -->
-                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:nowrap;">
-                  <div id="tbbIterationPillsStrip" style="display:flex; gap:6px; overflow-x:auto; align-items:center; flex:1; min-width:0; scroll-behavior:smooth;">
+                <!-- Fila Superior del Lienzo: Historial de Iteraciones en su propia fila + Botones de Acción -->
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <div id="tbbIterationPillsStrip" style="display:flex; gap:6px; overflow-x:auto; align-items:center; width:100%; min-width:0; scroll-behavior:smooth; padding-bottom:2px;">
                     ${st.logoIterations.map((it, idx) => `
                       <button type="button" class="tbb-duo-btn ${st.logoIterationIndex === idx + 1 ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbRestoreLogoIteration(${idx})" style="padding:6px 11px !important; flex-shrink:0; font-size:0.78rem !important;">
                         ${idx === 0 ? (it.isUploadedUserLogo ? "#1 · Tu Logo Base" : "#1 · Base") : `#${idx + 1}${it.conceptLabel ? " · " + String(it.conceptLabel).split(/\s+/).slice(0, 2).join(" ").slice(0, 15) : ""}`}
                       </button>
                     `).join("")}
                   </div>
-                  <div style="display:flex; gap:6px; flex-shrink:0;">
-                    <button type="button" id="tbbBtnNanoBananaSymbol" class="tbb-duo-btn tbb-duo-btn-emerald" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value:'');}" style="padding:6px 11px !important; font-size:0.76rem !important;" title="Generar símbolo visual de agencia con Nano Banana (Gemini Image) y trazarlo a curvas Bézier">
-                      ✦ Símbolo Nano Banana
+                  <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+                    <button type="button" id="tbbBtnNanoBananaSymbol" class="tbb-duo-btn tbb-duo-btn-emerald" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value:'');}" style="padding:6px 11px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Generar símbolo visual de agencia con Nano Banana (Gemini Image) y trazarlo a curvas Bézier">
+                      ✦ Símbolo Nano Banana Pro
                     </button>
                     ${uploadedLogoUrl ? `
-                      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="window.tbbTriggerEvolutionFromUploadedLogo()" style="padding:6px 11px !important; font-size:0.76rem !important;" title="Generar nueva evolución tomando tu logo subido como base">
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="window.tbbTriggerEvolutionFromUploadedLogo()" style="padding:6px 11px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Generar nueva evolución tomando tu logo subido como base">
                         Evolucionar mi Logo
                       </button>
                     ` : `
-                      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="tbbCycleSculpturalArchetype()" style="padding:6px 12px !important;" title="Cambiar estructura base inicial">
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="tbbCycleSculpturalArchetype()" style="padding:6px 12px !important; flex:1 1 auto;" title="Cambiar estructura base inicial">
                         Cambiar Base
                       </button>
                     `}
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="padding:6px 12px !important;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; if(window.tbbSyncImproBearsLogoDarkVariant){window.tbbSyncImproBearsLogoDarkVariant();} triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="padding:6px 12px !important; flex:1 1 auto;">
                       Fondo Claro/Oscuro
                     </button>
                   </div>
                 </div>
 
                 <!-- Lienzo Central a Pantalla Completa (Lockup + App en proporción 1:1) -->
-                <div style="flex:1; min-height:0; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:4px; position:relative;">
+                <div style="flex:1; min-height:190px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:4px; position:relative;">
                   ${svgCanvas}
                   ${st.geminiBusy ? `
                     <div style="position:absolute; inset:0; background:rgba(9,13,22,0.72); backdrop-filter:blur(4px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; z-index:20; color:#FFFFFF; padding:20px; text-align:center;">
@@ -23001,9 +23033,9 @@
                 </div>
 
                 <!-- Un Solo Cuadro Grande de Texto + Botón Directo de Aplicación Abierto 100% a Gemini Sin Límites -->
-                <div style="display:flex; gap:8px; align-items:stretch;">
-                  <textarea id="tbbSingleLogoIterationBox" rows="2" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Interacción 100% abierta a Gemini sin límites: cambia por completo el objeto o forma principal (ej. águila, león, taza de café, cohete, árbol, espada), transforma su estructura, estilo, colores o tipografía y pulsa Aplicar..." style="flex:1; min-width:0; padding:10px 12px; border-radius:14px; border:2px solid #090D16; font-size:0.86rem; font-weight:700; color:#090D16; background:#FFFFFF; resize:none; box-sizing:border-box; line-height:1.35;"></textarea>
-                  <button type="button" id="tbbInlineApplyLogoPromptBtn" class="tbb-duo-btn tbb-duo-btn-gold" ${st.geminiBusy ? "disabled" : ""} onclick="onTbbAtomicCenterAction()" style="flex-shrink:0; padding:0 16px !important; font-size:0.86rem !important;">
+                <div style="display:flex; gap:8px; align-items:stretch; flex-wrap:wrap;">
+                  <textarea id="tbbSingleLogoIterationBox" rows="2" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Interacción 100% abierta a Gemini sin límites: cambia por completo el objeto o forma principal (ej. águila, león, taza de café, cohete, árbol, espada), transforma su estructura, estilo, colores o tipografía y pulsa Aplicar..." style="flex:1 1 220px; min-width:0; padding:10px 12px; border-radius:14px; border:2px solid #090D16; font-size:0.86rem; font-weight:700; color:#090D16; background:#FFFFFF; resize:none; box-sizing:border-box; line-height:1.35;"></textarea>
+                  <button type="button" id="tbbInlineApplyLogoPromptBtn" class="tbb-duo-btn tbb-duo-btn-gold" ${st.geminiBusy ? "disabled" : ""} onclick="onTbbAtomicCenterAction()" style="flex:0 0 auto; padding:0 16px !important; font-size:0.86rem !important; min-height:44px !important;">
                     ${st.geminiBusy ? "Diseñando..." : "Aplicar con Gemini"}
                   </button>
                 </div>
@@ -23589,7 +23621,12 @@
         const curIdx = list.findIndex(a => a.id === curArch);
         const nextObj = list[(curIdx + 1) % list.length] || list[0];
         window.triggerAuraEmpatheticFeedback("input_logo_done", nextObj.label, false);
-        window.tbbAppendLogoIteration(`Escultura 3D: ${nextObj.label}`, nextObj.id, {});
+        const newEntry = window.tbbAppendLogoIteration(`Escultura 3D: ${nextObj.label}`, nextObj.id, {}, "");
+        if (newEntry) {
+          newEntry.archetypeCycled = true;
+          newEntry.geminiCustomSvg = "";
+          window.renderTbbZeroScrollStage();
+        }
       };
 
       // Detecta si la instrucción pide un símbolo/arquetipo específico
@@ -24259,12 +24296,12 @@
         canvasState.pantone_secondary = "Pantone 7684 C";
         canvasState.pantone_accent = "Pantone 1505 C";
 
-        // Paso 6: Configurar Estado del Estudio y Logotipo
+        // Paso 6: Configurar Estado del Estudio y Logotipo (6 Iteraciones Oficiales Apple Liquid Glass)
         const emblemSvg = window.tbbBuildOfficialBrandbook1EmblemSVG ? window.tbbBuildOfficialBrandbook1EmblemSVG(220) : "";
         window.tbbState = {
           activeMode: "step",
           step: Number(targetStep || 6),
-          subStep: 1,
+          subStep: Number(targetStep) === 5 ? 2 : 1,
           plateIdx: 0,
           logoParadigm: "volumetric_glass",
           logoPriHex: "#0D2540",
@@ -24272,13 +24309,15 @@
           logoDarkBg: false,
           logoScale: 1.0,
           selectedFontFamily: "Montserrat",
-          logoIterationIndex: 1,
+          logoIterationIndex: 6,
           logoIterations: [
             {
               idx: 1,
-              conceptLabel: "Orbe Atómico de Resonancia Cuántica TheBestBrand (Oficial)",
+              conceptLabel: "Iteración #1 · Orbe Atómico de Resonancia Cuántica (Base)",
               archetype: "volumetric_atom_core",
               paradigm: "volumetric_glass",
+              pri: "#0D2540",
+              sec: "#426EAE",
               priHex: "#0D2540",
               secHex: "#426EAE",
               accentHex: "#FF7A00",
@@ -24286,7 +24325,100 @@
               darkBg: false,
               scale: 1.0,
               layout: "horizontal",
-              note: "Logotipo oficial de TheBestBrand: 8 elipses en curvas bezier y núcleo activo en naranja #FF7A00.",
+              note: "Base oficial de TheBestBrand: 8 elipses en curvas Bézier y núcleo activo en naranja #FF7A00.",
+              svgOverlayAdditions: "",
+              geminiCustomSvg: emblemSvg
+            },
+            {
+              idx: 2,
+              conceptLabel: "Iteración #2 · Frosted Liquid Glass (visionOS)",
+              archetype: "apple_liquid_wings",
+              paradigm: "volumetric_glass",
+              pri: "#1E3A8A",
+              sec: "#38BDF8",
+              priHex: "#1E3A8A",
+              secHex: "#38BDF8",
+              accentHex: "#FF7A00",
+              fontFamily: "Plus Jakarta Sans",
+              darkBg: false,
+              scale: 1.02,
+              layout: "horizontal",
+              uploadedLogoDataUrl: "/assets/media/tbb_aura_iter02_frosted_glass.jpg",
+              note: "Evolución Nano Banana Pro 4K: biseles esmerilados con refracción interna y halo turquesa.",
+              svgOverlayAdditions: "",
+              geminiCustomSvg: emblemSvg
+            },
+            {
+              idx: 3,
+              conceptLabel: "Iteración #3 · Geometría Vectorial 12 Pétalos Glass",
+              archetype: "fluid_gradient_bloom",
+              paradigm: "volumetric_glass",
+              pri: "#0D2540",
+              sec: "#4C9DE6",
+              priHex: "#0D2540",
+              secHex: "#4C9DE6",
+              accentHex: "#FF7A00",
+              fontFamily: "Montserrat",
+              darkBg: false,
+              scale: 1.04,
+              layout: "horizontal",
+              note: "Construcción matemática de 12 pétalos elípticos radiales en curvas Bézier puras.",
+              svgOverlayAdditions: "",
+              geminiCustomSvg: emblemSvg
+            },
+            {
+              idx: 4,
+              conceptLabel: "Iteración #4 · Caustic Liquid Glass & Lente Óptica",
+              archetype: "liquid_glass_compass",
+              paradigm: "volumetric_glass",
+              pri: "#0F172A",
+              sec: "#2563EB",
+              priHex: "#0F172A",
+              secHex: "#2563EB",
+              accentHex: "#FF7A00",
+              fontFamily: "Space Grotesk",
+              darkBg: false,
+              scale: 1.05,
+              layout: "horizontal",
+              uploadedLogoDataUrl: "/assets/media/tbb_aura_iter04_liquid_glass_caustics.jpg",
+              note: "Cáusticas luminosas multicapa y aro perimetral cobre-ámbar #FF7A00.",
+              svgOverlayAdditions: "",
+              geminiCustomSvg: emblemSvg
+            },
+            {
+              idx: 5,
+              conceptLabel: "Iteración #5 · Facetas de Cristal Óptico (Bisel Suizo)",
+              archetype: "liquid_glass_crown",
+              paradigm: "volumetric_glass",
+              pri: "#0D2540",
+              sec: "#426EAE",
+              priHex: "#0D2540",
+              secHex: "#426EAE",
+              accentHex: "#FF7A00",
+              fontFamily: "Montserrat",
+              darkBg: false,
+              scale: 1.04,
+              layout: "horizontal",
+              note: "Facetado de precisión relojera con núcleo incandescente blanco-ámbar.",
+              svgOverlayAdditions: "",
+              geminiCustomSvg: emblemSvg
+            },
+            {
+              idx: 6,
+              conceptLabel: "Iteración #6 · Apple Liquid Glass Masterpiece (Oficial)",
+              archetype: "volumetric_atom_core",
+              paradigm: "volumetric_glass",
+              pri: "#0D2540",
+              sec: "#426EAE",
+              priHex: "#0D2540",
+              secHex: "#426EAE",
+              accentHex: "#FF7A00",
+              fontFamily: "Montserrat",
+              darkBg: false,
+              scale: 1.0,
+              layout: "horizontal",
+              uploadedLogoDataUrl: "/assets/deliverables_tbb/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png",
+              note: "Obra maestra final seleccionada para el Manual de 36 Láminas y Suite de 9 Entregables.",
               svgOverlayAdditions: "",
               geminiCustomSvg: emblemSvg
             }
@@ -24303,8 +24435,82 @@
           renderLiveBrandContinuityStrip();
         }
         if (typeof window.triggerAuraEmpatheticFeedback === "function") {
-          window.triggerAuraEmpatheticFeedback("admin_thebestbrand_loaded", "Perfil de Administrador TheBestBrand cargado con éxito. Explorando el Manual de 30 Hojas en Curvas.", true);
+          window.triggerAuraEmpatheticFeedback("admin_thebestbrand_loaded", "Perfil de Administrador TheBestBrand cargado con éxito. Explorando el Manual de 36 Láminas en Curvas.", true);
         }
+        if (typeof window.renderTbbZeroScrollStage === "function") {
+          window.renderTbbZeroScrollStage();
+        }
+      };
+
+      window.tbbLoadArcoIngenieriaPreset = function (targetStep = 5) {
+        if (typeof playAcousticClick === "function") playAcousticClick(960, 0.08);
+        window.step0State = {
+          goal: "evolve",
+          assets: "full_assets",
+          customBusinessType: "Constructora e Ingeniería Civil Estructural de Alta Precisión, Obra Industrial y Puentes",
+          hasExistingLogo: true,
+          existingBrandName: "ARCO Ingeniería",
+          existingLogoMode: "evolve",
+          uploadedLogoDataUrl: "/assets/media/arco_original_logo4k.png",
+          baseUploadedLogoDataUrl: "/assets/media/arco_original_logo4k.png"
+        };
+        canvasState.isOfficialAdminTbbPreset = false;
+        canvasState.isOfficialImproBearsPreset = false;
+        canvasState.brandName = "ARCO INGENIERÍA";
+        canvasState.userLockedBrandName = true;
+        canvasState.tagline = "ESTRUCTURAS QUE TRASCIENDEN GENERACIONES";
+        canvasState.custom_business_type = "Constructora e Ingeniería Civil Estructural de Alta Precisión, Obra Industrial y Puentes";
+        canvasState.step0_short_essence = "Ingeniería Civil Estructural, Puentes y Obra Industrial";
+        canvasState.golden_circle = "WHY: Construir infraestructura segura y monumental que sostenga el progreso industrial. HOW: Cálculo estructural milimétrico, acero de alta resistencia y supervisión BIM. WHAT: Obra civil, naves industriales, puentes y cimentaciones profundas.";
+        canvasState.value_offer = "Ingeniería civil y estructural llave en mano con precisión milimétrica y entrega garantizada por contrato.";
+        canvasState.primary_color = "#1B365D";
+        canvasState.secondary_color = "#D97706";
+        canvasState.accent_color = "#F59E0B";
+        canvasState.primary_font = "Space Grotesk";
+        canvasState.secondary_font = "Plus Jakarta Sans";
+        canvasState.uploaded_logo_data_url = "/assets/media/arco_iter10_final_masterpiece_original_colors.jpg";
+        const arcoImgs = [
+          "/assets/media/arco_original_logo4k.png",
+          "/assets/media/arco_iter04_nanobanana_original_colors.jpg",
+          "/assets/media/arco_iter07_nanobanana_original_colors.jpg",
+          "/assets/media/arco_iter10_final_masterpiece_original_colors.jpg"
+        ];
+        const arcoIters = [];
+        for (let i = 1; i <= 10; i++) {
+          const imgUrl = i === 1 ? arcoImgs[0] : (i <= 4 ? arcoImgs[1] : (i <= 7 ? arcoImgs[2] : arcoImgs[3]));
+          arcoIters.push({
+            idx: i,
+            isUploadedUserLogo: true,
+            uploadedLogoDataUrl: imgUrl,
+            conceptLabel: i === 1 ? "Iteración #1 · Logo Original Subido (Base)" : (i === 10 ? "Iteración #10 · Masterpiece Nano Banana Pro 4K" : `Iteración #${i} · Evolución Estructural Nano Banana Pro`),
+            archetype: "liquid_glass_crown",
+            paradigm: "volumetric_glass",
+            pri: "#1B365D",
+            sec: "#D97706",
+            priHex: "#1B365D",
+            secHex: "#D97706",
+            accentHex: "#F59E0B",
+            fontFamily: "Space Grotesk",
+            darkBg: false,
+            scale: 1.0,
+            layout: "horizontal",
+            note: `Iteración #${i} de ARCO Ingeniería conservando paleta azul acero #1B365D y ámbar #D97706.`
+          });
+        }
+        window.tbbState = {
+          activeMode: "step",
+          step: Number(targetStep || 5),
+          subStep: Number(targetStep || 5) === 5 ? 2 : 1,
+          plateIdx: 0,
+          logoParadigm: "volumetric_glass",
+          logoPriHex: "#1B365D",
+          logoSecHex: "#D97706",
+          logoDarkBg: false,
+          logoScale: 1.0,
+          selectedFontFamily: "Space Grotesk",
+          logoIterationIndex: 10,
+          logoIterations: arcoIters
+        };
         if (typeof window.renderTbbZeroScrollStage === "function") {
           window.renderTbbZeroScrollStage();
         }
@@ -24459,6 +24665,7 @@
               }
             }
             window.tbbIsDemoMode = false;
+            document.documentElement.classList.remove("tbb-is-demo-mode");
             const paywallModal = document.getElementById("tbbDemoCompletionPaywallModal");
             if (paywallModal) paywallModal.style.display = "none";
             if (typeof saveBrandSessionToLocalStorage === "function") {
@@ -24476,6 +24683,16 @@
           const vStep = Number(msg.step ?? (window.tbbState ? window.tbbState.step : 0));
           if (typeof openPhaseTransitionVideoCapsule === "function") {
             openPhaseTransitionVideoCapsule(Math.max(0, vStep - 1), vStep, { keepCurrentSubStep: true });
+          }
+        } else if (msg.type === "TBB_LOAD_PRESET") {
+          const p = String(msg.preset || "").toLowerCase();
+          const stp = Number(msg.step ?? 5);
+          if (p === "improbears" && typeof window.tbbLoadImproBearsMasterBrandPreset === "function") {
+            window.tbbLoadImproBearsMasterBrandPreset(stp);
+          } else if (p === "arco" && typeof window.tbbLoadArcoIngenieriaPreset === "function") {
+            window.tbbLoadArcoIngenieriaPreset(stp);
+          } else if (typeof window.tbbLoadOfficialAdminTheBestBrandData === "function") {
+            window.tbbLoadOfficialAdminTheBestBrandData(stp);
           }
         }
       });
@@ -24522,8 +24739,10 @@
         const cnv = document.getElementById("tbbSplashAuraCanvas");
         if (!ov || !cnv) return;
         const params = new URLSearchParams(window.location.search);
-        if (params.get("embed") === "iphone") {
-          document.body.classList.add("tbb-embed-iphone-mode");
+        if (params.get("embed") === "iphone" || params.get("novideo") === "1" || params.has("step") || params.has("brand")) {
+          if (params.get("embed") === "iphone") {
+            document.body.classList.add("tbb-embed-iphone-mode");
+          }
           ov.style.display = "none";
           return;
         }
@@ -24641,7 +24860,7 @@
         }, 900);
 
         _splashAutoTimer2 = setTimeout(() => {
-          if (lblEl) lblEl.textContent = "03/03 · Brandbook 1.0 y Estudio de 30 Láminas Listos";
+          if (lblEl) lblEl.textContent = "03/03 · Brandbook 1.0 y Estudio de 36 Láminas Listos";
           if (pctEl) pctEl.textContent = "100%";
           if (fillEl) fillEl.style.width = "100%";
         }, 1900);
@@ -24661,15 +24880,33 @@
           if (params.get("embed") === "iphone") {
             document.body.classList.add("tbb-embed-iphone-mode");
           }
+          // Restaurar datos migrados si el usuario acaba de desbloquear Paso 4
+          if (params.get("continue") === "true" || window.tbbHasActiveProLicense()) {
+            try {
+              const migRaw = localStorage.getItem("tbb_demo_steps0to3_migration_v92");
+              if (migRaw) {
+                const mig = JSON.parse(migRaw);
+                if (mig && typeof mig === "object") {
+                  if (mig.step0State && window.step0State) Object.assign(window.step0State, mig.step0State);
+                  if (mig.canvasState && typeof canvasState === "object") Object.assign(canvasState, mig.canvasState);
+                  if (mig.tpExtractedItems && typeof tpExtractedItems === "object") Object.assign(tpExtractedItems, mig.tpExtractedItems);
+                }
+              }
+            } catch (e) {}
+          }
           const brandParam = (params.get("brand") || params.get("admin") || "").toLowerCase();
           if (brandParam === "thebestbrand" || brandParam === "tbb" || params.get("admin") === "1" || params.get("admin") === "true") {
             const stepParam = parseInt(params.get("step") || "6", 10);
             window.tbbLoadOfficialAdminTheBestBrandData(isNaN(stepParam) ? 6 : stepParam);
+          } else if (brandParam === "arco" || brandParam === "arco_ingenieria") {
+            const stepParam = parseInt(params.get("step") || "5", 10);
+            window.tbbLoadArcoIngenieriaPreset(isNaN(stepParam) ? 5 : stepParam);
           } else if (params.get("step") !== null) {
             const initStep = parseInt(params.get("step") || "0", 10);
-            if (!isNaN(initStep) && initStep >= 0 && initStep <= 3) {
+            const maxAllowed = (params.get("demo") === "true" && !window.tbbHasActiveProLicense()) ? 3 : 6;
+            if (!isNaN(initStep) && initStep >= 0 && initStep <= maxAllowed) {
               window.tbbState.step = initStep;
-              window.tbbState.subStep = 1;
+              window.tbbState.subStep = initStep === 5 ? 2 : 1;
             }
           }
         } catch (e) {}
@@ -24682,25 +24919,46 @@
     })();
   </script>
   <style>
-    body.tbb-embed-iphone-mode .tbb-topbar {
+    body.tbb-embed-iphone-mode .tbb-topbar,
+    html.tbb-embed-iphone-mode .tbb-topbar {
       padding: 6px 10px !important;
     }
-    body.tbb-embed-iphone-mode .tbb-brand-title-sub {
+    body.tbb-embed-iphone-mode .tbb-brand-title-sub,
+    html.tbb-embed-iphone-mode .tbb-brand-title-sub {
       display: none !important;
     }
-    body.tbb-embed-iphone-mode #tbbAlwaysOnBuyFloatingBar {
+    body.tbb-embed-iphone-mode #tbbAlwaysOnBuyFloatingBar,
+    html.tbb-embed-iphone-mode #tbbAlwaysOnBuyFloatingBar {
       display: none !important;
+    }
+    html.tbb-embed-iphone-mode #tbbAuraTopOuterHeroSection {
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 10px !important;
+      padding: 6px 12px 4px !important;
+    }
+    html.tbb-embed-iphone-mode #tbbLiveAuraOrbCanvas {
+      width: 56px !important;
+      height: 56px !important;
+      min-width: 56px !important;
+      min-height: 56px !important;
+    }
+    html.tbb-embed-iphone-mode #tbbAuraEmpatheticText {
+      font-size: 11.5px !important;
+      line-height: 1.35 !important;
+      text-align: left !important;
     }
   </style>
   <script src="/assets/vendor/opentype.min.js?v=1.3.4"></script>
   <script src="/assets/vendor/html2canvas.min.js?v=1.4.1"></script>
-  <script src="/tbb-executive-deliverables-suite.js?v=86.0"></script>
-  <script src="/tbb-cloud-vector-outliner.js?v=86.0"></script>
-  <script src="/tbb-v80-brandbook-plates.js?v=86.0"></script>
-  <script src="/universal-brandbook-30-engine.js?v=86.0"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=86.0"></script>
-  <script src="/improbears-preset-engine.js?v=86.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=86.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=92.0"></script>
+  <script src="/tbb-executive-deliverables-suite.js?v=93.0"></script>
+  <script src="/tbb-cloud-vector-outliner.js?v=93.0"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=93.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=93.0"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=93.0"></script>
+  <script src="/improbears-preset-engine.js?v=93.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=93.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=93.0"></script>
 </body>
 </html>

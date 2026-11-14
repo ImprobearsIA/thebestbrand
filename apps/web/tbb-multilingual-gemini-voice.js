@@ -2341,6 +2341,15 @@
   // Instalar hooks sincrónicamente de inmediato para que ninguna llamada temprana use la voz del navegador
   installMultilingualAndGeminiHooks();
 
+  window.addEventListener("message", function (ev) {
+    const d = ev && ev.data;
+    if (d && typeof d === "object" && (d.type === "TBB_SET_LANGUAGE" || d.type === "TBB_SYNC_LANG") && d.lang) {
+      if (typeof window.tbbSetLanguage === "function") {
+        window.tbbSetLanguage(String(d.lang).toLowerCase(), true);
+      }
+    }
+  });
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => bootMultilingualAndGeminiVoice());
   } else {

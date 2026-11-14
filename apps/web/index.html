@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>THE BEST BRAND — YOUR BRAND, NOW!!! · Edición Brandbook 1.0 Oficial (Awwwards Edition)</title>
-  <meta name="description" content="Diseña la identidad y el manual oficial de Manual de Marca de 30 Hojas en Curvas de tu marca con Aura en tiempo real. Vive la Demo de los Pasos 1 y 2 y adquiere la app con Tarjeta, Apple Pay, Google Pay o PayPal." />
-  <meta name="theme-color" content="#050811" />
+  <meta name="description" content="Crea tu Marca y tus 9 Entregables de nivel profesional en 30 minutos con Aura en tiempo real. Incluye Manual de Marca de 36 Láminas en Curvas, Logotipos Vectoriales Nano Banana Pro y Demo en vivo." />
+  <meta name="theme-color" content="#FFFFFF" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Montserrat:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Cormorant+Garamond:wght@600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700;800&family=Montserrat:wght@600;700;800;900&family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
   <style id="tbbAwwwardsStylesheet">
     :root {
       --tbb-navy-deep: #0D2540;
@@ -62,7 +62,7 @@
       left: 0;
       right: 0;
       height: 3.5px;
-      background: rgba(9, 13, 22, 0.4);
+      background: rgba(226, 232, 240, 0.75);
       z-index: 2500;
       pointer-events: none;
     }
@@ -90,36 +90,52 @@
     <div class="tbb-scroll-progress-bar" id="tbbScrollProgressBar"></div>
   </div>
 
-  <!-- Contenedor Raíz de la Página Comercial Oficial Brandbook 1.0 (Awwwards Edition V58) -->
+  <!-- Contenedor Raíz de la Página Comercial Oficial Brandbook 1.0 (Awwwards Edition V93) -->
   <main id="tbbStandaloneCommercialPageRoot"></main>
 
-  <footer class="tbb-comm-footer">
+  <footer class="tbb-comm-footer" id="tbbMainCommercialFooter">
     <div style="max-width:1120px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:12px;">
-      <div style="font-family:var(--font-heading); font-weight:600; font-size:1.02rem; color:#0F172A; letter-spacing:0.01em;">
+      <div id="tbbFooterBrandHeadline" style="font-family:var(--font-heading); font-weight:600; font-size:1.02rem; color:#0F172A; letter-spacing:0.01em;">
         THE BEST BRAND — <span style="color:#426EAE;">YOUR BRAND, NOW</span> · <span style="color:#64748B;">EDICIÓN OFICIAL 1.0</span>
       </div>
-      <div style="color:#64748B; font-weight:400; max-width:720px; line-height:1.6;">
+      <div id="tbbFooterBrandDesc" style="color:#64748B; font-weight:400; max-width:720px; line-height:1.6;">
         Plataforma para crear la identidad visual, los 9 entregables oficiales y el Manual de Marca de 36 Láminas en Curvas de tu empresa con inteligencia artificial y guía por voz de Aura en 6 idiomas.
       </div>
-      <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-top:6px;">
-        <a href="#inicio" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('inicio'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Inicio</a>
+      <div id="tbbFooterNavLinks" style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-top:6px;">
+        <a href="#inicio" data-footer-tab="inicio" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('inicio'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Inicio</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="#demo" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('demo'); return false;}" style="color:#16A34A; font-weight:500; text-decoration:none;">Demo en vivo</a>
+        <a href="#demo" data-footer-tab="demo" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('demo'); return false;}" style="color:#16A34A; font-weight:500; text-decoration:none;">Demo en vivo</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="#app-tour" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('app-tour'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">App Tour</a>
+        <a href="#app-tour" data-footer-tab="app-tour" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('app-tour'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">App Tour</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="#bases-teoricas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('bases-teoricas'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Bases teóricas</a>
+        <a href="#bases-teoricas" data-footer-tab="bases-teoricas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('bases-teoricas'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Bases teóricas</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="#pack-descargas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('pack-descargas'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Pack de descargas</a>
+        <a href="#pack-descargas" data-footer-tab="pack-descargas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('pack-descargas'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Pack de descargas</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="#comprar" onclick="if(window.tbbOpenBuyAppCheckoutModal){window.tbbOpenBuyAppCheckoutModal('pro_atelier'); return false;}" style="color:#0D2540; font-weight:600; text-decoration:none;">Comprar la App ($49 USD)</a>
+        <a href="#comprar" data-footer-tab="comprar" onclick="if(window.tbbOpenBuyAppCheckoutModal){window.tbbOpenBuyAppCheckoutModal('pro_atelier'); return false;}" style="color:#0D2540; font-weight:600; text-decoration:none;">Comprar la App ($49 USD)</a>
       </div>
     </div>
   </footer>
 
-  <script src="/tbb-v80-brandbook-plates.js?v=92.0"></script>
-  <script src="/universal-brandbook-30-engine.js?v=92.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=92.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=92.0"></script>
+  <script>
+    (function () {
+      var bar = document.getElementById('tbbScrollProgressBar');
+      function updateScrollBar() {
+        if (!bar) return;
+        var doc = document.documentElement;
+        var scrollTop = window.pageYOffset || doc.scrollTop || 0;
+        var maxScroll = Math.max(1, (doc.scrollHeight || 1) - (window.innerHeight || 1));
+        var pct = Math.min(100, Math.max(0, (scrollTop / maxScroll) * 100));
+        bar.style.width = pct.toFixed(1) + '%';
+      }
+      window.addEventListener('scroll', updateScrollBar, { passive: true });
+      window.addEventListener('resize', updateScrollBar, { passive: true });
+      updateScrollBar();
+    })();
+  </script>
+  <script defer src="/tbb-v80-brandbook-plates.js?v=93.0"></script>
+  <script defer src="/universal-brandbook-30-engine.js?v=93.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=93.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=93.0"></script>
 </body>
 </html>
