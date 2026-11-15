@@ -1986,6 +1986,167 @@
   }
 
   window._tbbFlowVisualsCache = window._tbbFlowVisualsCache || {};
+  window._tbbFlowMockupStateByBrand = window._tbbFlowMockupStateByBrand || {};
+
+  // ==========================================================================
+  // 6. GOOGLE FLOW · REMIX OF MOCKUP (NANO BANANA 2.1 / PRO POR GIRO DEL NEGOCIO)
+  // ==========================================================================
+  const TBB_GOOGLE_FLOW_MOCKUP_URL = "https://flow.google.com/project/4bae0087-9fb0-4dc7-b5fb-6c975161bf17/tool/11f5131c-d37e-4aa9-9350-2bed08c47560?mode=APP&fromViewSource=tools";
+
+  const TBB_GOOGLE_FLOW_MOCKUP_SURFACES = [
+    { id: "laptop", emoji: "💻", label: "laptop", esTitle: "Laptop / MacBook Pro", surfacePrompt: "a sleek modern aluminum laptop screen and brushed metal lid on an executive desk" },
+    { id: "phone", emoji: "📱", label: "phone", esTitle: "Smartphone / App Móvil", surfacePrompt: "a flagship smartphone screen and minimalist case held in a sunlit contemporary studio" },
+    { id: "tv", emoji: "📺", label: "tv", esTitle: "Pantalla / Monitor 4K", surfacePrompt: "a large ultra-thin 4K architectural display in a modern boardroom or flagship showroom" },
+    { id: "shirt", emoji: "👕", label: "shirt", esTitle: "Indumentaria / Camisa / Polo", surfacePrompt: "a premium heavyweight organic cotton shirt / executive garment with finely embroidered emblem on the chest" },
+    { id: "hat", emoji: "🧢", label: "hat", esTitle: "Gorra / Casco de Obra", surfacePrompt: "a structured luxury cap or professional engineering safety helmet with raised 3D emblem on the front crown" },
+    { id: "bag", emoji: "🛍️", label: "bag", esTitle: "Bolsa / Packaging de Marca", surfacePrompt: "a luxury tactile kraft and cotton tote / shopping bag with embossed foil brand emblem resting on travertine stone" },
+    { id: "pin", emoji: "📍", label: "pin", esTitle: "Pin Metálico / Insignia", surfacePrompt: "a macro close-up of a precision die-struck brushed metal and enamel lapel pin badge on textured wool" },
+    { id: "book", emoji: "📖", label: "book", esTitle: "Libro / Dossier Pasta Dura", surfacePrompt: "an architectural linen-bound hardcover brandbook and executive dossier with debossed emblem on a warm oak table" },
+    { id: "poster", emoji: "🖼️", label: "poster", esTitle: "Póster / Cuadro Editorial", surfacePrompt: "a museum-grade framed architectural gallery poster on a sunlit gallery wall with natural shadows" },
+    { id: "window", emoji: "🪟", label: "window", esTitle: "Escaparate / Cristal Fachada", surfacePrompt: "a street-level boutique glass storefront window with frosted vinyl and brushed metal signage reflecting golden hour light" },
+    { id: "billboard", emoji: "🪧", label: "billboard", esTitle: "Espectacular / Valla Exterior", surfacePrompt: "a contemporary architectural outdoor billboard / urban mupi display in a clean upscale district at golden hour" },
+    { id: "mural", emoji: "🧱", label: "mural", esTitle: "Mural / Fachada Arquitectónica", surfacePrompt: "a monumental architectural concrete and travertine feature wall with 3D backlit dimensional emblem" }
+  ];
+
+  // Detecta el giro del negocio y selecciona automáticamente los 6 mockups ideales de Google Flow para los 6 espacios del Brandbook
+  function tbbDetectGiroMockupPlan(giroRaw, brandNameRaw, categoryRaw) {
+    const text = `${giroRaw || ""} ${brandNameRaw || ""} ${categoryRaw || ""}`.toLowerCase();
+    const bName = brandNameRaw || "Tu Marca";
+
+    if (/\b(restaurante|caf[eé]|gastronom|alimento|comida|bebida|panader|pasteler|postre|bar|cocina|hotel|hospitalidad|catering|chef|carnicer|asador|cervec|ingrediente|mascota|pet|croqueta)\b/i.test(text)) {
+      return {
+        sectorKey: "food_hospitality",
+        sectorLabel: "Gastronomía, Alimentos y Hospitalidad",
+        recommendedPills: ["shirt", "bag", "window", "phone", "poster", "mural"],
+        slots: {
+          persona: { surfaceId: "shirt", badge: "FLOW MOCKUP · 👕 SHIRT", title: `Indumentaria / Mandil de Autor · ${bName}`, promptObject: `an artisan barista/chef apron and premium linen culinary uniform with the imported "${bName}" logo finely embroidered on the chest` },
+          buyer: { surfaceId: "bag", badge: "FLOW MOCKUP · 🛍️ BAG", title: `Packaging & Takeaway Bag · ${bName}`, promptObject: `a bespoke tactile gourmet takeaway paper bag and artisan packaging box featuring the imported "${bName}" logo embossed on the front, held by a happy customer at a sunlit café table` },
+          tpBefore: { surfaceId: "window", badge: "FLOW MOCKUP · 🪟 WINDOW", title: `Escaparate y Cristal de Fachada · ${bName}`, promptObject: `a warm inviting restaurant/café glass storefront window with the imported "${bName}" logo applied in clean frosted white and brushed brass decal` },
+          tpDuring: { surfaceId: "phone", badge: "FLOW MOCKUP · 📱 PHONE", title: `Menú Digital y Pedidos · ${bName}`, promptObject: `a smartphone on a wooden café table displaying the "${bName}" digital ordering app with the imported logo at the top header alongside a ceramic cup` },
+          tpAfter: { surfaceId: "poster", badge: "FLOW MOCKUP · 🖼️ POSTER", title: `Cuadro y Empaque de Colección · ${bName}`, promptObject: `a framed editorial gastronomic print and sealed specialty pouch with the imported "${bName}" logo in morning sunlight` },
+          environment: { surfaceId: "mural", badge: "FLOW MOCKUP · 🧱 MURAL", title: `Mural Interior y Rótulo 3D · ${bName}`, promptObject: `an architectural brick and warm oak interior feature wall of "${bName}" with a backlit 3D mural of the imported brand logo` }
+        }
+      };
+    }
+
+    if (/\b(salud|m[eé]dic|cl[ií]nica|dental|odont|psicol|terapia|bienestar|spa|fitness|gimnasio|nutrici|farmac|hospital|veterinar|dermatol|fisioterap)\b/i.test(text)) {
+      return {
+        sectorKey: "health_wellness",
+        sectorLabel: "Salud, Clínica Especializada y Bienestar",
+        recommendedPills: ["shirt", "phone", "window", "book", "bag", "mural"],
+        slots: {
+          persona: { surfaceId: "shirt", badge: "FLOW MOCKUP · 👕 SHIRT", title: `Bata Clínica e Indumentaria · ${bName}`, promptObject: `a tailored medical coat / wellness specialist scrub top with the imported "${bName}" logo embroidered on the left chest pocket in a sunlit clinic` },
+          buyer: { surfaceId: "phone", badge: "FLOW MOCKUP · 📱 PHONE", title: `App de Citas y Expediente · ${bName}`, promptObject: `a smartphone held by a relaxed patient showing the "${bName}" health & wellness portal with the imported brand logo on screen` },
+          tpBefore: { surfaceId: "window", badge: "FLOW MOCKUP · 🪟 WINDOW", title: `Cristal Esmerilado de Recepción · ${bName}`, promptObject: `an architectural frosted glass clinic entrance window featuring the imported "${bName}" logo in clean dimensional signage` },
+          tpDuring: { surfaceId: "book", badge: "FLOW MOCKUP · 📖 BOOK", title: `Carpeta Clínica y Diagnóstico · ${bName}`, promptObject: `a minimalist linen-bound clinical welcome folder and diagnostic guide on a consultation desk with the imported "${bName}" logo embossed on the cover` },
+          tpAfter: { surfaceId: "bag", badge: "FLOW MOCKUP · 🛍️ BAG", title: `Kit de Cuidado y Bolsa de Paciente · ${bName}`, promptObject: `a clean dermatological / wellness kit tote bag and frosted glass bottle featuring the imported "${bName}" logo on travertine stone` },
+          environment: { surfaceId: "mural", badge: "FLOW MOCKUP · 🧱 MURAL", title: `Muro de Recepción y Señalética · ${bName}`, promptObject: `a serene travertine and warm wood medical clinic reception wall featuring a 3D halo-lit sign of the imported "${bName}" logo` }
+        }
+      };
+    }
+
+    if (/\b(arquitect|construcci|inmobiliar|interiorismo|ingenier[ií]a|obra|desarrollo urbano|bienes ra[ií]ces|hogar|mueble|carpinter|decoraci|arco)\b/i.test(text)) {
+      return {
+        sectorKey: "architecture_real_estate",
+        sectorLabel: "Arquitectura, Ingeniería, Construcción e Inmobiliaria",
+        recommendedPills: ["hat", "laptop", "billboard", "shirt", "book", "mural"],
+        slots: {
+          persona: { surfaceId: "hat", badge: "FLOW MOCKUP · 🧢 HAT", title: `Casco de Ingeniería y Supervisión · ${bName}`, promptObject: `a high-end white/matte architectural engineering safety hard hat and technical blueprint roll resting on a concrete studio table with the imported "${bName}" logo crisply printed on the front crown` },
+          buyer: { surfaceId: "laptop", badge: "FLOW MOCKUP · 💻 LAPTOP", title: `Presentación BIM y Render en Laptop · ${bName}`, promptObject: `a sleek MacBook Pro in an architectural showroom displaying a 3D building masterplan with the imported "${bName}" logo on the presentation header` },
+          tpBefore: { surfaceId: "billboard", badge: "FLOW MOCKUP · 🪧 BILLBOARD", title: `Valla Perimetral y Espectacular de Obra · ${bName}`, promptObject: `a monumental architectural development outdoor billboard at a modern construction site displaying the imported "${bName}" logo in bold high-contrast signage` },
+          tpDuring: { surfaceId: "shirt", badge: "FLOW MOCKUP · 👕 SHIRT", title: `Camisa Técnica y Chaleco de Obra · ${bName}`, promptObject: `a premium tailored architectural field jacket / executive polo shirt with the imported "${bName}" logo embroidered on the chest` },
+          tpAfter: { surfaceId: "book", badge: "FLOW MOCKUP · 📖 BOOK", title: `Memoria Constructiva y Dossier · ${bName}`, promptObject: `a luxury hardcover architectural project book and metal key entrega box on natural stone with the imported "${bName}" logo embossed on the cover` },
+          environment: { surfaceId: "mural", badge: "FLOW MOCKUP · 🧱 MURAL", title: `Fachada Corporativa en Concreto · ${bName}`, promptObject: `an Architectural Digest style exposed board-formed concrete and glass headquarters facade featuring a monumental 3D brushed steel sign of the imported "${bName}" logo` }
+        }
+      };
+    }
+
+    if (/\b(moda|ropa|prenda|deportiv|joyer|cosm[eé]tic|belleza|tienda|retail|e-commerce|producto|calzado|accesorio|perfum|artesan|boutique)\b/i.test(text)) {
+      return {
+        sectorKey: "retail_product",
+        sectorLabel: "Moda, Retail, E-Commerce y Diseño de Producto",
+        recommendedPills: ["shirt", "bag", "window", "hat", "phone", "billboard"],
+        slots: {
+          persona: { surfaceId: "shirt", badge: "FLOW MOCKUP · 👕 SHIRT", title: `Prenda Insignia de Colección · ${bName}`, promptObject: `a luxury flagship heavy cotton garment / tailored overshirt on a wooden atelier hanger featuring the imported "${bName}" logo embroidered on the chest and woven label` },
+          buyer: { surfaceId: "bag", badge: "FLOW MOCKUP · 🛍️ BAG", title: `Shopping Bag de Boutique · ${bName}`, promptObject: `a thick matte textured luxury boutique shopping bag with ribbon handles and the imported "${bName}" logo hot-stamped in the center` },
+          tpBefore: { surfaceId: "window", badge: "FLOW MOCKUP · 🪟 WINDOW", title: `Escaparate de Flagship Store · ${bName}`, promptObject: `a high-fashion street-level boutique glass display window with the imported "${bName}" logo in sleek vinyl signage` },
+          tpDuring: { surfaceId: "phone", badge: "FLOW MOCKUP · 📱 PHONE", title: `Tienda E-Commerce Móvil · ${bName}`, promptObject: `a flagship smartphone displaying the "${bName}" mobile e-commerce boutique with the imported brand logo on screen` },
+          tpAfter: { surfaceId: "hat", badge: "FLOW MOCKUP · 🧢 HAT", title: `Gorra y Empaque Unboxing · ${bName}`, promptObject: `a structured designer cap and rigid magnetic unboxing gift box featuring the imported "${bName}" logo` },
+          environment: { surfaceId: "billboard", badge: "FLOW MOCKUP · 🪧 BILLBOARD", title: `Mupi Urbano y Campaña · ${bName}`, promptObject: `an upscale city avenue architectural mupi / billboard poster showcasing the imported "${bName}" logo in golden hour light` }
+        }
+      };
+    }
+
+    if (/\b(educaci|academia|escuela|colegio|universidad|curso|capacitaci|formaci|coaching|taller|enseñanza)\b/i.test(text)) {
+      return {
+        sectorKey: "education_academy",
+        sectorLabel: "Educación, Academia y Formación Ejecutiva",
+        recommendedPills: ["book", "laptop", "pin", "shirt", "poster", "mural"],
+        slots: {
+          persona: { surfaceId: "book", badge: "FLOW MOCKUP · 📖 BOOK", title: `Manual y Libro Rector · ${bName}`, promptObject: `an authoritative cloth-bound hardcover textbook and executive workbook with the imported "${bName}" logo embossed on the front cover` },
+          buyer: { surfaceId: "laptop", badge: "FLOW MOCKUP · 💻 LAPTOP", title: `Campus Virtual en Laptop · ${bName}`, promptObject: `a modern laptop on a library desk showing the "${bName}" learning platform with the imported logo prominently displayed` },
+          tpBefore: { surfaceId: "poster", badge: "FLOW MOCKUP · 🖼️ POSTER", title: `Póster de Convocatoria Académica · ${bName}`, promptObject: `a framed academic keynote poster in a modern campus corridor featuring the imported "${bName}" logo` },
+          tpDuring: { surfaceId: "shirt", badge: "FLOW MOCKUP · 👕 SHIRT", title: `Indumentaria Institucional · ${bName}`, promptObject: `a collegiate / executive polo shirt with the imported "${bName}" crest logo finely embroidered on the chest` },
+          tpAfter: { surfaceId: "pin", badge: "FLOW MOCKUP · 📍 PIN", title: `Pin de Graduación y Certificación · ${bName}`, promptObject: `a metallic enamel lapel pin and official diploma seal featuring the imported "${bName}" logo in macro detail` },
+          environment: { surfaceId: "mural", badge: "FLOW MOCKUP · 🧱 MURAL", title: `Auditorio y Muro de Campus · ${bName}`, promptObject: `a contemporary lecture hall and acoustic wood reception wall featuring a 3D dimensional sign of the imported "${bName}" logo` }
+        }
+      };
+    }
+
+    // Default / SaaS / Tecnología / Consultoría / Servicios Profesionales
+    return {
+      sectorKey: "tech_consulting",
+      sectorLabel: "Tecnología, SaaS, Consultoría y Servicios Ejecutivos",
+      recommendedPills: ["laptop", "phone", "book", "shirt", "pin", "mural"],
+      slots: {
+        persona: { surfaceId: "laptop", badge: "FLOW MOCKUP · 💻 LAPTOP", title: `Workstation Ejecutiva y Plataforma · ${bName}`, promptObject: `a flagship aluminum MacBook Pro on a travertine and oak executive desk displaying the "${bName}" software interface with the imported brand logo on screen` },
+        buyer: { surfaceId: "phone", badge: "FLOW MOCKUP · 📱 PHONE", title: `App Móvil y Experiencia Digital · ${bName}`, promptObject: `a flagship smartphone resting on an architectural desk showing the "${bName}" mobile app header with the imported brand logo` },
+        tpBefore: { surfaceId: "window", badge: "FLOW MOCKUP · 🪟 WINDOW", title: `Acceso Corporativo en Cristal · ${bName}`, promptObject: `a sleek glass office entrance door and frosted partition wall with the imported "${bName}" logo applied in architectural vinyl` },
+        tpDuring: { surfaceId: "book", badge: "FLOW MOCKUP · 📖 BOOK", title: `Dossier Ejecutivo y Propuesta · ${bName}`, promptObject: `a bespoke hardcover strategy dossier and metallic pen on a boardroom table with the imported "${bName}" logo debossed on the cover` },
+        tpAfter: { surfaceId: "bag", badge: "FLOW MOCKUP · 🛍️ BAG", title: `Welcome Kit y Tote Ejecutiva · ${bName}`, promptObject: `an executive onboarding gift box, structured tote bag and enamel pin featuring the imported "${bName}" logo` },
+        environment: { surfaceId: "mural", badge: "FLOW MOCKUP · 🧱 MURAL", title: `Lobby Corporativo y Rótulo 3D · ${bName}`, promptObject: `an Architectural Digest style corporate headquarters lobby wall in stone and warm wood featuring a 3D backlit sign of the imported "${bName}" logo` }
+      }
+    };
+  }
+
+  // Rasteriza el logotipo activo de la marca (PNG subido o SVG en curvas del Paso 5) a base64 PNG limpio (512x512) para enviarlo como `Import Image` a Google Flow / Nano Banana 2.1
+  async function rasterizeActiveBrandLogoToPngDataUrl(brand) {
+    if (typeof document === "undefined") return "";
+    const cs = window.canvasState || {};
+    const st = window.tbbState || {};
+    const s0 = window.step0State || {};
+    const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
+
+    const directRaster = (brand && brand.uploadedLogoDataUrl)
+      || (activeIt && activeIt.uploadedLogoDataUrl)
+      || cs.uploaded_logo_data_url
+      || s0.uploadedLogoDataUrl
+      || "";
+
+    if (directRaster && /^data:image\/(png|jpeg|jpg|webp);base64,/i.test(directRaster)) {
+      return directRaster;
+    }
+
+    const svgCore = (brand && brand.svgCore)
+      || (typeof window.synthesizeSystemicSymbol180 === "function" ? window.synthesizeSystemicSymbol180("flow_mockup_logo") : "");
+    if (!svgCore) return "";
+
+    const fullSvg = svgCore.trim().startsWith("<svg")
+      ? svgCore
+      : `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200" width="512" height="512"><rect width="200" height="200" fill="#FFFFFF" fill-opacity="0"/>${svgCore}</svg>`;
+
+    const svgDataUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(fullSvg);
+    const img = await loadImgAsync(svgDataUrl);
+    if (!img) return "";
+
+    const cnv = document.createElement("canvas");
+    cnv.width = 512;
+    cnv.height = 512;
+    const ctx = cnv.getContext("2d");
+    ctx.clearRect(0, 0, 512, 512);
+    ctx.drawImage(img, 32, 32, 448, 448);
+    return cnv.toDataURL("image/png");
+  }
 
   // Recorta/normaliza cualquier imagen generada exactamente a 4:3 (960x720) preservando la proporción 1:1 de píxeles (CERO estiramiento ni deformación)
   async function normalizePhotoToLocked4x3Canvas(rawDataUrl) {
@@ -2023,9 +2184,85 @@
     });
   }
 
-  async function generateSingleFlowIllustration(promptText, slotKey, brand, aspectRatio = "4:3") {
-    const models = ["gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview", "gemini-2.5-flash-image"];
+  // Si la red falla o usa respaldo local, compone fotorrealistamente el logotipo real sobre la escena 4:3 con perspectiva e iluminación natural
+  async function compositeLogoMockupFallbackOn4x3Canvas(basePhotoUrl, logoPngDataUrl, brand, surfaceMeta) {
+    const normalizedBg = await normalizePhotoToLocked4x3Canvas(basePhotoUrl);
+    if (!logoPngDataUrl || typeof document === "undefined") return normalizedBg;
+    const [bgImg, logoImg] = await Promise.all([loadImgAsync(normalizedBg), loadImgAsync(logoPngDataUrl)]);
+    if (!bgImg || !logoImg) return normalizedBg;
+
+    const cnv = document.createElement("canvas");
+    cnv.width = 960;
+    cnv.height = 720;
+    const ctx = cnv.getContext("2d");
+    ctx.drawImage(bgImg, 0, 0, 960, 720);
+
+    const pri = brand?.colors?.pri || "#0D2540";
+    const acc = brand?.colors?.acc || "#FF7A00";
+    const bName = (brand?.name || "TU MARCA").toUpperCase();
+    const sLabel = (surfaceMeta && surfaceMeta.badge) || "FLOW MOCKUP · 4:3";
+
+    // Tarjeta física de aplicación de marca (estilo etiqueta / placa arquitectónica en esquina inferior izquierda)
+    ctx.save();
+    ctx.shadowColor = "rgba(9, 13, 22, 0.28)";
+    ctx.shadowBlur = 24;
+    ctx.shadowOffsetY = 8;
+    ctx.fillStyle = "rgba(255, 255, 255, 0.94)";
+    ctx.beginPath();
+    ctx.roundRect(34, 496, 290, 126, [14, 32, 14, 14]);
+    ctx.fill();
+    ctx.restore();
+
+    ctx.save();
+    ctx.strokeStyle = pri;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(34, 496, 290, 126, [14, 32, 14, 14]);
+    ctx.stroke();
+
+    ctx.fillStyle = acc;
+    ctx.fillRect(34, 616, 290, 6);
+
+    ctx.drawImage(logoImg, 48, 512, 92, 92);
+
+    ctx.fillStyle = acc;
+    ctx.font = "800 10px 'JetBrains Mono', monospace";
+    ctx.fillText(sLabel.slice(0, 28), 152, 538);
+
+    ctx.fillStyle = "#090D16";
+    ctx.font = "900 15px 'Montserrat', sans-serif";
+    ctx.fillText(bName.slice(0, 16), 152, 562);
+
+    ctx.fillStyle = "#475569";
+    ctx.font = "700 11px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillText(((surfaceMeta && surfaceMeta.title) || "Aplicación Oficial").slice(0, 24), 152, 584);
+    ctx.restore();
+
+    return cnv.toDataURL("image/jpeg", 0.92);
+  }
+
+  async function generateSingleFlowIllustration(promptText, slotKey, brand, aspectRatio = "4:3", options = {}) {
+    const flowMode = options.flowMode || (window.tbbState && window.tbbState.flowMockupQualityMode) || "fast";
+    const models = flowMode === "pro"
+      ? ["gemini-3-pro-image-preview", "gemini-3.1-flash-image-preview", "gemini-2.5-flash-image"]
+      : ["gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview", "gemini-2.5-flash-image"];
     const proxyUrl = (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
+    const logoDataUrl = options.logoDataUrl || await rasterizeActiveBrandLogoToPngDataUrl(brand);
+
+    const requestParts = [];
+    if (logoDataUrl && /^data:image\/(png|jpeg|jpg|webp);base64,/i.test(logoDataUrl)) {
+      const m = logoDataUrl.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,(.+)$/);
+      if (m) {
+        requestParts.push({
+          inlineData: {
+            mimeType: m[1],
+            data: m[2]
+          }
+        });
+      }
+    }
+    requestParts.push({ text: promptText });
+
     for (const model of models) {
       try {
         const genCfg = { responseModalities: ["IMAGE", "TEXT"] };
@@ -2037,7 +2274,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             model: model,
-            contents: [{ parts: [{ text: promptText }] }],
+            contents: [{ parts: requestParts }],
             generationConfig: genCfg
           })
         });
@@ -2052,12 +2289,13 @@
           }
         }
       } catch (e) {
-        console.warn("Flow chapter photo fallback:", e);
+        console.warn("Flow chapter mockup fallback:", e);
       }
     }
     const slug = String(brand?.slug || "").toLowerCase();
     const isArcoBrand = /^arco(_ingenier[ií]a)?$/i.test(slug);
-    const photoPrefix = isArcoBrand ? "arco" : "tbb";
+    const isImproBearsBrand = /improbears/i.test(slug) || /improbears/i.test(brand?.name || "");
+    const photoPrefix = isArcoBrand ? "arco" : (isImproBearsBrand ? "improbears" : "tbb");
     const editorialFallbackMap = {
       persona: `/assets/editorial_photos/${photoPrefix}_01_persona.jpg`,
       step0_splash: `/assets/editorial_photos/${photoPrefix}_01_persona.jpg`,
@@ -2073,34 +2311,41 @@
       step6_map: `/assets/editorial_photos/${photoPrefix}_06_environment.jpg`
     };
     const fallbackPhotoUrl = editorialFallbackMap[slotKey] || `/assets/editorial_photos/${photoPrefix}_06_environment.jpg`;
-    return await normalizePhotoToLocked4x3Canvas(fallbackPhotoUrl);
+    return await compositeLogoMockupFallbackOn4x3Canvas(fallbackPhotoUrl, logoDataUrl, brand, options.surfaceMeta);
   }
 
-  async function tbbGenerateChapterVisualsWithFlow(brandOrBtn, onProgress) {
+  async function tbbGenerateChapterVisualsWithFlow(brandOrBtn, onProgress, customOptions = {}) {
     const isDomButton = brandOrBtn && typeof brandOrBtn === "object" && (brandOrBtn.tagName === "BUTTON" || typeof brandOrBtn.textContent === "string");
     const triggerBtn = isDomButton ? brandOrBtn : null;
     const origBtnHtml = triggerBtn ? triggerBtn.innerHTML : "";
     if (triggerBtn) {
       triggerBtn.disabled = true;
-      triggerBtn.textContent = "Fotografiando capítulos (0/6)...";
+      triggerBtn.textContent = "Google Flow · Generando Mockups por Giro (0/6)...";
     }
     const brand = (!isDomButton && brandOrBtn && brandOrBtn.slug) ? brandOrBtn : window.buildActiveBrandProfileForV80();
+    const giroPlan = tbbDetectGiroMockupPlan(brand.giro, brand.name, brand.category);
+    const customSurfaceOverride = String(customOptions.surfaceOverride || "").trim();
+    const forceRegenerate = Boolean(customOptions.forceRegenerate);
+    const flowMode = customOptions.flowMode || (window.tbbState && window.tbbState.flowMockupQualityMode) || "fast";
+
     const cacheKey = `photo_v88|${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
+    const legacyKey86 = `photo_v86|${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
     window._tbbFlowVisualsInFlight = window._tbbFlowVisualsInFlight || {};
-    if (window._tbbFlowVisualsCache[cacheKey] && window._tbbFlowVisualsCache[cacheKey]._complete) {
+
+    if (!forceRegenerate && window._tbbFlowVisualsCache[cacheKey] && window._tbbFlowVisualsCache[cacheKey]._complete) {
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Fotografía Editorial 4:3 Lista";
+        triggerBtn.textContent = "✓ Mockups Google Flow 4:3 Listos";
         setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2200);
       }
       return window._tbbFlowVisualsCache[cacheKey];
     }
-    if (window._tbbFlowVisualsInFlight[cacheKey]) {
+    if (!forceRegenerate && window._tbbFlowVisualsInFlight[cacheKey]) {
       return window._tbbFlowVisualsInFlight[cacheKey];
     }
 
     const isTbbDedicatedPhotos = /^the_?best_?brand$/i.test(brand.slug);
-    if (isTbbDedicatedPhotos) {
+    if (!forceRegenerate && isTbbDedicatedPhotos && !customSurfaceOverride) {
       const tbbEntry = {
         persona: "/assets/editorial_photos/tbb_01_persona.jpg",
         step0_splash: "/assets/editorial_photos/tbb_01_persona.jpg",
@@ -2114,12 +2359,15 @@
         step5_atelier: "/assets/editorial_photos/tbb_05_tp_after.jpg",
         environment: "/assets/editorial_photos/tbb_06_environment.jpg",
         step6_map: "/assets/editorial_photos/tbb_06_environment.jpg",
+        _metaBySlot: giroPlan.slots,
+        _sectorLabel: giroPlan.sectorLabel,
         _complete: true
       };
       window._tbbFlowVisualsCache[cacheKey] = tbbEntry;
+      window._tbbFlowVisualsCache[legacyKey86] = tbbEntry;
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Fotografía Editorial 4:3 de The Best Brand Lista";
+        triggerBtn.textContent = "✓ Mockups Google Flow 4:3 de The Best Brand Listos";
         setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2200);
       }
       return tbbEntry;
@@ -2128,82 +2376,90 @@
     const pri = brand.colors?.pri || "#0D2540";
     const sec = brand.colors?.sec || "#426EAE";
     const acc = brand.colors?.acc || "#FF7A00";
-    const photoStyle = `Award-winning editorial magazine photography (Kinfolk / Cereal Magazine / Architectural Digest / Monocle), captured on medium-format Hasselblad X2D 50mm f/2.5 lens, natural golden-hour daylight, tactile organic materials (travertine stone, warm oak wood, brushed metal, raw linen, natural skin tones), subtle chromatic harmony with ${pri}, ${sec}, and warm accent ${acc}. STRICTLY REAL PHOTOGRAPHY (zero cartoon, zero flat vector illustration, zero comic outlines, zero 3D CGI render), zero text, no words, no signs with letters, no watermarks, locked 4:3 horizontal composition with generous headroom so heads and subjects are never cropped or stretched.`;
+    const logoDataUrl = await rasterizeActiveBrandLogoToPngDataUrl(brand);
 
-    const jobs = [
-      {
-        key: "persona",
-        alias: "step0_splash",
-        aspect: "4:3",
-        label: "La Empresa como Persona",
-        prompt: `Authentic editorial environmental portrait photograph representing the human archetype of "${brand.name}" (${brand.giro}): ${brand.persona}. Warm, composed expert in their real craft studio or architectural workspace, medium-wide 4:3 horizontal framing with generous breathing room above the head. ${photoStyle}`
-      },
-      {
-        key: "buyer",
-        alias: "step1_golden",
-        aspect: "4:3",
-        label: "Cliente Ideal (Buyer Persona)",
-        prompt: `Candid luxury editorial lifestyle photograph of the ideal customer of "${brand.name}": ${brand.buyer}, genuinely enjoying ${brand.what} in a sunlit refined setting, natural expressions, medium-wide horizontal 4:3 composition with full headroom. ${photoStyle}`
-      },
-      {
-        key: "tpBefore",
-        alias: "step3_touchpoints",
-        aspect: "4:3",
-        label: "Touchpoint Antes de Comprar",
-        prompt: `High-end editorial photograph of the first discovery touchpoint for "${brand.name}" (${brand.giro}): ${(brand.tpBefore && brand.tpBefore[0]) || "welcoming boutique entrance or curated digital discovery moment"}, clean architectural lines and natural light, 4:3 horizontal frame. ${photoStyle}`
-      },
-      {
-        key: "tpDuring",
-        alias: "step4_kansei",
-        aspect: "4:3",
-        label: "Touchpoint Durante el Servicio",
-        prompt: `Editorial medium documentary photograph of the signature service experience of "${brand.name}" (${brand.giro}): ${(brand.tpDuring && brand.tpDuring[0]) || "bespoke consultation and tactile presentation"}, authentic human connection, real materials, warm hospitality, 4:3 horizontal frame. ${photoStyle}`
-      },
-      {
-        key: "tpAfter",
-        alias: "step5_atelier",
-        aspect: "4:3",
-        label: "Touchpoint Después del Servicio",
-        prompt: `Tactile editorial still-life and lifestyle photograph of the post-purchase keepsake, bespoke packaging, certificate, or lasting relationship of "${brand.name}" (${brand.giro}): ${(brand.tpAfter && brand.tpAfter[0]) || "signature keepsake box, certificate of authenticity and lasting relationship"} resting on natural stone or warm timber in soft morning sunlight, 4:3 horizontal composition. ${photoStyle}`
-      },
-      {
-        key: "environment",
-        alias: "step6_map",
-        aspect: "4:3",
-        label: "Espacio Físico y Arquitectura de Marca",
-        prompt: `Architectural Digest style wide-angle interior & exterior flagship photograph of "${brand.name}" (${brand.giro}), refined contemporary architecture, museum-grade lighting, noble materials, zero text on walls, 4:3 horizontal composition. ${photoStyle}`
+    const resolveSlotSurface = (slotKey) => {
+      const baseSlot = giroPlan.slots[slotKey] || giroPlan.slots.environment;
+      if (!customSurfaceOverride) return baseSlot;
+      const foundPreset = TBB_GOOGLE_FLOW_MOCKUP_SURFACES.find(s => s.id === customSurfaceOverride);
+      if (foundPreset) {
+        return {
+          surfaceId: foundPreset.id,
+          badge: `FLOW MOCKUP · ${foundPreset.emoji} ${foundPreset.label.toUpperCase()}`,
+          title: `${foundPreset.esTitle} · ${brand.name}`,
+          promptObject: `${foundPreset.surfacePrompt} tailored to the "${brand.giro}" industry, featuring the imported "${brand.name}" brand logo applied with physical realism`
+        };
       }
+      return {
+        surfaceId: "custom",
+        badge: `FLOW MOCKUP · ✨ CUSTOM`,
+        title: `${customSurfaceOverride} · ${brand.name}`,
+        promptObject: `${customSurfaceOverride} tailored for "${brand.name}" (${brand.giro}), featuring the imported brand logo applied with physical realism`
+      };
+    };
+
+    const photoStyle = `GOOGLE FLOW REMIX OF MOCKUP (Nano Banana 2.1 / Pro): Using the attached/imported brand logo image as the exact graphic identity, generate an award-winning photorealistic 4:3 product & brand mockup photograph (Hasselblad X2D 50mm f/2.5, natural golden-hour daylight, tactile real-world materials, subtle chromatic harmony with ${pri}, ${sec}, and ${acc}). Apply the imported logo naturally onto the mockup surface (realistic embroidery, debossing, screen-print, brushed metal signage, or high-resolution display screen) with accurate perspective, lighting, and surface texture. Locked 4:3 horizontal composition.`;
+
+    const slotDefs = [
+      { key: "persona", alias: "step0_splash", meta: resolveSlotSurface("persona") },
+      { key: "buyer", alias: "step1_golden", meta: resolveSlotSurface("buyer") },
+      { key: "tpBefore", alias: "step3_touchpoints", meta: resolveSlotSurface("tpBefore") },
+      { key: "tpDuring", alias: "step4_kansei", meta: resolveSlotSurface("tpDuring") },
+      { key: "tpAfter", alias: "step5_atelier", meta: resolveSlotSurface("tpAfter") },
+      { key: "environment", alias: "step6_map", meta: resolveSlotSurface("environment") }
     ];
 
-    const entry = window._tbbFlowVisualsCache[cacheKey] || {};
+    const targetSingleSlot = customOptions.onlySlotKey || "";
+    const jobs = slotDefs
+      .filter(s => !targetSingleSlot || s.key === targetSingleSlot || s.alias === targetSingleSlot)
+      .map(s => ({
+        key: s.key,
+        alias: s.alias,
+        aspect: "4:3",
+        label: s.meta.title,
+        surfaceMeta: s.meta,
+        prompt: `Photorealistic Google Flow Remix of Mockup for "${brand.name}" (Business line / Giro: ${brand.giro}): ${s.meta.promptObject}. ${photoStyle}`
+      }));
+
+    const entry = window._tbbFlowVisualsCache[cacheKey] || { _metaBySlot: {} };
+    entry._metaBySlot = entry._metaBySlot || {};
+    entry._sectorLabel = giroPlan.sectorLabel;
     window._tbbFlowVisualsCache[cacheKey] = entry;
+    window._tbbFlowVisualsCache[legacyKey86] = entry;
 
     let done = 0;
     const runPromise = (async () => {
       for (const j of jobs) {
-        if (!entry[j.key] || String(entry[j.key]).startsWith("data:image/svg")) {
-          const url = await generateSingleFlowIllustration(j.prompt, j.key, brand, j.aspect || "4:3");
+        if (forceRegenerate || !entry[j.key] || String(entry[j.key]).startsWith("data:image/svg")) {
+          const url = await generateSingleFlowIllustration(j.prompt, j.key, brand, j.aspect || "4:3", {
+            logoDataUrl,
+            flowMode,
+            surfaceMeta: j.surfaceMeta
+          });
           if (url) {
             entry[j.key] = url;
             if (j.alias) entry[j.alias] = url;
+            entry._metaBySlot[j.key] = j.surfaceMeta;
+            if (j.alias) entry._metaBySlot[j.alias] = j.surfaceMeta;
           }
         } else if (j.alias && !entry[j.alias]) {
           entry[j.alias] = entry[j.key];
+          entry._metaBySlot[j.alias] = j.surfaceMeta;
         }
         done++;
-        if (triggerBtn) triggerBtn.textContent = `Fotografía Editorial 4:3 (${done}/${jobs.length})...`;
-        if (typeof onProgress === "function") onProgress(done, jobs.length, j.label);
+        if (triggerBtn) triggerBtn.textContent = `Google Flow Mockup (${done}/${jobs.length}) · ${j.surfaceMeta.badge}...`;
+        if (typeof onProgress === "function") onProgress(done, jobs.length, j.label, entry);
         if (typeof window.renderTbbZeroScrollStage === "function") {
           window.renderTbbZeroScrollStage();
         }
       }
 
-      const realRasterCount = Object.values(entry).filter(v => typeof v === "string" && /^data:image\/(png|jpeg|webp)/i.test(v)).length;
+      const realRasterCount = Object.values(entry).filter(v => typeof v === "string" && (/^data:image\/(png|jpeg|webp)/i.test(v) || v.startsWith("/assets/"))).length;
       entry._complete = realRasterCount >= 4;
       delete window._tbbFlowVisualsInFlight[cacheKey];
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Fotografía Editorial 4:3 Lista";
+        triggerBtn.textContent = "✓ Mockups Google Flow 4:3 Aplicados";
         if (typeof window.renderTbbZeroScrollStage === "function") {
           window.renderTbbZeroScrollStage();
         }
@@ -2214,6 +2470,239 @@
     window._tbbFlowVisualsInFlight[cacheKey] = runPromise;
     return runPromise;
   }
+
+  // Modal interactivo idéntico a la herramienta "Remix of Mockup" de Google Flow (con selector de superficies por Giro + Fast/Pro Nano Banana 2.1)
+  async function tbbOpenGoogleFlowMockupStudioModal() {
+    if (typeof document === "undefined" || !document.body) return;
+    const existing = document.getElementById("tbbGoogleFlowRemixModal");
+    if (existing) existing.remove();
+
+    const brand = window.buildActiveBrandProfileForV80();
+    const giroPlan = tbbDetectGiroMockupPlan(brand.giro, brand.name, brand.category);
+    const logoPngUrl = await rasterizeActiveBrandLogoToPngDataUrl(brand);
+    const cacheKey = `photo_v88|${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
+    const cachedEntry = window._tbbFlowVisualsCache[cacheKey] || {};
+    if (!window.tbbState) window.tbbState = {};
+    const curMode = window.tbbState.flowMockupQualityMode || "fast";
+    let selectedPill = window.tbbState.flowSelectedMockupPill || "";
+
+    const overlay = document.createElement("div");
+    overlay.id = "tbbGoogleFlowRemixModal";
+    overlay.style.cssText = "position:fixed;inset:0;background:rgba(9,13,22,0.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:999995;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;";
+
+    const renderModalBody = () => {
+      const modeNow = window.tbbState.flowMockupQualityMode || "fast";
+      const activeEntry = window._tbbFlowVisualsCache[cacheKey] || {};
+      const slotPreviewList = [
+        { key: "persona", alias: "step0_splash", defaultImg: "/assets/editorial_photos/tbb_01_persona.jpg" },
+        { key: "buyer", alias: "step1_golden", defaultImg: "/assets/editorial_photos/tbb_02_buyer.jpg" },
+        { key: "tpBefore", alias: "step3_touchpoints", defaultImg: "/assets/editorial_photos/tbb_03_tp_before.jpg" },
+        { key: "tpDuring", alias: "step4_kansei", defaultImg: "/assets/editorial_photos/tbb_04_tp_during.jpg" },
+        { key: "tpAfter", alias: "step5_atelier", defaultImg: "/assets/editorial_photos/tbb_05_tp_after.jpg" },
+        { key: "environment", alias: "step6_map", defaultImg: "/assets/editorial_photos/tbb_06_environment.jpg" }
+      ];
+
+      overlay.innerHTML = `
+        <div style="width:100%;max-width:1120px;background:#111318;color:#F8FAFC;border:1.5px solid rgba(255,255,255,0.14);border-radius:24px;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,0.65);font-family:'Plus Jakarta Sans',sans-serif;display:grid;grid-template-columns:minmax(310px, 380px) 1fr;max-height:92vh;">
+          <!-- Panel Izquierdo: Google Flow Canvas Media & Píldoras de Superficie -->
+          <div style="padding:20px;border-right:1px solid rgba(255,255,255,0.10);display:flex;flex-direction:column;justify-content:space-between;gap:14px;overflow-y:auto;background:#16181F;">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
+                <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,122,0,0.14);border:1px solid rgba(255,122,0,0.45);color:#FDBA74;padding:4px 10px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;">
+                  <span>✨</span> GOOGLE FLOW · REMIX OF MOCKUP
+                </div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:0.66rem;color:#94A3B8;font-weight:700;">Nano Banana 2.1</span>
+              </div>
+
+              <div style="font-size:1.02rem;font-weight:900;color:#FFFFFF;margin-bottom:4px;">
+                Mockups Inteligentes por Giro
+              </div>
+              <div style="font-size:0.76rem;color:#94A3B8;line-height:1.45;margin-bottom:12px;">
+                Giro detectado: <strong style="color:#F8FAFC;">${xmlEsc(giroPlan.sectorLabel)}</strong> (${xmlEsc(brand.name)}).
+              </div>
+
+              <!-- Canvas Media (Logo activo importado) -->
+              <div style="background:#1E202B;border:1.5px dashed rgba(255,255,255,0.22);border-radius:16px;padding:14px;text-align:center;margin-bottom:14px;position:relative;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#94A3B8;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.8px;">
+                  Canvas Media · Logotipo Activo Importado
+                </div>
+                <div style="width:108px;height:108px;margin:0 auto 8px auto;background:#FFFFFF;border-radius:18px;padding:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.35);">
+                  ${logoPngUrl ? `<img src="${logoPngUrl}" alt="Logo" style="max-width:100%;max-height:100%;object-fit:contain;display:block;" />` : `<span style="color:#0D2540;font-weight:900;font-size:0.75rem;">${xmlEsc(brand.name)}</span>`}
+                </div>
+                <div style="font-size:0.72rem;color:#CBD5E1;font-weight:700;">${xmlEsc(brand.name)} · Listo para aplicar en superficies</div>
+              </div>
+
+              <!-- 12 Píldoras Oficiales de Google Flow Remix of Mockup -->
+              <div style="font-family:'JetBrains Mono',monospace;font-size:0.66rem;color:#94A3B8;font-weight:800;margin-bottom:8px;letter-spacing:0.5px;">
+                SUPERFICIES GOOGLE FLOW (★ RECOMENDADAS PARA TU GIRO)
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+                <button type="button" data-flow-pill="" style="padding:6px 11px;border-radius:999px;border:1.5px solid ${selectedPill === "" ? "#FF7A00" : "rgba(255,255,255,0.16)"};background:${selectedPill === "" ? "rgba(255,122,0,0.22)" : "#232634"};color:#FFFFFF;font-size:0.73rem;font-weight:800;cursor:pointer;">
+                  🎯 Mix Automático del Giro (6)
+                </button>
+                ${TBB_GOOGLE_FLOW_MOCKUP_SURFACES.map(s => {
+                  const isRec = giroPlan.recommendedPills.includes(s.id);
+                  const isSel = selectedPill === s.id;
+                  return `<button type="button" data-flow-pill="${s.id}" title="${xmlEsc(s.esTitle)}" style="padding:6px 11px;border-radius:999px;border:1.5px solid ${isSel ? "#FF7A00" : (isRec ? "rgba(76,157,230,0.65)" : "rgba(255,255,255,0.14)")};background:${isSel ? "rgba(255,122,0,0.24)" : (isRec ? "rgba(66,110,174,0.22)" : "#232634")};color:#F8FAFC;font-size:0.73rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+                    <span>${s.emoji}</span> <span>${s.label}</span> ${isRec ? `<span style="color:#FDBA74;font-size:0.65rem;">★</span>` : ""}
+                  </button>`;
+                }).join("")}
+              </div>
+
+              <!-- + custom mockup -->
+              <div style="margin-bottom:12px;">
+                <input id="tbbFlowCustomMockupInput" type="text" value="${selectedPill && !TBB_GOOGLE_FLOW_MOCKUP_SURFACES.some(s => s.id === selectedPill) ? xmlEsc(selectedPill) : ""}" placeholder="+ custom mockup (ej. casco de obra, taza cerámica, camión, envase...)" style="width:100%;box-sizing:border-box;padding:9px 12px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.18);background:#1E202B;color:#FFFFFF;font-size:0.76rem;font-weight:600;outline:none;" />
+              </div>
+            </div>
+
+            <!-- Barra Inferior estilo Google Flow: Fast / Pro + Generar + Abrir en Google Flow -->
+            <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid rgba(255,255,255,0.10);padding-top:12px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                <div style="display:inline-flex;background:#232634;border-radius:999px;padding:3px;border:1px solid rgba(255,255,255,0.14);">
+                  <button type="button" id="tbbFlowModeFastBtn" style="padding:5px 12px;border-radius:999px;border:none;background:${modeNow === "fast" ? "#F8FAFC" : "transparent"};color:${modeNow === "fast" ? "#090D16" : "#CBD5E1"};font-size:0.72rem;font-weight:800;cursor:pointer;">Fast (2.1)</button>
+                  <button type="button" id="tbbFlowModeProBtn" style="padding:5px 12px;border-radius:999px;border:none;background:${modeNow === "pro" ? "#F8FAFC" : "transparent"};color:${modeNow === "pro" ? "#090D16" : "#CBD5E1"};font-size:0.72rem;font-weight:800;cursor:pointer;">Pro</button>
+                </div>
+                <button type="button" id="tbbFlowOpenExternalBtn" style="padding:6px 11px;border-radius:999px;border:1px solid rgba(255,255,255,0.22);background:#1E202B;color:#E2E8F0;font-size:0.70rem;font-weight:700;cursor:pointer;" title="Descarga tu logo PNG y abre la herramienta Remix of Mockup en flow.google.com">
+                  ↗ Abrir en flow.google.com
+                </button>
+              </div>
+
+              <button type="button" id="tbbFlowRunGenerateBtn" style="width:100%;padding:11px 16px;border-radius:12px;border:none;background:linear-gradient(90deg,#FF7A00,#F97316);color:#FFFFFF;font-family:'Montserrat',sans-serif;font-size:0.82rem;font-weight:900;cursor:pointer;box-shadow:0 8px 20px rgba(255,122,0,0.35);">
+                ✨ Generar y Actualizar Mockups en el Manual (4:3)
+              </button>
+            </div>
+          </div>
+
+          <!-- Panel Derecho: Galería de los 6 Mockups del Brandbook -->
+          <div style="padding:20px 24px;display:flex;flex-direction:column;justify-content:space-between;overflow-y:auto;background:#0D0F14;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;">
+              <div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#FF7A00;font-weight:800;letter-spacing:1px;">
+                  VISTA PREVIA EN VIVO · LÁMINAS 05, 07, 10, 11, 12, 28, 31 Y 32
+                </div>
+                <h3 style="font-family:'Montserrat',sans-serif;font-size:1.12rem;font-weight:900;color:#FFFFFF;margin:2px 0 0 0;">
+                  Showcase de Mockups de «${xmlEsc(brand.name)}» Aplicados al Giro
+                </h3>
+              </div>
+              <button type="button" id="tbbFlowCloseModalBtn" style="padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.22);background:#1E202B;color:#FFFFFF;font-size:0.75rem;font-weight:800;cursor:pointer;">
+                Cerrar ✕
+              </button>
+            </div>
+
+            <div id="tbbFlowModalStatusBanner" style="display:none;margin-bottom:12px;padding:9px 14px;border-radius:10px;background:rgba(66,110,174,0.22);border:1px solid #4C9DE6;color:#E2E8F0;font-size:0.78rem;font-weight:700;"></div>
+
+            <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;flex:1;">
+              ${slotPreviewList.map((item, idx) => {
+                const slotMeta = (activeEntry._metaBySlot && activeEntry._metaBySlot[item.key]) || giroPlan.slots[item.key];
+                const imgSrc = activeEntry[item.key] || activeEntry[item.alias] || item.defaultImg;
+                return `
+                  <div style="background:#16181F;border:1px solid rgba(255,255,255,0.12);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;">
+                    <div style="position:relative;width:100%;aspect-ratio:4/3;background:#090D16;overflow:hidden;">
+                      <img src="${imgSrc}" alt="${xmlEsc(slotMeta.title)}" style="width:100%;height:100%;object-fit:cover;display:block;" />
+                      <span style="position:absolute;top:8px;left:8px;background:rgba(9,13,22,0.86);color:#FDBA74;font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:800;padding:3px 8px;border-radius:999px;border:1px solid rgba(255,122,0,0.4);">
+                        0${idx + 1} · ${xmlEsc(slotMeta.badge)}
+                      </span>
+                    </div>
+                    <div style="padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                      <div style="min-width:0;">
+                        <div style="font-size:0.76rem;font-weight:800;color:#FFFFFF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${xmlEsc(slotMeta.title)}</div>
+                        <div style="font-size:0.66rem;color:#94A3B8;">Proporción 4:3 bloqueada</div>
+                      </div>
+                      <button type="button" data-flow-regen-slot="${item.key}" style="padding:4px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.18);background:#232634;color:#F8FAFC;font-size:0.66rem;font-weight:800;cursor:pointer;flex-shrink:0;" title="Regenerar este mockup con la superficie seleccionada">
+                        ↻ Remix
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Bindings interactivos del modal
+      overlay.querySelector("#tbbFlowCloseModalBtn")?.addEventListener("click", () => overlay.remove());
+      overlay.querySelector("#tbbFlowModeFastBtn")?.addEventListener("click", () => {
+        window.tbbState.flowMockupQualityMode = "fast";
+        renderModalBody();
+      });
+      overlay.querySelector("#tbbFlowModeProBtn")?.addEventListener("click", () => {
+        window.tbbState.flowMockupQualityMode = "pro";
+        renderModalBody();
+      });
+
+      overlay.querySelectorAll("[data-flow-pill]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          selectedPill = btn.getAttribute("data-flow-pill") || "";
+          window.tbbState.flowSelectedMockupPill = selectedPill;
+          renderModalBody();
+        });
+      });
+
+      overlay.querySelector("#tbbFlowOpenExternalBtn")?.addEventListener("click", () => {
+        if (logoPngUrl) {
+          const a = document.createElement("a");
+          a.href = logoPngUrl;
+          a.download = `Logo_Import_Google_Flow_${brand.slug || "marca"}.png`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
+        window.open(TBB_GOOGLE_FLOW_MOCKUP_URL, "_blank", "noopener,noreferrer");
+      });
+
+      const triggerRemix = async (onlySlotKey = "") => {
+        const customInputVal = (overlay.querySelector("#tbbFlowCustomMockupInput")?.value || "").trim();
+        const chosenSurface = customInputVal || selectedPill || "";
+        const banner = overlay.querySelector("#tbbFlowModalStatusBanner");
+        const runBtn = overlay.querySelector("#tbbFlowRunGenerateBtn");
+        if (banner) {
+          banner.style.display = "block";
+          banner.textContent = "Conectando con Nano Banana 2.1 (Google Flow Remix of Mockup): aplicando tu logotipo a las superficies del giro...";
+        }
+        if (runBtn) {
+          runBtn.disabled = true;
+          runBtn.textContent = "Generando Mockups con tu Logotipo...";
+        }
+        await tbbGenerateChapterVisualsWithFlow(
+          brand,
+          (done, total, label) => {
+            if (banner) {
+              banner.textContent = `Renderizando Mockup (${done}/${total}): ${label}...`;
+            }
+          },
+          {
+            forceRegenerate: true,
+            surfaceOverride: chosenSurface,
+            onlySlotKey: onlySlotKey,
+            flowMode: window.tbbState.flowMockupQualityMode || "fast"
+          }
+        );
+        renderModalBody();
+        if (typeof window.renderTbbZeroScrollStage === "function") {
+          window.renderTbbZeroScrollStage();
+        }
+      };
+
+      overlay.querySelector("#tbbFlowRunGenerateBtn")?.addEventListener("click", () => triggerRemix(""));
+      overlay.querySelectorAll("[data-flow-regen-slot]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const slotKey = btn.getAttribute("data-flow-regen-slot") || "";
+          triggerRemix(slotKey);
+        });
+      });
+    };
+
+    renderModalBody();
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) overlay.remove();
+    });
+    document.body.appendChild(overlay);
+  }
+
+  window.TBB_GOOGLE_FLOW_MOCKUP_SURFACES = TBB_GOOGLE_FLOW_MOCKUP_SURFACES;
+  window.tbbDetectGiroMockupPlan = tbbDetectGiroMockupPlan;
+  window.tbbOpenGoogleFlowMockupStudioModal = tbbOpenGoogleFlowMockupStudioModal;
 
   async function tbbGenerateNanoBananaBrandSymbol(userHint) {
     const cs = (typeof window.canvasState === "object" && window.canvasState) ? window.canvasState : {};

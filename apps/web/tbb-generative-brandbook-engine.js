@@ -762,19 +762,25 @@
     // Generar la Terna de Logos Profesional
     const suite = generateTriFoldLogoSuite(brand);
 
-    // Resolver fotografías editoriales realistas 4:3 de capítulos con AISLAMIENTO ESTRICTO POR MARCA (Cero cruce entre marcas)
+    // Resolver fotografías editoriales y mockups realistas 4:3 de capítulos con AISLAMIENTO ESTRICTO POR MARCA (Cero cruce entre marcas)
     const isArcoBrand = /^arco(_ingenier[ií]a)?$/i.test(slug);
     const isImproBearsBrand = /improbears/i.test(slug) || /improbears/i.test(bName);
     const editorialPhotoPrefix = isArcoBrand ? "arco" : (isImproBearsBrand ? "improbears" : "tbb");
+    const flowCacheKeyV88 = `photo_v88|${slug}|${(brand.giro || "").slice(0, 32)}`;
     const flowCacheKeyV86 = `photo_v86|${slug}|${(brand.giro || "").slice(0, 32)}`;
     const flowCacheKeyV85 = `photo_v85|${slug}|${(brand.giro || "").slice(0, 32)}`;
     const rawFlowVisuals = (typeof window !== "undefined" && window._tbbFlowVisualsCache && (
+      window._tbbFlowVisualsCache[flowCacheKeyV88] ||
       window._tbbFlowVisualsCache[flowCacheKeyV86] ||
       window._tbbFlowVisualsCache[flowCacheKeyV85]
     )) || {};
+    const giroMockupPlan = (typeof window !== "undefined" && typeof window.tbbDetectGiroMockupPlan === "function")
+      ? window.tbbDetectGiroMockupPlan(brand.giro, bName, brand.category)
+      : null;
     // Filtrar cualquier URL residual que apunte a otra marca
     const flowVisuals = {};
     Object.keys(rawFlowVisuals).forEach((k) => {
+      if (k.startsWith("_")) return;
       const val = String(rawFlowVisuals[k] || "");
       if (!isArcoBrand && /arco_/i.test(val)) return;
       if (!isImproBearsBrand && /improbears_0/i.test(val)) return;
@@ -792,6 +798,7 @@
     };
 
     function renderChapterVisualFrame(slotKey, fallbackTitle, fallbackSub) {
+      const canonicalSlot = slotFallbackAlias[slotKey] || slotKey;
       const defaultEditorialPhotoMap = {
         persona: `/assets/editorial_photos/${editorialPhotoPrefix}_01_persona.jpg`,
         step0_splash: `/assets/editorial_photos/${editorialPhotoPrefix}_01_persona.jpg`,
@@ -806,19 +813,24 @@
         environment: `/assets/editorial_photos/${editorialPhotoPrefix}_06_environment.jpg`,
         step6_map: `/assets/editorial_photos/${editorialPhotoPrefix}_06_environment.jpg`
       };
-      const resolvedSrc = (flowVisuals && (flowVisuals[slotKey] || (slotFallbackAlias[slotKey] && flowVisuals[slotFallbackAlias[slotKey]])))
+      const resolvedSrc = (flowVisuals && (flowVisuals[slotKey] || flowVisuals[canonicalSlot]))
         || defaultEditorialPhotoMap[slotKey]
         || `/assets/editorial_photos/${editorialPhotoPrefix}_06_environment.jpg`;
+      const customMeta = (rawFlowVisuals && rawFlowVisuals._metaBySlot && (rawFlowVisuals._metaBySlot[slotKey] || rawFlowVisuals._metaBySlot[canonicalSlot]))
+        || (giroMockupPlan && giroMockupPlan.slots && giroMockupPlan.slots[canonicalSlot])
+        || null;
+      const displayTitle = (customMeta && customMeta.title) || fallbackTitle;
+      const displayBadge = (customMeta && customMeta.badge) || "MOCKUP FLOW · 4:3";
       return `
         <div class="tbb-visual-frame" style="border-bottom-color:${acc};">
-          <img src="${resolvedSrc}" alt="${esc(fallbackTitle)}" />
+          <img src="${resolvedSrc}" alt="${esc(displayTitle)}" />
           <div style="position:absolute; top:12px; right:14px; z-index:4; background:rgba(255,255,255,0.95); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border:1.5px solid ${lightGray}; border-left:3.5px solid ${pri}; border-radius:999px; padding:4px 11px 4px 6px; display:flex; align-items:center; gap:7px;">
             <svg viewBox="0 0 200 200" width="22" height="22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="flex-shrink:0; display:block;">${symCore}</svg>
             <span style="font-family:'${priFont}','Montserrat',sans-serif; font-size:9.5px; font-weight:900; color:${darkInk}; letter-spacing:0.3px; white-space:nowrap;">${esc(bUpper)}</span>
           </div>
           <div class="tbb-visual-caption" style="border-left-color:${acc};">
-            <span>${esc(fallbackTitle)}</span>
-            <span style="color:${pri};font-family:'JetBrains Mono',monospace;font-size:10.5px;">MOCKUP REAL · 4:3</span>
+            <span>${esc(displayTitle)}</span>
+            <span style="color:${pri};font-family:'JetBrains Mono',monospace;font-size:10px;white-space:nowrap;">${esc(displayBadge)}</span>
           </div>
         </div>
       `;
