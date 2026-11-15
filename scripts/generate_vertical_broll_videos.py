@@ -33,7 +33,7 @@ VIDEOS_OUT_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "videos"
 PHOTOS_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "editorial_photos"
 ARTIFACTS_DIR = Path("/home/antigravity/.gemini/jetski/brain/v1/default/jetski_remote_agents_3p/b4c90800-97e3-4a72-b74c-2807a05a674a")
 FONTS_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "fonts"
-TMP_DIR = Path("/tmp/tbb_heygen_founder_sync_v92")
+TMP_DIR = Path("/tmp/tbb_male_founder_v97")
 
 VIDEOS_OUT_DIR.mkdir(parents=True, exist_ok=True)
 TMP_DIR.mkdir(parents=True, exist_ok=True)
@@ -41,6 +41,37 @@ TMP_DIR.mkdir(parents=True, exist_ok=True)
 FONT_BOLD = str(FONTS_DIR / "Montserrat-Black.ttf")
 FONT_SEMI = str(FONTS_DIR / "PlusJakartaSans-Bold.ttf")
 FONT_REG = str(FONTS_DIR / "PlusJakartaSans-Regular.ttf")
+
+HEYGEN_MASTER_720 = Path("/tmp/heygen_jorge_720x1280_30fps.mp4")
+
+# Ventanas de habla activa y de boca cerrada (reposo) medidas en consulting-presentacion.mp4
+SPEAK_WINDOWS = [
+    (0.30, 5.90),
+    (6.80, 12.10),
+    (13.10, 24.40),
+    (25.30, 44.00),
+]
+REST_WINDOWS = [
+    (0.00, 0.23),
+    (6.23, 6.48),
+]
+
+
+def ensure_heygen_master_720() -> Path:
+    """Garantiza la existencia del clip maestro 720x1280 30fps All-I-frame de Jorge Improbears."""
+    if HEYGEN_MASTER_720.exists() and HEYGEN_MASTER_720.stat().st_size > 1_000_000:
+        return HEYGEN_MASTER_720
+    src = IMPROBEARS_WEB / "videos" / "consulting-presentacion.mp4"
+    subprocess.run([
+        "ffmpeg", "-y",
+        "-i", str(src),
+        "-vf", "fps=30,scale=w=720:h=1280:force_original_aspect_ratio=increase,crop=720:1280:(iw-720)/2:0,setsar=1",
+        "-an",
+        "-c:v", "libx264", "-preset", "ultrafast", "-crf", "17", "-g", "1",
+        "-pix_fmt", "yuv420p",
+        str(HEYGEN_MASTER_720)
+    ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    return HEYGEN_MASTER_720
 
 
 def load_gemini_api_key() -> str:
@@ -271,71 +302,29 @@ def build_transparent_hud_overlay(
 
 def synthesize_founder_voice_m4a(narration_text: str, clip_id: str) -> Path:
     """
-    Genera la narración exacta del guion con voz masculina ejecutiva de fundador
-    (Gemini 2.5 Flash TTS `Orus` 24kHz AAC) para que coincida 100% con el avatar de Jorge Benítez
-    y con el diálogo de cada paso en la aplicación.
+    Genera la narración exacta del guion con voz masculina barítona calibrada al registro
+    fundamental de Jorge Benítez (~132 Hz) con formantes vocales desplazados vía librubberband.
     """
-    out_m4a = TMP_DIR / f"{clip_id}.m4a"
+    out_m4a = TMP_DIR / f"{clip_id}_male132.m4a"
     if out_m4a.exists() and out_m4a.stat().st_size > 2000:
         return out_m4a
 
     spoken_text = re.sub(r"^Hola,\s*soy\s+Aura\.", "Hola, soy Jorge Benítez.", narration_text.strip())
     spoken_text = spoken_text.replace("escucharás mi respuesta breve", "escucharás la respuesta de Aura en vivo")
 
-    if GEMINI_API_KEY:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key={GEMINI_API_KEY}"
-        payload = {
-            "contents": [{
-                "parts": [{
-                    "text": f"En español de México con voz ejecutiva cálida, firme y clara de fundador: {spoken_text}"
-                }]
-            }],
-            "generationConfig": {
-                "responseModalities": ["AUDIO"],
-                "speechConfig": {
-                    "voiceConfig": {
-                        "prebuiltVoiceConfig": {
-                            "voiceName": "Orus"
-                        }
-                    }
-                }
-            }
-        }
-        for attempt in range(3):
-            try:
-                req = urllib.request.Request(
-                    url,
-                    data=json.dumps(payload).encode("utf-8"),
-                    headers={"Content-Type": "application/json"},
-                    method="POST"
-                )
-                with urllib.request.urlopen(req, timeout=30) as r:
-                    d = json.loads(r.read().decode("utf-8"))
-                part = d["candidates"][0]["content"]["parts"][0]["inlineData"]
-                pcm_bytes = base64.b64decode(part["data"])
-                raw_pcm = TMP_DIR / f"{clip_id}.pcm"
-                raw_pcm.write_bytes(pcm_bytes)
-                subprocess.run([
-                    "ffmpeg", "-y", "-f", "s16le", "-ar", "24000", "-ac", "1",
-                    "-i", str(raw_pcm),
-                    "-filter:a", "atempo=1.05",
-                    "-ar", "24000", "-ac", "1",
-                    "-c:a", "aac", "-b:a", "128k",
-                    str(out_m4a)
-                ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                if out_m4a.exists() and out_m4a.stat().st_size > 2000:
-                    return out_m4a
-            except Exception as e:
-                print(f"  [TTS Retry {attempt+1}] {clip_id}: {e}")
-                time.sleep(1.5)
-
-    # Fallback con pitch masculino si falla la red
     raw_mp3 = TMP_DIR / f"{clip_id}_raw.mp3"
     tts = gTTS(text=spoken_text, lang="es", tld="com.mx", slow=False)
     tts.save(str(raw_mp3))
+
+    af_filter = (
+        "rubberband=pitch=0.586:tempo=1.06:formant=shifted:pitchq=quality,"
+        "equalizer=f=135:t=q:w=1.1:g=3.5,"
+        "equalizer=f=3200:t=q:w=1.5:g=-2.5,"
+        "lowpass=f=7200,volume=1.6"
+    )
     subprocess.run([
         "ffmpeg", "-y", "-i", str(raw_mp3),
-        "-filter:a", "asetrate=24000*0.86,aresample=24000,atempo=1.22",
+        "-af", af_filter,
         "-ar", "24000", "-ac", "1",
         "-c:a", "aac", "-b:a", "128k",
         str(out_m4a)
@@ -352,6 +341,78 @@ def get_duration(media_path: Path) -> float:
     return 8.0
 
 
+def build_lipsync_ffconcat(audio_m4a: Path, start_sec: float, out_concat_txt: Path) -> float:
+    """
+    Analiza la envolvente de voz (en ventanas de 50ms) del audio narrado y construye una línea
+    de tiempo ffconcat que alterna exactamente entre las ventanas de habla activa de Jorge Benítez
+    (SPEAK_WINDOWS) cuando hay voz y las ventanas de boca cerrada en reposo (REST_WINDOWS) durante pausas.
+    """
+    import numpy as np
+
+    master_v = ensure_heygen_master_720()
+    raw_pcm = subprocess.check_output([
+        "ffmpeg", "-v", "error", "-i", str(audio_m4a),
+        "-f", "f32le", "-ac", "1", "-ar", "16000", "-"
+    ])
+    samples = np.frombuffer(raw_pcm, dtype=np.float32)
+    sr = 16000
+    step_sz = 800  # 50 ms
+    win_sz = 1600
+    n_steps = max(1, len(samples) // step_sz)
+    voiced = []
+    for i in range(n_steps):
+        seg = samples[i * step_sz: i * step_sz + win_sz]
+        rms = float(np.sqrt(np.mean(seg ** 2))) if len(seg) > 0 else 0.0
+        voiced.append(rms > 0.010)
+
+    # Suavizar micro-huecos menores a 100ms dentro de una misma frase
+    for i in range(1, len(voiced) - 1):
+        if not voiced[i] and voiced[i - 1] and voiced[i + 1]:
+            voiced[i] = True
+
+    runs = []
+    cur_v = voiced[0]
+    cur_len = 1
+    for v in voiced[1:]:
+        if v == cur_v:
+            cur_len += 1
+        else:
+            runs.append((cur_v, round(cur_len * 0.05, 3)))
+            cur_v = v
+            cur_len = 1
+    runs.append((cur_v, round(cur_len * 0.05, 3)))
+
+    lines = ["ffconcat version 1.0"]
+    # Elegir ventana inicial de habla según start_sec para variar los gestos entre escenas
+    sw_idx = int(abs(start_sec) // 6) % len(SPEAK_WINDOWS)
+    rw_idx = 0
+    for is_v, d in runs:
+        rem = d
+        if is_v:
+            while rem > 0.02:
+                w0, w1 = SPEAK_WINDOWS[sw_idx % len(SPEAK_WINDOWS)]
+                w_len = w1 - w0
+                take = min(rem, w_len)
+                lines.append(f"file '{master_v}'")
+                lines.append(f"inpoint {w0:.3f}")
+                lines.append(f"outpoint {w0 + take:.3f}")
+                rem -= take
+                sw_idx += 1
+        else:
+            while rem > 0.02:
+                w0, w1 = REST_WINDOWS[rw_idx % len(REST_WINDOWS)]
+                w_len = w1 - w0
+                take = min(rem, w_len)
+                lines.append(f"file '{master_v}'")
+                lines.append(f"inpoint {w0:.3f}")
+                lines.append(f"outpoint {w0 + take:.3f}")
+                rem -= take
+                rw_idx += 1
+
+    out_concat_txt.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return len(samples) / sr
+
+
 def build_dynamic_heygen_flow_clip(
     mode: str,
     video_src: Path,
@@ -363,30 +424,51 @@ def build_dynamic_heygen_flow_clip(
 ):
     dur = get_duration(audio_m4a)
 
-    # Siempre conservar proporción original (SAR 1:1) escalando con force_original_aspect_ratio=increase y recortando al centro 720x1280
-    v_filter = (
-        "[0:v]fps=30,scale=w=720:h=1280:force_original_aspect_ratio=increase,"
-        "crop=720:1280:(iw-720)/2:0,setsar=1[bg];"
-        "[bg][1:v]overlay=0:0:format=auto[outv]"
-    )
+    if mode.startswith("heygen"):
+        concat_file = out_mp4.with_suffix(".ffconcat")
+        build_lipsync_ffconcat(audio_m4a, start_sec, concat_file)
+        v_filter = "[0:v]fps=30,setsar=1[bg];[bg][1:v]overlay=0:0:format=auto[outv]"
+        cmd = [
+            "ffmpeg", "-y",
+            "-f", "concat", "-safe", "0",
+            "-i", str(concat_file),
+            "-i", str(overlay_png),
+            "-i", str(audio_m4a),
+            "-filter_complex", v_filter,
+            "-map", "[outv]",
+            "-map", "2:a",
+            "-t", f"{dur:.2f}",
+            "-c:v", "libx264", "-preset", "veryfast", "-crf", "22",
+            "-pix_fmt", "yuv420p",
+            "-c:a", "aac", "-b:a", "128k",
+            "-shortest",
+            str(out_mp4)
+        ]
+    else:
+        # B-Roll Google Flow manteniendo proporción natural (SAR 1:1)
+        v_filter = (
+            "[0:v]fps=30,scale=w=720:h=1280:force_original_aspect_ratio=increase,"
+            "crop=720:1280:(iw-720)/2:0,setsar=1[bg];"
+            "[bg][1:v]overlay=0:0:format=auto[outv]"
+        )
+        cmd = [
+            "ffmpeg", "-y",
+            "-stream_loop", "-1",
+            "-ss", f"{start_sec:.2f}",
+            "-i", str(video_src),
+            "-i", str(overlay_png),
+            "-i", str(audio_m4a),
+            "-filter_complex", v_filter,
+            "-map", "[outv]",
+            "-map", "2:a",
+            "-t", f"{dur:.2f}",
+            "-c:v", "libx264", "-preset", "veryfast", "-crf", "22",
+            "-pix_fmt", "yuv420p",
+            "-c:a", "aac", "-b:a", "128k",
+            "-shortest",
+            str(out_mp4)
+        ]
 
-    cmd = [
-        "ffmpeg", "-y",
-        "-stream_loop", "-1",
-        "-ss", f"{start_sec:.2f}",
-        "-i", str(video_src),
-        "-i", str(overlay_png),
-        "-i", str(audio_m4a),
-        "-filter_complex", v_filter,
-        "-map", "[outv]",
-        "-map", "2:a",
-        "-t", f"{dur:.2f}",
-        "-c:v", "libx264", "-preset", "veryfast", "-crf", "22",
-        "-pix_fmt", "yuv420p",
-        "-c:a", "aac", "-b:a", "128k",
-        "-shortest",
-        str(out_mp4)
-    ]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     if poster_jpg is not None:
@@ -401,26 +483,37 @@ def build_dynamic_heygen_flow_clip(
 
 
 def main():
+    import shutil
+
+    ensure_heygen_master_720()
     manifest_path = VIDEOS_OUT_DIR / "capsules_manifest.json"
     with open(manifest_path, "r", encoding="utf-8") as f:
         manifest = json.load(f)
 
     updated = []
     first_clips = []
+    legacy_map = {
+        0: "capsule_step_0_intro.mp4",
+        1: "capsule_step_1_to_2.mp4",
+        2: "capsule_step_2_to_3.mp4",
+        3: "capsule_step_3_to_4.mp4",
+        4: "capsule_step_4_to_5.mp4",
+        5: "capsule_step_5_to_6.mp4",
+        6: "capsule_step_6_to_7.mp4",
+    }
 
     for item in manifest:
         step = item["step"]
         sources = STEP_VIDEO_SOURCES.get(step, STEP_VIDEO_SOURCES[0])
         pips = PIP_CARDS_BY_STEP.get(step, PIP_CARDS_BY_STEP[0])
         clip_paths = []
-        print(f"=== Generando Reel 9:16 HeyGen + Google Flow (Voz Fundador Sincronizada) · Paso {step}: {item['title']} ===")
+        print(f"=== Generando Reel 9:16 HeyGen Lip-Sync + Voz Masculina Barítona (132Hz) · Paso {step}: {item['title']} ===")
 
         for s_idx, scene in enumerate(item["scenes"]):
-            clip_id = f"v92_step_{step}_clip_{s_idx}"
+            clip_id = f"v97_step_{step}_clip_{s_idx}"
             mode, v_src, start_sec, shot_badge, sub_label = sources[s_idx % len(sources)]
             pip_path, pip_caption = pips[s_idx % len(pips)]
 
-            # Actualizar primera narración del Paso 0 para que diga Hola, soy Jorge Benítez en el manifiesto también
             if step == 0 and s_idx == 0:
                 scene["narration"] = re.sub(r"^Hola,\s*soy\s+Aura\.", "Hola, soy Jorge Benítez.", scene["narration"])
 
@@ -466,15 +559,20 @@ def main():
             str(out_step_mp4)
         ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
+        # Sincronizar también el archivo legacy capsule_step_*.mp4 para que no quede ningún archivo con voz femenina
+        leg_name = legacy_map.get(step)
+        if leg_name:
+            shutil.copy2(out_step_mp4, VIDEOS_OUT_DIR / leg_name)
+
         dur = round(get_duration(out_step_mp4), 1)
         sz_kb = round(out_step_mp4.stat().st_size / 1024, 1)
-        print(f"  ✓ {out_step_mp4.name} listo ({dur}s, {sz_kb} KB, 720x1280 30fps HeyGen + Voz Fundador)")
+        print(f"  ✓ {out_step_mp4.name} listo ({dur}s, {sz_kb} KB, 720x1280 30fps HeyGen Lip-Sync + Voz Masculina 132Hz)")
 
         item_copy = dict(item)
         item_copy["duration_sec"] = dur
         item_copy["size_kb"] = sz_kb
         item_copy["aspect_ratio"] = "9:16"
-        item_copy["production_engine"] = "HeyGen Founder Avatar (Jorge Improbears) + Google Flow Dynamic B-Rolls + Synchronized Founder Audio"
+        item_copy["production_engine"] = "HeyGen Founder Avatar (Jorge Improbears Lip-Sync) + Google Flow Dynamic B-Rolls + Male Baritone Voice (132Hz)"
         updated.append(item_copy)
 
     # Master tour (Recorrido completo con el Fundador y Avatares)
@@ -491,7 +589,7 @@ def main():
 
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(updated, f, indent=2, ensure_ascii=False)
-    print("\n✓ Todos los 8 videos verticales 9:16 (Pasos 0 al 6 + Recorrido) sincronizados con Voz del Fundador y Avatares HeyGen.")
+    print("\n✓ Todos los videos verticales en Español sincronizados con Voz Masculina (132Hz) y Lip-Sync de Jorge Benítez.")
 
 
 if __name__ == "__main__":

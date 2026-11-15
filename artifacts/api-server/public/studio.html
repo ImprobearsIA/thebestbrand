@@ -9808,6 +9808,7 @@
 
     let pendingTransitionOptions = null;
 
+    window.openPhaseTransitionVideoCapsule = openPhaseTransitionVideoCapsule;
     function openPhaseTransitionVideoCapsule(fromStep, toStep, options = {}) {
       const resolvedToStep = (typeof toStep === "number" && toStep >= 0) ? Math.min(6, toStep) : Math.min(6, (fromStep || 0) + 1);
       const resolvedFromStep = (typeof fromStep === "number" && fromStep >= 0) ? fromStep : Math.max(0, resolvedToStep - 1);
