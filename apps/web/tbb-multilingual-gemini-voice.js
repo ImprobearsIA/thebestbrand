@@ -2309,6 +2309,14 @@
     if (typeof showStepResetFeedbackToast === "function") {
       showStepResetFeedbackToast(ui.langSavedToast);
     }
+
+    try {
+      const transModal = document.getElementById("phaseTransitionVideoModal");
+      if (transModal && transModal.classList.contains("open") && window._tbbActiveTransitionModalParams && typeof openPhaseTransitionVideoCapsule === "function") {
+        const p = window._tbbActiveTransitionModalParams;
+        openPhaseTransitionVideoCapsule(p.fromStep, p.toStep, p.options || {});
+      }
+    } catch (e) {}
   };
 
   window.tbbSetGeminiVoiceName = function (voiceName) {

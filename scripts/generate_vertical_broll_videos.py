@@ -121,43 +121,43 @@ PIP_CARDS_BY_STEP = {
 # Secuencia de fuentes de video en movimiento por paso (Alternando Avatar HeyGen -> B-Roll Google Flow -> Avatar HeyGen -> B-Roll Google Flow)
 STEP_VIDEO_SOURCES = {
     0: [
-        ("heygen_navy_vertical", V_HEYGEN_JORGE_NAVY_BLAZER, 2.0, "HEYGEN AVATAR · JORGE IMPROBEARS", "Peter Drucker · Definir el punto de partida"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 2.0, "HEYGEN AVATAR · JORGE IMPROBEARS", "Peter Drucker · Definir el punto de partida"),
         ("flow_wide", V_FLOW_STUDIO_REEL, 6.0, "GOOGLE FLOW B-ROLL · CAPITAL VISUAL", "David Aaker & Sagi Haviv · Logo Base"),
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 4.0, "HEYGEN AVATAR · MENTORÍA EN VIVO", "Al Ries & Jack Trout · Giro del Negocio"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 14.0, "HEYGEN AVATAR · MENTORÍA EN VIVO", "Al Ries & Jack Trout · Giro del Negocio"),
         ("flow_wide", V_FLOW_PRODUCTIVIDAD, 0.5, "GOOGLE FLOW B-ROLL · ECOSISTEMA 24/7", "Sincronización en todos tus dispositivos")
     ],
     1: [
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 10.0, "HEYGEN AVATAR · PROPÓSITO NUCLEAR", "Simon Sinek · El Círculo Dorado"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 8.0, "HEYGEN AVATAR · PROPÓSITO NUCLEAR", "Simon Sinek · El Círculo Dorado"),
         ("flow_wide", V_FLOW_AI_AGENT, 0.0, "GOOGLE FLOW B-ROLL · COMITÉ DIRECTIVO", "Empezar por el Porqué antes del Qué"),
-        ("heygen_navy_vertical", V_HEYGEN_JORGE_NAVY_BLAZER, 16.0, "HEYGEN AVATAR · OFERTA DE VALOR", "Alex Osterwalder & Donald Miller"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 22.0, "HEYGEN AVATAR · OFERTA DE VALOR", "Alex Osterwalder & Donald Miller"),
         ("flow_wide", V_FLOW_STUDIO_REEL, 12.0, "GOOGLE FLOW B-ROLL · IMPACTO REAL", "Claridad que elimina toda fricción")
     ],
     2: [
-        ("heygen_navy_vertical", V_HEYGEN_JORGE_NAVY_BLAZER, 30.0, "HEYGEN AVATAR · MOMENTOS DE VERDAD", "Jan Carlzon · 15 segundos decisivos"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 12.0, "HEYGEN AVATAR · MOMENTOS DE VERDAD", "Jan Carlzon · 15 segundos decisivos"),
         ("flow_wide", V_FLOW_DRONE_CAMPUS, 2.0, "GOOGLE FLOW B-ROLL · FASE 1: ANTES", "Descubrimiento y primera impresión"),
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 18.0, "HEYGEN AVATAR · SERVICIO SIN FRICCIÓN", "Don Norman · Psicología de Touchpoints"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 28.0, "HEYGEN AVATAR · SERVICIO SIN FRICCIÓN", "Don Norman · Psicología de Touchpoints"),
         ("flow_wide", V_FLOW_STUDIO_REEL, 19.0, "GOOGLE FLOW B-ROLL · FASE 3: DESPUÉS", "Entrega, garantía y lealtad")
     ],
     3: [
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 26.0, "HEYGEN AVATAR · IDENTIDAD VERBAL", "Wally Olins · El poder del nombre"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 18.0, "HEYGEN AVATAR · IDENTIDAD VERBAL", "Wally Olins · El poder del nombre"),
         ("flow_wide", V_FLOW_PRODUCTIVIDAD, 2.0, "GOOGLE FLOW B-ROLL · MÉTODO SMILE", "Alexandra Watkins & David Placek"),
-        ("heygen_navy_vertical", V_HEYGEN_JORGE_NAVY_BLAZER, 46.0, "HEYGEN AVATAR · BLINDAJE LEGAL", "Alina Wheeler · Clases Internacionales Niza"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 34.0, "HEYGEN AVATAR · BLINDAJE LEGAL", "Alina Wheeler · Clases Internacionales Niza"),
         ("flow_wide", V_FLOW_DRONE_CAMPUS, 12.0, "GOOGLE FLOW B-ROLL · PRESENCIA 1:1", "Monograma en digital y arquitectura")
     ],
     4: [
-        ("heygen_navy_vertical", V_HEYGEN_JORGE_NAVY_BLAZER, 60.0, "HEYGEN AVATAR · INGENIERÍA KANSEI", "Mitsuo Nagamachi · Geometría emocional"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 24.0, "HEYGEN AVATAR · INGENIERÍA KANSEI", "Mitsuo Nagamachi · Geometría emocional"),
         ("flow_wide", V_FLOW_STUDIO_REEL, 24.0, "GOOGLE FLOW B-ROLL · 7 EJES OSGOOD", "Curvas de cercanía vs. precisión técnica"),
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 5.0, "HEYGEN AVATAR · VOZ TIPOGRÁFICA", "Robert Bringhurst & Adrian Frutiger"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 6.0, "HEYGEN AVATAR · VOZ TIPOGRÁFICA", "Robert Bringhurst & Adrian Frutiger"),
         ("flow_wide", V_FLOW_HERO_IB, 12.0, "GOOGLE FLOW B-ROLL · KIT DE FUENTES", "Tipografía híbrida lista para descarga")
     ],
     5: [
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 14.0, "HEYGEN AVATAR · TALLER DE LOGOTIPO", "Paul Rand & Josef Albers · Color original"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 16.0, "HEYGEN AVATAR · TALLER DE LOGOTIPO", "Paul Rand & Josef Albers · Color original"),
         ("flow_wide", V_FLOW_STUDIO_REEL, 8.0, "GOOGLE FLOW B-ROLL · GEMINI VISION", "Sagi Haviv · Conservar o evolucionar base"),
-        ("heygen_navy_vertical", V_HEYGEN_JORGE_NAVY_BLAZER, 74.0, "HEYGEN AVATAR · ITERACIÓN ABIERTA", "Max Wertheimer & Dieter Rams"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 30.0, "HEYGEN AVATAR · ITERACIÓN ABIERTA", "Max Wertheimer & Dieter Rams"),
         ("flow_wide", V_FLOW_PRODUCTIVIDAD, 1.0, "GOOGLE FLOW B-ROLL · LIQUID GLASS", "Jony Ive · Símbolo y vectores en curvas .AI")
     ],
     6: [
-        ("heygen_navy_vertical", V_HEYGEN_JORGE_NAVY_BLAZER, 88.0, "HEYGEN AVATAR · CONSTITUCIÓN C-00", "Massimo Vignelli · 36 Láminas en Curvas"),
+        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 20.0, "HEYGEN AVATAR · CONSTITUCIÓN C-00", "Massimo Vignelli · 36 Láminas en Curvas"),
         ("flow_wide", V_FLOW_DRONE_CAMPUS, 6.0, "GOOGLE FLOW B-ROLL · FLUJO EDITORIAL", "Josef Müller-Brockmann · Lienzo Claro"),
         ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 32.0, "HEYGEN AVATAR · SUITE EJECUTIVA", "Danne & Blackburn · De la idea a imprenta"),
         ("flow_wide", V_FLOW_STUDIO_REEL, 15.0, "GOOGLE FLOW B-ROLL · MARCA EN ACCIÓN", "PDF, Vectores .SVG/.AI, Word, PPTX y Fuentes")
@@ -363,18 +363,12 @@ def build_dynamic_heygen_flow_clip(
 ):
     dur = get_duration(audio_m4a)
 
-    if mode == "heygen_navy_vertical":
-        # Video nativo 9:16 1080x1920 -> escalado directo a 720x1280
-        v_filter = (
-            "[0:v]fps=30,scale=720:1280,setsar=1[bg];"
-            "[bg][1:v]overlay=0:0:format=auto[outv]"
-        )
-    else:
-        # Video horizontal 16:9 (1280x720 o 1920x1080) -> escalado a altura 1280 y recorte central 720x1280
-        v_filter = (
-            "[0:v]fps=30,scale=-1:1280,crop=720:1280:(iw-720)/2:0,setsar=1[bg];"
-            "[bg][1:v]overlay=0:0:format=auto[outv]"
-        )
+    # Siempre conservar proporción original (SAR 1:1) escalando con force_original_aspect_ratio=increase y recortando al centro 720x1280
+    v_filter = (
+        "[0:v]fps=30,scale=w=720:h=1280:force_original_aspect_ratio=increase,"
+        "crop=720:1280:(iw-720)/2:0,setsar=1[bg];"
+        "[bg][1:v]overlay=0:0:format=auto[outv]"
+    )
 
     cmd = [
         "ffmpeg", "-y",

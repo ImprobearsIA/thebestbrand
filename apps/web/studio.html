@@ -9525,64 +9525,89 @@
       }
     }
 
+    function tbbGetActiveStudioLang() {
+      try {
+        if (typeof window.tbbGetLang === "function") {
+          const l = String(window.tbbGetLang() || "").toLowerCase().trim();
+          if (["es", "en", "fr", "pt", "de", "it"].includes(l)) return l;
+        }
+        const raw = (localStorage.getItem("tbb_app_lang") || document.documentElement.lang || "es").toLowerCase().slice(0, 2);
+        return ["es", "en", "fr", "pt", "de", "it"].includes(raw) ? raw : "es";
+      } catch (e) {
+        return "es";
+      }
+    }
+
     function tbbResolveHeyGenVideoAsset(relPath) {
       const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-      if (isLocal) return `${relPath}?v=94.0`;
+      if (isLocal) return `${relPath}?v=95.0`;
       return `https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@47252ad/apps/web${relPath}`;
+    }
+
+    function tbbResolveLocalizedStudioStepVideo(stepNum, langOverride) {
+      const l = langOverride || tbbGetActiveStudioLang();
+      const sfx = l === "es" ? "" : `_${l}`;
+      return tbbResolveHeyGenVideoAsset(`/assets/videos/capsula_teoria_paso_${stepNum}${sfx}.mp4`);
+    }
+
+    function tbbResolveLocalizedStudioStepPoster(stepNum, langOverride) {
+      const l = langOverride || tbbGetActiveStudioLang();
+      const sfx = l === "es" ? "" : `_${l}`;
+      return tbbResolveHeyGenVideoAsset(`/assets/videos/poster_paso_${stepNum}${sfx}.jpg`);
     }
 
     const STEP_THEORY_CAPSULES_SPEC = {
       0: {
-        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_0.mp4"),
-        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_0.jpg"),
+        get videoUrl() { return tbbResolveLocalizedStudioStepVideo(0); },
+        get posterUrl() { return tbbResolveLocalizedStudioStepPoster(0); },
         frameworkBadge: "PASO 0 · DRUCKER, AAKER & HAVIV",
         headerLabel: "FUNDAMENTO DEL PASO 0",
         theoryTitle: "Objetivo, Capital Visual y Giro Comercial",
         theoryBody: "Elige si construyes tu marca desde cero, evolucionas tu logotipo actual o creas una sub-marca. Al definir tu giro con claridad, el sistema adapta automáticamente tus preguntas y entregables."
       },
       1: {
-        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_1.mp4"),
-        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_1.jpg"),
+        get videoUrl() { return tbbResolveLocalizedStudioStepVideo(1); },
+        get posterUrl() { return tbbResolveLocalizedStudioStepPoster(1); },
         frameworkBadge: "PASO 1 · CÍRCULO DORADO (SIMON SINEK)",
         headerLabel: "FUNDAMENTO DEL PASO 1",
         theoryTitle: "El Círculo Dorado y tu Promesa en 3 Pasos",
         theoryBody: "La gente no compra lo que haces, sino el porqué lo haces (Simon Sinek). Aquí defines tu propósito nuclear, tu método claro en tres pasos (Donald Miller) y el arquetipo humano de tu marca."
       },
       2: {
-        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_2.mp4"),
-        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_2.jpg"),
+        get videoUrl() { return tbbResolveLocalizedStudioStepVideo(2); },
+        get posterUrl() { return tbbResolveLocalizedStudioStepPoster(2); },
         frameworkBadge: "PASO 2 · MOMENTOS DE LA VERDAD (CARLZON)",
         headerLabel: "FUNDAMENTO DEL PASO 2",
         theoryTitle: "Puntos de Contacto: Antes, Durante y Después",
         theoryBody: "Cada contacto de 15 segundos define si tu cliente confía en tu marca (Jan Carlzon). Selecciona los canales reales donde te descubren, compran y recomiendan para integrarlos en tu manual."
       },
       3: {
-        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_3.mp4"),
-        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_3.jpg"),
+        get videoUrl() { return tbbResolveLocalizedStudioStepVideo(3); },
+        get posterUrl() { return tbbResolveLocalizedStudioStepPoster(3); },
         frameworkBadge: "PASO 3 · MODELO SMILE & CLASES DE NIZA",
         headerLabel: "FUNDAMENTO DEL PASO 3",
         theoryTitle: "Ingeniería de Naming, Eslogan y Registro",
         theoryBody: "El nombre es el primer activo verbal que pronunciarán tus clientes (Wally Olins & Alexandra Watkins). Confirmamos tu nombre oficial, eslogan y sus Clases Internacionales de Niza."
       },
       4: {
-        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_4.mp4"),
-        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_4.jpg"),
+        get videoUrl() { return tbbResolveLocalizedStudioStepVideo(4); },
+        get posterUrl() { return tbbResolveLocalizedStudioStepPoster(4); },
         frameworkBadge: "PASO 4 · INGENIERÍA KANSEI & TIPOGRAFÍA",
         headerLabel: "FUNDAMENTO DEL PASO 4",
         theoryTitle: "Psicología de la Forma y Par Tipográfico",
         theoryBody: "La Ingeniería Kansei (Mitsuo Nagamachi) traduce emociones en proporciones geométricas. Calibra el carácter visual de tu marca, elige tu tipografía oficial y define la estructura de tu símbolo."
       },
       5: {
-        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_5.mp4"),
-        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_5.jpg"),
+        get videoUrl() { return tbbResolveLocalizedStudioStepVideo(5); },
+        get posterUrl() { return tbbResolveLocalizedStudioStepPoster(5); },
         frameworkBadge: "PASO 5 · PAUL RAND, SAGI HAVIV & JONY IVE",
         headerLabel: "FUNDAMENTO DEL PASO 5",
         theoryTitle: "Taller de Logotipo en Curvas y Acabado Liquid Glass",
         theoryBody: "Un gran logotipo combina simplicidad geométrica y recordación inmediata (Paul Rand & Sagi Haviv). Itera en vivo con Nano Banana Pro y aprueba tu versión maestra sobre lienzo claro y oscuro."
       },
       6: {
-        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_6.mp4"),
-        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_6.jpg"),
+        get videoUrl() { return tbbResolveLocalizedStudioStepVideo(6); },
+        get posterUrl() { return tbbResolveLocalizedStudioStepPoster(6); },
         frameworkBadge: "PASO 6 · CANON DE VIGNELLI & 9 ENTREGABLES",
         headerLabel: "FUNDAMENTO DEL PASO 6",
         theoryTitle: "Tu Manual de 36 Láminas y Bóveda Ejecutiva",
@@ -9748,6 +9773,8 @@
       const baseTheorySpec = STEP_THEORY_CAPSULES_SPEC[targetStep] || STEP_THEORY_CAPSULES_SPEC[6];
       const theorySpec = {
         ...baseTheorySpec,
+        videoUrl: tbbResolveLocalizedStudioStepVideo(targetStep),
+        posterUrl: tbbResolveLocalizedStudioStepPoster(targetStep),
         importanceTitle: `Por qué es clave para ${escapeHTML(bName)} (${escapeHTML(monogram)})`,
         importanceBody: targetStep === 4
           ? `Para posicionar a ${escapeHTML(bName)} en ${escapeHTML(shortEss)}, calibrar los 7 ejes y elegir la Familia Base del monograma «${escapeHTML(monogram)}» define su plano maestro antes de trazar el logotipo.`
@@ -9801,6 +9828,7 @@
 
       pendingTransitionToStep = resolvedToStep;
       pendingTransitionOptions = options || {};
+      window._tbbActiveTransitionModalParams = { fromStep: resolvedFromStep, toStep: resolvedToStep, options: options || {} };
 
       const splashEl = document.getElementById("tbbAuraSplashBootOverlay");
       if (splashEl && !splashEl.classList.contains("is-dismissed")) {
