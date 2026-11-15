@@ -207,86 +207,35 @@ def build_transparent_hud_overlay(
     out_png: Path
 ):
     """
-    Construye un overlay RGBA 720x1280 transparente estilo Google Flow + HeyGen:
-    - Parte superior: Badge de motor (`HEYGEN AVATAR` o `GOOGLE FLOW B-ROLL`), Paso X · Toma Y/4 y Orbe 3D de Aura.
-    - Centro-derecha / flotante: Tarjeta Picture-in-Picture (PiP) con vista en vivo de la lámina/herramienta.
-    - Parte inferior: Lower-third cinemático con el titular, cita de autor y subtítulo exacto del diálogo hablado.
+    Construye un overlay RGBA 720x1280 ultra limpio estilo Apple / HeyGen:
+    - Cero cajas Picture-in-Picture flotantes sobre el cuerpo del fundador.
+    - Parte superior: Píldora discreta Paso X · Escena Y/4.
+    - Parte inferior: Lower-third limpio de 2 líneas (Titular + Autor) y barra fina de progreso.
     """
     W, H = 720, 1280
     overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
 
-    for y in range(0, 185):
-        alpha = int(185 * (1.0 - y / 185.0))
-        draw.line([(0, y), (W, y)], fill=(5, 8, 17, alpha))
-
-    for y in range(H - 490, H):
-        prog = (y - (H - 490)) / 490.0
-        alpha = int(242 * (prog ** 1.12))
-        draw.line([(0, y), (W, y)], fill=(5, 8, 17, alpha))
+    # Gradiente inferior suave solo en los últimos 280px para legibilidad del titular
+    for y in range(H - 280, H):
+        prog = (y - (H - 280)) / 280.0
+        alpha = int(215 * (prog ** 1.3))
+        draw.line([(0, y), (W, y)], fill=(8, 13, 24, alpha))
 
     try:
-        f_top_badge = ImageFont.truetype(FONT_BOLD, 14)
-        f_kicker = ImageFont.truetype(FONT_BOLD, 14)
-        f_title = ImageFont.truetype(FONT_BOLD, 24)
+        f_top_badge = ImageFont.truetype(FONT_BOLD, 13)
+        f_title = ImageFont.truetype(FONT_BOLD, 25)
         f_sub = ImageFont.truetype(FONT_SEMI, 16)
-        f_body = ImageFont.truetype(FONT_REG, 15)
-        f_pip = ImageFont.truetype(FONT_BOLD, 12)
     except Exception:
-        f_top_badge = f_kicker = f_title = f_sub = f_body = f_pip = ImageFont.load_default()
+        f_top_badge = f_title = f_sub = ImageFont.load_default()
 
-    draw.rounded_rectangle([26, 26, 420, 66], radius=20, fill=(13, 37, 64, 235), outline=(29, 78, 216, 255), width=2)
-    draw.ellipse([42, 40, 54, 52], fill=(224, 71, 0, 255))
-    draw.text((64, 38), f"PASO 0{step_num} · ESCENA {shot_idx + 1}/4 · HEYGEN + FLOW", font=f_top_badge, fill=(255, 255, 255, 255))
+    # Píldora superior discreta
+    draw.rounded_rectangle([28, 28, 280, 62], radius=17, fill=(13, 37, 64, 210), outline=(255, 255, 255, 65), width=1)
+    draw.ellipse([42, 40, 52, 50], fill=(234, 88, 12, 255))
+    draw.text((62, 37), f"PASO 0{step_num} · PARTE {shot_idx + 1}/4", font=f_top_badge, fill=(255, 255, 255, 255))
 
-    orb_img = draw_aura_orb_badge(86)
-    overlay.alpha_composite(orb_img, (W - 112, 18))
-
-    if pip_img_path and pip_img_path.exists():
-        try:
-            pip_w, pip_h = 268, 166
-            pip_x = W - pip_w - 26
-            pip_y = H - 510
-
-            draw.rounded_rectangle(
-                [pip_x - 4, pip_y - 4, pip_x + pip_w + 4, pip_y + pip_h + 30],
-                radius=16,
-                fill=(9, 13, 22, 245),
-                outline=(234, 115, 0, 255) if shot_idx % 2 == 1 else (29, 78, 216, 255),
-                width=3
-            )
-
-            raw_pip = Image.open(pip_img_path).convert("RGB")
-            rw, rh = raw_pip.size
-            target_r = pip_w / pip_h
-            src_r = rw / rh
-            if src_r > target_r:
-                nw = int(rh * target_r)
-                left = (rw - nw) // 2
-                crop_pip = raw_pip.crop((left, 0, left + nw, rh))
-            else:
-                nh = int(rw / target_r)
-                top = (rh - nh) // 2
-                crop_pip = raw_pip.crop((0, top, rw, top + nh))
-            resized_pip = crop_pip.resize((pip_w, pip_h), Image.Resampling.LANCZOS).convert("RGBA")
-            overlay.alpha_composite(resized_pip, (pip_x, pip_y))
-
-            caption_bg = (224, 71, 0, 255) if shot_idx % 2 == 1 else (29, 78, 216, 255)
-            draw.rounded_rectangle(
-                [pip_x, pip_y + pip_h, pip_x + pip_w, pip_y + pip_h + 26],
-                radius=8,
-                fill=caption_bg
-            )
-            draw.text((pip_x + 10, pip_y + pip_h + 6), pip_caption[:32], font=f_pip, fill=(255, 255, 255, 255))
-        except Exception as e:
-            print("Warning PiP:", e)
-
-    is_broll = "B-ROLL" in shot_badge
-    pill_bg = (224, 71, 0, 245) if is_broll else (29, 78, 216, 245)
-    draw.rounded_rectangle([26, H - 306, 404, H - 270], radius=18, fill=pill_bg)
-    draw.text((42, H - 296), shot_badge[:36], font=f_kicker, fill=(255, 255, 255, 255))
-
-    draw.rounded_rectangle([26, H - 254, 34, H - 52], radius=4, fill=(234, 115, 0, 255))
+    # Barra de acento lateral limpia en el lower-third
+    draw.rounded_rectangle([28, H - 156, 35, H - 54], radius=3, fill=(234, 88, 12, 255))
 
     words = headline.split()
     lines = []
@@ -303,42 +252,19 @@ def build_transparent_hud_overlay(
         lines.append(cur)
     lines = lines[:2]
 
-    y_text = H - 254
+    y_text = H - 156
     for ln in lines:
         draw.text((48, y_text), ln, font=f_title, fill=(255, 255, 255, 255))
-        y_text += 30
+        y_text += 31
 
-    draw.text((48, y_text + 2), sub_label[:54], font=f_sub, fill=(147, 197, 253, 255))
+    draw.text((48, y_text + 4), sub_label[:54], font=f_sub, fill=(147, 197, 253, 255))
 
-    # Subtítulo exacto del diálogo hablado (2 líneas limpias)
-    clean_narr = re.sub(r"^Hola,\s*soy\s+Aura\.\s*", "Hola, soy Jorge Benítez. ", (narration_text or "").strip())
-    n_words = clean_narr.split()
-    n_lines = []
-    n_cur = ""
-    for w in n_words:
-        test = (n_cur + " " + w).strip()
-        if len(test) <= 62:
-            n_cur = test
-        else:
-            if n_cur:
-                n_lines.append(n_cur)
-            n_cur = w
-    if n_cur:
-        n_lines.append(n_cur)
-    n_lines = n_lines[:2]
-
-    ny = y_text + 28
-    for idx_nl, nl in enumerate(n_lines):
-        if idx_nl == 1 and len(clean_narr) > 120 and not nl.endswith("."):
-            nl = nl[:59].rsplit(" ", 1)[0] + "..."
-        draw.text((48, ny), f"«{nl}»" if idx_nl == 0 else nl, font=f_body, fill=(241, 245, 249, 245))
-        ny += 21
-
-    seg_w = (W - 52 - 24) // 4
+    # Barra fina de progreso de las 4 escenas abajo
+    seg_w = (W - 56 - 24) // 4
     for i in range(4):
-        sx = 26 + i * (seg_w + 8)
-        col = (234, 115, 0, 255) if i <= shot_idx else (255, 255, 255, 70)
-        draw.rounded_rectangle([sx, H - 32, sx + seg_w, H - 23], radius=4, fill=col)
+        sx = 28 + i * (seg_w + 8)
+        col = (234, 88, 12, 255) if i <= shot_idx else (255, 255, 255, 75)
+        draw.rounded_rectangle([sx, H - 30, sx + seg_w, H - 24], radius=3, fill=col)
 
     overlay.save(out_png, "PNG")
 
