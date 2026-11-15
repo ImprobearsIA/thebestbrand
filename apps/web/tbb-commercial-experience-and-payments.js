@@ -900,28 +900,34 @@
   // ---------------------------------------------------------------------------
   // 2. DATOS MULTILINGÜES DE LOS VIDEOS, AUTORES, LIBROS, APP TOUR Y 9 ENTREGABLES
   // ---------------------------------------------------------------------------
+  function resolveVideoAsset(relPath) {
+    const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
+    if (isLocal) return `${relPath}?v=94.0`;
+    return `https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@47252ad/apps/web${relPath}`;
+  }
+
   const VIDEO_CAPSULES = [
     {
       step: 0,
-      url: "/assets/videos/capsula_teoria_paso_0.mp4?v=93.0",
-      poster: "/assets/videos/poster_paso_0.jpg?v=93.0",
+      url: resolveVideoAsset("/assets/videos/capsula_teoria_paso_0.mp4"),
+      poster: resolveVideoAsset("/assets/videos/poster_paso_0.jpg"),
       popupCapture: "/assets/app_captures/popup_video_paso_0_a_1.png",
       duration: "00:54",
       author: "Jorge Benítez (HeyGen) + Google Flow · David Aaker, Peter Drucker & Sagi Haviv",
       exactScript: "Hola, soy Jorge Benítez. Como afirma Peter Drucker, la mejor forma de predecir el futuro es creándolo. En el Paso cero eliges si construyes tu marca desde cero, evolucionas la actual o creas una sub-marca. Si ya tienes nombre y logotipo, David Aaker y Sagi Haviv recomiendan proteger tu capital visual. Aquí puedes conservar tu logo intacto, pedir sugerencias o evolucionarlo con inteligencia artificial. Siguiendo a Al Ries y Jack Trout en Posicionamiento, cuando describes tu giro con claridad en el tercer sub-paso, el sistema adapta automáticamente tus preguntas, puntos de contacto y propuestas. Y con el esquema Brand Relationship Spectrum de David Aaker, defines desde hoy si tu empresa operará como marca única o si tendrá sub-marcas listas para crecer.",
       i18n: {
-        es: { title: "Video Introductorio y Paso 0 · Objetivo, Logo Base y Giro", desc: "Guion sincronizado en HeyGen con el fundador y B-Roll Google Flow: cómo elegir entre crear una marca desde cero o evolucionar tu logotipo actual respetando tu capital visual (Peter Drucker, David Aaker y Sagi Haviv)." },
-        en: { title: "Intro & Step 0 · Goal, Base Logo & Core Business Essence", desc: "Synchronized HeyGen founder video + Google Flow B-Roll: how to choose between creating a brand from scratch or evolving your current logo while honoring your brand equity." },
-        fr: { title: "Intro & Étape 0 · Objectif, Logo de Base et Essence du Secteur", desc: "Vidéo HeyGen synchronisée du fondateur + B-Roll Google Flow : choisir entre créer une marque de zéro ou faire évoluer votre logo actuel." },
-        pt: { title: "Intro & Passo 0 · Objetivo, Logo Base e Essência do Negócio", desc: "Vídeo HeyGen sincronizado do fundador + B-Roll Google Flow: como escolher entre criar uma marca do zero ou evoluir seu logotipo atual." },
-        de: { title: "Intro & Schritt 0 · Ziel, Basis-Logo & Unternehmenskern", desc: "Synchronisiertes HeyGen-Gründervideo + Google Flow B-Roll: Wahl zwischen Neuerstellung oder Evolution Ihres bestehenden Logos." },
-        it: { title: "Intro & Passo 0 · Obiettivo, Logo Base ed Essenza del Business", desc: "Video HeyGen sincronizzato del fondatore + B-Roll Google Flow: come scegliere tra creare un brand da zero o evolvere il tuo logo attuale." }
+        es: { title: "Video Introductorio y Paso 0 · Objetivo, Logo Base y Giro", desc: "Cómo elegir entre crear una marca desde cero o evolucionar tu logotipo actual respetando tu capital visual (Peter Drucker, David Aaker y Sagi Haviv)." },
+        en: { title: "Intro & Step 0 · Goal, Base Logo & Core Business Essence", desc: "How to choose between creating a brand from scratch or evolving your current logo while honoring your brand equity." },
+        fr: { title: "Intro & Étape 0 · Objectif, Logo de Base et Essence du Secteur", desc: "Choisir entre créer une marque de zéro ou faire évoluer votre logo actuel." },
+        pt: { title: "Intro & Passo 0 · Objetivo, Logo Base e Essência do Negócio", desc: "Como escolher entre criar uma marca do zero ou evoluir seu logotipo atual." },
+        de: { title: "Intro & Schritt 0 · Ziel, Basis-Logo & Unternehmenskern", desc: "Wahl zwischen Neuerstellung oder Evolution Ihres bestehenden Logos." },
+        it: { title: "Intro & Passo 0 · Obiettivo, Logo Base ed Essenza del Business", desc: "Come scegliere tra creare un brand da zero o evolvere il tuo logo attuale." }
       }
     },
     {
       step: 1,
-      url: "/assets/videos/capsula_teoria_paso_1.mp4?v=93.0",
-      poster: "/assets/videos/poster_paso_1.jpg?v=93.0",
+      url: resolveVideoAsset("/assets/videos/capsula_teoria_paso_1.mp4"),
+      poster: resolveVideoAsset("/assets/videos/poster_paso_1.jpg"),
       popupCapture: "/assets/app_captures/popup_video_paso_0_a_1.png",
       duration: "00:48",
       author: "Jorge Benítez (HeyGen) + Google Flow · Simon Sinek, Jim Collins & Donald Miller",
@@ -937,8 +943,8 @@
     },
     {
       step: 2,
-      url: "/assets/videos/capsula_teoria_paso_2.mp4?v=93.0",
-      poster: "/assets/videos/poster_paso_2.jpg?v=93.0",
+      url: resolveVideoAsset("/assets/videos/capsula_teoria_paso_2.mp4"),
+      poster: resolveVideoAsset("/assets/videos/poster_paso_2.jpg"),
       popupCapture: "/assets/app_captures/popup_video_paso_1_a_2.png",
       duration: "00:47",
       author: "Jorge Benítez (HeyGen) + Google Flow · Jan Carlzon, Lemon/Verhoef & Don Norman",
@@ -954,8 +960,8 @@
     },
     {
       step: 3,
-      url: "/assets/videos/capsula_teoria_paso_3.mp4?v=93.0",
-      poster: "/assets/videos/poster_paso_3.jpg?v=93.0",
+      url: resolveVideoAsset("/assets/videos/capsula_teoria_paso_3.mp4"),
+      poster: resolveVideoAsset("/assets/videos/poster_paso_3.jpg"),
       popupCapture: "/assets/app_captures/popup_video_paso_2_a_3.png",
       duration: "00:45",
       author: "Jorge Benítez (HeyGen) + Google Flow · Alexandra Watkins, David Placek & Alina Wheeler",
@@ -971,8 +977,8 @@
     },
     {
       step: 4,
-      url: "/assets/videos/capsula_teoria_paso_4.mp4?v=93.0",
-      poster: "/assets/videos/poster_paso_4.jpg?v=93.0",
+      url: resolveVideoAsset("/assets/videos/capsula_teoria_paso_4.mp4"),
+      poster: resolveVideoAsset("/assets/videos/poster_paso_4.jpg"),
       popupCapture: "/assets/app_captures/popup_video_paso_3_a_4.png",
       duration: "00:51",
       author: "Jorge Benítez (HeyGen) + Google Flow · Mitsuo Nagamachi, Osgood & R. Bringhurst",
@@ -988,8 +994,8 @@
     },
     {
       step: 5,
-      url: "/assets/videos/capsula_teoria_paso_5.mp4?v=93.0",
-      poster: "/assets/videos/poster_paso_5.jpg?v=93.0",
+      url: resolveVideoAsset("/assets/videos/capsula_teoria_paso_5.mp4"),
+      poster: resolveVideoAsset("/assets/videos/poster_paso_5.jpg"),
       popupCapture: "/assets/app_captures/popup_video_paso_4_a_5.png",
       duration: "00:54",
       author: "Jorge Benítez (HeyGen) + Google Flow · Paul Rand, Sagi Haviv & Jony Ive",
@@ -1005,8 +1011,8 @@
     },
     {
       step: 6,
-      url: "/assets/videos/capsula_teoria_paso_6.mp4?v=93.0",
-      poster: "/assets/videos/poster_paso_6.jpg?v=93.0",
+      url: resolveVideoAsset("/assets/videos/capsula_teoria_paso_6.mp4"),
+      poster: resolveVideoAsset("/assets/videos/poster_paso_6.jpg"),
       popupCapture: "/assets/app_captures/popup_video_paso_5_a_6.png",
       duration: "00:52",
       author: "Jorge Benítez (HeyGen) + Google Flow · Massimo Vignelli & Josef Müller-Brockmann",
@@ -1876,40 +1882,48 @@
       document.body.appendChild(ov);
     }
 
+    const stepPillsHtml = VIDEO_CAPSULES.map((vc, idx) => {
+      const isAct = idx === s;
+      return `<button type="button" onclick="window.tbbOpenVideoPopupModal(${idx})" style="padding:5px 10px; border-radius:999px; border:1px solid ${isAct ? '#FF7A00' : '#CBD5E1'}; background:${isAct ? '#0D2540' : '#F8FAFC'}; color:${isAct ? '#FFFFFF' : '#0F172A'}; font-size:0.72rem; font-weight:600; cursor:pointer;">${idx === 0 ? 'Intro · Paso 0' : 'Paso ' + idx}</button>`;
+    }).join("");
+
     ov.innerHTML = `
-      <div style="background:#FFFFFF; border-radius:24px; width:100%; max-width:960px; overflow:hidden; box-shadow:0 30px 90px rgba(0,0,0,0.45); display:grid; grid-template-columns:repeat(auto-fit, minmax(310px, 1fr));">
+      <div style="background:#FFFFFF; border-radius:24px; width:100%; max-width:860px; overflow:hidden; box-shadow:0 30px 90px rgba(0,0,0,0.45); display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr));">
         <div style="background:#0F172A; display:flex; align-items:center; justify-content:center; padding:16px;">
-          <video src="${cap.url}" poster="${cap.poster}" controls autoplay playsinline style="max-height:76vh; width:auto; max-width:100%; border-radius:16px; box-shadow:0 16px 40px rgba(0,0,0,0.5);"></video>
+          <video src="${cap.url}" poster="${cap.poster}" controls autoplay playsinline style="max-height:74vh; width:auto; max-width:100%; border-radius:16px; box-shadow:0 16px 40px rgba(0,0,0,0.5);"></video>
         </div>
-        <div style="padding:30px 28px; display:flex; flex-direction:column; justify-content:space-between; gap:18px; background:#FFFFFF; color:#0F172A;">
+        <div style="padding:28px 26px; display:flex; flex-direction:column; justify-content:space-between; gap:16px; background:#FFFFFF; color:#0F172A;">
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:12px;">
-              <span style="font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:500; color:#EA580C; background:#FFF7ED; padding:4px 10px; border-radius:999px;">
-                HEYGEN + GOOGLE FLOW · ${lang.toUpperCase()} · ${cap.duration}
+              <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:600; color:#EA580C; background:#FFF7ED; padding:4px 10px; border-radius:999px;">
+                PASO 0${s} · HEYGEN · ${cap.duration}
               </span>
-              <button type="button" onclick="window.tbbCloseVideoPopupModal()" class="tbb-btn-light-surface" style="padding:5px 12px; font-size:0.82rem;">✕</button>
+              <button type="button" onclick="window.tbbCloseVideoPopupModal()" class="tbb-btn-light-surface" style="padding:4px 11px; font-size:0.82rem;">✕</button>
             </div>
-            <h3 style="font-family:'Montserrat', sans-serif; font-size:1.3rem; font-weight:600; color:#0F172A; margin:0 0 8px 0; line-height:1.25;">
+            <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:14px;">
+              ${stepPillsHtml}
+            </div>
+            <h3 style="font-family:'Montserrat', sans-serif; font-size:1.22rem; font-weight:600; color:#0F172A; margin:0 0 8px 0; line-height:1.28;">
               ${escHtml(loc.title)}
             </h3>
-            <div style="font-size:0.82rem; font-weight:500; color:#1D4ED8; margin-bottom:12px;">
+            <div style="font-size:0.80rem; font-weight:500; color:#1D4ED8; margin-bottom:12px;">
               ${escHtml(cap.author)}
             </div>
-            <p style="font-size:0.9rem; font-weight:400; color:#475569; line-height:1.6; margin:0 0 12px 0;">
+            <p style="font-size:0.88rem; font-weight:400; color:#475569; line-height:1.62; margin:0;">
               ${escHtml(loc.desc)}
             </p>
-            ${cap.exactScript ? `
-              <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-left:3.5px solid #1D4ED8; border-radius:12px; padding:10px 14px; font-size:0.8rem; color:#0F172A; line-height:1.5; max-height:175px; overflow-y:auto;">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; font-weight:600; color:#1D4ED8; margin-bottom:4px;">${escHtml(t("videoPopupScriptLabel"))}</div>
-                «${escHtml(cap.exactScript)}»
-              </div>
-            ` : ''}
           </div>
-          <div style="display:flex; flex-direction:column; gap:10px; padding-top:14px; border-top:1px solid #E2E8F0;">
-            <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbCloseVideoPopupModal(); window.tbbOpenBuyAppCheckoutModal('pro_atelier');" style="width:100%; padding:12px; font-size:0.88rem;">
-              ${escHtml(t("buyNowFloating"))}
-            </button>
-            <button type="button" class="tbb-btn-light-surface" onclick="window.tbbCloseVideoPopupModal()" style="width:100%; padding:10px; font-size:0.82rem;">
+          <div style="display:flex; flex-direction:column; gap:8px; padding-top:14px; border-top:1px solid #E2E8F0;">
+            ${s < 6 ? `
+              <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbOpenVideoPopupModal(${s + 1});" style="width:100%; padding:11px; font-size:0.86rem;">
+                Siguiente Video · Paso ${s + 1} →
+              </button>
+            ` : `
+              <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbCloseVideoPopupModal(); window.tbbOpenBuyAppCheckoutModal('pro_atelier');" style="width:100%; padding:11px; font-size:0.86rem;">
+                ${escHtml(t("buyNowFloating"))}
+              </button>
+            `}
+            <button type="button" class="tbb-btn-light-surface" onclick="window.tbbCloseVideoPopupModal()" style="width:100%; padding:9px; font-size:0.80rem;">
               ${escHtml(t("videoPopupContinue"))}
             </button>
           </div>

@@ -5646,103 +5646,89 @@
     </div>
   </div>
 
-  <!-- CLOSING & TRANSITION VIDEO CAPSULE MODAL (FORMATO VERTICAL 9:16 CON TOMAS REALISTAS, B-ROLLS, VOZ HUMANA Y TEXTOS RESPONSIVOS JUNTO/DEBAJO) -->
-  <div class="welcome-modal-overlay" id="phaseTransitionVideoModal" style="z-index: 9999; padding: 10px 14px; background: rgba(15, 23, 42, 0.90); backdrop-filter: blur(10px); overflow: hidden;">
-    <div class="welcome-modal-card tbb-atomic-card" style="max-width: 1180px; width: 100%; height: calc(100dvh - 20px); max-height: 880px; overflow: hidden; background: #FFFFFF; border: 2px solid #CBD5E1; border-radius: 24px; box-shadow: 0 20px 56px rgba(9, 13, 22, 0.24); color: #090D16; padding: 14px 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; text-align: left; box-sizing: border-box;" onclick="event.stopPropagation()">
-      <!-- 1. Cabecera Luminosa + Selector de los 7 Videos Verticales 9:16 -->
-      <div style="display:flex; flex-direction:column; gap:4px; border-bottom:1.5px solid #E2E8F0; padding-bottom:6px; flex-shrink:0;">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+  <!-- CLOSING & TRANSITION VIDEO CAPSULE MODAL (DISEÑO LIMPIO SIN ONDAS NI EXCESO DE TEXTO · HEYGEN 9:16 + RESUMEN DIRECTO) -->
+  <div class="welcome-modal-overlay" id="phaseTransitionVideoModal" style="z-index: 9999; padding: 14px; background: rgba(9, 13, 22, 0.88); backdrop-filter: blur(16px); overflow-y: auto;" onclick="if(event.target===this){this.classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}}">
+    <div class="welcome-modal-card tbb-atomic-card" style="max-width: 920px; width: 100%; max-height: calc(100dvh - 28px); overflow-y: auto !important; overflow-x: hidden !important; align-items: stretch !important; background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 28px; box-shadow: 0 28px 70px rgba(15, 23, 42, 0.22); color: #0F172A; padding: 22px 26px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px; text-align: left; box-sizing: border-box;" onclick="event.stopPropagation()">
+      <!-- 1. Cabecera Limpia + Selector de Paso -->
+      <div style="display:flex; flex-direction:column; gap:10px; border-bottom:1px solid #E2E8F0; padding-bottom:12px; flex-shrink:0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
           <div style="display:flex; align-items:center; gap:8px;">
-            <span id="transitionVideoBadge" style="font-family:var(--font-mono); background:#FAF8F5; color:#0D2540; border:1.5px solid #1D4ED8; border-left:4px solid #EA7300; font-size:0.68rem; font-weight:900; padding:3px 10px; border-radius:999px; letter-spacing:0.04em;">
-              GOOGLE FLOW + HEYGEN · AVATARES &amp; B-ROLLS DINÁMICOS 9:16
+            <span id="transitionVideoBadge" style="font-family:var(--font-mono); background:#FFF7ED; color:#EA580C; border:1px solid #FFEDD5; font-size:0.68rem; font-weight:700; padding:4px 12px; border-radius:999px; letter-spacing:0.04em;">
+              CÁPSULA DEL FUNDADOR · HEYGEN + GOOGLE FLOW
             </span>
-            <span id="transitionVideoChapterTag" style="font-family:var(--font-mono); font-size:0.68rem; color:#475569; font-weight:800;"></span>
+            <span id="transitionVideoChapterTag" style="font-family:var(--font-mono); font-size:0.70rem; color:#64748B; font-weight:600;"></span>
+            <span id="transitionVideoStatusPill" style="display:none;"></span>
           </div>
-          <span id="transitionVideoStatusPill" style="font-family:var(--font-mono); font-size:0.68rem; color:#059669; background:#F0FDF4; padding:3px 10px; border-radius:999px; border:1.5px solid #86EFAC; font-weight:800;">
-            HeyGen + Google Flow 9:16 HD Activo
-          </span>
+          <button type="button" onclick="document.getElementById('phaseTransitionVideoModal').classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; border-radius:999px; padding:5px 12px; font-size:0.78rem; font-weight:600; cursor:pointer;">✕</button>
         </div>
-        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;">
-          <h2 id="transitionVideoTitle" style="font-family:var(--font-display); font-size:1.12rem; font-weight:900; color:#0D2540; margin:0; line-height:1.2;">
-            Resumen de Avance + Video Dinámico HeyGen &amp; Google Flow 9:16
-          </h2>
-          <p id="transitionVideoSubtitle" style="font-size:0.74rem; color:#475569; font-weight:600; margin:0; line-height:1.25;">
-            Alterna avatares HeyGen en movimiento con B-rolls dinámicos de Google Flow y guiones originales:
-          </p>
-        </div>
-        <div id="transitionVideoThemeSelectorRow" style="display:flex; gap:5px; overflow-x:auto; padding-top:2px;">
-          <button type="button" class="tbb-video-theme-pill" data-vstep="0" onclick="window.tbbSwitchVideoCapsuleTheme(0)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 0 · Giro y Logo Base</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="1" onclick="window.tbbSwitchVideoCapsuleTheme(1)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 1 · Sinek</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="2" onclick="window.tbbSwitchVideoCapsuleTheme(2)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 2 · Touchpoints</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="3" onclick="window.tbbSwitchVideoCapsuleTheme(3)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 3 · Naming</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="4" onclick="window.tbbSwitchVideoCapsuleTheme(4)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 4 · Kansei &amp; Fuentes</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="5" onclick="window.tbbSwitchVideoCapsuleTheme(5)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 5 · Logo IA</button>
-          <button type="button" class="tbb-video-theme-pill" data-vstep="6" onclick="window.tbbSwitchVideoCapsuleTheme(6)" style="font-family:var(--font-mono); font-size:0.65rem; font-weight:800; padding:4px 9px; border-radius:999px; border:1.5px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 6 · 36 Láminas</button>
+        <div id="transitionVideoThemeSelectorRow" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;">
+          <button type="button" class="tbb-video-theme-pill" data-vstep="0" onclick="window.tbbSwitchVideoCapsuleTheme(0)" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:600; padding:5px 11px; border-radius:999px; border:1px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 0 · Inicio</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="1" onclick="window.tbbSwitchVideoCapsuleTheme(1)" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:600; padding:5px 11px; border-radius:999px; border:1px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 1 · Círculo Dorado</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="2" onclick="window.tbbSwitchVideoCapsuleTheme(2)" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:600; padding:5px 11px; border-radius:999px; border:1px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 2 · Touchpoints</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="3" onclick="window.tbbSwitchVideoCapsuleTheme(3)" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:600; padding:5px 11px; border-radius:999px; border:1px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 3 · Naming</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="4" onclick="window.tbbSwitchVideoCapsuleTheme(4)" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:600; padding:5px 11px; border-radius:999px; border:1px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 4 · Kansei</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="5" onclick="window.tbbSwitchVideoCapsuleTheme(5)" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:600; padding:5px 11px; border-radius:999px; border:1px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 5 · Logotipo</button>
+          <button type="button" class="tbb-video-theme-pill" data-vstep="6" onclick="window.tbbSwitchVideoCapsuleTheme(6)" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:600; padding:5px 11px; border-radius:999px; border:1px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 6 · Manual</button>
         </div>
       </div>
 
-      <!-- 2. Cuerpo Central Responsivo: Video Vertical 9:16 a Toda Altura + Textos de Apoyo Junto (Escritorio) o Debajo (Móvil) -->
-      <div class="tbb-video-modal-grid" style="flex:1; min-height:0; display:grid; grid-template-columns:minmax(290px, 370px) 1fr; gap:16px; align-items:stretch; overflow:hidden;">
-        <!-- Columna del Video Vertical 9:16 a Pantalla Completa Vertical -->
-        <div id="transitionTheoryVideoContainer" style="background:#090D16; border:2px solid #1D4ED8; border-radius:20px; padding:6px; display:flex; flex-direction:column; justify-content:space-between; gap:4px; min-height:0; overflow:hidden; position:relative;">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; padding:2px 6px; flex-shrink:0;">
-            <span id="transitionTheoryHeaderBadge" style="font-family:var(--font-mono); font-size:0.63rem; font-weight:800; color:#EA7300; text-transform:uppercase; letter-spacing:0.04em;">
-              HEYGEN AVATAR + GOOGLE FLOW B-ROLL 9:16
-            </span>
-            <span id="transitionTheoryFrameworkPill" style="font-family:var(--font-mono); font-size:0.62rem; background:rgba(255,255,255,0.12); color:#FFFFFF; padding:2px 8px; border-radius:999px; font-weight:800;">
-              9:16 30fps · Voz Humana
-            </span>
+      <!-- 2. Cuerpo Limpio: Video Vertical 9:16 Protagonista + Síntesis Breve al Lado -->
+      <div class="tbb-video-modal-grid" style="flex:1; min-height:0; display:grid; grid-template-columns:minmax(270px, 330px) 1fr; gap:24px; align-items:center;">
+        <!-- Reproductor 9:16 Limpio (Cero Ondas, Cero Cajas Extra) -->
+        <div id="transitionTheoryVideoContainer" style="background:#090D16; border-radius:20px; overflow:hidden; position:relative; box-shadow:0 16px 36px rgba(15, 23, 42, 0.16); display:flex; flex-direction:column;">
+          <span id="transitionTheoryHeaderBadge" style="display:none;"></span>
+          <span id="transitionTheoryFrameworkPill" style="display:none;"></span>
+          <video
+            id="transitionTheoryVideoPlayer"
+            controls
+            playsinline
+            preload="auto"
+            poster="https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@47252ad/apps/web/assets/videos/poster_paso_0.jpg"
+            style="width:100%; max-height:64vh; aspect-ratio:9/16; display:block; background:#090D16; object-fit:contain;"
+          >
+            <source id="transitionTheoryVideoSource" src="https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@47252ad/apps/web/assets/videos/capsula_teoria_paso_0.mp4" type="video/mp4" />
+            Tu navegador no soporta reproducción de video HTML5.
+          </video>
+          <div style="height:4px; background:#1E293B; overflow:hidden;">
+            <div id="transitionVideoProgressBar" style="width:0%; height:100%; background:#EA580C; transition:width 0.25s linear;"></div>
           </div>
-
-          <div style="flex:1; min-height:0; position:relative; border-radius:14px; overflow:hidden; background:#090D16; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-            <video
-              id="transitionTheoryVideoPlayer"
-              controls
-              playsinline
-              preload="auto"
-              style="width:100%; height:100%; max-height:100%; aspect-ratio:9/16; display:block; background:#090D16; object-fit:cover; border-radius:12px;"
-            >
-              <source id="transitionTheoryVideoSource" src="/assets/videos/capsula_teoria_paso_1.mp4?v=87.0" type="video/mp4" />
-              Tu navegador no soporta reproducción de video HTML5.
-            </video>
-          </div>
-
-          <div style="flex-shrink:0;">
-            <canvas id="transitionVideoCanvas" width="360" height="24" style="width:100%; height:22px; display:block; border-radius:6px; background:#0F172A;"></canvas>
-            <div style="display:none;"><div id="transitionVideoCaptionText"></div><div id="transitionVideoNextHint"></div></div>
-            <div style="height:4px; background:#1E293B; border-radius:999px; overflow:hidden; margin-top:3px;">
-              <div id="transitionVideoProgressBar" style="width:35%; height:100%; background:linear-gradient(90deg, #0078C0, #88E0E0, #10B981); transition:width 0.35s ease;"></div>
-            </div>
-          </div>
+          <div style="display:none;"><div id="transitionVideoCaptionText"></div><div id="transitionVideoNextHint"></div></div>
         </div>
 
-        <!-- Columna / Panel Responsivo de Textos de Apoyo (Junto al Video en Escritorio · Debajo del Video en Móvil) -->
-        <div class="tbb-video-support-texts-col" style="display:flex; flex-direction:column; justify-content:space-between; gap:10px; min-height:0; overflow-y:auto; padding-right:2px;">
-          <!-- PARTE 1: RESUMEN DEL PASO ANTERIOR -->
-          <div id="transitionVideoReviewCard" style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:18px; padding:12px 16px; display:flex; flex-direction:column; gap:7px; flex-shrink:0;">
-            <div id="transitionSummaryHeadingLabel" style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#059669; text-transform:uppercase; letter-spacing:0.04em;">
-              PARTE 1 · SÍNTESIS Y LOGROS DEL PASO COMPLETADO:
+        <!-- Columna Derecha Minimalista: Título, Fundamento Esencial y Botones de Acción -->
+        <div class="tbb-video-support-texts-col" style="display:flex; flex-direction:column; justify-content:center; gap:16px;">
+          <div>
+            <h2 id="transitionVideoTitle" style="font-family:var(--font-display); font-size:1.38rem; font-weight:700; color:#0F172A; margin:0 0 6px 0; line-height:1.25;">
+              Video Introductorio del Paso
+            </h2>
+            <p id="transitionVideoSubtitle" style="font-size:0.9rem; color:#475569; font-weight:400; margin:0; line-height:1.5;">
+              Escucha la explicación del fundador antes de continuar.
+            </p>
+          </div>
+
+          <!-- Idea Central del Paso (1 sola tarjeta limpia) -->
+          <div id="transitionTheoryCardsGrid" style="display:flex; flex-direction:column; gap:10px; font-size:0.86rem; line-height:1.5;">
+          </div>
+
+          <!-- Resumen Breve de tu Avance -->
+          <div id="transitionVideoReviewCard" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:12px 16px; display:flex; flex-direction:column; gap:6px;">
+            <div id="transitionSummaryHeadingLabel" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:600; color:#64748B; text-transform:uppercase; letter-spacing:0.04em;">
+              TU AVANCE SINCRONIZADO:
             </div>
-            <div id="transitionVideoDiscoveriesList" style="font-size:0.80rem; color:#0F172A; line-height:1.38; display:flex; flex-direction:column; gap:6px;">
-              <!-- Dinámico según la fase completada -->
+            <div id="transitionVideoDiscoveriesList" style="font-size:0.82rem; color:#334155; line-height:1.45; display:flex; flex-direction:column; gap:6px;">
             </div>
           </div>
 
-          <!-- SÍNTESIS PEDAGÓGICA EN 3 TARJETAS CLARAS (TEORÍA + IMPORTANCIA + EJEMPLO BREVE DE APOYO AL VIDEO) -->
-          <div id="transitionTheoryCardsGrid" style="flex:1; min-height:0; display:flex; flex-direction:column; justify-content:space-between; gap:8px; font-size:0.79rem; line-height:1.36;">
-            <!-- Se llena dinámicamente con Teoría, Importancia y Ejemplo Breve del paso destino -->
+          <!-- Botones de Acción -->
+          <div style="display:flex; align-items:center; gap:12px; padding-top:6px; flex-wrap:wrap;">
+            <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" id="btnFinishTransitionVideo" onclick="finishTransitionVideoAndEnterNextStep()" style="flex:1; min-width:210px;">
+              <span id="btnFinishTransitionVideoText">Continuar al Paso</span>
+            </button>
+            <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('phaseTransitionVideoModal').classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}" style="padding:0 18px;">
+              <span>Omitir video</span>
+            </button>
           </div>
         </div>
-      </div>
-
-      <!-- 3. Barra Inferior de Botones Tamaño Duolingo -->
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding-top:6px; border-top:1.5px solid #E2E8F0; flex-shrink:0;">
-        <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('phaseTransitionVideoModal').classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}" style="flex:0.42;">
-          <span>Cerrar Video</span>
-        </button>
-        <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" id="btnFinishTransitionVideo" onclick="finishTransitionVideoAndEnterNextStep()" style="flex:1;">
-          <span id="btnFinishTransitionVideoText">Continuar al Siguiente Paso</span>
-        </button>
       </div>
     </div>
   </div>
@@ -9539,83 +9525,68 @@
       }
     }
 
+    function tbbResolveHeyGenVideoAsset(relPath) {
+      const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+      if (isLocal) return `${relPath}?v=94.0`;
+      return `https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@47252ad/apps/web${relPath}`;
+    }
+
     const STEP_THEORY_CAPSULES_SPEC = {
       0: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_0.mp4?v=92.0",
-        frameworkBadge: "TEORÍA 00 · DAVID AAKER, SAGI HAVIV & PETER DRUCKER",
-        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 0): OBJETIVO, LOGO BASE Y GIRO",
-        theoryTitle: "Clip 1 & 2 · Punto de Partida y Capital Visual (Peter Drucker, David Aaker & Sagi Haviv)",
-        theoryBody: "«Hola, soy Jorge Benítez. Como afirma Peter Drucker, la mejor forma de predecir el futuro es creándolo. En el Paso cero eliges si construyes tu marca desde cero, evolucionas la actual o creas una sub-marca. Si ya tienes nombre y logotipo, David Aaker y Sagi Haviv recomiendan proteger tu capital visual.»",
-        importanceTitle: "Clip 3 · Giro Comercial que Alimenta el Sistema (Al Ries & Jack Trout)",
-        importanceBody: "«Siguiendo a Al Ries y Jack Trout en Posicionamiento, cuando describes tu giro con claridad en el tercer sub-paso, el sistema adapta automáticamente tus preguntas, puntos de contacto y propuestas.»",
-        exampleTitle: "Clip 4 · Sincronización en Vivo y Respuestas de Aura",
-        exampleBody: "«Además, tu sesión se sincroniza en tiempo real entre tu teléfono y tu computadora. En cada decisión escucharás mi respuesta breve de menos de diez segundos con el respaldo de los grandes autores.»"
+        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_0.mp4"),
+        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_0.jpg"),
+        frameworkBadge: "PASO 0 · DRUCKER, AAKER & HAVIV",
+        headerLabel: "FUNDAMENTO DEL PASO 0",
+        theoryTitle: "Objetivo, Capital Visual y Giro Comercial",
+        theoryBody: "Elige si construyes tu marca desde cero, evolucionas tu logotipo actual o creas una sub-marca. Al definir tu giro con claridad, el sistema adapta automáticamente tus preguntas y entregables."
       },
       1: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_1.mp4?v=92.0",
-        frameworkBadge: "TEORÍA 01 · CÍRCULO DORADO (SIMON SINEK)",
-        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 1): EL CÍRCULO DORADO Y PROMESA DE VALOR",
-        theoryTitle: "Clip 1 & 2 · El Círculo Dorado (Jim Collins & Simon Sinek)",
-        theoryBody: "«Bienvenido al Paso uno. Como demostró Jim Collins en Empresas que Sobresalen, toda marca duradera nace de cimientos estratégicos claros antes de diseñar su identidad visual. La teoría del Círculo Dorado de Simon Sinek enseña que la gente no compra lo que haces, sino el porqué lo haces.»",
-        importanceTitle: "Clip 3 · Oferta de Valor y Método en 3 Pasos (Alex Osterwalder & Donald Miller)",
-        importanceBody: "«Combinamos el Lienzo de Propuesta de Valor de Alex Osterwalder con el método StoryBrand de Donald Miller: al explicar tu proceso en tres pasos claros, tu cliente confía sin dudar.»",
-        exampleTitle: "Clip 4 · Caso Real: Apple y Nubank",
-        exampleBody: "«Observa a Nubank: su propósito fue liberar a las personas de la burocracia financiera con calidez y transparencia. Entra ahora al Paso uno y construyamos tus pilares estratégicos.»"
+        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_1.mp4"),
+        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_1.jpg"),
+        frameworkBadge: "PASO 1 · CÍRCULO DORADO (SIMON SINEK)",
+        headerLabel: "FUNDAMENTO DEL PASO 1",
+        theoryTitle: "El Círculo Dorado y tu Promesa en 3 Pasos",
+        theoryBody: "La gente no compra lo que haces, sino el porqué lo haces (Simon Sinek). Aquí defines tu propósito nuclear, tu método claro en tres pasos (Donald Miller) y el arquetipo humano de tu marca."
       },
       2: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_2.mp4?v=92.0",
-        frameworkBadge: "TEORÍA 02 · LEMON & VERHOEF · SERVICE BLUEPRINT",
-        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 2): TOUCHPOINTS (ANTES, DURANTE Y DESPUÉS)",
-        theoryTitle: "Clip 1 & 2 · Los Momentos de la Verdad (Jan Carlzon & Lemon/Verhoef)",
-        theoryBody: "«Excelente avance en el Paso uno. Como enseñó Jan Carlzon en los Momentos de la Verdad, cada contacto de quince segundos con tu cliente define si confía en tu marca. Según Katherine Lemon y Peter Verhoef, toda experiencia se divide en tres etapas: Antes, Durante y Después.»",
-        importanceTitle: "Clip 3 · Eliminar Fricciones Operativas (Don Norman)",
-        importanceBody: "«Don Norman explica que el diseño excelente elimina la fricción operativa. Los puntos de contacto reales que selecciones aquí alimentarán directamente las láminas de tu manual final.»",
-        exampleTitle: "Clip 4 · Caso Real y Paso a la Acción",
-        exampleBody: "«Cuando articulas atención ágil antes, servicio impecable durante y acompañamiento leal después, tus clientes se vuelven promotores. Seleccionemos ahora tus puntos de contacto en el Paso dos.»"
+        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_2.mp4"),
+        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_2.jpg"),
+        frameworkBadge: "PASO 2 · MOMENTOS DE LA VERDAD (CARLZON)",
+        headerLabel: "FUNDAMENTO DEL PASO 2",
+        theoryTitle: "Puntos de Contacto: Antes, Durante y Después",
+        theoryBody: "Cada contacto de 15 segundos define si tu cliente confía en tu marca (Jan Carlzon). Selecciona los canales reales donde te descubren, compran y recomiendan para integrarlos en tu manual."
       },
       3: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_3.mp4?v=92.0",
-        frameworkBadge: "TEORÍA 03 · SMILE & SCRATCH + CLASES DE NIZA",
-        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 3): INGENIERÍA DE NAMING Y REGISTRO",
-        theoryTitle: "Clip 1 & 2 · Modelo SMILE y Simbolismo Fonético (Wally Olins, Watkins & Placek)",
-        theoryBody: "«Ya tienes el mapa de experiencia de tu cliente. Como afirma Wally Olins, el nombre es el primer activo verbal que pronunciarán tus clientes en cada canal. Aplicamos el modelo SMILE de Alexandra Watkins y el simbolismo fonético de David Placek: buscamos un nombre de dos a tres sílabas, fácil de recordar y con iniciales potentes.»",
-        importanceTitle: "Clip 3 · Blindaje en Clases de Niza y Descriptor (Alina Wheeler)",
-        importanceBody: "«Siguiendo a Alina Wheeler, acompañamos tu nombre oficial con un descriptor claro y verificamos sus clases internacionales de Niza para proteger tu registro legal.»",
-        exampleTitle: "Clip 4 · Ejemplo Real: Stripe, Notion y Rolex",
-        exampleBody: "«Piensa en Rolex o Stripe: nombres breves cuyas iniciales forman un monograma inconfundible. Entremos al Paso tres para confirmar el nombre y eslogan de tu marca.»"
+        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_3.mp4"),
+        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_3.jpg"),
+        frameworkBadge: "PASO 3 · MODELO SMILE & CLASES DE NIZA",
+        headerLabel: "FUNDAMENTO DEL PASO 3",
+        theoryTitle: "Ingeniería de Naming, Eslogan y Registro",
+        theoryBody: "El nombre es el primer activo verbal que pronunciarán tus clientes (Wally Olins & Alexandra Watkins). Confirmamos tu nombre oficial, eslogan y sus Clases Internacionales de Niza."
       },
       4: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_4.mp4?v=92.0",
-        frameworkBadge: "TEORÍA 04 · INGENIERÍA KANSEI & SEMIÓTICA",
-        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 4): PSICOLOGÍA DE LA FORMA Y 7 EJES",
-        theoryTitle: "Clip 1 & 2 · Ingeniería Kansei y 7 Ejes (Mitsuo Nagamachi, Ramachandran & Osgood)",
-        theoryBody: "«Con tu nombre oficial listo, entramos al Paso cuatro. El profesor Mitsuo Nagamachi creó la Ingeniería Kansei para traducir sentimientos humanos en parámetros de diseño exactos. Nuestro cerebro asocia curvas suaves con cercanía humana y ángulos rectos con precisión técnica.»",
-        importanceTitle: "Clip 3 · La Tipografía es el Lenguaje Hecho Visible (Bringhurst & Frutiger)",
-        importanceBody: "«Robert Bringhurst afirma que la tipografía es el lenguaje hecho visible, y Adrian Frutiger demostró el poder de la estructura base. Aquí elegirás tu fuente oficial y tu familia constructiva.»",
-        exampleTitle: "Clip 4 · Ejemplo Real: Airbnb vs. Tesla",
-        exampleBody: "«Mira cómo Airbnb usa un lazo curvo para transmitir pertenencia, mientras Tesla usa ángulos de ingeniería. Calibra ahora el carácter visual de tu marca en el Paso cuatro.»"
+        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_4.mp4"),
+        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_4.jpg"),
+        frameworkBadge: "PASO 4 · INGENIERÍA KANSEI & TIPOGRAFÍA",
+        headerLabel: "FUNDAMENTO DEL PASO 4",
+        theoryTitle: "Psicología de la Forma y Par Tipográfico",
+        theoryBody: "La Ingeniería Kansei (Mitsuo Nagamachi) traduce emociones en proporciones geométricas. Calibra el carácter visual de tu marca, elige tu tipografía oficial y define la estructura de tu símbolo."
       },
       5: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_5.mp4?v=92.0",
-        frameworkBadge: "TEORÍA 05 · PAUL RAND, SAGI HAVIV, JONY IVE & GESTALT",
-        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 5): TALLER DE LOGOTIPO Y EVOLUCIÓN IA",
-        theoryTitle: "Clip 1 & 2 · Simplicidad y Evolución Vectorial (Paul Rand, Josef Albers & Sagi Haviv)",
-        theoryBody: "«Bienvenido al Paso cinco. Como enseñó el legendario Paul Rand, un logotipo extraordinario combina simplicidad geométrica y recordación inmediata, potenciado por la armonía cromática de Josef Albers. Si subiste tu logotipo actual, seguimos la máxima de Sagi Haviv: respetar la esencia reconocible mientras perfeccionamos sus trazos.»",
-        importanceTitle: "Clip 3 · Libertad Creativa Abierta (Max Wertheimer & Dieter Rams)",
-        importanceBody: "«Bajo las leyes de la Gestalt de Max Wertheimer y la pureza de Dieter Rams, tienes libertad total: pide cualquier símbolo u objeto nuevo en el cuadro inferior y compara tus iteraciones arriba.»",
-        exampleTitle: "Clip 4 · Lockup Principal + Ícono App 1:1 (Jony Ive)",
-        exampleBody: "«Inspirados en el rigor industrial de Jony Ive, visualizas al mismo tiempo tu logotipo completo y su ícono uno a uno. Cuando te enamore el resultado, confírmalo para generar tu manual.»"
+        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_5.mp4"),
+        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_5.jpg"),
+        frameworkBadge: "PASO 5 · PAUL RAND, SAGI HAVIV & JONY IVE",
+        headerLabel: "FUNDAMENTO DEL PASO 5",
+        theoryTitle: "Taller de Logotipo en Curvas y Acabado Liquid Glass",
+        theoryBody: "Un gran logotipo combina simplicidad geométrica y recordación inmediata (Paul Rand & Sagi Haviv). Itera en vivo con Nano Banana Pro y aprueba tu versión maestra sobre lienzo claro y oscuro."
       },
       6: {
-        videoUrl: "/assets/videos/capsula_teoria_paso_6.mp4?v=92.0",
-        frameworkBadge: "TEORÍA 06 · MASSIMO VIGNELLI, MÜLLER-BROCKMANN & GUÍA C-00",
-        headerLabel: "PARTE 2 · VIDEO HEYGEN DEL FUNDADOR (PASO 6): BRANDBOOK MAESTRO EN CURVAS",
-        theoryTitle: "Clip 1 & 2 · La Constitución Visual de tu Marca (Massimo Vignelli & Müller-Brockmann)",
-        theoryBody: "«Felicidades por llegar al Paso seis. Como estableció Massimo Vignelli en su Canon, un manual de identidad es la constitución que protege la coherencia de tu marca en todo momento. Aplicamos los sistemas de retículas de Josef Müller-Brockmann y la Guía Oficial C-Cero-Cero de ImproBears.»",
-        importanceTitle: "Clip 3 · De la Filosofía a la Imprenta (Danne & Blackburn · Alina Wheeler)",
-        importanceBody: "«Al igual que el manual de la NASA de Danne y Blackburn y la metodología de Alina Wheeler, tus láminas cubren desde la filosofía y geometría hasta papelería, uniformes y firma digital.»",
-        exampleTitle: "Clip 4 · Descarga Instantánea en iPhone, iPad y Escritorio",
-        exampleBody: "«Con un solo toque puedes descargar tu PDF en menos de dos segundos, compartirlo desde tu iPhone o exportar tu logotipo en curvas. Tu marca está lista para conquistar el mundo.»"
+        videoUrl: tbbResolveHeyGenVideoAsset("/assets/videos/capsula_teoria_paso_6.mp4"),
+        posterUrl: tbbResolveHeyGenVideoAsset("/assets/videos/poster_paso_6.jpg"),
+        frameworkBadge: "PASO 6 · CANON DE VIGNELLI & 9 ENTREGABLES",
+        headerLabel: "FUNDAMENTO DEL PASO 6",
+        theoryTitle: "Tu Manual de 36 Láminas y Bóveda Ejecutiva",
+        theoryBody: "Tu manual de identidad protege la coherencia de tu marca en todo canal (Massimo Vignelli). Revisa tus 36 láminas en curvas y descarga tus 9 entregables oficiales listos para usar."
       }
     };
 
@@ -9815,9 +9786,10 @@
       const resolvedFromStep = (typeof fromStep === "number" && fromStep >= 0) ? fromStep : Math.max(0, resolvedToStep - 1);
 
       const isDemoSession = new URLSearchParams(window.location.search).get("demo") === "true" || window.tbbIsDemoMode === true;
-      if (isDemoSession && resolvedToStep >= 3) {
+      const isProUnlocked = typeof window.tbbHasActiveProLicense === "function" && window.tbbHasActiveProLicense();
+      if (isDemoSession && !isProUnlocked && resolvedToStep >= 4) {
         if (window.parent && window.parent !== window) {
-          window.parent.postMessage({ type: "TBB_DEMO_COMPLETED_STEP_2", fromStep: resolvedFromStep, targetStep: resolvedToStep }, "*");
+          window.parent.postMessage({ type: "TBB_DEMO_COMPLETED_STEP_3", fromStep: resolvedFromStep, targetStep: resolvedToStep }, "*");
         }
         if (typeof window.tbbOpenBuyAppCheckoutModal === "function") {
           window.tbbOpenBuyAppCheckoutModal("pro_atelier");
@@ -9829,6 +9801,11 @@
 
       pendingTransitionToStep = resolvedToStep;
       pendingTransitionOptions = options || {};
+
+      const splashEl = document.getElementById("tbbAuraSplashBootOverlay");
+      if (splashEl && !splashEl.classList.contains("is-dismissed")) {
+        splashEl.classList.add("is-dismissed");
+      }
 
       const modal = document.getElementById("phaseTransitionVideoModal");
       if (!modal) {
@@ -9845,7 +9822,6 @@
       const summaryHeadEl = document.getElementById("transitionSummaryHeadingLabel");
       const titleEl = document.getElementById("transitionVideoTitle");
       const subEl = document.getElementById("transitionVideoSubtitle");
-      const capEl = document.getElementById("transitionVideoCaptionText");
       const listEl = document.getElementById("transitionVideoDiscoveriesList");
       const btnTxtEl = document.getElementById("btnFinishTransitionVideoText");
       const statusPill = document.getElementById("transitionVideoStatusPill");
@@ -9856,7 +9832,7 @@
       const videoPlayer = document.getElementById("transitionTheoryVideoPlayer");
       const videoSource = document.getElementById("transitionTheoryVideoSource");
 
-      // Resaltar píldora activa del selector de videos ilustrados (Pasos 0 al 6)
+      // Resaltar píldora activa del selector de videos (Pasos 0 al 6)
       document.querySelectorAll(".tbb-video-theme-pill").forEach(btn => {
         const isAct = Number(btn.getAttribute("data-vstep")) === resolvedToStep;
         btn.style.background = isAct ? "#0D2540" : "#F8FAFC";
@@ -9868,50 +9844,49 @@
       if (summaryHeadEl && review.summaryHeading) summaryHeadEl.textContent = review.summaryHeading;
       if (titleEl) titleEl.textContent = review.title;
       if (subEl) subEl.textContent = review.subtitle;
-      if (capEl) capEl.textContent = review.caption;
       if (listEl) {
-        listEl.innerHTML = review.bullets.slice(0, 3).map(b => `<div style="padding:7px 11px; background:#FFFFFF; border:1px solid #E2E8F0; border-left:3.5px solid #0284C7; border-radius:0 10px 10px 0; color:#1E293B; font-weight:600;">${b}</div>`).join("");
+        const firstDiscovery = (review.bullets && review.bullets[0]) ? review.bullets[0] : "";
+        listEl.innerHTML = firstDiscovery
+          ? `<div style="padding:8px 12px; background:#F8FAFC; border:1px solid #E2E8F0; border-left:3px solid #1D4ED8; border-radius:10px; color:#334155; font-size:0.80rem; line-height:1.45;">${firstDiscovery}</div>`
+          : "";
       }
       if (btnTxtEl) {
         btnTxtEl.textContent = options.keepCurrentSubStep
-          ? `Cerrar Video y Continuar en Paso ${window.tbbState?.step ?? resolvedToStep}`
+          ? `Continuar en Paso ${window.tbbState?.step ?? resolvedToStep}`
           : review.ctaLabel;
       }
       if (statusPill) {
-        statusPill.textContent = resolvedToStep === 0
-          ? `Paso 0 · HeyGen + Google Flow HD`
-          : (resolvedFromStep === 6
-              ? `Cierre Paso 6 · HeyGen + Google Flow HD`
-              : `Paso ${resolvedToStep} · HeyGen + Google Flow HD`);
+        statusPill.textContent = `Paso ${resolvedToStep} · HeyGen`;
       }
-      if (progBar) progBar.style.width = "25%";
+      if (progBar) progBar.style.width = "15%";
 
       if (review.theorySpec) {
         if (theoryHeaderEl) theoryHeaderEl.textContent = review.theorySpec.headerLabel;
         if (theoryFrameworkEl) theoryFrameworkEl.textContent = review.theorySpec.frameworkBadge;
         if (theoryCardsGrid) {
           theoryCardsGrid.innerHTML = `
-            <div style="background:#F0F7FF; border:1.5px solid #FDE68A; border-radius:14px; padding:8px 12px;">
-              <div style="font-weight:900; color:#B45309; margin-bottom:2px; font-size:0.76rem;">${review.theorySpec.theoryTitle}</div>
-              <div style="color:#1E293B; font-weight:600;">${review.theorySpec.theoryBody}</div>
-            </div>
-            <div style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:14px; padding:8px 12px;">
-              <div style="font-weight:900; color:#047857; margin-bottom:2px; font-size:0.76rem;">${review.theorySpec.importanceTitle}</div>
-              <div style="color:#1E293B; font-weight:600;">${review.theorySpec.importanceBody}</div>
-            </div>
-            <div style="background:#F0F9FF; border:1.5px solid #BAE6FD; border-radius:14px; padding:8px 12px;">
-              <div style="font-weight:900; color:#0369A1; margin-bottom:2px; font-size:0.76rem;">${review.theorySpec.exampleTitle}</div>
-              <div style="color:#1E293B; font-weight:600;">${review.theorySpec.exampleBody}</div>
+            <div style="color:#1E293B; font-size:0.86rem; line-height:1.58;">
+              <div style="font-weight:700; color:#0F172A; margin-bottom:4px; font-size:0.84rem;">${review.theorySpec.theoryTitle}</div>
+              <div style="color:#475569; font-weight:400;">${review.theorySpec.theoryBody}</div>
             </div>
           `;
         }
         if (videoPlayer && videoSource) {
+          if (review.theorySpec.posterUrl) {
+            videoPlayer.setAttribute("poster", review.theorySpec.posterUrl);
+          }
           if (videoSource.getAttribute("src") !== review.theorySpec.videoUrl) {
             videoSource.setAttribute("src", review.theorySpec.videoUrl);
             videoPlayer.load();
           } else {
             try { videoPlayer.currentTime = 0; } catch (e) {}
           }
+          videoPlayer.ontimeupdate = () => {
+            if (progBar && videoPlayer.duration > 0) {
+              const pct = Math.min(100, Math.max(8, Math.round((videoPlayer.currentTime / videoPlayer.duration) * 100)));
+              progBar.style.width = `${pct}%`;
+            }
+          };
           // Silenciar TTS suelto para que el audio narrado nativo del video MP4 se escuche limpio sin encimarse
           try {
             if (typeof window.tbbStopAllAuraVoicePlayback === "function") window.tbbStopAllAuraVoicePlayback();
@@ -9927,60 +9902,10 @@
       if (typeof window.tbbApplyCurrentLanguageToDOM === "function") {
         window.tbbApplyCurrentLanguageToDOM();
       }
-
-      // Iniciar animación generativa de acompañamiento en #transitionVideoCanvas
-      transitionVideoStartTime = performance.now();
-      if (transitionVideoAnimId) cancelAnimationFrame(transitionVideoAnimId);
-      renderTransitionVideoLoop(resolvedFromStep, resolvedToStep);
     }
 
-    function renderTransitionVideoLoop(fromStep, toStep) {
-      const modal = document.getElementById("phaseTransitionVideoModal");
-      if (!modal || !modal.classList.contains("open")) return;
-      const canvas = document.getElementById("transitionVideoCanvas");
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      const w = canvas.width;
-      const h = canvas.height;
-      const elapsed = (performance.now() - transitionVideoStartTime) / 1000;
-      const pct = Math.min(100, Math.round(22 + elapsed * 24));
-
-      const progBar = document.getElementById("transitionVideoProgressBar");
-      if (progBar) progBar.style.width = `${pct}%`;
-      const statusPill = document.getElementById("transitionVideoStatusPill");
-      if (statusPill && pct >= 98) {
-        statusPill.textContent = "Reporte de Avance Completado al 100%";
-      }
-
-      // Fondo luminoso de estudio con ondas cian y esmeralda (voz de Aura)
-      const grad = ctx.createLinearGradient(0, 0, w, h);
-      grad.addColorStop(0, "#F8FAFC");
-      grad.addColorStop(0.5, "#F0F9FF");
-      grad.addColorStop(1, "#ECFDF5");
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, w, h);
-
-      // Retícula constructiva sutil
-      ctx.strokeStyle = "rgba(148, 163, 184, 0.22)";
-      ctx.lineWidth = 1;
-      for (let x = 40; x < w; x += 60) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
-      }
-
-      // Ondas sinusoidales cian y esmeralda (voz de Aura)
-      for (let layer = 0; layer < 3; layer++) {
-        ctx.beginPath();
-        ctx.strokeStyle = layer === 0 ? "rgba(2, 132, 199, 0.78)" : (layer === 1 ? "rgba(56, 189, 248, 0.65)" : "rgba(16, 185, 129, 0.65)");
-        ctx.lineWidth = 2.4 - layer * 0.4;
-        for (let x = 0; x <= w; x += 8) {
-          const y = h * 0.5 + Math.sin(x * 0.018 + elapsed * (2.4 + layer * 0.7) + layer) * (8 + layer * 3);
-          if (x === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-      }
-
-      transitionVideoAnimId = requestAnimationFrame(() => renderTransitionVideoLoop(fromStep, toStep));
+    function renderTransitionVideoLoop() {
+      // Ondas sinusoidales eliminadas para mantener una presentación limpia y enfocada en el video HeyGen
     }
 
     function finishTransitionVideoAndEnterNextStep() {
@@ -24959,6 +24884,6 @@
   <script src="/tbb-generative-brandbook-engine.js?v=93.0"></script>
   <script src="/improbears-preset-engine.js?v=93.0"></script>
   <script src="/tbb-multilingual-gemini-voice.js?v=93.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=93.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=94.0"></script>
 </body>
 </html>
