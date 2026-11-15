@@ -1282,6 +1282,23 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
             )
         }
 
+    # Caso C: Jorge pide actualizar o revisar las oportunidades y flujo de pagos de Acqua Ixtapa (Valentina Sgró) basado en el PDF ESTATUS-EJECUTIVO-VALENTINA-FASE1-FASE2.pdf
+    is_acqua_deals_cmd = (
+        any(w in low_q for w in ["acqua", "aqcua", "valentina", "sgro", "ixtapa"])
+        and any(w in low_q for w in ["oportunidad", "oportunidades", "trato", "tratos", "pago", "pagos", "pdf", "fase 1", "fase 2", "estatus", "saldo", "anticipo"])
+    )
+    if is_acqua_deals_cmd:
+        return {
+            "specialist": "Aura ImproBears • Sincronización Zoho CRM Deals (Acqua Beach Residence · PDF Valentina Sgró)",
+            "reply": (
+                "Jorge, sincronizadas en Zoho CRM las oportunidades y el calendario de pagos de Acqua Beach Residence (Valentina Sgró) conforme al PDF oficial ($54,000 MXN + IVA = Fase 1 $30,000 + Fase 2 $24,000):\n"
+                "• Anticipos Pagados al Inicio ($15,000 MXN): 1.1 Web ($7,500), 1.2 Redes ($4,500), 1.3 Brochure ($3,000).\n"
+                "• Pago Viernes 13 nov ($19,500 MXN): Liquidación 50% de 1.1 Web ($7,500 · 100% entregada) + Anticipo 50% de 2.1 GEO/SEO ($7,250) + Anticipo 50% de 2.2 Pin 5 Mapas ($4,750).\n"
+                "• Pago Viernes 20 nov ($7,500 MXN): Liquidación 50% de 1.2 Redes ($4,500 · al 70%) + Liquidación 50% de 1.3 Brochure ($3,000 · al 30%).\n"
+                "• Pago Martes 24 nov ($12,000 MXN): Liquidación 50% de 2.1 GEO/SEO ($7,250) + Liquidación 50% de 2.2 Pin 5 Mapas ($4,750). (2.3 Concierge Digital queda en $0 por separado)."
+            )
+        }
+
     zoho_live = _fetch_live_zoho_telemetry()
     wa_live = _fetch_live_openclaw_whatsapp_cloud()
     fx_live = _fetch_live_dof_fx()
@@ -1299,9 +1316,14 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
                 "REGLA ESTRICTA DE INTEGRIDAD (CERO INVENCIÓN): JAMÁS inventes montos, folios, tareas ni facturas de prueba "
                 "(prohibido inventar '$113,680 MXN', '$33,640 MXN', 'SO-ZB-2026-0891', 'GAP-CRM' o cualquier dato que no esté en la telemetría real). "
                 "JAMÁS digas que ya enviaste un correo o un WhatsApp si el usuario solo dijo 'Déjame verlo' o si el API no confirmó el envío. "
-                "Contactos reales verificados de Ingready: Miguel Ángel Mazatán Gutiérrez (mmazatan@ingready.com.mx, WhatsApp +52 442 221 5925 / +52 442 252 3834) "
+                "Contactos reales verificados de Ingready: Miguel Ángel Mazatán Gutiérrez (mmazatan@ingready.com.mx, WhatsApp +52 442 252 3834) "
                 "y Lilian Maldonado Mandujano (lmaldonado@ingready.com.mx, WhatsApp +52 442 258 5037). "
-                "Factura real creada hoy en Zoho Books para Ingready: F-00011 por $5,220.00 MXN (3.0 x $1,500.00 MXN Sesión Coaching Comercial Ilse - Ingready + 16% IVA, fecha 13 nov 2026, vence 20 nov 2026).\n"
+                "Factura real creada en Zoho Books para Ingready: F-00011 por $5,220.00 MXN (3.0 x $1,500.00 MXN Sesión Coaching Comercial Ilse - Ingready + 16% IVA, fecha 13 nov 2026, vence 20 nov 2026).\n"
+                "Estatus oficial de Oportunidades y Pagos de Acqua Beach Residence (Valentina Sgró · PDF ESTATUS-EJECUTIVO-VALENTINA-FASE1-FASE2.pdf): "
+                "Total Fase 1 ($30,000) + Fase 2 ($24,000) = $54,000 MXN (+IVA). Anticipos pagados al inicio: $15,000 MXN (1.1 Web $7,500, 1.2 Redes $4,500, 1.3 Brochure $3,000). "
+                "Saldo Vie 13 nov: $19,500 MXN (50% final 1.1 Web $7,500 + 50% anticipo 2.1 GEO/SEO $7,250 + 50% anticipo 2.2 Pin 5 Mapas $4,750). "
+                "Saldo Vie 20 nov: $7,500 MXN (50% final 1.2 Redes $4,500 + 50% final 1.3 Brochure $3,000). "
+                "Saldo Mar 24 nov: $12,000 MXN (50% final 2.1 GEO/SEO $7,250 + 50% final 2.2 Pin 5 Mapas $4,750). 2.3 Concierge Digital se cotiza por separado ($0).\n"
                 f"- Telemetría Zoho One en vivo (Books + CRM Deals/Tasks/Contacts): {zoho_str}\n"
                 f"- Nodo Cloud WhatsApp (+52 442 181 2822 / 34.121.182.185:4747): {wa_str}\n"
                 f"- Tipo de cambio en vivo (Acqua Ixtapa USD/MXN): {fx_str}\n"
