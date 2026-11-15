@@ -2188,8 +2188,8 @@
           <div style="width:100%; max-width:1160px; border-radius:26px; overflow:hidden; background:#F8FAFC; border:1px solid #CBD5E1; box-shadow:0 28px 75px rgba(15,23,42,0.10); position:relative;">
             <video
               id="tbbHeroConvergenceVideoPlayer"
-              src="/assets/videos/hero_convergence_thebestbrand.mp4?v=93.0"
-              poster="/assets/videos/poster_hero_convergence.jpg?v=93.0"
+              src="https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@653f949/apps/web/assets/videos/hero_convergence_thebestbrand.mp4"
+              poster="https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@653f949/apps/web/assets/videos/poster_hero_convergence.jpg"
               autoplay
               muted
               loop
@@ -2317,7 +2317,7 @@
 
           <!-- Comparativa Interactiva Antes / Después (ARCO Ingeniería + The Best Brand Liquid Glass) -->
           <div class="tbb-comm-grid-2" style="gap:28px; align-items:stretch;">
-            <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:24px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; gap:16px; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(14, '/assets/app_captures/step5_arco_despues_nanobanana.png', 'ARCO Ingeniería · Evolución Nano Banana Pro 4K + Bézier')">
+            <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:24px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; gap:16px; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(14, 'https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@653f949/apps/web/assets/app_captures/step5_arco_despues_nanobanana.png', 'ARCO Ingeniería · Evolución Nano Banana Pro 4K + Bézier')">
               <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
                 <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#1D4ED8; background:#EFF6FF; padding:4px 10px; border-radius:999px;">CASO REAL 01 · REDISEÑO INDUSTRIAL</span>
                 <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:#EA580C;">10 ITERACIONES NANO BANANA PRO</span>
@@ -2338,7 +2338,7 @@
               </div>
             </div>
 
-            <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:24px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; gap:16px; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(13, '/assets/app_captures/step5_tbb_liquid_glass.png', 'The Best Brand · 6 Iteraciones Apple Liquid Glass + Vector Bézier')">
+            <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:24px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; gap:16px; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(13, 'https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@653f949/apps/web/assets/app_captures/step5_tbb_liquid_glass.png', 'The Best Brand · 6 Iteraciones Apple Liquid Glass + Vector Bézier')">
               <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
                 <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#EA580C; background:#FFF7ED; padding:4px 10px; border-radius:999px;">CASO REAL 02 · APPLE LIQUID GLASS 4K</span>
                 <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:#1D4ED8;">6 ITERACIONES + CURVAS BÉZIER</span>
@@ -2362,9 +2362,9 @@
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
             ${[
               { img: "/assets/logos/tbb_official_liquid_glass_logo.jpg", name: "The Best Brand · Aura Liquid Glass", tag: "SaaS IA · 36 Láminas" },
-              { img: "/assets/logos/improbears_oficial_positivo.png", name: "ImproBears · Marca Madre + 4 Submarcas", tag: "Arquitectura Homologada" },
-              { img: "/assets/showcase/logo_coffee.jpg", name: "Kanso Roasters · Specialty Coffee", tag: "Síntesis Kansei Minimalista" },
-              { img: "/assets/showcase/logo_fintech.jpg", name: "Vortex Pay · Wealth & Fintech", tag: "Geometría Vectorial Precisa" }
+              { img: "https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@653f949/apps/web/assets/logos/improbears_oficial_positivo.png", name: "ImproBears · Marca Madre + 4 Submarcas", tag: "Arquitectura Homologada" },
+              { img: "https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@653f949/apps/web/assets/showcase/logo_coffee.jpg", name: "Kanso Roasters · Specialty Coffee", tag: "Síntesis Kansei Minimalista" },
+              { img: "https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@653f949/apps/web/assets/showcase/logo_fintech.jpg", name: "Vortex Pay · Wealth & Fintech", tag: "Geometría Vectorial Precisa" }
             ].map(card => `
               <div onclick="window.tbbOpenPlateLightboxModal(13, '${card.img}', '${escHtml(card.name)}')" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:18px; padding:16px; display:flex; align-items:center; gap:14px; cursor:pointer;">
                 <img src="${card.img}" alt="${escHtml(card.name)}" style="width:62px; height:62px; object-fit:contain; border-radius:14px; background:#F8FAFC; padding:4px; flex-shrink:0;" />
