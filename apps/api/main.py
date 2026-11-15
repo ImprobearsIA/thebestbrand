@@ -198,6 +198,7 @@ def _read_web_file_with_github_sync(rel_path: str) -> str:
 def force_sync_from_github():
     """Pulls latest origin/main on disk and clears edge web cache."""
     import subprocess
+    import time as _time
     _EDGE_WEB_CACHE.clear()
     repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
     git_out = ""
