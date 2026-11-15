@@ -930,6 +930,13 @@
     return resolveVideoAsset(`/assets/videos/poster_hero_convergence${sfx}.jpg`);
   }
 
+  function getLocalizedAppCaptureUrl(relPath, langOverride) {
+    const l = String(langOverride || getLang() || "es").toLowerCase().trim();
+    const sfx = (l && l !== "es" && ["en", "fr", "pt", "de", "it"].includes(l)) ? `_${l}` : "";
+    const localizedRel = sfx ? String(relPath).replace(/\.png$/i, `${sfx}.png`) : relPath;
+    return resolveVideoAsset(localizedRel);
+  }
+
   function stepLabelForLang(stepNum, isIntro) {
     const l = getLang();
     const map = {
@@ -961,7 +968,7 @@
       step: 0,
       get url() { return getLocalizedStepVideoUrl(0); },
       get poster() { return getLocalizedStepPosterUrl(0); },
-      popupCapture: "/assets/app_captures/popup_video_paso_0_a_1.png",
+      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_0_a_1.png"); },
       duration: "00:54",
       author: "Jorge Benítez (HeyGen) + Google Flow · David Aaker, Peter Drucker & Sagi Haviv",
       exactScript: "Hola, soy Jorge Benítez. Como afirma Peter Drucker, la mejor forma de predecir el futuro es creándolo. En el Paso cero eliges si construyes tu marca desde cero, evolucionas la actual o creas una sub-marca. Si ya tienes nombre y logotipo, David Aaker y Sagi Haviv recomiendan proteger tu capital visual. Aquí puedes conservar tu logo intacto, pedir sugerencias o evolucionarlo con inteligencia artificial. Siguiendo a Al Ries y Jack Trout en Posicionamiento, cuando describes tu giro con claridad en el tercer sub-paso, el sistema adapta automáticamente tus preguntas, puntos de contacto y propuestas. Y con el esquema Brand Relationship Spectrum de David Aaker, defines desde hoy si tu empresa operará como marca única o si tendrá sub-marcas listas para crecer.",
@@ -978,7 +985,7 @@
       step: 1,
       get url() { return getLocalizedStepVideoUrl(1); },
       get poster() { return getLocalizedStepPosterUrl(1); },
-      popupCapture: "/assets/app_captures/popup_video_paso_0_a_1.png",
+      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_0_a_1.png"); },
       duration: "00:48",
       author: "Jorge Benítez (HeyGen) + Google Flow · Simon Sinek, Jim Collins & Donald Miller",
       exactScript: "Bienvenido al Paso uno. Como demostró Jim Collins en Empresas que Sobresalen, toda marca duradera nace de cimientos estratégicos claros antes de diseñar su identidad visual. La teoría del Círculo Dorado de Simon Sinek enseña que la gente no compra lo que haces, sino el porqué lo haces. En los primeros sub-pasos descubrirás tu propósito nuclear. Combinamos el Lienzo de Propuesta de Valor de Alex Osterwalder con el método StoryBrand de Donald Miller: al explicar tu proceso en tres pasos claros, tu cliente confía sin dudar. Finalmente, con los arquetipos de Carl Jung y la escala de Jennifer Aaker, definimos la personalidad humana de tu marca y el perfil exacto de tu cliente ideal.",
@@ -995,7 +1002,7 @@
       step: 2,
       get url() { return getLocalizedStepVideoUrl(2); },
       get poster() { return getLocalizedStepPosterUrl(2); },
-      popupCapture: "/assets/app_captures/popup_video_paso_1_a_2.png",
+      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_1_a_2.png"); },
       duration: "00:47",
       author: "Jorge Benítez (HeyGen) + Google Flow · Jan Carlzon, Lemon/Verhoef & Don Norman",
       exactScript: "Excelente avance en el Paso uno. Como enseñó Jan Carlzon en los Momentos de la Verdad, cada contacto de quince segundos con tu cliente define si confía en tu marca. Según Katherine Lemon y Peter Verhoef en Journal of Marketing, toda experiencia se divide en tres etapas: cómo te descubren Antes, cómo entregas valor Durante, y cómo fidelizas Después. Don Norman explica en el Diseño de las Cosas Cotidianas que el diseño excelente elimina la fricción. Aquí elegirás los puntos de contacto clave de tu negocio en tres clics. Al terminar el Paso dos, el sistema vinculará tus canales reales con los entregables y fotografías de tu manual para que tu marca viva en cada interacción.",
@@ -1012,7 +1019,7 @@
       step: 3,
       get url() { return getLocalizedStepVideoUrl(3); },
       get poster() { return getLocalizedStepPosterUrl(3); },
-      popupCapture: "/assets/app_captures/popup_video_paso_2_a_3.png",
+      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_2_a_3.png"); },
       duration: "00:45",
       author: "Jorge Benítez (HeyGen) + Google Flow · Alexandra Watkins, David Placek & Alina Wheeler",
       exactScript: "Ya tienes el mapa de experiencia de tu cliente. Como afirma Wally Olins, el nombre es el primer activo verbal que pronunciarán tus clientes en cada canal. Aplicamos el modelo SMILE de Alexandra Watkins y el simbolismo fonético de David Placek, creador de Lexicon Branding: buscamos un nombre de dos a tres sílabas, fácil de recordar y con iniciales potentes. Siguiendo a Alina Wheeler en Designing Brand Identity, acompañamos tu nombre oficial con un descriptor claro y un eslogan que comunique tu promesa en tres segundos. Y para blindar tu patrimonio, el Paso tres verifica automáticamente las clases internacionales de Niza para el registro legal de tu marca ante la autoridad.",
@@ -1029,7 +1036,7 @@
       step: 4,
       get url() { return getLocalizedStepVideoUrl(4); },
       get poster() { return getLocalizedStepPosterUrl(4); },
-      popupCapture: "/assets/app_captures/popup_video_paso_3_a_4.png",
+      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_3_a_4.png"); },
       duration: "00:51",
       author: "Jorge Benítez (HeyGen) + Google Flow · Mitsuo Nagamachi, Osgood & R. Bringhurst",
       exactScript: "Con tu nombre oficial listo, entramos al Paso cuatro. El profesor Mitsuo Nagamachi creó la Ingeniería Kansei para traducir sentimientos humanos en parámetros de diseño exactos. Como demostraron Ramachandran y Charles Osgood con el diferencial semántico, nuestro cerebro asocia curvas suaves con cercanía humana y ángulos rectos con precisión técnica. Robert Bringhurst afirma que la tipografía es el lenguaje hecho visible. Por eso elegirás tu fuente por estilo visual y recibirás el paquete instalable para tu equipo. Finalmente, con la taxonomía de Per Mollerup y Wheeler, eliges la estructura de tu marca: logotipo con símbolo integrado, monograma de iniciales o emblema.",
@@ -1046,7 +1053,7 @@
       step: 5,
       get url() { return getLocalizedStepVideoUrl(5); },
       get poster() { return getLocalizedStepPosterUrl(5); },
-      popupCapture: "/assets/app_captures/popup_video_paso_4_a_5.png",
+      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_4_a_5.png"); },
       duration: "00:54",
       author: "Jorge Benítez (HeyGen) + Google Flow · Paul Rand, Sagi Haviv & Jony Ive",
       exactScript: "Bienvenido al Paso cinco. Como enseñó el legendario Paul Rand, un logotipo extraordinario combina simplicidad geométrica y recordación inmediata, potenciado por la armonía cromática de Josef Albers. Si subiste tu logotipo actual, seguimos la máxima de Sagi Haviv en Chermayeff & Geismar: respetar la esencia reconocible mientras perfeccionamos sus trazos y acabados. Inspirados en el rigor industrial de Jony Ive, visualizas al mismo tiempo tu logotipo completo y su ícono cuadrado uno a uno sobre fondo claro y oscuro. Puedes iterar con el motor visual de inteligencia artificial, refinar detalles en tiempo real y aprobar la versión maestra que se compilará en curvas vectoriales puras.",
@@ -1063,7 +1070,7 @@
       step: 6,
       get url() { return getLocalizedStepVideoUrl(6); },
       get poster() { return getLocalizedStepPosterUrl(6); },
-      popupCapture: "/assets/app_captures/popup_video_paso_5_a_6.png",
+      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_5_a_6.png"); },
       duration: "00:52",
       author: "Jorge Benítez (HeyGen) + Google Flow · Massimo Vignelli & Josef Müller-Brockmann",
       exactScript: "Felicidades por llegar al Paso seis. Como estableció Massimo Vignelli en su Canon, un manual de identidad es la constitución que protege la coherencia de tu marca en todo momento. Aplicamos los sistemas de retículas de Josef Müller-Brockmann y la Guía Oficial C-Cero-Cero de ImproBears: láminas en curvas abiertas sobre lienzo claro, siguiendo exactamente los colores de tu logotipo. Tu manual incluye la terna oficial de tu marca, pruebas de legibilidad, códigos de color para imprenta y pantalla, y fotografías de aplicación en el mundo real. Desde la Bóveda descargas tus nueve entregables oficiales: Manual en PDF y Web, vectores editables, firma de correo, plantillas de Word y PowerPoint y tu kit de fuentes.",
@@ -1083,8 +1090,8 @@
       id: "step0_1",
       type: "step",
       badge: "PASO 0.1 · PUNTO DE PARTIDA",
-      img: "/assets/app_captures/tour_step0_1_objetivo.png",
-      secondaryImg: "/assets/app_captures/step0_logo_aura.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step0_1_objetivo.png"); },
+      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/step0_logo_aura.png"); },
       i18n: {
         es: { badge: "PASO 0.1 · PUNTO DE PARTIDA", title: "Eliges tu objetivo y conversas con Aura", desc: "Desde el primer segundo, la interfaz limpia te permite elegir si crearás una marca desde cero o evolucionarás tu logotipo actual, acompañado por el orbe líquido 3D de Aura en tiempo real." },
         en: { badge: "STEP 0.1 · STARTING POINT", title: "Choose your goal and talk with Aura", desc: "From the very first second, a clean interface lets you choose whether to build a brand from scratch or evolve your existing logo, guided by Aura's live 3D Liquid Glass orb." },
@@ -1098,8 +1105,8 @@
       id: "step0_3",
       type: "step",
       badge: "PASO 0.3 · GIRO Y ARQUITECTURA",
-      img: "/assets/app_captures/tour_step0_3_giro.png",
-      secondaryImg: "/assets/app_captures/step0_logo_aura.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step0_3_giro.png"); },
+      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/step0_logo_aura.png"); },
       i18n: {
         es: { badge: "PASO 0.3 · GIRO Y ARQUITECTURA", title: "Defines tu giro empresarial por voz o texto", desc: "Describes con tus propias palabras qué hace tu empresa. El motor comprende el contexto industrial y configura si tu marca será monolítica o con submarcas." },
         en: { badge: "STEP 0.3 · SECTOR & ARCHITECTURE", title: "Define your business sector by voice or text", desc: "Describe what your company does in your own words. The engine understands your industry context and configures a monolithic or multi-brand architecture." },
@@ -1113,7 +1120,7 @@
       id: "popup_0_1",
       type: "video_popup",
       badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 0 A PASO 1",
-      img: "/assets/app_captures/popup_video_paso_0_a_1.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_0_a_1.png"); },
       videoIdx: 1,
       i18n: {
         es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 0 A PASO 1", title: "Cápsula emergente: El Círculo Dorado antes del Paso 1", desc: "Al avanzar de etapa, la aplicación despliega un pop-up cinematográfico 9:16 con el fundador en HeyGen y B-Roll Google Flow que te explica cómo definir el Porqué de tu empresa." },
@@ -1128,8 +1135,8 @@
       id: "step1_main",
       type: "step",
       badge: "PASO 1 · ADN Y CÍRCULO DORADO",
-      img: "/assets/app_captures/step1_proposito_sinek.png",
-      secondaryImg: "/assets/app_captures/tour_step1_6_persona.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step1_proposito_sinek.png"); },
+      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step1_6_persona.png"); },
       i18n: {
         es: { badge: "PASO 1 · ADN Y CÍRCULO DORADO", title: "Estructuras tu Propósito, Método, Promesa y Personalidad", desc: "Guiado por preguntas claras y corrección ortográfica/ejecutiva en un clic, defines el corazón filosófico de tu marca y su arquetipo humano." },
         en: { badge: "STEP 1 · BRAND DNA & GOLDEN CIRCLE", title: "Structure your Purpose, Method, Promise & Brand Persona", desc: "Guided by clear prompts and 1-click executive copy refinement, you define the philosophical core and human persona of your brand." },
@@ -1143,7 +1150,7 @@
       id: "popup_1_2",
       type: "video_popup",
       badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 1 A PASO 2",
-      img: "/assets/app_captures/popup_video_paso_1_a_2.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_1_a_2.png"); },
       videoIdx: 2,
       i18n: {
         es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 1 A PASO 2", title: "Cápsula emergente: Momentos de la Verdad (Jan Carlzon)", desc: "Antes de mapear la experiencia de tu cliente, la cápsula de video te muestra cómo los primeros 15 segundos de contacto determinan la lealtad hacia tu marca." },
@@ -1158,8 +1165,8 @@
       id: "step2_main",
       type: "step",
       badge: "PASO 2 · TOUCHPOINTS ANTES, DURANTE Y DESPUÉS",
-      img: "/assets/app_captures/step2_touchpoints_carlzon.png",
-      secondaryImg: "/assets/app_captures/tour_step2_2_durante.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step2_touchpoints_carlzon.png"); },
+      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step2_2_durante.png"); },
       i18n: {
         es: { badge: "PASO 2 · TOUCHPOINTS ANTES, DURANTE Y DESPUÉS", title: "Seleccionas los puntos de contacto clave de tu negocio", desc: "Eliges y personalizas cómo te descubren tus clientes (Antes), cómo viven tu servicio (Durante) y cómo aseguras que regresen y te recomienden (Después)." },
         en: { badge: "STEP 2 · BEFORE, DURING & AFTER TOUCHPOINTS", title: "Select the key touchpoints of your business", desc: "Choose and customize how customers discover you (Before), experience your service (During), and stay loyal (After)." },
@@ -1173,7 +1180,7 @@
       id: "popup_2_3",
       type: "video_popup",
       badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 2 A PASO 3",
-      img: "/assets/app_captures/popup_video_paso_2_a_3.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_2_a_3.png"); },
       videoIdx: 3,
       i18n: {
         es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 2 A PASO 3", title: "Cápsula emergente: Naming Estratégico y Posicionamiento", desc: "El pop-up de video introduce las leyes de posicionamiento de Al Ries & Jack Trout y la fonética comercial SMILE antes de bautizar o confirmar el nombre de tu marca." },
@@ -1188,8 +1195,8 @@
       id: "step3_main",
       type: "step",
       badge: "PASO 3 · NAMING, ESLOGAN Y CLASES DE NIZA",
-      img: "/assets/app_captures/step3_naming_niza.png",
-      secondaryImg: "/assets/app_captures/tour_step3_2_naming.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step3_naming_niza.png"); },
+      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step3_2_naming.png"); },
       i18n: {
         es: { badge: "PASO 3 · NAMING, ESLOGAN Y CLASES DE NIZA", title: "Confirmas tu Nombre, Eslogan y Clasificación Legal de Niza", desc: "Exploras propuestas de naming o validas tu nombre actual junto con su eslogan y las Clases Internacionales de Niza exactas para proteger tu marca ante IMPI, USPTO o EUIPO." },
         en: { badge: "STEP 3 · NAMING, TAGLINE & NICE CLASSES", title: "Confirm your Name, Tagline & Legal Nice Classification", desc: "Explore naming proposals or validate your current name, tagline, and exact International Nice Classes for trademark registration." },
@@ -1203,7 +1210,7 @@
       id: "popup_3_4",
       type: "video_popup",
       badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 3 A PASO 4",
-      img: "/assets/app_captures/popup_video_paso_3_a_4.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_3_a_4.png"); },
       videoIdx: 4,
       i18n: {
         es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 3 A PASO 4", title: "Cápsula emergente: Ingeniería Kansei y Psicología de la Forma", desc: "Descubre en video cómo la metodología japonesa Kansei traduce tus valores estratégicos en peso tipográfico, curvatura y carácter visual." },
@@ -1218,8 +1225,8 @@
       id: "step4_main",
       type: "step",
       badge: "PASO 4 · BRÚJULA KANSEI Y TIPOGRAFÍA HÍBRIDA",
-      img: "/assets/app_captures/step4_kansei_tipografia.png",
-      secondaryImg: "/assets/app_captures/tour_step4_1_kansei.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step4_kansei_tipografia.png"); },
+      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step4_1_kansei.png"); },
       i18n: {
         es: { badge: "PASO 4 · BRÚJULA KANSEI Y TIPOGRAFÍA HÍBRIDA", title: "Calibras tus ejes sensoriales y eliges tus fuentes oficiales", desc: "Ajustas los deslizadores Kansei y seleccionas tu arquitectura tipográfica (Primaria, Secundaria y Monoespaciada) con empaquetado automático .TTF en archivo .ZIP." },
         en: { badge: "STEP 4 · KANSEI COMPASS & HYBRID TYPOGRAPHY", title: "Calibrate sensory axes and select your official fonts", desc: "Adjust the Kansei sliders and choose your typographic hierarchy (Primary, Secondary, Monospace) with automatic .TTF font bundling in a .ZIP kit." },
@@ -1233,7 +1240,7 @@
       id: "popup_4_5",
       type: "video_popup",
       badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 4 A PASO 5",
-      img: "/assets/app_captures/popup_video_paso_4_a_5.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_4_a_5.png"); },
       videoIdx: 5,
       i18n: {
         es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 4 A PASO 5", title: "Cápsula emergente: Síntesis Vectorial Nano Banana Pro y Colorimetría", desc: "El video explica cómo la simplicidad geométrica de Paul Rand y Jony Ive permite que un símbolo funcione desde el ícono de una app hasta la fachada de un edificio." },
@@ -1248,8 +1255,8 @@
       id: "step5_main",
       type: "step",
       badge: "PASO 5 · TALLER DE LOGOTIPO NANO BANANA PRO Y LIQUID GLASS",
-      img: "/assets/app_captures/step5_taller_logo_liquid_glass.png",
-      secondaryImg: "/assets/app_captures/tour_step5_2_iter6_claro.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step5_taller_logo_liquid_glass.png"); },
+      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step5_2_iter6_claro.png"); },
       i18n: {
         es: { badge: "PASO 5 · TALLER DE LOGOTIPO NANO BANANA PRO Y LIQUID GLASS", title: "Evolucionas con Nano Banana Pro y apruebas tu Logotipo en Curvas", desc: "Visualizas tus iteraciones sobre lienzo claro (#FFFFFF) y soporte oscuro (#090D16), ajustas tu paleta HEX/CMYK/Pantone y bloqueas la versión maestra en vectores matemáticos." },
         en: { badge: "STEP 5 · NANO BANANA PRO & LIQUID GLASS LOGO ATELIER", title: "Evolve with Nano Banana Pro and approve your Official Vector Logo", desc: "Preview iterations on light (#FFFFFF) and dark (#090D16) canvases, fine-tune your HEX/CMYK/Pantone palette, and lock in your master vector emblem." },
@@ -1263,7 +1270,7 @@
       id: "popup_5_6",
       type: "video_popup",
       badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 5 A PASO 6",
-      img: "/assets/app_captures/popup_video_paso_5_a_6.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_5_a_6.png"); },
       videoIdx: 6,
       i18n: {
         es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 5 A PASO 6", title: "Cápsula emergente: La Bóveda del Manual de 36 Láminas", desc: "Última cápsula antes de entrar a tu bóveda: cómo usar tu Manual de Identidad y tus 9 entregables con imprentas, diseñadores y equipo comercial." },
@@ -1278,7 +1285,7 @@
       id: "step6_1",
       type: "step",
       badge: "PASO 6.1 · VISOR EN VIVO DE LAS 36 LÁMINAS",
-      img: "/assets/app_captures/step6_visor_36_laminas.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step6_visor_36_laminas.png"); },
       secondaryImg: "/assets/brandbook_plates_tbb/plate-01.jpg",
       i18n: {
         es: { badge: "PASO 6.1 · VISOR EN VIVO DE LAS 36 LÁMINAS", title: "Inspeccionas tu Manual Oficial de 36 Láminas hoja por hoja", desc: "Recorres las 36 láminas compiladas en tiempo real: portada monolítica, índice rector, Círculo Dorado, Touchpoints, retícula del logo, paleta industrial y mockups fotográficos 4:3." },
@@ -1293,7 +1300,7 @@
       id: "step6_2_deliverables",
       type: "deliverables_finale",
       badge: "PASO 6.2 Y 6.3 · DESCARGA DE LOS 9 ENTREGABLES OFICIALES",
-      img: "/assets/app_captures/step6_boveda_entregables.png",
+      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step6_boveda_entregables.png"); },
       secondaryImg: "/assets/app_captures/step6_firma_correo_html.png",
       i18n: {
         es: { badge: "PASO 6.2 Y 6.3 · DESCARGA DE LOS 9 ENTREGABLES OFICIALES", title: "Descargas tus 9 Entregables Oficiales listos para operar", desc: "Al final del recorrido descargas en un clic tu Manual PDF de 36 Láminas, Visor Web HTML, Logotipo Horizontal SVG, Maestro Illustrator .AI, Isotipo 1024px, Firma de Correo HTML, Hoja Membretada Word .DOCX, Presentación PowerPoint .PPTX y Kit de Fuentes .ZIP." },
@@ -3034,8 +3041,8 @@
             </button>
           </div>
 
-          <div style="width:100%; position:relative; border-radius:24px; overflow:hidden; box-shadow:0 24px 64px rgba(15,23,42,0.10); border:1px solid #E2E8F0; background:#FFFFFF; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(1, '${isManual ? '/assets/brandbook_plates_tbb/plate-01.jpg' : '/assets/app_captures/step0_logo_aura.png'}', '${escHtml(step0Loc.title)}')">
-            <img src="${isManual ? '/assets/brandbook_plates_tbb/plate-01.jpg' : '/assets/app_captures/step0_logo_aura.png'}" alt="The Best Brand Showcase" style="width:100%; height:auto; display:block;" />
+          <div style="width:100%; position:relative; border-radius:24px; overflow:hidden; box-shadow:0 24px 64px rgba(15,23,42,0.10); border:1px solid #E2E8F0; background:#FFFFFF; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(1, '${isManual ? '/assets/brandbook_plates_tbb/plate-01.jpg' : getLocalizedAppCaptureUrl('/assets/app_captures/step0_logo_aura.png')}', '${escHtml(step0Loc.title)}')">
+            <img src="${isManual ? '/assets/brandbook_plates_tbb/plate-01.jpg' : getLocalizedAppCaptureUrl('/assets/app_captures/step0_logo_aura.png')}" alt="The Best Brand Showcase" style="width:100%; height:auto; display:block;" />
             <div style="position:absolute; top:18px; left:18px; background:rgba(255,255,255,0.94); backdrop-filter:blur(10px); padding:8px 16px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#0F172A; box-shadow:0 8px 24px rgba(15,23,42,0.12);">
               ${isManual ? escHtml(chapI18n.badgePlate1) : escHtml(step0Loc.title)} · (${lang.toUpperCase()})
             </div>
@@ -3949,6 +3956,7 @@
     const clean = String(langCode || "es").toLowerCase().trim();
     try {
       localStorage.setItem(LANG_STORAGE_KEY, clean);
+      localStorage.setItem("tbb_app_lang", clean);
       document.documentElement.lang = clean;
     } catch (e) {}
     if (typeof window.tbbSetApplicationLanguage === "function") {
