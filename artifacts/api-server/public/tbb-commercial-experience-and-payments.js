@@ -903,7 +903,7 @@
   function resolveVideoAsset(relPath) {
     const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
     if (isLocal) return `${relPath}?v=95.0`;
-    return `https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@47252ad/apps/web${relPath}`;
+    return `https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@4bd8584/apps/web${relPath}`;
   }
 
   function getLocalizedStepVideoUrl(stepNum, langOverride) {
