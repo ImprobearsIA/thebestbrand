@@ -18,7 +18,11 @@ from PIL import Image, ImageDraw, ImageFont
 from generate_vertical_broll_videos import (
     WORKSPACE_ROOT,
     VIDEOS_OUT_DIR,
+    API_VIDEOS_OUT_DIR,
     STEP_VIDEO_SOURCES,
+    STEP_APP_CAPTURES,
+    resolve_localized_capture_path,
+    build_transparent_hud_overlay,
     build_dynamic_heygen_flow_clip,
     get_duration,
 )
@@ -27,7 +31,7 @@ LOGOS_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "logos"
 CAPTURES_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "app_captures"
 PLATES_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "brandbook_plates_tbb"
 FONTS_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "fonts"
-TMP_MULTI_DIR = Path("/tmp/tbb_multilingual_videos_v97")
+TMP_MULTI_DIR = Path("/tmp/tbb_multilingual_videos_v99")
 TMP_MULTI_DIR.mkdir(parents=True, exist_ok=True)
 
 FONT_BOLD = str(FONTS_DIR / "Montserrat-Black.ttf")
@@ -68,12 +72,14 @@ MULTILINGUAL_SCENES = {
         3: [
             ("Positioning Starts with the Name", "Al Ries & Jack Trout · Positioning (1981)", "Welcome to Step 3. Al Ries and Jack Trout demonstrated that positioning happens in the customer's mind, and your name is the first anchor."),
             ("Semantic Roots & The SMILE Method", "Alexandra Watkins · Memorable Naming", "Using Alexandra Watkins' SMILE methodology, we explore semantic roots and generate phonetic, memorable, and easy-to-pronounce options."),
-            ("WIPO Nice Classification & Tagline", "45 Official Classes · Trademark Protection", "Additionally, we analyze the 45 official Nice classes to guide your trademark registration and seal your commercial tagline.")
+            ("WIPO Nice Classification & Tagline", "45 Official Classes · Trademark Protection", "Additionally, we analyze the 45 official Nice classes to guide your trademark registration and seal your commercial tagline."),
+            ("Case Study: Stripe, Notion & Rolex", "Short Names with Clean 1:1 Monograms", "Think of Rolex or Stripe: concise names whose initials project an unmistakable monogram on any screen or facade. Let's confirm your brand name.")
         ],
         4: [
             ("Translating Your Strategy into Visual Parameters", "Mitsuo Nagamachi · Emotional Geometry", "Before generating your logo, in Step 4 we apply Mitsuo Nagamachi's Kansei Engineering and Charles Osgood's Semantic Differential."),
             ("The 7 Visual & Emotional Axes", "Calibrating Tension, Weight & Geometry", "Instead of guessing styles, you calibrate seven visual axes: from classic to disruptive, from organic to geometric, and from sober to vibrant."),
-            ("Typographic Pairing & Optical Structure", "Robert Bringhurst & Adrian Frutiger", "With those vectors, we select your headline and body font pairing, logo layout structure, and conceptual symbol seed.")
+            ("Typographic Pairing & Optical Structure", "Robert Bringhurst & Adrian Frutiger", "With those vectors, we select your headline and body font pairing, logo layout structure, and conceptual symbol seed."),
+            ("Case Study: Airbnb vs. Tesla", "Coherence Between Personality & Stroke", "Notice how Airbnb uses organic curves to evoke belonging, while Tesla uses sharp engineering angles. Calibrate your visual character now.")
         ],
         5: [
             ("Simplicity, Memorability, and Versatility", "Paul Rand & Sagi Haviv · Logo Design", "We arrive at Step 5: the Logo Studio. Following Paul Rand and Sagi Haviv, a great symbol must be simple, memorable, and versatile at any scale."),
@@ -84,6 +90,7 @@ MULTILINGUAL_SCENES = {
         6: [
             ("36 Horizontal Plates Connected End to End", "Massimo Vignelli · 36 Vector Plates", "Congratulations! In Step 6, your entire journey is compiled under Massimo Vignelli's editorial canon and Directive C-00."),
             ("Strict Governance: Rule 1 & Rule 2", "100% Light Canvas & Positive/Negative Logos", "Review your 36-plate horizontal Brandbook: Golden Circle, Touchpoints, Kansei, Color, Typography, Sub-brands, and Photorealistic Mockups."),
+            ("Complete Architecture: Philosophy to Print", "Danne & Blackburn (NASA) & Alina Wheeler", "Like NASA's legendary manual, your plates cover everything from strategic essence and geometry to stationery, uniforms, and digital signature."),
             ("Download Your 9 Official Deliverables", "Brandbook .PDF/.HTML + .SVG/.AI + Office + Fonts", "In the Deliverables Vault, download your 9 ready-to-use files: PDF and HTML Brandbook, vector logos, Word, PowerPoint, email signature, and fonts.")
         ],
     },
@@ -109,12 +116,14 @@ MULTILINGUAL_SCENES = {
         3: [
             ("Le Positionnement Commence par le Nom", "Al Ries & Jack Trout · Positioning (1981)", "Bienvenue à l'Étape 3. Al Ries et Jack Trout ont prouvé que le positionnement naît dans l'esprit du client, dès le nom de marque."),
             ("Racines Sémantiques et Méthode SMILE", "Alexandra Watkins · Naming Mémorable", "Avec la méthode SMILE d'Alexandra Watkins, nous explorons des racines sémantiques et créons des noms mémorables et faciles à prononcer."),
-            ("Classification de Nice OMPI et Slogan", "45 Classes Officielles · Protection Juridique", "Nous analysons également les 45 classes officielles de Nice pour orienter votre dépôt de marque et valider votre slogan.")
+            ("Classification de Nice OMPI et Slogan", "45 Classes Officielles · Protection Juridique", "Nous analysons également les 45 classes officielles de Nice pour orienter votre dépôt de marque et valider votre slogan."),
+            ("Exemple Réel : Stripe, Notion et Rolex", "Noms Courts et Monogrammes 1:1", "Pensez à Rolex ou Stripe : des noms concis dont les initiales forment un monogramme parfait sur tout écran ou façade.")
         ],
         4: [
             ("Traduire la Stratégie en Paramètres Visuels", "Mitsuo Nagamachi · Géométrie Émotionnelle", "Avant de dessiner le logo, l'Étape 4 applique l'Ingénierie Kansei de Mitsuo Nagamachi et le Différentiel Sémantique d'Osgood."),
             ("Les 7 Axes Visuels et Émotionnels", "Calibrer Tension, Poids et Géométrie", "Au lieu de deviner, vous calibrez sept axes visuels : du classique au disruptif, de l'organique au géométrique, du sobre au vibrant."),
-            ("Duo Typographique et Structure Optique", "Robert Bringhurst & Adrian Frutiger", "Avec ces vecteurs, nous sélectionnons vos polices de titres et de corps ainsi que la structure optique de votre symbole.")
+            ("Duo Typographique et Structure Optique", "Robert Bringhurst & Adrian Frutiger", "Avec ces vecteurs, nous sélectionnons vos polices de titres et de corps ainsi que la structure optique de votre symbole."),
+            ("Exemple Réel : Airbnb vs. Tesla", "Cohérence entre Personnalité et Tracé", "Voyez comment Airbnb utilise des courbes organiques chaleureuses tandis que Tesla adopte des angles d'ingénierie précis.")
         ],
         5: [
             ("Simplicité, Mémorabilité et Polyvalence", "Paul Rand & Sagi Haviv · Design de Logo", "Voici l'Étape 5 : le Studio Logo. Selon Paul Rand et Sagi Haviv, un grand symbole doit être simple, mémorable et polyvalent."),
@@ -125,6 +134,7 @@ MULTILINGUAL_SCENES = {
         6: [
             ("36 Planches Horizontales Connectées de Bout en Bout", "Massimo Vignelli · 36 Planches Vectorielles", "Félicitations ! À l'Étape 6, tout votre parcours est assemblé selon le canon éditorial de Massimo Vignelli et la Directive C-00."),
             ("Gouvernance Stricte : Règle 1 et Règle 2", "Toile 100% Claire et Logos Positif/Négatif", "Parcourez votre Brandbook de 36 planches : Cercle d'Or, Touchpoints, Kansei, Couleurs, Typographie, Sous-marques et Mockups."),
+            ("Architecture Complète : de l'Idée à l'Impression", "Danne & Blackburn (NASA) & Alina Wheeler", "Comme le manuel historique de la NASA, vos planches couvrent l'essence, la géométrie, la papeterie, les uniformes et la signature."),
             ("Téléchargez Vos 9 Livrables Officiels", "Brandbook .PDF/.HTML + .SVG/.AI + Office + Polices", "Dans la Voûte des Livrables, téléchargez vos 9 fichiers prêts à l'emploi : PDF, HTML, vecteurs SVG et AI, Word, PowerPoint, signature et polices.")
         ],
     },
@@ -150,12 +160,14 @@ MULTILINGUAL_SCENES = {
         3: [
             ("O Posicionamento Começa pelo Nome", "Al Ries & Jack Trout · Positioning (1981)", "Bem-vindo ao Passo 3. Al Ries e Jack Trout demonstraram que o posicionamento ocorre na mente do cliente, e o nome é a primeira âncora."),
             ("Raízes Semânticas e Método SMILE", "Alexandra Watkins · Naming Memorável", "Com a metodologia SMILE de Alexandra Watkins, exploramos raízes semânticas e geramos opções fonéticas, memoráveis e fáceis de pronunciar."),
-            ("Classificação de Nice OMPI e Eslogan", "45 Classes Oficiais · Proteção Legal", "Além disso, analisamos as 45 classes oficiais de Nice para orientar o seu registo de marca e selar o seu eslogan comercial.")
+            ("Classificação de Nice OMPI e Eslogan", "45 Classes Oficiais · Proteção Legal", "Além disso, analisamos as 45 classes oficiais de Nice para orientar o seu registo de marca e selar o seu eslogan comercial."),
+            ("Exemplo Real: Stripe, Notion e Rolex", "Nomes Curtos com Monogramas 1:1", "Pense na Rolex ou na Stripe: nomes curtos cujas iniciais formam um monograma inconfundível em qualquer ecrã ou fachada.")
         ],
         4: [
             ("Traduzindo a Estratégia em Parâmetros Visuais", "Mitsuo Nagamachi · Geometria Emocional", "Antes de gerar o logótipo, no Passo 4 aplicamos a Engenharia Kansei de Mitsuo Nagamachi e o Diferencial Semântico de Osgood."),
             ("Os 7 Eixos Visuais e Emocionais", "Calibrando Tensão, Peso e Geometria", "Em vez de adivinhar estilos, calibra sete eixos visuais: do clássico ao disruptivo, do orgânico ao geométrico e do sóbrio ao vibrante."),
-            ("Par Tipográfico e Estrutura Óptica", "Robert Bringhurst & Adrian Frutiger", "Com esses vetores, selecionamos as fontes de títulos e corpo, a estrutura do logótipo e a semente conceptual do símbolo.")
+            ("Par Tipográfico e Estrutura Óptica", "Robert Bringhurst & Adrian Frutiger", "Com esses vetores, selecionamos as fontes de títulos e corpo, a estrutura do logótipo e a semente conceptual do símbolo."),
+            ("Exemplo Real: Airbnb vs. Tesla", "Coerência entre Personalidade e Traço", "Veja como a Airbnb usa curvas orgânicas acolhedoras enquanto a Tesla utiliza ângulos de engenharia de precisão.")
         ],
         5: [
             ("Simplicidade, Memorabilidade e Versatilidade", "Paul Rand & Sagi Haviv · Design de Logótipo", "Chegamos ao Passo 5: o Estúdio de Logótipo. Seguindo Paul Rand e Sagi Haviv, um grande símbolo deve ser simples, memorável e versátil."),
@@ -166,6 +178,7 @@ MULTILINGUAL_SCENES = {
         6: [
             ("36 Lâminas Horizontais Conectadas de Ponta a Ponta", "Massimo Vignelli · 36 Lâminas em Curvas", "Parabéns! No Passo 6, todo o seu percurso é compilado sob o cânone editorial de Massimo Vignelli e a Diretiva C-00."),
             ("Governança Estrita: Regra 1 e Regra 2", "Tela 100% Clara e Logos em Positivo/Negativo", "Revise o seu Brandbook horizontal de 36 lâminas: Círculo Dourado, Touchpoints, Kansei, Cor, Tipografia, Submarcas e Mockups."),
+            ("Arquitetura Completa: da Filosofia à Gráfica", "Danne & Blackburn (NASA) & Alina Wheeler", "Tal como o manual da NASA, as suas lâminas cobrem desde a essência e geometria até estacionário, fardamento e assinatura digital."),
             ("Descarregue os Seus 9 Entregáveis Oficiais", "Brandbook .PDF/.HTML + .SVG/.AI + Office + Fontes", "No Cofre de Entregáveis, descarregue os seus 9 ficheiros prontos a usar: PDF, HTML, vetores SVG e AI, Word, PowerPoint, assinatura e fontes.")
         ],
     },
@@ -191,12 +204,14 @@ MULTILINGUAL_SCENES = {
         3: [
             ("Positionierung Beginnt mit dem Namen", "Al Ries & Jack Trout · Positioning (1981)", "Willkommen zu Schritt 3. Al Ries und Jack Trout zeigten, dass Positionierung im Kopf des Kunden beginnt – und der Name der erste Anker ist."),
             ("Semantische Wurzeln & die SMILE-Methode", "Alexandra Watkins · Einprägsames Naming", "Mit der SMILE-Methode von Alexandra Watkins entwickeln wir phonetisch starke, einprägsame und leicht aussprechbare Marken-Namen."),
-            ("WIPO Nizza-Klassifikation & Slogan", "45 Offizielle Klassen · Markenschutz", "Zudem prüfen wir die 45 offiziellen Nizza-Klassen für Ihre Markenanmeldung und definieren Ihren kommerziellen Slogan.")
+            ("WIPO Nizza-Klassifikation & Slogan", "45 Offizielle Klassen · Markenschutz", "Zudem prüfen wir die 45 offiziellen Nizza-Klassen für Ihre Markenanmeldung und definieren Ihren kommerziellen Slogan."),
+            ("Praxisbeispiel: Stripe, Notion und Rolex", "Kurze Namen mit Perfektem 1:1-Monogramm", "Denken Sie an Rolex oder Stripe: prägnante Namen, deren Initialen auf jedem Bildschirm und jeder Fassade sofort erkennbar sind.")
         ],
         4: [
             ("Strategie in Visuelle Parameter Übersetzen", "Mitsuo Nagamachi · Emotionale Geometrie", "Vor dem Logo-Design wenden wir in Schritt 4 Mitsuo Nagamachis Kansei-Engineering und Osgoods Semantisches Differential an."),
             ("Die 7 Visuellen und Emotionalen Achsen", "Spannung, Gewicht und Geometrie Kalibrieren", "Statt Stile zu raten, kalibrieren Sie sieben visuelle Achsen: von klassisch bis disruptiv, von organisch bis geometrisch."),
-            ("Typografisches Paar & Optische Struktur", "Robert Bringhurst & Adrian Frutiger", "Mit diesen Vektoren wählen wir Ihre Titel- und Fließtextschriften sowie die optische Grundstruktur Ihres Symbols.")
+            ("Typografisches Paar & Optische Struktur", "Robert Bringhurst & Adrian Frutiger", "Mit diesen Vektoren wählen wir Ihre Titel- und Fließtextschriften sowie die optische Grundstruktur Ihres Symbols."),
+            ("Praxisbeispiel: Airbnb vs. Tesla", "Kohärenz Zwischen Charakter und Linie", "Sehen Sie, wie Airbnb weiche Kurven für Gastfreundschaft nutzt, während Tesla präzise Winkel für Ingenieurskunst einsetzt.")
         ],
         5: [
             ("Einfachheit, Einprägsamkeit und Vielseitigkeit", "Paul Rand & Sagi Haviv · Logo-Design", "Willkommen in Schritt 5: dem Logo-Studio. Nach Paul Rand und Sagi Haviv muss ein starkes Symbol einfach, einprägsam und skalierbar sein."),
@@ -207,6 +222,7 @@ MULTILINGUAL_SCENES = {
         6: [
             ("36 Horizontale Tafeln Nahtlos Verbunden", "Massimo Vignelli · 36 Vektor-Tafeln", "Herzlichen Glückwunsch! In Schritt 6 wird Ihr gesamter Prozess nach dem Kanon von Massimo Vignelli und Richtlinie C-00 zusammengeführt."),
             ("Strikte Markenführung: Regel 1 & Regel 2", "100% Helle Fläche & Positiv-/Negativ-Logos", "Prüfen Sie Ihr horizontales Brandbook mit 36 Tafeln: Golden Circle, Touchpoints, Kansei, Farben, Typografie, Submarken und Mockups."),
+            ("Vollständige Architektur: Von der Idee bis zum Druck", "Danne & Blackburn (NASA) & Alina Wheeler", "Wie das legendäre NASA-Handbuch decken Ihre Tafeln alles ab: von Strategie und Geometrie bis zu Briefpapier und digitaler Signatur."),
             ("Laden Sie Ihre 9 Offiziellen Deliverables Herunter", "Brandbook .PDF/.HTML + .SVG/.AI + Office + Fonts", "Im Deliverables-Tresor laden Sie Ihre 9 fertigen Dateien herunter: PDF, HTML, SVG/AI-Vektoren, Word, PowerPoint, E-Mail-Signatur und Schriften.")
         ],
     },
@@ -232,12 +248,14 @@ MULTILINGUAL_SCENES = {
         3: [
             ("Il Posizionamento Inizia dal Nome", "Al Ries & Jack Trout · Positioning (1981)", "Benvenuto al Passo 3. Al Ries e Jack Trout hanno dimostrato che il posizionamento avviene nella mente del cliente e il nome è la prima ancora."),
             ("Radici Semantiche e Metodo SMILE", "Alexandra Watkins · Naming Memorabile", "Con il metodo SMILE di Alexandra Watkins, esploriamo radici semantiche e generiamo opzioni fonetiche, memorabili e facili da pronunciare."),
-            ("Classificazione di Nizza OMPI e Slogan", "45 Classi Ufficiali · Tutela Legale", "Analizziamo inoltre le 45 classi ufficiali di Nizza per guidare la registrazione del marchio e definire il tuo slogan commerciale.")
+            ("Classificazione di Nizza OMPI e Slogan", "45 Classi Ufficiali · Tutela Legale", "Analizziamo inoltre le 45 classi ufficiali di Nizza per guidare la registrazione del marchio e definire il tuo slogan commerciale."),
+            ("Caso Reale: Stripe, Notion e Rolex", "Nomi Brevi con Monogramma 1:1", "Pensa a Rolex o Stripe: nomi concisi le cui iniziali formano un monogramma inconfondibile su ogni schermo o facciata.")
         ],
         4: [
             ("Tradurre la Strategia in Parametri Visivi", "Mitsuo Nagamachi · Geometria Emozionale", "Prima di generare il logo, nel Passo 4 applichiamo l'Ingegneria Kansei di Mitsuo Nagamachi e il Differenziale Semantico di Osgood."),
             ("I 7 Assi Visivi ed Emozionali", "Calibrare Tensione, Peso e Geometria", "Invece di indovinare gli stili, calibri sette assi visivi: dal classico al dirompente, dall'organico al geometrico, dal sobrio al vibrante."),
-            ("Coppia Tipografica e Struttura Ottica", "Robert Bringhurst & Adrian Frutiger", "Con questi vettori selezioniamo i font per titoli e testo, la struttura del logo e il seme concettuale del simbolo.")
+            ("Coppia Tipografica e Struttura Ottica", "Robert Bringhurst & Adrian Frutiger", "Con questi vettori selezioniamo i font per titoli e testo, la struttura del logo e il seme concettuale del simbolo."),
+            ("Caso Reale: Airbnb vs. Tesla", "Coerenza tra Personalità e Tratto", "Osserva come Airbnb usi curve morbide per trasmettere accoglienza, mentre Tesla usi angoli netti per esprimere ingegneria.")
         ],
         5: [
             ("Semplicità, Memorabilità e Versatilità", "Paul Rand & Sagi Haviv · Logo Design", "Siamo al Passo 5: lo Studio del Logo. Seguendo Paul Rand e Sagi Haviv, un grande simbolo deve essere semplice, memorabile e versatile."),
@@ -248,6 +266,7 @@ MULTILINGUAL_SCENES = {
         6: [
             ("36 Tavole Orizzontali Collegate da Capo a Fondo", "Massimo Vignelli · 36 Tavole Vettoriali", "Congratulazioni! Nel Passo 6 tutto il tuo percorso viene compilato secondo il canone editoriale di Massimo Vignelli e la Direttiva C-00."),
             ("Governance Rigorosa: Regola 1 e Regola 2", "Tela 100% Chiara e Loghi in Positivo/Negativo", "Esamina il tuo Brandbook orizzontale di 36 tavole: Cerchio d'Oro, Touchpoints, Kansei, Colore, Tipografia, Sub-brand e Mockup."),
+            ("Architettura Completa: dalla Filosofia alla Stampa", "Danne & Blackburn (NASA) & Alina Wheeler", "Come lo storico manuale della NASA, le tue tavole coprono dall'essenza e geometria fino a cancelleria, divise e firma digitale."),
             ("Scarica i Tuoi 9 Deliverable Ufficiali", "Brandbook .PDF/.HTML + .SVG/.AI + Office + Font", "Nel Caveau dei Deliverable scarichi i tuoi 9 file pronti all'uso: PDF, HTML, vettori SVG e AI, Word, PowerPoint, firma email e font.")
         ],
     },
@@ -447,22 +466,34 @@ def build_localized_hud_overlay(
 
 
 def generate_step_capsule_for_lang(lang: str, step: int):
+    import shutil
+
     scenes = MULTILINGUAL_SCENES[lang][step]
     sources = STEP_VIDEO_SOURCES.get(step, STEP_VIDEO_SOURCES[1])
+    cap_specs = STEP_APP_CAPTURES.get(step, STEP_APP_CAPTURES[0])
+    step_w, part_w = STEP_WORD.get(lang, ("STEP", "PART"))
     clip_paths = []
 
     for s_idx, (headline, sub_label, narration) in enumerate(scenes):
-        clip_id = f"step{step}_shot{s_idx + 1}_{lang}"
-        mode, v_src, start_sec, _shot_badge, _orig_sub = sources[s_idx % len(sources)]
+        clip_id = f"v99_step{step}_shot{s_idx + 1}_{lang}"
+        mode, look_idx, start_sec, shot_badge, _orig_sub = sources[s_idx % len(sources)]
+        cap_base, _cap_caption = cap_specs[s_idx % len(cap_specs)]
+        cap_path = resolve_localized_capture_path(cap_base, lang)
 
         overlay_png = TMP_MULTI_DIR / f"{clip_id}_overlay.png"
-        build_localized_hud_overlay(
-            lang=lang,
+        build_transparent_hud_overlay(
             step_num=step,
             shot_idx=s_idx,
+            shot_badge=shot_badge,
             headline=headline,
             sub_label=sub_label,
+            narration_text=narration,
+            pip_img_path=cap_path,
+            pip_caption=f"THEBESTBRAND STUDIO · {step_w} 0{step} ({lang.upper()})",
             out_png=overlay_png,
+            show_app_card=(mode == "heygen_app_card"),
+            step_word=step_w,
+            part_word=part_w,
         )
 
         audio_m4a = synthesize_localized_founder_voice_m4a(narration, lang, clip_id)
@@ -471,7 +502,7 @@ def generate_step_capsule_for_lang(lang: str, step: int):
 
         build_dynamic_heygen_flow_clip(
             mode=mode,
-            video_src=v_src,
+            look_idx=look_idx,
             start_sec=start_sec,
             overlay_png=overlay_png,
             audio_m4a=audio_m4a,
@@ -491,8 +522,14 @@ def generate_step_capsule_for_lang(lang: str, step: int):
         "-i", str(concat_txt), "-c", "copy", "-movflags", "+faststart",
         str(out_step_mp4)
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    shutil.copy2(out_step_mp4, API_VIDEOS_OUT_DIR / out_step_mp4.name)
+    poster_file = VIDEOS_OUT_DIR / f"poster_paso_{step}_{lang}.jpg"
+    if poster_file.exists():
+        shutil.copy2(poster_file, API_VIDEOS_OUT_DIR / poster_file.name)
+
     dur = round(get_duration(out_step_mp4), 1)
-    print(f"  ✓ [{lang.upper()}] {out_step_mp4.name} ({dur}s, Lip-Sync + Voz Masculina 132Hz)")
+    print(f"  ✓ [{lang.upper()}] {out_step_mp4.name} ({dur}s, HeyGen Look {step} Lip-Sync + Voz Masculina 132Hz)")
 
 
 def ease_in_out_cubic(x: float) -> float:
@@ -674,19 +711,17 @@ def add_spanish_voice_to_hero():
 
 
 def main():
-    print("=== Generando videos multilingües (EN, FR, PT, DE, IT) para Hero y Pasos 0..6 ===")
-    add_spanish_voice_to_hero()
+    print("=== Generando los 35 videos multilingües de Pasos 0..6 (EN, FR, PT, DE, IT) con Avatar HeyGen Jorge Improbears ===")
 
     tasks = []
     with ThreadPoolExecutor(max_workers=4) as ex:
         for lang in LANGS:
-            tasks.append(ex.submit(generate_hero_video_for_lang, lang))
             for step in range(7):
                 tasks.append(ex.submit(generate_step_capsule_for_lang, lang, step))
         for t in tasks:
             t.result()
 
-    print("\n✓ Todos los videos multilingües (Hero + 7 Pasos x 6 idiomas) generados con éxito.")
+    print("\n✓ Los 35 videos multilingües (7 Pasos x 5 idiomas) generados con éxito.")
 
 
 if __name__ == "__main__":

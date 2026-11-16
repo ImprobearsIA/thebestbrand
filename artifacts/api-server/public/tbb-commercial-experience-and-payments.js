@@ -902,8 +902,8 @@
   // ---------------------------------------------------------------------------
   function resolveVideoAsset(relPath) {
     const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
-    if (isLocal) return `${relPath}?v=97.0`;
-    return `https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@ce64ad6/apps/web${relPath}`;
+    if (isLocal) return `${relPath}?v=99.0`;
+    return `https://raw.githubusercontent.com/ImprobearsIA/thebestbrand/main/apps/web${relPath}?v=99.0`;
   }
 
   function getLocalizedStepVideoUrl(stepNum, langOverride) {

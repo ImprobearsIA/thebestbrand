@@ -9540,8 +9540,8 @@
 
     function tbbResolveHeyGenVideoAsset(relPath) {
       const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-      if (isLocal) return `${relPath}?v=98.0`;
-      return `https://raw.githubusercontent.com/ImprobearsIA/thebestbrand/main/apps/web${relPath}`;
+      if (isLocal) return `${relPath}?v=99.0`;
+      return `https://raw.githubusercontent.com/ImprobearsIA/thebestbrand/main/apps/web${relPath}?v=99.0`;
     }
 
     function tbbResolveLocalizedStudioStepVideo(stepNum, langOverride) {
@@ -9556,62 +9556,336 @@
       return tbbResolveHeyGenVideoAsset(`/assets/videos/poster_paso_${stepNum}${sfx}.jpg`);
     }
 
+    const STEP_THEORY_I18N = {
+      es: {
+        0: {
+          frameworkBadge: "PASO 0 · DRUCKER, AAKER & HAVIV",
+          headerLabel: "FUNDAMENTO DEL PASO 0",
+          theoryTitle: "Objetivo, Capital Visual y Giro Comercial",
+          theoryBody: "Elige si construyes tu marca desde cero, evolucionas tu logotipo actual o creas una sub-marca. Al definir tu giro con claridad, el sistema adapta automáticamente tus preguntas y entregables."
+        },
+        1: {
+          frameworkBadge: "PASO 1 · CÍRCULO DORADO (SIMON SINEK)",
+          headerLabel: "FUNDAMENTO DEL PASO 1",
+          theoryTitle: "El Círculo Dorado y tu Promesa en 3 Pasos",
+          theoryBody: "La gente no compra lo que haces, sino el porqué lo haces (Simon Sinek). Aquí defines tu propósito nuclear, tu método claro en tres pasos (Donald Miller) y el arquetipo humano de tu marca."
+        },
+        2: {
+          frameworkBadge: "PASO 2 · MOMENTOS DE LA VERDAD (CARLZON)",
+          headerLabel: "FUNDAMENTO DEL PASO 2",
+          theoryTitle: "Puntos de Contacto: Antes, Durante y Después",
+          theoryBody: "Cada contacto de 15 segundos define si tu cliente confía en tu marca (Jan Carlzon). Selecciona los canales reales donde te descubren, compran y recomiendan para integrarlos en tu manual."
+        },
+        3: {
+          frameworkBadge: "PASO 3 · MODELO SMILE & CLASES DE NIZA",
+          headerLabel: "FUNDAMENTO DEL PASO 3",
+          theoryTitle: "Ingeniería de Naming, Eslogan y Registro",
+          theoryBody: "El nombre es el primer activo verbal que pronunciarán tus clientes (Wally Olins & Alexandra Watkins). Confirmamos tu nombre oficial, eslogan y sus Clases Internacionales de Niza."
+        },
+        4: {
+          frameworkBadge: "PASO 4 · INGENIERÍA KANSEI & TIPOGRAFÍA",
+          headerLabel: "FUNDAMENTO DEL PASO 4",
+          theoryTitle: "Psicología de la Forma y Par Tipográfico",
+          theoryBody: "La Ingeniería Kansei (Mitsuo Nagamachi) traduce emociones en proporciones geométricas. Calibra el carácter visual de tu marca, elige tu tipografía oficial y define la estructura de tu símbolo."
+        },
+        5: {
+          frameworkBadge: "PASO 5 · PAUL RAND, SAGI HAVIV & JONY IVE",
+          headerLabel: "FUNDAMENTO DEL PASO 5",
+          theoryTitle: "Taller de Logotipo en Curvas y Acabado Liquid Glass",
+          theoryBody: "Un gran logotipo combina simplicidad geométrica y recordación inmediata (Paul Rand & Sagi Haviv). Itera en vivo con Nano Banana Pro y aprueba tu versión maestra sobre lienzo claro y oscuro."
+        },
+        6: {
+          frameworkBadge: "PASO 6 · CANON DE VIGNELLI & 9 ENTREGABLES",
+          headerLabel: "FUNDAMENTO DEL PASO 6",
+          theoryTitle: "Tu Manual de 36 Láminas y Bóveda Ejecutiva",
+          theoryBody: "Tu manual de identidad protege la coherencia de tu marca en todo canal (Massimo Vignelli). Revisa tus 36 láminas en curvas y descarga tus 9 entregables oficiales listos para usar."
+        }
+      },
+      en: {
+        0: {
+          frameworkBadge: "STEP 0 · DRUCKER, AAKER & HAVIV",
+          headerLabel: "STEP 0 FOUNDATION",
+          theoryTitle: "Objective, Visual Equity & Business Line",
+          theoryBody: "Choose whether to build your brand from scratch, evolve your current logo, or create a sub-brand. By clearly defining your business line, the engine adapts every question and deliverable."
+        },
+        1: {
+          frameworkBadge: "STEP 1 · THE GOLDEN CIRCLE (SIMON SINEK)",
+          headerLabel: "STEP 1 FOUNDATION",
+          theoryTitle: "The Golden Circle & Your 3-Step Promise",
+          theoryBody: "People don't buy what you do; they buy why you do it (Simon Sinek). Define your core purpose, your clear 3-step method (Donald Miller), and your brand's human archetype."
+        },
+        2: {
+          frameworkBadge: "STEP 2 · MOMENTS OF TRUTH (CARLZON)",
+          headerLabel: "STEP 2 FOUNDATION",
+          theoryTitle: "Touchpoints: Before, During & After",
+          theoryBody: "Every 15-second interaction determines whether a customer trusts your brand (Jan Carlzon). Map the channels where clients discover, experience, and recommend your brand."
+        },
+        3: {
+          frameworkBadge: "STEP 3 · SMILE METHOD & NICE CLASSES",
+          headerLabel: "STEP 3 FOUNDATION",
+          theoryTitle: "Naming Engineering, Tagline & Trademark",
+          theoryBody: "Your name is the first verbal asset customers speak (Wally Olins & Alexandra Watkins). Confirm your official name, tagline, and WIPO Nice Classes."
+        },
+        4: {
+          frameworkBadge: "STEP 4 · KANSEI ENGINEERING & TYPOGRAPHY",
+          headerLabel: "STEP 4 FOUNDATION",
+          theoryTitle: "Shape Psychology & Typographic Pairing",
+          theoryBody: "Kansei Engineering (Mitsuo Nagamachi) translates human emotion into geometric proportion. Calibrate your 7 visual axes, select your official fonts, and define your symbol structure."
+        },
+        5: {
+          frameworkBadge: "STEP 5 · PAUL RAND, SAGI HAVIV & JONY IVE",
+          headerLabel: "STEP 5 FOUNDATION",
+          theoryTitle: "Vector Logo Studio & Liquid Glass Finish",
+          theoryBody: "A timeless logo combines geometric simplicity and immediate recall (Paul Rand & Sagi Haviv). Iterate live with Nano Banana Pro and approve your master symbol on light and dark canvases."
+        },
+        6: {
+          frameworkBadge: "STEP 6 · VIGNELLI CANON & 9 DELIVERABLES",
+          headerLabel: "STEP 6 FOUNDATION",
+          theoryTitle: "Your 36-Plate Brandbook & Executive Vault",
+          theoryBody: "Your brand manual safeguards visual consistency across every touchpoint (Massimo Vignelli). Review your 36 vector plates and download your 9 ready-to-use deliverables."
+        }
+      },
+      fr: {
+        0: {
+          frameworkBadge: "ÉTAPE 0 · DRUCKER, AAKER & HAVIV",
+          headerLabel: "FONDEMENT DE L'ÉTAPE 0",
+          theoryTitle: "Objectif, Capital Visuel et Secteur d'Activité",
+          theoryBody: "Choisissez de créer votre marque de zéro, faire évoluer votre logo actuel ou créer une sous-marque. En décrivant votre secteur, le moteur adapte chaque question et livrable."
+        },
+        1: {
+          frameworkBadge: "ÉTAPE 1 · LE CERCLE D'OR (SIMON SINEK)",
+          headerLabel: "FONDEMENT DE L'ÉTAPE 1",
+          theoryTitle: "Le Cercle d'Or et Votre Promesse en 3 Étapes",
+          theoryBody: "Les gens n'achètent pas ce que vous faites, mais pourquoi vous le faites (Simon Sinek). Définissez votre raison d'être, votre méthode en 3 étapes et l'archétype humain de votre marque."
+        },
+        2: {
+          frameworkBadge: "ÉTAPE 2 · MOMENTS DE VÉRITÉ (CARLZON)",
+          headerLabel: "FONDEMENT DE L'ÉTAPE 2",
+          theoryTitle: "Points de Contact : Avant, Pendant et Après",
+          theoryBody: "Chaque contact de 15 secondes décide de la confiance envers votre marque (Jan Carlzon). Sélectionnez les canaux où vos clients vous découvrent, achètent et vous recommandent."
+        },
+        3: {
+          frameworkBadge: "ÉTAPE 3 · MÉTHODE SMILE & CLASSES DE NICE",
+          headerLabel: "FONDEMENT DE L'ÉTAPE 3",
+          theoryTitle: "Ingénierie du Naming, Slogan et Dépôt OMPI",
+          theoryBody: "Le nom est le premier actif verbal prononcé par vos clients (Wally Olins & Alexandra Watkins). Confirmez votre nom officiel, votre slogan et vos Classes Internationales de Nice."
+        },
+        4: {
+          frameworkBadge: "ÉTAPE 4 · INGÉNIERIE KANSEI & TYPOGRAPHIE",
+          headerLabel: "FONDEMENT DE L'ÉTAPE 4",
+          theoryTitle: "Psychologie des Formes et Duo Typographique",
+          theoryBody: "L'Ingénierie Kansei (Mitsuo Nagamachi) traduit les émotions en proportions géométriques. Calibrez les 7 axes visuels, choisissez vos polices et définissez la structure de votre symbole."
+        },
+        5: {
+          frameworkBadge: "ÉTAPE 5 · PAUL RAND, SAGI HAVIV & JONY IVE",
+          headerLabel: "FONDEMENT DE L'ÉTAPE 5",
+          theoryTitle: "Atelier Logo Vectoriel et Finition Liquid Glass",
+          theoryBody: "Un grand logo allie simplicité géométrique et mémorisation immédiate (Paul Rand & Sagi Haviv). Itérez en direct avec Nano Banana Pro sur fonds clair et sombre."
+        },
+        6: {
+          frameworkBadge: "ÉTAPE 6 · CANON DE VIGNELLI & 9 LIVRABLES",
+          headerLabel: "FONDEMENT DE L'ÉTAPE 6",
+          theoryTitle: "Votre Manuel de 36 Planches et Voûte Exécutive",
+          theoryBody: "Votre manuel d'identité protège la cohérence de votre marque (Massimo Vignelli). Parcourez vos 36 planches vectorielles et téléchargez vos 9 livrables officiels."
+        }
+      },
+      pt: {
+        0: {
+          frameworkBadge: "PASSO 0 · DRUCKER, AAKER & HAVIV",
+          headerLabel: "FUNDAMENTO DO PASSO 0",
+          theoryTitle: "Objetivo, Património Visual e Ramo Comercial",
+          theoryBody: "Escolha se cria a sua marca do zero, evolui o seu logótipo atual ou cria uma submarca. Ao definir o seu ramo com clareza, o sistema adapta automaticamente as perguntas e entregáveis."
+        },
+        1: {
+          frameworkBadge: "PASSO 1 · CÍRCULO DOURADO (SIMON SINEK)",
+          headerLabel: "FUNDAMENTO DO PASSO 1",
+          theoryTitle: "O Círculo Dourado e a Sua Promessa em 3 Passos",
+          theoryBody: "As pessoas não compram o que faz, mas porque o faz (Simon Sinek). Defina o seu propósito nuclear, o seu método em três passos (Donald Miller) e o arquétipo humano da sua marca."
+        },
+        2: {
+          frameworkBadge: "PASSO 2 · MOMENTOS DA VERDADE (CARLZON)",
+          headerLabel: "FUNDAMENTO DO PASSO 2",
+          theoryTitle: "Pontos de Contacto: Antes, Durante e Depois",
+          theoryBody: "Cada contacto de 15 segundos define se o cliente confia na sua marca (Jan Carlzon). Selecione os canais reais onde o descobrem, compram e recomendam."
+        },
+        3: {
+          frameworkBadge: "PASSO 3 · MODELO SMILE & CLASSES DE NICE",
+          headerLabel: "FUNDAMENTO DO PASSO 3",
+          theoryTitle: "Engenharia de Naming, Eslogan e Registo",
+          theoryBody: "O nome é o primeiro ativo verbal que os seus clientes pronunciam (Wally Olins & Alexandra Watkins). Confirmamos o seu nome oficial, eslogan e Classes Internacionais de Nice."
+        },
+        4: {
+          frameworkBadge: "PASSO 4 · ENGENHARIA KANSEI & TIPOGRAFIA",
+          headerLabel: "FUNDAMENTO DO PASSO 4",
+          theoryTitle: "Psicologia da Forma e Par Tipográfico",
+          theoryBody: "A Engenharia Kansei (Mitsuo Nagamachi) traduz emoções em proporções geométricas. Calibre o caráter visual da sua marca, escolha a tipografia oficial e a estrutura do símbolo."
+        },
+        5: {
+          frameworkBadge: "PASSO 5 · PAUL RAND, SAGI HAVIV & JONY IVE",
+          headerLabel: "FUNDAMENTO DO PASSO 5",
+          theoryTitle: "Estúdio de Logótipo em Curvas e Liquid Glass",
+          theoryBody: "Um grande logótipo combina simplicidade geométrica e memorização imediata (Paul Rand & Sagi Haviv). Itere ao vivo com o Nano Banana Pro em fundo claro e escuro."
+        },
+        6: {
+          frameworkBadge: "PASSO 6 · CÂNONE DE VIGNELLI & 9 ENTREGÁVEIS",
+          headerLabel: "FUNDAMENTO DO PASSO 6",
+          theoryTitle: "O Seu Manual de 36 Lâminas e Cofre Executivo",
+          theoryBody: "O seu manual de identidade protege a coerência da sua marca em todos os canais (Massimo Vignelli). Revise as 36 lâminas em curvas e descarregue os seus 9 entregáveis oficiais."
+        }
+      },
+      de: {
+        0: {
+          frameworkBadge: "SCHRITT 0 · DRUCKER, AAKER & HAVIV",
+          headerLabel: "FUNDAMENT SCHRITT 0",
+          theoryTitle: "Ziel, Visuelles Kapital & Geschäftsfeld",
+          theoryBody: "Wählen Sie, ob Sie Ihre Marke neu aufbauen, Ihr aktuelles Logo weiterentwickeln oder eine Submarke erstellen. Ihr Geschäftsfeld steuert alle Fragen und Deliverables."
+        },
+        1: {
+          frameworkBadge: "SCHRITT 1 · GOLDEN CIRCLE (SIMON SINEK)",
+          headerLabel: "FUNDAMENT SCHRITT 1",
+          theoryTitle: "Der Golden Circle & Ihr 3-Schritte-Versprechen",
+          theoryBody: "Menschen kaufen nicht, was Sie tun, sondern warum Sie es tun (Simon Sinek). Definieren Sie Ihren Kernzweck, Ihre 3-Schritte-Methode und den menschlichen Archetyp Ihrer Marke."
+        },
+        2: {
+          frameworkBadge: "SCHRITT 2 · MOMENTE DER WAHRHEIT (CARLZON)",
+          headerLabel: "FUNDAMENT SCHRITT 2",
+          theoryTitle: "Touchpoints: Vorher, Während und Nachher",
+          theoryBody: "Jeder 15-Sekunden-Kontakt entscheidet über das Vertrauen in Ihre Marke (Jan Carlzon). Wählen Sie die realen Kanäle vor, während und nach dem Kauf."
+        },
+        3: {
+          frameworkBadge: "SCHRITT 3 · SMILE-MODELL & NIZZA-KLASSEN",
+          headerLabel: "FUNDAMENT SCHRITT 3",
+          theoryTitle: "Naming-Engineering, Slogan & Markenschutz",
+          theoryBody: "Der Name ist das erste verbale Asset Ihrer Marke (Wally Olins & Alexandra Watkins). Bestätigen Sie Ihren offiziellen Namen, Slogan und die internationalen Nizza-Klassen."
+        },
+        4: {
+          frameworkBadge: "SCHRITT 4 · KANSEI-ENGINEERING & TYPOGRAFIE",
+          headerLabel: "FUNDAMENT SCHRITT 4",
+          theoryTitle: "Formpsychologie & Typografisches Paar",
+          theoryBody: "Kansei-Engineering (Mitsuo Nagamachi) übersetzt Emotionen in geometrische Proportionen. Kalibrieren Sie die 7 visuellen Achsen, wählen Sie Ihre Schriften und Symbolstruktur."
+        },
+        5: {
+          frameworkBadge: "SCHRITT 5 · PAUL RAND, SAGI HAVIV & JONY IVE",
+          headerLabel: "FUNDAMENT SCHRITT 5",
+          theoryTitle: "Vektor-Logo-Studio & Liquid Glass Finish",
+          theoryBody: "Ein starkes Logo verbindet geometrische Klarheit mit sofortiger Einprägsamkeit (Paul Rand & Sagi Haviv). Iterieren Sie live mit Nano Banana Pro auf hellem und dunklem Grund."
+        },
+        6: {
+          frameworkBadge: "SCHRITT 6 · VIGNELLI-KANON & 9 DELIVERABLES",
+          headerLabel: "FUNDAMENT SCHRITT 6",
+          theoryTitle: "Ihr 36-Tafeln-Brandbook & Deliverables-Tresor",
+          theoryBody: "Ihr Markenhandbuch schützt die Konsistenz Ihrer Marke (Massimo Vignelli). Prüfen Sie Ihre 36 Vektor-Tafeln und laden Sie Ihre 9 offiziellen Deliverables herunter."
+        }
+      },
+      it: {
+        0: {
+          frameworkBadge: "PASSO 0 · DRUCKER, AAKER & HAVIV",
+          headerLabel: "FONDAMENTO DEL PASSO 0",
+          theoryTitle: "Obiettivo, Capitale Visivo e Settore",
+          theoryBody: "Scegli se creare il tuo brand da zero, evolvere il tuo logo attuale o creare un sub-brand. Definendo con chiarezza il tuo settore, il sistema adatta domande e deliverable."
+        },
+        1: {
+          frameworkBadge: "PASSO 1 · CERCHIO D'ORO (SIMON SINEK)",
+          headerLabel: "FONDAMENTO DEL PASSO 1",
+          theoryTitle: "Il Cerchio d'Oro e la Promessa in 3 Passi",
+          theoryBody: "Le persone non comprano ciò che fai, ma perché lo fai (Simon Sinek). Definisci il tuo scopo centrale, il tuo metodo in tre passi e l'archetipo umano del tuo brand."
+        },
+        2: {
+          frameworkBadge: "PASSO 2 · MOMENTI DELLA VERITÀ (CARLZON)",
+          headerLabel: "FONDAMENTO DEL PASSO 2",
+          theoryTitle: "Touchpoint: Prima, Durante e Dopo",
+          theoryBody: "Ogni contatto di 15 secondi definisce la fiducia nel tuo brand (Jan Carlzon). Seleziona i canali reali in cui i clienti ti scoprono, acquistano e ti consigliano."
+        },
+        3: {
+          frameworkBadge: "PASSO 3 · MODELLO SMILE & CLASSI DI NIZZA",
+          headerLabel: "FONDAMENTO DEL PASSO 3",
+          theoryTitle: "Ingegneria del Naming, Slogan e Tutela",
+          theoryBody: "Il nome è il primo asset verbale pronunciato dai clienti (Wally Olins & Alexandra Watkins). Confermiamo il tuo nome ufficiale, lo slogan e le Classi Internazionali di Nizza."
+        },
+        4: {
+          frameworkBadge: "PASSO 4 · INGEGNERIA KANSEI & TIPOGRAFIA",
+          headerLabel: "FONDAMENTO DEL PASSO 4",
+          theoryTitle: "Psicologia della Forma e Coppia Tipografica",
+          theoryBody: "L'Ingegneria Kansei (Mitsuo Nagamachi) traduce le emozioni in proporzioni geometriche. Calibra i 7 assi visivi, scegli la tipografia ufficiale e la struttura del simbolo."
+        },
+        5: {
+          frameworkBadge: "PASSO 5 · PAUL RAND, SAGI HAVIV & JONY IVE",
+          headerLabel: "FONDAMENTO DEL PASSO 5",
+          theoryTitle: "Studio del Logo in Curve e Finitura Liquid Glass",
+          theoryBody: "Un grande logo unisce semplicità geometrica e memorabilità immediata (Paul Rand & Sagi Haviv). Itera dal vivo con Nano Banana Pro su sfondo chiaro e scuro."
+        },
+        6: {
+          frameworkBadge: "PASSO 6 · CANONE DI VIGNELLI & 9 DELIVERABLE",
+          headerLabel: "FONDAMENTO DEL PASSO 6",
+          theoryTitle: "Il Tuo Manuale di 36 Tavole e Caveau Esecutivo",
+          theoryBody: "Il manuale d'identità protegge la coerenza del tuo brand (Massimo Vignelli). Esamina le 36 tavole vettoriali e scarica i tuoi 9 deliverable ufficiali pronti all'uso."
+        }
+      }
+    };
+
+    function tbbGetStepTheoryText(stepNum, field) {
+      const l = tbbGetActiveStudioLang();
+      const dict = STEP_THEORY_I18N[l] || STEP_THEORY_I18N.es;
+      const entry = dict[stepNum] || STEP_THEORY_I18N.es[stepNum] || STEP_THEORY_I18N.es[0];
+      return entry[field] || "";
+    }
+
     const STEP_THEORY_CAPSULES_SPEC = {
       0: {
         get videoUrl() { return tbbResolveLocalizedStudioStepVideo(0); },
         get posterUrl() { return tbbResolveLocalizedStudioStepPoster(0); },
-        frameworkBadge: "PASO 0 · DRUCKER, AAKER & HAVIV",
-        headerLabel: "FUNDAMENTO DEL PASO 0",
-        theoryTitle: "Objetivo, Capital Visual y Giro Comercial",
-        theoryBody: "Elige si construyes tu marca desde cero, evolucionas tu logotipo actual o creas una sub-marca. Al definir tu giro con claridad, el sistema adapta automáticamente tus preguntas y entregables."
+        get frameworkBadge() { return tbbGetStepTheoryText(0, "frameworkBadge"); },
+        get headerLabel() { return tbbGetStepTheoryText(0, "headerLabel"); },
+        get theoryTitle() { return tbbGetStepTheoryText(0, "theoryTitle"); },
+        get theoryBody() { return tbbGetStepTheoryText(0, "theoryBody"); }
       },
       1: {
         get videoUrl() { return tbbResolveLocalizedStudioStepVideo(1); },
         get posterUrl() { return tbbResolveLocalizedStudioStepPoster(1); },
-        frameworkBadge: "PASO 1 · CÍRCULO DORADO (SIMON SINEK)",
-        headerLabel: "FUNDAMENTO DEL PASO 1",
-        theoryTitle: "El Círculo Dorado y tu Promesa en 3 Pasos",
-        theoryBody: "La gente no compra lo que haces, sino el porqué lo haces (Simon Sinek). Aquí defines tu propósito nuclear, tu método claro en tres pasos (Donald Miller) y el arquetipo humano de tu marca."
+        get frameworkBadge() { return tbbGetStepTheoryText(1, "frameworkBadge"); },
+        get headerLabel() { return tbbGetStepTheoryText(1, "headerLabel"); },
+        get theoryTitle() { return tbbGetStepTheoryText(1, "theoryTitle"); },
+        get theoryBody() { return tbbGetStepTheoryText(1, "theoryBody"); }
       },
       2: {
         get videoUrl() { return tbbResolveLocalizedStudioStepVideo(2); },
         get posterUrl() { return tbbResolveLocalizedStudioStepPoster(2); },
-        frameworkBadge: "PASO 2 · MOMENTOS DE LA VERDAD (CARLZON)",
-        headerLabel: "FUNDAMENTO DEL PASO 2",
-        theoryTitle: "Puntos de Contacto: Antes, Durante y Después",
-        theoryBody: "Cada contacto de 15 segundos define si tu cliente confía en tu marca (Jan Carlzon). Selecciona los canales reales donde te descubren, compran y recomiendan para integrarlos en tu manual."
+        get frameworkBadge() { return tbbGetStepTheoryText(2, "frameworkBadge"); },
+        get headerLabel() { return tbbGetStepTheoryText(2, "headerLabel"); },
+        get theoryTitle() { return tbbGetStepTheoryText(2, "theoryTitle"); },
+        get theoryBody() { return tbbGetStepTheoryText(2, "theoryBody"); }
       },
       3: {
         get videoUrl() { return tbbResolveLocalizedStudioStepVideo(3); },
         get posterUrl() { return tbbResolveLocalizedStudioStepPoster(3); },
-        frameworkBadge: "PASO 3 · MODELO SMILE & CLASES DE NIZA",
-        headerLabel: "FUNDAMENTO DEL PASO 3",
-        theoryTitle: "Ingeniería de Naming, Eslogan y Registro",
-        theoryBody: "El nombre es el primer activo verbal que pronunciarán tus clientes (Wally Olins & Alexandra Watkins). Confirmamos tu nombre oficial, eslogan y sus Clases Internacionales de Niza."
+        get frameworkBadge() { return tbbGetStepTheoryText(3, "frameworkBadge"); },
+        get headerLabel() { return tbbGetStepTheoryText(3, "headerLabel"); },
+        get theoryTitle() { return tbbGetStepTheoryText(3, "theoryTitle"); },
+        get theoryBody() { return tbbGetStepTheoryText(3, "theoryBody"); }
       },
       4: {
         get videoUrl() { return tbbResolveLocalizedStudioStepVideo(4); },
         get posterUrl() { return tbbResolveLocalizedStudioStepPoster(4); },
-        frameworkBadge: "PASO 4 · INGENIERÍA KANSEI & TIPOGRAFÍA",
-        headerLabel: "FUNDAMENTO DEL PASO 4",
-        theoryTitle: "Psicología de la Forma y Par Tipográfico",
-        theoryBody: "La Ingeniería Kansei (Mitsuo Nagamachi) traduce emociones en proporciones geométricas. Calibra el carácter visual de tu marca, elige tu tipografía oficial y define la estructura de tu símbolo."
+        get frameworkBadge() { return tbbGetStepTheoryText(4, "frameworkBadge"); },
+        get headerLabel() { return tbbGetStepTheoryText(4, "headerLabel"); },
+        get theoryTitle() { return tbbGetStepTheoryText(4, "theoryTitle"); },
+        get theoryBody() { return tbbGetStepTheoryText(4, "theoryBody"); }
       },
       5: {
         get videoUrl() { return tbbResolveLocalizedStudioStepVideo(5); },
         get posterUrl() { return tbbResolveLocalizedStudioStepPoster(5); },
-        frameworkBadge: "PASO 5 · PAUL RAND, SAGI HAVIV & JONY IVE",
-        headerLabel: "FUNDAMENTO DEL PASO 5",
-        theoryTitle: "Taller de Logotipo en Curvas y Acabado Liquid Glass",
-        theoryBody: "Un gran logotipo combina simplicidad geométrica y recordación inmediata (Paul Rand & Sagi Haviv). Itera en vivo con Nano Banana Pro y aprueba tu versión maestra sobre lienzo claro y oscuro."
+        get frameworkBadge() { return tbbGetStepTheoryText(5, "frameworkBadge"); },
+        get headerLabel() { return tbbGetStepTheoryText(5, "headerLabel"); },
+        get theoryTitle() { return tbbGetStepTheoryText(5, "theoryTitle"); },
+        get theoryBody() { return tbbGetStepTheoryText(5, "theoryBody"); }
       },
       6: {
         get videoUrl() { return tbbResolveLocalizedStudioStepVideo(6); },
         get posterUrl() { return tbbResolveLocalizedStudioStepPoster(6); },
-        frameworkBadge: "PASO 6 · CANON DE VIGNELLI & 9 ENTREGABLES",
-        headerLabel: "FUNDAMENTO DEL PASO 6",
-        theoryTitle: "Tu Manual de 36 Láminas y Bóveda Ejecutiva",
-        theoryBody: "Tu manual de identidad protege la coherencia de tu marca en todo canal (Massimo Vignelli). Revisa tus 36 láminas en curvas y descarga tus 9 entregables oficiales listos para usar."
+        get frameworkBadge() { return tbbGetStepTheoryText(6, "frameworkBadge"); },
+        get headerLabel() { return tbbGetStepTheoryText(6, "headerLabel"); },
+        get theoryTitle() { return tbbGetStepTheoryText(6, "theoryTitle"); },
+        get theoryBody() { return tbbGetStepTheoryText(6, "theoryBody"); }
       }
     };
 
@@ -9869,23 +10143,70 @@
         btn.style.borderColor = isAct ? "#FF7A00" : "#CBD5E1";
       });
 
-      if (tagEl) tagEl.textContent = review.chapterTag;
-      if (summaryHeadEl && review.summaryHeading) summaryHeadEl.textContent = review.summaryHeading;
-      if (titleEl) titleEl.textContent = review.title;
-      if (subEl) subEl.textContent = review.subtitle;
+      const curLang = typeof tbbGetActiveStudioLang === "function" ? tbbGetActiveStudioLang() : "es";
+      const modalI18nMap = {
+        es: {
+          chTag: (s) => `PASO ${s} · CÁPSULA HEYGEN DEL FUNDADOR`,
+          sumHead: (s) => `PARTE 1 · SÍNTESIS ESTRATÉGICA DEL PASO ${s}:`,
+          subTxt: "Mira la cápsula explicada por Jorge Benítez (HeyGen) con ejemplos reales de la aplicación antes de responder:",
+          contBtn: (s) => `Continuar en Paso ${s}`
+        },
+        en: {
+          chTag: (s) => `STEP ${s} · HEYGEN FOUNDER CAPSULE`,
+          sumHead: (s) => `PART 1 · STRATEGIC SYNTHESIS OF STEP ${s}:`,
+          subTxt: "Watch the capsule explained by Jorge Benítez (HeyGen) with real app examples before answering:",
+          contBtn: (s) => `Continue in Step ${s}`
+        },
+        fr: {
+          chTag: (s) => `ÉTAPE ${s} · CAPSULE HEYGEN DU FONDATEUR`,
+          sumHead: (s) => `PARTIE 1 · SYNTHÈSE STRATÉGIQUE DE L'ÉTAPE ${s} :`,
+          subTxt: "Regardez la capsule expliquée par Jorge Benítez (HeyGen) avec des exemples réels de l'application :",
+          contBtn: (s) => `Continuer à l'Étape ${s}`
+        },
+        pt: {
+          chTag: (s) => `PASSO ${s} · CÁPSULA HEYGEN DO FUNDADOR`,
+          sumHead: (s) => `PARTE 1 · SÍNTESE ESTRATÉGICA DO PASSO ${s}:`,
+          subTxt: "Assista à cápsula explicada por Jorge Benítez (HeyGen) com exemplos reais da aplicação antes de responder:",
+          contBtn: (s) => `Continuar no Passo ${s}`
+        },
+        de: {
+          chTag: (s) => `SCHRITT ${s} · HEYGEN GRÜNDER-KAPSEL`,
+          sumHead: (s) => `TEIL 1 · STRATEGISCHE SYNTHESE VON SCHRITT ${s}:`,
+          subTxt: "Sehen Sie sich die Kapsel von Jorge Benítez (HeyGen) mit echten App-Beispielen an:",
+          contBtn: (s) => `Weiter in Schritt ${s}`
+        },
+        it: {
+          chTag: (s) => `PASSO ${s} · CAPSULA HEYGEN DEL FONDATORE`,
+          sumHead: (s) => `PARTE 1 · SINTESI STRATEGICA DEL PASSO ${s}:`,
+          subTxt: "Guarda la capsula spiegata da Jorge Benítez (HeyGen) con esempi reali dell'applicazione:",
+          contBtn: (s) => `Continua nel Passo ${s}`
+        }
+      };
+      const locM = modalI18nMap[curLang] || modalI18nMap.es;
+
+      if (typeof window.tbbApplyCurrentLanguageToDOM === "function") {
+        window.tbbApplyCurrentLanguageToDOM();
+      }
+
+      if (tagEl) tagEl.textContent = curLang === "es" ? review.chapterTag : locM.chTag(resolvedToStep);
+      if (summaryHeadEl) summaryHeadEl.textContent = curLang === "es" ? (review.summaryHeading || locM.sumHead(resolvedToStep)) : locM.sumHead(resolvedToStep);
+      if (titleEl) titleEl.textContent = (curLang === "es" || !review.theorySpec) ? review.title : `${review.theorySpec.headerLabel} · ${review.theorySpec.theoryTitle}`;
+      if (subEl) subEl.textContent = curLang === "es" ? review.subtitle : locM.subTxt;
       if (listEl) {
-        const firstDiscovery = (review.bullets && review.bullets[0]) ? review.bullets[0] : "";
+        const firstDiscovery = curLang === "es"
+          ? ((review.bullets && review.bullets[0]) ? review.bullets[0] : "")
+          : (review.theorySpec ? `<strong>${review.theorySpec.frameworkBadge}:</strong> ${review.theorySpec.theoryBody}` : "");
         listEl.innerHTML = firstDiscovery
           ? `<div style="padding:8px 12px; background:#F8FAFC; border:1px solid #E2E8F0; border-left:3px solid #1D4ED8; border-radius:10px; color:#334155; font-size:0.80rem; line-height:1.45;">${firstDiscovery}</div>`
           : "";
       }
       if (btnTxtEl) {
-        btnTxtEl.textContent = options.keepCurrentSubStep
-          ? `Continuar en Paso ${window.tbbState?.step ?? resolvedToStep}`
-          : review.ctaLabel;
+        btnTxtEl.textContent = curLang === "es"
+          ? (options.keepCurrentSubStep ? `Continuar en Paso ${window.tbbState?.step ?? resolvedToStep}` : review.ctaLabel)
+          : locM.contBtn(resolvedToStep);
       }
       if (statusPill) {
-        statusPill.textContent = `Paso ${resolvedToStep} · HeyGen`;
+        statusPill.textContent = `${locM.chTag(resolvedToStep).split(" · ")[0]} · HeyGen`;
       }
       if (progBar) progBar.style.width = "15%";
 
@@ -9928,9 +10249,6 @@
       }
 
       modal.classList.add("open");
-      if (typeof window.tbbApplyCurrentLanguageToDOM === "function") {
-        window.tbbApplyCurrentLanguageToDOM();
-      }
     }
 
     function renderTransitionVideoLoop() {
@@ -24915,13 +25233,13 @@
   </style>
   <script src="/assets/vendor/opentype.min.js?v=1.3.4"></script>
   <script src="/assets/vendor/html2canvas.min.js?v=1.4.1"></script>
-  <script src="/tbb-executive-deliverables-suite.js?v=96.0"></script>
-  <script src="/tbb-cloud-vector-outliner.js?v=96.0"></script>
-  <script src="/tbb-v80-brandbook-plates.js?v=96.0"></script>
-  <script src="/universal-brandbook-30-engine.js?v=96.0"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=96.0"></script>
-  <script src="/improbears-preset-engine.js?v=96.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=97.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=97.0"></script>
+  <script src="/tbb-executive-deliverables-suite.js?v=99.0"></script>
+  <script src="/tbb-cloud-vector-outliner.js?v=99.0"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=99.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=99.0"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=99.0"></script>
+  <script src="/improbears-preset-engine.js?v=99.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=99.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=99.0"></script>
 </body>
 </html>

@@ -1,229 +1,183 @@
 #!/usr/bin/env python3
 """
 THEBESTBRAND — MOTOR DE REELS VERTICALES 9:16 (720x1280 · 30 FPS)
-CON AVATARES DEL FUNDADOR EN MOVIMIENTO REAL (HEYGEN) + VOZ MASCULINA EJECUTIVA SINCRONIZADA
-+ B-ROLLS DE VIDEO REALES (GOOGLE FLOW) + PIP CARDS EDITORIALES FLOTANTES
+CON AVATARES DEL FUNDADOR EN MOVIMIENTO REAL (HEYGEN · JORGE IMPROBEARS)
++ VOZ MASCULINA EJECUTIVA SINCRONIZADA (132 Hz)
++ CAPTURAS EN VIVO DE LA APP THEBESTBRAND STUDIO Y LÁMINAS C-00
 + GUIONES ORIGINALES INTACTOS DE CÁPSULAS (PASOS 0 AL 6).
 
-Cumple con la Regla 5 del Brandbook V5.1 y Requerimiento A (Parcial 2):
-- Tomas de Avatar del Fundador en movimiento real: Avatar oficial `Jorge Improbears`
-  en blazer gris claro + camisa blanca (`consulting-presentacion.mp4`) y blazer azul marino
-  + camisa azul cielo claro (`heygen_ef2588_navy_blazer_long.mp4` / `heygen_15283d_navy_blazer.mp4`),
-  100% libre de subtítulos viejos y alineado con el vestuario claro/neutro de la marca.
-- Audio 100% sincronizado con el guion exacto de cada paso (`capsules_manifest.json`) usando
-  la voz masculina ejecutiva (`Orus` de Gemini 2.5 Flash TTS / HeyGen Founder Voice) para que
-  cuando aparece el avatar de Jorge Benítez suene voz masculina de fundador coherente con el diálogo.
+Cumple con la Regla 5 del Brandbook V5.1 y Aislamiento Estricto:
+- Cero reutilización de videos de ImproBears-Web (`consulting-presentacion.mp4`, `studio-reel.mp4`, etc.).
+- Cada uno de los 7 pasos utiliza su propio look ejecutivo oficial de `Jorge Improbears` en HeyGen
+  (camisa + blazer en tonos claros/neutros de marca, cero aretes/piercings) sincronizado vía
+  lip-sync de envolvente acústica con el guion actual de cada paso.
+- En las escenas de demostración de interfaz, muestra la tarjeta flotante de la pantalla real
+  de TheBestBrand Studio App correspondiente a ese paso e idioma.
 """
 
-import base64
 import json
 import math
 import os
 import re
 import subprocess
-import time
-import urllib.request
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 from gtts import gTTS
 
 WORKSPACE_ROOT = Path("/home/antigravity/ImprobearsIA/thebestbrand")
-IMPROBEARS_WEB = Path("/home/antigravity/ImprobearsIA/ImproBears-Web/public/assets")
 VIDEOS_OUT_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "videos"
-PHOTOS_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "editorial_photos"
-ARTIFACTS_DIR = Path("/home/antigravity/.gemini/jetski/brain/v1/default/jetski_remote_agents_3p/b4c90800-97e3-4a72-b74c-2807a05a674a")
+API_VIDEOS_OUT_DIR = WORKSPACE_ROOT / "artifacts" / "api-server" / "public" / "assets" / "videos"
+CAPTURES_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "app_captures"
+PLATES_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "brandbook_plates_tbb"
 FONTS_DIR = WORKSPACE_ROOT / "apps" / "web" / "assets" / "fonts"
-TMP_DIR = Path("/tmp/tbb_male_founder_v97")
+HEYGEN_ASSETS_DIR = Path("/tmp/heygen_tbb_assets")
+TMP_DIR = Path("/tmp/tbb_heygen_steps_v99")
 
 VIDEOS_OUT_DIR.mkdir(parents=True, exist_ok=True)
+API_VIDEOS_OUT_DIR.mkdir(parents=True, exist_ok=True)
 TMP_DIR.mkdir(parents=True, exist_ok=True)
 
 FONT_BOLD = str(FONTS_DIR / "Montserrat-Black.ttf")
 FONT_SEMI = str(FONTS_DIR / "PlusJakartaSans-Bold.ttf")
 FONT_REG = str(FONTS_DIR / "PlusJakartaSans-Regular.ttf")
 
-HEYGEN_MASTER_720 = Path("/tmp/heygen_jorge_720x1280_30fps.mp4")
-
-# Ventanas de habla activa y de boca cerrada (reposo) medidas en consulting-presentacion.mp4
+# Ventanas de habla activa y de boca cerrada (reposo) medidas en el avatar HeyGen Jorge Improbears (1d65ca4f)
 SPEAK_WINDOWS = [
-    (0.30, 5.90),
-    (6.80, 12.10),
-    (13.10, 24.40),
-    (25.30, 44.00),
+    (0.10, 0.38),
+    (0.60, 1.32),
+    (1.72, 2.90),
+    (3.02, 3.30),
+    (3.42, 4.00),
+    (4.12, 5.90),
+    (6.32, 7.20),
+    (7.32, 8.40),
+    (8.72, 8.92),
+    (9.02, 10.02),
 ]
 REST_WINDOWS = [
-    (0.00, 0.23),
-    (6.23, 6.48),
+    (1.42, 1.68),
+    (6.10, 6.28),
+    (10.20, 10.38),
+    (0.42, 0.56),
 ]
 
-
-def ensure_heygen_master_720() -> Path:
-    """Garantiza la existencia del clip maestro 720x1280 30fps All-I-frame de Jorge Improbears."""
-    if HEYGEN_MASTER_720.exists() and HEYGEN_MASTER_720.stat().st_size > 1_000_000:
-        return HEYGEN_MASTER_720
-    src = IMPROBEARS_WEB / "videos" / "consulting-presentacion.mp4"
-    subprocess.run([
-        "ffmpeg", "-y",
-        "-i", str(src),
-        "-vf", "fps=30,scale=w=720:h=1280:force_original_aspect_ratio=increase,crop=720:1280:(iw-720)/2:0,setsar=1",
-        "-an",
-        "-c:v", "libx264", "-preset", "ultrafast", "-crf", "17", "-g", "1",
-        "-pix_fmt", "yuv420p",
-        str(HEYGEN_MASTER_720)
-    ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    return HEYGEN_MASTER_720
-
-
-def load_gemini_api_key() -> str:
-    k = os.environ.get("GEMINI_API_KEY", "").strip()
-    if k:
-        return k
-    snap = Path("/tmp/env_snapshot.txt")
-    if snap.exists():
-        text = snap.read_text(errors="ignore")
-        m = re.search(r'"GEMINI_API_KEY"\s*:\s*"([^"]+)"', text)
-        if m:
-            return m.group(1).strip()
-    return ""
-
-
-GEMINI_API_KEY = load_gemini_api_key()
-
-# =============================================================================
-# 1. FUENTES DE VIDEO REALES (HEYGEN AVATARES REGLA 5 + GOOGLE FLOW B-ROLLS)
-# =============================================================================
-V_HEYGEN_JORGE_GRAY_BLAZER = IMPROBEARS_WEB / "videos" / "consulting-presentacion.mp4"   # 1280x720, 46.9s (Camisa blanca + blazer gris claro Regla 5)
-V_HEYGEN_JORGE_NAVY_BLAZER = Path("/tmp/heygen_ef2588_navy_blazer_long.mp4")             # 1080x1920, 108.4s (Camisa azul cielo + blazer marino Regla 5)
-if not V_HEYGEN_JORGE_NAVY_BLAZER.exists():
-    V_HEYGEN_JORGE_NAVY_BLAZER = V_HEYGEN_JORGE_GRAY_BLAZER
-
-V_FLOW_STUDIO_REEL = IMPROBEARS_WEB / "videos" / "studio-reel.mp4"                  # 1920x1080, 34.0s (Google Flow arquitectura y estilo de vida)
-V_FLOW_AI_AGENT = IMPROBEARS_WEB / "videos" / "ai-agent-demo.mp4"                   # 1104x816, 6.0s (Google Flow sala de juntas ejecutiva)
-V_FLOW_PRODUCTIVIDAD = IMPROBEARS_WEB / "videos" / "productividad-reel.mp4"         # 1280x720, 10.0s (Google Flow tecnología y sistemas)
-V_FLOW_DRONE_CAMPUS = IMPROBEARS_WEB / "videos" / "studio-colegio-demo.mp4"         # 1920x1080, 25.3s (Google Flow dron y recorrido espacial)
-V_FLOW_HERO_IB = IMPROBEARS_WEB / "videos" / "hero-improbears.mp4"                  # 1280x720, 38.3s (Google Flow sistemas corporativos)
-
-# Fotografías y capturas reales de la app para las tarjetas PiP flotantes estilo Google Flow
-PIP_CARDS_BY_STEP = {
+# Capturas oficiales de TheBestBrand Studio App por paso (para tarjeta de demostración en escenas 2 y 4)
+STEP_APP_CAPTURES = {
     0: [
-        (ARTIFACTS_DIR / "ib_sim_01_step0_1_objetivo.png", "GOOGLE FLOW · PASO 0.1 OBJETIVO"),
-        (ARTIFACTS_DIR / "ib_sim_02_step0_2_nombre_y_logo_conservado.png", "CAPITAL VISUAL · LOGO BASE"),
-        (ARTIFACTS_DIR / "ib_sim_03_step0_3_giro_y_4_submarcas.png", "ESENCIA DEL GIRO Y SUBMARCAS"),
-        (PHOTOS_DIR / "improbears_01_persona.jpg", "SINCRONIZACIÓN CLOUD 24/7")
+        ("tour_step0_1_objetivo", "THEBESTBRAND STUDIO · PASO 0.1 OBJETIVO"),
+        ("step0_logo_aura", "DIAGNÓSTICO DE LOGO BASE CON GEMINI VISION"),
+        ("tour_step0_3_giro", "PASO 0.3 · GIRO DEL NEGOCIO Y ECOSISTEMA"),
+        ("step0_logo_aura", "SINCRONIZACIÓN EN VIVO CON AURA"),
     ],
     1: [
-        (ARTIFACTS_DIR / "ib_sim_04_step1_1_proposito.png", "SIMON SINEK · EL PORQUÉ"),
-        (ARTIFACTS_DIR / "ib_sim_21_step6_1_lamina_04_circulo_dorado.png", "CÍRCULO DORADO 100% CIRCULAR"),
-        (ARTIFACTS_DIR / "ib_sim_07_step1_4_metodo_3_pasos.png", "STORYBRAND · MÉTODO EN 3 PASOS"),
-        (PHOTOS_DIR / "tbb_02_buyer.jpg", "IMPACTO EN TU CLIENTE IDEAL")
+        ("step1_proposito_sinek", "SIMON SINEK · EL CÍRCULO DORADO"),
+        ("step1_proposito_sinek", "POR QUÉ -> CÓMO -> QUÉ"),
+        ("tour_step1_6_persona", "LA EMPRESA COMO PERSONA Y ARQUETIPOS"),
+        ("plate-04", "LÁMINA 04 · CÍRCULO DORADO EN CURVAS"),
     ],
     2: [
-        (ARTIFACTS_DIR / "ib_sim_11_step2_1_touchpoints_antes.png", "FASE 1 · TOUCHPOINTS ANTES"),
-        (PHOTOS_DIR / "improbears_03_tp_before.jpg", "DESCUBRIMIENTO Y CONFIANZA"),
-        (PHOTOS_DIR / "improbears_04_tp_during.jpg", "FASE 2 · EJECUCIÓN DURANTE"),
-        (PHOTOS_DIR / "improbears_05_tp_after.jpg", "FASE 3 · LEALTAD DESPUÉS")
+        ("step2_touchpoints_carlzon", "JAN CARLZON · MOMENTOS DE LA VERDAD"),
+        ("step2_touchpoints_carlzon", "TOUCHPOINTS: ANTES DE LA COMPRA"),
+        ("tour_step2_2_durante", "TOUCHPOINTS: DURANTE Y DESPUÉS"),
+        ("plate-10", "LÁMINA 10 · ARQUITECTURA DE EXPERIENCIA"),
     ],
     3: [
-        (ARTIFACTS_DIR / "tbb_sim_17_step3_1_raices_naming.png", "WALLY OLINS · RAÍCES DE NAMING"),
-        (ARTIFACTS_DIR / "tbb_sim_18_step3_2_seleccion_nombre.png", "MÉTODO SMILE & FONÉTICA"),
-        (ARTIFACTS_DIR / "ib_sim_14_step3_3_naming_improbears_y_clases_niza.png", "BLINDAJE EN CLASES DE NIZA"),
-        (ARTIFACTS_DIR / "Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png", "MONOGRAMA E ISOTIPO 1:1")
+        ("step3_naming_niza", "WALLY OLINS & AL RIES · IDENTIDAD VERBAL"),
+        ("step3_naming_niza", "ALEXANDRA WATKINS · MÉTODO SMILE"),
+        ("step3_naming_niza", "CLASIFICACIÓN INTERNACIONAL DE NIZA"),
+        ("plate-13", "LÁMINA 13 · TERNA OFICIAL DE LOGOTIPO"),
     ],
     4: [
-        (ARTIFACTS_DIR / "tbb_sim_21_step4_1_kansei_1.png", "INGENIERÍA KANSEI · 7 EJES"),
-        (ARTIFACTS_DIR / "step4_1_desktop_sliders.png", "CALIBRADOR SEMÁNTICO OSGOOD"),
-        (ARTIFACTS_DIR / "ib_sim_15_step4_4_tipografia_oficial_improbears.png", "VOZ TIPOGRÁFICA HÍBRIDA"),
-        (ARTIFACTS_DIR / "ib_sim_16_step4_5_arquitectura_5_logos_conservados.png", "ESTRUCTURA CONSTRUCTIVA")
+        ("step4_kansei_tipografia", "MITSUO NAGAMACHI · INGENIERÍA KANSEI"),
+        ("step4_kansei_tipografia", "7 EJES SEMÁNTICOS DE CHARLES OSGOOD"),
+        ("step4_kansei_tipografia", "ROBERT BRINGHURST · VOZ TIPOGRÁFICA"),
+        ("plate-22", "LÁMINA 22 · GOBERNANZA TIPOGRÁFICA HÍBRIDA"),
     ],
     5: [
-        (ARTIFACTS_DIR / "ib_sim_17_step5_1_paleta_oficial_improbears.png", "PAUL RAND & JOSEF ALBERS"),
-        (ARTIFACTS_DIR / "ib_sim_18_step5_2_marca_madre_y_4_submarcas_cargadas.png", "SAGI HAVIV · EVOLUCIÓN VECTORIAL"),
-        (ARTIFACTS_DIR / "tbb_sim_33_iter_06_final_apple_liquid_glass_claro.png", "ATELIER DE LOGOTIPO EN CURVAS"),
-        (ARTIFACTS_DIR / "tbb_sim_48_showcase_suite_logos_descargados.png", "SUITE .SVG + .AI + .PNG 1:1")
+        ("step5_taller_logo_liquid_glass", "PAUL RAND & JOSEF ALBERS · TALLER DE LOGO"),
+        ("step5_taller_logo_liquid_glass", "SAGI HAVIV · EVOLUCIÓN DE LOGO BASE"),
+        ("step5_taller_logo_liquid_glass", "10 ITERACIONES CON NANO BANANA PRO"),
+        ("plate-14", "LÁMINA 14 · ANATOMÍA VECTORIAL .SVG / .AI"),
     ],
     6: [
-        (ARTIFACTS_DIR / "ib_lamina_01_portada_zoom.png", "MASSIMO VIGNELLI · PORTADA C-00"),
-        (ARTIFACTS_DIR / "ib_lamina_02_indice_zoom.png", "36 LÁMINAS EN CURVAS ABIERTAS"),
-        (ARTIFACTS_DIR / "ib_lamina_30_4_submarcas_zoom.png", "ARQUITECTURA Y MOCKUPS REALES"),
-        (ARTIFACTS_DIR / "ib_sim_27_step6_2_boveda_entregables.png", "BÓVEDA: PDF, .AI, WORD Y PPTX")
-    ]
+        ("step6_visor_36_laminas", "MASSIMO VIGNELLI · 36 LÁMINAS EN CURVAS"),
+        ("step6_visor_36_laminas", "DIRECTIVA C-00 · LIENZO 100% CLARO"),
+        ("step6_boveda_entregables", "BÓVEDA DE 9 ENTREGABLES EJECUTIVOS"),
+        ("step6_firma_correo_html", "EXPORTACIÓN PDF, HTML, VECTORES Y OFFICE"),
+    ],
 }
 
-# Secuencia de fuentes de video en movimiento por paso (Alternando Avatar HeyGen -> B-Roll Google Flow -> Avatar HeyGen -> B-Roll Google Flow)
+# Secuencia de las 4 escenas por paso usando los 7 looks ejecutivos de Jorge Improbears en HeyGen
 STEP_VIDEO_SOURCES = {
     0: [
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 2.0, "HEYGEN AVATAR · JORGE IMPROBEARS", "Peter Drucker · Definir el punto de partida"),
-        ("flow_wide", V_FLOW_STUDIO_REEL, 6.0, "GOOGLE FLOW B-ROLL · CAPITAL VISUAL", "David Aaker & Sagi Haviv · Logo Base"),
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 14.0, "HEYGEN AVATAR · MENTORÍA EN VIVO", "Al Ries & Jack Trout · Giro del Negocio"),
-        ("flow_wide", V_FLOW_PRODUCTIVIDAD, 0.5, "GOOGLE FLOW B-ROLL · ECOSISTEMA 24/7", "Sincronización en todos tus dispositivos")
+        ("heygen_avatar", 0, 0.0, "HEYGEN AVATAR · JORGE IMPROBEARS", "Peter Drucker · Definir el punto de partida"),
+        ("heygen_app_card", 1, 2.0, "HEYGEN AVATAR + APP STUDIO", "David Aaker & Sagi Haviv · Logo Base"),
+        ("heygen_avatar", 0, 5.0, "HEYGEN AVATAR · MENTORÍA EN VIVO", "Al Ries & Jack Trout · Giro del Negocio"),
+        ("heygen_app_card", 2, 7.0, "HEYGEN AVATAR + APP STUDIO", "Sincronización en todos tus dispositivos"),
     ],
     1: [
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 8.0, "HEYGEN AVATAR · PROPÓSITO NUCLEAR", "Simon Sinek · El Círculo Dorado"),
-        ("flow_wide", V_FLOW_AI_AGENT, 0.0, "GOOGLE FLOW B-ROLL · COMITÉ DIRECTIVO", "Empezar por el Porqué antes del Qué"),
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 22.0, "HEYGEN AVATAR · OFERTA DE VALOR", "Alex Osterwalder & Donald Miller"),
-        ("flow_wide", V_FLOW_STUDIO_REEL, 12.0, "GOOGLE FLOW B-ROLL · IMPACTO REAL", "Claridad que elimina toda fricción")
+        ("heygen_avatar", 1, 0.5, "HEYGEN AVATAR · PROPÓSITO NUCLEAR", "Simon Sinek · El Círculo Dorado"),
+        ("heygen_app_card", 2, 3.0, "HEYGEN AVATAR + APP STUDIO", "Empezar por el Porqué antes del Qué"),
+        ("heygen_avatar", 1, 6.0, "HEYGEN AVATAR · OFERTA DE VALOR", "Alex Osterwalder & Donald Miller"),
+        ("heygen_app_card", 0, 8.0, "HEYGEN AVATAR + BRANDBOOK", "Claridad que elimina toda fricción"),
     ],
     2: [
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 12.0, "HEYGEN AVATAR · MOMENTOS DE VERDAD", "Jan Carlzon · 15 segundos decisivos"),
-        ("flow_wide", V_FLOW_DRONE_CAMPUS, 2.0, "GOOGLE FLOW B-ROLL · FASE 1: ANTES", "Descubrimiento y primera impresión"),
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 28.0, "HEYGEN AVATAR · SERVICIO SIN FRICCIÓN", "Don Norman · Psicología de Touchpoints"),
-        ("flow_wide", V_FLOW_STUDIO_REEL, 19.0, "GOOGLE FLOW B-ROLL · FASE 3: DESPUÉS", "Entrega, garantía y lealtad")
+        ("heygen_avatar", 2, 1.0, "HEYGEN AVATAR · MOMENTOS DE VERDAD", "Jan Carlzon · 15 segundos decisivos"),
+        ("heygen_app_card", 3, 3.5, "HEYGEN AVATAR + APP STUDIO", "Antes, Durante y Después de la compra"),
+        ("heygen_avatar", 2, 6.5, "HEYGEN AVATAR · SERVICIO SIN FRICCIÓN", "Don Norman · Psicología de Touchpoints"),
+        ("heygen_app_card", 1, 8.5, "HEYGEN AVATAR + BRANDBOOK", "Entrega, garantía y lealtad"),
     ],
     3: [
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 18.0, "HEYGEN AVATAR · IDENTIDAD VERBAL", "Wally Olins · El poder del nombre"),
-        ("flow_wide", V_FLOW_PRODUCTIVIDAD, 2.0, "GOOGLE FLOW B-ROLL · MÉTODO SMILE", "Alexandra Watkins & David Placek"),
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 34.0, "HEYGEN AVATAR · BLINDAJE LEGAL", "Alina Wheeler · Clases Internacionales Niza"),
-        ("flow_wide", V_FLOW_DRONE_CAMPUS, 12.0, "GOOGLE FLOW B-ROLL · PRESENCIA 1:1", "Monograma en digital y arquitectura")
+        ("heygen_avatar", 3, 0.0, "HEYGEN AVATAR · IDENTIDAD VERBAL", "Wally Olins · El poder del nombre"),
+        ("heygen_app_card", 4, 2.5, "HEYGEN AVATAR + APP STUDIO", "Alexandra Watkins & David Placek (SMILE)"),
+        ("heygen_avatar", 3, 5.5, "HEYGEN AVATAR · BLINDAJE LEGAL", "Alina Wheeler · Clases Internacionales Niza"),
+        ("heygen_app_card", 5, 7.5, "HEYGEN AVATAR + BRANDBOOK", "Monograma en digital y arquitectura"),
     ],
     4: [
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 24.0, "HEYGEN AVATAR · INGENIERÍA KANSEI", "Mitsuo Nagamachi · Geometría emocional"),
-        ("flow_wide", V_FLOW_STUDIO_REEL, 24.0, "GOOGLE FLOW B-ROLL · 7 EJES OSGOOD", "Curvas de cercanía vs. precisión técnica"),
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 6.0, "HEYGEN AVATAR · VOZ TIPOGRÁFICA", "Robert Bringhurst & Adrian Frutiger"),
-        ("flow_wide", V_FLOW_HERO_IB, 12.0, "GOOGLE FLOW B-ROLL · KIT DE FUENTES", "Tipografía híbrida lista para descarga")
+        ("heygen_avatar", 4, 1.0, "HEYGEN AVATAR · INGENIERÍA KANSEI", "Mitsuo Nagamachi · Geometría emocional"),
+        ("heygen_app_card", 0, 3.0, "HEYGEN AVATAR + APP STUDIO", "7 Ejes de Charles Osgood & Ramachandran"),
+        ("heygen_avatar", 4, 6.0, "HEYGEN AVATAR · VOZ TIPOGRÁFICA", "Robert Bringhurst & Adrian Frutiger"),
+        ("heygen_app_card", 2, 8.0, "HEYGEN AVATAR + BRANDBOOK", "Tipografía híbrida lista para descarga"),
     ],
     5: [
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 16.0, "HEYGEN AVATAR · TALLER DE LOGOTIPO", "Paul Rand & Josef Albers · Color original"),
-        ("flow_wide", V_FLOW_STUDIO_REEL, 8.0, "GOOGLE FLOW B-ROLL · GEMINI VISION", "Sagi Haviv · Conservar o evolucionar base"),
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 30.0, "HEYGEN AVATAR · ITERACIÓN ABIERTA", "Max Wertheimer & Dieter Rams"),
-        ("flow_wide", V_FLOW_PRODUCTIVIDAD, 1.0, "GOOGLE FLOW B-ROLL · LIQUID GLASS", "Jony Ive · Símbolo y vectores en curvas .AI")
+        ("heygen_avatar", 5, 0.5, "HEYGEN AVATAR · TALLER DE LOGOTIPO", "Paul Rand & Josef Albers · Color original"),
+        ("heygen_app_card", 1, 3.0, "HEYGEN AVATAR + APP STUDIO", "Sagi Haviv · Conservar o evolucionar base"),
+        ("heygen_avatar", 5, 5.5, "HEYGEN AVATAR · ITERACIÓN ABIERTA", "Max Wertheimer & Dieter Rams"),
+        ("heygen_app_card", 6, 8.0, "HEYGEN AVATAR + BRANDBOOK", "Jony Ive · Símbolo y vectores en curvas .AI"),
     ],
     6: [
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 20.0, "HEYGEN AVATAR · CONSTITUCIÓN C-00", "Massimo Vignelli · 36 Láminas en Curvas"),
-        ("flow_wide", V_FLOW_DRONE_CAMPUS, 6.0, "GOOGLE FLOW B-ROLL · FLUJO EDITORIAL", "Josef Müller-Brockmann · Lienzo Claro"),
-        ("heygen_gray_blazer", V_HEYGEN_JORGE_GRAY_BLAZER, 32.0, "HEYGEN AVATAR · SUITE EJECUTIVA", "Danne & Blackburn · De la idea a imprenta"),
-        ("flow_wide", V_FLOW_STUDIO_REEL, 15.0, "GOOGLE FLOW B-ROLL · MARCA EN ACCIÓN", "PDF, Vectores .SVG/.AI, Word, PPTX y Fuentes")
-    ]
+        ("heygen_avatar", 6, 0.0, "HEYGEN AVATAR · CONSTITUCIÓN C-00", "Massimo Vignelli · 36 Láminas en Curvas"),
+        ("heygen_app_card", 5, 2.5, "HEYGEN AVATAR + APP STUDIO", "Josef Müller-Brockmann · Lienzo Claro"),
+        ("heygen_avatar", 6, 5.0, "HEYGEN AVATAR · SUITE EJECUTIVA", "Danne & Blackburn · De la idea a imprenta"),
+        ("heygen_app_card", 1, 7.5, "HEYGEN AVATAR + BÓVEDA", "PDF, Vectores .SVG/.AI, Word, PPTX y Fuentes"),
+    ],
 }
 
 
-def draw_aura_orb_badge(size: int = 116) -> Image.Image:
-    """Dibuja el Orbe 3D de Aura con los colores oficiales (#1D4ED8, #E04700, #EA7300) para el HUD superior."""
-    img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-    cx, cy = size // 2, size // 2
-    max_r = size // 2 - 4
+def get_heygen_master_for_look(look_idx: int) -> Path:
+    """Devuelve el clip maestro 720x1280 30fps All-I-frame de Jorge Improbears para el look solicitado."""
+    idx = look_idx % 7
+    p = HEYGEN_ASSETS_DIR / f"master_step{idx}.mp4"
+    if p.exists() and p.stat().st_size > 1_000_000:
+        return p
+    fallback = HEYGEN_ASSETS_DIR / "video_1d65ca4f.mp4"
+    return fallback
 
-    draw.ellipse([cx - max_r, cy - max_r, cx + max_r, cy + max_r], fill=(8, 13, 26, 245), outline=(29, 78, 216, 255), width=3)
 
-    rings = 12
-    for i in range(rings):
-        u = (i / rings) * math.pi * 2 + 0.35
-        pts = []
-        for j in range(25):
-            v = (j / 24.0) * math.pi * 2
-            R = max_r * 0.50
-            rt = max_r * 0.22
-            sx = cx + (R + rt * math.cos(v)) * math.cos(u)
-            sy = cy + (R + rt * math.cos(v)) * math.sin(u) * 0.74 + rt * math.sin(v) * 0.48
-            pts.append((sx, sy))
-        col = (29, 78, 216, 210) if i % 2 == 0 else (234, 115, 0, 210)
-        draw.line(pts, fill=col, width=2)
-
-    r_glow = int(max_r * 0.28)
-    draw.ellipse([cx - r_glow, cy - r_glow, cx + r_glow, cy + r_glow], fill=(224, 71, 0, 220))
-    r_core = int(max_r * 0.13)
-    draw.ellipse([cx - r_core, cy - r_core, cx + r_core, cy + r_core], fill=(255, 255, 255, 255))
-    return img
+def resolve_localized_capture_path(base_name: str, lang: str = "es") -> Path:
+    """Resuelve la captura localizada de la app o lámina del brandbook."""
+    if base_name.startswith("plate-"):
+        p = PLATES_DIR / f"{base_name}.jpg"
+        if p.exists():
+            return p
+    if lang and lang != "es":
+        p_lang = CAPTURES_DIR / f"{base_name}_{lang}.png"
+        if p_lang.exists():
+            return p_lang
+    p_es = CAPTURES_DIR / f"{base_name}.png"
+    if p_es.exists():
+        return p_es
+    return PLATES_DIR / "plate-01.jpg"
 
 
 def build_transparent_hud_overlay(
@@ -235,38 +189,72 @@ def build_transparent_hud_overlay(
     narration_text: str,
     pip_img_path: Path,
     pip_caption: str,
-    out_png: Path
+    out_png: Path,
+    show_app_card: bool = False,
+    step_word: str = "PASO",
+    part_word: str = "PARTE",
 ):
     """
-    Construye un overlay RGBA 720x1280 ultra limpio estilo Apple / HeyGen:
-    - Cero cajas Picture-in-Picture flotantes sobre el cuerpo del fundador.
-    - Parte superior: Píldora discreta Paso X · Escena Y/4.
+    Construye un overlay RGBA 720x1280 estilo Apple / HeyGen:
+    - Parte superior: Píldora discreta PASO 0X · PARTE Y/4 + badge HeyGen Jorge Improbears.
+    - Si `show_app_card` es True (escenas 2 y 4), muestra una tarjeta cristalina en la zona
+      inferior-media (debajo del pecho, sin tapar jamás el rostro del avatar) con la captura
+      real de TheBestBrand Studio App en el idioma activo.
     - Parte inferior: Lower-third limpio de 2 líneas (Titular + Autor) y barra fina de progreso.
     """
     W, H = 720, 1280
     overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
 
-    # Gradiente inferior suave solo en los últimos 280px para legibilidad del titular
-    for y in range(H - 280, H):
-        prog = (y - (H - 280)) / 280.0
-        alpha = int(215 * (prog ** 1.3))
+    # Gradiente inferior suave para legibilidad del titular
+    grad_start = H - 340 if show_app_card else H - 280
+    for y in range(grad_start, H):
+        prog = (y - grad_start) / float(H - grad_start)
+        alpha = int(225 * (prog ** 1.25))
         draw.line([(0, y), (W, y)], fill=(8, 13, 24, alpha))
 
     try:
         f_top_badge = ImageFont.truetype(FONT_BOLD, 13)
-        f_title = ImageFont.truetype(FONT_BOLD, 25)
-        f_sub = ImageFont.truetype(FONT_SEMI, 16)
+        f_card_tag = ImageFont.truetype(FONT_BOLD, 11)
+        f_title = ImageFont.truetype(FONT_BOLD, 24)
+        f_sub = ImageFont.truetype(FONT_SEMI, 15)
     except Exception:
-        f_top_badge = f_title = f_sub = ImageFont.load_default()
+        f_top_badge = f_card_tag = f_title = f_sub = ImageFont.load_default()
 
-    # Píldora superior discreta
-    draw.rounded_rectangle([28, 28, 280, 62], radius=17, fill=(13, 37, 64, 210), outline=(255, 255, 255, 65), width=1)
-    draw.ellipse([42, 40, 52, 50], fill=(234, 88, 12, 255))
-    draw.text((62, 37), f"PASO 0{step_num} · PARTE {shot_idx + 1}/4", font=f_top_badge, fill=(255, 255, 255, 255))
+    # Píldora superior izquierda: PASO 0X · PARTE Y/4
+    draw.rounded_rectangle([28, 28, 286, 62], radius=17, fill=(13, 37, 64, 220), outline=(255, 255, 255, 75), width=1)
+    draw.ellipse([42, 40, 52, 50], fill=(255, 122, 0, 255))
+    draw.text((62, 37), f"{step_word} 0{step_num} · {part_word} {shot_idx + 1}/4", font=f_top_badge, fill=(255, 255, 255, 255))
+
+    # Píldora superior derecha: THE BEST BRAND · STUDIO
+    draw.rounded_rectangle([W - 252, 28, W - 28, 62], radius=17, fill=(255, 255, 255, 230), outline=(66, 110, 174, 180), width=1)
+    draw.text((W - 234, 37), "THE BEST BRAND AI", font=f_top_badge, fill=(13, 37, 64, 255))
+
+    # Si corresponde mostrar la tarjeta de captura de la app (debajo del pecho, y=735..1075)
+    if show_app_card and pip_img_path and pip_img_path.exists():
+        try:
+            card_w, card_h = 664, 326
+            cx0, cy0 = 28, 742
+            draw.rounded_rectangle(
+                [cx0 - 4, cy0 - 30, cx0 + card_w + 4, cy0 + card_h + 4],
+                radius=18,
+                fill=(13, 37, 64, 238),
+                outline=(255, 122, 0, 230),
+                width=2,
+            )
+            draw.ellipse([cx0 + 12, cy0 - 20, cx0 + 20, cy0 - 12], fill=(255, 122, 0, 255))
+            draw.text((cx0 + 28, cy0 - 22), pip_caption[:56], font=f_card_tag, fill=(255, 255, 255, 245))
+
+            cap_img = Image.open(pip_img_path).convert("RGBA")
+            cap_resized = cap_img.resize((card_w, card_h), Image.Resampling.LANCZOS)
+            mask = Image.new("L", (card_w, card_h), 0)
+            ImageDraw.Draw(mask).rounded_rectangle([0, 0, card_w, card_h], radius=14, fill=255)
+            overlay.paste(cap_resized, (cx0, cy0), mask)
+        except Exception:
+            pass
 
     # Barra de acento lateral limpia en el lower-third
-    draw.rounded_rectangle([28, H - 156, 35, H - 54], radius=3, fill=(234, 88, 12, 255))
+    draw.rounded_rectangle([28, H - 160, 35, H - 54], radius=3, fill=(255, 122, 0, 255))
 
     words = headline.split()
     lines = []
@@ -283,10 +271,10 @@ def build_transparent_hud_overlay(
         lines.append(cur)
     lines = lines[:2]
 
-    y_text = H - 156
+    y_text = H - 160
     for ln in lines:
         draw.text((48, y_text), ln, font=f_title, fill=(255, 255, 255, 255))
-        y_text += 31
+        y_text += 30
 
     draw.text((48, y_text + 4), sub_label[:54], font=f_sub, fill=(147, 197, 253, 255))
 
@@ -294,7 +282,7 @@ def build_transparent_hud_overlay(
     seg_w = (W - 56 - 24) // 4
     for i in range(4):
         sx = 28 + i * (seg_w + 8)
-        col = (234, 88, 12, 255) if i <= shot_idx else (255, 255, 255, 75)
+        col = (255, 122, 0, 255) if i <= shot_idx else (255, 255, 255, 75)
         draw.rounded_rectangle([sx, H - 30, sx + seg_w, H - 24], radius=3, fill=col)
 
     overlay.save(out_png, "PNG")
@@ -302,7 +290,7 @@ def build_transparent_hud_overlay(
 
 def synthesize_founder_voice_m4a(narration_text: str, clip_id: str) -> Path:
     """
-    Genera la narración exacta del guion con voz masculina barítona calibrada al registro
+    Genera la narración exacta del guion en español con voz masculina barítona calibrada al registro
     fundamental de Jorge Benítez (~132 Hz) con formantes vocales desplazados vía librubberband.
     """
     out_m4a = TMP_DIR / f"{clip_id}_male132.m4a"
@@ -341,15 +329,16 @@ def get_duration(media_path: Path) -> float:
     return 8.0
 
 
-def build_lipsync_ffconcat(audio_m4a: Path, start_sec: float, out_concat_txt: Path) -> float:
+def build_lipsync_ffconcat(audio_m4a: Path, look_idx: int, start_sec: float, out_concat_txt: Path) -> float:
     """
     Analiza la envolvente de voz (en ventanas de 50ms) del audio narrado y construye una línea
-    de tiempo ffconcat que alterna exactamente entre las ventanas de habla activa de Jorge Benítez
-    (SPEAK_WINDOWS) cuando hay voz y las ventanas de boca cerrada en reposo (REST_WINDOWS) durante pausas.
+    de tiempo ffconcat sobre el clip maestro HeyGen del look de ese paso (`master_step{look_idx}.mp4`),
+    alternando entre ventanas de habla activa (SPEAK_WINDOWS) cuando hay voz y ventanas de boca
+    cerrada en reposo (REST_WINDOWS) durante las pausas.
     """
     import numpy as np
 
-    master_v = ensure_heygen_master_720()
+    master_v = get_heygen_master_for_look(look_idx)
     raw_pcm = subprocess.check_output([
         "ffmpeg", "-v", "error", "-i", str(audio_m4a),
         "-f", "f32le", "-ac", "1", "-ar", "16000", "-"
@@ -383,9 +372,8 @@ def build_lipsync_ffconcat(audio_m4a: Path, start_sec: float, out_concat_txt: Pa
     runs.append((cur_v, round(cur_len * 0.05, 3)))
 
     lines = ["ffconcat version 1.0"]
-    # Elegir ventana inicial de habla según start_sec para variar los gestos entre escenas
-    sw_idx = int(abs(start_sec) // 6) % len(SPEAK_WINDOWS)
-    rw_idx = 0
+    sw_idx = int(abs(start_sec) * 2 + look_idx) % len(SPEAK_WINDOWS)
+    rw_idx = look_idx % len(REST_WINDOWS)
     for is_v, d in runs:
         rem = d
         if is_v:
@@ -415,7 +403,7 @@ def build_lipsync_ffconcat(audio_m4a: Path, start_sec: float, out_concat_txt: Pa
 
 def build_dynamic_heygen_flow_clip(
     mode: str,
-    video_src: Path,
+    look_idx: int,
     start_sec: float,
     overlay_png: Path,
     audio_m4a: Path,
@@ -423,52 +411,26 @@ def build_dynamic_heygen_flow_clip(
     poster_jpg: Path = None
 ):
     dur = get_duration(audio_m4a)
+    concat_file = out_mp4.with_suffix(".ffconcat")
+    build_lipsync_ffconcat(audio_m4a, int(look_idx), start_sec, concat_file)
 
-    if mode.startswith("heygen"):
-        concat_file = out_mp4.with_suffix(".ffconcat")
-        build_lipsync_ffconcat(audio_m4a, start_sec, concat_file)
-        v_filter = "[0:v]fps=30,setsar=1[bg];[bg][1:v]overlay=0:0:format=auto[outv]"
-        cmd = [
-            "ffmpeg", "-y",
-            "-f", "concat", "-safe", "0",
-            "-i", str(concat_file),
-            "-i", str(overlay_png),
-            "-i", str(audio_m4a),
-            "-filter_complex", v_filter,
-            "-map", "[outv]",
-            "-map", "2:a",
-            "-t", f"{dur:.2f}",
-            "-c:v", "libx264", "-preset", "veryfast", "-crf", "22",
-            "-pix_fmt", "yuv420p",
-            "-c:a", "aac", "-b:a", "128k",
-            "-shortest",
-            str(out_mp4)
-        ]
-    else:
-        # B-Roll Google Flow manteniendo proporción natural (SAR 1:1)
-        v_filter = (
-            "[0:v]fps=30,scale=w=720:h=1280:force_original_aspect_ratio=increase,"
-            "crop=720:1280:(iw-720)/2:0,setsar=1[bg];"
-            "[bg][1:v]overlay=0:0:format=auto[outv]"
-        )
-        cmd = [
-            "ffmpeg", "-y",
-            "-stream_loop", "-1",
-            "-ss", f"{start_sec:.2f}",
-            "-i", str(video_src),
-            "-i", str(overlay_png),
-            "-i", str(audio_m4a),
-            "-filter_complex", v_filter,
-            "-map", "[outv]",
-            "-map", "2:a",
-            "-t", f"{dur:.2f}",
-            "-c:v", "libx264", "-preset", "veryfast", "-crf", "22",
-            "-pix_fmt", "yuv420p",
-            "-c:a", "aac", "-b:a", "128k",
-            "-shortest",
-            str(out_mp4)
-        ]
-
+    v_filter = "[0:v]fps=30,setsar=1[bg];[bg][1:v]overlay=0:0:format=auto[outv]"
+    cmd = [
+        "ffmpeg", "-y",
+        "-f", "concat", "-safe", "0",
+        "-i", str(concat_file),
+        "-i", str(overlay_png),
+        "-i", str(audio_m4a),
+        "-filter_complex", v_filter,
+        "-map", "[outv]",
+        "-map", "2:a",
+        "-t", f"{dur:.2f}",
+        "-c:v", "libx264", "-preset", "veryfast", "-crf", "22",
+        "-pix_fmt", "yuv420p",
+        "-c:a", "aac", "-b:a", "128k",
+        "-shortest",
+        str(out_mp4)
+    ]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     if poster_jpg is not None:
@@ -485,7 +447,6 @@ def build_dynamic_heygen_flow_clip(
 def main():
     import shutil
 
-    ensure_heygen_master_720()
     manifest_path = VIDEOS_OUT_DIR / "capsules_manifest.json"
     with open(manifest_path, "r", encoding="utf-8") as f:
         manifest = json.load(f)
@@ -505,14 +466,15 @@ def main():
     for item in manifest:
         step = item["step"]
         sources = STEP_VIDEO_SOURCES.get(step, STEP_VIDEO_SOURCES[0])
-        pips = PIP_CARDS_BY_STEP.get(step, PIP_CARDS_BY_STEP[0])
+        cap_specs = STEP_APP_CAPTURES.get(step, STEP_APP_CAPTURES[0])
         clip_paths = []
-        print(f"=== Generando Reel 9:16 HeyGen Lip-Sync + Voz Masculina Barítona (132Hz) · Paso {step}: {item['title']} ===")
+        print(f"=== Generando Reel 9:16 HeyGen Avatar (Look Paso {step}) + Voz Masculina 132Hz · Paso {step}: {item['title']} ===")
 
         for s_idx, scene in enumerate(item["scenes"]):
-            clip_id = f"v97_step_{step}_clip_{s_idx}"
-            mode, v_src, start_sec, shot_badge, sub_label = sources[s_idx % len(sources)]
-            pip_path, pip_caption = pips[s_idx % len(pips)]
+            clip_id = f"v99_step_{step}_clip_{s_idx}_es"
+            mode, look_idx, start_sec, shot_badge, sub_label = sources[s_idx % len(sources)]
+            cap_base, cap_caption = cap_specs[s_idx % len(cap_specs)]
+            cap_path = resolve_localized_capture_path(cap_base, "es")
 
             if step == 0 and s_idx == 0:
                 scene["narration"] = re.sub(r"^Hola,\s*soy\s+Aura\.", "Hola, soy Jorge Benítez.", scene["narration"])
@@ -525,29 +487,32 @@ def main():
                 headline=scene["headline"],
                 sub_label=sub_label,
                 narration_text=scene.get("narration", ""),
-                pip_img_path=pip_path,
-                pip_caption=pip_caption,
-                out_png=overlay_png
+                pip_img_path=cap_path,
+                pip_caption=cap_caption,
+                out_png=overlay_png,
+                show_app_card=(mode == "heygen_app_card"),
+                step_word="PASO",
+                part_word="PARTE",
             )
 
             audio_m4a = synthesize_founder_voice_m4a(scene["narration"], clip_id)
-            clip_mp4 = TMP_DIR / f"{clip_id}_heygen_flow.mp4"
+            clip_mp4 = TMP_DIR / f"{clip_id}_heygen.mp4"
             poster_path = (VIDEOS_OUT_DIR / f"poster_paso_{step}.jpg") if s_idx == 0 else None
 
             build_dynamic_heygen_flow_clip(
                 mode=mode,
-                video_src=v_src,
+                look_idx=look_idx,
                 start_sec=start_sec,
                 overlay_png=overlay_png,
                 audio_m4a=audio_m4a,
                 out_mp4=clip_mp4,
-                poster_jpg=poster_path
+                poster_jpg=poster_path,
             )
             clip_paths.append(clip_mp4)
             if s_idx == 0:
                 first_clips.append(clip_mp4)
 
-        concat_txt = TMP_DIR / f"concat_step_{step}.txt"
+        concat_txt = TMP_DIR / f"concat_step_{step}_es.txt"
         with open(concat_txt, "w") as cf:
             for cp in clip_paths:
                 cf.write(f"file '{cp.resolve()}'\n")
@@ -559,24 +524,30 @@ def main():
             str(out_step_mp4)
         ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-        # Sincronizar también el archivo legacy capsule_step_*.mp4 para que no quede ningún archivo con voz femenina
+        # Copiar al directorio espejo de api-server y actualizar nombre legacy
+        shutil.copy2(out_step_mp4, API_VIDEOS_OUT_DIR / out_step_mp4.name)
+        poster_file = VIDEOS_OUT_DIR / f"poster_paso_{step}.jpg"
+        if poster_file.exists():
+            shutil.copy2(poster_file, API_VIDEOS_OUT_DIR / poster_file.name)
+
         leg_name = legacy_map.get(step)
         if leg_name:
             shutil.copy2(out_step_mp4, VIDEOS_OUT_DIR / leg_name)
+            shutil.copy2(out_step_mp4, API_VIDEOS_OUT_DIR / leg_name)
 
         dur = round(get_duration(out_step_mp4), 1)
         sz_kb = round(out_step_mp4.stat().st_size / 1024, 1)
-        print(f"  ✓ {out_step_mp4.name} listo ({dur}s, {sz_kb} KB, 720x1280 30fps HeyGen Lip-Sync + Voz Masculina 132Hz)")
+        print(f"  ✓ [ES] {out_step_mp4.name} listo ({dur}s, {sz_kb} KB, 720x1280 30fps HeyGen Look {step} + Lip-Sync)")
 
         item_copy = dict(item)
         item_copy["duration_sec"] = dur
         item_copy["size_kb"] = sz_kb
         item_copy["aspect_ratio"] = "9:16"
-        item_copy["production_engine"] = "HeyGen Founder Avatar (Jorge Improbears Lip-Sync) + Google Flow Dynamic B-Rolls + Male Baritone Voice (132Hz)"
+        item_copy["production_engine"] = f"HeyGen Founder Avatar (Jorge Improbears Look {step} Lip-Sync) + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
         updated.append(item_copy)
 
-    # Master tour (Recorrido completo con el Fundador y Avatares)
-    concat_master = TMP_DIR / "concat_master.txt"
+    # Master tour (Recorrido completo con los 7 looks del Fundador en HeyGen)
+    concat_master = TMP_DIR / "concat_master_es.txt"
     with open(concat_master, "w") as mf:
         for cp in first_clips:
             mf.write(f"file '{cp.resolve()}'\n")
@@ -586,10 +557,12 @@ def main():
         "-i", str(concat_master), "-c", "copy", "-movflags", "+faststart",
         str(master_mp4)
     ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    shutil.copy2(master_mp4, API_VIDEOS_OUT_DIR / master_mp4.name)
 
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(updated, f, indent=2, ensure_ascii=False)
-    print("\n✓ Todos los videos verticales en Español sincronizados con Voz Masculina (132Hz) y Lip-Sync de Jorge Benítez.")
+    shutil.copy2(manifest_path, API_VIDEOS_OUT_DIR / "capsules_manifest.json")
+    print("\n✓ Los 7 videos verticales en Español (Pasos 0..6) generados con el avatar HeyGen de Jorge Improbears sin material de ImproBears-Web.")
 
 
 if __name__ == "__main__":
