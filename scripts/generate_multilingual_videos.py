@@ -377,12 +377,12 @@ HERO_I18N = {
 
 
 MALE_PITCH_BY_LANG = {
-    "es": (0.586, "com.mx"),
-    "en": (0.619, "com"),
-    "fr": (0.743, "fr"),
-    "pt": (0.553, "com.br"),
-    "de": (0.610, "de"),
-    "it": (0.960, "it"),
+    "es": (0.735, "com.mx"),
+    "en": (0.765, "com"),
+    "fr": (0.865, "fr"),
+    "pt": (0.705, "com.br"),
+    "de": (0.755, "de"),
+    "it": (1.020, "it"),
 }
 
 
@@ -391,17 +391,17 @@ def synthesize_localized_founder_voice_m4a(text: str, lang: str, clip_id: str) -
     if out_m4a.exists() and out_m4a.stat().st_size > 4000:
         return out_m4a
 
-    pitch_factor, tld = MALE_PITCH_BY_LANG.get(lang, (0.619, "com"))
+    pitch_factor, tld = MALE_PITCH_BY_LANG.get(lang, (0.765, "com"))
     raw_mp3 = TMP_MULTI_DIR / f"{clip_id}_{lang}_raw.mp3"
     tts = gTTS(text=text, lang=lang, tld=tld, slow=False)
     tts.save(str(raw_mp3))
 
-    # Calibrar timbre masculino barítono de Jorge Benítez (~132 Hz) con formantes desplazados + ambiente sutil
+    # Calibrar timbre masculino barítono de Jorge Benítez con cadencia ágil (tempo=1.24) y nitidez vocal
     af_voice = (
-        f"[0:a]rubberband=pitch={pitch_factor:.3f}:tempo=1.06:formant=shifted:pitchq=quality,"
-        "equalizer=f=135:t=q:w=1.1:g=3.5,"
-        "equalizer=f=3200:t=q:w=1.5:g=-2.5,"
-        "lowpass=f=7200,aresample=44100,volume=1.6[v];"
+        f"[0:a]rubberband=pitch={pitch_factor:.3f}:tempo=1.24:formant=shifted:pitchq=quality,"
+        "equalizer=f=135:t=q:w=1.1:g=1.0,"
+        "equalizer=f=3200:t=q:w=1.4:g=2.0,"
+        "highpass=f=85,aresample=44100,volume=1.6[v];"
         "[1:a]lowpass=f=700[bg];"
         "[v][bg]amix=inputs=2:duration=first:dropout_transition=1,apad=pad_dur=0.20[aout]"
     )

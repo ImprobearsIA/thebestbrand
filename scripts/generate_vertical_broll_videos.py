@@ -305,10 +305,10 @@ def synthesize_founder_voice_m4a(narration_text: str, clip_id: str) -> Path:
     tts.save(str(raw_mp3))
 
     af_filter = (
-        "rubberband=pitch=0.586:tempo=1.06:formant=shifted:pitchq=quality,"
-        "equalizer=f=135:t=q:w=1.1:g=3.5,"
-        "equalizer=f=3200:t=q:w=1.5:g=-2.5,"
-        "lowpass=f=7200,volume=1.6"
+        "rubberband=pitch=0.735:tempo=1.24:formant=shifted:pitchq=quality,"
+        "equalizer=f=135:t=q:w=1.1:g=1.0,"
+        "equalizer=f=3200:t=q:w=1.4:g=2.0,"
+        "highpass=f=85,volume=1.6"
     )
     subprocess.run([
         "ffmpeg", "-y", "-i", str(raw_mp3),
