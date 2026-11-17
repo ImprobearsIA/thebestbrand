@@ -1854,149 +1854,323 @@
   const TBB_CLEAN_LOGO_SVG_RAW = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 120" width="430" height="120"><g transform="translate(10, 10) scale(0.5)"><circle cx="100" cy="102" r="87" fill="#090D16" fill-opacity="0.10"/><circle cx="100" cy="100" r="86" fill="#FF7A00"/><circle cx="100" cy="100" r="84.2" fill="none" stroke="#FFF7ED" stroke-width="1.2" stroke-opacity="0.55"/><circle cx="100" cy="100" r="81.2" fill="#EA580C" fill-opacity="0.65"/><circle cx="100" cy="100" r="79.5" fill="#070D19"/><circle cx="100" cy="100" r="76.5" fill="#0D2540" fill-opacity="0.88"/><circle cx="100" cy="96" r="68" fill="#1E3A8A" fill-opacity="0.28"/><circle cx="100" cy="100" r="77.2" fill="none" stroke="#60A5FA" stroke-width="1.3" stroke-opacity="0.42"/><circle cx="100" cy="100" r="56" fill="#38BDF8" fill-opacity="0.12"/><circle cx="100" cy="100" r="44" fill="#426EAE" fill-opacity="0.18"/><path d="M 100.00 87.00 C 86.50 68.00, 81.50 43.00, 100.00 32.00 C 118.50 43.00, 113.50 68.00, 100.00 87.00 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 106.50 88.74 C 104.31 65.54, 112.48 41.39, 134.00 41.11 C 144.52 59.89, 127.69 79.04, 106.50 88.74 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 111.26 93.50 C 120.96 72.31, 140.11 55.48, 158.89 66.00 C 158.61 87.52, 134.46 95.69, 111.26 93.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 113.00 100.00 C 132.00 86.50, 157.00 81.50, 168.00 100.00 C 157.00 118.50, 132.00 113.50, 113.00 100.00 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 111.26 106.50 C 134.46 104.31, 158.61 112.48, 158.89 134.00 C 140.11 144.52, 120.96 127.69, 111.26 106.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 106.50 111.26 C 127.69 120.96, 144.52 140.11, 134.00 158.89 C 112.48 158.61, 104.31 134.46, 106.50 111.26 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 100.00 113.00 C 113.50 132.00, 118.50 157.00, 100.00 168.00 C 81.50 157.00, 86.50 132.00, 100.00 113.00 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 93.50 111.26 C 95.69 134.46, 87.52 158.61, 66.00 158.89 C 55.48 140.11, 72.31 120.96, 93.50 111.26 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 88.74 106.50 C 79.04 127.69, 59.89 144.52, 41.11 134.00 C 41.39 112.48, 65.54 104.31, 88.74 106.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 87.00 100.00 C 68.00 113.50, 43.00 118.50, 32.00 100.00 C 43.00 81.50, 68.00 86.50, 87.00 100.00 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 88.74 93.50 C 65.54 95.69, 41.39 87.52, 41.11 66.00 C 59.89 55.48, 79.04 72.31, 88.74 93.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 93.50 88.74 C 72.31 79.04, 55.48 59.89, 66.00 41.11 C 87.52 41.39, 95.69 65.54, 93.50 88.74 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><circle cx="100" cy="100" r="28" fill="none" stroke="#93C5FD" stroke-width="0.9" stroke-opacity="0.45"/><circle cx="100" cy="100" r="25" fill="#FF7A00" fill-opacity="0.22"/><circle cx="100" cy="100" r="17.5" fill="#F97316" fill-opacity="0.48"/><circle cx="100" cy="100" r="11.8" fill="#FFEDD5" fill-opacity="0.86"/><circle cx="100" cy="100" r="6.5" fill="#FFFFFF"/><path d="M 42 66 C 56 35, 144 35, 158 66 C 138 50, 62 50, 42 66 Z" fill="#FFFFFF" fill-opacity="0.26"/></g><line x1="125" y1="24" x2="125" y2="96" stroke="#CBD5E1" stroke-width="1.8"/><g transform="translate(0, 13)"><path d="M156.570 56L150.434 56L150.434 42.558L145.104 42.558L145.104 37.800L161.900 37.800L161.900 42.558L156.570 42.558L156.570 56ZM183.226 56L177.090 56L177.090 49.292L171.422 49.292L171.422 56L165.286 56L165.286 37.800L171.422 37.800L171.422 44.248L177.090 44.248L177.090 37.800L183.226 37.800L183.226 56ZM203.122 56L187.990 56L187.990 37.800L202.784 37.800L202.784 42.428L194.022 42.428L194.022 44.560L201.718 44.560L201.718 48.980L194.022 48.980L194.022 51.372L203.122 51.372L203.122 56ZM227.132 56L216.888 56L216.888 37.800L226.612 37.800Q230.382 37.800 232.176 39.139Q233.970 40.478 233.970 42.558L233.970 42.558Q233.970 43.936 233.216 45.002L233.216 45.002Q232.566 45.912 231.474 46.484L231.474 46.484Q231.526 46.510 231.604 46.536L231.604 46.536Q233.138 47.134 233.983 48.265Q234.828 49.396 234.828 50.982L234.828 50.982Q234.828 53.348 232.865 54.674Q230.902 56 227.132 56L227.132 56ZM222.920 48.850L222.920 51.710L226.612 51.710Q227.626 51.710 228.133 51.346Q228.640 50.982 228.640 50.280Q228.640 49.578 228.133 49.214Q227.626 48.850 226.612 48.850L226.612 48.850L222.920 48.850ZM222.920 42.090L222.920 44.794L225.780 44.794Q226.820 44.794 227.301 44.443Q227.782 44.092 227.782 43.442L227.782 43.442Q227.782 42.766 227.301 42.428Q226.820 42.090 225.780 42.090L225.780 42.090L222.920 42.090ZM253.918 56L238.786 56L238.786 37.800L253.580 37.800L253.580 42.428L244.818 42.428L244.818 44.560L252.514 44.560L252.514 48.980L244.818 48.980L244.818 51.372L253.918 51.372L253.918 56ZM264.870 56.416L264.870 56.416Q262.582 56.416 260.450 55.896Q258.318 55.376 256.940 54.544L256.940 54.544L258.916 50.072Q260.216 50.826 261.815 51.281Q263.414 51.736 264.922 51.736L264.922 51.736Q265.806 51.736 266.313 51.619Q266.820 51.502 267.054 51.281Q267.288 51.060 267.288 50.748L267.288 50.748Q267.288 50.254 266.742 49.968Q266.196 49.682 265.299 49.487Q264.402 49.292 263.336 49.071Q262.270 48.850 261.191 48.486Q260.112 48.122 259.215 47.524Q258.318 46.926 257.772 45.951Q257.226 44.976 257.226 43.520L257.226 43.520Q257.226 41.830 258.175 40.439Q259.124 39.048 261.009 38.216Q262.894 37.384 265.702 37.384L265.702 37.384Q267.548 37.384 269.342 37.774Q271.136 38.164 272.566 38.970L272.566 38.970L270.720 43.416Q269.368 42.740 268.107 42.402Q266.846 42.064 265.650 42.064L265.650 42.064Q264.766 42.064 264.246 42.220Q263.726 42.376 263.505 42.636Q263.284 42.896 263.284 43.208L263.284 43.208Q263.284 43.676 263.830 43.949Q264.376 44.222 265.273 44.404Q266.170 44.586 267.249 44.794Q268.328 45.002 269.394 45.366Q270.460 45.730 271.357 46.328Q272.254 46.926 272.800 47.888Q273.346 48.850 273.346 50.280L273.346 50.280Q273.346 51.944 272.397 53.335Q271.448 54.726 269.576 55.571Q267.704 56.416 264.870 56.416ZM287.054 56L280.918 56L280.918 42.558L275.588 42.558L275.588 37.800L292.384 37.800L292.384 42.558L287.054 42.558L287.054 56ZM315.614 56L305.370 56L305.370 37.800L315.094 37.800Q318.864 37.800 320.658 39.139Q322.452 40.478 322.452 42.558L322.452 42.558Q322.452 43.936 321.698 45.002L321.698 45.002Q321.048 45.912 319.956 46.484L319.956 46.484Q320.008 46.510 320.086 46.536L320.086 46.536Q321.620 47.134 322.465 48.265Q323.310 49.396 323.310 50.982L323.310 50.982Q323.310 53.348 321.347 54.674Q319.384 56 315.614 56L315.614 56ZM311.402 48.850L311.402 51.710L315.094 51.710Q316.108 51.710 316.615 51.346Q317.122 50.982 317.122 50.280Q317.122 49.578 316.615 49.214Q316.108 48.850 315.094 48.850L315.094 48.850L311.402 48.850ZM311.402 42.090L311.402 44.794L314.262 44.794Q315.302 44.794 315.783 44.443Q316.264 44.092 316.264 43.442L316.264 43.442Q316.264 42.766 315.783 42.428Q315.302 42.090 314.262 42.090L314.262 42.090L311.402 42.090ZM333.404 56L327.268 56L327.268 37.800L335.770 37.800Q339.956 37.800 342.140 39.646Q344.324 41.492 344.324 44.664L344.324 44.664Q344.324 46.770 343.310 48.278L343.310 48.278Q342.426 49.630 340.892 50.410L340.892 50.410L344.714 56L338.162 56L335.068 51.424L333.404 51.424L333.404 56ZM333.404 42.532L333.404 46.796L335.640 46.796Q336.914 46.796 337.525 46.224Q338.136 45.652 338.136 44.664Q338.136 43.676 337.525 43.104Q336.914 42.532 335.640 42.532L335.640 42.532L333.404 42.532ZM352.702 56L346.462 56L354.418 37.800L360.450 37.800L368.406 56L362.062 56L360.840 52.828L353.924 52.828L352.702 56ZM355.614 48.408L359.150 48.408L357.382 43.832L355.614 48.408ZM377.174 56L371.194 56L371.194 37.800L376.238 37.800L383.154 46.068L383.154 37.800L389.134 37.800L389.134 56L384.090 56L377.174 47.732L377.174 56ZM402.868 56L393.898 56L393.898 37.800L402.868 37.800Q405.910 37.800 408.224 38.905Q410.538 40.010 411.838 42.038Q413.138 44.066 413.138 46.900L413.138 46.900Q413.138 49.708 411.838 51.749Q410.538 53.790 408.224 54.895Q405.910 56 402.868 56L402.868 56ZM400.034 42.584L400.034 51.216L402.608 51.216Q403.908 51.216 404.883 50.722Q405.858 50.228 406.404 49.253Q406.950 48.278 406.950 46.900L406.950 46.900Q406.950 45.496 406.404 44.534Q405.858 43.572 404.883 43.078Q403.908 42.584 402.608 42.584L402.608 42.584L400.034 42.584Z" fill="#090D16"/></g></svg>`;
   const TBB_CLEAN_LOGO_DATA_URI = "data:image/svg+xml;utf8," + encodeURIComponent(TBB_CLEAN_LOGO_SVG_RAW);
 
-  // Renderizador del Mockup Real de la Aplicación en Celular, Tablet o Computadora (al final de 1. Inicio)
+  // Catálogo de las 8 Propuestas Vectoriales Reales del Estudio de Logotipo (Paso 5B de la App)
+  const TBB_MOCKUP_LOGO_PROPOSALS = [
+    {
+      id: 1,
+      code: "#01",
+      name: "Estrella Polar",
+      sub: "Geometría Áurea · φ = 1.618",
+      darkBg: false,
+      svg: (strokeScale = 1, shield = false) => `
+        <svg viewBox="0 0 100 100" width="100%" height="100%">
+          ${shield ? `<path d="M50,8 L86,22 L86,52 C86,74 70,88 50,94 C30,88 14,74 14,52 L14,22 Z" fill="none" stroke="#D4AF37" stroke-width="${(2.2 * strokeScale).toFixed(1)}" stroke-dasharray="3 2"/>` : ""}
+          <circle cx="50" cy="50" r="36" fill="none" stroke="#090D16" stroke-width="${(4.5 * strokeScale).toFixed(1)}"/>
+          <polygon points="50,14 59,41 86,50 59,59 50,86 41,59 14,50 41,41" fill="#C59B27"/>
+          <circle cx="50" cy="50" r="6.5" fill="#090D16"/>
+        </svg>`
+    },
+    {
+      id: 2,
+      code: "#02",
+      name: "Escudo Áureo",
+      sub: "Heráldica Minimalista",
+      darkBg: true,
+      svg: (strokeScale = 1) => `
+        <svg viewBox="0 0 100 100" width="100%" height="100%">
+          <path d="M50,14 L82,26 L82,52 C82,72 68,84 50,90 C32,84 18,72 18,52 L18,26 Z" fill="none" stroke="#D4AF37" stroke-width="${(5.2 * strokeScale).toFixed(1)}"/>
+          <path d="M50,24 L66,52 L50,76 L34,52 Z" fill="#FAF8F5"/>
+          <circle cx="50" cy="52" r="5" fill="#FF7A00"/>
+        </svg>`
+    },
+    {
+      id: 3,
+      code: "#03",
+      name: "León Geométrico",
+      sub: "Fuerza & Autoridad",
+      darkBg: false,
+      svg: (strokeScale = 1) => `
+        <svg viewBox="0 0 100 100" width="100%" height="100%">
+          <path d="M50,14 L78,28 L84,58 L66,84 L34,84 L16,58 L22,28 Z" fill="none" stroke="#090D16" stroke-width="${(5.0 * strokeScale).toFixed(1)}"/>
+          <path d="M36,44 L48,50 L36,54 Z M64,44 L52,50 L64,54 Z" fill="#C59B27"/>
+          <path d="M43,63 L57,63 L50,72 Z" fill="#090D16"/>
+        </svg>`
+    },
+    {
+      id: 4,
+      code: "#04",
+      name: "Corona Soberana",
+      sub: "Prestigio Ejecutivo",
+      darkBg: true,
+      svg: (strokeScale = 1) => `
+        <svg viewBox="0 0 100 100" width="100%" height="100%">
+          <path d="M22,74 L22,38 L38,56 L50,24 L62,56 L78,38 L78,74 Z" fill="none" stroke="#D4AF37" stroke-width="${(5.2 * strokeScale).toFixed(1)}" stroke-linejoin="round"/>
+          <circle cx="50" cy="18" r="5" fill="#FAF8F5"/>
+          <line x1="22" y1="81" x2="78" y2="81" stroke="#38BDF8" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>`
+    },
+    {
+      id: 5,
+      code: "#05",
+      name: "Faro Boreal",
+      sub: "Guía & Dirección",
+      darkBg: false,
+      svg: (strokeScale = 1) => `
+        <svg viewBox="0 0 100 100" width="100%" height="100%">
+          <path d="M38,84 L44,36 L56,36 L62,84 Z" fill="none" stroke="#090D16" stroke-width="${(4.5 * strokeScale).toFixed(1)}"/>
+          <polygon points="50,26 20,16 20,32" fill="#FF7A00" opacity="0.85"/>
+          <polygon points="50,26 80,16 80,32" fill="#426EAE" opacity="0.85"/>
+          <circle cx="50" cy="26" r="6" fill="#C59B27"/>
+        </svg>`
+    },
+    {
+      id: 6,
+      code: "#06",
+      name: "Monograma Imperial",
+      sub: "Iniciales Enlazadas",
+      darkBg: true,
+      svg: (strokeScale = 1) => `
+        <svg viewBox="0 0 100 100" width="100%" height="100%">
+          <rect x="18" y="18" width="64" height="64" rx="14" fill="none" stroke="#D4AF37" stroke-width="${(4.5 * strokeScale).toFixed(1)}"/>
+          <path d="M34,34 H66 M50,34 V68 M38,68 H62" stroke="#FAF8F5" stroke-width="${(5.2 * strokeScale).toFixed(1)}" stroke-linecap="round"/>
+        </svg>`
+    },
+    {
+      id: 7,
+      code: "#07",
+      name: "Águila Cénit",
+      sub: "Visión & Expansión",
+      darkBg: false,
+      svg: (strokeScale = 1) => `
+        <svg viewBox="0 0 100 100" width="100%" height="100%">
+          <path d="M14,38 L42,52 L50,26 L58,52 L86,38 L66,72 L50,62 L34,72 Z" fill="none" stroke="#090D16" stroke-width="${(4.5 * strokeScale).toFixed(1)}" stroke-linejoin="round"/>
+          <circle cx="50" cy="48" r="5" fill="#C59B27"/>
+        </svg>`
+    },
+    {
+      id: 8,
+      code: "#08",
+      name: "Compás Maestro",
+      sub: "Precisión 8X×3X",
+      darkBg: true,
+      svg: (strokeScale = 1) => `
+        <svg viewBox="0 0 100 100" width="100%" height="100%">
+          <circle cx="50" cy="50" r="34" fill="none" stroke="#38BDF8" stroke-width="2.5" stroke-dasharray="4 3"/>
+          <path d="M50,18 L72,78 M50,18 L28,78 M33,58 H67" stroke="#D4AF37" stroke-width="${(5.0 * strokeScale).toFixed(1)}" stroke-linecap="round"/>
+          <circle cx="50" cy="18" r="5.5" fill="#FAF8F5"/>
+        </svg>`
+    }
+  ];
+
+  // Renderizador del Paso de Selección de Logotipo (Paso 5B Real de la App) adaptado exactamente a Celular, Tablet y Computadora
   window.tbbRenderHomeDeviceMockupContent = function (deviceForm) {
-    const form = deviceForm || (window.tbbCommercialDemoState && window.tbbCommercialDemoState.homeDeviceForm) || "mobile";
-    const isLiveStudio = Boolean(window.tbbCommercialDemoState && window.tbbCommercialDemoState.homeDeviceLiveStudio);
+    const st = window.tbbCommercialDemoState || {};
+    const form = deviceForm || st.homeDeviceForm || "mobile";
+    const isLiveStudio = Boolean(st.homeDeviceLiveStudio);
+    const selectedLogoId = Number(st.homeMockupSelectedLogoId) || 1;
+    const activeMod = st.homeMockupModifier || "normal";
+    const invertCanvas = Boolean(st.homeMockupInvertCanvas);
     const l = getLang();
+
+    const strokeScale = activeMod === "thin" ? 0.72 : activeMod === "bold" ? 1.38 : 1;
+    const hasShield = activeMod === "shield";
+    const selectedLogoObj = TBB_MOCKUP_LOGO_PROPOSALS.find((p) => p.id === selectedLogoId) || TBB_MOCKUP_LOGO_PROPOSALS[0];
 
     if (isLiveStudio) {
       return `
-        <div class="tbb-home-device-chassis is-${escHtml(form)}">
-          <div class="tbb-home-device-top-bezel">
-            <span class="tbb-bezel-dots"><i></i><i></i><i></i></span>
-            <span class="tbb-bezel-title">THE BEST BRAND · APLICACIÓN EN VIVO (${form === 'mobile' ? 'CELULAR' : form === 'tablet' ? 'TABLET' : 'COMPUTADORA'})</span>
-            <button type="button" class="tbb-bezel-mode-btn" onclick="window.tbbToggleHomeDeviceLiveStudio(false)">Ver Vista Estructurada</button>
-          </div>
-          <div class="tbb-home-device-live-iframe-box">
-            <iframe src="/studio?embed=home_${escHtml(form)}&lang=${escHtml(l)}" title="The Best Brand Live App" class="tbb-home-device-iframe"></iframe>
+        <div class="tbb-home-device-stage-centered">
+          <div class="tbb-home-device-chassis is-${escHtml(form)}">
+            <div class="tbb-home-device-top-bezel">
+              <span class="tbb-bezel-dots"><i class="r"></i><i class="y"></i><i class="g"></i></span>
+              <span class="tbb-bezel-title">THE BEST BRAND STUDIO EN VIVO · FORMATO ${form === 'mobile' ? 'CELULAR' : form === 'tablet' ? 'TABLET' : 'COMPUTADORA'}</span>
+              <button type="button" class="tbb-bezel-mode-btn" onclick="window.tbbToggleHomeDeviceLiveStudio(false)">← Volver a Vista del Paso de Selección de Logotipo</button>
+            </div>
+            <div class="tbb-home-device-screen">
+              <iframe src="/studio?embed=home_${escHtml(form)}&lang=${escHtml(l)}" title="The Best Brand Live App" class="tbb-home-device-live-iframe"></iframe>
+            </div>
           </div>
         </div>
       `;
     }
 
+    // Helper para renderizar una tarjeta de propuesta de logotipo idéntica a studio.html
+    const renderLogoCard = (item, compact = false) => {
+      const isSel = item.id === selectedLogoId;
+      const useDark = invertCanvas ? !item.darkBg : item.darkBg;
+      const bg = useDark ? "#090D16" : "#FAF8F5";
+      const fg = useDark ? "#FAF8F5" : "#090D16";
+      const border = isSel ? "2.5px solid #D4AF37" : useDark ? "1.5px solid #334155" : "1.5px solid #CBD5E1";
+      return `
+        <button
+          type="button"
+          onclick="window.tbbSelectMockupLogoOption(${item.id})"
+          class="tbb-studio-logo-card ${isSel ? 'is-selected' : ''}"
+          style="background:${bg}; color:${fg}; border:${border}; border-radius:12px; padding:${compact ? '8px 6px' : '10px 8px'}; text-align:center; cursor:pointer; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:space-between; transition:all 0.18s ease; box-shadow:${isSel ? '0 8px 20px rgba(212,175,55,0.28)' : 'none'};"
+        >
+          <div style="width:100%; display:flex; justify-content:space-between; align-items:center; font-family:'JetBrains Mono',monospace; font-size:0.60rem; font-weight:800; margin-bottom:4px;">
+            <span style="color:${useDark ? '#94A3B8' : '#64748B'};">${item.code}</span>
+            ${isSel
+              ? `<span style="background:#D4AF37; color:#090D16; padding:1px 6px; border-radius:999px; font-weight:900;">✓ ELEGIDO</span>`
+              : `<span style="color:${useDark ? '#FDE68A' : '#B45309'};">8X×3X</span>`}
+          </div>
+          <div style="width:${compact ? '46px' : '56px'}; height:${compact ? '46px' : '56px'}; margin:2px auto;">
+            ${item.svg(strokeScale, hasShield)}
+          </div>
+          <div style="margin-top:5px;">
+            <div style="font-family:'Montserrat',sans-serif; font-size:${compact ? '0.66rem' : '0.72rem'}; font-weight:800; color:${fg}; line-height:1.15;">${escHtml(item.name)}</div>
+            ${!compact ? `<div style="font-size:0.60rem; color:${useDark ? '#94A3B8' : '#64748B'}; margin-top:2px;">${escHtml(item.sub)}</div>` : ""}
+          </div>
+        </button>
+      `;
+    };
+
+    // =========================================================================
+    // 1. FORMATO CELULAR (MÓVIL VERTICAL): PASO 5B · SELECCIÓN DE LOGOTIPO
+    // =========================================================================
     if (form === "mobile") {
       return `
-        <div class="tbb-home-device-chassis is-mobile">
-          <div class="tbb-home-mobile-notch"></div>
-          <div class="tbb-home-device-screen-inner is-mobile-layout">
-            <div class="tbb-mock-app-topbar">
-              <div style="display:flex; align-items:center; gap:8px;">
-                <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:24px; height:24px;" />
-                <strong style="font-family:'Montserrat',sans-serif; font-size:0.76rem; color:#FFFFFF; letter-spacing:0.05em;">THE BEST BRAND</strong>
+        <div class="tbb-home-device-stage-centered">
+          <div class="tbb-home-device-chassis is-mobile">
+            <div class="tbb-home-mobile-notch"></div>
+            <div class="tbb-home-device-screen" style="background:#FAF8F5; color:#090D16; padding:12px; gap:10px;">
+              <!-- Barra Superior de la App en Celular -->
+              <div style="background:#090D16; color:#FFFFFF; border-radius:14px; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; border:1px solid #D4AF37;">
+                <div style="display:flex; align-items:center; gap:7px;">
+                  <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:22px; height:22px;" />
+                  <div style="text-align:left;">
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.56rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · CELULAR</div>
+                    <div style="font-family:'Montserrat',sans-serif; font-size:0.74rem; font-weight:900; color:#FFFFFF;">Selección de Logotipo</div>
+                  </div>
+                </div>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; background:#065F46; color:#A7F3D0; padding:3px 8px; border-radius:999px; font-weight:800;">8 Logos IA</span>
               </div>
-              <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:#38BDF8; background:rgba(56,189,248,0.14); padding:3px 8px; border-radius:999px; font-weight:800;">VISTA CELULAR</span>
-            </div>
 
-            <div class="tbb-mock-aura-banner">
-              <span class="tbb-live-dot"></span>
-              <div>
-                <div style="font-size:0.72rem; font-weight:800; color:#FFEDD5;">AURA · COPILOTO EN VIVO</div>
-                <div style="font-size:0.70rem; color:#CBD5E1;">Entrevista por voz y texto sincronizada</div>
+              <!-- Sub-selector 5A / 5B idéntico a la App Real -->
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px; background:#090D16; padding:4px; border-radius:999px; border:1px solid #D4AF37;">
+                <span style="text-align:center; color:#94A3B8; font-size:0.62rem; font-weight:800; padding:5px 4px;">1 · 24 Decisiones (5A)</span>
+                <span style="text-align:center; background:#D4AF37; color:#090D16; border-radius:999px; font-size:0.62rem; font-weight:900; padding:5px 4px;">2 · 8 Logotipos (5B)</span>
               </div>
-            </div>
 
-            <div class="tbb-mock-steps-list">
-              <div class="tbb-mock-step-row is-done">
-                <span class="tbb-mock-step-num">00</span>
-                <div class="tbb-mock-step-info">
-                  <strong>Objetivo, Nombre y Giro</strong>
-                  <small>Configuración base del negocio</small>
-                </div>
-                <span class="tbb-mock-step-tag">✓ Listo</span>
+              <!-- Punto de Partida Compacto en Celular -->
+              <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:11px; padding:7px 10px; display:flex; justify-content:space-between; align-items:center; font-size:0.66rem;">
+                <span><strong>Semilla:</strong> Brújula + Estrella</span>
+                <span style="display:inline-flex; gap:4px; align-items:center;">
+                  <i style="width:11px; height:11px; border-radius:50%; background:#090D16; display:inline-block;"></i>
+                  <i style="width:11px; height:11px; border-radius:50%; background:#D4AF37; display:inline-block;"></i>
+                  <i style="width:11px; height:11px; border-radius:50%; background:#FF7A00; display:inline-block;"></i>
+                </span>
               </div>
-              <div class="tbb-mock-step-row is-active">
-                <span class="tbb-mock-step-num">01</span>
-                <div class="tbb-mock-step-info">
-                  <strong>Círculo Dorado (Sinek)</strong>
-                  <small>WHY · HOW · WHAT + Arquetipo</small>
-                </div>
-                <span class="tbb-mock-step-tag is-orange">En Curso</span>
-              </div>
-              <div class="tbb-mock-step-row">
-                <span class="tbb-mock-step-num">02</span>
-                <div class="tbb-mock-step-info">
-                  <strong>Touchpoints (Carlzon)</strong>
-                  <small>Antes · Durante · Después</small>
-                </div>
-                <span class="tbb-mock-step-tag">Paso 2</span>
-              </div>
-              <div class="tbb-mock-step-row">
-                <span class="tbb-mock-step-num">03</span>
-                <div class="tbb-mock-step-info">
-                  <strong>Naming SMILE + OMPI Niza</strong>
-                  <small>Auditoría fonética y legal</small>
-                </div>
-                <span class="tbb-mock-step-tag">Paso 3</span>
-              </div>
-              <div class="tbb-mock-step-row">
-                <span class="tbb-mock-step-num">05</span>
-                <div class="tbb-mock-step-info">
-                  <strong>Geometría Vectorial & Brandbook</strong>
-                  <small>Curvas Bézier + Manual 30+ págs</small>
-                </div>
-                <span class="tbb-mock-step-tag">Paso 5–6B</span>
-              </div>
-            </div>
 
-            <div class="tbb-mock-mobile-bottom-cta">
-              <button type="button" class="tbb-btn-primary-vibrant" style="width:100%; justify-content:center; padding:10px 14px; font-size:0.78rem;" onclick="window.tbbToggleHomeDeviceLiveStudio(true)">
-                ${TBB_ICONS.spark}
-                <span>Interactuar con la App Real en este Celular</span>
+              <!-- Grid 2x2 de Selección de Logotipo en Celular (Interactivo al tocar) -->
+              <div style="background:#FFFFFF; border:1.5px solid #D4AF37; border-radius:14px; padding:9px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; font-weight:900; color:#090D16;">TOCA UN LOGOTIPO PARA ELEGIRLO:</span>
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:#15803D; font-weight:800;">Lote #1 (1–4 de 8)</span>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:7px;">
+                  ${TBB_MOCKUP_LOGO_PROPOSALS.slice(0, 4).map((item) => renderLogoCard(item, true)).join("")}
+                </div>
+              </div>
+
+              <!-- Afinación Rápida con IA en Celular -->
+              <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:8px 10px;">
+                <div style="font-family:'JetBrains Mono',monospace; font-size:0.58rem; font-weight:800; color:#475569; margin-bottom:5px;">
+                  PASO 3 · AFINAR LOGO ${selectedLogoObj.code} (${escHtml(selectedLogoObj.name.toUpperCase())}):
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                  <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo Fino</button>
+                  <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo Fuerte</button>
+                  <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">Escudo</button>
+                  <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#FF7A00' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">Invertir Fondo</button>
+                </div>
+              </div>
+
+              <!-- CTA Confirmar Logotipo en Celular -->
+              <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="width:100%; background:linear-gradient(135deg, #065F46 0%, #047857 100%); color:#FFFFFF; border:1.5px solid #34D399; border-radius:12px; padding:10px 12px; font-family:'Montserrat',sans-serif; font-size:0.72rem; font-weight:800; cursor:pointer; box-shadow:0 6px 16px rgba(6,95,70,0.25);">
+                ✓ Confirmar ${escHtml(selectedLogoObj.name)} y Abrir Brandbook →
               </button>
             </div>
+            <div class="tbb-home-mobile-bar"></div>
           </div>
         </div>
       `;
     }
 
+    // =========================================================================
+    // 2. FORMATO TABLET (PANTALLA DIVIDIDA HORIZONTAL): PASO 5B · SELECCIÓN DE LOGOTIPO
+    // =========================================================================
     if (form === "tablet") {
       return `
-        <div class="tbb-home-device-chassis is-tablet">
-          <div class="tbb-home-device-top-bezel">
-            <span class="tbb-bezel-dots"><i></i><i></i><i></i></span>
-            <span class="tbb-bezel-title">VISTA TABLET · PANEL DIVIDIDO INTERACTIVO (MAPA + LIENZO KANSEI & VECTORIAL)</span>
-            <button type="button" class="tbb-bezel-mode-btn" onclick="window.tbbToggleHomeDeviceLiveStudio(true)">Abrir App Interactiva Aquí</button>
-          </div>
-          <div class="tbb-home-device-screen-inner is-tablet-layout">
-            <!-- Columna Izquierda Tablet: Mapa de Pasos + Aura -->
-            <div class="tbb-tablet-left-nav">
-              <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
-                <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:26px; height:26px;" />
-                <strong style="font-family:'Montserrat',sans-serif; font-size:0.80rem; color:#FFFFFF;">THE BEST BRAND</strong>
-              </div>
-              <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">00</span><div class="tbb-mock-step-info"><strong>Giro y Punto de Partida</strong></div></div>
-              <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">01</span><div class="tbb-mock-step-info"><strong>Círculo Dorado (Sinek)</strong></div></div>
-              <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">02</span><div class="tbb-mock-step-info"><strong>Touchpoints (Carlzon)</strong></div></div>
-              <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">03</span><div class="tbb-mock-step-info"><strong>Naming SMILE & Niza</strong></div></div>
-              <div class="tbb-mock-step-row is-active"><span class="tbb-mock-step-num">04</span><div class="tbb-mock-step-info"><strong>7 Ejes Osgood & Kansei</strong></div></div>
-              <div class="tbb-mock-step-row"><span class="tbb-mock-step-num">05</span><div class="tbb-mock-step-info"><strong>Geometría & Brandbook 30+</strong></div></div>
-            </div>
-            <!-- Columna Derecha Tablet: Mesa de Trabajo Científica -->
-            <div class="tbb-tablet-right-workspace">
-              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
-                <div>
-                  <span style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#FF7A00; font-weight:800;">PASO 04 & 05 · MESA DE TRABAJO EN TABLET</span>
-                  <h4 style="font-family:'Montserrat',sans-serif; font-size:1.0rem; color:#FFFFFF; margin:2px 0 0;">Calibración Semántica Osgood + Retícula Áurea 8X×3X</h4>
+        <div class="tbb-home-device-stage-centered">
+          <div class="tbb-home-device-chassis is-tablet">
+            <div class="tbb-home-tablet-cam"></div>
+            <div class="tbb-home-device-screen" style="background:#FAF8F5; color:#090D16; padding:14px; gap:12px;">
+              <!-- Cabecera del Estudio de Logotipo en Tablet -->
+              <div style="background:#090D16; color:#FFFFFF; border-radius:14px; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; border:1.5px solid #D4AF37;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:26px; height:26px;" />
+                  <div style="text-align:left;">
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · VISTA TABLET (PANTALLA DIVIDIDA)</div>
+                    <div style="font-family:'Montserrat',sans-serif; font-size:0.92rem; font-weight:900; color:#FFFFFF;">Diseña y Elige el Logotipo Oficial de tu Marca</div>
+                  </div>
                 </div>
-                <span style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#38BDF8; background:rgba(56,189,248,0.14); padding:4px 10px; border-radius:999px;">Táctil & Apple Pencil / Stylus Ready</span>
-              </div>
-              <div class="tbb-tablet-cards-pair">
-                <div class="tbb-mock-workspace-card">
-                  <div style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#93C5FD; margin-bottom:6px;">DIFERENCIAL DE OSGOOD (7 EJES)</div>
-                  ${buildAcademicDiagramSVG("osgood_kansei", "#FF7A00")}
-                </div>
-                <div class="tbb-mock-workspace-card">
-                  <div style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#FDBA74; margin-bottom:6px;">RETÍCULA VECTORIAL 8X×3X EN CURVAS</div>
-                  ${buildAcademicDiagramSVG("kaizen_bezier", "#38BDF8")}
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <span style="background:rgba(255,255,255,0.12); color:#F8FAFC; border:1px solid rgba(255,255,255,0.25); border-radius:999px; padding:4px 10px; font-size:0.66rem; font-weight:800;">1 · 24 Decisiones (5A)</span>
+                  <span style="background:#D4AF37; color:#090D16; border-radius:999px; padding:4px 11px; font-size:0.66rem; font-weight:900;">2 · Estudio de 8 Logos (5B)</span>
                 </div>
               </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:10px;">
-                <span style="font-size:0.78rem; color:#CBD5E1;">Sincronización instantánea con tu celular y computadora.</span>
-                <button type="button" class="tbb-btn-primary-vibrant" style="padding:9px 16px; font-size:0.78rem;" onclick="window.tbbToggleHomeDeviceLiveStudio(true)">
-                  ${TBB_ICONS.spark}
-                  <span>Probar App en Vivo en esta Tablet</span>
-                </button>
+
+              <!-- Cuerpo en 2 Columnas Reales de Tablet: Izquierda = 8 Propuestas Vectoriales | Derecha = Retícula Áurea 8X×3X + Afinación IA -->
+              <div class="tbb-tablet-logo-studio-grid">
+                <!-- Columna Izquierda Tablet: Las 8 Propuestas Generadas por IA -->
+                <div style="background:#FFFFFF; border:2px solid #D4AF37; border-radius:16px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.66rem; font-weight:900; background:#090D16; color:#FFFFFF; padding:3px 10px; border-radius:999px;">PASO 2 · ELIGE TU LOGOTIPO (8 PROPUESTAS IA)</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; background:#DCFCE7; color:#15803D; padding:3px 9px; border-radius:999px; font-weight:800;">Vectores .SVG Listos</span>
+                  </div>
+                  <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px;">
+                    ${TBB_MOCKUP_LOGO_PROPOSALS.map((item) => renderLogoCard(item, true)).join("")}
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:8px; border-top:1px solid #E2E8F0; font-size:0.68rem; color:#475569;">
+                    <span><strong>Semilla activa:</strong> Brújula + Estrella · Obsidian & Gold</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#0D2540;">Ciclo #1 · φ = 1.618</span>
+                  </div>
+                </div>
+
+                <!-- Columna Derecha Tablet: Lienzo Áureo 8X×3X del Logo Elegido + Paso 3 Afinar -->
+                <div style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:16px; padding:12px; display:flex; flex-direction:column; justify-content:space-between; gap:8px;">
+                  <div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:900; color:#0D2540;">LIENZO ÁUREO 8X×3X · ${selectedLogoObj.code}</span>
+                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:#B45309; background:#FEF3C7; padding:2px 8px; border-radius:999px; font-weight:800;">${escHtml(selectedLogoObj.name)}</span>
+                    </div>
+                    <!-- Vista Previa en Retícula de Construcción -->
+                    <div style="background:${invertCanvas ? '#090D16' : '#F8FAFC'}; border:1.5px dashed #94A3B8; border-radius:12px; padding:10px; display:flex; align-items:center; justify-content:center; gap:12px; min-height:92px;">
+                      <div style="width:68px; height:68px; flex-shrink:0;">
+                        ${selectedLogoObj.svg(strokeScale, hasShield)}
+                      </div>
+                      <div style="text-align:left;">
+                        <div style="font-family:'Montserrat',sans-serif; font-size:0.86rem; font-weight:900; color:${invertCanvas ? '#FAF8F5' : '#090D16'};">THE BEST BRAND</div>
+                        <div style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:#FF7A00; font-weight:800;">Retícula 8X×3X · Safe Area 1X</div>
+                        <div style="font-size:0.64rem; color:${invertCanvas ? '#94A3B8' : '#475569'}; margin-top:2px;">Terna Tri-Fold: Horizontal · 1:1 · Sello</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Paso 3: Afinar el Logo Seleccionado -->
+                  <div>
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:900; color:#090D16; margin-bottom:5px;">PASO 3 · AFINAR EL LOGO SELECCIONADO CON IA:</div>
+                    <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px;">
+                      <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.64rem; font-weight:800; cursor:pointer;">Trazo Fino</button>
+                      <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.64rem; font-weight:800; cursor:pointer;">Trazo Fuerte</button>
+                      <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.64rem; font-weight:800; cursor:pointer;">Marco Escudo</button>
+                      <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#FF7A00' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.64rem; font-weight:800; cursor:pointer;">Invertir Fondo</button>
+                    </div>
+                    <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="width:100%; background:linear-gradient(135deg, #065F46 0%, #047857 100%); color:#FFFFFF; border:1.5px solid #34D399; border-radius:10px; padding:9px 12px; font-family:'Montserrat',sans-serif; font-size:0.72rem; font-weight:800; cursor:pointer;">
+                      ✓ Confirmar ${escHtml(selectedLogoObj.name)} y Abrir Brandbook (Paso 6) →
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -2004,71 +2178,175 @@
       `;
     }
 
-    // Vista Computadora (Workstation de 3 Columnas)
+    // =========================================================================
+    // 3. FORMATO COMPUTADORA (ESTACIÓN DE TRABAJO 3 COLUMNAS): PASO 5B · SELECCIÓN DE LOGOTIPO
+    // =========================================================================
     return `
-      <div class="tbb-home-device-chassis is-desktop">
-        <div class="tbb-home-device-top-bezel">
-          <span class="tbb-bezel-dots"><i></i><i></i><i></i></span>
-          <span class="tbb-bezel-title">VISTA COMPUTADORA · ESTACIÓN DE TRABAJO COMPLETA (MAPA + GEOMETRÍA EN CURVAS + BRANDBOOK 30+ PÁGINAS)</span>
-          <button type="button" class="tbb-bezel-mode-btn" onclick="window.tbbToggleHomeDeviceLiveStudio(true)">Abrir App Interactiva Aquí</button>
-        </div>
-        <div class="tbb-home-device-screen-inner is-desktop-layout">
-          <!-- Columna 1: Mapa de Recorrido -->
-          <div class="tbb-desktop-col-nav">
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
-              <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:26px; height:26px;" />
-              <strong style="font-family:'Montserrat',sans-serif; font-size:0.82rem; color:#FFFFFF;">THE BEST BRAND</strong>
-            </div>
-            <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">00</span><div class="tbb-mock-step-info"><strong>Giro y Objetivo</strong></div></div>
-            <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">01</span><div class="tbb-mock-step-info"><strong>Círculo Dorado</strong></div></div>
-            <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">02</span><div class="tbb-mock-step-info"><strong>Touchpoints</strong></div></div>
-            <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">03</span><div class="tbb-mock-step-info"><strong>SMILE & OMPI Niza</strong></div></div>
-            <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">04</span><div class="tbb-mock-step-info"><strong>7 Ejes Osgood</strong></div></div>
-            <div class="tbb-mock-step-row is-active"><span class="tbb-mock-step-num">05</span><div class="tbb-mock-step-info"><strong>Atelier Vectorial 8X×3X</strong></div></div>
-            <div class="tbb-mock-step-row is-active"><span class="tbb-mock-step-num">06</span><div class="tbb-mock-step-info"><strong>Brandbook 30+ Págs</strong></div></div>
+      <div class="tbb-home-device-stage-centered">
+        <div class="tbb-home-device-chassis is-desktop">
+          <div class="tbb-home-desktop-topbar">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="tbb-home-desktop-url">https://thebestbrand.app/studio · Paso 5B · Estudio y Selección del Logotipo Oficial</span>
+            <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="margin-left:auto; background:#FF7A00; color:#FFFFFF; border:none; border-radius:999px; padding:4px 12px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
+              Abrir Estudio en Vivo Aquí →
+            </button>
           </div>
 
-          <!-- Columna 2: Lienzo Central Vectorial + Aura -->
-          <div class="tbb-desktop-col-center">
-            <div class="tbb-mock-aura-banner" style="margin-bottom:10px;">
-              <span class="tbb-live-dot"></span>
-              <div>
-                <div style="font-size:0.75rem; font-weight:800; color:#FFEDD5;">AURA · SÍNTESIS DE IDENTIDAD EN COMPUTADORA</div>
-                <div style="font-size:0.72rem; color:#CBD5E1;">"He trazado tu logotipo en curvas Bézier puras y compilado las 30+ láminas de tu Brandbook oficial."</div>
+          <div class="tbb-home-device-screen" style="background:#FAF8F5; color:#090D16; padding:16px; gap:12px;">
+            <!-- Barra Superior del Estudio en Computadora -->
+            <div style="background:#090D16; color:#FFFFFF; border-radius:16px; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; border:1.5px solid #D4AF37;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:30px; height:30px;" />
+                <div style="text-align:left;">
+                  <div style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · ESTUDIO DE LOGOTIPO THE BEST BRAND (VISTA COMPUTADORA)</div>
+                  <div style="font-family:'Montserrat',sans-serif; font-size:1.05rem; font-weight:900; color:#FFFFFF;">Diseña y Elige el Logotipo Oficial de <span style="color:#FDE68A;">Tu Marca</span></div>
+                </div>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <span style="background:rgba(255,255,255,0.10); color:#F8FAFC; border:1px solid rgba(255,255,255,0.24); border-radius:999px; padding:5px 12px; font-size:0.70rem; font-weight:800;">1 Pantalla 5A · 24 Decisiones Visuales A/B</span>
+                <span style="background:#D4AF37; color:#090D16; border-radius:999px; padding:5px 14px; font-size:0.70rem; font-weight:900;">2 Pantalla 5B · Estudio de 8 Logotipos con IA</span>
               </div>
             </div>
-            <div class="tbb-mock-workspace-card" style="background:#FFFFFF; color:#0D2540; padding:14px; text-align:center;">
-              <div style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#426EAE; font-weight:800; margin-bottom:8px;">LIENZO DE CONSTRUCCIÓN VECTORIAL EN CURVAS (PROPORCIÓN 8X×3X)</div>
-              <div style="display:flex; align-items:center; justify-content:center; gap:14px; padding:10px; border:1.5px dashed #CBD5E1; border-radius:14px; background:#F8FAFC;">
-                <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:54px; height:54px;" />
-                <div style="text-align:left;">
-                  <div style="font-family:'Montserrat',sans-serif; font-size:1.15rem; font-weight:900; color:#0D2540; letter-spacing:0.04em;">THE BEST BRAND</div>
-                  <div style="font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; color:#FF7A00;">Your Brand,  NOW!!!</div>
+
+            <!-- Layout de 3 Columnas en Computadora: 1) Punto de Partida + Tri-Fold | 2) Las 8 Propuestas Vectoriales | 3) Lienzo Áureo 8X×3X + Afinar con IA -->
+            <div class="tbb-desktop-logo-studio-grid">
+              <!-- Columna 1 Computadora: Paso 1 Punto de Partida + Suite Tri-Fold -->
+              <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:16px; padding:12px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; text-align:left;">
+                <div>
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:900; color:#090D16; background:linear-gradient(135deg,#FDE68A,#D4AF37); padding:3px 10px; border-radius:999px; display:inline-block; margin-bottom:8px;">
+                    PASO 1 · TU PUNTO DE PARTIDA
+                  </span>
+                  <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:10px; padding:8px; margin-bottom:8px;">
+                    <div style="font-size:0.62rem; font-weight:800; color:#475569;">OBJETO O COMBINACIÓN (A + B)</div>
+                    <div style="font-family:'Montserrat',sans-serif; font-size:0.76rem; font-weight:800; color:#090D16; margin-top:2px;">Brújula + Estrella Polar</div>
+                  </div>
+                  <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:10px; padding:8px; margin-bottom:8px;">
+                    <div style="font-size:0.62rem; font-weight:800; color:#475569; margin-bottom:4px;">PALETA CURADA & TIPOGRAFÍA</div>
+                    <div style="display:flex; align-items:center; justify-content:space-between;">
+                      <span style="display:inline-flex; gap:5px;">
+                        <i style="width:14px; height:14px; border-radius:50%; background:#090D16; display:inline-block;"></i>
+                        <i style="width:14px; height:14px; border-radius:50%; background:#D4AF37; display:inline-block;"></i>
+                        <i style="width:14px; height:14px; border-radius:50%; background:#426EAE; display:inline-block;"></i>
+                        <i style="width:14px; height:14px; border-radius:50%; background:#FF7A00; display:inline-block;"></i>
+                      </span>
+                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:800; color:#0D2540;">Montserrat</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Suite Tri-Fold en Columna Izquierda -->
+                <div style="background:#F8FAFC; border:1.5px solid #0D2540; border-radius:12px; padding:9px;">
+                  <div style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; font-weight:900; color:#0D2540; margin-bottom:5px;">SUITE TRI-FOLD (3 FORMATOS):</div>
+                  <div style="display:flex; flex-direction:column; gap:4px; font-size:0.66rem; font-weight:700; color:#1E293B;">
+                    <div style="background:#FFFFFF; padding:4px 8px; border-radius:6px; border:1px solid #E2E8F0; display:flex; justify-content:space-between;"><span>1. Horizontal (3.5:1)</span><strong style="color:#0D2540;">.SVG / .AI</strong></div>
+                    <div style="background:#FFFFFF; padding:4px 8px; border-radius:6px; border:1px solid #E2E8F0; display:flex; justify-content:space-between;"><span>2. Avatar App Icon (1:1)</span><strong style="color:#FF7A00;">.SVG / .AI</strong></div>
+                    <div style="background:#FFFFFF; padding:4px 8px; border-radius:6px; border:1px solid #E2E8F0; display:flex; justify-content:space-between;"><span>3. Sello & Packaging</span><strong style="color:#426EAE;">.SVG / .AI</strong></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Columna 2 Central Computadora: Las 8 Propuestas Generadas por IA en Curvas -->
+              <div style="background:#FFFFFF; border:2px solid #D4AF37; border-radius:16px; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.66rem; font-weight:900; color:#FFFFFF; background:#090D16; border:1px solid #D4AF37; padding:4px 10px; border-radius:999px;">
+                      PASO 2 · ELIGE TU LOGOTIPO O PIDE 8 VARIACIONES
+                    </span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; background:#DCFCE7; color:#15803D; padding:3px 9px; border-radius:999px; font-weight:800;">8 Propuestas Listas</span>
+                  </div>
+                  <div style="display:flex; gap:4px; font-size:0.64rem; font-weight:800;">
+                    <span style="background:#090D16; color:#FDE68A; padding:3px 8px; border-radius:999px;">Horizontal</span>
+                    <span style="background:#F1F5F9; color:#0F172A; padding:3px 8px; border-radius:999px;">Vertical</span>
+                    <span style="background:#F1F5F9; color:#0F172A; padding:3px 8px; border-radius:999px;">App Icon</span>
+                  </div>
+                </div>
+
+                <!-- Grid 4x2 de las 8 Propuestas Vectoriales -->
+                <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:9px;">
+                  ${TBB_MOCKUP_LOGO_PROPOSALS.map((item) => renderLogoCard(item, false)).join("")}
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:8px; border-top:1px solid #E2E8F0; font-size:0.70rem; color:#475569;">
+                  <span>Haz clic en cualquiera de las <strong>8 propuestas</strong> para inspeccionarla y afinarla en tiempo real.</span>
+                  <span style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#090D16;">Vectores .SVG en Proporción Áurea (φ = 1.618)</span>
+                </div>
+              </div>
+
+              <!-- Columna 3 Derecha Computadora: Inspector 8X×3X + Paso 3 Afinar el Logo Seleccionado -->
+              <div style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:16px; padding:12px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; text-align:left;">
+                <div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:900; color:#090D16; background:#E2E8F0; padding:3px 9px; border-radius:999px;">
+                      PASO 3 · AFINAR CON IA
+                    </span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:800; color:#B45309; background:#FEF3C7; padding:3px 8px; border-radius:999px;">
+                      Editando ${selectedLogoObj.code}
+                    </span>
+                  </div>
+
+                  <!-- Lienzo de Inspección Vectorial 8X×3X -->
+                  <div style="background:${invertCanvas ? '#090D16' : '#F8FAFC'}; border:1.5px dashed #94A3B8; border-radius:12px; padding:10px; text-align:center; margin-bottom:8px;">
+                    <div style="width:74px; height:74px; margin:0 auto 6px;">
+                      ${selectedLogoObj.svg(strokeScale, hasShield)}
+                    </div>
+                    <div style="font-family:'Montserrat',sans-serif; font-size:0.82rem; font-weight:900; color:${invertCanvas ? '#FAF8F5' : '#090D16'};">${escHtml(selectedLogoObj.name)}</div>
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; color:#FF7A00; font-weight:800;">Retícula 8X×3X · CMYK + Pantone + WCAG AAA</div>
+                  </div>
+
+                  <div style="font-size:0.66rem; font-weight:800; color:#475569; margin-bottom:5px;">Ajustes rápidos sobre el logo elegido:</div>
+                  <div style="display:flex; flex-wrap:wrap; gap:5px;">
+                    <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.64rem; font-weight:800; cursor:pointer;">Trazo Fino</button>
+                    <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.64rem; font-weight:800; cursor:pointer;">Trazo Fuerte</button>
+                    <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.64rem; font-weight:800; cursor:pointer;">Marco de Escudo</button>
+                    <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#FF7A00' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.64rem; font-weight:800; cursor:pointer;">Invertir Fondo</button>
+                  </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <button type="button" onclick="window.tbbSetMockupLogoModifier('normal')" style="width:100%; background:#090D16; color:#FDE68A; border:1px solid #D4AF37; border-radius:10px; padding:8px 10px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
+                    Generar 8 Variaciones de ${escHtml(selectedLogoObj.name)}
+                  </button>
+                  <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="width:100%; background:linear-gradient(135deg, #065F46 0%, #047857 100%); color:#FFFFFF; border:1.5px solid #34D399; border-radius:10px; padding:10px 12px; font-family:'Montserrat',sans-serif; font-size:0.72rem; font-weight:800; cursor:pointer; box-shadow:0 6px 16px rgba(6,95,70,0.22);">
+                    ✓ Confirmar mi Logotipo Oficial (Paso 6) →
+                  </button>
                 </div>
               </div>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:10px;">
-              <span style="font-size:0.76rem; color:#CBD5E1;">Exportación directa en SVG, AI, EPS, PDF Editorial y PNG 4K.</span>
-              <button type="button" class="tbb-btn-primary-vibrant" style="padding:9px 16px; font-size:0.78rem;" onclick="window.tbbToggleHomeDeviceLiveStudio(true)">
-                ${TBB_ICONS.spark}
-                <span>Interactuar con la App en Computadora</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Columna 3: Inspector de Entregables y Brandbook -->
-          <div class="tbb-desktop-col-right">
-            <div style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#FF7A00; font-weight:800; margin-bottom:8px;">9 ENTREGABLES EJECUTIVOS</div>
-            <div class="tbb-desktop-deliv-pill">01 · Brandbook Oficial (30+ Págs)</div>
-            <div class="tbb-desktop-deliv-pill">02 · Suite Vectorial en Curvas</div>
-            <div class="tbb-desktop-deliv-pill">03 · Sistema Cromático WCAG</div>
-            <div class="tbb-desktop-deliv-pill">04 · Papelería Corporativa</div>
-            <div class="tbb-desktop-deliv-pill">05 · Kit Social Media & Firma</div>
-            <div class="tbb-desktop-deliv-pill">06 · Dictamen Legal OMPI Niza</div>
           </div>
         </div>
+        <div class="tbb-home-desktop-stand"></div>
       </div>
     `;
+  };
+
+  window.tbbSelectMockupLogoOption = function (logoId) {
+    if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
+    window.tbbCommercialDemoState.homeMockupSelectedLogoId = Number(logoId) || 1;
+    const stage = document.getElementById("tbbHomeMultiDeviceMockupStage");
+    if (stage) {
+      stage.innerHTML = window.tbbRenderHomeDeviceMockupContent(window.tbbCommercialDemoState.homeDeviceForm || "mobile");
+    }
+  };
+
+  window.tbbSetMockupLogoModifier = function (mod) {
+    if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
+    window.tbbCommercialDemoState.homeMockupModifier =
+      window.tbbCommercialDemoState.homeMockupModifier === mod ? "normal" : mod;
+    const stage = document.getElementById("tbbHomeMultiDeviceMockupStage");
+    if (stage) {
+      stage.innerHTML = window.tbbRenderHomeDeviceMockupContent(window.tbbCommercialDemoState.homeDeviceForm || "mobile");
+    }
+  };
+
+  window.tbbToggleMockupInvertCanvas = function () {
+    if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
+    window.tbbCommercialDemoState.homeMockupInvertCanvas = !window.tbbCommercialDemoState.homeMockupInvertCanvas;
+    const stage = document.getElementById("tbbHomeMultiDeviceMockupStage");
+    if (stage) {
+      stage.innerHTML = window.tbbRenderHomeDeviceMockupContent(window.tbbCommercialDemoState.homeDeviceForm || "mobile");
+    }
   };
 
   window.tbbSelectHomeDeviceMockup = function (deviceForm) {
@@ -4166,77 +4444,22 @@
         color: #FFFFFF;
         box-shadow: 0 6px 16px rgba(13, 37, 64, 0.22);
       }
+      .tbb-home-multidevice-head {
+        text-align: center;
+        margin: 0 auto 24px;
+      }
       .tbb-home-multidevice-stage-wrap {
-        max-width: 1200px;
+        max-width: 1240px;
         margin: 0 auto;
       }
-      .tbb-home-device-mockup-layout {
-        display: grid;
-        grid-template-columns: 350px 1fr;
-        gap: 32px;
-        align-items: center;
-      }
-      .tbb-home-device-info-col {
-        background: #FFFFFF;
-        border: 1.5px solid #E2E8F0;
-        border-radius: 24px;
-        padding: 24px;
-        box-shadow: 0 14px 36px rgba(13, 37, 64, 0.06);
-      }
-      .tbb-home-device-badge {
-        display: inline-block;
-        padding: 5px 12px;
-        border-radius: 999px;
-        background: #FFF7ED;
-        border: 1px solid #FFEDD5;
-        color: #EA580C;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.72rem;
-        font-weight: 800;
-        margin-bottom: 10px;
-      }
-      .tbb-home-device-title {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 1.38rem;
-        font-weight: 900;
-        color: #0D2540;
-        margin: 0 0 8px;
-      }
-      .tbb-home-device-desc {
-        font-size: 0.96rem;
-        color: #334155;
-        line-height: 1.58;
-        margin: 0 0 16px;
-      }
-      .tbb-home-device-specs-list {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 18px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .tbb-home-device-specs-list li {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: #0D2540;
-      }
-      .tbb-home-device-specs-list li svg { color: #FF7A00; }
-      .tbb-home-device-actions {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .tbb-home-device-frame-col {
+      .tbb-home-device-stage-centered {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        width: 100%;
       }
-      /* CHASIS CELULAR, TABLET Y COMPUTADORA */
+      /* CHASIS CELULAR, TABLET Y COMPUTADORA MOSTRANDO EL PASO DE SELECCIÓN DE LOGOTIPO */
       .tbb-home-device-chassis {
         background: #0D2540;
         box-shadow: 0 28px 70px rgba(13, 37, 64, 0.26), inset 0 0 0 3px #426EAE;
@@ -4246,22 +4469,58 @@
         flex-direction: column;
       }
       .tbb-home-device-chassis.is-mobile {
-        width: 340px;
-        max-width: 92vw;
-        border-radius: 48px;
+        width: 390px;
+        max-width: 94vw;
+        border-radius: 46px;
         padding: 14px;
       }
       .tbb-home-device-chassis.is-tablet {
-        width: 640px;
-        max-width: 94vw;
+        width: 880px;
+        max-width: 96vw;
         border-radius: 34px;
         padding: 16px;
       }
       .tbb-home-device-chassis.is-desktop {
         width: 100%;
-        max-width: 780px;
+        max-width: 1180px;
         border-radius: 20px 20px 10px 10px;
-        padding: 10px 12px 14px;
+        padding: 10px 14px 16px;
+      }
+      .tbb-tablet-logo-studio-grid {
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: 12px;
+        align-items: stretch;
+      }
+      .tbb-desktop-logo-studio-grid {
+        display: grid;
+        grid-template-columns: 245px 1fr 275px;
+        gap: 12px;
+        align-items: stretch;
+      }
+      .tbb-studio-logo-card:hover {
+        transform: translateY(-2px);
+      }
+      .tbb-home-device-top-bezel {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 4px 8px 10px;
+        color: #FFFFFF;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+      }
+      .tbb-bezel-mode-btn {
+        background: #FF7A00;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 999px;
+        padding: 5px 12px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.70rem;
+        font-weight: 800;
+        cursor: pointer;
       }
       .tbb-home-mobile-notch {
         width: 108px;
@@ -4289,6 +4548,7 @@
         align-items: center;
         gap: 6px;
         padding: 4px 8px 10px;
+        flex-wrap: wrap;
       }
       .tbb-home-desktop-topbar .dot {
         width: 10px;
@@ -4308,27 +4568,25 @@
         border-radius: 999px;
       }
       .tbb-home-desktop-stand {
-        width: 180px;
+        width: 200px;
         height: 16px;
         background: linear-gradient(180deg, #1E293B 0%, #0D2540 100%);
         border-radius: 0 0 18px 18px;
         box-shadow: 0 10px 20px rgba(13, 37, 64, 0.20);
       }
       .tbb-home-device-screen {
-        background: #FFFFFF;
-        border-radius: 22px;
+        background: #FAF8F5;
+        border-radius: 24px;
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        min-height: 410px;
       }
       .tbb-home-device-chassis.is-desktop .tbb-home-device-screen {
-        border-radius: 12px;
-        min-height: 400px;
+        border-radius: 14px;
       }
       .tbb-home-device-live-iframe {
         width: 100%;
-        height: 460px;
+        height: 540px;
         border: none;
         background: #FFFFFF;
       }
