@@ -1734,6 +1734,21 @@
     return window.tbbBuildSubpage1HomeHTML();
   };
 
+  window.tbbUpdateHeaderLogoDockState = function () {
+    const st = window.tbbCommercialDemoState || {};
+    const activeSec = Number(st.activeMainSection) || 1;
+    const headerEl = document.querySelector(".tbb-master-header");
+    const coverLogoEl = document.getElementById("tbbHomeCoverLogoBox");
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const shouldDockInHeader = activeSec !== 1 || scrollY > 175;
+    if (headerEl) {
+      headerEl.classList.toggle("is-logo-docked", shouldDockInHeader);
+    }
+    if (coverLogoEl) {
+      coverLogoEl.classList.toggle("is-docked-to-header", shouldDockInHeader);
+    }
+  };
+
   window.tbbSwitchMainSection = function (secNumber, opts) {
     const s = Math.max(1, Math.min(5, Number(secNumber) || 1));
     if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
@@ -1769,6 +1784,11 @@
       window.scrollTo(0, 0);
     }
 
+    if (typeof window.tbbUpdateHeaderLogoDockState === "function") {
+      window.tbbUpdateHeaderLogoDockState();
+      setTimeout(() => window.tbbUpdateHeaderLogoDockState(), 120);
+    }
+
     if (typeof window.tbbUpdateAlwaysOnFloatingBarText === "function") {
       window.tbbUpdateAlwaysOnFloatingBarText();
     }
@@ -1777,20 +1797,27 @@
     }
   };
 
-
   // Interacciones del Escenario Protagonista de los 5 Pilares Científicos a Todo el Ancho (Sección 1: Inicio)
   window.tbbTriggerHeroConvergence = function () {
-    const st = window.tbbCommercialDemoState;
+    const st = window.tbbCommercialDemoState || (window.tbbCommercialDemoState = {});
     st.heroConvergenceActive = !st.heroConvergenceActive;
+    st.heroConvergenceBurstTs = performance.now();
     const stageEl = document.getElementById("tbbHeroInteractiveConvergenceStage");
     if (stageEl) {
       stageEl.classList.toggle("is-converged", st.heroConvergenceActive);
     }
+    const btnLbl = document.getElementById("tbbConvergeBtnLabel");
+    if (btnLbl) {
+      btnLbl.textContent = st.heroConvergenceActive
+        ? "Fusión Científica Activa · 5 Pilares en Síntesis"
+        : t("heroConvergencePlayBtn");
+    }
   };
 
   window.tbbSelectHeroTheoryNode = function (idx) {
-    const st = window.tbbCommercialDemoState;
+    const st = window.tbbCommercialDemoState || (window.tbbCommercialDemoState = {});
     st.heroSelectedTheoryIdx = Number(idx) || 0;
+    st.heroConvergenceBurstTs = performance.now();
     const detailEl = document.getElementById("tbbHeroTheoryNodeDetailBox");
     const stageObj = ACADEMIC_INFOGRAPHIC_STAGES[st.heroSelectedTheoryIdx + 1] || ACADEMIC_INFOGRAPHIC_STAGES[1];
     if (detailEl && stageObj) {
@@ -1818,24 +1845,23 @@
     document.querySelectorAll(".tbb-hero-theory-pill").forEach((el, i) => {
       el.classList.toggle("active", i === st.heroSelectedTheoryIdx);
     });
-    document.querySelectorAll(".tbb-svg-pillar-node").forEach((el, i) => {
-      el.setAttribute("opacity", i === st.heroSelectedTheoryIdx ? "1" : "0.78");
-    });
   };
 
-  // SUBPÁGINA 1: INICIO (SIN REPETICIÓN DE LOGO, SIN BOTONES REDUNDANTES, SIN VIDEO CONFUSO — PROTAGONISMO DE LOS 5 PILARES CIENTÍFICOS A TODO EL ANCHO)
+  // SUBPÁGINA 1: INICIO (PORTADA CON LOGO AL CENTRO + TAGLINE OFICIAL "Your Brand,  NOW!!!" + "Donde la ciencia..." + ANIMACIÓN 60FPS DE LOS 5 PILARES CIENTÍFICOS)
   window.tbbBuildSubpage1HomeHTML = function () {
     const l = getLang();
+    const st = window.tbbCommercialDemoState || {};
+    const selectedIdx = Number(st.heroSelectedTheoryIdx) || 0;
 
     const fiveNodes = [
-      { idx: 0, code: "01 · CÍRCULO DORADO", author: "Simon Sinek", sub: "WHY → HOW → WHAT", color: "#FF7A00", cx: 140, cy: 76 },
-      { idx: 1, code: "02 · TOUCHPOINTS", author: "Jan Carlzon", sub: "Antes · Durante · Después", color: "#4C9DE6", cx: 140, cy: 224 },
-      { idx: 2, code: "03 · MODELO SMILE", author: "Alexandra Watkins", sub: "Naming & OMPI Niza", color: "#426EAE", cx: 560, cy: 38 },
-      { idx: 3, code: "04 · DIFERENCIAL OSGOOD", author: "Osgood & Nagamachi", sub: "7 Ejes Kansei", color: "#0D2540", cx: 980, cy: 76 },
-      { idx: 4, code: "05 · INGENIERÍA KAIZEN", author: "Masaaki Imai & Rand", sub: "Mejora Vectorial Continua", color: "#FF7A00", cx: 980, cy: 224 }
+      { idx: 0, code: "01 · CÍRCULO DORADO", author: "Simon Sinek", sub: "WHY → HOW → WHAT", color: "#FF7A00" },
+      { idx: 1, code: "02 · TOUCHPOINTS", author: "Jan Carlzon", sub: "Antes · Durante · Después", color: "#4C9DE6" },
+      { idx: 2, code: "03 · MODELO SMILE", author: "Alexandra Watkins", sub: "Naming & OMPI Niza", color: "#426EAE" },
+      { idx: 3, code: "04 · DIFERENCIAL OSGOOD", author: "Osgood & Nagamachi", sub: "7 Ejes Kansei", color: "#0D2540" },
+      { idx: 4, code: "05 · INGENIERÍA KAIZEN", author: "Masaaki Imai & Rand", sub: "Mejora Vectorial Continua", color: "#FF7A00" }
     ];
 
-    const initStage = ACADEMIC_INFOGRAPHIC_STAGES[1];
+    const initStage = ACADEMIC_INFOGRAPHIC_STAGES[selectedIdx + 1] || ACADEMIC_INFOGRAPHIC_STAGES[1];
     const initLoc = initStage.i18n[l] || initStage.i18n.es;
 
     return `
@@ -1851,81 +1877,72 @@
         <canvas id="tbbHeroDynamicCanvas" class="tbb-hero-particles-canvas" aria-hidden="true"></canvas>
 
         <div class="tbb-container-wide" style="position:relative; z-index:2;">
-          <!-- Encabezado Editorial Limpio (Sin duplicar el logotipo del Header y sin los 3 botones redundantes) -->
+          <!-- PORTADA CENTRAL: 1) LOGOTIPO AL CENTRO -> 2) TAGLINE LEGIBLE "Your Brand,  NOW!!!" -> 3) "Donde la ciencia se convierte en tu marca" -->
           <div class="tbb-reveal-on-scroll is-visible tbb-monumental-brand-axis">
-            <div style="margin-bottom:14px;">
-              <span class="tbb-eyebrow-pill">${TBB_ICONS.spark} <span>${escHtml(t("heroEyebrow"))}</span></span>
+            <div id="tbbHomeCoverLogoBox" class="tbb-cover-hero-logo-lockup">
+              <img
+                src="/assets/logos/Logotipo_Horizontal_Curvas_the_best_brand.svg"
+                alt="The Best Brand"
+                class="tbb-cover-hero-logo-svg"
+              />
+              <div class="tbb-cover-tagline-now" aria-label="Your Brand,  NOW!!!">Your Brand,  NOW!!!</div>
             </div>
 
             <h1 class="tbb-hero-display-title">
               ${escHtml(t("heroTitleLine1"))} <span class="tbb-text-accent-gradient">${escHtml(t("heroTitleHighlight"))}</span>
             </h1>
-            <p class="tbb-hero-lead-paragraph" style="margin-bottom:10px;">
+            <p class="tbb-hero-lead-paragraph" style="margin-bottom:16px;">
               ${escHtml(t("heroLead"))}
             </p>
+
+            <!-- Claridad Multidispositivo sin mencionar marcas comerciales: Móvil, Tablet o Computadora -->
+            <div class="tbb-multidevice-showcase-bar" role="region" aria-label="Compatibilidad Multidispositivo">
+              <div class="tbb-multidevice-badge-left">
+                <span class="tbb-live-dot"></span>
+                <span>Úsala en <strong>Móvil, Tablet o Computadora</strong> · Sincronización en Tiempo Real</span>
+              </div>
+              <div class="tbb-multidevice-icons-group">
+                <button type="button" class="tbb-device-form-btn active" onclick="window.tbbSwitchMainSection(2)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="3" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18.5" r="1" fill="#FF7A00"/></svg>
+                  <span>Móvil</span>
+                </button>
+                <button type="button" class="tbb-device-form-btn" onclick="window.tbbSwitchMainSection(2)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="16" height="20" rx="2.5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18.5" r="1" fill="#FF7A00"/></svg>
+                  <span>Tablet</span>
+                </button>
+                <button type="button" class="tbb-device-form-btn" onclick="window.tbbSwitchMainSection(2)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  <span>Computadora</span>
+                </button>
+              </div>
+            </div>
           </div>
 
-          <!-- PROTAGONISTA A TODO EL ANCHO DE LA PANTALLA: LOS 5 PILARES CIENTÍFICOS Y CONVERGENCIA CON AURA -->
+          <!-- PROTAGONISTA A TODO EL ANCHO DE LA PANTALLA: ANIMACIÓN INTERACTIVA 60FPS DE LOS 5 PILARES CIENTÍFICOS Y CONVERGENCIA CON AURA -->
           <div class="tbb-hero-convergence-fullwidth tbb-reveal-on-scroll is-visible">
-            <div id="tbbHeroInteractiveConvergenceStage" class="tbb-hero-interactive-stage tbb-fullwidth-stage">
+            <div id="tbbHeroInteractiveConvergenceStage" class="tbb-hero-interactive-stage tbb-fullwidth-stage ${st.heroConvergenceActive ? 'is-converged' : ''}">
               <div class="tbb-stage-header">
                 <div>
+                  <span class="tbb-eyebrow-pill" style="margin-bottom:8px;">${TBB_ICONS.spark} <span>ARQUITECTURA ALGORÍTMICA EN TIEMPO REAL</span></span>
                   <h2 class="tbb-stage-title" style="font-size:clamp(1.35rem, 2.2vw, 1.85rem);">${escHtml(t("heroInteractiveStageTitle"))}</h2>
                   <p class="tbb-stage-sub" style="font-size:1.0rem;">${escHtml(t("heroInteractiveStageSub"))}</p>
                 </div>
                 <button type="button" class="tbb-btn-converge-trigger" onclick="window.tbbTriggerHeroConvergence()">
                   ${TBB_ICONS.spark}
-                  <span>${escHtml(t("heroConvergencePlayBtn"))}</span>
+                  <span id="tbbConvergeBtnLabel">${escHtml(st.heroConvergenceActive ? "Fusión Científica Activa · 5 Pilares en Síntesis" : t("heroConvergencePlayBtn"))}</span>
                 </button>
               </div>
 
-              <!-- Escenario Panorámico Full-Width de los 5 Pilares Científicos -->
+              <!-- Lienzo Interactivo 60fps de Convergencia Científica (Partículas, Haces Bézier y Núcleo Aura en Tiempo Real) -->
               <div class="tbb-convergence-orbital-box tbb-orbital-fullwidth">
-                <svg class="tbb-convergence-lines-svg" viewBox="0 0 1120 280" preserveAspectRatio="xMidYMid meet">
-                  <defs>
-                    <linearGradient id="convBeamOrange" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stop-color="#FF7A00" stop-opacity="0.90"/>
-                      <stop offset="50%" stop-color="#426EAE" stop-opacity="0.95"/>
-                      <stop offset="100%" stop-color="#FF7A00" stop-opacity="0.90"/>
-                    </linearGradient>
-                    <radialGradient id="convCenterGlow" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stop-color="#FF7A00" stop-opacity="0.22"/>
-                      <stop offset="55%" stop-color="#426EAE" stop-opacity="0.10"/>
-                      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                    </radialGradient>
-                  </defs>
-                  <circle cx="560" cy="150" r="135" fill="url(#convCenterGlow)"/>
-                  <circle cx="560" cy="150" r="118" fill="none" stroke="rgba(66,110,174,0.22)" stroke-width="1.6" stroke-dasharray="6 5"/>
-                  <circle cx="560" cy="150" r="82" fill="none" stroke="rgba(255,122,0,0.32)" stroke-width="2"/>
-
-                  <!-- Haces de convergencia desde los 5 Pilares Científicos hacia el Núcleo Central -->
-                  <path d="M160,68 C320,68 420,125 560,150" fill="none" stroke="url(#convBeamOrange)" stroke-width="3" stroke-dasharray="8 5" class="tbb-beam-path"/>
-                  <path d="M160,226 C320,226 420,175 560,150" fill="none" stroke="url(#convBeamOrange)" stroke-width="3" stroke-dasharray="8 5" class="tbb-beam-path"/>
-                  <path d="M560,34 L560,150" fill="none" stroke="url(#convBeamOrange)" stroke-width="3" stroke-dasharray="8 5" class="tbb-beam-path"/>
-                  <path d="M960,68 C800,68 700,125 560,150" fill="none" stroke="url(#convBeamOrange)" stroke-width="3" stroke-dasharray="8 5" class="tbb-beam-path"/>
-                  <path d="M960,226 C800,226 700,175 560,150" fill="none" stroke="url(#convBeamOrange)" stroke-width="3" stroke-dasharray="8 5" class="tbb-beam-path"/>
-
-                  <!-- Nodos orbitales interactivos en el lienzo SVG -->
-                  <g class="tbb-svg-pillar-node" opacity="1"><circle cx="160" cy="68" r="9" fill="#FF7A00" stroke="#FFFFFF" stroke-width="2.5"/></g>
-                  <g class="tbb-svg-pillar-node" opacity="0.78"><circle cx="160" cy="226" r="9" fill="#4C9DE6" stroke="#FFFFFF" stroke-width="2.5"/></g>
-                  <g class="tbb-svg-pillar-node" opacity="0.78"><circle cx="560" cy="34" r="9" fill="#426EAE" stroke="#FFFFFF" stroke-width="2.5"/></g>
-                  <g class="tbb-svg-pillar-node" opacity="0.78"><circle cx="960" cy="68" r="9" fill="#0D2540" stroke="#FFFFFF" stroke-width="2.5"/></g>
-                  <g class="tbb-svg-pillar-node" opacity="0.78"><circle cx="960" cy="226" r="9" fill="#FF7A00" stroke="#FFFFFF" stroke-width="2.5"/></g>
-                </svg>
-
-                <!-- Núcleo Central de Síntesis con Aura (Sin repetir el logotipo del Header) -->
-                <div class="tbb-convergence-center-logo" onclick="window.tbbTriggerHeroConvergence()" title="Síntesis Científica con Aura">
-                  <div class="tbb-aura-core-orb">
-                    ${TBB_ICONS.spark}
-                  </div>
-                  <span>NÚCLEO CIENTÍFICO · AURA</span>
-                  <small style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#FF7A00; font-weight:800;">5 PILARES → TU IDENTIDAD</small>
+                <div class="tbb-five-pillars-canvas-wrap">
+                  <canvas id="tbbFivePillarsConvergenceCanvas" class="tbb-five-pillars-live-canvas"></canvas>
                 </div>
 
-                <!-- Grid Panorámico de los 5 Pilares Científicos a Todo el Ancho -->
+                <!-- Grid Panorámico de los 5 Pilares Científicos a Todo el Ancho (Sincronizado con el Canvas) -->
                 <div class="tbb-hero-theory-pills-wrap tbb-five-pillars-fullgrid">
                   ${fiveNodes.map((n, idx) => `
-                    <button type="button" class="tbb-hero-theory-pill pos-${idx} ${idx === 0 ? 'active' : ''}" onclick="window.tbbSelectHeroTheoryNode(${idx})">
+                    <button type="button" class="tbb-hero-theory-pill pos-${idx} ${idx === selectedIdx ? 'active' : ''}" onclick="window.tbbSelectHeroTheoryNode(${idx})">
                       <span class="tbb-pill-code" style="color:${n.color};">${escHtml(n.code)}</span>
                       <strong class="tbb-pill-author">${escHtml(n.author)}</strong>
                       <span class="tbb-pill-sub">${escHtml(n.sub)}</span>
@@ -1935,7 +1952,7 @@
               </div>
 
               <!-- Tarjeta Dinámica Ancha del Pilar Científico Seleccionado con Diagrama Vectorial en Vivo -->
-              <div id="tbbHeroTheoryNodeDetailBox" class="tbb-hero-theory-detail-box">
+              <div id="tbbHeroTheoryNodeDetailBox" class="tbb-hero-theory-detail-box tbb-fullwidth-pillar-detail">
                 <div class="tbb-hero-pillar-detail-grid">
                   <div class="tbb-hero-pillar-detail-text">
                     <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
@@ -2922,25 +2939,27 @@
     ];
 
     const langs = [
-      { code: "es", label: "ES" },
-      { code: "en", label: "EN" },
-      { code: "fr", label: "FR" },
-      { code: "pt", label: "PT" },
-      { code: "de", label: "DE" },
-      { code: "it", label: "IT" }
+      { code: "es", label: "ES · Español" },
+      { code: "en", label: "EN · English" },
+      { code: "fr", label: "FR · Français" },
+      { code: "pt", label: "PT · Português" },
+      { code: "de", label: "DE · Deutsch" },
+      { code: "it", label: "IT · Italiano" }
     ];
+
+    const initialDocked = activeSec !== 1 || ((window.scrollY || 0) > 175);
 
     return `
       <div class="tbb-commercial-master-shell">
-        <!-- HEADER SUPERIOR CON PROTAGONISMO DEL LOGOTIPO OFICIAL THE BEST BRAND -->
-        <header class="tbb-master-header">
+        <!-- HEADER SUPERIOR: EN INICIO EL LOGO ESTÁ EN LA PORTADA Y SOLO PASA AL ENCABEZADO AL HACER SCROLL O CAMBIAR DE MENÚ -->
+        <header class="tbb-master-header ${initialDocked ? 'is-logo-docked' : ''}">
           <div class="tbb-header-inner">
-            <!-- Eje Visual Central: Único Logotipo Oficial a Gran Escala (Cero Repetición) -->
+            <!-- Logotipo del Encabezado (Oculto en la portada de 1. Inicio; aparece suavemente al hacer scroll o cambiar a menú 2-5) -->
             <a href="/" class="tbb-brand-logo-link" onclick="event.preventDefault(); window.tbbSwitchMainSection(1);" aria-label="The Best Brand">
               <img src="/assets/logos/Logotipo_Horizontal_Curvas_the_best_brand.svg" alt="The Best Brand" class="tbb-header-wordmark-svg" />
             </a>
 
-            <!-- Menú de Escritorio en Orden Estricto: 1. Inicio | 2. App Tour | 3. Bases Teóricas | 4. Demo en Vivo | 5. Pack de Descargas -->
+            <!-- Menú Principal del 1 al 5 (Siempre Prevalece al Hacer Más Pequeña la Ventana) -->
             <nav class="tbb-desktop-nav" aria-label="Primary Navigation">
               ${navItems.map((item) => `
                 <button
@@ -2955,16 +2974,20 @@
               `).join("")}
             </nav>
 
-            <!-- Acciones Derecha: Selector de Idioma (6 Idiomas · Cero Banderas Emoji) + Botón de Licencia + Botón Menú Móvil -->
+            <!-- Acciones Derecha: Lista Desplegable de Idiomas + Botón Desbloquea tu Marca Bien Ajustado -->
             <div class="tbb-header-actions">
-              <div class="tbb-lang-pills-bar" role="group" aria-label="Language Selector">
-                ${langs.map((lg) => `
-                  <button
-                    type="button"
-                    class="tbb-lang-pill-btn ${l === lg.code ? 'active' : ''}"
-                    onclick="window.tbbSwitchCommercialLanguage('${lg.code}')"
-                  >${lg.label}</button>
-                `).join("")}
+              <div class="tbb-lang-select-wrap">
+                <span class="tbb-lang-globe-ic" aria-hidden="true">${TBB_ICONS.globe}</span>
+                <select
+                  id="tbbHeaderLangSelect"
+                  class="tbb-lang-select-dropdown"
+                  aria-label="Language Selector"
+                  onchange="window.tbbSwitchCommercialLanguage(this.value)"
+                >
+                  ${langs.map((lg) => `
+                    <option value="${lg.code}" ${l === lg.code ? 'selected' : ''}>${escHtml(lg.label)}</option>
+                  `).join("")}
+                </select>
               </div>
 
               <button
@@ -2972,21 +2995,8 @@
                 class="tbb-header-buy-btn ${isPro ? 'is-pro' : ''}"
                 onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')"
               >
-                ${isPro ? TBB_ICONS.unlock : TBB_ICONS.spark}
-                <span>${escHtml(isPro ? t("navLicenseActive") : t("navBuyCta"))}</span>
-              </button>
-
-              <!-- Botón Propietario para Abrir el Menú Móvil (Icono Vectorial a Medida) -->
-              <button
-                type="button"
-                class="tbb-mobile-menu-trigger"
-                onclick="window.tbbToggleMobileDrawer()"
-                aria-label="Toggle Mobile Navigation"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M4 7h16M4 12h16M10 17h10" stroke="#0D2540" stroke-width="2.4" stroke-linecap="round"/>
-                  <circle cx="5.5" cy="17" r="2" fill="#FF7A00"/>
-                </svg>
+                <span class="tbb-buy-btn-ic">${isPro ? TBB_ICONS.unlock : TBB_ICONS.spark}</span>
+                <span class="tbb-buy-btn-lbl">${escHtml(isPro ? t("navLicenseActive") : t("navBuyCta"))}</span>
               </button>
             </div>
           </div>
@@ -3488,12 +3498,12 @@
       }
       .tbb-svg-ic { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 
-      /* HEADER SUPERIOR CON LOGOTIPO PROTAGONISTA */
+      /* HEADER SUPERIOR: EN PORTADA DE 1. INICIO EL LOGO NO ESTÁ EN EL MENÚ; SOLO ENTRA AL HACER SCROLL O CAMBIAR DE MENÚ */
       .tbb-master-header {
         position: sticky;
         top: 0;
         z-index: 1200;
-        background: rgba(255, 255, 255, 0.94);
+        background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
         border-bottom: 1.5px solid #E2E8F0;
@@ -3502,50 +3512,70 @@
       .tbb-header-inner {
         max-width: 1440px;
         margin: 0 auto;
-        padding: 12px 24px;
+        padding: 10px 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 18px;
+        flex-wrap: wrap;
+        gap: 12px;
+        transition: justify-content 0.3s ease;
       }
       .tbb-brand-logo-link {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 10px;
         text-decoration: none;
-        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        flex-shrink: 0;
+        max-width: 260px;
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                    opacity 0.28s ease,
+                    transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+                    margin 0.3s ease;
       }
       .tbb-brand-logo-link:hover { transform: scale(1.02); }
+      .tbb-master-header:not(.is-logo-docked) .tbb-brand-logo-link {
+        max-width: 0 !important;
+        opacity: 0 !important;
+        overflow: hidden !important;
+        pointer-events: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        transform: translateY(-10px) scale(0.9);
+      }
       .tbb-header-wordmark-svg {
-        height: 62px;
+        height: 46px;
         width: auto;
-        max-width: 310px;
+        max-width: 245px;
         object-fit: contain;
-        filter: drop-shadow(0 6px 16px rgba(13, 37, 64, 0.08));
+        display: block;
       }
 
-      /* NAVEGACIÓN DESKTOP */
+      /* MENÚ PRINCIPAL DEL 1 AL 5 (SIEMPRE PREVALECE AL HACER MÁS PEQUEÑA LA VENTANA) */
       .tbb-desktop-nav {
-        display: flex;
+        display: flex !important;
         align-items: center;
-        gap: 6px;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
         background: #F4F8FC;
-        padding: 6px;
+        padding: 5px;
         border-radius: 999px;
         border: 1px solid #DCE6F2;
+        flex: 1 1 auto;
       }
       .tbb-nav-tab-btn {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 10px 16px;
+        gap: 6px;
+        padding: 8px 14px;
         border-radius: 999px;
         border: none;
         background: transparent;
         color: #0D2540;
         font-family: 'Montserrat', sans-serif;
-        font-size: 0.86rem;
-        font-weight: 700;
+        font-size: 0.82rem;
+        font-weight: 800;
         cursor: pointer;
         transition: all 0.22s ease;
         white-space: nowrap;
@@ -3557,72 +3587,139 @@
         box-shadow: 0 6px 18px rgba(13, 37, 64, 0.18);
       }
 
+      /* ACCIONES DERECHA: IDIOMAS EN LISTA DESPLEGABLE + BOTÓN DESBLOQUEA TU MARCA BIEN AJUSTADO */
       .tbb-header-actions {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         gap: 10px;
+        flex-shrink: 0;
       }
-      .tbb-lang-pills-bar {
-        display: flex;
+      .tbb-lang-select-wrap {
+        position: relative;
+        display: inline-flex;
         align-items: center;
-        gap: 3px;
         background: #F8FAFC;
-        padding: 4px;
+        border: 1.5px solid #CBD5E1;
         border-radius: 999px;
-        border: 1px solid #CBD5E1;
+        padding: 0 10px 0 12px;
+        height: 40px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
       }
-      .tbb-lang-pill-btn {
+      .tbb-lang-select-wrap:hover,
+      .tbb-lang-select-wrap:focus-within {
+        border-color: #426EAE;
+        box-shadow: 0 4px 12px rgba(66, 110, 174, 0.14);
+      }
+      .tbb-lang-globe-ic {
+        display: inline-flex;
+        align-items: center;
+        color: #0D2540;
+        margin-right: 6px;
+        pointer-events: none;
+      }
+      .tbb-lang-select-dropdown {
+        appearance: none;
+        -webkit-appearance: none;
         border: none;
         background: transparent;
-        color: #475569;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.74rem;
+        color: #0D2540;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.78rem;
         font-weight: 800;
-        padding: 5px 8px;
-        border-radius: 999px;
+        padding: 6px 20px 6px 2px;
         cursor: pointer;
-        transition: all 0.18s ease;
+        outline: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230D2540' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 2px center;
       }
-      .tbb-lang-pill-btn.active {
-        background: #FF7A00;
-        color: #FFFFFF;
-      }
+
+      /* BOTÓN "DESBLOQUEA TU MARCA ($49 USD)" BIEN AJUSTADO Y PROPORCIONADO */
       .tbb-header-buy-btn {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 10px 18px;
+        justify-content: center;
+        gap: 7px;
+        height: 40px;
+        padding: 0 16px;
         border-radius: 999px;
-        border: none;
+        border: 1.5px solid rgba(255, 255, 255, 0.22);
         background: linear-gradient(135deg, #FF7A00 0%, #EA580C 100%);
         color: #FFFFFF;
         font-family: 'Montserrat', sans-serif;
-        font-size: 0.84rem;
+        font-size: 0.80rem;
         font-weight: 800;
+        letter-spacing: 0.01em;
+        line-height: 1;
         cursor: pointer;
-        box-shadow: 0 10px 24px rgba(255, 122, 0, 0.28);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 8px 20px rgba(255, 122, 0, 0.26);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         white-space: nowrap;
+        flex-shrink: 0;
       }
-      .tbb-header-buy-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(255, 122, 0, 0.36); }
-      .tbb-header-buy-btn.is-pro { background: #0D2540; box-shadow: none; }
-
-      .tbb-mobile-menu-trigger {
-        display: none;
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
-        border: 1.5px solid #CBD5E1;
-        background: #FFFFFF;
+      .tbb-header-buy-btn:hover {
+        transform: translateY(-1.5px);
+        box-shadow: 0 12px 26px rgba(255, 122, 0, 0.36);
+      }
+      .tbb-header-buy-btn.is-pro {
+        background: #0D2540;
+        box-shadow: 0 6px 16px rgba(13, 37, 64, 0.18);
+      }
+      .tbb-buy-btn-ic {
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .tbb-buy-btn-lbl {
+        display: inline-block;
+        line-height: 1;
+      }
+
+      /* PORTADA CENTRAL DE 1. INICIO: LOGOTIPO AL CENTRO + TAGLINE LEGIBLE "Your Brand,  NOW!!!" */
+      .tbb-cover-hero-logo-lockup {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 18px;
+        padding: 10px 20px 14px;
+        transition: opacity 0.32s ease, transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .tbb-cover-hero-logo-lockup.is-docked-to-header {
+        opacity: 0;
+        transform: translateY(-18px) scale(0.92);
+        pointer-events: none;
+      }
+      .tbb-cover-hero-logo-svg {
+        width: clamp(270px, 38vw, 440px);
+        height: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 12px 28px rgba(13, 37, 64, 0.10));
+        margin-bottom: 8px;
+      }
+      .tbb-cover-tagline-now {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(1.08rem, 1.8vw, 1.42rem);
+        font-weight: 900;
+        color: #FF7A00;
+        letter-spacing: 0.12em;
+        white-space: pre;
+        background: linear-gradient(90deg, #0D2540 0%, #426EAE 38%, #FF7A00 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding: 4px 18px;
+        border-radius: 999px;
+        border: 1.5px solid rgba(255, 122, 0, 0.28);
+        background-color: #FFF7ED;
+        box-shadow: 0 8px 20px rgba(255, 122, 0, 0.10);
       }
 
       /* HERO & PROTAGONISMO A TODO EL ANCHO DE LOS 5 PILARES CIENTÍFICOS */
       .tbb-subpage-section {
         position: relative;
-        padding: 36px 24px 96px;
+        padding: 28px 24px 96px;
         min-height: calc(100vh - 84px);
       }
       .tbb-open-curve-bg {
@@ -3649,7 +3746,7 @@
       .tbb-monumental-brand-axis {
         text-align: center;
         max-width: 1080px;
-        margin: 0 auto 28px;
+        margin: 0 auto 24px;
       }
       .tbb-eyebrow-pill {
         display: inline-flex;
@@ -3667,12 +3764,12 @@
       }
       .tbb-hero-display-title {
         font-family: 'Montserrat', sans-serif;
-        font-size: clamp(2.15rem, 4.1vw, 3.45rem);
+        font-size: clamp(2.05rem, 3.8vw, 3.25rem);
         font-weight: 900;
         color: #0D2540;
         line-height: 1.12;
         letter-spacing: -0.025em;
-        margin: 14px 0 14px;
+        margin: 10px 0 12px;
       }
       .tbb-text-accent-gradient {
         background: linear-gradient(135deg, #426EAE 0%, #FF7A00 100%);
@@ -3680,11 +3777,11 @@
         -webkit-text-fill-color: transparent;
       }
       .tbb-hero-lead-paragraph {
-        font-size: clamp(1.08rem, 1.35vw, 1.26rem);
+        font-size: clamp(1.05rem, 1.3vw, 1.22rem);
         color: #334155;
-        line-height: 1.62;
+        line-height: 1.6;
         max-width: 920px;
-        margin: 0 auto 22px;
+        margin: 0 auto 18px;
       }
 
       /* BARRA MULTIDISPOSITIVO (MÓVIL · TABLET · COMPUTADORA · CERO MARCAS) */
@@ -3782,7 +3879,7 @@
         transform: translateY(-2px);
       }
 
-      /* SECCIÓN PROTAGONISTA DE LOS 5 PILARES CIENTÍFICOS A TODO EL ANCHO DE LA PANTALLA */
+      /* SECCIÓN PROTAGONISTA DE LOS 5 PILARES CIENTÍFICOS A TODO EL ANCHO DE LA PANTALLA (ANIMACIÓN 60FPS EN VIVO) */
       .tbb-hero-convergence-fullwidth {
         width: 100%;
       }
@@ -3823,86 +3920,50 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 11px 20px;
+        padding: 12px 22px;
         border-radius: 999px;
         border: 2px solid #FF7A00;
-        background: #FFF7ED;
+        background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
         color: #0D2540;
         font-family: 'Montserrat', sans-serif;
         font-size: 0.86rem;
         font-weight: 800;
         cursor: pointer;
-        transition: all 0.22s ease;
+        transition: all 0.24s ease;
+        box-shadow: 0 8px 20px rgba(255, 122, 0, 0.16);
       }
-      .tbb-btn-converge-trigger:hover {
-        background: #FF7A00;
+      .tbb-btn-converge-trigger:hover,
+      .tbb-hero-interactive-stage.is-converged .tbb-btn-converge-trigger {
+        background: linear-gradient(135deg, #FF7A00 0%, #EA580C 100%);
         color: #FFFFFF;
+        box-shadow: 0 12px 28px rgba(255, 122, 0, 0.34);
       }
       .tbb-convergence-orbital-box.tbb-orbital-fullwidth {
         position: relative;
-        min-height: 250px;
-        background: radial-gradient(circle at center, rgba(66,110,174,0.10) 0%, rgba(255,122,0,0.05) 45%, rgba(255,255,255,0) 75%);
-        border-radius: 24px;
-        border: 1.5px dashed #CBD5E1;
+        background: linear-gradient(180deg, #0D2540 0%, #133155 100%);
+        border-radius: 26px;
+        border: 2px solid #1E3A5F;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        padding: 22px 20px;
-        gap: 20px;
+        padding: 18px 20px 20px;
+        gap: 16px;
+        overflow: hidden;
+        box-shadow: inset 0 0 60px rgba(76, 157, 230, 0.14), 0 18px 40px rgba(13, 37, 64, 0.18);
       }
-      .tbb-convergence-lines-svg {
-        position: absolute;
-        inset: 0;
+      .tbb-five-pillars-canvas-wrap {
+        position: relative;
+        width: 100%;
+        height: 290px;
+        border-radius: 18px;
+        overflow: hidden;
+      }
+      .tbb-five-pillars-live-canvas {
         width: 100%;
         height: 100%;
-        pointer-events: none;
-      }
-      .tbb-convergence-center-logo.tbb-center-synthesis-hub {
-        position: relative;
-        z-index: 3;
-        display: inline-flex;
-        align-items: center;
-        gap: 14px;
-        background: #0D2540;
-        color: #FFFFFF;
-        padding: 12px 24px;
-        border-radius: 999px;
-        border: 2.5px solid #FF7A00;
-        box-shadow: 0 16px 36px rgba(13, 37, 64, 0.22);
+        display: block;
         cursor: pointer;
-        transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      .tbb-hero-interactive-stage.is-converged .tbb-convergence-center-logo {
-        transform: scale(1.12);
-        background: #FF7A00;
-        border-color: #0D2540;
-      }
-      .tbb-aura-core-orb {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.12);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .tbb-center-synthesis-txt {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .tbb-center-synthesis-txt strong {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 0.92rem;
-        font-weight: 900;
-        letter-spacing: 0.06em;
-        color: #FFFFFF;
-      }
-      .tbb-center-synthesis-txt small {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.72rem;
-        color: #FFEDD5;
       }
       .tbb-hero-theory-pills-wrap.tbb-five-pillars-fullgrid {
         position: relative;
@@ -3919,18 +3980,18 @@
         gap: 4px;
         padding: 14px 16px;
         border-radius: 18px;
-        border: 2px solid #CBD5E1;
-        background: #FFFFFF;
+        border: 2px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.96);
         cursor: pointer;
         text-align: left;
         transition: all 0.25s ease;
-        box-shadow: 0 8px 20px rgba(13, 37, 64, 0.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
       }
       .tbb-hero-theory-pill.active, .tbb-hero-theory-pill:hover {
         border-color: #FF7A00;
         background: #FFF7ED;
         transform: translateY(-4px);
-        box-shadow: 0 14px 28px rgba(255, 122, 0, 0.16);
+        box-shadow: 0 14px 28px rgba(255, 122, 0, 0.28);
       }
       .tbb-pill-code { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 800; }
       .tbb-pill-author { font-family: 'Montserrat', sans-serif; font-size: 0.95rem; font-weight: 900; color: #0D2540; }
@@ -5480,13 +5541,33 @@
         transform: translateY(0);
       }
 
-      /* RESPONSIVE BREAKPOINTS */
-      @media (max-width: 1120px) {
-        .tbb-desktop-nav { display: none; }
-        .tbb-mobile-menu-trigger { display: inline-flex; }
-        .tbb-mobile-bottom-dock { display: flex; }
+      /* RESPONSIVE BREAKPOINTS (EL MENÚ DEL 1 AL 5 SIEMPRE PREVALECE AL HACER MÁS PEQUEÑA LA VENTANA) */
+      @media (max-width: 1180px) {
+        .tbb-header-inner {
+          justify-content: center;
+          padding: 10px 14px;
+          gap: 10px;
+        }
+        .tbb-desktop-nav {
+          display: flex !important;
+          order: 2;
+          width: 100%;
+          justify-content: center;
+          flex-wrap: wrap;
+          border-radius: 20px;
+          padding: 6px;
+        }
+        .tbb-brand-logo-link { order: 1; }
+        .tbb-header-actions { order: 1; margin-left: auto; }
+        .tbb-master-header:not(.is-logo-docked) .tbb-header-actions {
+          margin-left: 0;
+        }
+        .tbb-nav-tab-btn {
+          padding: 7px 12px;
+          font-size: 0.78rem;
+        }
         .tbb-hero-theory-pills-wrap.tbb-five-pillars-fullgrid {
-          grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         }
         .tbb-hero-pillar-detail-grid,
         .tbb-scrollytelling-layout,
@@ -5511,8 +5592,12 @@
         }
       }
       @media (max-width: 680px) {
-        .tbb-header-buy-btn span { display: none; }
-        .tbb-header-wordmark-svg { height: 48px; max-width: 220px; }
+        .tbb-header-wordmark-svg { height: 38px; max-width: 185px; }
+        .tbb-nav-tab-btn { padding: 6px 10px; font-size: 0.74rem; gap: 4px; }
+        .tbb-header-buy-btn { height: 36px; padding: 0 12px; font-size: 0.74rem; }
+        .tbb-lang-select-wrap { height: 36px; padding: 0 8px 0 10px; }
+        .tbb-lang-select-dropdown { font-size: 0.73rem; }
+        .tbb-five-pillars-canvas-wrap { height: 240px; }
         .tbb-hero-interactive-stage.tbb-fullwidth-stage { padding: 18px 16px; }
         .tbb-infographic-stage-node { grid-template-columns: 1fr; }
         .tbb-infographic-spine-badge { width: 48px; height: 48px; font-size: 1.05rem; }
@@ -5521,8 +5606,19 @@
     document.head.appendChild(st);
   }
 
-  // Motor de Animaciones Basadas en Scroll + Partículas 60fps estilo ImproBears + Sincronización de iPhone
+  // Motor de Animaciones Basadas en Scroll + Partículas 60fps + Animación Interactiva de los 5 Pilares Científicos
   window.tbbInitAwwwardsInteractions = function () {
+    // 0. Sincronizar estado del logo entre la Portada de 1. Inicio y el Encabezado al hacer scroll
+    if (typeof window.tbbUpdateHeaderLogoDockState === "function") {
+      window.tbbUpdateHeaderLogoDockState();
+      if (!window.__tbbHeaderLogoScrollBound) {
+        window.__tbbHeaderLogoScrollBound = true;
+        window.addEventListener("scroll", () => {
+          window.tbbUpdateHeaderLogoDockState();
+        }, { passive: true });
+      }
+    }
+
     // 1. Scroll-driven reveals
     const revealEls = document.querySelectorAll(".tbb-reveal-on-scroll");
     if ("IntersectionObserver" in window) {
@@ -5605,6 +5701,256 @@
         requestAnimationFrame(tick);
       }
       requestAnimationFrame(tick);
+    }
+
+    // 5. Motor de Animación Interactiva 60fps de los 5 Pilares Científicos -> Núcleo Aura (#tbbFivePillarsConvergenceCanvas)
+    const pillarsCanvas = document.getElementById("tbbFivePillarsConvergenceCanvas");
+    if (pillarsCanvas && !pillarsCanvas.dataset.boundPillars60fps) {
+      pillarsCanvas.dataset.boundPillars60fps = "1";
+      const pCtx = pillarsCanvas.getContext("2d");
+      const pillarMeta = [
+        { code: "01", title: "CÍRCULO DORADO", sub: "Simon Sinek · WHY→HOW→WHAT", color: "#FF7A00", rx: 0.12, ry: 0.30 },
+        { code: "02", title: "TOUCHPOINTS", sub: "Jan Carlzon · Momentos de Verdad", color: "#4C9DE6", rx: 0.27, ry: 0.76 },
+        { code: "03", title: "MODELO SMILE", sub: "Watkins · Naming & OMPI Niza", color: "#38BDF8", rx: 0.50, ry: 0.18 },
+        { code: "04", title: "DIFERENCIAL OSGOOD", sub: "Osgood & Nagamachi · 7 Ejes", color: "#A7F3D0", rx: 0.73, ry: 0.76 },
+        { code: "05", title: "INGENIERÍA KAIZEN", sub: "Masaaki Imai & Paul Rand", color: "#FF7A00", rx: 0.88, ry: 0.30 }
+      ];
+
+      // Flujo continuo de fotones/partículas desde cada uno de los 5 pilares hacia el núcleo central
+      const streamParticles = Array.from({ length: 45 }, (_, idx) => ({
+        pillarIdx: idx % 5,
+        t: (idx / 45) % 1,
+        speed: 0.0045 + (idx % 7) * 0.0009,
+        size: 2.2 + (idx % 3) * 1.1
+      }));
+
+      function getCanvasMetrics() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const rect = pillarsCanvas.getBoundingClientRect();
+        const cw = Math.max(320, rect.width || 960);
+        const ch = Math.max(220, rect.height || 290);
+        if (pillarsCanvas.width !== Math.round(cw * dpr) || pillarsCanvas.height !== Math.round(ch * dpr)) {
+          pillarsCanvas.width = Math.round(cw * dpr);
+          pillarsCanvas.height = Math.round(ch * dpr);
+        }
+        return { dpr, cw, ch };
+      }
+
+      pillarsCanvas.addEventListener("click", (ev) => {
+        const rect = pillarsCanvas.getBoundingClientRect();
+        const mx = ev.clientX - rect.left;
+        const my = ev.clientY - rect.top;
+        const cw = rect.width || 960;
+        const ch = rect.height || 290;
+        const coreX = cw * 0.5;
+        const coreY = ch * 0.54;
+        if (Math.hypot(mx - coreX, my - coreY) < 58) {
+          window.tbbTriggerHeroConvergence();
+          return;
+        }
+        for (let i = 0; i < pillarMeta.length; i++) {
+          const px = cw * pillarMeta[i].rx;
+          const py = ch * pillarMeta[i].ry;
+          if (Math.hypot(mx - px, my - py) < 54) {
+            window.tbbSelectHeroTheoryNode(i);
+            return;
+          }
+        }
+      });
+
+      let startTs = performance.now();
+      function renderPillarsFrame(now) {
+        if (!document.body.contains(pillarsCanvas)) return;
+        const { dpr, cw, ch } = getCanvasMetrics();
+        pCtx.save();
+        pCtx.scale(dpr, dpr);
+        pCtx.clearRect(0, 0, cw, ch);
+
+        const elapsed = (now - startTs) * 0.001;
+        const st = window.tbbCommercialDemoState || {};
+        const selectedIdx = Number(st.heroSelectedTheoryIdx) || 0;
+        const isConverged = Boolean(st.heroConvergenceActive);
+        const burstAge = st.heroConvergenceBurstTs ? (now - st.heroConvergenceBurstTs) * 0.001 : 999;
+
+        const coreX = cw * 0.5;
+        const coreY = ch * 0.54;
+
+        // 1. Fondo de rejilla científica sutil y halo radial central
+        pCtx.strokeStyle = "rgba(76, 157, 230, 0.08)";
+        pCtx.lineWidth = 1;
+        const gridStep = 36;
+        for (let gx = 0; gx < cw; gx += gridStep) {
+          pCtx.beginPath();
+          pCtx.moveTo(gx, 0);
+          pCtx.lineTo(gx, ch);
+          pCtx.stroke();
+        }
+        for (let gy = 0; gy < ch; gy += gridStep) {
+          pCtx.beginPath();
+          pCtx.moveTo(0, gy);
+          pCtx.lineTo(cw, gy);
+          pCtx.stroke();
+        }
+
+        const coreGlow = pCtx.createRadialGradient(coreX, coreY, 8, coreX, coreY, isConverged ? 175 : 135);
+        coreGlow.addColorStop(0, isConverged ? "rgba(255, 122, 0, 0.42)" : "rgba(76, 157, 230, 0.28)");
+        coreGlow.addColorStop(0.55, "rgba(66, 110, 174, 0.12)");
+        coreGlow.addColorStop(1, "rgba(13, 37, 64, 0)");
+        pCtx.fillStyle = coreGlow;
+        pCtx.beginPath();
+        pCtx.arc(coreX, coreY, isConverged ? 175 : 135, 0, Math.PI * 2);
+        pCtx.fill();
+
+        // 2. Anillos orbitales concéntricos giratorios (Círculo Dorado + Radar Kansei)
+        pCtx.save();
+        pCtx.translate(coreX, coreY);
+        pCtx.rotate(elapsed * (isConverged ? 0.55 : 0.22));
+        pCtx.strokeStyle = isConverged ? "rgba(255, 122, 0, 0.45)" : "rgba(76, 157, 230, 0.28)";
+        pCtx.lineWidth = 1.5;
+        pCtx.setLineDash([8, 6]);
+        pCtx.beginPath();
+        pCtx.arc(0, 0, 74, 0, Math.PI * 2);
+        pCtx.stroke();
+
+        pCtx.rotate(-elapsed * 0.4);
+        pCtx.strokeStyle = "rgba(255, 255, 255, 0.16)";
+        pCtx.setLineDash([4, 8]);
+        pCtx.beginPath();
+        pCtx.arc(0, 0, 104, 0, Math.PI * 2);
+        pCtx.stroke();
+        pCtx.restore();
+
+        // Onda expansiva cuando se activa fusión o se selecciona un pilar
+        if (burstAge < 1.35) {
+          const waveR = 38 + burstAge * 165;
+          const waveAlpha = Math.max(0, 1 - burstAge / 1.35);
+          pCtx.strokeStyle = `rgba(255, 122, 0, ${waveAlpha * 0.75})`;
+          pCtx.lineWidth = 3;
+          pCtx.beginPath();
+          pCtx.arc(coreX, coreY, waveR, 0, Math.PI * 2);
+          pCtx.stroke();
+        }
+
+        // Helper para punto en curva Bézier cuadrática entre cada Pilar y el Núcleo Aura
+        function getQuadPoint(p0x, p0y, cpx, cpy, p1x, p1y, tVal) {
+          const inv = 1 - tVal;
+          return {
+            x: inv * inv * p0x + 2 * inv * tVal * cpx + tVal * tVal * p1x,
+            y: inv * inv * p0y + 2 * inv * tVal * cpy + tVal * tVal * p1y
+          };
+        }
+
+        // 3. Haces Bézier desde los 5 Pilares Científicos hacia el Núcleo Central
+        pillarMeta.forEach((p, idx) => {
+          const px = cw * p.rx;
+          const py = ch * p.ry;
+          const cpx = (px + coreX) * 0.5;
+          const cpy = Math.min(py, coreY) - 34;
+          const isSelected = idx === selectedIdx;
+
+          pCtx.save();
+          pCtx.beginPath();
+          pCtx.moveTo(px, py);
+          pCtx.quadraticCurveTo(cpx, cpy, coreX, coreY);
+          pCtx.strokeStyle = isSelected || isConverged ? p.color : "rgba(148, 163, 184, 0.35)";
+          pCtx.lineWidth = isSelected || isConverged ? 3.2 : 1.8;
+          pCtx.setLineDash([10, 6]);
+          pCtx.lineDashOffset = -elapsed * (isSelected || isConverged ? 48 : 24);
+          pCtx.stroke();
+          pCtx.restore();
+        });
+
+        // 4. Partículas de energía fluyendo a 60fps sobre las curvas Bézier hacia el Núcleo
+        streamParticles.forEach((pt) => {
+          const p = pillarMeta[pt.pillarIdx];
+          const isSelected = pt.pillarIdx === selectedIdx;
+          pt.t += pt.speed * (isConverged ? 2.1 : isSelected ? 1.55 : 1);
+          if (pt.t >= 1) pt.t -= 1;
+
+          const px = cw * p.rx;
+          const py = ch * p.ry;
+          const cpx = (px + coreX) * 0.5;
+          const cpy = Math.min(py, coreY) - 34;
+          const pos = getQuadPoint(px, py, cpx, cpy, coreX, coreY, pt.t);
+
+          pCtx.beginPath();
+          pCtx.fillStyle = isSelected || isConverged ? "#FF7A00" : "#4C9DE6";
+          pCtx.shadowColor = isSelected || isConverged ? "#FF7A00" : "#4C9DE6";
+          pCtx.shadowBlur = isSelected || isConverged ? 12 : 6;
+          pCtx.arc(pos.x, pos.y, isSelected ? pt.size + 1 : pt.size, 0, Math.PI * 2);
+          pCtx.fill();
+          pCtx.shadowBlur = 0;
+        });
+
+        // 5. Dibujar los 5 Nodos Orbitales con sus etiquetas legibles
+        pillarMeta.forEach((p, idx) => {
+          const px = cw * p.rx;
+          const py = ch * p.ry;
+          const isSelected = idx === selectedIdx;
+          const pulseR = (isSelected || isConverged ? 24 : 19) + Math.sin(elapsed * 3.2 + idx) * 2.5;
+
+          // Halo exterior del nodo
+          pCtx.beginPath();
+          pCtx.fillStyle = isSelected || isConverged ? "rgba(255, 122, 0, 0.26)" : "rgba(76, 157, 230, 0.16)";
+          pCtx.arc(px, py, pulseR + 7, 0, Math.PI * 2);
+          pCtx.fill();
+
+          // Círculo principal del pilar
+          pCtx.beginPath();
+          pCtx.fillStyle = isSelected ? "#FF7A00" : "#0D2540";
+          pCtx.strokeStyle = isSelected ? "#FFFFFF" : p.color;
+          pCtx.lineWidth = isSelected ? 3 : 2.2;
+          pCtx.arc(px, py, pulseR, 0, Math.PI * 2);
+          pCtx.fill();
+          pCtx.stroke();
+
+          // Número del pilar dentro del nodo
+          pCtx.fillStyle = "#FFFFFF";
+          pCtx.font = "900 12px 'JetBrains Mono', monospace";
+          pCtx.textAlign = "center";
+          pCtx.textBaseline = "middle";
+          pCtx.fillText(p.code, px, py);
+
+          // Etiqueta flotante del pilar (en pantallas medianas/grandes)
+          if (cw >= 560) {
+            const lblY = py < coreY ? py - pulseR - 14 : py + pulseR + 16;
+            pCtx.font = "800 11px 'Montserrat', sans-serif";
+            pCtx.fillStyle = isSelected ? "#FFEDD5" : "#E2E8F0";
+            pCtx.fillText(p.title, px, lblY);
+          }
+        });
+
+        // 6. Dibujar el Núcleo Central de Síntesis Científica · Aura
+        const corePulse = (isConverged ? 46 : 40) + Math.sin(elapsed * 4) * 3;
+        const gradCore = pCtx.createLinearGradient(coreX - corePulse, coreY - corePulse, coreX + corePulse, coreY + corePulse);
+        if (isConverged) {
+          gradCore.addColorStop(0, "#FF7A00");
+          gradCore.addColorStop(1, "#EA580C");
+        } else {
+          gradCore.addColorStop(0, "#0D2540");
+          gradCore.addColorStop(1, "#426EAE");
+        }
+        pCtx.beginPath();
+        pCtx.fillStyle = gradCore;
+        pCtx.strokeStyle = "#FF7A00";
+        pCtx.lineWidth = 3.5;
+        pCtx.arc(coreX, coreY, corePulse, 0, Math.PI * 2);
+        pCtx.fill();
+        pCtx.stroke();
+
+        pCtx.fillStyle = "#FFFFFF";
+        pCtx.font = "900 11px 'Montserrat', sans-serif";
+        pCtx.textAlign = "center";
+        pCtx.textBaseline = "middle";
+        pCtx.fillText("NÚCLEO AURA", coreX, coreY - 6);
+        pCtx.fillStyle = "#FFEDD5";
+        pCtx.font = "800 9.5px 'JetBrains Mono', monospace";
+        pCtx.fillText(isConverged ? "SÍNTESIS ACTIVA" : "5 PILARES → MARCA", coreX, coreY + 9);
+
+        pCtx.restore();
+        requestAnimationFrame(renderPillarsFrame);
+      }
+      requestAnimationFrame(renderPillarsFrame);
     }
   };
 
