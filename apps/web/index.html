@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>THE BEST BRAND — YOUR BRAND, NOW!!! · Edición Brandbook 1.0 Oficial (Awwwards Edition)</title>
-  <meta name="description" content="Crea tu Marca y tus 9 Entregables de nivel profesional en 30 minutos con Aura en tiempo real. Incluye Manual de Marca de 36 Láminas en Curvas, Logotipos Vectoriales Nano Banana Pro y Demo en vivo." />
+  <title>THE BEST BRAND — Arquitectura Científica de Identidad Visual con Aura</title>
+  <meta name="description" content="Construye tu Marca y tus 9 Entregables Oficiales en tiempo real junto a Aura. Incluye tu Brandbook Oficial de más de 30 páginas (ajustable según el giro del negocio), Suite Vectorial en Curvas y Demo Interactiva." />
   <meta name="theme-color" content="#FFFFFF" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,16 +18,14 @@
       --tbb-sapphire-glow: rgba(66, 110, 174, 0.35);
       --tbb-sky: #4C9DE6;
       --tbb-sky-glow: rgba(76, 157, 230, 0.45);
-      --tbb-gold: #D4AF37;
+      --tbb-orange: #FF7A00;
       --tbb-parchment: #F8FAFC;
       --tbb-pure-white: #FFFFFF;
-      --tbb-ink: #090D16;
+      --tbb-ink: #0D2540;
       --tbb-text-muted: #64748B;
       --tbb-border-subtle: #CBD5E1;
-      --tbb-border-glass: rgba(255, 255, 255, 0.14);
       --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-heading: 'Montserrat', 'Plus Jakarta Sans', sans-serif;
-      --font-display: 'Cinzel', Georgia, serif;
       --font-mono: 'JetBrains Mono', ui-monospace, monospace;
     }
 
@@ -51,11 +49,6 @@
       overflow-x: clip;
     }
 
-    section, [id^="tbbComm"] {
-      scroll-margin-top: 86px;
-    }
-
-    /* Top Scroll Progress Bar (ImproBears Navy + Sky Blue Standard) */
     .tbb-scroll-progress-track {
       position: fixed;
       top: 0;
@@ -63,7 +56,7 @@
       right: 0;
       height: 3.5px;
       background: rgba(226, 232, 240, 0.75);
-      z-index: 2500;
+      z-index: 2600;
       pointer-events: none;
     }
 
@@ -77,42 +70,43 @@
 
     footer.tbb-comm-footer {
       background: #F8FAFC;
-      color: #64748B;
-      border-top: 1px solid #CBD5E1;
-      padding: 48px 24px 116px 24px;
+      color: #475569;
+      border-top: 1.5px solid #E2E8F0;
+      padding: 52px 24px 116px 24px;
       text-align: center;
-      font-size: 0.84rem;
+      font-size: 0.92rem;
     }
   </style>
 </head>
-<body data-tbb-standalone-web="true">
+<body class="tbb-commercial-standalone-body" data-tbb-standalone-web="true">
   <div class="tbb-scroll-progress-track" aria-hidden="true">
     <div class="tbb-scroll-progress-bar" id="tbbScrollProgressBar"></div>
   </div>
 
-  <!-- Contenedor Raíz de la Página Comercial Oficial Brandbook 1.0 (Awwwards Edition V93) -->
-  <main id="tbbStandaloneCommercialPageRoot"></main>
+  <!-- Contenedor Raíz de la Experiencia Comercial The Best Brand -->
+  <div id="tbbStandaloneCommercialPageRoot"></div>
 
   <footer class="tbb-comm-footer" id="tbbMainCommercialFooter">
-    <div style="max-width:1120px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:12px;">
-      <div id="tbbFooterBrandHeadline" style="font-family:var(--font-heading); font-weight:600; font-size:1.02rem; color:#0F172A; letter-spacing:0.01em;">
-        THE BEST BRAND — <span style="color:#426EAE;">YOUR BRAND, NOW</span> · <span style="color:#64748B;">EDICIÓN OFICIAL 1.0</span>
+    <div style="max-width:1180px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:16px;">
+      <a href="/" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(1);}" style="display:inline-flex; align-items:center; gap:14px; text-decoration:none;">
+        <img src="/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png" alt="The Best Brand Isotipo" style="width:52px; height:52px; border-radius:14px; box-shadow:0 8px 22px rgba(13,37,64,0.12);" />
+        <img src="/assets/logos/Logotipo_Horizontal_Curvas_the_best_brand.svg" alt="The Best Brand" style="height:46px; width:auto;" />
+      </a>
+      <div id="tbbFooterBrandDesc" style="color:#475569; font-weight:500; max-width:780px; line-height:1.65;">
+        Arquitectura científica de identidad visual guiada en vivo por Aura. Incluye tu Brandbook oficial de más de 30 páginas (ajustable según el giro del negocio) y tus 9 entregables listos para producción en 6 idiomas.
       </div>
-      <div id="tbbFooterBrandDesc" style="color:#64748B; font-weight:400; max-width:720px; line-height:1.6;">
-        Plataforma para crear la identidad visual, los 9 entregables oficiales y el Manual de Marca de 36 Láminas en Curvas de tu empresa con inteligencia artificial y guía por voz de Aura en 6 idiomas.
-      </div>
-      <div id="tbbFooterNavLinks" style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-top:6px;">
-        <a href="#inicio" data-footer-tab="inicio" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('inicio'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Inicio</a>
+      <div id="tbbFooterNavLinks" style="display:flex; gap:18px; flex-wrap:wrap; justify-content:center; margin-top:6px;">
+        <a href="/" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(1);}" style="color:#0D2540; font-weight:700; text-decoration:none;">1. Inicio</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="/demo" data-footer-tab="demo" onclick="if(window.tbbLaunchDemoFullscreen){window.tbbLaunchDemoFullscreen(); return false;}" style="color:#16A34A; font-weight:500; text-decoration:none;">Demo en vivo</a>
+        <a href="/app-tour" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(2);}" style="color:#0D2540; font-weight:700; text-decoration:none;">2. App Tour</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="/app-tour" data-footer-tab="app-tour" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('app-tour'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">App Tour</a>
+        <a href="/bases-teoricas" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(3);}" style="color:#0D2540; font-weight:700; text-decoration:none;">3. Bases Teóricas</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="/bases-teoricas" data-footer-tab="bases-teoricas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('bases-teoricas'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Bases teóricas</a>
+        <a href="/demo" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(4);}" style="color:#FF7A00; font-weight:800; text-decoration:none;">4. Demo en Vivo</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="/pack-descargas" data-footer-tab="pack-descargas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('pack-descargas'); return false;}" style="color:#475569; font-weight:500; text-decoration:none;">Pack de descargas</a>
+        <a href="/pack-descargas" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(5);}" style="color:#0D2540; font-weight:700; text-decoration:none;">5. Pack de Descargas</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="#comprar" data-footer-tab="comprar" onclick="if(window.tbbOpenBuyAppCheckoutModal){window.tbbOpenBuyAppCheckoutModal('pro_atelier'); return false;}" style="color:#0D2540; font-weight:600; text-decoration:none;">Comprar la App ($49 USD)</a>
+        <a href="#desbloquear" onclick="if(window.tbbOpenBuyAppCheckoutModal){event.preventDefault(); window.tbbOpenBuyAppCheckoutModal('pro_atelier');}" style="color:#426EAE; font-weight:800; text-decoration:none;">Desbloquear Marca ($49 USD)</a>
       </div>
     </div>
   </footer>
@@ -133,9 +127,9 @@
       updateScrollBar();
     })();
   </script>
-  <script defer src="/tbb-v80-brandbook-plates.js?v=101.0"></script>
-  <script defer src="/universal-brandbook-30-engine.js?v=101.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=101.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=101.0"></script>
+  <script defer src="/tbb-v80-brandbook-plates.js?v=105.0"></script>
+  <script defer src="/universal-brandbook-30-engine.js?v=105.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=105.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=105.0"></script>
 </body>
 </html>

@@ -1,20 +1,14 @@
 /**
  * ============================================================================
- * THE BEST BRAND · YOUR BRAND, NOW!!! (PANORAMIC LIGHT EDITION V91.0)
- * ============================================================================
- * Arquitectura & Craft:
- * - 100% Lienzo Claro Panorámico (#FFFFFF / #F8FAFC) sin cajas anidadas innecesarias
- * - Tipografía ligera y elegante (font-weight 400/500 en cuerpo, 600/700 en titulares)
- * - Un solo elemento focal a la vez (Single-Focus Storytelling)
- * - 100% Capturas reales de la Aplicación y Láminas reales del Brandbook de 36 Láminas
- * - 5 Subpáginas Secuenciales en el Menú:
- *     01 Inicio (Hook + 2 opciones principales + Showcase Panorámico)
- *     02 Demo (Pasos 0, 1 y 2 en vivo con indicador pulsante dinámico)
- *     03 App Tour (Recorrido interactivo con Parallax, Sticky Stacking, Horizontal Scroll y Pop-ups de Video)
- *     04 Bases teóricas (Videos con miniaturas y Libros con links directos)
- *     05 Pack de descargas (Carrusel moderno + Visor pantalla casi completa + Próximamente Web & Redes Sociales)
- * - 100% Multilingüe en 6 idiomas (ES, EN, FR, PT, DE, IT) incluyendo capturas y videos
- * - Pago Real Habilitado (/api/v1/payments/checkout-live) y opción de Comprar siempre visible
+ * THE BEST BRAND — COMMERCIAL EXPERIENCE, SCROLLYTELLING & $49 PAYWALL ENGINE
+ * Edición Clínica V105.0 · 200 Mejoras de Diseño, Animación e Internacionalización
+ * - Protagonismo monumental del logotipo oficial "The Best Brand"
+ * - Menú móvil y de escritorio 100% con iconografía vectorial propietaria (Cero Emojis)
+ * - Cero nombres de herramientas internas (100% centrado en The Best Brand y Aura)
+ * - Orden estricto de navegación: 1. Inicio | 2. App Tour | 3. Bases Teóricas | 4. Demo en Vivo | 5. Pack de Descargas
+ * - Infografía Académica Interactiva en Bases Teóricas (Cero cápsulas de video del fundador en esa vista)
+ * - Mockup interactivo de iPhone en App Tour (Scrollytelling) y Demo en Vivo (Código real /studio + Aura + Paywall $49 USD en Paso 4)
+ * - Brandbook unificado a "más de 30 páginas (ajustable según el giro del negocio)"
  * ============================================================================
  */
 (function () {
@@ -22,867 +16,395 @@
 
   const LANG_STORAGE_KEY = "tbb_active_ui_lang_v52";
   const LICENSE_STORAGE_KEY = "tbb_pro_license_v56";
+  const ASSET_VERSION = "105.0";
 
-  // ---------------------------------------------------------------------------
-  // 1. DICCIONARIO MULTILINGÜE COMPLETO (6 IDIOMAS: ES, EN, FR, PT, DE, IT)
-  // ---------------------------------------------------------------------------
+  // Iconografía Vectorial Propietaria Dual-Tone (Cero Emojis Genéricos)
+  const TBB_ICONS = {
+    home: `<svg class="tbb-svg-ic" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6.5h-5V21H4a1 1 0 0 1-1-1v-9.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="10" r="2" fill="#FF7A00"/></svg>`,
+    appTour: `<svg class="tbb-svg-ic" width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="6" y="2.5" width="12" height="19" rx="3" stroke="currentColor" stroke-width="2"/><path d="M10 5.5h4" stroke="#FF7A00" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.3" fill="#FF7A00"/></svg>`,
+    theory: `<svg class="tbb-svg-ic" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="#426EAE" stroke-width="1.8"/><circle cx="12" cy="12" r="2" fill="#FF7A00"/></svg>`,
+    demo: `<svg class="tbb-svg-ic" width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="2"/><path d="M10 9l5 3-5 3V9z" fill="#FF7A00"/></svg>`,
+    downloads: `<svg class="tbb-svg-ic" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 4v11m0 0l-4-4m4 4l4-4" stroke="#FF7A00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    play: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="rgba(255,122,0,0.14)" stroke="#FF7A00" stroke-width="1.8"/><path d="M10 8.5l6 3.5-6 3.5V8.5z" fill="#FF7A00"/></svg>`,
+    lock: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="#FF7A00" stroke-width="2" stroke-linecap="round"/></svg>`,
+    unlock: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2.5" stroke="#10B981" stroke-width="2"/><path d="M8 11V7a4 4 0 0 1 7.5-1.8" stroke="#10B981" stroke-width="2" stroke-linecap="round"/></svg>`,
+    check: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" fill="rgba(16,185,129,0.14)" stroke="#10B981" stroke-width="1.8"/><path d="M8 12.3l2.6 2.6 5.4-5.4" stroke="#10B981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    spark: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z" fill="#FF7A00"/></svg>`,
+    globe: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 12h17M12 3a13.5 13.5 0 0 1 0 18M12 3a13.5 13.5 0 0 0 0 18" stroke="#426EAE" stroke-width="1.6"/></svg>`,
+    close: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+    expand: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M15 4h5v5M9 20H4v-5M20 4l-6 6M4 20l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    phone: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="6" y="2.5" width="12" height="19" rx="3" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="1.2" fill="#FF7A00"/></svg>`,
+    desktop: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="4" width="19" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 20h8M12 17v3" stroke="#FF7A00" stroke-width="2" stroke-linecap="round"/></svg>`,
+    refresh: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 11a8 8 0 1 0 2 5.3M20 4v7h-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    arrowRight: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    arrowLeft: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0l5-5m-5 5l5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    shield: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 5-3.2 8.7-7 10-3.8-1.3-7-5-7-10V6l7-3z" stroke="currentColor" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="#FF7A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    card: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="#FF7A00" stroke-width="2"/></svg>`,
+    volume: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H3v6h3l5 4V5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="#FF7A00" stroke-width="2" stroke-linecap="round"/></svg>`,
+    book: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z" stroke="currentColor" stroke-width="2"/><path d="M8 7h8M8 11h5" stroke="#FF7A00" stroke-width="2" stroke-linecap="round"/></svg>`
+  };
+  window.TBB_ICONS = TBB_ICONS;
+
   const I18N = {
     es: {
-      bento9Kicker: "SUITE EJECUTIVA COMPLETA · LOS 9 ENTREGABLES OFICIALES",
-      carouselPrev: "← Anterior",
-      carouselNext: "Siguiente →",
-      gcLiveKicker: "VISTA PREVIA EN VIVO DEL CÍRCULO DORADO DE TU MARCA",
-      iphoneSectionKicker: "APLICACIÓN REAL EN VIVO · CONECTADA CON AURA",
-      iphoneStep0Free: "Paso 0 · Giro (Gratis)",
-      iphoneStep1Free: "Paso 1 · Círculo Dorado (Gratis)",
-      iphoneStep2Free: "Paso 2 · Touchpoints (Gratis)",
-      iphoneStep3Free: "Paso 3 · Naming SMILE (Gratis)",
-      iphoneStep4Unlock: "🔒 Paso 4 · Desbloquear ($49 USD)",
-      iphoneVideoBtn: "▶ Video HeyGen del Paso",
-      nanoAfterLabel: "DESPUÉS · EVOLUCIÓN NANO BANANA PRO 4K + TRAZADO VECTORIAL EN CURVAS (.SVG / .AI)",
-      nanoBeforeLabel: "ANTES · LOGOTIPO SUBIDO POR EL CLIENTE (PASO 0.2)",
-      nanoKicker: "MOTOR VISUAL NANO BANANA PRO 4K + VECTORES BÉZIER PUROS",
-      plates36Kicker: "MANUAL OFICIAL DE IDENTIDAD · LAS 36 LÁMINAS EN CURVAS (16:9)",
-      syncFreeBadge: "✓ Acceso Libre",
-      syncLiveConnected: "● AURA EN VIVO CONECTADA",
-      syncUnlockBtn: "Desbloquear · $49 USD",
-      videoPopupContinue: "Continuar explorando",
-      videoPopupScriptLabel: "GUION EXACTO HABLADO (SINCRONIZADO EN HEYGEN):",
-      ytWatchHere: "▶ Reproducir Conferencia Aquí",
-      menu1: "Inicio",
-      menu2: "Demo",
-      menu2Live: "EN VIVO",
-      menu3: "App Tour",
-      menu4: "Bases teóricas",
-      menu5: "Pack de descargas",
-      openStudio: "Abrir Estudio ↗",
-      buyNowHeader: "Comprar · $49 USD",
-      buyNowFloating: "Adquirir Licencia Pro · $49 USD",
-      licenseActive: "LICENCIA PRO ACTIVA ✓",
-      heroEyebrow: "THE BEST BRAND · SUITE DE IDENTIDAD Y BRANDBOOK EN CURVAS",
-      heroHook: "Crea tu Marca y tus 9 Entregables de nivel profesional ¡en 30 minutos!",
-      heroSub: "Sin juntas interminables ni plantillas genéricas. Conversa con Aura, recorre los 7 pasos estratégicos y descarga tu Manual Oficial de 36 Láminas y toda tu papelería editable al instante.",
-      heroBtnDemo: "Usa nuestra demo con el paso 0, 1 y 2",
-      heroBtnTour: "Explorar el recorrido paso a paso (App Tour) →",
-      heroShowcaseTag: "VISTA PANORÁMICA REAL DE LA APLICACIÓN Y DEL BRANDBOOK",
-      heroShowcaseTitle: "Un sistema diseñado para enfocarte en una sola decisión a la vez",
-      heroShowcaseDesc: "Cada respuesta que das a Aura se transforma en tiempo real en geometría vectorial, tipografía calibrada y láminas listas para imprenta y mundo digital.",
-      heroSwitchApp: "Ver Captura Real de la App",
-      heroSwitchManual: "Ver Lámina Real del Manual (01/36)",
-      nextToDemoBtn: "Ir al siguiente paso: Usa nuestra Demo (Pasos 0, 1 y 2) →",
-      nextToTourBtn: "Continuar al siguiente menú: App Tour (Recorrido Completo) →",
-      nextToTheoryBtn: "Ir al siguiente submenú: Bases teóricas (Videos y Libros) →",
-      nextToDownloadsBtn: "Ir al último submenú: Pack de descargas (Carrusel + Próximamente) →",
-      demoEyebrow: "MENÚ 02 · DEMO INTERACTIVA EN TIEMPO REAL",
-      demoTitle: "Vive la experiencia real con el Paso 0, Paso 1 y Paso 2",
-      demoDesc: "Elige un caso real o escribe el giro de tu negocio. Observa cómo la aplicación estructura tu propósito (Simon Sinek) y tus puntos de contacto (Jan Carlzon) sobre tu manual en vivo.",
-      demoStep0Tab: "Paso 0 · Objetivo y Giro",
-      demoStep1Tab: "Paso 1 · Círculo Dorado (Por qué, Cómo, Qué)",
-      demoStep2Tab: "Paso 2 · Touchpoints (Antes, Durante, Después)",
-      demoObjCreate: "Crear una marca desde cero",
-      demoObjRedesign: "Evolucionar mi marca actual",
-      demoBrandLabel: "Nombre de tu marca",
-      demoTaglineLabel: "Eslogan o frase rectora",
-      demoGiroLabel: "Giro y actividad principal de tu empresa",
-      demoWhyLabel: "1. Por qué existe tu marca (Propósito nuclear)",
-      demoHowLabel: "2. Cómo lo haces único (Método diferenciador)",
-      demoWhatLabel: "3. Qué entregas (Oferta de valor concreta)",
-      demoPolishBtn: "Pulir redacción con claridad ejecutiva",
-      demoNextStepBtn: "Siguiente paso de la Demo →",
-      tourEyebrow: "MENÚ 03 · RECORRIDO INTERACTIVO CON SCROLLING",
-      tourTitle: "De la idea inicial a los 9 entregables paso a paso",
-      tourDesc: "Desliza hacia abajo para explorar cada pantalla real de la aplicación, las cápsulas de video que aparecen entre cada etapa y la bóveda final de descargas.",
-      tourPopupBadge: "POP-UP DE VIDEO INTERACTIVO ENTRE ETAPAS",
-      tourPlayVideoBtn: "Reproducir cápsula de video en tu idioma",
-      theoryEyebrow: "MENÚ 04 · BASES TEÓRICAS, CÁPSULAS DE VIDEO Y BIBLIOTECA",
-      theoryTitle: "La profundidad metodológica detrás de cada decisión",
-      theoryDesc: "Reproduce las cápsulas dinámicas con avatares y B-Roll de cada paso, mira las conferencias magistrales de los autores y consulta los libros fundamentales con enlaces directos.",
-      theoryCapsulesTitle: "Cápsulas de Video del Taller (Paso 0 al Paso 6)",
-      theoryAuthorsTitle: "Conferencias Magistrales de los Autores",
-      theoryBooksTitle: "Biblioteca Esencial con Enlaces Directos",
-      packEyebrow: "MENÚ 05 · PACK DE DESCARGAS Y EXPANSIÓN DE MARCA",
-      packTitle: "Tus 9 Entregables Oficiales en alta resolución",
-      packDesc: "Desliza el carrusel moderno y haz clic en cualquier entregable para abrirlo a máxima resolución en pantalla casi completa o descargar un ejemplo real.",
-      packOpenFullscreen: "Ver a máxima resolución en pantalla casi completa ⤢",
-      packDownloadSample: "Descargar archivo muestra ↗",
-      comingSoonEyebrow: "PRÓXIMAMENTE · NUEVOS MÓDULOS AUTOMATIZADOS",
-      comingSoonTitle: "Expande tu Brandbook hacia tu Web y tus Redes Sociales",
-      comingSoonDesc: "Muy pronto podrás adquirir directamente desde tu bóveda dos módulos conectados al ADN, colores, tipografías y fotografías de tu manual:",
-      csWebTitle: "Creación Automática de Página Web Oficial",
-      csWebDesc: "Sitio web responsivo, veloz y optimizado para conversión generado automáticamente con la paleta cromática, tipografías, narrativa socrática y fotografías 4:3 de tu Brandbook.",
-      csWebPrice: "Próximamente · Reserva prioritaria",
-      csSocialTitle: "Pack de Publicaciones para Redes Sociales",
-      csSocialDesc: "Parrilla mensual de contenido visual, carruseles educativos, historias y plantillas editables para Instagram, LinkedIn y Facebook alineadas 100% a la gobernanza de tu marca.",
-      csSocialPrice: "Próximamente · Reserva prioritaria",
-      csReserveBtn: "Solicitar acceso prioritario",
-      csReservedOk: "✓ Acceso prioritario registrado para tu correo",
-      checkoutTitle: "Adquirir The Best Brand — Activación Instantánea",
-      checkoutSub: "Pago único sin suscripciones. Desbloquea los 7 pasos completos y la descarga inmediata de tus 9 entregables oficiales.",
-      planSingleName: "Licencia Pro Empresario",
-      planSingleDesc: "1 Marca Completa · 36 Láminas + 9 Entregables",
-      planAgencyName: "Licencia Atelier Multi-Marca",
-      planAgencyDesc: "Marcas Ilimitadas · Para Agencias y Grupos",
-      payNowBtn: "Autorizar Pago Seguro y Activar Licencia",
-      heroTheoriesCopy: "Respaldado científicamente por las teorías de Simon Sinek (Círculo Dorado), Jan Carlzon (Momentos de la Verdad), Al Ries, Jack Trout y Alexandra Watkins (Posicionamiento y SMILE), Mitsuo Nagamachi (Ingeniería Kansei), Paul Rand y Jony Ive (Geometría Vectorial Liquid Glass) y Massimo Vignelli (Canon de 36 Láminas).",
-      heroBtnTryIphone: "Usa nuestra demo con el paso 0, 1 y 2",
-      heroBtnIntroVideo: "▶ Ver Video Introductorio del Fundador (HeyGen)",
-      iphoneSectionEyebrow: "APLICACIÓN REAL EN VIVO · CONECTADA AL MOTOR DE AURA",
-      iphoneSectionTitle: "Interactúa aquí mismo con la aplicación real: avanza sin costo en los primeros 3 pasos",
-      iphoneSectionDesc: "Escribe o habla con Aura dentro del iPhone. Completa gratis hasta el Paso 3 (Naming y Clases de Niza); al pasar al Paso 4 se activa el desbloqueo de $49 USD y tus respuestas se migran automáticamente a tu nueva cuenta.",
-      iphoneStep0Btn: "Paso 0 · Giro (Gratis)",
-      iphoneStep1Btn: "Paso 1 · Círculo Dorado (Gratis)",
-      iphoneStep2Btn: "Paso 2 · Touchpoints (Gratis)",
-      iphoneStep3Btn: "Paso 3 · Naming SMILE (Gratis)",
-      iphoneStep4BtnLocked: "🔒 Paso 4 · Desbloquear ($49 USD)",
-      iphoneStep4BtnUnlocked: "Paso 4 · Kansei ✓",
-      iphoneVideoStepBtn: "▶ Video HeyGen del Paso",
-      syncBadgeTitle: "SINCRONIZACIÓN Y RETENCIÓN AUTOMÁTICA DE PROGRESO",
-      syncLiveStatus: "● AURA CONECTADA EN VIVO",
-      syncCardHeading: "Tu avance en los Pasos 1 al 3 se guarda en tiempo real",
-      syncRow1: "Paso 0 y Paso 1 · Giro + Círculo Dorado (Simon Sinek)",
-      syncRow2: "Paso 2 · Touchpoints Antes, Durante y Después (Carlzon)",
-      syncRow3: "Paso 3 · Naming SMILE y Clases de Niza (Watkins)",
-      syncRow4: "Paso 4 al 6 · Kansei, Logotipo Nano Banana Pro y 9 Entregables",
-      freeAccessLabel: "✓ Acceso Libre",
-      unlock49Label: "Desbloquear · $49 USD",
-      presetsLabel: "Cargar Caso de Éxito Real:",
-      gcLiveHeading: "VISTA EN VIVO DEL CÍRCULO DORADO DE TU MARCA",
-      nanoEyebrow: "MOTOR VISUAL NANO BANANA PRO 4K + VECTORES MATEMÁTICOS BÉZIER",
-      nanoTitle: "De un boceto o logo antiguo a un símbolo Apple Liquid Glass y curvas .SVG / .AI",
-      nanoDesc: "En el Paso 5 iteras tu logotipo con el modelo más avanzado de Nano Banana Pro y nuestro trazador matemático en curvas Bézier puras sobre lienzo claro (#FFFFFF) y oscuro (#090D16).",
-      plates36Eyebrow: "MANUAL OFICIAL DE IDENTIDAD · LAS 36 LÁMINAS EN CURVAS (16:9)",
-      plates36Title: "Explora las 36 Láminas reales que el sistema compila para tu empresa",
-      plates36Desc: "Haz clic en cualquier lámina para inspeccionarla a máxima resolución en pantalla casi completa y navegar de la Lámina 01 a la 36.",
-      bento9Eyebrow: "SUITE EJECUTIVA COMPLETA · LOS 9 ENTREGABLES OFICIALES",
-      bento9Title: "Todo lo que descargas al finalizar tus 7 pasos en 30 minutos",
-      bento9Desc: "Haz clic en cualquier entregable para verlo en pantalla casi completa o ir al Pack de Descargas.",
-      lightboxKicker: "VISTA A MÁXIMA RESOLUCIÓN · PANTALLA CASI COMPLETA",
-      lightboxPrev: "← Lámina",
-      lightboxNext: "Lámina →",
-      lightboxClose: "✕ Cerrar",
-      videoCapsuleBadge: "CÁPSULA HEYGEN + GOOGLE FLOW",
-      videoScriptHeading: "GUION HABLADO EXACTO (SINCRONIZADO EN HEYGEN):",
-      videoContinueBtn: "Continuar explorando",
-      tourAmplifyBtn: "⤢ Ampliar captura",
-      tourQuickJumpLabel: "Saltar al paso:",
-      footerHeadlineSub: "EDICIÓN OFICIAL 1.0 · SUITE THE BEST",
-      footerDesc: "Plataforma para crear la identidad visual, los 9 entregables oficiales y el Manual de Marca de 36 Láminas en Curvas de tu empresa con inteligencia artificial y guía por voz de Aura en 6 idiomas."
+      navHome: "1. Inicio",
+      navAppTour: "2. App Tour",
+      navTheory: "3. Bases Teóricas",
+      navDemo: "4. Demo en Vivo",
+      navDownloads: "5. Pack de Descargas",
+      navBuyCta: "Desbloquear Marca · $49 USD",
+      navLicenseActive: "Licencia Pro Activa",
+      heroEyebrow: "THE BEST BRAND · ARQUITECTURA CIENTÍFICA DE IDENTIDAD CON AURA",
+      heroTitleLine1: "Donde la Ciencia Estratégica",
+      heroTitleHighlight: "Se Convierte en tu Marca",
+      heroLead: "El Círculo Dorado, el Modelo SMILE, los Touchpoints, la Ingeniería Kaizen y el Diferencial de Osgood convergen orgánicamente junto a Aura para construir tu identidad visual y tu Brandbook oficial de más de 30 páginas (ajustable según el giro del negocio).",
+      heroCtaTour: "Explorar el App Tour Interactivo",
+      heroCtaTheory: "Ver Infografía de Bases Teóricas",
+      heroCtaDemo: "Probar Demo en Vivo (Pasos 1-3 Gratis)",
+      heroVideoBadge: "CONVERGENCIA CONCEPTUAL EN VIVO · TEORÍAS → LOGOTIPO THE BEST BRAND",
+      heroInteractiveStageTitle: "Fusión Orgánica: 5 Pilares Científicos hacia The Best Brand",
+      heroInteractiveStageSub: "Haz clic en cada nodo teórico o reproduce la convergencia para observar cómo cada metodología estructura tu marca en tiempo real.",
+      heroConvergencePlayBtn: "Activar Fusión hacia el Logotipo",
+      tourEyebrow: "SECCIÓN 2 · RECORRIDO INTERACTIVO DE LA APLICACIÓN (SCROLLYTELLING)",
+      tourTitle: "Experimenta el Flujo Real de Aura en el Mockup Interactivo de iPhone",
+      tourLead: "Desliza hacia abajo para recorrer los 7 pasos del taller. El iPhone interactivo sincroniza recortes de precisión de la interfaz real con bloques explicativos de gran legibilidad y cápsulas puntuales.",
+      tourIphoneModeCutout: "Recorte de Precisión Sincronizado",
+      tourIphoneModeLive: "App Real Interactiva en el iPhone",
+      tourWatchStepCapsule: "Ver Cápsula Explicativa",
+      tourBeforeAfterTitle: "Evolución Vectorial Inteligente: De Boceto o Logo Actual a Identidad Maestra",
+      tourBeforeAfterSub: "Si ya cuentas con un logotipo, Aura preserva tu capital visual (Aaker & Haviv) y perfecciona su geometría y acabado.",
+      theoryEyebrow: "SECCIÓN 3 · INFOGRAFÍA DINÁMICA DE BASES TEÓRICAS Y AUTORES",
+      theoryTitle: "Arquitectura Científica Paso a Paso: Las Teorías que Respaldan tu Marca",
+      theoryLead: "Explora nuestra infografía interactiva y responsiva. Cada etapa de The Best Brand está fundamentada en modelos académicos probados, diagramas geométricos vivos y autores de referencia mundial.",
+      theoryInteractiveSimulatorTitle: "Simulador Interactivo Kansei & Diferencial Semántico de Osgood (Paso 4)",
+      theoryInteractiveSimulatorSub: "Ajusta los ejes emocionales en vivo y observa cómo la geometría paramétrica transforma la tensión, el radio de curvatura y el carácter tipográfico.",
+      theoryAuthorsSectionTitle: "Autores y Modelos que Estructuran cada Etapa",
+      theoryBooksSectionTitle: "Bibliografía Esencial de Dirección Estratégica y Diseño",
+      demoEyebrow: "SECCIÓN 4 · DEMO INTERACTIVA EN VIVO CON AURA (CÓDIGO REAL)",
+      demoTitle: "Vive la Experiencia Real en el iPhone: Pasos 1 al 3 Libres de Costo",
+      demoLead: "Interactúa directamente con Aura dentro del mockup de iPhone (o amplíalo a pantalla completa). Avanza gratis por los primeros 3 pasos reales; al pasar al Paso 4, activa tu licencia de $49 USD con migración automática de todas tus respuestas.",
+      demoModeIphone: "Vista Mockup iPhone 16 Pro",
+      demoModeFull: "Expandir a Pantalla Completa",
+      demoFreeStepsBadge: "PASOS 0, 1, 2 Y 3 GRATIS EN VIVO",
+      demoPaywallStep4Badge: "PASO 4 ACTIVA LICENCIA PRO ($49 USD) CON MIGRACIÓN AUTOMÁTICA",
+      demoUnlockBtn: "Desbloquear Paso 4 al 6 + Brandbook (+30 Páginas) · $49 USD",
+      downloadsEyebrow: "SECCIÓN 5 · CONSOLIDACIÓN DE ENTREGABLES Y BÓVEDA EJECUTIVA",
+      downloadsTitle: "Tu Brandbook Oficial de Más de 30 Páginas y Kit Completo de Producción",
+      downloadsLead: "Unificamos todos tus activos en un solo paquete ejecutivo: tu Brandbook oficial de más de 30 páginas (ajustable según el giro del negocio), suite vectorial de logotipos en curvas (.SVG, .AI, .EPS, .PNG), plantillas corporativas y tipografías.",
+      downloadsStandardBadge: "ESTÁNDAR OFICIAL UNIFICADO · BRANDBOOK DE MÁS DE 30 PÁGINAS (AJUSTABLE SEGÚN EL GIRO)",
+      downloadsViewSampleBtn: "Inspeccionar Muestra en Alta Resolución",
+      downloadsUnlockAllBtn: "Obtener los 9 Entregables Oficiales · $49 USD",
+      lightboxPrev: "Anterior",
+      lightboxNext: "Siguiente",
+      lightboxClose: "Cerrar Visor",
+      checkoutTitle: "Activa tu Licencia Pro ($49 USD) y Continúa al Paso 4 sin Perder tu Progreso",
+      checkoutSub: "Crearemos tu cuenta ejecutiva y migraremos automáticamente todas tus respuestas de los Pasos 0 al 3 para que continúes en el Paso 4 de inmediato.",
+      checkoutMigrationTitle: "Migración Automática Garantizada (Pasos 0 al 3 → Paso 4)",
+      checkoutAccountLabel: "Correo electrónico para tu cuenta y respaldo en la nube",
+      checkoutNameLabel: "Nombre del titular o fundador",
+      checkoutPayBtn: "Pagar $49 USD, Crear Cuenta y Continuar al Paso 4"
     },
     en: {
-      bento9Kicker: "COMPLETE EXECUTIVE SUITE · ALL 9 OFFICIAL DELIVERABLES",
-      carouselPrev: "← Previous",
-      carouselNext: "Next →",
-      gcLiveKicker: "LIVE PREVIEW OF YOUR BRAND GOLDEN CIRCLE",
-      iphoneSectionKicker: "REAL LIVE APPLICATION · CONNECTED WITH AURA",
-      iphoneStep0Free: "Step 0 · Sector (Free)",
-      iphoneStep1Free: "Step 1 · Golden Circle (Free)",
-      iphoneStep2Free: "Step 2 · Touchpoints (Free)",
-      iphoneStep3Free: "Step 3 · SMILE Naming (Free)",
-      iphoneStep4Unlock: "🔒 Step 4 · Unlock ($49 USD)",
-      iphoneVideoBtn: "▶ HeyGen Step Video",
-      nanoAfterLabel: "AFTER · NANO BANANA PRO 4K EVOLUTION + VECTOR CURVES (.SVG / .AI)",
-      nanoBeforeLabel: "BEFORE · ORIGINAL CLIENT LOGO UPLOADED (STEP 0.2)",
-      nanoKicker: "NANO BANANA PRO 4K VISUAL ENGINE + PURE BÉZIER VECTORS",
-      plates36Kicker: "OFFICIAL IDENTITY MANUAL · ALL 36 VECTOR PLATES (16:9)",
-      syncFreeBadge: "✓ Free Access",
-      syncLiveConnected: "● AURA LIVE CONNECTED",
-      syncUnlockBtn: "Unlock · $49 USD",
-      videoPopupContinue: "Continue exploring",
-      videoPopupScriptLabel: "EXACT SPOKEN SCRIPT (SYNCHRONIZED IN HEYGEN):",
-      ytWatchHere: "▶ Watch Keynote Here",
-      menu1: "Home",
-      menu2: "Demo",
-      menu2Live: "LIVE",
-      menu3: "App Tour",
-      menu4: "Theoretical Foundations",
-      menu5: "Download Pack",
-      openStudio: "Open Studio ↗",
-      buyNowHeader: "Buy Now · $49 USD",
-      buyNowFloating: "Get Pro License · $49 USD",
-      licenseActive: "PRO LICENSE ACTIVE ✓",
-      heroEyebrow: "THE BEST BRAND · ALGORITHMIC BRAND IDENTITY & VECTOR BRANDBOOK",
-      heroHook: "Create your Brand and your 9 Professional Deliverables in 30 minutes!",
-      heroSub: "No endless agency meetings or generic templates. Talk with Aura, complete 7 strategic steps, and download your 36-Plate Official Brandbook and editable stationery right away.",
-      heroBtnDemo: "Use our live demo with Step 0, 1 & 2",
-      heroBtnTour: "Explore the step-by-step App Tour →",
-      heroShowcaseTag: "REAL PANORAMIC VIEW OF THE APPLICATION & BRANDBOOK",
-      heroShowcaseTitle: "An experience designed to focus on one single element at a time",
-      heroShowcaseDesc: "Every answer you give Aura turns in real time into mathematical vector geometry, calibrated typography, and print-ready plates.",
-      heroSwitchApp: "View Real App Screenshot",
-      heroSwitchManual: "View Real Brandbook Plate (01/36)",
-      nextToDemoBtn: "Next step: Use our Live Demo (Steps 0, 1 & 2) →",
-      nextToTourBtn: "Continue to next menu: App Tour (Full Scroll Journey) →",
-      nextToTheoryBtn: "Continue to next menu: Theoretical Foundations (Videos & Books) →",
-      nextToDownloadsBtn: "Continue to final menu: Download Pack (Carousel & Coming Soon) →",
-      demoEyebrow: "MENU 02 · LIVE INTERACTIVE DEMO",
-      demoTitle: "Experience Step 0, Step 1, and Step 2 live",
-      demoDesc: "Pick a preset or type your business activity. Watch how the app structures your Golden Circle (Simon Sinek) and Touchpoints (Jan Carlzon) live.",
-      demoStep0Tab: "Step 0 · Goal & Business Sector",
-      demoStep1Tab: "Step 1 · Golden Circle (Why, How, What)",
-      demoStep2Tab: "Step 2 · Touchpoints (Before, During, After)",
-      demoObjCreate: "Create a brand from scratch",
-      demoObjRedesign: "Evolve my existing brand",
-      demoBrandLabel: "Your brand name",
-      demoTaglineLabel: "Tagline or core promise",
-      demoGiroLabel: "Core business activity",
-      demoWhyLabel: "1. Why your brand exists (Core Purpose)",
-      demoHowLabel: "2. How you make it unique (Differentiating Method)",
-      demoWhatLabel: "3. What you deliver (Concrete Value Offer)",
-      demoPolishBtn: "Polish copy with executive clarity",
-      demoNextStepBtn: "Next Demo Step →",
-      tourEyebrow: "MENU 03 · INTERACTIVE SCROLLING APP TOUR",
-      tourTitle: "From initial spark to all 9 deliverables step by step",
-      tourDesc: "Scroll down to explore real application screens for every step, the interactive video pop-ups between stages, and the final download vault.",
-      tourPopupBadge: "INTERACTIVE STAGE TRANSITION VIDEO POP-UP",
-      tourPlayVideoBtn: "Play video capsule in your language",
-      theoryEyebrow: "MENU 04 · THEORETICAL FOUNDATIONS, VIDEOS & BOOKS",
-      theoryTitle: "The strategic depth behind every creative decision",
-      theoryDesc: "Watch the dynamic avatar + B-Roll video capsules with thumbnails, explore masterclasses by the original authors, and access essential books with direct links.",
-      theoryCapsulesTitle: "Step-by-Step Video Capsules (Step 0 to Step 6)",
-      theoryAuthorsTitle: "Author Masterclass Lectures",
-      theoryBooksTitle: "Essential Founder Library with Direct Links",
-      packEyebrow: "MENU 05 · DOWNLOAD PACK & BRAND EXPANSION",
-      packTitle: "Your 9 Official Deliverables in full resolution",
-      packDesc: "Browse the modern carousel and click any deliverable thumbnail to inspect it in near-fullscreen maximum resolution or download a real sample file.",
-      packOpenFullscreen: "View at maximum resolution in near-fullscreen ⤢",
-      packDownloadSample: "Download sample file ↗",
-      comingSoonEyebrow: "COMING SOON · AUTOMATED BRAND EXPANSION ADD-ONS",
-      comingSoonTitle: "Turn your Brandbook into a Live Website and Social Media Suite",
-      comingSoonDesc: "Soon you will be able to purchase two automated add-on modules directly powered by your Brandbook's DNA, palette, fonts, and photography:",
-      csWebTitle: "Automated Official Website Creation",
-      csWebDesc: "A fast, responsive, conversion-ready website automatically generated using your Brandbook's color system, typography, Socratic copy, and 4:3 photography.",
-      csWebPrice: "Coming Soon · Priority Access",
-      csSocialTitle: "Social Media Content & Post Pack",
-      csSocialDesc: "Monthly visual content grid, carousels, stories, and editable templates for Instagram, LinkedIn, and Facebook 100% aligned with your brand rules.",
-      csSocialPrice: "Coming Soon · Priority Access",
-      csReserveBtn: "Request priority access",
-      csReservedOk: "✓ Priority access registered",
-      checkoutTitle: "Get The Best Brand — Instant Activation",
-      checkoutSub: "One-time payment, zero subscriptions. Unlock all 7 steps and immediate download of your 9 official deliverables.",
-      planSingleName: "Entrepreneur Pro License",
-      planSingleDesc: "1 Full Brand · 36 Plates + 9 Deliverables",
-      planAgencyName: "Multi-Brand Atelier License",
-      planAgencyDesc: "Unlimited Brands · For Agencies & Groups",
-      payNowBtn: "Authorize Secure Payment & Activate License",
-      heroTheoriesCopy: "Scientifically backed by the theories of Simon Sinek (Golden Circle), Jan Carlzon (Moments of Truth), Al Ries, Jack Trout & Alexandra Watkins (Positioning & SMILE), Mitsuo Nagamachi (Kansei Engineering), Paul Rand & Jony Ive (Liquid Glass Vector Geometry), and Massimo Vignelli (36-Plate Canon).",
-      heroBtnTryIphone: "Use our live demo with Step 0, 1 & 2",
-      heroBtnIntroVideo: "▶ Watch Founder Intro Video (HeyGen)",
-      iphoneSectionEyebrow: "LIVE REAL APPLICATION · CONNECTED TO AURA ENGINE",
-      iphoneSectionTitle: "Interact right here with the real app: advance free through the first 3 steps",
-      iphoneSectionDesc: "Type or speak with Aura inside the iPhone. Complete up to Step 3 (Naming & Nice Classes) for free; advancing to Step 4 activates the $49 USD unlock and migrates your answers to your new account.",
-      iphoneStep0Btn: "Step 0 · Sector (Free)",
-      iphoneStep1Btn: "Step 1 · Golden Circle (Free)",
-      iphoneStep2Btn: "Step 2 · Touchpoints (Free)",
-      iphoneStep3Btn: "Step 3 · SMILE Naming (Free)",
-      iphoneStep4BtnLocked: "🔒 Step 4 · Unlock ($49 USD)",
-      iphoneStep4BtnUnlocked: "Step 4 · Kansei ✓",
-      iphoneVideoStepBtn: "▶ HeyGen Step Video",
-      syncBadgeTitle: "REAL-TIME PROGRESS RETENTION & MIGRATION",
-      syncLiveStatus: "● AURA CONNECTED LIVE",
-      syncCardHeading: "Your progress across Steps 1 to 3 is saved in real time",
-      syncRow1: "Step 0 & Step 1 · Sector + Golden Circle (Simon Sinek)",
-      syncRow2: "Step 2 · Before, During & After Touchpoints (Carlzon)",
-      syncRow3: "Step 3 · SMILE Naming & Nice Classes (Watkins)",
-      syncRow4: "Steps 4 to 6 · Kansei, Nano Banana Pro Logo & 9 Deliverables",
-      freeAccessLabel: "✓ Free Access",
-      unlock49Label: "Unlock · $49 USD",
-      presetsLabel: "Load Real Case Study:",
-      gcLiveHeading: "LIVE GOLDEN CIRCLE PREVIEW OF YOUR BRAND",
-      nanoEyebrow: "NANO BANANA PRO 4K ENGINE + PURE BÉZIER VECTORS",
-      nanoTitle: "From an initial sketch or legacy logo to an Apple Liquid Glass emblem & .SVG / .AI curves",
-      nanoDesc: "In Step 5 you iterate your logo with the most advanced Nano Banana Pro model and our mathematical Bézier vector tracer on light (#FFFFFF) and dark (#090D16) canvases.",
-      plates36Eyebrow: "OFFICIAL BRAND IDENTITY MANUAL · ALL 36 PLATES IN CURVES (16:9)",
-      plates36Title: "Explore all 36 real Brandbook Plates compiled for your company",
-      plates36Desc: "Click any plate to inspect it at maximum resolution in near-fullscreen and navigate from Plate 01 to 36.",
-      bento9Eyebrow: "COMPLETE EXECUTIVE SUITE · THE 9 OFFICIAL DELIVERABLES",
-      bento9Title: "Everything you download upon completing your 7 steps in 30 minutes",
-      bento9Desc: "Click any deliverable to inspect it in near-fullscreen or jump to the Download Pack.",
-      lightboxKicker: "MAXIMUM RESOLUTION · NEAR-FULLSCREEN VIEWER",
-      lightboxPrev: "← Plate",
-      lightboxNext: "Plate →",
-      lightboxClose: "✕ Close",
-      videoCapsuleBadge: "HEYGEN + GOOGLE FLOW CAPSULE",
-      videoScriptHeading: "EXACT SPOKEN SCRIPT (SYNCHRONIZED IN HEYGEN):",
-      videoContinueBtn: "Continue exploring",
-      tourAmplifyBtn: "⤢ Expand screenshot",
-      tourQuickJumpLabel: "Jump to step:",
-      footerHeadlineSub: "OFFICIAL EDITION 1.0 · THE BEST SUITE",
-      footerDesc: "Platform to create your brand identity, 9 official deliverables, and 36-Plate Vector Brandbook with AI and live voice guidance from Aura in 6 languages."
+      navHome: "1. Home",
+      navAppTour: "2. App Tour",
+      navTheory: "3. Theoretical Foundations",
+      navDemo: "4. Live Demo",
+      navDownloads: "5. Download Pack",
+      navBuyCta: "Unlock Brand · $49 USD",
+      navLicenseActive: "Pro License Active",
+      heroEyebrow: "THE BEST BRAND · SCIENTIFIC BRAND ARCHITECTURE WITH AURA",
+      heroTitleLine1: "Where Strategic Science",
+      heroTitleHighlight: "Becomes Your Brand",
+      heroLead: "The Golden Circle, the SMILE Model, Touchpoints, Kaizen Engineering, and Osgood's Semantic Differential converge organically with Aura to build your visual identity and your official Brandbook of over 30 pages (adaptable to your business sector).",
+      heroCtaTour: "Explore Interactive App Tour",
+      heroCtaTheory: "View Theoretical Infographic",
+      heroCtaDemo: "Try Live Demo (Steps 1-3 Free)",
+      heroVideoBadge: "LIVE CONCEPTUAL CONVERGENCE · THEORIES → THE BEST BRAND LOGO",
+      heroInteractiveStageTitle: "Organic Fusion: 5 Scientific Pillars into The Best Brand",
+      heroInteractiveStageSub: "Click any theoretical node or play the convergence to see how each methodology structures your brand in real time.",
+      heroConvergencePlayBtn: "Trigger Logo Convergence",
+      tourEyebrow: "SECTION 2 · INTERACTIVE APPLICATION WALKTHROUGH (SCROLLYTELLING)",
+      tourTitle: "Experience Aura's Real Flow Inside the Interactive iPhone Mockup",
+      tourLead: "Scroll down to explore all 7 workshop stages. The interactive iPhone synchronizes precision interface cutouts with large, readable floating text blocks and moderate video capsules.",
+      tourIphoneModeCutout: "Synchronized Precision Cutout",
+      tourIphoneModeLive: "Live Interactive App in iPhone",
+      tourWatchStepCapsule: "Watch Explanatory Capsule",
+      tourBeforeAfterTitle: "Intelligent Vector Evolution: From Sketch or Current Logo to Master Identity",
+      tourBeforeAfterSub: "If you already have a logo, Aura preserves your visual equity (Aaker & Haviv) while refining its geometry and finish.",
+      theoryEyebrow: "SECTION 3 · DYNAMIC THEORETICAL FOUNDATIONS & AUTHORS INFOGRAPHIC",
+      theoryTitle: "Step-by-Step Scientific Architecture: The Theories Backing Your Brand",
+      theoryLead: "Explore our responsive academic infographic. Every stage of The Best Brand is grounded in proven frameworks, live geometric diagrams, and world-renowned authors.",
+      theoryInteractiveSimulatorTitle: "Interactive Kansei & Osgood Semantic Differential Simulator (Step 4)",
+      theoryInteractiveSimulatorSub: "Adjust the emotional axes live and watch how parametric geometry transforms tension, corner radius, and typographic character.",
+      theoryAuthorsSectionTitle: "Authors & Frameworks Structuring Every Stage",
+      theoryBooksSectionTitle: "Essential Strategy & Brand Design Bibliography",
+      demoEyebrow: "SECTION 4 · LIVE INTERACTIVE DEMO WITH AURA (REAL CODE)",
+      demoTitle: "Experience the Real App in the iPhone Mockup: Steps 1 to 3 Free",
+      demoLead: "Interact directly with Aura inside the iPhone mockup (or expand to fullscreen). Advance freely through the first 3 real steps; when entering Step 4, unlock your $49 USD Pro license with automatic migration of all your answers.",
+      demoModeIphone: "iPhone 16 Pro Mockup View",
+      demoModeFull: "Expand to Fullscreen",
+      demoFreeStepsBadge: "STEPS 0, 1, 2 & 3 FREE LIVE",
+      demoPaywallStep4Badge: "STEP 4 TRIGGERS PRO LICENSE ($49 USD) WITH AUTO-MIGRATION",
+      demoUnlockBtn: "Unlock Steps 4 to 6 + Brandbook (30+ Pages) · $49 USD",
+      downloadsEyebrow: "SECTION 5 · CONSOLIDATED DELIVERABLES & EXECUTIVE VAULT",
+      downloadsTitle: "Your Official 30+ Page Brandbook & Complete Production Kit",
+      downloadsLead: "All your brand assets unified under one standard: your official Brandbook of over 30 pages (adaptable to your business sector), vector logo suite (.SVG, .AI, .EPS, .PNG), corporate templates, and fonts.",
+      downloadsStandardBadge: "UNIFIED OFFICIAL STANDARD · 30+ PAGE BRANDBOOK (ADAPTABLE TO YOUR SECTOR)",
+      downloadsViewSampleBtn: "Inspect High-Resolution Sample",
+      downloadsUnlockAllBtn: "Get All 9 Official Deliverables · $49 USD",
+      lightboxPrev: "Previous",
+      lightboxNext: "Next",
+      lightboxClose: "Close Viewer",
+      checkoutTitle: "Activate Your Pro License ($49 USD) & Continue to Step 4 Without Losing Progress",
+      checkoutSub: "We create your executive account and automatically migrate all your answers from Steps 0 to 3 so you continue seamlessly in Step 4.",
+      checkoutMigrationTitle: "Guaranteed Automatic Migration (Steps 0 to 3 → Step 4)",
+      checkoutAccountLabel: "Email address for your account & cloud backup",
+      checkoutNameLabel: "Founder or account holder name",
+      checkoutPayBtn: "Pay $49 USD, Create Account & Continue to Step 4"
     },
     fr: {
-      bento9Kicker: "SUITE EXÉCUTIVE COMPLÈTE · LES 9 LIVRABLES OFFICIELS",
-      carouselPrev: "← Précédent",
-      carouselNext: "Suivant →",
-      gcLiveKicker: "APERÇU EN DIRECT DU CERCLE D'OR DE VOTRE MARQUE",
-      iphoneSectionKicker: "APPLICATION RÉELLE EN DIRECT · CONNECTÉE À AURA",
-      iphoneStep0Free: "Étape 0 · Secteur (Gratuit)",
-      iphoneStep1Free: "Étape 1 · Cercle d'Or (Gratuit)",
-      iphoneStep2Free: "Étape 2 · Touchpoints (Gratuit)",
-      iphoneStep3Free: "Étape 3 · Naming SMILE (Gratuit)",
-      iphoneStep4Unlock: "🔒 Étape 4 · Débloquer (49 $ USD)",
-      iphoneVideoBtn: "▶ Vidéo HeyGen de l'Étape",
-      nanoAfterLabel: "APRÈS · ÉVOLUTION NANO BANANA PRO 4K + COURBES VECTORIELLES (.SVG / .AI)",
-      nanoBeforeLabel: "AVANT · LOGO CLIENT TÉLÉVERSÉ (ÉTAPE 0.2)",
-      nanoKicker: "MOTEUR VISUEL NANO BANANA PRO 4K + VECTEURS DE BÉZIER PURS",
-      plates36Kicker: "MANUEL OFFICIEL D'IDENTITÉ · LES 36 PLANCHES EN COURBES (16:9)",
-      syncFreeBadge: "✓ Accès Libre",
-      syncLiveConnected: "● AURA CONNECTÉE EN DIRECT",
-      syncUnlockBtn: "Débloquer · 49 $ USD",
-      videoPopupContinue: "Continuer l'exploration",
-      videoPopupScriptLabel: "SCRIPT PARLÉ EXACT (SYNCHRONISÉ DANS HEYGEN) :",
-      ytWatchHere: "▶ Regarder la Conférence Ici",
-      menu1: "Accueil",
-      menu2: "Démo",
-      menu2Live: "EN DIRECT",
-      menu3: "App Tour",
-      menu4: "Bases théoriques",
-      menu5: "Pack de téléchargements",
-      openStudio: "Ouvrir le Studio ↗",
-      buyNowHeader: "Acheter · $49 USD",
-      buyNowFloating: "Licence Pro · $49 USD",
-      licenseActive: "LICENCE PRO ACTIVE ✓",
-      heroEyebrow: "THE BEST BRAND · IDENTITÉ VISUELLE & BRANDBOOK VECTORIEL",
-      heroHook: "Créez votre Marque et vos 9 Livrables de niveau professionnel en 30 minutes !",
-      heroSub: "Sans réunions interminables ni modèles génériques. Dialoguez avec Aura, parcourez les 7 étapes et téléchargez votre Manuel Officiel de 36 Planches et vos fichiers éditables.",
-      heroBtnDemo: "Utiliser notre démo avec les étapes 0, 1 et 2",
-      heroBtnTour: "Découvrir le parcours pas à pas (App Tour) →",
-      heroShowcaseTag: "VUE PANORAMIQUE RÉELLE DE L'APPLICATION ET DU BRANDBOOK",
-      heroShowcaseTitle: "Une expérience épurée centrée sur une seule décision à la fois",
-      heroShowcaseDesc: "Chaque réponse donnée à Aura devient en temps réel une géométrie vectorielle pure, une typographie calibrée et des planches prêtes pour l'impression.",
-      heroSwitchApp: "Voir Capture Réelle de l'App",
-      heroSwitchManual: "Voir Planche Réelle du Manuel (01/36)",
-      nextToDemoBtn: "Étape suivante : Essayer la Démo (Étapes 0, 1 et 2) →",
-      nextToTourBtn: "Continuer vers : App Tour (Parcours Complet) →",
-      nextToTheoryBtn: "Continuer vers : Bases théoriques (Vidéos et Livres) →",
-      nextToDownloadsBtn: "Continuer vers : Pack de téléchargements →",
-      demoEyebrow: "MENU 02 · DÉMO INTERACTIVE EN DIRECT",
-      demoTitle: "Testez en direct l'Étape 0, l'Étape 1 et l'Étape 2",
-      demoDesc: "Choisissez un exemple ou décrivez votre activité. Observez comment l'application structure votre Cercle d'Or (Simon Sinek) et vos Touchpoints (Jan Carlzon).",
-      demoStep0Tab: "Étape 0 · Objectif et Secteur",
-      demoStep1Tab: "Étape 1 · Cercle d'Or (Pourquoi, Comment, Quoi)",
-      demoStep2Tab: "Étape 2 · Touchpoints (Avant, Pendant, Après)",
-      demoObjCreate: "Créer une marque de zéro",
-      demoObjRedesign: "Faire évoluer ma marque actuelle",
-      demoBrandLabel: "Nom de votre marque",
-      demoTaglineLabel: "Slogan ou promesse",
-      demoGiroLabel: "Activité principale de votre entreprise",
-      demoWhyLabel: "1. Pourquoi votre marque existe (Raison d'être)",
-      demoHowLabel: "2. Comment vous vous différenciez (Méthode)",
-      demoWhatLabel: "3. Ce que vous délivrez (Offre concrète)",
-      demoPolishBtn: "Affiner la rédaction avec clarté exécutive",
-      demoNextStepBtn: "Étape suivante de la Démo →",
-      tourEyebrow: "MENU 03 · PARCOURS INTERACTIF AVEC DÉFILEMENT",
-      tourTitle: "De l'idée initiale aux 9 livrables étape par étape",
-      tourDesc: "Faites défiler pour explorer chaque capture réelle de l'application, les pop-ups vidéo entre chaque étape et le coffre final des livrables.",
-      tourPopupBadge: "POP-UP VIDÉO INTERACTIF ENTRE LES ÉTAPES",
-      tourPlayVideoBtn: "Lire la capsule vidéo dans votre langue",
-      theoryEyebrow: "MENU 04 · BASES THÉORIQUES, VIDÉOS & LIVRES",
-      theoryTitle: "La profondeur méthodologique derrière chaque décision",
-      theoryDesc: "Visionnez les capsules vidéo avec miniatures, les conférences des auteurs et les livres recommandés avec liens directs.",
-      theoryCapsulesTitle: "Capsules Vidéo de l'Atelier (Étape 0 à Étape 6)",
-      theoryAuthorsTitle: "Conférences Magistrales des Auteurs",
-      theoryBooksTitle: "Bibliothèque Essentielle avec Liens Directs",
-      packEyebrow: "MENU 05 · PACK DE TÉLÉCHARGEMENTS & EXPANSION",
-      packTitle: "Vos 9 Livrables Officiels en haute résolution",
-      packDesc: "Parcourez le carrousel moderne et cliquez sur n'importe quelle miniature pour l'inspecter en plein écran ou télécharger un fichier d'exemple.",
-      packOpenFullscreen: "Voir en résolution maximale plein écran ⤢",
-      packDownloadSample: "Télécharger l'exemple ↗",
-      comingSoonEyebrow: "PROCHAINEMENT · NOUVEAUX MODULES AUTOMATISÉS",
-      comingSoonTitle: "Déployez votre Brandbook sur votre Site Web et vos Réseaux Sociaux",
-      comingSoonDesc: "Bientôt disponibles à l'achat directement depuis votre coffre de marque :",
-      csWebTitle: "Création Automatique de Site Web Officiel",
-      csWebDesc: "Site web rapide et responsive généré automatiquement avec les couleurs, polices, textes et photos 4:3 de votre Brandbook.",
-      csWebPrice: "Prochainement · Accès prioritaire",
-      csSocialTitle: "Pack de Publications Réseaux Sociaux",
-      csSocialDesc: "Calendrier mensuel de visuels, carrousels et stories pour Instagram, LinkedIn et Facebook alignés sur votre charte.",
-      csSocialPrice: "Prochainement · Accès prioritaire",
-      csReserveBtn: "Demander un accès prioritaire",
-      csReservedOk: "✓ Accès prioritaire enregistré",
-      checkoutTitle: "Acheter The Best Brand — Activation Immédiate",
-      checkoutSub: "Paiement unique sans abonnement. Débloquez les 7 étapes et vos 9 livrables officiels.",
-      planSingleName: "Licence Pro Entrepreneur",
-      planSingleDesc: "1 Marque Complète · 36 Planches + 9 Livrables",
-      planAgencyName: "Licence Atelier Multi-Marques",
-      planAgencyDesc: "Marques Illimitées · Pour Agences & Groupes",
-      payNowBtn: "Autoriser le Paiement Sécurisé et Activer",
-      heroTheoriesCopy: "Fondé scientifiquement sur les théories de Simon Sinek (Cercle d'Or), Jan Carlzon (Moments de Vérité), Al Ries, Jack Trout & Alexandra Watkins (Positionnement & SMILE), Mitsuo Nagamachi (Ingénierie Kansei), Paul Rand & Jony Ive (Géométrie Vectorielle Liquid Glass) et Massimo Vignelli (Canon de 36 Planches).",
-      heroBtnTryIphone: "Utiliser notre démo avec les étapes 0, 1 et 2",
-      heroBtnIntroVideo: "▶ Voir la Vidéo d'Introduction du Fondateur (HeyGen)",
-      iphoneSectionEyebrow: "APPLICATION RÉELLE EN DIRECT · CONNECTÉE À AURA",
-      iphoneSectionTitle: "Interagissez ici même avec l'application réelle : avancez gratuitement sur les 3 premières étapes",
-      iphoneSectionDesc: "Écrivez ou parlez avec Aura dans l'iPhone. Complétez gratuitement jusqu'à l'Étape 3 ; le passage à l'Étape 4 active le déblocage à 49 $ USD et migre automatiquement vos réponses.",
-      iphoneStep0Btn: "Étape 0 · Secteur (Gratuit)",
-      iphoneStep1Btn: "Étape 1 · Cercle d'Or (Gratuit)",
-      iphoneStep2Btn: "Étape 2 · Touchpoints (Gratuit)",
-      iphoneStep3Btn: "Étape 3 · Naming SMILE (Gratuit)",
-      iphoneStep4BtnLocked: "🔒 Étape 4 · Débloquer ($49 USD)",
-      iphoneStep4BtnUnlocked: "Étape 4 · Kansei ✓",
-      iphoneVideoStepBtn: "▶ Vidéo HeyGen de l'Étape",
-      syncBadgeTitle: "SYNCHRONISATION ET RÉTENTION AUTOMATIQUE",
-      syncLiveStatus: "● AURA CONNECTÉE EN DIRECT",
-      syncCardHeading: "Votre progression sur les Étapes 1 à 3 est sauvegardée en temps réel",
-      syncRow1: "Étape 0 et 1 · Secteur + Cercle d'Or (Simon Sinek)",
-      syncRow2: "Étape 2 · Touchpoints Avant, Pendant et Après (Carlzon)",
-      syncRow3: "Étape 3 · Naming SMILE et Classes de Nice (Watkins)",
-      syncRow4: "Étapes 4 à 6 · Kansei, Logo Nano Banana Pro et 9 Livrables",
-      freeAccessLabel: "✓ Accès Libre",
-      unlock49Label: "Débloquer · $49 USD",
-      presetsLabel: "Charger un Cas Réel :",
-      gcLiveHeading: "APERÇU EN DIRECT DU CERCLE D'OR DE VOTRE MARQUE",
-      nanoEyebrow: "MOTEUR NANO BANANA PRO 4K + VECTEURS BÉZIER PURS",
-      nanoTitle: "D'une esquisse ou logo existant à un emblème Apple Liquid Glass en courbes .SVG / .AI",
-      nanoDesc: "À l'Étape 5, faites évoluer votre logo avec le modèle Nano Banana Pro le plus avancé et notre traceur vectoriel de Bézier sur fond clair et sombre.",
-      plates36Eyebrow: "MANUEL OFFICIEL D'IDENTITÉ · LES 36 PLANCHES EN COURBES (16:9)",
-      plates36Title: "Explorez les 36 planches réelles compilées pour votre entreprise",
-      plates36Desc: "Cliquez sur n'importe quelle planche pour l'inspecter en haute résolution et naviguer de la Planche 01 à 36.",
-      bento9Eyebrow: "SUITE EXÉCUTIVE COMPLÈTE · LES 9 LIVRABLES OFFICIELS",
-      bento9Title: "Tout ce que vous téléchargez en terminant vos 7 étapes en 30 minutes",
-      bento9Desc: "Cliquez sur un livrable pour l'afficher en plein écran ou accéder au Pack de Téléchargements.",
-      lightboxKicker: "RÉSOLUTION MAXIMALE · PLEIN ÉCRAN",
-      lightboxPrev: "← Planche",
-      lightboxNext: "Planche →",
-      lightboxClose: "✕ Fermer",
-      videoCapsuleBadge: "CAPSULE HEYGEN + GOOGLE FLOW",
-      videoScriptHeading: "SCRIPT PARLÉ EXACT (SYNCHRONISÉ DANS HEYGEN) :",
-      videoContinueBtn: "Continuer l'exploration",
-      tourAmplifyBtn: "⤢ Agrandir la capture",
-      tourQuickJumpLabel: "Aller à l'étape :",
-      footerHeadlineSub: "ÉDITION OFFICIELLE 1.0 · SUITE THE BEST",
-      footerDesc: "Plateforme pour créer l'identité visuelle, les 9 livrables officiels et le Manuel de Marque de 36 Planches avec IA et guidage vocal d'Aura en 6 langues."
+      navHome: "1. Accueil",
+      navAppTour: "2. App Tour",
+      navTheory: "3. Bases Théoriques",
+      navDemo: "4. Démo en Direct",
+      navDownloads: "5. Pack de Téléchargement",
+      navBuyCta: "Débloquer Marque · 49 $ USD",
+      navLicenseActive: "Licence Pro Active",
+      heroEyebrow: "THE BEST BRAND · ARCHITECTURE SCIENTIFIQUE D'IDENTITÉ AVEC AURA",
+      heroTitleLine1: "Où la Science Stratégique",
+      heroTitleHighlight: "Devient Votre Marque",
+      heroLead: "Le Cercle d'Or, le Modèle SMILE, les Touchpoints, l'Ingénierie Kaizen et le Différentiel d'Osgood convergent organiquement avec Aura pour créer votre identité visuelle et votre Brandbook officiel de plus de 30 pages (adaptable selon votre secteur d'activité).",
+      heroCtaTour: "Explorer l'App Tour Interactif",
+      heroCtaTheory: "Voir l'Infographie Théorique",
+      heroCtaDemo: "Essayer la Démo en Direct (Étapes 1-3 Gratuites)",
+      heroVideoBadge: "CONVERGENCE CONCEPTUELLE EN DIRECT · THÉORIES → LOGO THE BEST BRAND",
+      heroInteractiveStageTitle: "Fusion Organique : 5 Piliers Scientifiques vers The Best Brand",
+      heroInteractiveStageSub: "Cliquez sur chaque nœud théorique ou lancez la convergence pour observer comment chaque méthodologie structure votre marque.",
+      heroConvergencePlayBtn: "Activer la Fusion vers le Logo",
+      tourEyebrow: "SECTION 2 · PARCOURS INTERACTIF DE L'APPLICATION (SCROLLYTELLING)",
+      tourTitle: "Vivez le Flux Réel d'Aura dans le Mockup Interactif d'iPhone",
+      tourLead: "Faites défiler pour parcourir les 7 étapes. L'iPhone interactif synchronise des découpes précises de l'interface réelle avec des blocs de texte flottants haute lisibilité et des capsules vidéo ponctuelles.",
+      tourIphoneModeCutout: "Découpe de Précision Synchronisée",
+      tourIphoneModeLive: "App Réelle Interactive dans l'iPhone",
+      tourWatchStepCapsule: "Voir la Capsule Explicative",
+      tourBeforeAfterTitle: "Évolution Vectorielle Intelligente : Du Croquis ou Logo Actuel à l'Identité Maîtresse",
+      tourBeforeAfterSub: "Si vous avez déjà un logo, Aura préserve votre capital visuel (Aaker & Haviv) et perfectionne sa géométrie.",
+      theoryEyebrow: "SECTION 3 · INFOGRAPHIE DYNAMIQUE DES BASES THÉORIQUES ET AUTEURS",
+      theoryTitle: "Architecture Scientifique Étape par Étape : Les Théories qui Soutiennent Votre Marque",
+      theoryLead: "Explorez notre infographie académique responsive. Chaque étape de The Best Brand repose sur des modèles éprouvés, des diagrammes géométriques interactifs et des auteurs de référence mondiale.",
+      theoryInteractiveSimulatorTitle: "Simulateur Interactif Kansei & Différentiel Sémantique d'Osgood (Étape 4)",
+      theoryInteractiveSimulatorSub: "Ajustez les axes émotionnels en direct et observez comment la géométrie paramétrique transforme la tension et le caractère typographique.",
+      theoryAuthorsSectionTitle: "Auteurs et Modèles Structurant Chaque Étape",
+      theoryBooksSectionTitle: "Bibliographie Essentielle de Stratégie et Design de Marque",
+      demoEyebrow: "SECTION 4 · DÉMO INTERACTIVE EN DIRECT AVEC AURA (CODE RÉEL)",
+      demoTitle: "Vivez l'Expérience Réelle dans l'iPhone : Étapes 1 à 3 Gratuites",
+      demoLead: "Interagissez directement avec Aura dans le mockup d'iPhone (ou en plein écran). Avancez gratuitement dans les 3 premières étapes réelles ; à l'Étape 4, activez votre licence à 49 $ USD avec migration automatique de toutes vos réponses.",
+      demoModeIphone: "Vue Mockup iPhone 16 Pro",
+      demoModeFull: "Plein Écran",
+      demoFreeStepsBadge: "ÉTAPES 0, 1, 2 ET 3 GRATUITES EN DIRECT",
+      demoPaywallStep4Badge: "L'ÉTAPE 4 ACTIVE LA LICENCE PRO (49 $ USD) AVEC MIGRATION AUTO",
+      demoUnlockBtn: "Débloquer Étapes 4 à 6 + Brandbook (+30 Pages) · 49 $ USD",
+      downloadsEyebrow: "SECTION 5 · CONSOLIDATION DES LIVRABLES ET VOÛTE EXÉCUTIVE",
+      downloadsTitle: "Votre Brandbook Officiel de Plus de 30 Pages et Kit Complet de Production",
+      downloadsLead: "Tous vos actifs réunis sous un standard unique : votre Brandbook officiel de plus de 30 pages (adaptable selon votre secteur d'activité), suite vectorielle (.SVG, .AI, .EPS, .PNG), modèles Office et polices.",
+      downloadsStandardBadge: "STANDARD OFFICIEL UNIFIÉ · BRANDBOOK DE PLUS DE 30 PAGES (ADAPTABLE SELON VOTRE SECTEUR)",
+      downloadsViewSampleBtn: "Inspecter l'Aperçu Haute Résolution",
+      downloadsUnlockAllBtn: "Obtenir les 9 Livrables Officiels · 49 $ USD",
+      lightboxPrev: "Précédent",
+      lightboxNext: "Suivant",
+      lightboxClose: "Fermer",
+      checkoutTitle: "Activez Votre Licence Pro (49 $ USD) et Continuez à l'Étape 4 Sans Perdre Votre Progression",
+      checkoutSub: "Nous créons votre compte et migrons automatiquement toutes vos réponses des Étapes 0 à 3 pour continuer immédiatement à l'Étape 4.",
+      checkoutMigrationTitle: "Migration Automatique Garantie (Étapes 0 à 3 → Étape 4)",
+      checkoutAccountLabel: "Adresse e-mail pour votre compte et sauvegarde cloud",
+      checkoutNameLabel: "Nom du fondateur ou titulaire",
+      checkoutPayBtn: "Payer 49 $ USD, Créer le Compte et Continuer à l'Étape 4"
     },
     pt: {
-      bento9Kicker: "SUÍTE EXECUTIVA COMPLETA · OS 9 ENTREGÁVEIS OFICIAIS",
-      carouselPrev: "← Anterior",
-      carouselNext: "Próximo →",
-      gcLiveKicker: "PRÉVIA AO VIVO DO CÍRCULO DOURADO DA SUA MARCA",
-      iphoneSectionKicker: "APLICAÇÃO REAL AO VIVO · CONECTADA COM A AURA",
-      iphoneStep0Free: "Passo 0 · Ramo (Grátis)",
-      iphoneStep1Free: "Passo 1 · Círculo Dourado (Grátis)",
-      iphoneStep2Free: "Passo 2 · Touchpoints (Grátis)",
-      iphoneStep3Free: "Passo 3 · Naming SMILE (Grátis)",
-      iphoneStep4Unlock: "🔒 Passo 4 · Desbloquear ($49 USD)",
-      iphoneVideoBtn: "▶ Vídeo HeyGen do Passo",
-      nanoAfterLabel: "DEPOIS · EVOLUÇÃO NANO BANANA PRO 4K + CURVAS VETORIAIS (.SVG / .AI)",
-      nanoBeforeLabel: "ANTES · LOGOTIPO ENVIADO PELO CLIENTE (PASSO 0.2)",
-      nanoKicker: "MOTOR VISUAL NANO BANANA PRO 4K + VETORES BÉZIER PUROS",
-      plates36Kicker: "MANUAL OFICIAL DE IDENTIDADE · AS 36 LÂMINAS EM CURVAS (16:9)",
-      syncFreeBadge: "✓ Acesso Livre",
-      syncLiveConnected: "● AURA CONECTADA AO VIVO",
-      syncUnlockBtn: "Desbloquear · $49 USD",
-      videoPopupContinue: "Continuar explorando",
-      videoPopupScriptLabel: "ROTEIRO EXATO FALADO (SINCRONIZADO NO HEYGEN):",
-      ytWatchHere: "▶ Assistir Conferência Aqui",
-      menu1: "Início",
-      menu2: "Demo",
-      menu2Live: "AO VIVO",
-      menu3: "App Tour",
-      menu4: "Bases teóricas",
-      menu5: "Pack de downloads",
-      openStudio: "Abrir Estúdio ↗",
-      buyNowHeader: "Comprar · $49 USD",
-      buyNowFloating: "Adquirir Licença Pro · $49 USD",
-      licenseActive: "LICENÇA PRO ATIVA ✓",
-      heroEyebrow: "THE BEST BRAND · IDENTIDADE VISUAL & BRANDBOOK EM CURVAS",
-      heroHook: "Crie sua Marca e seus 9 Entregáveis de nível profissional em 30 minutos!",
-      heroSub: "Sem reuniões intermináveis ou templates genéricos. Converse com a Aura, percorra os 7 passos estratégicos e baixe seu Manual Oficial de 36 Lâminas e papelaria editável.",
-      heroBtnDemo: "Use nossa demo com o passo 0, 1 e 2",
-      heroBtnTour: "Explorar o tour passo a passo (App Tour) →",
-      heroShowcaseTag: "VISÃO PANORÂMICA REAL DO APLICATIVO E DO BRANDBOOK",
-      heroShowcaseTitle: "Um sistema elegante focado em uma única decisão por vez",
-      heroShowcaseDesc: "Cada resposta dada à Aura se transforma em tempo real em geometria vetorial, tipografia calibrada e lâminas prontas para gráfica e digital.",
-      heroSwitchApp: "Ver Captura Real do App",
-      heroSwitchManual: "Ver Lâmina Real do Manual (01/36)",
-      nextToDemoBtn: "Próximo passo: Use nossa Demo (Passos 0, 1 e 2) →",
-      nextToTourBtn: "Continuar para: App Tour (Jornada Completa) →",
-      nextToTheoryBtn: "Continuar para: Bases teóricas (Vídeos e Livros) →",
-      nextToDownloadsBtn: "Continuar para: Pack de downloads (Carrossel + Em Breve) →",
-      demoEyebrow: "MENU 02 · DEMO INTERATIVA AO VIVO",
-      demoTitle: "Experimente ao vivo o Passo 0, Passo 1 e Passo 2",
-      demoDesc: "Escolha um exemplo ou digite o ramo da sua empresa. Veja como o aplicativo estrutura seu Círculo Dourado (Simon Sinek) e Touchpoints (Jan Carlzon).",
-      demoStep0Tab: "Passo 0 · Objetivo e Ramo",
-      demoStep1Tab: "Passo 1 · Círculo Dourado (Por quê, Como, O quê)",
-      demoStep2Tab: "Passo 2 · Touchpoints (Antes, Durante, Depois)",
-      demoObjCreate: "Criar uma marca do zero",
-      demoObjRedesign: "Evoluir minha marca atual",
-      demoBrandLabel: "Nome da sua marca",
-      demoTaglineLabel: "Slogan ou promessa",
-      demoGiroLabel: "Ramo e atividade principal da empresa",
-      demoWhyLabel: "1. Por que sua marca existe (Propósito nuclear)",
-      demoHowLabel: "2. Como você faz único (Método diferenciador)",
-      demoWhatLabel: "3. O que você entrega (Oferta de valor)",
-      demoPolishBtn: "Refinar redação com clareza executiva",
-      demoNextStepBtn: "Próximo passo da Demo →",
-      tourEyebrow: "MENU 03 · TOUR INTERATIVO COM SCROLLING",
-      tourTitle: "Da ideia inicial aos 9 entregáveis passo a passo",
-      tourDesc: "Role a página para explorar cada captura real do aplicativo, os pop-ups de vídeo entre cada etapa e o cofre final de downloads.",
-      tourPopupBadge: "POP-UP DE VÍDEO INTERATIVO ENTRE ETAPAS",
-      tourPlayVideoBtn: "Reproduzir cápsula de vídeo no seu idioma",
-      theoryEyebrow: "MENU 04 · BASES TEÓRICAS, VÍDEOS E LIVROS",
-      theoryTitle: "A profundidade metodológica por trás de cada decisão",
-      theoryDesc: "Assista às cápsulas de vídeo com miniaturas, palestras dos autores e livros essenciais com links diretos.",
-      theoryCapsulesTitle: "Cápsulas de Vídeo do Estúdio (Passo 0 ao Passo 6)",
-      theoryAuthorsTitle: "Palestras Magistrais dos Autores",
-      theoryBooksTitle: "Biblioteca Essencial com Links Diretos",
-      packEyebrow: "MENU 05 · PACK DE DOWNLOADS E EXPANSÃO",
-      packTitle: "Seus 9 Entregáveis Oficiais em alta resolução",
-      packDesc: "Navegue pelo carrossel moderno e clique em qualquer miniatura para abrir em resolução máxima em tela quase cheia ou baixar um exemplo real.",
-      packOpenFullscreen: "Ver em resolução máxima em tela cheia ⤢",
-      packDownloadSample: "Baixar arquivo de amostra ↗",
-      comingSoonEyebrow: "EM BREVE · NOVOS MÓDULOS AUTOMATIZADOS",
-      comingSoonTitle: "Expanda seu Brandbook para seu Site e Redes Sociais",
-      comingSoonDesc: "Em breve você poderá adquirir diretamente dois módulos conectados ao DNA, cores, fontes e fotos do seu manual:",
-      csWebTitle: "Criação Automática de Site Oficial",
-      csWebDesc: "Site responsivo e otimizado gerado automaticamente com a paleta de cores, tipografia, narrativa e fotos 4:3 do seu Brandbook.",
-      csWebPrice: "Em breve · Acesso prioritário",
-      csSocialTitle: "Pack de Publicações para Redes Sociais",
-      csSocialDesc: "Grade mensal de conteúdo visual, carrosséis e stories para Instagram, LinkedIn e Facebook alinhados à sua marca.",
-      csSocialPrice: "Em breve · Acesso prioritário",
-      csReserveBtn: "Solicitar acesso prioritário",
-      csReservedOk: "✓ Acesso prioritário registrado",
-      checkoutTitle: "Adquirir The Best Brand — Ativação Instantânea",
-      checkoutSub: "Pagamento único sem mensalidades. Desbloqueie os 7 passos e o download imediato dos seus 9 entregáveis.",
-      planSingleName: "Licença Pro Empresário",
-      planSingleDesc: "1 Marca Completa · 36 Lâminas + 9 Entregáveis",
-      planAgencyName: "Licença Atelier Multi-Marca",
-      planAgencyDesc: "Marcas Ilimitadas · Para Agências e Grupos",
-      payNowBtn: "Autorizar Pagamento Seguro e Ativar Licença",
-      heroTheoriesCopy: "Respaldado cientificamente pelas teorias de Simon Sinek (Círculo Dourado), Jan Carlzon (Momentos da Verdade), Al Ries, Jack Trout e Alexandra Watkins (Posicionamento e SMILE), Mitsuo Nagamachi (Engenharia Kansei), Paul Rand e Jony Ive (Geometria Vetorial Liquid Glass) e Massimo Vignelli (Cânone de 36 Lâminas).",
-      heroBtnTryIphone: "Use nossa demo com o passo 0, 1 e 2",
-      heroBtnIntroVideo: "▶ Ver Vídeo Introdutório do Fundador (HeyGen)",
-      iphoneSectionEyebrow: "APLICATIVO REAL AO VIVO · CONECTADO AO MOTOR DA AURA",
-      iphoneSectionTitle: "Interaja aqui mesmo com o aplicativo real: avance grátis nos 3 primeiros passos",
-      iphoneSectionDesc: "Escreva ou fale com a Aura dentro do iPhone. Complete sem custo até o Passo 3; ao avançar para o Passo 4 ativa-se o desbloqueio de $49 USD e suas respostas migram automaticamente.",
-      iphoneStep0Btn: "Passo 0 · Ramo (Grátis)",
-      iphoneStep1Btn: "Passo 1 · Círculo Dourado (Grátis)",
-      iphoneStep2Btn: "Passo 2 · Touchpoints (Grátis)",
-      iphoneStep3Btn: "Passo 3 · Naming SMILE (Grátis)",
-      iphoneStep4BtnLocked: "🔒 Passo 4 · Desbloquear ($49 USD)",
-      iphoneStep4BtnUnlocked: "Passo 4 · Kansei ✓",
-      iphoneVideoStepBtn: "▶ Vídeo HeyGen do Passo",
-      syncBadgeTitle: "SINCRONIZAÇÃO E RETENÇÃO AUTOMÁTICA DE PROGRESSO",
-      syncLiveStatus: "● AURA CONECTADA AO VIVO",
-      syncCardHeading: "Seu avanço nos Passos 1 a 3 é salvo em tempo real",
-      syncRow1: "Passo 0 e Passo 1 · Ramo + Círculo Dourado (Simon Sinek)",
-      syncRow2: "Passo 2 · Touchpoints Antes, Durante e Depois (Carlzon)",
-      syncRow3: "Passo 3 · Naming SMILE e Classes de Nice (Watkins)",
-      syncRow4: "Passo 4 ao 6 · Kansei, Logotipo Nano Banana Pro e 9 Entregáveis",
-      freeAccessLabel: "✓ Acesso Livre",
-      unlock49Label: "Desbloquear · $49 USD",
-      presetsLabel: "Carregar Caso de Sucesso:",
-      gcLiveHeading: "VISÃO AO VIVO DO CÍRCULO DOURADO DA SUA MARCA",
-      nanoEyebrow: "MOTOR VISUAL NANO BANANA PRO 4K + VETORES BÉZIER PUROS",
-      nanoTitle: "De um esboço ou logo antigo a um símbolo Apple Liquid Glass em curvas .SVG / .AI",
-      nanoDesc: "No Passo 5 você evolui seu logotipo com o modelo mais avançado do Nano Banana Pro e nosso traçador matemático em curvas Bézier puras em fundo claro e escuro.",
-      plates36Eyebrow: "MANUAL OFICIAL DE IDENTIDADE · AS 36 LÂMINAS EM CURVAS (16:9)",
-      plates36Title: "Explore as 36 Lâminas reais que o sistema compila para sua empresa",
-      plates36Desc: "Clique em qualquer lâmina para inspecioná-la em resolução máxima e navegar da Lâmina 01 à 36.",
-      bento9Eyebrow: "SUÍTE EXECUTIVA COMPLETA · OS 9 ENTREGÁVEIS OFICIAIS",
-      bento9Title: "Tudo o que você baixa ao finalizar seus 7 passos em 30 minutos",
-      bento9Desc: "Clique em qualquer entregável para vê-lo em tela cheia ou ir ao Pack de Downloads.",
-      lightboxKicker: "RESOLUÇÃO MÁXIMA · TELA QUASE CHEIA",
-      lightboxPrev: "← Lâmina",
-      lightboxNext: "Lâmina →",
-      lightboxClose: "✕ Fechar",
-      videoCapsuleBadge: "CÁPSULA HEYGEN + GOOGLE FLOW",
-      videoScriptHeading: "ROTEIRO FALADO EXATO (SINCRONIZADO NO HEYGEN):",
-      videoContinueBtn: "Continuar explorando",
-      tourAmplifyBtn: "⤢ Ampliar captura",
-      tourQuickJumpLabel: "Ir para o passo:",
-      footerHeadlineSub: "EDIÇÃO OFICIAL 1.0 · SUÍTE THE BEST",
-      footerDesc: "Plataforma para criar a identidade visual, os 9 entregáveis oficiais e o Manual de Marca de 36 Lâminas em Curvas da sua empresa com IA e voz da Aura em 6 idiomas."
+      navHome: "1. Início",
+      navAppTour: "2. App Tour",
+      navTheory: "3. Bases Teóricas",
+      navDemo: "4. Demo ao Vivo",
+      navDownloads: "5. Pack de Descargas",
+      navBuyCta: "Desbloquear Marca · $49 USD",
+      navLicenseActive: "Licença Pro Ativa",
+      heroEyebrow: "THE BEST BRAND · ARQUITETURA CIENTÍFICA DE IDENTIDADE COM A AURA",
+      heroTitleLine1: "Onde a Ciência Estratégica",
+      heroTitleHighlight: "Se Torna a Sua Marca",
+      heroLead: "O Círculo Dourado, o Modelo SMILE, os Touchpoints, a Engenharia Kaizen e o Diferencial de Osgood convergem organicamente com a Aura para criar a sua identidade visual e o seu Brandbook oficial com mais de 30 páginas (ajustável conforme o ramo do negócio).",
+      heroCtaTour: "Explorar o App Tour Interativo",
+      heroCtaTheory: "Ver Infografia de Bases Teóricas",
+      heroCtaDemo: "Testar Demo ao Vivo (Passos 1-3 Grátis)",
+      heroVideoBadge: "CONVERGÊNCIA CONCETUAL AO VIVO · TEORIAS → LOGÓTIPO THE BEST BRAND",
+      heroInteractiveStageTitle: "Fusão Orgânica: 5 Pilares Científicos em Direção à The Best Brand",
+      heroInteractiveStageSub: "Clique em cada nó teórico ou reproduza a convergência para ver como cada metodologia estrutura a sua marca em tempo real.",
+      heroConvergencePlayBtn: "Ativar Fusão para o Logótipo",
+      tourEyebrow: "SECÇÃO 2 · PERCURSO INTERATIVO DA APLICAÇÃO (SCROLLYTELLING)",
+      tourTitle: "Experimente o Fluxo Real da Aura no Mockup Interativo de iPhone",
+      tourLead: "Deslize para percorrer os 7 passos. O iPhone interativo sincroniza recortes precisos da interface real com blocos de texto flutuantes de grande legibilidade e cápsulas moderadas.",
+      tourIphoneModeCutout: "Recorte de Precisão Sincronizado",
+      tourIphoneModeLive: "App Real Interativa no iPhone",
+      tourWatchStepCapsule: "Ver Cápsula Explicativa",
+      tourBeforeAfterTitle: "Evolução Vetorial Inteligente: De Esboço ou Logo Atual para Identidade Mestra",
+      tourBeforeAfterSub: "Se já tem um logótipo, a Aura preserva o seu património visual (Aaker & Haviv) e aperfeiçoa a sua geometria.",
+      theoryEyebrow: "SECÇÃO 3 · INFOGRAFIA DINÂMICA DE BASES TEÓRICAS E AUTORES",
+      theoryTitle: "Arquitetura Científica Passo a Passo: As Teorias que Sustentam a Sua Marca",
+      theoryLead: "Explore a nossa infografia académica responsiva. Cada etapa da The Best Brand baseia-se em modelos comprovados, diagramas geométricos vivos e autores de referência mundial.",
+      theoryInteractiveSimulatorTitle: "Simulador Interativo Kansei & Diferencial Semântico de Osgood (Passo 4)",
+      theoryInteractiveSimulatorSub: "Ajuste os eixos emocionais ao vivo e observe como a geometria paramétrica transforma a tensão e o caráter tipográfico.",
+      theoryAuthorsSectionTitle: "Autores e Modelos que Estruturam Cada Etapa",
+      theoryBooksSectionTitle: "Bibliografia Essencial de Estratégia e Design de Marca",
+      demoEyebrow: "SECÇÃO 4 · DEMO INTERATIVA AO VIVO COM A AURA (CÓDIGO REAL)",
+      demoTitle: "Viva a Experiência Real no iPhone: Passos 1 a 3 Gratuitos",
+      demoLead: "Interaja diretamente com a Aura dentro do mockup de iPhone (ou expanda para ecrã inteiro). Avance gratuitamente pelos primeiros 3 passos reais; ao aceder ao Passo 4, ative a sua licença de $49 USD com migração automática de todas as respostas.",
+      demoModeIphone: "Vista Mockup iPhone 16 Pro",
+      demoModeFull: "Expandir para Ecrã Inteiro",
+      demoFreeStepsBadge: "PASSOS 0, 1, 2 E 3 GRÁTIS AO VIVO",
+      demoPaywallStep4Badge: "PASSO 4 ATIVA LICENÇA PRO ($49 USD) COM MIGRAÇÃO AUTOMÁTICA",
+      demoUnlockBtn: "Desbloquear Passos 4 a 6 + Brandbook (+30 Páginas) · $49 USD",
+      downloadsEyebrow: "SECÇÃO 5 · CONSOLIDAÇÃO DE ENTREGÁVEIS E COFRE EXECUTIVO",
+      downloadsTitle: "O Seu Brandbook Oficial com Mais de 30 Páginas e Kit Completo de Produção",
+      downloadsLead: "Unificamos todos os seus ativos num único pacote executivo: o seu Brandbook oficial com mais de 30 páginas (ajustável conforme o ramo do negócio), suite vetorial (.SVG, .AI, .EPS, .PNG), modelos corporativos e fontes.",
+      downloadsStandardBadge: "PADRÃO OFICIAL UNIFICADO · BRANDBOOK COM MAIS DE 30 PÁGINAS (AJUSTÁVEL AO SEU RAMO)",
+      downloadsViewSampleBtn: "Inspecionar Amostra em Alta Resolução",
+      downloadsUnlockAllBtn: "Obter os 9 Entregáveis Oficiais · $49 USD",
+      lightboxPrev: "Anterior",
+      lightboxNext: "Seguinte",
+      lightboxClose: "Fechar",
+      checkoutTitle: "Ative a Sua Licença Pro ($49 USD) e Continue para o Passo 4 Sem Perder o Progresso",
+      checkoutSub: "Criamos a sua conta executiva e migramos automaticamente todas as respostas dos Passos 0 a 3 para continuar de imediato no Passo 4.",
+      checkoutMigrationTitle: "Migração Automática Garantida (Passos 0 a 3 → Passo 4)",
+      checkoutAccountLabel: "E-mail para a sua conta e cópia de segurança na nuvem",
+      checkoutNameLabel: "Nome do fundador ou titular",
+      checkoutPayBtn: "Pagar $49 USD, Criar Conta e Continuar no Passo 4"
     },
     de: {
-      bento9Kicker: "KOMPLETTE EXECUTIVE-SUITE · DIE 9 OFFIZIELLEN DELIVERABLES",
-      carouselPrev: "← Zurück",
-      carouselNext: "Weiter →",
-      gcLiveKicker: "LIVE-VORSCHAU DES GOLDEN CIRCLE IHRER MARKE",
-      iphoneSectionKicker: "ECHTE LIVE-APPLIKATION · MIT AURA VERBUNDEN",
-      iphoneStep0Free: "Schritt 0 · Branche (Gratis)",
-      iphoneStep1Free: "Schritt 1 · Golden Circle (Gratis)",
-      iphoneStep2Free: "Schritt 2 · Touchpoints (Gratis)",
-      iphoneStep3Free: "Schritt 3 · SMILE-Naming (Gratis)",
-      iphoneStep4Unlock: "🔒 Schritt 4 · Freischalten ($49 USD)",
-      iphoneVideoBtn: "▶ HeyGen-Schritt-Video",
-      nanoAfterLabel: "NACHHER · NANO BANANA PRO 4K EVOLUTION + VEKTORKURVEN (.SVG / .AI)",
-      nanoBeforeLabel: "VORHER · VOM KUNDEN HOCHGELADENES LOGO (SCHRITT 0.2)",
-      nanoKicker: "NANO BANANA PRO 4K ENGINE + REINE BÉZIER-VEKTOREN",
-      plates36Kicker: "OFFIZIELLES MARKENHANDBUCH · ALLE 36 TAFELN IN KURVEN (16:9)",
-      syncFreeBadge: "✓ Freier Zugang",
-      syncLiveConnected: "● AURA LIVE VERBUNDEN",
-      syncUnlockBtn: "Freischalten · $49 USD",
-      videoPopupContinue: "Weiter erkunden",
-      videoPopupScriptLabel: "EXAKTES SPRECHSKRIPT (SYNCHRONISIERT IN HEYGEN):",
-      ytWatchHere: "▶ Vortrag hier ansehen",
-      menu1: "Startseite",
-      menu2: "Demo",
-      menu2Live: "LIVE",
-      menu3: "App Tour",
-      menu4: "Theoretische Grundlagen",
-      menu5: "Download-Paket",
-      openStudio: "Studio öffnen ↗",
-      buyNowHeader: "Kaufen · $49 USD",
-      buyNowFloating: "Pro-Lizenz kaufen · $49 USD",
-      licenseActive: "PRO-LIZENZ AKTIV ✓",
-      heroEyebrow: "THE BEST BRAND · ALGORITHMISCHE MARKENIDENTITÄT & VEKTOR-BRANDBOOK",
-      heroHook: "Erstellen Sie Ihre Marke und Ihre 9 Profi-Deliverables in 30 Minuten!",
-      heroSub: "Ohne endlose Agentur-Meetings oder generische Vorlagen. Sprechen Sie mit Aura, durchlaufen Sie 7 strategische Schritte und laden Sie Ihr 36-Tafeln-Markenhandbuch sofort herunter.",
-      heroBtnDemo: "Unsere Live-Demo mit Schritt 0, 1 und 2 nutzen",
-      heroBtnTour: "Schritt-für-Schritt App Tour entdecken →",
-      heroShowcaseTag: "ECHTE PANORAMA-ANSICHT DER APP UND DES BRANDBOOKS",
-      heroShowcaseTitle: "Ein klares System mit Fokus auf jeweils ein einzelnes Element",
-      heroShowcaseDesc: "Jede Antwort an Aura wird in Echtzeit in präzise Vektorgeometrie, kalibrierte Typografie und druckfertige Tafeln übersetzt.",
-      heroSwitchApp: "Echten App-Screenshot ansehen",
-      heroSwitchManual: "Echte Brandbook-Tafel ansehen (01/36)",
-      nextToDemoBtn: "Nächster Schritt: Live-Demo testen (Schritte 0, 1 & 2) →",
-      nextToTourBtn: "Weiter zum nächsten Menü: App Tour (Scroll-Reise) →",
-      nextToTheoryBtn: "Weiter zum Menü: Theoretische Grundlagen (Videos & Bücher) →",
-      nextToDownloadsBtn: "Weiter zum letzten Menü: Download-Paket (Karussell & Demnächst) →",
-      demoEyebrow: "MENÜ 02 · INTERAKTIVE LIVE-DEMO",
-      demoTitle: "Erleben Sie Schritt 0, Schritt 1 und Schritt 2 live",
-      demoDesc: "Wählen Sie ein Beispiel oder geben Sie Ihre Branche ein. Sehen Sie live, wie Ihr Golden Circle (Simon Sinek) und Ihre Touchpoints (Jan Carlzon) entstehen.",
-      demoStep0Tab: "Schritt 0 · Ziel & Branche",
-      demoStep1Tab: "Schritt 1 · Golden Circle (Warum, Wie, Was)",
-      demoStep2Tab: "Schritt 2 · Touchpoints (Vor, Während, Nach)",
-      demoObjCreate: "Marke komplett neu erstellen",
-      demoObjRedesign: "Bestehende Marke weiterentwickeln",
-      demoBrandLabel: "Name Ihrer Marke",
-      demoTaglineLabel: "Claim oder Markenversprechen",
-      demoGiroLabel: "Hauptgeschäftsfeld Ihres Unternehmens",
-      demoWhyLabel: "1. Warum Ihre Marke existiert (Kernzweck)",
-      demoHowLabel: "2. Wie Sie es einzigartig machen (Methode)",
-      demoWhatLabel: "3. Was Sie liefern (Wertangebot)",
-      demoPolishBtn: "Text mit Executive-Klarheit optimieren",
-      demoNextStepBtn: "Nächster Demo-Schritt →",
-      tourEyebrow: "MENÜ 03 · INTERAKTIVE SCROLL-APP-TOUR",
-      tourTitle: "Von der ersten Idee bis zu allen 9 Deliverables Schritt für Schritt",
-      tourDesc: "Scrollen Sie durch alle echten App-Screens, die Video-Pop-ups zwischen den Schritten und den finalen Download-Tresor.",
-      tourPopupBadge: "INTERAKTIVES VIDEO-POP-UP ZWISCHEN DEN SCHRITTEN",
-      tourPlayVideoBtn: "Videokapsel in Ihrer Sprache abspielen",
-      theoryEyebrow: "MENÜ 04 · THEORETISCHE GRUNDLAGEN, VIDEOS & BÜCHER",
-      theoryTitle: "Die methodische Tiefe hinter jeder Markenentscheidung",
-      theoryDesc: "Sehen Sie die dynamischen Videokapseln mit Vorschaubildern, Autoren-Vorträge und Fachbücher mit direkten Links.",
-      theoryCapsulesTitle: "Video-Kapseln des Studios (Schritt 0 bis Schritt 6)",
-      theoryAuthorsTitle: "Keynote-Vorträge der Autoren",
-      theoryBooksTitle: "Gründer-Bibliothek mit Direktlinks",
-      packEyebrow: "MENÜ 05 · DOWNLOAD-PAKET & MARKENERWEITERUNG",
-      packTitle: "Ihre 9 offiziellen Deliverables in maximaler Auflösung",
-      packDesc: "Durchblättern Sie das moderne Karussell und klicken Sie auf eine Vorschau für die Fast-Vollbild-Ansicht oder den Beispiel-Download.",
-      packOpenFullscreen: "In maximaler Auflösung fast im Vollbild öffnen ⤢",
-      packDownloadSample: "Beispieldatei herunterladen ↗",
-      comingSoonEyebrow: "DEMNÄCHST · AUTOMATISIERTE MARKEN-ERWEITERUNGEN",
-      comingSoonTitle: "Erweitern Sie Ihr Brandbook auf Website und Social Media",
-      comingSoonDesc: "In Kürze können Sie zwei Zusatzmodule erwerben, die direkt aus Ihrem Brandbook generiert werden:",
-      csWebTitle: "Automatische Erstellung Ihrer offiziellen Website",
-      csWebDesc: "Responsive, schnelle Website, automatisch erstellt mit Farben, Schriften, Texten und 4:3-Fotos Ihres Brandbooks.",
-      csWebPrice: "Demnächst · Prioritätszugang",
-      csSocialTitle: "Social-Media-Content & Posting-Paket",
-      csSocialDesc: "Monatlicher Redaktionsplan mit Karussells, Stories und Vorlagen für Instagram, LinkedIn und Facebook im Marken-Look.",
-      csSocialPrice: "Demnächst · Prioritätszugang",
-      csReserveBtn: "Prioritätszugang anfordern",
-      csReservedOk: "✓ Prioritätszugang registriert",
-      checkoutTitle: "The Best Brand kaufen — Sofortaktivierung",
-      checkoutSub: "Einmalzahlung ohne Abonnement. Schaltet alle 7 Schritte und alle 9 offiziellen Deliverables frei.",
-      planSingleName: "Unternehmer Pro-Lizenz",
-      planSingleDesc: "1 komplette Marke · 36 Tafeln + 9 Deliverables",
-      planAgencyName: "Multi-Marken Atelier-Lizenz",
-      planAgencyDesc: "Unbegrenzte Marken · Für Agenturen & Gruppen",
-      payNowBtn: "Sichere Zahlung autorisieren & Lizenz aktivieren",
-      heroTheoriesCopy: "Wissenschaftlich fundiert durch die Theorien von Simon Sinek (Golden Circle), Jan Carlzon (Momente der Wahrheit), Al Ries, Jack Trout & Alexandra Watkins (Positionierung & SMILE), Mitsuo Nagamachi (Kansei-Engineering), Paul Rand & Jony Ive (Liquid Glass Vektorgeometrie) und Massimo Vignelli (36-Tafeln-Kanon).",
-      heroBtnTryIphone: "Unsere Live-Demo mit Schritt 0, 1 und 2 nutzen",
-      heroBtnIntroVideo: "▶ Gründer-Intro-Video ansehen (HeyGen)",
-      iphoneSectionEyebrow: "ECHTE LIVE-APPLIKATION · MIT AURA VERBUNDEN",
-      iphoneSectionTitle: "Interagieren Sie direkt hier mit der echten App: die ersten 3 Schritte kostenlos",
-      iphoneSectionDesc: "Schreiben oder sprechen Sie mit Aura im iPhone. Bis Schritt 3 kostenlos; beim Wechsel zu Schritt 4 wird die $49-USD-Freischaltung mit automatischer Datenmigration aktiviert.",
-      iphoneStep0Btn: "Schritt 0 · Branche (Gratis)",
-      iphoneStep1Btn: "Schritt 1 · Golden Circle (Gratis)",
-      iphoneStep2Btn: "Schritt 2 · Touchpoints (Gratis)",
-      iphoneStep3Btn: "Schritt 3 · SMILE-Naming (Gratis)",
-      iphoneStep4BtnLocked: "🔒 Schritt 4 · Freischalten ($49 USD)",
-      iphoneStep4BtnUnlocked: "Schritt 4 · Kansei ✓",
-      iphoneVideoStepBtn: "▶ HeyGen-Schritt-Video",
-      syncBadgeTitle: "AUTOMATISCHE FORTSCHRITTS-SPEICHERUNG & MIGRATION",
-      syncLiveStatus: "● AURA LIVE VERBUNDEN",
-      syncCardHeading: "Ihr Fortschritt in den Schritten 1 bis 3 wird in Echtzeit gespeichert",
-      syncRow1: "Schritt 0 & 1 · Branche + Golden Circle (Simon Sinek)",
-      syncRow2: "Schritt 2 · Touchpoints Vor, Während & Nach (Carlzon)",
-      syncRow3: "Schritt 3 · SMILE-Naming & Nizza-Klassen (Watkins)",
-      syncRow4: "Schritt 4 bis 6 · Kansei, Nano Banana Pro Logo & 9 Deliverables",
-      freeAccessLabel: "✓ Freier Zugang",
-      unlock49Label: "Freischalten · $49 USD",
-      presetsLabel: "Echtes Fallbeispiel laden:",
-      gcLiveHeading: "LIVE-VORSCHAU DES GOLDEN CIRCLE IHRER MARKE",
-      nanoEyebrow: "NANO BANANA PRO 4K ENGINE + REINE BÉZIER-VEKTOREN",
-      nanoTitle: "Vom Entwurf oder Alt-Logo zum Apple Liquid Glass Emblem in .SVG / .AI Kurven",
-      nanoDesc: "In Schritt 5 entwickeln Sie Ihr Logo mit dem neuesten Nano Banana Pro Modell und unserem mathematischen Bézier-Vektor-Tracer auf hellem und dunklem Grund.",
-      plates36Eyebrow: "OFFIZIELLES MARKENHANDBUCH · ALLE 36 TAFELN IN KURVEN (16:9)",
-      plates36Title: "Entdecken Sie alle 36 echten Brandbook-Tafeln für Ihr Unternehmen",
-      plates36Desc: "Klicken Sie auf eine Tafel für die Fast-Vollbild-Ansicht und blättern Sie von Tafel 01 bis 36.",
-      bento9Eyebrow: "KOMPLETTE EXECUTIVE-SUITE · DIE 9 OFFIZIELLEN DELIVERABLES",
-      bento9Title: "Alles, was Sie nach den 7 Schritten in 30 Minuten herunterladen",
-      bento9Desc: "Klicken Sie auf ein Deliverable für die Vollbild-Vorschau oder das Download-Paket.",
-      lightboxKicker: "MAXIMALE AUFLÖSUNG · FAST-VOLLBILD-ANSICHT",
-      lightboxPrev: "← Tafel",
-      lightboxNext: "Tafel →",
-      lightboxClose: "✕ Schließen",
-      videoCapsuleBadge: "HEYGEN + GOOGLE FLOW KAPSEL",
-      videoScriptHeading: "EXAKTES SPRECHSKRIPT (SYNCHRONISIERT IN HEYGEN):",
-      videoContinueBtn: "Weiter erkunden",
-      tourAmplifyBtn: "⤢ Screenshot vergrößern",
-      tourQuickJumpLabel: "Springe zu Schritt:",
-      footerHeadlineSub: "OFFIZIELLE EDITION 1.0 · THE BEST SUITE",
-      footerDesc: "Plattform zur Erstellung Ihrer Markenidentität, der 9 offiziellen Deliverables und des 36-Tafeln-Vektor-Brandbooks mit KI und Auras Sprachführung in 6 Sprachen."
+      navHome: "1. Start",
+      navAppTour: "2. App Tour",
+      navTheory: "3. Theoretische Grundlagen",
+      navDemo: "4. Live-Demo",
+      navDownloads: "5. Download-Paket",
+      navBuyCta: "Marke Freischalten · $49 USD",
+      navLicenseActive: "Pro-Lizenz Aktiv",
+      heroEyebrow: "THE BEST BRAND · WISSENSCHAFTLICHE MARKENARCHITEKTUR MIT AURA",
+      heroTitleLine1: "Wo Strategische Wissenschaft",
+      heroTitleHighlight: "Zu Ihrer Marke Wird",
+      heroLead: "Der Golden Circle, das SMILE-Modell, Touchpoints, Kaizen-Engineering und das Osgood-Differential verschmelzen organisch mit Aura zu Ihrer visuellen Identität und Ihrem offiziellen Brandbook mit über 30 Seiten (anpassbar je nach Branche).",
+      heroCtaTour: "Interaktive App Tour Starten",
+      heroCtaTheory: "Theorie-Infografik Ansehen",
+      heroCtaDemo: "Live-Demo Testen (Schritte 1-3 Gratis)",
+      heroVideoBadge: "KONZEPTUELLE LIVE-KONVERGENZ · THEORIEN → THE BEST BRAND LOGO",
+      heroInteractiveStageTitle: "Organische Fusion: 5 Wissenschaftliche Säulen zu The Best Brand",
+      heroInteractiveStageSub: "Klicken Sie auf einen Theorieknoten oder starten Sie die Konvergenz, um zu sehen, wie jede Methodik Ihre Marke strukturiert.",
+      heroConvergencePlayBtn: "Logo-Fusion Aktivieren",
+      tourEyebrow: "ABSCHNITT 2 · INTERAKTIVER APP-RUNDGANG (SCROLLYTELLING)",
+      tourTitle: "Erleben Sie Auras Echten Workflow im Interaktiven iPhone-Mockup",
+      tourLead: "Scrollen Sie durch alle 7 Schritte. Das interaktive iPhone synchronisiert präzise UI-Ausschnitte mit großzügigen, perfekt lesbaren Textblöcken und gezielten Videokapseln.",
+      tourIphoneModeCutout: "Synchronisierter Präzisions-Ausschnitt",
+      tourIphoneModeLive: "Echte Interaktive App im iPhone",
+      tourWatchStepCapsule: "Erklärkapsel Ansehen",
+      tourBeforeAfterTitle: "Intelligente Vektor-Evolution: Vom Entwurf oder Aktuellen Logo zur Meister-Identität",
+      tourBeforeAfterSub: "Wenn Sie bereits ein Logo haben, bewahrt Aura Ihr visuelles Kapital (Aaker & Haviv) und perfektioniert die Geometrie.",
+      theoryEyebrow: "ABSCHNITT 3 · DYNAMISCHE INFOGRAFIK DER THEORIEN UND AUTOREN",
+      theoryTitle: "Wissenschaftliche Architektur Schritt für Schritt: Die Theorien Hinter Ihrer Marke",
+      theoryLead: "Entdecken Sie unsere responsive akademische Infografik. Jeder Schritt von The Best Brand basiert auf bewährten Modellen, interaktiven Diagrammen und weltweit führenden Autoren.",
+      theoryInteractiveSimulatorTitle: "Interaktiver Kansei- & Osgood-Differential-Simulator (Schritt 4)",
+      theoryInteractiveSimulatorSub: "Kalibrieren Sie die emotionalen Achsen live und beobachten Sie, wie parametrische Geometrie Spannung und Typografie verändert.",
+      theoryAuthorsSectionTitle: "Autoren und Modelle Jeder Entwicklungsstufe",
+      theoryBooksSectionTitle: "Essenzielle Fachliteratur für Markenstrategie & Design",
+      demoEyebrow: "ABSCHNITT 4 · INTERAKTIVE LIVE-DEMO MIT AURA (ECHTER CODE)",
+      demoTitle: "Erleben Sie die Echte App im iPhone: Schritte 1 bis 3 Kostenlos",
+      demoLead: "Interagieren Sie direkt mit Aura im iPhone-Mockup (oder im Vollbildmodus). Durchlaufen Sie die ersten 3 echten Schritte kostenlos; beim Wechsel zu Schritt 4 schalten Sie Ihre $49 USD Lizenz mit automatischer Datenmigration frei.",
+      demoModeIphone: "iPhone 16 Pro Mockup-Ansicht",
+      demoModeFull: "Vollbildmodus",
+      demoFreeStepsBadge: "SCHRITTE 0, 1, 2 & 3 KOSTENLOS LIVE",
+      demoPaywallStep4Badge: "SCHRITT 4 AKTIVIERT PRO-LIZENZ ($49 USD) MIT AUTO-MIGRATION",
+      demoUnlockBtn: "Schritte 4 bis 6 + Brandbook (+30 Seiten) Freischalten · $49 USD",
+      downloadsEyebrow: "ABSCHNITT 5 · KONSOLIDIERTE DELIVERABLES & EXECUTIVE-TRESOR",
+      downloadsTitle: "Ihr Offizielles Brandbook mit Über 30 Seiten & Komplettes Produktions-Kit",
+      downloadsLead: "Alle Marken-Assets vereint: Ihr offizielles Brandbook mit über 30 Seiten (anpassbar je nach Branche), Vektor-Logo-Suite (.SVG, .AI, .EPS, .PNG), Office-Vorlagen und Schriften.",
+      downloadsStandardBadge: "EINHEITLICHER STANDARD · BRANDBOOK MIT ÜBER 30 SEITEN (BRANCHENANPASSBAR)",
+      downloadsViewSampleBtn: "Hochauflösende Vorschau Öffnen",
+      downloadsUnlockAllBtn: "Alle 9 Offiziellen Deliverables Erhalten · $49 USD",
+      lightboxPrev: "Zurück",
+      lightboxNext: "Weiter",
+      lightboxClose: "Schließen",
+      checkoutTitle: "Pro-Lizenz Aktivieren ($49 USD) & Nahtlos mit Schritt 4 Fortfahren",
+      checkoutSub: "Wir erstellen Ihr Konto und migrieren automatisch alle Antworten aus den Schritten 0 bis 3, damit Sie sofort in Schritt 4 weitermachen.",
+      checkoutMigrationTitle: "Garantierte Automatische Migration (Schritte 0 bis 3 → Schritt 4)",
+      checkoutAccountLabel: "E-Mail-Adresse für Ihr Konto & Cloud-Backup",
+      checkoutNameLabel: "Name des Gründers oder Kontoinhabers",
+      checkoutPayBtn: "$49 USD Bezahlen, Konto Erstellen & zu Schritt 4"
     },
     it: {
-      bento9Kicker: "SUITE ESECUTIVA COMPLETA · I 9 DELIVERABLE UFFICIALI",
-      carouselPrev: "← Precedente",
-      carouselNext: "Successivo →",
-      gcLiveKicker: "ANTEPRIMA DAL VIVO DEL CERCHIO D'ORO DEL TUO BRAND",
-      iphoneSectionKicker: "APPLICAZIONE REALE DAL VIVO · CONNESSA AD AURA",
-      iphoneStep0Free: "Passo 0 · Settore (Gratis)",
-      iphoneStep1Free: "Passo 1 · Cerchio d'Oro (Gratis)",
-      iphoneStep2Free: "Passo 2 · Touchpoint (Gratis)",
-      iphoneStep3Free: "Passo 3 · Naming SMILE (Gratis)",
-      iphoneStep4Unlock: "🔒 Passo 4 · Sblocca ($49 USD)",
-      iphoneVideoBtn: "▶ Video HeyGen del Passo",
-      nanoAfterLabel: "DOPO · EVOLUZIONE NANO BANANA PRO 4K + CURVE VETTORIALI (.SVG / .AI)",
-      nanoBeforeLabel: "PRIMA · LOGO CARICATO DAL CLIENTE (PASSO 0.2)",
-      nanoKicker: "MOTORE VISIVO NANO BANANA PRO 4K + VETTORI BÉZIER PURI",
-      plates36Kicker: "MANUALE UFFICIALE D'IDENTITÀ · LE 36 TAVOLE IN CURVE (16:9)",
-      syncFreeBadge: "✓ Accesso Libero",
-      syncLiveConnected: "● AURA CONNESSA DAL VIVO",
-      syncUnlockBtn: "Sblocca · $49 USD",
-      videoPopupContinue: "Continua a esplorare",
-      videoPopupScriptLabel: "COPIONE PARLATO ESATTO (SINCRONIZZATO IN HEYGEN):",
-      ytWatchHere: "▶ Guarda la Conferenza Qui",
-      menu1: "Home",
-      menu2: "Demo",
-      menu2Live: "LIVE",
-      menu3: "App Tour",
-      menu4: "Basi teoriche",
-      menu5: "Pack di download",
-      openStudio: "Apri Studio ↗",
-      buyNowHeader: "Acquista · $49 USD",
-      buyNowFloating: "Licenza Pro · $49 USD",
-      licenseActive: "LICENZA PRO ATTIVA ✓",
-      heroEyebrow: "THE BEST BRAND · IDENTITÀ VISIVA & BRANDBOOK IN CURVE",
-      heroHook: "Crea il tuo Brand e i tuoi 9 Deliverable di livello professionale in 30 minuti!",
-      heroSub: "Senza riunioni interminabili o template generici. Dialoga con Aura, completa i 7 passi strategici e scarica il tuo Manuale Ufficiale di 36 Tavole e i file editabili.",
-      heroBtnDemo: "Usa la nostra demo con il passo 0, 1 e 2",
-      heroBtnTour: "Esplora il percorso passo dopo passo (App Tour) →",
-      heroShowcaseTag: "VISTA PANORAMICA REALE DELL'APPLICAZIONE E DEL BRANDBOOK",
-      heroShowcaseTitle: "Un sistema elegante pensato per concentrarsi su un solo elemento alla volta",
-      heroShowcaseDesc: "Ogni risposta data ad Aura si trasforma in tempo reale in geometria vettoriale, tipografia calibrata e tavole pronte per la stampa.",
-      heroSwitchApp: "Vedi Screenshot Reale dell'App",
-      heroSwitchManual: "Vedi Tavola Reale del Manuale (01/36)",
-      nextToDemoBtn: "Prossimo passo: Usa la nostra Demo (Passi 0, 1 e 2) →",
-      nextToTourBtn: "Continua al menu successivo: App Tour (Percorso Completo) →",
-      nextToTheoryBtn: "Continua al menu: Basi teoriche (Video e Libri) →",
-      nextToDownloadsBtn: "Continua all'ultimo menu: Pack di download (Carosello + Prossimamente) →",
-      demoEyebrow: "MENU 02 · DEMO INTERATTIVA DAL VIVO",
-      demoTitle: "Vivi l'esperienza reale con il Passo 0, Passo 1 e Passo 2",
-      demoDesc: "Scegli un esempio o inserisci il settore della tua azienda. Osserva come l'app struttura il Cerchio d'Oro (Simon Sinek) e i Touchpoint (Jan Carlzon).",
-      demoStep0Tab: "Passo 0 · Obiettivo e Settore",
-      demoStep1Tab: "Passo 1 · Cerchio d'Oro (Perché, Come, Cosa)",
-      demoStep2Tab: "Passo 2 · Touchpoint (Prima, Durante, Dopo)",
-      demoObjCreate: "Creare un brand da zero",
-      demoObjRedesign: "Evolvere il mio brand attuale",
-      demoBrandLabel: "Nome del tuo brand",
-      demoTaglineLabel: "Slogan o promessa",
-      demoGiroLabel: "Settore e attività principale dell'azienda",
-      demoWhyLabel: "1. Perché esiste il tuo brand (Scopo nucleare)",
-      demoHowLabel: "2. Come lo rendi unico (Metodo differenziante)",
-      demoWhatLabel: "3. Cosa consegni (Offerta di valore)",
-      demoPolishBtn: "Perfeziona il testo con chiarezza esecutiva",
-      demoNextStepBtn: "Prossimo passo della Demo →",
-      tourEyebrow: "MENU 03 · PERCORSO INTERATTIVO CON SCROLLING",
-      tourTitle: "Dall'idea iniziale ai 9 deliverable passo dopo passo",
-      tourDesc: "Scorri verso il basso per esplorare ogni schermata reale dell'applicazione, i pop-up video tra le fasi e il caveau finale di download.",
-      tourPopupBadge: "POP-UP VIDEO INTERATTIVO TRA LE FASI",
-      tourPlayVideoBtn: "Riproduci capsula video nella tua lingua",
-      theoryEyebrow: "MENU 04 · BASI TEORICHE, VIDEO E LIBRI",
-      theoryTitle: "La profondità metodologica dietro ogni decisione",
-      theoryDesc: "Guarda le capsule video dinamiche con miniature, le conferenze degli autori e i libri essenziali con link diretti.",
-      theoryCapsulesTitle: "Capsule Video dello Studio (Passo 0 a Passo 6)",
-      theoryAuthorsTitle: "Conferenze Magistrali degli Autori",
-      theoryBooksTitle: "Biblioteca Essenziale con Link Diretti",
-      packEyebrow: "MENU 05 · PACK DI DOWNLOAD ED ESPANSIONE",
-      packTitle: "I tuoi 9 Deliverable Ufficiali ad alta risoluzione",
-      packDesc: "Scorri il carosello moderno e clicca su qualsiasi miniatura per aprirla a massima risoluzione a quasi tutto schermo o scaricare un file di esempio.",
-      packOpenFullscreen: "Vedi a massima risoluzione a tutto schermo ⤢",
-      packDownloadSample: "Scarica file di esempio ↗",
-      comingSoonEyebrow: "PROSSIMAMENTE · NUOVI MODULI AUTOMATIZZATI",
-      comingSoonTitle: "Espandi il tuo Brandbook verso il Sito Web e i Social Media",
-      comingSoonDesc: "Presto potrai acquistare direttamente due moduli collegati al DNA, colori, font e foto del tuo manuale:",
-      csWebTitle: "Creazione Automatica del Sito Web Ufficiale",
-      csWebDesc: "Sito web responsive e veloce generato automaticamente con palette cromatica, tipografia, testi e fotografie 4:3 del tuo Brandbook.",
-      csWebPrice: "Prossimamente · Accesso prioritario",
-      csSocialTitle: "Pack di Pubblicazioni per Social Media",
-      csSocialDesc: "Piano mensile di contenuti visivi, caroselli e storie per Instagram, LinkedIn e Facebook allineati al tuo brand.",
-      csSocialPrice: "Prossimamente · Accesso prioritario",
-      csReserveBtn: "Richiedi accesso prioritario",
-      csReservedOk: "✓ Accesso prioritario registrato",
-      checkoutTitle: "Acquista The Best Brand — Attivazione Istantanea",
-      checkoutSub: "Pagamento unico senza abbonamenti. Sblocca tutti i 7 passi e il download immediato dei tuoi 9 deliverable ufficiali.",
-      planSingleName: "Licenza Pro Imprenditore",
-      planSingleDesc: "1 Brand Completo · 36 Tavole + 9 Deliverable",
-      planAgencyName: "Licenza Atelier Multi-Brand",
-      planAgencyDesc: "Brand Illimitati · Per Agenzie e Gruppi",
-      payNowBtn: "Autorizza Pagamento Sicuro e Attiva Licenza",
-      heroTheoriesCopy: "Scientificamente fondato sulle teorie di Simon Sinek (Cerchio d'Oro), Jan Carlzon (Momenti della Verità), Al Ries, Jack Trout e Alexandra Watkins (Posizionamento e SMILE), Mitsuo Nagamachi (Ingegneria Kansei), Paul Rand e Jony Ive (Geometria Vettoriale Liquid Glass) e Massimo Vignelli (Canone di 36 Tavole).",
-      heroBtnTryIphone: "Usa la nostra demo con il passo 0, 1 e 2",
-      heroBtnIntroVideo: "▶ Guarda il Video Introduttivo del Fondatore (HeyGen)",
-      iphoneSectionEyebrow: "APPLICAZIONE REALE DAL VIVO · CONNESSA AD AURA",
-      iphoneSectionTitle: "Interagisci qui stesso con l'applicazione reale: avanza gratis nei primi 3 passi",
-      iphoneSectionDesc: "Scrivi o parla con Aura dentro l'iPhone. Completa gratis fino al Passo 3; passando al Passo 4 si attiva lo sblocco da $49 USD e le tue risposte migrano automaticamente.",
-      iphoneStep0Btn: "Passo 0 · Settore (Gratis)",
-      iphoneStep1Btn: "Passo 1 · Cerchio d'Oro (Gratis)",
-      iphoneStep2Btn: "Passo 2 · Touchpoint (Gratis)",
-      iphoneStep3Btn: "Passo 3 · Naming SMILE (Gratis)",
-      iphoneStep4BtnLocked: "🔒 Passo 4 · Sblocca ($49 USD)",
-      iphoneStep4BtnUnlocked: "Passo 4 · Kansei ✓",
-      iphoneVideoStepBtn: "▶ Video HeyGen del Passo",
-      syncBadgeTitle: "SINCRONIZZAZIONE E CONSERVAZIONE AUTOMATICA",
-      syncLiveStatus: "● AURA CONNESSA DAL VIVO",
-      syncCardHeading: "Il tuo progresso nei Passi 1 a 3 è salvato in tempo reale",
-      syncRow1: "Passo 0 e Passo 1 · Settore + Cerchio d'Oro (Simon Sinek)",
-      syncRow2: "Passo 2 · Touchpoint Prima, Durante e Dopo (Carlzon)",
-      syncRow3: "Passo 3 · Naming SMILE e Classi di Nizza (Watkins)",
-      syncRow4: "Passi 4 a 6 · Kansei, Logo Nano Banana Pro e 9 Deliverable",
-      freeAccessLabel: "✓ Accesso Libero",
-      unlock49Label: "Sblocca · $49 USD",
-      presetsLabel: "Carica Caso Studio Reale:",
-      gcLiveHeading: "ANTEPRIMA DAL VIVO DEL CERCHIO D'ORO DEL TUO BRAND",
-      nanoEyebrow: "MOTORE VISIVO NANO BANANA PRO 4K + VETTORI BÉZIER PURI",
-      nanoTitle: "Da uno schizzo o logo esistente a un simbolo Apple Liquid Glass in curve .SVG / .AI",
-      nanoDesc: "Nel Passo 5 fai evolvere il tuo logo con il modello più avanzato di Nano Banana Pro e il nostro tracciatore matematico in curve di Bézier su sfondo chiaro e scuro.",
-      plates36Eyebrow: "MANUALE UFFICIALE D'IDENTITÀ · LE 36 TAVOLE IN CURVE (16:9)",
-      plates36Title: "Esplora le 36 Tavole reali compilate dal sistema per la tua azienda",
-      plates36Desc: "Clicca su qualsiasi tavola per ispezionarla a massima risoluzione e navigare dalla Tavola 01 alla 36.",
-      bento9Eyebrow: "SUITE ESECUTIVA COMPLETA · I 9 DELIVERABLE UFFICIALI",
-      bento9Title: "Tutto ciò che scarichi completando i 7 passi in 30 minuti",
-      bento9Desc: "Clicca su qualsiasi deliverable per vederlo a quasi tutto schermo o andare al Pack di Download.",
-      lightboxKicker: "MASSIMA RISOLUZIONE · QUASI TUTTO SCHERMO",
-      lightboxPrev: "← Tavola",
-      lightboxNext: "Tavola →",
-      lightboxClose: "✕ Chiudi",
-      videoCapsuleBadge: "CAPSULA HEYGEN + GOOGLE FLOW",
-      videoScriptHeading: "COPIONE PARLATO ESATTO (SINCRONIZZATO IN HEYGEN):",
-      videoContinueBtn: "Continua a esplorare",
-      tourAmplifyBtn: "⤢ Ingrandisci screenshot",
-      tourQuickJumpLabel: "Vai al passo:",
-      footerHeadlineSub: "EDIZIONE UFFICIALE 1.0 · SUITE THE BEST",
-      footerDesc: "Piattaforma per creare l'identità visiva, i 9 deliverable ufficiali e il Manuale di Brand di 36 Tavole in Curve con IA e guida vocale di Aura in 6 lingue."
+      navHome: "1. Inizio",
+      navAppTour: "2. App Tour",
+      navTheory: "3. Basi Teoriche",
+      navDemo: "4. Demo dal Vivo",
+      navDownloads: "5. Pack di Download",
+      navBuyCta: "Sblocca Brand · $49 USD",
+      navLicenseActive: "Licenza Pro Attiva",
+      heroEyebrow: "THE BEST BRAND · ARCHITETTURA SCIENTIFICA D'IDENTITÀ CON AURA",
+      heroTitleLine1: "Dove la Scienza Strategica",
+      heroTitleHighlight: "Diventa il Tuo Brand",
+      heroLead: "Il Cerchio d'Oro, il Modello SMILE, i Touchpoint, l'Ingegneria Kaizen e il Differenziale di Osgood convergono organicamente con Aura per costruire la tua identità visiva e il tuo Brandbook ufficiale di oltre 30 pagine (adattabile al settore aziendale).",
+      heroCtaTour: "Esplora l'App Tour Interattivo",
+      heroCtaTheory: "Vedi Infografica delle Basi Teoriche",
+      heroCtaDemo: "Prova la Demo dal Vivo (Passi 1-3 Gratis)",
+      heroVideoBadge: "CONVERGENZA CONCETTUALE DAL VIVO · TEORIE → LOGO THE BEST BRAND",
+      heroInteractiveStageTitle: "Fusione Organica: 5 Pilastri Scientifici verso The Best Brand",
+      heroInteractiveStageSub: "Clicca su ogni nodo teorico o avvia la convergenza per osservare come ogni metodologia struttura il tuo brand in tempo reale.",
+      heroConvergencePlayBtn: "Attiva Fusione verso il Logo",
+      tourEyebrow: "SEZIONE 2 · PERCORSO INTERATTIVO DELL'APPLICAZIONE (SCROLLYTELLING)",
+      tourTitle: "Vivi il Flusso Reale di Aura nel Mockup Interattivo di iPhone",
+      tourLead: "Scorri verso il basso per esplorare i 7 passi. L'iPhone interattivo sincronizza ritagli precisi dell'interfaccia reale con blocchi di testo fluttuanti ad alta leggibilità e capsule video mirate.",
+      tourIphoneModeCutout: "Ritaglio di Precisione Sincronizzato",
+      tourIphoneModeLive: "App Reale Interattiva nell'iPhone",
+      tourWatchStepCapsule: "Guarda Capsula Esplicativa",
+      tourBeforeAfterTitle: "Evoluzione Vettoriale Intelligente: Da Bozza o Logo Attuale a Identità Master",
+      tourBeforeAfterSub: "Se hai già un logo, Aura preserva il tuo capitale visivo (Aaker & Haviv) e ne perfeziona la geometria.",
+      theoryEyebrow: "SEZIONE 3 · INFOGRAFICA DINAMICA DELLE BASI TEORICHE E AUTORI",
+      theoryTitle: "Architettura Scientifica Passo dopo Passo: Le Teorie a Supporto del Tuo Brand",
+      theoryLead: "Esplora la nostra infografica accademica responsive. Ogni fase di The Best Brand si fonda su modelli collaudati, diagrammi geometrici interattivi e autori di fama mondiale.",
+      theoryInteractiveSimulatorTitle: "Simulatore Interattivo Kansei & Differenziale Semantico di Osgood (Passo 4)",
+      theoryInteractiveSimulatorSub: "Regola gli assi emozionali dal vivo e osserva come la geometria parametrica trasforma tensione e carattere tipografico.",
+      theoryAuthorsSectionTitle: "Autori e Modelli che Strutturano Ogni Fase",
+      theoryBooksSectionTitle: "Bibliografia Essenziale di Strategia e Brand Design",
+      demoEyebrow: "SEZIONE 4 · DEMO INTERATTIVA DAL VIVO CON AURA (CODICE REALE)",
+      demoTitle: "Vivi l'Esperienza Reale nell'iPhone: Passi da 1 a 3 Gratuiti",
+      demoLead: "Interagisci direttamente con Aura nel mockup di iPhone (o a schermo intero). Avanza gratuitamente nei primi 3 passi reali; al Passo 4 attiva la licenza da $49 USD con migrazione automatica di tutte le tue risposte.",
+      demoModeIphone: "Vista Mockup iPhone 16 Pro",
+      demoModeFull: "Schermo Intero",
+      demoFreeStepsBadge: "PASSI 0, 1, 2 E 3 GRATIS DAL VIVO",
+      demoPaywallStep4Badge: "IL PASSO 4 ATTIVA LA LICENZA PRO ($49 USD) CON MIGRAZIONE AUTO",
+      demoUnlockBtn: "Sblocca Passi da 4 a 6 + Brandbook (+30 Pagine) · $49 USD",
+      downloadsEyebrow: "SEZIONE 5 · CONSOLIDAMENTO DEI DELIVERABLE E CAVEAU ESECUTIVO",
+      downloadsTitle: "Il Tuo Brandbook Ufficiale di Oltre 30 Pagine e Kit Completo di Produzione",
+      downloadsLead: "Tutti i tuoi asset riuniti in un unico standard esecutivo: il tuo Brandbook ufficiale di oltre 30 pagine (adattabile al settore aziendale), suite vettoriale (.SVG, .AI, .EPS, .PNG), modelli aziendali e font.",
+      downloadsStandardBadge: "STANDARD UFFICIALE UNIFICATO · BRANDBOOK DI OLTRE 30 PAGINE (ADATTABILE AL SETTORE)",
+      downloadsViewSampleBtn: "Ispeziona Campione ad Alta Risoluzione",
+      downloadsUnlockAllBtn: "Ottieni i 9 Deliverable Ufficiali · $49 USD",
+      lightboxPrev: "Precedente",
+      lightboxNext: "Successivo",
+      lightboxClose: "Chiudi",
+      checkoutTitle: "Attiva la Licenza Pro ($49 USD) e Continua al Passo 4 Senza Perdere i Progressi",
+      checkoutSub: "Creiamo il tuo account esecutivo e migriamo automaticamente tutte le risposte dei Passi da 0 a 3 per continuare subito nel Passo 4.",
+      checkoutMigrationTitle: "Migrazione Automatica Garantita (Passi da 0 a 3 → Passo 4)",
+      checkoutAccountLabel: "Indirizzo email per il tuo account e backup cloud",
+      checkoutNameLabel: "Nome del fondatore o titolare",
+      checkoutPayBtn: "Paga $49 USD, Crea Account e Continua al Passo 4"
     }
   };
 
   function getLang() {
     try {
-      const saved = (localStorage.getItem(LANG_STORAGE_KEY) || "es").toLowerCase().trim();
-      return I18N[saved] ? saved : "es";
+      const saved = (localStorage.getItem(LANG_STORAGE_KEY) || localStorage.getItem("tbb_app_lang") || document.documentElement.lang || "es").toLowerCase().trim();
+      return ["es", "en", "fr", "pt", "de", "it"].includes(saved) ? saved : "es";
     } catch (e) {
       return "es";
     }
   }
+  window.tbbGetLang = getLang;
 
   function t(key) {
     const l = getLang();
@@ -890,2832 +412,1975 @@
   }
 
   function escHtml(str) {
-    return String(str || "")
+    return String(str == null ? "" : str)
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
   }
 
-  // ---------------------------------------------------------------------------
-  // 2. DATOS MULTILINGÜES DE LOS VIDEOS, AUTORES, LIBROS, APP TOUR Y 9 ENTREGABLES
-  // ---------------------------------------------------------------------------
   function resolveVideoAsset(relPath) {
-    const isLocal = typeof window !== "undefined" && (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost");
-    if (isLocal) return `${relPath}?v=101.0`;
-    return `https://raw.githubusercontent.com/ImprobearsIA/thebestbrand/main/apps/web${relPath}?v=101.0`;
+    return `${relPath}?v=${ASSET_VERSION}`;
   }
 
+  function resolveVideoAssetFallback(relPath) {
+    return `https://raw.githubusercontent.com/ImprobearsIA/thebestbrand/main/apps/web${relPath}?v=${ASSET_VERSION}`;
+  }
+  window.tbbResolveVideoFallback = resolveVideoAssetFallback;
+
   function getLocalizedStepVideoUrl(stepNum, langOverride) {
-    const l = String(langOverride || getLang() || "es").toLowerCase().trim();
-    const sfx = (l && l !== "es" && ["en", "fr", "pt", "de", "it"].includes(l)) ? `_${l}` : "";
+    const l = langOverride || getLang();
+    const sfx = l === "es" ? "" : `_${l}`;
     return resolveVideoAsset(`/assets/videos/capsula_teoria_paso_${stepNum}${sfx}.mp4`);
   }
 
   function getLocalizedStepPosterUrl(stepNum, langOverride) {
-    const l = String(langOverride || getLang() || "es").toLowerCase().trim();
-    const sfx = (l && l !== "es" && ["en", "fr", "pt", "de", "it"].includes(l)) ? `_${l}` : "";
+    const l = langOverride || getLang();
+    const sfx = l === "es" ? "" : `_${l}`;
     return resolveVideoAsset(`/assets/videos/poster_paso_${stepNum}${sfx}.jpg`);
   }
 
   function getLocalizedHeroVideoUrl(langOverride) {
-    const l = String(langOverride || getLang() || "es").toLowerCase().trim();
-    const sfx = (l && l !== "es" && ["en", "fr", "pt", "de", "it"].includes(l)) ? `_${l}` : "";
+    const l = langOverride || getLang();
+    const sfx = l === "es" ? "" : `_${l}`;
     return resolveVideoAsset(`/assets/videos/hero_convergence_thebestbrand${sfx}.mp4`);
   }
 
   function getLocalizedHeroPosterUrl(langOverride) {
-    const l = String(langOverride || getLang() || "es").toLowerCase().trim();
-    const sfx = (l && l !== "es" && ["en", "fr", "pt", "de", "it"].includes(l)) ? `_${l}` : "";
+    const l = langOverride || getLang();
+    const sfx = l === "es" ? "" : `_${l}`;
     return resolveVideoAsset(`/assets/videos/poster_hero_convergence${sfx}.jpg`);
   }
 
   function getLocalizedAppCaptureUrl(relPath, langOverride) {
-    const l = String(langOverride || getLang() || "es").toLowerCase().trim();
-    const sfx = (l && l !== "es" && ["en", "fr", "pt", "de", "it"].includes(l)) ? `_${l}` : "";
-    const localizedRel = sfx ? String(relPath).replace(/\.png$/i, `${sfx}.png`) : relPath;
-    return resolveVideoAsset(localizedRel);
+    const l = langOverride || getLang();
+    if (l === "es") return `${relPath}?v=${ASSET_VERSION}`;
+    const dotIdx = relPath.lastIndexOf(".");
+    if (dotIdx === -1) return `${relPath}?v=${ASSET_VERSION}`;
+    return `${relPath.slice(0, dotIdx)}_${l}${relPath.slice(dotIdx)}?v=${ASSET_VERSION}`;
   }
 
   function stepLabelForLang(stepNum, isIntro) {
     const l = getLang();
-    const map = {
-      es: isIntro ? `Intro · Paso ${stepNum}` : `Paso ${stepNum}`,
-      en: isIntro ? `Intro · Step ${stepNum}` : `Step ${stepNum}`,
-      fr: isIntro ? `Intro · Étape ${stepNum}` : `Étape ${stepNum}`,
-      pt: isIntro ? `Intro · Passo ${stepNum}` : `Passo ${stepNum}`,
-      de: isIntro ? `Intro · Schritt ${stepNum}` : `Schritt ${stepNum}`,
-      it: isIntro ? `Intro · Passo ${stepNum}` : `Passo ${stepNum}`
-    };
-    return map[l] || map.es;
+    const map = { es: "Paso", en: "Step", fr: "Étape", pt: "Passo", de: "Schritt", it: "Passo" };
+    return `${map[l] || "Paso"} ${stepNum}`;
   }
 
   function stepUpperForLang(stepNum) {
-    const l = getLang();
-    const map = {
-      es: `PASO ${stepNum}`,
-      en: `STEP ${stepNum}`,
-      fr: `ÉTAPE ${stepNum}`,
-      pt: `PASSO ${stepNum}`,
-      de: `SCHRITT ${stepNum}`,
-      it: `PASSO ${stepNum}`
-    };
-    return map[l] || map.es;
+    return stepLabelForLang(stepNum, false).toUpperCase();
   }
 
-  const VIDEO_CAPSULES = [
+
+  const VIDEO_CAPSULES = [0, 1, 2, 3, 4, 5, 6].map((idx) => {
+    const metaByStep = {
+      0: {
+        author: "Peter Drucker, David Aaker & Sagi Haviv",
+        es: ["Paso 0: Punto de Partida, Capital Visual y Giro", "Define si creas tu marca desde cero, evolucionas tu logotipo actual o estructuras una submarca oficial con Aura."],
+        en: ["Step 0: Starting Point, Visual Equity & Business Sector", "Define whether you build from scratch, evolve your current logo, or structure an official sub-brand with Aura."],
+        fr: ["Étape 0 : Point de Départ, Capital Visuel et Secteur", "Définissez si vous créez de zéro, faites évoluer votre logo actuel ou structurez une sous-marque avec Aura."],
+        pt: ["Passo 0: Ponto de Partida, Património Visual e Ramo", "Defina se cria a sua marca do zero, evolui o logótipo atual ou estrutura uma submarca oficial com a Aura."],
+        de: ["Schritt 0: Ausgangspunkt, Visuelles Kapital & Branche", "Definieren Sie, ob Sie neu starten, Ihr aktuelles Logo weiterentwickeln oder eine Submarke mit Aura aufbauen."],
+        it: ["Passo 0: Punto di Partenza, Capitale Visivo e Settore", "Definisci se creare da zero, evolvere il logo attuale o strutturare un sub-brand ufficiale con Aura."]
+      },
+      1: {
+        author: "Simon Sinek, Alex Osterwalder & Donald Miller",
+        es: ["Paso 1: El Círculo Dorado y Promesa en 3 Pasos", "Estructuramos tu Porqué, tu Cómo y tu Qué junto con el arquetipo humano de tu empresa antes de trazar una sola línea."],
+        en: ["Step 1: The Golden Circle & 3-Step Value Promise", "We structure your Why, How, and What alongside your company's human archetype before drawing a single line."],
+        fr: ["Étape 1 : Le Cercle d'Or et Promesse en 3 Étapes", "Nous structurons votre Pourquoi, Comment et Quoi ainsi que l'archétype humain de votre entreprise."],
+        pt: ["Passo 1: O Círculo Dourado e Promessa em 3 Passos", "Estruturamos o seu Porquê, Como e O Quê junto com o arquétipo humano da sua empresa."],
+        de: ["Schritt 1: Der Golden Circle & 3-Schritte-Versprechen", "Wir strukturieren Ihr Warum, Wie und Was sowie den menschlichen Archetyp Ihres Unternehmens."],
+        it: ["Passo 1: Il Cerchio d'Oro e Promessa in 3 Passi", "Strutturiamo il tuo Perché, Come e Cosa insieme all'archetipo umano della tua azienda."]
+      },
+      2: {
+        author: "Jan Carlzon, Don Norman & Katherine Lemon",
+        es: ["Paso 2: Arquitectura de Touchpoints (Antes, Durante y Después)", "Convertimos tu propósito en Momentos de la Verdad libres de fricción operativa en cada canal de contacto."],
+        en: ["Step 2: Touchpoint Architecture (Before, During & After)", "We turn your purpose into zero-friction Moments of Truth across every customer channel."],
+        fr: ["Étape 2 : Architecture des Touchpoints (Avant, Pendant, Après)", "Nous transformons votre raison d'être en Moments de Vérité sans friction sur chaque canal client."],
+        pt: ["Passo 2: Arquitetura de Touchpoints (Antes, Durante e Depois)", "Transformamos o seu propósito em Momentos da Verdade sem fricção em cada canal de contacto."],
+        de: ["Schritt 2: Touchpoint-Architektur (Vorher, Während, Nachher)", "Wir verwandeln Ihren Zweck in reibungslose Momente der Wahrheit an jedem Kontaktpunkt."],
+        it: ["Passo 2: Architettura dei Touchpoint (Prima, Durante e Dopo)", "Trasformiamo il tuo scopo in Momenti della Verità senza attrito in ogni canale di contatto."]
+      },
+      3: {
+        author: "Alexandra Watkins (SMILE), Al Ries & OMPI Niza",
+        es: ["Paso 3: Ingeniería de Naming, Fonética y Clases de Niza", "Validamos la sonoridad, recordación SMILE, monograma 1:1 y clasificación internacional de Niza para tu nombre."],
+        en: ["Step 3: Naming Engineering, Phonetics & Nice Classes", "We validate phonetics, SMILE memorability, 1:1 monogram, and WIPO Nice classification for your brand name."],
+        fr: ["Étape 3 : Ingénierie du Naming, Phonétique et Classes de Nice", "Nous validons la sonorité, la mémorisation SMILE, le monogramme 1:1 et les classes OMPI de Nice."],
+        pt: ["Passo 3: Engenharia de Naming, Fonética e Classes de Nice", "Validamos a sonoridade, memorização SMILE, monograma 1:1 e classificação internacional de Nice."],
+        de: ["Schritt 3: Naming-Engineering, Phonetik & Nizza-Klassen", "Wir prüfen Phonetik, SMILE-Einprägsamkeit, 1:1-Monogramm und WIPO Nizza-Klassen für Ihren Namen."],
+        it: ["Passo 3: Ingegneria del Naming, Fonetica e Classi di Nizza", "Validiamo sonorità, memorabilità SMILE, monogramma 1:1 e classificazione internazionale di Nizza."]
+      },
+      4: {
+        author: "Mitsuo Nagamachi (Kansei), Charles Osgood & R. Bringhurst",
+        es: ["Paso 4: Ingeniería Kansei, Diferencial de Osgood y Tipografía", "Calibramos 7 ejes emocionales y ópticos para traducir tu estrategia en proporciones geométricas y par tipográfico."],
+        en: ["Step 4: Kansei Engineering, Osgood Differential & Typography", "We calibrate 7 emotional and optical axes to translate your strategy into geometric proportions and font pairing."],
+        fr: ["Étape 4 : Ingénierie Kansei, Différentiel d'Osgood et Typographie", "Nous calibrons 7 axes émotionnels et optiques pour traduire votre stratégie en géométrie et duo typographique."],
+        pt: ["Passo 4: Engenharia Kansei, Diferencial de Osgood e Tipografia", "Calibramos 7 eixos emocionais e ópticos para traduzir a sua estratégia em proporções geométricas e tipografia."],
+        de: ["Schritt 4: Kansei-Engineering, Osgood-Differential & Typografie", "Wir kalibrieren 7 emotionale Achsen, um Ihre Strategie in geometrische Proportionen und Schriften zu übersetzen."],
+        it: ["Passo 4: Ingegneria Kansei, Differenziale di Osgood e Tipografia", "Calibriamo 7 assi emozionali e ottici per tradurre la strategia in proporzioni geometriche e coppia tipografica."]
+      },
+      5: {
+        author: "Paul Rand, Sagi Haviv, Josef Albers & Masaaki Imai (Kaizen)",
+        es: ["Paso 5: Estudio de Logotipo en Curvas y Mejora Continua Kaizen", "Iteración progresiva sobre retícula constructiva 8X×3X, psicología cromática y vectorización en curvas Bézier puras."],
+        en: ["Step 5: Vector Logo Studio & Kaizen Continuous Refinement", "Progressive iteration on an 8X×3X grid, color psychology, and pure Bézier curve vectorization."],
+        fr: ["Étape 5 : Atelier Logo Vectoriel et Amélioration Kaizen", "Itération progressive sur grille 8X×3X, psychologie des couleurs et vectorisation en courbes de Bézier pures."],
+        pt: ["Passo 5: Estúdio de Logótipo em Curvas e Melhoria Kaizen", "Iteração progressiva sobre grelha 8X×3X, psicologia da cor e vetorização em curvas Bézier puras."],
+        de: ["Schritt 5: Vektor-Logo-Studio & Kontinuierliches Kaizen", "Progressive Iteration auf einem 8X×3X-Raster, Farbpsychologie und reine Bézier-Vektorisierung."],
+        it: ["Passo 5: Studio del Logo in Curve e Miglioramento Kaizen", "Iterazione progressiva su griglia 8X×3X, psicologia del colore e vettorizzazione in curve di Bézier pure."]
+      },
+      6: {
+        author: "Massimo Vignelli, Müller-Brockmann & Directiva C-00",
+        es: ["Paso 6: Brandbook Oficial (+30 Páginas) y Bóveda Ejecutiva", "Compilación automática de tu Brandbook oficial de más de 30 páginas (ajustable según el giro del negocio) y tus 9 entregables."],
+        en: ["Step 6: Official Brandbook (30+ Pages) & Executive Vault", "Automatic compilation of your official Brandbook of over 30 pages (adaptable to your business sector) and all 9 deliverables."],
+        fr: ["Étape 6 : Brandbook Officiel (+30 Pages) et Voûte Exécutive", "Compilation automatique de votre Brandbook officiel de plus de 30 pages (adaptable selon votre secteur) et de vos 9 livrables."],
+        pt: ["Passo 6: Brandbook Oficial (+30 Páginas) e Cofre Executivo", "Compilação automática do seu Brandbook oficial com mais de 30 páginas (ajustável ao ramo do negócio) e 9 entregáveis."],
+        de: ["Schritt 6: Offizielles Brandbook (+30 Seiten) & Executive-Tresor", "Automatische Erstellung Ihres offiziellen Brandbooks mit über 30 Seiten (branchenanpassbar) und aller 9 Deliverables."],
+        it: ["Passo 6: Brandbook Ufficiale (+30 Pagine) e Caveau Esecutivo", "Compilazione automatica del tuo Brandbook ufficiale di oltre 30 pagine (adattabile al settore) e dei 9 deliverable."]
+      }
+    }[idx];
+    return {
+      step: idx,
+      author: metaByStep.author,
+      get videoUrl() { return getLocalizedStepVideoUrl(idx); },
+      get posterUrl() { return getLocalizedStepPosterUrl(idx); },
+      get title() { const l = getLang(); return (metaByStep[l] || metaByStep.es)[0]; },
+      get summary() { const l = getLang(); return (metaByStep[l] || metaByStep.es)[1]; }
+    };
+  });
+
+  // Datos para el App Tour (Scrollytelling en iPhone + Recortes Precisos + Bloques Flotantes)
+  const APP_TOUR_STEPS = [
     {
       step: 0,
-      get url() { return getLocalizedStepVideoUrl(0); },
-      get poster() { return getLocalizedStepPosterUrl(0); },
-      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_0_a_1.png"); },
-      duration: "00:51",
-      author: "Jorge Benítez (HeyGen) + Google Flow · David Aaker, Peter Drucker & Sagi Haviv",
-      exactScript: "Hola, soy Jorge Benítez. Como afirma Peter Drucker, la mejor forma de predecir el futuro es creándolo. En el Paso cero eliges si construyes tu marca desde cero, evolucionas la actual o creas una sub-marca. Si ya tienes nombre y logotipo, David Aaker y Sagi Haviv recomiendan proteger tu capital visual. Aquí puedes conservar tu logo intacto, pedir sugerencias o evolucionarlo con inteligencia artificial. Siguiendo a Al Ries y Jack Trout en Posicionamiento, cuando describes tu giro con claridad en el tercer sub-paso, el sistema adapta automáticamente tus preguntas, puntos de contacto y propuestas. Y con el esquema Brand Relationship Spectrum de David Aaker, defines desde hoy si tu empresa operará como marca única o si tendrá sub-marcas listas para crecer.",
+      captureBase: "/assets/app_captures/step0_logo_aura.png",
+      cutoutFocus: "top-center",
+      accent: "#426EAE",
+      theoryTag: "DRUCKER · AAKER · HAVIV",
       i18n: {
-        es: { title: "Video Introductorio y Paso 0 · Objetivo, Logo Base y Giro", desc: "Cómo elegir entre crear una marca desde cero o evolucionar tu logotipo actual respetando tu capital visual (Peter Drucker, David Aaker y Sagi Haviv)." },
-        en: { title: "Intro & Step 0 · Goal, Base Logo & Core Business Essence", desc: "How to choose between creating a brand from scratch or evolving your current logo while honoring your brand equity." },
-        fr: { title: "Intro & Étape 0 · Objectif, Logo de Base et Essence du Secteur", desc: "Choisir entre créer une marque de zéro ou faire évoluer votre logo actuel." },
-        pt: { title: "Intro & Passo 0 · Objetivo, Logo Base e Essência do Negócio", desc: "Como escolher entre criar uma marca do zero ou evoluir seu logotipo atual." },
-        de: { title: "Intro & Schritt 0 · Ziel, Basis-Logo & Unternehmenskern", desc: "Wahl zwischen Neuerstellung oder Evolution Ihres bestehenden Logos." },
-        it: { title: "Intro & Passo 0 · Obiettivo, Logo Base ed Essenza del Business", desc: "Come scegliere tra creare un brand da zero o evolvere il tuo logo attuale." }
+        es: {
+          badge: "PASO 00 · PUNTO DE PARTIDA Y CAPITAL VISUAL",
+          title: "Diagnóstico Inicial: Crear desde Cero, Evolucionar tu Logo o Crear Submarcas",
+          body: "Dentro de la aplicación, Aura te recibe en tiempo real. Puedes cargar tu logotipo actual para conservar o evolucionar su capital visual, describir el giro exacto de tu negocio y activar tu arquitectura de submarcas.",
+          cutoutLabel: "RECORTE DE INTERFAZ 00 · CARGA DE LOGO BASE Y SELECTOR DE OBJETIVO",
+          floatingNote: "Aura extrae la paleta cromática de tu logo actual y personaliza todo el cuestionario según tu giro."
+        },
+        en: {
+          badge: "STEP 00 · STARTING POINT & VISUAL EQUITY",
+          title: "Initial Diagnosis: Build from Scratch, Evolve Your Logo, or Create Sub-brands",
+          body: "Inside the app, Aura welcomes you in real time. Upload your current logo to preserve or evolve its visual equity, describe your exact business sector, and enable sub-brand architecture.",
+          cutoutLabel: "UI PRECISION CUTOUT 00 · BASE LOGO UPLOAD & OBJECTIVE SELECTOR",
+          floatingNote: "Aura extracts the color palette from your existing logo and tailors every question to your business line."
+        },
+        fr: {
+          badge: "ÉTAPE 00 · POINT DE DÉPART ET CAPITAL VISUEL",
+          title: "Diagnostic Initial : Créer de Zéro, Faire Évoluer Votre Logo ou Créer des Sous-marques",
+          body: "Dans l'application, Aura vous accueille en temps réel. Importez votre logo actuel pour préserver ou faire évoluer son capital visuel, décrivez votre secteur d'activité et activez vos sous-marques.",
+          cutoutLabel: "DÉCOUPE UI 00 · IMPORT DU LOGO ACTUEL ET SÉLECTEUR D'OBJECTIF",
+          floatingNote: "Aura extrait la palette de votre logo actuel et personnalise tout le parcours selon votre secteur."
+        },
+        pt: {
+          badge: "PASSO 00 · PONTO DE PARTIDA E PATRIMÓNIO VISUAL",
+          title: "Diagnóstico Inicial: Criar do Zero, Evoluir o Seu Logo ou Criar Submarcas",
+          body: "Na aplicação, a Aura recebe-o em tempo real. Carregue o seu logótipo atual para preservar ou evoluir o seu património visual, descreva o seu ramo de negócio e ative a arquitetura de submarcas.",
+          cutoutLabel: "RECORTE UI 00 · CARREGAMENTO DE LOGO BASE E SELETOR DE OBJETIVO",
+          floatingNote: "A Aura extrai a paleta cromática do seu logo atual e adapta todo o percurso ao seu ramo."
+        },
+        de: {
+          badge: "SCHRITT 00 · AUSGANGSPUNKT & VISUELLES KAPITAL",
+          title: "Erstdiagnose: Neu Starten, Logo Weiterentwickeln oder Submarken Aufbauen",
+          body: "In der App empfängt Sie Aura in Echtzeit. Laden Sie Ihr bestehendes Logo hoch, beschreiben Sie Ihr Geschäftsfeld und aktivieren Sie bei Bedarf Ihre Submarken-Architektur.",
+          cutoutLabel: "UI-AUSSCHNITT 00 · LOGO-UPLOAD & ZIELAUSWAHL",
+          floatingNote: "Aura extrahiert die Farbpalette Ihres Logos und passt alle Fragen an Ihre Branche an."
+        },
+        it: {
+          badge: "PASSO 00 · PUNTO DI PARTENZA E CAPITALE VISIVO",
+          title: "Diagnosi Iniziale: Creare da Zero, Evolvere il Logo o Creare Sub-brand",
+          body: "Nell'app, Aura ti accoglie in tempo reale. Carica il tuo logo attuale per preservarne o evolverne il capitale visivo, descrivi il tuo settore e attiva l'architettura dei sub-brand.",
+          cutoutLabel: "RITAGLIO UI 00 · CARICAMENTO LOGO BASE E SELETTORE OBIETTIVO",
+          floatingNote: "Aura estrae la palette cromatica dal tuo logo attuale e personalizza l'intero percorso."
+        }
       }
     },
     {
       step: 1,
-      get url() { return getLocalizedStepVideoUrl(1); },
-      get poster() { return getLocalizedStepPosterUrl(1); },
-      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_0_a_1.png"); },
-      duration: "00:40",
-      author: "Jorge Benítez (HeyGen) + Google Flow · Simon Sinek, Jim Collins & Donald Miller",
-      exactScript: "Bienvenido al Paso uno. Como demostró Jim Collins en Empresas que Sobresalen, toda marca duradera nace de cimientos estratégicos claros antes de diseñar su identidad visual. La teoría del Círculo Dorado de Simon Sinek enseña que la gente no compra lo que haces, sino el porqué lo haces. En los primeros sub-pasos descubrirás tu propósito nuclear. Combinamos el Lienzo de Propuesta de Valor de Alex Osterwalder con el método StoryBrand de Donald Miller: al explicar tu proceso en tres pasos claros, tu cliente confía sin dudar. Finalmente, con los arquetipos de Carl Jung y la escala de Jennifer Aaker, definimos la personalidad humana de tu marca y el perfil exacto de tu cliente ideal.",
+      captureBase: "/assets/app_captures/step1_golden_circle.png",
+      cutoutFocus: "center",
+      accent: "#FF7A00",
+      theoryTag: "SIMON SINEK · EL CÍRCULO DORADO",
       i18n: {
-        es: { title: "Transición al Paso 1 · El Círculo Dorado y la Promesa de Valor", desc: "Por qué la gente no compra lo que haces, sino el propósito por el que lo haces (Simon Sinek, Jim Collins, Alex Osterwalder y Donald Miller)." },
-        en: { title: "Transition to Step 1 · The Golden Circle & Value Promise", desc: "Why people don't buy what you do, they buy why you do it (Simon Sinek, Jim Collins, Alex Osterwalder & Donald Miller)." },
-        fr: { title: "Transition vers l'Étape 1 · Le Cercle d'Or et la Promesse de Valeur", desc: "Pourquoi les clients n'achètent pas ce que vous faites, mais pourquoi vous le faites." },
-        pt: { title: "Transição ao Passo 1 · O Círculo Dourado e a Promessa de Valor", desc: "Por que as pessoas não compram o que você faz, mas o porquê você faz." },
-        de: { title: "Übergang zu Schritt 1 · Der Golden Circle & Wertversprechen", desc: "Warum Menschen nicht kaufen, was Sie tun, sondern warum Sie es tun." },
-        it: { title: "Transizione al Passo 1 · Il Cerchio d'Oro e la Promessa di Valore", desc: "Perché le persone non comprano ciò che fai, ma il perché lo fai." }
+        es: {
+          badge: "PASO 01 · EL CÍRCULO DORADO Y PROMESA DE VALOR",
+          title: "Del Porqué Nuclear a tu Método en 3 Pasos y la Empresa como Persona",
+          body: "A través de una entrevista socrática por voz o texto, Aura estructura tu Círculo Dorado (Why → How → What), sintetiza tu promesa única de valor y define la personalidad humana de tu marca.",
+          cutoutLabel: "RECORTE DE INTERFAZ 01 · LIENZO DEL CÍRCULO DORADO Y VOZ DE AURA",
+          floatingNote: "Las primeras 8 páginas estratégicas de tu Brandbook se estructuran automáticamente al completar este paso."
+        },
+        en: {
+          badge: "STEP 01 · THE GOLDEN CIRCLE & VALUE PROMISE",
+          title: "From Core Why to Your 3-Step Method & The Company as a Person",
+          body: "Through a Socratic voice or text interview, Aura structures your Golden Circle (Why → How → What), synthesizes your value promise, and defines your brand's human personality.",
+          cutoutLabel: "UI PRECISION CUTOUT 01 · GOLDEN CIRCLE CANVAS & AURA VOICE",
+          floatingNote: "The first 8 strategic pages of your Brandbook are structured automatically upon completing this step."
+        },
+        fr: {
+          badge: "ÉTAPE 01 · LE CERCLE D'OR ET PROMESSE DE VALEUR",
+          title: "Du Pourquoi Nucléaire à Votre Méthode en 3 Étapes et l'Entreprise comme Personne",
+          body: "Par entretien socratique vocal ou écrit, Aura structure votre Cercle d'Or (Why → How → What), synthétise votre promesse de valeur et définit la personnalité humaine de votre marque.",
+          cutoutLabel: "DÉCOUPE UI 01 · CANEVAS DU CERCLE D'OR ET VOIX D'AURA",
+          floatingNote: "Les 8 premières pages stratégiques de votre Brandbook sont structurées automatiquement."
+        },
+        pt: {
+          badge: "PASSO 01 · O CÍRCULO DOURADO E PROMESSA DE VALOR",
+          title: "Do Porquê Nuclear ao Método em 3 Passos e a Empresa como Pessoa",
+          body: "Através de uma entrevista socrática por voz ou texto, a Aura estrutura o seu Círculo Dourado (Why → How → What), sintetiza a sua promessa de valor e define a personalidade da marca.",
+          cutoutLabel: "RECORTE UI 01 · TELA DO CÍRCULO DOURADO E VOZ DA AURA",
+          floatingNote: "As primeiras 8 páginas estratégicas do seu Brandbook são estruturadas automaticamente."
+        },
+        de: {
+          badge: "SCHRITT 01 · DER GOLDEN CIRCLE & WERTVERSPRECHEN",
+          title: "Vom Kern-Warum zur 3-Schritte-Methode & dem Unternehmen als Person",
+          body: "Im sokratischen Sprach- oder Textdialog strukturiert Aura Ihren Golden Circle (Why → How → What), Ihr Wertversprechen und die menschliche Markenpersönlichkeit.",
+          cutoutLabel: "UI-AUSSCHNITT 01 · GOLDEN-CIRCLE-CANVAS & AURA-STIMME",
+          floatingNote: "Die ersten 8 strategischen Seiten Ihres Brandbooks werden automatisch aufgebaut."
+        },
+        it: {
+          badge: "PASSO 01 · IL CERCHIO D'ORO E PROMESSA DI VALORE",
+          title: "Dal Perché Centrale al Metodo in 3 Passi e l'Azienda come Persona",
+          body: "Attraverso un'intervista socratica vocale o testuale, Aura struttura il tuo Cerchio d'Oro (Why → How → What), sintetizza la promessa di valore e definisce la personalità del brand.",
+          cutoutLabel: "RITAGLIO UI 01 · CANVAS DEL CERCHIO D'ORO E VOCE DI AURA",
+          floatingNote: "Le prime 8 pagine strategiche del tuo Brandbook vengono strutturate automaticamente."
+        }
       }
     },
     {
       step: 2,
-      get url() { return getLocalizedStepVideoUrl(2); },
-      get poster() { return getLocalizedStepPosterUrl(2); },
-      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_1_a_2.png"); },
-      duration: "00:40",
-      author: "Jorge Benítez (HeyGen) + Google Flow · Jan Carlzon, Lemon/Verhoef & Don Norman",
-      exactScript: "Excelente avance en el Paso uno. Como enseñó Jan Carlzon en los Momentos de la Verdad, cada contacto de quince segundos con tu cliente define si confía en tu marca. Según Katherine Lemon y Peter Verhoef en Journal of Marketing, toda experiencia se divide en tres etapas: cómo te descubren Antes, cómo entregas valor Durante, y cómo fidelizas Después. Don Norman explica en el Diseño de las Cosas Cotidianas que el diseño excelente elimina la fricción. Aquí elegirás los puntos de contacto clave de tu negocio en tres clics. Al terminar el Paso dos, el sistema vinculará tus canales reales con los entregables y fotografías de tu manual para que tu marca viva en cada interacción.",
+      captureBase: "/assets/app_captures/step2_touchpoints.png",
+      cutoutFocus: "center",
+      accent: "#4C9DE6",
+      theoryTag: "JAN CARLZON · MOMENTOS DE LA VERDAD",
       i18n: {
-        es: { title: "Transición al Paso 2 · Ingeniería de Touchpoints (Momentos de la Verdad)", desc: "En 15 segundos de contacto tu cliente decide si confía en tu marca antes, durante y después de comprar (Jan Carlzon, Lemon/Verhoef y Don Norman)." },
-        en: { title: "Transition to Step 2 · Touchpoint Engineering (Moments of Truth)", desc: "In 15 seconds of contact, your customer decides whether to trust your brand before, during, and after purchase." },
-        fr: { title: "Transition vers l'Étape 2 · Ingénierie des Touchpoints (Moments de Vérité)", desc: "En 15 secondes de contact, votre client décide s'il fait confiance à votre marque." },
-        pt: { title: "Transição ao Passo 2 · Engenharia de Touchpoints (Momentos da Verdade)", desc: "Em 15 segundos de contato seu cliente decide se confia na sua marca antes, durante e depois da compra." },
-        de: { title: "Übergang zu Schritt 2 · Touchpoint-Engineering (Momente der Wahrheit)", desc: "In 15 Sekunden Kontakt entscheidet Ihr Kunde über Vertrauen vor, während und nach dem Kauf." },
-        it: { title: "Transizione al Passo 2 · Ingegneria dei Touchpoint (Momenti della Verità)", desc: "In 15 secondi di contatto il cliente decide se fidarsi del tuo brand prima, durante e dopo l'acquisto." }
+        es: {
+          badge: "PASO 02 · ARQUITECTURA DE TOUCHPOINTS REALES",
+          title: "Mapeo Operativo Antes, Durante y Después de la Compra",
+          body: "Seleccionas con un toque los puntos de contacto reales donde tu cliente te descubre (Antes), vive tu servicio sin fricción (Durante) y regresa o te recomienda (Después).",
+          cutoutLabel: "RECORTE DE INTERFAZ 02 · MATRIZ INTERACTIVA ANTES · DURANTE · DESPUÉS",
+          floatingNote: "Cada touchpoint elegido determina las aplicaciones reales y mockups que incluirá tu Brandbook."
+        },
+        en: {
+          badge: "STEP 02 · REAL TOUCHPOINT ARCHITECTURE",
+          title: "Operational Mapping Before, During & After the Purchase",
+          body: "Select with one tap the real touchpoints where customers discover you (Before), experience zero-friction delivery (During), and return or refer you (After).",
+          cutoutLabel: "UI PRECISION CUTOUT 02 · INTERACTIVE BEFORE · DURING · AFTER MATRIX",
+          floatingNote: "Every selected touchpoint dictates the real-world applications and mockups inside your Brandbook."
+        },
+        fr: {
+          badge: "ÉTAPE 02 · ARCHITECTURE DES TOUCHPOINTS RÉELS",
+          title: "Cartographie Opérationnelle Avant, Pendant et Après l'Achat",
+          body: "Sélectionnez en un clic les points de contact réels où votre client vous découvre (Avant), vit une expérience sans friction (Pendant) et vous recommande (Après).",
+          cutoutLabel: "DÉCOUPE UI 02 · MATRICE INTERACTIVE AVANT · PENDANT · APRÈS",
+          floatingNote: "Chaque touchpoint choisi détermine les applications et mockups intégrés à votre Brandbook."
+        },
+        pt: {
+          badge: "PASSO 02 · ARQUITETURA DE TOUCHPOINTS REAIS",
+          title: "Mapeamento Operacional Antes, Durante e Depois da Compra",
+          body: "Selecione com um toque os pontos de contacto reais onde o cliente o descobre (Antes), vive o serviço sem fricção (Durante) e regressa ou recomenda (Depois).",
+          cutoutLabel: "RECORTE UI 02 · MATRIZ INTERATIVA ANTES · DURANTE · DEPOIS",
+          floatingNote: "Cada touchpoint escolhido define as aplicações reais e mockups do seu Brandbook."
+        },
+        de: {
+          badge: "SCHRITT 02 · ECHTE TOUCHPOINT-ARCHITEKTUR",
+          title: "Operatives Mapping Vor, Während und Nach dem Kauf",
+          body: "Wählen Sie die realen Kontaktpunkte, an denen Kunden Sie entdecken (Vorher), reibungslosen Service erleben (Während) und Sie weiterempfehlen (Nachher).",
+          cutoutLabel: "UI-AUSSCHNITT 02 · INTERAKTIVE VORHER · WÄHREND · NACHHER MATRIX",
+          floatingNote: "Jeder gewählte Touchpoint steuert die realen Anwendungen und Mockups in Ihrem Brandbook."
+        },
+        it: {
+          badge: "PASSO 02 · ARCHITETTURA DEI TOUCHPOINT REALI",
+          title: "Mappatura Operativa Prima, Durante e Dopo l'Acquisto",
+          body: "Seleziona con un tocco i punti di contatto reali in cui il cliente ti scopre (Prima), vive il servizio senza attrito (Durante) e ti consiglia (Dopo).",
+          cutoutLabel: "RITAGLIO UI 02 · MATRICE INTERATTIVA PRIMA · DURANTE · DOPO",
+          floatingNote: "Ogni touchpoint scelto determina le applicazioni reali e i mockup del tuo Brandbook."
+        }
       }
     },
     {
       step: 3,
-      get url() { return getLocalizedStepVideoUrl(3); },
-      get poster() { return getLocalizedStepPosterUrl(3); },
-      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_2_a_3.png"); },
-      duration: "00:38",
-      author: "Jorge Benítez (HeyGen) + Google Flow · Alexandra Watkins, David Placek & Alina Wheeler",
-      exactScript: "Ya tienes el mapa de experiencia de tu cliente. Como afirma Wally Olins, el nombre es el primer activo verbal que pronunciarán tus clientes en cada canal. Aplicamos el modelo SMILE de Alexandra Watkins y el simbolismo fonético de David Placek, creador de Lexicon Branding: buscamos un nombre de dos a tres sílabas, fácil de recordar y con iniciales potentes. Siguiendo a Alina Wheeler en Designing Brand Identity, acompañamos tu nombre oficial con un descriptor claro y un eslogan que comunique tu promesa en tres segundos. Y para blindar tu patrimonio, el Paso tres verifica automáticamente las clases internacionales de Niza para el registro legal de tu marca ante la autoridad.",
+      captureBase: "/assets/app_captures/step3_naming_nice.png",
+      cutoutFocus: "center",
+      accent: "#0D2540",
+      theoryTag: "ALEXANDRA WATKINS · MODELO SMILE & OMPI NIZA",
       i18n: {
-        es: { title: "Transición al Paso 3 · Fonética, Naming SMILE y Clases de Niza", desc: "Cómo elegir un nombre memorable de 2 a 3 sílabas y vincularlo con las Clases Internacionales de Niza (Watkins, Placek y Alina Wheeler)." },
-        en: { title: "Transition to Step 3 · Phonetics, SMILE Naming & Nice Classes", desc: "How to lock in a memorable name and match it with international Nice Classification trademark classes." },
-        fr: { title: "Transition vers l'Étape 3 · Phonétique, Naming SMILE et Classes de Nice", desc: "Comment valider un nom mémorable et l'associer aux classes internationales de Nice." },
-        pt: { title: "Transição ao Passo 3 · Fonética, Naming SMILE e Classes de Nice", desc: "Como escolher um nome memorável e vinculá-lo às Classes Internacionais de Nice." },
-        de: { title: "Übergang zu Schritt 3 · Phonetik, SMILE-Naming & Nizza-Klassen", desc: "Wie Sie einen einprägsamen Markennamen wählen und rechtlich in Nizza-Klassen einordnen." },
-        it: { title: "Transizione al Passo 3 · Fonetica, Naming SMILE e Classi di Nizza", desc: "Come scegliere un nome memorabile e abbinarlo alle Classi Internazionali di Nizza." }
+        es: {
+          badge: "PASO 03 · INGENIERÍA DE NAMING, FONÉTICA Y REGISTRO",
+          title: "Evaluación Acústica SMILE, Monograma 1:1 y Clases Internacionales de Niza",
+          body: "Confirmas tu nombre actual o generas candidatos fonéticos de 2 a 3 sílabas con evaluación SMILE, descriptor comercial y clasificación oficial de Niza para blindar tu registro.",
+          cutoutLabel: "RECORTE DE INTERFAZ 03 · AUDITORÍA FONÉTICA SMILE Y CLASES DE NIZA",
+          floatingNote: "Hasta aquí avanzas 100% gratis en la Demo en Vivo antes del desbloqueo del Paso 4 ($49 USD)."
+        },
+        en: {
+          badge: "STEP 03 · NAMING ENGINEERING, PHONETICS & TRADEMARK",
+          title: "SMILE Acoustic Scoring, 1:1 Monogram & WIPO Nice Classes",
+          body: "Confirm your existing name or generate 2–3 syllable phonetic candidates with SMILE scoring, commercial tagline, and official Nice classes for trademark protection.",
+          cutoutLabel: "UI PRECISION CUTOUT 03 · SMILE PHONETIC AUDIT & NICE CLASSES",
+          floatingNote: "You advance 100% free through Step 3 in the Live Demo before the Step 4 Pro unlock ($49 USD)."
+        },
+        fr: {
+          badge: "ÉTAPE 03 · INGÉNIERIE DU NAMING, PHONÉTIQUE ET DÉPÔT",
+          title: "Évaluation Acoustique SMILE, Monogramme 1:1 et Classes de Nice",
+          body: "Confirmez votre nom actuel ou générez des candidats phonétiques avec score SMILE, slogan commercial et classification officielle OMPI de Nice.",
+          cutoutLabel: "DÉCOUPE UI 03 · AUDIT PHONÉTIQUE SMILE ET CLASSES DE NICE",
+          floatingNote: "Vous avancez gratuitement jusqu'à l'Étape 3 avant le déblocage Pro de l'Étape 4 (49 $ USD)."
+        },
+        pt: {
+          badge: "PASSO 03 · ENGENHARIA DE NAMING, FONÉTICA E REGISTO",
+          title: "Avaliação Acústica SMILE, Monograma 1:1 e Classes de Nice",
+          body: "Confirme o seu nome atual ou gere candidatos fonéticos com avaliação SMILE, eslogan comercial e classificação oficial de Nice para proteção de marca.",
+          cutoutLabel: "RECORTE UI 03 · AUDITORIA FONÉTICA SMILE E CLASSES DE NICE",
+          floatingNote: "Avança 100% grátis até ao Passo 3 na Demo ao Vivo antes do desbloqueio do Passo 4 ($49 USD)."
+        },
+        de: {
+          badge: "SCHRITT 03 · NAMING-ENGINEERING, PHONETIK & MARKENSCHUTZ",
+          title: "SMILE-Phonetik-Score, 1:1-Monogramm & Internationale Nizza-Klassen",
+          body: "Bestätigen Sie Ihren Namen oder generieren Sie phonetisch starke Kandidaten mit SMILE-Bewertung, Slogan und offiziellen Nizza-Klassen.",
+          cutoutLabel: "UI-AUSSCHNITT 03 · SMILE-PHONETIK-AUDIT & NIZZA-KLASSEN",
+          floatingNote: "Bis Schritt 3 testen Sie in der Live-Demo kostenlos, bevor Schritt 4 ($49 USD) freigeschaltet wird."
+        },
+        it: {
+          badge: "PASSO 03 · INGEGNERIA DEL NAMING, FONETICA E REGISTRAZIONE",
+          title: "Valutazione Acustica SMILE, Monogramma 1:1 e Classi di Nizza",
+          body: "Conferma il tuo nome attuale o genera candidati fonetici con punteggio SMILE, slogan commerciale e classificazione ufficiale di Nizza.",
+          cutoutLabel: "RITAGLIO UI 03 · AUDIT FONETICO SMILE E CLASSI DI NIZZA",
+          floatingNote: "Avanzi gratuitamente fino al Passo 3 nella Demo dal Vivo prima dello sblocco del Passo 4 ($49 USD)."
+        }
       }
     },
     {
       step: 4,
-      get url() { return getLocalizedStepVideoUrl(4); },
-      get poster() { return getLocalizedStepPosterUrl(4); },
-      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_3_a_4.png"); },
-      duration: "00:43",
-      author: "Jorge Benítez (HeyGen) + Google Flow · Mitsuo Nagamachi, Osgood & R. Bringhurst",
-      exactScript: "Con tu nombre oficial listo, entramos al Paso cuatro. El profesor Mitsuo Nagamachi creó la Ingeniería Kansei para traducir sentimientos humanos en parámetros de diseño exactos. Como demostraron Ramachandran y Charles Osgood con el diferencial semántico, nuestro cerebro asocia curvas suaves con cercanía humana y ángulos rectos con precisión técnica. Robert Bringhurst afirma que la tipografía es el lenguaje hecho visible. Por eso elegirás tu fuente por estilo visual y recibirás el paquete instalable para tu equipo. Finalmente, con la taxonomía de Per Mollerup y Wheeler, eliges la estructura de tu marca: logotipo con símbolo integrado, monograma de iniciales o emblema.",
+      captureBase: "/assets/app_captures/step4_kansei_axes.png",
+      cutoutFocus: "center",
+      accent: "#426EAE",
+      theoryTag: "MITSUO NAGAMACHI · KANSEI & DIFERENCIAL DE OSGOOD",
       i18n: {
-        es: { title: "Transición al Paso 4 · Ingeniería Kansei y Gobernanza Tipográfica", desc: "Traducción de emociones a parámetros geométricos en 7 ejes y selección del par tipográfico oficial (Mitsuo Nagamachi, Osgood y Bringhurst)." },
-        en: { title: "Transition to Step 4 · Kansei Engineering & Typographic Governance", desc: "Translating sensory emotion into geometry and selecting your official open-license font pairing." },
-        fr: { title: "Transition vers l'Étape 4 · Ingénierie Kansei et Gouvernance Typographique", desc: "Traduction des émotions en géométrie et sélection du duo typographique officiel." },
-        pt: { title: "Transição ao Passo 4 · Engenharia Kansei e Governança Tipográfica", desc: "Tradução de emoções em parâmetros visuais e escolha do par tipográfico oficial." },
-        de: { title: "Übergang zu Schritt 4 · Kansei-Engineering & Typografie-Governance", desc: "Übersetzung sensorischer Eindrücke in Geometrie und Auswahl Ihres offiziellen Schriftpaares." },
-        it: { title: "Transizione al Passo 4 · Ingegneria Kansei e Governance Tipografica", desc: "Traduzione delle emozioni in geometria e scelta della coppia tipografica ufficiale." }
+        es: {
+          badge: "PASO 04 · INGENIERÍA KANSEI Y DIFERENCIAL DE OSGOOD",
+          title: "Calibración de los 7 Ejes Visuales, Par Tipográfico y Semilla Constructiva",
+          body: "Deslizas 7 ejes bipolares (de orgánico a geométrico, de clásico a vanguardista) para traducir emociones en vectores matemáticos, seleccionando tu tipografía oficial y estructura base.",
+          cutoutLabel: "RECORTE DE INTERFAZ 04 · CALIBRADOR BIPOLAR DE 7 EJES DE OSGOOD",
+          floatingNote: "Al desbloquear el Paso 4 ($49 USD), todas tus respuestas de los Pasos 0 al 3 migran automáticamente."
+        },
+        en: {
+          badge: "STEP 04 · KANSEI ENGINEERING & OSGOOD DIFFERENTIAL",
+          title: "Calibrating the 7 Visual Axes, Font Pairing & Structural Seed",
+          body: "Slide 7 bipolar axes (from organic to geometric, classic to avant-garde) to translate human emotion into mathematical vectors, selecting your official typography and base structure.",
+          cutoutLabel: "UI PRECISION CUTOUT 04 · 7-AXIS OSGOOD BIPOLAR CALIBRATOR",
+          floatingNote: "Upon unlocking Step 4 ($49 USD), all your answers from Steps 0 to 3 migrate automatically."
+        },
+        fr: {
+          badge: "ÉTAPE 04 · INGÉNIERIE KANSEI ET DIFFÉRENTIEL D'OSGOOD",
+          title: "Calibrage des 7 Axes Visuels, Duo Typographique et Structure de Base",
+          body: "Faites glisser 7 axes bipolaires (de l'organique au géométrique, du classique à l'avant-garde) pour traduire les émotions en vecteurs mathématiques et choisir votre typographie.",
+          cutoutLabel: "DÉCOUPE UI 04 · CALIBRATEUR BIPOLAIRE À 7 AXES D'OSGOOD",
+          floatingNote: "En débloquant l'Étape 4 (49 $ USD), toutes vos réponses des Étapes 0 à 3 sont migrées automatiquement."
+        },
+        pt: {
+          badge: "PASSO 04 · ENGENHARIA KANSEI E DIFERENCIAL DE OSGOOD",
+          title: "Calibração dos 7 Eixos Visuais, Par Tipográfico e Semente Construtiva",
+          body: "Deslize 7 eixos bipolares (do orgânico ao geométrico, do clássico ao vanguardista) para traduzir emoções em vetores matemáticos e escolher a sua tipografia oficial.",
+          cutoutLabel: "RECORTE UI 04 · CALIBRADOR BIPOLAR DE 7 EIXOS DE OSGOOD",
+          floatingNote: "Ao desbloquear o Passo 4 ($49 USD), todas as respostas dos Passos 0 a 3 migram automaticamente."
+        },
+        de: {
+          badge: "SCHRITT 04 · KANSEI-ENGINEERING & OSGOOD-DIFFERENTIAL",
+          title: "Kalibrierung der 7 Visuellen Achsen, Schriftpaarung & Grundstruktur",
+          body: "Steuern Sie 7 bipolare Achsen (von organisch bis geometrisch, klassisch bis avantgardistisch), um Emotionen in mathematische Vektoren und Typografie zu übersetzen.",
+          cutoutLabel: "UI-AUSSCHNITT 04 · BIPOLARER 7-ACHSEN-KALIBRIERER NACH OSGOOD",
+          floatingNote: "Beim Freischalten von Schritt 4 ($49 USD) werden alle Daten aus Schritt 0 bis 3 automatisch übernommen."
+        },
+        it: {
+          badge: "PASSO 04 · INGEGNERIA KANSEI E DIFFERENZIALE DI OSGOOD",
+          title: "Calibrazione dei 7 Assi Visivi, Coppia Tipografica e Struttura Base",
+          body: "Scorri i 7 assi bipolari (da organico a geometrico, da classico ad avanguardista) per tradurre le emozioni in vettori matematici e selezionare la tipografia ufficiale.",
+          cutoutLabel: "RITAGLIO UI 04 · CALIBRATORE BIPOLARE A 7 ASSI DI OSGOOD",
+          floatingNote: "Sbloccando il Passo 4 ($49 USD), tutte le risposte dei Passi da 0 a 3 migrano automaticamente."
+        }
       }
     },
     {
       step: 5,
-      get url() { return getLocalizedStepVideoUrl(5); },
-      get poster() { return getLocalizedStepPosterUrl(5); },
-      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_4_a_5.png"); },
-      duration: "00:44",
-      author: "Jorge Benítez (HeyGen) + Google Flow · Paul Rand, Sagi Haviv & Jony Ive",
-      exactScript: "Bienvenido al Paso cinco. Como enseñó el legendario Paul Rand, un logotipo extraordinario combina simplicidad geométrica y recordación inmediata, potenciado por la armonía cromática de Josef Albers. Si subiste tu logotipo actual, seguimos la máxima de Sagi Haviv en Chermayeff & Geismar: respetar la esencia reconocible mientras perfeccionamos sus trazos y acabados. Inspirados en el rigor industrial de Jony Ive, visualizas al mismo tiempo tu logotipo completo y su ícono cuadrado uno a uno sobre fondo claro y oscuro. Puedes iterar con el motor visual de inteligencia artificial, refinar detalles en tiempo real y aprobar la versión maestra que se compilará en curvas vectoriales puras.",
+      captureBase: "/assets/app_captures/step5_logo_studio.png",
+      cutoutFocus: "center",
+      accent: "#FF7A00",
+      theoryTag: "PAUL RAND · SAGI HAVIV · INGENIERÍA KAIZEN",
       i18n: {
-        es: { title: "Transición al Paso 5 · Síntesis Vectorial Nano Banana Pro y Taller de Logotipo", desc: "Iteración asistida por Nano Banana Pro 4K y trazado matemático Bézier Liquid Glass sobre fondo claro y oscuro sin píxeles (Paul Rand, Sagi Haviv y Jony Ive)." },
-        en: { title: "Transition to Step 5 · Nano Banana Pro Vector Synthesis & Logo Atelier", desc: "Nano Banana Pro AI-assisted iteration and mathematical Bézier vector tracing on light and dark canvases." },
-        fr: { title: "Transition vers l'Étape 5 · Synthèse Vectorielle Nano Banana Pro et Atelier Logo", desc: "Itération assistée par Nano Banana Pro et tracé mathématique de Bézier sur fond clair et sombre." },
-        pt: { title: "Transição ao Passo 5 · Síntese Vetorial Nano Banana Pro e Atelier de Logo", desc: "Iteração assistida por Nano Banana Pro e traçado matemático Bézier sobre fundo claro e escuro." },
-        de: { title: "Übergang zu Schritt 5 · Nano Banana Pro Vektorsynthese & Logo-Atelier", desc: "KI-gestützte Nano Banana Pro Iteration und mathematische Bézier-Vektorisierung auf hellem und dunklem Grund." },
-        it: { title: "Transizione al Passo 5 · Sintesi Vettoriale Nano Banana Pro e Atelier del Logo", desc: "Iterazione assistita da Nano Banana Pro e tracciato matematico di Bézier su sfondo chiaro e scuro." }
+        es: {
+          badge: "PASO 05 · TALLER DE LOGOTIPO EN CURVAS E ITERACIÓN KAIZEN",
+          title: "10 Iteraciones Progresivas, Psicología Cromática y Vectores Bézier Puros",
+          body: "El estudio sintetiza propuestas en curvas Bézier sobre retícula 8X×3X, valida contraste en fondo claro y oscuro, homologa submarcas y genera tu ícono App 1:1 en vivo.",
+          cutoutLabel: "RECORTE DE INTERFAZ 05 · TALLER VECTORIAL Y COMPARADOR DE ITERACIONES",
+          floatingNote: "Exportación inmediata en trazos vectoriales puros (.SVG y .AI) listos para imprenta y pantallas Retina."
+        },
+        en: {
+          badge: "STEP 05 · VECTOR LOGO STUDIO & KAIZEN ITERATION",
+          title: "10 Progressive Iterations, Color Psychology & Pure Bézier Vectors",
+          body: "The studio synthesizes Bézier vector proposals on an 8X×3X grid, validates contrast on light and dark canvases, homologates sub-brands, and generates your 1:1 App Icon live.",
+          cutoutLabel: "UI PRECISION CUTOUT 05 · VECTOR STUDIO & ITERATION COMPARATOR",
+          floatingNote: "Instant export in pure vector paths (.SVG and .AI) ready for print and Retina displays."
+        },
+        fr: {
+          badge: "ÉTAPE 05 · ATELIER LOGO VECTORIEL ET ITÉRATION KAIZEN",
+          title: "10 Itérations Progressives, Psychologie Chromatique et Vecteurs Bézier",
+          body: "L'atelier synthétise des propositions en courbes de Bézier sur grille 8X×3X, valide le contraste sur fonds clair et sombre, homologue les sous-marques et crée votre icône 1:1.",
+          cutoutLabel: "DÉCOUPE UI 05 · ATELIER VECTORIEL ET COMPARATEUR D'ITÉRATIONS",
+          floatingNote: "Export immédiat en tracés vectoriels purs (.SVG et .AI) prêts pour l'impression et le web."
+        },
+        pt: {
+          badge: "PASSO 05 · ESTÚDIO DE LOGÓTIPO EM CURVAS E ITERAÇÃO KAIZEN",
+          title: "10 Iterações Progressivas, Psicologia da Cor e Vetores Bézier Puros",
+          body: "O estúdio sintetiza propostas em curvas Bézier sobre grelha 8X×3X, valida o contraste em fundo claro e escuro, homologa submarcas e gera o seu ícone App 1:1 ao vivo.",
+          cutoutLabel: "RECORTE UI 05 · ESTÚDIO VETORIAL E COMPARADOR DE ITERAÇÕES",
+          floatingNote: "Exportação imediata em traços vetoriais puros (.SVG e .AI) prontos para gráfica e ecrãs."
+        },
+        de: {
+          badge: "SCHRITT 05 · VEKTOR-LOGO-STUDIO & KAIZEN-ITERATION",
+          title: "10 Progressive Iterationen, Farbpsychologie & Reine Bézier-Vektoren",
+          body: "Das Studio erzeugt Bézier-Vektorvorschläge auf einem 8X×3X-Raster, prüft den Kontrast auf hellem und dunklem Grund, homologiert Submarken und erstellt Ihr 1:1 App-Icon.",
+          cutoutLabel: "UI-AUSSCHNITT 05 · VEKTOR-STUDIO & ITERATIONS-VERGLEICH",
+          floatingNote: "Sofortiger Export in reinen Vektorpfaden (.SVG und .AI) für Druck und hochauflösende Displays."
+        },
+        it: {
+          badge: "PASSO 05 · STUDIO DEL LOGO IN CURVE E ITERAZIONE KAIZEN",
+          title: "10 Iterazioni Progressive, Psicologia del Colore e Vettori Bézier Puri",
+          body: "Lo studio sintetizza proposte in curve di Bézier su griglia 8X×3X, valida il contrasto su sfondo chiaro e scuro, omologa i sub-brand e genera la tua icona App 1:1.",
+          cutoutLabel: "RITAGLIO UI 05 · STUDIO VETTORIALE E COMPARATORE DI ITERAZIONI",
+          floatingNote: "Esportazione immediata in tracciati vettoriali puri (.SVG e .AI) pronti per la stampa."
+        }
       }
     },
     {
       step: 6,
-      get url() { return getLocalizedStepVideoUrl(6); },
-      get poster() { return getLocalizedStepPosterUrl(6); },
-      get popupCapture() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_5_a_6.png"); },
-      duration: "00:42",
-      author: "Jorge Benítez (HeyGen) + Google Flow · Massimo Vignelli & Josef Müller-Brockmann",
-      exactScript: "Felicidades por llegar al Paso seis. Como estableció Massimo Vignelli en su Canon, un manual de identidad es la constitución que protege la coherencia de tu marca en todo momento. Aplicamos los sistemas de retículas de Josef Müller-Brockmann y la Guía Oficial C-Cero-Cero de ImproBears: láminas en curvas abiertas sobre lienzo claro, siguiendo exactamente los colores de tu logotipo. Tu manual incluye la terna oficial de tu marca, pruebas de legibilidad, códigos de color para imprenta y pantalla, y fotografías de aplicación en el mundo real. Desde la Bóveda descargas tus nueve entregables oficiales: Manual en PDF y Web, vectores editables, firma de correo, plantillas de Word y PowerPoint y tu kit de fuentes.",
+      captureBase: "/assets/app_captures/step6_brandbook_36.png",
+      cutoutFocus: "center",
+      accent: "#0D2540",
+      theoryTag: "MASSIMO VIGNELLI · BRANDBOOK +30 PÁGINAS",
       i18n: {
-        es: { title: "Transición al Paso 6 · El Manual Oficial de 36 Láminas y los 9 Entregables", desc: "Cómo la disciplina de retícula de Massimo Vignelli y tus 9 archivos ejecutivos convierten tu marca en un sistema escalable." },
-        en: { title: "Transition to Step 6 · The 36-Plate Official Brandbook & 9 Deliverables", desc: "How grid discipline and your 9 production files turn your brand into a scalable enterprise asset." },
-        fr: { title: "Transition vers l'Étape 6 · Le Manuel Officiel de 36 Planches et les 9 Livrables", desc: "Comment la rigueur de grille et vos 9 fichiers transforment votre marque en système durable." },
-        pt: { title: "Transição ao Passo 6 · O Manual Oficial de 36 Lâminas e os 9 Entregáveis", desc: "Como a disciplina de grid e seus 9 arquivos transformam sua marca em um sistema escalável." },
-        de: { title: "Übergang zu Schritt 6 · Das 36-Tafeln-Markenhandbuch & 9 Deliverables", desc: "Wie Rasterdisziplin und Ihre 9 Produktionsdateien Ihre Marke in ein skalierbares System verwandeln." },
-        it: { title: "Transizione al Passo 6 · Il Manuale Ufficiale di 36 Tavole e i 9 Deliverable", desc: "Come la disciplina della griglia e i tuoi 9 file trasformano il brand in un sistema scalabile." }
+        es: {
+          badge: "PASO 06 · BRANDBOOK OFICIAL (+30 PÁGINAS) Y 9 ENTREGABLES",
+          title: "Gobernanza Editorial en Curvas Abiertas y Descarga Instantánea",
+          body: "Tu recorrido completo se ensambla en un Brandbook oficial de más de 30 páginas (ajustable según el giro del negocio) junto con tu bóveda de 9 entregables listos para producción.",
+          cutoutLabel: "RECORTE DE INTERFAZ 06 · VISOR DE BRANDBOOK (+30 PÁGINAS) Y BÓVEDA",
+          floatingNote: "Incluye PDF editorial, HTML interactivo, vectores .SVG/.AI, plantillas Word/PowerPoint, firma y fuentes."
+        },
+        en: {
+          badge: "STEP 06 · OFFICIAL BRANDBOOK (30+ PAGES) & 9 DELIVERABLES",
+          title: "Open-Curve Editorial Governance & Instant Vault Download",
+          body: "Your entire journey is compiled into an official Brandbook of over 30 pages (adaptable to your business sector) alongside your vault of 9 production-ready deliverables.",
+          cutoutLabel: "UI PRECISION CUTOUT 06 · 30+ PAGE BRANDBOOK VIEWER & VAULT",
+          floatingNote: "Includes editorial PDF, interactive HTML, .SVG/.AI vectors, Word/PowerPoint templates, email signature, and fonts."
+        },
+        fr: {
+          badge: "ÉTAPE 06 · BRANDBOOK OFFICIEL (+30 PAGES) ET 9 LIVRABLES",
+          title: "Gouvernance Éditoriale en Courbes Ouvertes et Téléchargement Immédiat",
+          body: "Tout votre parcours est assemblé dans un Brandbook officiel de plus de 30 pages (adaptable selon votre secteur d'activité) avec votre voûte de 9 livrables prêts pour la production.",
+          cutoutLabel: "DÉCOUPE UI 06 · VISIONNEUSE BRANDBOOK (+30 PAGES) ET VOÛTE",
+          floatingNote: "Inclut PDF éditorial, HTML interactif, vecteurs .SVG/.AI, modèles Word/PowerPoint, signature et polices."
+        },
+        pt: {
+          badge: "PASSO 06 · BRANDBOOK OFICIAL (+30 PÁGINAS) E 9 ENTREGÁVEIS",
+          title: "Governança Editorial em Curvas Abertas e Descarga Instantânea",
+          body: "Todo o seu percurso é compilado num Brandbook oficial com mais de 30 páginas (ajustável conforme o ramo do negócio) juntamente com o cofre de 9 entregáveis prontos a usar.",
+          cutoutLabel: "RECORTE UI 06 · VISOR DE BRANDBOOK (+30 PÁGINAS) E COFRE",
+          floatingNote: "Inclui PDF editorial, HTML interativo, vetores .SVG/.AI, modelos Word/PowerPoint, assinatura e fontes."
+        },
+        de: {
+          badge: "SCHRITT 06 · OFFIZIELLES BRANDBOOK (+30 SEITEN) & 9 DELIVERABLES",
+          title: "Editorische Markenführung in Offenen Kurven & Sofort-Download",
+          body: "Ihr gesamter Prozess wird in einem offiziellen Brandbook mit über 30 Seiten (anpassbar je nach Branche) sowie Ihrem Tresor mit 9 produktionsfertigen Deliverables gebündelt.",
+          cutoutLabel: "UI-AUSSCHNITT 06 · BRANDBOOK-VIEWER (+30 SEITEN) & TRESOR",
+          floatingNote: "Enthält PDF, interaktives HTML, .SVG/.AI-Vektoren, Word/PowerPoint-Vorlagen, E-Mail-Signatur und Schriften."
+        },
+        it: {
+          badge: "PASSO 06 · BRANDBOOK UFFICIALE (+30 PAGINE) E 9 DELIVERABLE",
+          title: "Governance Editoriale in Curve Aperte e Download Istantaneo",
+          body: "L'intero percorso viene assemblato in un Brandbook ufficiale di oltre 30 pagine (adattabile al settore aziendale) insieme al caveau con i 9 deliverable pronti per la produzione.",
+          cutoutLabel: "RITAGLIO UI 06 · VISORE BRANDBOOK (+30 PAGINE) E CAVEAU",
+          floatingNote: "Include PDF editoriale, HTML interattivo, vettori .SVG/.AI, modelli Word/PowerPoint, firma email e font."
+        }
       }
     }
   ];
 
-  const APP_TOUR_FLOW_ITEMS = [
-    {
-      id: "step0_1",
-      type: "step",
-      badge: "PASO 0.1 · PUNTO DE PARTIDA",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step0_1_objetivo.png"); },
-      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/step0_logo_aura.png"); },
-      i18n: {
-        es: { badge: "PASO 0.1 · PUNTO DE PARTIDA", title: "Eliges tu objetivo y conversas con Aura", desc: "Desde el primer segundo, la interfaz limpia te permite elegir si crearás una marca desde cero o evolucionarás tu logotipo actual, acompañado por el orbe líquido 3D de Aura en tiempo real." },
-        en: { badge: "STEP 0.1 · STARTING POINT", title: "Choose your goal and talk with Aura", desc: "From the very first second, a clean interface lets you choose whether to build a brand from scratch or evolve your existing logo, guided by Aura's live 3D Liquid Glass orb." },
-        fr: { badge: "ÉTAPE 0.1 · POINT DE DÉPART", title: "Choisissez votre objectif et échangez avec Aura", desc: "Dès la première seconde, choisissez de créer une marque de zéro ou de faire évoluer votre logo actuel avec l'orbe 3D d'Aura." },
-        pt: { badge: "PASSO 0.1 · PONTO DE PARTIDA", title: "Escolha seu objetivo e converse com a Aura", desc: "Desde o primeiro segundo, escolha criar uma marca do zero ou evoluir seu logotipo atual com o orbe 3D da Aura." },
-        de: { badge: "SCHRITT 0.1 · AUSGANGSPUNKT", title: "Ziel wählen und mit Aura sprechen", desc: "Wählen Sie vom ersten Moment an zwischen Neuerstellung oder Evolution Ihres bestehenden Logos mit Auras 3D-Orb." },
-        it: { badge: "PASSO 0.1 · PUNTO DI PARTENZA", title: "Scegli il tuo obiettivo e dialoga con Aura", desc: "Dal primo secondo scegli se creare un brand da zero o evolvere il tuo logo attuale con la sfera 3D di Aura." }
-      }
-    },
-    {
-      id: "step0_3",
-      type: "step",
-      badge: "PASO 0.3 · GIRO Y ARQUITECTURA",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step0_3_giro.png"); },
-      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/step0_logo_aura.png"); },
-      i18n: {
-        es: { badge: "PASO 0.3 · GIRO Y ARQUITECTURA", title: "Defines tu giro empresarial por voz o texto", desc: "Describes con tus propias palabras qué hace tu empresa. El motor comprende el contexto industrial y configura si tu marca será monolítica o con submarcas." },
-        en: { badge: "STEP 0.3 · SECTOR & ARCHITECTURE", title: "Define your business sector by voice or text", desc: "Describe what your company does in your own words. The engine understands your industry context and configures a monolithic or multi-brand architecture." },
-        fr: { badge: "ÉTAPE 0.3 · SECTEUR ET ARCHITECTURE", title: "Définissez votre secteur par la voix ou le texte", desc: "Décrivez avec vos propres mots l'activité de votre entreprise pour calibrer toute l'architecture." },
-        pt: { badge: "PASSO 0.3 · RAMO E ARQUITETURA", title: "Defina seu ramo por voz ou texto", desc: "Descreva com suas próprias palavras o que sua empresa faz para calibrar toda a arquitetura da marca." },
-        de: { badge: "SCHRITT 0.3 · BRANCHE & ARCHITEKTUR", title: "Branche per Sprache oder Text definieren", desc: "Beschreiben Sie in eigenen Worten Ihr Geschäftsfeld zur automatischen Kalibrierung der Markenarchitektur." },
-        it: { badge: "PASSO 0.3 · SETTORE E ARCHITETTURA", title: "Definisci il tuo settore con voce o testo", desc: "Descrivi con parole tue cosa fa la tua azienda per calibrare l'intera architettura del brand." }
-      }
-    },
-    {
-      id: "popup_0_1",
-      type: "video_popup",
-      badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 0 A PASO 1",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_0_a_1.png"); },
-      videoIdx: 1,
-      i18n: {
-        es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 0 A PASO 1", title: "Cápsula emergente: El Círculo Dorado antes del Paso 1", desc: "Al avanzar de etapa, la aplicación despliega un pop-up cinematográfico 9:16 con el fundador en HeyGen y B-Roll Google Flow que te explica cómo definir el Porqué de tu empresa." },
-        en: { badge: "VIDEO POP-UP · TRANSITION STEP 0 TO STEP 1", title: "Pop-up Capsule: The Golden Circle before Step 1", desc: "When advancing stages, the app presents a 9:16 cinematic pop-up with HeyGen founder avatar and Google Flow B-Roll explaining how to articulate your company's Why." },
-        fr: { badge: "POP-UP VIDÉO · TRANSITION ÉTAPE 0 À ÉTAPE 1", title: "Pop-up Vidéo : Le Cercle d'Or avant l'Étape 1", desc: "À chaque transition, un pop-up vidéo 9:16 avec avatar HeyGen et B-Roll Google Flow explique la théorie de l'étape suivante." },
-        pt: { badge: "POP-UP DE VÍDEO · TRANSIÇÃO PASSO 0 AO PASSO 1", title: "Pop-up de Vídeo: O Círculo Dourado antes do Passo 1", desc: "Ao avançar de etapa, o app exibe um pop-up 9:16 com avatar HeyGen e B-Roll Google Flow explicando como definir seu Porquê." },
-        de: { badge: "VIDEO-POP-UP · ÜBERGANG SCHRITT 0 ZU SCHRITT 1", title: "Video-Pop-up: Der Golden Circle vor Schritt 1", desc: "Beim Phasenwechsel öffnet sich ein 9:16-Video-Pop-up mit HeyGen-Avatar und Google Flow B-Roll zur Einführung in den Golden Circle." },
-        it: { badge: "POP-UP VIDEO · TRANSIZIONE PASSO 0 A PASSO 1", title: "Pop-up Video: Il Cerchio d'Oro prima del Passo 1", desc: "Al cambio di fase, l'app mostra un pop-up video 9:16 con avatar HeyGen e B-Roll Google Flow che spiega come definire il tuo Perché." }
-      }
-    },
-    {
-      id: "step1_main",
-      type: "step",
-      badge: "PASO 1 · ADN Y CÍRCULO DORADO",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step1_proposito_sinek.png"); },
-      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step1_6_persona.png"); },
-      i18n: {
-        es: { badge: "PASO 1 · ADN Y CÍRCULO DORADO", title: "Estructuras tu Propósito, Método, Promesa y Personalidad", desc: "Guiado por preguntas claras y corrección ortográfica/ejecutiva en un clic, defines el corazón filosófico de tu marca y su arquetipo humano." },
-        en: { badge: "STEP 1 · BRAND DNA & GOLDEN CIRCLE", title: "Structure your Purpose, Method, Promise & Brand Persona", desc: "Guided by clear prompts and 1-click executive copy refinement, you define the philosophical core and human persona of your brand." },
-        fr: { badge: "ÉTAPE 1 · ADN ET CERCLE D'OR", title: "Structurez votre Raison d'être, Méthode et Personnalité", desc: "Guidé par des questions claires et une révision exécutive en un clic, vous définissez le cœur de votre marque." },
-        pt: { badge: "PASSO 1 · DNA E CÍRCULO DOURADO", title: "Estruture seu Propósito, Método, Promessa e Personalidade", desc: "Guiado por perguntas claras e revisão executiva em um clique, você define o coração estratégico da sua marca." },
-        de: { badge: "SCHRITT 1 · MARKEN-DNA & GOLDEN CIRCLE", title: "Zweck, Methode, Versprechen & Markenpersönlichkeit", desc: "Mit klaren Impulsen und 1-Klick-Textoptimierung definieren Sie den strategischen Kern Ihrer Marke." },
-        it: { badge: "PASSO 1 · DNA E CERCHIO D'ORO", title: "Struttura Scopo, Metodo, Promessa e Personalità", desc: "Guidato da domande chiare e revisione esecutiva in un clic, definisci il cuore strategico del tuo brand." }
-      }
-    },
-    {
-      id: "popup_1_2",
-      type: "video_popup",
-      badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 1 A PASO 2",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_1_a_2.png"); },
-      videoIdx: 2,
-      i18n: {
-        es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 1 A PASO 2", title: "Cápsula emergente: Momentos de la Verdad (Jan Carlzon)", desc: "Antes de mapear la experiencia de tu cliente, la cápsula de video te muestra cómo los primeros 15 segundos de contacto determinan la lealtad hacia tu marca." },
-        en: { badge: "VIDEO POP-UP · TRANSITION STEP 1 TO STEP 2", title: "Pop-up Capsule: Moments of Truth (Jan Carlzon)", desc: "Before mapping your customer journey, this video pop-up shows how the first 15 seconds of contact determine brand loyalty." },
-        fr: { badge: "POP-UP VIDÉO · TRANSITION ÉTAPE 1 À ÉTAPE 2", title: "Pop-up Vidéo : Les Moments de Vérité (Jan Carlzon)", desc: "Découvrez comment 15 secondes d'interaction déterminent la confiance de vos clients." },
-        pt: { badge: "POP-UP DE VÍDEO · TRANSIÇÃO PASSO 1 AO PASSO 2", title: "Pop-up de Vídeo: Momentos da Verdade (Jan Carlzon)", desc: "Veja como os primeiros 15 segundos de contato determinam a fidelidade do seu cliente." },
-        de: { badge: "VIDEO-POP-UP · ÜBERGANG SCHRITT 1 ZU SCHRITT 2", title: "Video-Pop-up: Momente der Wahrheit (Jan Carlzon)", desc: "Erleben Sie, wie die ersten 15 Sekunden Kundenkontakt über langfristige Markentreue entscheiden." },
-        it: { badge: "POP-UP VIDEO · TRANSIZIONE PASSO 1 A PASSO 2", title: "Pop-up Video: I Momenti della Verità (Jan Carlzon)", desc: "Scopri come i primi 15 secondi di contatto determinano la fedeltà verso il tuo brand." }
-      }
-    },
-    {
-      id: "step2_main",
-      type: "step",
-      badge: "PASO 2 · TOUCHPOINTS ANTES, DURANTE Y DESPUÉS",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step2_touchpoints_carlzon.png"); },
-      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step2_2_durante.png"); },
-      i18n: {
-        es: { badge: "PASO 2 · TOUCHPOINTS ANTES, DURANTE Y DESPUÉS", title: "Seleccionas los puntos de contacto clave de tu negocio", desc: "Eliges y personalizas cómo te descubren tus clientes (Antes), cómo viven tu servicio (Durante) y cómo aseguras que regresen y te recomienden (Después)." },
-        en: { badge: "STEP 2 · BEFORE, DURING & AFTER TOUCHPOINTS", title: "Select the key touchpoints of your business", desc: "Choose and customize how customers discover you (Before), experience your service (During), and stay loyal (After)." },
-        fr: { badge: "ÉTAPE 2 · TOUCHPOINTS AVANT, PENDANT ET APRÈS", title: "Sélectionnez les points de contact clés de votre entreprise", desc: "Personnalisez comment vos clients vous découvrent (Avant), vivent votre service (Pendant) et restent fidèles (Après)." },
-        pt: { badge: "PASSO 2 · TOUCHPOINTS ANTES, DURANTE E DEPOIS", title: "Selecione os pontos de contato chave do seu negócio", desc: "Personalize como seus clientes descobrem você (Antes), vivem seu serviço (Durante) e permanecem fiéis (Depois)." },
-        de: { badge: "SCHRITT 2 · TOUCHPOINTS VORHER, WÄHREND & NACHHER", title: "Wählen Sie die wichtigsten Kontaktpunkte Ihres Geschäfts", desc: "Definieren Sie, wie Kunden Sie entdecken (Vorher), erleben (Währenddessen) und weiterempfehlen (Nachher)." },
-        it: { badge: "PASSO 2 · TOUCHPOINT PRIMA, DURANTE E DOPO", title: "Seleziona i punti di contatto chiave del tuo business", desc: "Personalizza come i clienti ti scoprono (Prima), vivono il servizio (Durante) e restano fedeli (Dopo)." }
-      }
-    },
-    {
-      id: "popup_2_3",
-      type: "video_popup",
-      badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 2 A PASO 3",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_2_a_3.png"); },
-      videoIdx: 3,
-      i18n: {
-        es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 2 A PASO 3", title: "Cápsula emergente: Naming Estratégico y Posicionamiento", desc: "El pop-up de video introduce las leyes de posicionamiento de Al Ries & Jack Trout y la fonética comercial SMILE antes de bautizar o confirmar el nombre de tu marca." },
-        en: { badge: "VIDEO POP-UP · TRANSITION STEP 2 TO STEP 3", title: "Pop-up Capsule: Strategic Naming & Positioning", desc: "This video pop-up introduces Al Ries & Jack Trout's positioning laws and SMILE commercial phonetics before confirming your brand name." },
-        fr: { badge: "POP-UP VIDÉO · TRANSITION ÉTAPE 2 À ÉTAPE 3", title: "Pop-up Vidéo : Naming Stratégique et Positionnement", desc: "Introduction aux lois du positionnement et à la phonétique de marque SMILE." },
-        pt: { badge: "POP-UP DE VÍDEO · TRANSIÇÃO PASSO 2 AO PASSO 3", title: "Pop-up de Vídeo: Naming Estratégico e Posicionamento", desc: "Introdução às leis de posicionamento e fonética comercial SMILE antes de confirmar seu nome." },
-        de: { badge: "VIDEO-POP-UP · ÜBERGANG SCHRITT 2 ZU SCHRITT 3", title: "Video-Pop-up: Strategisches Naming & Positionierung", desc: "Einführung in die Gesetze der Markenpositionierung und kommerziellen Phonetik." },
-        it: { badge: "POP-UP VIDEO · TRANSIZIONE PASSO 2 A PASSO 3", title: "Pop-up Video: Naming Strategico e Posizionamento", desc: "Introduzione alle leggi del posizionamento e alla fonetica commerciale." }
-      }
-    },
-    {
-      id: "step3_main",
-      type: "step",
-      badge: "PASO 3 · NAMING, ESLOGAN Y CLASES DE NIZA",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step3_naming_niza.png"); },
-      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step3_2_naming.png"); },
-      i18n: {
-        es: { badge: "PASO 3 · NAMING, ESLOGAN Y CLASES DE NIZA", title: "Confirmas tu Nombre, Eslogan y Clasificación Legal de Niza", desc: "Exploras propuestas de naming o validas tu nombre actual junto con su eslogan y las Clases Internacionales de Niza exactas para proteger tu marca ante IMPI, USPTO o EUIPO." },
-        en: { badge: "STEP 3 · NAMING, TAGLINE & NICE CLASSES", title: "Confirm your Name, Tagline & Legal Nice Classification", desc: "Explore naming proposals or validate your current name, tagline, and exact International Nice Classes for trademark registration." },
-        fr: { badge: "ÉTAPE 3 · NAMING, SLOGAN ET CLASSES DE NICE", title: "Confirmez votre Nom, Slogan et Classification de Nice", desc: "Validez votre nom commercial, votre slogan et les classes internationales de Nice pour le dépôt de marque." },
-        pt: { badge: "PASSO 3 · NAMING, SLOGAN E CLASSES DE NICE", title: "Confirme seu Nome, Slogan e Classificação de Nice", desc: "Valide seu nome comercial, slogan e as Classes Internacionais de Nice exatas para registro de marca." },
-        de: { badge: "SCHRITT 3 · NAMING, CLAIM & NIZZA-KLASSEN", title: "Markenname, Claim & Nizza-Klassifikation bestätigen", desc: "Bestätigen Sie Ihren Markennamen, Ihren Claim und die exakten Nizza-Klassen für den Markenschutz." },
-        it: { badge: "PASSO 3 · NAMING, PAYOFF E CLASSI DI NIZZA", title: "Conferma Nome, Payoff e Classificazione di Nizza", desc: "Convalida il nome del brand, lo slogan e le Classi Internazionali di Nizza per la registrazione del marchio." }
-      }
-    },
-    {
-      id: "popup_3_4",
-      type: "video_popup",
-      badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 3 A PASO 4",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_3_a_4.png"); },
-      videoIdx: 4,
-      i18n: {
-        es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 3 A PASO 4", title: "Cápsula emergente: Ingeniería Kansei y Psicología de la Forma", desc: "Descubre en video cómo la metodología japonesa Kansei traduce tus valores estratégicos en peso tipográfico, curvatura y carácter visual." },
-        en: { badge: "VIDEO POP-UP · TRANSITION STEP 3 TO STEP 4", title: "Pop-up Capsule: Kansei Engineering & Psychology of Form", desc: "Discover how Japanese Kansei engineering translates your strategic values into typographic weight, curvature, and visual character." },
-        fr: { badge: "POP-UP VIDÉO · TRANSITION ÉTAPE 3 À ÉTAPE 4", title: "Pop-up Vidéo : Ingénierie Kansei et Psychologie des Formes", desc: "Découvrez comment la méthode japonaise Kansei traduit vos valeurs en typographie et géométrie." },
-        pt: { badge: "POP-UP DE VÍDEO · TRANSIÇÃO PASSO 3 AO PASSO 4", title: "Pop-up de Vídeo: Engenharia Kansei e Psicologia da Forma", desc: "Descubra como a metodologia japonesa Kansei traduz seus valores em tipografia e geometria." },
-        de: { badge: "VIDEO-POP-UP · ÜBERGANG SCHRITT 3 ZU SCHRITT 4", title: "Video-Pop-up: Kansei-Engineering & Formpsychologie", desc: "Erfahren Sie, wie japanisches Kansei-Engineering Ihre Markenwerte in Typografie und Geometrie übersetzt." },
-        it: { badge: "POP-UP VIDEO · TRANSIZIONE PASSO 3 A PASSO 4", title: "Pop-up Video: Ingegneria Kansei e Psicologia della Forma", desc: "Scopri come il metodo giapponese Kansei traduce i tuoi valori in tipografia e geometria." }
-      }
-    },
-    {
-      id: "step4_main",
-      type: "step",
-      badge: "PASO 4 · BRÚJULA KANSEI Y TIPOGRAFÍA HÍBRIDA",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step4_kansei_tipografia.png"); },
-      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step4_1_kansei.png"); },
-      i18n: {
-        es: { badge: "PASO 4 · BRÚJULA KANSEI Y TIPOGRAFÍA HÍBRIDA", title: "Calibras tus ejes sensoriales y eliges tus fuentes oficiales", desc: "Ajustas los deslizadores Kansei y seleccionas tu arquitectura tipográfica (Primaria, Secundaria y Monoespaciada) con empaquetado automático .TTF en archivo .ZIP." },
-        en: { badge: "STEP 4 · KANSEI COMPASS & HYBRID TYPOGRAPHY", title: "Calibrate sensory axes and select your official fonts", desc: "Adjust the Kansei sliders and choose your typographic hierarchy (Primary, Secondary, Monospace) with automatic .TTF font bundling in a .ZIP kit." },
-        fr: { badge: "ÉTAPE 4 · BOUSSOLE KANSEI ET TYPOGRAPHIE HYBRIDE", title: "Calibrez vos axes sensoriels et choisissez vos polices", desc: "Ajustez les curseurs Kansei et sélectionnez votre duo typographique officiel avec kit .ZIP inclus." },
-        pt: { badge: "PASSO 4 · BÚSSOLA KANSEI E TIPOGRAFIA HÍBRIDA", title: "Calibre seus eixos sensoriais e escolha suas fontes", desc: "Ajuste os controles Kansei e selecione sua hierarquia tipográfica oficial com pacote .ZIP incluso." },
-        de: { badge: "SCHRITT 4 · KANSEI-KOMPASS & HYBRIDE TYPOGRAFIE", title: "Sensorische Achsen kalibrieren & Schriften wählen", desc: "Kalibrieren Sie die Kansei-Regler und wählen Sie Ihre offizielle Schrifthierarchie inklusive .ZIP-Schriftenpaket." },
-        it: { badge: "PASSO 4 · BUSSOLA KANSEI E TIPOGRAFIA IBRIDA", title: "Calibra gli assi sensoriali e scegli i tuoi font ufficiali", desc: "Regola i cursori Kansei e seleziona la gerarchia tipografica ufficiale con kit .ZIP incluso." }
-      }
-    },
-    {
-      id: "popup_4_5",
-      type: "video_popup",
-      badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 4 A PASO 5",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_4_a_5.png"); },
-      videoIdx: 5,
-      i18n: {
-        es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 4 A PASO 5", title: "Cápsula emergente: Síntesis Vectorial Nano Banana Pro y Colorimetría", desc: "El video explica cómo la simplicidad geométrica de Paul Rand y Jony Ive permite que un símbolo funcione desde el ícono de una app hasta la fachada de un edificio." },
-        en: { badge: "VIDEO POP-UP · TRANSITION STEP 4 TO STEP 5", title: "Pop-up Capsule: Nano Banana Pro Vector Synthesis & Colorimetry", desc: "This video explains how geometric simplicity lets your emblem scale effortlessly from a mobile app icon to a building facade." },
-        fr: { badge: "POP-UP VIDÉO · TRANSITION ÉTAPE 4 À ÉTAPE 5", title: "Pop-up Vidéo : Synthèse Vectorielle Nano Banana Pro et Colorimétrie", desc: "Comment la simplicité géométrique permet à votre emblème de fonctionner à toutes les échelles." },
-        pt: { badge: "POP-UP DE VÍDEO · TRANSIÇÃO PASSO 4 AO PASSO 5", title: "Pop-up de Vídeo: Síntese Vetorial Nano Banana Pro e Colorimetria", desc: "Como a simplicidade geométrica permite que seu símbolo funcione de um ícone de app até uma fachada." },
-        de: { badge: "VIDEO-POP-UP · ÜBERGANG SCHRITT 4 ZU SCHRITT 5", title: "Video-Pop-up: Nano Banana Pro Vektorsynthese & Farbarchitektur", desc: "Wie geometrische Präzision dafür sorgt, dass Ihr Markenzeichen vom App-Icon bis zur Gebäudefassade wirkt." },
-        it: { badge: "POP-UP VIDEO · TRANSIZIONE PASSO 4 A PASSO 5", title: "Pop-up Video: Sintesi Vettoriale Nano Banana Pro e Colorimetria", desc: "Come la semplicità geometrica permette al tuo simbolo di funzionare da un'icona app fino a una facciata." }
-      }
-    },
-    {
-      id: "step5_main",
-      type: "step",
-      badge: "PASO 5 · TALLER DE LOGOTIPO NANO BANANA PRO Y LIQUID GLASS",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step5_taller_logo_liquid_glass.png"); },
-      get secondaryImg() { return getLocalizedAppCaptureUrl("/assets/app_captures/tour_step5_2_iter6_claro.png"); },
-      i18n: {
-        es: { badge: "PASO 5 · TALLER DE LOGOTIPO NANO BANANA PRO Y LIQUID GLASS", title: "Evolucionas con Nano Banana Pro y apruebas tu Logotipo en Curvas", desc: "Visualizas tus iteraciones sobre lienzo claro (#FFFFFF) y soporte oscuro (#090D16), ajustas tu paleta HEX/CMYK/Pantone y bloqueas la versión maestra en vectores matemáticos." },
-        en: { badge: "STEP 5 · NANO BANANA PRO & LIQUID GLASS LOGO ATELIER", title: "Evolve with Nano Banana Pro and approve your Official Vector Logo", desc: "Preview iterations on light (#FFFFFF) and dark (#090D16) canvases, fine-tune your HEX/CMYK/Pantone palette, and lock in your master vector emblem." },
-        fr: { badge: "ÉTAPE 5 · ATELIER LOGO NANO BANANA PRO ET LIQUID GLASS", title: "Faites évoluer avec Nano Banana Pro et validez votre Logotype", desc: "Prévisualisez vos itérations sur fond clair et sombre, ajustez votre palette HEX/CMYK/Pantone et validez le vecteur maître." },
-        pt: { badge: "PASSO 5 · ATELIER DE LOGOTIPO NANO BANANA PRO E LIQUID GLASS", title: "Evolua com Nano Banana Pro e aprove seu Logotipo Oficial", desc: "Visualize suas iterações em fundo claro e escuro, ajuste sua paleta HEX/CMYK/Pantone e aprove o vetor mestre." },
-        de: { badge: "SCHRITT 5 · NANO BANANA PRO & LIQUID GLASS LOGO-ATELIER", title: "Mit Nano Banana Pro Vektor-Logo entwickeln und freigeben", desc: "Prüfen Sie Varianten auf hellem und dunklem Grund, kalibrieren Sie HEX/CMYK/Pantone und bestätigen Sie das Master-Logo." },
-        it: { badge: "PASSO 5 · ATELIER DEL LOGO NANO BANANA PRO E LIQUID GLASS", title: "Evolvi con Nano Banana Pro e approva il tuo Logo in Curve", desc: "Visualizza le iterazioni su sfondo chiaro e scuro, regola la palette HEX/CMYK/Pantone e approva il vettore master." }
-      }
-    },
-    {
-      id: "popup_5_6",
-      type: "video_popup",
-      badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 5 A PASO 6",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/popup_video_paso_5_a_6.png"); },
-      videoIdx: 6,
-      i18n: {
-        es: { badge: "POP-UP DE VIDEO · TRANSICIÓN PASO 5 A PASO 6", title: "Cápsula emergente: La Bóveda del Manual de 36 Láminas", desc: "Última cápsula antes de entrar a tu bóveda: cómo usar tu Manual de Identidad y tus 9 entregables con imprentas, diseñadores y equipo comercial." },
-        en: { badge: "VIDEO POP-UP · TRANSITION STEP 5 TO STEP 6", title: "Pop-up Capsule: The 36-Plate Brandbook Vault", desc: "Final video capsule before entering your vault: how to deploy your 36-Plate Brandbook and 9 deliverables across print shops, designers, and sales teams." },
-        fr: { badge: "POP-UP VIDÉO · TRANSITION ÉTAPE 5 À ÉTAPE 6", title: "Pop-up Vidéo : Le Coffre du Manuel de 36 Planches", desc: "Dernière capsule avant le coffre : comment utiliser votre manuel et vos 9 livrables au quotidien." },
-        pt: { badge: "POP-UP DE VÍDEO · TRANSIÇÃO PASSO 5 AO PASSO 6", title: "Pop-up de Vídeo: O Cofre do Manual de 36 Lâminas", desc: "Última cápsula antes do cofre: como usar seu Manual de 36 Lâminas e seus 9 entregáveis com gráficas e equipe." },
-        de: { badge: "VIDEO-POP-UP · ÜBERGANG SCHRITT 5 ZU SCHRITT 6", title: "Video-Pop-up: Der Tresor des 36-Tafeln-Handbuchs", desc: "Letzte Kapsel vor dem Tresor: Wie Sie Ihr Handbuch und alle 9 Deliverables im Alltag einsetzen." },
-        it: { badge: "POP-UP VIDEO · TRANSIZIONE PASSO 5 A PASSO 6", title: "Pop-up Video: Il Caveau del Manuale di 36 Tavole", desc: "Ultima capsula prima del caveau: come utilizzare il Manuale di 36 Tavole e i 9 deliverable con stamperie e team." }
-      }
-    },
-    {
-      id: "step6_1",
-      type: "step",
-      badge: "PASO 6.1 · VISOR EN VIVO DE LAS 36 LÁMINAS",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step6_visor_36_laminas.png"); },
-      secondaryImg: "/assets/brandbook_plates_tbb/plate-01.jpg",
-      i18n: {
-        es: { badge: "PASO 6.1 · VISOR EN VIVO DE LAS 36 LÁMINAS", title: "Inspeccionas tu Manual Oficial de 36 Láminas hoja por hoja", desc: "Recorres las 36 láminas compiladas en tiempo real: portada monolítica, índice rector, Círculo Dorado, Touchpoints, retícula del logo, paleta industrial y mockups fotográficos 4:3." },
-        en: { badge: "STEP 6.1 · LIVE 36-PLATE BRANDBOOK VIEWER", title: "Inspect your 36-Plate Official Brandbook page by page", desc: "Flip through all 36 compiled plates in real time: monolithic cover, master index, Golden Circle, Touchpoints, logo grid, industrial palette, and 4:3 photo mockups." },
-        fr: { badge: "ÉTAPE 6.1 · VISIONNEUSE EN DIRECT DES 36 PLANCHES", title: "Inspectez votre Manuel Officiel de 36 Planches page par page", desc: "Parcourez les 36 planches compilées en temps réel avant l'exportation finale." },
-        pt: { badge: "PASSO 6.1 · VISUALIZADOR AO VIVO DAS 36 LÂMINAS", title: "Inspecione seu Manual Oficial de 36 Lâminas folha por folha", desc: "Navegue pelas 36 lâminas compiladas em tempo real antes de exportar." },
-        de: { badge: "SCHRITT 6.1 · LIVE-VIEWER DER 36 TAFELN", title: "Prüfen Sie Ihr 36-Tafeln-Markenhandbuch Seite für Seite", desc: "Blättern Sie in Echtzeit durch alle 36 kompilierten Tafeln vor dem Export." },
-        it: { badge: "PASSO 6.1 · VISORE LIVE DELLE 36 TAVOLE", title: "Ispeziona il tuo Manuale Ufficiale di 36 Tavole pagina per pagina", desc: "Sfoglia tutte le 36 tavole compilate in tempo reale prima dell'esportazione." }
-      }
-    },
-    {
-      id: "step6_2_deliverables",
-      type: "deliverables_finale",
-      badge: "PASO 6.2 Y 6.3 · DESCARGA DE LOS 9 ENTREGABLES OFICIALES",
-      get img() { return getLocalizedAppCaptureUrl("/assets/app_captures/step6_boveda_entregables.png"); },
-      secondaryImg: "/assets/app_captures/step6_firma_correo_html.png",
-      i18n: {
-        es: { badge: "PASO 6.2 Y 6.3 · DESCARGA DE LOS 9 ENTREGABLES OFICIALES", title: "Descargas tus 9 Entregables Oficiales listos para operar", desc: "Al final del recorrido descargas en un clic tu Manual PDF de 36 Láminas, Visor Web HTML, Logotipo Horizontal SVG, Maestro Illustrator .AI, Isotipo 1024px, Firma de Correo HTML, Hoja Membretada Word .DOCX, Presentación PowerPoint .PPTX y Kit de Fuentes .ZIP." },
-        en: { badge: "STEP 6.2 & 6.3 · DOWNLOAD ALL 9 OFFICIAL DELIVERABLES", title: "Download all 9 Official Deliverables ready for business", desc: "At the end of the tour, download in one click your 36-Plate PDF Brandbook, Interactive HTML Viewer, Horizontal SVG Logo, Native Illustrator .AI, 1024px App Icon, HTML Email Signature, Word Letterhead .DOCX, PowerPoint Deck .PPTX, and Font Kit .ZIP." },
-        fr: { badge: "ÉTAPE 6.2 ET 6.3 · TÉLÉCHARGEMENT DES 9 LIVRABLES OFFICIELS", title: "Téléchargez vos 9 Livrables Officiels prêts à l'emploi", desc: "À la fin du parcours, téléchargez en un clic votre Manuel PDF 36 Planches, Visionneuse HTML, SVG, Illustrator .AI, Icône 1024px, Signature HTML, Word .DOCX, PowerPoint .PPTX et Kit de Polices .ZIP." },
-        pt: { badge: "PASSO 6.2 E 6.3 · DOWNLOAD DOS 9 ENTREGÁVEIS OFICIAIS", title: "Baixe seus 9 Entregáveis Oficiais prontos para usar", desc: "No final do tour, baixe em um clique seu Manual PDF de 36 Lâminas, Visualizador HTML, SVG, Illustrator .AI, Ícone 1024px, Assinatura HTML, Word .DOCX, PowerPoint .PPTX e Kit de Fontes .ZIP." },
-        de: { badge: "SCHRITT 6.2 & 6.3 · DOWNLOAD ALLER 9 OFFIZIELLEN DELIVERABLES", title: "Laden Sie alle 9 offiziellen Deliverables einsatzbereit herunter", desc: "Am Ende der Tour laden Sie per Klick Ihr 36-Tafeln-PDF, HTML-Viewer, SVG, Illustrator .AI, 1024px Icon, HTML-Signatur, Word .DOCX, PowerPoint .PPTX und Font-Kit .ZIP herunter." },
-        it: { badge: "PASSO 6.2 E 6.3 · DOWNLOAD DEI 9 DELIVERABLE UFFICIALI", title: "Scarica i tuoi 9 Deliverable Ufficiali pronti per operare", desc: "Alla fine del percorso scarichi con un clic il Manuale PDF di 36 Tavole, Visore HTML, SVG, Illustrator .AI, Icona 1024px, Firma HTML, Word .DOCX, PowerPoint .PPTX e Kit Font .ZIP." }
-      }
-    }
-  ];
-
+  // Consolidación de Entregables (Mención única del Brandbook oficial de "más de 30 páginas (ajustable según el giro del negocio)")
   const OFFICIAL_9_DELIVERABLES = [
     {
       num: "01",
-      format: ".PDF · 36 PLATES",
-      plateNum: 1,
+      format: ".PDF + .HTML INTERACTIVO",
+      sampleUrl: "/samples/1_Brandbook_Maestro_TheBestBrand.html",
       thumb: "/assets/brandbook_plates_tbb/plate-01.jpg",
-      sampleUrl: "/assets/deliverables_tbb/Manual_Identidad_36_Laminas_the_best_brand.pdf",
+      plateNum: 1,
+      isPrimaryBrandbook: true,
       i18n: {
-        es: { format: ".PDF · 36 LÁMINAS", title: "Manual Oficial de Identidad de 36 Láminas (.PDF)", desc: "Documento maestro de 36 páginas 16:9 sobre lienzo claro con índice rector, Círculo Dorado, Touchpoints, terna de logotipos, retícula constructiva, paleta CMYK/Pantone y aplicaciones reales." },
-        en: { format: ".PDF · 36 PLATES", title: "36-Plate Official Brand Identity Manual (.PDF)", desc: "36-page 16:9 master document on a light canvas featuring master index, Golden Circle, Touchpoints, logo suite, construction grid, CMYK/Pantone palette, and real-world mockups." },
-        fr: { format: ".PDF · 36 PLANCHES", title: "Manuel Officiel d'Identité de 36 Planches (.PDF)", desc: "Document maître de 36 pages 16:9 avec sommaire, Cercle d'Or, Touchpoints, logotypes, grille de construction, palette CMJN/Pantone et applications." },
-        pt: { format: ".PDF · 36 LÂMINAS", title: "Manual Oficial de Identidade de 36 Lâminas (.PDF)", desc: "Documento mestre de 36 páginas 16:9 com índice diretor, Círculo Dourado, Touchpoints, terna de logotipos, grid construtivo, paleta CMYK/Pantone e aplicações." },
-        de: { format: ".PDF · 36 TAFELN", title: "Offizielles 36-Tafeln-Markenhandbuch (.PDF)", desc: "36-seitiges 16:9-Masterdokument mit Inhaltsverzeichnis, Golden Circle, Touchpoints, Logo-Suite, Konstruktionsraster, CMYK/Pantone-Palette und Mockups." },
-        it: { format: ".PDF · 36 TAVOLE", title: "Manuale Ufficiale d'Identità di 36 Tavole (.PDF)", desc: "Documento master di 36 pagine 16:9 con indice generale, Cerchio d'Oro, Touchpoint, terna di loghi, griglia costruttiva, palette CMYK/Pantone e mockup." }
+        es: { title: "Brandbook Oficial de Más de 30 Páginas (Ajustable según el Giro del Negocio)", desc: "Constitución visual y estratégica unificada en flujo de curvas abiertas: Círculo Dorado, La Empresa como Persona, Touchpoints Antes/Durante/Después, Retícula 8X×3X, Psicología del Color, Tipografía, Submarcas y Aplicaciones." },
+        en: { title: "Official Brandbook of 30+ Pages (Adaptable to Your Business Sector)", desc: "Unified strategic and visual constitution in open vector curves: Golden Circle, Company as a Person, Before/During/After Touchpoints, 8X×3X Grid, Color Psychology, Typography, Sub-brands, and Applications." },
+        fr: { title: "Brandbook Officiel de Plus de 30 Pages (Adaptable selon Votre Secteur d'Activité)", desc: "Constitution visuelle et stratégique unifiée en courbes ouvertes : Cercle d'Or, Entreprise comme Personne, Touchpoints Avant/Pendant/Après, Grille 8X×3X, Couleurs, Typographie, Sous-marques et Applications." },
+        pt: { title: "Brandbook Oficial com Mais de 30 Páginas (Ajustável conforme o Ramo do Negócio)", desc: "Constituição visual e estratégica unificada em curvas abertas: Círculo Dourado, Empresa como Pessoa, Touchpoints Antes/Durante/Depois, Grelha 8X×3X, Cor, Tipografia, Submarcas e Aplicações." },
+        de: { title: "Offizielles Brandbook mit Über 30 Seiten (Anpassbar je nach Branche)", desc: "Einheitliche strategische und visuelle Markenverfassung in offenen Vektorkurven: Golden Circle, Markenpersönlichkeit, Touchpoints, 8X×3X-Raster, Farbsystem, Typografie, Submarken und Anwendungen." },
+        it: { title: "Brandbook Ufficiale di Oltre 30 Pagine (Adattabile al Settore Aziendale)", desc: "Costituzione visiva e strategica unificata in curve aperte: Cerchio d'Oro, Azienda come Persona, Touchpoint Prima/Durante/Dopo, Griglia 8X×3X, Colore, Tipografia, Sub-brand e Applicazioni." }
       }
     },
     {
       num: "02",
-      format: ".HTML · WEB VIEWER",
-      plateNum: 2,
-      thumb: "/assets/brandbook_plates_tbb/plate-02.jpg",
-      sampleUrl: "/assets/deliverables_tbb/Manual_Identidad_36_Laminas_the_best_brand.html",
+      format: ".SVG · VECTOR PURO",
+      sampleUrl: "/samples/Logotipo_Oficial_TheBestBrand_Curvas.svg",
+      thumb: "/assets/brandbook_plates_tbb/plate-09.jpg",
+      plateNum: 9,
       i18n: {
-        es: { format: ".HTML · VISOR INTERACTIVO", title: "Manual Web Autónomo de 36 Láminas (.HTML)", desc: "Archivo interactivo autónomo con navegación instantánea entre las 36 láminas, ideal para compartir con tu equipo directivo, diseñadores y proveedores." },
-        en: { format: ".HTML · INTERACTIVE VIEWER", title: "Standalone Interactive 36-Plate Web Brandbook (.HTML)", desc: "Self-contained interactive file with instant navigation across all 36 plates, ideal for sharing with your executive team, designers, and vendors." },
-        fr: { format: ".HTML · VISIONNEUSE WEB", title: "Manuel Web Autonome de 36 Planches (.HTML)", desc: "Fichier interactif autonome permettant de naviguer instantanément entre les 36 planches sur tout navigateur." },
-        pt: { format: ".HTML · VISUALIZADOR INTERATIVO", title: "Manual Web Autônomo de 36 Lâminas (.HTML)", desc: "Arquivo interativo autônomo com navegação rápida entre as 36 lâminas para compartilhar com equipe e fornecedores." },
-        de: { format: ".HTML · INTERAKTIVER VIEWER", title: "Eigenständiges Interaktives Web-Brandbook (.HTML)", desc: "Interaktive Einzeldatei mit Sofortnavigation durch alle 36 Tafeln für Team, Agenturen und Lieferanten." },
-        it: { format: ".HTML · VISORE INTERATTIVO", title: "Manuale Web Autonomo di 36 Tavole (.HTML)", desc: "File interattivo autonomo con navigazione istantanea tra le 36 tavole da condividere con team e fornitori." }
+        es: { title: "Logotipo Maestro en Curvas Bézier (.SVG)", desc: "Archivo vectorial escalable sin pérdida desde 16px hasta espectacular, en versiones positivo, negativo y monocromático." },
+        en: { title: "Master Logo in Pure Bézier Curves (.SVG)", desc: "Lossless scalable vector file from 16px to billboard scale, in positive, negative, and monochrome versions." },
+        fr: { title: "Logo Maître en Courbes de Bézier (.SVG)", desc: "Fichier vectoriel extensible sans perte de 16px aux grands formats, en versions positive, négative et monochrome." },
+        pt: { title: "Logótipo Mestre em Curvas Bézier (.SVG)", desc: "Ficheiro vetorial escalável sem perda desde 16px até grande formato, em versões positiva, negativa e monocromática." },
+        de: { title: "Master-Logo in Reinen Bézier-Kurven (.SVG)", desc: "Verlustfrei skalierbare Vektordatei von 16px bis Großformat in Positiv-, Negativ- und Monochrom-Varianten." },
+        it: { title: "Logo Master in Curve di Bézier Pure (.SVG)", desc: "File vettoriale scalabile senza perdita da 16px a grande formato, nelle versioni positivo, negativo e monocromatico." }
       }
     },
     {
       num: "03",
-      format: ".SVG · PURE VECTORS",
-      plateNum: 13,
-      thumb: "/assets/brandbook_plates_tbb/plate-13.jpg",
-      sampleUrl: "/assets/logos/Logotipo_Horizontal_Curvas_the_best_brand.svg",
+      format: ".AI / .EPS · PRE-PRENSA",
+      sampleUrl: "/samples/Logotipo_Master_Illustrator_TheBestBrand.ai.svg",
+      thumb: "/assets/brandbook_plates_tbb/plate-11.jpg",
+      plateNum: 11,
       i18n: {
-        es: { format: ".SVG · VECTORES PUROS", title: "Logotipo Horizontal Oficial en Curvas (.SVG)", desc: "Archivo vectorial matemático escalable al infinito sin pérdida de nitidez para web, rotulación vehicular, espectaculares y bordado." },
-        en: { format: ".SVG · PURE VECTORS", title: "Official Horizontal Vector Logo in Curves (.SVG)", desc: "Infinitely scalable mathematical vector file with zero quality loss for web, vehicle wraps, billboards, and embroidery." },
-        fr: { format: ".SVG · VECTEURS PURS", title: "Logotype Horizontal Officiel en Courbes (.SVG)", desc: "Fichier vectoriel mathématique extensible à l'infini pour le web, la signalétique et l'impression grand format." },
-        pt: { format: ".SVG · VETORES PUROS", title: "Logotipo Horizontal Oficial em Curvas (.SVG)", desc: "Arquivo vetorial matemático escalável ao infinito sem perda de nitidez para web, frota, outdoor e bordado." },
-        de: { format: ".SVG · REINE VEKTOREN", title: "Offizielles Horizontales Vektor-Logo (.SVG)", desc: "Unendlich skalierbare mathematische Vektordatei ohne Qualitätsverlust für Web, Beschriftung und Großformatdruck." },
-        it: { format: ".SVG · VETTORI PURI", title: "Logotipo Orizzontale Ufficiale in Curve (.SVG)", desc: "File vettoriale matematico scalabile all'infinito senza perdita di qualità per web, insegne e stampa." }
+        es: { title: "Originales de Imprenta y Bordado (.AI / .EPS)", desc: "Capas constructivas separadas con equivalencias Pantone Solid Coated, CMYK FOGRA39 y líneas de corte." },
+        en: { title: "Print & Embroidery Master Originals (.AI / .EPS)", desc: "Layered construction files with Pantone Solid Coated, CMYK FOGRA39 equivalents, and die-cut lines." },
+        fr: { title: "Originaux d'Imprimerie et Broderie (.AI / .EPS)", desc: "Calques de construction séparés avec équivalences Pantone Solid Coated et CMYK FOGRA39." },
+        pt: { title: "Originais de Gráfica e Bordado (.AI / .EPS)", desc: "Camadas construtivas separadas com equivalências Pantone Solid Coated e CMYK FOGRA39." },
+        de: { title: "Druck- & Stickerei-Originaldateien (.AI / .EPS)", desc: "Getrennte Konstruktionsebenen mit Pantone Solid Coated und CMYK FOGRA39 Farbwerten." },
+        it: { title: "Originali per Stampa e Ricamo (.AI / .EPS)", desc: "Livelli costruttivi separati con equivalenze Pantone Solid Coated e CMYK FOGRA39." }
       }
     },
     {
       num: "04",
-      format: ".AI · ADOBE ILLUSTRATOR",
-      plateNum: 14,
+      format: ".PNG · CANAL ALFA 4K",
+      sampleUrl: "/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png",
       thumb: "/assets/brandbook_plates_tbb/plate-14.jpg",
-      sampleUrl: "/assets/deliverables_tbb/Logotipo_Horizontal_Curvas_the_best_brand.ai",
+      plateNum: 14,
       i18n: {
-        es: { format: ".AI · ADOBE ILLUSTRATOR", title: "Archivo Maestro Editable en Capas (.AI)", desc: "Código nativo Adobe Illustrator con trazos Bézier puros, retícula constructiva y capas organizadas para imprentas offset y diseñadores." },
-        en: { format: ".AI · ADOBE ILLUSTRATOR", title: "Layered Native Master Vector File (.AI)", desc: "Native Adobe Illustrator file with pure Bézier paths, construction grid, and organized layers for offset printers and designers." },
-        fr: { format: ".AI · ADOBE ILLUSTRATOR", title: "Fichier Maître Éditable en Calques (.AI)", desc: "Fichier natif Adobe Illustrator avec tracés de Bézier purs et calques organisés pour les imprimeurs." },
-        pt: { format: ".AI · ADOBE ILLUSTRATOR", title: "Arquivo Mestre Editável em Camadas (.AI)", desc: "Arquivo nativo Adobe Illustrator com curvas Bézier puras e camadas organizadas para gráficas e designers." },
-        de: { format: ".AI · ADOBE ILLUSTRATOR", title: "Editierbare Master-Vektordatei mit Ebenen (.AI)", desc: "Native Adobe-Illustrator-Datei mit reinen Bézier-Pfaden und geordneten Ebenen für Druckereien und Designer." },
-        it: { format: ".AI · ADOBE ILLUSTRATOR", title: "File Master Editabile a Livelli (.AI)", desc: "File nativo Adobe Illustrator con tracciati di Bézier puri e livelli organizzati per tipografie e designer." }
+        es: { title: "Pack de Transparencias 4K e Ícono App 1:1 (.PNG)", desc: "Logotipo horizontal, vertical e isotipo 1:1 calados sin fondo blanco listos para web, video y redes sociales." },
+        en: { title: "4K Alpha Transparency Pack & 1:1 App Icon (.PNG)", desc: "Horizontal, stacked, and 1:1 icon assets with transparent background ready for web, video, and social media." },
+        fr: { title: "Pack Transparences 4K et Icône App 1:1 (.PNG)", desc: "Logos horizontal, vertical et icône 1:1 détourés sans fond blanc pour web, vidéo et réseaux sociaux." },
+        pt: { title: "Pack de Transparências 4K e Ícone App 1:1 (.PNG)", desc: "Logótipo horizontal, vertical e ícone 1:1 sem fundo branco prontos para web, vídeo e redes sociais." },
+        de: { title: "4K Alpha-Transparenz-Paket & 1:1 App-Icon (.PNG)", desc: "Freigestellte Horizontal-, Vertikal- und 1:1-Icon-Dateien ohne weißen Hintergrund für Web und Video." },
+        it: { title: "Pack Trasparenze 4K e Icona App 1:1 (.PNG)", desc: "Logo orizzontale, verticale e icona 1:1 scontornati senza sfondo bianco per web, video e social." }
       }
     },
     {
       num: "05",
-      format: ".SVG + .PNG 1024px · APP ICON",
-      plateNum: 18,
-      thumb: "/assets/brandbook_plates_tbb/plate-18.jpg",
-      sampleUrl: "/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png",
+      format: ".DOCX · PAPELERÍA WORD",
+      sampleUrl: "/samples/5_Hoja_Membretada_Corporativa_Word.html",
+      thumb: "/assets/brandbook_plates_tbb/plate-25.jpg",
+      plateNum: 25,
       i18n: {
-        es: { format: ".SVG + .PNG 1024px · APP ICON", title: "Isotipo 1:1, Avatar Social y Sello Circular", desc: "Símbolo cuadrado en alta resolución (1024×1024px) y curvas .SVG calibrado para App Store, WhatsApp Business, LinkedIn, Instagram y sello institucional." },
-        en: { format: ".SVG + .PNG 1024px · APP ICON", title: "1:1 App Icon, Social Avatar & Circular Seal", desc: "High-resolution 1024×1024px square symbol and .SVG curves calibrated for App Store, WhatsApp Business, LinkedIn, Instagram, and official seal." },
-        fr: { format: ".SVG + .PNG 1024px · APP ICON", title: "Isotype 1:1, Avatar Social et Sceau Circulaire", desc: "Symbole carré haute résolution (1024×1024px) et .SVG calibré pour App Store, WhatsApp Business, LinkedIn et Instagram." },
-        pt: { format: ".SVG + .PNG 1024px · APP ICON", title: "Isotipo 1:1, Avatar Social e Selo Circular", desc: "Símbolo quadrado em alta resolução (1024×1024px) e .SVG calibrado para App Store, WhatsApp Business, LinkedIn e Instagram." },
-        de: { format: ".SVG + .PNG 1024px · APP ICON", title: "1:1 App-Icon, Social-Avatar & Rundsiegel", desc: "Hochauflösendes 1024×1024px-Symbol und .SVG für App Store, WhatsApp Business, LinkedIn, Instagram und Siegel." },
-        it: { format: ".SVG + .PNG 1024px · APP ICON", title: "Isotipo 1:1, Avatar Social e Sigillo Circolare", desc: "Simbolo quadrato ad alta risoluzione (1024×1024px) e .SVG calibrato per App Store, WhatsApp Business, LinkedIn e Instagram." }
+        es: { title: "Hoja Membretada y Propuesta Ejecutiva (.DOCX)", desc: "Plantilla editable en Microsoft Word y Google Docs con encabezado en curvas, estilos tipográficos y pie legal." },
+        en: { title: "Corporate Letterhead & Executive Proposal (.DOCX)", desc: "Editable Microsoft Word & Google Docs template with open-curve header, typographic styles, and footer." },
+        fr: { title: "Papier à En-tête et Proposition Exécutive (.DOCX)", desc: "Modèle éditable Word et Google Docs avec en-tête en courbes, styles typographiques et pied de page." },
+        pt: { title: "Folha Timbrada e Proposta Executiva (.DOCX)", desc: "Modelo editável em Word e Google Docs com cabeçalho em curvas, estilos tipográficos e rodapé." },
+        de: { title: "Geschäftsbriefbogen & Angebotsvorlage (.DOCX)", desc: "Editierbare Word- & Google-Docs-Vorlage mit Kurven-Kopfzeile, Absatzformaten und Fußzeile." },
+        it: { title: "Carta Intestata e Proposta Esecutiva (.DOCX)", desc: "Modello modificabile Word e Google Docs con intestazione in curve, stili tipografici e piè di pagina." }
       }
     },
     {
       num: "06",
-      format: ".HTML · EMAIL SIGNATURE",
-      plateNum: 33,
-      thumb: "/assets/brandbook_plates_tbb/plate-33.jpg",
-      sampleUrl: "/assets/deliverables_tbb/Firma_Correo_Corporativa_the_best_brand.html",
+      format: ".PPTX · KEYNOTE / SLIDES",
+      sampleUrl: "/samples/6_Presentacion_Ejecutiva_Keynote_16_9.html",
+      thumb: "/assets/brandbook_plates_tbb/plate-26.jpg",
+      plateNum: 26,
       i18n: {
-        es: { format: ".HTML · FIRMA DE CORREO", title: "Firma Corporativa Interactiva de Correo (.HTML)", desc: "Plantilla ejecutiva personalizable con foto o isotipo, cargo, teléfono, enlaces y botón de copia en un clic para Gmail, Outlook y Apple Mail." },
-        en: { format: ".HTML · EMAIL SIGNATURE", title: "Interactive Corporate Email Signature (.HTML)", desc: "Customizable executive signature with photo or emblem, role, phone, links, and 1-click copy for Gmail, Outlook, and Apple Mail." },
-        fr: { format: ".HTML · SIGNATURE E-MAIL", title: "Signature E-mail Corporative Interactive (.HTML)", desc: "Modèle exécutif personnalisable avec photo ou isotype et copie en un clic pour Gmail, Outlook et Apple Mail." },
-        pt: { format: ".HTML · ASSINATURA DE E-MAIL", title: "Assinatura Corporativa Interativa de E-mail (.HTML)", desc: "Modelo executivo personalizável com foto ou isotipo e cópia em um clique para Gmail, Outlook e Apple Mail." },
-        de: { format: ".HTML · E-MAIL-SIGNATUR", title: "Interaktive Corporate E-Mail-Signatur (.HTML)", desc: "Anpassbare Executive-Signatur mit Foto oder Emblem und 1-Klick-Kopie für Gmail, Outlook und Apple Mail." },
-        it: { format: ".HTML · FIRMA EMAIL", title: "Firma Email Aziendale Interattiva (.HTML)", desc: "Modello esecutivo personalizzabile con foto o isotipo e copia in un clic per Gmail, Outlook e Apple Mail." }
+        es: { title: "Presentación Comercial Panorámica 16:9 (.PPTX)", desc: "Deck maestro para ventas y consejo directivo con portadas, gráficas financieras y láminas de caso de éxito." },
+        en: { title: "Widescreen 16:9 Commercial Pitch Deck (.PPTX)", desc: "Master sales and board presentation with cover slides, financial charts, and case study layouts." },
+        fr: { title: "Présentation Commerciale Panoramique 16:9 (.PPTX)", desc: "Deck maître pour ventes et direction avec couvertures, graphiques financiers et études de cas." },
+        pt: { title: "Apresentação Comercial Panorâmica 16:9 (.PPTX)", desc: "Deck mestre para vendas e direção com capas, gráficos financeiros e casos de sucesso." },
+        de: { title: "Widescreen 16:9 Vertriebspräsentation (.PPTX)", desc: "Master-Pitch-Deck mit Titelfolien, Finanzdiagrammen und Case-Study-Layouts." },
+        it: { title: "Presentazione Commerciale Panoramica 16:9 (.PPTX)", desc: "Deck master per vendite e direzione con copertine, grafici finanziari e casi di successo." }
       }
     },
     {
       num: "07",
-      format: ".DOCX · MICROSOFT WORD",
-      plateNum: 34,
-      thumb: "/assets/brandbook_plates_tbb/plate-34.jpg",
-      sampleUrl: "/assets/deliverables_tbb/Plantilla_Hoja_Membretada_the_best_brand.docx",
+      format: ".HTML · FIRMA INTERACTIVA",
+      sampleUrl: "/samples/7_Firma_interactiva_Correo_CEO.html",
+      thumb: "/assets/brandbook_plates_tbb/plate-27.jpg",
+      plateNum: 27,
       i18n: {
-        es: { format: ".DOCX · MICROSOFT WORD", title: "Plantilla Editable de Hoja Membretada (.DOCX)", desc: "Documento oficial en formato Carta/A4 con encabezado vectorial, tipografías homologadas y pie institucional listo para contratos y cotizaciones en Word o Google Docs." },
-        en: { format: ".DOCX · MICROSOFT WORD", title: "Editable Corporate Letterhead Template (.DOCX)", desc: "Official Letter/A4 document with vector header, matched typography, and institutional footer ready for contracts and quotes in Word or Google Docs." },
-        fr: { format: ".DOCX · MICROSOFT WORD", title: "Modèle Éditable de Papier à En-tête (.DOCX)", desc: "Document officiel avec en-tête vectoriel et pied de page institutionnel prêt pour vos contrats dans Word ou Google Docs." },
-        pt: { format: ".DOCX · MICROSOFT WORD", title: "Modelo Editável de Papel Timbrado (.DOCX)", desc: "Documento oficial com cabeçalho vetorial e rodapé institucional pronto para contratos e propostas no Word ou Google Docs." },
-        de: { format: ".DOCX · MICROSOFT WORD", title: "Editierbare Briefpapier-Vorlage (.DOCX)", desc: "Offizielle Vorlage mit Vektor-Kopfzeile und Fußzeile, bereit für Angebote und Verträge in Word oder Google Docs." },
-        it: { format: ".DOCX · MICROSOFT WORD", title: "Modello Editabile di Carta Intestata (.DOCX)", desc: "Documento ufficiale con intestazione vettoriale e piè di pagina pronto per contratti e preventivi in Word o Google Docs." }
+        es: { title: "Firma de Correo Ejecutiva para Gmail, Outlook y Apple Mail", desc: "Código HTML responsivo con logotipo en alta densidad, enlaces directos a WhatsApp, sitio web y agenda." },
+        en: { title: "Executive Email Signature for Gmail, Outlook & Apple Mail", desc: "Responsive HTML signature with high-DPI logo and direct links to WhatsApp, website, and booking." },
+        fr: { title: "Signature E-mail Exécutive pour Gmail, Outlook et Apple Mail", desc: "Signature HTML responsive avec logo haute densité et liens directs vers WhatsApp et site web." },
+        pt: { title: "Assinatura de E-mail Executiva para Gmail, Outlook e Apple Mail", desc: "Assinatura HTML responsiva com logótipo de alta densidade e ligações diretas para WhatsApp e site." },
+        de: { title: "Executive E-Mail-Signatur für Gmail, Outlook & Apple Mail", desc: "Responsive HTML-Signatur mit Retina-Logo und Direktlinks zu WhatsApp, Website und Kalender." },
+        it: { title: "Firma Email Esecutiva per Gmail, Outlook e Apple Mail", desc: "Firma HTML responsive con logo ad alta densità e link diretti a WhatsApp, sito web e agenda." }
       }
     },
     {
       num: "08",
-      format: ".PPTX · POWERPOINT 16:9",
-      plateNum: 35,
-      thumb: "/assets/brandbook_plates_tbb/plate-35.jpg",
-      sampleUrl: "/assets/deliverables_tbb/Plantilla_Presentacion_Ejecutiva_the_best_brand.pptx",
+      format: ".TTF / .WOFF2 · LICENCIA",
+      sampleUrl: "/samples/8_Especificacion_Tipografica_y_Licencias.html",
+      thumb: "/assets/brandbook_plates_tbb/plate-17.jpg",
+      plateNum: 17,
       i18n: {
-        es: { format: ".PPTX · POWERPOINT 16:9", title: "Presentación Ejecutiva Widescreen 16:9 (.PPTX)", desc: "Master Deck corporativo con diapositivas editables de Portada, Propósito, Oferta Comercial, Metodología y Cierre alineadas a tu paleta oficial." },
-        en: { format: ".PPTX · POWERPOINT 16:9", title: "Widescreen 16:9 Executive Presentation (.PPTX)", desc: "Corporate Master Deck with editable Cover, Purpose, Commercial Offer, Methodology, and Closing slides aligned with your official palette." },
-        fr: { format: ".PPTX · POWERPOINT 16:9", title: "Présentation Exécutive Widescreen 16:9 (.PPTX)", desc: "Master Deck corporatif avec diapositives éditables alignées à 100% sur votre palette et votre typographie." },
-        pt: { format: ".PPTX · POWERPOINT 16:9", title: "Apresentação Executiva Widescreen 16:9 (.PPTX)", desc: "Master Deck corporativo com slides editáveis de Capa, Propósito, Oferta Comercial e Fechamento alinhados à sua marca." },
-        de: { format: ".PPTX · POWERPOINT 16:9", title: "Executive-Präsentation Widescreen 16:9 (.PPTX)", desc: "Corporate Master-Deck mit editierbaren Folien für Titel, Zweck, Angebot und Abschluss im offiziellen Marken-Design." },
-        it: { format: ".PPTX · POWERPOINT 16:9", title: "Presentazione Esecutiva Widescreen 16:9 (.PPTX)", desc: "Master Deck aziendale con diapositive editabili di Copertina, Scopo, Offerta Commerciale e Chiusura." }
+        es: { title: "Familia Tipográfica Oficial para Escritorio y Web (.TTF / .WOFF2)", desc: "Paquete de fuentes para titulares, cuerpo y cifras tabulares junto con su hoja de estilos CSS y licencia comercial." },
+        en: { title: "Official Desktop & Web Font Family (.TTF / .WOFF2)", desc: "Headline, body, and tabular numeral font files with ready-to-use CSS stylesheet and commercial license." },
+        fr: { title: "Famille Typographique Officielle Bureau et Web (.TTF / .WOFF2)", desc: "Polices de titres, corps et chiffres tabulaires avec feuille de style CSS et licence commerciale." },
+        pt: { title: "Família Tipográfica Oficial para Desktop e Web (.TTF / .WOFF2)", desc: "Pacote de fontes para títulos, corpo e números tabulares com folha de estilos CSS e licença comercial." },
+        de: { title: "Offizielle Desktop- & Web-Schriftfamilie (.TTF / .WOFF2)", desc: "Titel-, Fließtext- und Tabellenziffern-Fonts inklusive CSS-Stylesheet und kommerzieller Lizenz." },
+        it: { title: "Famiglia Tipografica Ufficiale Desktop e Web (.TTF / .WOFF2)", desc: "Pacchetto font per titoli, corpo e cifre tabulari con foglio di stile CSS e licenza commerciale." }
       }
     },
     {
       num: "09",
-      format: ".ZIP · FONT KIT .TTF",
-      plateNum: 36,
-      thumb: "/assets/brandbook_plates_tbb/plate-36.jpg",
-      sampleUrl: "/assets/deliverables_tbb/Kit_Fuentes_Oficiales_the_best_brand.zip",
+      format: ".JSON / .CSS · DESIGN TOKENS",
+      sampleUrl: "/samples/9_Design_Tokens_y_Variables_CSS.html",
+      thumb: "/assets/brandbook_plates_tbb/plate-15.jpg",
+      plateNum: 15,
       i18n: {
-        es: { format: ".ZIP · KIT DE FUENTES .TTF", title: "Paquete Oficial de Tipografías Instalables (.ZIP)", desc: "Archivo comprimido con las familias tipográficas oficiales en formato .TTF listas para instalar en Mac y Windows más guía de uso web y Adobe Typekit." },
-        en: { format: ".ZIP · .TTF FONT KIT", title: "Installable Official Font Package (.ZIP)", desc: "ZIP archive containing your official .TTF font families ready to install on Mac and Windows plus web CSS and Adobe Typekit governance guide." },
-        fr: { format: ".ZIP · KIT DE POLICES .TTF", title: "Pack Officiel de Polices Installables (.ZIP)", desc: "Archive .ZIP contenant les polices officielles .TTF prêtes à installer sur Mac et Windows ainsi que le guide CSS/Web." },
-        pt: { format: ".ZIP · KIT DE FONTES .TTF", title: "Pacote Oficial de Tipografias Instaláveis (.ZIP)", desc: "Arquivo .ZIP com as famílias tipográficas oficiais .TTF prontas para instalar no Mac e Windows mais guia de uso web." },
-        de: { format: ".ZIP · SCHRIFTENPAKET .TTF", title: "Installierbares Offizielles Schriftenpaket (.ZIP)", desc: "ZIP-Archiv mit allen offiziellen .TTF-Schriftfamilien für Mac und Windows inklusive Web-CSS-Leitfaden." },
-        it: { format: ".ZIP · KIT DI FONT .TTF", title: "Pacchetto Ufficiale di Font Installabili (.ZIP)", desc: "Archivio .ZIP con le famiglie tipografiche ufficiali .TTF pronte da installare su Mac e Windows più guida CSS web." }
+        es: { title: "Design Tokens, Variables CSS y Guía de Implementación Web", desc: "Paleta hexadecimal validada WCAG AAA, sombras, radios de curvatura y tokens listos para tu equipo de desarrollo." },
+        en: { title: "Design Tokens, CSS Variables & Web Implementation Guide", desc: "WCAG AAA validated hex palette, elevation tokens, corner radii, and variables ready for your engineering team." },
+        fr: { title: "Design Tokens, Variables CSS et Guide d'Implémentation Web", desc: "Palette hexadécimale validée WCAG AAA, ombres, rayons de courbure et tokens prêts pour vos développeurs." },
+        pt: { title: "Design Tokens, Variáveis CSS e Guia de Implementação Web", desc: "Paleta hexadecimal validada WCAG AAA, sombras, raios de curvatura e tokens prontos para a equipa técnica." },
+        de: { title: "Design Tokens, CSS-Variablen & Web-Implementierungsleitfaden", desc: "WCAG-AAA-validierte Hex-Palette, Schatten, Radien und Tokens für Ihr Entwicklerteam." },
+        it: { title: "Design Token, Variabili CSS e Guida all'Implementazione Web", desc: "Palette esadecimale validata WCAG AAA, ombre, raggi di curvatura e token pronti per il team di sviluppo." }
       }
     }
   ];
 
-  // Conferencias magistrales de los autores con miniaturas 16:9 reales de YouTube (Cero fotos del fundador)
-  const YOUTUBE_METHODOLOGY_AUTHORS = [
+
+  // Infografía Académica Dinámica y Responsiva (Sección 3: Bases Teóricas — Cero Cápsulas de Video del Fundador)
+  const ACADEMIC_INFOGRAPHIC_STAGES = [
     {
-      id: "qp0HIF3SfI4",
-      author: "Simon Sinek",
-      duration: "18:04",
-      thumb: resolveVideoAsset("/assets/videos/yt_thumbs/qp0HIF3SfI4.jpg"),
-      ytThumbFallback: "https://i.ytimg.com/vi/qp0HIF3SfI4/hqdefault.jpg",
-      url: "https://www.youtube.com/watch?v=qp0HIF3SfI4",
+      step: 0,
+      code: "ETAPA 00",
+      color: "#426EAE",
+      authors: "Peter Drucker · David Aaker · Sagi Haviv · Theodore Levitt",
+      works: "Managing for Results (1964) · Managing Brand Equity (1991) · Identify (2011)",
+      diagramType: "equity_spectrum",
       i18n: {
-        es: { step: "Paso 1 · Círculo Dorado", title: "Cómo los grandes líderes inspiran la acción (Start With Why)" },
-        en: { step: "Step 1 · Golden Circle", title: "How Great Leaders Inspire Action (Start With Why)" },
-        fr: { step: "Étape 1 · Cercle d'Or", title: "Comment les grands leaders inspirent l'action (Start With Why)" },
-        pt: { step: "Passo 1 · Círculo Dourado", title: "Como grandes líderes inspiram ação (Start With Why)" },
-        de: { step: "Schritt 1 · Golden Circle", title: "Wie große Führungspersönlichkeiten zum Handeln inspirieren (Start With Why)" },
-        it: { step: "Passo 1 · Cerchio d'Oro", title: "Come i grandi leader ispirano l'azione (Start With Why)" }
+        es: {
+          title: "Diagnóstico de Capital Visual, Giro de Negocio y Espectro de Marca",
+          thesis: "Toda decisión de identidad parte de cuantificar el capital visual acumulado (Brand Equity) y evitar la miopía de marketing definiendo la transformación real que entrega la empresa.",
+          pillars: [
+            "Preservación o evolución progresiva de activos visuales existentes (Aaker & Haviv)",
+            "Definición de alcance: Marca desde Cero, Rediseño Evolutivo o Arquitectura de Submarcas",
+            "Extracción algorítmica de paleta base y parametrización del giro comercial"
+          ],
+          output: "Expediente de Diagnóstico Inicial + Arquitectura de Marca Madre y Submarcas"
+        },
+        en: {
+          title: "Visual Equity Diagnosis, Business Line & Brand Relationship Spectrum",
+          thesis: "Every identity decision begins by quantifying accumulated Brand Equity and avoiding marketing myopia by defining the real transformation delivered by the company.",
+          pillars: [
+            "Preservation or progressive evolution of existing visual assets (Aaker & Haviv)",
+            "Scope definition: Brand from Scratch, Evolutionary Redesign, or Sub-brand Architecture",
+            "Algorithmic base palette extraction and business sector parameterization"
+          ],
+          output: "Initial Diagnosis Dossier + Master Brand & Sub-brand Architecture"
+        },
+        fr: {
+          title: "Diagnostic du Capital Visuel, Secteur d'Activité et Spectre de Marque",
+          thesis: "Toute décision d'identité commence par mesurer le capital de marque accumulé (Brand Equity) et définir la transformation réelle apportée au client.",
+          pillars: [
+            "Préservation ou évolution progressive des actifs visuels existants (Aaker & Haviv)",
+            "Définition du périmètre : Création de Zéro, Refonte Évolutive ou Sous-marques",
+            "Extraction algorithmique de la palette et paramétrage du secteur d'activité"
+          ],
+          output: "Dossier de Diagnostic Initial + Architecture Marque Mère et Sous-marques"
+        },
+        pt: {
+          title: "Diagnóstico de Património Visual, Ramo de Negócio e Espectro de Marca",
+          thesis: "Toda decisão de identidade parte de quantificar o capital visual acumulado (Brand Equity) e definir a transformação real entregue pela empresa.",
+          pillars: [
+            "Preservação ou evolução progressiva de ativos visuais existentes (Aaker & Haviv)",
+            "Definição de âmbito: Marca do Zero, Redesenho Evolutivo ou Submarcas",
+            "Extração algorítmica da paleta base e parametrização do ramo comercial"
+          ],
+          output: "Dossier de Diagnóstico Inicial + Arquitetura de Marca Mãe e Submarcas"
+        },
+        de: {
+          title: "Diagnose des Visuellen Kapitals, Geschäftsfeld & Markenspektrum",
+          thesis: "Jede Identitätsentscheidung beginnt mit der Bewertung des vorhandenen Markenwerts (Brand Equity) und der klaren Definition des Kundennutzens.",
+          pillars: [
+            "Bewahrung oder progressive Evolution bestehender visueller Assets (Aaker & Haviv)",
+            "Umfangsdefinition: Neustart, Evolutionäres Redesign oder Submarken-Architektur",
+            "Algorithmische Farbextraktion und Parametrisierung des Geschäftsfelds"
+          ],
+          output: "Initiales Diagnose-Dossier + Dachmarken- & Submarken-Architektur"
+        },
+        it: {
+          title: "Diagnosi del Capitale Visivo, Settore Aziendale e Spettro di Marca",
+          thesis: "Ogni decisione d'identità parte dalla misurazione del valore visivo accumulato (Brand Equity) e dalla definizione della trasformazione offerta al cliente.",
+          pillars: [
+            "Preservazione o evoluzione progressiva degli asset visivi esistenti (Aaker & Haviv)",
+            "Definizione dell'ambito: Brand da Zero, Redesign Evolutivo o Sub-brand",
+            "Estrazione algoritmica della palette base e parametrizzazione del settore"
+          ],
+          output: "Dossier di Diagnosi Iniziale + Architettura Brand Madre e Sub-brand"
+        }
       }
     },
     {
-      id: "_Kc57XAE_V4",
-      author: "Don Norman & Jan Carlzon",
-      duration: "14:22",
-      thumb: resolveVideoAsset("/assets/videos/yt_thumbs/_Kc57XAE_V4.jpg"),
-      ytThumbFallback: "https://i.ytimg.com/vi/_Kc57XAE_V4/hqdefault.jpg",
-      url: "https://www.youtube.com/watch?v=_Kc57XAE_V4",
+      step: 1,
+      code: "ETAPA 01",
+      color: "#FF7A00",
+      authors: "Simon Sinek · Carl Jung · Jennifer Aaker · Donald Miller · Alex Osterwalder",
+      works: "Start With Why (2009) · Dimensions of Brand Personality (1997) · Building a StoryBrand (2017)",
+      diagramType: "golden_circle",
       i18n: {
-        es: { step: "Paso 2 · Touchpoints", title: "El Diseño de las Cosas Cotidianas y los Momentos de la Verdad" },
-        en: { step: "Step 2 · Touchpoints", title: "The Design of Everyday Things & Moments of Truth" },
-        fr: { step: "Étape 2 · Touchpoints", title: "Le Design des Objets du Quotidien et les Moments de Vérité" },
-        pt: { step: "Passo 2 · Touchpoints", title: "O Design do Dia a Dia e os Momentos da Verdade" },
-        de: { step: "Schritt 2 · Touchpoints", title: "The Design of Everyday Things & Momente der Wahrheit" },
-        it: { step: "Passo 2 · Touchpoint", title: "La Caffettiera del Masochista e i Momenti della Verità" }
+        es: {
+          title: "El Círculo Dorado, Arquetipos de Personalidad y Promesa en 3 Pasos",
+          thesis: "Las personas no compran lo que haces, compran el porqué lo haces. La comunicación biológica fluye del sistema límbico (Propósito WHY) hacia el neocórtex (Diferenciador HOW y Producto WHAT).",
+          pillars: [
+            "Núcleo Límbico (WHY): Causa, creencia y razón de existir más allá de la utilidad",
+            "Proceso Diferenciador (HOW): Método propietario resumido en 3 pasos claros (StoryBrand)",
+            "La Empresa como Persona: Dimensiones de personalidad de Jennifer Aaker y arquetipos de Jung"
+          ],
+          output: "Páginas Estratégicas 01 a 08 del Brandbook Oficial"
+        },
+        en: {
+          title: "The Golden Circle, Personality Archetypes & 3-Step Value Promise",
+          thesis: "People don't buy what you do; they buy why you do it. Biological decision-making flows from the limbic brain (WHY) outward to the neocortex (HOW and WHAT).",
+          pillars: [
+            "Limbic Core (WHY): Cause, belief, and reason for being beyond profit",
+            "Differentiating Process (HOW): Proprietary method distilled into 3 clear steps (StoryBrand)",
+            "The Company as a Person: Jennifer Aaker's personality dimensions & Jungian archetypes"
+          ],
+          output: "Strategic Pages 01 to 08 of the Official Brandbook"
+        },
+        fr: {
+          title: "Le Cercle d'Or, Archétypes de Personnalité et Promesse en 3 Étapes",
+          thesis: "Les gens n'achètent pas ce que vous faites, mais pourquoi vous le faites. La décision naît dans le système limbique (WHY) avant le néocortex (HOW et WHAT).",
+          pillars: [
+            "Cœur Limbique (WHY) : Raison d'être et conviction profonde de l'entreprise",
+            "Processus Différenciateur (HOW) : Méthode propriétaire en 3 étapes claires (StoryBrand)",
+            "L'Entreprise comme Personne : Dimensions de personnalité d'Aaker et archétypes de Jung"
+          ],
+          output: "Pages Stratégiques 01 à 08 du Brandbook Officiel"
+        },
+        pt: {
+          title: "O Círculo Dourado, Arquétipos de Personalidade e Promessa em 3 Passos",
+          thesis: "As pessoas não compram o que faz, compram o porquê o faz. A decisão biológica flui do sistema límbico (WHY) para o neocórtex (HOW e WHAT).",
+          pillars: [
+            "Núcleo Límbico (WHY): Causa, crença e razão de existir além do lucro",
+            "Processo Diferenciador (HOW): Método próprio resumido em 3 passos claros (StoryBrand)",
+            "A Empresa como Pessoa: Dimensões de personalidade de Aaker e arquétipos de Jung"
+          ],
+          output: "Páginas Estratégicas 01 a 08 do Brandbook Oficial"
+        },
+        de: {
+          title: "Der Golden Circle, Persönlichkeitsarchetypen & 3-Schritte-Versprechen",
+          thesis: "Menschen kaufen nicht, was Sie tun, sondern warum Sie es tun. Entscheidungen entstehen im limbischen System (WHY) vor dem Neokortex (HOW und WHAT).",
+          pillars: [
+            "Limbischer Kern (WHY): Sinn, Überzeugung und Daseinszweck der Marke",
+            "Differenzierender Prozess (HOW): Eigene Methode in 3 klaren Schritten (StoryBrand)",
+            "Das Unternehmen als Person: Markenpersönlichkeit nach Aaker & Archetypen nach Jung"
+          ],
+          output: "Strategische Seiten 01 bis 08 des Offiziellen Brandbooks"
+        },
+        it: {
+          title: "Il Cerchio d'Oro, Archetipi di Personalità e Promessa in 3 Passi",
+          thesis: "Le persone non comprano ciò che fai, ma perché lo fai. La decisione biologica fluisce dal sistema limbico (WHY) verso la neocorteccia (HOW e WHAT).",
+          pillars: [
+            "Nucleo Limbico (WHY): Causa, convinzione e scopo profondo dell'azienda",
+            "Processo Differenziante (HOW): Metodo proprietario sintetizzato in 3 passi (StoryBrand)",
+            "L'Azienda come Persona: Dimensioni di personalità di Aaker e archetipi di Jung"
+          ],
+          output: "Pagine Strategiche da 01 a 08 del Brandbook Ufficiale"
+        }
       }
     },
     {
-      id: "iM-ouJfISwY",
-      author: "Al Ries & Jack Trout",
-      duration: "11:45",
-      thumb: resolveVideoAsset("/assets/videos/yt_thumbs/iM-ouJfISwY.jpg"),
-      ytThumbFallback: "https://i.ytimg.com/vi/iM-ouJfISwY/hqdefault.jpg",
-      url: "https://www.youtube.com/watch?v=iM-ouJfISwY",
+      step: 2,
+      code: "ETAPA 02",
+      color: "#4C9DE6",
+      authors: "Jan Carlzon · Don Norman · Katherine Lemon & Peter Verhoef · Bernd Schmitt",
+      works: "Moments of Truth (1987) · The Design of Everyday Things (1988) · Customer Experience (2016)",
+      diagramType: "touchpoints_wave",
       i18n: {
-        es: { step: "Paso 3 · Naming y Posicionamiento", title: "Las Leyes Inmutables del Posicionamiento y el Enfoque Mental" },
-        en: { step: "Step 3 · Naming & Positioning", title: "The Immutable Laws of Branding & Narrowing the Focus" },
-        fr: { step: "Étape 3 · Naming et Positionnement", title: "Les Lois Immuables du Branding et du Positionnement" },
-        pt: { step: "Passo 3 · Naming e Posicionamento", title: "As Leis Imutáveis do Branding e Posicionamento" },
-        de: { step: "Schritt 3 · Naming & Positionierung", title: "Die unveränderlichen Gesetze von Branding & Positionierung" },
-        it: { step: "Passo 3 · Naming e Posizionamento", title: "Le Leggi Immutabili del Branding e del Posizionamento" }
+        es: {
+          title: "Ingeniería de Touchpoints y Momentos de la Verdad (Antes · Durante · Después)",
+          thesis: "Una marca es la suma de cada episodio de 15 segundos donde un cliente entra en contacto con su operación (Carlzon) eliminando la fricción cognitiva (Norman).",
+          pillars: [
+            "Fase ANTES (Descubrimiento): Redes, web clara, propuesta ejecutiva y primer contacto",
+            "Fase DURANTE (Operación Cero Fricción): Entrega impecable donde se comprueba la promesa",
+            "Fase DESPUÉS (Lealtad y Embajadores): Seguimiento, portal de clientes y recompra"
+          ],
+          output: "Matriz de Experiencia + Aplicaciones Operativas del Brandbook"
+        },
+        en: {
+          title: "Touchpoint Engineering & Moments of Truth (Before · During · After)",
+          thesis: "A brand is the sum of every 15-second episode where a customer interacts with its operation (Carlzon) while eliminating cognitive friction (Norman).",
+          pillars: [
+            "BEFORE Stage (Discovery): Social channels, clear website, executive proposal & first inquiry",
+            "DURING Stage (Zero-Friction Delivery): Flawless execution proving the core promise",
+            "AFTER Stage (Loyalty & Advocacy): Follow-up, client portal, and referral loop"
+          ],
+          output: "Experience Blueprint + Operational Brandbook Applications"
+        },
+        fr: {
+          title: "Ingénierie des Touchpoints et Moments de Vérité (Avant · Pendant · Après)",
+          thesis: "Une marque est la somme de chaque épisode de 15 secondes où un client interagit avec son opération (Carlzon) sans friction cognitive (Norman).",
+          pillars: [
+            "Phase AVANT (Découverte) : Réseaux, site clair, proposition exécutive et premier contact",
+            "Phase PENDANT (Zéro Friction) : Prestation irréprochable prouvant la promesse centrale",
+            "Phase APRÈS (Fidélisation) : Suivi proactif, portail client et recommandation"
+          ],
+          output: "Matrice d'Expérience + Applications Opérationnelles du Brandbook"
+        },
+        pt: {
+          title: "Engenharia de Touchpoints e Momentos da Verdade (Antes · Durante · Depois)",
+          thesis: "Uma marca é a soma de cada episódio de 15 segundos em que um cliente interage com a operação (Carlzon) eliminando a fricção cognitiva (Norman).",
+          pillars: [
+            "Fase ANTES (Descoberta): Redes, site claro, proposta executiva e primeiro contacto",
+            "Fase DURANTE (Operação Zero Fricção): Entrega impecável que comprova a promessa",
+            "Fase DEPOIS (Fidelização): Acompanhamento, portal de clientes e recomendação"
+          ],
+          output: "Matriz de Experiência + Aplicações Operacionais do Brandbook"
+        },
+        de: {
+          title: "Touchpoint-Engineering & Momente der Wahrheit (Vorher · Während · Nachher)",
+          thesis: "Eine Marke ist die Summe jeder 15-Sekunden-Interaktion mit dem Kunden (Carlzon) bei minimaler kognitiver Reibung (Norman).",
+          pillars: [
+            "Phase VORHER (Entdeckung): Social Media, klare Website, Angebot & Erstkontakt",
+            "Phase WÄHREND (Null Reibung): Perfekte Leistungserbringung als Beweis des Versprechens",
+            "Phase NACHHER (Bindung & Empfehlung): Betreuung, Kundenportal und Weiterempfehlung"
+          ],
+          output: "Experience-Matrix + Operative Brandbook-Anwendungen"
+        },
+        it: {
+          title: "Ingegneria dei Touchpoint e Momenti della Verità (Prima · Durante · Dopo)",
+          thesis: "Un brand è la somma di ogni episodio di 15 secondi in cui un cliente entra in contatto con l'operatività (Carlzon) senza attrito cognitivo (Norman).",
+          pillars: [
+            "Fase PRIMA (Scoperta): Social, sito chiaro, proposta esecutiva e primo contatto",
+            "Fase DURANTE (Zero Attrito): Erogazione impeccabile che dimostra la promessa",
+            "Fase DOPO (Fidelizzazione): Follow-up, portale clienti e passaparola"
+          ],
+          output: "Matrice d'Esperienza + Applicazioni Operative del Brandbook"
+        }
       }
     },
     {
-      id: "nIoRRan0KE4",
-      author: "Sir Jony Ive & Mitsuo Nagamachi",
-      duration: "19:40",
-      thumb: resolveVideoAsset("/assets/videos/yt_thumbs/nIoRRan0KE4.jpg"),
-      ytThumbFallback: "https://i.ytimg.com/vi/nIoRRan0KE4/hqdefault.jpg",
-      url: "https://www.youtube.com/watch?v=nIoRRan0KE4",
+      step: 3,
+      code: "ETAPA 03",
+      color: "#0D2540",
+      authors: "Alexandra Watkins · Al Ries & Jack Trout · David Placek · OMPI (Clasificación de Niza)",
+      works: "Hello, My Name Is Awesome (2014) · Positioning (1981) · WIPO Nice Agreement (45 Classes)",
+      diagramType: "smile_radar",
       i18n: {
-        es: { step: "Paso 4 · Ingeniería Kansei y Forma", title: "Arquitectura Sensorial, Cuidado Industrial e Ingeniería Kansei" },
-        en: { step: "Step 4 · Kansei Engineering & Form", title: "Sensory Design Architecture, Craft & Kansei Engineering" },
-        fr: { step: "Étape 4 · Ingénierie Kansei et Forme", title: "Architecture Sensorielle, Design Industriel et Ingénierie Kansei" },
-        pt: { step: "Passo 4 · Engenharia Kansei e Forma", title: "Arquitetura Sensorial, Design Industrial e Engenharia Kansei" },
-        de: { step: "Schritt 4 · Kansei-Engineering & Form", title: "Sensorische Designarchitektur, Präzision & Kansei-Engineering" },
-        it: { step: "Passo 4 · Ingegneria Kansei e Forma", title: "Architettura Sensoriale, Cura Industriale e Ingegneria Kansei" }
+        es: {
+          title: "Modelo SMILE & SCRATCH, Simbolismo Fonético y Blindaje en Clases de Niza",
+          thesis: "El nombre es el primer ancla de posicionamiento en la mente humana (Ries & Trout). Su éxito depende de su capacidad sugestiva, sonoridad fonética y viabilidad registral.",
+          pillars: [
+            "Evaluación SMILE: Suggestive (Sugerente), Memorable, Imagery (Imagen mental), Legs (Extensible), Emotional",
+            "Filtro SCRATCH: Eliminación de defectos ortográficos, pronunciación confusa o nombres genéricos",
+            "Clasificación Internacional de Niza (45 Clases OMPI) y construcción del Monograma 1:1"
+          ],
+          output: "Nombre Oficial Validado + Descriptor Comercial + Expediente Fonético y de Niza"
+        },
+        en: {
+          title: "SMILE & SCRATCH Model, Sound Symbolism & WIPO Nice Trademark Shield",
+          thesis: "Your name is the first positioning anchor in the human mind (Ries & Trout). Its strength relies on suggestive imagery, acoustic rhythm, and legal registrability.",
+          pillars: [
+            "SMILE Evaluation: Suggestive, Memorable, Imagery, Legs (Extendable), Emotional resonance",
+            "SCRATCH Filter: Elimination of spelling traps, awkward pronunciation, or generic clichés",
+            "WIPO International Nice Classification (45 Classes) & 1:1 Monogram construction"
+          ],
+          output: "Validated Official Name + Commercial Tagline + Phonetic & Nice Class Dossier"
+        },
+        fr: {
+          title: "Modèle SMILE & SCRATCH, Symbolisme Phonétique et Classes OMPI de Nice",
+          thesis: "Le nom est le premier ancrage de positionnement dans l'esprit du client (Ries & Trout). Sa force dépend de son imagerie mentale, de sa sonorité et de sa protection juridique.",
+          pillars: [
+            "Évaluation SMILE : Suggestive, Memorable, Imagery, Legs (Déclinable), Emotional",
+            "Filtre SCRATCH : Élimination des pièges orthographiques et prononciations ambiguës",
+            "Classification Internationale de Nice (45 Classes OMPI) et Monogramme 1:1"
+          ],
+          output: "Nom Officiel Validé + Slogan Commercial + Dossier Phonétique et OMPI"
+        },
+        pt: {
+          title: "Modelo SMILE & SCRATCH, Simbolismo Fonético e Classes de Nice OMPI",
+          thesis: "O nome é a primeira âncora de posicionamento na mente humana (Ries & Trout). O seu impacto depende da imagem mental, sonoridade e viabilidade legal.",
+          pillars: [
+            "Avaliação SMILE: Suggestive, Memorable, Imagery, Legs (Expansível), Emotional",
+            "Filtro SCRATCH: Eliminação de erros ortográficos ou pronúncia confusa",
+            "Classificação Internacional de Nice (45 Classes OMPI) e Monograma 1:1"
+          ],
+          output: "Nome Oficial Validado + Eslogan Comercial + Dossier Fonético e de Nice"
+        },
+        de: {
+          title: "SMILE- & SCRATCH-Modell, Lautsymbolik & WIPO Nizza-Markenschutz",
+          thesis: "Der Name ist der erste Positionierungsanker im Kopf des Kunden (Ries & Trout). Seine Stärke beruht auf Bildhaftigkeit, Klangmechanik und Schutzfähigkeit.",
+          pillars: [
+            "SMILE-Bewertung: Suggestive, Memorable, Imagery, Legs (Skalierbar), Emotional",
+            "SCRATCH-Filter: Ausschluss von Schreibfehlern und schwer aussprechbaren Begriffen",
+            "Internationale Nizza-Klassifikation (45 WIPO-Klassen) & 1:1-Monogramm"
+          ],
+          output: "Validierter Markenname + Slogan + Phonetik- & Nizza-Dossier"
+        },
+        it: {
+          title: "Modello SMILE & SCRATCH, Simbolismo Fonetico e Classi di Nizza OMPI",
+          thesis: "Il nome è la prima ancora di posizionamento nella mente del cliente (Ries & Trout). La sua forza dipende da capacità evocativa, ritmo acustico e tutela legale.",
+          pillars: [
+            "Valutazione SMILE: Suggestive, Memorable, Imagery, Legs (Estensibile), Emotional",
+            "Filtro SCRATCH: Eliminazione di trappole ortografiche e pronunce ambigue",
+            "Classificazione Internazionale di Nizza (45 Classi OMPI) e Monogramma 1:1"
+          ],
+          output: "Nome Ufficiale Validato + Slogan Commerciale + Dossier Fonetico e Nizza"
+        }
       }
     },
     {
-      id: "XvzExym4slg",
-      author: "Marty Neumeier",
-      duration: "16:10",
-      thumb: resolveVideoAsset("/assets/videos/yt_thumbs/XvzExym4slg.jpg"),
-      ytThumbFallback: "https://i.ytimg.com/vi/XvzExym4slg/hqdefault.jpg",
-      url: "https://www.youtube.com/watch?v=XvzExym4slg",
+      step: 4,
+      code: "ETAPA 04",
+      color: "#426EAE",
+      authors: "Prof. Mitsuo Nagamachi · Charles E. Osgood · V. S. Ramachandran · Robert Bringhurst",
+      works: "Kansei Engineering (1995) · The Measurement of Meaning (1957) · Elements of Typographic Style (1992)",
+      diagramType: "osgood_kansei",
       i18n: {
-        es: { step: "Paso 5 · Identidad Visual", title: "The Brand Gap: Uniendo la Estrategia de Negocio con el Diseño" },
-        en: { step: "Step 5 · Visual Identity", title: "The Brand Gap: Bridging Business Strategy and Design" },
-        fr: { step: "Étape 5 · Identité Visuelle", title: "The Brand Gap : Relier la Stratégie d'Entreprise et le Design" },
-        pt: { step: "Passo 5 · Identidade Visual", title: "The Brand Gap: Unindo a Estratégia de Negócios ao Design" },
-        de: { step: "Schritt 5 · Visuelle Identität", title: "The Brand Gap: Brücke zwischen Strategie und Design" },
-        it: { step: "Passo 5 · Identità Visiva", title: "The Brand Gap: Unire Strategia di Business e Design" }
+        es: {
+          title: "Ingeniería Kansei, Diferencial Semántico de Osgood y Voz Tipográfica",
+          thesis: "Los sentimientos humanos (Kansei) y las connotaciones semánticas (Osgood) pueden cuantificarse en 7 ejes bipolares para traducir la estrategia en radios de curvatura, peso de trazo y proporción tipográfica.",
+          pillars: [
+            "Diferencial Semántico de Osgood (1957): Medición bipolar en 7 ejes (Orgánico ↔ Geométrico, Clásico ↔ Disruptivo)",
+            "Efecto Neuroestético Bouba/Kiki (Ramachandran): Curvas suaves para empatía vs. ángulos agudos para precisión técnica",
+            "Arquitectura Tipográfica (Bringhurst & Frutiger): Emparejamiento óptico de fuentes de titular y lectura"
+          ],
+          output: "Vector Paramétrico de 7 Ejes + Par Tipográfico Oficial + Semilla Estructural"
+        },
+        en: {
+          title: "Kansei Engineering, Osgood's Semantic Differential & Typographic Voice",
+          thesis: "Human feelings (Kansei) and semantic connotations (Osgood) can be quantified across 7 bipolar axes to translate strategy into corner radii, stroke weight, and typographic proportion.",
+          pillars: [
+            "Osgood's Semantic Differential (1957): 7-axis bipolar calibration (Organic ↔ Geometric, Classic ↔ Disruptive)",
+            "Bouba/Kiki Neuroaesthetic Effect (Ramachandran): Soft curves for empathy vs. sharp angles for technical precision",
+            "Typographic Architecture (Bringhurst & Frutiger): Optical pairing of display and body typefaces"
+          ],
+          output: "7-Axis Parametric Vector + Official Font Pairing + Structural Seed"
+        },
+        fr: {
+          title: "Ingénierie Kansei, Différentiel Sémantique d'Osgood et Voix Typographique",
+          thesis: "Les émotions humaines (Kansei) et les connotations sémantiques (Osgood) se quantifient sur 7 axes bipolaires pour traduire la stratégie en rayons de courbure, graisse de trait et typographie.",
+          pillars: [
+            "Différentiel Sémantique d'Osgood (1957) : Calibrage sur 7 axes (Organique ↔ Géométrique, Classique ↔ Disruptif)",
+            "Effet Neuro-esthétique Bouba/Kiki (Ramachandran) : Courbes d'empathie vs angles de précision",
+            "Architecture Typographique (Bringhurst & Frutiger) : Duo optique de polices de titre et de lecture"
+          ],
+          output: "Vecteur Paramétrique à 7 Axes + Duo Typographique + Structure de Base"
+        },
+        pt: {
+          title: "Engenharia Kansei, Diferencial Semântico de Osgood e Voz Tipográfica",
+          thesis: "As emoções humanas (Kansei) e as conotações semânticas (Osgood) quantificam-se em 7 eixos bipolares para traduzir a estratégia em raios de curvatura, espessura de traço e tipografia.",
+          pillars: [
+            "Diferencial Semântico de Osgood (1957): Medição bipolar em 7 eixos (Orgânico ↔ Geométrico, Clássico ↔ Disruptivo)",
+            "Efeito Neuroestético Bouba/Kiki (Ramachandran): Curvas suaves para empatia vs. ângulos para precisão técnica",
+            "Arquitetura Tipográfica (Bringhurst & Frutiger): Emparelhamento óptico de fontes de título e corpo"
+          ],
+          output: "Vetor Paramétrico de 7 Eixos + Par Tipográfico Oficial + Semente Estrutural"
+        },
+        de: {
+          title: "Kansei-Engineering, Semantisches Differential nach Osgood & Typografie",
+          thesis: "Menschliche Emotionen (Kansei) und semantische Konnotationen (Osgood) werden auf 7 bipolaren Achsen quantifiziert, um Strategie in Kurvenradien, Strichstärke und Typografie zu übersetzen.",
+          pillars: [
+            "Semantisches Differential nach Osgood (1957): 7-Achsen-Kalibrierung (Organisch ↔ Geometrisch, Klassisch ↔ Disruptiv)",
+            "Bouba/Kiki-Neuroästhetik (Ramachandran): Weiche Kurven für Nähe vs. präzise Winkel für Ingenieurskunst",
+            "Typografische Architektur (Bringhurst & Frutiger): Optische Paarung von Titel- und Fließtextschrift"
+          ],
+          output: "Parametrischer 7-Achsen-Vektor + Offizielles Schriftpaar + Grundstruktur"
+        },
+        it: {
+          title: "Ingegneria Kansei, Differenziale Semantico di Osgood e Voce Tipografica",
+          thesis: "Le emozioni umane (Kansei) e le connotazioni semantiche (Osgood) si quantificano su 7 assi bipolari per tradurre la strategia in raggi di curvatura, spessore del tratto e tipografia.",
+          pillars: [
+            "Differenziale Semantico di Osgood (1957): Calibrazione su 7 assi (Organico ↔ Geometrico, Classico ↔ Dirompente)",
+            "Effetto Neuroestetico Bouba/Kiki (Ramachandran): Curve morbide per empatia vs angoli netti per precisione",
+            "Architettura Tipografica (Bringhurst & Frutiger): Accoppiamento ottico di font per titoli e testo"
+          ],
+          output: "Vettore Parametrico a 7 Assi + Coppia Tipografica Ufficiale + Seme Strutturale"
+        }
       }
     },
     {
-      id: "2FumwkBMhLo",
-      author: "Alexander Osterwalder",
-      duration: "22:18",
-      thumb: resolveVideoAsset("/assets/videos/yt_thumbs/2FumwkBMhLo.jpg"),
-      ytThumbFallback: "https://i.ytimg.com/vi/2FumwkBMhLo/hqdefault.jpg",
-      url: "https://www.youtube.com/watch?v=2FumwkBMhLo",
+      step: 5,
+      code: "ETAPA 05",
+      color: "#FF7A00",
+      authors: "Paul Rand · Masaaki Imai (Kaizen) · Max Wertheimer (Gestalt) · Josef Albers",
+      works: "Thoughts on Design (1947) · Kaizen: The Key to Competitive Success (1986) · Interaction of Color (1963)",
+      diagramType: "kaizen_bezier_grid",
       i18n: {
-        es: { step: "Paso 6 · Modelo y Propuesta de Valor", title: "Diseño de Propuesta de Valor y Business Model Canvas" },
-        en: { step: "Step 6 · Value Proposition & Model", title: "Value Proposition Design & Business Model Canvas" },
-        fr: { step: "Étape 6 · Modèle et Proposition de Valeur", title: "La Proposition de Valeur et le Business Model Canvas" },
-        pt: { step: "Passo 6 · Modelo e Proposta de Valor", title: "Design de Proposta de Valor e Business Model Canvas" },
-        de: { step: "Schritt 6 · Wertangebot & Geschäftsmodell", title: "Value Proposition Design & Business Model Canvas" },
-        it: { step: "Passo 6 · Modello e Proposta di Valore", title: "Value Proposition Design e Business Model Canvas" }
+        es: {
+          title: "Síntesis Geométrica de Paul Rand, Leyes de la Gestalt e Ingeniería Kaizen",
+          thesis: "Un gran símbolo combina simplicidad, recordación y escalabilidad (Paul Rand) perfeccionadas mediante ciclos iterativos Kaizen (Masaaki Imai) y armonía cromática (Josef Albers).",
+          pillars: [
+            "Ingeniería Kaizen (Masaaki Imai): Evolución continua en 10 iteraciones aislando variables geométricas",
+            "Leyes de la Gestalt (Wertheimer) y Retícula 8X×3X: Cierre visual, pregnancia figura-fondo y área de aislamiento",
+            "Psicología e Interacción del Color (Albers & Itten): Validación de contraste WCAG AAA en positivo y negativo"
+          ],
+          output: "Logotipo Oficial en Curvas Bézier (.SVG/.AI) + Ícono 1:1 + Submarcas Homologadas"
+        },
+        en: {
+          title: "Paul Rand's Geometric Synthesis, Gestalt Laws & Kaizen Engineering",
+          thesis: "A great symbol combines simplicity, memorability, and scalability (Paul Rand), refined through iterative Kaizen cycles (Masaaki Imai) and chromatic harmony (Josef Albers).",
+          pillars: [
+            "Kaizen Engineering (Masaaki Imai): Continuous refinement across 10 iterations isolating geometric variables",
+            "Gestalt Laws (Wertheimer) & 8X×3X Grid: Visual closure, figure-ground pregnance, and clear-space governance",
+            "Color Psychology & Interaction (Albers & Itten): WCAG AAA contrast validation in positive and negative modes"
+          ],
+          output: "Official Bézier Vector Logo (.SVG/.AI) + 1:1 App Icon + Homologated Sub-brands"
+        },
+        fr: {
+          title: "Synthèse Géométrique de Paul Rand, Lois de la Gestalt et Ingénierie Kaizen",
+          thesis: "Un grand symbole allie simplicité, mémorabilité et polyvalence (Paul Rand), perfectionnées par des cycles itératifs Kaizen (Masaaki Imai) et l'harmonie chromatique (Albers).",
+          pillars: [
+            "Ingénierie Kaizen (Masaaki Imai) : Amélioration continue en 10 itérations isolant les variables géométriques",
+            "Lois de la Gestalt (Wertheimer) et Grille 8X×3X : Clôture visuelle, rapport figure-fond et zone de protection",
+            "Psychologie et Interaction des Couleurs (Albers & Itten) : Validation du contraste WCAG AAA positif/négatif"
+          ],
+          output: "Logo Officiel en Courbes de Bézier (.SVG/.AI) + Icône 1:1 + Sous-marques Homologuées"
+        },
+        pt: {
+          title: "Síntese Geométrica de Paul Rand, Leis da Gestalt e Engenharia Kaizen",
+          thesis: "Um grande símbolo combina simplicidade, memorabilidade e escalabilidade (Paul Rand), aperfeiçoadas por ciclos iterativos Kaizen (Masaaki Imai) e harmonia cromática (Albers).",
+          pillars: [
+            "Engenharia Kaizen (Masaaki Imai): Melhoria contínua em 10 iterações isolando variáveis geométricas",
+            "Leis da Gestalt (Wertheimer) e Grelha 8X×3X: Fechamento visual, figura-fundo e área de proteção",
+            "Psicologia e Interação da Cor (Albers & Itten): Validação de contraste WCAG AAA em positivo e negativo"
+          ],
+          output: "Logótipo Oficial em Curvas Bézier (.SVG/.AI) + Ícone 1:1 + Submarcas Homologadas"
+        },
+        de: {
+          title: "Geometrische Synthese nach Paul Rand, Gestaltgesetze & Kaizen-Engineering",
+          thesis: "Ein zeitloses Symbol vereint Einfachheit, Einprägsamkeit und Skalierbarkeit (Paul Rand), verfeinert durch iterative Kaizen-Zyklen (Masaaki Imai) und Farbharmonie (Albers).",
+          pillars: [
+            "Kaizen-Engineering (Masaaki Imai): Kontinuierliche Verfeinerung über 10 Iterationen",
+            "Gestaltgesetze (Wertheimer) & 8X×3X-Raster: Prägnanz, Figur-Grund-Kontrast und Schutzzone",
+            "Farbpsychologie & Wechselwirkung (Albers & Itten): WCAG-AAA-Kontrastprüfung in Positiv und Negativ"
+          ],
+          output: "Offizielles Bézier-Vektor-Logo (.SVG/.AI) + 1:1-Icon + Homologierte Submarken"
+        },
+        it: {
+          title: "Sintesi Geometrica di Paul Rand, Leggi della Gestalt e Ingegneria Kaizen",
+          thesis: "Un grande simbolo unisce semplicità, memorabilità e scalabilità (Paul Rand), perfezionate tramite cicli iterativi Kaizen (Masaaki Imai) e armonia cromatica (Albers).",
+          pillars: [
+            "Ingegneria Kaizen (Masaaki Imai): Miglioramento continuo in 10 iterazioni isolando le variabili geometriche",
+            "Leggi della Gestalt (Wertheimer) e Griglia 8X×3X: Chiusura visiva, figura-sfondo e area di rispetto",
+            "Psicologia e Interazione del Colore (Albers & Itten): Validazione contrasto WCAG AAA in positivo e negativo"
+          ],
+          output: "Logo Ufficiale in Curve di Bézier (.SVG/.AI) + Icona 1:1 + Sub-brand Omologati"
+        }
+      }
+    },
+    {
+      step: 6,
+      code: "ETAPA 06",
+      color: "#0D2540",
+      authors: "Massimo Vignelli · Josef Müller-Brockmann · Richard Danne & Bruce Blackburn (NASA) · Alina Wheeler",
+      works: "The Vignelli Canon (2010) · Grid Systems in Graphic Design (1981) · NASA Graphics Standards Manual (1975)",
+      diagramType: "vignelli_canon",
+      i18n: {
+        es: {
+          title: "Canon de Massimo Vignelli, Sistemas de Retículas y Gobernanza Documental",
+          thesis: "Un sistema de identidad trasciende en el tiempo cuando sus reglas estratégicas, geométricas y operativas quedan codificadas en un Brandbook claro y libre de ambigüedad.",
+          pillars: [
+            "Canon Editorial (Vignelli & Müller-Brockmann): Retícula modular, flujo abierto en curvas y jerarquía tipográfica",
+            "Estándar Unificado: Brandbook oficial de más de 30 páginas (ajustable según el giro del negocio)",
+            "Ecosistema de Implementación (Wheeler & NASA): Desde la filosofía y papelería hasta firma digital y tokens web"
+          ],
+          output: "Brandbook Oficial (+30 Páginas) + Bóveda Completa de 9 Entregables"
+        },
+        en: {
+          title: "Massimo Vignelli's Canon, Grid Systems & Documentary Governance",
+          thesis: "An identity system endures across decades when its strategic, geometric, and operational rules are codified in an unambiguous Brandbook.",
+          pillars: [
+            "Editorial Canon (Vignelli & Müller-Brockmann): Modular grid, open vector curves, and typographic hierarchy",
+            "Unified Standard: Official Brandbook of over 30 pages (adaptable to your business sector)",
+            "Implementation Ecosystem (Wheeler & NASA): From philosophy and stationery to digital signatures and web tokens"
+          ],
+          output: "Official Brandbook (30+ Pages) + Complete Vault of 9 Deliverables"
+        },
+        fr: {
+          title: "Canon de Massimo Vignelli, Systèmes de Grilles et Gouvernance Documentaire",
+          thesis: "Un système d'identité traverse le temps lorsque ses règles stratégiques, géométriques et opérationnelles sont codifiées dans un Brandbook sans ambiguïté.",
+          pillars: [
+            "Canon Éditorial (Vignelli & Müller-Brockmann) : Grille modulaire, courbes ouvertes et hiérarchie typographique",
+            "Standard Unifié : Brandbook officiel de plus de 30 pages (adaptable selon votre secteur d'activité)",
+            "Écosystème d'Implémentation (Wheeler & NASA) : De la philosophie et papeterie jusqu'aux tokens web"
+          ],
+          output: "Brandbook Officiel (+30 Pages) + Voûte Complète de 9 Livrables"
+        },
+        pt: {
+          title: "Cânone de Massimo Vignelli, Sistemas de Grelhas e Governança Documental",
+          thesis: "Um sistema de identidade perdura no tempo quando as suas regras estratégicas, geométricas e operacionais ficam codificadas num Brandbook claro.",
+          pillars: [
+            "Cânone Editorial (Vignelli & Müller-Brockmann): Grelha modular, fluxo aberto em curvas e hierarquia tipográfica",
+            "Padrão Unificado: Brandbook oficial com mais de 30 páginas (ajustável conforme o ramo do negócio)",
+            "Ecossistema de Implementação (Wheeler & NASA): Da filosofia e estacionário até assinatura digital e tokens web"
+          ],
+          output: "Brandbook Oficial (+30 Páginas) + Cofre Completo de 9 Entregáveis"
+        },
+        de: {
+          title: "Kanon von Massimo Vignelli, Rastersysteme & Marken-Governance",
+          thesis: "Ein Identitätssystem überdauert Jahrzehnte, wenn seine strategischen, geometrischen und operativen Regeln in einem eindeutigen Brandbook kodifiziert sind.",
+          pillars: [
+            "Editorischer Kanon (Vignelli & Müller-Brockmann): Modulares Raster, offene Kurven und Typografie-Hierarchie",
+            "Einheitlicher Standard: Offizielles Brandbook mit über 30 Seiten (anpassbar je nach Branche)",
+            "Implementierungs-Ökosystem (Wheeler & NASA): Von Philosophie und Briefpapier bis zu Web-Tokens"
+          ],
+          output: "Offizielles Brandbook (+30 Seiten) + Kompletter Tresor mit 9 Deliverables"
+        },
+        it: {
+          title: "Canone di Massimo Vignelli, Sistemi di Griglie e Governance Documentale",
+          thesis: "Un sistema d'identità dura nel tempo quando le sue regole strategiche, geometriche e operative sono codificate in un Brandbook privo di ambiguità.",
+          pillars: [
+            "Canone Editoriale (Vignelli & Müller-Brockmann): Griglia modulare, curve aperte e gerarchia tipografica",
+            "Standard Unificato: Brandbook ufficiale di oltre 30 pagine (adattabile al settore aziendale)",
+            "Ecosistema d'Implementazione (Wheeler & NASA): Dalla filosofia e cancelleria fino ai token web"
+          ],
+          output: "Brandbook Ufficiale (+30 Pagine) + Caveau Completo con 9 Deliverable"
+        }
       }
     }
   ];
 
   const FOUNDER_ESSENTIAL_BOOKS = [
-    {
-      title: "Start with Why",
-      author: "Simon Sinek",
-      coverImg: "sinek_why.jpg",
-      kindleUrl: "https://www.amazon.com/dp/B002Q6XUE4",
-      appleBooksUrl: "https://books.apple.com/us/book/start-with-why/id359902640",
-      i18n: {
-        es: { step: "Paso 1 · Propósito Nuclear", takeaway: "Las personas no compran lo que haces, sino el porqué lo haces. La base del Paso 1." },
-        en: { step: "Step 1 · Core Purpose", takeaway: "People don't buy what you do; they buy why you do it. The foundation of Step 1." },
-        fr: { step: "Étape 1 · Raison d'Être", takeaway: "Les gens n'achètent pas ce que vous faites, mais pourquoi vous le faites. La base de l'Étape 1." },
-        pt: { step: "Passo 1 · Propósito Nuclear", takeaway: "As pessoas não compram o que você faz, mas o porquê você faz. A base do Passo 1." },
-        de: { step: "Schritt 1 · Kernzweck", takeaway: "Menschen kaufen nicht, was Sie tun, sondern warum Sie es tun. Das Fundament von Schritt 1." },
-        it: { step: "Passo 1 · Scopo Centrale", takeaway: "Le persone non comprano ciò che fai, ma il perché lo fai. La base del Passo 1." }
-      }
-    },
-    {
-      title: "Moments of Truth",
-      author: "Jan Carlzon",
-      coverImg: "carlzon_truth.jpg",
-      kindleUrl: "https://www.amazon.com/dp/B001ANYDL0",
-      appleBooksUrl: "https://books.apple.com/us/book/moments-of-truth/id1504958327",
-      i18n: {
-        es: { step: "Paso 2 · Touchpoints", takeaway: "Cómo cada contacto de 15 segundos entre cliente y empresa define la lealtad hacia tu marca." },
-        en: { step: "Step 2 · Touchpoints", takeaway: "How every 15-second contact between customer and company defines long-term brand loyalty." },
-        fr: { step: "Étape 2 · Touchpoints", takeaway: "Comment chaque contact de 15 secondes entre le client et l'entreprise définit la fidélité." },
-        pt: { step: "Passo 2 · Touchpoints", takeaway: "Como cada contato de 15 segundos entre cliente e empresa define a lealdade à sua marca." },
-        de: { step: "Schritt 2 · Touchpoints", takeaway: "Wie jeder 15-Sekunden-Kontakt zwischen Kunde und Unternehmen die Markentreue bestimmt." },
-        it: { step: "Passo 2 · Touchpoint", takeaway: "Come ogni contatto di 15 secondi tra cliente e azienda definisce la fedeltà al brand." }
-      }
-    },
-    {
-      title: "Positioning: The Battle for Your Mind",
-      author: "Al Ries & Jack Trout",
-      coverImg: "ries_lean.jpg",
-      kindleUrl: "https://www.amazon.com/dp/B000OI0F4K",
-      appleBooksUrl: "https://books.apple.com/us/book/positioning-the-battle-for-your-mind/id496277918",
-      i18n: {
-        es: { step: "Paso 0 y 3 · Posicionamiento y Naming", takeaway: "Cómo ocupar un lugar único e indiscutible en la mente de tu cliente ideal desde el nombre y giro." },
-        en: { step: "Steps 0 & 3 · Positioning & Naming", takeaway: "How to claim a unique, unmistakable position in your ideal customer's mind starting with your name." },
-        fr: { step: "Étapes 0 et 3 · Positionnement et Naming", takeaway: "Comment occuper une place unique dans l'esprit de votre client idéal dès le choix du nom." },
-        pt: { step: "Passos 0 e 3 · Posicionamento e Naming", takeaway: "Como ocupar um lugar único na mente do seu cliente ideal a partir do nome e ramo." },
-        de: { step: "Schritt 0 & 3 · Positionierung & Naming", takeaway: "Wie Sie vom Namen an einen einzigartigen Platz im Kopf Ihres Idealkunden besetzen." },
-        it: { step: "Passi 0 e 3 · Posizionamento e Naming", takeaway: "Come occupare un posto unico nella mente del cliente ideale a partire dal nome." }
-      }
-    },
-    {
-      title: "The Brand Gap",
-      author: "Marty Neumeier",
-      coverImg: "neumeier_brandgap.jpg",
-      kindleUrl: "https://www.amazon.com/dp/B000SEI7P8",
-      appleBooksUrl: "https://books.apple.com/us/book/the-brand-gap/id496263434",
-      i18n: {
-        es: { step: "Paso 4 y 5 · Estrategia y Diseño", takeaway: "El puente ejecutivo entre la estrategia de negocio analítica y la expresión visual carismática." },
-        en: { step: "Steps 4 & 5 · Strategy & Design", takeaway: "The executive bridge between analytical business strategy and charismatic visual expression." },
-        fr: { step: "Étapes 4 et 5 · Stratégie et Design", takeaway: "Le pont exécutif entre la stratégie d'entreprise analytique et l'expression visuelle." },
-        pt: { step: "Passos 4 e 5 · Estratégia e Design", takeaway: "A ponte executiva entre a estratégia analítica de negócios e a expressão visual carismática." },
-        de: { step: "Schritt 4 & 5 · Strategie & Design", takeaway: "Die Brücke zwischen analytischer Geschäftsstrategie und charismatischem Design." },
-        it: { step: "Passi 4 e 5 · Strategia e Design", takeaway: "Il ponte esecutivo tra strategia aziendale analitica ed espressione visiva carismatica." }
-      }
-    },
-    {
-      title: "Building Strong Brands",
-      author: "David A. Aaker",
-      coverImg: "aaker_branding.jpg",
-      kindleUrl: "https://www.amazon.com/dp/B003L77VSC",
-      appleBooksUrl: "https://books.apple.com/us/book/building-strong-brands/id381482832",
-      i18n: {
-        es: { step: "Paso 0 · Arquitectura y Capital de Marca", takeaway: "El modelo Brand Relationship Spectrum para proteger tu capital de marca y estructurar submarcas." },
-        en: { step: "Step 0 · Brand Equity & Architecture", takeaway: "The Brand Relationship Spectrum model to protect brand equity and structure sub-brands." },
-        fr: { step: "Étape 0 · Architecture et Capital de Marque", takeaway: "Le modèle Brand Relationship Spectrum pour protéger votre capital et structurer vos sous-marques." },
-        pt: { step: "Passo 0 · Arquitetura e Brand Equity", takeaway: "O modelo Brand Relationship Spectrum para proteger seu patrimônio visual e estruturar submarcas." },
-        de: { step: "Schritt 0 · Markenarchitektur & Brand Equity", takeaway: "Das Brand-Relationship-Spectrum-Modell zum Schutz Ihres Markenkapitals und Ihrer Submarken." },
-        it: { step: "Passo 0 · Architettura e Brand Equity", takeaway: "Il modello Brand Relationship Spectrum per proteggere il capitale di marca e i sub-brand." }
-      }
-    },
-    {
-      title: "Identify: Basic Principles of Identity Design",
-      author: "Sagi Haviv, Tom Geismar & Ivan Chermayeff",
-      coverImg: "haviv_identify.jpg",
-      kindleUrl: "https://www.amazon.com/dp/1440310327",
-      appleBooksUrl: "https://books.apple.com/us/book/identify/id540656455",
-      i18n: {
-        es: { step: "Paso 5 · Síntesis Vectorial y Rediseño", takeaway: "Por qué un símbolo memorable debe ser simple, apropiado y distintivo en blanco y negro." },
-        en: { step: "Step 5 · Vector Synthesis & Redesign", takeaway: "Why a memorable symbol must be simple, appropriate, and distinctive in pure black and white." },
-        fr: { step: "Étape 5 · Synthèse Vectorielle et Refonte", takeaway: "Pourquoi un symbole mémorable doit être simple, approprié et distinctif en noir et blanc." },
-        pt: { step: "Passo 5 · Síntese Vetorial e Redesign", takeaway: "Por que um símbolo memorável deve ser simples, apropriado e distintivo em preto e branco." },
-        de: { step: "Schritt 5 · Vektorsynthese & Redesign", takeaway: "Warum ein starkes Markenzeichen einfach, passend und in Schwarz-Weiß unverwechselbar sein muss." },
-        it: { step: "Passo 5 · Sintesi Vettoriale e Redesign", takeaway: "Perché un simbolo memorabile deve essere semplice, appropriato e distintivo in bianco e nero." }
-      }
-    },
-    {
-      title: "Building a StoryBrand",
-      author: "Donald Miller",
-      coverImg: "miller_storybrand.jpg",
-      kindleUrl: "https://www.amazon.com/dp/B06XCFV93Z",
-      appleBooksUrl: "https://books.apple.com/us/book/building-a-storybrand/id1209119036",
-      i18n: {
-        es: { step: "Paso 1.4 · Método en 3 Pasos Claros", takeaway: "Cómo posicionar a tu cliente como el héroe y presentar tu método en 3 pasos libres de fricción." },
-        en: { step: "Step 1.4 · Clear 3-Step Method", takeaway: "How to position your customer as the hero and present your method in 3 friction-free steps." },
-        fr: { step: "Étape 1.4 · Méthode en 3 Étapes Claires", takeaway: "Comment positionner votre client en héros et présenter votre méthode en 3 étapes simples." },
-        pt: { step: "Passo 1.4 · Método em 3 Passos Claros", takeaway: "Como posicionar seu cliente como o herói e apresentar seu método em 3 passos sem fricção." },
-        de: { step: "Schritt 1.4 · Klare 3-Schritte-Methode", takeaway: "Wie Sie Ihren Kunden zum Helden machen und Ihre Methode in 3 klaren Schritten erklären." },
-        it: { step: "Passo 1.4 · Metodo in 3 Passi Chiari", takeaway: "Come posizionare il cliente come l'eroe e presentare il tuo metodo in 3 passi senza attrito." }
-      }
-    },
-    {
-      title: "Business Model Generation",
-      author: "Alexander Osterwalder & Yves Pigneur",
-      coverImg: "osterwalder_bmg.jpg",
-      kindleUrl: "https://www.amazon.com.mx/dp/B01B3J471E",
-      appleBooksUrl: "https://books.apple.com/us/book/business-model-generation/id420803588",
-      i18n: {
-        es: { title: "Generación de Modelos de Negocio", step: "Paso 6 · Arquitectura de Valor", takeaway: "El estándar global para estructurar tu modelo de negocio en un sistema visual coherente." },
-        en: { title: "Business Model Generation", step: "Step 6 · Value Architecture", takeaway: "The global standard for structuring your business model into a coherent visual system." },
-        fr: { title: "Business Model Nouvelle Génération", step: "Étape 6 · Architecture de Valeur", takeaway: "La référence mondiale pour structurer votre modèle économique en un système visuel cohérent." },
-        pt: { title: "Business Model Generation", step: "Passo 6 · Arquitetura de Valor", takeaway: "O padrão global para estruturar seu modelo de negócios em um sistema visual coerente." },
-        de: { title: "Business Model Generation", step: "Schritt 6 · Wertarchitektur", takeaway: "Der globale Standard zur Strukturierung Ihres Geschäftsmodells in einem klaren visuellen System." },
-        it: { title: "Business Model Generation", step: "Passo 6 · Architettura di Valore", takeaway: "Lo standard globale per strutturare il tuo modello di business in un sistema visivo coerente." }
-      }
-    },
-    {
-      title: "Value Proposition Design",
-      author: "Alexander Osterwalder & Yves Pigneur",
-      coverImg: "osterwalder_vpd.jpg",
-      kindleUrl: "https://www.amazon.com.mx/dp/B00P0L6W7A",
-      appleBooksUrl: "https://books.apple.com/us/book/value-proposition-design/id927699748",
-      i18n: {
-        es: { title: "Diseñando la Propuesta de Valor", step: "Paso 1.2 · Oferta Comercial", takeaway: "Cómo alinear exactamente lo que entregas con los dolores y aspiraciones reales de tu cliente." },
-        en: { title: "Value Proposition Design", step: "Step 1.2 · Commercial Offer", takeaway: "How to align what you deliver with the real pains, gains, and aspirations of your customer." },
-        fr: { title: "La Méthode Value Proposition Design", step: "Étape 1.2 · Offre Commerciale", takeaway: "Comment aligner exactement votre offre sur les besoins et aspirations réels de vos clients." },
-        pt: { title: "Value Proposition Design", step: "Passo 1.2 · Oferta Comercial", takeaway: "Como alinhar exatamente o que você entrega com as dores e aspirações reais do seu cliente." },
-        de: { title: "Value Proposition Design", step: "Schritt 1.2 · Wertangebot", takeaway: "Wie Sie Ihr Angebot exakt auf die echten Bedürfnisse und Ziele Ihrer Kunden ausrichten." },
-        it: { title: "Value Proposition Design", step: "Passo 1.2 · Offerta Commerciale", takeaway: "Come allineare esattamente ciò che offri con i problemi e le aspirazioni reali del cliente." }
-      }
-    }
+    { author: "Simon Sinek", year: "2009", work: "Start With Why", stage: "01", color: "#FF7A00" },
+    { author: "Jan Carlzon", year: "1987", work: "Moments of Truth", stage: "02", color: "#4C9DE6" },
+    { author: "Alexandra Watkins", year: "2014", work: "Hello, My Name Is Awesome (SMILE)", stage: "03", color: "#426EAE" },
+    { author: "Masaaki Imai", year: "1986", work: "Kaizen: Continuous Improvement", stage: "05", color: "#FF7A00" },
+    { author: "Charles E. Osgood & M. Nagamachi", year: "1957 / 1995", work: "Semantic Differential & Kansei Engineering", stage: "04", color: "#0D2540" },
+    { author: "Paul Rand & Massimo Vignelli", year: "1985 / 2010", work: "Paul Rand: A Designer's Art & The Vignelli Canon", stage: "05–06", color: "#426EAE" }
   ];
 
-  const DEMO_QUICK_PRESETS = [
-    {
-      id: "tbb",
-      label: "The Best Brand (SaaS IA)",
-      objective: "create",
-      brandName: "THE BEST BRAND",
-      tagline: "YOUR BRAND, NOW!!!",
-      businessGiro: "Plataforma interactiva con IA que guía a empresarios paso a paso para definir su identidad estratégica y generar su Manual Oficial de Marca de 36 Láminas y 9 Entregables.",
-      whyPurpose: "Porque creemos que la claridad de marca multiplica el valor de las empresas y libera tiempo mental al líder.",
-      howMethod: "Combinamos el acompañamiento socrático de Aura, ingeniería Kansei y síntesis vectorial Apple Liquid Glass paso a paso.",
-      whatOffer: "Suite ejecutiva de 9 entregables oficiales: Manual de 36 Láminas (.PDF y .HTML), vectores (.SVG y .AI), firma (.HTML), Word (.DOCX), PowerPoint (.PPTX) y Kit de Fuentes (.ZIP).",
-      i18n: {
-        es: {
-          label: "The Best Brand (SaaS IA)",
-          tagline: "YOUR BRAND, NOW!!!",
-          businessGiro: "Plataforma interactiva con IA que guía a empresarios paso a paso para definir su identidad estratégica y generar su Manual Oficial de Marca de 36 Láminas y 9 Entregables.",
-          whyPurpose: "Porque creemos que la claridad de marca multiplica el valor de las empresas y libera tiempo mental al líder.",
-          howMethod: "Combinamos el acompañamiento socrático de Aura, ingeniería Kansei y síntesis vectorial Apple Liquid Glass paso a paso.",
-          whatOffer: "Suite ejecutiva de 9 entregables oficiales: Manual de 36 Láminas (.PDF y .HTML), vectores (.SVG y .AI), firma (.HTML), Word (.DOCX), PowerPoint (.PPTX) y Kit de Fuentes (.ZIP)."
-        },
-        en: {
-          label: "The Best Brand (AI SaaS)",
-          tagline: "YOUR BRAND, NOW!!!",
-          businessGiro: "Interactive AI platform guiding entrepreneurs step by step to define their strategic identity and compile their 36-Plate Official Brandbook & 9 Deliverables.",
-          whyPurpose: "Because we believe brand clarity multiplies company value and frees executive mental bandwidth.",
-          howMethod: "Combining Aura's live Socratic guidance, Kansei engineering, and step-by-step Apple Liquid Glass vector synthesis.",
-          whatOffer: "Executive suite of 9 official deliverables: 36-Plate Brandbook (.PDF & .HTML), vectors (.SVG & .AI), email signature (.HTML), Word (.DOCX), PowerPoint (.PPTX) & Font Kit (.ZIP)."
-        },
-        fr: {
-          label: "The Best Brand (SaaS IA)",
-          tagline: "YOUR BRAND, NOW!!!",
-          businessGiro: "Plateforme interactive avec IA guidant les dirigeants étape par étape pour créer leur Manuel Officiel de 36 Planches et 9 Livrables.",
-          whyPurpose: "Parce que la clarté de marque multiplie la valeur des entreprises et libère l'esprit du dirigeant.",
-          howMethod: "En combinant le guidage socratique d'Aura, l'ingénierie Kansei et la synthèse vectorielle Apple Liquid Glass.",
-          whatOffer: "Suite exécutive de 9 livrables officiels : Manuel de 36 Planches (.PDF/.HTML), vecteurs (.SVG/.AI), signature (.HTML), Word (.DOCX), PowerPoint (.PPTX) et Polices (.ZIP)."
-        },
-        pt: {
-          label: "The Best Brand (SaaS IA)",
-          tagline: "YOUR BRAND, NOW!!!",
-          businessGiro: "Plataforma interativa com IA que guia empresários passo a passo para criar seu Manual Oficial de 36 Lâminas e 9 Entregáveis.",
-          whyPurpose: "Porque acreditamos que a clareza de marca multiplica o valor das empresas e libera tempo mental ao líder.",
-          howMethod: "Combinamos o acompanhamento socrático da Aura, engenharia Kansei e síntese vetorial Apple Liquid Glass.",
-          whatOffer: "Suíte executiva de 9 entregáveis oficiais: Manual de 36 Lâminas (.PDF/.HTML), vetores (.SVG/.AI), assinatura (.HTML), Word (.DOCX), PowerPoint (.PPTX) e Fontes (.ZIP)."
-        },
-        de: {
-          label: "The Best Brand (KI-SaaS)",
-          tagline: "YOUR BRAND, NOW!!!",
-          businessGiro: "Interaktive KI-Plattform, die Unternehmer Schritt für Schritt zum offiziellen 36-Tafeln-Brandbook und 9 Deliverables führt.",
-          whyPurpose: "Weil Markenklarheit den Unternehmenswert steigert und dem Führenden mentale Freiheit schafft.",
-          howMethod: "Durch Auras sokratische Sprachführung, Kansei-Engineering und Apple Liquid Glass Vektorsynthese.",
-          whatOffer: "Executive-Suite mit 9 offiziellen Deliverables: 36-Tafeln-Brandbook (.PDF/.HTML), Vektoren (.SVG/.AI), Signatur (.HTML), Word (.DOCX), PowerPoint (.PPTX) & Schriften (.ZIP)."
-        },
-        it: {
-          label: "The Best Brand (SaaS IA)",
-          tagline: "YOUR BRAND, NOW!!!",
-          businessGiro: "Piattaforma interattiva con IA che guida gli imprenditori passo dopo passo a generare il Manuale Ufficiale di 36 Tavole e 9 Deliverable.",
-          whyPurpose: "Perché crediamo che la chiarezza del brand moltiplichi il valore aziendale e liberi tempo mentale al leader.",
-          howMethod: "Combinando la guida socratica di Aura, l'ingegneria Kansei e la sintesi vettoriale Apple Liquid Glass.",
-          whatOffer: "Suite esecutiva di 9 deliverable ufficiali: Manuale di 36 Tavole (.PDF/.HTML), vettori (.SVG/.AI), firma (.HTML), Word (.DOCX), PowerPoint (.PPTX) e Font (.ZIP)."
-        }
-      }
-    },
-    {
-      id: "arco",
-      label: "ARCO Ingeniería (Constructora)",
-      objective: "redesign",
-      brandName: "ARCO INGENIERÍA",
-      tagline: "ESTRUCTURAS QUE TRASCIENDEN",
-      businessGiro: "Firma de ingeniería civil y construcción industrial especializada en naves logísticas e infraestructura de alta precisión.",
-      whyPurpose: "Porque creemos que cada obra bien ejecutada protege el patrimonio de nuestros clientes y eleva el estándar industrial.",
-      howMethod: "Mediante planeación BIM milimétrica, supervisión residente diaria y cumplimiento estricto de tiempos y presupuesto.",
-      whatOffer: "Diseño estructural, construcción de naves industriales y gerencia de proyectos llave en mano.",
-      i18n: {
-        es: {
-          label: "ARCO Ingeniería (Constructora)",
-          tagline: "ESTRUCTURAS QUE TRASCIENDEN",
-          businessGiro: "Firma de ingeniería civil y construcción industrial especializada en naves logísticas e infraestructura de alta precisión.",
-          whyPurpose: "Porque creemos que cada obra bien ejecutada protege el patrimonio de nuestros clientes y eleva el estándar industrial.",
-          howMethod: "Mediante planeación BIM milimétrica, supervisión residente diaria y cumplimiento estricto de tiempos y presupuesto.",
-          whatOffer: "Diseño estructural, construcción de naves industriales y gerencia de proyectos llave en mano."
-        },
-        en: {
-          label: "ARCO Engineering (Industrial Construction)",
-          tagline: "STRUCTURES THAT TRANSCEND",
-          businessGiro: "Civil engineering and industrial construction firm specializing in logistics hubs and high-precision infrastructure.",
-          whyPurpose: "Because every well-executed structure protects our clients' capital and elevates the industrial standard.",
-          howMethod: "Through millimeter-precise BIM planning, daily on-site supervision, and strict schedule and budget compliance.",
-          whatOffer: "Structural engineering, industrial warehouse construction, and turnkey project management."
-        },
-        fr: {
-          label: "ARCO Ingénierie (Construction)",
-          tagline: "DES STRUCTURES QUI TRANSCENDENT",
-          businessGiro: "Cabinet de génie civil et construction industrielle spécialisé dans les plateformes logistiques de haute précision.",
-          whyPurpose: "Parce que chaque ouvrage bien exécuté protège le patrimoine de nos clients et élève le standard industriel.",
-          howMethod: "Grâce à une planification BIM millimétrique, une supervision quotidienne et le respect strict des délais.",
-          whatOffer: "Ingénierie structurelle, construction de bâtiments industriels et gestion de projets clés en main."
-        },
-        pt: {
-          label: "ARCO Engenharia (Construtora)",
-          tagline: "ESTRUTURAS QUE TRANSCENDEM",
-          businessGiro: "Empresa de engenharia civil e construção industrial especializada em galpões logísticos e infraestrutura de alta precisão.",
-          whyPurpose: "Porque acreditamos que cada obra bem executada protege o patrimônio dos nossos clientes e eleva o padrão industrial.",
-          howMethod: "Por meio de planejamento BIM milimétrico, supervisão diária em obra e cumprimento estrito de prazos e orçamento.",
-          whatOffer: "Projeto estrutural, construção de galpões industriais e gerenciamento de obras chave na mão."
-        },
-        de: {
-          label: "ARCO Ingenieurbau (Industriebau)",
-          tagline: "STRUKTUREN, DIE ÜBERDAUERN",
-          businessGiro: "Tief- und Industriebauunternehmen für Logistikzentren und hochpräzise Infrastruktur.",
-          whyPurpose: "Weil jedes präzise ausgeführte Bauwerk das Kapital unserer Kunden schützt und Industriestandards hebt.",
-          howMethod: "Durch millimetergenaue BIM-Planung, tägliche Bauleitung vor Ort und strikte Termin- und Budgettreue.",
-          whatOffer: "Tragwerksplanung, Bau von Industriehallen und schlüsselfertiges Projektmanagement."
-        },
-        it: {
-          label: "ARCO Ingegneria (Costruzioni)",
-          tagline: "STRUTTURE CHE TRASCENDONO",
-          businessGiro: "Società di ingegneria civile e costruzioni industriali specializzata in poli logistici e infrastrutture di alta precisione.",
-          whyPurpose: "Perché ogni opera ben eseguita protegge il patrimonio dei nostri clienti ed eleva lo standard industriale.",
-          howMethod: "Tramite pianificazione BIM millimetrica, supervisione quotidiana in cantiere e rispetto rigoroso di tempi e budget.",
-          whatOffer: "Progettazione strutturale, costruzione di capannoni industriali e gestione progetti chiavi in mano."
-        }
-      }
-    },
-    {
-      id: "improbears",
-      label: "ImproBears (4 Submarcas)",
-      objective: "redesign",
-      brandName: "IMPROBEARS",
-      tagline: "DEL CAOS AL SISTEMA",
-      businessGiro: "Firma de ingeniería de negocios, ingredientes especializados, producción audiovisual e inteligencia artificial aplicada con 4 submarcas homologadas.",
-      whyPurpose: "Porque creemos en acompañar hombro a hombro al líder para transformar el caos operativo en sistemas rentables que liberan tiempo mental.",
-      howMethod: "Escuchamos primero la visión del cliente, estructuramos procesos claros y desplegamos tecnología e identidad sin imponer.",
-      whatOffer: "Consultoría estratégica (Consulting), insumos cerveceros (Ingredients), producción visual (Studio) y agentes digitales (AI).",
-      i18n: {
-        es: {
-          label: "ImproBears (4 Submarcas)",
-          tagline: "DEL CAOS AL SISTEMA",
-          businessGiro: "Firma de ingeniería de negocios, ingredientes especializados, producción audiovisual e inteligencia artificial aplicada con 4 submarcas homologadas.",
-          whyPurpose: "Porque creemos en acompañar hombro a hombro al líder para transformar el caos operativo en sistemas rentables que liberan tiempo mental.",
-          howMethod: "Escuchamos primero la visión del cliente, estructuramos procesos claros y desplegamos tecnología e identidad sin imponer.",
-          whatOffer: "Consultoría estratégica (Consulting), insumos cerveceros (Ingredients), producción visual (Studio) y agentes digitales (AI)."
-        },
-        en: {
-          label: "ImproBears (4 Sub-brands)",
-          tagline: "FROM CHAOS TO SYSTEM",
-          businessGiro: "Business engineering, specialty brewing ingredients, audiovisual studio, and applied AI firm with 4 homologated sub-brands.",
-          whyPurpose: "Because we work shoulder to shoulder with leaders to turn operational chaos into profitable systems that free mental time.",
-          howMethod: "Listening first to the client's vision, structuring clear processes, and deploying technology and identity without imposing.",
-          whatOffer: "Strategic Consulting, Specialty Ingredients, Audiovisual Studio, and Applied AI Digital Agents."
-        },
-        fr: {
-          label: "ImproBears (4 Sous-marques)",
-          tagline: "DU CHAOS AU SYSTÈME",
-          businessGiro: "Cabinet d'ingénierie d'affaires, ingrédients spécialisés, production audiovisuelle et IA appliquée avec 4 sous-marques.",
-          whyPurpose: "Accompagner le dirigeant côte à côte pour transformer le chaos opérationnel en systèmes rentables.",
-          howMethod: "Écouter d'abord la vision du client, structurer des processus clairs et déployer la technologie sans imposer.",
-          whatOffer: "Conseil stratégique (Consulting), ingrédients (Ingredients), studio audiovisuel (Studio) et agents IA (AI)."
-        },
-        pt: {
-          label: "ImproBears (4 Submarcas)",
-          tagline: "DO CAOS AO SISTEMA",
-          businessGiro: "Firma de engenharia de negócios, ingredientes especializados, produção audiovisual e IA aplicada com 4 submarcas homologadas.",
-          whyPurpose: "Acompanhar ombro a ombro o líder para transformar o caos operacional em sistemas rentáveis que liberam tempo mental.",
-          howMethod: "Ouvimos primeiro a visão do cliente, estruturamos processos claros e implementamos tecnologia sem impor.",
-          whatOffer: "Consultoria estratégica (Consulting), insumos cervejeiros (Ingredients), estúdio visual (Studio) e agentes digitais (AI)."
-        },
-        de: {
-          label: "ImproBears (4 Submarken)",
-          tagline: "VOM CHAOS ZUM SYSTEM",
-          businessGiro: "Unternehmensberatung, Spezialzutaten, Medienproduktion und angewandte KI mit 4 homologierten Submarken.",
-          whyPurpose: "Schulter an Schulter mit Führungskräften operatives Chaos in profitable Systeme verwandeln.",
-          howMethod: "Zuerst die Vision des Kunden verstehen, klare Prozesse strukturieren und Technologie partnerschaftlich einsetzen.",
-          whatOffer: "Strategieberatung (Consulting), Spezialzutaten (Ingredients), Filmstudio (Studio) und KI-Agenten (AI)."
-        },
-        it: {
-          label: "ImproBears (4 Sub-brand)",
-          tagline: "DAL CAOS AL SISTEMA",
-          businessGiro: "Società di ingegneria aziendale, ingredienti speciali, produzione audiovisiva e IA applicata con 4 sub-brand omologati.",
-          whyPurpose: "Affiancare spalla a spalla il leader per trasformare il caos operativo in sistemi redditizi che liberano tempo mentale.",
-          howMethod: "Ascoltiamo prima la visione del cliente, strutturiamo processi chiari e implementiamo tecnologia senza imporre.",
-          whatOffer: "Consulenza strategica (Consulting), ingredienti (Ingredients), produzione visiva (Studio) e agenti digitali (AI)."
-        }
-      }
+  // Generador de Diagramas Vectoriales Interactivos para la Infografía de Bases Teóricas
+  function buildAcademicDiagramSVG(diagramType, stageColor) {
+    if (diagramType === "golden_circle") {
+      return `<svg viewBox="0 0 320 210" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="gcGradInf" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#FF7A00" stop-opacity="0.28"/>
+            <stop offset="60%" stop-color="#426EAE" stop-opacity="0.14"/>
+            <stop offset="100%" stop-color="#0D2540" stop-opacity="0.05"/>
+          </radialGradient>
+        </defs>
+        <circle cx="160" cy="105" r="88" fill="url(#gcGradInf)" stroke="#0D2540" stroke-width="2" stroke-dasharray="4 3"/>
+        <circle cx="160" cy="105" r="58" fill="rgba(66,110,174,0.12)" stroke="#426EAE" stroke-width="2.2"/>
+        <circle cx="160" cy="105" r="30" fill="#FF7A00" stroke="#FFFFFF" stroke-width="2.5"/>
+        <text x="160" y="109" text-anchor="middle" fill="#FFFFFF" font-family="Montserrat,sans-serif" font-weight="900" font-size="12">WHY</text>
+        <text x="160" y="62" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="800" font-size="10">HOW · 3 STEPS</text>
+        <text x="160" y="30" text-anchor="middle" fill="#426EAE" font-family="Montserrat,sans-serif" font-weight="800" font-size="10">WHAT · PRODUCT</text>
+        <path d="M190 105 L285 105" stroke="#FF7A00" stroke-width="2" stroke-dasharray="3 3"/>
+        <circle cx="285" cy="105" r="4" fill="#FF7A00"/>
+      </svg>`;
     }
-  ];
-
-  function getLocalizedPresetData(presetObj) {
-    const p = presetObj || DEMO_QUICK_PRESETS[0];
-    const l = getLang();
-    const loc = (p.i18n && (p.i18n[l] || p.i18n.es)) || p;
-    return {
-      id: p.id,
-      objective: p.objective,
-      brandName: p.brandName,
-      label: loc.label || p.label,
-      tagline: loc.tagline || p.tagline,
-      businessGiro: loc.businessGiro || p.businessGiro,
-      whyPurpose: loc.whyPurpose || p.whyPurpose,
-      howMethod: loc.howMethod || p.howMethod,
-      whatOffer: loc.whatOffer || p.whatOffer
-    };
+    if (diagramType === "touchpoints_wave") {
+      return `<svg viewBox="0 0 320 210" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+        <line x1="24" y1="110" x2="296" y2="110" stroke="#CBD5E1" stroke-width="2"/>
+        <path d="M 28 140 C 75 45, 115 45, 160 110 C 205 175, 245 45, 292 75" fill="none" stroke="#426EAE" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="68" cy="74" r="9" fill="#4C9DE6" stroke="#FFFFFF" stroke-width="2.5"/>
+        <circle cx="160" cy="110" r="10" fill="#FF7A00" stroke="#FFFFFF" stroke-width="2.5"/>
+        <circle cx="256" cy="78" r="9" fill="#0D2540" stroke="#FFFFFF" stroke-width="2.5"/>
+        <text x="68" y="54" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="800" font-size="10">1. ANTES</text>
+        <text x="160" y="142" text-anchor="middle" fill="#FF7A00" font-family="Montserrat,sans-serif" font-weight="900" font-size="10">2. DURANTE (15s)</text>
+        <text x="256" y="56" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="800" font-size="10">3. DESPUÉS</text>
+      </svg>`;
+    }
+    if (diagramType === "smile_radar") {
+      return `<svg viewBox="0 0 320 210" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="160,24 238,80 208,172 112,172 82,80" fill="rgba(66,110,174,0.10)" stroke="#94A3B8" stroke-width="1.5"/>
+        <polygon points="160,38 224,85 198,158 122,158 96,85" fill="rgba(255,122,0,0.20)" stroke="#FF7A00" stroke-width="2.5"/>
+        <circle cx="160" cy="38" r="4.5" fill="#0D2540"/><text x="160" y="17" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="800" font-size="9.5">S · SUGGESTIVE</text>
+        <circle cx="224" cy="85" r="4.5" fill="#0D2540"/><text x="272" y="86" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="800" font-size="9.5">M · MEMORABLE</text>
+        <circle cx="198" cy="158" r="4.5" fill="#0D2540"/><text x="235" y="188" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="800" font-size="9.5">I · IMAGERY</text>
+        <circle cx="122" cy="158" r="4.5" fill="#0D2540"/><text x="85" y="188" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="800" font-size="9.5">L · LEGS</text>
+        <circle cx="96" cy="85" r="4.5" fill="#0D2540"/><text x="48" y="86" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="800" font-size="9.5">E · EMOTIONAL</text>
+      </svg>`;
+    }
+    if (diagramType === "osgood_kansei") {
+      return `<svg viewBox="0 0 320 210" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+        <rect x="24" y="24" width="272" height="162" rx="14" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+        <line x1="56" y1="60" x2="264" y2="60" stroke="#CBD5E1" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="205" cy="60" r="8" fill="#FF7A00" stroke="#FFFFFF" stroke-width="2"/>
+        <text x="56" y="48" fill="#475569" font-family="Plus Jakarta Sans,sans-serif" font-weight="700" font-size="9.5">Orgánico (Bouba)</text>
+        <text x="264" y="48" text-anchor="end" fill="#0D2540" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="9.5">Geométrico (Kiki)</text>
+        <line x1="56" y1="108" x2="264" y2="108" stroke="#CBD5E1" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="182" cy="108" r="8" fill="#426EAE" stroke="#FFFFFF" stroke-width="2"/>
+        <text x="56" y="96" fill="#475569" font-family="Plus Jakarta Sans,sans-serif" font-weight="700" font-size="9.5">Clásico / Herencia</text>
+        <text x="264" y="96" text-anchor="end" fill="#0D2540" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="9.5">Vanguardia Tecnológica</text>
+        <line x1="56" y1="156" x2="264" y2="156" stroke="#CBD5E1" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="134" cy="156" r="8" fill="#0D2540" stroke="#FFFFFF" stroke-width="2"/>
+        <text x="56" y="144" fill="#0D2540" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="9.5">Síntesis Minimalista</text>
+        <text x="264" y="144" text-anchor="end" fill="#475569" font-family="Plus Jakarta Sans,sans-serif" font-weight="700" font-size="9.5">Complejidad Escudo</text>
+      </svg>`;
+    }
+    if (diagramType === "kaizen_bezier_grid") {
+      return `<svg viewBox="0 0 320 210" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="#E2E8F0" stroke-width="1">
+          <line x1="40" y1="30" x2="280" y2="30"/><line x1="40" y1="65" x2="280" y2="65"/><line x1="40" y1="100" x2="280" y2="100"/><line x1="40" y1="135" x2="280" y2="135"/><line x1="40" y1="170" x2="280" y2="170"/>
+          <line x1="40" y1="30" x2="40" y2="170"/><line x1="88" y1="30" x2="88" y2="170"/><line x1="136" y1="30" x2="136" y2="170"/><line x1="184" y1="30" x2="184" y2="170"/><line x1="232" y1="30" x2="232" y2="170"/><line x1="280" y1="30" x2="280" y2="170"/>
+        </g>
+        <rect x="64" y="45" width="192" height="110" rx="18" fill="none" stroke="#426EAE" stroke-width="2" stroke-dasharray="5 4"/>
+        <path d="M 88 135 C 115 48, 205 48, 232 135" fill="none" stroke="#FF7A00" stroke-width="3.5"/>
+        <line x1="88" y1="135" x2="115" y2="48" stroke="#0D2540" stroke-width="1.5"/>
+        <line x1="232" y1="135" x2="205" y2="48" stroke="#0D2540" stroke-width="1.5"/>
+        <circle cx="115" cy="48" r="5" fill="#0D2540"/><circle cx="205" cy="48" r="5" fill="#0D2540"/>
+        <rect x="83" y="130" width="10" height="10" fill="#FF7A00"/><rect x="227" y="130" width="10" height="10" fill="#FF7A00"/>
+        <text x="160" y="192" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="800" font-size="10">RETÍCULA 8X×3X · KAIZEN CONTINUO · BÉZIER</text>
+      </svg>`;
+    }
+    if (diagramType === "vignelli_canon") {
+      return `<svg viewBox="0 0 320 210" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+        <rect x="34" y="28" width="252" height="154" rx="16" fill="#FFFFFF" stroke="#0D2540" stroke-width="2.2"/>
+        <path d="M 34 86 Q 160 54 286 92 L 286 182 L 34 182 Z" fill="rgba(66,110,174,0.12)"/>
+        <rect x="54" y="48" width="84" height="14" rx="4" fill="#0D2540"/>
+        <rect x="54" y="70" width="130" height="8" rx="3" fill="#FF7A00"/>
+        <rect x="54" y="104" width="64" height="56" rx="8" fill="#F8FAFC" stroke="#426EAE" stroke-width="1.6"/>
+        <rect x="128" y="104" width="64" height="56" rx="8" fill="#F8FAFC" stroke="#426EAE" stroke-width="1.6"/>
+        <rect x="202" y="104" width="64" height="56" rx="8" fill="#F8FAFC" stroke="#FF7A00" stroke-width="1.6"/>
+        <text x="160" y="198" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="900" font-size="10">BRANDBOOK OFICIAL · +30 PÁGINAS EN CURVAS</text>
+      </svg>`;
+    }
+    return `<svg viewBox="0 0 320 210" width="100%" height="190" xmlns="http://www.w3.org/2000/svg">
+      <rect x="30" y="42" width="76" height="126" rx="14" fill="#F8FAFC" stroke="#426EAE" stroke-width="2"/>
+      <rect x="122" y="28" width="76" height="140" rx="14" fill="#EFF6FF" stroke="#FF7A00" stroke-width="2.2"/>
+      <rect x="214" y="42" width="76" height="126" rx="14" fill="#F8FAFC" stroke="#0D2540" stroke-width="2"/>
+      <text x="68" y="108" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="800" font-size="9.5">DESDE CERO</text>
+      <text x="160" y="102" text-anchor="middle" fill="#FF7A00" font-family="Montserrat,sans-serif" font-weight="900" font-size="9.5">EVOLUCIÓN</text>
+      <text x="252" y="108" text-anchor="middle" fill="#0D2540" font-family="Montserrat,sans-serif" font-weight="800" font-size="9.5">SUBMARCAS</text>
+    </svg>`;
   }
 
-  // ---------------------------------------------------------------------------
-  // 3. ESTADO GLOBAL DE LA EXPERIENCIA COMERCIAL V91.0
-  // ---------------------------------------------------------------------------
+  // Estado Global Comercial y de Sincronización
   window.tbbCommercialDemoState = {
-    activeMainSection: 1, // 1: Inicio | 2: Demo | 3: App Tour | 4: Bases teóricas | 5: Pack de descargas
-    heroVisualMode: "app", // "app" | "manual"
-    activeDemoStep: 0, // 0, 1, 2
-    demoObjective: "create", // "create" | "redesign"
-    activeVideoStep: 0, // 0..6
-    activeCarouselIndex: 0, // 0..8
-    mobileDrawerOpen: false,
-    activePresetId: "tbb",
-    brandName: "THE BEST BRAND",
-    tagline: "YOUR BRAND, NOW!!!",
-    businessGiro: "Plataforma interactiva con IA que guía a empresarios paso a paso para definir su identidad estratégica y generar su Manual Oficial de Marca de 36 Láminas y 9 Entregables.",
-    whyPurpose: "Porque creemos que la claridad de marca multiplica el valor de las empresas y libera tiempo mental al líder.",
-    howMethod: "Combinamos el acompañamiento socrático de Aura, ingeniería Kansei y síntesis vectorial Apple Liquid Glass paso a paso.",
-    whatOffer: "Suite ejecutiva de 9 entregables oficiales: Manual de 36 Láminas (.PDF y .HTML), vectores (.SVG y .AI), firma (.HTML), Word (.DOCX), PowerPoint (.PPTX) y Kit de Fuentes (.ZIP).",
-    tpBefore: ["Búsqueda Web y App Store", "Demostración Interactiva en Línea (Pasos 0, 1 y 2)", "Recomendación Directa de Empresarios"],
-    tpDuring: ["Taller Guiado por Voz con Aura", "Lienzo Generativo de Logotipo en Tiempo Real", "Checkout Directo con Tarjeta, Apple Pay, Google Pay y PayPal"],
-    tpAfter: ["Bóveda Digital del Manual de 36 Láminas en PDF y HTML", "Suite Editable (.SVG, .AI, .DOCX, .PPTX, .HTML, .ZIP)", "Seguimiento de Satisfacción y Expansión Web"],
+    activeMainSection: 1, // 1: Inicio, 2: App Tour, 3: Bases Teóricas, 4: Demo en Vivo, 5: Pack de Descargas
+    heroConvergenceActive: false,
+    heroSelectedTheoryIdx: 0,
+    tourActiveStep: 0,
+    tourIphoneLiveMode: false,
+    beforeAfterVal: 54,
+    kanseiGeoVal: 72,
+    kanseiVanguardVal: 68,
+    kanseiWeightVal: 64,
+    demoViewportMode: "iphone", // "iphone" | "full"
+    activeDemoStep: 0,
+    brandName: "The Best Brand",
     selectedPlan: "pro_atelier",
     selectedPaymentMethod: "card",
-    comingSoonReservedWeb: false,
-    comingSoonReservedSocial: false
+    openVideoModalStep: null,
+    migratedSteps0to3Snapshot: null
   };
 
-  function syncDemoStateFromAppIfAvailable() {
+  function hasProLicense() {
     try {
-      const st = window.tbbCommercialDemoState;
-      const presetBase = DEMO_QUICK_PRESETS.find(item => item.id === (st.activePresetId || "tbb")) || DEMO_QUICK_PRESETS[0];
-      const locP = getLocalizedPresetData(presetBase);
-      if (!st.userEditedCustomDemo) {
-        st.brandName = locP.brandName;
-        st.tagline = locP.tagline;
-        st.businessGiro = locP.businessGiro;
-        st.whyPurpose = locP.whyPurpose;
-        st.howMethod = locP.howMethod;
-        st.whatOffer = locP.whatOffer;
-      }
-      const cs = (typeof window.canvasState === "object" && window.canvasState) ? window.canvasState : null;
-      if (!cs) return;
-      if (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) st.brandName = cs.brandName;
-      if (cs.tagline) st.tagline = cs.tagline;
-      if (cs.custom_business_type && cs.custom_business_type.length > 12) st.businessGiro = cs.custom_business_type;
-      if (cs.golden_circle && cs.golden_circle.length > 12) st.whyPurpose = cs.golden_circle;
-      if (cs.process_steps_text && cs.process_steps_text.length > 12) st.howMethod = cs.process_steps_text;
-      if (cs.value_offer && cs.value_offer.length > 12) st.whatOffer = cs.value_offer;
-    } catch (e) {}
+      return Boolean(localStorage.getItem(LICENSE_STORAGE_KEY));
+    } catch (e) {
+      return false;
+    }
   }
+  window.tbbHasProLicense = hasProLicense;
 
-  window.tbbSyncCommercialDemoToAppState = function () {
-    const st = window.tbbCommercialDemoState;
-    try {
-      if (typeof window.canvasState === "object" && window.canvasState) {
-        window.canvasState.brandName = st.brandName || "THE BEST BRAND";
-        window.canvasState.tagline = st.tagline || "YOUR BRAND, NOW!!!";
-        window.canvasState.custom_business_type = st.businessGiro;
-        window.canvasState.step0_short_essence = st.businessGiro.split(/\s+/).slice(0, 7).join(" ");
-        window.canvasState.golden_circle = st.whyPurpose;
-        window.canvasState.process_steps_text = st.howMethod;
-        window.canvasState.value_offer = st.whatOffer;
-        window.canvasState.tp_before = st.tpBefore.join(", ");
-        window.canvasState.tp_during = st.tpDuring.join(", ");
-        window.canvasState.tp_after = st.tpAfter.join(", ");
-      }
-      if (typeof window.saveBrandSessionToLocalStorage === "function") {
-        window.saveBrandSessionToLocalStorage();
-      }
-      localStorage.setItem("tbb_commercial_demo_snapshot_v56", JSON.stringify(st));
-    } catch (e) {}
-  };
-
-  // ---------------------------------------------------------------------------
-  // 4. CONTROLADOR DE NAVEGACIÓN ENTRE LAS 5 SUBPÁGINAS (COMPRAR SIEMPRE VISIBLE)
-  // ---------------------------------------------------------------------------
+  // Orden estricto del menú solicitado por el usuario:
+  // 1. Inicio (/) | 2. App Tour (/app-tour) | 3. Bases Teóricas (/bases-teoricas) | 4. Demo en Vivo (/demo) | 5. Pack de Descargas (/pack-descargas)
   const SUBPAGE_META = {
-    1: { slug: "inicio", path: "/", title: "THE BEST BRAND — YOUR BRAND, NOW!!!" },
-    2: { slug: "demo", path: "/demo", title: "Demo EN VIVO — THE BEST BRAND" },
-    3: { slug: "app-tour", path: "/app-tour", title: "App Tour — THE BEST BRAND" },
-    4: { slug: "bases-teoricas", path: "/bases-teoricas", title: "Bases Teóricas — THE BEST BRAND" },
-    5: { slug: "pack-descargas", path: "/pack-descargas", title: "Pack de Descargas — THE BEST BRAND" }
+    1: { slug: "inicio", path: "/" },
+    2: { slug: "app-tour", path: "/app-tour" },
+    3: { slug: "bases-teoricas", path: "/bases-teoricas" },
+    4: { slug: "demo", path: "/demo" },
+    5: { slug: "pack-descargas", path: "/pack-descargas" }
   };
 
   window.tbbSetActiveMainTab = function (slugOrNum) {
     const map = {
-      inicio: 1,
-      home: 1,
-      demo: 2,
-      "app-tour": 3,
-      tour: 3,
-      "bases-teoricas": 4,
-      bases: 4,
-      theory: 4,
-      "pack-descargas": 5,
-      pack: 5,
-      downloads: 5
+      "1": 1, "inicio": 1, "home": 1,
+      "2": 2, "app-tour": 2, "tour": 2, "recorrido": 2,
+      "3": 3, "bases-teoricas": 3, "bases-tecnicas": 3, "theory": 3,
+      "4": 4, "demo": 4, "aplicacion": 4, "live-demo": 4,
+      "5": 5, "pack-descargas": 5, "downloads": 5, "entregables": 5
     };
-    const key = String(slugOrNum || "1").toLowerCase().trim();
-    const sec = map[key] || Number(slugOrNum) || 1;
+    const sec = map[String(slugOrNum || "1").toLowerCase()] || 1;
     window.tbbSwitchMainSection(sec);
   };
 
-  window.tbbMountSingleActiveIphoneStudioFrame = function () {
-    const st = window.tbbCommercialDemoState || {};
-    const sec = Number(st.activeMainSection || 1);
-    const homeMount = document.getElementById("tbbHomeIphoneMount");
-    const sub2Mount = document.getElementById("tbbSubpage2IphoneMount");
-    if (homeMount) homeMount.innerHTML = "";
-    if (sub2Mount && sec !== 2) sub2Mount.innerHTML = "";
-  };
-
-  window.tbbUpdateBeforeAfterSlider = function (val) {
-    const num = Math.max(0, Math.min(100, Number(val ?? 50)));
-    const afterWrap = document.getElementById("tbbBeforeAfterClipLayer");
-    const divider = document.getElementById("tbbBeforeAfterHandleLine");
-    if (afterWrap) afterWrap.style.clipPath = `inset(0 ${100 - num}% 0 0)`;
-    if (divider) divider.style.left = `${num}%`;
-  };
-
-  window.tbbFilterHome36PlatesChapter = function (chapFilter) {
-    window.tbbCommercialDemoState.activePlateChapterFilter = chapFilter || "all";
-    document.querySelectorAll(".tbb-plate36-filter-btn").forEach(btn => {
-      const isAct = btn.getAttribute("data-chapter") === (chapFilter || "all");
-      btn.style.background = isAct ? "#0D2540" : "#FFFFFF";
-      btn.style.color = isAct ? "#FFFFFF" : "#334155";
-      btn.style.borderColor = isAct ? "#0D2540" : "#CBD5E1";
-    });
-    document.querySelectorAll(".tbb-plate36-thumb-card").forEach(card => {
-      const ch = card.getAttribute("data-chapter");
-      const show = !chapFilter || chapFilter === "all" || ch === chapFilter;
-      card.style.display = show ? "flex" : "none";
-    });
-  };
-
   window.tbbRenderActiveSubpageHTML = function (secNumber) {
-    const s = Math.max(1, Math.min(5, Number(secNumber || 1)));
-    if (s === 2) return window.tbbBuildSubpage2DemoHTML();
-    if (s === 3) return window.tbbBuildSubpage3AppTourHTML();
-    if (s === 4) return window.tbbBuildSubpage4TheoryHTML();
+    const s = Number(secNumber) || 1;
+    if (s === 2) return window.tbbBuildSubpage2AppTourHTML();
+    if (s === 3) return window.tbbBuildSubpage3TheoryHTML();
+    if (s === 4) return window.tbbBuildSubpage4DemoHTML();
     if (s === 5) return window.tbbBuildSubpage5DownloadsHTML();
     return window.tbbBuildSubpage1HomeHTML();
   };
 
   window.tbbSwitchMainSection = function (secNumber, opts) {
-    const s = Math.max(1, Math.min(5, Number(secNumber || 1)));
+    const s = Math.max(1, Math.min(5, Number(secNumber) || 1));
     if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
     window.tbbCommercialDemoState.activeMainSection = s;
-    document.body.classList.toggle("tbb-is-demo-section", s === 2);
-    document.body.setAttribute("data-tbb-active-subpage", String(s));
 
-    // Cerrar cualquier overlay fullscreen legado si estaba abierto
-    const legacyOverlay = document.getElementById("tbbFullscreenDemoOverlay");
-    if (legacyOverlay && legacyOverlay.style.display !== "none") {
-      legacyOverlay.style.display = "none";
-      legacyOverlay.innerHTML = "";
-    }
+    // Close mobile drawer if open
+    const drawer = document.getElementById("tbbMobileNavDrawer");
+    if (drawer) drawer.classList.remove("open");
 
-    const meta = SUBPAGE_META[s] || SUBPAGE_META[1];
-    try {
-      document.title = meta.title;
-      if (!(opts && opts.skipHistory)) {
-        const currentSearch = window.location.search || "";
-        const targetUrl = meta.path + currentSearch;
-        if (window.location.pathname !== meta.path) {
-          window.history.pushState({ sec: s }, meta.title, targetUrl);
-        }
-      }
-    } catch (e) {}
-
-    const viewport = document.getElementById("tbbMainActiveSubpageViewport");
+    const viewport = document.getElementById("tbbSubpageDynamicViewport");
     if (viewport) {
       viewport.innerHTML = window.tbbRenderActiveSubpageHTML(s);
-    } else {
-      for (let i = 1; i <= 5; i++) {
-        const pane = document.getElementById(`tbbMainSectionPane_${i}`);
-        if (pane) {
-          pane.style.display = (i === s) ? "block" : "none";
-        }
-      }
     }
 
-    for (let i = 1; i <= 5; i++) {
-      document.querySelectorAll(`#tbbSecTab_${i}, .tbb-tab-sec-${i}`).forEach(btn => {
-        btn.classList.toggle("is-active", i === s);
-      });
-    }
-
-    // Ocultar footer en Subpágina 1 (Inicio sin scroll) y Subpágina 2 (App a tamaño 100% real)
-    const footerEl = document.getElementById("tbbMainCommercialFooter");
-    if (footerEl) {
-      footerEl.style.display = (s === 1 || s === 2) ? "none" : "block";
-    }
-
-    // En Subpágina 2 ocultar la píldora flotante inferior derecha para no tapar controles de la app real
-    const floatBar = document.getElementById("tbbAlwaysOnBuyFloatingBar");
-    if (floatBar) {
-      const isStandalone = document.body.getAttribute("data-tbb-standalone-web") === "true" && window.location.pathname !== "/studio" && !window.location.pathname.endsWith("studio.html");
-      floatBar.style.display = (isStandalone && s !== 2) ? "flex" : "none";
-    }
-
-    window.scrollTo({ top: 0, behavior: "auto" });
-    setTimeout(() => {
-      if (typeof window.tbbInitAwwwardsInteractions === "function") {
-        window.tbbInitAwwwardsInteractions();
-      }
-    }, 50);
-  };
-
-  window.tbbLaunchDemoFullscreen = function () {
-    window.tbbSwitchMainSection(2);
-  };
-
-  window.tbbCloseDemoFullscreen = function () {
-    window.tbbSwitchMainSection(1);
-  };
-
-  window.tbbSetHeroVisualMode = function (mode) {
-    window.tbbCommercialDemoState.heroVisualMode = mode === "manual" ? "manual" : "app";
-    window.tbbRefreshCommercialPortalDOM();
-  };
-
-  // ---------------------------------------------------------------------------
-  // 5. EMBLEMA VECTORIAL Y CÍRCULO DORADO EN VIVO (TIPOGRAFÍA LIGERA Y LIMPIA)
-  // ---------------------------------------------------------------------------
-  window.tbbBuildOfficialBrandbook1EmblemSVG = function (size = 44) {
-    return `
-      <svg width="${size}" height="${size}" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="display:block; flex-shrink:0;">
-        <circle cx="100" cy="100" r="86" fill="#FF7A00"/>
-        <circle cx="100" cy="100" r="79" fill="#0D2540"/>
-        <circle cx="100" cy="100" r="56" fill="#38BDF8" fill-opacity="0.16"/>
-        <path d="M 100 86 C 86 67, 82 43, 100 32 C 118 43, 114 67, 100 86 Z" fill="#38BDF8" fill-opacity="0.38" stroke="#7DD3FC" stroke-width="1.4"/>
-        <path d="M 114 100 C 133 86, 157 82, 168 100 C 157 118, 133 114, 114 100 Z" fill="#38BDF8" fill-opacity="0.38" stroke="#7DD3FC" stroke-width="1.4"/>
-        <path d="M 100 114 C 114 133, 118 157, 100 168 C 82 157, 86 133, 100 114 Z" fill="#38BDF8" fill-opacity="0.38" stroke="#7DD3FC" stroke-width="1.4"/>
-        <path d="M 86 100 C 67 114, 43 118, 32 100 C 43 82, 67 86, 86 100 Z" fill="#38BDF8" fill-opacity="0.38" stroke="#7DD3FC" stroke-width="1.4"/>
-        <circle cx="100" cy="100" r="22" fill="#FF7A00" fill-opacity="0.45"/>
-        <circle cx="100" cy="100" r="11" fill="#FFFFFF"/>
-      </svg>
-    `;
-  };
-
-  function splitIntoTwoChordLines(str, maxCharsLine1, maxCharsLine2) {
-    const clean = String(str || "").replace(/\s+/g, " ").trim();
-    if (!clean) return ["—", ""];
-    const words = clean.split(" ");
-    let line1 = "";
-    let idx = 0;
-    while (idx < words.length) {
-      const candidate = line1 ? `${line1} ${words[idx]}` : words[idx];
-      if (candidate.length <= maxCharsLine1) {
-        line1 = candidate;
-        idx++;
-      } else {
-        break;
-      }
-    }
-    if (!line1) {
-      line1 = clean.slice(0, maxCharsLine1);
-      const rest = clean.slice(maxCharsLine1, maxCharsLine1 + maxCharsLine2);
-      return [line1, rest ? `${rest}…` : ""];
-    }
-    const remaining = words.slice(idx).join(" ");
-    if (!remaining) return [line1, ""];
-    if (remaining.length <= maxCharsLine2) return [line1, remaining];
-    return [line1, remaining.slice(0, maxCharsLine2 - 1).trim() + "…"];
-  }
-
-  window.tbbBuildCircularGoldenCircleSVG = function () {
-    const st = window.tbbCommercialDemoState;
-    const lang = getLang();
-    const [whatL1, whatL2] = splitIntoTwoChordLines(st.whatOffer, 32, 36);
-    const [howL1, howL2] = splitIntoTwoChordLines(st.howMethod, 26, 28);
-    const [whyL1, whyL2] = splitIntoTwoChordLines(st.whyPurpose, 18, 18);
-
-    const gcLabels = {
-      es: { w: "3. WHAT · OFERTA", h: "2. HOW · MÉTODO", y: "1. WHY · PROPÓSITO" },
-      en: { w: "3. WHAT · OFFER", h: "2. HOW · METHOD", y: "1. WHY · PURPOSE" },
-      fr: { w: "3. WHAT · OFFRE", h: "2. HOW · MÉTHODE", y: "1. WHY · RAISON D'ÊTRE" },
-      pt: { w: "3. WHAT · OFERTA", h: "2. HOW · MÉTODO", y: "1. WHY · PROPÓSITO" },
-      de: { w: "3. WHAT · ANGEBOT", h: "2. HOW · METHODE", y: "1. WHY · SINN & ZWECK" },
-      it: { w: "3. WHAT · OFFERTA", h: "2. HOW · METODO", y: "1. WHY · SCOPO" }
-    }[lang] || { w: "3. WHAT · OFERTA", h: "2. HOW · MÉTODO", y: "1. WHY · PROPÓSITO" };
-
-    return `
-      <svg viewBox="0 0 380 380" width="100%" height="320" xmlns="http://www.w3.org/2000/svg" style="display:block; margin:0 auto; max-width:360px;">
-        <defs>
-          <radialGradient id="gcWhyCoreV91" cx="50%" cy="45%" r="55%">
-            <stop offset="0%" stop-color="#1D4ED8"/>
-            <stop offset="100%" stop-color="#0D2540"/>
-          </radialGradient>
-        </defs>
-        <circle cx="190" cy="190" r="172" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
-        <text x="190" y="42" text-anchor="middle" fill="#1D4ED8" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600" letter-spacing="0.05em">${escHtml(gcLabels.w)}</text>
-        <text x="190" y="57" text-anchor="middle" fill="#334155" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="500">
-          <tspan x="190" dy="0">${escHtml(whatL1)}</tspan>
-          ${whatL2 ? `<tspan x="190" dy="11.5">${escHtml(whatL2)}</tspan>` : ""}
-        </text>
-
-        <circle cx="190" cy="206" r="118" fill="#FFFFFF" stroke="#93C5FD" stroke-width="2" stroke-dasharray="5 4"/>
-        <text x="190" y="114" text-anchor="middle" fill="#0D2540" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600" letter-spacing="0.04em">${escHtml(gcLabels.h)}</text>
-        <text x="190" y="128" text-anchor="middle" fill="#334155" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.2" font-weight="500">
-          <tspan x="190" dy="0">${escHtml(howL1)}</tspan>
-          ${howL2 ? `<tspan x="190" dy="11">${escHtml(howL2)}</tspan>` : ""}
-        </text>
-
-        <circle cx="190" cy="224" r="66" fill="url(#gcWhyCoreV91)" stroke="#FF7A00" stroke-width="2.5"/>
-        <text x="190" y="205" text-anchor="middle" fill="#93C5FD" font-family="'JetBrains Mono', monospace" font-size="8.8" font-weight="600">${escHtml(gcLabels.y)}</text>
-        <text x="190" y="224" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-size="7.8" font-weight="500">
-          <tspan x="190" dy="0">${escHtml(whyL1)}</tspan>
-          ${whyL2 ? `<tspan x="190" dy="10.5">${escHtml(whyL2)}</tspan>` : ""}
-        </text>
-      </svg>
-    `;
-  };
-
-  // ---------------------------------------------------------------------------
-  // 6. LIGHTBOX DE PANTALLA CASI COMPLETA (MÁXIMA RESOLUCIÓN) Y MODAL DE VIDEO
-  // ---------------------------------------------------------------------------
-  window.tbbOpenPlateLightboxModal = function (plateNum, customImgUrl, customTitle, customSampleUrl) {
-    const pNum = Math.max(1, Math.min(36, Number(plateNum) || 1));
-    const padNum = String(pNum).padStart(2, "0");
-    const isBrandbookPlate = !customImgUrl || String(customImgUrl).includes("/assets/brandbook_plates_tbb/plate-");
-    const imgSrc = customImgUrl || `/assets/brandbook_plates_tbb/plate-${padNum}.jpg`;
-    const titleTxt = customTitle || `${t("lightboxPrev")} ${padNum} / 36 · The Best Brand`;
-    const downloadHref = customSampleUrl || "/assets/deliverables_tbb/Manual_Identidad_36_Laminas_the_best_brand.pdf";
-
-    let ov = document.getElementById("tbbPlateLightboxModalOverlay");
-    if (!ov) {
-      ov = document.createElement("div");
-      ov.id = "tbbPlateLightboxModalOverlay";
-      ov.style.cssText = "position:fixed; inset:0; background:rgba(15,23,42,0.88); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); z-index:10080; display:flex; align-items:center; justify-content:center; padding:12px;";
-      ov.onclick = (e) => { if (e.target === ov) window.tbbClosePlateLightboxModal(); };
-      document.body.appendChild(ov);
-    }
-
-    const prevNum = pNum > 1 ? pNum - 1 : 36;
-    const nextNum = pNum < 36 ? pNum + 1 : 1;
-
-    ov.innerHTML = `
-      <div style="background:#FFFFFF; border-radius:20px; width:96vw; height:94vh; max-width:1680px; box-shadow:0 30px 90px rgba(0,0,0,0.45); display:flex; flex-direction:column; overflow:hidden;">
-        <div style="padding:14px 24px; display:flex; justify-content:space-between; align-items:center; gap:12px; border-bottom:1px solid #E2E8F0; flex-wrap:wrap; background:#FFFFFF;">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <img src="/assets/logos/tbb_official_liquid_glass_logo.jpg" alt="The Best Brand" style="width:34px; height:34px; border-radius:50%; object-fit:cover;" />
-            <div>
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#EA580C;">${escHtml(t("lightboxKicker"))}</div>
-              <div style="font-family:'Montserrat', sans-serif; font-size:1.02rem; font-weight:600; color:#0F172A;">${escHtml(titleTxt)}</div>
-            </div>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-            ${isBrandbookPlate ? `
-              <button type="button" onclick="window.tbbOpenPlateLightboxModal(${prevNum})" class="tbb-btn-light-surface" style="padding:7px 14px; font-size:0.78rem;">← ${escHtml(t("lightboxPrev"))} ${String(prevNum).padStart(2, '0')}</button>
-              <button type="button" onclick="window.tbbOpenPlateLightboxModal(${nextNum})" class="tbb-btn-light-surface" style="padding:7px 14px; font-size:0.78rem;">${escHtml(t("lightboxNext"))} ${String(nextNum).padStart(2, '0')} →</button>
-            ` : ''}
-            <a href="${downloadHref}" target="_blank" rel="noopener" class="tbb-comm-btn-blue" style="padding:8px 16px; font-size:0.78rem; text-decoration:none;">${escHtml(t("packDownloadSample"))}</a>
-            <button type="button" onclick="window.tbbClosePlateLightboxModal()" class="tbb-btn-light-surface" style="padding:7px 14px; font-size:0.86rem;">${escHtml(t("lightboxClose"))}</button>
-          </div>
-        </div>
-        <div style="flex:1; padding:18px; background:#F8FAFC; display:flex; justify-content:center; align-items:center; overflow:auto;">
-          <img src="${imgSrc}" alt="${escHtml(titleTxt)}" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:12px; background:#FFFFFF; box-shadow:0 12px 40px rgba(15,23,42,0.08);" />
-        </div>
-      </div>
-    `;
-    ov.style.display = "flex";
-  };
-
-  window.tbbClosePlateLightboxModal = function () {
-    const ov = document.getElementById("tbbPlateLightboxModalOverlay");
-    if (ov) {
-      ov.style.display = "none";
-      ov.innerHTML = "";
-    }
-  };
-
-  window.tbbOpenVideoPopupModal = function (stepIdx) {
-    const s = Math.max(0, Math.min(VIDEO_CAPSULES.length - 1, Number(stepIdx) || 0));
-    const cap = VIDEO_CAPSULES[s] || VIDEO_CAPSULES[0];
-    const lang = getLang();
-    const loc = cap.i18n[lang] || cap.i18n.es;
-    if (window.tbbCommercialDemoState) {
-      window.tbbCommercialDemoState.openVideoModalStep = s;
-    }
-
-    let ov = document.getElementById("tbbVideoCapsuleModalOverlay");
-    if (!ov) {
-      ov = document.createElement("div");
-      ov.id = "tbbVideoCapsuleModalOverlay";
-      ov.style.cssText = "position:fixed; inset:0; background:rgba(15,23,42,0.86); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); z-index:10090; display:flex; align-items:center; justify-content:center; padding:16px;";
-      ov.onclick = (e) => { if (e.target === ov) window.tbbCloseVideoPopupModal(); };
-      document.body.appendChild(ov);
-    }
-
-    const nextVideoLbl = {
-      es: `Siguiente Video · ${stepLabelForLang(s + 1)} →`,
-      en: `Next Video · ${stepLabelForLang(s + 1)} →`,
-      fr: `Vidéo Suivante · ${stepLabelForLang(s + 1)} →`,
-      pt: `Próximo Vídeo · ${stepLabelForLang(s + 1)} →`,
-      de: `Nächstes Video · ${stepLabelForLang(s + 1)} →`,
-      it: `Video Successivo · ${stepLabelForLang(s + 1)} →`
-    }[lang] || `Siguiente Video · ${stepLabelForLang(s + 1)} →`;
-
-    const stepPillsHtml = VIDEO_CAPSULES.map((vc, idx) => {
-      const isAct = idx === s;
-      return `<button type="button" onclick="window.tbbOpenVideoPopupModal(${idx})" style="padding:5px 10px; border-radius:999px; border:1px solid ${isAct ? '#FF7A00' : '#CBD5E1'}; background:${isAct ? '#0D2540' : '#F8FAFC'}; color:${isAct ? '#FFFFFF' : '#0F172A'}; font-size:0.72rem; font-weight:600; cursor:pointer;">${escHtml(stepLabelForLang(idx, idx === 0))}</button>`;
-    }).join("");
-
-    ov.innerHTML = `
-      <div style="background:#FFFFFF; border-radius:24px; width:100%; max-width:860px; overflow:hidden; box-shadow:0 30px 90px rgba(0,0,0,0.45); display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr));">
-        <div style="background:#0F172A; display:flex; align-items:center; justify-content:center; padding:16px;">
-          <video src="${cap.url}" poster="${cap.poster}" controls autoplay playsinline style="max-height:74vh; width:auto; max-width:100%; border-radius:16px; box-shadow:0 16px 40px rgba(0,0,0,0.5);"></video>
-        </div>
-        <div style="padding:28px 26px; display:flex; flex-direction:column; justify-content:space-between; gap:16px; background:#FFFFFF; color:#0F172A;">
-          <div>
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:12px;">
-              <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:600; color:#EA580C; background:#FFF7ED; padding:4px 10px; border-radius:999px;">
-                ${escHtml(stepUpperForLang(s))} · HEYGEN · ${cap.duration} · (${lang.toUpperCase()})
-              </span>
-              <button type="button" onclick="window.tbbCloseVideoPopupModal()" class="tbb-btn-light-surface" style="padding:4px 11px; font-size:0.82rem;">✕</button>
-            </div>
-            <div style="display:flex; flex-wrap:wrap; gap:5px; margin-bottom:14px;">
-              ${stepPillsHtml}
-            </div>
-            <h3 style="font-family:'Montserrat', sans-serif; font-size:1.22rem; font-weight:600; color:#0F172A; margin:0 0 8px 0; line-height:1.28;">
-              ${escHtml(loc.title)}
-            </h3>
-            <div style="font-size:0.80rem; font-weight:500; color:#1D4ED8; margin-bottom:12px;">
-              ${escHtml(cap.author)}
-            </div>
-            <p style="font-size:0.88rem; font-weight:400; color:#475569; line-height:1.62; margin:0;">
-              ${escHtml(loc.desc)}
-            </p>
-          </div>
-          <div style="display:flex; flex-direction:column; gap:8px; padding-top:14px; border-top:1px solid #E2E8F0;">
-            ${s < 6 ? `
-              <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbOpenVideoPopupModal(${s + 1});" style="width:100%; padding:11px; font-size:0.86rem;">
-                ${escHtml(nextVideoLbl)}
-              </button>
-            ` : `
-              <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbCloseVideoPopupModal(); window.tbbOpenBuyAppCheckoutModal('pro_atelier');" style="width:100%; padding:11px; font-size:0.86rem;">
-                ${escHtml(t("buyNowFloating"))}
-              </button>
-            `}
-            <button type="button" class="tbb-btn-light-surface" onclick="window.tbbCloseVideoPopupModal()" style="width:100%; padding:9px; font-size:0.80rem;">
-              ${escHtml(t("videoPopupContinue"))}
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-    ov.style.display = "flex";
-  };
-
-  window.tbbCloseVideoPopupModal = function () {
-    if (window.tbbCommercialDemoState) {
-      window.tbbCommercialDemoState.openVideoModalStep = null;
-    }
-    const ov = document.getElementById("tbbVideoCapsuleModalOverlay");
-    if (ov) {
-      ov.style.display = "none";
-      ov.innerHTML = "";
-    }
-  };
-
-  // ---------------------------------------------------------------------------
-  // 7. FUNCIONES INTERACTIVAS DE LA DEMO (PASOS 0, 1 Y 2), CARRUSEL Y PRÓXIMAMENTE
-  // ---------------------------------------------------------------------------
-  window.tbbApplyCommercialDemoPreset = function (presetId) {
-    const rawPreset = DEMO_QUICK_PRESETS.find(item => item.id === presetId) || DEMO_QUICK_PRESETS[0];
-    const p = getLocalizedPresetData(rawPreset);
-    const st = window.tbbCommercialDemoState;
-    st.activePresetId = p.id;
-    st.demoObjective = p.objective || "create";
-    st.brandName = p.brandName;
-    st.tagline = p.tagline;
-    st.businessGiro = p.businessGiro;
-    st.whyPurpose = p.whyPurpose;
-    st.howMethod = p.howMethod;
-    st.whatOffer = p.whatOffer;
-    window.tbbSyncCommercialDemoToAppState();
-
-    // Actualizar tarjeta del Círculo Dorado y título sin recargar el iframe del iPhone
-    const gcWrap = document.getElementById("tbbDemoLiveGoldenCircleWrap");
-    if (gcWrap) gcWrap.innerHTML = window.tbbBuildCircularGoldenCircleSVG();
-    const bTitleEl = document.getElementById("tbbDemoLiveBrandTitle");
-    if (bTitleEl) bTitleEl.textContent = st.brandName;
-    const bTagEl = document.getElementById("tbbDemoLiveBrandTagline");
-    if (bTagEl) bTagEl.textContent = st.tagline;
-
-    document.querySelectorAll(".tbb-demo-preset-pill-btn").forEach(btn => {
-      const isAct = btn.getAttribute("data-preset-id") === p.id;
-      btn.style.background = isAct ? "#0D2540" : "#FFFFFF";
-      btn.style.color = isAct ? "#FFFFFF" : "#0F172A";
-      btn.style.borderColor = isAct ? "#0D2540" : "#CBD5E1";
+    // Update active state on all nav buttons
+    document.querySelectorAll("[data-tbb-nav-sec]").forEach((btn) => {
+      const btnSec = Number(btn.getAttribute("data-tbb-nav-sec"));
+      btn.classList.toggle("active", btnSec === s);
     });
 
-    // Enviar preset al iframe real de Studio en el iPhone
-    document.querySelectorAll(".tbb-live-iphone-studio-iframe").forEach(fr => {
+    if (!(opts && opts.skipHistory)) {
       try {
-        if (fr && fr.contentWindow) {
-          fr.contentWindow.postMessage({ type: "TBB_LOAD_PRESET", presetId: p.id, presetData: p }, "*");
+        const meta = SUBPAGE_META[s] || SUBPAGE_META[1];
+        if (window.location.pathname !== meta.path) {
+          window.history.pushState({ tbbSec: s }, "", meta.path);
         }
       } catch (e) {}
-    });
-  };
-
-  window.tbbSwitchCommercialDemoStep = function (stepNum) {
-    const s = [0, 1, 2].includes(Number(stepNum)) ? Number(stepNum) : 0;
-    window.tbbCommercialDemoState.activeDemoStep = s;
-    window.tbbSyncCommercialDemoToAppState();
-    window.tbbRefreshCommercialPortalDOM();
-  };
-
-  window.tbbSetDemoObjective = function (objMode) {
-    window.tbbCommercialDemoState.demoObjective = objMode === "redesign" ? "redesign" : "create";
-    window.tbbRefreshCommercialPortalDOM();
-  };
-
-  window.tbbUpdateCommercialDemoField = function (fieldKey, value) {
-    window.tbbCommercialDemoState[fieldKey] = String(value || "");
-    window.tbbSyncCommercialDemoToAppState();
-    const gcWrap = document.getElementById("tbbDemoLiveGoldenCircleWrap");
-    if (gcWrap) gcWrap.innerHTML = window.tbbBuildCircularGoldenCircleSVG();
-    const bTitleEl = document.getElementById("tbbDemoLiveBrandTitle");
-    if (bTitleEl) bTitleEl.textContent = window.tbbCommercialDemoState.brandName || "THE BEST BRAND";
-    const bTagEl = document.getElementById("tbbDemoLiveBrandTagline");
-    if (bTagEl) bTagEl.textContent = window.tbbCommercialDemoState.tagline || "YOUR BRAND, NOW!!!";
-  };
-
-  window.tbbPolishCommercialDemoStep1 = function () {
-    const st = window.tbbCommercialDemoState;
-    const refine = typeof window.tbbRefineUserCopyOrthoAndClarity === "function"
-      ? window.tbbRefineUserCopyOrthoAndClarity
-      : (txt) => String(txt || "").trim();
-    st.businessGiro = refine(st.businessGiro, "giro", st.brandName, st.businessGiro);
-    st.whyPurpose = refine(st.whyPurpose, "golden_circle", st.brandName, st.businessGiro);
-    st.howMethod = refine(st.howMethod, "process_steps_text", st.brandName, st.businessGiro);
-    st.whatOffer = refine(st.whatOffer, "value_offer", st.brandName, st.businessGiro);
-    window.tbbSyncCommercialDemoToAppState();
-    window.tbbRefreshCommercialPortalDOM();
-  };
-
-  window.tbbToggleCommercialDemoTouchpoint = function (stateKey, itemText) {
-    const st = window.tbbCommercialDemoState;
-    const list = Array.isArray(st[stateKey]) ? st[stateKey] : [];
-    const idx = list.indexOf(itemText);
-    if (idx >= 0) list.splice(idx, 1);
-    else list.push(itemText);
-    st[stateKey] = list;
-    window.tbbSyncCommercialDemoToAppState();
-    window.tbbRefreshCommercialPortalDOM();
-  };
-
-  window.tbbSelectDeliverableCarousel = function (idx) {
-    const total = OFFICIAL_9_DELIVERABLES.length;
-    const clean = ((Number(idx) || 0) % total + total) % total;
-    window.tbbCommercialDemoState.activeCarouselIndex = clean;
-    window.tbbRefreshCommercialPortalDOM();
-    setTimeout(() => {
-      const strip = document.getElementById("tbbModernDeliverablesCarouselTrack");
-      const card = document.getElementById(`tbbCarouselDelivCard_${clean}`);
-      if (strip && card) {
-        card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-      }
-    }, 30);
-  };
-
-  window.tbbReserveComingSoonAddon = function (addonType) {
-    if (addonType === "web") {
-      window.tbbCommercialDemoState.comingSoonReservedWeb = true;
-    } else {
-      window.tbbCommercialDemoState.comingSoonReservedSocial = true;
     }
-    window.tbbRefreshCommercialPortalDOM();
-  };
 
-  // ---------------------------------------------------------------------------
-  // 8. CONSTRUCCIÓN DE CADA UNA DE LAS 5 SUBPÁGINAS (PANORÁMICAS, CLARAS, LIMPIAS)
-  // ---------------------------------------------------------------------------
-
-  window.tbbBuildIphoneLiveStudioFrameHTML = function (frameId = "tbbLiveIphoneStudioFrame") {
-    const st = window.tbbCommercialDemoState;
-    const isLicensed = Boolean(localStorage.getItem(LICENSE_STORAGE_KEY));
-    const curStep = Math.max(0, Math.min(6, Number(st.activeDemoStep || 0)));
-    const curLang = getLang();
-
-    const step4UnlockedLbl = {
-      es: "Paso 4 · Kansei ✓",
-      en: "Step 4 · Kansei ✓",
-      fr: "Étape 4 · Kansei ✓",
-      pt: "Passo 4 · Kansei ✓",
-      de: "Schritt 4 · Kansei ✓",
-      it: "Passo 4 · Kansei ✓"
-    }[curLang] || "Paso 4 · Kansei ✓";
-
-    return `
-      <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
-        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
-          ${[
-            { s: 0, lbl: t("iphoneStep0Free") },
-            { s: 1, lbl: t("iphoneStep1Free") },
-            { s: 2, lbl: t("iphoneStep2Free") },
-            { s: 3, lbl: t("iphoneStep3Free") },
-            { s: 4, lbl: isLicensed ? step4UnlockedLbl : t("iphoneStep4Unlock") }
-          ].map(item => {
-            const isAct = curStep === item.s;
-            return `
-              <button type="button" onclick="window.tbbIphoneJumpToStep(${item.s})" style="padding:7px 13px; border-radius:999px; border:1px solid ${isAct ? '#1D4ED8' : (item.s === 4 && !isLicensed ? '#FDBA74' : '#CBD5E1')}; background:${isAct ? '#0D2540' : (item.s === 4 && !isLicensed ? '#FFF7ED' : '#FFFFFF')}; color:${isAct ? '#FFFFFF' : (item.s === 4 && !isLicensed ? '#EA580C' : '#0F172A')}; font-size:0.75rem; font-weight:500; cursor:pointer; transition:all 0.2s ease;">
-                ${escHtml(item.lbl)}
-              </button>
-            `;
-          }).join("")}
-          <button type="button" onclick="window.tbbIphoneOpenActiveStepVideo()" style="padding:7px 13px; border-radius:999px; border:1px solid #1D4ED8; background:#EFF6FF; color:#1D4ED8; font-size:0.75rem; font-weight:500; cursor:pointer;">
-            ${escHtml(t("iphoneVideoBtn"))}
-          </button>
-        </div>
-
-        <!-- Mockup Real de iPhone 16 Pro Titanium con la App Real (/studio) y Aura en Vivo -->
-        <div style="position:relative; width:392px; max-width:94vw; height:790px; background:linear-gradient(145deg, #1E293B 0%, #0F172A 50%, #334155 100%); border-radius:54px; padding:13px; box-shadow:0 34px 90px rgba(15,23,42,0.22), inset 0 0 0 2px rgba(255,255,255,0.22); display:flex; flex-direction:column;">
-          <!-- Dynamic Island -->
-          <div style="position:absolute; top:21px; left:50%; transform:translateX(-50%); width:116px; height:26px; background:#000000; border-radius:999px; z-index:20; display:flex; align-items:center; justify-content:space-between; padding:0 12px; box-shadow:0 2px 8px rgba(0,0,0,0.45);">
-            <span class="tbb-live-pulse-dot" style="width:7px; height:7px;"></span>
-            <span style="font-family:'JetBrains Mono', monospace; font-size:0.55rem; color:#FFFFFF; letter-spacing:0.04em;">AURA LIVE</span>
-            <span style="width:9px; height:9px; border-radius:50%; background:radial-gradient(circle, #38BDF8 0%, #1E3A8A 80%);"></span>
-          </div>
-
-          <!-- Pantalla iOS con App Real Ejecutándose en Vivo -->
-          <div style="flex:1; width:100%; height:100%; background:#090D16; border-radius:42px; overflow:hidden; position:relative; display:flex; flex-direction:column;">
-            <div style="height:34px; background:#090D16; color:#FFFFFF; display:flex; align-items:center; justify-content:space-between; padding:6px 22px 0 22px; font-family:'Plus Jakarta Sans', sans-serif; font-size:0.7rem; font-weight:500; flex-shrink:0;">
-              <span>9:41</span>
-              <span style="font-family:'JetBrains Mono', monospace; font-size:0.6rem; color:#38BDF8;">5G · TBB OS</span>
-            </div>
-            <iframe
-              id="${frameId}"
-              class="tbb-live-iphone-studio-iframe"
-              src="/studio?demo=true&embed=iphone&lang=${encodeURIComponent(curLang)}"
-              title="The Best Brand Studio Real App con Aura en Vivo"
-              allow="microphone; autoplay; clipboard-write"
-              style="flex:1; width:100%; height:100%; border:none; display:block; background:#090D16;"
-            ></iframe>
-          </div>
-        </div>
-      </div>
-    `;
-  };
-
-  window.tbbIphoneJumpToStep = function (stepNum) {
-    const target = Number(stepNum || 0);
-    const isLicensed = Boolean(localStorage.getItem(LICENSE_STORAGE_KEY));
-    if (target >= 4 && !isLicensed) {
-      window.tbbOpenBuyAppCheckoutModal("pro_atelier");
-      return;
+    try {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (e) {
+      window.scrollTo(0, 0);
     }
-    window.tbbCommercialDemoState.activeDemoStep = target;
-    document.querySelectorAll(".tbb-live-iphone-studio-iframe").forEach(fr => {
+
+    if (typeof window.tbbUpdateAlwaysOnFloatingBarText === "function") {
+      window.tbbUpdateAlwaysOnFloatingBarText();
+    }
+    if (typeof window.tbbInitAwwwardsInteractions === "function") {
+      setTimeout(() => window.tbbInitAwwwardsInteractions(), 40);
+    }
+  };
+
+
+  // Interacciones del Escenario de Convergencia Hero (Sección 1: Inicio)
+  window.tbbTriggerHeroConvergence = function () {
+    const st = window.tbbCommercialDemoState;
+    st.heroConvergenceActive = !st.heroConvergenceActive;
+    const stageEl = document.getElementById("tbbHeroInteractiveConvergenceStage");
+    if (stageEl) {
+      stageEl.classList.toggle("is-converged", st.heroConvergenceActive);
+    }
+    const vid = document.getElementById("tbbHeroMainVideo");
+    if (vid) {
       try {
-        if (fr && fr.contentWindow) {
-          fr.contentWindow.postMessage({ type: "TBB_IPHONE_JUMP_STEP", step: target, subStep: 1 }, "*");
-        }
+        vid.muted = false;
+        vid.currentTime = 0;
+        vid.play().catch(() => {});
       } catch (e) {}
+    }
+  };
+
+  window.tbbSelectHeroTheoryNode = function (idx) {
+    const st = window.tbbCommercialDemoState;
+    st.heroSelectedTheoryIdx = Number(idx) || 0;
+    const detailEl = document.getElementById("tbbHeroTheoryNodeDetailBox");
+    const stageObj = ACADEMIC_INFOGRAPHIC_STAGES[st.heroSelectedTheoryIdx + 1] || ACADEMIC_INFOGRAPHIC_STAGES[1];
+    if (detailEl && stageObj) {
+      const l = getLang();
+      const loc = stageObj.i18n[l] || stageObj.i18n.es;
+      detailEl.innerHTML = `
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:6px;">
+          <span style="font-family:'JetBrains Mono',monospace; font-size:0.76rem; font-weight:800; color:${stageObj.color}; letter-spacing:0.06em;">${escHtml(stageObj.authors)}</span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:700; color:#475569; background:#F1F5F9; padding:3px 10px; border-radius:999px;">${escHtml(stageObj.works)}</span>
+        </div>
+        <div style="font-family:'Montserrat',sans-serif; font-size:1.08rem; font-weight:800; color:#0D2540; margin-bottom:4px;">${escHtml(loc.title)}</div>
+        <div style="font-size:0.96rem; color:#334155; line-height:1.55;">${escHtml(loc.thesis)}</div>
+      `;
+    }
+    document.querySelectorAll(".tbb-hero-theory-pill").forEach((el, i) => {
+      el.classList.toggle("active", i === st.heroSelectedTheoryIdx);
     });
   };
 
-  window.tbbIphoneOpenActiveStepVideo = function () {
-    const curStep = Number(window.tbbCommercialDemoState.activeDemoStep || 0);
-    window.tbbOpenVideoPopupModal(curStep);
-  };
-
-  // SUBPÁGINA 1: PORTADA / INICIO (VIDEO CONVERGENCIA 6 TEORÍAS + IPHONE REAL + NANOBANANA PRO 4K + 36 LÁMINAS + 9 ENTREGABLES)
+  // SUBPÁGINA 1: INICIO (PROTAGONISMO MONUMENTAL DEL LOGOTIPO + VIDEO HERO CONCEPTUAL + CONVERGENCIA ORGÁNICA)
   window.tbbBuildSubpage1HomeHTML = function () {
-    const st = window.tbbCommercialDemoState;
-    const lang = getLang();
-    const isManual = st.heroVisualMode === "manual";
-    const step0Loc = APP_TOUR_FLOW_ITEMS[0].i18n[lang] || APP_TOUR_FLOW_ITEMS[0].i18n.es;
-    const activePreset = st.activePresetId || "tbb";
+    const l = getLang();
+    const heroVideoUrl = getLocalizedHeroVideoUrl(l);
+    const heroPosterUrl = getLocalizedHeroPosterUrl(l);
+    const heroRelClean = `/assets/videos/hero_convergence_thebestbrand${l === "es" ? "" : "_" + l}.mp4`;
+    const fallbackUrl = resolveVideoAssetFallback(heroRelClean);
 
-    const theoryPillarsDict = {
-      es: [
-        { step: "PASO 1", author: "Simon Sinek", theory: "El Círculo Dorado (Why · How · What)" },
-        { step: "PASO 2", author: "Jan Carlzon & Don Norman", theory: "Momentos de la Verdad & Touchpoints" },
-        { step: "PASO 3", author: "Al Ries, Trout & A. Watkins", theory: "Posicionamiento, Modelo SMILE & Clases Niza" },
-        { step: "PASO 4", author: "Prof. Mitsuo Nagamachi", theory: "Ingeniería Kansei & Diferencial de Osgood" },
-        { step: "PASO 5", author: "Paul Rand, Sagi Haviv & Jony Ive", theory: "Síntesis Vectorial Bézier & Liquid Glass" },
-        { step: "PASO 6", author: "Massimo Vignelli & Müller-Brockmann", theory: "Canon de Retícula en 36 Láminas y 9 Entregables" }
-      ],
-      en: [
-        { step: "STEP 1", author: "Simon Sinek", theory: "The Golden Circle (Why · How · What)" },
-        { step: "STEP 2", author: "Jan Carlzon & Don Norman", theory: "Moments of Truth & Touchpoints" },
-        { step: "STEP 3", author: "Al Ries, Trout & A. Watkins", theory: "Positioning, SMILE Model & Nice Classes" },
-        { step: "STEP 4", author: "Prof. Mitsuo Nagamachi", theory: "Kansei Engineering & Osgood Differential" },
-        { step: "STEP 5", author: "Paul Rand, Sagi Haviv & Jony Ive", theory: "Bézier Vector Synthesis & Liquid Glass" },
-        { step: "STEP 6", author: "Massimo Vignelli & Müller-Brockmann", theory: "Grid Canon in 36 Plates & 9 Deliverables" }
-      ],
-      fr: [
-        { step: "ÉTAPE 1", author: "Simon Sinek", theory: "Le Cercle d'Or (Why · How · What)" },
-        { step: "ÉTAPE 2", author: "Jan Carlzon & Don Norman", theory: "Moments de Vérité & Touchpoints" },
-        { step: "ÉTAPE 3", author: "Al Ries, Trout & A. Watkins", theory: "Positionnement, Modèle SMILE & Classes de Nice" },
-        { step: "ÉTAPE 4", author: "Prof. Mitsuo Nagamachi", theory: "Ingénierie Kansei & Différentiel d'Osgood" },
-        { step: "ÉTAPE 5", author: "Paul Rand, Sagi Haviv & Jony Ive", theory: "Synthèse Vectorielle Bézier & Liquid Glass" },
-        { step: "ÉTAPE 6", author: "Massimo Vignelli & Müller-Brockmann", theory: "Canon de Grille en 36 Planches & 9 Livrables" }
-      ],
-      pt: [
-        { step: "PASSO 1", author: "Simon Sinek", theory: "O Círculo Dourado (Why · How · What)" },
-        { step: "PASSO 2", author: "Jan Carlzon & Don Norman", theory: "Momentos da Verdade & Touchpoints" },
-        { step: "PASSO 3", author: "Al Ries, Trout & A. Watkins", theory: "Posicionamento, Modelo SMILE & Classes Nice" },
-        { step: "PASSO 4", author: "Prof. Mitsuo Nagamachi", theory: "Engenharia Kansei & Diferencial de Osgood" },
-        { step: "PASSO 5", author: "Paul Rand, Sagi Haviv & Jony Ive", theory: "Síntese Vetorial Bézier & Liquid Glass" },
-        { step: "PASSO 6", author: "Massimo Vignelli & Müller-Brockmann", theory: "Cânone de Grelha em 36 Lâminas e 9 Entregáveis" }
-      ],
-      de: [
-        { step: "SCHRITT 1", author: "Simon Sinek", theory: "Der Golden Circle (Why · How · What)" },
-        { step: "SCHRITT 2", author: "Jan Carlzon & Don Norman", theory: "Momente der Wahrheit & Touchpoints" },
-        { step: "SCHRITT 3", author: "Al Ries, Trout & A. Watkins", theory: "Positionierung, SMILE-Modell & Nizza-Klassen" },
-        { step: "SCHRITT 4", author: "Prof. Mitsuo Nagamachi", theory: "Kansei-Engineering & Osgood-Differential" },
-        { step: "SCHRITT 5", author: "Paul Rand, Sagi Haviv & Jony Ive", theory: "Bézier-Vektorsynthese & Liquid Glass" },
-        { step: "SCHRITT 6", author: "Massimo Vignelli & Müller-Brockmann", theory: "Rasterkanon in 36 Tafeln & 9 Ergebnissen" }
-      ],
-      it: [
-        { step: "PASSO 1", author: "Simon Sinek", theory: "Il Cerchio d'Oro (Why · How · What)" },
-        { step: "PASSO 2", author: "Jan Carlzon & Don Norman", theory: "Momenti della Verità & Touchpoint" },
-        { step: "PASSO 3", author: "Al Ries, Trout & A. Watkins", theory: "Posizionamento, Modello SMILE & Classi di Nizza" },
-        { step: "PASSO 4", author: "Prof. Mitsuo Nagamachi", theory: "Ingegneria Kansei & Differenziale di Osgood" },
-        { step: "PASSO 5", author: "Paul Rand, Sagi Haviv & Jony Ive", theory: "Sintesi Vettoriale Bézier & Liquid Glass" },
-        { step: "PASSO 6", author: "Massimo Vignelli & Müller-Brockmann", theory: "Canone di Griglia in 36 Tavole e 9 Deliverable" }
-      ]
-    };
-    const theoryPillars = theoryPillarsDict[lang] || theoryPillarsDict.es;
+    const fiveNodes = [
+      { idx: 0, code: "01 · CÍRCULO DORADO", author: "Simon Sinek", sub: "WHY → HOW → WHAT", color: "#FF7A00" },
+      { idx: 1, code: "02 · TOUCHPOINTS", author: "Jan Carlzon", sub: "Antes · Durante · Después", color: "#4C9DE6" },
+      { idx: 2, code: "03 · MODELO SMILE", author: "Alexandra Watkins", sub: "Naming & OMPI Niza", color: "#426EAE" },
+      { idx: 3, code: "04 · DIFERENCIAL OSGOOD", author: "Osgood & Nagamachi", sub: "7 Ejes Kansei", color: "#0D2540" },
+      { idx: 4, code: "05 · INGENIERÍA KAIZEN", author: "Masaaki Imai & Rand", sub: " Mejora Vectorial Continua", color: "#FF7A00" }
+    ];
 
-    const chapI18n = {
-      es: {
-        all: "Todas las 36 Láminas (01–36)",
-        c1: "Cap. I · Estrategia (01–09)",
-        c2: "Cap. II · Touchpoints (10–12)",
-        c3: "Cap. III · Logotipo & Curvas (13–20)",
-        c4: "Cap. IV · Color & Fuentes (21–26)",
-        c5: "Cap. V · Mockups & Cierre (27–36)",
-        s1: "Cap. I · Estrategia",
-        s2: "Cap. II · Touchpoints",
-        s3: "Cap. III · Logotipo & Geometría",
-        s4: "Cap. IV · Color & Tipografía",
-        s5: "Cap. V · Aplicaciones & Cierre",
-        plateWord: "LÁMINA",
-        pdfBtn: "⬇ PDF 36 Láminas",
-        badgePlate1: "BRANDBOOK OFICIAL · LÁMINA 01 / 36"
-      },
-      en: {
-        all: "All 36 Plates (01–36)",
-        c1: "Ch. I · Strategy (01–09)",
-        c2: "Ch. II · Touchpoints (10–12)",
-        c3: "Ch. III · Logo & Curves (13–20)",
-        c4: "Ch. IV · Color & Fonts (21–26)",
-        c5: "Ch. V · Mockups & Closing (27–36)",
-        s1: "Ch. I · Strategy",
-        s2: "Ch. II · Touchpoints",
-        s3: "Ch. III · Logo & Geometry",
-        s4: "Ch. IV · Color & Typography",
-        s5: "Ch. V · Applications & Closing",
-        plateWord: "PLATE",
-        pdfBtn: "⬇ 36-Plate PDF",
-        badgePlate1: "OFFICIAL BRANDBOOK · PLATE 01 / 36"
-      },
-      fr: {
-        all: "Toutes les 36 Planches (01–36)",
-        c1: "Chap. I · Stratégie (01–09)",
-        c2: "Chap. II · Touchpoints (10–12)",
-        c3: "Chap. III · Logo & Courbes (13–20)",
-        c4: "Chap. IV · Couleur & Polices (21–26)",
-        c5: "Chap. V · Mockups & Clôture (27–36)",
-        s1: "Chap. I · Stratégie",
-        s2: "Chap. II · Touchpoints",
-        s3: "Chap. III · Logo & Géométrie",
-        s4: "Chap. IV · Couleur & Typographie",
-        s5: "Chap. V · Applications & Clôture",
-        plateWord: "PLANCHE",
-        pdfBtn: "⬇ PDF 36 Planches",
-        badgePlate1: "BRANDBOOK OFFICIEL · PLANCHE 01 / 36"
-      },
-      pt: {
-        all: "Todas as 36 Lâminas (01–36)",
-        c1: "Cap. I · Estratégia (01–09)",
-        c2: "Cap. II · Touchpoints (10–12)",
-        c3: "Cap. III · Logotipo & Curvas (13–20)",
-        c4: "Cap. IV · Cor & Fontes (21–26)",
-        c5: "Cap. V · Mockups & Fecho (27–36)",
-        s1: "Cap. I · Estratégia",
-        s2: "Cap. II · Touchpoints",
-        s3: "Cap. III · Logotipo & Geometria",
-        s4: "Cap. IV · Cor & Tipografia",
-        s5: "Cap. V · Aplicações & Fecho",
-        plateWord: "LÂMINA",
-        pdfBtn: "⬇ PDF 36 Lâminas",
-        badgePlate1: "BRANDBOOK OFICIAL · LÂMINA 01 / 36"
-      },
-      de: {
-        all: "Alle 36 Tafeln (01–36)",
-        c1: "Kap. I · Strategie (01–09)",
-        c2: "Kap. II · Touchpoints (10–12)",
-        c3: "Kap. III · Logo & Kurven (13–20)",
-        c4: "Kap. IV · Farbe & Schriften (21–26)",
-        c5: "Kap. V · Mockups & Abschluss (27–36)",
-        s1: "Kap. I · Strategie",
-        s2: "Kap. II · Touchpoints",
-        s3: "Kap. III · Logo & Geometrie",
-        s4: "Kap. IV · Farbe & Typografie",
-        s5: "Kap. V · Anwendungen & Abschluss",
-        plateWord: "TAFEL",
-        pdfBtn: "⬇ PDF 36 Tafeln",
-        badgePlate1: "OFFIZIELLES BRANDBOOK · TAFEL 01 / 36"
-      },
-      it: {
-        all: "Tutte le 36 Tavole (01–36)",
-        c1: "Cap. I · Strategia (01–09)",
-        c2: "Cap. II · Touchpoint (10–12)",
-        c3: "Cap. III · Logo & Curve (13–20)",
-        c4: "Cap. IV · Colore & Font (21–26)",
-        c5: "Cap. V · Mockup & Chiusura (27–36)",
-        s1: "Cap. I · Strategia",
-        s2: "Cap. II · Touchpoint",
-        s3: "Cap. III · Logo & Geometria",
-        s4: "Cap. IV · Colore & Tipografia",
-        s5: "Cap. V · Applicazioni & Chiusura",
-        plateWord: "TAVOLA",
-        pdfBtn: "⬇ PDF 36 Tavole",
-        badgePlate1: "BRANDBOOK UFFICIALE · TAVOLA 01 / 36"
-      }
-    }[lang] || {
-      all: "Todas las 36 Láminas (01–36)",
-      c1: "Cap. I · Estrategia (01–09)",
-      c2: "Cap. II · Touchpoints (10–12)",
-      c3: "Cap. III · Logotipo & Curvas (13–20)",
-      c4: "Cap. IV · Color & Fuentes (21–26)",
-      c5: "Cap. V · Mockups & Cierre (27–36)",
-      s1: "Cap. I · Estrategia",
-      s2: "Cap. II · Touchpoints",
-      s3: "Cap. III · Logotipo & Geometría",
-      s4: "Cap. IV · Color & Tipografía",
-      s5: "Cap. V · Aplicaciones & Cierre",
-      plateWord: "LÁMINA",
-      pdfBtn: "⬇ PDF 36 Láminas",
-      badgePlate1: "BRANDBOOK OFICIAL · LÁMINA 01 / 36"
-    };
-
-    const nanoCaseCopy = {
-      es: {
-        c1Badge: "CASO REAL 01 · REDISEÑO INDUSTRIAL",
-        c1Iter: "10 ITERACIONES NANO BANANA PRO",
-        c1Foot: "ARCO Ingeniería · Paleta Institucional Respetada + Vector .SVG y .AI",
-        c1Zoom: "⤢ Ver en estudio",
-        c2Badge: "CASO REAL 02 · APPLE LIQUID GLASS 4K",
-        c2Iter: "6 ITERACIONES + CURVAS BÉZIER",
-        c2Foot: "4 Configuraciones Oficiales: Horizontal, Apilado, Símbolo 1:1 y Sello Circular",
-        c2Zoom: "⤢ Ampliar",
-        tag1: "SaaS IA · 36 Láminas",
-        tag2: "Arquitectura Homologada",
-        tag3: "Síntesis Kansei Minimalista",
-        tag4: "Geometría Vectorial Precisa"
-      },
-      en: {
-        c1Badge: "REAL CASE 01 · INDUSTRIAL REDESIGN",
-        c1Iter: "10 NANO BANANA PRO ITERATIONS",
-        c1Foot: "ARCO Engineering · Institutional Palette Preserved + .SVG & .AI Vector",
-        c1Zoom: "⤢ View in studio",
-        c2Badge: "REAL CASE 02 · APPLE LIQUID GLASS 4K",
-        c2Iter: "6 ITERATIONS + BÉZIER CURVES",
-        c2Foot: "4 Official Lockups: Horizontal, Stacked, 1:1 Symbol & Circular Seal",
-        c2Zoom: "⤢ Enlarge",
-        tag1: "AI SaaS · 36 Plates",
-        tag2: "Unified Brand Architecture",
-        tag3: "Minimalist Kansei Synthesis",
-        tag4: "Precise Vector Geometry"
-      },
-      fr: {
-        c1Badge: "CAS RÉEL 01 · REFONTE INDUSTRIELLE",
-        c1Iter: "10 ITÉRATIONS NANO BANANA PRO",
-        c1Foot: "ARCO Ingénierie · Palette Institutionnelle Respectée + Vecteur .SVG & .AI",
-        c1Zoom: "⤢ Voir en studio",
-        c2Badge: "CAS RÉEL 02 · APPLE LIQUID GLASS 4K",
-        c2Iter: "6 ITÉRATIONS + COURBES DE BÉZIER",
-        c2Foot: "4 Configurations Officielles : Horizontale, Empilée, Symbole 1:1 et Sceau",
-        c2Zoom: "⤢ Agrandir",
-        tag1: "SaaS IA · 36 Planches",
-        tag2: "Architecture Homologuée",
-        tag3: "Synthèse Kansei Minimaliste",
-        tag4: "Géométrie Vectorielle Précise"
-      },
-      pt: {
-        c1Badge: "CASO REAL 01 · REDESIGN INDUSTRIAL",
-        c1Iter: "10 ITERAÇÕES NANO BANANA PRO",
-        c1Foot: "ARCO Engenharia · Paleta Institucional Respeitada + Vetor .SVG e .AI",
-        c1Zoom: "⤢ Ver no estúdio",
-        c2Badge: "CASO REAL 02 · APPLE LIQUID GLASS 4K",
-        c2Iter: "6 ITERAÇÕES + CURVAS BÉZIER",
-        c2Foot: "4 Configurações Oficiais: Horizontal, Empilhado, Símbolo 1:1 e Selo Circular",
-        c2Zoom: "⤢ Ampliar",
-        tag1: "SaaS IA · 36 Lâminas",
-        tag2: "Arquitetura Homologada",
-        tag3: "Síntese Kansei Minimalista",
-        tag4: "Geometria Vetorial Precisa"
-      },
-      de: {
-        c1Badge: "PRAXISFALL 01 · INDUSTRIE-REDESIGN",
-        c1Iter: "10 NANO BANANA PRO ITERATIONEN",
-        c1Foot: "ARCO Ingenieurwesen · Institutionelle Palette bewahrt + .SVG & .AI Vektor",
-        c1Zoom: "⤢ Im Studio ansehen",
-        c2Badge: "PRAXISFALL 02 · APPLE LIQUID GLASS 4K",
-        c2Iter: "6 ITERATIONEN + BÉZIER-KURVEN",
-        c2Foot: "4 Offizielle Lockups: Horizontal, Gestapelt, 1:1-Symbol & Rundsiegel",
-        c2Zoom: "⤢ Vergrößern",
-        tag1: "KI-SaaS · 36 Tafeln",
-        tag2: "Homologierte Architektur",
-        tag3: "Minimalistische Kansei-Synthese",
-        tag4: "Präzise Vektorgeometrie"
-      },
-      it: {
-        c1Badge: "CASO REALE 01 · REDESIGN INDUSTRIALE",
-        c1Iter: "10 ITERAZIONI NANO BANANA PRO",
-        c1Foot: "ARCO Ingegneria · Palette Istituzionale Rispettata + Vettore .SVG e .AI",
-        c1Zoom: "⤢ Vedi in studio",
-        c2Badge: "CASO REALE 02 · APPLE LIQUID GLASS 4K",
-        c2Iter: "6 ITERAZIONI + CURVE BÉZIER",
-        c2Foot: "4 Configurazioni Ufficiali: Orizzontale, Impilato, Simbolo 1:1 e Sigillo",
-        c2Zoom: "⤢ Ingrandisci",
-        tag1: "SaaS IA · 36 Tavole",
-        tag2: "Architettura Omologata",
-        tag3: "Sintesi Kansei Minimalista",
-        tag4: "Geometria Vettoriale Precisa"
-      }
-    }[lang] || {
-      c1Badge: "CASO REAL 01 · REDISEÑO INDUSTRIAL",
-      c1Iter: "10 ITERACIONES NANO BANANA PRO",
-      c1Foot: "ARCO Ingeniería · Paleta Institucional Respetada + Vector .SVG y .AI",
-      c1Zoom: "⤢ Ver en estudio",
-      c2Badge: "CASO REAL 02 · APPLE LIQUID GLASS 4K",
-      c2Iter: "6 ITERACIONES + CURVAS BÉZIER",
-      c2Foot: "4 Configuraciones Oficiales: Horizontal, Apilado, Símbolo 1:1 y Sello Circular",
-      c2Zoom: "⤢ Ampliar",
-      tag1: "SaaS IA · 36 Láminas",
-      tag2: "Arquitectura Homologada",
-      tag3: "Síntesis Kansei Minimalista",
-      tag4: "Geometría Vectorial Precisa"
-    };
-
-    const plates36Meta = Array.from({ length: 36 }, (_, idx) => {
-      const n = idx + 1;
-      const pad = String(n).padStart(2, "0");
-      let chap = "c1";
-      let chapLabel = chapI18n.s1;
-      if (n >= 10 && n <= 12) { chap = "c2"; chapLabel = chapI18n.s2; }
-      else if (n >= 13 && n <= 20) { chap = "c3"; chapLabel = chapI18n.s3; }
-      else if (n >= 21 && n <= 26) { chap = "c4"; chapLabel = chapI18n.s4; }
-      else if (n >= 27) { chap = "c5"; chapLabel = chapI18n.s5; }
-      return { n, pad, chap, chapLabel, img: `/assets/brandbook_plates_tbb/plate-${pad}.jpg` };
-    });
+    const initStage = ACADEMIC_INFOGRAPHIC_STAGES[1];
+    const initLoc = initStage.i18n[l] || initStage.i18n.es;
 
     return `
-      <section class="tbb-subpage1-single-screen" style="min-height:calc(100vh - 64px); padding:22px 24px 28px 24px; background:linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); display:flex; align-items:center; justify-content:center;">
-        <div style="width:100%; max-width:1240px; margin:0 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;">
-          <div style="text-align:center; max-width:980px; display:flex; flex-direction:column; align-items:center; gap:12px;">
-            <div style="display:inline-flex; align-items:center; gap:10px; padding:5px 15px; border-radius:999px; background:#F1F5F9; color:#0D2540; font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:500; letter-spacing:0.04em;">
-              <img src="/assets/logos/tbb_official_liquid_glass_logo.jpg" alt="Aura" style="width:20px; height:20px; border-radius:50%; object-fit:cover;" />
-              <span>${escHtml(t("heroEyebrow"))}</span>
+      <section class="tbb-subpage-section tbb-home-hero-section">
+        <!-- Curva Vectorial Superior Fluida estilo ImproBears -->
+        <div class="tbb-open-curve-bg" aria-hidden="true">
+          <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style="width:100%; height:100%;">
+            <path fill="rgba(66,110,174,0.06)" d="M0,96L80,112C160,128,320,160,480,154.7C640,149,800,107,960,101.3C1120,96,1280,128,1360,144L1440,160L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"></path>
+            <path fill="none" stroke="rgba(255,122,0,0.22)" stroke-width="2" d="M0,192 C360,90 720,260 1440,110"></path>
+          </svg>
+        </div>
+
+        <canvas id="tbbHeroDynamicCanvas" class="tbb-hero-particles-canvas" aria-hidden="true"></canvas>
+
+        <div class="tbb-container-wide" style="position:relative; z-index:2;">
+          <!-- BLOQUE MONUMENTAL DE LOGOTIPO OFICIAL THE BEST BRAND (EJE CENTRAL VISUAL) -->
+          <div class="tbb-reveal-on-scroll is-visible tbb-monumental-brand-axis">
+            <div class="tbb-monumental-logo-showcase">
+              <div class="tbb-monumental-isotipo-wrap">
+                <img src="/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png" alt="The Best Brand Isotipo Oficial" class="tbb-monumental-isotipo-img" />
+              </div>
+              <div class="tbb-monumental-wordmark-col">
+                <span class="tbb-eyebrow-pill">${TBB_ICONS.spark} <span>${escHtml(t("heroEyebrow"))}</span></span>
+                <img src="/assets/logos/Logotipo_Horizontal_Curvas_the_best_brand.svg" alt="The Best Brand Logotipo Oficial" class="tbb-monumental-horizontal-svg" />
+              </div>
             </div>
 
-            <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.75rem, 3.2vw, 2.75rem); font-weight:600; color:#0F172A; line-height:1.12; letter-spacing:-0.03em; margin:0;">
-              ${escHtml(t("heroHook"))}
+            <h1 class="tbb-hero-display-title">
+              ${escHtml(t("heroTitleLine1"))} <span class="tbb-text-accent-gradient">${escHtml(t("heroTitleHighlight"))}</span>
             </h1>
-
-            <p style="font-size:clamp(0.90rem, 1.15vw, 1.02rem); font-weight:400; color:#475569; line-height:1.55; max-width:860px; margin:0;">
-              ${escHtml(t("heroTheoriesCopy"))}
+            <p class="tbb-hero-lead-paragraph">
+              ${escHtml(t("heroLead"))}
             </p>
 
-            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:2px; width:100%;">
-              <button type="button" onclick="window.tbbSwitchMainSection(2)" class="tbb-comm-btn-blue" style="padding:12px 22px; font-size:0.90rem; font-weight:600; display:inline-flex; align-items:center; gap:10px;">
-                <span class="tbb-live-pulse-dot"></span>
-                <span>${escHtml(t("heroBtnDemo"))}</span>
-                <span class="tbb-live-pill-badge">${escHtml(t("menu2Live"))}</span>
+            <!-- Botones de Flujo Educativo Ordenado: 2. App Tour -> 3. Bases Teóricas -> 4. Demo en Vivo -->
+            <div class="tbb-hero-cta-cluster">
+              <button type="button" class="tbb-btn-primary-vibrant" onclick="window.tbbSwitchMainSection(2)">
+                ${TBB_ICONS.appTour}
+                <span>${escHtml(t("heroCtaTour"))}</span>
+                ${TBB_ICONS.arrowRight}
               </button>
-
-              <button type="button" onclick="window.tbbOpenVideoPopupModal(0)" class="tbb-btn-light-surface" style="padding:12px 20px; font-size:0.88rem; font-weight:500;">
-                <span>${escHtml(t("heroBtnIntroVideo"))}</span>
+              <button type="button" class="tbb-btn-secondary-clean" onclick="window.tbbSwitchMainSection(3)">
+                ${TBB_ICONS.theory}
+                <span>${escHtml(t("heroCtaTheory"))}</span>
               </button>
-
-              <button type="button" onclick="window.tbbSwitchMainSection(3)" class="tbb-btn-light-surface" style="padding:12px 20px; font-size:0.88rem; font-weight:500;">
-                <span>${escHtml(t("heroBtnTour"))}</span>
+              <button type="button" class="tbb-btn-secondary-clean" onclick="window.tbbSwitchMainSection(4)">
+                ${TBB_ICONS.demo}
+                <span>${escHtml(t("heroCtaDemo"))}</span>
               </button>
             </div>
           </div>
 
-          <!-- VIDEO ANIMADO DE CONVERGENCIA DE LAS 6 TEORÍAS HACIA LA APP Y SU LOGOTIPO (16:9 SIN RECORTE, EN EL IDIOMA ACTIVO) -->
-          <div style="width:100%; max-width:1020px; border-radius:22px; overflow:hidden; background:#F8FAFC; border:1px solid #CBD5E1; box-shadow:0 22px 60px rgba(15,23,42,0.10); position:relative;">
-            <video
-              id="tbbHeroConvergenceVideoPlayer"
-              src="${getLocalizedHeroVideoUrl()}"
-              poster="${getLocalizedHeroPosterUrl()}"
-              autoplay
-              muted
-              loop
-              playsinline
-              controls
-              style="width:100%; height:auto; aspect-ratio:16/9; max-height:46vh; object-fit:contain; display:block; background:#F8FAFC;"
-            ></video>
-          </div>
-
-          <!-- Píldoras de Autoridad Teórica que Respaldan el Proceso (1 clic = Video HeyGen + Google Flow) -->
-          <div style="width:100%; max-width:1120px; display:grid; grid-template-columns:repeat(6, minmax(0, 1fr)); gap:10px;" class="tbb-home-6-pills-row">
-            ${theoryPillars.map((p, idx) => `
-              <div onclick="window.tbbOpenVideoPopupModal(${idx + 1})" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:10px 12px; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; gap:3px; box-shadow:0 4px 12px rgba(15,23,42,0.03);">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.62rem; font-weight:600; color:#EA580C;">${escHtml(p.step)} · ▶ HEYGEN</div>
-                <div style="font-family:'Montserrat', sans-serif; font-size:0.78rem; font-weight:600; color:#0F172A; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escHtml(p.author)}</div>
-                <div style="font-size:0.71rem; font-weight:400; color:#475569; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${escHtml(p.theory)}</div>
+          <!-- GRID CENTRAL HERO: VIDEO CONCEPTUAL DE CONVERGENCIA + ESCENARIO INTERACTIVO DE FUSIÓN TEÓRICA -->
+          <div class="tbb-hero-convergence-grid tbb-reveal-on-scroll is-visible">
+            <!-- Columna Izquierda: Video Hero Conceptual en el Idioma Seleccionado -->
+            <div class="tbb-hero-video-card">
+              <div class="tbb-hero-video-topbar">
+                <span class="tbb-live-dot"></span>
+                <span class="tbb-hero-video-badge-txt">${escHtml(t("heroVideoBadge"))} (${l.toUpperCase()})</span>
+                <button type="button" class="tbb-mini-sound-btn" onclick="const v=document.getElementById('tbbHeroMainVideo'); if(v){v.muted=!v.muted; if(!v.muted)v.play().catch(()=>{});}">
+                  ${TBB_ICONS.volume}
+                </button>
               </div>
-            `).join("")}
+              <div class="tbb-hero-video-frame-wrap">
+                <video
+                  id="tbbHeroMainVideo"
+                  controls
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  poster="${escHtml(heroPosterUrl)}"
+                  onerror="if(!this.dataset.fb){this.dataset.fb='1'; this.src='${escHtml(fallbackUrl)}'; this.load();}"
+                  class="tbb-hero-video-el"
+                >
+                  <source src="${escHtml(heroVideoUrl)}" type="video/mp4" />
+                  <source src="${escHtml(fallbackUrl)}" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+
+            <!-- Columna Derecha: Convergencia Orgánica Interactiva (Círculo Dorado, SMILE, Touchpoints, Kaizen, Osgood -> Logotipo) -->
+            <div id="tbbHeroInteractiveConvergenceStage" class="tbb-hero-interactive-stage">
+              <div class="tbb-stage-header">
+                <div>
+                  <h2 class="tbb-stage-title">${escHtml(t("heroInteractiveStageTitle"))}</h2>
+                  <p class="tbb-stage-sub">${escHtml(t("heroInteractiveStageSub"))}</p>
+                </div>
+                <button type="button" class="tbb-btn-converge-trigger" onclick="window.tbbTriggerHeroConvergence()">
+                  ${TBB_ICONS.spark}
+                  <span>${escHtml(t("heroConvergencePlayBtn"))}</span>
+                </button>
+              </div>
+
+              <!-- Diagrama SVG Vivo de Convergencia de los 5 Conceptos hacia el Logotipo Oficial -->
+              <div class="tbb-convergence-orbital-box">
+                <svg class="tbb-convergence-lines-svg" viewBox="0 0 600 260" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <linearGradient id="convBeamOrange" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#FF7A00" stop-opacity="0.85"/>
+                      <stop offset="100%" stop-color="#426EAE" stop-opacity="0.95"/>
+                    </linearGradient>
+                  </defs>
+                  <circle cx="300" cy="130" r="108" fill="none" stroke="rgba(66,110,174,0.18)" stroke-width="1.5" stroke-dasharray="5 4"/>
+                  <circle cx="300" cy="130" r="72" fill="none" stroke="rgba(255,122,0,0.28)" stroke-width="1.8"/>
+                  <path d="M95,45 Q200,90 300,130" fill="none" stroke="url(#convBeamOrange)" stroke-width="2.5" class="tbb-beam-path"/>
+                  <path d="M505,45 Q400,90 300,130" fill="none" stroke="url(#convBeamOrange)" stroke-width="2.5" class="tbb-beam-path"/>
+                  <path d="M75,195 Q190,165 300,130" fill="none" stroke="url(#convBeamOrange)" stroke-width="2.5" class="tbb-beam-path"/>
+                  <path d="M525,195 Q410,165 300,130" fill="none" stroke="url(#convBeamOrange)" stroke-width="2.5" class="tbb-beam-path"/>
+                  <path d="M300,18 L300,130" fill="none" stroke="url(#convBeamOrange)" stroke-width="2.5" class="tbb-beam-path"/>
+                </svg>
+
+                <div class="tbb-convergence-center-logo" onclick="window.tbbTriggerHeroConvergence()" title="The Best Brand">
+                  <img src="/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png" alt="The Best Brand" />
+                  <span>THE BEST BRAND</span>
+                </div>
+
+                <div class="tbb-hero-theory-pills-wrap">
+                  ${fiveNodes.map((n, idx) => `
+                    <button type="button" class="tbb-hero-theory-pill pos-${idx} ${idx === 0 ? 'active' : ''}" onclick="window.tbbSelectHeroTheoryNode(${idx})">
+                      <span class="tbb-pill-code" style="color:${n.color};">${escHtml(n.code)}</span>
+                      <strong class="tbb-pill-author">${escHtml(n.author)}</strong>
+                      <span class="tbb-pill-sub">${escHtml(n.sub)}</span>
+                    </button>
+                  `).join("")}
+                </div>
+              </div>
+
+              <!-- Tarjeta Dinámica del Concepto Seleccionado -->
+              <div id="tbbHeroTheoryNodeDetailBox" class="tbb-hero-theory-detail-box">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:6px;">
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:0.76rem; font-weight:800; color:${initStage.color}; letter-spacing:0.06em;">${escHtml(initStage.authors)}</span>
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:700; color:#475569; background:#F1F5F9; padding:3px 10px; border-radius:999px;">${escHtml(initStage.works)}</span>
+                </div>
+                <div style="font-family:'Montserrat',sans-serif; font-size:1.08rem; font-weight:800; color:#0D2540; margin-bottom:4px;">${escHtml(initLoc.title)}</div>
+                <div style="font-size:0.96rem; color:#334155; line-height:1.55;">${escHtml(initLoc.thesis)}</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
     `;
   };
 
-  // SUBPÁGINA 2: APLICACIÓN REAL A TAMAÑO 100% COMPLETO PARA EXPERIENCIA 100% REAL (SIN RECORTE NI SCROLL EXTERNO)
-  window.tbbBuildSubpage2DemoHTML = function () {
-    const curLang = getLang();
 
-    return `
-      <section id="tbbSubpage2RealSizeAppStage" style="width:100%; height:calc(100vh - 64px); margin:0; padding:0; background:#090D16; overflow:hidden; display:flex; flex-direction:column; position:relative;">
-        <iframe
-          id="tbbSubpage2RealSizeStudioFrame"
-          class="tbb-live-iphone-studio-iframe"
-          src="/studio?demo=true&fullscreen=1&lang=${encodeURIComponent(curLang)}"
-          title="The Best Brand Studio — Experiencia 100% Real a Tamaño Completo"
-          allow="microphone; autoplay; clipboard-write; fullscreen"
-          allowfullscreen
-          style="flex:1; width:100%; height:100%; border:none; display:block; background:#090D16;"
-        ></iframe>
-      </section>
-    `;
-  };
-
-  // SUBPÁGINA 3: APP TOUR (RECORRIDO DETALLADO POR SCROLLING CON TÉCNICAS MODERNAS DE PROGRAMACIÓN WEB: STICKY SCROLL-SPY, 3D REVEAL, SLIDER ANTES/DESPUÉS NANO BANANA 4K Y 36 LÁMINAS)
-  window.tbbBuildSubpage3AppTourHTML = function () {
+  // Sincronización del Mockup Interactivo de iPhone en App Tour (Scrollytelling + Modo App en Vivo)
+  window.tbbSetTourActiveStep = function (stepIdx) {
+    const s = Math.max(0, Math.min(6, Number(stepIdx) || 0));
     const st = window.tbbCommercialDemoState;
-    const lang = getLang();
-    const isManual = st.heroVisualMode === "manual";
-    const step0Loc = APP_TOUR_FLOW_ITEMS[0].i18n[lang] || APP_TOUR_FLOW_ITEMS[0].i18n.es;
+    st.tourActiveStep = s;
+    const item = APP_TOUR_STEPS[s] || APP_TOUR_STEPS[0];
+    const l = getLang();
+    const loc = item.i18n[l] || item.i18n.es;
+    const capUrl = getLocalizedAppCaptureUrl(item.captureBase, l);
 
-    const quickStepsDict = {
-      es: [
-        { id: "tbbTourItem_0", lbl: "00 · Giro & Aura" },
-        { id: "tbbTourItem_2", lbl: "01 · Círculo Dorado" },
-        { id: "tbbTourItem_4", lbl: "02 · Touchpoints" },
-        { id: "tbbTourItem_6", lbl: "03 · Naming SMILE" },
-        { id: "tbbTourItem_8", lbl: "04 · Kansei & Fuentes" },
-        { id: "tbbTourItem_10", lbl: "05 · Nano Banana Pro 4K" },
-        { id: "tbbTourNanoBananaShowcase", lbl: "★ Antes / Después 4K" },
-        { id: "tbbTourItem_12", lbl: "06 · 36 Láminas & 9 Entregables" }
-      ],
-      en: [
-        { id: "tbbTourItem_0", lbl: "00 · Sector & Aura" },
-        { id: "tbbTourItem_2", lbl: "01 · Golden Circle" },
-        { id: "tbbTourItem_4", lbl: "02 · Touchpoints" },
-        { id: "tbbTourItem_6", lbl: "03 · SMILE Naming" },
-        { id: "tbbTourItem_8", lbl: "04 · Kansei & Fonts" },
-        { id: "tbbTourItem_10", lbl: "05 · Nano Banana Pro 4K" },
-        { id: "tbbTourNanoBananaShowcase", lbl: "★ Before / After 4K" },
-        { id: "tbbTourItem_12", lbl: "06 · 36 Plates & 9 Deliverables" }
-      ],
-      fr: [
-        { id: "tbbTourItem_0", lbl: "00 · Secteur & Aura" },
-        { id: "tbbTourItem_2", lbl: "01 · Cercle d'Or" },
-        { id: "tbbTourItem_4", lbl: "02 · Touchpoints" },
-        { id: "tbbTourItem_6", lbl: "03 · Naming SMILE" },
-        { id: "tbbTourItem_8", lbl: "04 · Kansei & Polices" },
-        { id: "tbbTourItem_10", lbl: "05 · Nano Banana Pro 4K" },
-        { id: "tbbTourNanoBananaShowcase", lbl: "★ Avant / Après 4K" },
-        { id: "tbbTourItem_12", lbl: "06 · 36 Planches & 9 Livrables" }
-      ],
-      pt: [
-        { id: "tbbTourItem_0", lbl: "00 · Setor & Aura" },
-        { id: "tbbTourItem_2", lbl: "01 · Círculo Dourado" },
-        { id: "tbbTourItem_4", lbl: "02 · Touchpoints" },
-        { id: "tbbTourItem_6", lbl: "03 · Naming SMILE" },
-        { id: "tbbTourItem_8", lbl: "04 · Kansei & Fontes" },
-        { id: "tbbTourItem_10", lbl: "05 · Nano Banana Pro 4K" },
-        { id: "tbbTourNanoBananaShowcase", lbl: "★ Antes / Depois 4K" },
-        { id: "tbbTourItem_12", lbl: "06 · 36 Lâminas & 9 Entregáveis" }
-      ],
-      de: [
-        { id: "tbbTourItem_0", lbl: "00 · Branche & Aura" },
-        { id: "tbbTourItem_2", lbl: "01 · Golden Circle" },
-        { id: "tbbTourItem_4", lbl: "02 · Touchpoints" },
-        { id: "tbbTourItem_6", lbl: "03 · SMILE Naming" },
-        { id: "tbbTourItem_8", lbl: "04 · Kansei & Schriften" },
-        { id: "tbbTourItem_10", lbl: "05 · Nano Banana Pro 4K" },
-        { id: "tbbTourNanoBananaShowcase", lbl: "★ Vorher / Nachher 4K" },
-        { id: "tbbTourItem_12", lbl: "06 · 36 Tafeln & 9 Ergebnisse" }
-      ],
-      it: [
-        { id: "tbbTourItem_0", lbl: "00 · Settore & Aura" },
-        { id: "tbbTourItem_2", lbl: "01 · Cerchio d'Oro" },
-        { id: "tbbTourItem_4", lbl: "02 · Touchpoint" },
-        { id: "tbbTourItem_6", lbl: "03 · Naming SMILE" },
-        { id: "tbbTourItem_8", lbl: "04 · Kansei & Font" },
-        { id: "tbbTourItem_10", lbl: "05 · Nano Banana Pro 4K" },
-        { id: "tbbTourNanoBananaShowcase", lbl: "★ Prima / Dopo 4K" },
-        { id: "tbbTourItem_12", lbl: "06 · 36 Tavole & 9 Deliverable" }
-      ]
-    };
-    const quickSteps = quickStepsDict[lang] || quickStepsDict.es;
+    const screenImg = document.getElementById("tbbTourIphoneScreenImg");
+    if (screenImg) {
+      screenImg.src = capUrl;
+      screenImg.onerror = function () { this.src = item.captureBase + "?v=" + ASSET_VERSION; };
+    }
+    const badgeEl = document.getElementById("tbbTourIphoneStepBadge");
+    if (badgeEl) badgeEl.textContent = loc.badge;
+    const cutoutEl = document.getElementById("tbbTourIphoneCutoutCaption");
+    if (cutoutEl) cutoutEl.textContent = loc.cutoutLabel;
+    const noteEl = document.getElementById("tbbTourIphoneFloatingNote");
+    if (noteEl) noteEl.textContent = loc.floatingNote;
 
-    const tourUiLabels = {
-      es: {
-        v1: "Vista Principal en Studio",
-        v2: "Vista Complementaria / Evolución Nano Banana Pro",
-        zoom: "⤢ Ampliar",
-        playHint: "▶ CLIC PARA REPRODUCIR VIDEO 9:16 HEYGEN + FLOW",
-        fullHint: "⤢ CLIC PARA PANTALLA CASI COMPLETA",
-        finaleHeading: "LOS 9 DESCARGABLES QUE OBTIENES AL FINALIZAR:",
-        sliderHint: "⟷ Desliza la barra central para comparar el Logotipo Base vs. Nano Banana Pro 4K + Bézier"
-      },
-      en: {
-        v1: "Main Studio View",
-        v2: "Complementary View / Nano Banana Pro Evolution",
-        zoom: "⤢ Enlarge",
-        playHint: "▶ CLICK TO PLAY 9:16 HEYGEN + FLOW VIDEO",
-        fullHint: "⤢ CLICK FOR FULLSCREEN HIGH-RES VIEW",
-        finaleHeading: "THE 9 DOWNLOADABLES YOU GET UPON COMPLETION:",
-        sliderHint: "⟷ Drag the center slider to compare Base Logo vs. Nano Banana Pro 4K + Bézier"
-      },
-      fr: {
-        v1: "Vue Principale dans Studio",
-        v2: "Vue Complémentaire / Évolution Nano Banana Pro",
-        zoom: "⤢ Agrandir",
-        playHint: "▶ CLIQUEZ POUR LIRE LA VIDÉO 9:16 HEYGEN + FLOW",
-        fullHint: "⤢ CLIQUEZ POUR L'AFFICHAGE PLEIN ÉCRAN",
-        finaleHeading: "LES 9 LIVRABLES QUE VOUS OBTENEZ À LA FIN :",
-        sliderHint: "⟷ Faites glisser le curseur pour comparer le Logo de Base vs Nano Banana Pro 4K"
-      },
-      pt: {
-        v1: "Vista Principal no Studio",
-        v2: "Vista Complementar / Evolução Nano Banana Pro",
-        zoom: "⤢ Ampliar",
-        playHint: "▶ CLIQUE PARA REPRODUZIR VÍDEO 9:16 HEYGEN + FLOW",
-        fullHint: "⤢ CLIQUE PARA ECRÃ QUASE COMPLETO",
-        finaleHeading: "OS 9 DESCARREGÁVEIS QUE OBTÉM AO FINALIZAR:",
-        sliderHint: "⟷ Deslize a barra central para comparar o Logotipo Base vs. Nano Banana Pro 4K"
-      },
-      de: {
-        v1: "Hauptansicht im Studio",
-        v2: "Ergänzende Ansicht / Nano Banana Pro Evolution",
-        zoom: "⤢ Vergrößern",
-        playHint: "▶ KLICKEN FÜR 9:16 HEYGEN + FLOW VIDEO",
-        fullHint: "⤢ KLICKEN FÜR VOLLBILDANSICHT",
-        finaleHeading: "DIE 9 ERGEBNISSE BEI ABSCHLUSS:",
-        sliderHint: "⟷ Ziehen Sie den Regler zum Vergleich: Basis-Logo vs. Nano Banana Pro 4K"
-      },
-      it: {
-        v1: "Vista Principale in Studio",
-        v2: "Vista Complementare / Evoluzione Nano Banana Pro",
-        zoom: "⤢ Ingrandisci",
-        playHint: "▶ CLICCA PER RIPRODURRE IL VIDEO 9:16 HEYGEN + FLOW",
-        fullHint: "⤢ CLICCA PER SCHERMO QUASI INTERO",
-        finaleHeading: "I 9 DELIVERABLE CHE OTTIENI AL TERMINE:",
-        sliderHint: "⟷ Trascina il cursore centrale per confrontare Logo Base vs Nano Banana Pro 4K"
-      }
-    }[lang] || {
-      v1: "Vista Principal en Studio",
-      v2: "Vista Complementaria / Evolución Nano Banana Pro",
-      zoom: "⤢ Ampliar",
-      playHint: "▶ CLIC PARA REPRODUCIR VIDEO 9:16 HEYGEN + FLOW",
-      fullHint: "⤢ CLIC PARA PANTALLA CASI COMPLETA",
-      finaleHeading: "LOS 9 DESCARGABLES QUE OBTIENES AL FINALIZAR:",
-      sliderHint: "⟷ Desliza la barra central para comparar el Logotipo Base vs. Nano Banana Pro 4K + Bézier"
-    };
-
-    const chapI18n = {
-      es: {
-        all: "Todas las 36 Láminas (01–36)",
-        c1: "Cap. I · Estrategia (01–09)",
-        c2: "Cap. II · Touchpoints (10–12)",
-        c3: "Cap. III · Logotipo & Curvas (13–20)",
-        c4: "Cap. IV · Color & Fuentes (21–26)",
-        c5: "Cap. V · Mockups & Cierre (27–36)",
-        s1: "Cap. I · Estrategia",
-        s2: "Cap. II · Touchpoints",
-        s3: "Cap. III · Logotipo & Geometría",
-        s4: "Cap. IV · Color & Tipografía",
-        s5: "Cap. V · Aplicaciones & Cierre",
-        plateWord: "LÁMINA",
-        pdfBtn: "⬇ PDF 36 Láminas",
-        badgePlate1: "BRANDBOOK OFICIAL · LÁMINA 01 / 36"
-      },
-      en: {
-        all: "All 36 Plates (01–36)",
-        c1: "Ch. I · Strategy (01–09)",
-        c2: "Ch. II · Touchpoints (10–12)",
-        c3: "Ch. III · Logo & Curves (13–20)",
-        c4: "Ch. IV · Color & Fonts (21–26)",
-        c5: "Ch. V · Mockups & Closing (27–36)",
-        s1: "Ch. I · Strategy",
-        s2: "Ch. II · Touchpoints",
-        s3: "Ch. III · Logo & Geometry",
-        s4: "Ch. IV · Color & Typography",
-        s5: "Ch. V · Applications & Closing",
-        plateWord: "PLATE",
-        pdfBtn: "⬇ 36-Plate PDF",
-        badgePlate1: "OFFICIAL BRANDBOOK · PLATE 01 / 36"
-      }
-    }[lang] || {
-      all: "Todas las 36 Láminas (01–36)",
-      c1: "Cap. I · Estrategia (01–09)",
-      c2: "Cap. II · Touchpoints (10–12)",
-      c3: "Cap. III · Logotipo & Curvas (13–20)",
-      c4: "Cap. IV · Color & Fuentes (21–26)",
-      c5: "Cap. V · Mockups & Cierre (27–36)",
-      s1: "Cap. I · Estrategia",
-      s2: "Cap. II · Touchpoints",
-      s3: "Cap. III · Logotipo & Geometría",
-      s4: "Cap. IV · Color & Tipografía",
-      s5: "Cap. V · Aplicaciones & Cierre",
-      plateWord: "LÁMINA",
-      pdfBtn: "⬇ PDF 36 Láminas",
-      badgePlate1: "BRANDBOOK OFICIAL · LÁMINA 01 / 36"
-    };
-
-    const nanoCaseCopy = {
-      es: {
-        c1Badge: "CASO REAL 01 · REDISEÑO INDUSTRIAL",
-        c1Iter: "10 ITERACIONES NANO BANANA PRO",
-        c1Foot: "ARCO Ingeniería · Paleta Institucional Respetada + Vector .SVG y .AI",
-        c1Zoom: "⤢ Ver en estudio",
-        c2Badge: "CASO REAL 02 · APPLE LIQUID GLASS 4K",
-        c2Iter: "6 ITERACIONES + CURVAS BÉZIER",
-        c2Foot: "4 Configuraciones Oficiales: Horizontal, Apilado, Símbolo 1:1 y Sello Circular",
-        c2Zoom: "⤢ Ampliar"
-      },
-      en: {
-        c1Badge: "REAL CASE 01 · INDUSTRIAL REDESIGN",
-        c1Iter: "10 NANO BANANA PRO ITERATIONS",
-        c1Foot: "ARCO Engineering · Institutional Palette Preserved + .SVG & .AI Vector",
-        c1Zoom: "⤢ View in studio",
-        c2Badge: "REAL CASE 02 · APPLE LIQUID GLASS 4K",
-        c2Iter: "6 ITERATIONS + BÉZIER CURVES",
-        c2Foot: "4 Official Lockups: Horizontal, Stacked, 1:1 Symbol & Circular Seal",
-        c2Zoom: "⤢ Enlarge"
-      }
-    }[lang] || {
-      c1Badge: "CASO REAL 01 · REDISEÑO INDUSTRIAL",
-      c1Iter: "10 ITERACIONES NANO BANANA PRO",
-      c1Foot: "ARCO Ingeniería · Paleta Institucional Respetada + Vector .SVG y .AI",
-      c1Zoom: "⤢ Ver en estudio",
-      c2Badge: "CASO REAL 02 · APPLE LIQUID GLASS 4K",
-      c2Iter: "6 ITERACIONES + CURVAS BÉZIER",
-      c2Foot: "4 Configuraciones Oficiales: Horizontal, Apilado, Símbolo 1:1 y Sello Circular",
-      c2Zoom: "⤢ Ampliar"
-    };
-
-    const plates36Meta = Array.from({ length: 36 }, (_, idx) => {
-      const n = idx + 1;
-      const pad = String(n).padStart(2, "0");
-      let chap = "c1";
-      let chapLabel = chapI18n.s1;
-      if (n >= 10 && n <= 12) { chap = "c2"; chapLabel = chapI18n.s2; }
-      else if (n >= 13 && n <= 20) { chap = "c3"; chapLabel = chapI18n.s3; }
-      else if (n >= 21 && n <= 26) { chap = "c4"; chapLabel = chapI18n.s4; }
-      else if (n >= 27) { chap = "c5"; chapLabel = chapI18n.s5; }
-      return { n, pad, chap, chapLabel, img: `/assets/brandbook_plates_tbb/plate-${pad}.jpg` };
+    document.querySelectorAll(".tbb-tour-step-dot").forEach((btn, idx) => {
+      btn.classList.toggle("active", idx === s);
+    });
+    document.querySelectorAll(".tbb-tour-scrolly-card").forEach((card, idx) => {
+      card.classList.toggle("is-active-step", idx === s);
     });
 
+    const iframe = document.getElementById("tbbTourIphoneLiveIframe");
+    if (iframe && iframe.contentWindow) {
+      try {
+        iframe.contentWindow.postMessage({ type: "TBB_JUMP_TO_STEP", step: s }, "*");
+      } catch (e) {}
+    }
+  };
+
+  window.tbbToggleTourIphoneMode = function (liveMode) {
+    const st = window.tbbCommercialDemoState;
+    st.tourIphoneLiveMode = Boolean(liveMode);
+    const cutoutWrap = document.getElementById("tbbTourIphoneCutoutModeWrap");
+    const liveWrap = document.getElementById("tbbTourIphoneLiveModeWrap");
+    const btnCutout = document.getElementById("tbbBtnTourModeCutout");
+    const btnLive = document.getElementById("tbbBtnTourModeLive");
+    if (cutoutWrap) cutoutWrap.style.display = st.tourIphoneLiveMode ? "none" : "flex";
+    if (liveWrap) {
+      liveWrap.style.display = st.tourIphoneLiveMode ? "flex" : "none";
+      const iframe = document.getElementById("tbbTourIphoneLiveIframe");
+      if (st.tourIphoneLiveMode && iframe && !iframe.getAttribute("src")) {
+        iframe.setAttribute("src", `/studio?demo=true&embed=iphone_tour&lang=${getLang()}&step=${st.tourActiveStep || 0}`);
+      }
+    }
+    if (btnCutout) btnCutout.classList.toggle("active", !st.tourIphoneLiveMode);
+    if (btnLive) btnLive.classList.toggle("active", st.tourIphoneLiveMode);
+  };
+
+  window.tbbUpdateBeforeAfterSlider = function (val) {
+    const num = Math.max(5, Math.min(95, Number(val) || 50));
+    window.tbbCommercialDemoState.beforeAfterVal = num;
+    const beforeClip = document.getElementById("tbbBeforeClipLayer");
+    const handle = document.getElementById("tbbBeforeAfterHandle");
+    if (beforeClip) beforeClip.style.clipPath = `inset(0 ${100 - num}% 0 0)`;
+    if (handle) handle.style.left = `${num}%`;
+  };
+
+  // SUBPÁGINA 2: APP TOUR (SCROLLYTELLING MODERNO + MOCKUP INTERACTIVO DE IPHONE + TIPOGRAFÍA GRANDE + CÁPSULAS MODERADAS)
+  window.tbbBuildSubpage2AppTourHTML = function () {
+    const l = getLang();
+    const st = window.tbbCommercialDemoState;
+    const curStep = Math.max(0, Math.min(6, Number(st.tourActiveStep) || 0));
+    const activeItem = APP_TOUR_STEPS[curStep] || APP_TOUR_STEPS[0];
+    const activeLoc = activeItem.i18n[l] || activeItem.i18n.es;
+    const activeCapUrl = getLocalizedAppCaptureUrl(activeItem.captureBase, l);
+
     return `
-      <!-- ENCABEZADO DEL RECORRIDO INTERACTIVO -->
-      <section style="padding:52px 24px 28px 24px; background:linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); text-align:center;">
-        <div style="max-width:940px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:14px;">
-          <div style="display:inline-flex; align-items:center; gap:8px; padding:5px 14px; border-radius:999px; background:#EFF6FF; color:#1D4ED8; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:600; letter-spacing:0.05em;">
-            <span>✦ SCROLL-DRIVEN INTERACTIVE WALKTHROUGH</span>
-            <span>·</span>
-            <span>${escHtml(t("tourEyebrow"))} (${lang.toUpperCase()})</span>
+      <section class="tbb-subpage-section tbb-apptour-section">
+        <div class="tbb-container-wide">
+          <!-- Cabecera de Gran Escala Tipográfica -->
+          <div class="tbb-section-header-large tbb-reveal-on-scroll is-visible">
+            <span class="tbb-eyebrow-pill">${TBB_ICONS.appTour} <span>${escHtml(t("tourEyebrow"))}</span></span>
+            <h1 class="tbb-section-title-xl">${escHtml(t("tourTitle"))}</h1>
+            <p class="tbb-section-lead-xl">${escHtml(t("tourLead"))}</p>
           </div>
-          <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(2rem, 3.8vw, 3.05rem); font-weight:600; color:#0F172A; margin:0; line-height:1.14; letter-spacing:-0.02em;">
-            ${escHtml(t("tourTitle"))}
-          </h1>
-          <p style="font-size:1.02rem; font-weight:400; color:#475569; line-height:1.68; margin:0; max-width:780px;">
-            ${escHtml(t("tourDesc"))}
-          </p>
-        </div>
-      </section>
 
-      <!-- BARRA STICKY GLASSMORPHIC CON SCROLL-SPY EN TIEMPO REAL -->
-      <div id="tbbTourStickyStepperBar" style="position:sticky; top:64px; z-index:920; background:rgba(255,255,255,0.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-top:1px solid #E2E8F0; border-bottom:1px solid #E2E8F0; padding:10px 20px; box-shadow:0 10px 30px rgba(15,23,42,0.05);">
-        <div style="max-width:1240px; margin:0 auto; display:flex; flex-direction:column; gap:8px;">
-          <div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
-            ${quickSteps.map((qs, qIdx) => `
-              <button type="button" data-tour-target="${qs.id}" onclick="document.getElementById('${qs.id}')?.scrollIntoView({behavior:'smooth', block:'start'});" class="tbb-tour-spy-pill ${qIdx === 0 ? 'is-active' : ''}" style="padding:6px 13px; border-radius:999px; font-size:0.75rem; font-weight:600; cursor:pointer; transition:all 0.25s cubic-bezier(0.16,1,0.3,1);">
-                ${escHtml(qs.lbl)}
-              </button>
-            `).join("")}
-          </div>
-          <div style="width:100%; height:3px; background:#E2E8F0; border-radius:999px; overflow:hidden;">
-            <div id="tbbTourScrollProgressFill" style="width:8%; height:100%; background:linear-gradient(90deg, #0D2540 0%, #1D4ED8 55%, #FF7A00 100%); transition:width 0.12s linear;"></div>
-          </div>
-        </div>
-      </div>
+          <!-- Layout Scrollytelling: Mockup Interactivo de iPhone Sticky + Columna de Bloques Flotantes y Recortes Precisos -->
+          <div class="tbb-scrollytelling-layout">
+            <!-- Columna Sticky Izquierda: Mockup Interactivo de iPhone 16 Pro -->
+            <div class="tbb-sticky-iphone-column">
+              <div class="tbb-iphone-mode-switcher">
+                <button type="button" id="tbbBtnTourModeCutout" class="tbb-mode-pill ${!st.tourIphoneLiveMode ? 'active' : ''}" onclick="window.tbbToggleTourIphoneMode(false)">
+                  ${TBB_ICONS.phone} <span>${escHtml(t("tourIphoneModeCutout"))}</span>
+                </button>
+                <button type="button" id="tbbBtnTourModeLive" class="tbb-mode-pill ${st.tourIphoneLiveMode ? 'active' : ''}" onclick="window.tbbToggleTourIphoneMode(true)">
+                  ${TBB_ICONS.spark} <span>${escHtml(t("tourIphoneModeLive"))}</span>
+                </button>
+              </div>
 
-      <!-- ESCENARIO DE SCROLLING MODERNO CON REVEAL 3D, TIMELINE NUMÉRICO Y COMPARATIVAS INTERACTIVAS -->
-      <section style="padding:36px 24px 80px 24px; background:#F8FAFC; position:relative;">
-        <div style="max-width:1240px; margin:0 auto; display:flex; flex-direction:column; gap:52px;">
-          ${APP_TOUR_FLOW_ITEMS.map((item, idx) => {
-            const loc = item.i18n[lang] || item.i18n.es;
-            const badgeTxt = loc.badge || item.badge;
-            const isPopup = item.type === "video_popup";
-            const isFinale = item.type === "deliverables_finale";
-            const hasSecondary = Boolean(item.secondaryImg);
-            const displayImg = isPopup ? getLocalizedStepPosterUrl(item.videoIdx) : item.img;
-            const stepIndexStr = String(idx + 1).padStart(2, "0");
+              <!-- Chasis de iPhone 16 Pro -->
+              <div class="tbb-iphone16-chassis">
+                <div class="tbb-iphone16-dynamic-island">
+                  <span class="tbb-island-cam"></span>
+                  <span class="tbb-island-speaker"></span>
+                </div>
 
-            const cardHtml = `
-              <article id="tbbTourItem_${idx}" data-tour-spy-section="tbbTourItem_${idx}" class="tbb-tour-clean-stage tbb-tour-scroll-card is-visible" style="background:#FFFFFF; border-radius:28px; padding:clamp(24px, 3.8vw, 42px); box-shadow:0 24px 60px rgba(15,23,42,0.07); border:1px solid ${isPopup ? '#FDBA74' : '#E2E8F0'}; position:relative; overflow:hidden;">
-                <div style="display:flex; flex-direction:column; gap:26px;">
-                  <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;">
-                    <div style="display:flex; align-items:flex-start; gap:16px; max-width:820px;">
-                      <div style="width:46px; height:46px; border-radius:14px; background:${isPopup ? '#FFF7ED' : '#0D2540'}; color:${isPopup ? '#EA580C' : '#FFFFFF'}; border:1px solid ${isPopup ? '#FDBA74' : '#1D4ED8'}; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono', monospace; font-size:0.86rem; font-weight:700; flex-shrink:0; box-shadow:0 8px 20px rgba(15,23,42,0.10);">
-                        ${stepIndexStr}
-                      </div>
-                      <div>
-                        <div style="display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:600; color:${isPopup ? '#EA580C' : '#1D4ED8'}; margin-bottom:6px;">
-                          <span>${escHtml(badgeTxt)}</span>
-                          <span>·</span>
-                          <span>${lang.toUpperCase()}</span>
+                <!-- Vista 1: Recortes de Precisión Sincronizados con el Scroll -->
+                <div id="tbbTourIphoneCutoutModeWrap" class="tbb-iphone16-screen-inner" style="display:${st.tourIphoneLiveMode ? 'none' : 'flex'};">
+                  <div class="tbb-iphone-status-bar">
+                    <span>9:41</span>
+                    <span id="tbbTourIphoneStepBadge" class="tbb-iphone-step-pill">${escHtml(activeLoc.badge)}</span>
+                  </div>
+                  <div class="tbb-iphone-capture-viewport">
+                    <img
+                      id="tbbTourIphoneScreenImg"
+                      src="${escHtml(activeCapUrl)}"
+                      onerror="this.src='${escHtml(activeItem.captureBase)}?v=${ASSET_VERSION}'"
+                      alt="${escHtml(activeLoc.title)}"
+                      class="tbb-iphone-capture-img"
+                    />
+                  </div>
+                  <div class="tbb-iphone-floating-glass-card">
+                    <div id="tbbTourIphoneCutoutCaption" class="tbb-iphone-cutout-tag">${escHtml(activeLoc.cutoutLabel)}</div>
+                    <div id="tbbTourIphoneFloatingNote" class="tbb-iphone-floating-note">${escHtml(activeLoc.floatingNote)}</div>
+                  </div>
+                </div>
+
+                <!-- Vista 2: Código Real Interactivo de la Aplicación dentro del iPhone -->
+                <div id="tbbTourIphoneLiveModeWrap" class="tbb-iphone16-screen-inner" style="display:${st.tourIphoneLiveMode ? 'flex' : 'none'};">
+                  <iframe
+                    id="tbbTourIphoneLiveIframe"
+                    title="The Best Brand Live App in iPhone"
+                    src="${st.tourIphoneLiveMode ? `/studio?demo=true&embed=iphone_tour&lang=${l}&step=${curStep}` : ''}"
+                    class="tbb-iphone-live-iframe"
+                    allow="microphone; autoplay; clipboard-write"
+                  ></iframe>
+                </div>
+
+                <div class="tbb-iphone16-home-bar"></div>
+              </div>
+
+              <!-- Selector Rápido de Pasos 00 a 06 debajo del iPhone -->
+              <div class="tbb-tour-step-dots-row">
+                ${APP_TOUR_STEPS.map((it, idx) => `
+                  <button type="button" class="tbb-tour-step-dot ${idx === curStep ? 'active' : ''}" onclick="window.tbbSetTourActiveStep(${idx}); const el=document.getElementById('tbbTourStepCard_${idx}'); if(el)el.scrollIntoView({behavior:'smooth',block:'center'});">
+                    0${idx}
+                  </button>
+                `).join("")}
+              </div>
+            </div>
+
+            <!-- Columna Derecha de Scrollytelling: Tarjetas en Sticky-Stacking con Recortes de Precisión y Cápsulas Moderadas -->
+            <div class="tbb-scrolly-cards-column">
+              ${APP_TOUR_STEPS.map((it, idx) => {
+                const loc = it.i18n[l] || it.i18n.es;
+                const capImg = getLocalizedAppCaptureUrl(it.captureBase, l);
+                const posterImg = getLocalizedStepPosterUrl(idx, l);
+                return `
+                  <article
+                    id="tbbTourStepCard_${idx}"
+                    class="tbb-tour-scrolly-card tbb-reveal-on-scroll ${idx === curStep ? 'is-active-step is-visible' : ''}"
+                    data-tour-step="${idx}"
+                    onmouseenter="window.tbbSetTourActiveStep(${idx})"
+                    onclick="window.tbbSetTourActiveStep(${idx})"
+                  >
+                    <div class="tbb-scrolly-card-top">
+                      <span class="tbb-scrolly-step-badge" style="border-color:${it.accent}; color:${it.accent};">${escHtml(loc.badge)}</span>
+                      <span class="tbb-scrolly-theory-tag">${escHtml(it.theoryTag)}</span>
+                    </div>
+
+                    <h2 class="tbb-scrolly-card-title">${escHtml(loc.title)}</h2>
+                    <p class="tbb-scrolly-card-body">${escHtml(loc.body)}</p>
+
+                    <!-- Recorte de Precisión de la Interfaz + Bloque Flotante Explicativo -->
+                    <div class="tbb-precision-cutout-showcase">
+                      <div class="tbb-precision-cutout-frame">
+                        <img
+                          src="${escHtml(capImg)}"
+                          onerror="this.src='${escHtml(it.captureBase)}?v=${ASSET_VERSION}'"
+                          alt="${escHtml(loc.cutoutLabel)}"
+                          loading="lazy"
+                        />
+                        <div class="tbb-floating-callout-pill">
+                          ${TBB_ICONS.check}
+                          <span>${escHtml(loc.cutoutLabel)}</span>
                         </div>
-                        <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.4rem, 2.4vw, 1.95rem); font-weight:600; color:#0F172A; margin:0 0 10px 0; line-height:1.22;">
-                          ${escHtml(loc.title)}
-                        </h2>
-                        <p style="font-size:0.98rem; font-weight:400; color:#475569; line-height:1.66; margin:0;">
-                          ${escHtml(loc.desc)}
-                        </p>
+                      </div>
+                      <div class="tbb-floating-explanation-box">
+                        <p>${escHtml(loc.floatingNote)}</p>
                       </div>
                     </div>
 
-                    ${isPopup ? `
-                      <button type="button" onclick="window.tbbOpenVideoPopupModal(${item.videoIdx})" class="tbb-comm-btn-blue" style="padding:12px 22px; font-size:0.86rem; font-weight:600; flex-shrink:0;">
-                        ▶ ${escHtml(t("tourPlayVideoBtn"))}
+                    <!-- Cápsula Emergente Moderada (1 botón limpio con miniatura del avatar en el idioma activo) -->
+                    <div class="tbb-moderate-capsule-bar">
+                      <div class="tbb-capsule-mini-preview" onclick="event.stopPropagation(); window.tbbOpenVideoPopupModal(${idx});">
+                        <img src="${escHtml(posterImg)}" alt="Step 0${idx}" loading="lazy" />
+                        <span class="tbb-capsule-play-badge">${TBB_ICONS.play}</span>
+                      </div>
+                      <div class="tbb-capsule-bar-info">
+                        <strong>${escHtml(t("tourWatchStepCapsule"))} · 0${idx} (${l.toUpperCase()})</strong>
+                        <span>${escHtml(VIDEO_CAPSULES[idx].author)}</span>
+                      </div>
+                      <button type="button" class="tbb-btn-capsule-open" onclick="event.stopPropagation(); window.tbbOpenVideoPopupModal(${idx});">
+                        ${TBB_ICONS.play}
+                        <span>${escHtml(t("tourWatchStepCapsule"))}</span>
                       </button>
-                    ` : `
-                      <button type="button" onclick="window.tbbOpenPlateLightboxModal(1, '${item.img}', '${escHtml(loc.title)}')" class="tbb-btn-light-surface" style="padding:10px 18px; font-size:0.82rem; font-weight:500; flex-shrink:0;">
-                        ⤢ ${escHtml(t("packOpenFullscreen"))}
-                      </button>
-                    `}
+                    </div>
+                  </article>
+                `;
+              }).join("")}
+            </div>
+          </div>
+
+          <!-- Comparador Interactivo Antes / Después (Evolución de Logotipo con Aura) -->
+          <div class="tbb-before-after-block tbb-reveal-on-scroll">
+            <div class="tbb-before-after-header">
+              <h2 class="tbb-section-title-lg">${escHtml(t("tourBeforeAfterTitle"))}</h2>
+              <p class="tbb-section-lead-md">${escHtml(t("tourBeforeAfterSub"))}</p>
+            </div>
+            <div class="tbb-before-after-stage">
+              <div class="tbb-ba-layer tbb-ba-after">
+                <div class="tbb-ba-card-content is-after">
+                  <span class="tbb-ba-badge after">DESPUÉS · THE BEST BRAND VECTOR ATELIER</span>
+                  <img src="/assets/logos/Logotipo_Horizontal_Curvas_the_best_brand.svg" alt="The Best Brand Final Vector" style="max-height:110px; width:auto;" />
+                  <p>Geometría en proporción áurea (8X×3X), curvas Bézier puras y Brandbook oficial de más de 30 páginas.</p>
+                </div>
+              </div>
+              <div id="tbbBeforeClipLayer" class="tbb-ba-layer tbb-ba-before" style="clip-path:inset(0 ${100 - st.beforeAfterVal}% 0 0);">
+                <div class="tbb-ba-card-content is-before">
+                  <span class="tbb-ba-badge before">ANTES · BOCETO O LOGO SIN RETÍCULA</span>
+                  <div class="tbb-ba-sketch-placeholder">BOCETO INICIAL · SIN SISTEMA</div>
+                  <p>Trazos sin proporción matemática, sin paleta validada WCAG ni manual de aplicación.</p>
+                </div>
+              </div>
+              <div id="tbbBeforeAfterHandle" class="tbb-ba-handle" style="left:${st.beforeAfterVal}%;">
+                <div class="tbb-ba-handle-knob">${TBB_ICONS.arrowLeft}${TBB_ICONS.arrowRight}</div>
+              </div>
+              <input
+                type="range"
+                min="5"
+                max="95"
+                value="${st.beforeAfterVal}"
+                class="tbb-ba-range-input"
+                aria-label="Before and After Comparison"
+                oninput="window.tbbUpdateBeforeAfterSlider(this.value)"
+              />
+            </div>
+
+            <div style="text-align:center; margin-top:36px;">
+              <button type="button" class="tbb-btn-primary-vibrant" onclick="window.tbbSwitchMainSection(3)">
+                ${TBB_ICONS.theory}
+                <span>${escHtml(t("navTheory"))}</span>
+                ${TBB_ICONS.arrowRight}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  };
+
+
+  // Simulador Interactivo Kansei & Diferencial Semántico de Osgood en vivo (Sección 3: Bases Teóricas)
+  window.tbbUpdateKanseiInfographicSimulator = function () {
+    const st = window.tbbCommercialDemoState;
+    const gEl = document.getElementById("tbbKanseiSliderGeo");
+    const vEl = document.getElementById("tbbKanseiSliderVanguard");
+    const wEl = document.getElementById("tbbKanseiSliderWeight");
+    if (gEl) st.kanseiGeoVal = Number(gEl.value);
+    if (vEl) st.kanseiVanguardVal = Number(vEl.value);
+    if (wEl) st.kanseiWeightVal = Number(wEl.value);
+
+    const previewBox = document.getElementById("tbbKanseiLiveVectorPreview");
+    if (!previewBox) return;
+
+    const rx = Math.round(48 - (st.kanseiGeoVal / 100) * 40); // 48px (Bouba orgánico) -> 8px (Kiki geométrico)
+    const strokeW = (1.6 + (st.kanseiWeightVal / 100) * 3.8).toFixed(1);
+    const rot = Math.round((st.kanseiVanguardVal - 50) * 0.45);
+    const accentCol = st.kanseiVanguardVal > 55 ? "#FF7A00" : "#426EAE";
+
+    previewBox.innerHTML = `
+      <svg viewBox="0 0 360 190" width="100%" height="185" xmlns="http://www.w3.org/2000/svg">
+        <rect x="12" y="12" width="336" height="166" rx="18" fill="#0D2540"/>
+        <g transform="translate(95, 95) rotate(${rot})">
+          <rect x="-46" y="-46" width="92" height="92" rx="${rx}" fill="rgba(255,255,255,0.06)" stroke="${accentCol}" stroke-width="${strokeW}"/>
+          <circle cx="0" cy="0" r="${Math.max(12, Math.round(32 - st.kanseiGeoVal * 0.16))}" fill="none" stroke="#FFFFFF" stroke-width="${strokeW}"/>
+          <circle cx="0" cy="0" r="6" fill="#FF7A00"/>
+        </g>
+        <text x="172" y="84" fill="#FFFFFF" font-family="Montserrat,sans-serif" font-weight="${st.kanseiWeightVal > 50 ? 900 : 600}" font-size="18" letter-spacing="${(st.kanseiVanguardVal * 0.04).toFixed(1)}">THE BEST BRAND</text>
+        <text x="172" y="108" fill="#93C5FD" font-family="JetBrains Mono,monospace" font-weight="700" font-size="10">R=${rx}px · W=${strokeW}pt · θ=${rot}°</text>
+        <text x="172" y="130" fill="#FF7A00" font-family="Plus Jakarta Sans,sans-serif" font-weight="700" font-size="10.5">${st.kanseiGeoVal >= 50 ? "Geometría Constructiva Kiki" : "Curva Orgánica Empática Bouba"}</text>
+      </svg>
+    `;
+  };
+
+  // SUBPÁGINA 3: BASES TEÓRICAS (INFOGRAFÍA DINÁMICA Y RESPONSIVA PASO A PASO · CERO CÁPSULAS DE VIDEO DEL FUNDADOR)
+  window.tbbBuildSubpage3TheoryHTML = function () {
+    const l = getLang();
+    const st = window.tbbCommercialDemoState;
+
+    return `
+      <section class="tbb-subpage-section tbb-theory-infographic-section">
+        <div class="tbb-container-wide">
+          <!-- Cabecera Académica -->
+          <div class="tbb-section-header-large tbb-reveal-on-scroll is-visible">
+            <span class="tbb-eyebrow-pill">${TBB_ICONS.theory} <span>${escHtml(t("theoryEyebrow"))}</span></span>
+            <h1 class="tbb-section-title-xl">${escHtml(t("theoryTitle"))}</h1>
+            <p class="tbb-section-lead-xl">${escHtml(t("theoryLead"))}</p>
+          </div>
+
+          <!-- INFOGRAFÍA DINÁMICA Y RESPONSIVA PASO A PASO (ETAPAS 00 A 06 CON DIAGRAMAS VECTORIALES Y AUTORES) -->
+          <div class="tbb-academic-infographic-timeline">
+            ${ACADEMIC_INFOGRAPHIC_STAGES.map((stg, idx) => {
+              const loc = stg.i18n[l] || stg.i18n.es;
+              const isEven = idx % 2 === 0;
+              return `
+                <article class="tbb-infographic-stage-node tbb-reveal-on-scroll ${idx < 2 ? 'is-visible' : ''} ${isEven ? 'is-even' : 'is-odd'}">
+                  <div class="tbb-infographic-spine-badge" style="background:${stg.color};">
+                    <span>0${stg.step}</span>
                   </div>
 
-                  ${hasSecondary ? `
-                    <div class="tbb-comm-grid-2" style="gap:22px; align-items:stretch;">
-                      <div class="tbb-tour-img-hover-card" style="border-radius:20px; overflow:hidden; background:#F8FAFC; border:1px solid #E2E8F0; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between;" onclick="window.tbbOpenPlateLightboxModal(1, '${item.img}', '${escHtml(loc.title)} (01)')">
-                        <img src="${item.img}" alt="${escHtml(loc.title)} 1" loading="eager" decoding="async" style="width:100%; max-height:460px; object-fit:contain; display:block; background:#F8FAFC;" />
-                        <div style="padding:11px 16px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:#475569;">
-                          <span>${escHtml(tourUiLabels.v1)}</span>
-                          <span style="color:#1D4ED8; font-family:'JetBrains Mono', monospace; font-weight:600;">${escHtml(tourUiLabels.zoom)}</span>
+                  <div class="tbb-infographic-card">
+                    <div class="tbb-infographic-card-grid">
+                      <!-- Columna Conceptual y Autores -->
+                      <div class="tbb-infographic-text-col">
+                        <div class="tbb-infographic-meta-row">
+                          <span class="tbb-infographic-code-pill" style="background:${stg.color}; color:#FFFFFF;">${escHtml(stg.code)}</span>
+                          <span class="tbb-infographic-authors-tag">${escHtml(stg.authors)}</span>
                         </div>
-                      </div>
-                      <div class="tbb-tour-img-hover-card" style="border-radius:20px; overflow:hidden; background:#F8FAFC; border:1px solid #E2E8F0; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between;" onclick="window.tbbOpenPlateLightboxModal(1, '${item.secondaryImg}', '${escHtml(loc.title)} (02)')">
-                        <img src="${item.secondaryImg}" alt="${escHtml(loc.title)} 2" loading="eager" decoding="async" style="width:100%; max-height:460px; object-fit:contain; display:block; background:#F8FAFC;" />
-                        <div style="padding:11px 16px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:#475569;">
-                          <span>${escHtml(tourUiLabels.v2)}</span>
-                          <span style="color:#1D4ED8; font-family:'JetBrains Mono', monospace; font-weight:600;">${escHtml(tourUiLabels.zoom)}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ` : `
-                    <div class="tbb-tour-img-hover-card" style="border-radius:20px; overflow:hidden; background:#F8FAFC; border:1px solid #E2E8F0; cursor:pointer;" onclick="${isPopup ? `window.tbbOpenVideoPopupModal(${item.videoIdx})` : `window.tbbOpenPlateLightboxModal(1, '${item.img}', '${escHtml(loc.title)}')`}">
-                      <img src="${displayImg}" alt="${escHtml(loc.title)}" loading="eager" decoding="async" style="width:100%; max-height:560px; object-fit:contain; display:block; margin:0 auto; background:#F8FAFC;" />
-                      <div style="padding:12px 18px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
-                        <div style="font-size:0.84rem; font-weight:500; color:#0F172A;">
-                          ${escHtml(loc.title)}
-                        </div>
-                        <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:600; color:${isPopup ? '#EA580C' : '#1D4ED8'};">
-                          ${escHtml(isPopup ? tourUiLabels.playHint : tourUiLabels.fullHint)}
-                        </div>
-                      </div>
-                    </div>
-                  `}
+                        <h2 class="tbb-infographic-stage-title">${escHtml(loc.title)}</h2>
+                        <div class="tbb-infographic-works-cite">${TBB_ICONS.book} <span>${escHtml(stg.works)}</span></div>
+                        <p class="tbb-infographic-thesis">${escHtml(loc.thesis)}</p>
 
-                  ${isFinale ? `
-                    <div style="padding-top:12px;">
-                      <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:600; color:#0D2540; margin-bottom:12px;">
-                        ${escHtml(t("bento9Kicker"))} · ${escHtml(tourUiLabels.finaleHeading)}
-                      </div>
-                      <div style="display:flex; gap:16px; overflow-x:auto; padding-bottom:12px; scroll-snap-type:x mandatory;">
-                        ${OFFICIAL_9_DELIVERABLES.map((deliv) => {
-                          const dLoc = deliv.i18n[lang] || deliv.i18n.es;
-                          const dFmt = dLoc.format || deliv.format;
-                          return `
-                            <div style="min-width:290px; max-width:290px; scroll-snap-align:start; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:18px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(${deliv.plateNum}, '${deliv.thumb}', '${escHtml(dLoc.title)}', '${deliv.sampleUrl}')">
-                              <img src="${deliv.thumb}" alt="${escHtml(dLoc.title)}" loading="eager" decoding="async" style="width:100%; height:150px; object-fit:cover; object-position:top center; border-radius:12px; background:#FFFFFF;" />
-                              <div>
-                                <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:500; color:#EA580C;">#${deliv.num} · ${escHtml(dFmt)}</div>
-                                <div style="font-size:0.9rem; font-weight:600; color:#0F172A; margin-top:3px;">${escHtml(dLoc.title)}</div>
-                              </div>
-                            </div>
-                          `;
-                        }).join("")}
-                      </div>
-                    </div>
-                  ` : ''}
-                </div>
-              </article>
-            `;
-
-            // Inyectar el Showcase Interactivo Antes/Después Nano Banana Pro 4K justo después del Paso 5 (idx === 10)
-            if (idx === 10) {
-              const nanoShowcaseHtml = `
-                <article id="tbbTourNanoBananaShowcase" data-tour-spy-section="tbbTourNanoBananaShowcase" class="tbb-tour-clean-stage tbb-tour-scroll-card is-visible" style="background:linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); border-radius:28px; padding:clamp(26px, 3.8vw, 44px); box-shadow:0 24px 65px rgba(15,23,42,0.08); border:1.5px solid #93C5FD;">
-                  <div style="display:flex; flex-direction:column; gap:28px;">
-                    <div style="text-align:center; max-width:860px; margin:0 auto;">
-                      <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:600; color:#EA580C; letter-spacing:0.06em; margin-bottom:8px;">
-                        ${escHtml(t("nanoKicker"))}
-                      </div>
-                      <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.65rem, 2.9vw, 2.35rem); font-weight:600; color:#0F172A; margin:0 0 10px 0;">
-                        ${escHtml(t("nanoTitle"))}
-                      </h2>
-                      <p style="font-size:0.96rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
-                        ${escHtml(t("nanoDesc"))}
-                      </p>
-                    </div>
-
-                    <div class="tbb-comm-grid-2" style="gap:28px; align-items:stretch;">
-                      <!-- Comparador Interactivo Deslizable Antes / Después (ARCO Ingeniería) -->
-                      <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-radius:24px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; gap:16px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                          <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:600; color:#1D4ED8; background:#EFF6FF; padding:4px 10px; border-radius:999px;">${escHtml(nanoCaseCopy.c1Badge)}</span>
-                          <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:#EA580C; font-weight:600;">${escHtml(nanoCaseCopy.c1Iter)}</span>
-                        </div>
-
-                        <div style="position:relative; width:100%; height:220px; border-radius:18px; overflow:hidden; background:#F8FAFC; border:1px solid #E2E8F0; user-select:none;">
-                          <!-- Capa Base (Después: Nano Banana Pro 4K) -->
-                          <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:18px; background:#FFFFFF;">
-                            <span style="position:absolute; top:10px; right:12px; font-family:'JetBrains Mono', monospace; font-size:0.62rem; font-weight:700; color:#1D4ED8; background:#EFF6FF; padding:3px 9px; border-radius:999px;">${escHtml(t("nanoAfterLabel"))}</span>
-                            <img src="/assets/logos/arco_ingenieria_nanobanana_logo.png" alt="ARCO Nano Banana Pro" style="max-width:85%; max-height:165px; object-fit:contain; display:block;" />
-                          </div>
-                          <!-- Capa Recortada (Antes: Logotipo Original) -->
-                          <div id="tbbBeforeAfterClipLayer" style="position:absolute; inset:0; clip-path:inset(0 50% 0 0); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:18px; background:#F1F5F9;">
-                            <span style="position:absolute; top:10px; left:12px; font-family:'JetBrains Mono', monospace; font-size:0.62rem; font-weight:700; color:#475569; background:#FFFFFF; padding:3px 9px; border-radius:999px; border:1px solid #CBD5E1;">${escHtml(t("nanoBeforeLabel"))}</span>
-                            <img src="/assets/logos/arco_ingenieria_base_actual.png" alt="ARCO Base" style="max-width:85%; max-height:165px; object-fit:contain; display:block;" />
-                          </div>
-                          <!-- Línea Divisoria Interactiva -->
-                          <div id="tbbBeforeAfterHandleLine" style="position:absolute; top:0; bottom:0; left:50%; width:3px; background:#FF7A00; transform:translateX(-50%); pointer-events:none; box-shadow:0 0 12px rgba(255,122,0,0.6);">
-                            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:34px; height:34px; border-radius:50%; background:#0D2540; color:#FFFFFF; border:2px solid #FF7A00; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; box-shadow:0 6px 16px rgba(15,23,42,0.35);">⟷</div>
-                          </div>
-                          <input type="range" min="5" max="95" value="50" aria-label="Comparar Antes y Después" oninput="window.tbbUpdateBeforeAfterSlider(this.value)" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:ew-resize; margin:0;" />
-                        </div>
-
-                        <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:#1D4ED8; text-align:center;">
-                          ${escHtml(tourUiLabels.sliderHint)}
-                        </div>
-
-                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.82rem; color:#475569;">
-                          <span>${escHtml(nanoCaseCopy.c1Foot)}</span>
-                          <button type="button" onclick="window.tbbOpenPlateLightboxModal(14, '/assets/app_captures/step5_arco_despues_nanobanana.png', 'ARCO Ingeniería · Nano Banana Pro 4K + Bézier')" class="tbb-btn-light-surface" style="padding:5px 12px; font-size:0.76rem; color:#1D4ED8;">${escHtml(nanoCaseCopy.c1Zoom)}</button>
-                        </div>
-                      </div>
-
-                      <!-- 4 Configuraciones Oficiales Apple Liquid Glass -->
-                      <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-radius:24px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; gap:16px; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(13, '/assets/app_captures/step5_tbb_liquid_glass.png', 'The Best Brand · 6 Iteraciones Apple Liquid Glass + Vector Bézier')">
-                        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                          <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:600; color:#EA580C; background:#FFF7ED; padding:4px 10px; border-radius:999px;">${escHtml(nanoCaseCopy.c2Badge)}</span>
-                          <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:#1D4ED8; font-weight:600;">${escHtml(nanoCaseCopy.c2Iter)}</span>
-                        </div>
-                        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; align-items:center;">
-                          ${[1, 2, 3, 4].map(n => `
-                            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:10px 8px; text-align:center;">
-                              <img src="/assets/brandbook/step5b_master_logo_0${n}.jpg" alt="Master Lockup 0${n}" style="width:100%; height:132px; object-fit:contain; border-radius:10px; display:block;" />
-                              <div style="font-family:'JetBrains Mono', monospace; font-size:0.6rem; color:#475569; margin-top:6px;">LOCKUP 0${n}</div>
-                            </div>
+                        <ul class="tbb-infographic-pillars-list">
+                          ${loc.pillars.map((p) => `
+                            <li>${TBB_ICONS.check} <span>${escHtml(p)}</span></li>
                           `).join("")}
+                        </ul>
+
+                        <div class="tbb-infographic-output-bar">
+                          <strong>ENTREGABLE CIENTÍFICO DE LA ETAPA:</strong>
+                          <span>${escHtml(loc.output)}</span>
                         </div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.82rem; color:#475569;">
-                          <span>${escHtml(nanoCaseCopy.c2Foot)}</span>
-                          <span style="color:#1D4ED8; font-weight:600;">${escHtml(nanoCaseCopy.c2Zoom)}</span>
+                      </div>
+
+                      <!-- Columna de Diagrama Infográfico Responsivo -->
+                      <div class="tbb-infographic-diagram-col">
+                        <div class="tbb-infographic-diagram-frame">
+                          ${buildAcademicDiagramSVG(stg.diagramType, stg.color)}
                         </div>
                       </div>
                     </div>
                   </div>
                 </article>
               `;
-              return cardHtml + nanoShowcaseHtml;
-            }
-            return cardHtml;
-          }).join("")}
+            }).join("")}
+          </div>
 
-          <!-- EXPLORADOR INTERACTIVO DE LAS 36 LÁMINAS EN CURVAS AL FINAL DEL TOUR -->
-          <article id="tbbTour36PlatesShowcase" class="tbb-tour-clean-stage tbb-tour-scroll-card is-visible" style="background:#FFFFFF; border-radius:28px; padding:clamp(26px, 3.8vw, 44px); box-shadow:0 24px 65px rgba(15,23,42,0.07); border:1px solid #E2E8F0;">
-            <div style="display:flex; flex-direction:column; align-items:center; gap:24px;">
-              <div style="text-align:center; max-width:820px;">
-                <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:600; color:#1D4ED8; letter-spacing:0.06em; margin-bottom:6px;">
-                  ${escHtml(t("plates36Kicker"))}
-                </div>
-                <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.6rem, 2.8vw, 2.25rem); font-weight:600; color:#0F172A; margin:0 0 10px 0;">
-                  ${escHtml(t("plates36Title"))}
-                </h2>
-                <p style="font-size:0.96rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
-                  ${escHtml(t("plates36Desc"))}
-                </p>
+          <!-- SIMULADOR INTERACTIVO EN VIVO: INGENIERÍA KANSEI & DIFERENCIAL SEMÁNTICO DE OSGOOD -->
+          <div class="tbb-kansei-simulator-card tbb-reveal-on-scroll">
+            <div class="tbb-kansei-sim-header">
+              <div>
+                <span class="tbb-eyebrow-pill">${TBB_ICONS.spark} <span>LABORATORIO INTERACTIVO · NAGAMACHI & OSGOOD</span></span>
+                <h2 class="tbb-section-title-lg" style="margin-top:10px;">${escHtml(t("theoryInteractiveSimulatorTitle"))}</h2>
+                <p class="tbb-section-lead-md">${escHtml(t("theoryInteractiveSimulatorSub"))}</p>
               </div>
+            </div>
 
-              <div style="display:inline-flex; background:#F1F5F9; padding:5px; border-radius:999px; gap:6px; border:1px solid #E2E8F0;">
-                <button type="button" onclick="window.tbbSetHeroVisualMode('app')" style="padding:9px 20px; border-radius:999px; border:none; background:${!isManual ? '#FFFFFF' : 'transparent'}; color:${!isManual ? '#0F172A' : '#475569'}; font-size:0.84rem; font-weight:600; cursor:pointer; box-shadow:${!isManual ? '0 4px 12px rgba(15,23,42,0.08)' : 'none'};">
-                  ${escHtml(t("heroSwitchApp"))}
-                </button>
-                <button type="button" onclick="window.tbbSetHeroVisualMode('manual')" style="padding:9px 20px; border-radius:999px; border:none; background:${isManual ? '#FFFFFF' : 'transparent'}; color:${isManual ? '#0F172A' : '#475569'}; font-size:0.84rem; font-weight:600; cursor:pointer; box-shadow:${isManual ? '0 4px 12px rgba(15,23,42,0.08)' : 'none'};">
-                  ${escHtml(t("heroSwitchManual"))}
-                </button>
-              </div>
-
-              <div style="width:100%; position:relative; border-radius:22px; overflow:hidden; box-shadow:0 20px 55px rgba(15,23,42,0.09); border:1px solid #E2E8F0; background:#FFFFFF; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(1, '${isManual ? '/assets/brandbook_plates_tbb/plate-01.jpg' : getLocalizedAppCaptureUrl('/assets/app_captures/step0_logo_aura.png')}', '${escHtml(step0Loc.title)}')">
-                <img src="${isManual ? '/assets/brandbook_plates_tbb/plate-01.jpg' : getLocalizedAppCaptureUrl('/assets/app_captures/step0_logo_aura.png')}" alt="The Best Brand Showcase" style="width:100%; height:auto; display:block;" />
-                <div style="position:absolute; top:16px; left:16px; background:rgba(255,255,255,0.94); backdrop-filter:blur(10px); padding:7px 15px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.70rem; font-weight:600; color:#0F172A; box-shadow:0 8px 24px rgba(15,23,42,0.12);">
-                  ${isManual ? escHtml(chapI18n.badgePlate1) : escHtml(step0Loc.title)} · (${lang.toUpperCase()})
-                </div>
-              </div>
-
-              <div style="width:100%; display:flex; flex-direction:column; gap:14px; padding-top:6px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                  <div style="display:flex; flex-wrap:wrap; gap:8px;">
-                    ${[
-                      { id: "all", lbl: chapI18n.all },
-                      { id: "c1", lbl: chapI18n.c1 },
-                      { id: "c2", lbl: chapI18n.c2 },
-                      { id: "c3", lbl: chapI18n.c3 },
-                      { id: "c4", lbl: chapI18n.c4 },
-                      { id: "c5", lbl: chapI18n.c5 }
-                    ].map((ch, idx) => `
-                      <button type="button" data-chapter="${ch.id}" class="tbb-plate36-filter-btn" onclick="window.tbbFilterHome36PlatesChapter('${ch.id}')" style="padding:7px 14px; border-radius:999px; border:1px solid ${idx === 0 ? '#0D2540' : '#CBD5E1'}; background:${idx === 0 ? '#0D2540' : '#FFFFFF'}; color:${idx === 0 ? '#FFFFFF' : '#334155'}; font-size:0.75rem; font-weight:500; cursor:pointer;">
-                        ${escHtml(ch.lbl)}
-                      </button>
-                    `).join("")}
+            <div class="tbb-kansei-sim-grid">
+              <div class="tbb-kansei-sliders-col">
+                <div class="tbb-kansei-slider-row">
+                  <div class="tbb-kansei-slider-labels">
+                    <span>Orgánico / Cercano (Bouba)</span>
+                    <strong>Eje 1 · Morfología Geométrica</strong>
+                    <span>Geométrico / Exacto (Kiki)</span>
                   </div>
-                  <a href="/assets/deliverables_tbb/Manual_Identidad_36_Laminas_the_best_brand.pdf" target="_blank" rel="noopener" class="tbb-btn-light-surface" style="padding:7px 16px; font-size:0.78rem; text-decoration:none;">
-                    ${escHtml(chapI18n.pdfBtn)}
-                  </a>
+                  <input id="tbbKanseiSliderGeo" type="range" min="0" max="100" value="${st.kanseiGeoVal}" oninput="window.tbbUpdateKanseiInfographicSimulator()" />
                 </div>
 
-                <div style="display:flex; gap:14px; overflow-x:auto; padding:6px 2px 16px 2px; scroll-snap-type:x mandatory;">
-                  ${plates36Meta.map(p => `
-                    <div data-chapter="${p.chap}" class="tbb-plate36-thumb-card" onclick="window.tbbOpenPlateLightboxModal(${p.n})" style="min-width:225px; max-width:225px; scroll-snap-align:start; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:10px; display:flex; flex-direction:column; gap:8px; cursor:pointer; flex-shrink:0;">
-                      <img src="${p.img}" alt="Plate ${p.pad}" loading="eager" decoding="async" style="width:100%; height:130px; object-fit:cover; border-radius:10px; background:#FFFFFF; border:1px solid #E2E8F0;" />
-                      <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:600; color:#0F172A;">${escHtml(chapI18n.plateWord)} ${p.pad} / 36</span>
-                        <span style="font-size:0.68rem; color:#1D4ED8;">⤢ Max Res</span>
-                      </div>
-                      <div style="font-size:0.72rem; color:#64748B;">${escHtml(p.chapLabel)}</div>
-                    </div>
-                  `).join("")}
+                <div class="tbb-kansei-slider-row">
+                  <div class="tbb-kansei-slider-labels">
+                    <span>Herencia Clásica</span>
+                    <strong>Eje 2 · Tensión Temporal</strong>
+                    <span>Vanguardia Disruptiva</span>
+                  </div>
+                  <input id="tbbKanseiSliderVanguard" type="range" min="0" max="100" value="${st.kanseiVanguardVal}" oninput="window.tbbUpdateKanseiInfographicSimulator()" />
                 </div>
-              </div>
-            </div>
-          </article>
 
-          <div style="text-align:center; padding-top:16px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
-            <button type="button" onclick="window.tbbSwitchMainSection(2)" class="tbb-btn-light-surface" style="padding:16px 28px; font-size:0.96rem; font-weight:600;">
-              <span class="tbb-live-pulse-dot"></span>
-              <span>${escHtml(t("nextToDemoBtn"))}</span>
-            </button>
-            <button type="button" onclick="window.tbbSwitchMainSection(4)" class="tbb-comm-btn-blue" style="padding:16px 32px; font-size:0.98rem; font-weight:600;">
-              ${escHtml(t("nextToTheoryBtn"))}
-            </button>
-          </div>
-        </div>
-      </section>
-    `;
-  };
-
-  // SUBPÁGINA 4: BASES TEÓRICAS (VIDEOS 9:16 HEYGEN + GOOGLE FLOW CON PROPORCIÓN 9:16 PERFECTA Y AUTORES CON MINIATURA REAL DE YOUTUBE)
-  window.tbbBuildSubpage4TheoryHTML = function () {
-    const lang = getLang();
-
-    return `
-      <section style="padding:64px 24px 88px 24px; background:#FFFFFF;">
-        <div style="max-width:1240px; margin:0 auto; display:flex; flex-direction:column; gap:64px;">
-          <div style="text-align:center; max-width:820px; margin:0 auto;">
-            <div style="font-family:'JetBrains Mono', monospace; font-size:0.74rem; font-weight:500; color:#EA580C; letter-spacing:0.06em; margin-bottom:8px;">
-              ${escHtml(t("theoryEyebrow"))}
-            </div>
-            <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.9rem, 3.6vw, 2.85rem); font-weight:600; color:#0F172A; margin:0 0 12px 0; letter-spacing:-0.02em;">
-              ${escHtml(t("theoryTitle"))}
-            </h1>
-            <p style="font-size:1.02rem; font-weight:400; color:#475569; line-height:1.68; margin:0;">
-              ${escHtml(t("theoryDesc"))}
-            </p>
-          </div>
-
-          <div>
-            <h2 style="font-family:'Montserrat', sans-serif; font-size:1.5rem; font-weight:600; color:#0F172A; margin:0 0 24px 0;">
-              ${escHtml(t("theoryCapsulesTitle"))}
-            </h2>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(255px, 1fr)); gap:24px;">
-              ${VIDEO_CAPSULES.map((cap, idx) => {
-                const loc = cap.i18n[lang] || cap.i18n.es;
-                return `
-                  <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:22px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.25s ease; cursor:pointer;" onclick="window.tbbOpenVideoPopupModal(${idx})">
-                    <div>
-                      <div style="position:relative; width:100%; aspect-ratio:9/16; max-height:420px; background:#0F172A; overflow:hidden; display:flex; align-items:center; justify-content:center;">
-                        <img src="${cap.poster}" alt="${escHtml(loc.title)}" loading="eager" decoding="async" style="width:100%; height:100%; object-fit:cover; object-position:top center; display:block; background:#0F172A;" />
-                        <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(15,23,42,0.04) 0%, rgba(15,23,42,0.34) 100%); display:flex; align-items:center; justify-content:center;">
-                          <div style="width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,0.94); color:#0D2540; display:flex; align-items:center; justify-content:center; font-size:1.1rem; box-shadow:0 10px 25px rgba(0,0,0,0.28);">▶</div>
-                        </div>
-                        <span style="position:absolute; top:10px; left:10px; background:rgba(255,255,255,0.92); color:#0D2540; padding:3px 9px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.64rem; font-weight:600;">${escHtml(stepUpperForLang(cap.step))} · 9:16</span>
-                        <span style="position:absolute; bottom:10px; right:10px; background:rgba(15,23,42,0.88); color:#FFFFFF; padding:3px 9px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.68rem;">${cap.duration}</span>
-                      </div>
-                      <div style="padding:18px 18px 10px 18px;">
-                        <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#1D4ED8; margin-bottom:4px;">${escHtml(cap.author)}</div>
-                        <h3 style="font-family:'Montserrat', sans-serif; font-size:1.02rem; font-weight:600; color:#0F172A; margin:0 0 8px 0; line-height:1.3;">${escHtml(loc.title)}</h3>
-                        <p style="font-size:0.86rem; font-weight:400; color:#475569; line-height:1.55; margin:0;">${escHtml(loc.desc)}</p>
-                      </div>
-                    </div>
-                    <div style="padding:12px 18px 18px 18px;">
-                      <span style="font-size:0.82rem; font-weight:500; color:#1D4ED8;">▶ ${escHtml(t("tourPlayVideoBtn"))} (${lang.toUpperCase()})</span>
-                    </div>
+                <div class="tbb-kansei-slider-row">
+                  <div class="tbb-kansei-slider-labels">
+                    <span>Trazo Fino Editorial</span>
+                    <strong>Eje 3 · Masa Óptica y Peso</strong>
+                    <span>Presencia Monumental Bold</span>
                   </div>
-                `;
-              }).join("")}
-            </div>
-          </div>
-
-          <div>
-            <h2 style="font-family:'Montserrat', sans-serif; font-size:1.5rem; font-weight:600; color:#0F172A; margin:0 0 24px 0;">
-              ${escHtml(t("theoryAuthorsTitle"))}
-            </h2>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:24px;">
-              ${YOUTUBE_METHODOLOGY_AUTHORS.map(a => {
-                const aLoc = (a.i18n && (a.i18n[lang] || a.i18n.es)) || a;
-                return `
-                  <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:20px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
-                    <div>
-                      <div style="position:relative; aspect-ratio:16/9; background:#0F172A; cursor:pointer; overflow:hidden;" onclick="window.tbbPlayYouTubeAuthorVideo('${a.id}')">
-                        <img src="${a.thumb}" onerror="if(this.src!=='${a.ytThumbFallback}')this.src='${a.ytThumbFallback}';" alt="${escHtml(aLoc.title)}" loading="eager" decoding="async" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;" />
-                        <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(15,23,42,0.10) 0%, rgba(15,23,42,0.42) 100%); display:flex; align-items:center; justify-content:center;">
-                          <div style="width:54px; height:38px; border-radius:10px; background:#FF0000; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:1.05rem; box-shadow:0 8px 24px rgba(0,0,0,0.38);">▶</div>
-                        </div>
-                        <span style="position:absolute; top:10px; left:10px; background:rgba(15,23,42,0.86); color:#FFFFFF; padding:3px 9px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.62rem;">YOUTUBE · ${escHtml(a.author)}</span>
-                        <span style="position:absolute; bottom:10px; right:10px; background:rgba(15,23,42,0.85); color:#FFFFFF; padding:3px 9px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.68rem;">${a.duration}</span>
-                      </div>
-                      <div style="padding:18px;">
-                        <div style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:500; color:#EA580C; margin-bottom:4px;">${escHtml(aLoc.step)} · ${escHtml(a.author)}</div>
-                        <h3 style="font-family:'Montserrat', sans-serif; font-size:1.02rem; font-weight:600; color:#0F172A; margin:0;">${escHtml(aLoc.title)}</h3>
-                      </div>
-                    </div>
-                    <div style="padding:0 18px 18px 18px; display:flex; gap:10px;">
-                      <button type="button" onclick="window.tbbPlayYouTubeAuthorVideo('${a.id}')" class="tbb-btn-light-surface" style="padding:8px 14px; font-size:0.8rem; font-weight:500;">${escHtml(t("ytWatchHere"))}</button>
-                      <a href="${a.url}" target="_blank" rel="noopener" class="tbb-btn-light-surface" style="padding:8px 14px; font-size:0.8rem; font-weight:500; text-decoration:none;">YouTube ↗</a>
-                    </div>
-                  </div>
-                `;
-              }).join("")}
-            </div>
-          </div>
-
-          <div>
-            <h2 style="font-family:'Montserrat', sans-serif; font-size:1.5rem; font-weight:600; color:#0F172A; margin:0 0 24px 0;">
-              ${escHtml(t("theoryBooksTitle"))}
-            </h2>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(340px, 1fr)); gap:24px;">
-              ${FOUNDER_ESSENTIAL_BOOKS.map(b => {
-                const bLoc = (b.i18n && (b.i18n[lang] || b.i18n.es)) || b;
-                return `
-                  <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:20px; padding:20px; display:flex; gap:18px; align-items:center;">
-                    <img src="/assets/books/${b.coverImg}" alt="${escHtml(bLoc.title || b.title)}" loading="eager" decoding="async" style="width:88px; height:128px; object-fit:cover; border-radius:10px; box-shadow:0 8px 20px rgba(15,23,42,0.12); flex-shrink:0;" />
-                    <div style="display:flex; flex-direction:column; gap:6px;">
-                      <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:500; color:#1D4ED8;">${escHtml(bLoc.step)}</div>
-                      <h3 style="font-family:'Montserrat', sans-serif; font-size:1.0rem; font-weight:600; color:#0F172A; margin:0;">${escHtml(bLoc.title || b.title)}</h3>
-                      <div style="font-size:0.82rem; font-weight:500; color:#475569;">${escHtml(b.author)}</div>
-                      <p style="font-size:0.82rem; font-weight:400; color:#64748B; line-height:1.45; margin:0;">${escHtml(bLoc.takeaway)}</p>
-                      <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
-                        <a href="${b.kindleUrl}" target="_blank" rel="noopener" style="padding:6px 12px; border-radius:999px; background:#0D2540; color:#FFFFFF; font-size:0.75rem; font-weight:500; text-decoration:none;">Amazon / Kindle ↗</a>
-                        <a href="${b.appleBooksUrl}" target="_blank" rel="noopener" style="padding:6px 12px; border-radius:999px; background:#E2E8F0; color:#0F172A; font-size:0.75rem; font-weight:500; text-decoration:none;">Apple Books ↗</a>
-                      </div>
-                    </div>
-                  </div>
-                `;
-              }).join("")}
-            </div>
-          </div>
-
-          <div style="text-align:center; padding-top:16px;">
-            <button type="button" onclick="window.tbbSwitchMainSection(5)" class="tbb-comm-btn-blue" style="padding:18px 34px; font-size:1.02rem; font-weight:600;">
-              ${escHtml(t("nextToDownloadsBtn"))}
-            </button>
-          </div>
-        </div>
-      </section>
-    `;
-  };
-
-  // SUBPÁGINA 5: PACK DE DESCARGAS (CARRUSEL MODERNO + VISOR PANTALLA CASI COMPLETA + PRÓXIMAMENTE WEB Y REDES SOCIALES)
-  window.tbbBuildSubpage5DownloadsHTML = function () {
-    const st = window.tbbCommercialDemoState;
-    const lang = getLang();
-    const activeIdx = Math.max(0, Math.min(OFFICIAL_9_DELIVERABLES.length - 1, Number(st.activeCarouselIndex) || 0));
-    const activeItem = OFFICIAL_9_DELIVERABLES[activeIdx];
-    const activeLoc = activeItem.i18n[lang] || activeItem.i18n.es;
-    const activeFmt = activeLoc.format || activeItem.format;
-
-    return `
-      <section style="padding:64px 24px 88px 24px; background:#FFFFFF;">
-        <div style="max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:56px;">
-          <div style="text-align:center; max-width:840px; margin:0 auto;">
-            <div style="font-family:'JetBrains Mono', monospace; font-size:0.74rem; font-weight:500; color:#1D4ED8; letter-spacing:0.06em; margin-bottom:8px;">
-              ${escHtml(t("packEyebrow"))}
-            </div>
-            <h1 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.95rem, 3.6vw, 2.9rem); font-weight:600; color:#0F172A; margin:0 0 12px 0; letter-spacing:-0.02em;">
-              ${escHtml(t("packTitle"))}
-            </h1>
-            <p style="font-size:1.02rem; font-weight:400; color:#475569; line-height:1.68; margin:0;">
-              ${escHtml(t("packDesc"))}
-            </p>
-          </div>
-
-          <div class="tbb-comm-grid-2" style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:28px; padding:clamp(24px, 3.5vw, 40px); gap:36px; align-items:center;">
-            <div style="position:relative; border-radius:20px; overflow:hidden; background:#FFFFFF; box-shadow:0 20px 50px rgba(15,23,42,0.10); cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(${activeItem.plateNum}, '${activeItem.thumb}', '${escHtml(activeLoc.title)}', '${activeItem.sampleUrl}')">
-              <img src="${activeItem.thumb}" alt="${escHtml(activeLoc.title)}" style="width:100%; max-height:440px; object-fit:contain; display:block; margin:0 auto;" />
-              <div style="position:absolute; bottom:12px; right:12px; background:rgba(15,23,42,0.88); color:#FFFFFF; padding:6px 14px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.7rem;">
-                ⤢ ${escHtml(t("packOpenFullscreen"))}
-              </div>
-            </div>
-
-            <div style="display:flex; flex-direction:column; gap:18px;">
-              <div style="display:inline-flex; align-items:center; gap:8px; align-self:flex-start; padding:5px 14px; border-radius:999px; background:#EFF6FF; color:#1D4ED8; font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500;">
-                #${activeItem.num} / 09 · ${escHtml(activeFmt)}
-              </div>
-              <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.4rem, 2.4vw, 1.95rem); font-weight:600; color:#0F172A; margin:0; line-height:1.22;">
-                ${escHtml(activeLoc.title)}
-              </h2>
-              <p style="font-size:0.98rem; font-weight:400; color:#475569; line-height:1.68; margin:0;">
-                ${escHtml(activeLoc.desc)}
-              </p>
-
-              <div style="display:flex; flex-wrap:wrap; gap:12px; padding-top:8px;">
-                <button type="button" onclick="window.tbbOpenPlateLightboxModal(${activeItem.plateNum}, '${activeItem.thumb}', '${escHtml(activeLoc.title)}', '${activeItem.sampleUrl}')" class="tbb-comm-btn-blue" style="padding:13px 22px; font-size:0.88rem; font-weight:600;">
-                  ${escHtml(t("packOpenFullscreen"))}
-                </button>
-                <a href="${activeItem.sampleUrl}" target="_blank" rel="noopener" class="tbb-btn-light-surface" style="padding:13px 22px; font-size:0.88rem; font-weight:500; text-decoration:none;">
-                  ${escHtml(t("packDownloadSample"))}
-                </a>
-              </div>
-
-              <div style="display:flex; gap:10px; padding-top:8px;">
-                <button type="button" onclick="window.tbbSelectDeliverableCarousel(${activeIdx - 1})" class="tbb-btn-light-surface" style="padding:8px 16px; font-size:0.82rem;">${escHtml(t("carouselPrev"))}</button>
-                <button type="button" onclick="window.tbbSelectDeliverableCarousel(${activeIdx + 1})" class="tbb-btn-light-surface" style="padding:8px 16px; font-size:0.82rem;">${escHtml(t("carouselNext"))}</button>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div id="tbbModernDeliverablesCarouselTrack" style="display:flex; gap:18px; overflow-x:auto; padding:8px 4px 20px 4px; scroll-snap-type:x mandatory;">
-              ${OFFICIAL_9_DELIVERABLES.map((item, idx) => {
-                const loc = item.i18n[lang] || item.i18n.es;
-                const fmtTxt = loc.format || item.format;
-                const isSel = idx === activeIdx;
-                return `
-                  <div id="tbbCarouselDelivCard_${idx}" onclick="window.tbbSelectDeliverableCarousel(${idx})" style="min-width:265px; max-width:265px; scroll-snap-align:center; background:${isSel ? '#FFFFFF' : '#F8FAFC'}; border-radius:20px; padding:14px; border:2px solid ${isSel ? '#1D4ED8' : '#E2E8F0'}; box-shadow:${isSel ? '0 16px 36px rgba(29,78,216,0.14)' : '0 4px 12px rgba(15,23,42,0.04)'}; cursor:pointer; transition:all 0.22s ease; display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
-                    <div>
-                      <div style="position:relative; border-radius:12px; overflow:hidden; background:#FFFFFF; margin-bottom:10px;">
-                        <img src="${item.thumb}" alt="${escHtml(loc.title)}" loading="eager" decoding="async" style="width:100%; height:148px; object-fit:cover; object-position:top center; display:block;" />
-                        <button type="button" onclick="event.stopPropagation(); window.tbbOpenPlateLightboxModal(${item.plateNum}, '${item.thumb}', '${escHtml(loc.title)}', '${item.sampleUrl}');" style="position:absolute; top:8px; right:8px; background:rgba(15,23,42,0.82); color:#FFFFFF; border:none; border-radius:999px; padding:4px 10px; font-size:0.68rem; cursor:pointer;">
-                          ⤢ Max Res
-                        </button>
-                      </div>
-                      <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:500; color:#EA580C;">#${item.num} · ${escHtml(fmtTxt)}</div>
-                      <div style="font-family:'Montserrat', sans-serif; font-size:0.92rem; font-weight:600; color:#0F172A; margin-top:4px; line-height:1.3;">${escHtml(loc.title)}</div>
-                    </div>
-                  </div>
-                `;
-              }).join("")}
-            </div>
-          </div>
-
-          <div style="padding-top:36px; border-top:1px solid #E2E8F0;">
-            <div style="text-align:center; max-width:780px; margin:0 auto 36px auto;">
-              <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:500; color:#EA580C; letter-spacing:0.06em; margin-bottom:8px;">
-                ${escHtml(t("comingSoonEyebrow"))}
-              </div>
-              <h2 style="font-family:'Montserrat', sans-serif; font-size:clamp(1.6rem, 2.8vw, 2.25rem); font-weight:600; color:#0F172A; margin:0 0 10px 0;">
-                ${escHtml(t("comingSoonTitle"))}
-              </h2>
-              <p style="font-size:0.98rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
-                ${escHtml(t("comingSoonDesc"))}
-              </p>
-            </div>
-
-            <div class="tbb-comm-grid-2" style="gap:28px; align-items:stretch;">
-              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:32px; display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
-                <div>
-                  <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px;">
-                    <span style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; font-weight:500; color:#1D4ED8; background:#EFF6FF; padding:5px 12px; border-radius:999px;">
-                      ADD-ON 01 · ${escHtml(t("csWebPrice"))}
-                    </span>
-                  </div>
-                  <h3 style="font-family:'Montserrat', sans-serif; font-size:1.35rem; font-weight:600; color:#0F172A; margin:0 0 10px 0;">
-                    🌐 ${escHtml(t("csWebTitle"))}
-                  </h3>
-                  <p style="font-size:0.94rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
-                    ${escHtml(t("csWebDesc"))}
-                  </p>
-                </div>
-                <div>
-                  <button type="button" onclick="window.tbbReserveComingSoonAddon('web')" class="tbb-btn-light-surface" style="padding:12px 22px; font-size:0.86rem; font-weight:500;">
-                    ${st.comingSoonReservedWeb ? escHtml(t("csReservedOk")) : escHtml(t("csReserveBtn"))}
-                  </button>
+                  <input id="tbbKanseiSliderWeight" type="range" min="0" max="100" value="${st.kanseiWeightVal}" oninput="window.tbbUpdateKanseiInfographicSimulator()" />
                 </div>
               </div>
 
-              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:24px; padding:32px; display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
-                <div>
-                  <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px;">
-                    <span style="font-family:'JetBrains Mono', monospace; font-size:0.7rem; font-weight:500; color:#EA580C; background:#FFF7ED; padding:5px 12px; border-radius:999px;">
-                      ADD-ON 02 · ${escHtml(t("csSocialPrice"))}
-                    </span>
-                  </div>
-                  <h3 style="font-family:'Montserrat', sans-serif; font-size:1.35rem; font-weight:600; color:#0F172A; margin:0 0 10px 0;">
-                    📱 ${escHtml(t("csSocialTitle"))}
-                  </h3>
-                  <p style="font-size:0.94rem; font-weight:400; color:#475569; line-height:1.65; margin:0;">
-                    ${escHtml(t("csSocialDesc"))}
-                  </p>
-                </div>
-                <div>
-                  <button type="button" onclick="window.tbbReserveComingSoonAddon('social')" class="tbb-btn-light-surface" style="padding:12px 22px; font-size:0.86rem; font-weight:500;">
-                    ${st.comingSoonReservedSocial ? escHtml(t("csReservedOk")) : escHtml(t("csReserveBtn"))}
-                  </button>
-                </div>
+              <div id="tbbKanseiLiveVectorPreview" class="tbb-kansei-preview-col">
+                <!-- Se inicializa al renderizar -->
               </div>
+            </div>
+          </div>
+
+          <!-- BIBLIOGRAFÍA ESENCIAL DE RESPALDO ACADÉMICO -->
+          <div class="tbb-books-academic-block tbb-reveal-on-scroll">
+            <h2 class="tbb-section-title-lg" style="text-align:center; margin-bottom:24px;">${escHtml(t("theoryBooksSectionTitle"))}</h2>
+            <div class="tbb-books-grid">
+              ${FOUNDER_ESSENTIAL_BOOKS.map((b) => `
+                <div class="tbb-book-academic-card">
+                  <div class="tbb-book-spine" style="background:${b.color};">ETAPA ${escHtml(b.stage)}</div>
+                  <div class="tbb-book-body">
+                    <span class="tbb-book-year">${escHtml(b.year)}</span>
+                    <h3 class="tbb-book-title">${escHtml(b.work)}</h3>
+                    <p class="tbb-book-author">${escHtml(b.author)}</p>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+
+            <div style="text-align:center; margin-top:40px;">
+              <button type="button" class="tbb-btn-primary-vibrant" onclick="window.tbbSwitchMainSection(4)">
+                ${TBB_ICONS.demo}
+                <span>${escHtml(t("navDemo"))}</span>
+                ${TBB_ICONS.arrowRight}
+              </button>
             </div>
           </div>
         </div>
@@ -3723,1169 +2388,726 @@
     `;
   };
 
-  // ---------------------------------------------------------------------------
-  // 9. RENDERIZADOR PRINCIPAL DE LA EXPERIENCIA COMERCIAL (5 SUBPÁGINAS)
-  // ---------------------------------------------------------------------------
-  window.tbbBuildCommercialExperienceMarkup = function (isStandalonePage) {
-    syncDemoStateFromAppIfAvailable();
+  // Alternar entre Vista Mockup de iPhone 16 Pro y Pantalla Completa en la Sección 4 (Demo en Vivo)
+  window.tbbSetDemoViewportMode = function (mode) {
     const st = window.tbbCommercialDemoState;
-    const curLang = getLang();
-    const isLicensed = Boolean(localStorage.getItem(LICENSE_STORAGE_KEY));
-    const sec = st.activeMainSection || 1;
-
-    return `
-      <header class="tbb-awwwards-nav">
-        <a href="#top" onclick="window.tbbSwitchMainSection(1); return false;" style="display:flex; align-items:center; gap:12px; text-decoration:none; min-width:0;">
-          <img src="/assets/logos/tbb_official_liquid_glass_logo.jpg" alt="The Best Brand" style="width:38px; height:38px; border-radius:10px; object-fit:cover; flex-shrink:0;" />
-          <div class="tbb-header-brand-text-wrap" style="min-width:0;">
-            <div style="font-family:'Montserrat', sans-serif; font-size:0.98rem; font-weight:600; color:#0F172A; letter-spacing:-0.02em; white-space:nowrap;">
-              THE BEST BRAND <span class="tbb-brand-inline-tagline" style="color:#EA580C; font-size:0.7rem; font-weight:500; margin-left:4px;">YOUR BRAND, NOW!!!</span>
-            </div>
-          </div>
-        </a>
-
-        <nav class="tbb-desktop-nav-links" aria-label="Menú Principal">
-          <button type="button" id="tbbSecTab_1" class="tbb-nav-menu-item ${sec === 1 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(1)">
-            <span>${escHtml(t("menu1"))}</span>
-          </button>
-          <button type="button" id="tbbSecTab_2" class="tbb-nav-menu-item ${sec === 2 ? 'is-active' : ''}" onclick="window.tbbLaunchDemoFullscreen()">
-            <span class="tbb-live-pulse-dot"></span>
-            <span>${escHtml(t("menu2"))}</span>
-            <span class="tbb-live-pill-badge">${escHtml(t("menu2Live"))}</span>
-          </button>
-          <button type="button" id="tbbSecTab_3" class="tbb-nav-menu-item ${sec === 3 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(3)">
-            <span>${escHtml(t("menu3"))}</span>
-          </button>
-          <button type="button" id="tbbSecTab_4" class="tbb-nav-menu-item ${sec === 4 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(4)">
-            <span>${escHtml(t("menu4"))}</span>
-          </button>
-          <button type="button" id="tbbSecTab_5" class="tbb-nav-menu-item ${sec === 5 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(5)">
-            <span>${escHtml(t("menu5"))}</span>
-          </button>
-        </nav>
-
-        <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
-          <select id="tbbCommercialLangSelect" aria-label="Idioma" onchange="window.tbbChangeCommercialLanguage(this.value)" style="height:36px; padding:0 10px; border-radius:999px; background:#F8FAFC; color:#0F172A; border:1px solid #CBD5E1; font-size:0.78rem; font-weight:500; cursor:pointer;">
-            <option value="es" ${curLang === "es" ? "selected" : ""}>🇪🇸 ES</option>
-            <option value="en" ${curLang === "en" ? "selected" : ""}>🇺🇸 EN</option>
-            <option value="fr" ${curLang === "fr" ? "selected" : ""}>🇫🇷 FR</option>
-            <option value="pt" ${curLang === "pt" ? "selected" : ""}>🇧🇷 PT</option>
-            <option value="de" ${curLang === "de" ? "selected" : ""}>🇩🇪 DE</option>
-            <option value="it" ${curLang === "it" ? "selected" : ""}>🇮🇹 IT</option>
-          </select>
-
-          <button type="button" id="tbbBtnTopBuyAppNow" class="tbb-comm-btn-blue" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')" style="padding:9px 18px; font-size:0.82rem; font-weight:600; white-space:nowrap;">
-            <span>${isLicensed ? escHtml(t("licenseActive")) : escHtml(t("buyNowHeader"))}</span>
-          </button>
-
-          ${isStandalonePage ? `
-            <a href="/studio" class="tbb-btn-light-surface tbb-desktop-only-ctrl" style="padding:8px 14px; font-size:0.8rem; font-weight:500; text-decoration:none; white-space:nowrap;">
-              <span>${escHtml(t("openStudio"))}</span>
-            </a>
-          ` : `
-            <button type="button" class="tbb-btn-light-surface" onclick="window.tbbCloseCommercialPortalModal()" style="padding:7px 12px; font-size:0.8rem;">✕</button>
-          `}
-
-          <button type="button" class="tbb-mobile-hamburger-btn" onclick="window.tbbToggleMobileDrawer()" aria-label="Abrir menú móvil">
-            ☰
-          </button>
-        </div>
-      </header>
-
-      <nav class="tbb-mobile-subpages-bar" aria-label="Subpáginas">
-        <button type="button" class="tbb-mob-pill tbb-tab-sec-1 ${sec === 1 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(1)">${escHtml(t("menu1"))}</button>
-        <button type="button" class="tbb-mob-pill tbb-tab-sec-2 ${sec === 2 ? 'is-active' : ''}" onclick="window.tbbLaunchDemoFullscreen()">
-          <span class="tbb-live-pulse-dot"></span> ${escHtml(t("menu2"))}
-        </button>
-        <button type="button" class="tbb-mob-pill tbb-tab-sec-3 ${sec === 3 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(3)">${escHtml(t("menu3"))}</button>
-        <button type="button" class="tbb-mob-pill tbb-tab-sec-4 ${sec === 4 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(4)">${escHtml(t("menu4"))}</button>
-        <button type="button" class="tbb-mob-pill tbb-tab-sec-5 ${sec === 5 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(5)">${escHtml(t("menu5"))}</button>
-      </nav>
-
-      <div id="tbbMobileDrawerBackdrop" class="tbb-mobile-drawer-backdrop" onclick="window.tbbToggleMobileDrawer(false)"></div>
-      <aside id="tbbMobileSlideDrawer" class="tbb-mobile-slide-drawer" aria-label="Menú Móvil">
-        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid #E2E8F0;">
-          <span style="font-weight:600; font-size:0.95rem; color:#0F172A;">THE BEST BRAND</span>
-          <button type="button" class="tbb-btn-light-surface" onclick="window.tbbToggleMobileDrawer(false)" style="padding:5px 10px;">✕</button>
-        </div>
-        <div style="display:flex; flex-direction:column; gap:10px; margin-top:16px;">
-          <button type="button" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(1);" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px;">01 · ${escHtml(t("menu1"))}</button>
-          <button type="button" onclick="window.tbbToggleMobileDrawer(false); window.tbbLaunchDemoFullscreen();" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px;">02 · ${escHtml(t("menu2"))} (${escHtml(t("menu2Live"))})</button>
-          <button type="button" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(3);" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px;">03 · ${escHtml(t("menu3"))}</button>
-          <button type="button" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(4);" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px;">04 · ${escHtml(t("menu4"))}</button>
-          <button type="button" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(5);" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px;">05 · ${escHtml(t("menu5"))}</button>
-          <a href="/studio" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px; text-decoration:none;">${escHtml(t("openStudio"))}</a>
-          <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbToggleMobileDrawer(false); window.tbbOpenBuyAppCheckoutModal('pro_atelier');" style="padding:14px; margin-top:6px;">${escHtml(t("buyNowFloating"))}</button>
-        </div>
-      </aside>
-
-      <main id="tbbMainActiveSubpageViewport" style="background:#FFFFFF; min-height:82vh;">
-        ${window.tbbRenderActiveSubpageHTML(sec)}
-      </main>
-    `;
+    st.demoViewportMode = mode === "full" ? "full" : "iphone";
+    const shell = document.getElementById("tbbDemoInteractiveStageWrap");
+    if (shell) {
+      shell.classList.toggle("is-fullscreen-mode", st.demoViewportMode === "full");
+      shell.classList.toggle("is-iphone-mode", st.demoViewportMode !== "full");
+    }
+    const btnIp = document.getElementById("tbbBtnDemoModeIphone");
+    const btnFl = document.getElementById("tbbBtnDemoModeFull");
+    if (btnIp) btnIp.classList.toggle("active", st.demoViewportMode !== "full");
+    if (btnFl) btnFl.classList.toggle("active", st.demoViewportMode === "full");
   };
 
-  // ---------------------------------------------------------------------------
-  // 10. MODAL YOUTUBE Y MOTOR REAL DE PAGO (/api/v1/payments/checkout-live)
-  // ---------------------------------------------------------------------------
-  window.tbbPlayYouTubeAuthorVideo = function (videoId) {
-    const author = YOUTUBE_METHODOLOGY_AUTHORS.find(a => a.id === videoId);
-    const lang = getLang();
-    const aLoc = (author && author.i18n && (author.i18n[lang] || author.i18n.es)) || author;
-    let ov = document.getElementById("tbbYouTubeAuthorModalOverlay");
-    if (!ov) {
-      ov = document.createElement("div");
-      ov.id = "tbbYouTubeAuthorModalOverlay";
-      ov.style.cssText = "position:fixed; inset:0; background:rgba(15,23,42,0.86); backdrop-filter:blur(14px); z-index:10050; display:flex; align-items:center; justify-content:center; padding:16px;";
-      ov.onclick = (e) => { if (e.target === ov) { ov.style.display = "none"; ov.innerHTML = ""; } };
-      document.body.appendChild(ov);
+  window.tbbJumpDemoToStep = function (stepNum) {
+    const s = Number(stepNum) || 0;
+    const isPro = hasProLicense();
+    if (s >= 4 && !isPro) {
+      window.tbbOpenBuyAppCheckoutModal("pro_atelier");
+      return;
     }
-    ov.innerHTML = `
-      <div style="background:#FFFFFF; border-radius:22px; width:100%; max-width:900px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.45);">
-        <div style="padding:14px 20px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #E2E8F0;">
-          <div style="font-family:'Montserrat',sans-serif; font-size:1.0rem; font-weight:600; color:#0F172A;">${escHtml(aLoc?.title || author?.title || "YouTube")}</div>
-          <button type="button" onclick="document.getElementById('tbbYouTubeAuthorModalOverlay').style.display='none'; document.getElementById('tbbYouTubeAuthorModalOverlay').innerHTML='';" class="tbb-btn-light-surface" style="padding:5px 12px;">✕</button>
-        </div>
-        <div style="aspect-ratio:16/9; width:100%; background:#000000;">
-          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:block; border:none;"></iframe>
-        </div>
-      </div>
-    `;
-    ov.style.display = "flex";
-  };
-
-  window.tbbToggleMobileDrawer = function (forceOpen) {
-    const next = typeof forceOpen === "boolean" ? forceOpen : !window.tbbCommercialDemoState.mobileDrawerOpen;
-    window.tbbCommercialDemoState.mobileDrawerOpen = next;
-    const drw = document.getElementById("tbbMobileSlideDrawer");
-    const bkp = document.getElementById("tbbMobileDrawerBackdrop");
-    if (drw) drw.classList.toggle("open", next);
-    if (bkp) bkp.classList.toggle("open", next);
-  };
-
-  window.tbbUpdateLocalizedFooterDOM = function () {
-    const fHead = document.getElementById("tbbFooterBrandHeadline");
-    if (fHead) {
-      const subMap = {
-        es: "ARQUITECTURA DE MARCA EN 30 MINUTOS",
-        en: "BRAND ARCHITECTURE IN 30 MINUTES",
-        fr: "ARCHITECTURE DE MARQUE EN 30 MINUTES",
-        pt: "ARQUITETURA DE MARCA EM 30 MINUTOS",
-        de: "MARKENARCHITEKTUR IN 30 MINUTEN",
-        it: "ARCHITETTURA DEL BRAND IN 30 MINUTI"
-      };
-      const subTxt = subMap[getLang()] || subMap.es;
-      fHead.innerHTML = `THE BEST BRAND <span style="color:#EA580C; font-weight:500; font-size:0.76rem; margin-left:6px;">· ${escHtml(subTxt)}</span>`;
-    }
-    const fDesc = document.getElementById("tbbFooterBrandDesc");
-    if (fDesc) fDesc.textContent = t("footerDesc");
-    const fNav = document.getElementById("tbbFooterNavLinks");
-    if (fNav) {
-      fNav.innerHTML = `
-        <a href="/" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('inicio');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">01 · ${escHtml(t("menu1"))}</a>
-        <a href="/demo" onclick="if(window.tbbLaunchDemoFullscreen){window.tbbLaunchDemoFullscreen();return false;}" style="font-size:0.84rem; color:#16A34A; text-decoration:none; font-weight:600;">02 · ${escHtml(t("menu2"))}</a>
-        <a href="/app-tour" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('app-tour');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">03 · ${escHtml(t("menu3"))}</a>
-        <a href="/bases-teoricas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('bases-teoricas');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">04 · ${escHtml(t("menu4"))}</a>
-        <a href="/pack-descargas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('pack-descargas');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">05 · ${escHtml(t("menu5"))}</a>
-        <a href="/studio" style="font-size:0.84rem; color:#1D4ED8; text-decoration:none; font-weight:600;">${escHtml(t("openStudio"))}</a>
-      `;
-    }
-  };
-
-  window.tbbChangeCommercialLanguage = function (langCode) {
-    const clean = String(langCode || "es").toLowerCase().trim();
-    try {
-      localStorage.setItem(LANG_STORAGE_KEY, clean);
-      localStorage.setItem("tbb_app_lang", clean);
-      document.documentElement.lang = clean;
-    } catch (e) {}
-    if (typeof window.tbbSetApplicationLanguage === "function") {
-      window.tbbSetApplicationLanguage(clean);
-    }
-    // Actualizar datos del preset activo al nuevo idioma
-    const st = window.tbbCommercialDemoState;
-    if (st && st.activePresetId) {
-      const rawP = DEMO_QUICK_PRESETS.find(item => item.id === st.activePresetId);
-      if (rawP) {
-        const locP = getLocalizedPresetData(rawP, clean);
-        st.brandName = locP.brandName;
-        st.tagline = locP.tagline;
-        st.businessGiro = locP.businessGiro;
-        st.whyPurpose = locP.whyPurpose;
-        st.howMethod = locP.howMethod;
-        st.whatOffer = locP.whatOffer;
-      }
-    }
-    window.tbbRefreshCommercialPortalDOM();
-    window.tbbRenderCheckoutModalContent();
-    window.tbbUpdateAlwaysOnFloatingBarText();
-    window.tbbUpdateLocalizedFooterDOM();
-    // Si el modal de video está abierto, recargarlo en el idioma recién seleccionado
-    if (st && typeof st.openVideoModalStep === "number") {
-      const ov = document.getElementById("tbbVideoCapsuleModalOverlay");
-      if (ov && ov.style.display === "flex") {
-        window.tbbOpenVideoPopupModal(st.openVideoModalStep);
-      }
-    }
-    document.querySelectorAll(".tbb-live-iphone-studio-iframe").forEach(fr => {
+    window.tbbCommercialDemoState.activeDemoStep = s;
+    const iframe = document.getElementById("tbbRealStudioDemoIframe");
+    if (iframe && iframe.contentWindow) {
       try {
-        if (fr && fr.contentWindow) {
-          fr.contentWindow.postMessage({ type: "TBB_SET_LANGUAGE", lang: clean }, "*");
-        }
+        iframe.contentWindow.postMessage({ type: "TBB_JUMP_TO_STEP", step: s }, "*");
       } catch (e) {}
+    }
+    document.querySelectorAll(".tbb-demo-step-pill").forEach((el, idx) => {
+      el.classList.toggle("active", idx === s);
     });
   };
 
-  window.tbbFormatCardInput = function (inputEl) {
-    if (!inputEl) return;
-    const digits = inputEl.value.replace(/\D/g, "").slice(0, 16);
-    const groups = digits.match(/.{1,4}/g) || [];
-    inputEl.value = groups.join(" ");
+  // SUBPÁGINA 4: DEMO EN VIVO (TRASLADADA AL FINAL DEL FLUJO EDUCATIVO · EJECUTA EL CÓDIGO REAL DENTRO DEL MOCKUP DE IPHONE + PAYWALL $49 USD EN PASO 4)
+  window.tbbBuildSubpage4DemoHTML = function () {
+    const l = getLang();
+    const st = window.tbbCommercialDemoState;
+    const isPro = hasProLicense();
+    const isFull = st.demoViewportMode === "full";
+    const iframeSrc = `/studio?demo=true&embed=commercial&lang=${encodeURIComponent(l)}`;
+
+    return `
+      <section class="tbb-subpage-section tbb-live-demo-section">
+        <div class="tbb-container-wide">
+          <!-- Cabecera de Demo Interactiva Real -->
+          <div class="tbb-section-header-large tbb-reveal-on-scroll is-visible" style="margin-bottom:24px;">
+            <span class="tbb-eyebrow-pill">${TBB_ICONS.demo} <span>${escHtml(t("demoEyebrow"))}</span></span>
+            <h1 class="tbb-section-title-xl">${escHtml(t("demoTitle"))}</h1>
+            <p class="tbb-section-lead-xl">${escHtml(t("demoLead"))}</p>
+          </div>
+
+          <!-- Barra de Control de Pasos (Pasos 0, 1, 2 y 3 Libres | Paso 4 activa Paywall $49 USD con Migración Automática) -->
+          <div class="tbb-demo-control-bar">
+            <div class="tbb-demo-steps-strip">
+              ${[0, 1, 2, 3, 4, 5, 6].map((s) => {
+                const locked = s >= 4 && !isPro;
+                return `
+                  <button
+                    type="button"
+                    class="tbb-demo-step-pill ${st.activeDemoStep === s ? 'active' : ''} ${locked ? 'is-locked' : 'is-free'}"
+                    onclick="window.tbbJumpDemoToStep(${s})"
+                  >
+                    ${locked ? TBB_ICONS.lock : TBB_ICONS.check}
+                    <span>${escHtml(stepLabelForLang(s))}</span>
+                    ${s < 4 ? `<small class="tbb-free-tag">FREE</small>` : `<small class="tbb-pro-tag">${isPro ? 'PRO' : '$49'}</small>`}
+                  </button>
+                `;
+              }).join("")}
+            </div>
+
+            <div class="tbb-demo-viewport-toggles">
+              <button type="button" id="tbbBtnDemoModeIphone" class="tbb-mode-pill ${!isFull ? 'active' : ''}" onclick="window.tbbSetDemoViewportMode('iphone')">
+                ${TBB_ICONS.phone} <span>${escHtml(t("demoModeIphone"))}</span>
+              </button>
+              <button type="button" id="tbbBtnDemoModeFull" class="tbb-mode-pill ${isFull ? 'active' : ''}" onclick="window.tbbSetDemoViewportMode('full')">
+                ${TBB_ICONS.expand} <span>${escHtml(t("demoModeFull"))}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ESCENARIO REAL: MOCKUP INTERACTIVO DE IPHONE 16 PRO EJECUTANDO /STUDIO EN VIVO -->
+          <div id="tbbDemoInteractiveStageWrap" class="tbb-demo-stage-wrap ${isFull ? 'is-fullscreen-mode' : 'is-iphone-mode'}">
+            <!-- Panel Lateral Izquierdo de Guía y Conversión -->
+            <aside class="tbb-demo-side-guide">
+              <div class="tbb-demo-guide-card">
+                <div class="tbb-demo-status-pill free">${TBB_ICONS.check} <span>${escHtml(t("demoFreeStepsBadge"))}</span></div>
+                <h3>1. Habla o escribe a Aura en vivo</h3>
+                <p>El mockup ejecuta el código real de The Best Brand Studio. Responde los Pasos 0, 1 (Círculo Dorado), 2 (Touchpoints) y 3 (Naming y Niza) sin costo.</p>
+              </div>
+
+              <div class="tbb-demo-guide-card highlight">
+                <div class="tbb-demo-status-pill paywall">${isPro ? TBB_ICONS.unlock : TBB_ICONS.lock} <span>${escHtml(t("demoPaywallStep4Badge"))}</span></div>
+                <h3>2. Desbloqueo del Paso 4 ($49 USD) y Migración Automática</h3>
+                <p>Al avanzar al Paso 4 (Ingeniería Kansei), el sistema activa el bloqueo de pago de $49 USD, crea tu cuenta ejecutiva y migra automáticamente el 100% de tus respuestas de los Pasos 0 al 3.</p>
+                <button type="button" class="tbb-btn-primary-vibrant" style="width:100%; margin-top:12px;" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')">
+                  ${TBB_ICONS.shield}
+                  <span>${escHtml(t("demoUnlockBtn"))}</span>
+                </button>
+              </div>
+            </aside>
+
+            <!-- Contenedor del Mockup de iPhone / Lienzo Completo con la App Real -->
+            <div class="tbb-demo-iphone-center-stage">
+              <div class="tbb-demo-device-frame">
+                <div class="tbb-iphone16-dynamic-island">
+                  <span class="tbb-island-cam"></span>
+                  <span class="tbb-island-speaker"></span>
+                </div>
+                <iframe
+                  id="tbbRealStudioDemoIframe"
+                  title="The Best Brand Live Interactive Demo"
+                  src="${escHtml(iframeSrc)}"
+                  class="tbb-real-studio-iframe"
+                  allow="microphone; autoplay; clipboard-write; fullscreen"
+                ></iframe>
+                <div class="tbb-iphone16-home-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
   };
 
-  window.tbbFormatExpiryInput = function (inputEl) {
-    if (!inputEl) return;
-    const digits = inputEl.value.replace(/\D/g, "").slice(0, 4);
-    inputEl.value = digits.length >= 3 ? digits.slice(0, 2) + "/" + digits.slice(2) : digits;
+  // SUBPÁGINA 5: PACK DE DESCARGAS (CONSOLIDACIÓN DE ENTREGABLES · MENCIÓN ÚNICA DEL BRANDBOOK DE MÁS DE 30 PÁGINAS)
+  window.tbbBuildSubpage5DownloadsHTML = function () {
+    const l = getLang();
+    const primaryBrandbook = OFFICIAL_9_DELIVERABLES[0];
+    const pbLoc = primaryBrandbook.i18n[l] || primaryBrandbook.i18n.es;
+    const otherDeliverables = OFFICIAL_9_DELIVERABLES.slice(1);
+
+    return `
+      <section class="tbb-subpage-section tbb-downloads-section">
+        <div class="tbb-container-wide">
+          <!-- Cabecera Unificada -->
+          <div class="tbb-section-header-large tbb-reveal-on-scroll is-visible">
+            <span class="tbb-eyebrow-pill">${TBB_ICONS.downloads} <span>${escHtml(t("downloadsEyebrow"))}</span></span>
+            <h1 class="tbb-section-title-xl">${escHtml(t("downloadsTitle"))}</h1>
+            <p class="tbb-section-lead-xl">${escHtml(t("downloadsLead"))}</p>
+          </div>
+
+          <!-- BLOQUE PROTAGONISTA ÚNICO DEL BRANDBOOK OFICIAL (ESTANDARIZADO A "MÁS DE 30 PÁGINAS (AJUSTABLE SEGÚN EL GIRO DEL NEGOCIO)") -->
+          <div class="tbb-consolidated-brandbook-hero-card tbb-reveal-on-scroll is-visible">
+            <div class="tbb-cb-left">
+              <span class="tbb-cb-standard-badge">${TBB_ICONS.shield} <span>${escHtml(t("downloadsStandardBadge"))}</span></span>
+              <h2 class="tbb-cb-title">${escHtml(pbLoc.title)}</h2>
+              <p class="tbb-cb-desc">${escHtml(pbLoc.desc)}</p>
+              <div class="tbb-cb-actions">
+                <button
+                  type="button"
+                  class="tbb-btn-primary-vibrant"
+                  onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(primaryBrandbook.thumb)}', '${escHtml(pbLoc.title)}', '${escHtml(primaryBrandbook.sampleUrl)}')"
+                >
+                  ${TBB_ICONS.book}
+                  <span>${escHtml(t("downloadsViewSampleBtn"))}</span>
+                </button>
+                <button type="button" class="tbb-btn-secondary-clean" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')">
+                  ${TBB_ICONS.downloads}
+                  <span>${escHtml(t("downloadsUnlockAllBtn"))}</span>
+                </button>
+              </div>
+            </div>
+            <div class="tbb-cb-right" onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(primaryBrandbook.thumb)}', '${escHtml(pbLoc.title)}', '${escHtml(primaryBrandbook.sampleUrl)}')">
+              <img src="${escHtml(primaryBrandbook.thumb)}" alt="${escHtml(pbLoc.title)}" class="tbb-cb-preview-img" />
+              <div class="tbb-cb-overlay-pill">${TBB_ICONS.expand} <span>${escHtml(primaryBrandbook.format)}</span></div>
+            </div>
+          </div>
+
+          <!-- Grid Responsivo + Scroll Horizontal de los 8 Archivos Ejecutivos Complementarios -->
+          <div class="tbb-deliverables-grid tbb-reveal-on-scroll">
+            ${otherDeliverables.map((item) => {
+              const loc = item.i18n[l] || item.i18n.es;
+              return `
+                <article class="tbb-deliverable-card" onclick="window.tbbOpenPlateLightboxModal(${item.plateNum}, '${escHtml(item.thumb)}', '${escHtml(loc.title)}', '${escHtml(item.sampleUrl)}')">
+                  <div class="tbb-deliv-thumb-wrap">
+                    <img src="${escHtml(item.thumb)}" alt="${escHtml(loc.title)}" loading="lazy" />
+                    <span class="tbb-deliv-num-badge">#${escHtml(item.num)}</span>
+                    <span class="tbb-deliv-fmt-badge">${escHtml(item.format)}</span>
+                  </div>
+                  <div class="tbb-deliv-body">
+                    <h3 class="tbb-deliv-title">${escHtml(loc.title)}</h3>
+                    <p class="tbb-deliv-desc">${escHtml(loc.desc)}</p>
+                    <span class="tbb-deliv-link">${TBB_ICONS.expand} <span>${escHtml(t("downloadsViewSampleBtn"))}</span></span>
+                  </div>
+                </article>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      </section>
+    `;
   };
 
-  window.tbbSelectCheckoutPlan = function (planId) {
-    window.tbbCommercialDemoState.selectedPlan = planId === "agency_suite" ? "agency_suite" : "pro_atelier";
-    window.tbbRenderCheckoutModalContent();
+
+  window.tbbToggleMobileDrawer = function (forceState) {
+    const drawer = document.getElementById("tbbMobileNavDrawer");
+    if (!drawer) return;
+    const next = typeof forceState === "boolean" ? forceState : !drawer.classList.contains("open");
+    drawer.classList.toggle("open", next);
   };
 
-  window.tbbSelectPaymentMethod = function (methodId) {
-    window.tbbCommercialDemoState.selectedPaymentMethod = methodId || "card";
-    window.tbbRenderCheckoutModalContent();
+  // ESTRUCTURA PRINCIPAL DE LA INTERFAZ COMERCIAL (HEADER CON LOGOTIPO PROTAGONISTA + MENÚ MÓVIL PROPIETARIO CERO EMOJIS + VIEWPORT)
+  window.tbbBuildCommercialExperienceMarkup = function (isStandalonePage) {
+    const l = getLang();
+    const st = window.tbbCommercialDemoState || {};
+    const activeSec = Math.max(1, Math.min(5, Number(st.activeMainSection) || 1));
+    const isPro = hasProLicense();
+
+    const navItems = [
+      { sec: 1, label: t("navHome"), icon: TBB_ICONS.home },
+      { sec: 2, label: t("navAppTour"), icon: TBB_ICONS.appTour },
+      { sec: 3, label: t("navTheory"), icon: TBB_ICONS.theory },
+      { sec: 4, label: t("navDemo"), icon: TBB_ICONS.demo },
+      { sec: 5, label: t("navDownloads"), icon: TBB_ICONS.downloads }
+    ];
+
+    const langs = [
+      { code: "es", label: "ES" },
+      { code: "en", label: "EN" },
+      { code: "fr", label: "FR" },
+      { code: "pt", label: "PT" },
+      { code: "de", label: "DE" },
+      { code: "it", label: "IT" }
+    ];
+
+    return `
+      <div class="tbb-commercial-master-shell">
+        <!-- HEADER SUPERIOR CON PROTAGONISMO DEL LOGOTIPO OFICIAL THE BEST BRAND -->
+        <header class="tbb-master-header">
+          <div class="tbb-header-inner">
+            <!-- Eje Visual Central: Logotipo Oficial a Gran Escala -->
+            <a href="/" class="tbb-brand-logo-link" onclick="event.preventDefault(); window.tbbSwitchMainSection(1);" aria-label="The Best Brand">
+              <img src="/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png" alt="The Best Brand Isotipo" class="tbb-header-isotipo" />
+              <img src="/assets/logos/Logotipo_Horizontal_Curvas_the_best_brand.svg" alt="The Best Brand" class="tbb-header-wordmark-svg" />
+            </a>
+
+            <!-- Menú de Escritorio en Orden Estricto: 1. Inicio | 2. App Tour | 3. Bases Teóricas | 4. Demo en Vivo | 5. Pack de Descargas -->
+            <nav class="tbb-desktop-nav" aria-label="Primary Navigation">
+              ${navItems.map((item) => `
+                <button
+                  type="button"
+                  data-tbb-nav-sec="${item.sec}"
+                  class="tbb-nav-tab-btn ${activeSec === item.sec ? 'active' : ''}"
+                  onclick="window.tbbSwitchMainSection(${item.sec})"
+                >
+                  ${item.icon}
+                  <span>${escHtml(item.label)}</span>
+                </button>
+              `).join("")}
+            </nav>
+
+            <!-- Acciones Derecha: Selector de Idioma (6 Idiomas · Cero Banderas Emoji) + Botón de Licencia + Botón Menú Móvil -->
+            <div class="tbb-header-actions">
+              <div class="tbb-lang-pills-bar" role="group" aria-label="Language Selector">
+                ${langs.map((lg) => `
+                  <button
+                    type="button"
+                    class="tbb-lang-pill-btn ${l === lg.code ? 'active' : ''}"
+                    onclick="window.tbbSwitchCommercialLanguage('${lg.code}')"
+                  >${lg.label}</button>
+                `).join("")}
+              </div>
+
+              <button
+                type="button"
+                class="tbb-header-buy-btn ${isPro ? 'is-pro' : ''}"
+                onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')"
+              >
+                ${isPro ? TBB_ICONS.unlock : TBB_ICONS.spark}
+                <span>${escHtml(isPro ? t("navLicenseActive") : t("navBuyCta"))}</span>
+              </button>
+
+              <!-- Botón Propietario para Abrir el Menú Móvil (Icono Vectorial a Medida) -->
+              <button
+                type="button"
+                class="tbb-mobile-menu-trigger"
+                onclick="window.tbbToggleMobileDrawer()"
+                aria-label="Toggle Mobile Navigation"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M4 7h16M4 12h16M10 17h10" stroke="#0D2540" stroke-width="2.4" stroke-linecap="round"/>
+                  <circle cx="5.5" cy="17" r="2" fill="#FF7A00"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- MENÚ MÓVIL REDISEÑADO (DRAWER DESLIZABLE + BARRA INFERIOR CON ICONOS PROPIETARIOS · CERO EMOJIS GENÉRICOS) -->
+        <div id="tbbMobileNavDrawer" class="tbb-mobile-drawer-overlay" onclick="if(event.target===this) window.tbbToggleMobileDrawer(false)">
+          <aside class="tbb-mobile-drawer-panel" onclick="event.stopPropagation()">
+            <div class="tbb-mobile-drawer-head">
+              <div class="tbb-mobile-drawer-logo">
+                <img src="/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png" alt="The Best Brand" />
+                <img src="/assets/logos/Logotipo_Horizontal_Curvas_the_best_brand.svg" alt="The Best Brand" class="tbb-drawer-wordmark" />
+              </div>
+              <button type="button" class="tbb-drawer-close-btn" onclick="window.tbbToggleMobileDrawer(false)" aria-label="Close">
+                ${TBB_ICONS.close}
+              </button>
+            </div>
+
+            <div class="tbb-mobile-drawer-nav-list">
+              ${navItems.map((item) => `
+                <button
+                  type="button"
+                  data-tbb-nav-sec="${item.sec}"
+                  class="tbb-mobile-drawer-item ${activeSec === item.sec ? 'active' : ''}"
+                  onclick="window.tbbSwitchMainSection(${item.sec})"
+                >
+                  <span class="tbb-drawer-ic">${item.icon}</span>
+                  <span class="tbb-drawer-lbl">${escHtml(item.label)}</span>
+                  <span class="tbb-drawer-arr">${TBB_ICONS.arrowRight}</span>
+                </button>
+              `).join("")}
+            </div>
+
+            <div class="tbb-mobile-drawer-lang-box">
+              <div class="tbb-drawer-lang-title">${TBB_ICONS.globe} <span>GLOBALIZACIÓN · 6 IDIOMAS</span></div>
+              <div class="tbb-drawer-lang-grid">
+                ${langs.map((lg) => `
+                  <button
+                    type="button"
+                    class="tbb-drawer-lang-btn ${l === lg.code ? 'active' : ''}"
+                    onclick="window.tbbSwitchCommercialLanguage('${lg.code}')"
+                  >${lg.label}</button>
+                `).join("")}
+              </div>
+            </div>
+
+            <div class="tbb-mobile-drawer-footer">
+              <button type="button" class="tbb-btn-primary-vibrant" style="width:100%;" onclick="window.tbbToggleMobileDrawer(false); window.tbbOpenBuyAppCheckoutModal('pro_atelier');">
+                ${TBB_ICONS.shield}
+                <span>${escHtml(t("navBuyCta"))}</span>
+              </button>
+            </div>
+          </aside>
+        </div>
+
+        <!-- VIEWPORT DINÁMICO EXCLUSIVO DE LA SUBPÁGINA SELECCIONADA (CERO ANCLAS DE SCROLL EN INICIO) -->
+        <main id="tbbSubpageDynamicViewport" class="tbb-subpage-dynamic-viewport">
+          ${window.tbbRenderActiveSubpageHTML(activeSec)}
+        </main>
+
+        <!-- Barra de Navegación Móvil Inferior con Iconos Propietarios -->
+        <nav class="tbb-mobile-bottom-dock" aria-label="Mobile Quick Navigation">
+          ${navItems.map((item) => `
+            <button
+              type="button"
+              data-tbb-nav-sec="${item.sec}"
+              class="tbb-mobile-dock-btn ${activeSec === item.sec ? 'active' : ''}"
+              onclick="window.tbbSwitchMainSection(${item.sec})"
+            >
+              ${item.icon}
+              <span>${escHtml(item.label.replace(/^[0-9]+\.\s*/, ""))}</span>
+            </button>
+          `).join("")}
+        </nav>
+      </div>
+    `;
   };
 
+  // VISOR MODAL DE CÁPSULAS EXPLICATIVAS EN EL IDIOMA ACTIVO (ES, EN, FR, PT, DE, IT CON FALLBACK AUTOMÁTICO)
+  window.tbbOpenVideoPopupModal = function (stepIdx) {
+    const s = Math.max(0, Math.min(6, Number(stepIdx) || 0));
+    const l = getLang();
+    if (window.tbbCommercialDemoState) {
+      window.tbbCommercialDemoState.openVideoModalStep = s;
+    }
+
+    let ov = document.getElementById("tbbVideoPopupModalOverlay");
+    if (!ov) {
+      ov = document.createElement("div");
+      ov.id = "tbbVideoPopupModalOverlay";
+      ov.className = "tbb-modal-overlay";
+      ov.onclick = (e) => { if (e.target === ov) window.tbbCloseVideoPopupModal(); };
+      document.body.appendChild(ov);
+    }
+
+    const cap = VIDEO_CAPSULES[s] || VIDEO_CAPSULES[0];
+    const vidUrl = getLocalizedStepVideoUrl(s, l);
+    const posterUrl = getLocalizedStepPosterUrl(s, l);
+    const sfx = l === "es" ? "" : `_${l}`;
+    const fbVidUrl = resolveVideoAssetFallback(`/assets/videos/capsula_teoria_paso_${s}${sfx}.mp4`);
+
+    ov.innerHTML = `
+      <div class="tbb-video-modal-card" onclick="event.stopPropagation()">
+        <div class="tbb-video-modal-head">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span class="tbb-eyebrow-pill" style="margin:0;">${TBB_ICONS.play} <span>THE BEST BRAND · ${escHtml(stepUpperForLang(s))} (${l.toUpperCase()})</span></span>
+            <div style="display:flex; gap:5px; flex-wrap:wrap;">
+              ${[0, 1, 2, 3, 4, 5, 6].map((idx) => `
+                <button
+                  type="button"
+                  onclick="window.tbbOpenVideoPopupModal(${idx})"
+                  style="padding:4px 10px; border-radius:999px; border:1px solid ${idx === s ? '#FF7A00' : '#CBD5E1'}; background:${idx === s ? '#0D2540' : '#F8FAFC'}; color:${idx === s ? '#FFFFFF' : '#0D2540'}; font-size:0.74rem; font-weight:700; cursor:pointer;"
+                >0${idx}</button>
+              `).join("")}
+            </div>
+          </div>
+          <button type="button" class="tbb-modal-close-ic" onclick="window.tbbCloseVideoPopupModal()" aria-label="Close">
+            ${TBB_ICONS.close}
+          </button>
+        </div>
+
+        <div class="tbb-video-modal-body-grid">
+          <div class="tbb-video-modal-player-box">
+            <video
+              id="tbbPopupCapsuleVideoEl"
+              controls
+              autoplay
+              playsinline
+              preload="auto"
+              poster="${escHtml(posterUrl)}"
+              onerror="if(!this.dataset.fb){this.dataset.fb='1'; this.src='${escHtml(fbVidUrl)}'; this.load(); this.play().catch(()=>{});}"
+            >
+              <source src="${escHtml(vidUrl)}" type="video/mp4" />
+              <source src="${escHtml(fbVidUrl)}" type="video/mp4" />
+            </video>
+          </div>
+          <div class="tbb-video-modal-info-col">
+            <span class="tbb-scrolly-theory-tag">${escHtml(cap.author)}</span>
+            <h3>${escHtml(cap.title)}</h3>
+            <p>${escHtml(cap.summary)}</p>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:auto;">
+              ${s < 6 ? `
+                <button type="button" class="tbb-btn-primary-vibrant" onclick="window.tbbOpenVideoPopupModal(${s + 1})">
+                  <span>${escHtml(stepLabelForLang(s + 1))}</span>
+                  ${TBB_ICONS.arrowRight}
+                </button>
+              ` : `
+                <button type="button" class="tbb-btn-primary-vibrant" onclick="window.tbbCloseVideoPopupModal(); window.tbbSwitchMainSection(4);">
+                  ${TBB_ICONS.demo}
+                  <span>${escHtml(t("navDemo"))}</span>
+                </button>
+              `}
+              <button type="button" class="tbb-btn-secondary-clean" onclick="window.tbbCloseVideoPopupModal()">
+                <span>${escHtml(t("lightboxClose"))}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    ov.classList.add("open");
+  };
+
+  window.tbbCloseVideoPopupModal = function () {
+    if (window.tbbCommercialDemoState) {
+      window.tbbCommercialDemoState.openVideoModalStep = null;
+    }
+    const vid = document.getElementById("tbbPopupCapsuleVideoEl");
+    if (vid) {
+      try { vid.pause(); } catch (e) {}
+    }
+    const ov = document.getElementById("tbbVideoPopupModalOverlay");
+    if (ov) ov.classList.remove("open");
+  };
+
+  // VISOR DE ALTA RESOLUCIÓN PARA EL BRANDBOOK Y ENTREGABLES
+  window.tbbOpenPlateLightboxModal = function (plateNum, customImgUrl, customTitle, customSampleUrl) {
+    const pNum = Math.max(1, Math.min(30, Number(plateNum) || 1));
+    const imgUrl = customImgUrl || `/assets/brandbook_plates_tbb/plate-${String(pNum).padStart(2, "0")}.jpg`;
+    const titleStr = customTitle || `Brandbook Oficial · Página ${String(pNum).padStart(2, "0")}`;
+    const sampleHref = customSampleUrl || "/samples/1_Brandbook_Maestro_TheBestBrand.html";
+
+    let ov = document.getElementById("tbbPlateLightboxOverlay");
+    if (!ov) {
+      ov = document.createElement("div");
+      ov.id = "tbbPlateLightboxOverlay";
+      ov.className = "tbb-modal-overlay";
+      ov.onclick = (e) => { if (e.target === ov) window.tbbClosePlateLightboxModal(); };
+      document.body.appendChild(ov);
+    }
+
+    const prevNum = pNum > 1 ? pNum - 1 : 30;
+    const nextNum = pNum < 30 ? pNum + 1 : 1;
+
+    ov.innerHTML = `
+      <div class="tbb-lightbox-modal-card" onclick="event.stopPropagation()">
+        <div class="tbb-video-modal-head">
+          <strong>${escHtml(titleStr)}</strong>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button type="button" class="tbb-btn-secondary-clean" style="padding:6px 12px;" onclick="window.tbbOpenPlateLightboxModal(${prevNum})">
+              ${TBB_ICONS.arrowLeft} <span>${escHtml(t("lightboxPrev"))}</span>
+            </button>
+            <button type="button" class="tbb-btn-secondary-clean" style="padding:6px 12px;" onclick="window.tbbOpenPlateLightboxModal(${nextNum})">
+              <span>${escHtml(t("lightboxNext"))}</span> ${TBB_ICONS.arrowRight}
+            </button>
+            <a href="${escHtml(sampleHref)}" target="_blank" rel="noopener" class="tbb-btn-primary-vibrant" style="padding:7px 14px; text-decoration:none;">
+              ${TBB_ICONS.expand} <span>Abrir Documento Interactivo</span>
+            </a>
+            <button type="button" class="tbb-modal-close-ic" onclick="window.tbbClosePlateLightboxModal()">
+              ${TBB_ICONS.close}
+            </button>
+          </div>
+        </div>
+        <div style="background:#F8FAFC; border-radius:18px; overflow:hidden; text-align:center; padding:12px;">
+          <img src="${escHtml(imgUrl)}" alt="${escHtml(titleStr)}" style="max-width:100%; max-height:74vh; border-radius:12px; box-shadow:0 16px 40px rgba(13,37,64,0.12);" />
+        </div>
+      </div>
+    `;
+    ov.classList.add("open");
+  };
+
+  window.tbbClosePlateLightboxModal = function () {
+    const ov = document.getElementById("tbbPlateLightboxOverlay");
+    if (ov) ov.classList.remove("open");
+  };
+
+
+  // MECÁNICA DE CONVERSIÓN ($49 USD PAYWALL EN PASO 4), CREACIÓN DE CUENTA Y MIGRACIÓN AUTOMÁTICA DE PASOS 0 AL 3
   window.tbbGetPendingDemoMigrationSnapshot = function () {
     const st = window.tbbCommercialDemoState || {};
     if (st.migratedSteps0to3Snapshot && typeof st.migratedSteps0to3Snapshot === "object") {
       return st.migratedSteps0to3Snapshot;
     }
     try {
-      const raw = localStorage.getItem("tbb_demo_steps0to3_migration_v92");
+      const raw = localStorage.getItem("tbb_studio_autosave_v45") || localStorage.getItem("tbb_demo_steps_0_to_3_backup");
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === "object") return parsed;
       }
     } catch (e) {}
-    if (typeof window.tbbBuildProgressMigrationSnapshot === "function") {
-      try {
-        return window.tbbBuildProgressMigrationSnapshot();
-      } catch (e) {}
-    }
     return {
-      migratedAt: new Date().toISOString(),
-      completedDemoSteps: [0, 1, 2, 3],
-      targetStepAfterPaywall: 4,
-      brandName: st.brandName || "THE BEST BRAND",
-      sector: st.sector || "",
-      whyPurpose: st.whyPurpose || "",
-      howMethod: st.howMethod || "",
-      whatOffer: st.whatOffer || "",
-      touchpoints: Array.isArray(st.touchpoints) ? st.touchpoints : []
+      brandName: st.brandName || "The Best Brand",
+      completedSteps: [0, 1, 2, 3],
+      migratedAt: new Date().toISOString()
     };
   };
 
-  window.tbbProcessCheckoutPayment = async function (methodId) {
-    const st = window.tbbCommercialDemoState;
-    const planPrice = st.selectedPlan === "agency_suite" ? 149.00 : 49.00;
-    const planLabel = st.selectedPlan === "agency_suite" ? t("planAgencyName") : t("planSingleName");
-    const statusBox = document.getElementById("tbbCheckoutLiveStatusBox");
+  window.tbbFormatCardInput = function (inputEl) {
+    if (!inputEl) return;
+    const digits = String(inputEl.value || "").replace(/\D/g, "").slice(0, 16);
+    inputEl.value = digits.replace(/(.{4})/g, "$1 ").trim();
+  };
 
-    const nameVal = (document.getElementById("tbbCardHolderInput")?.value || "Jorge Benítez").trim();
-    const numVal = (document.getElementById("tbbCardNumberInput")?.value || "4532891044218890").replace(/\D/g, "");
-    const expVal = (document.getElementById("tbbCardExpiryInput")?.value || "08/29").trim();
-    const cvcVal = (document.getElementById("tbbCardCvcInput")?.value || "842").replace(/\D/g, "");
-    const emailVal = (document.getElementById("tbbCardEmailInput")?.value || "cliente@thebestbrand.app").trim();
-    const pwdVal = (document.getElementById("tbbAccountPasswordInput")?.value || "TheBestBrand2026!").trim();
-
-    if (methodId === "card" && (nameVal.length < 3 || numVal.length < 13 || expVal.length < 4 || cvcVal.length < 3)) {
-      if (statusBox) {
-        statusBox.style.display = "block";
-        statusBox.style.background = "#FEF2F2";
-        statusBox.style.color = "#991B1B";
-        statusBox.textContent = "Please check your card details or choose Apple Pay, Google Pay, or PayPal.";
-      }
-      return;
-    }
-
-    const migrationSnapshot = window.tbbGetPendingDemoMigrationSnapshot();
-    const effectiveBrandName = (migrationSnapshot && migrationSnapshot.brandName) || st.brandName || "THE BEST BRAND";
-
-    if (statusBox) {
-      statusBox.style.display = "block";
-      statusBox.style.background = "#EFF6FF";
-      statusBox.style.color = "#1E3A8A";
-      statusBox.textContent = `$${planPrice.toFixed(2)} USD...`;
-    }
-
-    try {
-      const resp = await fetch("/api/v1/payments/checkout-live", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          plan_id: st.selectedPlan,
-          payment_method: methodId,
-          brand_name: effectiveBrandName,
-          customer_email: emailVal,
-          card_holder: nameVal,
-          card_last4: numVal.slice(-4) || "8890",
-          account_password: pwdVal,
-          current_step: 4,
-          state_snapshot: migrationSnapshot
-        })
-      });
-      const data = await resp.json();
-
-      if (data && data.stripe_checkout_url) {
-        window.location.href = data.stripe_checkout_url;
-        return;
-      }
-
-      const accountObj = (data && data.account) || {
-        account_id: "acct_live_" + Date.now().toString(36),
-        email: emailVal,
-        full_name: nameVal,
-        plan_tier: st.selectedPlan === "agency_suite" ? "ENTERPRISE_UNLIMITED" : "PRO_ATELIER_49",
-        migrated_steps_1_to_3: true,
-        unlocked_step: 4
-      };
-
-      const receiptObj = {
-        licenseCode: (data && data.license_code) || ("TBB-PRO-" + Date.now().toString(36).toUpperCase()),
-        orderFolio: (data && data.order_folio) || "TBB-LIVE-001",
-        downloadGrantToken: (data && data.download_grant_token) || "",
-        planId: st.selectedPlan,
-        planLabel,
-        amountUSD: planPrice,
-        paymentMethod: methodId,
-        brandName: effectiveBrandName,
-        customerEmail: emailVal,
-        accountId: accountObj.account_id,
-        migratedSteps: "Steps 0–3 → Step 4 Unlocked",
-        activatedAt: (data && data.authorized_at) || new Date().toISOString()
-      };
-
-      localStorage.setItem(LICENSE_STORAGE_KEY, JSON.stringify(receiptObj));
-      localStorage.setItem("tbb_license_active_pro_atelier", "true");
-      localStorage.setItem("thebestbrand_pro_license", receiptObj.licenseCode);
-      localStorage.setItem("tbb_user_account_v30", JSON.stringify(accountObj));
-      localStorage.setItem("tbb_demo_steps0to3_migration_v92", JSON.stringify(migrationSnapshot));
-      if (receiptObj.downloadGrantToken) {
-        localStorage.setItem("tbb_hmac_download_grant_v82", receiptObj.downloadGrantToken);
-      }
-
-      window.tbbSyncCommercialDemoToAppState();
-      window.tbbBroadcastLicenseUnlockedToStudio(receiptObj, accountObj, migrationSnapshot);
-      window.tbbRenderCheckoutSuccessView(receiptObj, accountObj);
-      window.tbbUpdateAlwaysOnFloatingBarText();
-      window.tbbRefreshCommercialPortalDOM();
-    } catch (err) {
-      const fallbackAccount = {
-        account_id: "acct_local_" + Date.now().toString(36),
-        email: emailVal,
-        full_name: nameVal,
-        plan_tier: "PRO_ATELIER_49",
-        migrated_steps_1_to_3: true,
-        unlocked_step: 4
-      };
-      const fallbackReceipt = {
-        licenseCode: "TBB-PRO-" + Math.random().toString(36).substring(2, 6).toUpperCase(),
-        orderFolio: "TBB-LIVE-LOCAL",
-        planId: st.selectedPlan,
-        planLabel,
-        amountUSD: planPrice,
-        paymentMethod: methodId,
-        brandName: effectiveBrandName,
-        customerEmail: emailVal,
-        accountId: fallbackAccount.account_id,
-        migratedSteps: "Steps 0–3 → Step 4 Unlocked",
-        activatedAt: new Date().toISOString()
-      };
-      try {
-        localStorage.setItem(LICENSE_STORAGE_KEY, JSON.stringify(fallbackReceipt));
-        localStorage.setItem("tbb_license_active_pro_atelier", "true");
-        localStorage.setItem("thebestbrand_pro_license", fallbackReceipt.licenseCode);
-        localStorage.setItem("tbb_user_account_v30", JSON.stringify(fallbackAccount));
-      } catch (e) {}
-      window.tbbBroadcastLicenseUnlockedToStudio(fallbackReceipt, fallbackAccount, migrationSnapshot);
-      window.tbbRenderCheckoutSuccessView(fallbackReceipt, fallbackAccount);
-      window.tbbUpdateAlwaysOnFloatingBarText();
-      window.tbbRefreshCommercialPortalDOM();
-    }
+  window.tbbFormatExpiryInput = function (inputEl) {
+    if (!inputEl) return;
+    const digits = String(inputEl.value || "").replace(/\D/g, "").slice(0, 4);
+    inputEl.value = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
   };
 
   window.tbbBroadcastLicenseUnlockedToStudio = function (receiptObj, accountObj, migrationSnapshot) {
-    // 1. Notificar a todos los iframes de iPhone en vivo en la landing
-    try {
-      const frames = document.querySelectorAll(".tbb-live-iphone-studio-iframe");
-      frames.forEach(fr => {
-        if (fr && fr.contentWindow) {
-          fr.contentWindow.postMessage({
-            type: "TBB_LICENSE_UNLOCKED_CONTINUE_STEP4",
-            receipt: receiptObj,
-            account: accountObj,
-            migratedState: migrationSnapshot
-          }, "*");
-        }
-      });
-    } catch (e) {}
-
-    // 2. Si estamos ejecutando dentro de studio.html directamente, desbloquear y saltar al Paso 4
-    try {
-      if (typeof window.switchStep === "function" && (window.location.pathname === "/studio" || window.location.pathname.endsWith("studio.html"))) {
-        if (typeof window.state === "object" && window.state) {
-          window.state.account = accountObj;
-        }
-        window.switchStep(4);
+    const payload = {
+      type: "TBB_PRO_LICENSE_UNLOCKED",
+      license: receiptObj,
+      account: accountObj,
+      migrationSnapshot: migrationSnapshot,
+      continueAtStep: 4
+    };
+    ["tbbRealStudioDemoIframe", "tbbTourIphoneLiveIframe"].forEach((id) => {
+      const ifr = document.getElementById(id);
+      if (ifr && ifr.contentWindow) {
+        try {
+          ifr.contentWindow.postMessage(payload, "*");
+          ifr.contentWindow.postMessage({ type: "TBB_JUMP_TO_STEP", step: 4 }, "*");
+        } catch (e) {}
       }
-    } catch (e) {}
+    });
   };
 
-  window.tbbRenderCheckoutSuccessView = function (receipt, account) {
-    const container = document.getElementById("tbbCheckoutSheetInner");
-    if (!container) return;
-    container.innerHTML = `
-      <div style="display:flex; flex-direction:column; gap:14px; text-align:center; padding:14px 8px;">
-        <div style="margin:0 auto;">${window.tbbBuildOfficialBrandbook1EmblemSVG(64)}</div>
-        <div style="font-family:'JetBrains Mono', monospace; font-size:0.74rem; font-weight:600; color:#16A34A;">
-          ✓ ${escHtml(t("licenseActive"))} · STEP 4 UNLOCKED
+  window.tbbProcessCheckoutPayment = async function (methodId) {
+    const emailEl = document.getElementById("tbbCheckoutEmailInput");
+    const nameEl = document.getElementById("tbbCheckoutHolderNameInput");
+    const email = (emailEl && emailEl.value.trim()) || "fundador@thebestbrand.app";
+    const holderName = (nameEl && nameEl.value.trim()) || "Fundador Ejecutivo";
+    const migrationSnapshot = window.tbbGetPendingDemoMigrationSnapshot();
+
+    const receiptObj = {
+      licenseId: "TBB-PRO-" + Math.random().toString(36).substring(2, 8).toUpperCase(),
+      plan: "pro_atelier",
+      amountUsd: 49,
+      method: methodId || "card",
+      unlockedAt: new Date().toISOString(),
+      stepsUnlocked: [0, 1, 2, 3, 4, 5, 6]
+    };
+    const accountObj = {
+      email,
+      name: holderName,
+      createdAt: new Date().toISOString(),
+      migratedSteps0to3: true
+    };
+
+    try {
+      localStorage.setItem(LICENSE_STORAGE_KEY, JSON.stringify(receiptObj));
+      localStorage.setItem("tbb_user_account_v56", JSON.stringify(accountObj));
+      localStorage.setItem("tbb_migrated_steps_0_to_3_v56", JSON.stringify(migrationSnapshot));
+    } catch (e) {}
+
+    window.tbbBroadcastLicenseUnlockedToStudio(receiptObj, accountObj, migrationSnapshot);
+    window.tbbRenderCheckoutSuccessView(receiptObj, accountObj, migrationSnapshot);
+    window.tbbRefreshCommercialPortalDOM();
+  };
+
+  window.tbbRenderCheckoutSuccessView = function (receipt, account, migrationSnapshot) {
+    const box = document.getElementById("tbbCheckoutModalContentBox");
+    if (!box) return;
+    const bName = (migrationSnapshot && (migrationSnapshot.brandName || (migrationSnapshot.canvasState && migrationSnapshot.canvasState.brandName))) || "Tu Marca";
+    box.innerHTML = `
+      <div style="text-align:center; padding:18px 10px;">
+        <div style="width:68px; height:68px; margin:0 auto 14px; border-radius:20px; background:#ECFDF5; border:2px solid #10B981; display:flex; align-items:center; justify-content:center;">
+          ${TBB_ICONS.unlock}
         </div>
-        <h3 style="font-family:'Montserrat', sans-serif; font-size:1.38rem; font-weight:600; color:#0F172A; margin:0;">
-          ${escHtml(receipt.brandName)} · Pro Atelier
-        </h3>
-        <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:16px; padding:14px; text-align:left; font-size:0.84rem; line-height:1.65; color:#334155;">
-          <div>Account: <span style="font-family:'JetBrains Mono', monospace; color:#0F172A; font-weight:600;">${escHtml(receipt.customerEmail || account?.email || "cliente@thebestbrand.app")}</span></div>
-          <div>License: <span style="font-family:'JetBrains Mono', monospace; color:#1D4ED8; font-weight:600;">${escHtml(receipt.licenseCode)}</span></div>
-          <div>Order: <span style="font-family:'JetBrains Mono', monospace;">${escHtml(receipt.orderFolio || "TBB-LIVE")}</span></div>
-          <div>Status: <span style="color:#15803D; font-weight:600;">✓ ${escHtml(receipt.migratedSteps || "Steps 1–3 → Step 4")}</span></div>
-        </div>
-        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;">
-          <a href="/studio?step=4&continue=true" onclick="window.tbbCloseBuyAppCheckoutModal();" class="tbb-comm-btn-blue" style="flex:1; padding:14px; text-decoration:none;">
-            ${escHtml(t("openStudio"))}
-          </a>
-          <button type="button" class="tbb-btn-light-surface" onclick="window.tbbCloseBuyAppCheckoutModal()" style="padding:14px 18px;">
-            ${escHtml(t("lightboxClose"))}
+        <span class="tbb-eyebrow-pill" style="background:#ECFDF5; color:#065F46; border-color:#A7F3D0;">
+          ${TBB_ICONS.check} <span>LICENCIA PRO ACTIVA (${escHtml(receipt.licenseId)}) · CUENTA CREADA</span>
+        </span>
+        <h2 style="font-family:'Montserrat',sans-serif; font-size:1.55rem; font-weight:900; color:#0D2540; margin:12px 0 8px;">
+          ¡Progreso Migrado (${escHtml(bName)})! Paso 4 Desbloqueado
+        </h2>
+        <p style="font-size:0.98rem; color:#475569; line-height:1.55; max-width:520px; margin:0 auto 20px;">
+          Tu cuenta <strong>${escHtml(account.email)}</strong> ha sido creada y todas tus respuestas de los Pasos 0, 1, 2 y 3 se migraron automáticamente. Ya puedes continuar en el Paso 4 sin perder nada de tu avance.
+        </p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <button
+            type="button"
+            class="tbb-btn-primary-vibrant"
+            onclick="window.tbbCloseBuyAppCheckoutModal(); window.tbbSwitchMainSection(4); setTimeout(()=>window.tbbJumpDemoToStep(4), 180);"
+          >
+            ${TBB_ICONS.spark}
+            <span>Continuar Ahora en el Paso 4</span>
+            ${TBB_ICONS.arrowRight}
           </button>
+          <a
+            href="/studio?step=4&continue=true&lang=${encodeURIComponent(getLang())}"
+            class="tbb-btn-secondary-clean"
+            style="text-decoration:none;"
+          >
+            ${TBB_ICONS.expand}
+            <span>Abrir Estudio a Pantalla Completa</span>
+          </a>
         </div>
       </div>
     `;
   };
 
   window.tbbRenderCheckoutModalContent = function () {
-    const container = document.getElementById("tbbCheckoutSheetInner");
-    if (!container) return;
-    const st = window.tbbCommercialDemoState;
-    const lang = getLang();
-    const isAgency = st.selectedPlan === "agency_suite";
-    const priceTxt = isAgency ? "$149.00 USD" : "$49.00 USD";
-    const method = st.selectedPaymentMethod || "card";
+    const box = document.getElementById("tbbCheckoutModalContentBox");
+    if (!box) return;
     const mig = window.tbbGetPendingDemoMigrationSnapshot();
-    const migBrand = (mig && mig.brandName) || st.brandName || "THE BEST BRAND";
+    const bName = (mig && (mig.brandName || (mig.canvasState && mig.canvasState.brandName))) || "Tu Marca en Curso";
 
-    const chkCopy = {
-      es: {
-        title: "Desbloquea los Pasos 4 al 6 y tus 9 Entregables",
-        sub: "Crea tu cuenta y conserva intacto todo tu avance de los Pasos 1 al 3",
-        migStrong: "Migración Automática Activada:",
-        migText: `Tus respuestas de los Pasos 1 al 3 para ${migBrand} se vincularán automáticamente a tu nueva cuenta para continuar en el Paso 4 sin perder tu progreso.`,
-        cardTab: "💳 Tarjeta",
-        emailLbl: "Correo de tu nueva cuenta",
-        pwdLbl: "Contraseña (migrar Pasos 1–3)",
-        holderLbl: "Nombre del titular",
-        numLbl: "Número de tarjeta",
-        expLbl: "MM/AA",
-        payBtn: `Crear Cuenta, Migrar Pasos 1–3 y Pagar · ${priceTxt}`,
-        altText: `Autorización instantánea con ${method.toUpperCase().replace("_", " ")} por ${priceTxt} y migración automática de tus Pasos 1–3.`
-      },
-      en: {
-        title: "Unlock Steps 4 to 6 and Your 9 Deliverables",
-        sub: "Create your account and keep all your Steps 1 to 3 progress intact",
-        migStrong: "Automatic Migration Active:",
-        migText: `Your Steps 1 to 3 answers for ${migBrand} will automatically link to your new account so you can continue in Step 4 without losing progress.`,
-        cardTab: "💳 Card",
-        emailLbl: "New account email",
-        pwdLbl: "Password (migrate Steps 1–3)",
-        holderLbl: "Cardholder name",
-        numLbl: "Card number",
-        expLbl: "MM/YY",
-        payBtn: `Create Account, Migrate Steps 1–3 & Pay · ${priceTxt}`,
-        altText: `Instant authorization with ${method.toUpperCase().replace("_", " ")} for ${priceTxt} and automatic migration of your Steps 1–3.`
-      },
-      fr: {
-        title: "Débloquez les Étapes 4 à 6 et vos 9 Livrables",
-        sub: "Créez votre compte et conservez intacte toute votre progression des Étapes 1 à 3",
-        migStrong: "Migration Automatique Activée :",
-        migText: `Vos réponses des Étapes 1 à 3 pour ${migBrand} seront automatiquement liées à votre nouveau compte pour continuer à l'Étape 4.`,
-        cardTab: "💳 Carte",
-        emailLbl: "Email de votre nouveau compte",
-        pwdLbl: "Mot de passe (migrer Étapes 1–3)",
-        holderLbl: "Nom du titulaire",
-        numLbl: "Numéro de carte",
-        expLbl: "MM/AA",
-        payBtn: `Créer un Compte, Migrer Étapes 1–3 & Payer · ${priceTxt}`,
-        altText: `Autorisation instantanée avec ${method.toUpperCase().replace("_", " ")} pour ${priceTxt} et migration automatique.`
-      },
-      pt: {
-        title: "Desbloqueie os Passos 4 a 6 e os seus 9 Entregáveis",
-        sub: "Crie a sua conta e conserve intacto todo o seu avanço dos Passos 1 a 3",
-        migStrong: "Migração Automática Ativada:",
-        migText: `As suas respostas dos Passos 1 a 3 para ${migBrand} serão vinculadas automaticamente à sua nova conta para continuar no Passo 4.`,
-        cardTab: "💳 Cartão",
-        emailLbl: "Email da sua nova conta",
-        pwdLbl: "Palavra-passe (migrar Passos 1–3)",
-        holderLbl: "Nome do titular",
-        numLbl: "Número do cartão",
-        expLbl: "MM/AA",
-        payBtn: `Criar Conta, Migrar Passos 1–3 e Pagar · ${priceTxt}`,
-        altText: `Autorização instantânea com ${method.toUpperCase().replace("_", " ")} por ${priceTxt} e migração automática.`
-      },
-      de: {
-        title: "Schritte 4 bis 6 & Ihre 9 Ergebnisse freischalten",
-        sub: "Konto erstellen und Ihren gesamten Fortschritt aus den Schritten 1 bis 3 behalten",
-        migStrong: "Automatische Migration aktiviert:",
-        migText: `Ihre Antworten der Schritte 1 bis 3 für ${migBrand} werden automatisch mit Ihrem neuen Konto verknüpft, um in Schritt 4 fortzufahren.`,
-        cardTab: "💳 Karte",
-        emailLbl: "E-Mail Ihres neuen Kontos",
-        pwdLbl: "Passwort (Schritte 1–3 migrieren)",
-        holderLbl: "Name des Karteninhabers",
-        numLbl: "Kartennummer",
-        expLbl: "MM/JJ",
-        payBtn: `Konto erstellen, Schritte 1–3 migrieren & zahlen · ${priceTxt}`,
-        altText: `Sofortige Autorisierung mit ${method.toUpperCase().replace("_", " ")} für ${priceTxt} und automatische Migration.`
-      },
-      it: {
-        title: "Sblocca i Passi da 4 a 6 e i tuoi 9 Deliverable",
-        sub: "Crea il tuo account e conserva intatto tutto il progresso dei Passi da 1 a 3",
-        migStrong: "Migrazione Automatica Attivata:",
-        migText: `Le tue risposte dei Passi da 1 a 3 per ${migBrand} verranno collegate automaticamente al tuo nuovo account per continuare al Passo 4.`,
-        cardTab: "💳 Carta",
-        emailLbl: "Email del tuo nuovo account",
-        pwdLbl: "Password (migra Passi 1–3)",
-        holderLbl: "Nome del titolare",
-        numLbl: "Numero di carta",
-        expLbl: "MM/AA",
-        payBtn: `Crea Account, Migra Passi 1–3 e Paga · ${priceTxt}`,
-        altText: `Autorizzazione istantanea con ${method.toUpperCase().replace("_", " ")} per ${priceTxt} e migrazione automatica.`
-      }
-    }[lang] || {
-      title: "Desbloquea los Pasos 4 al 6 y tus 9 Entregables",
-      sub: "Crea tu cuenta y conserva intacto todo tu avance de los Pasos 1 al 3",
-      migStrong: "Migración Automática Activada:",
-      migText: `Tus respuestas de los Pasos 1 al 3 para ${migBrand} se vincularán automáticamente a tu nueva cuenta para continuar en el Paso 4 sin perder tu progreso.`,
-      cardTab: "💳 Tarjeta",
-      emailLbl: "Correo de tu nueva cuenta",
-      pwdLbl: "Contraseña (migrar Pasos 1–3)",
-      holderLbl: "Nombre del titular",
-      numLbl: "Número de tarjeta",
-      expLbl: "MM/AA",
-      payBtn: `Crear Cuenta, Migrar Pasos 1–3 y Pagar · ${priceTxt}`,
-      altText: `Autorización instantánea con ${method.toUpperCase().replace("_", " ")} por ${priceTxt} y migración automática de tus Pasos 1–3.`
-    };
-
-    container.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; border-bottom:1px solid #E2E8F0; padding-bottom:12px;">
-        <div style="display:flex; align-items:center; gap:12px;">
-          <img src="/assets/logos/tbb_official_liquid_glass_logo.jpg" alt="The Best Brand" style="width:38px; height:38px; border-radius:10px; object-fit:cover;" />
+    box.innerHTML = `
+      <div class="tbb-checkout-head">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <img src="/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png" alt="The Best Brand" style="width:42px; height:42px; border-radius:11px;" />
           <div>
-            <div style="font-family:'Montserrat', sans-serif; font-size:1.06rem; font-weight:600; color:#0F172A;">${escHtml(chkCopy.title)}</div>
-            <div style="font-size:0.78rem; font-weight:400; color:#475569;">${escHtml(chkCopy.sub)}</div>
+            <span class="tbb-eyebrow-pill" style="margin:0;">${TBB_ICONS.shield} <span>DESBLOQUEO PASO 4 AL 6 · $49 USD PAGO ÚNICO</span></span>
+            <h3 style="font-family:'Montserrat',sans-serif; font-size:1.28rem; font-weight:900; color:#0D2540; margin:4px 0 0;">${escHtml(t("checkoutTitle"))}</h3>
           </div>
         </div>
-        <button type="button" class="tbb-btn-light-surface" onclick="window.tbbCloseBuyAppCheckoutModal()" style="padding:6px 12px;">✕</button>
+        <button type="button" class="tbb-modal-close-ic" onclick="window.tbbCloseBuyAppCheckoutModal()">
+          ${TBB_ICONS.close}
+        </button>
       </div>
 
-      <!-- Banner de Retención y Migración Automática de Datos (Pasos 1 al 3) -->
-      <div style="margin-top:12px; padding:10px 14px; border-radius:12px; background:#F0FDF4; border:1px solid #BBF7D0; display:flex; align-items:center; gap:10px; font-size:0.78rem; color:#166534;">
-        <span style="font-size:1rem;">🔄</span>
+      <p style="font-size:0.95rem; color:#475569; line-height:1.5; margin:10px 0 14px;">
+        ${escHtml(t("checkoutSub"))}
+      </p>
+
+      <!-- Garantía de Migración Automática de los Pasos 1 al 3 -->
+      <div style="background:#F0F9FF; border:1.5px solid #BAE6FD; border-radius:16px; padding:12px 16px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          ${TBB_ICONS.check}
+          <div>
+            <strong style="display:block; font-size:0.86rem; color:#0D2540;">${escHtml(t("checkoutMigrationTitle"))}</strong>
+            <span style="font-size:0.80rem; color:#334155;">Marca detectada: <strong>${escHtml(bName)}</strong> · Pasos 0, 1, 2 y 3 listos para migrar al Paso 4.</span>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:0.78rem; font-weight:800; color:#FF7A00; background:#FFF7ED; padding:4px 10px; border-radius:999px; border:1px solid #FFEDD5;">$49 USD</span>
+      </div>
+
+      <div class="tbb-checkout-form-grid">
         <div>
-          <strong>${escHtml(chkCopy.migStrong)}</strong> ${escHtml(chkCopy.migText)}
+          <label class="tbb-checkout-label">${escHtml(t("checkoutNameLabel"))}</label>
+          <input id="tbbCheckoutHolderNameInput" type="text" value="Jorge Benítez" class="tbb-checkout-input" />
+        </div>
+        <div>
+          <label class="tbb-checkout-label">${escHtml(t("checkoutAccountLabel"))}</label>
+          <input id="tbbCheckoutEmailInput" type="email" value="fundador@empresa.com" class="tbb-checkout-input" />
+        </div>
+        <div>
+          <label class="tbb-checkout-label">Número de Tarjeta (Visa / Mastercard / Amex)</label>
+          <input id="tbbCardNumberInput" type="text" value="4532 8910 4421 8890" maxlength="19" oninput="window.tbbFormatCardInput(this)" class="tbb-checkout-input mono" />
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div>
+            <label class="tbb-checkout-label">Vigencia</label>
+            <input id="tbbCardExpiryInput" type="text" value="08/29" maxlength="5" oninput="window.tbbFormatExpiryInput(this)" class="tbb-checkout-input mono" />
+          </div>
+          <div>
+            <label class="tbb-checkout-label">CVC</label>
+            <input type="text" value="884" maxlength="4" class="tbb-checkout-input mono" />
+          </div>
         </div>
       </div>
 
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px;">
-        <button type="button" onclick="window.tbbSelectCheckoutPlan('pro_atelier')" style="padding:12px; border-radius:14px; border:1.5px solid ${!isAgency ? '#1D4ED8' : '#CBD5E1'}; background:${!isAgency ? '#EFF6FF' : '#FFFFFF'}; text-align:left; cursor:pointer;">
-          <div style="font-size:0.84rem; font-weight:600; color:#0F172A;">${escHtml(t("planSingleName"))}</div>
-          <div style="font-size:1.12rem; font-weight:600; color:#1D4ED8; margin-top:2px;">$49 USD</div>
-          <div style="font-size:0.72rem; font-weight:400; color:#475569;">${escHtml(t("planSingleDesc"))}</div>
-        </button>
-        <button type="button" onclick="window.tbbSelectCheckoutPlan('agency_suite')" style="padding:12px; border-radius:14px; border:1.5px solid ${isAgency ? '#1D4ED8' : '#CBD5E1'}; background:${isAgency ? '#EFF6FF' : '#FFFFFF'}; text-align:left; cursor:pointer;">
-          <div style="font-size:0.84rem; font-weight:600; color:#0F172A;">${escHtml(t("planAgencyName"))}</div>
-          <div style="font-size:1.12rem; font-weight:600; color:#1D4ED8; margin-top:2px;">$149 USD</div>
-          <div style="font-size:0.72rem; font-weight:400; color:#475569;">${escHtml(t("planAgencyDesc"))}</div>
-        </button>
-      </div>
-
-      <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-top:12px;">
-        ${[
-          { id: "card", lbl: chkCopy.cardTab },
-          { id: "apple_pay", lbl: " Apple Pay" },
-          { id: "google_pay", lbl: "G Pay" },
-          { id: "paypal", lbl: "PayPal" }
-        ].map(m => `
-          <button type="button" onclick="window.tbbSelectPaymentMethod('${m.id}')" style="padding:9px 8px; border-radius:10px; border:1px solid ${method === m.id ? '#0D2540' : '#CBD5E1'}; background:${method === m.id ? '#0D2540' : '#F8FAFC'}; color:${method === m.id ? '#FFFFFF' : '#0F172A'}; font-size:0.78rem; font-weight:500; cursor:pointer;">
-            ${escHtml(m.lbl)}
-          </button>
-        `).join("")}
-      </div>
-
-      <div style="margin-top:12px; background:#F8FAFC; border-radius:16px; padding:16px;">
-        <!-- Datos de creación de cuenta para vincular Pasos 1-3 -->
-        <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:10px; margin-bottom:10px;">
-          <div>
-            <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">${escHtml(chkCopy.emailLbl)}</label>
-            <input type="email" id="tbbCardEmailInput" value="cliente@thebestbrand.app" style="width:100%; height:40px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-size:0.84rem; color:#0F172A; background:#FFFFFF;" />
-          </div>
-          <div>
-            <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">${escHtml(chkCopy.pwdLbl)}</label>
-            <input type="password" id="tbbAccountPasswordInput" value="TheBestBrand2026!" style="width:100%; height:40px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-size:0.84rem; color:#0F172A; background:#FFFFFF;" />
-          </div>
-        </div>
-
-        ${method === "card" ? `
-          <div style="display:flex; flex-direction:column; gap:10px;">
-            <div>
-              <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">${escHtml(chkCopy.holderLbl)}</label>
-              <input type="text" id="tbbCardHolderInput" value="Jorge Benítez" style="width:100%; height:40px; padding:0 12px; border-radius:10px; border:1px solid #CBD5E1; font-size:0.86rem; color:#0F172A; background:#FFFFFF;" />
-            </div>
-            <div style="display:grid; grid-template-columns:1.8fr 0.8fr 0.7fr; gap:10px;">
-              <div>
-                <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">${escHtml(chkCopy.numLbl)}</label>
-                <input type="text" id="tbbCardNumberInput" oninput="window.tbbFormatCardInput(this)" value="4532 8910 4421 8890" maxlength="19" style="width:100%; height:40px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-family:'JetBrains Mono', monospace; font-size:0.86rem; color:#0F172A; background:#FFFFFF;" />
-              </div>
-              <div>
-                <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">${escHtml(chkCopy.expLbl)}</label>
-                <input type="text" id="tbbCardExpiryInput" oninput="window.tbbFormatExpiryInput(this)" value="08/29" maxlength="5" style="width:100%; height:40px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-family:'JetBrains Mono', monospace; font-size:0.84rem; color:#0F172A; background:#FFFFFF;" />
-              </div>
-              <div>
-                <label style="display:block; font-size:0.74rem; font-weight:500; color:#334155; margin-bottom:4px;">CVC</label>
-                <input type="password" id="tbbCardCvcInput" value="842" maxlength="4" style="width:100%; height:40px; padding:0 10px; border-radius:10px; border:1px solid #CBD5E1; font-family:'JetBrains Mono', monospace; font-size:0.84rem; color:#0F172A; background:#FFFFFF;" />
-              </div>
-            </div>
-            <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbProcessCheckoutPayment('card')" style="width:100%; padding:14px; font-size:0.9rem; font-weight:600; margin-top:4px;">
-              ${escHtml(chkCopy.payBtn)}
-            </button>
-          </div>
-        ` : `
-          <div style="text-align:center; padding:10px;">
-            <p style="font-size:0.86rem; font-weight:400; color:#334155; margin:0 0 12px 0;">
-              ${escHtml(chkCopy.altText)}
-            </p>
-            <button type="button" class="tbb-comm-btn-blue" onclick="window.tbbProcessCheckoutPayment('${method}')" style="width:100%; padding:14px; font-size:0.9rem; font-weight:600;">
-              ${escHtml(chkCopy.payBtn)}
-            </button>
-          </div>
-        `}
-        <div id="tbbCheckoutLiveStatusBox" style="display:none; margin-top:12px; padding:12px; border-radius:10px; font-size:0.82rem; font-weight:500;"></div>
-      </div>
-    `;
-  };
-
-  // ---------------------------------------------------------------------------
-  // 11. ESTILOS GLOBALES V91.0 (LIENZO CLARO, CERO NEGRITAS EXCESIVAS, COMPRA SIEMPRE VISIBLE)
-  // ---------------------------------------------------------------------------
-  function tbbInjectAwwwardsStyles() {
-    let styleEl = document.getElementById("tbbCommercialAwwwardsStyle");
-    if (!styleEl) {
-      styleEl = document.createElement("style");
-      styleEl.id = "tbbCommercialAwwwardsStyle";
-      document.head.appendChild(styleEl);
-    }
-    styleEl.textContent = `
-      :root {
-        --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      }
-      body[data-tbb-standalone-web="true"] {
-        background: #FFFFFF !important;
-        color: #0F172A !important;
-        font-family: var(--font-main);
-        font-weight: 400;
-      }
-      .tbb-awwwards-nav {
-        position: sticky;
-        top: 0;
-        z-index: 999;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 14px;
-        padding: 12px 28px;
-        background: rgba(255, 255, 255, 0.94);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid #E2E8F0;
-      }
-      .tbb-desktop-nav-links {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .tbb-nav-menu-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 8px 16px;
-        border-radius: 999px;
-        border: 1px solid transparent;
-        background: transparent;
-        color: #475569;
-        font-family: var(--font-main);
-        font-size: 0.86rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        white-space: nowrap;
-      }
-      .tbb-nav-menu-item:hover {
-        color: #0F172A;
-        background: #F8FAFC;
-      }
-      .tbb-nav-menu-item.is-active {
-        color: #0F172A;
-        background: #F1F5F9;
-        border-color: #CBD5E1;
-        font-weight: 600;
-      }
-      .tbb-live-pulse-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #FF7A00;
-        display: inline-block;
-        box-shadow: 0 0 0 0 rgba(255, 122, 0, 0.7);
-        animation: tbbLivePulseAnim 1.8s infinite;
-      }
-      @keyframes tbbLivePulseAnim {
-        0% { box-shadow: 0 0 0 0 rgba(255, 122, 0, 0.7); transform: scale(0.95); }
-        70% { box-shadow: 0 0 0 8px rgba(255, 122, 0, 0); transform: scale(1.1); }
-        100% { box-shadow: 0 0 0 0 rgba(255, 122, 0, 0); transform: scale(0.95); }
-      }
-      .tbb-live-pill-badge {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.62rem;
-        font-weight: 600;
-        background: #FFF7ED;
-        color: #EA580C;
-        border: 1px solid #FDBA74;
-        padding: 2px 7px;
-        border-radius: 999px;
-      }
-      .tbb-comm-btn-blue {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        background: #0D2540;
-        color: #FFFFFF !important;
-        font-family: var(--font-main);
-        font-weight: 600;
-        border: 1px solid #1D4ED8;
-        border-radius: 999px;
-        cursor: pointer;
-        box-shadow: 0 8px 22px rgba(13, 37, 64, 0.16);
-        transition: all 0.2s ease;
-      }
-      .tbb-comm-btn-blue:hover {
-        background: #1D4ED8;
-        transform: translateY(-1px);
-      }
-      .tbb-btn-light-surface {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        background: #FFFFFF;
-        border: 1px solid #CBD5E1;
-        color: #0F172A !important;
-        font-family: var(--font-main);
-        font-weight: 500;
-        border-radius: 999px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-      .tbb-btn-light-surface:hover {
-        border-color: #1D4ED8;
-        background: #F8FAFC;
-      }
-      .tbb-comm-grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 32px;
-        align-items: center;
-      }
-      .tbb-mobile-subpages-bar {
-        display: none;
-        gap: 8px;
-        padding: 8px 14px;
-        background: #F8FAFC;
-        border-bottom: 1px solid #E2E8F0;
-        overflow-x: auto;
-      }
-      .tbb-mob-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 14px;
-        border-radius: 999px;
-        border: 1px solid #CBD5E1;
-        background: #FFFFFF;
-        color: #475569;
-        font-size: 0.78rem;
-        font-weight: 500;
-        white-space: nowrap;
-        cursor: pointer;
-      }
-      .tbb-mob-pill.is-active {
-        background: #0D2540;
-        color: #FFFFFF;
-        border-color: #0D2540;
-      }
-      .tbb-mobile-hamburger-btn {
-        display: none;
-        align-items: center;
-        justify-content: center;
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        background: #F8FAFC;
-        border: 1px solid #CBD5E1;
-        color: #0F172A;
-        font-size: 1.05rem;
-        cursor: pointer;
-      }
-      .tbb-tour-spy-pill {
-        border: 1px solid #CBD5E1;
-        background: #FFFFFF;
-        color: #475569;
-      }
-      .tbb-tour-spy-pill:hover {
-        border-color: #1D4ED8;
-        color: #0F172A;
-      }
-      .tbb-tour-spy-pill.is-active {
-        background: #0D2540 !important;
-        color: #FFFFFF !important;
-        border-color: #1D4ED8 !important;
-        box-shadow: 0 6px 18px rgba(13, 37, 64, 0.22);
-      }
-      .tbb-tour-scroll-card {
-        opacity: 0;
-        transform: translate3d(0, 34px, 0) scale(0.985);
-        transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.72s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-        will-change: opacity, transform;
-      }
-      .tbb-tour-scroll-card.is-visible {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-      .tbb-tour-img-hover-card {
-        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
-      }
-      .tbb-tour-img-hover-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12);
-      }
-      @media (max-width: 1040px) {
-        .tbb-desktop-nav-links,
-        .tbb-desktop-only-ctrl,
-        .tbb-brand-inline-tagline {
-          display: none !important;
-        }
-        .tbb-mobile-subpages-bar {
-          display: flex !important;
-        }
-        .tbb-mobile-hamburger-btn {
-          display: inline-flex !important;
-        }
-        .tbb-awwwards-nav {
-          padding: 10px 16px;
-        }
-        .tbb-home-6-pills-row {
-          grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        }
-      }
-      @media (max-width: 920px) {
-        .tbb-comm-grid-2 {
-          grid-template-columns: 1fr;
-          gap: 24px;
-        }
-        .tbb-tour-sticky-stage {
-          position: relative !important;
-          top: auto !important;
-        }
-      }
-      @media (max-width: 640px) {
-        .tbb-home-6-pills-row {
-          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        }
-      }
-      @media (max-width: 560px) {
-        .tbb-header-brand-text-wrap {
-          display: none !important;
-        }
-        #tbbAlwaysOnBuyFloatingBar {
-          left: 12px !important;
-          right: 12px !important;
-          bottom: 10px !important;
-          justify-content: space-between !important;
-        }
-      }
-      .tbb-mobile-drawer-backdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(15, 23, 42, 0.45);
-        backdrop-filter: blur(4px);
-        z-index: 1998;
-        display: none;
-      }
-      .tbb-mobile-drawer-backdrop.open {
-        display: block;
-      }
-      .tbb-mobile-slide-drawer {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: min(320px, 86vw);
-        background: #FFFFFF;
-        border-left: 1px solid #E2E8F0;
-        padding: 20px;
-        z-index: 1999;
-        transform: translateX(105%);
-        transition: transform 0.25s ease;
-        overflow-y: auto;
-      }
-      .tbb-mobile-slide-drawer.open {
-        transform: translateX(0);
-      }
-
-      /* Barra Flotante de Compra SIEMPRE VISIBLE en las subpáginas informativas */
-      #tbbAlwaysOnBuyFloatingBar {
-        position: fixed;
-        bottom: 16px;
-        right: 20px;
-        z-index: 990;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 8px 16px;
-        background: rgba(255, 255, 255, 0.96);
-        backdrop-filter: blur(16px);
-        border: 1px solid #CBD5E1;
-        box-shadow: 0 14px 36px rgba(15, 23, 42, 0.16);
-        border-radius: 999px;
-      }
-      .tbb-float-buy-cta {
-        background: #0D2540;
-        color: #FFFFFF;
-        border: 1px solid #1D4ED8;
-        padding: 9px 18px;
-        border-radius: 999px;
-        font-family: var(--font-main);
-        font-size: 0.82rem;
-        font-weight: 600;
-        cursor: pointer;
-        white-space: nowrap;
-      }
-      #tbbCommercialPortalModalOverlay,
-      #tbbBuyAppCheckoutModalOverlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(15, 23, 42, 0.72);
-        backdrop-filter: blur(12px);
-        z-index: 2100;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 16px;
-      }
-      #tbbCommercialPortalModalOverlay.open,
-      #tbbBuyAppCheckoutModalOverlay.open {
-        display: flex !important;
-      }
-      .tbb-comm-portal-sheet {
-        max-width: 1240px;
-        width: 100%;
-        max-height: 92vh;
-        overflow-y: auto;
-        background: #FFFFFF;
-        border-radius: 24px;
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
-      }
-      .tbb-checkout-sheet {
-        max-width: 620px;
-        width: 100%;
-        max-height: 92vh;
-        overflow-y: auto;
-        background: #FFFFFF;
-        border-radius: 24px;
-        padding: 24px;
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
-        color: #0F172A;
-      }
-    `;
-  }
-
-  window.tbbInitHeroParticlesCanvas = function () {};
-
-  let _tbbTourScrollObserver = null;
-  let _tbbTourScrollSpyListenerBound = false;
-
-  window.tbbInitAwwwardsInteractions = function () {
-    try {
-      const cards = document.querySelectorAll(".tbb-tour-scroll-card");
-      if (_tbbTourScrollObserver) {
-        _tbbTourScrollObserver.disconnect();
-      }
-      if ("IntersectionObserver" in window && cards.length) {
-        cards.forEach((c, idx) => {
-          if (idx > 1) c.classList.remove("is-visible");
-          else c.classList.add("is-visible");
-        });
-        _tbbTourScrollObserver = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-            }
-          });
-        }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
-        cards.forEach((c) => _tbbTourScrollObserver.observe(c));
-      } else {
-        cards.forEach((c) => c.classList.add("is-visible"));
-      }
-
-      if (!_tbbTourScrollSpyListenerBound) {
-        _tbbTourScrollSpyListenerBound = true;
-        const updateTourSpy = () => {
-          const st = window.tbbCommercialDemoState || {};
-          if (Number(st.activeMainSection || 1) !== 3) return;
-          const doc = document.documentElement;
-          const scrollTop = window.pageYOffset || doc.scrollTop || 0;
-          const maxScroll = Math.max(1, (doc.scrollHeight || 1) - (window.innerHeight || 1));
-          const pct = Math.min(100, Math.max(5, (scrollTop / maxScroll) * 100));
-          const fillEl = document.getElementById("tbbTourScrollProgressFill");
-          if (fillEl) fillEl.style.width = `${pct.toFixed(1)}%`;
-
-          const spyBtns = Array.from(document.querySelectorAll(".tbb-tour-spy-pill[data-tour-target]"));
-          if (!spyBtns.length) return;
-          let activeTargetId = spyBtns[0].getAttribute("data-tour-target");
-          for (const btn of spyBtns) {
-            const tid = btn.getAttribute("data-tour-target");
-            const el = tid ? document.getElementById(tid) : null;
-            if (el) {
-              const rect = el.getBoundingClientRect();
-              if (rect.top <= 240) {
-                activeTargetId = tid;
-              }
-            }
-          }
-          spyBtns.forEach((btn) => {
-            btn.classList.toggle("is-active", btn.getAttribute("data-tour-target") === activeTargetId);
-          });
-        };
-        window.addEventListener("scroll", updateTourSpy, { passive: true });
-      }
-    } catch (e) {}
-  };
-
-  function ensureModalsAndFloatingBarMounted() {
-    tbbInjectAwwwardsStyles();
-    const isStandalone = document.body.getAttribute("data-tbb-standalone-web") === "true" && window.location.pathname !== "/studio" && !window.location.pathname.endsWith("studio.html");
-
-    if (isStandalone) {
-      if (!document.getElementById("tbbAlwaysOnBuyFloatingBar")) {
-        const floatBar = document.createElement("div");
-        floatBar.id = "tbbAlwaysOnBuyFloatingBar";
-        document.body.appendChild(floatBar);
-      }
-      window.tbbUpdateAlwaysOnFloatingBarText();
-    } else {
-      const existingFloat = document.getElementById("tbbAlwaysOnBuyFloatingBar");
-      if (existingFloat) existingFloat.style.display = "none";
-    }
-
-    if (!document.getElementById("tbbCommercialPortalModalOverlay")) {
-      const portalOv = document.createElement("div");
-      portalOv.id = "tbbCommercialPortalModalOverlay";
-      portalOv.innerHTML = `<div class="tbb-comm-portal-sheet" id="tbbCommercialPortalSheetInner"></div>`;
-      document.body.appendChild(portalOv);
-    }
-
-    if (!document.getElementById("tbbBuyAppCheckoutModalOverlay")) {
-      const checkOv = document.createElement("div");
-      checkOv.id = "tbbBuyAppCheckoutModalOverlay";
-      checkOv.innerHTML = `<div class="tbb-checkout-sheet" id="tbbCheckoutSheetInner"></div>`;
-      document.body.appendChild(checkOv);
-    }
-  }
-
-  window.tbbUpdateAlwaysOnFloatingBarText = function () {
-    const floatBar = document.getElementById("tbbAlwaysOnBuyFloatingBar");
-    if (!floatBar) return;
-    const isStandalone = document.body.getAttribute("data-tbb-standalone-web") === "true" && window.location.pathname !== "/studio" && !window.location.pathname.endsWith("studio.html");
-    const activeSec = Number((window.tbbCommercialDemoState && window.tbbCommercialDemoState.activeMainSection) || 1);
-    if (!isStandalone || activeSec === 2) {
-      floatBar.style.display = "none";
-      return;
-    }
-    const isLicensed = Boolean(localStorage.getItem(LICENSE_STORAGE_KEY));
-    floatBar.style.display = "flex";
-    floatBar.innerHTML = `
-      <div style="display:flex; align-items:center; gap:8px;">
-        <span class="tbb-live-pulse-dot"></span>
-        <span style="font-size:0.78rem; font-weight:500; color:#0F172A; white-space:nowrap;">THE BEST BRAND</span>
-      </div>
-      <button type="button" class="tbb-float-buy-cta" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')">
-        ${isLicensed ? escHtml(t("licenseActive")) : escHtml(t("buyNowFloating"))}
+      <button type="button" class="tbb-btn-primary-vibrant" style="width:100%; margin-top:18px; justify-content:center; padding:15px;" onclick="window.tbbProcessCheckoutPayment('card')">
+        ${TBB_ICONS.card}
+        <span>${escHtml(t("checkoutPayBtn"))}</span>
+        ${TBB_ICONS.arrowRight}
       </button>
     `;
   };
 
-  window.tbbRefreshCommercialPortalDOM = function () {
-    const portalInner = document.getElementById("tbbCommercialPortalSheetInner");
-    if (portalInner && document.getElementById("tbbCommercialPortalModalOverlay")?.classList.contains("open")) {
-      portalInner.innerHTML = window.tbbBuildCommercialExperienceMarkup(false);
+  window.tbbOpenBuyAppCheckoutModal = function (planId) {
+    if (window.tbbCommercialDemoState && planId) {
+      window.tbbCommercialDemoState.selectedPlan = planId;
     }
-    const standaloneRoot = document.getElementById("tbbStandaloneCommercialPageRoot");
-    if (standaloneRoot) {
-      standaloneRoot.innerHTML = window.tbbBuildCommercialExperienceMarkup(true);
+    let ov = document.getElementById("tbbBuyAppCheckoutModalOverlay");
+    if (!ov) {
+      ov = document.createElement("div");
+      ov.id = "tbbBuyAppCheckoutModalOverlay";
+      ov.className = "tbb-modal-overlay";
+      ov.onclick = (e) => { if (e.target === ov) window.tbbCloseBuyAppCheckoutModal(); };
+      ov.innerHTML = `<div id="tbbCheckoutModalContentBox" class="tbb-checkout-modal-card" onclick="event.stopPropagation()"></div>`;
+      document.body.appendChild(ov);
     }
-    const sec = Number((window.tbbCommercialDemoState && window.tbbCommercialDemoState.activeMainSection) || 1);
-    const footerEl = document.getElementById("tbbMainCommercialFooter");
-    if (footerEl) {
-      footerEl.style.display = (sec === 1 || sec === 2) ? "none" : "block";
-    }
-    setTimeout(() => {
-      if (typeof window.tbbInitAwwwardsInteractions === "function") {
-        window.tbbInitAwwwardsInteractions();
-      }
-    }, 40);
-  };
-
-  window.tbbOpenCommercialPortalModal = function () {
-    ensureModalsAndFloatingBarMounted();
-    const ov = document.getElementById("tbbCommercialPortalModalOverlay");
-    const inner = document.getElementById("tbbCommercialPortalSheetInner");
-    if (!ov || !inner) return;
-    inner.innerHTML = window.tbbBuildCommercialExperienceMarkup(false);
-    ov.classList.add("open");
-  };
-
-  window.tbbCloseCommercialPortalModal = function () {
-    const ov = document.getElementById("tbbCommercialPortalModalOverlay");
-    if (ov) ov.classList.remove("open");
-  };
-
-  window.tbbOpenBuyAppCheckoutModal = function (planId, preferredMethod) {
-    ensureModalsAndFloatingBarMounted();
-    if (planId) window.tbbCommercialDemoState.selectedPlan = planId;
-    if (preferredMethod) window.tbbCommercialDemoState.selectedPaymentMethod = preferredMethod;
     window.tbbRenderCheckoutModalContent();
-    const ov = document.getElementById("tbbBuyAppCheckoutModalOverlay");
-    if (ov) ov.classList.add("open");
+    ov.classList.add("open");
   };
 
   window.tbbCloseBuyAppCheckoutModal = function () {
@@ -4893,121 +3115,1949 @@
     if (ov) ov.classList.remove("open");
   };
 
-  function applyUrlParamsState() {
+  // CAMBIO GLOBAL DE IDIOMA (TRADUCE TEXTOS, INFOGRAFÍA, IPHONE MOCKUP Y VIDEOS EN LOS 6 IDIOMAS)
+  window.tbbSwitchCommercialLanguage = function (langCode) {
+    const clean = String(langCode || "es").toLowerCase().trim();
+    if (!["es", "en", "fr", "pt", "de", "it"].includes(clean)) return;
     try {
-      const sp = new URLSearchParams(window.location.search);
-      const langParam = sp.get("lang");
-      if (langParam && I18N[langParam]) {
-        localStorage.setItem(LANG_STORAGE_KEY, langParam);
+      localStorage.setItem(LANG_STORAGE_KEY, clean);
+      localStorage.setItem("tbb_app_lang", clean);
+    } catch (e) {}
+    document.documentElement.lang = clean;
+
+    window.tbbRefreshCommercialPortalDOM();
+
+    // Sincronizar iframes activos de Studio (/demo y /app-tour)
+    ["tbbRealStudioDemoIframe", "tbbTourIphoneLiveIframe"].forEach((id) => {
+      const ifr = document.getElementById(id);
+      if (ifr && ifr.contentWindow) {
+        try {
+          ifr.contentWindow.postMessage({ type: "TBB_SET_LANGUAGE", lang: clean }, "*");
+        } catch (e) {}
+      }
+    });
+
+    // Si hay un modal de video abierto, actualizarlo de inmediato al idioma seleccionado
+    const st = window.tbbCommercialDemoState || {};
+    const vidOv = document.getElementById("tbbVideoPopupModalOverlay");
+    if (vidOv && vidOv.classList.contains("open") && st.openVideoModalStep != null) {
+      window.tbbOpenVideoPopupModal(st.openVideoModalStep);
+    }
+  };
+
+
+  function tbbInjectAwwwardsStyles() {
+    if (document.getElementById("tbbClinicalAuditV105Styles")) return;
+    const st = document.createElement("style");
+    st.id = "tbbClinicalAuditV105Styles";
+    st.textContent = `
+      :root {
+        --tbb-navy: #0D2540;
+        --tbb-blue: #426EAE;
+        --tbb-sky: #4C9DE6;
+        --tbb-orange: #FF7A00;
+        --tbb-ink: #1E293B;
+        --tbb-muted: #475569;
+        --tbb-line: #E2E8F0;
+        --tbb-bg: #FFFFFF;
+        --tbb-surface: #F8FAFC;
+      }
+      html { scroll-behavior: smooth; }
+      body.tbb-commercial-standalone-body {
+        margin: 0;
+        padding: 0;
+        background: #FFFFFF;
+        color: #0D2540;
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+      .tbb-svg-ic { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+
+      /* HEADER SUPERIOR CON LOGOTIPO PROTAGONISTA */
+      .tbb-master-header {
+        position: sticky;
+        top: 0;
+        z-index: 1200;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-bottom: 1.5px solid #E2E8F0;
+        box-shadow: 0 10px 30px rgba(13, 37, 64, 0.05);
+      }
+      .tbb-header-inner {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 12px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+      .tbb-brand-logo-link {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        text-decoration: none;
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .tbb-brand-logo-link:hover { transform: scale(1.02); }
+      .tbb-header-isotipo {
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        object-fit: contain;
+        box-shadow: 0 8px 20px rgba(13, 37, 64, 0.14);
+      }
+      .tbb-header-wordmark-svg {
+        height: 48px;
+        width: auto;
+        max-width: 250px;
+        object-fit: contain;
       }
 
+      /* NAVEGACIÓN DESKTOP */
+      .tbb-desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #F4F8FC;
+        padding: 6px;
+        border-radius: 999px;
+        border: 1px solid #DCE6F2;
+      }
+      .tbb-nav-tab-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        border: none;
+        background: transparent;
+        color: #0D2540;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.86rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.22s ease;
+        white-space: nowrap;
+      }
+      .tbb-nav-tab-btn:hover { background: rgba(66, 110, 174, 0.10); }
+      .tbb-nav-tab-btn.active {
+        background: #0D2540;
+        color: #FFFFFF;
+        box-shadow: 0 6px 18px rgba(13, 37, 64, 0.18);
+      }
+
+      .tbb-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .tbb-lang-pills-bar {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        background: #F8FAFC;
+        padding: 4px;
+        border-radius: 999px;
+        border: 1px solid #CBD5E1;
+      }
+      .tbb-lang-pill-btn {
+        border: none;
+        background: transparent;
+        color: #475569;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.74rem;
+        font-weight: 800;
+        padding: 5px 8px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: all 0.18s ease;
+      }
+      .tbb-lang-pill-btn.active {
+        background: #FF7A00;
+        color: #FFFFFF;
+      }
+      .tbb-header-buy-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 999px;
+        border: none;
+        background: linear-gradient(135deg, #FF7A00 0%, #EA580C 100%);
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.84rem;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 10px 24px rgba(255, 122, 0, 0.28);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        white-space: nowrap;
+      }
+      .tbb-header-buy-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(255, 122, 0, 0.36); }
+      .tbb-header-buy-btn.is-pro { background: #0D2540; box-shadow: none; }
+
+      .tbb-mobile-menu-trigger {
+        display: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1.5px solid #CBD5E1;
+        background: #FFFFFF;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      /* HERO & PROTAGONISMO MONUMENTAL DEL LOGOTIPO */
+      .tbb-subpage-section {
+        position: relative;
+        padding: 44px 24px 96px;
+        min-height: calc(100vh - 84px);
+      }
+      .tbb-open-curve-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 360px;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .tbb-hero-particles-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .tbb-container-wide {
+        max-width: 1360px;
+        margin: 0 auto;
+      }
+      .tbb-monumental-brand-axis {
+        text-align: center;
+        max-width: 1040px;
+        margin: 0 auto 38px;
+      }
+      .tbb-monumental-logo-showcase {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        background: linear-gradient(180deg, #FFFFFF 0%, #F4F8FC 100%);
+        border: 2px solid #DCE6F2;
+        border-radius: 32px;
+        padding: 20px 36px;
+        margin-bottom: 26px;
+        box-shadow: 0 22px 54px rgba(13, 37, 64, 0.09);
+        flex-wrap: wrap;
+      }
+      .tbb-monumental-isotipo-img {
+        width: 112px;
+        height: 112px;
+        border-radius: 26px;
+        object-fit: contain;
+        box-shadow: 0 14px 32px rgba(13, 37, 64, 0.18);
+      }
+      .tbb-monumental-wordmark-col {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .tbb-monumental-horizontal-svg {
+        height: 84px;
+        width: auto;
+        max-width: min(520px, 78vw);
+        object-fit: contain;
+      }
+      .tbb-eyebrow-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: #FFF7ED;
+        border: 1px solid #FFEDD5;
+        color: #EA580C;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+      }
+      .tbb-hero-display-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(2.25rem, 4.4vw, 3.75rem);
+        font-weight: 900;
+        color: #0D2540;
+        line-height: 1.1;
+        letter-spacing: -0.025em;
+        margin: 0 0 18px;
+      }
+      .tbb-text-accent-gradient {
+        background: linear-gradient(135deg, #426EAE 0%, #FF7A00 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .tbb-hero-lead-paragraph {
+        font-size: clamp(1.12rem, 1.4vw, 1.32rem);
+        color: #334155;
+        line-height: 1.65;
+        max-width: 880px;
+        margin: 0 auto 26px;
+      }
+      .tbb-hero-cta-cluster {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .tbb-btn-primary-vibrant {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 26px;
+        border-radius: 999px;
+        border: none;
+        background: linear-gradient(135deg, #0D2540 0%, #426EAE 100%);
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.96rem;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 14px 32px rgba(13, 37, 64, 0.22);
+        transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .tbb-btn-primary-vibrant:hover {
+        transform: translateY(-3px);
+        background: linear-gradient(135deg, #FF7A00 0%, #EA580C 100%);
+        box-shadow: 0 18px 36px rgba(255, 122, 0, 0.32);
+      }
+      .tbb-btn-secondary-clean {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 14px 22px;
+        border-radius: 999px;
+        border: 1.5px solid #CBD5E1;
+        background: #FFFFFF;
+        color: #0D2540;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.92rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .tbb-btn-secondary-clean:hover {
+        border-color: #426EAE;
+        background: #F4F8FC;
+        transform: translateY(-2px);
+      }
+
+      /* GRID HERO DE CONVERGENCIA */
+      .tbb-hero-convergence-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        gap: 28px;
+        align-items: stretch;
+      }
+      .tbb-hero-video-card, .tbb-hero-interactive-stage {
+        background: #FFFFFF;
+        border: 1.5px solid #DCE6F2;
+        border-radius: 28px;
+        padding: 20px;
+        box-shadow: 0 20px 50px rgba(13, 37, 64, 0.08);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .tbb-hero-video-topbar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .tbb-live-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #FF7A00;
+        box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.2);
+      }
+      .tbb-hero-video-badge-txt {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.74rem;
+        font-weight: 800;
+        color: #0D2540;
+        flex: 1;
+      }
+      .tbb-mini-sound-btn {
+        border: 1px solid #CBD5E1;
+        background: #F8FAFC;
+        border-radius: 999px;
+        padding: 6px 10px;
+        cursor: pointer;
+      }
+      .tbb-hero-video-frame-wrap {
+        border-radius: 20px;
+        overflow: hidden;
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+      }
+      .tbb-hero-video-el {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        display: block;
+        object-fit: cover;
+      }
+
+      .tbb-stage-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .tbb-stage-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.24rem;
+        font-weight: 900;
+        color: #0D2540;
+        margin: 0 0 4px;
+      }
+      .tbb-stage-sub {
+        font-size: 0.92rem;
+        color: #475569;
+        margin: 0;
+        line-height: 1.45;
+      }
+      .tbb-btn-converge-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 16px;
+        border-radius: 999px;
+        border: 1.5px solid #FF7A00;
+        background: #FFF7ED;
+        color: #0D2540;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.80rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .tbb-convergence-orbital-box {
+        position: relative;
+        min-height: 235px;
+        background: radial-gradient(circle at center, rgba(66,110,174,0.08) 0%, rgba(255,255,255,0) 70%);
+        border-radius: 20px;
+        border: 1px dashed #CBD5E1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 14px;
+        margin-bottom: 14px;
+      }
+      .tbb-convergence-lines-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      .tbb-convergence-center-logo {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        background: #FFFFFF;
+        padding: 12px 20px;
+        border-radius: 22px;
+        border: 2.5px solid #FF7A00;
+        box-shadow: 0 16px 36px rgba(13, 37, 64, 0.14);
+        cursor: pointer;
+        transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .tbb-hero-interactive-stage.is-converged .tbb-convergence-center-logo {
+        transform: scale(1.16);
+        border-color: #0D2540;
+      }
+      .tbb-convergence-center-logo img {
+        width: 68px;
+        height: 68px;
+        border-radius: 16px;
+      }
+      .tbb-convergence-center-logo span {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.86rem;
+        font-weight: 900;
+        color: #0D2540;
+        letter-spacing: 0.08em;
+      }
+      .tbb-hero-theory-pills-wrap {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .tbb-hero-theory-pill {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 12px;
+        border-radius: 14px;
+        border: 1.5px solid #CBD5E1;
+        background: #FFFFFF;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.25s ease;
+      }
+      .tbb-hero-theory-pill.active, .tbb-hero-theory-pill:hover {
+        border-color: #FF7A00;
+        background: #FFF7ED;
+        transform: translateY(-2px);
+      }
+      .tbb-pill-code { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 800; }
+      .tbb-pill-author { font-family: 'Montserrat', sans-serif; font-size: 0.80rem; color: #0D2540; }
+      .tbb-pill-sub { font-size: 0.72rem; color: #475569; }
+      .tbb-hero-theory-detail-box {
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        border-left: 4px solid #FF7A00;
+        border-radius: 16px;
+        padding: 14px 16px;
+      }
+
+      /* CABECERAS DE SECCIÓN CON TIPOGRAFÍA GRANDE Y RESPONSIVA */
+      .tbb-section-header-large {
+        text-align: center;
+        max-width: 960px;
+        margin: 0 auto 44px;
+      }
+      .tbb-section-title-xl {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(2.0rem, 3.8vw, 3.15rem);
+        font-weight: 900;
+        color: #0D2540;
+        line-height: 1.14;
+        margin: 14px 0 16px;
+      }
+      .tbb-section-lead-xl {
+        font-size: clamp(1.12rem, 1.35vw, 1.28rem);
+        color: #334155;
+        line-height: 1.65;
+        margin: 0;
+      }
+      .tbb-section-title-lg {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(1.6rem, 2.8vw, 2.35rem);
+        font-weight: 900;
+        color: #0D2540;
+        margin: 0 0 10px;
+      }
+      .tbb-section-lead-md {
+        font-size: clamp(1.05rem, 1.2vw, 1.18rem);
+        color: #475569;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      /* SECCIÓN 2: APP TOUR (SCROLLYTELLING + STICKY IPHONE 16 PRO MOCKUP) */
+      .tbb-scrollytelling-layout {
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        gap: 42px;
+        align-items: start;
+      }
+      .tbb-sticky-iphone-column {
+        position: sticky;
+        top: 94px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+      }
+      .tbb-iphone-mode-switcher {
+        display: flex;
+        gap: 6px;
+        background: #F4F8FC;
+        padding: 5px;
+        border-radius: 999px;
+        border: 1px solid #DCE6F2;
+      }
+      .tbb-mode-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: none;
+        background: transparent;
+        color: #0D2540;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .tbb-mode-pill.active {
+        background: #0D2540;
+        color: #FFFFFF;
+      }
+      .tbb-iphone16-chassis {
+        width: 376px;
+        height: 740px;
+        max-width: 92vw;
+        background: #0D2540;
+        border-radius: 54px;
+        padding: 14px;
+        box-shadow: 0 30px 70px rgba(13, 37, 64, 0.26), inset 0 0 0 3px #426EAE;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .tbb-iphone16-dynamic-island {
+        width: 116px;
+        height: 26px;
+        background: #050B14;
+        border-radius: 999px;
+        margin: 6px auto 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 14px;
+        flex-shrink: 0;
+      }
+      .tbb-island-cam { width: 10px; height: 10px; border-radius: 50%; background: #1E293B; border: 2px solid #426EAE; }
+      .tbb-island-speaker { width: 36px; height: 5px; border-radius: 99px; background: #1E293B; }
+      .tbb-iphone16-screen-inner {
+        flex: 1;
+        background: #FFFFFF;
+        border-radius: 38px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+      .tbb-iphone-status-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        background: #0D2540;
+        color: #FFFFFF;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.74rem;
+        font-weight: 800;
+      }
+      .tbb-iphone-step-pill {
+        background: #FF7A00;
+        color: #FFFFFF;
+        padding: 3px 9px;
+        border-radius: 999px;
+        font-size: 0.68rem;
+      }
+      .tbb-iphone-capture-viewport {
+        flex: 1;
+        overflow: hidden;
+        background: #F8FAFC;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tbb-iphone-capture-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        transition: transform 0.35s ease;
+      }
+      .tbb-iphone-floating-glass-card {
+        background: rgba(13, 37, 64, 0.94);
+        color: #FFFFFF;
+        padding: 14px 16px;
+        border-top: 2px solid #FF7A00;
+      }
+      .tbb-iphone-cutout-tag {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.70rem;
+        font-weight: 800;
+        color: #FF7A00;
+        margin-bottom: 4px;
+      }
+      .tbb-iphone-floating-note {
+        font-size: 0.88rem;
+        line-height: 1.45;
+        color: #F8FAFC;
+      }
+      .tbb-iphone-live-iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: #FFFFFF;
+      }
+      .tbb-iphone16-home-bar {
+        width: 130px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.45);
+        border-radius: 999px;
+        margin: 8px auto 2px;
+      }
+      .tbb-tour-step-dots-row {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+      }
+      .tbb-tour-step-dot {
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        border: 1.5px solid #CBD5E1;
+        background: #FFFFFF;
+        color: #0D2540;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.80rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .tbb-tour-step-dot.active {
+        background: #FF7A00;
+        color: #FFFFFF;
+        border-color: #FF7A00;
+      }
+
+      /* TARJETAS DE SCROLLYTELLING CON TIPOGRAFÍA GRANDE Y RECORTES DE PRECISIÓN */
+      .tbb-scrolly-cards-column {
+        display: flex;
+        flex-direction: column;
+        gap: 34px;
+      }
+      .tbb-tour-scrolly-card {
+        background: #FFFFFF;
+        border: 2px solid #E2E8F0;
+        border-radius: 30px;
+        padding: 32px;
+        box-shadow: 0 18px 44px rgba(13, 37, 64, 0.06);
+        transition: all 0.28s ease;
+        cursor: pointer;
+      }
+      .tbb-tour-scrolly-card.is-active-step {
+        border-color: #426EAE;
+        box-shadow: 0 24px 58px rgba(66, 110, 174, 0.16);
+      }
+      .tbb-scrolly-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+      .tbb-scrolly-step-badge {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.84rem;
+        font-weight: 800;
+        padding: 6px 14px;
+        border-radius: 999px;
+        border: 1.5px solid #426EAE;
+        background: #F8FAFC;
+      }
+      .tbb-scrolly-theory-tag {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.80rem;
+        font-weight: 800;
+        color: #FF7A00;
+      }
+      .tbb-scrolly-card-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+        font-weight: 900;
+        color: #0D2540;
+        line-height: 1.22;
+        margin: 0 0 14px;
+      }
+      .tbb-scrolly-card-body {
+        font-size: clamp(1.08rem, 1.28vw, 1.22rem);
+        color: #334155;
+        line-height: 1.68;
+        margin: 0 0 22px;
+      }
+      .tbb-precision-cutout-showcase {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 18px;
+        align-items: center;
+        background: #F4F8FC;
+        border: 1.5px solid #DCE6F2;
+        border-radius: 22px;
+        padding: 18px;
+        margin-bottom: 20px;
+      }
+      .tbb-precision-cutout-frame {
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1.5px solid #CBD5E1;
+        background: #FFFFFF;
+        max-height: 240px;
+      }
+      .tbb-precision-cutout-frame img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+      }
+      .tbb-floating-callout-pill {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        background: rgba(13, 37, 64, 0.92);
+        color: #FFFFFF;
+        padding: 7px 12px;
+        border-radius: 10px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .tbb-floating-explanation-box {
+        background: #FFFFFF;
+        border-left: 4px solid #FF7A00;
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: 0 10px 24px rgba(13, 37, 64, 0.06);
+      }
+      .tbb-floating-explanation-box p {
+        font-size: 1.04rem;
+        font-weight: 600;
+        color: #0D2540;
+        line-height: 1.55;
+        margin: 0;
+      }
+
+      /* CÁPSULA EMERGENTE MODERADA */
+      .tbb-moderate-capsule-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        background: #FFFFFF;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 18px;
+        padding: 12px 16px;
+        flex-wrap: wrap;
+      }
+      .tbb-capsule-mini-preview {
+        position: relative;
+        width: 56px;
+        height: 76px;
+        border-radius: 12px;
+        overflow: hidden;
+        flex-shrink: 0;
+        border: 2px solid #FF7A00;
+        cursor: pointer;
+      }
+      .tbb-capsule-mini-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+      }
+      .tbb-capsule-play-badge {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(13, 37, 64, 0.25);
+      }
+      .tbb-capsule-bar-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .tbb-capsule-bar-info strong { font-size: 0.98rem; color: #0D2540; }
+      .tbb-capsule-bar-info span { font-size: 0.86rem; color: #475569; }
+      .tbb-btn-capsule-open {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 999px;
+        border: 1.5px solid #0D2540;
+        background: #0D2540;
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.84rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .tbb-btn-capsule-open:hover { background: #FF7A00; border-color: #FF7A00; }
+
+      /* ANTES / DESPUÉS SLIDER */
+      .tbb-before-after-block {
+        margin-top: 64px;
+        background: #F4F8FC;
+        border: 1.5px solid #DCE6F2;
+        border-radius: 32px;
+        padding: 40px 32px;
+      }
+      .tbb-before-after-header { text-align: center; max-width: 780px; margin: 0 auto 28px; }
+      .tbb-before-after-stage {
+        position: relative;
+        max-width: 920px;
+        height: 290px;
+        margin: 0 auto;
+        border-radius: 24px;
+        overflow: hidden;
+        border: 2px solid #0D2540;
+        background: #FFFFFF;
+      }
+      .tbb-ba-layer {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      .tbb-ba-after { background: #FFFFFF; }
+      .tbb-ba-before { background: #F1F5F9; }
+      .tbb-ba-card-content { text-align: center; max-width: 580px; }
+      .tbb-ba-badge {
+        display: inline-block;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.76rem;
+        font-weight: 800;
+        padding: 5px 12px;
+        border-radius: 999px;
+        margin-bottom: 14px;
+      }
+      .tbb-ba-badge.after { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+      .tbb-ba-badge.before { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+      .tbb-ba-sketch-placeholder {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: #64748B;
+        border: 2px dashed #94A3B8;
+        padding: 18px 32px;
+        border-radius: 16px;
+        margin-bottom: 10px;
+      }
+      .tbb-ba-handle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: #FF7A00;
+        pointer-events: none;
+      }
+      .tbb-ba-handle-knob {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: #0D2540;
+        color: #FFFFFF;
+        border: 2.5px solid #FF7A00;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tbb-ba-range-input {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: ew-resize;
+      }
+
+      /* SECCIÓN 3: BASES TEÓRICAS (INFOGRAFÍA DINÁMICA Y RESPONSIVA · CERO VIDEOS DEL FUNDADOR) */
+      .tbb-academic-infographic-timeline {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        margin-bottom: 56px;
+      }
+      .tbb-infographic-stage-node {
+        display: grid;
+        grid-template-columns: 68px 1fr;
+        gap: 22px;
+        align-items: stretch;
+      }
+      .tbb-infographic-spine-badge {
+        width: 64px;
+        height: 64px;
+        border-radius: 20px;
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.35rem;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 12px 28px rgba(13, 37, 64, 0.18);
+      }
+      .tbb-infographic-card {
+        background: #FFFFFF;
+        border: 2px solid #E2E8F0;
+        border-radius: 28px;
+        padding: 30px;
+        box-shadow: 0 18px 44px rgba(13, 37, 64, 0.06);
+      }
+      .tbb-infographic-card-grid {
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: 28px;
+        align-items: center;
+      }
+      .tbb-infographic-meta-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .tbb-infographic-code-pill {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.78rem;
+        font-weight: 800;
+        padding: 5px 12px;
+        border-radius: 999px;
+      }
+      .tbb-infographic-authors-tag {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.92rem;
+        font-weight: 800;
+        color: #0D2540;
+      }
+      .tbb-infographic-stage-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(1.45rem, 2.2vw, 1.95rem);
+        font-weight: 900;
+        color: #0D2540;
+        margin: 0 0 8px;
+        line-height: 1.24;
+      }
+      .tbb-infographic-works-cite {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.80rem;
+        color: #426EAE;
+        font-weight: 700;
+        margin-bottom: 14px;
+      }
+      .tbb-infographic-thesis {
+        font-size: 1.08rem;
+        color: #334155;
+        line-height: 1.65;
+        margin: 0 0 16px;
+      }
+      .tbb-infographic-pillars-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .tbb-infographic-pillars-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 1.0rem;
+        color: #0D2540;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+      .tbb-infographic-output-bar {
+        background: #F4F8FC;
+        border: 1px solid #DCE6F2;
+        border-left: 4px solid #FF7A00;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-size: 0.92rem;
+        color: #0D2540;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .tbb-infographic-diagram-frame {
+        background: #F8FAFC;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 22px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* SIMULADOR INTERACTIVO KANSEI / OSGOOD */
+      .tbb-kansei-simulator-card {
+        background: linear-gradient(180deg, #FFFFFF 0%, #F4F8FC 100%);
+        border: 2px solid #426EAE;
+        border-radius: 30px;
+        padding: 34px;
+        margin-bottom: 56px;
+        box-shadow: 0 22px 52px rgba(13, 37, 64, 0.08);
+      }
+      .tbb-kansei-sim-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 28px;
+        align-items: center;
+        margin-top: 24px;
+      }
+      .tbb-kansei-sliders-col {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .tbb-kansei-slider-row {
+        background: #FFFFFF;
+        border: 1px solid #CBD5E1;
+        border-radius: 16px;
+        padding: 14px 18px;
+      }
+      .tbb-kansei-slider-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.84rem;
+        color: #475569;
+        margin-bottom: 8px;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .tbb-kansei-slider-labels strong { color: #0D2540; }
+      .tbb-kansei-slider-row input[type="range"] {
+        width: 100%;
+        accent-color: #FF7A00;
+        cursor: pointer;
+      }
+
+      .tbb-books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 18px;
+      }
+      .tbb-book-academic-card {
+        background: #FFFFFF;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 20px;
+        overflow: hidden;
+        display: flex;
+        box-shadow: 0 10px 24px rgba(13, 37, 64, 0.05);
+      }
+      .tbb-book-spine {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        padding: 14px 8px;
+        color: #FFFFFF;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-align: center;
+      }
+      .tbb-book-body { padding: 18px; }
+      .tbb-book-year { font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; color: #FF7A00; font-weight: 800; }
+      .tbb-book-title { font-family: 'Montserrat', sans-serif; font-size: 1.08rem; font-weight: 800; color: #0D2540; margin: 4px 0 6px; }
+      .tbb-book-author { font-size: 0.92rem; color: #475569; margin: 0; }
+
+      /* SECCIÓN 4: DEMO EN VIVO (MOCKUP INTERACTIVO DE IPHONE + FULLSCREEN + PAYWALL $49 USD) */
+      .tbb-demo-control-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        background: #F4F8FC;
+        border: 1.5px solid #DCE6F2;
+        border-radius: 22px;
+        padding: 12px 18px;
+        margin-bottom: 26px;
+        flex-wrap: wrap;
+      }
+      .tbb-demo-steps-strip {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .tbb-demo-step-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1.5px solid #CBD5E1;
+        background: #FFFFFF;
+        color: #0D2540;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.80rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .tbb-demo-step-pill.active {
+        background: #0D2540;
+        color: #FFFFFF;
+        border-color: #0D2540;
+      }
+      .tbb-free-tag {
+        background: #ECFDF5;
+        color: #065F46;
+        padding: 2px 6px;
+        border-radius: 99px;
+        font-size: 0.65rem;
+      }
+      .tbb-pro-tag {
+        background: #FFF7ED;
+        color: #EA580C;
+        padding: 2px 6px;
+        border-radius: 99px;
+        font-size: 0.65rem;
+      }
+      .tbb-demo-stage-wrap.is-iphone-mode {
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 32px;
+        align-items: start;
+      }
+      .tbb-demo-stage-wrap.is-fullscreen-mode {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .tbb-demo-stage-wrap.is-fullscreen-mode .tbb-demo-side-guide {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      .tbb-demo-guide-card {
+        background: #FFFFFF;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 24px;
+        padding: 22px;
+        margin-bottom: 18px;
+        box-shadow: 0 12px 30px rgba(13, 37, 64, 0.05);
+      }
+      .tbb-demo-guide-card.highlight {
+        border-color: #FF7A00;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FFF7ED 100%);
+      }
+      .tbb-demo-guide-card h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.18rem;
+        font-weight: 800;
+        color: #0D2540;
+        margin: 10px 0 8px;
+      }
+      .tbb-demo-guide-card p {
+        font-size: 0.98rem;
+        color: #334155;
+        line-height: 1.58;
+        margin: 0;
+      }
+      .tbb-demo-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        font-weight: 800;
+        padding: 4px 10px;
+        border-radius: 999px;
+      }
+      .tbb-demo-status-pill.free { background: #ECFDF5; color: #065F46; }
+      .tbb-demo-status-pill.paywall { background: #FFF7ED; color: #EA580C; }
+
+      .tbb-demo-iphone-center-stage {
+        display: flex;
+        justify-content: center;
+      }
+      .tbb-demo-stage-wrap.is-iphone-mode .tbb-demo-device-frame {
+        width: 430px;
+        height: 820px;
+        max-width: 95vw;
+        background: #0D2540;
+        border-radius: 56px;
+        padding: 14px;
+        box-shadow: 0 32px 76px rgba(13, 37, 64, 0.28), inset 0 0 0 3px #426EAE;
+        display: flex;
+        flex-direction: column;
+      }
+      .tbb-demo-stage-wrap.is-fullscreen-mode .tbb-demo-device-frame {
+        width: 100%;
+        height: 84vh;
+        background: #FFFFFF;
+        border-radius: 24px;
+        border: 2px solid #0D2540;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .tbb-demo-stage-wrap.is-fullscreen-mode .tbb-iphone16-dynamic-island,
+      .tbb-demo-stage-wrap.is-fullscreen-mode .tbb-iphone16-home-bar {
+        display: none;
+      }
+      .tbb-real-studio-iframe {
+        flex: 1;
+        width: 100%;
+        border: none;
+        border-radius: 38px;
+        background: #FFFFFF;
+      }
+      .tbb-demo-stage-wrap.is-fullscreen-mode .tbb-real-studio-iframe {
+        border-radius: 0;
+      }
+
+      /* SECCIÓN 5: PACK DE DESCARGAS CONSOLIDADO */
+      .tbb-consolidated-brandbook-hero-card {
+        display: grid;
+        grid-template-columns: 1.25fr 1fr;
+        gap: 32px;
+        align-items: center;
+        background: linear-gradient(135deg, #FFFFFF 0%, #F4F8FC 100%);
+        border: 2.5px solid #0D2540;
+        border-radius: 32px;
+        padding: 36px;
+        margin-bottom: 42px;
+        box-shadow: 0 24px 60px rgba(13, 37, 64, 0.10);
+      }
+      .tbb-cb-standard-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #FFF7ED;
+        color: #EA580C;
+        border: 1px solid #FFEDD5;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.76rem;
+        font-weight: 800;
+        margin-bottom: 14px;
+      }
+      .tbb-cb-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(1.65rem, 2.6vw, 2.3rem);
+        font-weight: 900;
+        color: #0D2540;
+        line-height: 1.2;
+        margin: 0 0 14px;
+      }
+      .tbb-cb-desc {
+        font-size: 1.08rem;
+        color: #334155;
+        line-height: 1.65;
+        margin: 0 0 24px;
+      }
+      .tbb-cb-actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .tbb-cb-right {
+        position: relative;
+        border-radius: 22px;
+        overflow: hidden;
+        border: 2px solid #CBD5E1;
+        cursor: pointer;
+      }
+      .tbb-cb-preview-img {
+        width: 100%;
+        display: block;
+        transition: transform 0.35s ease;
+      }
+      .tbb-cb-right:hover .tbb-cb-preview-img { transform: scale(1.03); }
+      .tbb-cb-overlay-pill {
+        position: absolute;
+        bottom: 14px;
+        right: 14px;
+        background: rgba(13, 37, 64, 0.92);
+        color: #FFFFFF;
+        padding: 7px 14px;
+        border-radius: 999px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.74rem;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .tbb-deliverables-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        gap: 24px;
+      }
+      .tbb-deliverable-card {
+        background: #FFFFFF;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 24px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .tbb-deliverable-card:hover {
+        transform: translateY(-4px);
+        border-color: #426EAE;
+        box-shadow: 0 18px 40px rgba(13, 37, 64, 0.10);
+      }
+      .tbb-deliv-thumb-wrap {
+        position: relative;
+        height: 175px;
+        background: #F8FAFC;
+        overflow: hidden;
+      }
+      .tbb-deliv-thumb-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .tbb-deliv-num-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: #0D2540;
+        color: #FFFFFF;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.74rem;
+        font-weight: 800;
+        padding: 4px 10px;
+        border-radius: 999px;
+      }
+      .tbb-deliv-fmt-badge {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        background: rgba(255, 255, 255, 0.95);
+        color: #FF7A00;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.70rem;
+        font-weight: 800;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid #FFEDD5;
+      }
+      .tbb-deliv-body {
+        padding: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .tbb-deliv-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.12rem;
+        font-weight: 800;
+        color: #0D2540;
+        margin: 0 0 8px;
+      }
+      .tbb-deliv-desc {
+        font-size: 0.95rem;
+        color: #475569;
+        line-height: 1.55;
+        margin: 0 0 14px;
+        flex: 1;
+      }
+      .tbb-deliv-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: #426EAE;
+      }
+
+      /* MODALES Y DRAWER MÓVIL */
+      .tbb-modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 3000;
+        background: rgba(13, 37, 64, 0.82);
+        backdrop-filter: blur(14px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+      }
+      .tbb-modal-overlay.open { display: flex; }
+      .tbb-video-modal-card, .tbb-lightbox-modal-card, .tbb-checkout-modal-card {
+        background: #FFFFFF;
+        border-radius: 28px;
+        border: 1.5px solid #E2E8F0;
+        max-width: 900px;
+        width: 100%;
+        max-height: 92vh;
+        overflow-y: auto;
+        padding: 24px;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+      }
+      .tbb-checkout-modal-card { max-width: 640px; }
+      .tbb-video-modal-head, .tbb-checkout-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #E2E8F0;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+      }
+      .tbb-modal-close-ic {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 1px solid #CBD5E1;
+        background: #F8FAFC;
+        color: #0D2540;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .tbb-video-modal-body-grid {
+        display: grid;
+        grid-template-columns: 310px 1fr;
+        gap: 24px;
+        align-items: stretch;
+      }
+      .tbb-video-modal-player-box {
+        background: #0D2540;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .tbb-video-modal-player-box video {
+        width: 100%;
+        aspect-ratio: 9 / 16;
+        display: block;
+        object-fit: contain;
+      }
+      .tbb-video-modal-info-col {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .tbb-video-modal-info-col h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.45rem;
+        font-weight: 900;
+        color: #0D2540;
+        margin: 0;
+      }
+      .tbb-video-modal-info-col p {
+        font-size: 1.04rem;
+        color: #334155;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .tbb-checkout-form-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .tbb-checkout-label {
+        display: block;
+        font-size: 0.80rem;
+        font-weight: 700;
+        color: #0D2540;
+        margin-bottom: 4px;
+      }
+      .tbb-checkout-input {
+        width: 100%;
+        height: 44px;
+        padding: 0 14px;
+        border-radius: 12px;
+        border: 1.5px solid #CBD5E1;
+        font-size: 0.94rem;
+        color: #0D2540;
+        box-sizing: border-box;
+      }
+      .tbb-checkout-input.mono { font-family: 'JetBrains Mono', monospace; }
+
+      /* DRAWER MÓVIL Y BARRA INFERIOR */
+      .tbb-mobile-drawer-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 2500;
+        background: rgba(13, 37, 64, 0.65);
+        backdrop-filter: blur(8px);
+        display: none;
+        justify-content: flex-end;
+      }
+      .tbb-mobile-drawer-overlay.open { display: flex; }
+      .tbb-mobile-drawer-panel {
+        width: min(360px, 88vw);
+        height: 100%;
+        background: #FFFFFF;
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-sizing: border-box;
+      }
+      .tbb-mobile-drawer-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #E2E8F0;
+      }
+      .tbb-mobile-drawer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .tbb-mobile-drawer-logo img:first-child { width: 42px; height: 42px; border-radius: 10px; }
+      .tbb-drawer-wordmark { height: 34px; width: auto; }
+      .tbb-drawer-close-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        border: 1px solid #CBD5E1;
+        background: #F8FAFC;
+        cursor: pointer;
+      }
+      .tbb-mobile-drawer-nav-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 18px 0;
+      }
+      .tbb-mobile-drawer-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1.5px solid #E2E8F0;
+        background: #F8FAFC;
+        color: #0D2540;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .tbb-mobile-drawer-item.active {
+        background: #0D2540;
+        color: #FFFFFF;
+        border-color: #0D2540;
+      }
+      .tbb-drawer-lbl { flex: 1; text-align: left; margin-left: 12px; }
+      .tbb-mobile-drawer-lang-box {
+        background: #F4F8FC;
+        border-radius: 16px;
+        padding: 14px;
+        border: 1px solid #DCE6F2;
+      }
+      .tbb-drawer-lang-title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: #0D2540;
+        margin-bottom: 10px;
+      }
+      .tbb-drawer-lang-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 6px;
+      }
+      .tbb-drawer-lang-btn {
+        padding: 8px 0;
+        border-radius: 10px;
+        border: 1px solid #CBD5E1;
+        background: #FFFFFF;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.76rem;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .tbb-drawer-lang-btn.active {
+        background: #FF7A00;
+        color: #FFFFFF;
+        border-color: #FF7A00;
+      }
+
+      .tbb-mobile-bottom-dock {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1250;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(16px);
+        border-top: 1.5px solid #E2E8F0;
+        padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+        justify-content: space-around;
+      }
+      .tbb-mobile-dock-btn {
+        border: none;
+        background: transparent;
+        color: #475569;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.66rem;
+        font-weight: 800;
+        padding: 6px 8px;
+        border-radius: 12px;
+        cursor: pointer;
+      }
+      .tbb-mobile-dock-btn.active {
+        color: #0D2540;
+        background: #F4F8FC;
+      }
+
+      /* SCROLL-DRIVEN REVEALS */
+      .tbb-reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .tbb-reveal-on-scroll.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* RESPONSIVE BREAKPOINTS */
+      @media (max-width: 1120px) {
+        .tbb-desktop-nav { display: none; }
+        .tbb-mobile-menu-trigger { display: inline-flex; }
+        .tbb-mobile-bottom-dock { display: flex; }
+        .tbb-hero-convergence-grid,
+        .tbb-scrollytelling-layout,
+        .tbb-infographic-card-grid,
+        .tbb-kansei-sim-grid,
+        .tbb-demo-stage-wrap.is-iphone-mode,
+        .tbb-consolidated-brandbook-hero-card {
+          grid-template-columns: 1fr;
+        }
+        .tbb-sticky-iphone-column {
+          position: relative;
+          top: 0;
+          margin-bottom: 24px;
+        }
+        .tbb-precision-cutout-showcase {
+          grid-template-columns: 1fr;
+        }
+        .tbb-video-modal-body-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 680px) {
+        .tbb-header-buy-btn span { display: none; }
+        .tbb-monumental-logo-showcase { padding: 16px 20px; }
+        .tbb-monumental-isotipo-img { width: 84px; height: 84px; }
+        .tbb-monumental-horizontal-svg { height: 58px; }
+        .tbb-infographic-stage-node { grid-template-columns: 1fr; }
+        .tbb-infographic-spine-badge { width: 48px; height: 48px; font-size: 1.05rem; }
+      }
+    `;
+    document.head.appendChild(st);
+  }
+
+  // Motor de Animaciones Basadas en Scroll + Partículas 60fps estilo ImproBears + Sincronización de iPhone
+  window.tbbInitAwwwardsInteractions = function () {
+    // 1. Scroll-driven reveals
+    const revealEls = document.querySelectorAll(".tbb-reveal-on-scroll");
+    if ("IntersectionObserver" in window) {
+      const revObs = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            en.target.classList.add("is-visible");
+          }
+        });
+      }, { threshold: 0.12 });
+      revealEls.forEach((el) => revObs.observe(el));
+
+      // 2. Scrollytelling iPhone Synchronization in App Tour
+      const tourCards = document.querySelectorAll(".tbb-tour-scrolly-card[data-tour-step]");
+      if (tourCards.length > 0) {
+        const tourObs = new IntersectionObserver((entries) => {
+          entries.forEach((en) => {
+            if (en.isIntersecting) {
+              const sIdx = Number(en.target.getAttribute("data-tour-step"));
+              if (!isNaN(sIdx)) {
+                window.tbbSetTourActiveStep(sIdx);
+              }
+            }
+          });
+        }, { rootMargin: "-25% 0px -45% 0px", threshold: 0.15 });
+        tourCards.forEach((c) => tourObs.observe(c));
+      }
+    } else {
+      revealEls.forEach((el) => el.classList.add("is-visible"));
+    }
+
+    // 3. Inicializar Simulador Kansei si está presente en Bases Teóricas
+    if (document.getElementById("tbbKanseiLiveVectorPreview")) {
+      window.tbbUpdateKanseiInfographicSimulator();
+    }
+
+    // 4. Canvas de Nodos Conectados a 60fps en Hero (Estilo ImproBears)
+    const canvas = document.getElementById("tbbHeroDynamicCanvas");
+    if (canvas && !canvas.dataset.bound60fps) {
+      canvas.dataset.bound60fps = "1";
+      const ctx = canvas.getContext("2d");
+      let w = (canvas.width = canvas.parentElement.offsetWidth || window.innerWidth);
+      let h = (canvas.height = canvas.parentElement.offsetHeight || 720);
+      const nodes = Array.from({ length: 24 }, (_, i) => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.55,
+        vy: (Math.random() - 0.5) * 0.55,
+        r: i % 4 === 0 ? 3.5 : 2.2,
+        accent: i % 5 === 0
+      }));
+      function tick() {
+        if (!document.body.contains(canvas)) return;
+        ctx.clearRect(0, 0, w, h);
+        for (let i = 0; i < nodes.length; i++) {
+          const a = nodes[i];
+          a.x += a.vx;
+          a.y += a.vy;
+          if (a.x < 0 || a.x > w) a.vx *= -1;
+          if (a.y < 0 || a.y > h) a.vy *= -1;
+          for (let j = i + 1; j < nodes.length; j++) {
+            const b = nodes[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 165) {
+              ctx.strokeStyle = `rgba(66, 110, 174, ${(1 - dist / 165) * 0.16})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+          ctx.fillStyle = a.accent ? "rgba(255, 122, 0, 0.55)" : "rgba(13, 37, 64, 0.25)";
+          ctx.beginPath();
+          ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+  };
+
+  window.tbbUpdateAlwaysOnFloatingBarText = function () {};
+  window.tbbUpdateLocalizedFooterDOM = function () {};
+
+  window.tbbRefreshCommercialPortalDOM = function () {
+    tbbInjectAwwwardsStyles();
+    const standaloneRoot = document.getElementById("tbbStandaloneCommercialPageRoot") || document.getElementById("tbbStandaloneCommercialRoot");
+    if (standaloneRoot) {
+      standaloneRoot.innerHTML = window.tbbBuildCommercialExperienceMarkup(true);
+    }
+    const portalInner = document.getElementById("tbbCommercialPortalInner");
+    if (portalInner) {
+      portalInner.innerHTML = window.tbbBuildCommercialExperienceMarkup(false);
+    }
+    setTimeout(() => window.tbbInitAwwwardsInteractions(), 30);
+  };
+
+  function applyUrlParamsState() {
+    try {
+      const path = (window.location.pathname || "/").toLowerCase().replace(/\/+$/, "") || "/";
       const pathMap = {
         "/": 1,
         "/inicio": 1,
-        "/demo": 2,
-        "/app-tour": 3,
-        "/tour": 3,
-        "/bases-teoricas": 4,
-        "/teoria": 4,
+        "/app-tour": 2,
+        "/tour": 2,
+        "/bases-teoricas": 3,
+        "/bases-tecnicas": 3,
+        "/demo": 4,
+        "/aplicacion": 4,
         "/pack-descargas": 5,
-        "/descargas": 5
+        "/entregables": 5
       };
-      const cleanPath = String(window.location.pathname || "/").replace(/\/+$/, "") || "/";
-      if (pathMap[cleanPath]) {
-        window.tbbCommercialDemoState.activeMainSection = pathMap[cleanPath];
+      if (pathMap[path]) {
+        window.tbbCommercialDemoState.activeMainSection = pathMap[path];
       }
-
-      const secParam = sp.get("sec");
-      if (secParam) {
-        const map = { inicio: 1, demo: 2, "app-tour": 3, tour: 3, "bases-teoricas": 4, bases: 4, "pack-descargas": 5, pack: 5, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5 };
-        if (map[secParam.toLowerCase()]) {
-          window.tbbCommercialDemoState.activeMainSection = map[secParam.toLowerCase()];
-        }
+      const params = new URLSearchParams(window.location.search);
+      const langP = params.get("lang");
+      if (langP && ["es", "en", "fr", "pt", "de", "it"].includes(langP.toLowerCase())) {
+        localStorage.setItem(LANG_STORAGE_KEY, langP.toLowerCase());
+        localStorage.setItem("tbb_app_lang", langP.toLowerCase());
+        document.documentElement.lang = langP.toLowerCase();
+      }
+      const secP = params.get("section") || params.get("tab");
+      if (secP) {
+        const sMap = { "1": 1, "inicio": 1, "2": 2, "app-tour": 2, "3": 3, "bases-teoricas": 3, "4": 4, "demo": 4, "5": 5, "pack-descargas": 5 };
+        if (sMap[secP.toLowerCase()]) window.tbbCommercialDemoState.activeMainSection = sMap[secP.toLowerCase()];
       }
     } catch (e) {}
   }
 
-  window.addEventListener("popstate", function () {
-    applyUrlParamsState();
-    const sec = Number((window.tbbCommercialDemoState && window.tbbCommercialDemoState.activeMainSection) || 1);
-    window.tbbSwitchMainSection(sec, { skipHistory: true });
-  });
-
-  window.addEventListener("message", function (ev) {
-    if (!ev || !ev.data || typeof ev.data !== "object") return;
-    const msg = ev.data;
-
-    if (msg.type === "TBB_DEMO_PROGRESS_SYNC" && msg.stateSnapshot) {
-      const snap = msg.stateSnapshot;
+  // Escuchar eventos desde el iframe de /studio (Sincronización de Pasos 0-3 y Bloqueo de Pago $49 USD en Paso 4)
+  window.addEventListener("message", (ev) => {
+    try {
+      const msg = ev && ev.data;
+      if (!msg || typeof msg !== "object") return;
       const st = window.tbbCommercialDemoState;
-      st.migratedSteps0to3Snapshot = snap;
-      st.activeDemoStep = Number(msg.currentStep || st.activeDemoStep || 0);
-      if (snap.brandName) st.brandName = snap.brandName;
-      if (snap.tagline) st.tagline = snap.tagline;
-      if (snap.sector) st.sector = snap.sector;
-      if (snap.whyPurpose) st.whyPurpose = snap.whyPurpose;
-      if (snap.howMethod) st.howMethod = snap.howMethod;
-      if (snap.whatOffer) st.whatOffer = snap.whatOffer;
-      if (Array.isArray(snap.touchpoints) && snap.touchpoints.length) {
-        st.touchpoints = snap.touchpoints;
-      }
-      try {
-        localStorage.setItem("tbb_demo_steps0to3_migration_v92", JSON.stringify(snap));
-      } catch (e) {}
-
-      // Actualizar texto de estado en vivo junto al iPhone y el Círculo Dorado SVG
-      try {
-        document.querySelectorAll(".tbb-live-migration-status-txt").forEach(el => {
-          el.innerHTML = `<span style="color:#16A34A; font-weight:600;">● ${escHtml(snap.brandName || "Tu Marca")}</span> · Paso ${Number(msg.currentStep || 0)} sincronizado`;
-        });
-        const bTitleEl = document.getElementById("tbbDemoLiveBrandTitle");
-        if (bTitleEl && st.brandName) bTitleEl.textContent = st.brandName;
-        const bTagEl = document.getElementById("tbbDemoLiveBrandTagline");
-        if (bTagEl && st.tagline) bTagEl.textContent = st.tagline;
-        const gcWrap = document.getElementById("tbbDemoLiveGoldenCircleWrap");
-        if (gcWrap && typeof window.tbbBuildCircularGoldenCircleSVG === "function") {
-          gcWrap.innerHTML = window.tbbBuildCircularGoldenCircleSVG();
-        }
-      } catch (e) {}
-    } else if (msg.type === "TBB_TRIGGER_STEP4_PAYWALL" || msg.type === "TBB_DEMO_COMPLETED_STEP_2") {
-      if (msg.stateSnapshot) {
-        window.tbbCommercialDemoState.migratedSteps0to3Snapshot = msg.stateSnapshot;
-        if (msg.stateSnapshot.brandName) {
-          window.tbbCommercialDemoState.brandName = msg.stateSnapshot.brandName;
-        }
+      if (msg.type === "TBB_DEMO_STATE_SYNC" && msg.stateSnapshot) {
+        st.migratedSteps0to3Snapshot = msg.stateSnapshot;
+        if (msg.stateSnapshot.brandName) st.brandName = msg.stateSnapshot.brandName;
+        if (typeof msg.stateSnapshot.step === "number") st.activeDemoStep = msg.stateSnapshot.step;
         try {
-          localStorage.setItem("tbb_demo_steps0to3_migration_v92", JSON.stringify(msg.stateSnapshot));
+          localStorage.setItem("tbb_demo_steps_0_to_3_backup", JSON.stringify(msg.stateSnapshot));
         } catch (e) {}
       }
-      window.tbbOpenBuyAppCheckoutModal("pro_atelier");
-    }
+      if (msg.type === "TBB_OPEN_CHECKOUT_PAYWALL_STEP4" || msg.type === "TBB_TRIGGER_PAYWALL") {
+        if (msg.stateSnapshot) {
+          st.migratedSteps0to3Snapshot = msg.stateSnapshot;
+          try {
+            localStorage.setItem("tbb_demo_steps_0_to_3_backup", JSON.stringify(msg.stateSnapshot));
+          } catch (e) {}
+        }
+        window.tbbOpenBuyAppCheckoutModal("pro_atelier");
+      }
+    } catch (e) {}
+  });
+
+  window.addEventListener("popstate", () => {
+    applyUrlParamsState();
+    window.tbbRefreshCommercialPortalDOM();
   });
 
   function bootCommercialExperience() {
+    tbbInjectAwwwardsStyles();
     applyUrlParamsState();
-    ensureModalsAndFloatingBarMounted();
     window.tbbRefreshCommercialPortalDOM();
-    if (typeof window.tbbUpdateLocalizedFooterDOM === "function") {
-      window.tbbUpdateLocalizedFooterDOM();
-    }
-    try {
-      const sp = new URLSearchParams(window.location.search);
-      const viewerIdx = sp.get("viewer");
-      if (viewerIdx !== null && typeof window.tbbOpenPlateLightboxModal === "function") {
-        const idx = Math.max(0, Math.min(OFFICIAL_9_DELIVERABLES.length - 1, parseInt(viewerIdx, 10) || 0));
-        const item = OFFICIAL_9_DELIVERABLES[idx];
-        const loc = item.i18n[getLang()] || item.i18n.es;
-        setTimeout(() => window.tbbOpenPlateLightboxModal(item.plateNum, item.thumb, loc.title, item.sampleUrl), 250);
-      }
-      const paywallParam = sp.get("paywall");
-      if (paywallParam === "1" || paywallParam === "step4") {
-        setTimeout(() => window.tbbOpenBuyAppCheckoutModal("pro_atelier"), 250);
-      }
-      const videoParam = sp.get("video");
-      if (videoParam && typeof window.tbbOpenVideoPopupModal === "function") {
-        setTimeout(() => window.tbbOpenVideoPopupModal(videoParam), 250);
-      }
-    } catch (e) {}
   }
 
   if (document.readyState === "loading") {

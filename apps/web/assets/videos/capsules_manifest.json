@@ -39,7 +39,7 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "HeyGen Founder Avatar (Jorge Improbears Look 0 Lip-Sync) + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
+    "production_engine": "The Best Brand Founder Avatar + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
   },
   {
     "step": 1,
@@ -81,7 +81,7 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "HeyGen Founder Avatar (Jorge Improbears Look 1 Lip-Sync) + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
+    "production_engine": "The Best Brand Founder Avatar + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
   },
   {
     "step": 2,
@@ -123,7 +123,7 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "HeyGen Founder Avatar (Jorge Improbears Look 2 Lip-Sync) + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
+    "production_engine": "The Best Brand Founder Avatar + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
   },
   {
     "step": 3,
@@ -165,7 +165,7 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "HeyGen Founder Avatar (Jorge Improbears Look 3 Lip-Sync) + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
+    "production_engine": "The Best Brand Founder Avatar + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
   },
   {
     "step": 4,
@@ -207,14 +207,14 @@
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "HeyGen Founder Avatar (Jorge Improbears Look 4 Lip-Sync) + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
+    "production_engine": "The Best Brand Founder Avatar + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
   },
   {
     "step": 5,
     "video_url": "/assets/videos/capsula_teoria_paso_5.mp4",
     "duration_sec": 59.0,
     "size_kb": 4082.8,
-    "title": "Paso 5: Estudio de Logotipo con Gemini Vision y Evolución de Base",
+    "title": "Paso 5: Estudio de Logotipo con Aura Vision y Evolución de Base",
     "author_name": "Paul Rand & Jony Ive",
     "author_role": "Maestros de Identidad Visual y Liquid Glass",
     "theory_badge": "TEORÍA 05 · PAUL RAND, SAGI HAVIV, JONY IVE & JOSEF ALBERS",
@@ -228,10 +228,10 @@
       },
       {
         "phase_tag": "CLIP 2/4 · CONSERVA O EVOLUCIONA TU LOGO ACTUAL COMO BASE",
-        "headline": "Visión Multimodal Gemini para Mejorar tu Logo Existente",
+        "headline": "Visión Multimodal de Aura para Mejorar tu Logo Existente",
         "bullet_title": "Cita de Autor: Sagi Haviv (Chermayeff & Geismar & Haviv)",
-        "body_text": "Si subiste tu logo actual, puedes mantenerlo intacto o pulsar 'Evolucionar mi Logo': Gemini Vision analiza tu imagen y traza una evolución vectorial.",
-        "narration": "Si subiste tu logotipo actual, seguimos la máxima de Sagi Haviv: respetar la esencia reconocible mientras perfeccionamos sus trazos. Gemini analiza tu imagen y crea versiones evolucionadas al instante."
+        "body_text": "Si subiste tu logo actual, puedes mantenerlo intacto o pulsar 'Evolucionar mi Logo': Aura Vision analiza tu imagen y traza una evolución vectorial.",
+        "narration": "Si subiste tu logotipo actual, seguimos la máxima de Sagi Haviv: respetar la esencia reconocible mientras perfeccionamos sus trazos. Aura analiza tu imagen y crea versiones evolucionadas al instante."
       },
       {
         "phase_tag": "CLIP 3/4 · LIBERTAD CREATIVA 100% ABIERTA SIN LÍMITES",
@@ -244,26 +244,26 @@
         "phase_tag": "CLIP 4/4 · LOCKUP PRINCIPAL + ÍCONO APP 1:1 LIQUID GLASS",
         "headline": "Doble Vista Simultánea Lista para el Brandbook",
         "bullet_title": "Cita de Autor: Jony Ive (Física Óptica y Proporción 1:1)",
-        "body_text": "Observa en vivo tu logotipo horizontal o apilado arriba y tu ícono App 1:1 debajo. Al confirmarlo, se integra en tus 30 láminas del Paso 6.",
+        "body_text": "Observa en vivo tu logotipo horizontal o apilado arriba y tu ícono App 1:1 debajo. Al confirmarlo, se integra en tus más de 30 páginas del Paso 6.",
         "narration": "Inspirados en el rigor industrial de Jony Ive, visualizas al mismo tiempo tu logotipo completo y su ícono uno a uno. Cuando te enamore el resultado, confírmalo para generar tu manual."
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "HeyGen Founder Avatar (Jorge Improbears Look 5 Lip-Sync) + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
+    "production_engine": "The Best Brand Founder Avatar + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
   },
   {
     "step": 6,
     "video_url": "/assets/videos/capsula_teoria_paso_6.mp4",
     "duration_sec": 57.1,
     "size_kb": 3922.1,
-    "title": "Paso 6: Brandbook Maestro de 30 Láminas en Curvas (Guía C-00)",
+    "title": "Paso 6: Brandbook Maestro de más de 30 páginas en Curvas (Guía C-00)",
     "author_name": "Massimo Vignelli & El Oso",
     "author_role": "Sistemas de Retículas y Constitución C-00 ImproBears",
     "theory_badge": "TEORÍA 06 · MASSIMO VIGNELLI, MÜLLER-BROCKMANN & GUÍA C-00",
     "scenes": [
       {
         "phase_tag": "CLIP 1/4 · LA CONSTITUCIÓN VISUAL DE TU MARCA",
-        "headline": "30 Láminas Horizontales Conectadas de Punta a Punta",
+        "headline": "más de 30 páginas Horizontales Conectadas de Punta a Punta",
         "bullet_title": "Cita de Autor: Massimo Vignelli (The Vignelli Canon)",
         "body_text": "Massimo Vignelli demostró que un sistema de identidad protege el valor de la marca frente a terceros. Tu Brandbook une tus respuestas del Paso 0 al 5.",
         "narration": "Felicidades por llegar al Paso seis. Como estableció Massimo Vignelli en su Canon, un manual de identidad es la constitución que protege la coherencia de tu marca en todo momento."
@@ -286,11 +286,11 @@
         "phase_tag": "CLIP 4/4 · DESCARGA INSTANTÁNEA EN IPHONE, IPAD Y ESCRITORIO",
         "headline": "Exportación Ultrarrápida en PDF, HTML Autónomo y SVG",
         "bullet_title": "Compatible con Modo App en iOS y Compartir Nativo",
-        "body_text": "Descarga las 30 láminas en PDF en menos de 2 segundos, abre el visor interactivo dentro de la app o exporta los vectores de tu logotipo.",
+        "body_text": "Descarga las más de 30 páginas en PDF en menos de 2 segundos, abre el visor interactivo dentro de la app o exporta los vectores de tu logotipo.",
         "narration": "Con un solo toque puedes descargar tu PDF de treinta láminas en menos de dos segundos, compartirlo desde tu iPhone o exportar tu logotipo en curvas. Tu marca está lista para conquistar el mundo."
       }
     ],
     "aspect_ratio": "9:16",
-    "production_engine": "HeyGen Founder Avatar (Jorge Improbears Look 6 Lip-Sync) + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
+    "production_engine": "The Best Brand Founder Avatar + TheBestBrand Studio Captures + Male Baritone Voice (132Hz)"
   }
 ]

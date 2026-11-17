@@ -217,6 +217,12 @@ def force_sync_from_github():
 
 
 @app.api_route("/", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/inicio", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/app-tour", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/bases-teoricas", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/bases-tecnicas", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/demo", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/pack-descargas", methods=["GET", "HEAD"], response_class=HTMLResponse)
 def serve_web_app():
     content = _read_web_file_with_github_sync("index.html")
     return HTMLResponse(
@@ -225,7 +231,7 @@ def serve_web_app():
             "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
             "Pragma": "no-cache",
             "Expires": "0",
-            "X-TBB-Release": "v93.0-7cycles-325improvements"
+            "X-TBB-Release": "v105.0-200improvements-audit"
         }
     )
 
