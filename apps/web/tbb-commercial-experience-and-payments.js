@@ -1968,6 +1968,14 @@
   // ---------------------------------------------------------------------------
   // 4. CONTROLADOR DE NAVEGACIÓN ENTRE LAS 5 SUBPÁGINAS (COMPRAR SIEMPRE VISIBLE)
   // ---------------------------------------------------------------------------
+  const SUBPAGE_META = {
+    1: { slug: "inicio", path: "/", title: "THE BEST BRAND — YOUR BRAND, NOW!!!" },
+    2: { slug: "demo", path: "/demo", title: "Demo EN VIVO — THE BEST BRAND" },
+    3: { slug: "app-tour", path: "/app-tour", title: "App Tour — THE BEST BRAND" },
+    4: { slug: "bases-teoricas", path: "/bases-teoricas", title: "Bases Teóricas — THE BEST BRAND" },
+    5: { slug: "pack-descargas", path: "/pack-descargas", title: "Pack de Descargas — THE BEST BRAND" }
+  };
+
   window.tbbSetActiveMainTab = function (slugOrNum) {
     const map = {
       inicio: 1,
@@ -2021,17 +2029,46 @@
     });
   };
 
-  window.tbbSwitchMainSection = function (secNumber) {
+  window.tbbRenderActiveSubpageHTML = function (secNumber) {
+    const s = Math.max(1, Math.min(5, Number(secNumber || 1)));
+    if (s === 2) return window.tbbBuildSubpage2DemoHTML();
+    if (s === 3) return window.tbbBuildSubpage3AppTourHTML();
+    if (s === 4) return window.tbbBuildSubpage4TheoryHTML();
+    if (s === 5) return window.tbbBuildSubpage5DownloadsHTML();
+    return window.tbbBuildSubpage1HomeHTML();
+  };
+
+  window.tbbSwitchMainSection = function (secNumber, opts) {
     const s = Math.max(1, Math.min(5, Number(secNumber || 1)));
     if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
     window.tbbCommercialDemoState.activeMainSection = s;
     document.body.classList.remove("tbb-is-demo-section");
 
-    for (let i = 1; i <= 5; i++) {
-      const pane = document.getElementById(`tbbMainSectionPane_${i}`);
-      if (pane) {
-        pane.style.display = (i === s) ? "block" : "none";
+    const meta = SUBPAGE_META[s] || SUBPAGE_META[1];
+    try {
+      document.title = meta.title;
+      if (!(opts && opts.skipHistory)) {
+        const currentSearch = window.location.search || "";
+        const targetUrl = meta.path + currentSearch;
+        if (window.location.pathname !== meta.path) {
+          window.history.pushState({ sec: s }, meta.title, targetUrl);
+        }
       }
+    } catch (e) {}
+
+    const viewport = document.getElementById("tbbMainActiveSubpageViewport");
+    if (viewport) {
+      viewport.innerHTML = window.tbbRenderActiveSubpageHTML(s);
+    } else {
+      for (let i = 1; i <= 5; i++) {
+        const pane = document.getElementById(`tbbMainSectionPane_${i}`);
+        if (pane) {
+          pane.style.display = (i === s) ? "block" : "none";
+        }
+      }
+    }
+
+    for (let i = 1; i <= 5; i++) {
       document.querySelectorAll(`#tbbSecTab_${i}, .tbb-tab-sec-${i}`).forEach(btn => {
         btn.classList.toggle("is-active", i === s);
       });
@@ -2051,6 +2088,70 @@
         window.tbbInitAwwwardsInteractions();
       }
     }, 60);
+  };
+
+  window.tbbLaunchDemoFullscreen = function () {
+    window.tbbSwitchMainSection(2);
+    const curLang = getLang();
+    let overlay = document.getElementById("tbbFullscreenDemoOverlay");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "tbbFullscreenDemoOverlay";
+      overlay.style.cssText = "position:fixed; inset:0; z-index:99999; background:#090D16; display:flex; flex-direction:column; width:100vw; height:100vh;";
+      document.body.appendChild(overlay);
+    }
+
+    const backLabel = {
+      es: "← Volver a The Best Brand",
+      en: "← Back to The Best Brand",
+      fr: "← Retour à The Best Brand",
+      pt: "← Voltar para The Best Brand",
+      de: "← Zurück zu The Best Brand",
+      it: "← Torna a The Best Brand"
+    }[curLang] || "← Volver a The Best Brand";
+
+    overlay.innerHTML = `
+      <div style="height:48px; background:#0D2540; border-bottom:1px solid rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:space-between; padding:0 18px; flex-shrink:0;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="tbb-live-pulse-dot"></span>
+          <span style="font-family:'Montserrat', sans-serif; font-size:0.84rem; font-weight:700; color:#FFFFFF; letter-spacing:0.02em;">THE BEST BRAND · DEMO EN VIVO</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button type="button" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')" style="padding:6px 14px; border-radius:999px; border:none; background:#FF7A00; color:#FFFFFF; font-size:0.76rem; font-weight:700; cursor:pointer;">${escHtml(t("buyNowHeader"))}</button>
+          <button type="button" onclick="window.tbbCloseDemoFullscreen()" style="padding:6px 14px; border-radius:999px; border:1px solid rgba(255,255,255,0.28); background:rgba(255,255,255,0.08); color:#FFFFFF; font-size:0.76rem; font-weight:600; cursor:pointer;">${escHtml(backLabel)}</button>
+        </div>
+      </div>
+      <iframe
+        id="tbbFullscreenLiveStudioIframe"
+        src="/studio?demo=true&fullscreen=1&lang=${encodeURIComponent(curLang)}"
+        title="The Best Brand — Demo EN VIVO Pantalla Completa"
+        allow="microphone; autoplay; clipboard-write; fullscreen"
+        allowfullscreen
+        style="flex:1; width:100%; height:calc(100vh - 48px); border:none; display:block; background:#090D16;"
+      ></iframe>
+    `;
+    overlay.style.display = "flex";
+    document.body.style.overflow = "hidden";
+
+    try {
+      if (document.fullscreenEnabled && overlay.requestFullscreen && !document.fullscreenElement) {
+        overlay.requestFullscreen().catch(() => {});
+      }
+    } catch (e) {}
+  };
+
+  window.tbbCloseDemoFullscreen = function () {
+    const overlay = document.getElementById("tbbFullscreenDemoOverlay");
+    if (overlay) {
+      overlay.style.display = "none";
+      overlay.innerHTML = "";
+    }
+    document.body.style.overflow = "";
+    try {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    } catch (e) {}
   };
 
   window.tbbSetHeroVisualMode = function (mode) {
@@ -3073,7 +3174,7 @@
             <div style="display:flex; gap:14px; overflow-x:auto; padding:6px 2px 16px 2px; scroll-snap-type:x mandatory;">
               ${plates36Meta.map(p => `
                 <div data-chapter="${p.chap}" class="tbb-plate36-thumb-card" onclick="window.tbbOpenPlateLightboxModal(${p.n})" style="min-width:230px; max-width:230px; scroll-snap-align:start; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:10px; display:flex; flex-direction:column; gap:8px; cursor:pointer; flex-shrink:0;">
-                  <img src="${p.img}" alt="Plate ${p.pad}" loading="lazy" style="width:100%; height:132px; object-fit:cover; border-radius:10px; background:#FFFFFF; border:1px solid #E2E8F0;" />
+                  <img src="${p.img}" alt="Plate ${p.pad}" loading="eager" decoding="async" style="width:100%; height:132px; object-fit:cover; border-radius:10px; background:#FFFFFF; border:1px solid #E2E8F0;" />
                   <div style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="font-family:'JetBrains Mono', monospace; font-size:0.68rem; font-weight:600; color:#0F172A;">${escHtml(chapI18n.plateWord)} ${p.pad} / 36</span>
                     <span style="font-size:0.68rem; color:#1D4ED8;">⤢ Max Res</span>
@@ -3108,7 +3209,7 @@
               return `
                 <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:20px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
                   <div onclick="window.tbbOpenPlateLightboxModal(${item.plateNum}, '${item.thumb}', '${escHtml(loc.title)}', '${item.sampleUrl}')" style="cursor:pointer;">
-                    <img src="${item.thumb}" alt="${escHtml(loc.title)}" loading="lazy" style="width:100%; height:144px; object-fit:cover; object-position:top center; border-radius:12px; background:#F8FAFC; border:1px solid #F1F5F9; margin-bottom:10px;" />
+                    <img src="${item.thumb}" alt="${escHtml(loc.title)}" loading="eager" decoding="async" style="width:100%; height:144px; object-fit:cover; object-position:top center; border-radius:12px; background:#F8FAFC; border:1px solid #F1F5F9; margin-bottom:10px;" />
                     <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:500; color:#EA580C;">#${item.num} · ${escHtml(fmtTxt)}</div>
                     <h3 style="font-family:'Montserrat', sans-serif; font-size:0.95rem; font-weight:600; color:#0F172A; margin:4px 0 6px 0; line-height:1.3;">${escHtml(loc.title)}</h3>
                     <p style="font-size:0.82rem; font-weight:400; color:#64748B; line-height:1.5; margin:0;">${escHtml(loc.desc)}</p>
@@ -3438,14 +3539,14 @@
                   ${hasSecondary ? `
                     <div class="tbb-comm-grid-2" style="gap:20px; align-items:stretch;">
                       <div style="border-radius:18px; overflow:hidden; background:#F8FAFC; border:1px solid #E2E8F0; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between;" onclick="window.tbbOpenPlateLightboxModal(1, '${item.img}', '${escHtml(loc.title)} (01)')">
-                        <img src="${item.img}" alt="${escHtml(loc.title)} 1" loading="lazy" style="width:100%; max-height:460px; object-fit:contain; display:block; background:#F8FAFC;" />
+                        <img src="${item.img}" alt="${escHtml(loc.title)} 1" loading="eager" decoding="async" style="width:100%; max-height:460px; object-fit:contain; display:block; background:#F8FAFC;" />
                         <div style="padding:10px 16px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:#475569;">
                           <span>${escHtml(tourUiLabels.v1)}</span>
                           <span style="color:#1D4ED8; font-family:'JetBrains Mono', monospace;">${escHtml(tourUiLabels.zoom)}</span>
                         </div>
                       </div>
                       <div style="border-radius:18px; overflow:hidden; background:#F8FAFC; border:1px solid #E2E8F0; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between;" onclick="window.tbbOpenPlateLightboxModal(1, '${item.secondaryImg}', '${escHtml(loc.title)} (02)')">
-                        <img src="${item.secondaryImg}" alt="${escHtml(loc.title)} 2" loading="lazy" style="width:100%; max-height:460px; object-fit:contain; display:block; background:#F8FAFC;" />
+                        <img src="${item.secondaryImg}" alt="${escHtml(loc.title)} 2" loading="eager" decoding="async" style="width:100%; max-height:460px; object-fit:contain; display:block; background:#F8FAFC;" />
                         <div style="padding:10px 16px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:#475569;">
                           <span>${escHtml(tourUiLabels.v2)}</span>
                           <span style="color:#1D4ED8; font-family:'JetBrains Mono', monospace;">${escHtml(tourUiLabels.zoom)}</span>
@@ -3454,7 +3555,7 @@
                     </div>
                   ` : `
                     <div style="border-radius:20px; overflow:hidden; background:#F8FAFC; border:1px solid #E2E8F0; cursor:pointer;" onclick="${isPopup ? `window.tbbOpenVideoPopupModal(${item.videoIdx})` : `window.tbbOpenPlateLightboxModal(1, '${item.img}', '${escHtml(loc.title)}')`}">
-                      <img src="${displayImg}" alt="${escHtml(loc.title)}" loading="lazy" style="width:100%; max-height:560px; object-fit:contain; display:block; margin:0 auto; background:#F8FAFC;" />
+                      <img src="${displayImg}" alt="${escHtml(loc.title)}" loading="eager" decoding="async" style="width:100%; max-height:560px; object-fit:contain; display:block; margin:0 auto; background:#F8FAFC;" />
                       <div style="padding:12px 18px; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
                         <div style="font-size:0.84rem; font-weight:500; color:#0F172A;">
                           ${escHtml(loc.title)}
@@ -3477,7 +3578,7 @@
                           const dFmt = dLoc.format || deliv.format;
                           return `
                             <div style="min-width:290px; max-width:290px; scroll-snap-align:start; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:18px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; cursor:pointer;" onclick="window.tbbOpenPlateLightboxModal(${deliv.plateNum}, '${deliv.thumb}', '${escHtml(dLoc.title)}', '${deliv.sampleUrl}')">
-                              <img src="${deliv.thumb}" alt="${escHtml(dLoc.title)}" loading="lazy" style="width:100%; height:150px; object-fit:cover; object-position:top center; border-radius:12px; background:#FFFFFF;" />
+                              <img src="${deliv.thumb}" alt="${escHtml(dLoc.title)}" loading="eager" decoding="async" style="width:100%; height:150px; object-fit:cover; object-position:top center; border-radius:12px; background:#FFFFFF;" />
                               <div>
                                 <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:500; color:#EA580C;">#${deliv.num} · ${escHtml(dFmt)}</div>
                                 <div style="font-size:0.9rem; font-weight:600; color:#0F172A; margin-top:3px;">${escHtml(dLoc.title)}</div>
@@ -3533,7 +3634,7 @@
                   <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:22px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.25s ease; cursor:pointer;" onclick="window.tbbOpenVideoPopupModal(${idx})">
                     <div>
                       <div style="position:relative; width:100%; aspect-ratio:9/16; max-height:420px; background:#0F172A; overflow:hidden; display:flex; align-items:center; justify-content:center;">
-                        <img src="${cap.poster}" alt="${escHtml(loc.title)}" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:top center; display:block; background:#0F172A;" />
+                        <img src="${cap.poster}" alt="${escHtml(loc.title)}" loading="eager" decoding="async" style="width:100%; height:100%; object-fit:cover; object-position:top center; display:block; background:#0F172A;" />
                         <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(15,23,42,0.04) 0%, rgba(15,23,42,0.34) 100%); display:flex; align-items:center; justify-content:center;">
                           <div style="width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,0.94); color:#0D2540; display:flex; align-items:center; justify-content:center; font-size:1.1rem; box-shadow:0 10px 25px rgba(0,0,0,0.28);">▶</div>
                         </div>
@@ -3566,7 +3667,7 @@
                   <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:20px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between;">
                     <div>
                       <div style="position:relative; aspect-ratio:16/9; background:#0F172A; cursor:pointer; overflow:hidden;" onclick="window.tbbPlayYouTubeAuthorVideo('${a.id}')">
-                        <img src="${a.thumb}" onerror="if(this.src!=='${a.ytThumbFallback}')this.src='${a.ytThumbFallback}';" alt="${escHtml(aLoc.title)}" loading="lazy" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;" />
+                        <img src="${a.thumb}" onerror="if(this.src!=='${a.ytThumbFallback}')this.src='${a.ytThumbFallback}';" alt="${escHtml(aLoc.title)}" loading="eager" decoding="async" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;" />
                         <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(15,23,42,0.10) 0%, rgba(15,23,42,0.42) 100%); display:flex; align-items:center; justify-content:center;">
                           <div style="width:54px; height:38px; border-radius:10px; background:#FF0000; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:1.05rem; box-shadow:0 8px 24px rgba(0,0,0,0.38);">▶</div>
                         </div>
@@ -3597,7 +3698,7 @@
                 const bLoc = (b.i18n && (b.i18n[lang] || b.i18n.es)) || b;
                 return `
                   <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:20px; padding:20px; display:flex; gap:18px; align-items:center;">
-                    <img src="/assets/books/${b.coverImg}" alt="${escHtml(bLoc.title || b.title)}" loading="lazy" style="width:88px; height:128px; object-fit:cover; border-radius:10px; box-shadow:0 8px 20px rgba(15,23,42,0.12); flex-shrink:0;" />
+                    <img src="/assets/books/${b.coverImg}" alt="${escHtml(bLoc.title || b.title)}" loading="eager" decoding="async" style="width:88px; height:128px; object-fit:cover; border-radius:10px; box-shadow:0 8px 20px rgba(15,23,42,0.12); flex-shrink:0;" />
                     <div style="display:flex; flex-direction:column; gap:6px;">
                       <div style="font-family:'JetBrains Mono', monospace; font-size:0.66rem; font-weight:500; color:#1D4ED8;">${escHtml(bLoc.step)}</div>
                       <h3 style="font-family:'Montserrat', sans-serif; font-size:1.0rem; font-weight:600; color:#0F172A; margin:0;">${escHtml(bLoc.title || b.title)}</h3>
@@ -3693,7 +3794,7 @@
                   <div id="tbbCarouselDelivCard_${idx}" onclick="window.tbbSelectDeliverableCarousel(${idx})" style="min-width:265px; max-width:265px; scroll-snap-align:center; background:${isSel ? '#FFFFFF' : '#F8FAFC'}; border-radius:20px; padding:14px; border:2px solid ${isSel ? '#1D4ED8' : '#E2E8F0'}; box-shadow:${isSel ? '0 16px 36px rgba(29,78,216,0.14)' : '0 4px 12px rgba(15,23,42,0.04)'}; cursor:pointer; transition:all 0.22s ease; display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
                     <div>
                       <div style="position:relative; border-radius:12px; overflow:hidden; background:#FFFFFF; margin-bottom:10px;">
-                        <img src="${item.thumb}" alt="${escHtml(loc.title)}" loading="lazy" style="width:100%; height:148px; object-fit:cover; object-position:top center; display:block;" />
+                        <img src="${item.thumb}" alt="${escHtml(loc.title)}" loading="eager" decoding="async" style="width:100%; height:148px; object-fit:cover; object-position:top center; display:block;" />
                         <button type="button" onclick="event.stopPropagation(); window.tbbOpenPlateLightboxModal(${item.plateNum}, '${item.thumb}', '${escHtml(loc.title)}', '${item.sampleUrl}');" style="position:absolute; top:8px; right:8px; background:rgba(15,23,42,0.82); color:#FFFFFF; border:none; border-radius:999px; padding:4px 10px; font-size:0.68rem; cursor:pointer;">
                           ⤢ Max Res
                         </button>
@@ -3794,7 +3895,7 @@
           <button type="button" id="tbbSecTab_1" class="tbb-nav-menu-item ${sec === 1 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(1)">
             <span>${escHtml(t("menu1"))}</span>
           </button>
-          <button type="button" id="tbbSecTab_2" class="tbb-nav-menu-item ${sec === 2 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(2)">
+          <button type="button" id="tbbSecTab_2" class="tbb-nav-menu-item ${sec === 2 ? 'is-active' : ''}" onclick="window.tbbLaunchDemoFullscreen()">
             <span class="tbb-live-pulse-dot"></span>
             <span>${escHtml(t("menu2"))}</span>
             <span class="tbb-live-pill-badge">${escHtml(t("menu2Live"))}</span>
@@ -3840,7 +3941,7 @@
 
       <nav class="tbb-mobile-subpages-bar" aria-label="Subpáginas">
         <button type="button" class="tbb-mob-pill tbb-tab-sec-1 ${sec === 1 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(1)">${escHtml(t("menu1"))}</button>
-        <button type="button" class="tbb-mob-pill tbb-tab-sec-2 ${sec === 2 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(2)">
+        <button type="button" class="tbb-mob-pill tbb-tab-sec-2 ${sec === 2 ? 'is-active' : ''}" onclick="window.tbbLaunchDemoFullscreen()">
           <span class="tbb-live-pulse-dot"></span> ${escHtml(t("menu2"))}
         </button>
         <button type="button" class="tbb-mob-pill tbb-tab-sec-3 ${sec === 3 ? 'is-active' : ''}" onclick="window.tbbSwitchMainSection(3)">${escHtml(t("menu3"))}</button>
@@ -3856,7 +3957,7 @@
         </div>
         <div style="display:flex; flex-direction:column; gap:10px; margin-top:16px;">
           <button type="button" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(1);" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px;">01 · ${escHtml(t("menu1"))}</button>
-          <button type="button" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(2);" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px;">02 · ${escHtml(t("menu2"))} (${escHtml(t("menu2Live"))})</button>
+          <button type="button" onclick="window.tbbToggleMobileDrawer(false); window.tbbLaunchDemoFullscreen();" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px;">02 · ${escHtml(t("menu2"))} (${escHtml(t("menu2Live"))})</button>
           <button type="button" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(3);" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px;">03 · ${escHtml(t("menu3"))}</button>
           <button type="button" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(4);" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px;">04 · ${escHtml(t("menu4"))}</button>
           <button type="button" onclick="window.tbbToggleMobileDrawer(false); window.tbbSwitchMainSection(5);" class="tbb-btn-light-surface" style="justify-content:flex-start; padding:12px 14px;">05 · ${escHtml(t("menu5"))}</button>
@@ -3865,22 +3966,8 @@
         </div>
       </aside>
 
-      <main style="background:#FFFFFF; min-height:82vh;">
-        <div id="tbbMainSectionPane_1" style="display:${sec === 1 ? 'block' : 'none'};">
-          ${window.tbbBuildSubpage1HomeHTML()}
-        </div>
-        <div id="tbbMainSectionPane_2" style="display:${sec === 2 ? 'block' : 'none'};">
-          ${window.tbbBuildSubpage2DemoHTML()}
-        </div>
-        <div id="tbbMainSectionPane_3" style="display:${sec === 3 ? 'block' : 'none'};">
-          ${window.tbbBuildSubpage3AppTourHTML()}
-        </div>
-        <div id="tbbMainSectionPane_4" style="display:${sec === 4 ? 'block' : 'none'};">
-          ${window.tbbBuildSubpage4TheoryHTML()}
-        </div>
-        <div id="tbbMainSectionPane_5" style="display:${sec === 5 ? 'block' : 'none'};">
-          ${window.tbbBuildSubpage5DownloadsHTML()}
-        </div>
+      <main id="tbbMainActiveSubpageViewport" style="background:#FFFFFF; min-height:82vh;">
+        ${window.tbbRenderActiveSubpageHTML(sec)}
       </main>
     `;
   };
@@ -3942,11 +4029,11 @@
     const fNav = document.getElementById("tbbFooterNavLinks");
     if (fNav) {
       fNav.innerHTML = `
-        <a href="#inicio" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('inicio');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">01 · ${escHtml(t("menu1"))}</a>
-        <a href="#demo" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('demo');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">02 · ${escHtml(t("menu2"))}</a>
-        <a href="#app-tour" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('app-tour');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">03 · ${escHtml(t("menu3"))}</a>
-        <a href="#bases-teoricas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('bases-teoricas');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">04 · ${escHtml(t("menu4"))}</a>
-        <a href="#pack-descargas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('pack-descargas');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">05 · ${escHtml(t("menu5"))}</a>
+        <a href="/" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('inicio');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">01 · ${escHtml(t("menu1"))}</a>
+        <a href="/demo" onclick="if(window.tbbLaunchDemoFullscreen){window.tbbLaunchDemoFullscreen();return false;}" style="font-size:0.84rem; color:#16A34A; text-decoration:none; font-weight:600;">02 · ${escHtml(t("menu2"))}</a>
+        <a href="/app-tour" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('app-tour');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">03 · ${escHtml(t("menu3"))}</a>
+        <a href="/bases-teoricas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('bases-teoricas');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">04 · ${escHtml(t("menu4"))}</a>
+        <a href="/pack-descargas" onclick="if(window.tbbSetActiveMainTab){window.tbbSetActiveMainTab('pack-descargas');return false;}" style="font-size:0.84rem; color:#475569; text-decoration:none; font-weight:500;">05 · ${escHtml(t("menu5"))}</a>
         <a href="/studio" style="font-size:0.84rem; color:#1D4ED8; text-decoration:none; font-weight:600;">${escHtml(t("openStudio"))}</a>
       `;
     }
