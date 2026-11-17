@@ -1847,15 +1847,258 @@
     });
   };
 
-  // Data URI en curvas puras del Logotipo Oficial THE BEST BRAND (Sin subtexto microscópico ilegible; el tagline oficial "Your Brand,  NOW!!!" se muestra debajo donde es 100% legible)
+  // Data URI en curvas puras del Isotipo Oficial y del Logotipo THE BEST BRAND (Cero texto "del caos al sistema"; únicamente el Isotipo + "THE BEST BRAND")
+  const TBB_ISOTIPO_SVG_RAW = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200"><circle cx="100" cy="102" r="87" fill="#090D16" fill-opacity="0.10"/><circle cx="100" cy="100" r="86" fill="#FF7A00"/><circle cx="100" cy="100" r="84.2" fill="none" stroke="#FFF7ED" stroke-width="1.2" stroke-opacity="0.55"/><circle cx="100" cy="100" r="81.2" fill="#EA580C" fill-opacity="0.65"/><circle cx="100" cy="100" r="79.5" fill="#070D19"/><circle cx="100" cy="100" r="76.5" fill="#0D2540" fill-opacity="0.88"/><circle cx="100" cy="96" r="68" fill="#1E3A8A" fill-opacity="0.28"/><circle cx="100" cy="100" r="77.2" fill="none" stroke="#60A5FA" stroke-width="1.3" stroke-opacity="0.42"/><circle cx="100" cy="100" r="56" fill="#38BDF8" fill-opacity="0.12"/><circle cx="100" cy="100" r="44" fill="#426EAE" fill-opacity="0.18"/><path d="M 100.00 87.00 C 86.50 68.00, 81.50 43.00, 100.00 32.00 C 118.50 43.00, 113.50 68.00, 100.00 87.00 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 106.50 88.74 C 104.31 65.54, 112.48 41.39, 134.00 41.11 C 144.52 59.89, 127.69 79.04, 106.50 88.74 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 111.26 93.50 C 120.96 72.31, 140.11 55.48, 158.89 66.00 C 158.61 87.52, 134.46 95.69, 111.26 93.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 113.00 100.00 C 132.00 86.50, 157.00 81.50, 168.00 100.00 C 157.00 118.50, 132.00 113.50, 113.00 100.00 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 111.26 106.50 C 134.46 104.31, 158.61 112.48, 158.89 134.00 C 140.11 144.52, 120.96 127.69, 111.26 106.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 106.50 111.26 C 127.69 120.96, 144.52 140.11, 134.00 158.89 C 112.48 158.61, 104.31 134.46, 106.50 111.26 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 100.00 113.00 C 113.50 132.00, 118.50 157.00, 100.00 168.00 C 81.50 157.00, 86.50 132.00, 100.00 113.00 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 93.50 111.26 C 95.69 134.46, 87.52 158.61, 66.00 158.89 C 55.48 140.11, 72.31 120.96, 93.50 111.26 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 88.74 106.50 C 79.04 127.69, 59.89 144.52, 41.11 134.00 C 41.39 112.48, 65.54 104.31, 88.74 106.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 87.00 100.00 C 68.00 113.50, 43.00 118.50, 32.00 100.00 C 43.00 81.50, 68.00 86.50, 87.00 100.00 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 88.74 93.50 C 65.54 95.69, 41.39 87.52, 41.11 66.00 C 59.89 55.48, 79.04 72.31, 88.74 93.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 93.50 88.74 C 72.31 79.04, 55.48 59.89, 66.00 41.11 C 87.52 41.39, 95.69 65.54, 93.50 88.74 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><circle cx="100" cy="100" r="28" fill="none" stroke="#93C5FD" stroke-width="0.9" stroke-opacity="0.45"/><circle cx="100" cy="100" r="25" fill="#FF7A00" fill-opacity="0.22"/><circle cx="100" cy="100" r="17.5" fill="#F97316" fill-opacity="0.48"/><circle cx="100" cy="100" r="11.8" fill="#FFEDD5" fill-opacity="0.86"/><circle cx="100" cy="100" r="6.5" fill="#FFFFFF"/><path d="M 42 66 C 56 35, 144 35, 158 66 C 138 50, 62 50, 42 66 Z" fill="#FFFFFF" fill-opacity="0.26"/></svg>`;
+  const TBB_ISOTIPO_DATA_URI = "data:image/svg+xml;utf8," + encodeURIComponent(TBB_ISOTIPO_SVG_RAW);
+
   const TBB_CLEAN_LOGO_SVG_RAW = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 120" width="430" height="120"><g transform="translate(10, 10) scale(0.5)"><circle cx="100" cy="102" r="87" fill="#090D16" fill-opacity="0.10"/><circle cx="100" cy="100" r="86" fill="#FF7A00"/><circle cx="100" cy="100" r="84.2" fill="none" stroke="#FFF7ED" stroke-width="1.2" stroke-opacity="0.55"/><circle cx="100" cy="100" r="81.2" fill="#EA580C" fill-opacity="0.65"/><circle cx="100" cy="100" r="79.5" fill="#070D19"/><circle cx="100" cy="100" r="76.5" fill="#0D2540" fill-opacity="0.88"/><circle cx="100" cy="96" r="68" fill="#1E3A8A" fill-opacity="0.28"/><circle cx="100" cy="100" r="77.2" fill="none" stroke="#60A5FA" stroke-width="1.3" stroke-opacity="0.42"/><circle cx="100" cy="100" r="56" fill="#38BDF8" fill-opacity="0.12"/><circle cx="100" cy="100" r="44" fill="#426EAE" fill-opacity="0.18"/><path d="M 100.00 87.00 C 86.50 68.00, 81.50 43.00, 100.00 32.00 C 118.50 43.00, 113.50 68.00, 100.00 87.00 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 106.50 88.74 C 104.31 65.54, 112.48 41.39, 134.00 41.11 C 144.52 59.89, 127.69 79.04, 106.50 88.74 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 111.26 93.50 C 120.96 72.31, 140.11 55.48, 158.89 66.00 C 158.61 87.52, 134.46 95.69, 111.26 93.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 113.00 100.00 C 132.00 86.50, 157.00 81.50, 168.00 100.00 C 157.00 118.50, 132.00 113.50, 113.00 100.00 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 111.26 106.50 C 134.46 104.31, 158.61 112.48, 158.89 134.00 C 140.11 144.52, 120.96 127.69, 111.26 106.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 106.50 111.26 C 127.69 120.96, 144.52 140.11, 134.00 158.89 C 112.48 158.61, 104.31 134.46, 106.50 111.26 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 100.00 113.00 C 113.50 132.00, 118.50 157.00, 100.00 168.00 C 81.50 157.00, 86.50 132.00, 100.00 113.00 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 93.50 111.26 C 95.69 134.46, 87.52 158.61, 66.00 158.89 C 55.48 140.11, 72.31 120.96, 93.50 111.26 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 88.74 106.50 C 79.04 127.69, 59.89 144.52, 41.11 134.00 C 41.39 112.48, 65.54 104.31, 88.74 106.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 87.00 100.00 C 68.00 113.50, 43.00 118.50, 32.00 100.00 C 43.00 81.50, 68.00 86.50, 87.00 100.00 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 88.74 93.50 C 65.54 95.69, 41.39 87.52, 41.11 66.00 C 59.89 55.48, 79.04 72.31, 88.74 93.50 Z" fill="#38BDF8" fill-opacity="0.28" stroke="#7DD3FC" stroke-width="1.35" stroke-opacity="0.82"/><path d="M 93.50 88.74 C 72.31 79.04, 55.48 59.89, 66.00 41.11 C 87.52 41.39, 95.69 65.54, 93.50 88.74 Z" fill="#426EAE" fill-opacity="0.22" stroke="#60A5FA" stroke-width="1.35" stroke-opacity="0.82"/><circle cx="100" cy="100" r="28" fill="none" stroke="#93C5FD" stroke-width="0.9" stroke-opacity="0.45"/><circle cx="100" cy="100" r="25" fill="#FF7A00" fill-opacity="0.22"/><circle cx="100" cy="100" r="17.5" fill="#F97316" fill-opacity="0.48"/><circle cx="100" cy="100" r="11.8" fill="#FFEDD5" fill-opacity="0.86"/><circle cx="100" cy="100" r="6.5" fill="#FFFFFF"/><path d="M 42 66 C 56 35, 144 35, 158 66 C 138 50, 62 50, 42 66 Z" fill="#FFFFFF" fill-opacity="0.26"/></g><line x1="125" y1="24" x2="125" y2="96" stroke="#CBD5E1" stroke-width="1.8"/><g transform="translate(0, 13)"><path d="M156.570 56L150.434 56L150.434 42.558L145.104 42.558L145.104 37.800L161.900 37.800L161.900 42.558L156.570 42.558L156.570 56ZM183.226 56L177.090 56L177.090 49.292L171.422 49.292L171.422 56L165.286 56L165.286 37.800L171.422 37.800L171.422 44.248L177.090 44.248L177.090 37.800L183.226 37.800L183.226 56ZM203.122 56L187.990 56L187.990 37.800L202.784 37.800L202.784 42.428L194.022 42.428L194.022 44.560L201.718 44.560L201.718 48.980L194.022 48.980L194.022 51.372L203.122 51.372L203.122 56ZM227.132 56L216.888 56L216.888 37.800L226.612 37.800Q230.382 37.800 232.176 39.139Q233.970 40.478 233.970 42.558L233.970 42.558Q233.970 43.936 233.216 45.002L233.216 45.002Q232.566 45.912 231.474 46.484L231.474 46.484Q231.526 46.510 231.604 46.536L231.604 46.536Q233.138 47.134 233.983 48.265Q234.828 49.396 234.828 50.982L234.828 50.982Q234.828 53.348 232.865 54.674Q230.902 56 227.132 56L227.132 56ZM222.920 48.850L222.920 51.710L226.612 51.710Q227.626 51.710 228.133 51.346Q228.640 50.982 228.640 50.280Q228.640 49.578 228.133 49.214Q227.626 48.850 226.612 48.850L226.612 48.850L222.920 48.850ZM222.920 42.090L222.920 44.794L225.780 44.794Q226.820 44.794 227.301 44.443Q227.782 44.092 227.782 43.442L227.782 43.442Q227.782 42.766 227.301 42.428Q226.820 42.090 225.780 42.090L225.780 42.090L222.920 42.090ZM253.918 56L238.786 56L238.786 37.800L253.580 37.800L253.580 42.428L244.818 42.428L244.818 44.560L252.514 44.560L252.514 48.980L244.818 48.980L244.818 51.372L253.918 51.372L253.918 56ZM264.870 56.416L264.870 56.416Q262.582 56.416 260.450 55.896Q258.318 55.376 256.940 54.544L256.940 54.544L258.916 50.072Q260.216 50.826 261.815 51.281Q263.414 51.736 264.922 51.736L264.922 51.736Q265.806 51.736 266.313 51.619Q266.820 51.502 267.054 51.281Q267.288 51.060 267.288 50.748L267.288 50.748Q267.288 50.254 266.742 49.968Q266.196 49.682 265.299 49.487Q264.402 49.292 263.336 49.071Q262.270 48.850 261.191 48.486Q260.112 48.122 259.215 47.524Q258.318 46.926 257.772 45.951Q257.226 44.976 257.226 43.520L257.226 43.520Q257.226 41.830 258.175 40.439Q259.124 39.048 261.009 38.216Q262.894 37.384 265.702 37.384L265.702 37.384Q267.548 37.384 269.342 37.774Q271.136 38.164 272.566 38.970L272.566 38.970L270.720 43.416Q269.368 42.740 268.107 42.402Q266.846 42.064 265.650 42.064L265.650 42.064Q264.766 42.064 264.246 42.220Q263.726 42.376 263.505 42.636Q263.284 42.896 263.284 43.208L263.284 43.208Q263.284 43.676 263.830 43.949Q264.376 44.222 265.273 44.404Q266.170 44.586 267.249 44.794Q268.328 45.002 269.394 45.366Q270.460 45.730 271.357 46.328Q272.254 46.926 272.800 47.888Q273.346 48.850 273.346 50.280L273.346 50.280Q273.346 51.944 272.397 53.335Q271.448 54.726 269.576 55.571Q267.704 56.416 264.870 56.416ZM287.054 56L280.918 56L280.918 42.558L275.588 42.558L275.588 37.800L292.384 37.800L292.384 42.558L287.054 42.558L287.054 56ZM315.614 56L305.370 56L305.370 37.800L315.094 37.800Q318.864 37.800 320.658 39.139Q322.452 40.478 322.452 42.558L322.452 42.558Q322.452 43.936 321.698 45.002L321.698 45.002Q321.048 45.912 319.956 46.484L319.956 46.484Q320.008 46.510 320.086 46.536L320.086 46.536Q321.620 47.134 322.465 48.265Q323.310 49.396 323.310 50.982L323.310 50.982Q323.310 53.348 321.347 54.674Q319.384 56 315.614 56L315.614 56ZM311.402 48.850L311.402 51.710L315.094 51.710Q316.108 51.710 316.615 51.346Q317.122 50.982 317.122 50.280Q317.122 49.578 316.615 49.214Q316.108 48.850 315.094 48.850L315.094 48.850L311.402 48.850ZM311.402 42.090L311.402 44.794L314.262 44.794Q315.302 44.794 315.783 44.443Q316.264 44.092 316.264 43.442L316.264 43.442Q316.264 42.766 315.783 42.428Q315.302 42.090 314.262 42.090L314.262 42.090L311.402 42.090ZM333.404 56L327.268 56L327.268 37.800L335.770 37.800Q339.956 37.800 342.140 39.646Q344.324 41.492 344.324 44.664L344.324 44.664Q344.324 46.770 343.310 48.278L343.310 48.278Q342.426 49.630 340.892 50.410L340.892 50.410L344.714 56L338.162 56L335.068 51.424L333.404 51.424L333.404 56ZM333.404 42.532L333.404 46.796L335.640 46.796Q336.914 46.796 337.525 46.224Q338.136 45.652 338.136 44.664Q338.136 43.676 337.525 43.104Q336.914 42.532 335.640 42.532L335.640 42.532L333.404 42.532ZM352.702 56L346.462 56L354.418 37.800L360.450 37.800L368.406 56L362.062 56L360.840 52.828L353.924 52.828L352.702 56ZM355.614 48.408L359.150 48.408L357.382 43.832L355.614 48.408ZM377.174 56L371.194 56L371.194 37.800L376.238 37.800L383.154 46.068L383.154 37.800L389.134 37.800L389.134 56L384.090 56L377.174 47.732L377.174 56ZM402.868 56L393.898 56L393.898 37.800L402.868 37.800Q405.910 37.800 408.224 38.905Q410.538 40.010 411.838 42.038Q413.138 44.066 413.138 46.900L413.138 46.900Q413.138 49.708 411.838 51.749Q410.538 53.790 408.224 54.895Q405.910 56 402.868 56L402.868 56ZM400.034 42.584L400.034 51.216L402.608 51.216Q403.908 51.216 404.883 50.722Q405.858 50.228 406.404 49.253Q406.950 48.278 406.950 46.900L406.950 46.900Q406.950 45.496 406.404 44.534Q405.858 43.572 404.883 43.078Q403.908 42.584 402.608 42.584L402.608 42.584L400.034 42.584Z" fill="#090D16"/></g></svg>`;
   const TBB_CLEAN_LOGO_DATA_URI = "data:image/svg+xml;utf8," + encodeURIComponent(TBB_CLEAN_LOGO_SVG_RAW);
 
-  // SUBPÁGINA 1: INICIO (PORTADA CON LOGO AL CENTRO + TAGLINE OFICIAL "Your Brand,  NOW!!!" + "Donde la ciencia..." + ANIMACIÓN 60FPS DE LOS 5 PILARES CIENTÍFICOS)
+  // Renderizador del Mockup Real de la Aplicación en Celular, Tablet o Computadora (al final de 1. Inicio)
+  window.tbbRenderHomeDeviceMockupContent = function (deviceForm) {
+    const form = deviceForm || (window.tbbCommercialDemoState && window.tbbCommercialDemoState.homeDeviceForm) || "mobile";
+    const isLiveStudio = Boolean(window.tbbCommercialDemoState && window.tbbCommercialDemoState.homeDeviceLiveStudio);
+    const l = getLang();
+
+    if (isLiveStudio) {
+      return `
+        <div class="tbb-home-device-chassis is-${escHtml(form)}">
+          <div class="tbb-home-device-top-bezel">
+            <span class="tbb-bezel-dots"><i></i><i></i><i></i></span>
+            <span class="tbb-bezel-title">THE BEST BRAND · APLICACIÓN EN VIVO (${form === 'mobile' ? 'CELULAR' : form === 'tablet' ? 'TABLET' : 'COMPUTADORA'})</span>
+            <button type="button" class="tbb-bezel-mode-btn" onclick="window.tbbToggleHomeDeviceLiveStudio(false)">Ver Vista Estructurada</button>
+          </div>
+          <div class="tbb-home-device-live-iframe-box">
+            <iframe src="/studio?embed=home_${escHtml(form)}&lang=${escHtml(l)}" title="The Best Brand Live App" class="tbb-home-device-iframe"></iframe>
+          </div>
+        </div>
+      `;
+    }
+
+    if (form === "mobile") {
+      return `
+        <div class="tbb-home-device-chassis is-mobile">
+          <div class="tbb-home-mobile-notch"></div>
+          <div class="tbb-home-device-screen-inner is-mobile-layout">
+            <div class="tbb-mock-app-topbar">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:24px; height:24px;" />
+                <strong style="font-family:'Montserrat',sans-serif; font-size:0.76rem; color:#FFFFFF; letter-spacing:0.05em;">THE BEST BRAND</strong>
+              </div>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:#38BDF8; background:rgba(56,189,248,0.14); padding:3px 8px; border-radius:999px; font-weight:800;">VISTA CELULAR</span>
+            </div>
+
+            <div class="tbb-mock-aura-banner">
+              <span class="tbb-live-dot"></span>
+              <div>
+                <div style="font-size:0.72rem; font-weight:800; color:#FFEDD5;">AURA · COPILOTO EN VIVO</div>
+                <div style="font-size:0.70rem; color:#CBD5E1;">Entrevista por voz y texto sincronizada</div>
+              </div>
+            </div>
+
+            <div class="tbb-mock-steps-list">
+              <div class="tbb-mock-step-row is-done">
+                <span class="tbb-mock-step-num">00</span>
+                <div class="tbb-mock-step-info">
+                  <strong>Objetivo, Nombre y Giro</strong>
+                  <small>Configuración base del negocio</small>
+                </div>
+                <span class="tbb-mock-step-tag">✓ Listo</span>
+              </div>
+              <div class="tbb-mock-step-row is-active">
+                <span class="tbb-mock-step-num">01</span>
+                <div class="tbb-mock-step-info">
+                  <strong>Círculo Dorado (Sinek)</strong>
+                  <small>WHY · HOW · WHAT + Arquetipo</small>
+                </div>
+                <span class="tbb-mock-step-tag is-orange">En Curso</span>
+              </div>
+              <div class="tbb-mock-step-row">
+                <span class="tbb-mock-step-num">02</span>
+                <div class="tbb-mock-step-info">
+                  <strong>Touchpoints (Carlzon)</strong>
+                  <small>Antes · Durante · Después</small>
+                </div>
+                <span class="tbb-mock-step-tag">Paso 2</span>
+              </div>
+              <div class="tbb-mock-step-row">
+                <span class="tbb-mock-step-num">03</span>
+                <div class="tbb-mock-step-info">
+                  <strong>Naming SMILE + OMPI Niza</strong>
+                  <small>Auditoría fonética y legal</small>
+                </div>
+                <span class="tbb-mock-step-tag">Paso 3</span>
+              </div>
+              <div class="tbb-mock-step-row">
+                <span class="tbb-mock-step-num">05</span>
+                <div class="tbb-mock-step-info">
+                  <strong>Geometría Vectorial & Brandbook</strong>
+                  <small>Curvas Bézier + Manual 30+ págs</small>
+                </div>
+                <span class="tbb-mock-step-tag">Paso 5–6B</span>
+              </div>
+            </div>
+
+            <div class="tbb-mock-mobile-bottom-cta">
+              <button type="button" class="tbb-btn-primary-vibrant" style="width:100%; justify-content:center; padding:10px 14px; font-size:0.78rem;" onclick="window.tbbToggleHomeDeviceLiveStudio(true)">
+                ${TBB_ICONS.spark}
+                <span>Interactuar con la App Real en este Celular</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    if (form === "tablet") {
+      return `
+        <div class="tbb-home-device-chassis is-tablet">
+          <div class="tbb-home-device-top-bezel">
+            <span class="tbb-bezel-dots"><i></i><i></i><i></i></span>
+            <span class="tbb-bezel-title">VISTA TABLET · PANEL DIVIDIDO INTERACTIVO (MAPA + LIENZO KANSEI & VECTORIAL)</span>
+            <button type="button" class="tbb-bezel-mode-btn" onclick="window.tbbToggleHomeDeviceLiveStudio(true)">Abrir App Interactiva Aquí</button>
+          </div>
+          <div class="tbb-home-device-screen-inner is-tablet-layout">
+            <!-- Columna Izquierda Tablet: Mapa de Pasos + Aura -->
+            <div class="tbb-tablet-left-nav">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:26px; height:26px;" />
+                <strong style="font-family:'Montserrat',sans-serif; font-size:0.80rem; color:#FFFFFF;">THE BEST BRAND</strong>
+              </div>
+              <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">00</span><div class="tbb-mock-step-info"><strong>Giro y Punto de Partida</strong></div></div>
+              <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">01</span><div class="tbb-mock-step-info"><strong>Círculo Dorado (Sinek)</strong></div></div>
+              <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">02</span><div class="tbb-mock-step-info"><strong>Touchpoints (Carlzon)</strong></div></div>
+              <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">03</span><div class="tbb-mock-step-info"><strong>Naming SMILE & Niza</strong></div></div>
+              <div class="tbb-mock-step-row is-active"><span class="tbb-mock-step-num">04</span><div class="tbb-mock-step-info"><strong>7 Ejes Osgood & Kansei</strong></div></div>
+              <div class="tbb-mock-step-row"><span class="tbb-mock-step-num">05</span><div class="tbb-mock-step-info"><strong>Geometría & Brandbook 30+</strong></div></div>
+            </div>
+            <!-- Columna Derecha Tablet: Mesa de Trabajo Científica -->
+            <div class="tbb-tablet-right-workspace">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                <div>
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#FF7A00; font-weight:800;">PASO 04 & 05 · MESA DE TRABAJO EN TABLET</span>
+                  <h4 style="font-family:'Montserrat',sans-serif; font-size:1.0rem; color:#FFFFFF; margin:2px 0 0;">Calibración Semántica Osgood + Retícula Áurea 8X×3X</h4>
+                </div>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#38BDF8; background:rgba(56,189,248,0.14); padding:4px 10px; border-radius:999px;">Táctil & Apple Pencil / Stylus Ready</span>
+              </div>
+              <div class="tbb-tablet-cards-pair">
+                <div class="tbb-mock-workspace-card">
+                  <div style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#93C5FD; margin-bottom:6px;">DIFERENCIAL DE OSGOOD (7 EJES)</div>
+                  ${buildAcademicDiagramSVG("osgood_kansei", "#FF7A00")}
+                </div>
+                <div class="tbb-mock-workspace-card">
+                  <div style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#FDBA74; margin-bottom:6px;">RETÍCULA VECTORIAL 8X×3X EN CURVAS</div>
+                  ${buildAcademicDiagramSVG("kaizen_bezier", "#38BDF8")}
+                </div>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:10px;">
+                <span style="font-size:0.78rem; color:#CBD5E1;">Sincronización instantánea con tu celular y computadora.</span>
+                <button type="button" class="tbb-btn-primary-vibrant" style="padding:9px 16px; font-size:0.78rem;" onclick="window.tbbToggleHomeDeviceLiveStudio(true)">
+                  ${TBB_ICONS.spark}
+                  <span>Probar App en Vivo en esta Tablet</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Vista Computadora (Workstation de 3 Columnas)
+    return `
+      <div class="tbb-home-device-chassis is-desktop">
+        <div class="tbb-home-device-top-bezel">
+          <span class="tbb-bezel-dots"><i></i><i></i><i></i></span>
+          <span class="tbb-bezel-title">VISTA COMPUTADORA · ESTACIÓN DE TRABAJO COMPLETA (MAPA + GEOMETRÍA EN CURVAS + BRANDBOOK 30+ PÁGINAS)</span>
+          <button type="button" class="tbb-bezel-mode-btn" onclick="window.tbbToggleHomeDeviceLiveStudio(true)">Abrir App Interactiva Aquí</button>
+        </div>
+        <div class="tbb-home-device-screen-inner is-desktop-layout">
+          <!-- Columna 1: Mapa de Recorrido -->
+          <div class="tbb-desktop-col-nav">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+              <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:26px; height:26px;" />
+              <strong style="font-family:'Montserrat',sans-serif; font-size:0.82rem; color:#FFFFFF;">THE BEST BRAND</strong>
+            </div>
+            <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">00</span><div class="tbb-mock-step-info"><strong>Giro y Objetivo</strong></div></div>
+            <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">01</span><div class="tbb-mock-step-info"><strong>Círculo Dorado</strong></div></div>
+            <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">02</span><div class="tbb-mock-step-info"><strong>Touchpoints</strong></div></div>
+            <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">03</span><div class="tbb-mock-step-info"><strong>SMILE & OMPI Niza</strong></div></div>
+            <div class="tbb-mock-step-row is-done"><span class="tbb-mock-step-num">04</span><div class="tbb-mock-step-info"><strong>7 Ejes Osgood</strong></div></div>
+            <div class="tbb-mock-step-row is-active"><span class="tbb-mock-step-num">05</span><div class="tbb-mock-step-info"><strong>Atelier Vectorial 8X×3X</strong></div></div>
+            <div class="tbb-mock-step-row is-active"><span class="tbb-mock-step-num">06</span><div class="tbb-mock-step-info"><strong>Brandbook 30+ Págs</strong></div></div>
+          </div>
+
+          <!-- Columna 2: Lienzo Central Vectorial + Aura -->
+          <div class="tbb-desktop-col-center">
+            <div class="tbb-mock-aura-banner" style="margin-bottom:10px;">
+              <span class="tbb-live-dot"></span>
+              <div>
+                <div style="font-size:0.75rem; font-weight:800; color:#FFEDD5;">AURA · SÍNTESIS DE IDENTIDAD EN COMPUTADORA</div>
+                <div style="font-size:0.72rem; color:#CBD5E1;">"He trazado tu logotipo en curvas Bézier puras y compilado las 30+ láminas de tu Brandbook oficial."</div>
+              </div>
+            </div>
+            <div class="tbb-mock-workspace-card" style="background:#FFFFFF; color:#0D2540; padding:14px; text-align:center;">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#426EAE; font-weight:800; margin-bottom:8px;">LIENZO DE CONSTRUCCIÓN VECTORIAL EN CURVAS (PROPORCIÓN 8X×3X)</div>
+              <div style="display:flex; align-items:center; justify-content:center; gap:14px; padding:10px; border:1.5px dashed #CBD5E1; border-radius:14px; background:#F8FAFC;">
+                <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:54px; height:54px;" />
+                <div style="text-align:left;">
+                  <div style="font-family:'Montserrat',sans-serif; font-size:1.15rem; font-weight:900; color:#0D2540; letter-spacing:0.04em;">THE BEST BRAND</div>
+                  <div style="font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; color:#FF7A00;">Your Brand,  NOW!!!</div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:10px;">
+              <span style="font-size:0.76rem; color:#CBD5E1;">Exportación directa en SVG, AI, EPS, PDF Editorial y PNG 4K.</span>
+              <button type="button" class="tbb-btn-primary-vibrant" style="padding:9px 16px; font-size:0.78rem;" onclick="window.tbbToggleHomeDeviceLiveStudio(true)">
+                ${TBB_ICONS.spark}
+                <span>Interactuar con la App en Computadora</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Columna 3: Inspector de Entregables y Brandbook -->
+          <div class="tbb-desktop-col-right">
+            <div style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#FF7A00; font-weight:800; margin-bottom:8px;">9 ENTREGABLES EJECUTIVOS</div>
+            <div class="tbb-desktop-deliv-pill">01 · Brandbook Oficial (30+ Págs)</div>
+            <div class="tbb-desktop-deliv-pill">02 · Suite Vectorial en Curvas</div>
+            <div class="tbb-desktop-deliv-pill">03 · Sistema Cromático WCAG</div>
+            <div class="tbb-desktop-deliv-pill">04 · Papelería Corporativa</div>
+            <div class="tbb-desktop-deliv-pill">05 · Kit Social Media & Firma</div>
+            <div class="tbb-desktop-deliv-pill">06 · Dictamen Legal OMPI Niza</div>
+          </div>
+        </div>
+      </div>
+    `;
+  };
+
+  window.tbbSelectHomeDeviceMockup = function (deviceForm) {
+    if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
+    window.tbbCommercialDemoState.homeDeviceForm = deviceForm || "mobile";
+    window.tbbCommercialDemoState.homeDeviceLiveStudio = false;
+    document.querySelectorAll("[data-home-device-btn]").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-home-device-btn") === window.tbbCommercialDemoState.homeDeviceForm);
+    });
+    const stage = document.getElementById("tbbHomeMultiDeviceMockupStage");
+    if (stage) {
+      stage.innerHTML = window.tbbRenderHomeDeviceMockupContent(window.tbbCommercialDemoState.homeDeviceForm);
+    }
+  };
+
+  window.tbbToggleHomeDeviceLiveStudio = function (enableLive) {
+    if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
+    window.tbbCommercialDemoState.homeDeviceLiveStudio = Boolean(enableLive);
+    const stage = document.getElementById("tbbHomeMultiDeviceMockupStage");
+    if (stage) {
+      stage.innerHTML = window.tbbRenderHomeDeviceMockupContent(window.tbbCommercialDemoState.homeDeviceForm || "mobile");
+    }
+  };
+
+  // SUBPÁGINA 1: INICIO (PORTADA CON LOGO AL CENTRO + TAGLINE OFICIAL "Your Brand,  NOW!!!" + "Donde la ciencia..." + ANIMACIÓN 60FPS DE LOS 5 PILARES + SECCIÓN MULTIDISPOSITIVO AL FINAL CON MOCKUPS INTERACTIVOS)
   window.tbbBuildSubpage1HomeHTML = function () {
     const l = getLang();
     const st = window.tbbCommercialDemoState || {};
     const selectedIdx = Number(st.heroSelectedTheoryIdx) || 0;
+    const activeHomeDevice = st.homeDeviceForm || "mobile";
 
     const fiveNodes = [
       { idx: 0, code: "01 · CÍRCULO DORADO", author: "Simon Sinek", sub: "WHY → HOW → WHAT", color: "#FF7A00" },
@@ -1881,48 +2124,29 @@
         <canvas id="tbbHeroDynamicCanvas" class="tbb-hero-particles-canvas" aria-hidden="true"></canvas>
 
         <div class="tbb-container-wide" style="position:relative; z-index:2;">
-          <!-- PORTADA CENTRAL: 1) LOGOTIPO AL CENTRO -> 2) TAGLINE LEGIBLE "Your Brand,  NOW!!!" -> 3) "Donde la ciencia se convierte en tu marca" -->
+          <!-- PORTADA CENTRAL: 1) LOGOTIPO LIMPIO AL CENTRO (ISOTIPO + THE BEST BRAND) -> 2) TAGLINE LEGIBLE "Your Brand,  NOW!!!" -> 3) "Donde la ciencia se convierte en tu marca" -->
           <div class="tbb-reveal-on-scroll is-visible tbb-monumental-brand-axis">
             <div id="tbbHomeCoverLogoBox" class="tbb-cover-hero-logo-lockup">
-              <img
-                src="${TBB_CLEAN_LOGO_DATA_URI}"
-                alt="The Best Brand"
-                class="tbb-cover-hero-logo-svg"
-              />
+              <div class="tbb-cover-logo-clean-row">
+                <img
+                  src="${TBB_ISOTIPO_DATA_URI}"
+                  alt="The Best Brand Isotipo"
+                  class="tbb-cover-isotipo-img"
+                />
+                <span class="tbb-cover-brand-words">THE BEST BRAND</span>
+              </div>
               <div class="tbb-cover-tagline-now" aria-label="Your Brand,  NOW!!!">Your Brand,  NOW!!!</div>
             </div>
 
             <h1 class="tbb-hero-display-title">
               ${escHtml(t("heroTitleLine1"))} <span class="tbb-text-accent-gradient">${escHtml(t("heroTitleHighlight"))}</span>
             </h1>
-            <p class="tbb-hero-lead-paragraph" style="margin-bottom:16px;">
+            <p class="tbb-hero-lead-paragraph" style="margin-bottom:10px;">
               ${escHtml(t("heroLead"))}
             </p>
-
-            <!-- Claridad Multidispositivo sin mencionar marcas comerciales: Móvil, Tablet o Computadora -->
-            <div class="tbb-multidevice-showcase-bar" role="region" aria-label="Compatibilidad Multidispositivo">
-              <div class="tbb-multidevice-badge-left">
-                <span class="tbb-live-dot"></span>
-                <span>Úsala en <strong>Móvil, Tablet o Computadora</strong> · Sincronización en Tiempo Real</span>
-              </div>
-              <div class="tbb-multidevice-icons-group">
-                <button type="button" class="tbb-device-form-btn active" onclick="window.tbbSwitchMainSection(2)">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="3" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18.5" r="1" fill="#FF7A00"/></svg>
-                  <span>Móvil</span>
-                </button>
-                <button type="button" class="tbb-device-form-btn" onclick="window.tbbSwitchMainSection(2)">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="16" height="20" rx="2.5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18.5" r="1" fill="#FF7A00"/></svg>
-                  <span>Tablet</span>
-                </button>
-                <button type="button" class="tbb-device-form-btn" onclick="window.tbbSwitchMainSection(2)">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                  <span>Computadora</span>
-                </button>
-              </div>
-            </div>
           </div>
 
-          <!-- PROTAGONISTA A TODO EL ANCHO DE LA PANTALLA: ANIMACIÓN INTERACTIVA 60FPS DE LOS 5 PILARES CIENTÍFICOS Y CONVERGENCIA CON AURA -->
+          <!-- PROTAGONISTA A TODO EL ANCHO DE LA PANTALLA: ANIMACIÓN INTERACTIVA 60FPS DE LOS 5 PILARES CIENTÍFICOS Y EXPLICACIÓN -->
           <div class="tbb-hero-convergence-fullwidth tbb-reveal-on-scroll is-visible">
             <div id="tbbHeroInteractiveConvergenceStage" class="tbb-hero-interactive-stage tbb-fullwidth-stage ${st.heroConvergenceActive ? 'is-converged' : ''}">
               <div class="tbb-stage-header">
@@ -1974,6 +2198,52 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- AL FINAL DE INICIO (DEBAJO DE LA ANIMACIÓN Y EXPLICACIÓN): EXPERIENCIA MULTIDISPOSITIVO CON MOCKUPS REALES EN CELULAR, TABLET Y COMPUTADORA -->
+          <div class="tbb-home-multidevice-bottom-section tbb-reveal-on-scroll is-visible">
+            <div class="tbb-home-multidevice-head">
+              <div class="tbb-multidevice-showcase-bar" role="region" aria-label="Compatibilidad Multidispositivo">
+                <div class="tbb-multidevice-badge-left">
+                  <span class="tbb-live-dot"></span>
+                  <span>Úsala en tu <strong>Celular, Tablet o Computadora</strong> · Haz clic para ver cómo luce la app real en cada dispositivo:</span>
+                </div>
+                <div class="tbb-multidevice-icons-group">
+                  <button
+                    type="button"
+                    data-home-device-btn="mobile"
+                    class="tbb-device-form-btn ${activeHomeDevice === 'mobile' ? 'active' : ''}"
+                    onclick="window.tbbSelectHomeDeviceMockup('mobile')"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="3" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18.5" r="1" fill="#FF7A00"/></svg>
+                    <span>Celular</span>
+                  </button>
+                  <button
+                    type="button"
+                    data-home-device-btn="tablet"
+                    class="tbb-device-form-btn ${activeHomeDevice === 'tablet' ? 'active' : ''}"
+                    onclick="window.tbbSelectHomeDeviceMockup('tablet')"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="16" height="20" rx="2.5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18.5" r="1" fill="#FF7A00"/></svg>
+                    <span>Tablet</span>
+                  </button>
+                  <button
+                    type="button"
+                    data-home-device-btn="desktop"
+                    class="tbb-device-form-btn ${activeHomeDevice === 'desktop' ? 'active' : ''}"
+                    onclick="window.tbbSelectHomeDeviceMockup('desktop')"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span>Computadora</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Escenario de Mockup Real (Cambia instantáneamente entre Celular, Tablet y Computadora) -->
+            <div id="tbbHomeMultiDeviceMockupStage" class="tbb-home-multidevice-stage-wrap">
+              ${window.tbbRenderHomeDeviceMockupContent(activeHomeDevice)}
             </div>
           </div>
         </div>
@@ -2515,7 +2785,7 @@
               <div class="tbb-ba-layer tbb-ba-after">
                 <div class="tbb-ba-card-content is-after">
                   <span class="tbb-ba-badge after">DESPUÉS · THE BEST BRAND VECTOR ATELIER</span>
-                  <img src="/assets/logos/Logotipo_Horizontal_Curvas_the_best_brand.svg" alt="The Best Brand Final Vector" style="max-height:110px; width:auto;" />
+                  <img src="${TBB_CLEAN_LOGO_DATA_URI}" alt="The Best Brand Final Vector" style="max-height:110px; width:auto;" />
                   <p>Geometría en proporción áurea (8X×3X), curvas Bézier puras y Brandbook oficial de más de 30 páginas.</p>
                 </div>
               </div>
@@ -2958,9 +3228,10 @@
         <!-- HEADER SUPERIOR: EN INICIO EL LOGO ESTÁ EN LA PORTADA Y SOLO PASA AL ENCABEZADO AL HACER SCROLL O CAMBIAR DE MENÚ -->
         <header class="tbb-master-header ${initialDocked ? 'is-logo-docked' : ''}">
           <div class="tbb-header-inner">
-            <!-- Logotipo del Encabezado (Oculto en la portada de 1. Inicio; aparece suavemente al hacer scroll o cambiar a menú 2-5) -->
+            <!-- Logotipo del Encabezado (Oculto en la portada de 1. Inicio; aparece al hacer scroll o cambiar a menú 2-5 e incluye el logo y las palabras "THE BEST BRAND") -->
             <a href="/" class="tbb-brand-logo-link" onclick="event.preventDefault(); window.tbbSwitchMainSection(1);" aria-label="The Best Brand">
-              <img src="${TBB_CLEAN_LOGO_DATA_URI}" alt="The Best Brand" class="tbb-header-wordmark-svg" />
+              <img src="${TBB_ISOTIPO_DATA_URI}" alt="The Best Brand Logo" class="tbb-header-isotipo-img" />
+              <span class="tbb-header-brand-words">THE BEST <span class="tbb-brand-word-accent">BRAND</span></span>
             </a>
 
             <!-- Menú Principal del 1 al 5 (Siempre Prevalece al Hacer Más Pequeña la Ventana) -->
@@ -3502,16 +3773,22 @@
       }
       .tbb-svg-ic { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 
-      /* HEADER SUPERIOR: EN PORTADA DE 1. INICIO EL LOGO NO ESTÁ EN EL MENÚ; SOLO ENTRA AL HACER SCROLL O CAMBIAR DE MENÚ */
+      /* HEADER SUPERIOR FIJO (SE PRESERVA SIEMPRE AL HACER SCROLL Y MUESTRA EL LOGO + "THE BEST BRAND") */
       .tbb-master-header {
-        position: sticky;
-        top: 0;
-        z-index: 1200;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
+        position: fixed;
+        top: 3.5px;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 2500;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         border-bottom: 1.5px solid #E2E8F0;
-        box-shadow: 0 10px 30px rgba(13, 37, 64, 0.05);
+        box-shadow: 0 10px 30px rgba(13, 37, 64, 0.06);
+      }
+      .tbb-subpage-dynamic-viewport {
+        padding-top: 82px;
       }
       .tbb-header-inner {
         max-width: 1440px;
@@ -3527,9 +3804,10 @@
       .tbb-brand-logo-link {
         display: inline-flex;
         align-items: center;
+        gap: 10px;
         text-decoration: none;
         flex-shrink: 0;
-        max-width: 260px;
+        max-width: 340px;
         opacity: 1;
         transform: translateY(0) scale(1);
         transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
@@ -3545,10 +3823,30 @@
         pointer-events: none !important;
         margin: 0 !important;
         padding: 0 !important;
+        gap: 0 !important;
         transform: translateY(-10px) scale(0.9);
       }
+      .tbb-header-isotipo-img {
+        height: 40px;
+        width: auto;
+        object-fit: contain;
+        display: block;
+        flex-shrink: 0;
+      }
+      .tbb-header-brand-words {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        color: #0D2540;
+        white-space: nowrap;
+        line-height: 1;
+      }
+      .tbb-brand-word-accent {
+        color: #FF7A00;
+      }
       .tbb-header-wordmark-svg {
-        height: 46px;
+        height: 44px;
         width: auto;
         max-width: 245px;
         object-fit: contain;
@@ -3681,7 +3979,7 @@
         line-height: 1;
       }
 
-      /* PORTADA CENTRAL DE 1. INICIO: LOGOTIPO AL CENTRO + TAGLINE LEGIBLE "Your Brand,  NOW!!!" */
+      /* PORTADA CENTRAL DE 1. INICIO: LOGOTIPO AL CENTRO (CERO "DEL CAOS AL SISTEMA") + TAGLINE "Your Brand,  NOW!!!" */
       .tbb-cover-hero-logo-lockup {
         display: flex;
         flex-direction: column;
@@ -3696,12 +3994,27 @@
         transform: translateY(-18px) scale(0.92);
         pointer-events: none;
       }
-      .tbb-cover-hero-logo-svg {
-        width: clamp(270px, 38vw, 440px);
-        height: auto;
+      .tbb-cover-logo-clean-row {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .tbb-cover-isotipo-img {
+        height: clamp(68px, 8.5vw, 96px);
+        width: auto;
         object-fit: contain;
-        filter: drop-shadow(0 12px 28px rgba(13, 37, 64, 0.10));
-        margin-bottom: 8px;
+        filter: drop-shadow(0 12px 26px rgba(13, 37, 64, 0.12));
+      }
+      .tbb-cover-brand-words {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(2.1rem, 4.2vw, 3.45rem);
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        color: #0D2540;
+        line-height: 1;
       }
       .tbb-cover-tagline-now {
         font-family: 'Montserrat', sans-serif;
@@ -3723,7 +4036,7 @@
       /* HERO & PROTAGONISMO A TODO EL ANCHO DE LOS 5 PILARES CIENTÍFICOS */
       .tbb-subpage-section {
         position: relative;
-        padding: 28px 24px 96px;
+        padding: 24px 24px 96px;
         min-height: calc(100vh - 84px);
       }
       .tbb-open-curve-bg {
@@ -3785,18 +4098,31 @@
         color: #334155;
         line-height: 1.6;
         max-width: 920px;
-        margin: 0 auto 18px;
+        margin: 0 auto 14px;
       }
 
-      /* BARRA MULTIDISPOSITIVO (MÓVIL · TABLET · COMPUTADORA · CERO MARCAS) */
+      /* SECCIÓN FINAL DE 1. INICIO: "ÚSALA EN TU MÓVIL, TABLET O COMPUTADORA" + MOCKUPS REALES AL HACER CLICK */
+      .tbb-home-multidevice-bottom-section {
+        margin-top: 38px;
+        background: linear-gradient(180deg, #FFFFFF 0%, #F4F8FC 100%);
+        border: 2px solid #DCE6F2;
+        border-radius: 32px;
+        padding: 36px 28px 42px;
+        box-shadow: 0 24px 64px rgba(13, 37, 64, 0.08);
+      }
+      .tbb-home-multidevice-header {
+        text-align: center;
+        max-width: 920px;
+        margin: 0 auto 28px;
+      }
       .tbb-multidevice-showcase-bar {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 16px;
         flex-wrap: wrap;
-        background: linear-gradient(180deg, #FFFFFF 0%, #F4F8FC 100%);
-        border: 1.5px solid #DCE6F2;
+        background: #FFFFFF;
+        border: 1.5px solid #CBD5E1;
         border-radius: 999px;
         padding: 8px 18px;
         box-shadow: 0 10px 26px rgba(13, 37, 64, 0.06);
@@ -3814,7 +4140,7 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: #FFFFFF;
+        background: #F4F8FC;
         padding: 4px;
         border-radius: 999px;
         border: 1px solid #CBD5E1;
@@ -3823,22 +4149,342 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 7px 14px;
+        padding: 8px 16px;
         border-radius: 999px;
         border: none;
         background: transparent;
         color: #0D2540;
         font-family: 'Montserrat', sans-serif;
-        font-size: 0.78rem;
+        font-size: 0.82rem;
         font-weight: 800;
         cursor: pointer;
         transition: all 0.2s ease;
       }
-      .tbb-device-form-btn:hover { background: #F4F8FC; }
+      .tbb-device-form-btn:hover { background: #E2E8F0; }
       .tbb-device-form-btn.active {
         background: #0D2540;
         color: #FFFFFF;
-        box-shadow: 0 4px 12px rgba(13, 37, 64, 0.18);
+        box-shadow: 0 6px 16px rgba(13, 37, 64, 0.22);
+      }
+      .tbb-home-multidevice-stage-wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .tbb-home-device-mockup-layout {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 32px;
+        align-items: center;
+      }
+      .tbb-home-device-info-col {
+        background: #FFFFFF;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: 0 14px 36px rgba(13, 37, 64, 0.06);
+      }
+      .tbb-home-device-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 999px;
+        background: #FFF7ED;
+        border: 1px solid #FFEDD5;
+        color: #EA580C;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+      .tbb-home-device-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.38rem;
+        font-weight: 900;
+        color: #0D2540;
+        margin: 0 0 8px;
+      }
+      .tbb-home-device-desc {
+        font-size: 0.96rem;
+        color: #334155;
+        line-height: 1.58;
+        margin: 0 0 16px;
+      }
+      .tbb-home-device-specs-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .tbb-home-device-specs-list li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #0D2540;
+      }
+      .tbb-home-device-specs-list li svg { color: #FF7A00; }
+      .tbb-home-device-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .tbb-home-device-frame-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      /* CHASIS CELULAR, TABLET Y COMPUTADORA */
+      .tbb-home-device-chassis {
+        background: #0D2540;
+        box-shadow: 0 28px 70px rgba(13, 37, 64, 0.26), inset 0 0 0 3px #426EAE;
+        position: relative;
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+      }
+      .tbb-home-device-chassis.is-mobile {
+        width: 340px;
+        max-width: 92vw;
+        border-radius: 48px;
+        padding: 14px;
+      }
+      .tbb-home-device-chassis.is-tablet {
+        width: 640px;
+        max-width: 94vw;
+        border-radius: 34px;
+        padding: 16px;
+      }
+      .tbb-home-device-chassis.is-desktop {
+        width: 100%;
+        max-width: 780px;
+        border-radius: 20px 20px 10px 10px;
+        padding: 10px 12px 14px;
+      }
+      .tbb-home-mobile-notch {
+        width: 108px;
+        height: 22px;
+        background: #061322;
+        border-radius: 999px;
+        margin: 0 auto 10px;
+      }
+      .tbb-home-mobile-bar {
+        width: 110px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.45);
+        border-radius: 999px;
+        margin: 10px auto 2px;
+      }
+      .tbb-home-tablet-cam {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #4C9DE6;
+        margin: 0 auto 8px;
+      }
+      .tbb-home-desktop-topbar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px 10px;
+      }
+      .tbb-home-desktop-topbar .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .tbb-home-desktop-topbar .dot.red { background: #EF4444; }
+      .tbb-home-desktop-topbar .dot.yellow { background: #F59E0B; }
+      .tbb-home-desktop-topbar .dot.green { background: #10B981; }
+      .tbb-home-desktop-url {
+        margin-left: 10px;
+        background: rgba(255, 255, 255, 0.12);
+        color: #E2E8F0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        padding: 3px 14px;
+        border-radius: 999px;
+      }
+      .tbb-home-desktop-stand {
+        width: 180px;
+        height: 16px;
+        background: linear-gradient(180deg, #1E293B 0%, #0D2540 100%);
+        border-radius: 0 0 18px 18px;
+        box-shadow: 0 10px 20px rgba(13, 37, 64, 0.20);
+      }
+      .tbb-home-device-screen {
+        background: #FFFFFF;
+        border-radius: 22px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 410px;
+      }
+      .tbb-home-device-chassis.is-desktop .tbb-home-device-screen {
+        border-radius: 12px;
+        min-height: 400px;
+      }
+      .tbb-home-device-live-iframe {
+        width: 100%;
+        height: 460px;
+        border: none;
+        background: #FFFFFF;
+      }
+      .tbb-home-mock-app-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        background: #F8FAFC;
+        border-bottom: 1px solid #E2E8F0;
+      }
+      .tbb-home-mock-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.76rem;
+        font-weight: 900;
+        color: #0D2540;
+      }
+      .tbb-home-mock-brand img { height: 22px; width: auto; }
+      .tbb-home-mock-status {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.68rem;
+        font-weight: 800;
+        color: #FF7A00;
+        background: #FFF7ED;
+        padding: 3px 8px;
+        border-radius: 999px;
+      }
+      .tbb-home-mock-body {
+        flex: 1;
+        padding: 14px;
+        display: grid;
+        gap: 12px;
+      }
+      .tbb-home-mock-body.layout-mobile {
+        grid-template-columns: 1fr;
+      }
+      .tbb-home-mock-body.layout-tablet {
+        grid-template-columns: 1.05fr 1fr;
+      }
+      .tbb-home-mock-body.layout-desktop {
+        grid-template-columns: 170px 1fr 220px;
+      }
+      .tbb-home-mock-sidebar {
+        background: #F4F8FC;
+        border: 1px solid #DCE6F2;
+        border-radius: 14px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .tbb-mock-step {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #475569;
+        padding: 7px 10px;
+        border-radius: 10px;
+      }
+      .tbb-mock-step.active {
+        background: #0D2540;
+        color: #FFFFFF;
+      }
+      .tbb-home-mock-shot-panel {
+        position: relative;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid #CBD5E1;
+        background: #F8FAFC;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tbb-home-mock-shot-img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+      }
+      .tbb-home-mock-overlay-pill {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        background: rgba(13, 37, 64, 0.90);
+        color: #FFFFFF;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.68rem;
+        font-weight: 800;
+        padding: 4px 10px;
+        border-radius: 999px;
+      }
+      .tbb-home-mock-aura-panel {
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        border-radius: 14px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .tbb-mock-aura-bubble {
+        font-size: 0.80rem;
+        color: #0D2540;
+        line-height: 1.45;
+        background: #FFFFFF;
+        padding: 10px;
+        border-radius: 12px;
+        border: 1px solid #DCE6F2;
+      }
+      .tbb-mock-aura-bubble strong {
+        display: block;
+        color: #FF7A00;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.74rem;
+        margin-bottom: 4px;
+      }
+      .tbb-mock-swatches {
+        display: flex;
+        gap: 6px;
+      }
+      .tbb-mock-swatches span {
+        flex: 1;
+        height: 22px;
+        border-radius: 6px;
+      }
+      .tbb-home-mock-footer-cta {
+        padding: 10px 14px;
+        background: #F4F8FC;
+        border-top: 1px solid #DCE6F2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .tbb-home-mock-footer-cta span {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: #0D2540;
+      }
+      .tbb-home-mock-footer-cta button {
+        border: none;
+        background: #FF7A00;
+        color: #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.74rem;
+        font-weight: 800;
+        padding: 6px 14px;
+        border-radius: 999px;
+        cursor: pointer;
       }
 
       .tbb-btn-primary-vibrant {
@@ -5547,6 +6193,9 @@
 
       /* RESPONSIVE BREAKPOINTS (EL MENÚ DEL 1 AL 5 SIEMPRE PREVALECE AL HACER MÁS PEQUEÑA LA VENTANA) */
       @media (max-width: 1180px) {
+        .tbb-subpage-dynamic-viewport {
+          padding-top: 134px;
+        }
         .tbb-header-inner {
           justify-content: center;
           padding: 10px 14px;
@@ -5574,12 +6223,17 @@
           grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         }
         .tbb-hero-pillar-detail-grid,
+        .tbb-home-device-mockup-layout,
         .tbb-scrollytelling-layout,
         .tbb-interleaved-step-grid,
         .tbb-infographic-card-grid,
         .tbb-kansei-sim-grid,
         .tbb-demo-stage-wrap.is-iphone-mode,
         .tbb-consolidated-brandbook-hero-card {
+          grid-template-columns: 1fr;
+        }
+        .tbb-home-mock-body.layout-tablet,
+        .tbb-home-mock-body.layout-desktop {
           grid-template-columns: 1fr;
         }
         .tbb-interleaved-step-grid.is-odd-layout .tbb-interleaved-visual-col,
