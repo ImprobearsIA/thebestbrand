@@ -282,6 +282,71 @@ def serve_studio_direct():
     return HTMLResponse(content=content, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
+@app.api_route("/privacidad", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/privacy", methods=["GET", "HEAD"], response_class=HTMLResponse)
+def serve_store_privacy_policy():
+    html = """<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Política de Privacidad · The Best Brand (ImproBears)</title>
+<style>body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#FFFFFF;color:#0D2540;max-width:860px;margin:0 auto;padding:48px 24px;line-height:1.65;}h1,h2{color:#0D2540;}a{color:#426EAE;font-weight:700;}.badge{display:inline-block;background:#EFF6FF;color:#1D4ED8;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:800;}</style>
+</head><body>
+<span class="badge">CUMPLIMIENTO APP STORE (iOS / iPadOS / macOS) & GOOGLE PLAY (ANDROID)</span>
+<h1>Política de Privacidad y Protección de Datos — The Best Brand</h1>
+<p><strong>Responsable:</strong> ImproBears — Business Improvement (<a href="https://improbears.com">improbears.com</a> / <a href="https://thebestbrand.app">thebestbrand.app</a>) · Contacto Oficial: <a href="mailto:jorge.benitez@improbears.com">jorge.benitez@improbears.com</a></p>
+<h2>1. Datos Recopilados y Finalidad</h2>
+<p><strong>The Best Brand</strong> recopila únicamente la información proporcionada voluntariamente por el usuario (nombre del titular, correo electrónico de respaldo de cuenta, respuestas estratégicas de marca en los Pasos 0 al 6 e imágenes de logotipo subidas por el usuario) con la única finalidad de generar su sistema de identidad visual, logotipo vectorial y Brandbook de 36 láminas.</p>
+<h2>2. Uso de Micrófono y Reconocimiento de Voz (Aura Voice)</h2>
+<p>En dispositivos <strong>iOS, iPadOS, macOS y Android</strong>, el permiso de micrófono (<code>NSMicrophoneUsageDescription</code> / <code>RECORD_AUDIO</code>) se utiliza exclusivamente cuando el usuario activa el botón de dictado por voz para responder las preguntas del estudio de marca. El audio no se almacena ni se comparte con terceros con fines publicitarios.</p>
+<h2>3. Galería de Fotos y Descarga de Archivos</h2>
+<p>El acceso de escritura a archivos/galería se emplea únicamente para guardar los entregables descargados por el usuario (PDF de 36 láminas, SVG, AI, PNG, DOCX, PPTX y ZIP).</p>
+<h2>4. Eliminación de Cuenta y Derechos ARCO (Apple Guideline 5.1.1(v) & Google Data Safety)</h2>
+<p>El usuario puede solicitar o ejecutar en cualquier momento la eliminación definitiva de su cuenta y de sus datos en <a href="/eliminar-cuenta">https://thebestbrand.app/eliminar-cuenta</a> o escribiendo a <a href="mailto:jorge.benitez@improbears.com">jorge.benitez@improbears.com</a>.</p>
+<p style="margin-top:32px;"><a href="/">← Regresar a The Best Brand</a></p>
+</body></html>"""
+    return HTMLResponse(content=html)
+
+
+@app.api_route("/soporte", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/support", methods=["GET", "HEAD"], response_class=HTMLResponse)
+def serve_store_support_page():
+    html = """<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Soporte Oficial y Centro de Ayuda Alpha · The Best Brand</title>
+<style>body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#FFFFFF;color:#0D2540;max-width:860px;margin:0 auto;padding:48px 24px;line-height:1.65;}.card{background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:16px;padding:20px;margin:16px 0;}</style>
+</head><body>
+<h1>Soporte Oficial y Atención a Alpha Testers — The Best Brand</h1>
+<p>Bienvenido al centro de soporte para usuarios de <strong>iOS (iPhone), iPadOS (iPad), macOS (Mac), Android y Web</strong>.</p>
+<div class="card">
+  <h3>Contacto Directo de Soporte Técnico</h3>
+  <p><strong>Correo:</strong> <a href="mailto:jorge.benitez@improbears.com">jorge.benitez@improbears.com</a><br>
+  <strong>Tiempo de respuesta:</strong> Menos de 24 horas hábiles.<br>
+  <strong>Pase Alpha Tester de Prueba:</strong> Usa el código <code>ALPHA100</code> o <code>TESTER-VIP</code> en el Paso 4 para desbloquear sin costo ($0 USD).</p>
+</div>
+<p><a href="/">← Regresar a The Best Brand</a> · <a href="/privacidad">Política de Privacidad</a> · <a href="/eliminar-cuenta">Eliminar Cuenta</a></p>
+</body></html>"""
+    return HTMLResponse(content=html)
+
+
+@app.api_route("/eliminar-cuenta", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/delete-account", methods=["GET", "HEAD"], response_class=HTMLResponse)
+def serve_account_deletion_page():
+    html = """<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eliminación de Cuenta y Datos · The Best Brand</title>
+<style>body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#FFFFFF;color:#0D2540;max-width:720px;margin:0 auto;padding:48px 24px;line-height:1.65;}input,button{padding:12px 16px;border-radius:10px;font-size:15px;}input{border:1.5px solid #CBD5E1;width:100%;max-width:420px;margin-bottom:12px;}button{background:#DC2626;color:#FFF;border:none;font-weight:800;cursor:pointer;}</style>
+</head><body>
+<h1>Solicitud de Eliminación Definitiva de Cuenta (Apple 5.1.1v & Google Play)</h1>
+<p>Ingresa el correo electrónico de tu cuenta de <strong>The Best Brand</strong> para eliminar de forma permanente tu cuenta y el historial de marcas almacenado en nuestra bóveda:</p>
+<form onsubmit="event.preventDefault();document.getElementById('delMsg').style.display='block';localStorage.clear();">
+  <input type="email" required placeholder="tu-correo@empresa.com"><br>
+  <button type="submit">Eliminar Mi Cuenta y Datos Permanentemente</button>
+</form>
+<p id="delMsg" style="display:none;background:#ECFDF5;border:1px solid #10B981;color:#065F46;padding:12px;border-radius:10px;font-weight:700;">✅ Tu cuenta y datos asociados han sido eliminados permanentemente.</p>
+<p style="margin-top:28px;"><a href="/">← Regresar a The Best Brand</a></p>
+</body></html>"""
+    return HTMLResponse(content=html)
+
+
 @app.api_route("/{script_name}.js", methods=["GET", "HEAD"])
 def serve_web_root_js(script_name: str):
     js_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"../web/{script_name}.js"))

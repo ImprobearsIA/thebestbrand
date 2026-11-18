@@ -1,0 +1,40 @@
+{
+	"appId": "com.improbears.thebestbrand",
+	"appName": "The Best Brand",
+	"webDir": "apps/native-shell",
+	"server": {
+		"url": "https://thebestbrand.app/studio",
+		"cleartext": false,
+		"allowNavigation": [
+			"thebestbrand.app",
+			"*.thebestbrand.app",
+			"*.improbears.com"
+		]
+	},
+	"ios": {
+		"contentInset": "automatic",
+		"allowsLinkPreview": false,
+		"scrollEnabled": true,
+		"backgroundColor": "#FFFFFF",
+		"preferredContentMode": "recommended"
+	},
+	"android": {
+		"backgroundColor": "#FFFFFF",
+		"allowMixedContent": false,
+		"captureInput": true,
+		"webContentsDebuggingEnabled": false
+	},
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 1400,
+			"launchAutoHide": true,
+			"backgroundColor": "#0D2540",
+			"androidSplashResourceName": "splash",
+			"showSpinner": false
+		},
+		"StatusBar": {
+			"style": "DARK",
+			"backgroundColor": "#0D2540"
+		}
+	}
+}

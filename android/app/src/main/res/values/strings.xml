@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">The Best Brand</string>
+    <string name="title_activity_main">The Best Brand</string>
+    <string name="package_name">com.improbears.thebestbrand</string>
+    <string name="custom_url_scheme">com.improbears.thebestbrand</string>
+</resources>

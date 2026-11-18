@@ -1,8 +1,7 @@
 {
   "appId": "com.improbears.thebestbrand",
   "appName": "The Best Brand",
-  "webDir": "apps/web",
-  "bundledWebRuntime": false,
+  "webDir": "apps/native-shell",
   "server": {
     "url": "https://thebestbrand.app/studio",
     "cleartext": false,

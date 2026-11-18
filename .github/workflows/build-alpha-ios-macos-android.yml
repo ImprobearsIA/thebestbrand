@@ -1,0 +1,78 @@
+name: Build Alpha (iOS · iPadOS · macOS · Android APK & AAB)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'ios/**'
+      - 'android/**'
+      - 'apps/native-shell/**'
+      - 'capacitor.config.json'
+      - '.github/workflows/build-alpha-ios-macos-android.yml'
+  workflow_dispatch:
+
+jobs:
+  build-android-alpha:
+    name: Build Android Alpha (.APK Directo + .AAB Google Play)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup Java JDK 21 for Android Gradle
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Install Capacitor dependencies & sync Android
+        run: |
+          npm install --no-audit --no-fund
+          npx cap sync android
+
+      - name: Build Android Alpha APK (Instalación Directa) & AAB (Google Play)
+        working-directory: ./android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug bundleDebug --no-daemon
+
+      - name: Upload Android Alpha APK (Instalación directa sin tienda)
+        uses: actions/upload-artifact@v4
+        with:
+          name: TheBestBrand-Alpha-Android-DirectInstall-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+
+      - name: Upload Android Alpha AAB (Para Google Play Console)
+        uses: actions/upload-artifact@v4
+        with:
+          name: TheBestBrand-Alpha-GooglePlay-AAB
+          path: android/app/build/outputs/bundle/debug/app-debug.aab
+          retention-days: 30
+
+  verify-apple-universal-alpha:
+    name: Verify Apple Universal Xcode Project (iOS · iPadOS · macOS)
+    runs-on: macos-15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Capacitor dependencies & sync iOS/iPadOS/macOS
+        run: |
+          npm install --no-audit --no-fund
+          npx cap sync ios
+
+      - name: Compile Unsigned iOS Simulator Build (Smoke Verification)
+        working-directory: ./ios/App
+        run: |
+          xcodebuild -project App.xcodeproj -scheme App -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO build
