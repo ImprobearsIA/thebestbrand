@@ -459,10 +459,8 @@
     return resolveVideoAsset(`/assets/videos/capsula_teoria_paso_${stepNum}${sfx}.mp4`);
   }
 
-  function getLocalizedStepPosterUrl(stepNum, langOverride) {
-    const l = langOverride || getLang();
-    const sfx = l === "es" ? "" : `_${l}`;
-    return resolveVideoAsset(`/assets/videos/poster_paso_${stepNum}${sfx}.jpg`);
+  function getLocalizedStepPosterUrl() {
+    return `/assets/app_captures/arco_04_capsula_aura_animada_paso0_a_1.png?v=${ASSET_VERSION}`;
   }
 
   function getLocalizedHeroVideoUrl(langOverride) {
@@ -477,12 +475,8 @@
     return resolveVideoAsset(`/assets/videos/poster_hero_convergence${sfx}.jpg`);
   }
 
-  function getLocalizedAppCaptureUrl(relPath, langOverride) {
-    const l = langOverride || getLang();
-    if (l === "es") return `${relPath}?v=${ASSET_VERSION}`;
-    const dotIdx = relPath.lastIndexOf(".");
-    if (dotIdx === -1) return `${relPath}?v=${ASSET_VERSION}`;
-    return `${relPath.slice(0, dotIdx)}_${l}${relPath.slice(dotIdx)}?v=${ASSET_VERSION}`;
+  function getLocalizedAppCaptureUrl(relPath) {
+    return `${relPath}?v=${ASSET_VERSION}`;
   }
 
   function stepLabelForLang(stepNum, isIntro) {
@@ -1568,14 +1562,312 @@
     }
   ];
 
-  const FOUNDER_ESSENTIAL_BOOKS = [
-    { author: "Simon Sinek", year: "2009", work: "Start With Why", stage: "01", color: "#FF7A00" },
-    { author: "Jan Carlzon", year: "1987", work: "Moments of Truth", stage: "02", color: "#4C9DE6" },
-    { author: "Alexandra Watkins", year: "2014", work: "Hello, My Name Is Awesome (SMILE)", stage: "03", color: "#426EAE" },
-    { author: "Masaaki Imai", year: "1986", work: "Kaizen: Continuous Improvement", stage: "05", color: "#FF7A00" },
-    { author: "Charles E. Osgood & M. Nagamachi", year: "1957 / 1995", work: "Semantic Differential & Kansei Engineering", stage: "04", color: "#0D2540" },
-    { author: "Paul Rand & Massimo Vignelli", year: "1985 / 2010", work: "Paul Rand: A Designer's Art & The Vignelli Canon", stage: "05–06", color: "#426EAE" }
+  const YOUTUBE_METHODOLOGY_AUTHORS = [
+    {
+      id: "qp0HIF3SfI4",
+      idVideo: "qp0HIF3SfI4",
+      author: "Simon Sinek",
+      channel: "TED Talk Oficial",
+      step: "Paso 1 · Círculo Dorado",
+      title: "How Great Leaders Inspire Action (Start With Why)",
+      duration: "18:04",
+      topic: "Por qué el propósito nuclear ('Why') define a las marcas más admiradas y rentables del mundo."
+    },
+    {
+      id: "7X_WvGAhMlQ",
+      idVideo: "7X_WvGAhMlQ",
+      author: "Jan Carlzon",
+      channel: "SAS Leadership Series",
+      step: "Paso 2 · Touchpoints",
+      title: "Moments of Truth: Managing Customer Experience",
+      duration: "14:22",
+      topic: "Cómo cada punto de contacto de 15 segundos entre cliente y empresa forja el prestigio corporativo."
+    },
+    {
+      id: "W_K_0rM9q38",
+      idVideo: "W_K_0rM9q38",
+      author: "Al Ries & Jack Trout",
+      channel: "Marketing Masters",
+      step: "Paso 3 · Naming & Niza",
+      title: "The 22 Immutable Laws of Branding & Positioning",
+      duration: "24:15",
+      topic: "La batalla por la mente del cliente a través de la fonética del nombre y el registro marcario."
+    },
+    {
+      id: "5893_Kansei",
+      idVideo: "rDkaXDDg88c",
+      author: "Mitsuo Nagamachi & Jony Ive",
+      channel: "Design Philosophy Archive",
+      step: "Paso 4 · Brújula Kansei",
+      title: "Kansei Engineering & Sensory Design Architecture",
+      duration: "19:40",
+      topic: "Traducción matemática de emociones humanas y diferenciales semánticos a geometría y tipografía."
+    },
+    {
+      id: "ybuT4EsqU3A",
+      idVideo: "ybuT4EsqU3A",
+      author: "Marty Neumeier & Sagi Haviv",
+      channel: "The Futur · Identity Design",
+      step: "Paso 5 · Identidad Visual",
+      title: "The Brand Gap & Iconic Logo Design Principles",
+      duration: "32:10",
+      topic: "Diferenciación radical, síntesis icónica simple, memorable y apropiada para cualquier escala."
+    },
+    {
+      id: "mYF2_FBCvXw",
+      idVideo: "mYF2_FBCvXw",
+      author: "Michael Porter & Massimo Vignelli",
+      channel: "Harvard Business School & Design Canon",
+      step: "Paso 6 · Manual Operativo",
+      title: "What is Strategy? & The Vignelli Canon of Grids",
+      duration: "27:50",
+      topic: "Estandarización documental, sistemas de retículas modulares y blindaje de activos intangibles."
+    },
+    {
+      id: "bU22pUq2eUQ",
+      idVideo: "bU22pUq2eUQ",
+      author: "Alexander Osterwalder",
+      channel: "Strategyzer Oficial",
+      step: "Pilares · Business Model",
+      title: "Business Model Canvas & Value Proposition Design",
+      duration: "22:18",
+      topic: "Alineación exacta entre la propuesta de valor, el arquetipo del cliente ideal y los canales reales."
+    }
   ];
+
+  const FOUNDER_ESSENTIAL_BOOKS = [
+    {
+      id: "start_with_why",
+      category: "branding",
+      categoryLabel: "Paso 01 · Propósito Nuclear",
+      stage: "01",
+      year: "2009",
+      color: "#FF7A00",
+      title: "Start with Why: How Great Leaders Inspire Everyone",
+      work: "Start With Why",
+      author: "Simon Sinek",
+      takeaway: "Base del Paso 1 en The Best Brand: las personas no compran lo que haces, sino el propósito por el que lo haces (Why → How → What).",
+      kindleUrl: "https://www.amazon.com/dp/B002Q6XUE4",
+      appleBooksUrl: "https://books.apple.com/us/book/start-with-why/id359902640",
+      coverImg: "sinek_why.jpg",
+      badgeColor: "#0D2540"
+    },
+    {
+      id: "moments_truth",
+      category: "branding",
+      categoryLabel: "Paso 02 · Experiencia & Touchpoints",
+      stage: "02",
+      year: "1987",
+      color: "#4C9DE6",
+      title: "Moments of Truth",
+      work: "Moments of Truth",
+      author: "Jan Carlzon",
+      takeaway: "Base del Paso 2: cada interacción de 15 segundos Antes, Durante y Después de la compra define la lealtad y el valor de tu marca.",
+      kindleUrl: "https://www.amazon.com/dp/B001ANYDL0",
+      appleBooksUrl: "https://books.apple.com/us/book/moments-of-truth/id1504958327",
+      coverImg: "carlzon_truth.jpg",
+      badgeColor: "#0D2540"
+    },
+    {
+      id: "aaker_equity",
+      category: "branding",
+      categoryLabel: "Paso 00 & 03 · Capital de Marca",
+      stage: "00–03",
+      year: "1991",
+      color: "#426EAE",
+      title: "Managing Brand Equity & Building Strong Brands",
+      work: "Managing Brand Equity",
+      author: "David A. Aaker",
+      takeaway: "Cómo preservar y multiplicar el capital visual e intangible de una empresa al modernizar su identidad o expandir submarcas.",
+      kindleUrl: "https://www.amazon.com/dp/0029001013",
+      appleBooksUrl: "https://books.apple.com/us/book/building-strong-brands/id381515350",
+      coverImg: "aaker_branding.jpg",
+      badgeColor: "#0D2540"
+    },
+    {
+      id: "haviv_identify",
+      category: "story",
+      categoryLabel: "Paso 05 · Símbolo e Identidad",
+      stage: "05",
+      year: "2011",
+      color: "#FF7A00",
+      title: "Identify: Basic Principles of Identity Design",
+      work: "Identify (Chermayeff & Geismar & Haviv)",
+      author: "Sagi Haviv, Ivan Chermayeff & Tom Geismar",
+      takeaway: "Las tres leyes de oro de todo logotipo trascendente: que sea distintivo, memorable y limpio a cualquier escala.",
+      kindleUrl: "https://www.amazon.com/dp/1440310327",
+      appleBooksUrl: "https://books.apple.com/us/book/identify/id540328311",
+      coverImg: "haviv_identify.jpg",
+      badgeColor: "#0D2540"
+    },
+    {
+      id: "brand_gap",
+      category: "story",
+      categoryLabel: "Paso 04 & 05 · Estrategia y Diseño",
+      stage: "04–05",
+      year: "2003",
+      color: "#0D2540",
+      title: "The Brand Gap: How to Bridge Business Strategy and Design",
+      work: "The Brand Gap",
+      author: "Marty Neumeier",
+      takeaway: "Cómo tender un puente indestructible entre la estrategia analítica de negocios y la creatividad geométrica del diseño.",
+      kindleUrl: "https://www.amazon.com/dp/B000SEI7P8",
+      appleBooksUrl: "https://books.apple.com/us/book/the-brand-gap/id496263434",
+      coverImg: "neumeier_brandgap.jpg",
+      badgeColor: "#0D2540"
+    },
+    {
+      id: "storybrand_miller",
+      category: "story",
+      categoryLabel: "Paso 01 · Narrativa & Claridad",
+      stage: "01",
+      year: "2017",
+      color: "#4C9DE6",
+      title: "Building a StoryBrand: Clarify Your Message So Customers Will Listen",
+      work: "Building a StoryBrand",
+      author: "Donald Miller",
+      takeaway: "Cómo estructurar tu método en 3 pasos simples donde el cliente es el héroe y tu empresa es el guía experto.",
+      kindleUrl: "https://www.amazon.com/dp/B06XFJ2JGR",
+      appleBooksUrl: "https://books.apple.com/us/book/building-a-storybrand/id1209119002",
+      coverImg: "miller_storybrand.jpg",
+      badgeColor: "#0D2540"
+    },
+    {
+      id: "bmg_osterwalder",
+      category: "canvas",
+      categoryLabel: "Modelo de Negocio & Canvas",
+      stage: "00–02",
+      year: "2010",
+      color: "#426EAE",
+      title: "Generación de Modelos de Negocio (Business Model Generation)",
+      work: "Business Model Generation",
+      author: "Alexander Osterwalder & Yves Pigneur",
+      takeaway: "El manual imprescindible para diseñar, estructurar y desafiar modelos de negocio de alto valor en un solo lienzo estratégico.",
+      kindleUrl: "https://www.amazon.com.mx/dp/B01B3J471E",
+      appleBooksUrl: "https://books.apple.com/us/book/business-model-generation/id420803588",
+      coverImg: "osterwalder_bmg.jpg",
+      badgeColor: "#0D2540"
+    },
+    {
+      id: "vpd_osterwalder",
+      category: "canvas",
+      categoryLabel: "Propuesta de Valor & Buyer",
+      stage: "01–02",
+      year: "2014",
+      color: "#FF7A00",
+      title: "Diseñando la Propuesta de Valor (Value Proposition Design)",
+      work: "Value Proposition Design",
+      author: "Alexander Osterwalder, Yves Pigneur & Greg Bernarda",
+      takeaway: "Cómo encajar con precisión quirúrgica los dolores y alegrías del cliente ideal con tu oferta de productos y servicios.",
+      kindleUrl: "https://www.amazon.com.mx/dp/B00P0L6W7A",
+      appleBooksUrl: "https://books.apple.com/us/book/value-proposition-design/id927699748",
+      coverImg: "osterwalder_vpd.jpg",
+      badgeColor: "#0D2540"
+    },
+    {
+      id: "lean_startup",
+      category: "canvas",
+      categoryLabel: "Paso 05 & 06 · Iteración Kaizen",
+      stage: "05–06",
+      year: "2011",
+      color: "#0D2540",
+      title: "The Lean Startup: Continuous Innovation",
+      work: "The Lean Startup",
+      author: "Eric Ries",
+      takeaway: "Evolución iterativa continua (Crear → Medir → Aprender) aplicada a la validación rápida de activos comerciales y de marca.",
+      kindleUrl: "https://www.amazon.com/dp/B004J4XGN6",
+      appleBooksUrl: "https://books.apple.com/us/book/the-lean-startup/id436979505",
+      coverImg: "ries_lean.jpg",
+      badgeColor: "#0D2540"
+    }
+  ];
+
+  const ARCO_PDF_PLATES_SHOWCASE = [
+    { plate: "Lámina 01 / 36", title: "Portada Oficial de Marca · ARCO Ingeniería (#5 Lineal Minimalista)", img: "/assets/app_captures/pdf_lamina_01_portada.png" },
+    { plate: "Lámina 03 / 36", title: "Manifiesto Central y Filosofía Operativa (Del Caos al Sistema)", img: "/assets/app_captures/pdf_lamina_03_why_circulo_dorado.png" },
+    { plate: "Lámina 08 / 36", title: "Mapa de Empatía del Cliente Ideal (Desarrolladores e Inversionistas)", img: "/assets/app_captures/pdf_lamina_08_touchpoints.png" },
+    { plate: "Lámina 11 / 36", title: "Ingeniería de Touchpoints en Obra + Mockup Camisa Técnica y Chaleco", img: "/assets/app_captures/pdf_lamina_11_naming_niza37.png" },
+    { plate: "Lámina 13 / 36", title: "Terna Oficial en Curvas Bézier: Horizontal, Avatar 1:1 y Sello Circular", img: "/assets/app_captures/pdf_lamina_13_terna_curvas.png" },
+    { plate: "Lámina 16 / 36", title: "Área de Aislamiento (Margen X) y Reducción Mínima del Isotipo #5", img: "/assets/app_captures/pdf_lamina_16_reticula_8x3x.png" },
+    { plate: "Lámina 21 / 36", title: "Paleta Cromática Oficial (HEX · RGB · CMYK · Pantone #0078C0 / #88E0E0 / #585850)", img: "/assets/app_captures/pdf_lamina_21_paleta_cromatica.png" },
+    { plate: "Lámina 25 / 36", title: "Papelería Ejecutiva: Hoja Membretada y Tarjeta de Dirección General", img: "/assets/app_captures/pdf_lamina_25_tipografia_montserrat.png" },
+    { plate: "Lámina 30 / 36", title: "Gobernanza y Certificado Oficial de Entrega con Sello #5", img: "/assets/app_captures/pdf_lamina_30_papeleria_hoja_membretada.png" },
+    { plate: "Lámina 36 / 36", title: "Certificación Técnica de Trazado Vectorial en Curvas Bézier (.SVG / .AI)", img: "/assets/app_captures/pdf_lamina_36_constitucion_cierre.png" }
+  ];
+
+  const ARCO_ALL_12_DELIVERABLES = [
+    { num: "01", fmt: ".PDF (36 Págs)", name: "Manual Oficial de Marca en PDF (36 Láminas Apaisadas)", url: "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf", previewImg: "/assets/app_captures/pdf_lamina_01_portada.png" },
+    { num: "02", fmt: ".HTML (36 Págs)", name: "Manual Web Interactivo Autónomo (36 Láminas)", url: "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.html", previewImg: "/assets/app_captures/arco_30_paso6_1_brandbook_lamina01_portada.png" },
+    { num: "03", fmt: ".PNG (1600×1100)", name: "Logotipo Masterpiece #5 Lineal Minimalista Alta Resolución", url: "/samples/Logotipo_Masterpiece_NanoBanana_ARCO_Ingenieria.png", previewImg: "/samples/Logotipo_Masterpiece_NanoBanana_ARCO_Ingenieria.png" },
+    { num: "04", fmt: ".PNG (1024×1024)", name: "Isotipo 1:1 Centrado sin Texto Duplicado (App Icon / Favicon)", url: "/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png", previewImg: "/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" },
+    { num: "05", fmt: ".SVG (Curvas)", name: "Logotipo Horizontal 100% en Curvas Bézier", url: "/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.svg", previewImg: "/assets/app_captures/pdf_lamina_13_terna_curvas.png" },
+    { num: "06", fmt: ".AI (Illustrator)", name: "Original Maestro Nativo Adobe Illustrator en Curvas", url: "/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.ai", previewImg: "/assets/app_captures/arco_28_paso5_2_iter5_nanobanana_lineal_minimalista.png" },
+    { num: "07", fmt: ".SVG (Símbolo)", name: "Isotipo / Símbolo Puro en Curvas Bézier", url: "/samples/Isotipo_Simbolo_Curvas_arco_ingenieria.svg", previewImg: "/assets/app_captures/pdf_lamina_16_reticula_8x3x.png" },
+    { num: "08", fmt: ".SVG (Avatar 1:1)", name: "Avatar Social 1:1 en Curvas Bézier", url: "/samples/Avatar_Social_1x1_Curvas_arco_ingenieria.svg", previewImg: "/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" },
+    { num: "09", fmt: ".SVG (Sello)", name: "Sello Circular Corporativo en Curvas Bézier", url: "/samples/Sello_Circular_Curvas_arco_ingenieria.svg", previewImg: "/assets/app_captures/pdf_lamina_30_papeleria_hoja_membretada.png" },
+    { num: "10", fmt: ".DOCX (Word)", name: "Plantilla Editable de Hoja Membretada Corporativa", url: "/samples/Plantilla_Hoja_Membretada_arco_ingenieria.docx", previewImg: "/assets/app_captures/pdf_lamina_25_tipografia_montserrat.png" },
+    { num: "11", fmt: ".PPTX (16:9)", name: "Presentación Ejecutiva Panorámica Editable (6 Diapositivas)", url: "/samples/Plantilla_Presentacion_Ejecutiva_arco_ingenieria.pptx", previewImg: "/assets/app_captures/pdf_lamina_21_paleta_cromatica.png" },
+    { num: "12", fmt: ".HTML + .ZIP + .JSON", name: "Firma de Correo Ing. Luis Ponce (.HTML), Kit de Fuentes (.ZIP) y Tokens (.JSON)", url: "/samples/Firma_Corporativa_Luis_Ponce_ARCO_Ingenieria.html", extraZip: "/samples/Kit_Fuentes_Oficiales_arco_ingenieria.zip", extraJson: "/samples/Design_Tokens_ARCO_Ingenieria.json", previewImg: "/assets/app_captures/arco_34_modal_firma_corporativa_luis_ponce.png" }
+  ];
+
+  window.tbbPlayYouTubeAuthorVideo = function (videoId) {
+    const author = YOUTUBE_METHODOLOGY_AUTHORS.find((a) => a.id === videoId || a.idVideo === videoId);
+    const finalId = (author && (author.idVideo || author.id)) || videoId;
+    window.tbbOpenYouTubeModal(finalId, author ? author.author : "", author ? author.title : "");
+  };
+
+  window.tbbOpenYouTubeModal = function (youtubeVideoId, authorName, videoTitle) {
+    let ov = document.getElementById("tbbYouTubeAuthorModalOverlay");
+    if (!ov) {
+      ov = document.createElement("div");
+      ov.id = "tbbYouTubeAuthorModalOverlay";
+      ov.style.cssText = "position:fixed; inset:0; background:rgba(5,8,17,0.88); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); z-index:10050; display:flex; align-items:center; justify-content:center; padding:16px;";
+      ov.onclick = (e) => { if (e.target === ov) window.tbbCloseYouTubeModal(); };
+      document.body.appendChild(ov);
+    }
+    const ytDirectUrl = `https://www.youtube.com/watch?v=${encodeURIComponent(youtubeVideoId)}`;
+    ov.innerHTML = `
+      <div style="background:#0F172A; border:2px solid #0078C0; border-top:6px solid #FF7A00; border-radius:22px; width:100%; max-width:900px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.85); display:flex; flex-direction:column;">
+        <div style="padding:16px 20px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; border-bottom:1px solid #1E293B;">
+          <div>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:0.70rem; font-weight:800; color:#88E0E0;">CONFERENCIA MAGISTRAL · ${escHtml(authorName || "PENSADOR CLAVE")}</span>
+            <div style="font-family:'Montserrat',sans-serif; font-size:1.05rem; font-weight:900; color:#FFFFFF; margin-top:2px;">${escHtml(videoTitle || "Metodología Oficial The Best Brand")}</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <a href="${ytDirectUrl}" target="_blank" rel="noopener noreferrer" style="background:#FF7A00; color:#FFFFFF; text-decoration:none; padding:7px 14px; border-radius:999px; font-family:'Montserrat',sans-serif; font-size:0.76rem; font-weight:800;">
+              ↗ Abrir en YouTube
+            </a>
+            <button type="button" onclick="window.tbbCloseYouTubeModal()" style="background:#1E293B; border:1px solid #475569; color:#FFFFFF; font-size:1.1rem; cursor:pointer; padding:5px 11px; border-radius:10px;">✕</button>
+          </div>
+        </div>
+        <div style="aspect-ratio:16/9; width:100%; background:#000000;">
+          <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeVideoId)}?autoplay=1&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:block; border:none;"></iframe>
+        </div>
+      </div>
+    `;
+    ov.style.display = "flex";
+  };
+
+  window.tbbCloseYouTubeModal = function () {
+    const ov = document.getElementById("tbbYouTubeAuthorModalOverlay");
+    if (ov) {
+      ov.innerHTML = "";
+      ov.style.display = "none";
+    }
+  };
+
+  window.tbbFilterBooksCategory = function (cat) {
+    const cards = document.querySelectorAll(".tbb-book-card");
+    const pills = document.querySelectorAll(".tbb-book-filter-pill");
+    pills.forEach((p) => p.classList.toggle("is-active", p.dataset.cat === cat));
+    cards.forEach((card) => {
+      if (cat === "all" || card.dataset.cat === cat) {
+        card.style.display = "flex";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  };
 
   // Generador de Diagramas Vectoriales Interactivos para la Infografía de Bases Teóricas
   function buildAcademicDiagramSVG(diagramType, stageColor) {
@@ -2098,12 +2390,16 @@
               <span style="font-family:'JetBrains Mono',monospace; font-size:${compact ? '0.54rem' : '0.58rem'}; color:#FFFFFF; font-weight:800; background:${isSel ? '#0078C0' : '#0D2540'}; padding:2px 7px; border-radius:999px;">${escHtml(item.code)}</span>
               <span style="font-family:'JetBrains Mono',monospace; font-size:${compact ? '0.52rem' : '0.56rem'}; color:#0D2540; background:#F0F9FF; border:1px solid #88E0E0; padding:2px 6px; border-radius:999px; font-weight:800;">${escHtml(item.badge)}</span>
             </div>
-            <div style="width:100%; aspect-ratio:16/11; border-radius:10px; overflow:hidden; border:1px solid #E2E8F0; margin-bottom:6px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; padding:6px;">
+            <div
+              onclick="event.stopPropagation(); window.tbbOpenPlateLightboxModal(${item.id}, '${escHtml(item.screenImg)}', '${escHtml(item.code)} · ${escHtml(item.name)}', '${escHtml(item.logoImg)}');"
+              title="Haz clic para ampliar captura real"
+              style="width:100%; aspect-ratio:16/11; border-radius:10px; overflow:hidden; border:1px solid #E2E8F0; margin-bottom:6px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; padding:6px;"
+            >
               <img src="${escHtml(item.logoImg)}" alt="${escHtml(item.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" />
             </div>
             ${!compact ? `<div style="font-size:0.64rem; color:#334155; line-height:1.35; margin-bottom:6px; font-weight:600;">${escHtml(item.rationale)}</div>` : ""}
           </div>
-          <div style="display:grid; grid-template-columns:1fr auto; gap:4px;">
+          <div style="display:grid; grid-template-columns:1fr auto; gap:4px; align-items:center;">
             <button
               type="button"
               onclick="event.stopPropagation(); window.tbbSelectMockupLogoOption(${item.id});"
@@ -2111,7 +2407,13 @@
             >
               ${isSel ? '✓ Iteración Activa en App' : 'Ver Captura de Iteración'}
             </button>
-            <span style="background:#F8FAFC; color:#0D2540; border:1px solid #CBD5E1; border-radius:7px; padding:${compact ? '5px 6px' : '6px 7px'}; font-size:0.56rem; font-weight:800; font-family:'JetBrains Mono',monospace;">.SVG/.AI</span>
+            <a
+              href="/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.svg"
+              download="Logotipo_Horizontal_Curvas_arco_ingenieria.svg"
+              onclick="event.stopPropagation();"
+              title="Descargar Vector Oficial .SVG de ARCO Ingeniería"
+              style="background:#F0F9FF; color:#0078C0; border:1px solid #0078C0; border-radius:7px; padding:${compact ? '5px 6px' : '6px 7px'}; font-size:0.56rem; font-weight:800; font-family:'JetBrains Mono',monospace; text-decoration:none; display:inline-block;"
+            >⬇ .SVG/.AI</a>
           </div>
         </div>
       `;
@@ -2133,9 +2435,20 @@
         <div style="background:#FFFFFF; border:2px solid #0078C0; border-radius:14px; padding:10px; box-shadow:0 12px 28px rgba(13,37,64,0.10);">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
             <span style="font-family:'Montserrat',sans-serif; font-size:${compact ? '0.70rem' : '0.82rem'}; font-weight:900; color:#0D2540;">${escHtml(selectedCapObj.title)}</span>
-            <span style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; font-weight:800; color:#0078C0; background:#F0F9FF; border:1px solid #88E0E0; padding:3px 9px; border-radius:999px;">CASO REAL: ING. LUIS PONCE · ARCO INGENIERÍA</span>
+            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+              <span style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; font-weight:800; color:#0078C0; background:#F0F9FF; border:1px solid #88E0E0; padding:3px 9px; border-radius:999px;">CASO REAL: ING. LUIS PONCE · ARCO INGENIERÍA</span>
+              <button
+                type="button"
+                onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(selectedCapObj.img)}', '${escHtml(selectedCapObj.title)}', '/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
+                style="background:#0D2540; color:#FFFFFF; border:none; border-radius:999px; padding:3px 9px; font-size:0.58rem; font-weight:800; cursor:pointer;"
+              >🔍 Ampliar Captura HD</button>
+            </div>
           </div>
-          <div style="width:100%; border-radius:10px; overflow:hidden; border:1px solid #E2E8F0; background:#F8FAFC;">
+          <div
+            onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(selectedCapObj.img)}', '${escHtml(selectedCapObj.title)}', '/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
+            title="Haz clic para abrir en pantalla completa"
+            style="width:100%; border-radius:10px; overflow:hidden; border:1px solid #E2E8F0; background:#F8FAFC; cursor:zoom-in;"
+          >
             <img src="${escHtml(selectedCapObj.img)}" alt="${escHtml(selectedCapObj.title)}" style="width:100%; height:auto; display:block;" />
           </div>
         </div>
@@ -2500,6 +2813,39 @@
             <!-- Escenario de Mockup Real (Cambia instantáneamente entre Celular, Tablet y Computadora) -->
             <div id="tbbHomeMultiDeviceMockupStage" class="tbb-home-multidevice-stage-wrap">
               ${window.tbbRenderHomeDeviceMockupContent(activeHomeDevice)}
+            </div>
+
+            <!-- Barra Rápida de Acceso Directo a los 12 Entregables Reales de ARCO Ingeniería desde Inicio -->
+            <div style="margin-top:20px; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:20px; padding:18px 22px; box-shadow:0 12px 32px rgba(13,37,64,0.06);">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+                <div>
+                  <span style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#0078C0; letter-spacing:0.05em;">CASO DE ESTUDIO REAL COMPLETO · ING. LUIS PONCE</span>
+                  <h3 style="font-family:'Montserrat',sans-serif; font-size:1.15rem; font-weight:900; color:#0D2540; margin:2px 0 0;">Descarga o Inspecciona los Entregables Generados para «ARCO Ingeniería» (Iteración #5)</h3>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <a href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf" target="_blank" rel="noopener" style="background:#0078C0; color:#FFFFFF; text-decoration:none; padding:9px 16px; border-radius:999px; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; display:inline-flex; align-items:center; gap:6px;">
+                    📄 Abrir Manual .PDF (36 Láminas)
+                  </a>
+                  <a href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.html" target="_blank" rel="noopener" style="background:#0D2540; color:#FFFFFF; text-decoration:none; padding:9px 16px; border-radius:999px; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; display:inline-flex; align-items:center; gap:6px;">
+                    🌐 Abrir Brandbook Interactivo .HTML
+                  </a>
+                  <button type="button" onclick="window.tbbSwitchMainSection(5)" style="background:#FFF7ED; color:#FF7A00; border:1.5px solid #FF7A00; padding:9px 16px; border-radius:999px; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; cursor:pointer;">
+                    Ver Pack Completo (12 Archivos) →
+                  </button>
+                </div>
+              </div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                ${ARCO_ALL_12_DELIVERABLES.map((d) => `
+                  <a
+                    href="${escHtml(d.url)}"
+                    ${d.url.endsWith('.html') || d.url.endsWith('.pdf') ? 'target="_blank" rel="noopener"' : `download="${escHtml(d.url.split('/').pop())}"`}
+                    style="background:#F8FAFC; color:#0D2540; border:1px solid #CBD5E1; border-radius:10px; padding:6px 11px; font-size:0.74rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;"
+                  >
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:800; color:#FFFFFF; background:#0078C0; padding:2px 6px; border-radius:6px;">${escHtml(d.ext)}</span>
+                    <span>${escHtml(d.label)}</span>
+                  </a>
+                `).join("")}
+              </div>
             </div>
           </div>
         </div>
@@ -2977,8 +3323,13 @@
 
                     <!-- Intercalado Dinámico (Par / Impar): Screenshot Real de la App + Texto de Revisión + Imagen / Esquema Gráfico -->
                     <div class="tbb-interleaved-step-grid ${isEven ? 'is-even-layout' : 'is-odd-layout'}">
-                      <!-- Bloque A: Screenshot Real de la Interfaz del Paso -->
-                      <div class="tbb-precision-cutout-frame">
+                      <!-- Bloque A: Screenshot Real de la Interfaz del Paso (Clic para Ampliar en Lightbox) -->
+                      <div
+                        class="tbb-precision-cutout-frame"
+                        onclick="event.stopPropagation(); window.tbbOpenPlateLightboxModal(${idx + 1}, '${escHtml(capImg)}', '${escHtml(loc.badge)} · ${escHtml(loc.title)}', '/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf');"
+                        title="Haz clic para ampliar esta captura real de ARCO Ingeniería"
+                        style="cursor:zoom-in;"
+                      >
                         <img
                           src="${escHtml(capImg)}"
                           onerror="this.src='${escHtml(it.captureBase)}?v=${ASSET_VERSION}'"
@@ -2987,7 +3338,7 @@
                         />
                         <div class="tbb-floating-callout-pill">
                           ${TBB_ICONS.check}
-                          <span>${escHtml(loc.cutoutLabel)}</span>
+                          <span>${escHtml(loc.cutoutLabel)} · Clic para ampliar</span>
                         </div>
                       </div>
 
@@ -3010,19 +3361,27 @@
                       </div>
                     </div>
 
-                    <!-- Cápsula Emergente Moderada (1 botón limpio bajo demanda) -->
+                    <!-- Cápsula de Audio con Aura Animada (Cero Video del Fundador · Audio Nativo Multilingüe) -->
                     <div class="tbb-moderate-capsule-bar">
-                      <div class="tbb-capsule-mini-preview" onclick="event.stopPropagation(); window.tbbOpenVideoPopupModal(${idx});">
-                        <img src="${escHtml(posterImg)}" alt="Step 0${idx}" loading="lazy" />
+                      <div
+                        class="tbb-capsule-mini-preview"
+                        onclick="event.stopPropagation(); window.tbbOpenVideoPopupModal(${idx});"
+                        style="background:radial-gradient(circle at 50% 50%, #38BDF8 0%, #0078C0 48%, #0D2540 100%); display:flex; align-items:center; justify-content:center;"
+                      >
+                        <svg width="34" height="34" viewBox="0 0 64 64" fill="none">
+                          <circle cx="32" cy="32" r="24" stroke="#88E0E0" stroke-width="2" stroke-dasharray="6 4"/>
+                          <circle cx="32" cy="32" r="14" fill="rgba(56,189,248,0.28)" stroke="#FFFFFF" stroke-width="2"/>
+                          <circle cx="32" cy="32" r="6" fill="#FF7A00"/>
+                        </svg>
                         <span class="tbb-capsule-play-badge">${TBB_ICONS.play}</span>
                       </div>
                       <div class="tbb-capsule-bar-info">
-                        <strong>${escHtml(t("tourWatchStepCapsule"))} · 0${idx} (${l.toUpperCase()})</strong>
+                        <strong>Cápsula de Audio con Aura Animada · 0${idx} (${l.toUpperCase()})</strong>
                         <span>${escHtml(VIDEO_CAPSULES[idx].author)}</span>
                       </div>
                       <button type="button" class="tbb-btn-capsule-open" onclick="event.stopPropagation(); window.tbbOpenVideoPopupModal(${idx});">
                         ${TBB_ICONS.play}
-                        <span>${escHtml(t("tourWatchStepCapsule"))}</span>
+                        <span>Escuchar a Aura (0${idx})</span>
                       </button>
                     </div>
                   </article>
@@ -3031,25 +3390,31 @@
             </div>
           </div>
 
-          <!-- Comparador Interactivo Antes / Después (Evolución de Logotipo con Aura) -->
+          <!-- Comparador Interactivo Antes / Después (Evolución Real de ARCO Ingeniería: Logo Original -> Selección #5 Lineal Minimalista) -->
           <div class="tbb-before-after-block tbb-reveal-on-scroll">
             <div class="tbb-before-after-header">
-              <h2 class="tbb-section-title-lg">${escHtml(t("tourBeforeAfterTitle"))}</h2>
-              <p class="tbb-section-lead-md">${escHtml(t("tourBeforeAfterSub"))}</p>
+              <span class="tbb-eyebrow-pill" style="margin-bottom:10px;">${TBB_ICONS.spark} <span>CASO AUDITADO REAL · ING. LUIS PONCE (ARCO INGENIERÍA)</span></span>
+              <h2 class="tbb-section-title-lg">Evolución Real: Del Logotipo Original a la Iteración #5 · Lineal Minimalista</h2>
+              <p class="tbb-section-lead-md">Desliza el comparador para ver cómo el estudio respetó el ADN de «ARCO Ingeniería» (azul corporativo, arco con flecha ascendente y retícula arquitectónica) y lo transformó en un sistema vectorial de alta precisión.</p>
             </div>
             <div class="tbb-before-after-stage">
               <div class="tbb-ba-layer tbb-ba-after">
                 <div class="tbb-ba-card-content is-after">
-                  <span class="tbb-ba-badge after">DESPUÉS · THE BEST BRAND VECTOR ATELIER</span>
-                  <img src="${TBB_CLEAN_LOGO_DATA_URI}" alt="The Best Brand Final Vector" style="max-height:110px; width:auto;" />
-                  <p>Geometría en proporción áurea (8X×3X), curvas Bézier puras y Brandbook oficial de más de 30 páginas.</p>
+                  <span class="tbb-ba-badge after">DESPUÉS · SELECCIÓN #5 LINEAL MINIMALISTA (NANOBANANA PRO + RETÍCULA 8X×3X)</span>
+                  <div style="display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap; margin:8px 0;">
+                    <img src="/assets/logos/arco_iter5_full.png" alt="ARCO Ingeniería Iteración #5 Lineal Minimalista" style="max-height:130px; width:auto; border-radius:12px; background:#FFFFFF; padding:8px; border:1px solid #CBD5E1;" />
+                    <img src="/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" alt="Isotipo 1:1 ARCO Ingeniería" style="max-height:110px; width:auto; border-radius:12px; background:#FFFFFF; padding:8px; border:1px solid #CBD5E1;" />
+                  </div>
+                  <p>Trazo monolineal continuo en proporción áurea (8X×3X), paleta validada (<code>#0D2540</code>, <code>#0078C0</code>, <code>#88E0E0</code>) y Brandbook de 36 láminas.</p>
                 </div>
               </div>
               <div id="tbbBeforeClipLayer" class="tbb-ba-layer tbb-ba-before" style="clip-path:inset(0 ${100 - st.beforeAfterVal}% 0 0);">
                 <div class="tbb-ba-card-content is-before">
-                  <span class="tbb-ba-badge before">ANTES · BOCETO O LOGO SIN RETÍCULA</span>
-                  <div class="tbb-ba-sketch-placeholder">BOCETO INICIAL · SIN SISTEMA</div>
-                  <p>Trazos sin proporción matemática, sin paleta validada WCAG ni manual de aplicación.</p>
+                  <span class="tbb-ba-badge before">ANTES · LOGOTIPO BASE CARGADO EN EL PASO 0.2 (ARCO INGENIERÍA)</span>
+                  <div style="display:flex; align-items:center; justify-content:center; margin:8px 0;">
+                    <img src="/assets/logos/arco_ingenieria_logo4k_original.png" alt="ARCO Ingeniería Logotipo Original" style="max-height:125px; width:auto; border-radius:12px; background:#FFFFFF; padding:10px; border:1px solid #CBD5E1;" />
+                  </div>
+                  <p>Logotipo original subido por el Ing. Luis Ponce como semilla de capital visual para su modernización arquitectónica.</p>
                 </div>
               </div>
               <div id="tbbBeforeAfterHandle" class="tbb-ba-handle" style="left:${st.beforeAfterVal}%;">
@@ -3066,8 +3431,16 @@
               />
             </div>
 
-            <div style="text-align:center; margin-top:36px;">
-              <button type="button" class="tbb-btn-primary-vibrant" onclick="window.tbbSwitchMainSection(3)">
+            <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:28px;">
+              <a href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf" target="_blank" rel="noopener" class="tbb-btn-primary-vibrant" style="text-decoration:none;">
+                ${TBB_ICONS.book}
+                <span>Abrir Manual .PDF de ARCO Ingeniería (36 Láminas)</span>
+              </a>
+              <button type="button" class="tbb-btn-secondary-clean" onclick="window.tbbSwitchMainSection(5)">
+                ${TBB_ICONS.downloads}
+                <span>Ir al Pack de 12 Descargas</span>
+              </button>
+              <button type="button" class="tbb-btn-secondary-clean" onclick="window.tbbSwitchMainSection(3)">
                 ${TBB_ICONS.theory}
                 <span>${escHtml(t("navTheory"))}</span>
                 ${TBB_ICONS.arrowRight}
@@ -3222,19 +3595,146 @@
             </div>
           </div>
 
-          <!-- BIBLIOGRAFÍA ESENCIAL DE RESPALDO ACADÉMICO -->
-          <div class="tbb-books-academic-block tbb-reveal-on-scroll">
-            <h2 class="tbb-section-title-lg" style="text-align:center; margin-bottom:24px;">${escHtml(t("theoryBooksSectionTitle"))}</h2>
-            <div class="tbb-books-grid">
-              ${FOUNDER_ESSENTIAL_BOOKS.map((b) => `
-                <div class="tbb-book-academic-card">
-                  <div class="tbb-book-spine" style="background:${b.color};">ETAPA ${escHtml(b.stage)}</div>
-                  <div class="tbb-book-body">
-                    <span class="tbb-book-year">${escHtml(b.year)}</span>
-                    <h3 class="tbb-book-title">${escHtml(b.work)}</h3>
-                    <p class="tbb-book-author">${escHtml(b.author)}</p>
+          <!-- CONFERENCIAS MAGISTRALES DE LOS AUTORES EN YOUTUBE (RESTAURADAS CON REPRODUCTOR INTEGRADO Y ENLACE DIRECTO) -->
+          <div id="tbbTheoryAuthorsYouTubeSection" class="tbb-books-academic-block tbb-reveal-on-scroll is-visible" style="margin-top:44px;">
+            <div style="text-align:center; max-width:860px; margin:0 auto 28px;">
+              <span class="tbb-eyebrow-pill">${TBB_ICONS.play} <span>CONFERENCIAS MAGISTRALES EN YOUTUBE · AUTORES ORIGINALES</span></span>
+              <h2 class="tbb-section-title-lg" style="margin-top:10px;">Escucha Directamente a los Creadores de Cada Metodología</h2>
+              <p class="tbb-section-lead-md">Reproduce aquí mismo las charlas TED, cátedras de Stanford y conferencias de diseño de Simon Sinek, Sagi Haviv, Alex Osterwalder, Donald Miller, Marty Neumeier, Alexandra Watkins y David Aaker, o ábrelas directamente en YouTube.</p>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(310px, 1fr)); gap:20px;">
+              ${YOUTUBE_METHODOLOGY_AUTHORS.map((yt, idx) => {
+                const vidId = yt.idVideo || yt.id;
+                const watchHref = `https://www.youtube.com/watch?v=${encodeURIComponent(vidId)}`;
+                const badgeCol = idx % 2 === 0 ? "#FF7A00" : "#0078C0";
+                return `
+                <article style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:20px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 12px 28px rgba(13,37,64,0.06);">
+                  <div>
+                    <div
+                      id="tbbYtEmbedWrap_${escHtml(yt.id)}"
+                      style="position:relative; width:100%; aspect-ratio:16/9; background:radial-gradient(circle at 80% 20%, #1E3A8A 0%, #0D2540 70%); overflow:hidden; cursor:pointer;"
+                      onclick="window.tbbPlayYouTubeAuthorVideo('${escHtml(yt.id)}', '${escHtml(vidId)}')"
+                    >
+                      <svg viewBox="0 0 400 225" width="100%" height="100%" style="position:absolute; inset:0; opacity:0.22; pointer-events:none;">
+                        <circle cx="320" cy="60" r="90" fill="none" stroke="#38BDF8" stroke-width="2" stroke-dasharray="6 4"/>
+                        <circle cx="320" cy="60" r="52" fill="none" stroke="#FF7A00" stroke-width="2"/>
+                        <path d="M0,180 Q140,110 280,165 T400,120" fill="none" stroke="#88E0E0" stroke-width="2.5"/>
+                      </svg>
+                      <img
+                        src="https://i.ytimg.com/vi/${escHtml(vidId)}/hqdefault.jpg"
+                        alt="${escHtml(yt.author)}"
+                        loading="lazy"
+                        onerror="this.style.display='none'"
+                        style="width:100%; height:100%; object-fit:cover; opacity:0.55; display:block;"
+                      />
+                      <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(13,37,64,0.25) 0%, rgba(13,37,64,0.88) 100%); display:flex; flex-direction:column; justify-content:space-between; padding:14px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
+                          <span style="font-family:'JetBrains Mono',monospace; font-size:0.66rem; font-weight:800; background:${badgeCol}; color:#FFFFFF; padding:4px 10px; border-radius:999px;">${escHtml(yt.step)}</span>
+                          <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:700; background:rgba(13,37,64,0.9); color:#88E0E0; border:1px solid rgba(136,224,224,0.35); padding:3px 9px; border-radius:999px;">⏱ ${escHtml(yt.duration)}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:12px; text-align:left;">
+                          <span style="width:46px; height:46px; border-radius:999px; background:#FF0000; color:#FFFFFF; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(255,0,0,0.45); flex-shrink:0;">
+                            ${TBB_ICONS.play}
+                          </span>
+                          <div>
+                            <div style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; color:#88E0E0; font-weight:800;">${escHtml(yt.channel)}</div>
+                            <div style="color:#FFFFFF; font-family:'Montserrat',sans-serif; font-size:0.86rem; font-weight:800; line-height:1.28; text-shadow:0 2px 6px rgba(0,0,0,0.5);">${escHtml(yt.title)}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="padding:16px 18px 12px; text-align:left;">
+                      <div style="font-family:'Montserrat',sans-serif; font-size:1.04rem; font-weight:900; color:#0D2540;">${escHtml(yt.author)}</div>
+                      <div style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:700; color:#0078C0; margin-bottom:8px;">${escHtml(yt.channel)} · ${escHtml(yt.step)}</div>
+                      <p style="font-size:0.84rem; color:#334155; line-height:1.5; margin:0 0 8px;">${escHtml(yt.topic)}</p>
+                    </div>
                   </div>
-                </div>
+
+                  <div style="padding:0 18px 16px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button
+                      type="button"
+                      onclick="window.tbbPlayYouTubeAuthorVideo('${escHtml(yt.id)}', '${escHtml(vidId)}')"
+                      style="flex:1; background:#0D2540; color:#FFFFFF; border:none; border-radius:10px; padding:9px 12px; font-family:'Montserrat',sans-serif; font-size:0.76rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px;"
+                    >
+                      ▶ Reproducir Aquí
+                    </button>
+                    <a
+                      href="${escHtml(watchHref)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style="background:#FFF1F2; color:#BE123C; border:1px solid #FECDD3; border-radius:10px; padding:9px 12px; font-family:'Montserrat',sans-serif; font-size:0.76rem; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:5px;"
+                    >
+                      ↗ Ver en YouTube
+                    </a>
+                  </div>
+                </article>
+              `;
+              }).join("")}
+            </div>
+          </div>
+
+          <!-- BIBLIOTECA ESENCIAL DEL FUNDADOR (RESTAURADA CON PORTADAS Y ENLACES A AMAZON / KINDLE Y APPLE BOOKS) -->
+          <div id="tbbTheoryFounderBooksSection" class="tbb-books-academic-block tbb-reveal-on-scroll is-visible" style="margin-top:48px;">
+            <div style="text-align:center; max-width:840px; margin:0 auto 20px;">
+              <span class="tbb-eyebrow-pill">${TBB_ICONS.book} <span>BIBLIOTECA DEL FUNDADOR · 9 OBRAS FUNDAMENTALES</span></span>
+              <h2 class="tbb-section-title-lg" style="margin-top:10px;">${escHtml(t("theoryBooksSectionTitle"))}</h2>
+              <p class="tbb-section-lead-md">Consulta y adquiere las obras originales en las que se fundamenta cada paso algorítmico de TheBestBrand Studio, con enlaces directos a Amazon / Kindle y Apple Books.</p>
+            </div>
+
+            <!-- Filtros por Categoría Bibliográfica -->
+            <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:24px;">
+              <button type="button" data-book-cat-pill="all" onclick="window.tbbFilterBooksCategory('all')" style="padding:8px 16px; border-radius:999px; border:1.5px solid #0D2540; background:#0D2540; color:#FFFFFF; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; cursor:pointer;">Todos los Libros (9)</button>
+              <button type="button" data-book-cat-pill="canvas" onclick="window.tbbFilterBooksCategory('canvas')" style="padding:8px 16px; border-radius:999px; border:1.5px solid #CBD5E1; background:#FFFFFF; color:#0D2540; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; cursor:pointer;">Canvas &amp; Modelo de Negocio</button>
+              <button type="button" data-book-cat-pill="branding" onclick="window.tbbFilterBooksCategory('branding')" style="padding:8px 16px; border-radius:999px; border:1.5px solid #CBD5E1; background:#FFFFFF; color:#0D2540; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; cursor:pointer;">Propósito, Identidad &amp; Logos</button>
+              <button type="button" data-book-cat-pill="story" onclick="window.tbbFilterBooksCategory('story')" style="padding:8px 16px; border-radius:999px; border:1.5px solid #CBD5E1; background:#FFFFFF; color:#0D2540; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; cursor:pointer;">Narrativa &amp; Touchpoints</button>
+            </div>
+
+            <div class="tbb-books-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:18px;">
+              ${FOUNDER_ESSENTIAL_BOOKS.map((b) => `
+                <article
+                  data-book-cat="${escHtml(b.category || 'branding')}"
+                  class="tbb-book-academic-card"
+                  style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:18px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; gap:12px; box-shadow:0 10px 24px rgba(13,37,64,0.05);"
+                >
+                  <div style="display:flex; gap:14px; align-items:flex-start;">
+                    <img
+                      src="/assets/books/${escHtml(b.coverImg)}"
+                      alt="${escHtml(b.work)}"
+                      loading="lazy"
+                      style="width:76px; height:112px; object-fit:cover; border-radius:8px; border:1px solid #CBD5E1; flex-shrink:0; box-shadow:0 6px 14px rgba(13,37,64,0.12);"
+                    />
+                    <div style="text-align:left;">
+                      <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-bottom:4px;">
+                        <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:800; background:${escHtml(b.color)}; color:#FFFFFF; padding:2px 8px; border-radius:999px;">ETAPA ${escHtml(b.stage)}</span>
+                        <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:700; color:#64748B;">${escHtml(b.year)}</span>
+                      </div>
+                      <h3 style="font-family:'Montserrat',sans-serif; font-size:0.98rem; font-weight:900; color:#0D2540; margin:0 0 4px; line-height:1.25;">${escHtml(b.work)}</h3>
+                      <div style="font-size:0.80rem; font-weight:800; color:#0078C0; margin-bottom:6px;">${escHtml(b.author)}</div>
+                      <p style="font-size:0.78rem; color:#475569; line-height:1.42; margin:0;">${escHtml(b.takeaway || '')}</p>
+                    </div>
+                  </div>
+
+                  <div style="display:flex; gap:8px; flex-wrap:wrap; padding-top:10px; border-top:1px solid #E2E8F0;">
+                    <a
+                      href="${escHtml(b.kindleUrl)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style="flex:1; background:#FFF7ED; color:#C2410C; border:1px solid #FED7AA; border-radius:10px; padding:8px 10px; font-family:'Montserrat',sans-serif; font-size:0.74rem; font-weight:800; text-decoration:none; text-align:center;"
+                    >
+                      📖 Amazon / Kindle ↗
+                    </a>
+                    <a
+                      href="${escHtml(b.appleBooksUrl)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style="flex:1; background:#F8FAFC; color:#0D2540; border:1px solid #CBD5E1; border-radius:10px; padding:8px 10px; font-family:'Montserrat',sans-serif; font-size:0.74rem; font-weight:800; text-decoration:none; text-align:center;"
+                    >
+                       Apple Books ↗
+                    </a>
+                  </div>
+                </article>
               `).join("")}
             </div>
 
@@ -3376,7 +3876,7 @@
     `;
   };
 
-  // SUBPÁGINA 5: PACK DE DESCARGAS (CONSOLIDACIÓN DE ENTREGABLES · MENCIÓN ÚNICA DEL BRANDBOOK DE MÁS DE 30 PÁGINAS)
+  // SUBPÁGINA 5: PACK DE DESCARGAS (CONSOLIDACIÓN DE ENTREGABLES · BRANDBOOK .PDF + .HTML DE 36 LÁMINAS Y 12 ARCHIVOS DE ARCO INGENIERÍA)
   window.tbbBuildSubpage5DownloadsHTML = function () {
     const l = getLang();
     const primaryBrandbook = OFFICIAL_9_DELIVERABLES[0];
@@ -3388,29 +3888,53 @@
         <div class="tbb-container-wide">
           <!-- Cabecera Unificada -->
           <div class="tbb-section-header-large tbb-reveal-on-scroll is-visible">
-            <span class="tbb-eyebrow-pill">${TBB_ICONS.downloads} <span>${escHtml(t("downloadsEyebrow"))}</span></span>
+            <span class="tbb-eyebrow-pill">${TBB_ICONS.downloads} <span>${escHtml(t("downloadsEyebrow"))} · CASO REAL: ARCO INGENIERÍA (LOGO #5)</span></span>
             <h1 class="tbb-section-title-xl">${escHtml(t("downloadsTitle"))}</h1>
             <p class="tbb-section-lead-xl">${escHtml(t("downloadsLead"))}</p>
           </div>
 
-          <!-- BLOQUE PROTAGONISTA ÚNICO DEL BRANDBOOK OFICIAL (ESTANDARIZADO A "MÁS DE 30 PÁGINAS (AJUSTABLE SEGÚN EL GIRO DEL NEGOCIO)") -->
+          <!-- BLOQUE PROTAGONISTA DEL BRANDBOOK OFICIAL (.PDF + .HTML DE 36 LÁMINAS GENERADO PARA ARCO INGENIERÍA) -->
           <div class="tbb-consolidated-brandbook-hero-card tbb-reveal-on-scroll is-visible">
             <div class="tbb-cb-left">
-              <span class="tbb-cb-standard-badge">${TBB_ICONS.shield} <span>${escHtml(t("downloadsStandardBadge"))}</span></span>
+              <span class="tbb-cb-standard-badge">${TBB_ICONS.shield} <span>${escHtml(t("downloadsStandardBadge"))} · SELECCIÓN #5 LINEAL MINIMALISTA</span></span>
               <h2 class="tbb-cb-title">${escHtml(pbLoc.title)}</h2>
               <p class="tbb-cb-desc">${escHtml(pbLoc.desc)}</p>
-              <div class="tbb-cb-actions">
-                <button
-                  type="button"
+              <div class="tbb-cb-actions" style="display:flex; gap:10px; flex-wrap:wrap;">
+                <a
+                  href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
+                  target="_blank"
+                  rel="noopener"
                   class="tbb-btn-primary-vibrant"
-                  onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(primaryBrandbook.thumb)}', '${escHtml(pbLoc.title)}', '${escHtml(primaryBrandbook.sampleUrl)}')"
+                  style="text-decoration:none;"
                 >
                   ${TBB_ICONS.book}
-                  <span>${escHtml(t("downloadsViewSampleBtn"))}</span>
-                </button>
-                <button type="button" class="tbb-btn-secondary-clean" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')">
+                  <span>Abrir Manual en .PDF (36 Láminas)</span>
+                </a>
+                <a
+                  href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
+                  download="Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
+                  class="tbb-btn-secondary-clean"
+                  style="text-decoration:none;"
+                >
                   ${TBB_ICONS.downloads}
-                  <span>${escHtml(t("downloadsUnlockAllBtn"))}</span>
+                  <span>⬇ Descargar .PDF (16.3 MB)</span>
+                </a>
+                <a
+                  href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.html"
+                  target="_blank"
+                  rel="noopener"
+                  class="tbb-btn-secondary-clean"
+                  style="text-decoration:none;"
+                >
+                  ${TBB_ICONS.expand}
+                  <span>Abrir Visor Interactivo .HTML</span>
+                </a>
+                <button
+                  type="button"
+                  class="tbb-btn-secondary-clean"
+                  onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(primaryBrandbook.thumb)}', '${escHtml(pbLoc.title)}', '${escHtml(primaryBrandbook.sampleUrl)}')"
+                >
+                  🔍 Explorar Láminas en HD
                 </button>
               </div>
             </div>
@@ -3420,10 +3944,45 @@
             </div>
           </div>
 
-          <!-- Grid Responsivo + Scroll Horizontal de los 8 Archivos Ejecutivos Complementarios -->
-          <div class="tbb-deliverables-grid tbb-reveal-on-scroll">
+          <!-- GALERÍA DE LÁMINAS INTERIORES DEL MANUAL EN .PDF DE ARCO INGENIERÍA (36 PÁGINAS LANDSCAPE) -->
+          <div style="margin:32px 0; background:#FFFFFF; border:1.5px solid #CBD5E1; border-radius:22px; padding:24px; box-shadow:0 14px 36px rgba(13,37,64,0.06);">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
+              <div>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#0078C0;">VISTA PREVIA DE PÁGINAS INTERIORES DEL ARCHIVO .PDF</span>
+                <h3 style="font-family:'Montserrat',sans-serif; font-size:1.28rem; font-weight:900; color:#0D2540; margin:4px 0 0;">Láminas Oficiales del Manual de Marca .PDF de ARCO Ingeniería (36 Láminas)</h3>
+              </div>
+              <a
+                href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
+                target="_blank"
+                rel="noopener"
+                style="background:#0078C0; color:#FFFFFF; text-decoration:none; padding:10px 18px; border-radius:999px; font-family:'Montserrat',sans-serif; font-size:0.80rem; font-weight:800;"
+              >
+                📄 Ver las 36 Páginas en .PDF →
+              </a>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px;">
+              ${ARCO_PDF_PLATES_SHOWCASE.map((pl, idx) => `
+                <div
+                  onclick="window.tbbOpenPlateLightboxModal(${idx + 1}, '${escHtml(pl.img)}', '${escHtml(pl.code)} · ${escHtml(pl.title)}', '/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
+                  style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:10px; cursor:zoom-in; transition:all 0.2s ease;"
+                >
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:800; color:#FFFFFF; background:#0D2540; padding:2px 8px; border-radius:999px;">${escHtml(pl.code)}</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; font-weight:800; color:#0078C0;">.PDF HD</span>
+                  </div>
+                  <img src="${escHtml(pl.img)}" alt="${escHtml(pl.title)}" loading="lazy" style="width:100%; border-radius:8px; border:1px solid #E2E8F0; display:block; margin-bottom:6px;" />
+                  <div style="font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; color:#0D2540;">${escHtml(pl.title)}</div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- Grid Responsivo de los 8 Archivos Ejecutivos Complementarios (Con Vista Previa HD + Descarga Directa) -->
+          <div class="tbb-deliverables-grid tbb-reveal-on-scroll is-visible">
             ${otherDeliverables.map((item) => {
               const loc = item.i18n[l] || item.i18n.es;
+              const fileName = String(item.sampleUrl || "").split("/").pop();
+              const isWebViewable = item.sampleUrl.endsWith(".html") || item.sampleUrl.endsWith(".pdf");
               return `
                 <article class="tbb-deliverable-card" onclick="window.tbbOpenPlateLightboxModal(${item.plateNum}, '${escHtml(item.thumb)}', '${escHtml(loc.title)}', '${escHtml(item.sampleUrl)}')">
                   <div class="tbb-deliv-thumb-wrap">
@@ -3434,11 +3993,60 @@
                   <div class="tbb-deliv-body">
                     <h3 class="tbb-deliv-title">${escHtml(loc.title)}</h3>
                     <p class="tbb-deliv-desc">${escHtml(loc.desc)}</p>
-                    <span class="tbb-deliv-link">${TBB_ICONS.expand} <span>${escHtml(t("downloadsViewSampleBtn"))}</span></span>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
+                      <button
+                        type="button"
+                        onclick="event.stopPropagation(); window.tbbOpenPlateLightboxModal(${item.plateNum}, '${escHtml(item.thumb)}', '${escHtml(loc.title)}', '${escHtml(item.sampleUrl)}');"
+                        style="background:#F0F9FF; color:#0078C0; border:1px solid #0078C0; border-radius:8px; padding:6px 10px; font-size:0.72rem; font-weight:800; cursor:pointer;"
+                      >
+                        🔍 Ver Muestra HD
+                      </button>
+                      <a
+                        href="${escHtml(item.sampleUrl)}"
+                        ${isWebViewable ? 'target="_blank" rel="noopener"' : `download="${escHtml(fileName)}"`}
+                        onclick="event.stopPropagation();"
+                        style="background:#0D2540; color:#FFFFFF; border-radius:8px; padding:6px 11px; font-size:0.72rem; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:4px;"
+                      >
+                        ⬇ ${isWebViewable ? 'Abrir Archivo' : 'Descargar'}
+                      </a>
+                    </div>
                   </div>
                 </article>
               `;
             }).join("")}
+          </div>
+
+          <!-- BÓVEDA DE DESCARGA DIRECTA DE LOS 12 ARCHIVOS REALES GENERADOS PARA ARCO INGENIERÍA -->
+          <div style="margin-top:36px; background:#0D2540; color:#FFFFFF; border-radius:24px; padding:26px; border:2px solid #0078C0;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
+              <div>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#88E0E0;">BÓVEDA EJECUTIVA VERIFICADA · 12 ARCHIVOS REALES DISPONIBLES</span>
+                <h3 style="font-family:'Montserrat',sans-serif; font-size:1.32rem; font-weight:900; color:#FFFFFF; margin:4px 0 0;">Descarga Individual de Cada Entregable de «ARCO Ingeniería» (Ing. Luis Ponce)</h3>
+              </div>
+              <button type="button" class="tbb-btn-primary-vibrant" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')">
+                ${TBB_ICONS.spark}
+                <span>${escHtml(t("downloadsUnlockAllBtn"))}</span>
+              </button>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:10px;">
+              ${ARCO_ALL_12_DELIVERABLES.map((d, i) => {
+                const fn = d.url.split("/").pop();
+                const isView = d.url.endsWith(".pdf") || d.url.endsWith(".html");
+                return `
+                  <a
+                    href="${escHtml(d.url)}"
+                    ${isView ? 'target="_blank" rel="noopener"' : `download="${escHtml(fn)}"`}
+                    style="background:rgba(255,255,255,0.07); border:1px solid rgba(136,224,224,0.32); border-radius:12px; padding:11px 14px; color:#FFFFFF; text-decoration:none; display:flex; align-items:center; justify-content:space-between; gap:10px;"
+                  >
+                    <div style="display:flex; align-items:center; gap:9px; text-align:left;">
+                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.66rem; font-weight:800; background:#0078C0; color:#FFFFFF; padding:3px 7px; border-radius:6px;">${String(i + 1).padStart(2, "0")} · ${escHtml(d.ext)}</span>
+                      <span style="font-family:'Montserrat',sans-serif; font-size:0.80rem; font-weight:700;">${escHtml(d.label)}</span>
+                    </div>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#88E0E0; font-weight:800; white-space:nowrap;">${escHtml(d.size)} ⬇</span>
+                  </a>
+                `;
+              }).join("")}
+            </div>
           </div>
         </div>
       </section>
@@ -3605,7 +4213,7 @@
     `;
   };
 
-  // VISOR MODAL DE CÁPSULAS EXPLICATIVAS EN EL IDIOMA ACTIVO (ES, EN, FR, PT, DE, IT CON SELECTOR INTERACTIVO Y FALLBACK CDN)
+  // VISOR MODAL DE CÁPSULAS EXPLICATIVAS CON AURA ANIMADA + AUDIO NATIVO MULTILINGÜE (CERO VIDEO DEL FUNDADOR)
   window.tbbOpenVideoPopupModal = function (stepIdx, langOverride) {
     const s = Math.max(0, Math.min(6, Number(stepIdx) || 0));
     if (langOverride && ["es", "en", "fr", "pt", "de", "it"].includes(String(langOverride).toLowerCase())) {
@@ -3631,7 +4239,6 @@
 
     const cap = VIDEO_CAPSULES[s] || VIDEO_CAPSULES[0];
     const vidUrl = getLocalizedStepVideoUrl(s, l);
-    const posterUrl = getLocalizedStepPosterUrl(s, l);
     const sfx = l === "es" ? "" : `_${l}`;
     const fbVidUrl = resolveVideoAssetFallback(`/assets/videos/capsula_teoria_paso_${s}${sfx}.mp4`);
     const modalLangs = [
@@ -3647,7 +4254,7 @@
       <div class="tbb-video-modal-card" onclick="event.stopPropagation()">
         <div class="tbb-video-modal-head" style="flex-wrap:wrap; gap:10px;">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <span class="tbb-eyebrow-pill" style="margin:0;">${TBB_ICONS.play} <span>THE BEST BRAND · ${escHtml(stepUpperForLang(s))} (${l.toUpperCase()})</span></span>
+            <span class="tbb-eyebrow-pill" style="margin:0;">${TBB_ICONS.play} <span>CÁPSULA DE AUDIO CON AURA · ${escHtml(stepUpperForLang(s))} (${l.toUpperCase()})</span></span>
             <div style="display:flex; gap:5px; flex-wrap:wrap;" title="Seleccionar Paso (00 - 06)">
               ${[0, 1, 2, 3, 4, 5, 6].map((idx) => `
                 <button
@@ -3657,7 +4264,7 @@
                 >0${idx}</button>
               `).join("")}
             </div>
-            <div style="display:flex; gap:4px; flex-wrap:wrap; padding-left:6px; border-left:1px solid #CBD5E1;" title="Idioma del Video (Avatar Multilingüe)">
+            <div style="display:flex; gap:4px; flex-wrap:wrap; padding-left:6px; border-left:1px solid #CBD5E1;" title="Idioma del Audio de Aura">
               ${modalLangs.map((ml) => `
                 <button
                   type="button"
@@ -3673,13 +4280,18 @@
         </div>
 
         <div class="tbb-video-modal-body-grid">
-          <div class="tbb-video-modal-player-box" style="position:relative; overflow:hidden;">
-            <img
-              id="tbbPopupCapsulePosterOv"
-              src="${escHtml(posterUrl)}"
-              alt="Cápsula Ejecutiva"
-              style="position:absolute; inset:0 0 46px 0; width:100%; height:calc(100% - 46px); object-fit:cover; pointer-events:none; transition:opacity 0.25s ease; z-index:2;"
-            />
+          <div class="tbb-video-modal-player-box" style="position:relative; overflow:hidden; background:radial-gradient(circle at 50% 42%, #1E3A8A 0%, #0D2540 72%); display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:28px 18px 14px; min-height:320px;">
+            <div style="text-align:center;">
+              <span style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; font-weight:800; color:#88E0E0; letter-spacing:0.08em;">AURA NEURAL VOICE · PASO 0${s} (${l.toUpperCase()})</span>
+            </div>
+            <div style="position:relative; width:150px; height:150px; display:flex; align-items:center; justify-content:center;">
+              <svg width="150" height="150" viewBox="0 0 160 160" fill="none">
+                <circle cx="80" cy="80" r="68" stroke="rgba(136,224,224,0.35)" stroke-width="2" stroke-dasharray="10 6"/>
+                <circle cx="80" cy="80" r="50" fill="rgba(0,120,192,0.28)" stroke="#38BDF8" stroke-width="2.5"/>
+                <circle cx="80" cy="80" r="30" fill="rgba(56,189,248,0.35)" stroke="#FFFFFF" stroke-width="2"/>
+                <circle cx="80" cy="80" r="12" fill="#FF7A00"/>
+              </svg>
+            </div>
             <video
               id="tbbPopupCapsuleVideoEl"
               controls
@@ -3687,10 +4299,8 @@
               playsinline
               preload="metadata"
               src="${escHtml(vidUrl)}"
-              poster="${escHtml(posterUrl)}"
+              style="width:100%; height:46px; max-height:46px; border-radius:10px; background:#09192C;"
               onloadedmetadata="this.playbackRate=1.0; this.defaultPlaybackRate=1.0;"
-              ontimeupdate="const ov=document.getElementById('tbbPopupCapsulePosterOv'); if(ov && this.currentTime>0.08 && !this.paused){ov.style.opacity='0';}"
-              onpause="const ov=document.getElementById('tbbPopupCapsulePosterOv'); if(ov && this.currentTime<0.08){ov.style.opacity='1';}"
               onerror="if(!this.dataset.fb){this.dataset.fb='1'; this.src='${escHtml(fbVidUrl)}'; this.load(); this.play().catch(()=>{});}"
             ></video>
           </div>
@@ -3699,7 +4309,7 @@
             <h3>${escHtml(cap.title)}</h3>
             <p>${escHtml(cap.summary)}</p>
             <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid #E2E8F0; font-size:0.76rem; color:#334155;">
-              <strong style="color:#0D2540;">Audio &amp; Video Nativo (${l.toUpperCase()}):</strong> Velocidad <code>1.0x</code> certificada · Disponible en 6 idiomas (ES, EN, FR, PT, DE, IT).
+              <strong style="color:#0D2540;">Voz Neural de Aura (${l.toUpperCase()}):</strong> Velocidad <code>1.0x</code> certificada · Disponible en 6 idiomas (ES, EN, FR, PT, DE, IT).
             </div>
             <div style="display:flex; flex-direction:column; gap:10px; margin-top:auto;">
               ${s < 6 ? `
@@ -3742,12 +4352,31 @@
     if (ov) ov.classList.remove("open");
   };
 
-  // VISOR DE ALTA RESOLUCIÓN PARA EL BRANDBOOK Y ENTREGABLES
+  // VISOR DE ALTA RESOLUCIÓN PARA EL BRANDBOOK .PDF Y LOS ENTREGABLES REALES DE ARCO INGENIERÍA (CERO ENLACES ROTOS)
   window.tbbOpenPlateLightboxModal = function (plateNum, customImgUrl, customTitle, customSampleUrl) {
-    const pNum = Math.max(1, Math.min(30, Number(plateNum) || 1));
-    const imgUrl = customImgUrl || `/assets/brandbook_plates_tbb/plate-${String(pNum).padStart(2, "0")}.jpg`;
-    const titleStr = customTitle || `Brandbook Oficial · Página ${String(pNum).padStart(2, "0")}`;
-    const sampleHref = customSampleUrl || "/samples/1_Brandbook_Maestro_TheBestBrand.html";
+    const galleryItems = [
+      ...ARCO_PDF_PLATES_SHOWCASE.map((pl) => ({
+        img: pl.img,
+        title: `Manual .PDF ARCO Ingeniería · ${pl.code}: ${pl.title}`,
+        sampleUrl: "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
+      })),
+      ...OFFICIAL_9_DELIVERABLES.map((dl) => {
+        const loc = dl.i18n[getLang()] || dl.i18n.es;
+        return {
+          img: dl.thumb,
+          title: loc.title,
+          sampleUrl: dl.sampleUrl
+        };
+      })
+    ];
+
+    const total = galleryItems.length;
+    const idx = Math.max(0, Math.min(total - 1, (Number(plateNum) || 1) - 1));
+    const fallbackItem = galleryItems[idx] || galleryItems[0];
+
+    const imgUrl = customImgUrl || fallbackItem.img;
+    const titleStr = customTitle || fallbackItem.title;
+    const sampleHref = customSampleUrl || fallbackItem.sampleUrl || "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf";
 
     let ov = document.getElementById("tbbPlateLightboxOverlay");
     if (!ov) {
@@ -3758,22 +4387,28 @@
       document.body.appendChild(ov);
     }
 
-    const prevNum = pNum > 1 ? pNum - 1 : 30;
-    const nextNum = pNum < 30 ? pNum + 1 : 1;
+    const prevNum = idx > 0 ? idx : total;
+    const nextNum = idx + 2 <= total ? idx + 2 : 1;
+    const prevItem = galleryItems[prevNum - 1] || galleryItems[0];
+    const nextItem = galleryItems[nextNum - 1] || galleryItems[0];
+    const dlFileName = String(sampleHref).split("/").pop();
 
     ov.innerHTML = `
       <div class="tbb-lightbox-modal-card" onclick="event.stopPropagation()">
-        <div class="tbb-video-modal-head">
+        <div class="tbb-video-modal-head" style="flex-wrap:wrap; gap:10px;">
           <strong>${escHtml(titleStr)}</strong>
-          <div style="display:flex; gap:8px; align-items:center;">
-            <button type="button" class="tbb-btn-secondary-clean" style="padding:6px 12px;" onclick="window.tbbOpenPlateLightboxModal(${prevNum})">
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <button type="button" class="tbb-btn-secondary-clean" style="padding:6px 12px;" onclick="window.tbbOpenPlateLightboxModal(${prevNum}, '${escHtml(prevItem.img)}', '${escHtml(prevItem.title)}', '${escHtml(prevItem.sampleUrl)}')">
               ${TBB_ICONS.arrowLeft} <span>${escHtml(t("lightboxPrev"))}</span>
             </button>
-            <button type="button" class="tbb-btn-secondary-clean" style="padding:6px 12px;" onclick="window.tbbOpenPlateLightboxModal(${nextNum})">
+            <button type="button" class="tbb-btn-secondary-clean" style="padding:6px 12px;" onclick="window.tbbOpenPlateLightboxModal(${nextNum}, '${escHtml(nextItem.img)}', '${escHtml(nextItem.title)}', '${escHtml(nextItem.sampleUrl)}')">
               <span>${escHtml(t("lightboxNext"))}</span> ${TBB_ICONS.arrowRight}
             </button>
             <a href="${escHtml(sampleHref)}" target="_blank" rel="noopener" class="tbb-btn-primary-vibrant" style="padding:7px 14px; text-decoration:none;">
-              ${TBB_ICONS.expand} <span>Abrir Documento Interactivo</span>
+              ${TBB_ICONS.expand} <span>Abrir Original</span>
+            </a>
+            <a href="${escHtml(sampleHref)}" download="${escHtml(dlFileName)}" class="tbb-btn-secondary-clean" style="padding:7px 14px; text-decoration:none;">
+              ⬇ Descargar Archivo
             </a>
             <button type="button" class="tbb-modal-close-ic" onclick="window.tbbClosePlateLightboxModal()">
               ${TBB_ICONS.close}
