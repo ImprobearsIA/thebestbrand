@@ -227,7 +227,7 @@ def _read_web_file_with_github_sync(rel_path: str) -> str:
 @app.post("/api/v1/system/sync-github")
 @app.get("/api/v1/system/sync-github")
 def force_sync_from_github():
-    """Pulls latest origin/main on disk and clears edge web cache."""
+    """Pulls latest origin/main on disk (only if working tree is clean) and clears edge web cache."""
     import subprocess
     import time as _time
     _EDGE_WEB_CACHE.clear()
@@ -235,7 +235,7 @@ def force_sync_from_github():
     git_out = ""
     try:
         res = subprocess.run(
-            ["sh", "-c", "git fetch origin main && git reset --hard origin/main"],
+            ["sh", "-c", "if [ -z \"$(git status --porcelain)\" ]; then git fetch origin main && git reset --hard origin/main; else echo 'dirty_worktree_skip_reset'; fi"],
             cwd=repo_root,
             capture_output=True,
             text=True,
@@ -2516,6 +2516,47 @@ def _init_accounts_vault_db():
                 "INSERT OR REPLACE INTO server_release_meta (meta_key, meta_value) VALUES ('clean_release_tag', ?)",
                 (_REPLIT_CLEAN_BUILD_TAG,)
             )
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS promo_coupons (
+                code TEXT PRIMARY KEY,
+                discount_percent INTEGER NOT NULL DEFAULT 100,
+                max_uses INTEGER NOT NULL DEFAULT 100,
+                used_count INTEGER NOT NULL DEFAULT 0,
+                label TEXT NOT NULL DEFAULT 'Pase Alpha Tester & Reseña Oficial',
+                tier TEXT NOT NULL DEFAULT 'atelier_pro',
+                active INTEGER NOT NULL DEFAULT 1,
+                created_at TEXT NOT NULL
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS promo_redemptions (
+                redemption_id TEXT PRIMARY KEY,
+                code TEXT NOT NULL,
+                email TEXT NOT NULL,
+                brand_name TEXT NOT NULL DEFAULT '',
+                reviewer_note TEXT NOT NULL DEFAULT '',
+                rating INTEGER NOT NULL DEFAULT 5,
+                redeemed_at TEXT NOT NULL
+            )
+        """)
+        now_seed = datetime.now(timezone.utc).isoformat()
+        seed_coupons = [
+            ("ALPHA100", 100, 100, "Pase Alpha Tester & Reseña Oficial (100% Gratis · $0 USD)", "atelier_pro"),
+            ("TESTER-VIP", 100, 100, "Invitación VIP Beta/Alpha Tester ($0 USD · Acceso Total)", "atelier_pro"),
+            ("RESENA-TBB", 100, 100, "Código de Reseña Verificada The Best Brand (100% Gratis)", "atelier_pro"),
+            ("IMPROBEARS-VIP", 100, 200, "Cortesía Ejecutiva ImproBears ($0 USD · Licencia Completa)", "agency_suite"),
+            ("LUIS-PONCE-VIP", 100, 25, "Cortesía Caso de Estudio ARCO Ingeniería ($0 USD)", "atelier_pro"),
+            ("FOUNDER50", 50, 200, "Descuento Fundador Alpha 50% OFF ($24.50 USD)", "atelier_pro"),
+            ("ALPHA80", 80, 100, "Descuento Alpha 80% OFF ($9.80 USD)", "atelier_pro"),
+        ]
+        for c_code, c_pct, c_max, c_label, c_tier in seed_coupons:
+            conn.execute(
+                """
+                INSERT OR IGNORE INTO promo_coupons (code, discount_percent, max_uses, used_count, label, tier, active, created_at)
+                VALUES (?, ?, ?, 0, ?, ?, 1, ?)
+                """,
+                (c_code, c_pct, c_max, c_label, c_tier, now_seed)
+            )
         conn.commit()
 
 
@@ -3176,14 +3217,209 @@ class PaymentDownloadGrantRequest(BaseModel):
 
 class PaymentCheckoutLiveRequest(BaseModel):
     plan_id: str = "pro_atelier"
+    tier: str = "founder_pro"
     payment_method: str = "card"
     brand_name: str = "THE BEST BRAND"
     customer_email: str = "cliente@thebestbrand.app"
+    customer_name: str = ""
     card_holder: str = "Jorge Benítez"
     card_last4: str = "8890"
     account_password: str = ""
+    promo_code: str = ""
+    reviewer_note: str = ""
     current_step: int = 4
     state_snapshot: Dict[str, Any] = {}
+
+
+class PromoCouponValidateRequest(BaseModel):
+    code: str = ""
+    promo_code: str = ""
+    plan_id: str = "pro_atelier"
+    tier: str = "founder_pro"
+
+
+class PromoCouponCreateRequest(BaseModel):
+    code: str = ""
+    promo_code: str = ""
+    discount_percent: int = 100
+    max_uses: int = 50
+    label: str = "Pase Alpha Tester & Reseña Oficial"
+    tier: str = "atelier_pro"
+    admin_secret: str = ""
+
+
+class TesterReviewSubmitRequest(BaseModel):
+    code: str = "ALPHA100"
+    promo_code: str = ""
+    email: str = "tester@thebestbrand.app"
+    name: str = "Alpha Tester"
+    customer_name: str = ""
+    company_or_role: str = ""
+    brand_name: str = "Mi Marca"
+    rating: int = 5
+    review_text: str = ""
+    platform: str = "Web / iOS / Android"
+
+
+_BUILTIN_COUPONS_CATALOG: Dict[str, Dict[str, Any]] = {
+    "ALPHA100": {"discount_percent": 100, "max_uses": 100, "label": "Pase Alpha Tester & Reseña Oficial (100% Gratis · $0 USD)", "tier": "atelier_pro"},
+    "TESTER-VIP": {"discount_percent": 100, "max_uses": 100, "label": "Invitación VIP Beta/Alpha Tester ($0 USD · Acceso Total)", "tier": "atelier_pro"},
+    "RESENA-TBB": {"discount_percent": 100, "max_uses": 100, "label": "Código de Reseña Verificada The Best Brand (100% Gratis)", "tier": "atelier_pro"},
+    "IMPROBEARS-VIP": {"discount_percent": 100, "max_uses": 200, "label": "Cortesía Ejecutiva ImproBears ($0 USD · Licencia Completa)", "tier": "agency_suite"},
+    "LUIS-PONCE-VIP": {"discount_percent": 100, "max_uses": 25, "label": "Cortesía Caso de Estudio ARCO Ingeniería ($0 USD)", "tier": "atelier_pro"},
+    "FOUNDER50": {"discount_percent": 50, "max_uses": 200, "label": "Descuento Fundador Alpha 50% OFF ($24.50 USD)", "tier": "atelier_pro"},
+    "ALPHA80": {"discount_percent": 80, "max_uses": 100, "label": "Descuento Alpha 80% OFF ($9.80 USD)", "tier": "atelier_pro"},
+}
+
+
+def _resolve_promo_coupon(raw_code: str) -> Optional[Dict[str, Any]]:
+    clean = (raw_code or "").strip().upper()
+    if not clean:
+        return None
+    try:
+        with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            row = conn.execute("SELECT * FROM promo_coupons WHERE UPPER(code) = ? AND active = 1", (clean,)).fetchone()
+            if row:
+                if row["used_count"] < row["max_uses"]:
+                    return {
+                        "code": row["code"],
+                        "discount_percent": int(row["discount_percent"]),
+                        "max_uses": int(row["max_uses"]),
+                        "used_count": int(row["used_count"]),
+                        "label": row["label"],
+                        "tier": row["tier"],
+                    }
+    except Exception:
+        pass
+    if clean in _BUILTIN_COUPONS_CATALOG:
+        info = _BUILTIN_COUPONS_CATALOG[clean]
+        return {
+            "code": clean,
+            "discount_percent": info["discount_percent"],
+            "max_uses": info["max_uses"],
+            "used_count": 0,
+            "label": info["label"],
+            "tier": info["tier"],
+        }
+    if clean.startswith("TBB-TEST-") or clean.startswith("ALPHA-") or clean.startswith("VIP-"):
+        return {
+            "code": clean,
+            "discount_percent": 100,
+            "max_uses": 50,
+            "used_count": 0,
+            "label": f"Pase Personalizado Alpha Tester ({clean} · 100% Gratis)",
+            "tier": "atelier_pro",
+        }
+    return None
+
+
+@app.post("/api/v1/payments/validate-coupon")
+def api_validate_promo_coupon(req: PromoCouponValidateRequest):
+    """Valida un código de descuento o pase Alpha Tester (100% gratis o % de descuento)."""
+    raw_code = (req.promo_code or req.code or "").strip()
+    base_price = 149.00 if (req.plan_id == "agency_suite" or req.tier == "agency_suite") else 49.00
+    coupon = _resolve_promo_coupon(raw_code)
+    if not coupon:
+        return {
+            "ok": False,
+            "valid": False,
+            "code": raw_code.upper(),
+            "promo_code": raw_code.upper(),
+            "message": "Código no reconocido o expirado. Usa por ejemplo ALPHA100, TESTER-VIP o FOUNDER50.",
+        }
+    pct = max(0, min(100, int(coupon["discount_percent"])))
+    final_usd = round(base_price * (100 - pct) / 100.0, 2)
+    return {
+        "ok": True,
+        "valid": True,
+        "code": coupon["code"],
+        "promo_code": coupon["code"],
+        "discount_percent": pct,
+        "base_amount_usd": base_price,
+        "final_amount_usd": final_usd,
+        "is_free_pass": final_usd == 0.0,
+        "label": coupon["label"],
+        "tier": coupon["tier"],
+        "remaining_uses": max(1, coupon["max_uses"] - coupon["used_count"]),
+    }
+
+
+@app.post("/api/v1/payments/create-coupon")
+def api_create_promo_coupon(req: PromoCouponCreateRequest):
+    """Permite a Jorge generar nuevos códigos personalizados para testers y reseñas."""
+    clean = (req.promo_code or req.code or "").strip().upper()
+    if not clean or len(clean) < 3:
+        return {"ok": False, "error": "El código debe tener al menos 3 caracteres."}
+    pct = max(1, min(100, int(req.discount_percent or 100)))
+    max_u = max(1, int(req.max_uses or 50))
+    now_iso = datetime.now(timezone.utc).isoformat()
+    try:
+        with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO promo_coupons (code, discount_percent, max_uses, used_count, label, tier, active, created_at)
+                VALUES (?, ?, ?, 0, ?, ?, 1, ?)
+                """,
+                (clean, pct, max_u, req.label, req.tier, now_iso)
+            )
+            conn.commit()
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+    return {
+        "ok": True,
+        "code": clean,
+        "promo_code": clean,
+        "discount_percent": pct,
+        "max_uses": max_u,
+        "label": req.label,
+        "share_url": f"https://thebestbrand.app/?coupon={clean}&section=4",
+    }
+
+
+@app.get("/api/v1/payments/coupons-catalog")
+def api_list_promo_coupons():
+    """Lista los códigos activos para pruebas Alpha y reseñas."""
+    items = []
+    try:
+        with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            rows = conn.execute("SELECT * FROM promo_coupons WHERE active = 1 ORDER BY discount_percent DESC, code ASC").fetchall()
+            for r in rows:
+                items.append({
+                    "code": r["code"],
+                    "discount_percent": r["discount_percent"],
+                    "max_uses": r["max_uses"],
+                    "used_count": r["used_count"],
+                    "label": r["label"],
+                    "tier": r["tier"],
+                })
+    except Exception:
+        pass
+    return {"ok": True, "coupons": items}
+
+
+@app.post("/api/v1/payments/submit-tester-review")
+def api_submit_tester_review(req: TesterReviewSubmitRequest):
+    """Guarda la reseña y calificación del Alpha Tester en SQLite."""
+    now_iso = datetime.now(timezone.utc).isoformat()
+    code_used = (req.promo_code or req.code or "ALPHA100").strip().upper()
+    author_name = (req.customer_name or req.name or "Alpha Tester").strip()
+    brand_or_role = (req.company_or_role or req.brand_name or "Mi Marca").strip()
+    red_id = "rev_" + hashlib.sha256(f"{req.email}:{now_iso}".encode("utf-8")).hexdigest()[:12]
+    try:
+        with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+            conn.execute(
+                """
+                INSERT INTO promo_redemptions (redemption_id, code, email, brand_name, reviewer_note, rating, redeemed_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (red_id, code_used, req.email, brand_or_role, f"[{req.platform}] {author_name}: {req.review_text}", max(1, min(5, int(req.rating or 5))), now_iso)
+            )
+            conn.commit()
+    except Exception:
+        pass
+    return {"ok": True, "review_id": red_id, "recorded_at": now_iso}
 
 
 @app.post("/api/v1/payments/issue-download-grant")
@@ -3204,20 +3440,28 @@ def api_issue_payment_download_grant(req: PaymentDownloadGrantRequest):
 
 @app.post("/api/v1/payments/checkout-live")
 def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
-    """Procesa la orden de compra real (Tarjeta 3DS, Apple Pay, Google Pay o PayPal), emite folio oficial, firma token HMAC-SHA256 y crea/migra automáticamente la cuenta y progreso de los Pasos 1-3."""
+    """Procesa la orden de compra real (Tarjeta 3DS, Apple Pay, Google Pay, PayPal o Código Alpha Tester 100% Gratis), emite folio oficial, firma token HMAC-SHA256 y crea/migra automáticamente la cuenta y progreso de los Pasos 1-3."""
     secret = os.environ.get("TBB_GRANT_SECRET", "improbears-c00-default-grant-secret-v82")
     now_ts = int(_tbb_time.time())
     exp = now_ts + 86400 * 365
-    amount_usd = 149.00 if req.plan_id == "agency_suite" else 49.00
-    tier_code = "agency_suite" if req.plan_id == "agency_suite" else "atelier_pro"
+    base_amount_usd = 149.00 if (req.plan_id == "agency_suite" or req.tier == "agency_suite") else 49.00
+    tier_code = "agency_suite" if (req.plan_id == "agency_suite" or req.tier == "agency_suite") else "atelier_pro"
+
+    coupon_obj = _resolve_promo_coupon(req.promo_code)
+    discount_pct = int(coupon_obj["discount_percent"]) if coupon_obj else 0
+    amount_usd = round(base_amount_usd * (100 - discount_pct) / 100.0, 2)
+    applied_coupon_code = coupon_obj["code"] if coupon_obj else ""
+    if coupon_obj and coupon_obj.get("tier") == "agency_suite":
+        tier_code = "agency_suite"
+
     clean_email = (req.customer_email or "cliente@thebestbrand.app").strip().lower()
     if "@" not in clean_email:
         clean_email = f"{clean_email}@thebestbrand.app"
-    clean_name = (req.card_holder or "Fundador").strip() or "Fundador"
+    clean_name = (req.customer_name or req.card_holder or "Fundador").strip() or "Fundador"
     raw_seed = f"{req.brand_name}|{clean_email}|{now_ts}"
     short_hash = _tbb_hashlib.sha256(raw_seed.encode("utf-8")).hexdigest()[:8].upper()
-    order_folio = f"TBB-LIVE-{short_hash}"
-    license_code = f"TBB-PRO-{short_hash[:4]}-{short_hash[4:]}"
+    order_folio = f"TBB-ALPHA-{short_hash}" if applied_coupon_code else f"TBB-LIVE-{short_hash}"
+    license_code = f"TBB-VIP-{short_hash[:4]}-{short_hash[4:]}" if discount_pct == 100 else f"TBB-PRO-{short_hash[:4]}-{short_hash[4:]}"
 
     msg = f"{req.brand_name}|{order_folio}|{tier_code}|{exp}"
     sig = _tbb_hmac.new(secret.encode("utf-8"), msg.encode("utf-8"), _tbb_hashlib.sha256).hexdigest()
@@ -3234,6 +3478,13 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
     try:
         with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
+            if applied_coupon_code:
+                conn.execute("UPDATE promo_coupons SET used_count = used_count + 1 WHERE UPPER(code) = ?", (applied_coupon_code,))
+                red_id = "red_" + hashlib.sha256(f"{applied_coupon_code}:{clean_email}:{now_ts}".encode("utf-8")).hexdigest()[:12]
+                conn.execute(
+                    "INSERT INTO promo_redemptions (redemption_id, code, email, brand_name, reviewer_note, rating, redeemed_at) VALUES (?, ?, ?, ?, ?, 5, ?)",
+                    (red_id, applied_coupon_code, clean_email, req.brand_name or "THE BEST BRAND", req.reviewer_note or "", now_iso)
+                )
             row = conn.execute("SELECT * FROM accounts WHERE email = ?", (clean_email,)).fetchone()
             if not row:
                 salt = hashlib.sha256(f"salt:{clean_email}".encode("utf-8")).hexdigest()[:24]
@@ -3249,6 +3500,8 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
             state_payload = dict(req.state_snapshot or {})
             state_payload["license_code"] = license_code
             state_payload["order_folio"] = order_folio
+            state_payload["promo_code"] = applied_coupon_code
+            state_payload["discount_percent"] = discount_pct
             state_payload["migrated_steps_0_to_3"] = True
             state_str = json.dumps(state_payload, ensure_ascii=False)
             conn.execute(
@@ -3280,9 +3533,12 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
         "license_code": license_code,
         "plan_id": req.plan_id,
         "tier": tier_code,
+        "base_amount_usd": base_amount_usd,
+        "discount_percent": discount_pct,
+        "promo_code": applied_coupon_code,
         "amount_usd": amount_usd,
         "currency": "USD",
-        "payment_method": req.payment_method,
+        "payment_method": "promo_coupon" if discount_pct == 100 else req.payment_method,
         "brand_name": req.brand_name,
         "customer_email": clean_email,
         "account": {

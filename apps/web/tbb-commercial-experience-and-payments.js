@@ -4726,24 +4726,151 @@
     });
   };
 
+  // CATÁLOGO OFICIAL DE CÓDIGOS DE DESCUENTO Y PASES ALPHA TESTER (iOS / macOS / iPadOS / Android / Web)
+  const TBB_PROMO_COUPON_CATALOG = {
+    "ALPHA100": { code: "ALPHA100", discountPercent: 100, finalAmountUsd: 0, tier: "founder_pro", label: "Pase Alpha Tester Oficial (100% Gratis · Test & Reseña)" },
+    "TESTER-VIP": { code: "TESTER-VIP", discountPercent: 100, finalAmountUsd: 0, tier: "founder_pro", label: "Invitación VIP Alpha/Beta Tester (100% Gratis)" },
+    "RESENA-TBB": { code: "RESENA-TBB", discountPercent: 100, finalAmountUsd: 0, tier: "founder_pro", label: "Pase de Reseña Verificada The Best Brand (100% Gratis)" },
+    "IMPROBEARS-VIP": { code: "IMPROBEARS-VIP", discountPercent: 100, finalAmountUsd: 0, tier: "agency_suite", label: "Cortesía Ejecutiva ImproBears (100% Gratis)" },
+    "LUIS-PONCE-VIP": { code: "LUIS-PONCE-VIP", discountPercent: 100, finalAmountUsd: 0, tier: "founder_pro", label: "Cortesía Caso de Estudio ARCO Ingeniería (100% Gratis)" },
+    "ALPHA80": { code: "ALPHA80", discountPercent: 80, finalAmountUsd: 9.80, tier: "founder_pro", label: "Descuento Especial Alpha Tester (80% OFF · $9.80 USD)" },
+    "FOUNDER50": { code: "FOUNDER50", discountPercent: 50, finalAmountUsd: 24.50, tier: "founder_pro", label: "Descuento Fundador Alpha (50% OFF · $24.50 USD)" }
+  };
+
+  window.tbbResolvePromoCouponSync = function (rawCode) {
+    const clean = String(rawCode || "").trim().toUpperCase();
+    if (!clean) return null;
+    if (TBB_PROMO_COUPON_CATALOG[clean]) {
+      return Object.assign({ valid: true }, TBB_PROMO_COUPON_CATALOG[clean]);
+    }
+    if (clean.startsWith("TBB-TEST-") || clean.startsWith("ALPHA-") || clean.startsWith("VIP-")) {
+      return {
+        valid: true,
+        code: clean,
+        discountPercent: 100,
+        finalAmountUsd: 0,
+        tier: "founder_pro",
+        label: "Pase Personalizado Alpha Tester (100% Gratis)"
+      };
+    }
+    return null;
+  };
+
+  window.tbbApplyPromoCouponCode = async function (optionalCode) {
+    const inp = document.getElementById("tbbCheckoutPromoCodeInput");
+    const msgEl = document.getElementById("tbbCheckoutPromoStatusMsg");
+    const rawCode = String(optionalCode !== undefined ? optionalCode : (inp ? inp.value : "")).trim().toUpperCase();
+    if (inp && optionalCode !== undefined) inp.value = rawCode;
+
+    if (!rawCode) {
+      if (window.tbbCommercialDemoState) window.tbbCommercialDemoState.appliedCoupon = null;
+      window.tbbRenderCheckoutModalContent();
+      return;
+    }
+
+    let resolved = window.tbbResolvePromoCouponSync(rawCode);
+    try {
+      const res = await fetch("/api/v1/payments/validate-coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ promo_code: rawCode, tier: "founder_pro" })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.valid) {
+          resolved = {
+            valid: true,
+            code: data.promo_code || data.code,
+            discountPercent: Number(data.discount_percent || 0),
+            finalAmountUsd: Number(data.final_amount_usd || 0),
+            tier: data.tier || "founder_pro",
+            label: data.label || ("Cupón Aplicado (" + data.discount_percent + "% OFF)")
+          };
+        }
+      }
+    } catch (e) {}
+
+    if (!resolved) {
+      if (msgEl) {
+        msgEl.style.display = "block";
+        msgEl.style.background = "#FEF2F2";
+        msgEl.style.borderColor = "#FECACA";
+        msgEl.style.color = "#B91C1C";
+        msgEl.innerHTML = `⚠️ El código <strong>${escHtml(rawCode)}</strong> no fue reconocido. Usa por ejemplo <code>ALPHA100</code>, <code>TESTER-VIP</code> o <code>FOUNDER50</code>.`;
+      }
+      return;
+    }
+
+    if (window.tbbCommercialDemoState) {
+      window.tbbCommercialDemoState.appliedCoupon = resolved;
+    }
+    try {
+      localStorage.setItem("tbb_active_promo_coupon", JSON.stringify(resolved));
+    } catch (e) {}
+    window.tbbRenderCheckoutModalContent();
+  };
+
+  window.tbbClearPromoCouponCode = function () {
+    if (window.tbbCommercialDemoState) {
+      window.tbbCommercialDemoState.appliedCoupon = null;
+    }
+    try {
+      localStorage.removeItem("tbb_active_promo_coupon");
+    } catch (e) {}
+    window.tbbRenderCheckoutModalContent();
+  };
+
   window.tbbProcessCheckoutPayment = async function (methodId) {
     const emailEl = document.getElementById("tbbCheckoutEmailInput");
     const nameEl = document.getElementById("tbbCheckoutHolderNameInput");
+    const noteEl = document.getElementById("tbbCheckoutReviewerNoteInput");
     const email = (emailEl && emailEl.value.trim()) || "fundador@thebestbrand.app";
     const holderName = (nameEl && nameEl.value.trim()) || "Fundador Ejecutivo";
+    const reviewerNote = (noteEl && noteEl.value.trim()) || "";
     const migrationSnapshot = window.tbbGetPendingDemoMigrationSnapshot();
+    const coupon = (window.tbbCommercialDemoState && window.tbbCommercialDemoState.appliedCoupon) || null;
+    const isFreeCoupon = Boolean(coupon && (coupon.discountPercent >= 100 || coupon.finalAmountUsd <= 0));
+    const finalAmount = coupon ? Number(coupon.finalAmountUsd) : 49;
+    const prefix = isFreeCoupon ? "TBB-VIP-" : "TBB-PRO-";
+
+    let serverLicenseCode = prefix + Math.random().toString(36).substring(2, 8).toUpperCase();
+    try {
+      const bName = (migrationSnapshot && (migrationSnapshot.brandName || (migrationSnapshot.canvasState && migrationSnapshot.canvasState.brandName))) || "Marca Alpha";
+      const resp = await fetch("/api/v1/payments/checkout-live", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tier: (coupon && coupon.tier) || "founder_pro",
+          customer_email: email,
+          customer_name: holderName,
+          brand_name: bName,
+          payment_method: isFreeCoupon ? "promo_coupon_100" : (methodId || "card"),
+          promo_code: coupon ? coupon.code : "",
+          reviewer_note: reviewerNote
+        })
+      });
+      if (resp.ok) {
+        const d = await resp.json();
+        if (d && d.license_code) serverLicenseCode = d.license_code;
+      }
+    } catch (e) {}
 
     const receiptObj = {
-      licenseId: "TBB-PRO-" + Math.random().toString(36).substring(2, 8).toUpperCase(),
-      plan: "pro_atelier",
-      amountUsd: 49,
-      method: methodId || "card",
+      licenseId: serverLicenseCode,
+      plan: (coupon && coupon.tier) || "pro_atelier",
+      amountUsd: finalAmount,
+      originalAmountUsd: 49,
+      discountPercent: coupon ? coupon.discountPercent : 0,
+      promoCode: coupon ? coupon.code : null,
+      promoLabel: coupon ? coupon.label : null,
+      method: isFreeCoupon ? "alpha_tester_coupon" : (methodId || "card"),
       unlockedAt: new Date().toISOString(),
       stepsUnlocked: [0, 1, 2, 3, 4, 5, 6]
     };
     const accountObj = {
       email,
       name: holderName,
+      promoCode: coupon ? coupon.code : null,
       createdAt: new Date().toISOString(),
       migratedSteps0to3: true
     };
@@ -4759,25 +4886,75 @@
     window.tbbRefreshCommercialPortalDOM();
   };
 
+  window.tbbSubmitAlphaTesterReview = async function () {
+    const nameEl = document.getElementById("tbbReviewAuthorName");
+    const roleEl = document.getElementById("tbbReviewAuthorRole");
+    const platEl = document.getElementById("tbbReviewPlatformSelect");
+    const textEl = document.getElementById("tbbReviewFeedbackText");
+    const msgEl = document.getElementById("tbbReviewSubmitStatus");
+    const ratingVal = Number(window._tbbSelectedReviewStars || 5);
+
+    const payload = {
+      customer_name: (nameEl && nameEl.value.trim()) || "Alpha Tester",
+      company_or_role: (roleEl && roleEl.value.trim()) || "Fundador / Evaluador Alpha",
+      platform: (platEl && platEl.value) || "iOS / macOS / Web",
+      rating: ratingVal,
+      review_text: (textEl && textEl.value.trim()) || "Excelente experiencia en la versión Alpha.",
+      promo_code: (window.tbbCommercialDemoState && window.tbbCommercialDemoState.appliedCoupon && window.tbbCommercialDemoState.appliedCoupon.code) || "ALPHA100"
+    };
+
+    try {
+      await fetch("/api/v1/payments/submit-tester-review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {}
+
+    if (msgEl) {
+      msgEl.style.display = "block";
+      msgEl.innerHTML = `✅ <strong>¡Gracias por tu reseña (${ratingVal}★)!</strong> Quedó registrada en la bóveda de evaluación Alpha de The Best Brand.`;
+    }
+  };
+
+  window.tbbCopyAlphaInviteLink = function (codeStr) {
+    const clean = String(codeStr || "ALPHA100").trim().toUpperCase();
+    const url = window.location.origin + "/?coupon=" + encodeURIComponent(clean) + "&section=4";
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url);
+      }
+    } catch (e) {}
+    const statusEl = document.getElementById("tbbCopyInviteStatus");
+    if (statusEl) {
+      statusEl.style.display = "block";
+      statusEl.innerHTML = `📋 Link copiado para WhatsApp/Email: <code>${escHtml(url)}</code>`;
+    }
+  };
+
   window.tbbRenderCheckoutSuccessView = function (receipt, account, migrationSnapshot) {
     const box = document.getElementById("tbbCheckoutModalContentBox");
     if (!box) return;
     const bName = (migrationSnapshot && (migrationSnapshot.brandName || (migrationSnapshot.canvasState && migrationSnapshot.canvasState.brandName))) || "Tu Marca";
+    const isCouponRedemption = Boolean(receipt && receipt.promoCode);
+    window._tbbSelectedReviewStars = 5;
+
     box.innerHTML = `
-      <div style="text-align:center; padding:18px 10px;">
-        <div style="width:68px; height:68px; margin:0 auto 14px; border-radius:20px; background:#ECFDF5; border:2px solid #10B981; display:flex; align-items:center; justify-content:center;">
+      <div style="text-align:center; padding:14px 8px;">
+        <div style="width:62px; height:62px; margin:0 auto 10px; border-radius:18px; background:#ECFDF5; border:2px solid #10B981; display:flex; align-items:center; justify-content:center;">
           ${TBB_ICONS.unlock}
         </div>
         <span class="tbb-eyebrow-pill" style="background:#ECFDF5; color:#065F46; border-color:#A7F3D0;">
-          ${TBB_ICONS.check} <span>LICENCIA PRO ACTIVA (${escHtml(receipt.licenseId)}) · CUENTA CREADA</span>
+          ${TBB_ICONS.check} <span>LICENCIA PRO ACTIVA (${escHtml(receipt.licenseId)}) ${isCouponRedemption ? "· CÓDIGO " + escHtml(receipt.promoCode) + " ($" + Number(receipt.amountUsd).toFixed(2) + " USD)" : "· CUENTA CREADA"}</span>
         </span>
-        <h2 style="font-family:'Montserrat',sans-serif; font-size:1.55rem; font-weight:900; color:#0D2540; margin:12px 0 8px;">
-          ¡Progreso Migrado (${escHtml(bName)})! Paso 4 Desbloqueado
+        <h2 style="font-family:'Montserrat',sans-serif; font-size:1.42rem; font-weight:900; color:#0D2540; margin:10px 0 6px;">
+          ¡Progreso Migrado (${escHtml(bName)})! Pasos 4 al 6 Desbloqueados
         </h2>
-        <p style="font-size:0.98rem; color:#475569; line-height:1.55; max-width:520px; margin:0 auto 20px;">
-          Tu cuenta <strong>${escHtml(account.email)}</strong> ha sido creada y todas tus respuestas de los Pasos 0, 1, 2 y 3 se migraron automáticamente. Ya puedes continuar en el Paso 4 sin perder nada de tu avance.
+        <p style="font-size:0.90rem; color:#475569; line-height:1.5; max-width:540px; margin:0 auto 14px;">
+          Tu cuenta <strong>${escHtml(account.email)}</strong> está activa y tus respuestas de los Pasos 0 al 3 se migraron automáticamente.
         </p>
-        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:16px;">
           <button
             type="button"
             class="tbb-btn-primary-vibrant"
@@ -4796,6 +4973,38 @@
             <span>Abrir Estudio a Pantalla Completa</span>
           </a>
         </div>
+
+        <!-- MÓDULO DE RESEÑA Y FEEDBACK PARA ALPHA TESTERS (iOS / macOS / iPadOS / Android / Web) -->
+        <div style="text-align:left; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:14px 16px; margin-top:8px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#0D2540; text-transform:uppercase;">
+              ⭐ Evaluación y Reseña de Alpha Tester (TestFlight / Google Play / Web)
+            </span>
+            <span style="font-size:0.82rem; color:#F59E0B; font-weight:900; letter-spacing:2px;">★★★★★ 5.0</span>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+            <input id="tbbReviewAuthorName" type="text" value="${escHtml(account.name || '')}" placeholder="Tu nombre" class="tbb-checkout-input" style="padding:8px 10px; font-size:0.82rem;" />
+            <select id="tbbReviewPlatformSelect" class="tbb-checkout-input" style="padding:8px 10px; font-size:0.82rem;">
+              <option value="iOS (iPhone · TestFlight)">iOS (iPhone · TestFlight)</option>
+              <option value="iPadOS (iPad · TestFlight)">iPadOS (iPad · TestFlight)</option>
+              <option value="macOS (Mac · TestFlight)">macOS (Mac · TestFlight)</option>
+              <option value="Android (Google Play Alpha)">Android (Google Play Alpha)</option>
+              <option value="Web Desktop / Mobile">Web Desktop / Mobile</option>
+            </select>
+          </div>
+          <input id="tbbReviewAuthorRole" type="text" placeholder="Empresa / Cargo (ej. Director General · ARCO Ingeniería)" value="${escHtml(bName)}" class="tbb-checkout-input" style="padding:8px 10px; font-size:0.82rem; margin-bottom:8px; width:100%;" />
+          <textarea id="tbbReviewFeedbackText" rows="2" placeholder="Escribe tu reseña o comentarios de prueba sobre el proceso guiado por voz e IA..." class="tbb-checkout-input" style="padding:8px 10px; font-size:0.82rem; width:100%; resize:vertical;">Increíble cómo el motor lleva desde el propósito y naming hasta el logotipo vectorial y el manual de 36 láminas listo para imprenta.</textarea>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:8px; flex-wrap:wrap;">
+            <button type="button" onclick="window.tbbSubmitAlphaTesterReview()" style="background:#0D2540; color:#FFFFFF; border:none; border-radius:999px; padding:8px 16px; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; cursor:pointer;">
+              Enviar Reseña de Alpha Tester →
+            </button>
+            <button type="button" onclick="window.tbbCopyAlphaInviteLink('${escHtml((receipt && receipt.promoCode) || 'ALPHA100')}')" style="background:#FFFFFF; color:#0D2540; border:1px solid #94A3B8; border-radius:999px; padding:7px 13px; font-size:0.75rem; font-weight:700; cursor:pointer;">
+              🔗 Copiar Link de Invitación con Código (${escHtml((receipt && receipt.promoCode) || 'ALPHA100')})
+            </button>
+          </div>
+          <div id="tbbReviewSubmitStatus" style="display:none; margin-top:8px; padding:8px 12px; border-radius:10px; background:#ECFDF5; border:1px solid #10B981; color:#065F46; font-size:0.80rem;"></div>
+          <div id="tbbCopyInviteStatus" style="display:none; margin-top:6px; padding:6px 10px; border-radius:8px; background:#EFF6FF; border:1px solid #93C5FD; color:#1E3A8A; font-size:0.76rem;"></div>
+        </div>
       </div>
     `;
   };
@@ -4806,13 +5015,31 @@
     const mig = window.tbbGetPendingDemoMigrationSnapshot();
     const bName = (mig && (mig.brandName || (mig.canvasState && mig.canvasState.brandName))) || "Tu Marca en Curso";
 
+    // Recuperar cupón activo si existe en estado o localStorage
+    let coupon = (window.tbbCommercialDemoState && window.tbbCommercialDemoState.appliedCoupon) || null;
+    if (!coupon) {
+      try {
+        const savedCoupon = JSON.parse(localStorage.getItem("tbb_active_promo_coupon") || "null");
+        if (savedCoupon && savedCoupon.code) {
+          coupon = savedCoupon;
+          if (window.tbbCommercialDemoState) window.tbbCommercialDemoState.appliedCoupon = coupon;
+        }
+      } catch (e) {}
+    }
+
+    const isFreeCoupon = Boolean(coupon && (coupon.discountPercent >= 100 || coupon.finalAmountUsd <= 0));
+    const finalPriceUsd = coupon ? Number(coupon.finalAmountUsd) : 49;
+    const priceLabelStr = isFreeCoupon
+      ? "$0 USD (100% GRATIS · PASE ALPHA)"
+      : (coupon ? `$${finalPriceUsd.toFixed(2)} USD (${coupon.discountPercent}% OFF)` : "$49 USD");
+
     box.innerHTML = `
       <div class="tbb-checkout-head">
         <div style="display:flex; align-items:center; gap:10px;">
           <img src="${escHtml(tbbImgSrc('/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png'))}" onerror="window.tbbImgFallback(this, '/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png')" alt="The Best Brand" style="width:42px; height:42px; border-radius:11px;" />
           <div>
-            <span class="tbb-eyebrow-pill" style="margin:0;">${TBB_ICONS.shield} <span>DESBLOQUEO PASO 4 AL 6 · $49 USD PAGO ÚNICO</span></span>
-            <h3 style="font-family:'Montserrat',sans-serif; font-size:1.28rem; font-weight:900; color:#0D2540; margin:4px 0 0;">${escHtml(t("checkoutTitle"))}</h3>
+            <span class="tbb-eyebrow-pill" style="margin:0;">${TBB_ICONS.shield} <span>DESBLOQUEO PASO 4 AL 6 · ${escHtml(priceLabelStr)}</span></span>
+            <h3 style="font-family:'Montserrat',sans-serif; font-size:1.25rem; font-weight:900; color:#0D2540; margin:4px 0 0;">${escHtml(t("checkoutTitle"))}</h3>
           </div>
         </div>
         <button type="button" class="tbb-modal-close-ic" onclick="window.tbbCloseBuyAppCheckoutModal()">
@@ -4820,20 +5047,56 @@
         </button>
       </div>
 
-      <p style="font-size:0.95rem; color:#475569; line-height:1.5; margin:10px 0 14px;">
-        ${escHtml(t("checkoutSub"))}
-      </p>
-
       <!-- Garantía de Migración Automática de los Pasos 1 al 3 -->
-      <div style="background:#F0F9FF; border:1.5px solid #BAE6FD; border-radius:16px; padding:12px 16px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+      <div style="background:#F0F9FF; border:1.5px solid #BAE6FD; border-radius:14px; padding:10px 14px; margin:10px 0 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
         <div style="display:flex; align-items:center; gap:10px;">
           ${TBB_ICONS.check}
           <div>
-            <strong style="display:block; font-size:0.86rem; color:#0D2540;">${escHtml(t("checkoutMigrationTitle"))}</strong>
-            <span style="font-size:0.80rem; color:#334155;">Marca detectada: <strong>${escHtml(bName)}</strong> · Pasos 0, 1, 2 y 3 listos para migrar al Paso 4.</span>
+            <strong style="display:block; font-size:0.84rem; color:#0D2540;">${escHtml(t("checkoutMigrationTitle"))}</strong>
+            <span style="font-size:0.78rem; color:#334155;">Marca detectada: <strong>${escHtml(bName)}</strong> · Pasos 0, 1, 2 y 3 listos para migrar al Paso 4.</span>
           </div>
         </div>
-        <span style="font-family:'JetBrains Mono',monospace; font-size:0.78rem; font-weight:800; color:#FF7A00; background:#FFF7ED; padding:4px 10px; border-radius:999px; border:1px solid #FFEDD5;">$49 USD</span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:0.78rem; font-weight:800; color:${isFreeCoupon ? '#059669' : '#FF7A00'}; background:${isFreeCoupon ? '#ECFDF5' : '#FFF7ED'}; padding:4px 10px; border-radius:999px; border:1px solid ${isFreeCoupon ? '#6EE7B7' : '#FFEDD5'};">
+          ${coupon ? `<s style="opacity:0.6;margin-right:4px;">$49</s> $${finalPriceUsd.toFixed(2)} USD` : `$49 USD`}
+        </span>
+      </div>
+
+      <!-- SECCIÓN DE CÓDIGO DE DESCUENTO / PASE ALPHA TESTER Y RESEÑAS -->
+      <div style="background:${coupon ? '#ECFDF5' : '#FFFBEB'}; border:1.5px dashed ${coupon ? '#10B981' : '#F59E0B'}; border-radius:14px; padding:12px 14px; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:6px;">
+          <label for="tbbCheckoutPromoCodeInput" style="font-family:'JetBrains Mono',monospace; font-size:0.73rem; font-weight:800; color:#0D2540; text-transform:uppercase;">
+            🎁 ¿Tienes un Código de Descuento o Invitación Alpha Tester?
+          </label>
+          ${coupon ? `<button type="button" onclick="window.tbbClearPromoCouponCode()" style="background:none;border:none;color:#DC2626;font-size:0.74rem;font-weight:700;cursor:pointer;text-decoration:underline;">Quitar código</button>` : ``}
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input
+            id="tbbCheckoutPromoCodeInput"
+            type="text"
+            value="${escHtml(coupon ? coupon.code : '')}"
+            placeholder="Ej. ALPHA100, TESTER-VIP, RESENA-TBB o FOUNDER50"
+            class="tbb-checkout-input mono"
+            style="flex:1; text-transform:uppercase; font-weight:800; padding:9px 12px; background:#FFFFFF;"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();window.tbbApplyPromoCouponCode();}"
+          />
+          <button
+            type="button"
+            onclick="window.tbbApplyPromoCouponCode()"
+            style="background:#0D2540; color:#FFFFFF; border:none; border-radius:10px; padding:10px 16px; font-family:'Montserrat',sans-serif; font-size:0.80rem; font-weight:800; cursor:pointer; white-space:nowrap;"
+          >
+            Aplicar Código
+          </button>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:8px;">
+          <span style="font-size:0.72rem; color:#64748B; font-weight:600;">Pases rápidos para prueba/reseña:</span>
+          <button type="button" onclick="window.tbbApplyPromoCouponCode('ALPHA100')" style="background:#FFFFFF; border:1px solid #10B981; color:#065F46; border-radius:999px; padding:2px 9px; font-family:'JetBrains Mono',monospace; font-size:0.69rem; font-weight:800; cursor:pointer;">ALPHA100 (100% Gratis)</button>
+          <button type="button" onclick="window.tbbApplyPromoCouponCode('TESTER-VIP')" style="background:#FFFFFF; border:1px solid #3B82F6; color:#1D4ED8; border-radius:999px; padding:2px 9px; font-family:'JetBrains Mono',monospace; font-size:0.69rem; font-weight:800; cursor:pointer;">TESTER-VIP (100% Gratis)</button>
+          <button type="button" onclick="window.tbbApplyPromoCouponCode('RESENA-TBB')" style="background:#FFFFFF; border:1px solid #8B5CF6; color:#6D28D9; border-radius:999px; padding:2px 9px; font-family:'JetBrains Mono',monospace; font-size:0.69rem; font-weight:800; cursor:pointer;">RESENA-TBB (100% Gratis)</button>
+          <button type="button" onclick="window.tbbApplyPromoCouponCode('FOUNDER50')" style="background:#FFFFFF; border:1px solid #F59E0B; color:#B45309; border-radius:999px; padding:2px 9px; font-family:'JetBrains Mono',monospace; font-size:0.69rem; font-weight:800; cursor:pointer;">FOUNDER50 (-50%)</button>
+        </div>
+        <div id="tbbCheckoutPromoStatusMsg" style="display:${coupon ? 'block' : 'none'}; margin-top:8px; padding:7px 11px; border-radius:9px; background:#DCFCE7; border:1px solid #86EFAC; color:#065F46; font-size:0.79rem; font-weight:700;">
+          ${coupon ? `✅ <strong>${escHtml(coupon.code)}</strong> activo: ${escHtml(coupon.label)} — Total a pagar: <strong>$${finalPriceUsd.toFixed(2)} USD</strong>` : ``}
+        </div>
       </div>
 
       <div class="tbb-checkout-form-grid">
@@ -4845,6 +5108,12 @@
           <label class="tbb-checkout-label">${escHtml(t("checkoutAccountLabel"))}</label>
           <input id="tbbCheckoutEmailInput" type="email" value="fundador@empresa.com" class="tbb-checkout-input" />
         </div>
+        ${isFreeCoupon ? `
+        <div style="grid-column:1 / -1;">
+          <label class="tbb-checkout-label">Nota / Dispositivo de Prueba (Opcional para Alpha Testers)</label>
+          <input id="tbbCheckoutReviewerNoteInput" type="text" placeholder="Ej. Probando en iPhone 16 Pro / iPad Air / Mac / Android — Invitado por Jorge" class="tbb-checkout-input" />
+        </div>
+        ` : `
         <div>
           <label class="tbb-checkout-label">Número de Tarjeta de Crédito o Débito</label>
           <input id="tbbCardNumberInput" type="text" value="4532 8910 4421 8890" maxlength="19" oninput="window.tbbFormatCardInput(this)" class="tbb-checkout-input mono" />
@@ -4859,19 +5128,29 @@
             <input type="text" value="884" maxlength="4" class="tbb-checkout-input mono" />
           </div>
         </div>
+        `}
       </div>
 
-      <button type="button" class="tbb-btn-primary-vibrant" style="width:100%; margin-top:18px; justify-content:center; padding:15px;" onclick="window.tbbProcessCheckoutPayment('card')">
-        ${TBB_ICONS.card}
-        <span>${escHtml(t("checkoutPayBtn"))}</span>
+      <button type="button" class="tbb-btn-primary-vibrant" style="width:100%; margin-top:16px; justify-content:center; padding:14px; ${isFreeCoupon ? 'background:linear-gradient(135deg,#059669 0%,#10B981 100%); box-shadow:0 10px 26px rgba(16,185,129,0.35);' : ''}" onclick="window.tbbProcessCheckoutPayment('${isFreeCoupon ? 'alpha_coupon' : 'card'}')">
+        ${isFreeCoupon ? TBB_ICONS.unlock : TBB_ICONS.card}
+        <span>${isFreeCoupon ? `🎁 Canjear Pase Alpha (${escHtml(coupon.code)} · $0 USD) y Desbloquear Paso 4` : (coupon ? `Pagar $${finalPriceUsd.toFixed(2)} USD con Descuento (${escHtml(coupon.code)}) y Desbloquear` : escHtml(t("checkoutPayBtn")))}</span>
         ${TBB_ICONS.arrowRight}
       </button>
     `;
   };
 
-  window.tbbOpenBuyAppCheckoutModal = function (planId) {
+  window.tbbOpenBuyAppCheckoutModal = function (planId, optionalPromoCode) {
     if (window.tbbCommercialDemoState && planId) {
       window.tbbCommercialDemoState.selectedPlan = planId;
+    }
+    if (optionalPromoCode) {
+      const resolved = window.tbbResolvePromoCouponSync(optionalPromoCode);
+      if (resolved && window.tbbCommercialDemoState) {
+        window.tbbCommercialDemoState.appliedCoupon = resolved;
+        try {
+          localStorage.setItem("tbb_active_promo_coupon", JSON.stringify(resolved));
+        } catch (e) {}
+      }
     }
     let ov = document.getElementById("tbbBuyAppCheckoutModalOverlay");
     if (!ov) {
@@ -8056,6 +8335,16 @@
       if (secP) {
         const sMap = { "1": 1, "inicio": 1, "2": 2, "app-tour": 2, "3": 3, "bases-teoricas": 3, "4": 4, "demo": 4, "5": 5, "pack-descargas": 5 };
         if (sMap[secP.toLowerCase()]) window.tbbCommercialDemoState.activeMainSection = sMap[secP.toLowerCase()];
+      }
+      const couponP = params.get("coupon") || params.get("promo") || params.get("code");
+      if (couponP) {
+        const resolved = window.tbbResolvePromoCouponSync(couponP);
+        if (resolved) {
+          window.tbbCommercialDemoState.appliedCoupon = resolved;
+          try {
+            localStorage.setItem("tbb_active_promo_coupon", JSON.stringify(resolved));
+          } catch (e) {}
+        }
       }
     } catch (e) {}
   }

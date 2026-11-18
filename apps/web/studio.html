@@ -8982,6 +8982,86 @@
       window.location.href = "/";
     };
 
+    window.tbbRedeemStudioPromoCouponAtStep4 = async function (optionalCode) {
+      const inp = document.getElementById("tbbStudioStep4PromoInput");
+      const msg = document.getElementById("tbbStudioStep4PromoMsg");
+      const code = String(optionalCode !== undefined ? optionalCode : (inp ? inp.value : "")).trim().toUpperCase();
+      if (inp && optionalCode !== undefined) inp.value = code;
+
+      if (!code) {
+        if (msg) {
+          msg.style.display = "block";
+          msg.style.background = "#FEF2F2";
+          msg.style.color = "#B91C1C";
+          msg.innerHTML = "Ingresa un código (ej. <code>ALPHA100</code>, <code>TESTER-VIP</code> o <code>RESENA-TBB</code>).";
+        }
+        return;
+      }
+
+      const validFreeCodes = ["ALPHA100", "TESTER-VIP", "RESENA-TBB", "IMPROBEARS-VIP", "LUIS-PONCE-VIP"];
+      let isFree = validFreeCodes.includes(code) || code.startsWith("TBB-TEST-") || code.startsWith("ALPHA-") || code.startsWith("VIP-");
+      let discountPct = isFree ? 100 : (code === "ALPHA80" ? 80 : (code === "FOUNDER50" ? 50 : 0));
+
+      try {
+        const res = await fetch("/api/v1/payments/validate-coupon", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ promo_code: code, tier: "founder_pro" })
+        });
+        if (res.ok) {
+          const d = await res.json();
+          if (d && d.valid) {
+            discountPct = Number(d.discount_percent || 0);
+            isFree = Boolean(d.is_free_pass || discountPct >= 100);
+          }
+        }
+      } catch (e) {}
+
+      if (discountPct <= 0) {
+        if (msg) {
+          msg.style.display = "block";
+          msg.style.background = "#FEF2F2";
+          msg.style.color = "#B91C1C";
+          msg.innerHTML = `⚠️ Código <strong>${code}</strong> no válido. Prueba con <code>ALPHA100</code> o <code>TESTER-VIP</code>.`;
+        }
+        return;
+      }
+
+      if (!isFree) {
+        try {
+          localStorage.setItem("tbb_active_promo_coupon", JSON.stringify({
+            valid: true,
+            code: code,
+            discountPercent: discountPct,
+            finalAmountUsd: Number((49 * (100 - discountPct) / 100).toFixed(2)),
+            tier: "founder_pro",
+            label: `Código ${code} (-${discountPct}%)`
+          }));
+        } catch (e) {}
+        window.tbbOpenParentCheckoutFromDemo();
+        return;
+      }
+
+      const receiptObj = {
+        licenseId: "TBB-VIP-" + Math.random().toString(36).substring(2, 8).toUpperCase(),
+        plan: "founder_pro",
+        amountUsd: 0,
+        discountPercent: 100,
+        promoCode: code,
+        method: "alpha_tester_coupon",
+        unlockedAt: new Date().toISOString(),
+        stepsUnlocked: [0, 1, 2, 3, 4, 5, 6]
+      };
+      try {
+        localStorage.setItem("tbb_unlocked_license_v56", JSON.stringify(receiptObj));
+        localStorage.setItem("tbb_pro_license_unlocked", "true");
+      } catch (e) {}
+      window.tbbIsDemoMode = false;
+      const modal = document.getElementById("tbbDemoCompletionPaywallModal");
+      if (modal) modal.style.display = "none";
+      switchStep(4);
+    };
+
     function showDemoCompletionPaywallModal() {
       let modal = document.getElementById("tbbDemoCompletionPaywallModal");
       if (!modal) {
@@ -8989,24 +9069,39 @@
         modal.id = "tbbDemoCompletionPaywallModal";
         modal.style.cssText = "position:fixed; inset:0; z-index:999999; background:rgba(9,13,22,0.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); display:flex; align-items:center; justify-content:center; padding:20px;";
         modal.innerHTML = `
-          <div style="background:#FFFFFF; border:2.5px solid #FF7A00; border-top:6px solid #0D2540; border-radius:24px; padding:32px 28px; max-width:560px; width:100%; box-shadow:0 30px 80px rgba(0,0,0,0.65); text-align:center; position:relative; font-family:'Plus Jakarta Sans',sans-serif;">
-            <div style="display:inline-flex; align-items:center; gap:8px; background:#FFF7ED; border:1px solid #FDBA74; border-radius:999px; padding:5px 14px; font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#EA580C; margin-bottom:12px;">
+          <div style="background:#FFFFFF; border:2.5px solid #FF7A00; border-top:6px solid #0D2540; border-radius:24px; padding:28px 26px; max-width:560px; width:100%; box-shadow:0 30px 80px rgba(0,0,0,0.65); text-align:center; position:relative; font-family:'Plus Jakarta Sans',sans-serif;">
+            <div style="display:inline-flex; align-items:center; gap:8px; background:#FFF7ED; border:1px solid #FDBA74; border-radius:999px; padding:5px 14px; font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#EA580C; margin-bottom:10px;">
               ★ HAS LLEGADO AL PASO 4 · PASOS 0 AL 3 COMPLETADOS GRATIS
             </div>
-            <h3 style="font-family:'Montserrat',sans-serif; font-size:1.45rem; font-weight:900; color:#0D2540; margin:0 0 10px 0; line-height:1.2;">
-              ¡Desbloquea el Paso 4 al 6 o Regresa a la Web!
+            <h3 style="font-family:'Montserrat',sans-serif; font-size:1.38rem; font-weight:900; color:#0D2540; margin:0 0 8px 0; line-height:1.2;">
+              ¡Desbloquea el Paso 4 al 6 o Usa tu Pase Alpha Tester!
             </h3>
-            <p style="font-size:0.90rem; color:#475569; line-height:1.55; margin:0 0 22px 0;">
-              Has completado la fase estratégica gratuita (Pasos 0, 1, 2 y 3). Para continuar al <strong>Paso 4 (ADN Visual Kansei y Tipografía)</strong>, <strong>Paso 5 (Taller de Logotipo en Curvas)</strong> y <strong>Paso 6 (Brandbook de 36 Láminas + Pack de Descargas)</strong> con migración automática de tus respuestas, activa tu Licencia Pro o regresa a la web principal.
+            <p style="font-size:0.86rem; color:#475569; line-height:1.5; margin:0 0 14px 0;">
+              Has completado la fase estratégica gratuita (Pasos 0, 1, 2 y 3). Activa tu Licencia Pro, ingresa un <strong>Código de Descuento / Pase Alpha Tester</strong> o regresa a la web principal.
             </p>
-            <div style="display:flex; flex-direction:column; gap:10px;">
-              <button type="button" onclick="window.tbbOpenParentCheckoutFromDemo();" style="background:linear-gradient(135deg, #FF7A00 0%, #E05E00 100%); color:#FFFFFF; border:none; border-radius:999px; padding:15px 24px; font-family:'Montserrat',sans-serif; font-size:0.96rem; font-weight:900; cursor:pointer; box-shadow:0 10px 26px rgba(255,122,0,0.38);">
-                ✨ Comprar y Desbloquear Marca Completa · $49 USD →
+
+            <!-- CAJA DE CÓDIGO DE DESCUENTO / PASE ALPHA TESTER DIRECTO EN PASO 4 -->
+            <div style="background:#ECFDF5; border:1.5px dashed #10B981; border-radius:14px; padding:10px 12px; margin-bottom:14px; text-align:left;">
+              <div style="font-family:'JetBrains Mono',monospace; font-size:0.70rem; font-weight:800; color:#065F46; margin-bottom:6px; text-transform:uppercase;">
+                🎁 ¿Tienes un Código Alpha Tester o Descuento?
+              </div>
+              <div style="display:flex; gap:6px;">
+                <input id="tbbStudioStep4PromoInput" type="text" placeholder="Ej. ALPHA100, TESTER-VIP o FOUNDER50" style="flex:1; padding:8px 10px; border-radius:9px; border:1.5px solid #A7F3D0; font-family:'JetBrains Mono',monospace; font-size:0.80rem; font-weight:800; text-transform:uppercase; color:#0D2540;" onkeydown="if(event.key==='Enter'){event.preventDefault();window.tbbRedeemStudioPromoCouponAtStep4();}" />
+                <button type="button" onclick="window.tbbRedeemStudioPromoCouponAtStep4();" style="background:#059669; color:#FFFFFF; border:none; border-radius:9px; padding:8px 14px; font-family:'Montserrat',sans-serif; font-size:0.76rem; font-weight:800; cursor:pointer; white-space:nowrap;">
+                  Canjear Código →
+                </button>
+              </div>
+              <div id="tbbStudioStep4PromoMsg" style="display:none; margin-top:6px; padding:5px 8px; border-radius:7px; font-size:0.74rem; font-weight:700;"></div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:9px;">
+              <button type="button" onclick="window.tbbOpenParentCheckoutFromDemo();" style="background:linear-gradient(135deg, #FF7A00 0%, #E05E00 100%); color:#FFFFFF; border:none; border-radius:999px; padding:14px 22px; font-family:'Montserrat',sans-serif; font-size:0.92rem; font-weight:900; cursor:pointer; box-shadow:0 10px 26px rgba(255,122,0,0.38);">
+                ✨ Comprar o Usar Cupón en Checkout · $49 USD →
               </button>
-              <button type="button" onclick="window.tbbReturnToWebFromDemo();" style="background:#0D2540; color:#FFFFFF; border:1.5px solid #4C9DE6; border-radius:999px; padding:13px 22px; font-family:'Montserrat',sans-serif; font-size:0.90rem; font-weight:800; cursor:pointer;">
+              <button type="button" onclick="window.tbbReturnToWebFromDemo();" style="background:#0D2540; color:#FFFFFF; border:1.5px solid #4C9DE6; border-radius:999px; padding:12px 20px; font-family:'Montserrat',sans-serif; font-size:0.88rem; font-weight:800; cursor:pointer;">
                 ← Regresar a la Web
               </button>
-              <button type="button" onclick="document.getElementById('tbbDemoCompletionPaywallModal').style.display='none'; switchStep(3);" style="background:#F8FAFC; border:1.5px solid #CBD5E1; color:#475569; border-radius:999px; padding:9px 18px; font-size:0.80rem; font-weight:700; cursor:pointer;">
+              <button type="button" onclick="document.getElementById('tbbDemoCompletionPaywallModal').style.display='none'; switchStep(3);" style="background:#F8FAFC; border:1.5px solid #CBD5E1; color:#475569; border-radius:999px; padding:8px 16px; font-size:0.78rem; font-weight:700; cursor:pointer;">
                 Seguir revisando mis respuestas del Paso 3 (Gratis)
               </button>
             </div>
