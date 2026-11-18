@@ -52,3 +52,4 @@ entregables_brandbooks/evidences/
 .env.local
 entregables_brandbooks/
 apps/web/brandbooks/
+node_modules/
