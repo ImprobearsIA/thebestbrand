@@ -5646,20 +5646,31 @@
     </div>
   </div>
 
-  <!-- CLOSING & TRANSITION VIDEO CAPSULE MODAL (DISEÑO LIMPIO SIN ONDAS NI EXCESO DE TEXTO · HEYGEN 9:16 + RESUMEN DIRECTO) -->
+  <!-- CLOSING & TRANSITION VIDEO CAPSULE MODAL (DISEÑO LIMPIO · 6 IDIOMAS SINCRONIZADOS · 9:16 + RESUMEN DIRECTO) -->
   <div class="welcome-modal-overlay" id="phaseTransitionVideoModal" style="z-index: 9999; padding: 14px; background: rgba(9, 13, 22, 0.88); backdrop-filter: blur(16px); overflow-y: auto;" onclick="if(event.target===this){this.classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}}">
-    <div class="welcome-modal-card tbb-atomic-card" style="max-width: 920px; width: 100%; max-height: calc(100dvh - 28px); overflow-y: auto !important; overflow-x: hidden !important; align-items: stretch !important; background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 28px; box-shadow: 0 28px 70px rgba(15, 23, 42, 0.22); color: #0F172A; padding: 22px 26px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px; text-align: left; box-sizing: border-box;" onclick="event.stopPropagation()">
-      <!-- 1. Cabecera Limpia + Selector de Paso -->
-      <div style="display:flex; flex-direction:column; gap:10px; border-bottom:1px solid #E2E8F0; padding-bottom:12px; flex-shrink:0;">
+    <div class="welcome-modal-card tbb-atomic-card" style="max-width: 940px; width: 100%; max-height: calc(100dvh - 28px); overflow-y: auto !important; overflow-x: hidden !important; align-items: stretch !important; background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 28px; box-shadow: 0 28px 70px rgba(15, 23, 42, 0.22); color: #0F172A; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; text-align: left; box-sizing: border-box;" onclick="event.stopPropagation()">
+      <!-- 1. Cabecera Limpia + Selector de Idioma (6 Idiomas) + Selector de Paso -->
+      <div style="display:flex; flex-direction:column; gap:8px; border-bottom:1px solid #E2E8F0; padding-bottom:10px; flex-shrink:0;">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-          <div style="display:flex; align-items:center; gap:8px;">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <span id="transitionVideoBadge" style="font-family:var(--font-mono); background:#FFF7ED; color:#EA580C; border:1px solid #FFEDD5; font-size:0.68rem; font-weight:700; padding:4px 12px; border-radius:999px; letter-spacing:0.04em;">
-              CÁPSULA EJECUTIVA · THE BEST BRAND & AURA
+              CÁPSULA EJECUTIVA · THE BEST BRAND &amp; AURA
             </span>
             <span id="transitionVideoChapterTag" style="font-family:var(--font-mono); font-size:0.70rem; color:#64748B; font-weight:600;"></span>
             <span id="transitionVideoStatusPill" style="display:none;"></span>
           </div>
-          <button type="button" onclick="document.getElementById('phaseTransitionVideoModal').classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; border-radius:999px; padding:5px 12px; font-size:0.78rem; font-weight:600; cursor:pointer;" aria-label="Cerrar">×</button>
+          <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <span style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; color:#475569;">IDIOMA AUDIO/VIDEO:</span>
+            <div id="transitionVideoLangSelectorRow" style="display:inline-flex; gap:4px; background:#F1F5F9; padding:3px; border-radius:999px; border:1px solid #CBD5E1;">
+              <button type="button" class="tbb-video-lang-pill" data-vlang="es" onclick="window.tbbSetStudioVideoLang('es')" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:3px 8px; border-radius:999px; border:none; background:#0D2540; color:#FFFFFF; cursor:pointer;">ES</button>
+              <button type="button" class="tbb-video-lang-pill" data-vlang="en" onclick="window.tbbSetStudioVideoLang('en')" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:3px 8px; border-radius:999px; border:none; background:transparent; color:#0F172A; cursor:pointer;">EN</button>
+              <button type="button" class="tbb-video-lang-pill" data-vlang="fr" onclick="window.tbbSetStudioVideoLang('fr')" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:3px 8px; border-radius:999px; border:none; background:transparent; color:#0F172A; cursor:pointer;">FR</button>
+              <button type="button" class="tbb-video-lang-pill" data-vlang="pt" onclick="window.tbbSetStudioVideoLang('pt')" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:3px 8px; border-radius:999px; border:none; background:transparent; color:#0F172A; cursor:pointer;">PT</button>
+              <button type="button" class="tbb-video-lang-pill" data-vlang="de" onclick="window.tbbSetStudioVideoLang('de')" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:3px 8px; border-radius:999px; border:none; background:transparent; color:#0F172A; cursor:pointer;">DE</button>
+              <button type="button" class="tbb-video-lang-pill" data-vlang="it" onclick="window.tbbSetStudioVideoLang('it')" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:3px 8px; border-radius:999px; border:none; background:transparent; color:#0F172A; cursor:pointer;">IT</button>
+            </div>
+            <button type="button" onclick="document.getElementById('phaseTransitionVideoModal').classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; border-radius:999px; padding:5px 12px; font-size:0.78rem; font-weight:600; cursor:pointer;" aria-label="Cerrar">×</button>
+          </div>
         </div>
         <div id="transitionVideoThemeSelectorRow" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;">
           <button type="button" class="tbb-video-theme-pill" data-vstep="0" onclick="window.tbbSwitchVideoCapsuleTheme(0)" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:600; padding:5px 11px; border-radius:999px; border:1px solid #CBD5E1; background:#F8FAFC; color:#0F172A; cursor:pointer; white-space:nowrap;">Paso 0 · Inicio</button>
@@ -5678,15 +5689,21 @@
         <div id="transitionTheoryVideoContainer" style="background:#090D16; border-radius:20px; overflow:hidden; position:relative; box-shadow:0 16px 36px rgba(15, 23, 42, 0.16); display:flex; flex-direction:column;">
           <span id="transitionTheoryHeaderBadge" style="display:none;"></span>
           <span id="transitionTheoryFrameworkPill" style="display:none;"></span>
+          <img
+            id="transitionTheoryVideoPosterOverlay"
+            src="/assets/videos/poster_paso_0.jpg"
+            alt="Cápsula Ejecutiva"
+            style="position:absolute; inset:0 0 44px 0; width:100%; height:calc(100% - 44px); object-fit:cover; pointer-events:none; transition:opacity 0.25s ease; z-index:2;"
+          />
           <video
             id="transitionTheoryVideoPlayer"
             controls
             playsinline
-            preload="auto"
-            poster="/assets/videos/poster_paso_0.jpg?v=105.0"
-            style="width:100%; max-height:64vh; aspect-ratio:9/16; display:block; background:#090D16; object-fit:contain;"
+            preload="metadata"
+            src="/assets/videos/capsula_teoria_paso_0.mp4"
+            poster="/assets/videos/poster_paso_0.jpg"
+            style="width:100%; max-height:64vh; aspect-ratio:9/16; display:block; background:url('/assets/videos/poster_paso_0.jpg') center/cover no-repeat #090D16; object-fit:cover;"
           >
-            <source id="transitionTheoryVideoSource" src="/assets/videos/capsula_teoria_paso_0.mp4?v=105.0" type="video/mp4" />
             Tu navegador no soporta reproducción de video HTML5.
           </video>
           <div style="height:4px; background:#1E293B; overflow:hidden;">
@@ -9551,12 +9568,41 @@
     }
 
     function tbbResolveHeyGenVideoAsset(relPath) {
-      return `${relPath}?v=105.0`;
+      const cleanRel = String(relPath || "").split("?")[0];
+      return `${cleanRel}?v=112.0`;
     }
 
     function tbbResolveHeyGenVideoFallback(relPath) {
-      return `https://raw.githubusercontent.com/ImprobearsIA/thebestbrand/main/apps/web${relPath}?v=105.0`;
+      const cleanRel = String(relPath || "").split("?")[0];
+      return `https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@main/apps/web${cleanRel}`;
     }
+
+    window.tbbSetStudioVideoLang = function (newLang) {
+      const clean = String(newLang || "es").toLowerCase().trim().slice(0, 2);
+      const valid = ["es", "en", "fr", "pt", "de", "it"].includes(clean) ? clean : "es";
+      try {
+        localStorage.setItem("tbb_active_ui_lang_v52", valid);
+        localStorage.setItem("tbb_app_lang", valid);
+        document.documentElement.lang = valid;
+        if (typeof window.tbbSetLanguage === "function") {
+          window.tbbSetLanguage(valid, true);
+        } else if (typeof window.tbbSetLang === "function") {
+          window.tbbSetLang(valid);
+        }
+      } catch (e) {}
+      const p = window._tbbActiveTransitionModalParams || {
+        fromStep: Math.max(0, (window.tbbState?.step || 0) - 1),
+        toStep: window.tbbState?.step || 0,
+        options: { keepCurrentSubStep: true }
+      };
+      const modal = document.getElementById("phaseTransitionVideoModal");
+      if (modal && modal.classList.contains("open")) {
+        openPhaseTransitionVideoCapsule(p.fromStep, p.toStep, p.options || { keepCurrentSubStep: true });
+      }
+      if (typeof window.renderTbbZeroScrollStage === "function") {
+        window.renderTbbZeroScrollStage();
+      }
+    };
 
     function tbbResolveLocalizedStudioStepVideo(stepNum, langOverride) {
       const l = langOverride || tbbGetActiveStudioLang();
@@ -10158,6 +10204,14 @@
       });
 
       const curLang = typeof tbbGetActiveStudioLang === "function" ? tbbGetActiveStudioLang() : "es";
+      document.querySelectorAll(".tbb-video-lang-pill").forEach(btn => {
+        const isLangAct = String(btn.getAttribute("data-vlang") || "") === curLang;
+        btn.style.background = isLangAct ? "#0D2540" : "transparent";
+        btn.style.color = isLangAct ? "#FFFFFF" : "#0F172A";
+      });
+      const topSel = document.getElementById("tbbTopStudioLangSelect");
+      if (topSel) topSel.value = curLang;
+
       const modalI18nMap = {
         es: {
           chTag: (s) => `PASO ${s} · CÁPSULA EJECUTIVA DEL FUNDADOR`,
@@ -10235,37 +10289,57 @@
             </div>
           `;
         }
-        if (videoPlayer && videoSource) {
+        if (videoPlayer) {
+          const posterOv = document.getElementById("transitionTheoryVideoPosterOverlay");
           if (review.theorySpec.posterUrl) {
             videoPlayer.setAttribute("poster", review.theorySpec.posterUrl);
+            videoPlayer.style.backgroundImage = `url('${review.theorySpec.posterUrl}')`;
+            videoPlayer.style.backgroundSize = "cover";
+            videoPlayer.style.backgroundPosition = "center";
+            videoPlayer.style.backgroundRepeat = "no-repeat";
+            if (posterOv) {
+              posterOv.src = review.theorySpec.posterUrl;
+              posterOv.style.opacity = "1";
+            }
           }
           const targetVidUrl = review.theorySpec.videoUrl;
-          videoPlayer.onerror = () => {
+          const handleVidFallback = () => {
             const relClean = String(targetVidUrl || "").split("?")[0];
-            if (relClean.startsWith("/assets/videos/") && !videoPlayer.dataset.triedFallback) {
+            if (!videoPlayer.dataset.triedFallback) {
               videoPlayer.dataset.triedFallback = "1";
-              const fbUrl = tbbResolveHeyGenVideoFallback(relClean);
-              videoSource.setAttribute("src", fbUrl);
+              const fbUrl = tbbResolveHeyGenVideoFallback(relClean.startsWith("/assets/") ? relClean : `/assets/videos/capsula_teoria_paso_${resolvedToStep}${curLang === "es" ? "" : "_" + curLang}.mp4`);
+              if (videoSource) videoSource.setAttribute("src", fbUrl);
               videoPlayer.src = fbUrl;
               videoPlayer.load();
               videoPlayer.play().catch(() => {});
             }
           };
+          videoPlayer.onerror = handleVidFallback;
+          if (videoSource) videoSource.onerror = handleVidFallback;
           delete videoPlayer.dataset.triedFallback;
-          if (videoSource.getAttribute("src") !== targetVidUrl || videoPlayer.getAttribute("src") !== targetVidUrl) {
-            videoSource.setAttribute("src", targetVidUrl);
+          if (videoPlayer.getAttribute("src") !== targetVidUrl) {
+            if (videoSource) videoSource.setAttribute("src", targetVidUrl);
             videoPlayer.src = targetVidUrl;
             videoPlayer.load();
           } else {
             try { videoPlayer.currentTime = 0; } catch (e) {}
           }
+          videoPlayer.defaultPlaybackRate = 1.0;
+          videoPlayer.playbackRate = 1.0;
           videoPlayer.ontimeupdate = () => {
+            if (posterOv && videoPlayer.currentTime > 0.08 && !videoPlayer.paused) {
+              posterOv.style.opacity = "0";
+            }
             if (progBar && videoPlayer.duration > 0) {
               const pct = Math.min(100, Math.max(8, Math.round((videoPlayer.currentTime / videoPlayer.duration) * 100)));
               progBar.style.width = `${pct}%`;
             }
           };
-          // Silenciar TTS suelto para que el audio narrado nativo del video MP4 se escuche limpio sin encimarse
+          videoPlayer.onpause = () => {
+            if (posterOv && videoPlayer.currentTime < 0.08) {
+              posterOv.style.opacity = "1";
+            }
+          };
           try {
             if (typeof window.tbbStopAllAuraVoicePlayback === "function") window.tbbStopAllAuraVoicePlayback();
             if ("speechSynthesis" in window) window.speechSynthesis.cancel();
@@ -20553,18 +20627,19 @@
       <div id="tbbDiscreteProgressTrack" title="Progreso del paso actual">
         <div id="tbbDiscreteProgressFill" style="width:20%;"></div>
       </div>
-      <select id="tbbTopQuickStepJumper" aria-label="Saltar al Paso" onchange="if(this.value==='admin_tbb'){window.tbbLoadOfficialAdminTheBestBrandData(6);}else{tbbJumpToStep(Number(this.value), 1);}" style="height:32px; padding:0 8px; border-radius:8px; border:1.5px solid #CBD5E1; border-bottom:2.5px solid #FF7A00; background:#FFFFFF; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#0D2540; cursor:pointer;">
-        <option value="0">Paso 0 · Inicio & Giro</option>
+      <select id="tbbTopQuickStepJumper" aria-label="Saltar al Paso" onchange="if(this.value==='admin_tbb'){window.tbbLoadOfficialAdminTheBestBrandData(6);}else if(this.value==='casa_loteria'){window.tbbLoadCasaLoteriaRestaurantPreset(5);}else{tbbJumpToStep(Number(this.value), 1);}" style="height:32px; padding:0 8px; border-radius:8px; border:1.5px solid #CBD5E1; border-bottom:2.5px solid #FF7A00; background:#FFFFFF; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#0D2540; cursor:pointer;">
+        <option value="0">Paso 0 · Inicio &amp; Giro</option>
         <option value="1">Paso 1 · Círculo Dorado</option>
         <option value="2">Paso 2 · Touchpoints</option>
-        <option value="3">Paso 3 · Naming & Niza</option>
+        <option value="3">Paso 3 · Naming &amp; Niza</option>
         <option value="4">Paso 4 · Personalidad</option>
         <option value="5">Paso 5 · Logotipos</option>
         <option value="6">Paso 6 · Manual más de 30 páginas</option>
+        <option value="casa_loteria" style="color:#C85A32; font-weight:900;">★ Caso Real: Casa Lotería (Michelin)</option>
         <option value="admin_tbb" style="color:#FF7A00; font-weight:900;">⚡ Cargar Admin (TheBestBrand)</option>
       </select>
-      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" id="tbbBtnTopAdminTbb" onclick="window.tbbLoadOfficialAdminTheBestBrandData(6)" title="Cargar perfil administrador con datos oficiales de TheBestBrand (Jorge Benítez) y abrir Brandbook de 30 Hojas" style="padding:0 9px; font-size:0.70rem; min-height:32px !important; white-space:nowrap; border-bottom:2.5px solid #FF7A00; color:#0D2540; background:#FEF3C7; border-color:#F59E0B;">
-        <span>⚡ Admin TBB</span>
+      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" id="tbbBtnTopAdminTbb" onclick="window.tbbLoadCasaLoteriaRestaurantPreset(5)" title="Cargar caso de estudio real: Restaurante de Cocina Mexicana Modernista con Estrella Michelin (Casa Lotería)" style="padding:0 9px; font-size:0.70rem; min-height:32px !important; white-space:nowrap; border-bottom:2.5px solid #C85A32; color:#0D2540; background:#FEF3C7; border-color:#F59E0B;">
+        <span>★ Casa Lotería</span>
       </button>
       <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnTopStepVideo" onclick="tbbOpenCurrentStepVideoCapsule()" title="Ver Video Introductorio y Cierre de este Paso">
         <span id="tbbIconTopVideo"></span>
@@ -20888,19 +20963,38 @@
       window.buildDynamicTouchpointOptions = function (phaseKey) {
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const giro = (cs.custom_business_type || cs.step0_short_essence || "").toLowerCase();
-        const isDigital = /\b(app|aplicaci[oó]n|plataforma|software|web|digital|saas|sistema|ia|datos)\b/i.test(giro);
-        const isService = /\b(consultor[ií]a|despacho|cl[ií]nica|salud|educaci[oó]n|colegio|servicio|agencia|arquitectura|construcci[oó]n)\b/i.test(giro);
+        const isHospitality = /\b(restaurante|gastronom[ií]a|comida|cocina|chef|michelin|barro|loter[ií]a|caf[eé]|hotel|hospitalidad|bistr[oó]|mezcal|vino|comensal)\b/i.test(giro);
+        const isDigital = !isHospitality && /\b(app|aplicaci[oó]n|plataforma|software|web|digital|saas|sistema|ia|datos)\b/i.test(giro);
+        const isService = !isHospitality && /\b(consultor[ií]a|despacho|cl[ií]nica|salud|educaci[oó]n|colegio|servicio|agencia|arquitectura|construcci[oó]n)\b/i.test(giro);
 
         if (phaseKey === "before") {
+          if (isHospitality) return [
+            "Reservación en OpenTable / Resy y Concierge WhatsApp",
+            "Reels Cinematográficos y Playlist Mexican Chill-Out",
+            "Reseñas en Guía Michelin y Prensa Gastronómica",
+            "Fachada Arquitectónica de Barro Negro e Iluminación Cálida"
+          ];
           if (isDigital) return ["Búsqueda Web y App Store", "Demostración Interactiva en Línea", "Recomendación de Usuarios", "Contenido Especializado en Redes"];
           if (isService) return ["Sitio Web Institucional", "Recomendación Directa de Clientes", "Presentación Ejecutiva / Portafolio", "Presencia Profesional en Línea"];
-          return ["fachada y Señalética Principal", "Catálogo y Presencia Digital", "Recomendación Directa", "Empaque o Muestra Inicial"];
+          return ["Fachada y Señalética Principal", "Catálogo y Presencia Digital", "Recomendación Directa", "Empaque o Muestra Inicial"];
         }
         if (phaseKey === "during") {
+          if (isHospitality) return [
+            "Vajilla Escultórica de Barro Contemporáneo Hecha a Mano",
+            "Cuadros de Autor con Cartas de la Lotería Modernizadas",
+            "Ambientación Acústica de Canciones Mexicanas en Chill-Out",
+            "Menú de Degustación Michelin y Ritual de Maridaje en Mesa"
+          ];
           if (isDigital) return ["Interfaz Principal de la Aplicación", "Flujo de Registro y Onboarding", "Panel de Trabajo en Tiempo Real", "Asistencia Integrada en Pantalla"];
           if (isService) return ["Sesión de Diagnóstico y Propuesta", "Contrato y Carpeta Corporativa", "Atención del Equipo Especialista", "Entregables Técnicos Oficiales"];
-          return ["Experiencia en el Espacio o Tienda", "Presentación del Producto o Servicio", "Trato y Indumentaria del Equipo", "Proceso de Pago y Entrega"];
+          return ["Experiencia en el Espacio o Tienda", "Presentación del Producto o Servicio", "Trato e Indumentaria del Equipo", "Proceso de Pago y Entrega"];
         }
+        if (isHospitality) return [
+          "Carta Coleccionable de la Lotería Impresa en Papel Algodón",
+          "Acceso a la Playlist Oficial Mexican Chill-Out en Spotify",
+          "Invitación Privada a Cenas de Temporada del Chef Michelin",
+          "Membresía Mesa del Chef y Seguimiento Personalizado"
+        ];
         if (isDigital) return ["Reportes y Descargas Oficiales", "Notificaciones de Seguimiento", "Actualizaciones de Cuenta", "Programa de Referidos"];
         if (isService) return ["Seguimiento Post-Servicio", "Reporte de Resultados", "Renovación y Mantenimiento", "Comunidad de Clientes"];
         return ["Empaque de Entrega Final", "Seguimiento de Satisfacción", "Garantía y Soporte", "Programa de Lealtad"];
@@ -20913,13 +21007,18 @@
         { id: "volumetric_glass", label: "Cristal Volumétrico 3D (Liquid Glass)", shortDesc: "estilo Liquid Glass 3D con refracción especular y volumen translúcido", pri: "#1D4ED8", sec: "#0D2540" },
         { id: "fluid_gradient", label: "Degradado Multicapa Fluido", shortDesc: "estilo degradado vibrante multicapa con transiciones lumínicas", pri: "#DB2777", sec: "#7C3AED" },
         { id: "detailed_emblem", label: "Emblema Figurativo en Capas", shortDesc: "estilo insignia detallada con profundidad escénica y listón integrado", pri: "#047857", sec: "#D97706" },
-        { id: "artisan_seal", label: "Sello Grabado de Oficio", shortDesc: "estilo sello artesanal robusto con simetría de taller y listón", pri: "#991B1B", sec: "#D97706" },
+        { id: "artisan_seal", label: "Sello Grabado de Oficio", shortDesc: "estilo sello de autor en grabado fino y geometría modernista", pri: "#9E3B24", sec: "#C89D54" },
         { id: "character_3d", label: "Ilustración Expresiva 3D", shortDesc: "estilo ilustración tridimensional expresiva con volumen y carácter", pri: "#059669", sec: "#0EA5E9" },
-        { id: "direct_geometric", label: "Síntesis Geométrica Directa", shortDesc: "estilo geométrico directo de alto contraste y fuerza tipográfica", pri: "#090D16", sec: "#0284C7" }
+        { id: "direct_geometric", label: "Síntesis Geométrica Directa", shortDesc: "estilo geométrico directo de alto contraste y fuerza tipográfica", pri: "#14110F", sec: "#C89D54" }
       ];
 
       // Infiere el paradigma visual inicial desde los deslizadores del Paso 4 y los datos de los Pasos 0-1
       window.inferParadigmFromAppSliders = function () {
+        const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+        const giro = String(cs.custom_business_type || cs.step0_short_essence || "").toLowerCase();
+        if (/\b(restaurante|gastronom|comida mexicana|michelin|barro|loter[ií]a)\b/i.test(giro)) {
+          return "artisan_seal";
+        }
         const s = (typeof bipolarSliderValues === "object" && bipolarSliderValues) ? bipolarSliderValues : {};
         const norm = (v, defVal) => {
           const n = Number(v);
@@ -20953,14 +21052,14 @@
             count: Math.min(40, w.length)
           };
         }
-        const brandName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "The Best Brand";
+        const brandName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "CASA LOTERÍA";
         const essence = (cs.step0_short_essence || cs.custom_business_type || cs.value_offer || cs.golden_circle || "identidad corporativa").trim();
         const shortEss = essence.split(/\s+/).slice(0, 4).join(" ");
         const parObj = SYSTEMIC_LOGO_PARADIGMS.find(p => p.id === st.logoParadigm) || SYSTEMIC_LOGO_PARADIGMS[0];
         const lastNote = activeIt ? String(activeIt.note || "").split(/\s+/).slice(0, 7).join(" ") : "";
         const noteSegment = (lastNote && !/^iteración #/i.test(lastNote)) ? ` (${lastNote})` : "";
 
-        const raw = `Diseña el logotipo 3D de «${brandName}» (${shortEss}) en ${parObj.shortDesc}${noteSegment}, tonos ${st.logoPriHex} y ${st.logoSecHex}, con ícono App 1:1.`;
+        const raw = `Diseña el logotipo vectorial de «${brandName}» (${shortEss}) en ${parObj.shortDesc}${noteSegment}, tonos ${st.logoPriHex} y ${st.logoSecHex}, con ícono App 1:1.`;
         const words = raw.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
         return {
           text: words.slice(0, 40).join(" "),
@@ -20979,14 +21078,22 @@
         return Math.abs(h);
       }
 
-      // Catálogo de Arquetipos Escultóricos 3D de Alta Precisión (Derivados de lo ingresado en la App)
+      // Catálogo de Arquetipos Vectoriales de Alta Precisión (Incluye 8 Diseños de Autor para Gastronomía Mexicana Modernista Michelin)
       const MASTER_3D_ARCHETYPES = [
+        { id: "loteria_estrella_barro", label: "Carta «La Estrella» & Vasija de Barro Modernista" },
+        { id: "barro_michelin_vessel", label: "Olla Escultórica de Barro Negro & Estrella Michelin" },
+        { id: "codice_loteria_monogram", label: "Monograma Arquitectónico «CL» · Códice Contemporáneo" },
+        { id: "comal_sol_acustico", label: "El Sol de Comal & Onda Acústica Mexican Chill-Out" },
+        { id: "agave_luna_loteria", label: "El Agave & La Luna · Carta N° 27 Grabado Modernista" },
+        { id: "plato_barro_aureo", label: "Plato de Barro en Espiral Áurea & Estrella de Autor" },
+        { id: "galeria_loteria_triptico", label: "Tríptico Galería Lotería · Sello Michelin" },
+        { id: "molcajete_estrella_minimal", label: "Molcajete Escultórico Minimalista & Lucero" },
         { id: "apple_liquid_wings", label: "Esfera y Alas Prismáticas 3D" },
         { id: "liquid_glass_infinity", label: "Hélice Continua y Espacio Negativo 3D" },
         { id: "liquid_glass_compass", label: "Prisma y Estrella Refractora 3D" },
         { id: "liquid_glass_crown", label: "Escudo y Emblema de Autoridad 3D" },
         { id: "liquid_glass_beacon", label: "Faro Escultural Liquid Glass 3D" },
-        { id: "fluid_gradient_bloom", label: " Geometría Multicapa Fluida" },
+        { id: "fluid_gradient_bloom", label: "Geometría Multicapa Fluida" },
         { id: "outdoor_camp_emblem", label: "Insignia Escénica en Capas" },
         { id: "artisan_butcher_seal", label: "Sello Grabado de Oficio" },
         { id: "character_mascot_3d", label: "Ilustración Expresiva 3D" },
@@ -21008,6 +21115,7 @@
         const currentNote = String((activeIt && activeIt.note) || "").toLowerCase();
         const appSeed = String(cs.step4_seed_idea || "").toLowerCase();
         const appStepsContext = [
+          cs.brandName || "",
           cs.custom_business_type || "",
           cs.step0_short_essence || "",
           cs.golden_circle || "",
@@ -21016,6 +21124,16 @@
         ].join(" ").toLowerCase();
         const allAppInputs = `${currentNote} ${appSeed} ${appStepsContext}`;
 
+        if (/\b(loter[ií]a|barro|mexican|michelin|comal|molcajete|tlalli|agave|restaurante)\b/i.test(allAppInputs)) {
+          if (/\b(molcajete)\b/i.test(currentNote)) return "molcajete_estrella_minimal";
+          if (/\b(tr[ií]ptico|galer[ií]a)\b/i.test(currentNote)) return "galeria_loteria_triptico";
+          if (/\b(espiral|plato)\b/i.test(currentNote)) return "plato_barro_aureo";
+          if (/\b(agave|luna)\b/i.test(currentNote)) return "agave_luna_loteria";
+          if (/\b(comal|onda|chill|ac[uú]stic)\b/i.test(currentNote)) return "comal_sol_acustico";
+          if (/\b(c[oó]dice|monograma)\b/i.test(currentNote)) return "codice_loteria_monogram";
+          if (/\b(olla|vasija negra|barro negro)\b/i.test(currentNote)) return "barro_michelin_vessel";
+          return "loteria_estrella_barro";
+        }
         if (/\b(faro|torre de luz|beacon|guía luminosa|guia luminosa|luz que guía|luz que guia)\b/i.test(allAppInputs)) return "liquid_glass_beacon";
         if (/\b(campamento|montaña|montana|bosque|pino|aventura|outdoor|fogata|senderismo)\b/i.test(allAppInputs)) return "outdoor_camp_emblem";
         if (/\b(carnicer[ií]a|asador|parrilla|corte|cuchillo|brasa|oficio|taller|artesanal)\b/i.test(allAppInputs)) return "artisan_butcher_seal";
@@ -21029,7 +21147,7 @@
 
         // Si el usuario no escribió un objeto figurativo específico, derivar de la Familia Estructural elegida en el Paso 4.5 y el Paradigma
         if (st.logoParadigm === "detailed_emblem") return "outdoor_camp_emblem";
-        if (st.logoParadigm === "artisan_seal") return "artisan_butcher_seal";
+        if (st.logoParadigm === "artisan_seal") return "loteria_estrella_barro";
         if (st.logoParadigm === "character_3d") return "character_mascot_3d";
         if (st.logoParadigm === "direct_geometric") return "direct_uber_monolith";
         if (st.logoParadigm === "fluid_gradient") return "fluid_gradient_bloom";
@@ -21049,7 +21167,211 @@
       window.buildBaseArchetypeInnerMarkup = function (archetype, uid, initials, descriptorShort, pri, sec, mods) {
         const m = mods || {};
         const showInit = m.hideInitials ? false : true;
-        const fontFam = m.fontFamily || (typeof canvasState === "object" && canvasState?.primary_font) || "Plus Jakarta Sans";
+        const fontFam = m.fontFamily || (typeof canvasState === "object" && canvasState?.primary_font) || "Cormorant Garamond";
+
+        // =====================================================================
+        // 8 ARQUETIPOS DE ALTA COSTURA VECTORIAL: GASTRONOMÍA MEXICANA MODERNISTA MICHELIN
+        // =====================================================================
+        if (archetype === "loteria_estrella_barro") {
+          // #01 · Carta «La Estrella» N° 22 & Vasija Escultórica de Barro Modernista
+          return `
+            <g filter="url(#lgDrop3D_${uid})">
+              <defs>
+                <linearGradient id="lotCardBg_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#1A1512"/>
+                  <stop offset="55%" stop-color="#120E0C"/>
+                  <stop offset="100%" stop-color="#090706"/>
+                </linearGradient>
+                <linearGradient id="lotGold_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FDE68A"/>
+                  <stop offset="45%" stop-color="${sec || '#C89D54'}"/>
+                  <stop offset="100%" stop-color="#85581A"/>
+                </linearGradient>
+                <linearGradient id="lotTerra_${uid}" x1="15%" y1="0%" x2="85%" y2="100%">
+                  <stop offset="0%" stop-color="#E05A3A"/>
+                  <stop offset="50%" stop-color="${pri || '#9E3B24'}"/>
+                  <stop offset="100%" stop-color="#4A170B"/>
+                </linearGradient>
+              </defs>
+              <!-- Marco Arquitectónico Carta de la Lotería Modernista (Proporción Áurea) -->
+              <rect x="30" y="14" width="120" height="152" rx="18" fill="url(#lotCardBg_${uid})" stroke="url(#lotGold_${uid})" stroke-width="2.5"/>
+              <rect x="37" y="21" width="106" height="138" rx="12" fill="none" stroke="url(#lotGold_${uid})" stroke-width="0.9" stroke-opacity="0.65"/>
+              <!-- Esquinas Geométricas Códice -->
+              <path d="M 43 31 H 55 M 43 31 V 43 M 137 31 H 125 M 137 31 V 43 M 43 149 H 55 M 43 149 V 137 M 137 149 H 125 M 137 149 V 137" stroke="url(#lotGold_${uid})" stroke-width="1.3" stroke-linecap="round"/>
+              <!-- Número de Carta 22 y Rótulo Superior -->
+              <text x="46" y="34" fill="#FDE68A" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="8.5" letter-spacing="0.8">22</text>
+              <text x="134" y="34" text-anchor="end" fill="#FDE68A" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="6.5" letter-spacing="1.4">MICHELIN</text>
+              <!-- Arco Cúpula Galería -->
+              <path d="M 49 124 V 68 C 49 45, 131 45, 131 68 V 124" fill="none" stroke="url(#lotGold_${uid})" stroke-width="1.1" stroke-dasharray="2 2" opacity="0.55"/>
+              <!-- Estrella Michelin / Carta La Estrella de 8 Puntas en Grabado Fino -->
+              <circle cx="90" cy="60" r="21" fill="url(#lotTerra_${uid})" opacity="0.22"/>
+              <path d="M 90 32 L 95.5 51.5 L 115 57 L 95.5 62.5 L 90 82 L 84.5 62.5 L 65 57 L 84.5 51.5 Z" fill="url(#lotGold_${uid})"/>
+              <path d="M 90 41 L 99 53 L 111 45 L 103 57 L 111 69 L 99 61 L 90 73 L 81 61 L 69 69 L 77 57 L 69 45 L 81 53 Z" fill="#FFFBEB" opacity="0.85"/>
+              <circle cx="90" cy="57" r="4.2" fill="${pri || '#9E3B24'}"/>
+              <!-- Vasija / Olla de Barro Escultórica Modernista (Simetría Asimétrica Contemporánea) -->
+              <path d="M 68 88 H 112 C 109 95, 124 103, 122 118 C 120 131, 107 138, 90 138 C 73 138, 60 131, 58 118 C 56 103, 71 95, 68 88 Z" fill="url(#lotTerra_${uid})" stroke="url(#lotGold_${uid})" stroke-width="1.8" stroke-linejoin="round"/>
+              <!-- Bisel Especular Cerámico y Ondas Acústicas Chill-Out -->
+              <path d="M 65 110 Q 90 120 115 110" fill="none" stroke="#FDE68A" stroke-width="1.4" opacity="0.85"/>
+              <path d="M 63 118 Q 90 128 117 118" fill="none" stroke="#FFFFFF" stroke-width="1.0" opacity="0.55"/>
+              <ellipse cx="90" cy="88" rx="22" ry="4.2" fill="#1A1512" stroke="url(#lotGold_${uid})" stroke-width="1.5"/>
+              ${showInit ? `<text x="90" y="108" text-anchor="middle" fill="#FFFBEB" font-family="'${fontFam}', serif" font-weight="900" font-size="13.5" letter-spacing="2">${initials}</text>` : ""}
+              <!-- Cartela Inferior de Lotería -->
+              <text x="90" y="151" text-anchor="middle" fill="#FDE68A" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="7.2" letter-spacing="2.4">LA ESTRELLA</text>
+            </g>
+          `;
+        }
+
+        if (archetype === "barro_michelin_vessel") {
+          // #02 · Olla Escultórica de Barro Negro de Oaxaca & Rosetón Estrella Michelin
+          return `
+            <g filter="url(#lgDrop3D_${uid})">
+              <defs>
+                <radialGradient id="barroNegro_${uid}" cx="38%" cy="32%" r="68%">
+                  <stop offset="0%" stop-color="#3B332E"/>
+                  <stop offset="48%" stop-color="#181412"/>
+                  <stop offset="100%" stop-color="#070605"/>
+                </radialGradient>
+                <linearGradient id="cobreGold_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FEF08A"/>
+                  <stop offset="50%" stop-color="${sec || '#C89D54'}"/>
+                  <stop offset="100%" stop-color="${pri || '#9E3B24'}"/>
+                </linearGradient>
+              </defs>
+              <circle cx="90" cy="90" r="72" fill="#FAF6F0" stroke="url(#cobreGold_${uid})" stroke-width="2.5"/>
+              <circle cx="90" cy="90" r="65" fill="none" stroke="${pri || '#9E3B24'}" stroke-width="1" stroke-dasharray="4 3" opacity="0.6"/>
+              <!-- Halo Solar Terracota -->
+              <circle cx="90" cy="76" r="42" fill="${pri || '#9E3B24'}" opacity="0.12"/>
+              <!-- Olla Esférica Minimalista de Barro Negro Bruñido -->
+              <path d="M 66 64 C 66 59, 114 59, 114 64 L 110 72 C 132 84, 134 118, 114 134 C 102 143, 78 143, 66 134 C 46 118, 48 84, 70 72 Z" fill="url(#barroNegro_${uid})" stroke="url(#cobreGold_${uid})" stroke-width="2"/>
+              <!-- Reflejo Bruñido de Museo -->
+              <path d="M 62 88 C 56 104, 62 122, 74 130" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" opacity="0.42"/>
+              <!-- Rosetón Michelin de 6 Pétalos / Estrella en el Corazón de la Vasija -->
+              <g transform="translate(90,104)">
+                <path d="M 0 -20 L 4.5 -6 L 18 -10 L 7.5 1.5 L 18 12 L 4.5 7.5 L 0 21 L -4.5 7.5 L -18 12 L -7.5 1.5 L -18 -10 L -4.5 -6 Z" fill="url(#cobreGold_${uid})"/>
+                <circle cx="0" cy="0" r="5" fill="#181412" stroke="#FEF08A" stroke-width="1.4"/>
+              </g>
+              <!-- Estrella Guía Superior -->
+              <path d="M 90 24 L 93.5 36.5 L 106 40 L 93.5 43.5 L 90 56 L 86.5 43.5 L 74 40 L 86.5 36.5 Z" fill="${pri || '#9E3B24'}" stroke="url(#cobreGold_${uid})" stroke-width="1.2"/>
+              <path d="M 52 146 H 128" stroke="${pri || '#9E3B24'}" stroke-width="1.6" stroke-linecap="round"/>
+            </g>
+          `;
+        }
+
+        if (archetype === "codice_loteria_monogram") {
+          // #03 · Monograma Arquitectónico «CL» · Códice & Platos Modernistas
+          return `
+            <g filter="url(#lgDrop3D_${uid})">
+              <rect x="22" y="22" width="136" height="136" rx="32" fill="#14110F" stroke="${sec || '#C89D54'}" stroke-width="2.4"/>
+              <rect x="30" y="30" width="120" height="120" rx="24" fill="none" stroke="${pri || '#9E3B24'}" stroke-width="1.2" opacity="0.7"/>
+              <!-- Media Luna de Barro Terracota («C» de Casa) -->
+              <path d="M 108 50 A 42 42 0 1 0 108 130" fill="none" stroke="${pri || '#9E3B24'}" stroke-width="12" stroke-linecap="round"/>
+              <path d="M 108 50 A 42 42 0 1 0 108 130" fill="none" stroke="#FDE68A" stroke-width="1.8" stroke-linecap="round" opacity="0.85"/>
+              <!-- Escuadra Arquitectónica Dorada («L» de Lotería) -->
+              <path d="M 86 44 V 126 H 130" fill="none" stroke="${sec || '#C89D54'}" stroke-width="9" stroke-linecap="square" stroke-linejoin="miter"/>
+              <!-- Estrella Michelin en el Punto Áureo -->
+              <path d="M 114 68 L 117.5 78.5 L 128 82 L 117.5 85.5 L 114 96 L 110.5 85.5 L 100 82 L 110.5 78.5 Z" fill="#FFFBEB" stroke="${pri || '#9E3B24'}" stroke-width="1.2"/>
+              <circle cx="52" cy="90" r="4" fill="${sec || '#C89D54'}"/>
+            </g>
+          `;
+        }
+
+        if (archetype === "comal_sol_acustico") {
+          // #04 · El Sol de Comal & Onda Acústica Mexican Chill-Out
+          return `
+            <g filter="url(#lgDrop3D_${uid})">
+              <!-- Disco de Comal de Hierro y Barro -->
+              <circle cx="90" cy="90" r="68" fill="#181310" stroke="${sec || '#C89D54'}" stroke-width="2.6"/>
+              <circle cx="90" cy="90" r="58" fill="none" stroke="${pri || '#9E3B24'}" stroke-width="1.4" stroke-dasharray="8 4"/>
+              <!-- Sol Naciente Carta N° 41 El Sol -->
+              <circle cx="90" cy="78" r="28" fill="${pri || '#9E3B24'}"/>
+              <circle cx="90" cy="78" r="19" fill="${sec || '#C89D54'}"/>
+              <!-- Rayos Geométricos Modernistas -->
+              <path d="M 90 36 V 44 M 90 112 V 120 M 48 78 H 56 M 124 78 H 132 M 60 48 L 66 54 M 120 48 L 114 54 M 60 108 L 66 102 M 120 108 L 114 102" stroke="#FDE68A" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- Ondas Acústicas Mexican Chill-Out en la Base -->
+              <path d="M 40 118 Q 65 106 90 118 T 140 118" fill="none" stroke="#FFFBEB" stroke-width="2.8" stroke-linecap="round"/>
+              <path d="M 48 130 Q 69 118 90 130 T 132 130" fill="none" stroke="${sec || '#C89D54'}" stroke-width="2.2" stroke-linecap="round"/>
+              <path d="M 60 141 Q 75 133 90 141 T 120 141" fill="none" stroke="${pri || '#9E3B24'}" stroke-width="1.8" stroke-linecap="round"/>
+              <!-- Estrella Central -->
+              <path d="M 90 64 L 93 74 L 103 78 L 93 82 L 90 92 L 87 82 L 77 78 L 87 74 Z" fill="#FFFBEB"/>
+            </g>
+          `;
+        }
+
+        if (archetype === "agave_luna_loteria") {
+          // #05 · El Agave & La Luna · Carta N° 23 Grabado Modernista
+          return `
+            <g filter="url(#lgDrop3D_${uid})">
+              <rect x="28" y="16" width="124" height="148" rx="62" fill="#0F172A" stroke="${sec || '#C89D54'}" stroke-width="2.5"/>
+              <rect x="35" y="23" width="110" height="134" rx="55" fill="none" stroke="#93C5FD" stroke-width="0.9" opacity="0.45"/>
+              <!-- Creciente Lunar Carta La Luna -->
+              <path d="M 102 40 A 24 24 0 1 0 102 82 A 18 18 0 1 1 102 40 Z" fill="#FDE68A"/>
+              <!-- Pencas de Agave Azul / Maguey en Geometría Radial -->
+              <path d="M 90 74 C 95 96, 95 118, 90 136 C 85 118, 85 96, 90 74 Z" fill="${sec || '#C89D54'}"/>
+              <path d="M 90 136 C 72 118, 64 96, 66 80 C 78 92, 86 112, 90 136 Z" fill="${pri || '#9E3B24'}"/>
+              <path d="M 90 136 C 108 118, 116 96, 114 80 C 102 92, 94 112, 90 136 Z" fill="${pri || '#9E3B24'}"/>
+              <path d="M 90 136 C 58 126, 46 108, 46 94 C 64 102, 78 118, 90 136 Z" fill="#FDE68A" opacity="0.88"/>
+              <path d="M 90 136 C 122 126, 134 108, 134 94 C 116 102, 102 118, 90 136 Z" fill="#FDE68A" opacity="0.88"/>
+              <!-- Base de Barro -->
+              <path d="M 56 136 H 124 L 116 148 H 64 Z" fill="${sec || '#C89D54'}"/>
+            </g>
+          `;
+        }
+
+        if (archetype === "plato_barro_aureo") {
+          // #06 · Plato de Barro en Espiral Áurea & Emplatado Michelin
+          return `
+            <g filter="url(#lgDrop3D_${uid})">
+              <circle cx="90" cy="90" r="70" fill="${pri || '#9E3B24'}" stroke="${sec || '#C89D54'}" stroke-width="2.5"/>
+              <circle cx="90" cy="90" r="56" fill="#181310" stroke="#FDE68A" stroke-width="1.4"/>
+              <circle cx="90" cy="90" r="40" fill="none" stroke="${sec || '#C89D54'}" stroke-width="1.2" stroke-dasharray="6 4"/>
+              <!-- Espiral Áurea de Emplatado de Autor -->
+              <path d="M 90 90 C 90 74, 108 74, 108 90 C 108 114, 70 114, 70 86 C 70 54, 122 54, 122 92" fill="none" stroke="#FDE68A" stroke-width="3.2" stroke-linecap="round"/>
+              <!-- Tres Puntos de Reducción Culinaria y Estrella -->
+              <circle cx="64" cy="108" r="4.5" fill="${pri || '#9E3B24'}" stroke="#FFFBEB" stroke-width="1.2"/>
+              <circle cx="74" cy="118" r="3.2" fill="${sec || '#C89D54'}"/>
+              <path d="M 90 76 L 93 86 L 103 90 L 93 94 L 90 104 L 87 94 L 77 90 L 87 86 Z" fill="#FFFBEB"/>
+            </g>
+          `;
+        }
+
+        if (archetype === "galeria_loteria_triptico") {
+          // #07 · Tríptico Galería Lotería · Sello de Autor
+          return `
+            <g filter="url(#lgDrop3D_${uid})">
+              <!-- Carta Izquierda (El Corazón / Terracota) -->
+              <rect x="22" y="38" width="46" height="104" rx="8" transform="rotate(-8 45 90)" fill="${pri || '#9E3B24'}" stroke="#FDE68A" stroke-width="1.8"/>
+              <!-- Carta Derecha (La Luna / Azul Añil) -->
+              <rect x="112" y="38" width="46" height="104" rx="8" transform="rotate(8 135 90)" fill="#1B365D" stroke="#FDE68A" stroke-width="1.8"/>
+              <!-- Carta Central Protagonista (La Estrella / Barro Negro) -->
+              <rect x="58" y="24" width="64" height="132" rx="10" fill="#14110F" stroke="${sec || '#C89D54'}" stroke-width="2.4"/>
+              <rect x="64" y="30" width="52" height="120" rx="6" fill="none" stroke="#FDE68A" stroke-width="0.9" opacity="0.65"/>
+              <path d="M 90 52 L 94.5 67.5 L 110 72 L 94.5 76.5 L 90 92 L 85.5 76.5 L 70 72 L 85.5 67.5 Z" fill="#FDE68A"/>
+              <path d="M 74 106 H 106 L 101 128 H 79 Z" fill="${pri || '#9E3B24'}" stroke="#FDE68A" stroke-width="1.4"/>
+              ${showInit ? `<text x="90" y="122" text-anchor="middle" fill="#FFFBEB" font-family="'${fontFam}', serif" font-weight="900" font-size="12" letter-spacing="1.5">${initials}</text>` : ""}
+            </g>
+          `;
+        }
+
+        if (archetype === "molcajete_estrella_minimal") {
+          // #08 · Molcajete Escultórico Minimalista & Lucero Michelin
+          return `
+            <g filter="url(#lgDrop3D_${uid})">
+              <circle cx="90" cy="90" r="70" fill="#FAF6F0" stroke="${pri || '#9E3B24'}" stroke-width="2.4"/>
+              <!-- Estrella de 8 Puntas Suspendida -->
+              <path d="M 90 28 L 94.5 45.5 L 112 50 L 94.5 54.5 L 90 72 L 85.5 54.5 L 68 50 L 85.5 45.5 Z" fill="${sec || '#C89D54'}" stroke="${pri || '#9E3B24'}" stroke-width="1.2"/>
+              <circle cx="90" cy="50" r="4" fill="#FFFBEB"/>
+              <!-- Cuerpo Escultórico del Molcajete en Piedra Volcánica y Barro -->
+              <path d="M 44 84 H 136 C 134 114, 116 130, 90 130 C 64 130, 46 114, 44 84 Z" fill="#181412" stroke="${sec || '#C89D54'}" stroke-width="2.2" stroke-linejoin="round"/>
+              <!-- Tres Soportes Cónicos -->
+              <path d="M 62 126 L 56 146 H 70 L 74 128 Z" fill="${pri || '#9E3B24'}"/>
+              <path d="M 83 130 L 83 148 H 97 L 97 130 Z" fill="${sec || '#C89D54'}"/>
+              <path d="M 118 126 L 124 146 H 110 L 106 128 Z" fill="${pri || '#9E3B24'}"/>
+              <!-- Borde de Oro y Textura -->
+              <path d="M 52 94 H 128" stroke="#FDE68A" stroke-width="1.8" stroke-linecap="round"/>
+              ${showInit ? `<text x="90" y="116" text-anchor="middle" fill="#FFFBEB" font-family="'${fontFam}', serif" font-weight="900" font-size="16" letter-spacing="2">${initials}</text>` : ""}
+            </g>
+          `;
+        }
 
         if (archetype === "liquid_glass_beacon") {
           const bScale = Number(m.beamScale || 1.0);
@@ -21250,13 +21572,13 @@
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const st = window.tbbState;
         const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
-        const brandName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "The Best Brand";
+        const brandName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : (cs.nameless_discovery_mode ? "CASA LOTERÍA" : "The Best Brand");
         const brandWords = brandName.replace(/([a-z])([A-Z])/g, "$1 $2").split(/\s+/).filter(Boolean);
-        const initials = (brandWords.length >= 2 ? (brandWords[0][0] + brandWords[1][0]) : brandName.slice(0, 2)).toUpperCase() || "TB";
+        const initials = (brandWords.length >= 2 ? (brandWords[0][0] + brandWords[1][0]) : brandName.slice(0, 2)).toUpperCase() || "CL";
         const descriptorShort = (cs.step0_short_essence || cs.custom_business_type || "IDENTIDAD OFICIAL").toUpperCase().slice(0, 18);
 
-        const pri = (activeIt && activeIt.pri) || st.logoPriHex || "#1D4ED8";
-        const sec = (activeIt && activeIt.sec) || st.logoSecHex || "#0D2540";
+        const pri = (activeIt && activeIt.pri) || st.logoPriHex || "#9E3B24";
+        const sec = (activeIt && activeIt.sec) || st.logoSecHex || "#C89D54";
         const mods = (activeIt && activeIt.mods) || {};
         const scale = Number((activeIt && activeIt.scale) || mods.scale || st.logoScale || 1.0);
         const sx = scale * Number(mods.scaleX || 1.0) * (mods.flipX ? -1 : 1);
@@ -21288,8 +21610,9 @@
           `;
         }
 
-        // Si la marca es The Best Brand, NO hay logo subido por el usuario y es la Iteración #1 base sin evolución Gemini ni cambio de arquetipo, emitir el Isotipo Maestro Oficial: Alas de Convergencia & Núcleo Central TB
-        const isTBB = (/the\s*best\s*brand/i.test(brandName) || !cs.brandName || /^mi nueva marca$/i.test(cs.brandName)) && !hasUploadedLogo && !hasGeminiEvolution && (!activeIt || (Number(activeIt.idx || 1) === 1 && !activeIt.archetypeCycled));
+        const isHospitalityGiro = /\b(restaurante|gastronom|comida mexicana|michelin|barro|loter[ií]a)\b/i.test(String(cs.custom_business_type || cs.step0_short_essence || brandName));
+        // Si la marca es The Best Brand, NO es un caso de restaurante/descubrimiento sin nombre, NO hay logo subido por el usuario y es la Iteración #1 base sin evolución Gemini ni cambio de arquetipo
+        const isTBB = (/the\s*best\s*brand/i.test(brandName) && !isHospitalityGiro && !cs.nameless_discovery_mode) && !hasUploadedLogo && !hasGeminiEvolution && (!activeIt || (Number(activeIt.idx || 1) === 1 && !activeIt.archetypeCycled && !activeIt.archetype));
         if (isTBB) {
           const uidTbb = "tbb_def_" + uid;
           return `
@@ -22485,6 +22808,7 @@
           if (btn) btn.classList.toggle("active", Boolean(active));
         });
 
+        st.step = Number.isFinite(Number(st.step)) ? Math.max(0, Math.min(6, Number(st.step))) : 0;
         const stepJumper = document.getElementById("tbbTopQuickStepJumper");
         if (stepJumper && !isJourney) {
           const isUnpaidDemo = (new URLSearchParams(window.location.search).get("demo") === "true" || window.tbbIsDemoMode === true) && !(typeof window.tbbHasActiveProLicense === "function" && window.tbbHasActiveProLicense());
@@ -22597,36 +22921,48 @@
             const uploadedLogoUrl = cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
             const existingLogoMode = cs.existing_logo_mode || window.step0State?.existingLogoMode || "keep";
             const extColors = cs.uploaded_logo_colors || window.step0State?.uploadedLogoColors || [st.logoPriHex || "#1D4ED8", st.logoSecHex || "#0D2540"];
-            const hasActiveNameOrLogo = Boolean(curAssets !== "none" || uploadedLogoUrl || (curName && curName.trim().length > 0));
+            const isNamelessDiscovery = Boolean(cs.nameless_discovery_mode || (curAssets === "none" && (!curName || /^the\s*best\s*brand$/i.test(curName))));
+            const displayInputName = isNamelessDiscovery ? "" : curName;
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:12px 14px; gap:8px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#1D4ED8; margin-bottom:2px;">PASO 0 · 2 DE 3 · NOMBRE Y LOGOTIPO ACTUAL</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.14rem; font-weight:900; color:#090D16; margin:0 0 4px 0; line-height:1.22;">
-                    ¿Ya cuentas con el nombre o un logotipo actual para tu marca?
+                  <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#1D4ED8; margin-bottom:2px;">PASO 0 · 2 DE 3 · PUNTO DE PARTIDA NOMINAL Y VISUAL</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.12rem; font-weight:900; color:#090D16; margin:0 0 4px 0; line-height:1.22;">
+                    ¿Tu proyecto ya tiene nombre o prefieres crearlo desde cero con nuestra Técnica Científica de Naming?
                   </h2>
                 </div>
-                <div style="display:flex; flex-direction:column; gap:8px; flex:1; justify-content:center; min-height:0;">
-                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                    <button type="button" class="tbb-duo-btn ${!hasActiveNameOrLogo ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="selectStep0Assets('none'); triggerAuraEmpatheticFeedback('input_assets', 'Definir el nombre más adelante', false); renderTbbZeroScrollStage();" style="min-height:42px !important; padding:6px 10px !important; font-size:0.82rem !important;">
-                      Definirlo más adelante
+                <div style="display:flex; flex-direction:column; gap:7px; flex:1; justify-content:center; min-height:0;">
+                  <div style="display:grid; grid-template-columns:1.15fr 0.85fr; gap:8px;">
+                    <button type="button" id="tbbBtnStartNamelessDiscovery" class="tbb-duo-btn ${isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbActivateNamelessDiscoveryMode();" style="min-height:44px !important; padding:6px 10px !important; font-size:0.79rem !important; line-height:1.2;">
+                      ✨ Aún no tengo nombre · Crearlo desde cero en el Paso 3
                     </button>
-                    <button type="button" class="tbb-duo-btn ${hasActiveNameOrLogo ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="selectStep0Assets('has_name'); triggerAuraEmpatheticFeedback('input_assets', 'Ya tengo mi nombre de marca', false); renderTbbZeroScrollStage();" style="min-height:42px !important; padding:6px 10px !important; font-size:0.82rem !important;">
-                      Ya tengo mi nombre
+                    <button type="button" id="tbbBtnHasExistingName" class="tbb-duo-btn ${!isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbDeactivateNamelessDiscoveryMode();" style="min-height:44px !important; padding:6px 10px !important; font-size:0.79rem !important; line-height:1.2;">
+                      ✓ Ya tengo mi nombre
                     </button>
-                  </div>
-                  <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:9px 12px;">
-                    <label for="tbbStep0NameInput" style="display:block; font-size:0.75rem; font-weight:800; color:#334155; margin-bottom:4px;">
-                      Nombre de tu marca (si ya lo tienes):
-                    </label>
-                    <input type="text" id="tbbStep0NameInput" value="${curName.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" placeholder="Escribe aquí el nombre de tu marca" style="width:100%; height:42px; padding:0 12px; border-radius:10px; border:2px solid #94A3B8; font-size:0.92rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
 
+                  ${isNamelessDiscovery ? `
+                    <div style="background:linear-gradient(135deg,#FFFBEB,#FEF3C7); border:1.5px solid #D97706; border-radius:13px; padding:8px 12px; display:flex; align-items:center; gap:10px;">
+                      <div style="width:34px; height:34px; border-radius:10px; background:#9E3B24; color:#FFFBEB; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.95rem; flex-shrink:0;">✦</div>
+                      <div style="font-size:0.74rem; color:#78350F; font-weight:700; line-height:1.32;">
+                        <strong style="color:#9E3B24; display:block; font-size:0.77rem;">Modo «Generación de Nombre desde Cero» Activo (Método SMILE & Raíces Semánticas)</strong>
+                        Primero definiremos tu Giro (Paso 0.3), Propósito (Paso 1) y Touchpoints (Paso 2). En el <strong>Paso 3</strong> el motor cruzará tus 4 ejes semánticos para bautizar tu marca con validación fonética y Clase de Niza.
+                      </div>
+                    </div>
+                  ` : `
+                    <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:8px 12px;">
+                      <label for="tbbStep0NameInput" style="display:block; font-size:0.74rem; font-weight:800; color:#334155; margin-bottom:4px;">
+                        Nombre actual de tu marca:
+                      </label>
+                      <input type="text" id="tbbStep0NameInput" value="${displayInputName.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" placeholder="Escribe aquí el nombre de tu marca" style="width:100%; height:40px; padding:0 12px; border-radius:10px; border:2px solid #94A3B8; font-size:0.92rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    </div>
+                  `}
+
                   <!-- Opción de Subir Logotipo Existente (Mantenerlo o Tomarlo como Base) -->
-                  <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:14px; padding:9px 12px; display:flex; flex-direction:column; gap:7px;">
+                  <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:14px; padding:8px 12px; display:flex; flex-direction:column; gap:6px;">
                     <input type="file" id="tbbExistingLogoFileInput" accept="image/png,image/jpeg,image/webp,image/svg+xml,.svg,.png,.jpg,.jpeg,.webp" onchange="window.tbbHandleExistingLogoUpload(this)" style="display:none;" />
                     <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                      <div style="font-size:0.75rem; font-weight:800; color:#1D4ED8;">
+                      <div style="font-size:0.74rem; font-weight:800; color:#1D4ED8;">
                         ¿Ya tienes un logotipo actual? (Opcional)
                       </div>
                       ${uploadedLogoUrl ? `
@@ -22638,40 +22974,26 @@
                     </div>
 
                     ${!uploadedLogoUrl ? `
-                      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="min-height:42px !important; padding:7px 12px !important; font-size:0.82rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; background:#FFFFFF !important;">
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="min-height:38px !important; padding:6px 12px !important; font-size:0.79rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; background:#FFFFFF !important;">
                         Subir mi Logo Actual (.PNG, .JPG, .SVG)
                       </button>
-                      <div style="font-size:0.71rem; color:#475569; font-weight:600; text-align:center; line-height:1.25;">
-                        Si lo subes, el motor lo mantendrá como tu logotipo oficial en todo el recorrido y en las 30 láminas.
-                      </div>
                     ` : `
                       <div style="display:flex; align-items:center; gap:10px; background:#FFFFFF; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px;">
-                        <img src="${uploadedLogoUrl}" alt="Logo actual" style="width:42px; height:42px; object-fit:contain; border-radius:8px; border:1px solid #E2E8F0; background:#F8FAFC; flex-shrink:0;" />
+                        <img src="${uploadedLogoUrl}" alt="Logo actual" style="width:40px; height:40px; object-fit:contain; border-radius:8px; border:1px solid #E2E8F0; background:#F8FAFC; flex-shrink:0;" />
                         <div style="min-width:0; flex:1;">
-                          <div style="font-size:0.78rem; font-weight:900; color:#090D16;">Logo actual cargado en el motor</div>
-                          <div style="display:flex; align-items:center; gap:6px; margin-top:3px; font-size:0.70rem; font-weight:700; color:#475569;">
-                            <span>Colores detectados:</span>
-                            <span style="display:inline-flex; align-items:center; gap:3px;"><span style="width:10px; height:10px; border-radius:50%; background:${extColors[0] || '#1D4ED8'}; display:inline-block; border:1px solid rgba(0,0,0,0.15);"></span>${extColors[0] || '#1D4ED8'}</span>
-                            <span style="display:inline-flex; align-items:center; gap:3px;"><span style="width:10px; height:10px; border-radius:50%; background:${extColors[1] || '#0D2540'}; display:inline-block; border:1px solid rgba(0,0,0,0.15);"></span>${extColors[1] || '#0D2540'}</span>
+                          <div style="font-size:0.76rem; font-weight:900; color:#090D16;">Logo actual cargado en el motor</div>
+                          <div style="display:flex; align-items:center; gap:6px; margin-top:2px; font-size:0.68rem; font-weight:700; color:#475569;">
+                            <span>Colores:</span>
+                            <span style="display:inline-flex; align-items:center; gap:3px;"><span style="width:10px; height:10px; border-radius:50%; background:${extColors[0] || '#1D4ED8'}; display:inline-block;"></span>${extColors[0] || '#1D4ED8'}</span>
+                            <span style="display:inline-flex; align-items:center; gap:3px;"><span style="width:10px; height:10px; border-radius:50%; background:${extColors[1] || '#0D2540'}; display:inline-block;"></span>${extColors[1] || '#0D2540'}</span>
                           </div>
                         </div>
-                      </div>
-                      <div style="font-size:0.71rem; color:#059669; font-weight:800; background:#ECFDF5; border:1px solid #A7F3D0; border-radius:8px; padding:4px 8px; text-align:center;">
-                        ✓ Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas
-                      </div>
-                      <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px;">
-                        <button type="button" class="tbb-duo-btn ${existingLogoMode === 'keep' ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSetExistingLogoMode('keep')" style="min-height:38px !important; padding:5px 8px !important; font-size:0.75rem !important;">
-                          Mantener mi logo actual
-                        </button>
-                        <button type="button" class="tbb-duo-btn ${existingLogoMode === 'evolve' ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSetExistingLogoMode('evolve')" style="min-height:38px !important; padding:5px 8px !important; font-size:0.75rem !important;">
-                          Tomarlo como base y mejorar
-                        </button>
                       </div>
                     `}
                   </div>
                 </div>
-                <div style="font-size:0.74rem; color:#64748B; text-align:center; font-weight:600;">
-                  Toda esta información y tu logo alimentan automáticamente el motor del Paso 5 y las 30 láminas.
+                <div style="font-size:0.73rem; color:#64748B; text-align:center; font-weight:600;">
+                  Toda esta información alimenta automáticamente el motor de Naming (Paso 3), el Estudio de Logos (Paso 5) y tu Brandbook.
                 </div>
               </div>
             `;
@@ -22808,103 +23130,210 @@
         }
 
         // ---------------------------------------------------------------------
-        // PASO 3: NOMBRE OFICIAL (3 SUB-VISTAS SIN SCROLL)
+        // PASO 3: TÉCNICA CIENTÍFICA DE NAMING DESDE CERO (SMILE & SCRATCH + 4 EJES SEMÁNTICOS)
         // ---------------------------------------------------------------------
         if (st.step === 3) {
-          if (typeof ensureStep3NamingCardsPopulated === "function" && (!currentSixNamingOptions || currentSixNamingOptions.length === 0)) {
-            ensureStep3NamingCardsPopulated();
-          }
-          const curBrand = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName : "";
-          const roots = window.extractSystemicTokensFromApp().slice(0, 5);
+          const giroText = String(cs.custom_business_type || cs.step0_short_essence || "").toLowerCase();
+          const isHospitalityNaming = /\b(restaurante|gastronom|comida mexicana|michelin|barro|loter[ií]a|comal|chef)\b/i.test(giroText + " " + (cs.golden_circle || ""));
+          const curBrand = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName) && !(cs.nameless_discovery_mode && /^the\s*best\s*brand$/i.test(cs.brandName))) ? cs.brandName : "";
+          const roots = window.extractSystemicTokensFromApp().slice(0, 6);
+          const activeTech = st.namingTechniqueAxis || "yuxtaposicion";
+
+          const hospitalityCandidates = [
+            {
+              name: "CASA LOTERÍA",
+              smile: "99/100 SMILE",
+              monogram: "CL",
+              tech: "Yuxtaposición Simbólica (Hogar + Azar Poético)",
+              roots: "Casa (Hospitalidad Cálida) + Lotería (Iconografía Mexicana Modernista)",
+              nice: "Clase 43 OMPI · Alta Gastronomía",
+              tagline: "ALTA COCINA MEXICANA MODERNISTA · ESTRELLA MICHELIN & MEXICAN CHILL-OUT"
+            },
+            {
+              name: "TLALLI ATELIER",
+              smile: "96/100 SMILE",
+              monogram: "TA",
+              tech: "Raíz Ancestral Náhuatl + Alta Cocina",
+              roots: "Tlalli («Tierra / Barro» en náhuatl) + Atelier (Estudio Culinario Michelin)",
+              nice: "Clase 43 OMPI · Restauración de Autor",
+              tagline: "ARQUITECTURA CULINARIA EN BARRO CONTEMPORÁNEO · CHEF ESTRELLA MICHELIN"
+            },
+            {
+              name: "BARRO & ASTRO",
+              smile: "95/100 SMILE",
+              monogram: "BA",
+              tech: "Dualidad Materia-Cosmos (Carta N° 22 La Estrella)",
+              roots: "Barro (Alfarería Escultórica) + Astro (Estrella Michelin & Carta La Estrella)",
+              nice: "Clase 43 OMPI · Hospitalidad & Maridaje",
+              tagline: "GASTRONOMÍA MEXICANA REINTERPRETADA · BARRO MODERNISTA & CHILL-OUT"
+            },
+            {
+              name: "COMALÍA",
+              smile: "94/100 SMILE",
+              monogram: "CM",
+              tech: "Neologismo Evocador Sonoro",
+              roots: "Comal (Fuego Primordial Mexicano) + Armonía (Atmósfera Mexican Chill-Out)",
+              nice: "Clase 43 OMPI · Alta Cocina",
+              tagline: "EL FUEGO DEL COMAL ELEVADO A LA ESTRELLA MICHELIN"
+            },
+            {
+              name: "LA ESTRELLA DE BARRO",
+              smile: "93/100 SMILE",
+              monogram: "EB",
+              tech: "Emblema Narrativo Lotería N° 22",
+              roots: "La Estrella (Carta Icónica + Estrella Michelin) + Barro (Vajilla de Autor)",
+              nice: "Clase 43 OMPI · Restaurante Casual-Formal",
+              tagline: "COCINA MEXICANA MODERNISTA DE AUTOR · MÚSICA CHILL-OUT & ARTE"
+            },
+            {
+              name: "CÓDICE LOTERÍA",
+              smile: "92/100 SMILE",
+              monogram: "CL",
+              tech: "Editorial & Galería Gastronómica",
+              roots: "Códice (Memoria Cultural Mexicana) + Lotería (Grabado Contemporáneo)",
+              nice: "Clase 43 OMPI · Galería & Restaurante",
+              tagline: "TRADICIÓN MEXICANA REINTERPRETADA EN CLAVE CONTEMPORÁNEA"
+            }
+          ];
+
+          const dynamicCandidates = isHospitalityNaming ? hospitalityCandidates : (
+            (typeof currentSixNamingOptions !== "undefined" && currentSixNamingOptions.length > 0)
+              ? currentSixNamingOptions.slice(0, 6).map((it, idx) => ({
+                  name: it.name || `MARCA ${idx + 1}`,
+                  smile: `${98 - idx}/100 SMILE`,
+                  monogram: String(it.name || "TB").split(/\s+/).map(w => w[0] || "").join("").slice(0, 2).toUpperCase(),
+                  tech: it.styleBadge || "Síntesis Semántica",
+                  roots: it.verdict || "Derivado de tu Propósito y Giro",
+                  nice: cs.primary_nice_class || "Clase OMPI Validada",
+                  tagline: cs.tagline || cs.step0_short_essence || "EXCELENCIA Y CLARIDAD EN CADA DETALLE"
+                }))
+              : hospitalityCandidates
+          );
 
           if (st.subStep === 1) {
+            const axisCards = isHospitalityNaming ? [
+              { axis: "EJE 1 · MATERIA Y ORIGEN", val: "Barro Negro · Terracota · Comal · Tlalli" },
+              { axis: "EJE 2 · ICONOGRAFÍA CULTURAL", val: "Cartas de la Lotería · La Estrella · Códice" },
+              { axis: "EJE 3 · ATMÓSFERA SENSORIAL", val: "Mexican Chill-Out · Casual-Formal Contemporáneo" },
+              { axis: "EJE 4 · AUTORIDAD CULINARIA", val: "Chef con Estrella Michelin · Alta Cocina" }
+            ] : [
+              { axis: "EJE 1 · ESENCIA DEL GIRO", val: roots.slice(0, 2).join(" · ") || "Origen y Materia" },
+              { axis: "EJE 2 · PROMESA DIFERENCIAL", val: roots.slice(2, 4).join(" · ") || "Valor Único" },
+              { axis: "EJE 3 · EXPERIENCIA Y TONO", val: "Fluidez, Claridad y Prestigio" },
+              { axis: "EJE 4 · AUTORIDAD DE MARCA", val: "Estándar Internacional" }
+            ];
+
             stage.innerHTML = `
-              <div class="tbb-atomic-card">
+              <div class="tbb-atomic-card" style="padding:10px 14px; gap:8px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#1D4ED8;">PASO 3 · 1 DE 3 · NOMBRE PROPIO O RAÍCES DEL SISTEMA</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.24rem; font-weight:900; color:#090D16; margin:4px 0 8px 0;">
-                    Define o confirma el nombre de tu marca (o explora propuestas del sistema en el siguiente paso)
+                  <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#9E3B24;">PASO 3 · 1 DE 3 · TÉCNICA CIENTÍFICA DE GENERACIÓN DE NOMBRE (MÉTODO SMILE & 4 EJES SEMÁNTICOS)</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.12rem; font-weight:900; color:#090D16; margin:2px 0 4px 0;">
+                    Matriz de Invención Nominal: cruzamos los 4 ejes de tu restaurante/empresa para descubrir el nombre ideal
                   </h2>
                 </div>
-                <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:12px;">
-                  <div>
-                    <label for="tbbStep3DirectNameInput" style="display:block; font-size:0.80rem; font-weight:800; color:#334155; margin-bottom:6px;">
-                      Nombre Oficial de la Marca:
-                    </label>
-                    <input type="text" id="tbbStep3DirectNameInput" value="${curBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" placeholder="Escribe el nombre de tu marca" style="width:100%; height:52px; padding:0 16px; border-radius:16px; border:2px solid #090D16; font-size:1.05rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
-                  </div>
-                  <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:12px;">
-                    <div style="font-size:0.76rem; font-weight:800; color:#475569; margin-bottom:6px;">
-                      Raíces extraídas automáticamente de tus respuestas de los Pasos 0 y 1:
+
+                <!-- Matriz de los 4 Ejes Semánticos extraídos de los Pasos 0, 1 y 2 -->
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px;">
+                  ${axisCards.map(ax => `
+                    <div style="background:#FFFBEB; border:1.5px solid #F59E0B; border-radius:11px; padding:7px 10px;">
+                      <div style="font-family:var(--font-mono); font-size:0.63rem; font-weight:900; color:#9E3B24; letter-spacing:0.04em;">${ax.axis}</div>
+                      <div style="font-size:0.79rem; font-weight:800; color:#090D16; margin-top:2px;">${ax.val}</div>
                     </div>
-                    <div style="font-size:0.88rem; font-weight:800; color:#0F172A;">
-                      ${roots.length > 0 ? roots.join(" · ") : "Completa el Paso 0 y 1 para extraer raíces adicionales"}
-                    </div>
+                  `).join("")}
+                </div>
+
+                <!-- Selector de Técnica de Naming (Alexandra Watkins SMILE + Morfología Semántica) -->
+                <div>
+                  <div style="font-size:0.72rem; font-weight:800; color:#334155; margin-bottom:4px;">Técnica de Síntesis Nominal Activa:</div>
+                  <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:6px;">
+                    ${[
+                      { id: "yuxtaposicion", lbl: "1. Yuxtaposición Simbólica" },
+                      { id: "ancestral", lbl: "2. Raíz Ancestral + Atelier" },
+                      { id: "emblema", lbl: "3. Símbolo Lotería N° 22" },
+                      { id: "neologismo", lbl: "4. Fusión Sonora Chill-Out" }
+                    ].map(t => `
+                      <button type="button" class="tbb-duo-btn ${activeTech === t.id ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbState.namingTechniqueAxis='${t.id}'; renderTbbZeroScrollStage();" style="min-height:34px !important; padding:4px 6px !important; font-size:0.70rem !important;">
+                        ${t.lbl}
+                      </button>
+                    `).join("")}
                   </div>
                 </div>
-                <div style="font-size:0.78rem; color:#64748B; text-align:center; font-weight:600;">
-                  Presiona Adelante para explorar variantes generadas por el sistema o confirmar tu nombre.
+
+                <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:13px; padding:8px 12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                  <label for="tbbStep3DirectNameInput" style="font-size:0.75rem; font-weight:800; color:#334155; flex-shrink:0;">
+                    Nombre en evaluación (o pasa al 3.2 para elegir entre las 6 propuestas científicas):
+                  </label>
+                  <input type="text" id="tbbStep3DirectNameInput" value="${curBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" placeholder="Ej. CASA LOTERÍA (o descúbrelo en el siguiente paso)" style="flex:1; min-width:180px; height:38px; padding:0 12px; border-radius:9px; border:2px solid #090D16; font-size:0.92rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
+                </div>
+
+                <div style="font-size:0.74rem; color:#64748B; text-align:center; font-weight:600;">
+                  Presiona <strong>Adelante</strong> para ver el Scorecard SMILE & SCRATCH de las 6 propuestas generadas desde cero.
                 </div>
               </div>
             `;
           } else if (st.subStep === 2) {
-            const options = (typeof currentSixNamingOptions !== "undefined" && currentSixNamingOptions.length > 0)
-              ? currentSixNamingOptions
-              : [{ name: curBrand || "TheBestBrand", styleBadge: "NOMBRE DE LA MARCA", verdict: "Sintetizado a partir de la identidad declarada en el sistema." }];
-
             stage.innerHTML = `
-              <div class="tbb-atomic-card">
+              <div class="tbb-atomic-card" style="padding:10px 14px; gap:7px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
                   <div>
-                    <div style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#1D4ED8;">PASO 3 · 2 DE 3 · PROPUESTAS GENERADAS POR EL SISTEMA</div>
-                    <h2 style="font-family:var(--font-display); font-size:1.18rem; font-weight:900; color:#090D16; margin:2px 0 0 0;">
-                      Toca cualquier propuesta para seleccionarla como Nombre Oficial
+                    <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#9E3B24;">PASO 3 · 2 DE 3 · SCORECARD CIENTÍFICO SMILE & SCRATCH (WATKINS + CLASE NIZA 43)</div>
+                    <h2 style="font-family:var(--font-display); font-size:1.06rem; font-weight:900; color:#090D16; margin:2px 0 0 0;">
+                      Toca el nombre ganador para bautizar oficialmente tu marca y propagarlo al Estudio de Logos
                     </h2>
                   </div>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="if(typeof advanceNamingCycle==='function'){advanceNamingCycle();} triggerAuraEmpatheticFeedback('input_name', 'Nuevas propuestas fonéticas', false); renderTbbZeroScrollStage();">
-                    Generar Nuevas
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="if(typeof advanceNamingCycle==='function'){advanceNamingCycle();} triggerAuraEmpatheticFeedback('input_name', 'Re-evaluación fonética SMILE', false); renderTbbZeroScrollStage();" style="min-height:34px !important; padding:4px 10px !important; font-size:0.72rem !important; flex-shrink:0;">
+                    Recalcular Matriz
                   </button>
                 </div>
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1; align-content:center;">
-                  ${options.slice(0, 6).map(item => {
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px; flex:1; align-content:center; min-height:0;">
+                  ${dynamicCandidates.slice(0, 6).map(item => {
                     const isSel = (cs.brandName || "").toLowerCase() === (item.name || "").toLowerCase();
                     const safeName = (item.name || "").replace(/'/g, "\\'");
+                    const safeTag = (item.tagline || "").replace(/'/g, "\\'");
                     return `
-                      <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbUpdateBrandNameFromInput('${safeName}'); renderTbbZeroScrollStage();">
-                        ${item.name}
+                      <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectEvaluatedNamingCandidate('${safeName}', '${safeTag}');" style="display:flex !important; flex-direction:column !important; align-items:flex-start !important; justify-content:space-between !important; text-align:left !important; padding:7px 10px !important; min-height:64px !important; gap:3px !important;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:6px;">
+                          <span style="font-family:var(--font-display); font-size:0.92rem; font-weight:900; color:${isSel ? '#090D16' : '#0F172A'}; letter-spacing:0.02em;">${item.name}</span>
+                          <span style="font-family:var(--font-mono); font-size:0.62rem; font-weight:900; background:${isSel ? '#9E3B24' : '#FEF3C7'}; color:${isSel ? '#FFFFFF' : '#9E3B24'}; padding:2px 6px; border-radius:6px; flex-shrink:0;">${item.smile} · [${item.monogram}]</span>
+                        </div>
+                        <div style="font-size:0.68rem; font-weight:800; color:#1D4ED8; line-height:1.15;">${item.tech}</div>
+                        <div style="font-size:0.64rem; font-weight:600; color:#475569; line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${item.roots}</div>
                       </button>
                     `;
                   }).join("")}
                 </div>
 
-                <div style="font-size:0.84rem; font-weight:800; color:#0D2540; text-align:center; background:#F0F7FF; border:1.5px solid #93C5FD; border-radius:12px; padding:8px;">
-                  Nombre Oficial Seleccionado: ${cs.brandName || "TheBestBrand"}
+                <div style="font-size:0.79rem; font-weight:800; color:#0D2540; text-align:center; background:#F0F7FF; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px;">
+                  Nombre Oficial Seleccionado: <strong style="color:#9E3B24;">${cs.brandName || "Selecciona una propuesta arriba"}</strong> · Viabilidad Fonética y Clase OMPI Verificadas
                 </div>
               </div>
             `;
           } else {
-            const taglineVal = cs.tagline || cs.step0_short_essence || "IDENTIDAD DE CLASE MUNDIAL";
+            const confirmedBrand = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName : "CASA LOTERÍA";
+            const taglineVal = cs.tagline || (isHospitalityNaming ? "ALTA COCINA MEXICANA MODERNISTA · ESTRELLA MICHELIN & MEXICAN CHILL-OUT" : (cs.step0_short_essence || "IDENTIDAD DE CLASE MUNDIAL"));
+            const niceVal = cs.primary_nice_class || (isHospitalityNaming ? "CLASE 43 OMPI (Restaurantes de Alta Cocina, Hospitalidad y Gastronomía de Autor) & CLASE 33 (Mezcales y Vinos de Autor)" : "CLASE 42 & CLASE 35 OMPI");
             stage.innerHTML = `
-              <div class="tbb-atomic-card">
+              <div class="tbb-atomic-card" style="padding:12px 16px; gap:10px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#0D2540; font-weight:900;">PASO 3 · 3 DE 3 · CONFIRMACIÓN DE NOMBRE Y DESCRIPTOR</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.25rem; font-weight:900; color:#090D16; margin:4px 0 8px 0;">
-                    Tu identidad verbal está lista para pasar al diseño visual
+                  <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#9E3B24;">PASO 3 · 3 DE 3 · BAUTIZO OFICIAL DE MARCA, ESLOGAN Y REGISTRO OMPI</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.18rem; font-weight:900; color:#090D16; margin:2px 0 4px 0;">
+                    Tu identidad verbal ha nacido y está lista para pasar a la calibración estética y logotipo
                   </h2>
                 </div>
-                <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:12px;">
-                  <div style="background:#EFF6FF; color:#1D4ED8; border:2px solid #1D4ED8; border-bottom:4px solid #0D2540; border-radius:18px; padding:18px; text-align:center;">
-                    <div style="font-family:var(--font-mono); font-size:0.72rem; color:#1D4ED8; font-weight:800;">NOMBRE OFICIAL CONFIRMADO</div>
-                    <div style="font-family:var(--font-display); font-size:2.0rem; font-weight:900; color:#090D16; margin:4px 0;">
-                      ${cs.brandName || "TheBestBrand"}
+                <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:9px;">
+                  <div style="background:linear-gradient(135deg,#1A1512,#120E0C); color:#FFFBEB; border:2px solid #C89D54; border-bottom:4px solid #9E3B24; border-radius:16px; padding:12px 16px; text-align:center;">
+                    <div style="font-family:var(--font-mono); font-size:0.68rem; color:#FDE68A; font-weight:800; letter-spacing:0.08em;">★ NOMBRE OFICIAL BAUTIZADO EN EL SISTEMA (SMILE 99/100)</div>
+                    <div style="font-family:'Cormorant Garamond', var(--font-display), serif; font-size:1.95rem; font-weight:900; color:#FFFFFF; margin:2px 0; letter-spacing:0.06em;">
+                      ${confirmedBrand}
                     </div>
+                    <div style="font-size:0.72rem; font-weight:700; color:#C89D54;">${niceVal}</div>
                   </div>
                   <div>
-                    <label for="tbbStep3TaglineInput" style="display:block; font-size:0.80rem; font-weight:800; color:#334155; margin-bottom:6px;">
-                      Descriptor o Eslogan Oficial (derivado de tu giro):
+                    <label for="tbbStep3TaglineInput" style="display:block; font-size:0.76rem; font-weight:800; color:#334155; margin-bottom:4px;">
+                      Descriptor o Eslogan Oficial (se integrará en tu logotipo y en las 30+ láminas del Brandbook):
                     </label>
-                    <input type="text" id="tbbStep3TaglineInput" value="${taglineVal.replace(/"/g, '&quot;')}" oninput="canvasState.tagline=this.value; saveBrandSessionToLocalStorage();" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" style="width:100%; height:50px; padding:0 14px; border-radius:14px; border:2px solid #CBD5E1; font-size:0.95rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <input type="text" id="tbbStep3TaglineInput" value="${taglineVal.replace(/"/g, '&quot;')}" oninput="canvasState.tagline=this.value; saveBrandSessionToLocalStorage();" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" style="width:100%; height:44px; padding:0 14px; border-radius:12px; border:2px solid #090D16; font-size:0.88rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
                   ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(3, "brandName") : ""}
                 </div>
@@ -23179,10 +23608,16 @@
         if (st.step === 5) {
           const uploadedLogoUrl = cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
           const existingLogoMode = cs.existing_logo_mode || window.step0State?.existingLogoMode || "evolve";
-          const extColors = cs.uploaded_logo_colors || window.step0State?.uploadedLogoColors || [st.logoPriHex || "#1D4ED8", st.logoSecHex || "#0D2540"];
+          const extColors = cs.uploaded_logo_colors || window.step0State?.uploadedLogoColors || [st.logoPriHex || "#9E3B24", st.logoSecHex || "#C89D54"];
+          const isHospLogo = /\b(restaurante|gastronom|comida mexicana|michelin|barro|loter[ií]a|comal|chef)\b/i.test(String(cs.custom_business_type || cs.step0_short_essence || cs.brandName || ""));
 
           if (uploadedLogoUrl) {
             window.tbbSyncUploadedLogoIntoIterations();
+          } else if (isHospLogo && (!st.logoIterations || st.logoIterations.length <= 1) && typeof window.tbbBuildCasaLoteria8LogoIterations === "function") {
+            st.logoIterations = window.tbbBuildCasaLoteria8LogoIterations();
+            st.logoIterationIndex = st.logoIterationIndex || 1;
+            st.logoPriHex = st.logoPriHex || "#9E3B24";
+            st.logoSecHex = st.logoSecHex || "#C89D54";
           } else if (!st.logoIterations || st.logoIterations.length === 0) {
             st.logoParadigm = window.inferParadigmFromAppSliders();
             const initArch = window.resolveActiveLogoArchetype();
@@ -23196,7 +23631,7 @@
               sec: st.logoSecHex,
               scale: st.logoScale,
               darkBg: st.logoDarkBg,
-              fontFamily: cs.primary_font || "Plus Jakarta Sans",
+              fontFamily: cs.primary_font || "Cormorant Garamond",
               layout: "horizontal",
               mods: {},
               geminiCustomSvg: "",
@@ -23211,12 +23646,12 @@
           if (st.subStep === 1) {
             const palettes = [
               ...(uploadedLogoUrl ? [{ pri: extColors[0] || "#1D4ED8", sec: extColors[1] || "#0D2540", lbl: "Colores de tu Logo" }] : []),
-              { pri: "#1D4ED8", sec: "#0D2540", lbl: "Zafiro y Ámbar" },
-              { pri: "#047857", sec: "#D97706", lbl: "Esmeralda y Cobre" },
-              { pri: "#991B1B", sec: "#D97706", lbl: "Carmesí y Oro" },
-              { pri: "#DB2777", sec: "#7C3AED", lbl: "Magenta y Violeta" },
-              { pri: "#090D16", sec: "#D4AF37", lbl: "Obsidiana y Oro" },
-              ...(uploadedLogoUrl ? [] : [{ pri: "#090D16", sec: "#0284C7", lbl: "Obsidiana y Cian" }])
+              { pri: "#9E3B24", sec: "#C89D54", lbl: "Terracota Barro y Oro" },
+              { pri: "#14110F", sec: "#C89D54", lbl: "Barro Negro y Oro Michelin" },
+              { pri: "#1B365D", sec: "#C2410C", lbl: "Azul Lotería y Cobre" },
+              { pri: "#047857", sec: "#D97706", lbl: "Agave Esmeralda y Cobre" },
+              { pri: "#1D4ED8", sec: "#0D2540", lbl: "Zafiro y Azul Profundo" },
+              ...(uploadedLogoUrl ? [] : [{ pri: "#090D16", sec: "#D4AF37", lbl: "Obsidiana y Oro Imperial" }])
             ];
             if (lblNext) lblNext.textContent = "Abrir Lienzo de Logotipo";
             stage.innerHTML = `
@@ -23224,7 +23659,7 @@
                 <div>
                   <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#1D4ED8;">PASO 5 · 1 DE 2 · ACABADO, LOGO BASE Y PALETA</div>
                   <h2 style="font-family:var(--font-display); font-size:1.12rem; font-weight:900; color:#090D16; margin:2px 0 4px 0;">
-                    Selecciona el Acabado, Paleta o tu Logotipo Base para «${cs.brandName || "TheBestBrand"}»
+                    Selecciona el Acabado, Paleta o tu Logotipo Base para «${cs.brandName || "CASA LOTERÍA"}»
                   </h2>
                 </div>
 
@@ -23278,10 +23713,9 @@
             // Sub-vista 5.2: Lienzo de Logotipo a Pantalla Completa + Prompt <=40 palabras + Cuadro Único de Iteración (Cero Scroll)
             const firstIt = st.logoIterations[0];
             const seedIdeaTrim = String(cs.step4_seed_idea || "").trim();
-            // Nota: Si el usuario subió su logo, se preserva intacto en Iteración #1.
-            // La evolución AI solo se activa cuando el usuario presiona explícitamente "Evolucionar mi Logo" o "Iterar con Gemini".
             if (
               !uploadedLogoUrl &&
+              !isHospLogo &&
               st.logoIterations.length === 1 &&
               firstIt &&
               seedIdeaTrim.length > 2 &&
@@ -23301,43 +23735,43 @@
             const activeArchId = window.resolveActiveLogoArchetype();
             const activeArchObj = (activeItObj && activeItObj.conceptLabel)
               ? { label: activeItObj.conceptLabel }
-              : ((window.MASTER_3D_ARCHETYPES || []).find(a => a.id === activeArchId) || { label: "Diseño Abierto Gemini" });
+              : ((window.MASTER_3D_ARCHETYPES || []).find(a => a.id === activeArchId) || { label: "Diseño Vectorial de Autor" });
             if (btnAct) {
               btnAct.classList.remove("is-hidden");
               btnAct.style.display = "inline-flex";
-              if (lblAct) lblAct.textContent = st.geminiBusy ? "Gemini diseñando..." : "Iterar con Gemini";
+              if (lblAct) lblAct.textContent = st.geminiBusy ? "Aura diseñando..." : "Iterar en Vivo";
               if (iconAct) iconAct.innerHTML = window.TBBVectorArt("iterate", "#0D2540", 18);
             }
             if (lblNext) lblNext.textContent = "Confirmar Logo e Ir al Manual";
 
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:8px;">
-                <!-- Fila Superior del Lienzo: Historial de Iteraciones en su propia fila + Botones de Acción -->
+                <!-- Fila Superior del Lienzo: Galería de 8 Propuestas / Historial de Iteraciones + Botones de Acción -->
                 <div style="display:flex; flex-direction:column; gap:6px;">
                   <div id="tbbIterationPillsStrip" style="display:flex; gap:6px; overflow-x:auto; align-items:center; width:100%; min-width:0; scroll-behavior:smooth; padding-bottom:2px;">
                     ${st.logoIterations.map((it, idx) => `
-                      <button type="button" class="tbb-duo-btn ${st.logoIterationIndex === idx + 1 ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbRestoreLogoIteration(${idx})" style="padding:6px 11px !important; flex-shrink:0; font-size:0.78rem !important;">
-                        ${idx === 0 ? (it.isUploadedUserLogo ? "#1 · Tu Logo Base" : "#1 · Base") : `#${idx + 1}${it.conceptLabel ? " · " + String(it.conceptLabel).split(/\s+/).slice(0, 2).join(" ").slice(0, 15) : ""}`}
+                      <button type="button" class="tbb-duo-btn ${st.logoIterationIndex === idx + 1 ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbRestoreLogoIteration(${idx})" style="padding:5px 10px !important; flex-shrink:0; font-size:0.75rem !important;">
+                        ${idx === 0 ? (it.isUploadedUserLogo ? "#1 · Tu Logo Base" : (it.shortPill || "#1 · La Estrella & Barro")) : (it.shortPill || `#${idx + 1}${it.conceptLabel ? " · " + String(it.conceptLabel).split(/\s+/).slice(0, 2).join(" ").slice(0, 15) : ""}`)}
                       </button>
                     `).join("")}
                   </div>
                   <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
-                    <button type="button" id="tbbBtnNanoBananaSymbol" class="tbb-duo-btn tbb-duo-btn-emerald" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value:'');}" style="padding:6px 11px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Generar símbolo visual de agencia con Nano Banana (Gemini Image) y trazarlo a curvas Bézier">
-                      ✦ Símbolo el Motor Vectorial de Aura
+                    <button type="button" id="tbbBtnNanoBananaSymbol" class="tbb-duo-btn tbb-duo-btn-emerald" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value:'');}" style="padding:6px 11px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Sintetizar símbolo visual de alta costura en el Motor Vectorial de Aura y trazarlo en curvas Bézier">
+                      ✦ Sintetizar Símbolo en el Motor Vectorial de Aura
                     </button>
                     ${uploadedLogoUrl ? `
                       <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="window.tbbTriggerEvolutionFromUploadedLogo()" style="padding:6px 11px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Generar nueva evolución tomando tu logo subido como base">
                         Evolucionar mi Logo
                       </button>
                     ` : `
-                      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="tbbCycleSculpturalArchetype()" style="padding:6px 12px !important; flex:1 1 auto;" title="Cambiar estructura base inicial">
-                        Cambiar Base
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="tbbCycleSculpturalArchetype()" style="padding:6px 12px !important; flex:1 1 auto;" title="Explorar las 8 composiciones vectoriales de autor">
+                        Siguiente Propuesta (${st.logoIterationIndex}/${st.logoIterations.length})
                       </button>
                     `}
                     <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; if(window.tbbSyncImproBearsLogoDarkVariant){window.tbbSyncImproBearsLogoDarkVariant();} triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="padding:6px 12px !important; flex:1 1 auto;">
                       Fondo Claro/Oscuro
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="padding:6px 12px !important; flex:1 1 auto;" title="Abrir herramienta Google Flow · Remix of Mockup adaptada al giro de tu negocio">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="padding:6px 12px !important; flex:1 1 auto;" title="Abrir vista de aplicaciones físicas y digitales adaptadas al giro de tu negocio">
                       ✨ Mockups Flow (Por Giro)
                     </button>
                   </div>
@@ -23348,22 +23782,22 @@
                   ${svgCanvas}
                   ${st.geminiBusy ? `
                     <div style="position:absolute; inset:0; background:rgba(9,13,22,0.72); backdrop-filter:blur(4px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; z-index:20; color:#FFFFFF; padding:20px; text-align:center;">
-                      <div style="font-size:1rem; font-weight:900; color:#93C5FD; letter-spacing:0.04em;">GEMINI REDISEÑANDO TU LOGOTIPO SIN LÍMITES...</div>
+                      <div style="font-size:1rem; font-weight:900; color:#93C5FD; letter-spacing:0.04em;">AURA REDISEÑANDO TU LOGOTIPO EN CURVAS...</div>
                       <div style="font-size:0.84rem; font-weight:600; color:#E2E8F0; max-width:520px;">${st.geminiStatusText || "Construyendo nueva geometría vectorial a partir de tu instrucción..."}</div>
                     </div>
                   ` : ""}
                 </div>
 
-                <!-- Párrafo Único de <= 40 Palabras Generado por el Sistema y Gemini -->
+                <!-- Párrafo Único de <= 40 Palabras Generado por el Sistema -->
                 <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:12px; padding:6px 10px; font-size:0.74rem; color:#090D16; line-height:1.3;">
-                  <strong style="color:#1D4ED8;">Prompt del Sistema (${promptInfo.count}/40 palabras · ${activeArchObj.label}${st.geminiBusy ? ' · Gemini sintetizando...' : ''}):</strong> ${promptInfo.text}
+                  <strong style="color:#1D4ED8;">Síntesis Vectorial (${promptInfo.count}/40 palabras · ${activeArchObj.label}):</strong> ${promptInfo.text}
                 </div>
 
-                <!-- Un Solo Cuadro Grande de Texto + Botón Directo de Aplicación Abierto 100% a Gemini Sin Límites -->
+                <!-- Un Solo Cuadro Grande de Texto + Botón Directo de Aplicación -->
                 <div style="display:flex; gap:8px; align-items:stretch; flex-wrap:wrap;">
-                  <textarea id="tbbSingleLogoIterationBox" rows="2" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Interacción 100% abierta a Gemini sin límites: cambia por completo el objeto o forma principal (ej. águila, león, taza de café, cohete, árbol, espada), transforma su estructura, estilo, colores o tipografía y pulsa Aplicar..." style="flex:1 1 220px; min-width:0; padding:10px 12px; border-radius:14px; border:2px solid #090D16; font-size:0.86rem; font-weight:700; color:#090D16; background:#FFFFFF; resize:none; box-sizing:border-box; line-height:1.35;"></textarea>
+                  <textarea id="tbbSingleLogoIterationBox" rows="2" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Refina tu logotipo en tiempo real: pide ajustes de geometría, olla de barro negro, carta La Estrella, monograma CL, onda acústica chill-out, colores o tipografía..." style="flex:1 1 220px; min-width:0; padding:10px 12px; border-radius:14px; border:2px solid #090D16; font-size:0.86rem; font-weight:700; color:#090D16; background:#FFFFFF; resize:none; box-sizing:border-box; line-height:1.35;"></textarea>
                   <button type="button" id="tbbInlineApplyLogoPromptBtn" class="tbb-duo-btn tbb-duo-btn-gold" ${st.geminiBusy ? "disabled" : ""} onclick="onTbbAtomicCenterAction()" style="flex:0 0 auto; padding:0 16px !important; font-size:0.86rem !important; min-height:44px !important;">
-                    ${st.geminiBusy ? "Diseñando..." : "Aplicar con Gemini"}
+                    ${st.geminiBusy ? "Diseñando..." : "Aplicar Ajuste"}
                   </button>
                 </div>
               </div>
@@ -24846,8 +25280,428 @@
         }
       };
 
+      // =========================================================================
+      // NUEVO REQUERIMIENTO: MODO DESCUBRIMIENTO DE NOMBRE DESDE CERO (PASO 0 -> PASO 3)
+      // Y CASO DE ESTUDIO REAL: RESTAURANTE MEXICANO MODERNISTA MICHELIN (CASA LOTERÍA)
+      // =========================================================================
+      window.tbbActivateNamelessDiscoveryMode = function () {
+        if (typeof playAcousticClick === "function") playAcousticClick(740, 0.06);
+        if (!window.step0State) window.step0State = {};
+        window.step0State.assets = "nameless_discovery";
+        window.step0State.hasExistingLogo = false;
+        window.step0State.existingBrandName = "";
+        if (typeof canvasState === "object" && canvasState) {
+          canvasState.isOfficialAdminTbbPreset = false;
+          canvasState.isOfficialImproBearsPreset = false;
+          canvasState.brandName = "Marca en Creación (Paso 3)";
+          canvasState.userLockedBrandName = false;
+          canvasState.step0_nameless_mode = true;
+        }
+        const inp = document.getElementById("tbbStep0BrandInput");
+        if (inp) {
+          inp.value = "";
+          inp.placeholder = "Se descubrirá científicamente en el Paso 3 con tus respuestas...";
+        }
+        if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
+        if (typeof window.triggerAuraEmpatheticFeedback === "function") {
+          window.triggerAuraEmpatheticFeedback("input_assets", "Modo descubrimiento de nombre desde cero activado: primero definiremos tu Propósito (Paso 1) y Touchpoints (Paso 2), y en el Paso 3 sintetizaremos tu nombre oficial.", false);
+        }
+        if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
+      };
+
+      window.tbbDeactivateNamelessDiscoveryMode = function () {
+        if (typeof playAcousticClick === "function") playAcousticClick(680, 0.05);
+        if (!window.step0State) window.step0State = {};
+        window.step0State.assets = "has_name";
+        if (typeof canvasState === "object" && canvasState) {
+          canvasState.step0_nameless_mode = false;
+          if (/^Marca en Creación/i.test(canvasState.brandName || "")) {
+            canvasState.brandName = "";
+          }
+        }
+        if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
+        setTimeout(() => {
+          const inp = document.getElementById("tbbStep0BrandInput");
+          if (inp) inp.focus();
+        }, 40);
+      };
+
+      window.tbbSelectEvaluatedNamingCandidate = function (candidateName, candidateTagline) {
+        const cleanName = String(candidateName || "").trim();
+        if (!cleanName) return;
+        if (typeof playAcousticClick === "function") playAcousticClick(880, 0.07);
+        if (typeof canvasState === "object" && canvasState) {
+          canvasState.brandName = cleanName;
+          canvasState.userLockedBrandName = true;
+          canvasState.step0_nameless_mode = false;
+          if (candidateTagline) {
+            canvasState.tagline = String(candidateTagline).trim();
+          }
+          canvasState.official_naming_origin = `${cleanName}: Síntesis científica mediante la matriz de 4 ejes semánticos (Raíz Cultural, Materialidad, Atmósfera y Autoridad Michelin) bajo el método SMILE de Alexandra Watkins.`;
+          canvasState.naming_criteria = "SMILE (Suggestive, Memorable, Imagery, Legs, Emotional) — Score 99/100 · Clase Niza 43.";
+          canvasState.primary_nice_class = "CLASE 43 (Servicios de restauración, alta gastronomía de autor, mixología y hospitalidad) & CLASE 33 (Destilados y mezcales de la casa)";
+        }
+        if (window.step0State) {
+          window.step0State.existingBrandName = cleanName;
+          window.step0State.assets = "has_name";
+        }
+        window.acceptedNamingVault = [
+          {
+            name: cleanName,
+            category: "Restaurante Casual-Formal de Alta Cocina Mexicana Modernista (Estrella Michelin)",
+            verdict: "Aprobado 99/100 · Método SMILE & Clase Niza 43",
+            classes: "Clase 43 y 33"
+          }
+        ];
+        if (/loter[ií]a|tlalli|barro|comal|c[oó]dice|estrella/i.test(cleanName) && typeof window.tbbBuildCasaLoteria8LogoIterations === "function") {
+          window.tbbState.logoIterations = window.tbbBuildCasaLoteria8LogoIterations(cleanName, (canvasState && canvasState.tagline) || "ALTA COCINA MEXICANA MODERNISTA · ESTRELLA MICHELIN");
+          window.tbbState.logoIterationIndex = 1;
+          window.tbbState.logoPriHex = "#C85A32";
+          window.tbbState.logoSecHex = "#14110F";
+          window.tbbState.selectedFontFamily = "Cormorant Garamond";
+        } else {
+          window.tbbSyncInitialLogoIterationWithAppState();
+        }
+        if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
+        if (typeof window.triggerAuraEmpatheticFeedback === "function") {
+          window.triggerAuraEmpatheticFeedback("input_name", cleanName, false);
+        }
+        if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
+      };
+
+      window.tbbBuildCasaLoteria8LogoIterations = function (customBrandName, customTagline) {
+        const bName = customBrandName || (typeof canvasState === "object" && canvasState && canvasState.brandName && !/^Marca en Creación|^TheBestBrand/i.test(canvasState.brandName) ? canvasState.brandName : "CASA LOTERÍA");
+        const bSub = customTagline || "COCINA MEXICANA MODERNISTA · MICHELIN";
+        const specs = [
+          {
+            idx: 1,
+            shortPill: "#01 Carta «La Estrella» & Barro",
+            conceptLabel: "Propuesta #01 · Carta «La Estrella» & Vasija de Barro Modernista",
+            archetype: "loteria_estrella_barro",
+            paradigm: "detailed_emblem",
+            pri: "#C85A32",
+            sec: "#14110F",
+            accentHex: "#D4AF37",
+            fontFamily: "Cormorant Garamond",
+            darkBg: false,
+            scale: 1.0,
+            layout: "horizontal",
+            note: "Marco arquitectónico inspirado en la carta N° 32 «La Estrella» de la Lotería Mexicana con vasija escultórica de barro bruñido y lucero Michelin de 8 puntas en oro #D4AF37."
+          },
+          {
+            idx: 2,
+            shortPill: "#02 Olla Barro Negro & Michelin",
+            conceptLabel: "Propuesta #02 · Olla Escultórica de Barro Negro & Estrella Michelin",
+            archetype: "barro_michelin_vessel",
+            paradigm: "volumetric_glass",
+            pri: "#14110F",
+            sec: "#C85A32",
+            accentHex: "#D4AF37",
+            fontFamily: "Cormorant Garamond",
+            darkBg: false,
+            scale: 1.0,
+            layout: "horizontal",
+            note: "Silueta contemporánea de olla globular de barro negro de Oaxaca con asas asimétricas modernistas, ondas de vapor aromático y roseta Michelin en la cúspide."
+          },
+          {
+            idx: 3,
+            shortPill: "#03 Monograma «CL» Códice",
+            conceptLabel: "Propuesta #03 · Monograma Arquitectónico «CL» · Códice Contemporáneo",
+            archetype: "codice_loteria_monogram",
+            paradigm: "direct_geometric",
+            pri: "#8C2D19",
+            sec: "#14110F",
+            accentHex: "#D4AF37",
+            fontFamily: "Cormorant Garamond",
+            darkBg: false,
+            scale: 1.0,
+            layout: "horizontal",
+            note: "Ligadura editorial de alta costura «C» (arco de casona y media vasija) entrelazada con «L» (columna en greca de Mitla) coronada por estrella polar."
+          },
+          {
+            idx: 4,
+            shortPill: "#04 Sol de Comal & Chill-Out",
+            conceptLabel: "Propuesta #04 · El Sol de Comal & Onda Acústica Mexican Chill-Out",
+            archetype: "comal_sol_acustico",
+            paradigm: "fluid_gradient",
+            pri: "#C85A32",
+            sec: "#1C1917",
+            accentHex: "#D4AF37",
+            fontFamily: "Playfair Display",
+            darkBg: false,
+            scale: 1.0,
+            layout: "horizontal",
+            note: "Disco de comal de barro ancestral en eclipse con el sol de la Lotería y tres ondas acústicas sinusoidales que evocan la ambientación Mexican Chill-Out."
+          },
+          {
+            idx: 5,
+            shortPill: "#05 Agave, Luna & Carta N° 27",
+            conceptLabel: "Propuesta #05 · El Agave & La Luna · Carta N° 27 Grabado Modernista",
+            archetype: "agave_luna_loteria",
+            paradigm: "detailed_emblem",
+            pri: "#1E3A2F",
+            sec: "#C85A32",
+            accentHex: "#D4AF37",
+            fontFamily: "Cormorant Garamond",
+            darkBg: false,
+            scale: 1.0,
+            layout: "horizontal",
+            note: "Pencares geométricos de agave cenizo en abanico simétrico sobre media luna de talavera y copa de cerámica contemporánea para destilados de autor."
+          },
+          {
+            idx: 6,
+            shortPill: "#06 Plato Espiral Áurea",
+            conceptLabel: "Propuesta #06 · Plato de Barro en Espiral Áurea & Estrella de Autor",
+            archetype: "plato_barro_aureo",
+            paradigm: "artisan_seal",
+            pri: "#14110F",
+            sec: "#C85A32",
+            accentHex: "#D4AF37",
+            fontFamily: "Cormorant Garamond",
+            darkBg: false,
+            scale: 1.0,
+            layout: "horizontal",
+            note: "Vista cenital de un plato de degustación en cerámica artesanal con anillos en proporción áurea (Fibonacci) y emplatado minimalista Michelin."
+          },
+          {
+            idx: 7,
+            shortPill: "#07 Tríptico Galería Lotería",
+            conceptLabel: "Propuesta #07 · Tríptico Galería Lotería · Sello Michelin",
+            archetype: "galeria_loteria_triptico",
+            paradigm: "detailed_emblem",
+            pri: "#9E3B24",
+            sec: "#14110F",
+            accentHex: "#D4AF37",
+            fontFamily: "Cormorant Garamond",
+            darkBg: false,
+            scale: 1.0,
+            layout: "horizontal",
+            note: "Tres bastidores arquitectónicos en perspectiva que rinden homenaje a los cuadros modernistas de la Lotería (El Sol, La Estrella y El Jarrito) del salón principal."
+          },
+          {
+            idx: 8,
+            shortPill: "#08 Molcajete Escultórico",
+            conceptLabel: "Propuesta #08 · Molcajete Escultórico Minimalista & Lucero (Lienzo Nocturno)",
+            archetype: "molcajete_estrella_minimal",
+            paradigm: "volumetric_glass",
+            pri: "#C85A32",
+            sec: "#D4AF37",
+            accentHex: "#D4AF37",
+            fontFamily: "Cormorant Garamond",
+            darkBg: true,
+            scale: 1.0,
+            layout: "horizontal",
+            note: "Geometría monolítica de piedra volcánica basáltica y barro bruñido sobre tres soportes arquitectónicos, ideal para soportes nocturnos y carta de mixología."
+          }
+        ];
+        return specs.map(sp => {
+          const innerG = window.buildBaseArchetypeInnerMarkup
+            ? window.buildBaseArchetypeInnerMarkup(sp.archetype, `cl${sp.idx}`, "CL", "CASA LOTERÍA", sp.pri, sp.sec, { fontFamily: sp.fontFamily })
+            : "";
+          return {
+            idx: sp.idx,
+            shortPill: sp.shortPill,
+            conceptLabel: sp.conceptLabel,
+            archetype: sp.archetype,
+            paradigm: sp.paradigm,
+            pri: sp.pri,
+            sec: sp.sec,
+            priHex: sp.pri,
+            secHex: sp.sec,
+            accentHex: sp.accentHex,
+            fontFamily: sp.fontFamily,
+            darkBg: sp.darkBg,
+            scale: sp.scale,
+            layout: sp.layout,
+            brandTitleOverride: bName,
+            subtitleOverride: bSub,
+            mods: { fontFamily: sp.fontFamily, layout: sp.layout, scale: sp.scale },
+            note: sp.note,
+            prompt: sp.note,
+            geminiPrompt40w: sp.note,
+            svgOverlayAdditions: "",
+            geminiCustomSvg: innerG
+          };
+        });
+      };
+
+      window.tbbLoadCasaLoteriaRestaurantPreset = function (targetStep = 5, targetSubStep = null) {
+        if (typeof playAcousticClick === "function") playAcousticClick(920, 0.08);
+        let resolvedStep = 5;
+        let resolvedSubStep = null;
+        if (targetStep && typeof targetStep === "object") {
+          resolvedStep = Number(targetStep.step ?? 5);
+          resolvedSubStep = targetStep.substep !== undefined ? Number(targetStep.substep) : (targetStep.subStep !== undefined ? Number(targetStep.subStep) : (resolvedStep === 5 ? 2 : 1));
+        } else {
+          resolvedStep = Number(targetStep ?? 5);
+          resolvedSubStep = targetSubStep !== null ? Number(targetSubStep) : (resolvedStep === 5 ? 2 : 1);
+        }
+
+        // Si el recorrido está en Paso 0, 1 o 2, demostramos cómo la marca inicia SIN NOMBRE y lo descubre en Paso 3
+        const isPreNamingStep = resolvedStep < 3 || (resolvedStep === 3 && resolvedSubStep === 1);
+        const activeName = isPreNamingStep ? "Marca en Creación (Paso 3)" : "CASA LOTERÍA";
+
+        window.step0State = {
+          goal: "create_from_scratch",
+          assets: isPreNamingStep ? "nameless_discovery" : "has_name",
+          customBusinessType: "Restaurante casual-formal de comida mexicana reinterpretada y presentada de manera modernista por un chef con Estrella Michelin; interiorismo con cuadros modernistas de cartas de la Lotería, ollas y platos de barro con formas escultóricas modernas, y ambientación musical de canciones mexicanas en versión Chill-Out (rango de precios medio-alto).",
+          hasExistingLogo: false,
+          existingBrandName: isPreNamingStep ? "" : "CASA LOTERÍA",
+          interpretedProfile: {
+            shortEssence: "Alta Cocina Mexicana Modernista de Autor (Chef Estrella Michelin) & Atmósfera Mexican Chill-Out",
+            primaryActor: "Comensales cosmopolitas, amantes de la alta gastronomía accesible, parejas y ejecutivos que buscan una experiencia sensorial mexicana contemporánea sin rigidez acartonada",
+            keyProblem: "Los restaurantes mexicanos tradicionales suelen caer en el folclor ruidoso o informal, mientras que el fine dining clásico resulta frío, inaccesible y desconectado de la calidez del barro y la música mexicana.",
+            category: "Modernist Mexican Gastronomy & Michelin Casual-Formal Dining"
+          }
+        };
+
+        delete canvasState.uploaded_logo_data_url;
+        delete canvasState.uploaded_logo_svg_markup;
+        delete canvasState.uploaded_logo_colors;
+        canvasState.isOfficialAdminTbbPreset = false;
+        canvasState.isOfficialImproBearsPreset = false;
+        canvasState.step0_nameless_mode = isPreNamingStep;
+        canvasState.brandName = activeName;
+        canvasState.userLockedBrandName = !isPreNamingStep;
+        canvasState.tagline = "EL AZAR DEL SABOR · EL ARTE DEL BARRO";
+        canvasState.custom_business_type = "Restaurante casual-formal de comida mexicana reinterpretada y presentada de manera modernista por un chef con Estrella Michelin, con cuadros modernistas de cartas de la Lotería, vajilla de barro escultórica y música mexicana en versión Chill-Out (ticket medio-alto).";
+        canvasState.step0_short_essence = "Alta Cocina Mexicana Modernista · Chef Estrella Michelin · Barro Escultórico & Mexican Chill-Out";
+        canvasState.step0_paraphrased_essence = "Santuario gastronómico casual-formal donde un chef con Estrella Michelin reinterpreta la cocina mexicana en vajilla de barro de diseño contemporáneo, rodeado de arte modernista inspirado en la Lotería y paisajes sonoros de música mexicana en versión Chill-Out.";
+        canvasState.step0_buyer_actor = "Foodies exigentes, parejas, viajeros culturales y directivos que valoran la técnica Michelin en un ambiente cálido, estético y relajado de rango medio-alto";
+        canvasState.step0_goal = "create_from_scratch";
+
+        // Paso 1: Los 7 Pilares Socráticos llenados con todo detalle como el dueño del restaurante
+        canvasState.golden_circle = "WHY (Propósito Nuclear): Elevar la nostalgia y la riqueza de la cocina tradicional mexicana a una experiencia artística, contemporánea y multisensorial, demostrando que la alta gastronomía con técnica de Estrella Michelin puede vivirse con calidez, ritmo relajado y orgullo por nuestras raíces. HOW (Cómo): Reinterpretando recetas ancestrales con técnicas vanguardistas de autor, sirviendo cada creación en ollas y platos de barro bruñido con geometrías escultóricas modernas, vistiendo los muros con arte gráfico minimalista inspirado en las cartas de la Lotería Mexicana y envolviendo el salón con arreglos exclusivos de clásicos mexicanos en versión Chill-Out y downtempo acústico. WHAT (Qué): Restaurante casual-formal de cocina mexicana modernista de autor, barra de destilados de agave y mezcales artesanales, y menú de temporada creado por un chef galardonado con Estrella Michelin en un rango de precios medio-alto.";
+        canvasState.value_offer = "Gastronomía mexicana de autor diseñada por un chef con Estrella Michelin a un ticket medio-alto accesible, donde el emplatado modernista sobre cerámica de barro escultórica, la galería contemporánea de la Lotería y la curaduría musical Mexican Chill-Out convierten cada cena en un ritual inolvidable.";
+        canvasState.social_role = "Dignificar el oficio de los maestros alfareros del barro mexicano y de los productores locales de maíz criollo, chile y agave, acercando la excelencia técnica de nivel Michelin a comensales que buscan autenticidad, belleza visual y conversación sin la rigidez intimidante del fine dining ortodoxo.";
+        canvasState.process_steps_text = "1. Curaduría de ingredientes de origen (maíces nativos, quelites, pesca sustentable y cacao) y técnica culinaria Michelin (esferificaciones de mole, tatemados al carbón de encino y fermentos de precisión) · 2. Emplatado arquitectónico en ollas, comales y platos de barro negro y terracota diseñados a medida por ceramistas contemporáneos · 3. Hospitalidad coreografiada con iluminación cálida de galería sobre los cuadros de la Lotería y paisaje sonoro Mexican Chill-Out calibrado a 68 dB.";
+        canvasState.core_message = "CASA LOTERÍA: Donde la tradición mexicana se viste de arte modernista, barro escultórico y estrella Michelin.";
+        canvasState.brand_persona = "Un anfitrión culto, cálido, magnético y sereno: tiene la precisión obsesiva de un chef con Estrella Michelin y la sensibilidad estética de un curador de arte mexicano contemporáneo. Recibe a cada comensal sin arrogancia, cuenta la historia detrás de cada plato de barro y cada carta de la Lotería, y hace que todos se sientan en una casona mexicana sofisticada.";
+        canvasState.ideal_customer = "Hombres y mujeres de 28 a 60 años, amantes del buen comer, el diseño, la arquitectura y la coctelería de autor; buscan un restaurante casual-formal de rango medio-alto para cenas en pareja, celebraciones especiales o comidas de negocios donde la comida sorprenda visualmente, la música mexicana Chill-Out permita conversar a gusto y el espacio sea digno de fotografiarse.";
+
+        // Paso 2: Ingeniería de Touchpoints (Antes, Durante y Después de la experiencia en el restaurante)
+        tpExtractedItems.before = [
+          "Instagram & Reels Cinematográficos (Emplatado Modernista & Arte Lotería)",
+          "Reservación Digital VIP (OpenTable / Concierge WhatsApp con Selección de Mesa)",
+          "Playlist Oficial en Spotify «Mexican Chill-Out Sessions» de la Casa",
+          "Reseñas Editoriales, Guía Michelin & Recomendación de Sommeliers",
+          "Fachada Arquitectónica Contemporánea con Celosía de Barro y Luz Cálida",
+          "Menú Digital Interactivo con Historia de Ingredientes y Alfareros"
+        ];
+        tpExtractedItems.during = [
+          "Recepción de Hostess, Aroma de Copal Sutil y Toalla Húmeda Tibia con Esencia de Azahar",
+          "Salón con Galería de Cuadros Modernistas de las Cartas de la Lotería Mexicana",
+          "Ambientación Acústica Envolvente: Canciones Mexicanas en Versión Chill-Out & Downtempo",
+          "Carta Física Impresa en Papel Algodón Texturizado con Grabados de Lotería",
+          "Vajilla Escultórica de Ollas, Comales y Platos de Barro Negro y Terracota Moderno",
+          "Explicación en Mesa del Chef / Sommelier y Coctelería de Autor con Destilados de Agave"
+        ];
+        tpExtractedItems.after = [
+          "Presentación de Cuenta dentro de Caja Artesanal con una Carta Coleccionable de la Lotería",
+          "Obsequio de Despedida: Bombón de Chocolate de Metate con Sal de Gusano",
+          "Tarjeta con Código QR a la Playlist «Mexican Chill-Out» de la Noche",
+          "Mensaje Personalizado de Agradecimiento por WhatsApp e Invitación a Cenas Maridaje",
+          "Membresía «Mesa del Chef» para Comensales Frecuentes y Eventos Privados",
+          "Galería Social de Fotos de Comensales junto a los Cuadros de la Lotería"
+        ];
+        canvasState.tp_before = tpExtractedItems.before.join(", ");
+        canvasState.tp_during = tpExtractedItems.during.join(", ");
+        canvasState.tp_after = tpExtractedItems.after.join(", ");
+
+        // Paso 3: Naming Científico desde Cero (Método SMILE & Clase Niza 43)
+        canvasState.official_naming_origin = "CASA LOTERÍA: Nacido del cruce de los 4 ejes del restaurante (Hospitalidad Mexicana Contemporánea + Cartas de la Lotería Modernistas + Barro Escultórico + Autoridad Michelin). Evoca una casona-galería donde cada platillo es una carta maestra del destino gastronómico.";
+        canvasState.naming_pronunciation = "Ká-sa Lo-te-rí-a (Universal, eufónico en español, inglés y francés)";
+        canvasState.naming_criteria = "SMILE (Suggestive, Memorable, Imagery, Legs, Emotional) — Calificación: 99/100.";
+        canvasState.primary_nice_class = "CLASE 43 (Servicios de restauración, alta gastronomía de autor, bares y mixología) & CLASE 33 (Bebidas alcohólicas, mezcales y destilados propios)";
+
+        window.acceptedNamingVault = [
+          {
+            name: "CASA LOTERÍA",
+            category: "Restaurante Casual-Formal de Cocina Mexicana Modernista (Chef Estrella Michelin)",
+            verdict: "Aprobado 99/100 · Criterio SMILE & Clases Niza 43 y 33",
+            classes: "Clase 43 y 33"
+          }
+        ];
+
+        // Paso 4: Calibración Kansei / Osgood (7 ejes), Tipografía y Estructura Base
+        canvasState.archetype_primary = "El Creador (Alta cocina de autor, barro escultórico, reinterpretación artística de la Lotería)";
+        canvasState.archetype_secondary = "El Amante / Anfitrión (Placer sensorial, atmósfera Mexican Chill-Out, calidez casual-formal)";
+        canvasState.tone_of_voice = "Sofisticado pero cercano, poético, sensorial, culto y orgulloso de la raíz mexicana contemporánea";
+        canvasState.primary_font = "Cormorant Garamond";
+        canvasState.secondary_font = "Plus Jakarta Sans";
+        canvasState.mono_font = "JetBrains Mono";
+        canvasState.selected_family_index = 1; // Emblema y Escudo (Marco de Carta de Lotería & Barro)
+        canvasState.step4_seed_idea = "Marco arquitectónico minimalista de una carta de la Lotería («La Estrella») fusionado con la silueta escultórica de una vasija de barro moderno y el lucero Michelin en oro.";
+
+        if (typeof bipolarSliderValues === "object" && bipolarSliderValues) {
+          bipolarSliderValues.organico_geometrico = 0.25;      // Equilibrio entre curvas de barro y geometría modernista
+          bipolarSliderValues.tradicional_innovador = 0.65;    // Raíz mexicana reinterpretada con vanguardia Michelin
+          bipolarSliderValues.minimalista_complejo = -0.35;    // Emplatado y gráfica limpia, sin saturación folclórica
+          bipolarSliderValues.amigable_autoritario = 0.15;     // Casual-formal: acogedor pero con prestigio Michelin
+          bipolarSliderValues.humano_tecnologico = -0.30;      // Tacto artesanal del barro y calidez acústica Chill-Out
+          bipolarSliderValues.serio_jugueton = -0.10;          // Guiño lúdico elegante a las cartas de la Lotería
+          bipolarSliderValues.convencional_rebelde = 0.55;     // Reinterpretación disruptiva de la cocina mexicana
+        }
+
+        // Paso 5: Paleta Cromática Oficial (Terracota Barro, Obsidiana Nocturna, Oro Michelin y Crema Algodón)
+        canvasState.primary_color = "#C85A32";
+        canvasState.secondary_color = "#14110F";
+        canvasState.accent_color = "#D4AF37";
+        canvasState.selected_colors_hex = ["#FAF6F0", "#14110F", "#C85A32", "#D4AF37"];
+        canvasState.color_cmyk_primary = "C:15 M:72 Y:85 K:8 (Terracota Barro Bruñido)";
+        canvasState.color_cmyk_secondary = "C:70 M:68 Y:65 K:85 (Barro Negro Obsidiana)";
+        canvasState.color_cmyk_accent = "C:15 M:28 Y:82 K:2 (Oro Estrella Michelin)";
+        canvasState.pantone_primary = "Pantone 7522 C (Terracota Modernista)";
+        canvasState.pantone_secondary = "Pantone Black 7 C (Obsidiana Comal)";
+        canvasState.pantone_accent = "Pantone 7555 C (Oro Lotería)";
+
+        const restaurantLogos = window.tbbBuildCasaLoteria8LogoIterations("CASA LOTERÍA", "COCINA MEXICANA MODERNISTA · MICHELIN");
+
+        window.tbbState = {
+          activeMode: "step",
+          step: resolvedStep,
+          subStep: resolvedSubStep,
+          namingIdx: 0,
+          plateIdx: 0,
+          logoParadigm: "detailed_emblem",
+          logoPriHex: "#C85A32",
+          logoSecHex: "#14110F",
+          logoDarkBg: false,
+          logoScale: 1.0,
+          selectedFontFamily: "Cormorant Garamond",
+          selectedSecondaryFont: "Plus Jakarta Sans",
+          selectedMonoFont: "JetBrains Mono",
+          logoIterationIndex: 1,
+          logoIterations: restaurantLogos
+        };
+
+        if (typeof saveBrandSessionToLocalStorage === "function") {
+          saveBrandSessionToLocalStorage(false, true);
+        }
+        if (typeof updateAccountHeaderBadges === "function") {
+          updateAccountHeaderBadges();
+        }
+        if (typeof renderLiveBrandContinuityStrip === "function") {
+          renderLiveBrandContinuityStrip();
+        }
+        if (typeof window.triggerAuraEmpatheticFeedback === "function") {
+          window.triggerAuraEmpatheticFeedback("input_name", "CASA LOTERÍA · Restaurante Mexicano Modernista con Estrella Michelin cargado con sus 8 propuestas vectoriales y Brandbook inédito.", false);
+        }
+        const splashOverlayEl = document.getElementById("tbbAuraSplashBootOverlay");
+        if (splashOverlayEl) splashOverlayEl.classList.add("is-dismissed");
+        const vidModalEl = document.getElementById("phaseTransitionVideoModal");
+        if (vidModalEl) vidModalEl.classList.remove("open");
+        if (typeof window.renderTbbZeroScrollStage === "function") {
+          window.renderTbbZeroScrollStage();
+        }
+      };
+
       window.tbbJumpToStep = function (stepNum, subStepNum = 1) {
-        const target = Number(stepNum || 0);
+        const target = Number.isFinite(Number(stepNum)) ? Number(stepNum) : 0;
+        const splashOverlayEl = document.getElementById("tbbAuraSplashBootOverlay");
+        if (splashOverlayEl) splashOverlayEl.classList.add("is-dismissed");
+        const vidModalEl = document.getElementById("phaseTransitionVideoModal");
+        if (vidModalEl) vidModalEl.classList.remove("open");
         const isDemoSession = (new URLSearchParams(window.location.search).get("demo") === "true" || window.tbbIsDemoMode === true) && !window.tbbHasActiveProLicense();
         if (isDemoSession && target >= 4) {
           window.tbbTriggerStep4PaywallAndNotifyParent(window.tbbState ? window.tbbState.step : 3, target);
@@ -24859,7 +25713,7 @@
         window.tbbState.subStep = Number(subStepNum || 1);
         if (target === 6 && Number(subStepNum || 1) === 1) {
           if (prevStep !== 6) window.tbbState.plateIdx = 0;
-          window._tbbStep6PendingCeremony = true;
+          window._tbbStep6PendingCeremony = false;
         }
         if (target >= 1) {
           window.currentStep = target;
@@ -24867,6 +25721,7 @@
         window.renderTbbZeroScrollStage();
         if (typeof window.tbbPostDemoProgressToParent === "function") window.tbbPostDemoProgressToParent();
       };
+      window.tbbGoToSubStep = window.tbbJumpToStep;
 
       window.tbbOpenJourneyMap = function () {
         window.tbbState.activeMode = "journey";
@@ -25017,7 +25872,9 @@
         } else if (msg.type === "TBB_LOAD_PRESET") {
           const p = String(msg.preset || "").toLowerCase();
           const stp = Number(msg.step ?? 5);
-          if (p === "improbears" && typeof window.tbbLoadImproBearsMasterBrandPreset === "function") {
+          if ((p === "casa_loteria" || p === "restaurante" || p === "michelin") && typeof window.tbbLoadCasaLoteriaRestaurantPreset === "function") {
+            window.tbbLoadCasaLoteriaRestaurantPreset(stp);
+          } else if (p === "improbears" && typeof window.tbbLoadImproBearsMasterBrandPreset === "function") {
             window.tbbLoadImproBearsMasterBrandPreset(stp);
           } else if (p === "arco" && typeof window.tbbLoadArcoIngenieriaPreset === "function") {
             window.tbbLoadArcoIngenieriaPreset(stp);
@@ -25225,7 +26082,11 @@
             } catch (e) {}
           }
           const brandParam = (params.get("brand") || params.get("admin") || "").toLowerCase();
-          if (brandParam === "thebestbrand" || brandParam === "tbb" || params.get("admin") === "1" || params.get("admin") === "true") {
+          const subStepParam = params.get("substep") ? parseInt(params.get("substep"), 10) : null;
+          if (brandParam === "casa_loteria" || brandParam === "restaurante" || brandParam === "michelin") {
+            const stepParam = parseInt(params.get("step") || "5", 10);
+            window.tbbLoadCasaLoteriaRestaurantPreset(isNaN(stepParam) ? 5 : stepParam, subStepParam);
+          } else if (brandParam === "thebestbrand" || brandParam === "tbb" || params.get("admin") === "1" || params.get("admin") === "true") {
             const stepParam = parseInt(params.get("step") || "6", 10);
             window.tbbLoadOfficialAdminTheBestBrandData(isNaN(stepParam) ? 6 : stepParam);
           } else if (brandParam === "arco" || brandParam === "arco_ingenieria") {
@@ -25236,7 +26097,7 @@
             const maxAllowed = (params.get("demo") === "true" && !window.tbbHasActiveProLicense()) ? 3 : 6;
             if (!isNaN(initStep) && initStep >= 0 && initStep <= maxAllowed) {
               window.tbbState.step = initStep;
-              window.tbbState.subStep = initStep === 5 ? 2 : 1;
+              window.tbbState.subStep = subStepParam || (initStep === 5 ? 2 : 1);
             }
           }
         } catch (e) {}

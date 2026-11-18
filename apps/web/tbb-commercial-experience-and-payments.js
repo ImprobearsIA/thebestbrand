@@ -448,7 +448,8 @@
   }
 
   function resolveVideoAssetFallback(relPath) {
-    return `https://raw.githubusercontent.com/ImprobearsIA/thebestbrand/main/apps/web${relPath}?v=${ASSET_VERSION}`;
+    const clean = String(relPath || "").split("?")[0];
+    return `https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@main/apps/web${clean}`;
   }
   window.tbbResolveVideoFallback = resolveVideoAssetFallback;
 
@@ -937,17 +938,17 @@
     {
       num: "01",
       format: ".PDF + .HTML INTERACTIVO",
-      sampleUrl: "/samples/1_Brandbook_Maestro_TheBestBrand.html",
-      thumb: "/assets/brandbook_plates_tbb/plate-01.jpg",
+      sampleUrl: "/samples/Brandbook_Casa_Loteria_Michelin.html",
+      thumb: "/assets/app_captures/step6_brandbook_36.png",
       plateNum: 1,
       isPrimaryBrandbook: true,
       i18n: {
-        es: { title: "Brandbook Oficial de Más de 30 Páginas (Ajustable según el Giro del Negocio)", desc: "Constitución visual y estratégica unificada en flujo de curvas abiertas: Círculo Dorado, La Empresa como Persona, Touchpoints Antes/Durante/Después, Retícula 8X×3X, Psicología del Color, Tipografía, Submarcas y Aplicaciones." },
-        en: { title: "Official Brandbook of 30+ Pages (Adaptable to Your Business Sector)", desc: "Unified strategic and visual constitution in open vector curves: Golden Circle, Company as a Person, Before/During/After Touchpoints, 8X×3X Grid, Color Psychology, Typography, Sub-brands, and Applications." },
-        fr: { title: "Brandbook Officiel de Plus de 30 Pages (Adaptable selon Votre Secteur d'Activité)", desc: "Constitution visuelle et stratégique unifiée en courbes ouvertes : Cercle d'Or, Entreprise comme Personne, Touchpoints Avant/Pendant/Après, Grille 8X×3X, Couleurs, Typographie, Sous-marques et Applications." },
-        pt: { title: "Brandbook Oficial com Mais de 30 Páginas (Ajustável conforme o Ramo do Negócio)", desc: "Constituição visual e estratégica unificada em curvas abertas: Círculo Dourado, Empresa como Pessoa, Touchpoints Antes/Durante/Depois, Grelha 8X×3X, Cor, Tipografia, Submarcas e Aplicações." },
-        de: { title: "Offizielles Brandbook mit Über 30 Seiten (Anpassbar je nach Branche)", desc: "Einheitliche strategische und visuelle Markenverfassung in offenen Vektorkurven: Golden Circle, Markenpersönlichkeit, Touchpoints, 8X×3X-Raster, Farbsystem, Typografie, Submarken und Anwendungen." },
-        it: { title: "Brandbook Ufficiale di Oltre 30 Pagine (Adattabile al Settore Aziendale)", desc: "Costituzione visiva e strategica unificata in curve aperte: Cerchio d'Oro, Azienda come Persona, Touchpoint Prima/Durante/Dopo, Griglia 8X×3X, Colore, Tipografia, Sub-brand e Applicazioni." }
+        es: { title: "Brandbook Oficial de Más de 30 Páginas · Caso Real Inédito: CASA LOTERÍA (Cocina Mexicana Modernista · Chef Estrella Michelin)", desc: "Constitución visual y estratégica unificada en flujo de curvas abiertas creada desde cero (empezando sin nombre): Círculo Dorado, La Empresa como Persona, Touchpoints de Hospitalidad (Antes/Durante/Después), Naming SMILE (CASA LOTERÍA 99/100 · Clase Niza 43), Retícula 8X×3X, Paleta Barro Negro/Terracota, Tipografía Cormorant Garamond y 8 Propuestas Vectoriales." },
+        en: { title: "Official Brandbook of 30+ Pages · Real Case Study: CASA LOTERÍA (Modernist Mexican Cuisine · Michelin-Starred Chef)", desc: "Unified strategic and visual constitution in open vector curves created from scratch (starting nameless): Golden Circle, Company as a Person, Hospitality Touchpoints, SMILE Naming (CASA LOTERÍA 99/100 · Nice Class 43), 8X×3X Grid, Oaxacan Black Clay/Terracotta Palette, Cormorant Garamond Typography, and 8 Vector Proposals." },
+        fr: { title: "Brandbook Officiel de Plus de 30 Pages · Cas Réel : CASA LOTERÍA (Cuisine Mexicaine Moderniste · Chef Étoilé Michelin)", desc: "Constitution visuelle et stratégique unifiée en courbes ouvertes créée de zéro (sans nom initial) : Cercle d'Or, Entreprise comme Personne, Touchpoints Hospitalité, Naming SMILE (CASA LOTERÍA 99/100 · Classe Nice 43), Grille 8X×3X, Palette Argile Noire/Terracotta et 8 Logos Vectoriels." },
+        pt: { title: "Brandbook Oficial com Mais de 30 Páginas · Caso Real: CASA LOTERÍA (Cozinha Mexicana Modernista · Chef Estrela Michelin)", desc: "Constituição visual e estratégica unificada em curvas abertas criada do zero (sem nome inicial): Círculo Dourado, Empresa como Pessoa, Touchpoints de Hospitalidade, Naming SMILE (CASA LOTERÍA 99/100 · Classe Nice 43), Grelha 8X×3X, Paleta Barro Negro/Terracota e 8 Logos Vetoriais." },
+        de: { title: "Offizielles Brandbook mit Über 30 Seiten · Fallstudie: CASA LOTERÍA (Modernistische Mexikanische Küche · Michelin-Sternekoch)", desc: "Einheitliche strategische und visuelle Markenverfassung in offenen Vektorkurven von Grund auf erstellt (ohne Startnamen): Golden Circle, Hospitality-Touchpoints, SMILE-Naming (CASA LOTERÍA 99/100 · Nizza-Klasse 43), 8X×3X-Raster und 8 Vektor-Logos." },
+        it: { title: "Brandbook Ufficiale di Oltre 30 Pagine · Caso Reale: CASA LOTERÍA (Cucina Messicana Modernista · Chef Stellato Michelin)", desc: "Costituzione visiva e strategica unificata in curve aperte creata da zero (senza nome iniziale): Cerchio d'Oro, Touchpoint Ospitalità, Naming SMILE (CASA LOTERÍA 99/100 · Classe Nizza 43), Griglia 8X×3X, Palette Argilla Nera/Terracotta e 8 Loghi Vettoriali." }
       }
     },
     {
@@ -1857,213 +1858,205 @@
   // ============================================================================
   // CATÁLOGO FIEL 1:1 DE LAS 8 PROPUESTAS REALES DE LA APP (studio.html -> renderSynthesizedFinalLogoProposalsGrid, líneas 11541-11800)
   // Cada tarjeta usa el viewBox="0 0 520 310" exacto de studio.html con los 8 arquetipos reales:
-  // #01 Lockup Totémico Flagship, #02 Horizontal 16:9 Alabastro, #03 Monograma Escultórico & Emblema, #04 Squircle App Icon 1:1,
-  // #05 Galería Escultórica, #06 Editorial Suisse Fondo Claro, #07 Sello Monumental, #08 Lockup Panorámico Nocturno
+  // #01 Carta «La Estrella» & Barro, #02 Olla Escultórica de Barro Negro & Michelin, #03 Monograma «CL» Códice, #04 Sol de Comal & Chill-Out,
+  // #05 El Agave & La Luna Carta N° 27, #06 Plato de Barro en Espiral Áurea, #07 Tríptico Galería Lotería, #08 Molcajete Escultórico Nocturno
   // ============================================================================
-  function buildRealStudioSymbolElements(cx, cy, r, primaryHex, accentHex, strokeScale = 1, hasShield = false) {
-    const sw = (2.8 * strokeScale).toFixed(1);
-    const shieldPath = hasShield
-      ? `<path d="M ${cx} ${cy - r * 1.12} L ${cx + r * 0.95} ${cy - r * 0.62} L ${cx + r * 0.95} ${cy + r * 0.18} C ${cx + r * 0.95} ${cy + r * 0.78} ${cx + r * 0.5} ${cy + r * 1.08} ${cx} ${cy + r * 1.18} C ${cx - r * 0.5} ${cy + r * 1.08} ${cx - r * 0.95} ${cy + r * 0.78} ${cx - r * 0.95} ${cy + r * 0.18} L ${cx - r * 0.95} ${cy - r * 0.62} Z" fill="none" stroke="${accentHex}" stroke-width="1.8" stroke-dasharray="4 3"/>`
+  function buildCasaLoteriaMockupSymbol(archetypeId, strokeScale = 1, hasShield = false, pri = "#C85A32", sec = "#14110F", gold = "#D4AF37") {
+    const sw = (2.6 * strokeScale).toFixed(1);
+    const shieldFrame = hasShield
+      ? `<rect x="20" y="12" width="140" height="156" rx="14" fill="none" stroke="${gold}" stroke-width="2.2" stroke-dasharray="5 3"/>`
       : "";
-    return `
-      ${shieldPath}
-      <circle cx="${cx}" cy="${cy}" r="${(r * 0.92).toFixed(1)}" fill="none" stroke="${primaryHex}" stroke-width="${sw}"/>
-      <circle cx="${cx}" cy="${cy}" r="${(r * 0.68).toFixed(1)}" fill="none" stroke="${accentHex}" stroke-width="1.3" stroke-dasharray="3 3" opacity="0.78"/>
-      <polygon points="${cx},${cy - r * 0.88} ${cx + r * 0.22},${cy - r * 0.22} ${cx + r * 0.88},${cy} ${cx + r * 0.22},${cy + r * 0.22} ${cx},${cy + r * 0.88} ${cx - r * 0.22},${cy + r * 0.22} ${cx - r * 0.88},${cy} ${cx - r * 0.22},${cy - r * 0.22}" fill="${accentHex}"/>
-      <circle cx="${cx}" cy="${cy}" r="${(r * 0.16).toFixed(1)}" fill="${primaryHex}"/>
-    `;
+    if (archetypeId === "loteria_estrella_barro") {
+      return `<g transform="translate(0,0)">
+        ${shieldFrame}
+        <rect x="30" y="14" width="120" height="152" rx="10" fill="#FAF6F0" stroke="${sec}" stroke-width="${sw}"/>
+        <rect x="37" y="21" width="106" height="138" rx="6" fill="none" stroke="${pri}" stroke-width="1.5"/>
+        <text x="45" y="36" fill="${sec}" font-family="Cormorant Garamond,Georgia,serif" font-weight="700" font-size="11">32</text>
+        <path d="M 90 30 L 95 45 L 111 45 L 98 54 L 103 69 L 90 60 L 77 69 L 82 54 L 69 45 L 85 45 Z" fill="${gold}" stroke="${sec}" stroke-width="1.2"/>
+        <path d="M 62 84 C 62 76, 118 76, 118 84 C 128 104, 122 132, 90 134 C 58 132, 52 104, 62 84 Z" fill="${pri}" stroke="${sec}" stroke-width="2.2"/>
+        <ellipse cx="90" cy="82" rx="22" ry="5" fill="${sec}" stroke="${gold}" stroke-width="1.4"/>
+        <path d="M 60 106 Q 90 116 120 106" fill="none" stroke="#FAF6F0" stroke-width="2" stroke-linecap="round"/>
+        <text x="90" y="151" text-anchor="middle" fill="${sec}" font-family="JetBrains Mono,monospace" font-weight="800" font-size="7.5" letter-spacing="2">LA ESTRELLA</text>
+      </g>`;
+    }
+    if (archetypeId === "barro_michelin_vessel") {
+      return `<g transform="translate(0,0)">
+        ${shieldFrame}
+        <circle cx="90" cy="90" r="70" fill="#FAF6F0" stroke="${pri}" stroke-width="2"/>
+        <circle cx="90" cy="90" r="63" fill="none" stroke="${gold}" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <path d="M 90 24 L 94 36 L 106 36 L 96 43 L 100 55 L 90 48 L 80 55 L 84 43 L 74 36 L 86 36 Z" fill="${gold}"/>
+        <path d="M 66 72 L 114 72 C 132 92, 128 134, 90 138 C 52 134, 48 92, 66 72 Z" fill="${sec}" stroke="${gold}" stroke-width="${sw}"/>
+        <path d="M 66 72 C 46 72, 46 102, 60 108" fill="none" stroke="${pri}" stroke-width="3.2" stroke-linecap="round"/>
+        <path d="M 114 72 C 134 72, 134 102, 120 108" fill="none" stroke="${pri}" stroke-width="3.2" stroke-linecap="round"/>
+        <path d="M 64 104 L 76 94 L 90 106 L 104 94 L 116 104" fill="none" stroke="${gold}" stroke-width="2" stroke-linecap="round"/>
+      </g>`;
+    }
+    if (archetypeId === "codice_loteria_monogram") {
+      return `<g transform="translate(0,0)">
+        ${shieldFrame}
+        <polygon points="90,14 156,52 156,128 90,166 24,128 24,52" fill="#14110F" stroke="${gold}" stroke-width="2.4"/>
+        <polygon points="90,22 148,56 148,124 90,158 32,124 32,56" fill="none" stroke="${pri}" stroke-width="1.4"/>
+        <path d="M 104 56 C 68 48, 48 72, 52 98 C 56 124, 78 134, 106 124" fill="none" stroke="#FAF6F0" stroke-width="6.5" stroke-linecap="round"/>
+        <path d="M 88 54 L 88 128 L 126 128" fill="none" stroke="${pri}" stroke-width="6.5" stroke-linecap="square"/>
+        <polygon points="90,30 94,40 104,44 94,48 90,58 86,48 76,44 86,40" fill="${gold}"/>
+      </g>`;
+    }
+    if (archetypeId === "comal_sol_acustico") {
+      return `<g transform="translate(0,0)">
+        ${shieldFrame}
+        <circle cx="90" cy="88" r="66" fill="#1C1917" stroke="${gold}" stroke-width="2.2"/>
+        <circle cx="90" cy="80" r="32" fill="${pri}" stroke="${gold}" stroke-width="2"/>
+        <polygon points="90,56 95,72 111,72 98,81 103,97 90,88 77,97 82,81 69,72 85,72" fill="#FAF6F0"/>
+        <path d="M 38 118 Q 64 106 90 118 T 142 118" fill="none" stroke="${gold}" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M 46 130 Q 68 120 90 130 T 134 130" fill="none" stroke="${pri}" stroke-width="2.2" stroke-linecap="round"/>
+      </g>`;
+    }
+    if (archetypeId === "agave_luna_loteria") {
+      return `<g transform="translate(0,0)">
+        ${shieldFrame}
+        <rect x="28" y="16" width="124" height="148" rx="62" fill="#14110F" stroke="${gold}" stroke-width="2.2"/>
+        <path d="M 90 120 L 90 48 M 90 120 L 64 62 M 90 120 L 116 62 M 90 120 L 48 84 M 90 120 L 132 84" stroke="#2E6F5E" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 56 120 L 124 120 L 110 144 L 70 144 Z" fill="${pri}" stroke="${gold}" stroke-width="1.8"/>
+        <polygon points="90,26 93,34 101,37 93,40 90,48 87,40 79,37 87,34" fill="${gold}"/>
+      </g>`;
+    }
+    if (archetypeId === "plato_barro_aureo") {
+      return `<g transform="translate(0,0)">
+        ${shieldFrame}
+        <circle cx="90" cy="90" r="68" fill="${sec}" stroke="${gold}" stroke-width="2.5"/>
+        <circle cx="90" cy="90" r="52" fill="${pri}" stroke="#FAF6F0" stroke-width="1.5"/>
+        <circle cx="90" cy="90" r="34" fill="#14110F" stroke="${gold}" stroke-width="1.8"/>
+        <polygon points="90,68 95,83 110,83 98,92 102,107 90,98 78,107 82,92 70,83 85,83" fill="${gold}"/>
+      </g>`;
+    }
+    if (archetypeId === "galeria_loteria_triptico") {
+      return `<g transform="translate(0,0)">
+        ${shieldFrame}
+        <rect x="22" y="34" width="38" height="112" rx="5" fill="#FAF6F0" stroke="${sec}" stroke-width="2"/>
+        <rect x="66" y="20" width="48" height="136" rx="6" fill="${pri}" stroke="${gold}" stroke-width="2.4"/>
+        <rect x="120" y="34" width="38" height="112" rx="5" fill="#FAF6F0" stroke="${sec}" stroke-width="2"/>
+        <circle cx="41" cy="86" r="10" fill="${pri}"/>
+        <polygon points="90,52 95,68 111,68 98,77 103,93 90,84 77,93 82,77 69,68 85,68" fill="${gold}"/>
+        <path d="M 131 80 L 147 80 C 151 92, 149 106, 139 108 C 129 106, 127 92, 131 80 Z" fill="${sec}"/>
+      </g>`;
+    }
+    return `<g transform="translate(0,0)">
+      ${shieldFrame}
+      <circle cx="90" cy="90" r="68" fill="#14110F" stroke="${gold}" stroke-width="2.2"/>
+      <polygon points="90,32 95,46 109,46 98,54 102,68 90,60 78,68 82,54 71,46 85,46" fill="${gold}"/>
+      <path d="M 48 82 L 132 82 C 130 116, 114 130, 90 130 C 66 130, 50 116, 48 82 Z" fill="${pri}" stroke="${gold}" stroke-width="2.2"/>
+      <rect x="62" y="126" width="10" height="16" rx="3" fill="${gold}"/>
+      <rect x="85" y="128" width="10" height="16" rx="3" fill="${gold}"/>
+      <rect x="108" y="126" width="10" height="16" rx="3" fill="${gold}"/>
+    </g>`;
   }
 
   const TBB_MOCKUP_LOGO_PROPOSALS = [
     {
       id: 1,
-      code: "#01 · PENTAGRAM · LOCKUP TOTÉMICO",
+      code: "#01 · CARTA «LA ESTRELLA» & VASIJA DE BARRO",
       shortCode: "#01",
-      name: "Lockup Totémico Flagship",
-      badge: "99% Match con tu entrevista",
-      rationale: "Lockup Totémico Flagship: Símbolo centrado sobre retícula áurea φ=1.618 y titular monumental.",
-      darkBg: true,
-      svgLockup: (strokeScale = 1, hasShield = false, invert = false) => {
-        const bg = invert ? "#FAF8F5" : "#090D16";
-        const fg = invert ? "#090D16" : "#FAF8F5";
-        const gold = "#D4AF37";
-        return `<svg viewBox="0 0 520 310" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <rect width="520" height="310" rx="18" fill="${bg}"/>
-          <g stroke="${fg}" stroke-opacity="0.08" stroke-width="1">
-            <line x1="260" y1="14" x2="260" y2="296"/>
-            <line x1="60" y1="112" x2="460" y2="112"/>
-            <circle cx="260" cy="112" r="64" fill="none" stroke-dasharray="3 3"/>
-          </g>
-          ${buildRealStudioSymbolElements(260, 112, 54, fg, gold, strokeScale, hasShield)}
-          <text x="260" y="226" text-anchor="middle" fill="${fg}" font-family="Montserrat,sans-serif" font-weight="900" font-size="25" letter-spacing="4">THE BEST BRAND</text>
-          <line x1="205" y1="242" x2="315" y2="242" stroke="${gold}" stroke-width="1.8" stroke-opacity="0.75"/>
-          <text x="260" y="264" text-anchor="middle" fill="${gold}" font-family="JetBrains Mono,monospace" font-weight="700" font-size="10" letter-spacing="3.5">YOUR BRAND,  NOW!!!</text>
-        </svg>`;
-      }
+      name: "Carta «La Estrella» & Barro",
+      badge: "99% Match · Michelin & Lotería",
+      rationale: "Marco arquitectónico inspirado en la carta N° 32 «La Estrella» de la Lotería Mexicana con vasija escultórica de barro bruñido y lucero Michelin en oro #D4AF37.",
+      darkBg: false,
+      archetype: "loteria_estrella_barro"
     },
     {
       id: 2,
-      code: "#02 · LINEAR · LOCKUP HORIZONTAL 16:9",
+      code: "#02 · OLLA ESCULTÓRICA DE BARRO NEGRO & MICHELIN",
       shortCode: "#02",
-      name: "Lockup Horizontal 16:9",
-      badge: "Lienzo Editorial Claro",
-      rationale: "Composición Horizontal 16:9: Emblema en squircle oscuro a la izquierda + tipografía editorial a dos líneas sobre papel alabastro.",
+      name: "Olla Barro Negro & Michelin",
+      badge: "Alfarería Contemporánea",
+      rationale: "Silueta contemporánea de olla globular de barro negro de Oaxaca con asas asimétricas modernistas, ondas aromáticas y roseta Michelin en la cúspide.",
       darkBg: false,
-      svgLockup: (strokeScale = 1, hasShield = false, invert = false) => {
-        const bg = invert ? "#090D16" : "#FAF8F5";
-        const fg = invert ? "#FAF8F5" : "#090D16";
-        const gold = "#C59B27";
-        return `<svg viewBox="0 0 520 310" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <rect width="520" height="310" rx="18" fill="${bg}"/>
-          <rect x="18" y="18" width="484" height="274" rx="14" fill="none" stroke="#090D16" stroke-opacity="0.08" stroke-width="1.2"/>
-          <rect x="44" y="87" width="136" height="136" rx="30" fill="#090D16" stroke="${gold}" stroke-width="1.8"/>
-          ${buildRealStudioSymbolElements(112, 155, 48, "#FAF8F5", "#D4AF37", strokeScale, hasShield)}
-          <line x1="202" y1="98" x2="202" y2="212" stroke="${gold}" stroke-width="2" stroke-opacity="0.55"/>
-          <text x="222" y="146" fill="${fg}" font-family="Montserrat,sans-serif" font-weight="900" font-size="26" letter-spacing="2">THE BEST</text>
-          <text x="222" y="178" fill="${gold}" font-family="Montserrat,sans-serif" font-weight="800" font-size="22" letter-spacing="2">BRAND</text>
-          <text x="222" y="206" fill="#475569" font-family="JetBrains Mono,monospace" font-weight="700" font-size="9.5" letter-spacing="2.8">YOUR BRAND,  NOW!!!</text>
-        </svg>`;
-      }
+      archetype: "barro_michelin_vessel"
     },
     {
       id: 3,
-      code: "#03 · HERMÈS · MONOGRAMA ESCULTÓRICO",
+      code: "#03 · MONOGRAMA ARQUITECTÓNICO «CL» CÓDICE",
       shortCode: "#03",
-      name: "Monograma Escultórico & Emblema",
-      badge: "Heráldica Contemporánea",
-      rationale: "Emblema Octogonal de Alta Joyería: Símbolo custodiado por doble marco geométrico y firma inferior.",
+      name: "Monograma «CL» Códice",
+      badge: "Alta Costura Gastronómica",
+      rationale: "Ligadura editorial «C» (arco de casona y media vasija) entrelazada con «L» (columna en greca de Mitla) coronada por estrella polar en oro.",
       darkBg: true,
-      svgLockup: (strokeScale = 1, hasShield = false, invert = false) => {
-        const bg = invert ? "#FAF8F5" : "#0B0F1A";
-        const fg = invert ? "#090D16" : "#FAF8F5";
-        const gold = "#D4AF37";
-        return `<svg viewBox="0 0 520 310" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <rect width="520" height="310" rx="18" fill="${bg}"/>
-          <polygon points="260,22 332,52 362,124 332,196 260,226 188,196 158,124 188,52" fill="none" stroke="${gold}" stroke-width="2.2"/>
-          <polygon points="260,30 325,58 353,124 325,190 260,218 195,190 167,124 195,58" fill="none" stroke="${fg}" stroke-opacity="0.22" stroke-width="1"/>
-          ${buildRealStudioSymbolElements(260, 124, 52, fg, gold, strokeScale, hasShield)}
-          <text x="260" y="262" text-anchor="middle" fill="${fg}" font-family="Montserrat,sans-serif" font-weight="900" font-size="22" letter-spacing="4.5">THE BEST BRAND</text>
-          <text x="260" y="284" text-anchor="middle" fill="${gold}" font-family="JetBrains Mono,monospace" font-weight="700" font-size="9.5" letter-spacing="3.5">EST. MMXXVI · LUXURY ATELIER</text>
-        </svg>`;
-      }
+      archetype: "codice_loteria_monogram"
     },
     {
       id: 4,
-      code: "#04 · APPLE AWARD · SQUIRCLE APP ICON 1:1",
+      code: "#04 · EL SOL DE COMAL & ONDA MEXICAN CHILL-OUT",
       shortCode: "#04",
-      name: "Squircle App Icon 1:1",
-      badge: "Icono Digital & Favicons",
-      rationale: "Flagship App Icon Squircle + Cabecera Corporativa: Diseñado para verse impecable en iOS, Android, Web y perfil social.",
+      name: "Sol de Comal & Chill-Out",
+      badge: "Atmósfera Sonora & Fuego",
+      rationale: "Disco de comal de barro ancestral en eclipse con el sol de la Lotería y ondas acústicas sinusoidales que evocan la música mexicana en versión Chill-Out.",
       darkBg: true,
-      svgLockup: (strokeScale = 1, hasShield = false, invert = false) => {
-        const bg = invert ? "#F1F5F9" : "#0F172A";
-        const fg = invert ? "#090D16" : "#FAF8F5";
-        const gold = "#D4AF37";
-        return `<svg viewBox="0 0 520 310" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <rect width="520" height="310" rx="18" fill="${bg}"/>
-          <rect x="44" y="67" width="176" height="176" rx="42" fill="#090D16" stroke="${gold}" stroke-width="2.5"/>
-          <rect x="52" y="75" width="160" height="160" rx="36" fill="none" stroke="#FAF8F5" stroke-opacity="0.16" stroke-width="1"/>
-          ${buildRealStudioSymbolElements(132, 155, 56, "#FAF8F5", gold, strokeScale, hasShield)}
-          <text x="248" y="120" fill="${gold}" font-family="JetBrains Mono,monospace" font-weight="800" font-size="10" letter-spacing="2.8">APP ICON 1:1 + HEADER</text>
-          <text x="248" y="156" fill="${fg}" font-family="Montserrat,sans-serif" font-weight="900" font-size="24" letter-spacing="2">THE BEST</text>
-          <text x="248" y="186" fill="${gold}" font-family="Montserrat,sans-serif" font-weight="800" font-size="20" letter-spacing="2">BRAND</text>
-          <rect x="248" y="204" width="224" height="28" rx="14" fill="rgba(212,175,55,0.14)" stroke="${gold}" stroke-width="1"/>
-          <text x="360" y="222" text-anchor="middle" fill="${fg}" font-family="JetBrains Mono,monospace" font-weight="700" font-size="9.5" letter-spacing="2">RETÍCULA 8X×3X · φ=1.618</text>
-        </svg>`;
-      }
+      archetype: "comal_sol_acustico"
     },
     {
       id: 5,
-      code: "#05 · GALERÍA ESCULTÓRICA #05",
+      code: "#05 · EL AGAVE & LA LUNA · CARTA N° 27 GRABADO",
       shortCode: "#05",
-      name: "Doble Anillo Áureo",
-      badge: "Geometría Sagrada",
-      rationale: "Síntesis Escultórica sobre Doble Anillo Áureo: Máxima autoridad visual para firmas de alto valor.",
+      name: "Agave, Luna & Carta N° 27",
+      badge: "Mixología & Destilados",
+      rationale: "Pencares geométricos de agave cenizo en abanico simétrico sobre media luna y copa de cerámica contemporánea para mezcales de autor.",
       darkBg: true,
-      svgLockup: (strokeScale = 1, hasShield = false, invert = false) => {
-        const bg = invert ? "#FAF8F5" : "#090D16";
-        const fg = invert ? "#090D16" : "#FAF8F5";
-        const gold = "#D4AF37";
-        return `<svg viewBox="0 0 520 310" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <rect width="520" height="310" rx="18" fill="${bg}"/>
-          <circle cx="260" cy="116" r="72" fill="none" stroke="${gold}" stroke-width="1.4" stroke-opacity="0.45"/>
-          <circle cx="260" cy="116" r="56" fill="none" stroke="${fg}" stroke-width="1" stroke-dasharray="4 4" stroke-opacity="0.28"/>
-          ${buildRealStudioSymbolElements(260, 116, 48, fg, gold, strokeScale, hasShield)}
-          <text x="260" y="232" text-anchor="middle" fill="${fg}" font-family="Montserrat,sans-serif" font-weight="900" font-size="24" letter-spacing="4">THE BEST BRAND</text>
-          <text x="260" y="258" text-anchor="middle" fill="${gold}" font-family="JetBrains Mono,monospace" font-weight="700" font-size="10" letter-spacing="3.5">YOUR BRAND,  NOW!!!</text>
-        </svg>`;
-      }
+      archetype: "agave_luna_loteria"
     },
     {
       id: 6,
-      code: "#06 · EDITORIAL SUISSE #06",
+      code: "#06 · PLATO DE BARRO EN ESPIRAL ÁUREA (φ=1.618)",
       shortCode: "#06",
-      name: "Editorial Suisse Alabastro",
-      badge: "Fondo Claro Corporativo",
-      rationale: "Lockup Editorial Suizo sobre Papel Alabastro: Claridad absoluta para papelería ejecutiva, contratos y web blanca.",
+      name: "Plato Espiral Áurea",
+      badge: "Emplatado Estrella Michelin",
+      rationale: "Vista cenital de un plato de degustación en cerámica artesanal con anillos en proporción áurea (Fibonacci) y estrella de autor en el centro.",
       darkBg: false,
-      svgLockup: (strokeScale = 1, hasShield = false, invert = false) => {
-        const bg = invert ? "#090D16" : "#FAF8F5";
-        const fg = invert ? "#FAF8F5" : "#090D16";
-        return `<svg viewBox="0 0 520 310" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <rect width="520" height="310" rx="18" fill="${bg}"/>
-          <rect x="20" y="20" width="480" height="270" rx="14" fill="none" stroke="#090D16" stroke-opacity="0.14" stroke-width="1.5"/>
-          ${buildRealStudioSymbolElements(126, 155, 52, fg, "#C59B27", strokeScale, hasShield)}
-          <line x1="208" y1="86" x2="208" y2="224" stroke="#090D16" stroke-opacity="0.20" stroke-width="1.5"/>
-          <text x="230" y="144" fill="${fg}" font-family="Montserrat,sans-serif" font-weight="900" font-size="25" letter-spacing="2.2">THE BEST</text>
-          <text x="230" y="176" fill="#C59B27" font-family="Montserrat,sans-serif" font-weight="800" font-size="21" letter-spacing="2">BRAND</text>
-          <text x="230" y="204" fill="#475569" font-family="JetBrains Mono,monospace" font-weight="700" font-size="9.5" letter-spacing="2.8">SWISS GRID · 8X×3X</text>
-        </svg>`;
-      }
+      archetype: "plato_barro_aureo"
     },
     {
       id: 7,
-      code: "#07 · SELLO MONUMENTAL #07",
+      code: "#07 · TRÍPTICO GALERÍA LOTERÍA · SELLO DE AUTOR",
       shortCode: "#07",
-      name: "Sello Circular de Autor",
-      badge: "Emblema de Prestigio",
-      rationale: "Sello Circular de Autor: Ideal para lacrado, packaging de lujo, etiquetas y marcas de agua.",
-      darkBg: true,
-      svgLockup: (strokeScale = 1, hasShield = false, invert = false) => {
-        const bg = invert ? "#FAF8F5" : "#090D16";
-        const fg = invert ? "#090D16" : "#FAF8F5";
-        const gold = "#D4AF37";
-        return `<svg viewBox="0 0 520 310" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <rect width="520" height="310" rx="18" fill="${bg}"/>
-          <circle cx="260" cy="118" r="68" fill="none" stroke="${gold}" stroke-width="2.5"/>
-          <circle cx="260" cy="118" r="58" fill="none" stroke="${fg}" stroke-width="1.2" stroke-dasharray="2 4" stroke-opacity="0.5"/>
-          ${buildRealStudioSymbolElements(260, 118, 44, fg, gold, strokeScale, hasShield)}
-          <text x="260" y="232" text-anchor="middle" fill="${fg}" font-family="Montserrat,sans-serif" font-weight="900" font-size="23" letter-spacing="4">THE BEST BRAND</text>
-          <text x="260" y="256" text-anchor="middle" fill="${gold}" font-family="JetBrains Mono,monospace" font-weight="700" font-size="9.5" letter-spacing="4">OFFICIAL SEAL · MMXXVI</text>
-        </svg>`;
-      }
+      name: "Tríptico Galería Lotería",
+      badge: "Interiorismo & Galería",
+      rationale: "Tres bastidores arquitectónicos en perspectiva que rinden homenaje a los cuadros modernistas de la Lotería (El Sol, La Estrella y El Jarrito) del salón principal.",
+      darkBg: false,
+      archetype: "galeria_loteria_triptico"
     },
     {
       id: 8,
-      code: "#08 · LOCKUP PANORÁMICO NOCTURNO #08",
+      code: "#08 · MOLCAJETE ESCULTÓRICO & LUCERO NOCTURNO",
       shortCode: "#08",
-      name: "Lockup Panorámico Nocturno",
-      badge: "Header & Fachada",
-      rationale: "Lockup Panorámico de Alto Contraste: Diseñado para cabeceras web, presentaciones Keynote y fachadas.",
+      name: "Molcajete Escultórico",
+      badge: "Lienzo Nocturno & Fachada",
+      rationale: "Geometría monolítica de piedra volcánica basáltica y barro bruñido sobre tres soportes arquitectónicos, ideal para fachadas y carta nocturna.",
       darkBg: true,
-      svgLockup: (strokeScale = 1, hasShield = false, invert = false) => {
-        const bg = invert ? "#FAF8F5" : "#090D16";
-        const fg = invert ? "#090D16" : "#FAF8F5";
-        const gold = "#D4AF37";
-        return `<svg viewBox="0 0 520 310" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <rect width="520" height="310" rx="18" fill="${bg}"/>
-          <rect x="36" y="88" width="134" height="134" rx="28" fill="rgba(255,255,255,0.03)" stroke="${gold}" stroke-width="2"/>
-          ${buildRealStudioSymbolElements(103, 155, 48, fg, gold, strokeScale, hasShield)}
-          <line x1="194" y1="96" x2="194" y2="214" stroke="${gold}" stroke-width="2" stroke-opacity="0.55"/>
-          <text x="216" y="146" fill="${fg}" font-family="Montserrat,sans-serif" font-weight="900" font-size="25" letter-spacing="2.2">THE BEST</text>
-          <text x="216" y="178" fill="${gold}" font-family="Montserrat,sans-serif" font-weight="800" font-size="21" letter-spacing="2.2">BRAND</text>
-          <text x="216" y="206" fill="${fg}" fill-opacity="0.72" font-family="JetBrains Mono,monospace" font-weight="700" font-size="9.5" letter-spacing="3">YOUR BRAND,  NOW!!!</text>
-        </svg>`;
-      }
+      archetype: "molcajete_estrella_minimal"
     }
-  ];
+  ].map((item) => {
+    item.svgLockup = (strokeScale = 1, hasShield = false, invert = false) => {
+      const useDark = invert ? !item.darkBg : item.darkBg;
+      const bg = useDark ? "#14110F" : "#FAF6F0";
+      const fg = useDark ? "#FAF6F0" : "#14110F";
+      const pri = "#C85A32";
+      const gold = "#D4AF37";
+      return `<svg viewBox="0 0 520 310" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <rect width="520" height="310" rx="18" fill="${bg}"/>
+        <rect x="14" y="14" width="492" height="282" rx="12" fill="none" stroke="${gold}" stroke-opacity="0.32" stroke-width="1.4"/>
+        <g transform="translate(24, 65)">
+          ${buildCasaLoteriaMockupSymbol(item.archetype, strokeScale, hasShield, pri, "#14110F", gold)}
+        </g>
+        <line x1="212" y1="76" x2="212" y2="234" stroke="${gold}" stroke-opacity="0.45" stroke-width="1.8"/>
+        <text x="232" y="114" fill="${pri}" font-family="JetBrains Mono,monospace" font-weight="800" font-size="9.5" letter-spacing="2.4">RESTAURANTE · ESTRELLA MICHELIN</text>
+        <text x="232" y="156" fill="${fg}" font-family="Cormorant Garamond,Georgia,serif" font-weight="700" font-size="31" letter-spacing="2.5">CASA LOTERÍA</text>
+        <text x="232" y="184" fill="${gold}" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="11.5" letter-spacing="3.2">COCINA MEXICANA MODERNISTA</text>
+        <rect x="232" y="202" width="248" height="26" rx="13" fill="rgba(200,90,50,0.14)" stroke="${pri}" stroke-width="1"/>
+        <text x="356" y="219" text-anchor="middle" fill="${fg}" font-family="JetBrains Mono,monospace" font-weight="700" font-size="8.8" letter-spacing="1.8">BARRO ESCULTÓRICO · MEXICAN CHILL-OUT</text>
+      </svg>`;
+    };
+    return item;
+  });
 
-  // Renderizador Fiel 1:1 del Paso 5 Real de studio.html (con conmutador interactivo entre Pantalla 5A: 24 Decisiones A/B y Pantalla 5B: Las 8 Propuestas Reales 520x310)
+  // Renderizador Fiel 1:1 del Paso 5 Real de studio.html (Caso Real: Restaurante Mexicano Modernista con Estrella Michelin · CASA LOTERÍA)
   window.tbbRenderHomeDeviceMockupContent = function (deviceForm) {
     const st = window.tbbCommercialDemoState || {};
     const form = deviceForm || st.homeDeviceForm || "mobile";
@@ -2085,141 +2078,135 @@
           <div class="tbb-home-device-chassis is-${escHtml(form)}">
             <div class="tbb-home-device-top-bezel">
               <span class="tbb-bezel-dots"><i class="r"></i><i class="y"></i><i class="g"></i></span>
-              <span class="tbb-bezel-title">THE BEST BRAND STUDIO EN VIVO (/studio) · FORMATO ${form === 'mobile' ? 'CELULAR' : form === 'tablet' ? 'TABLET' : 'COMPUTADORA'}</span>
-              <button type="button" class="tbb-bezel-mode-btn" onclick="window.tbbToggleHomeDeviceLiveStudio(false)">← Volver a Vista del Paso 5 (Selección de Logotipo)</button>
+              <span class="tbb-bezel-title">THE BEST BRAND STUDIO EN VIVO (/studio · Caso Real: CASA LOTERÍA) · FORMATO ${form === 'mobile' ? 'CELULAR' : form === 'tablet' ? 'TABLET' : 'COMPUTADORA'}</span>
+              <button type="button" class="tbb-bezel-mode-btn" onclick="window.tbbToggleHomeDeviceLiveStudio(false)">← Volver a Vista de las 8 Propuestas (Paso 5)</button>
             </div>
             <div class="tbb-home-device-screen">
-              <iframe src="/studio?embed=home_${escHtml(form)}&lang=${escHtml(l)}#step-5" title="The Best Brand Live App" class="tbb-home-device-live-iframe"></iframe>
+              <iframe src="/studio?brand=casa_loteria&step=5&novideo=1&embed=home_${escHtml(form)}&lang=${escHtml(l)}" title="The Best Brand Live App - Casa Lotería" class="tbb-home-device-live-iframe"></iframe>
             </div>
           </div>
         </div>
       `;
     }
 
-    // Sub-navegador interactivo idéntico a studio.html (líneas 4564-4582): Pantalla 5A (24 Decisiones A/B) vs Pantalla 5B (Estudio de 8 Logotipos con IA)
+    // Sub-navegador interactivo idéntico a studio.html: Pantalla 5A (Paleta y Decisiones A/B) vs Pantalla 5B (Estudio de 8 Logotipos con IA para CASA LOTERÍA)
     const renderSubscreenSwitchBar = (compact = false) => `
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; background:#090D16; padding:5px; border-radius:999px; border:1.5px solid #D4AF37;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; background:#14110F; padding:5px; border-radius:999px; border:1.5px solid #D4AF37;">
         <button
           type="button"
           onclick="window.tbbSetMockupStep5Subscreen('5A')"
-          style="background:${subScreen === '5A' ? '#D4AF37' : 'transparent'}; color:${subScreen === '5A' ? '#090D16' : '#F8FAFC'}; border:none; border-radius:999px; padding:${compact ? '6px 8px' : '7px 14px'}; font-family:'Montserrat',sans-serif; font-size:${compact ? '0.62rem' : '0.72rem'}; font-weight:900; cursor:pointer; transition:all 0.2s;"
+          style="background:${subScreen === '5A' ? '#D4AF37' : 'transparent'}; color:${subScreen === '5A' ? '#14110F' : '#FAF6F0'}; border:none; border-radius:999px; padding:${compact ? '6px 8px' : '7px 14px'}; font-family:'Montserrat',sans-serif; font-size:${compact ? '0.62rem' : '0.72rem'}; font-weight:900; cursor:pointer; transition:all 0.2s;"
         >
-          1 · ${compact ? '24 Decisiones A/B (5A)' : 'Pantalla 5A · 24 Decisiones Visuales A/B'}
+          1 · ${compact ? 'Paleta Barro & Decisiones (5A)' : 'Pantalla 5A · Paleta Terracota/Barro & Decisiones A/B'}
         </button>
         <button
           type="button"
           onclick="window.tbbSetMockupStep5Subscreen('5B')"
-          style="background:${subScreen === '5B' ? '#D4AF37' : 'transparent'}; color:${subScreen === '5B' ? '#090D16' : '#F8FAFC'}; border:none; border-radius:999px; padding:${compact ? '6px 8px' : '7px 14px'}; font-family:'Montserrat',sans-serif; font-size:${compact ? '0.62rem' : '0.72rem'}; font-weight:900; cursor:pointer; transition:all 0.2s;"
+          style="background:${subScreen === '5B' ? '#D4AF37' : 'transparent'}; color:${subScreen === '5B' ? '#14110F' : '#FAF6F0'}; border:none; border-radius:999px; padding:${compact ? '6px 8px' : '7px 14px'}; font-family:'Montserrat',sans-serif; font-size:${compact ? '0.62rem' : '0.72rem'}; font-weight:900; cursor:pointer; transition:all 0.2s;"
         >
-          2 · ${compact ? '8 Logotipos IA (5B)' : 'Pantalla 5B · Estudio de 8 Logotipos con IA'}
+          2 · ${compact ? '8 Logos Casa Lotería (5B)' : 'Pantalla 5B · 8 Propuestas Vectoriales «CASA LOTERÍA»'}
         </button>
       </div>
     `;
 
-    // Renderizador de Tarjeta Real de studio.html (renderSynthesizedFinalLogoProposalsGrid, líneas 11738-11796)
+    // Renderizador de Tarjeta Real de studio.html
     const renderRealAppLogoLockupCard = (item, compact = false) => {
       const isSel = item.id === selectedLogoId;
       return `
         <div
           onclick="window.tbbSelectMockupLogoOption(${item.id})"
-          style="background:#FFFFFF; border:${isSel ? '2.5px solid #065F46' : '1.5px solid rgba(9,13,22,0.14)'}; border-radius:14px; padding:${compact ? '8px' : '10px'}; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; transition:all 0.2s ease; box-shadow:${isSel ? '0 10px 24px rgba(6,95,70,0.18)' : '0 4px 12px rgba(9,13,22,0.05)'}; text-align:left;"
+          style="background:#FFFFFF; border:${isSel ? '2.5px solid #C85A32' : '1.5px solid rgba(20,17,15,0.14)'}; border-radius:14px; padding:${compact ? '8px' : '10px'}; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; transition:all 0.2s ease; box-shadow:${isSel ? '0 10px 24px rgba(200,90,50,0.20)' : '0 4px 12px rgba(20,17,15,0.05)'}; text-align:left;"
         >
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; gap:4px; margin-bottom:6px; flex-wrap:wrap;">
-              <span style="font-family:'JetBrains Mono',monospace; font-size:${compact ? '0.55rem' : '0.60rem'}; color:#FFFFFF; font-weight:800; background:#090D16; padding:2px 7px; border-radius:999px;">${escHtml(item.code)}</span>
-              <span style="font-family:'JetBrains Mono',monospace; font-size:${compact ? '0.54rem' : '0.58rem'}; color:#065F46; background:rgba(6,95,70,0.10); border:1px solid rgba(6,95,70,0.28); padding:2px 6px; border-radius:999px; font-weight:800;">${escHtml(item.badge)}</span>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:${compact ? '0.55rem' : '0.60rem'}; color:#FAF6F0; font-weight:800; background:#14110F; padding:2px 7px; border-radius:999px;">${escHtml(item.code)}</span>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:${compact ? '0.54rem' : '0.58rem'}; color:#9A3412; background:#FFF7ED; border:1px solid #FDBA74; padding:2px 6px; border-radius:999px; font-weight:800;">${escHtml(item.badge)}</span>
             </div>
-            <div style="width:100%; aspect-ratio:520/310; border-radius:10px; overflow:hidden; border:1px solid rgba(9,13,22,0.12); margin-bottom:6px;">
+            <div style="width:100%; aspect-ratio:520/310; border-radius:10px; overflow:hidden; border:1px solid rgba(20,17,15,0.12); margin-bottom:6px;">
               ${item.svgLockup(strokeScale, hasShield, invertCanvas)}
             </div>
             ${!compact ? `<div style="font-size:0.65rem; color:#1E293B; line-height:1.35; margin-bottom:6px; font-weight:600;">${escHtml(item.rationale)}</div>` : ""}
           </div>
-          <!-- Botones idénticos a studio.html líneas 11776-11793 -->
           <div style="display:grid; grid-template-columns:1fr auto auto; gap:4px;">
             <button
               type="button"
               onclick="event.stopPropagation(); window.tbbSelectMockupLogoOption(${item.id});"
-              style="background:${isSel ? '#065F46' : '#090D16'}; color:#FFFFFF; border:none; border-radius:7px; padding:${compact ? '5px 6px' : '6px 8px'}; font-size:${compact ? '0.58rem' : '0.62rem'}; font-weight:800; cursor:pointer;"
+              style="background:${isSel ? '#C85A32' : '#14110F'}; color:#FFFFFF; border:none; border-radius:7px; padding:${compact ? '5px 6px' : '6px 8px'}; font-size:${compact ? '0.58rem' : '0.62rem'}; font-weight:800; cursor:pointer;"
             >
-              ${isSel ? '✓ Logo Oficial Elegido' : 'Elegir como mi Logo Oficial'}
+              ${isSel ? '✓ Logo Oficial Elegido' : 'Elegir como Logo Oficial'}
             </button>
-            <span style="background:#FAF8F5; color:#090D16; border:1px solid rgba(9,13,22,0.25); border-radius:7px; padding:${compact ? '5px 6px' : '6px 7px'}; font-size:0.58rem; font-weight:800; font-family:'JetBrains Mono',monospace;">.SVG</span>
+            <span style="background:#FAF6F0; color:#14110F; border:1px solid rgba(20,17,15,0.25); border-radius:7px; padding:${compact ? '5px 6px' : '6px 7px'}; font-size:0.58rem; font-weight:800; font-family:'JetBrains Mono',monospace;">.SVG</span>
             <button
               type="button"
               onclick="event.stopPropagation(); window.tbbSelectMockupLogoOption(${item.id});"
-              style="background:rgba(197,155,39,0.16); color:#78350F; border:1px solid rgba(197,155,39,0.45); border-radius:7px; padding:${compact ? '5px 6px' : '6px 7px'}; font-size:0.58rem; font-weight:800; cursor:pointer;"
+              style="background:rgba(212,175,55,0.18); color:#78350F; border:1px solid rgba(212,175,55,0.55); border-radius:7px; padding:${compact ? '5px 6px' : '6px 7px'}; font-size:0.58rem; font-weight:800; cursor:pointer;"
             >
-              Afinar este
+              Afinar
             </button>
           </div>
         </div>
       `;
     };
 
-    // Renderizador de la Pantalla 5A Real de studio.html (24 Decisiones Visuales A/B · Par 1/24 Geometría del Vértice + Barra de Semillas Rápidas)
+    // Renderizador de la Pantalla 5A Real de studio.html (Caso Real: CASA LOTERÍA)
     const renderRealScreen5AContent = (isCompactMobile = false) => `
       <div style="display:flex; flex-direction:column; gap:10px; text-align:left;">
-        <!-- Barra de Semilla Rápida idéntica a studio.html líneas 4602-4617 -->
         <div style="background:#FFFFFF; border:1.5px solid #D4AF37; border-radius:12px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;">
-          <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:900; color:#090D16;">O ELIGE DIRECTO TU SEMILLA Y SALTA A TUS 8 PROPUESTAS:</span>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:900; color:#14110F;">SEMILLAS DEL CASO REAL «CASA LOTERÍA» (RESTAURANTE MEXICANO MODERNISTA MICHELIN):</span>
           <div style="display:flex; flex-wrap:wrap; gap:4px; align-items:center;">
-            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">🧭 Brújula</button>
-            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">🦁 León</button>
-            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">🦅 Águila</button>
-            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">👑 Corona</button>
-            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#090D16; color:#FDE68A; border:1px solid #D4AF37; border-radius:999px; padding:4px 10px; font-size:0.62rem; font-weight:900; cursor:pointer;">Saltar a mis 8 Logos →</button>
+            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#FFF7ED; border:1px solid #C85A32; color:#9A3412; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">★ Carta La Estrella &amp; Barro</button>
+            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">🏺 Olla Barro Negro</button>
+            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">☀️ Sol de Comal &amp; Chill-Out</button>
+            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#14110F; color:#FDE68A; border:1px solid #D4AF37; border-radius:999px; padding:4px 10px; font-size:0.62rem; font-weight:900; cursor:pointer;">Ver las 8 Propuestas →</button>
           </div>
         </div>
 
-        <!-- Arena de Duelo Visual A/B idéntica a studio.html (renderCurrentPairCard, líneas 4619-4652) -->
-        <div style="background:#FFFFFF; border:2px solid #090D16; border-radius:16px; padding:12px;">
+        <div style="background:#FFFFFF; border:2px solid #14110F; border-radius:16px; padding:12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
             <div style="display:flex; gap:5px; flex-wrap:wrap;">
-              <span style="background:#090D16; color:#FDE68A; border-radius:999px; padding:3px 10px; font-size:0.62rem; font-weight:900;">1 · Forma y Símbolo (1–12)</span>
-              <span style="background:#F1F5F9; color:#475569; border-radius:999px; padding:3px 10px; font-size:0.62rem; font-weight:800;">2 · Tipo de Letra (13–18)</span>
-              <span style="background:#F1F5F9; color:#475569; border-radius:999px; padding:3px 10px; font-size:0.62rem; font-weight:800;">3 · Color (19–24)</span>
+              <span style="background:#14110F; color:#FDE68A; border-radius:999px; padding:3px 10px; font-size:0.62rem; font-weight:900;">1 · Terracota Barro &amp; Obsidiana (#C85A32 / #14110F)</span>
+              <span style="background:#FEF3C7; color:#92400E; border-radius:999px; padding:3px 10px; font-size:0.62rem; font-weight:800;">2 · Tipografía: Cormorant Garamond + Plus Jakarta Sans</span>
             </div>
-            <span style="font-family:'JetBrains Mono',monospace; font-size:0.66rem; font-weight:900; color:#FFFFFF; background:#090D16; padding:3px 10px; border-radius:999px;">Par 1 / 24 · Geometría del Vértice</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:0.66rem; font-weight:900; color:#FFFFFF; background:#C85A32; padding:3px 10px; border-radius:999px;">Calibración Kansei · Casa Lotería</span>
           </div>
 
           <div style="display:grid; grid-template-columns:${isCompactMobile ? '1fr' : '1fr 1fr'}; gap:10px;">
-            <!-- Opción A: Trazo Orgánico (Bouba) -->
             <div
               onclick="window.tbbSelectMockupAbChoice('A')"
-              style="background:#FAF8F5; border:${abChoice === 'A' ? '2.5px solid #065F46' : '1.5px solid #CBD5E1'}; border-radius:14px; padding:12px; cursor:pointer; text-align:center;"
+              style="background:#FAF6F0; border:${abChoice === 'A' ? '2.5px solid #C85A32' : '1.5px solid #CBD5E1'}; border-radius:14px; padding:12px; cursor:pointer; text-align:center;"
             >
               <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:800; margin-bottom:6px;">
-                <span style="color:#090D16;">OPCIÓN A · KÖHLER BOUBA</span>
-                ${abChoice === 'A' ? '<span style="background:#065F46; color:#FFFFFF; padding:1px 7px; border-radius:999px;">✓ ELEGIDA</span>' : '<span style="color:#64748B;">Toca para elegir</span>'}
+                <span style="color:#14110F;">OPCIÓN A · CURVA DE BARRO ESCULTÓRICO</span>
+                ${abChoice === 'A' ? '<span style="background:#C85A32; color:#FFFFFF; padding:1px 7px; border-radius:999px;">✓ ACTIVA</span>' : '<span style="color:#64748B;">Seleccionar</span>'}
               </div>
               <svg viewBox="0 0 220 110" width="100%" height="88" style="background:#FFFFFF; border-radius:10px; border:1px solid #E2E8F0; margin-bottom:6px;">
-                <path d="M 45 75 C 65 20, 115 20, 135 55 C 155 90, 175 30, 185 55" fill="none" stroke="#0D2540" stroke-width="5" stroke-linecap="round"/>
-                <circle cx="110" cy="55" r="28" fill="rgba(212,175,55,0.18)" stroke="#C59B27" stroke-width="2.5"/>
+                <path d="M 75 30 C 75 22, 145 22, 145 30 C 158 55, 150 92, 110 95 C 70 92, 62 55, 75 30 Z" fill="#C85A32" stroke="#14110F" stroke-width="2.5"/>
+                <path d="M 45 78 Q 80 62 110 78 T 175 78" fill="none" stroke="#D4AF37" stroke-width="3" stroke-linecap="round"/>
               </svg>
-              <div style="font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:900; color:#090D16;">Curva Orgánica Continua (Empatía y Cercanía)</div>
+              <div style="font-family:'Cormorant Garamond',serif; font-size:0.92rem; font-weight:700; color:#14110F;">Calidez de Olla de Barro &amp; Onda Acústica Chill-Out</div>
             </div>
 
-            <!-- Opción B: Ángulo de Precisión (Kiki) -->
             <div
               onclick="window.tbbSelectMockupAbChoice('B')"
-              style="background:#FAF8F5; border:${abChoice === 'B' ? '2.5px solid #065F46' : '1.5px solid #CBD5E1'}; border-radius:14px; padding:12px; cursor:pointer; text-align:center;"
+              style="background:#FAF6F0; border:${abChoice === 'B' ? '2.5px solid #C85A32' : '1.5px solid #CBD5E1'}; border-radius:14px; padding:12px; cursor:pointer; text-align:center;"
             >
               <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:800; margin-bottom:6px;">
-                <span style="color:#090D16;">OPCIÓN B · KÖHLER KIKI</span>
-                ${abChoice === 'B' ? '<span style="background:#065F46; color:#FFFFFF; padding:1px 7px; border-radius:999px;">✓ ELEGIDA</span>' : '<span style="color:#64748B;">Toca para elegir</span>'}
+                <span style="color:#14110F;">OPCIÓN B · CARTA LOTERÍA MODERNISTA &amp; MICHELIN</span>
+                ${abChoice === 'B' ? '<span style="background:#C85A32; color:#FFFFFF; padding:1px 7px; border-radius:999px;">✓ ACTIVA</span>' : '<span style="color:#64748B;">Seleccionar</span>'}
               </div>
-              <svg viewBox="0 0 220 110" width="100%" height="88" style="background:#090D16; border-radius:10px; border:1px solid #D4AF37; margin-bottom:6px;">
-                <polygon points="110,16 148,55 110,94 72,55" fill="none" stroke="#D4AF37" stroke-width="3.5"/>
-                <polygon points="110,28 134,55 110,82 86,55" fill="#FAF8F5"/>
+              <svg viewBox="0 0 220 110" width="100%" height="88" style="background:#14110F; border-radius:10px; border:1px solid #D4AF37; margin-bottom:6px;">
+                <rect x="76" y="10" width="68" height="90" rx="6" fill="#FAF6F0" stroke="#D4AF37" stroke-width="2"/>
+                <polygon points="110,24 115,38 130,38 118,46 122,60 110,52 98,60 102,46 90,38 105,38" fill="#C85A32"/>
+                <path d="M 92 68 L 128 68 C 132 82, 126 92, 110 92 C 94 92, 88 82, 92 68 Z" fill="#14110F"/>
               </svg>
-              <div style="font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:900; color:#090D16;">Ángulo Geométrico de Precisión (Autoridad y Exactitud)</div>
+              <div style="font-family:'Cormorant Garamond',serif; font-size:0.92rem; font-weight:700; color:#14110F;">Marco de Galería Lotería + Estrella Michelin</div>
             </div>
           </div>
 
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top:10px; padding-top:8px; border-top:1px solid #E2E8F0;">
-            <span style="font-size:0.66rem; font-weight:700; color:#475569;">Al completar o saltar los pares, la IA genera las <strong>8 Propuestas en Pantalla 5B</strong>.</span>
-            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#065F46; color:#FFFFFF; border:none; border-radius:999px; padding:6px 14px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
-              Ver las 8 Propuestas Generadas (Pantalla 5B) →
+            <span style="font-size:0.66rem; font-weight:700; color:#475569;">Al combinar ambos ejes, Aura sintetiza las <strong>8 Propuestas Oficiales de «CASA LOTERÍA» en Pantalla 5B</strong>.</span>
+            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#C85A32; color:#FFFFFF; border:none; border-radius:999px; padding:6px 14px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
+              Ver las 8 Propuestas de CASA LOTERÍA (5B) →
             </button>
           </div>
         </div>
@@ -2227,53 +2214,49 @@
     `;
 
     // =========================================================================
-    // 1. FORMATO CELULAR (MÓVIL VERTICAL): PASO 5 REAL DE STUDIO.HTML
+    // 1. FORMATO CELULAR (MÓVIL VERTICAL): PASO 5 REAL DE STUDIO.HTML (CASA LOTERÍA)
     // =========================================================================
     if (form === "mobile") {
       return `
         <div class="tbb-home-device-stage-centered">
           <div class="tbb-home-device-chassis is-mobile">
             <div class="tbb-home-mobile-notch"></div>
-            <div class="tbb-home-device-screen" style="background:#FAF8F5; color:#090D16; padding:11px; gap:8px;">
-              <!-- Barra Superior de studio.html en Celular -->
-              <div style="background:#090D16; color:#FFFFFF; border-radius:13px; padding:9px 11px; display:flex; align-items:center; justify-content:space-between; border:1px solid #D4AF37;">
+            <div class="tbb-home-device-screen" style="background:#FAF6F0; color:#14110F; padding:11px; gap:8px;">
+              <div style="background:#14110F; color:#FFFFFF; border-radius:13px; padding:9px 11px; display:flex; align-items:center; justify-content:space-between; border:1px solid #D4AF37;">
                 <div style="display:flex; align-items:center; gap:7px;">
                   <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:20px; height:20px;" />
                   <div style="text-align:left;">
-                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.54rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · APP REAL EN CELULAR</div>
-                    <div style="font-family:'Montserrat',sans-serif; font-size:0.72rem; font-weight:900; color:#FFFFFF;">Estudio y Selección de Logotipo</div>
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.54rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · CASO REAL: CASA LOTERÍA</div>
+                    <div style="font-family:'Cormorant Garamond',serif; font-size:0.82rem; font-weight:700; color:#FFFFFF;">Restaurante Mexicano Modernista · Michelin</div>
                   </div>
                 </div>
-                <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="font-family:'JetBrains Mono',monospace; font-size:0.56rem; background:#FF7A00; color:#FFFFFF; border:none; padding:4px 8px; border-radius:999px; font-weight:800; cursor:pointer;">App en Vivo</button>
+                <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="font-family:'JetBrains Mono',monospace; font-size:0.56rem; background:#C85A32; color:#FFFFFF; border:none; padding:4px 8px; border-radius:999px; font-weight:800; cursor:pointer;">App en Vivo</button>
               </div>
 
-              <!-- Conmutador Interactivo 5A / 5B idéntico a studio.html -->
               ${renderSubscreenSwitchBar(true)}
 
               ${subScreen === "5A"
                 ? renderRealScreen5AContent(true)
                 : `
-                  <!-- Grid de las Tarjetas 520x310 Reales de studio.html en Celular -->
                   <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px;">
                     ${TBB_MOCKUP_LOGO_PROPOSALS.slice(0, 4).map((item) => renderRealAppLogoLockupCard(item, true)).join("")}
                   </div>
 
-                  <!-- Paso 3 · Afinar con IA sobre el Logo Seleccionado -->
                   <div style="background:#FFFFFF; border:1.5px solid #D4AF37; border-radius:11px; padding:7px 9px; text-align:left;">
-                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.56rem; font-weight:900; color:#090D16; margin-bottom:4px;">
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.56rem; font-weight:900; color:#14110F; margin-bottom:4px;">
                       PASO 3 · AFINAR ${escHtml(selectedLogoObj.shortCode)} (${escHtml(selectedLogoObj.name.toUpperCase())}):
                     </div>
                     <div style="display:flex; flex-wrap:wrap; gap:4px;">
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Trazo más fino</button>
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Trazo más fuerte</button>
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Marco escudo</button>
-                      <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#FF7A00' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Invertir fondo</button>
+                      <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Trazo fino</button>
+                      <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Trazo fuerte</button>
+                      <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Marco Lotería</button>
+                      <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#C85A32' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Fondo Barro Negro / Claro</button>
                     </div>
                   </div>
                 `}
 
-              <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="width:100%; background:linear-gradient(135deg, #065F46 0%, #047857 100%); color:#FFFFFF; border:1.5px solid #34D399; border-radius:11px; padding:9px 10px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
-                ✓ Confirmar ${escHtml(selectedLogoObj.shortCode)} y Abrir Estudio en Vivo (/studio) →
+              <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="width:100%; background:linear-gradient(135deg, #C85A32 0%, #9A3412 100%); color:#FFFFFF; border:1.5px solid #D4AF37; border-radius:11px; padding:9px 10px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
+                ✓ Abrir Caso Real «CASA LOTERÍA» en Estudio en Vivo (/studio) →
               </button>
             </div>
             <div class="tbb-home-mobile-bar"></div>
@@ -2283,21 +2266,20 @@
     }
 
     // =========================================================================
-    // 2. FORMATO TABLET: PASO 5 REAL DE STUDIO.HTML
+    // 2. FORMATO TABLET: PASO 5 REAL DE STUDIO.HTML (CASA LOTERÍA)
     // =========================================================================
     if (form === "tablet") {
       return `
         <div class="tbb-home-device-stage-centered">
           <div class="tbb-home-device-chassis is-tablet">
             <div class="tbb-home-tablet-cam"></div>
-            <div class="tbb-home-device-screen" style="background:#FAF8F5; color:#090D16; padding:14px; gap:10px;">
-              <!-- Cabecera Real de studio.html en Tablet -->
-              <div style="background:#090D16; color:#FFFFFF; border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; border:1.5px solid #D4AF37;">
+            <div class="tbb-home-device-screen" style="background:#FAF6F0; color:#14110F; padding:14px; gap:10px;">
+              <div style="background:#14110F; color:#FFFFFF; border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; border:1.5px solid #D4AF37;">
                 <div style="display:flex; align-items:center; gap:9px;">
                   <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:24px; height:24px;" />
                   <div style="text-align:left;">
-                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · VISTA TABLET DE LA APP REAL (/studio)</div>
-                    <div style="font-family:'Montserrat',sans-serif; font-size:0.88rem; font-weight:900; color:#FFFFFF;">Diseña y Elige el Logotipo Oficial de tu Marca</div>
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · VISTA TABLET · CASO REAL: CASA LOTERÍA (MICHELIN)</div>
+                    <div style="font-family:'Cormorant Garamond',serif; font-size:0.96rem; font-weight:700; color:#FFFFFF;">Selección de Logotipo: Alta Cocina Mexicana Modernista, Barro &amp; Lotería</div>
                   </div>
                 </div>
                 ${renderSubscreenSwitchBar(true)}
@@ -2306,20 +2288,19 @@
               ${subScreen === "5A"
                 ? renderRealScreen5AContent(false)
                 : `
-                  <!-- Grid 2x2 de las Tarjetas 520x310 Reales de studio.html + Barra de Afinación -->
                   <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
                     ${TBB_MOCKUP_LOGO_PROPOSALS.slice(0, 4).map((item) => renderRealAppLogoLockupCard(item, false)).join("")}
                   </div>
                   <div style="background:#FFFFFF; border:1.5px solid #D4AF37; border-radius:12px; padding:9px 12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
                     <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:900; color:#090D16;">PASO 3 · AFINAR ${escHtml(selectedLogoObj.shortCode)}:</span>
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fino</button>
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fuerte</button>
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Marco escudo</button>
-                      <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#FF7A00' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Invertir fondo</button>
+                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:900; color:#14110F;">PASO 3 · AFINAR ${escHtml(selectedLogoObj.shortCode)}:</span>
+                      <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fino</button>
+                      <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fuerte</button>
+                      <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Marco Lotería</button>
+                      <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#C85A32' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Invertir fondo</button>
                     </div>
-                    <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="background:#065F46; color:#FFFFFF; border:none; border-radius:999px; padding:6px 14px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
-                      ✓ Confirmar mi Logotipo Oficial →
+                    <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="background:#C85A32; color:#FFFFFF; border:none; border-radius:999px; padding:6px 14px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
+                      ✓ Confirmar Logotipo de CASA LOTERÍA →
                     </button>
                   </div>
                 `}
@@ -2330,7 +2311,7 @@
     }
 
     // =========================================================================
-    // 3. FORMATO COMPUTADORA: PASO 5 REAL DE STUDIO.HTML (LAS 8 PROPUESTAS 520×310 IDÉNTICAS A LA APP)
+    // 3. FORMATO COMPUTADORA: PASO 5 REAL DE STUDIO.HTML (LAS 8 PROPUESTAS DE CASA LOTERÍA)
     // =========================================================================
     return `
       <div class="tbb-home-device-stage-centered">
@@ -2339,20 +2320,19 @@
             <span class="dot red"></span>
             <span class="dot yellow"></span>
             <span class="dot green"></span>
-            <span class="tbb-home-desktop-url">https://thebestbrand.app/studio#step-5 · Paso 5 de 6 · Estudio de Logotipo The Best Brand</span>
-            <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="margin-left:auto; background:#FF7A00; color:#FFFFFF; border:none; border-radius:999px; padding:4px 12px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
-              Interactuar con /studio en Vivo Aquí →
+            <span class="tbb-home-desktop-url">https://thebestbrand.app/studio?brand=casa_loteria&amp;step=5 · Caso Real: Restaurante Mexicano Modernista «CASA LOTERÍA» (Estrella Michelin)</span>
+            <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="margin-left:auto; background:#C85A32; color:#FFFFFF; border:none; border-radius:999px; padding:4px 12px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
+              Interactuar con «CASA LOTERÍA» en Vivo Aquí →
             </button>
           </div>
 
-          <div class="tbb-home-device-screen" style="background:#FAF8F5; color:#090D16; padding:16px; gap:12px;">
-            <!-- Cabecera Exacta de studio.html (líneas 4560-4582) -->
-            <div style="background:#090D16; color:#FFFFFF; border-radius:16px; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; border:1.5px solid #D4AF37;">
+          <div class="tbb-home-device-screen" style="background:#FAF6F0; color:#14110F; padding:16px; gap:12px;">
+            <div style="background:#14110F; color:#FFFFFF; border-radius:16px; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; border:1.5px solid #D4AF37;">
               <div style="display:flex; align-items:center; gap:12px;">
                 <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:28px; height:28px;" />
                 <div style="text-align:left;">
-                  <div style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · ESTUDIO DE LOGOTIPO THE BEST BRAND (VISTA COMPUTADORA)</div>
-                  <div style="font-family:'Montserrat',sans-serif; font-size:1.0rem; font-weight:900; color:#FFFFFF;">Diseña y Elige el Logotipo Oficial de <span style="color:#FDE68A;">Tu Marca</span></div>
+                  <div style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · ENSAYO REAL DE MARCA DESDE CERO (SIN NOMBRE INICIAL → «CASA LOTERÍA»)</div>
+                  <div style="font-family:'Cormorant Garamond',serif; font-size:1.12rem; font-weight:700; color:#FFFFFF;">8 Propuestas Vectoriales para <span style="color:#FDE68A;">CASA LOTERÍA</span> (Cocina Mexicana Modernista · Estrella Michelin)</div>
                 </div>
               </div>
               ${renderSubscreenSwitchBar(false)}
@@ -2361,26 +2341,24 @@
             ${subScreen === "5A"
               ? renderRealScreen5AContent(false)
               : `
-                <!-- Barra Paso 1 (Tu Punto de Partida) + Paso 2 (Las 8 Propuestas 520x310 Reales de renderSynthesizedFinalLogoProposalsGrid) -->
-                <div style="background:#FFFFFF; border:1.5px solid rgba(9,13,22,0.12); border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; text-align:left;">
+                <div style="background:#FFFFFF; border:1.5px solid rgba(20,17,15,0.12); border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; text-align:left;">
                   <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:900; color:#FFFFFF; background:#090D16; border:1px solid #D4AF37; padding:4px 10px; border-radius:999px;">
-                      PASO 2 · ELIGE TU LOGOTIPO O PIDE 8 VARIACIONES DE TU FAVORITO
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:900; color:#FAF6F0; background:#14110F; border:1px solid #D4AF37; padding:4px 10px; border-radius:999px;">
+                      PASO 2 · 8 ARQUETIPOS CREADOS A MEDIDA PARA EL RESTAURANTE (LOTERÍA · BARRO · COMAL · MICHELIN)
                     </span>
-                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; background:#DCFCE7; color:#15803D; padding:3px 9px; border-radius:999px; font-weight:800;">
-                      8 Propuestas Listas (Vectores .SVG 520×310 Reales de la App)
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; background:#FFF7ED; color:#9A3412; border:1px solid #FDBA74; padding:3px 9px; border-radius:999px; font-weight:800;">
+                      8 Vectores .SVG Reales en Curvas Bézier
                     </span>
                   </div>
                   <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
                     <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:800; color:#475569;">AFINAR SELECCIONADO (${escHtml(selectedLogoObj.shortCode)}):</span>
-                    <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fino</button>
-                    <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fuerte</button>
-                    <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#090D16' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Marco de escudo</button>
-                    <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#FF7A00' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Invertir fondo</button>
+                    <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fino</button>
+                    <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fuerte</button>
+                    <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Marco Lotería</button>
+                    <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#C85A32' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Invertir fondo</button>
                   </div>
                 </div>
 
-                <!-- Grid Exacto de las 8 Propuestas Reales de studio.html (#01 Pentagram Lockup Totémico a #08 Lockup Panorámico Nocturno) -->
                 <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;">
                   ${TBB_MOCKUP_LOGO_PROPOSALS.map((item) => renderRealAppLogoLockupCard(item, false)).join("")}
                 </div>
@@ -3716,9 +3694,16 @@
     `;
   };
 
-  // VISOR MODAL DE CÁPSULAS EXPLICATIVAS EN EL IDIOMA ACTIVO (ES, EN, FR, PT, DE, IT CON FALLBACK AUTOMÁTICO)
-  window.tbbOpenVideoPopupModal = function (stepIdx) {
+  // VISOR MODAL DE CÁPSULAS EXPLICATIVAS EN EL IDIOMA ACTIVO (ES, EN, FR, PT, DE, IT CON SELECTOR INTERACTIVO Y FALLBACK CDN)
+  window.tbbOpenVideoPopupModal = function (stepIdx, langOverride) {
     const s = Math.max(0, Math.min(6, Number(stepIdx) || 0));
+    if (langOverride && ["es", "en", "fr", "pt", "de", "it"].includes(String(langOverride).toLowerCase())) {
+      const targetLang = String(langOverride).toLowerCase();
+      if (window.tbbCommercialDemoState) {
+        window.tbbCommercialDemoState.lang = targetLang;
+      }
+      try { localStorage.setItem("tbb_commercial_lang", targetLang); } catch (e) {}
+    }
     const l = getLang();
     if (window.tbbCommercialDemoState) {
       window.tbbCommercialDemoState.openVideoModalStep = s;
@@ -3738,19 +3723,36 @@
     const posterUrl = getLocalizedStepPosterUrl(s, l);
     const sfx = l === "es" ? "" : `_${l}`;
     const fbVidUrl = resolveVideoAssetFallback(`/assets/videos/capsula_teoria_paso_${s}${sfx}.mp4`);
+    const modalLangs = [
+      { code: "es", label: "ES · Español" },
+      { code: "en", label: "EN · English" },
+      { code: "fr", label: "FR · Français" },
+      { code: "pt", label: "PT · Português" },
+      { code: "de", label: "DE · Deutsch" },
+      { code: "it", label: "IT · Italiano" }
+    ];
 
     ov.innerHTML = `
       <div class="tbb-video-modal-card" onclick="event.stopPropagation()">
-        <div class="tbb-video-modal-head">
+        <div class="tbb-video-modal-head" style="flex-wrap:wrap; gap:10px;">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <span class="tbb-eyebrow-pill" style="margin:0;">${TBB_ICONS.play} <span>THE BEST BRAND · ${escHtml(stepUpperForLang(s))} (${l.toUpperCase()})</span></span>
-            <div style="display:flex; gap:5px; flex-wrap:wrap;">
+            <div style="display:flex; gap:5px; flex-wrap:wrap;" title="Seleccionar Paso (00 - 06)">
               ${[0, 1, 2, 3, 4, 5, 6].map((idx) => `
                 <button
                   type="button"
-                  onclick="window.tbbOpenVideoPopupModal(${idx})"
+                  onclick="window.tbbOpenVideoPopupModal(${idx}, '${l}')"
                   style="padding:4px 10px; border-radius:999px; border:1px solid ${idx === s ? '#FF7A00' : '#CBD5E1'}; background:${idx === s ? '#0D2540' : '#F8FAFC'}; color:${idx === s ? '#FFFFFF' : '#0D2540'}; font-size:0.74rem; font-weight:700; cursor:pointer;"
                 >0${idx}</button>
+              `).join("")}
+            </div>
+            <div style="display:flex; gap:4px; flex-wrap:wrap; padding-left:6px; border-left:1px solid #CBD5E1;" title="Idioma del Video (Avatar Multilingüe)">
+              ${modalLangs.map((ml) => `
+                <button
+                  type="button"
+                  onclick="window.tbbOpenVideoPopupModal(${s}, '${ml.code}')"
+                  style="padding:4px 9px; border-radius:999px; border:1px solid ${ml.code === l ? '#FF7A00' : '#CBD5E1'}; background:${ml.code === l ? '#FF7A00' : '#FFFFFF'}; color:${ml.code === l ? '#FFFFFF' : '#0D2540'}; font-size:0.72rem; font-weight:800; cursor:pointer;"
+                >${ml.label}</button>
               `).join("")}
             </div>
           </div>
@@ -3760,27 +3762,37 @@
         </div>
 
         <div class="tbb-video-modal-body-grid">
-          <div class="tbb-video-modal-player-box">
+          <div class="tbb-video-modal-player-box" style="position:relative; overflow:hidden;">
+            <img
+              id="tbbPopupCapsulePosterOv"
+              src="${escHtml(posterUrl)}"
+              alt="Cápsula Ejecutiva"
+              style="position:absolute; inset:0 0 46px 0; width:100%; height:calc(100% - 46px); object-fit:cover; pointer-events:none; transition:opacity 0.25s ease; z-index:2;"
+            />
             <video
               id="tbbPopupCapsuleVideoEl"
               controls
               autoplay
               playsinline
-              preload="auto"
+              preload="metadata"
+              src="${escHtml(vidUrl)}"
               poster="${escHtml(posterUrl)}"
+              onloadedmetadata="this.playbackRate=1.0; this.defaultPlaybackRate=1.0;"
+              ontimeupdate="const ov=document.getElementById('tbbPopupCapsulePosterOv'); if(ov && this.currentTime>0.08 && !this.paused){ov.style.opacity='0';}"
+              onpause="const ov=document.getElementById('tbbPopupCapsulePosterOv'); if(ov && this.currentTime<0.08){ov.style.opacity='1';}"
               onerror="if(!this.dataset.fb){this.dataset.fb='1'; this.src='${escHtml(fbVidUrl)}'; this.load(); this.play().catch(()=>{});}"
-            >
-              <source src="${escHtml(vidUrl)}" type="video/mp4" />
-              <source src="${escHtml(fbVidUrl)}" type="video/mp4" />
-            </video>
+            ></video>
           </div>
           <div class="tbb-video-modal-info-col">
             <span class="tbb-scrolly-theory-tag">${escHtml(cap.author)}</span>
             <h3>${escHtml(cap.title)}</h3>
             <p>${escHtml(cap.summary)}</p>
+            <div style="padding:10px 12px; border-radius:12px; background:#F8FAFC; border:1px solid #E2E8F0; font-size:0.76rem; color:#334155;">
+              <strong style="color:#0D2540;">Audio &amp; Video Nativo (${l.toUpperCase()}):</strong> Velocidad <code>1.0x</code> certificada · Disponible en 6 idiomas (ES, EN, FR, PT, DE, IT).
+            </div>
             <div style="display:flex; flex-direction:column; gap:10px; margin-top:auto;">
               ${s < 6 ? `
-                <button type="button" class="tbb-btn-primary-vibrant" onclick="window.tbbOpenVideoPopupModal(${s + 1})">
+                <button type="button" class="tbb-btn-primary-vibrant" onclick="window.tbbOpenVideoPopupModal(${s + 1}, '${l}')">
                   <span>${escHtml(stepLabelForLang(s + 1))}</span>
                   ${TBB_ICONS.arrowRight}
                 </button>
@@ -3799,6 +3811,12 @@
       </div>
     `;
     ov.classList.add("open");
+    const vEl = document.getElementById("tbbPopupCapsuleVideoEl");
+    if (vEl) {
+      vEl.defaultPlaybackRate = 1.0;
+      vEl.playbackRate = 1.0;
+      vEl.play().catch(() => {});
+    }
   };
 
   window.tbbCloseVideoPopupModal = function () {

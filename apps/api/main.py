@@ -23,7 +23,7 @@ except ImportError:
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../packages/brandbook-engine")))
 
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse, Response
+from fastapi.responses import HTMLResponse, JSONResponse, Response, FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -81,6 +81,20 @@ app.add_middleware(
 
 _ASSETS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/assets"))
 os.makedirs(_ASSETS_DIR, exist_ok=True)
+_JSDELIVR_WEB_BASE = "https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@main/apps/web"
+
+
+@app.get("/assets/videos/{video_file}")
+def serve_video_asset_with_cdn_fallback(video_file: str):
+    safe_name = os.path.basename(video_file)
+    local_vpath = os.path.join(_ASSETS_DIR, "videos", safe_name)
+    if os.path.isfile(local_vpath) and os.path.getsize(local_vpath) > 1000:
+        media_type = "video/mp4" if safe_name.endswith(".mp4") else ("image/jpeg" if safe_name.endswith(".jpg") else "application/octet-stream")
+        return FileResponse(local_vpath, media_type=media_type)
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url=f"{_JSDELIVR_WEB_BASE}/assets/videos/{safe_name}", status_code=307)
+
+
 app.mount("/assets", StaticFiles(directory=_ASSETS_DIR), name="assets")
 
 _BRANDBOOKS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../entregables_brandbooks"))
@@ -383,8 +397,12 @@ def run_kansei_qtt1_synthesis(req: Step4SynthesizeRequest):
 
 
 @app.get("/api/step-video/{step_id}")
-def get_step_intro_video(step_id: int):
+def get_step_intro_video(step_id: int, lang: str = "es"):
     s_id = max(0, min(6, int(step_id)))
+    clean_lang = (lang or "es").strip().lower()[:2]
+    if clean_lang not in ("es", "en", "fr", "pt", "de", "it"):
+        clean_lang = "es"
+    sfx = "" if clean_lang == "es" else f"_{clean_lang}"
     manifest_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/assets/videos/capsules_manifest.json"))
     capsule_data = None
     try:
@@ -400,27 +418,25 @@ def get_step_intro_video(step_id: int):
         capsule_data = None
 
     fallback = LiveGeminiSocraticBrain.STEP_INTRO_VIDEOS.get(s_id, LiveGeminiSocraticBrain.STEP_INTRO_VIDEOS.get(1, {}))
-    video_map = {
-        0: "/assets/videos/capsule_step_0_intro.mp4?v=93.0",
-        1: "/assets/videos/capsule_step_1_to_2.mp4?v=93.0",
-        2: "/assets/videos/capsule_step_2_to_3.mp4?v=93.0",
-        3: "/assets/videos/capsule_step_3_to_4.mp4?v=93.0",
-        4: "/assets/videos/capsule_step_4_to_5.mp4?v=93.0",
-        5: "/assets/videos/capsule_step_5_to_6.mp4?v=93.0",
-        6: "/assets/videos/capsule_step_6_to_7.mp4?v=93.0",
-    }
-    video_url = video_map.get(s_id, f"/assets/videos/capsula_teoria_paso_{s_id}.mp4?v=93.0")
-    poster_url = f"/assets/videos/poster_paso_{s_id}.jpg?v=93.0"
+    rel_vid = f"/assets/videos/capsula_teoria_paso_{s_id}{sfx}.mp4"
+    rel_poster = f"/assets/videos/poster_paso_{s_id}{sfx}.jpg"
+    video_url = f"{rel_vid}?v=111.0"
+    cdn_video_url = f"{_JSDELIVR_WEB_BASE}{rel_vid}"
+    poster_url = f"{rel_poster}?v=111.0"
+    cdn_poster_url = f"{_JSDELIVR_WEB_BASE}{rel_poster}"
     scenes = (capsule_data or {}).get("scenes", [])
     exact_script = " ".join([sc.get("narration", "") for sc in scenes if sc.get("narration")]).strip()
     return {
         "status": "ok",
         "step": s_id,
+        "lang": clean_lang,
         "video_url": video_url,
+        "cdn_video_url": cdn_video_url,
         "poster_url": poster_url,
-        "heygen_synchronized": True,
+        "cdn_poster_url": cdn_poster_url,
+        "synchronized": True,
         "google_flow_broll": True,
-        "production_engine": (capsule_data or {}).get("production_engine", "HeyGen Founder Avatar (Jorge Improbears) + Google Flow Dynamic B-Rolls"),
+        "production_engine": "The Best Brand Executive Avatar (Jorge Benítez) + Dynamic B-Rolls",
         "clips": scenes,
         "exact_script": exact_script,
         "capsule": capsule_data,
@@ -429,7 +445,9 @@ def get_step_intro_video(step_id: int):
             "title": (capsule_data or {}).get("title") or (fallback if isinstance(fallback, dict) else {}).get("title", ""),
             "narration": exact_script or (fallback if isinstance(fallback, dict) else {}).get("narration", ""),
             "video_url": video_url,
+            "cdn_video_url": cdn_video_url,
             "poster_url": poster_url,
+            "cdn_poster_url": cdn_poster_url,
             "capsule_manifest": capsule_data
         }
     }
