@@ -14,6 +14,7 @@ import os
 import base64
 import time as _time
 import json
+import subprocess
 try:
     from dotenv import load_dotenv
     load_dotenv()
