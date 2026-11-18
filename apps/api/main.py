@@ -82,7 +82,10 @@ app.add_middleware(
 
 _ASSETS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/assets"))
 os.makedirs(_ASSETS_DIR, exist_ok=True)
+_SAMPLES_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/samples"))
+os.makedirs(_SAMPLES_DIR, exist_ok=True)
 _JSDELIVR_WEB_BASE = "https://cdn.jsdelivr.net/gh/ImprobearsIA/thebestbrand@main/apps/web"
+_RAW_GH_WEB_BASE = "https://raw.githubusercontent.com/ImprobearsIA/thebestbrand/main/apps/web"
 
 
 @app.get("/assets/videos/{video_file}")
@@ -96,6 +99,19 @@ def serve_video_asset_with_cdn_fallback(video_file: str):
     return RedirectResponse(url=f"{_JSDELIVR_WEB_BASE}/assets/videos/{safe_name}", status_code=307)
 
 
+@app.get("/samples/{sample_file}")
+@app.get("/assets/samples/{sample_file}")
+def serve_sample_asset_with_fallback(sample_file: str):
+    safe_name = os.path.basename(sample_file)
+    for base_dir in (_SAMPLES_DIR, os.path.join(_ASSETS_DIR, "samples")):
+        local_spath = os.path.join(base_dir, safe_name)
+        if os.path.isfile(local_spath) and os.path.getsize(local_spath) > 50:
+            return FileResponse(local_spath)
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url=f"{_RAW_GH_WEB_BASE}/samples/{safe_name}", status_code=307)
+
+
+app.mount("/samples", StaticFiles(directory=_SAMPLES_DIR), name="samples")
 app.mount("/assets", StaticFiles(directory=_ASSETS_DIR), name="assets")
 
 _BRANDBOOKS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../entregables_brandbooks"))

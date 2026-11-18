@@ -443,6 +443,129 @@
       .replace(/"/g, "&quot;");
   }
 
+  const TBB_GH_RAW_BASE = "https://raw.githubusercontent.com/ImprobearsIA/thebestbrand/main/apps/web";
+
+  function isLocalHostEnv() {
+    try {
+      const h = (window.location && window.location.hostname) || "";
+      return h === "localhost" || h === "127.0.0.1" || h.startsWith("192.168.");
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function normalizeSampleAssetPath(relPath) {
+    const clean = String(relPath || "").split("?")[0];
+    if (clean.startsWith("/samples/")) {
+      return "/assets" + clean;
+    }
+    return clean;
+  }
+
+  function tbbImgSrc(relPath) {
+    const clean = normalizeSampleAssetPath(relPath);
+    if (!clean) return "";
+    if (!isLocalHostEnv() && (clean.startsWith("/assets/") || clean.startsWith("/samples/"))) {
+      return `${TBB_GH_RAW_BASE}${clean}?v=${ASSET_VERSION}`;
+    }
+    return `${clean}?v=${ASSET_VERSION}`;
+  }
+  window.tbbImgSrc = tbbImgSrc;
+
+  window.tbbImgFallback = function (imgEl, origPath) {
+    if (!imgEl) return;
+    const step = Number(imgEl.dataset.tbbFbStep || "0");
+    if (step >= 2) return;
+    imgEl.dataset.tbbFbStep = String(step + 1);
+    const rawAttr = origPath || imgEl.getAttribute("data-orig-src") || imgEl.getAttribute("src") || "";
+    const clean = normalizeSampleAssetPath(rawAttr.replace(TBB_GH_RAW_BASE, ""));
+    if (!clean.startsWith("/")) return;
+    if (step === 0) {
+      imgEl.src = isLocalHostEnv()
+        ? `${TBB_GH_RAW_BASE}${clean}?v=${ASSET_VERSION}`
+        : `${clean}?v=${ASSET_VERSION}`;
+    } else {
+      imgEl.src = `${TBB_GH_RAW_BASE}${clean.replace(/^\/assets\/samples\//, "/samples/")}?v=${ASSET_VERSION}`;
+    }
+  };
+
+  function getMimeForSample(fileName) {
+    const lower = String(fileName || "").toLowerCase();
+    if (lower.endsWith(".pdf")) return "application/pdf";
+    if (lower.endsWith(".html")) return "text/html;charset=utf-8";
+    if (lower.endsWith(".svg")) return "image/svg+xml";
+    if (lower.endsWith(".png")) return "image/png";
+    if (lower.endsWith(".json")) return "application/json;charset=utf-8";
+    if (lower.endsWith(".zip")) return "application/zip";
+    if (lower.endsWith(".docx")) return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    if (lower.endsWith(".pptx")) return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    if (lower.endsWith(".ai")) return "application/postscript";
+    return "application/octet-stream";
+  }
+
+  window.tbbHandleSampleClick = async function (ev, anchorEl) {
+    try {
+      if (!anchorEl) return true;
+      const href = anchorEl.getAttribute("href") || "";
+      if (!href) return true;
+      const clean = normalizeSampleAssetPath(href);
+      const fileName = clean.split("/").pop() || "entregable_arco";
+      const isDownload = anchorEl.hasAttribute("download");
+      const isViewable = fileName.endsWith(".pdf") || fileName.endsWith(".html");
+
+      // En localhost los archivos existen directamente en disco
+      if (isLocalHostEnv()) return true;
+
+      if (ev) ev.preventDefault();
+      // Verificar si el servidor ya sincronizó /assets/samples/...
+      let targetUrl = clean;
+      let localOk = false;
+      try {
+        const headResp = await fetch(clean, { method: "HEAD" });
+        if (headResp.ok) localOk = true;
+      } catch (e) {}
+
+      if (localOk) {
+        if (isDownload && !isViewable) {
+          const a = document.createElement("a");
+          a.href = clean;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        } else {
+          window.open(clean, "_blank", "noopener");
+        }
+        return false;
+      }
+
+      // Fallback desde GitHub Raw con MIME Blob nativo (Cero 404 incluso antes de sync en disco)
+      const ghUrl = `${TBB_GH_RAW_BASE}/samples/${fileName}`;
+      const resp = await fetch(ghUrl);
+      if (!resp.ok) {
+        window.open(ghUrl, "_blank", "noopener");
+        return false;
+      }
+      const buf = await resp.arrayBuffer();
+      const blob = new Blob([buf], { type: getMimeForSample(fileName) });
+      const blobUrl = URL.createObjectURL(blob);
+      if (isDownload && !isViewable) {
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } else {
+        window.open(blobUrl, "_blank", "noopener");
+      }
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+      return false;
+    } catch (err) {
+      return true;
+    }
+  };
+
   function resolveVideoAsset(relPath) {
     return `${relPath}?v=${ASSET_VERSION}`;
   }
@@ -460,7 +583,7 @@
   }
 
   function getLocalizedStepPosterUrl() {
-    return `/assets/app_captures/arco_04_capsula_aura_animada_paso0_a_1.png?v=${ASSET_VERSION}`;
+    return tbbImgSrc("/assets/app_captures/arco_04_capsula_aura_animada_paso0_a_1.png");
   }
 
   function getLocalizedHeroVideoUrl(langOverride) {
@@ -476,7 +599,7 @@
   }
 
   function getLocalizedAppCaptureUrl(relPath) {
-    return `${relPath}?v=${ASSET_VERSION}`;
+    return tbbImgSrc(relPath);
   }
 
   function stepLabelForLang(stepNum, isIntro) {
@@ -566,62 +689,62 @@
     };
   });
 
-  // Datos para el App Tour (Scrollytelling en iPhone + Recortes Precisos + Bloques Flotantes)
+  // Datos para el App Tour (Scrollytelling en iPhone + Capturas Reales de ARCO Ingeniería · Ing. Luis Ponce)
   const APP_TOUR_STEPS = [
     {
       step: 0,
-      captureBase: "/assets/app_captures/step0_logo_aura.png",
+      captureBase: "/assets/app_captures/arco_02_paso0_2_nombre_y_logo_actual_modernizar.png",
       cutoutFocus: "top-center",
       accent: "#426EAE",
       theoryTag: "DRUCKER · AAKER · HAVIV",
       i18n: {
         es: {
-          badge: "PASO 00 · PUNTO DE PARTIDA Y CAPITAL VISUAL",
+          badge: "PASO 00 · PUNTO DE PARTIDA Y CAPITAL VISUAL (CASO ARCO INGENIERÍA)",
           title: "Diagnóstico Inicial: Crear desde Cero, Evolucionar tu Logo o Crear Submarcas",
-          body: "Dentro de la aplicación, Aura te recibe en tiempo real. Puedes cargar tu logotipo actual para conservar o evolucionar su capital visual, describir el giro exacto de tu negocio y activar tu arquitectura de submarcas.",
-          cutoutLabel: "RECORTE DE INTERFAZ 00 · CARGA DE LOGO BASE Y SELECTOR DE OBJETIVO",
-          floatingNote: "Aura extrae la paleta cromática de tu logo actual y personaliza todo el cuestionario según tu giro."
+          body: "Dentro de la aplicación, Aura te recibe en tiempo real. Puedes cargar tu logotipo actual (como el logo original de ARCO Ingeniería subido por el Ing. Luis Ponce) para conservar o evolucionar su capital visual, describir el giro exacto de tu negocio y activar tu arquitectura.",
+          cutoutLabel: "CAPTURA REAL PASO 0.2 · CARGA DE LOGO BASE «ARCO INGENIERÍA» Y MODO MODERNIZAR",
+          floatingNote: "Aura extrae la paleta cromática de tu logo actual (#0078C0, #88E0E0, #585850) y personaliza todo el cuestionario según tu giro."
         },
         en: {
-          badge: "STEP 00 · STARTING POINT & VISUAL EQUITY",
+          badge: "STEP 00 · STARTING POINT & VISUAL EQUITY (ARCO INGENIERÍA CASE)",
           title: "Initial Diagnosis: Build from Scratch, Evolve Your Logo, or Create Sub-brands",
-          body: "Inside the app, Aura welcomes you in real time. Upload your current logo to preserve or evolve its visual equity, describe your exact business sector, and enable sub-brand architecture.",
-          cutoutLabel: "UI PRECISION CUTOUT 00 · BASE LOGO UPLOAD & OBJECTIVE SELECTOR",
+          body: "Inside the app, Aura welcomes you in real time. Upload your current logo (like ARCO Ingeniería's original logo uploaded by Eng. Luis Ponce) to preserve or evolve its visual equity, describe your exact business sector, and enable sub-brand architecture.",
+          cutoutLabel: "REAL CAPTURE STEP 0.2 · BASE LOGO UPLOAD «ARCO INGENIERÍA» & MODERNIZE MODE",
           floatingNote: "Aura extracts the color palette from your existing logo and tailors every question to your business line."
         },
         fr: {
           badge: "ÉTAPE 00 · POINT DE DÉPART ET CAPITAL VISUEL",
           title: "Diagnostic Initial : Créer de Zéro, Faire Évoluer Votre Logo ou Créer des Sous-marques",
           body: "Dans l'application, Aura vous accueille en temps réel. Importez votre logo actuel pour préserver ou faire évoluer son capital visuel, décrivez votre secteur d'activité et activez vos sous-marques.",
-          cutoutLabel: "DÉCOUPE UI 00 · IMPORT DU LOGO ACTUEL ET SÉLECTEUR D'OBJECTIF",
+          cutoutLabel: "CAPTURE RÉELLE 0.2 · IMPORT DU LOGO ACTUEL ARCO INGENIERÍA",
           floatingNote: "Aura extrait la palette de votre logo actuel et personnalise tout le parcours selon votre secteur."
         },
         pt: {
           badge: "PASSO 00 · PONTO DE PARTIDA E PATRIMÓNIO VISUAL",
           title: "Diagnóstico Inicial: Criar do Zero, Evoluir o Seu Logo ou Criar Submarcas",
           body: "Na aplicação, a Aura recebe-o em tempo real. Carregue o seu logótipo atual para preservar ou evoluir o seu património visual, descreva o seu ramo de negócio e ative a arquitetura de submarcas.",
-          cutoutLabel: "RECORTE UI 00 · CARREGAMENTO DE LOGO BASE E SELETOR DE OBJETIVO",
+          cutoutLabel: "CAPTURA REAL 0.2 · CARREGAMENTO DE LOGO BASE ARCO INGENIERÍA",
           floatingNote: "A Aura extrai a paleta cromática do seu logo atual e adapta todo o percurso ao seu ramo."
         },
         de: {
           badge: "SCHRITT 00 · AUSGANGSPUNKT & VISUELLES KAPITAL",
           title: "Erstdiagnose: Neu Starten, Logo Weiterentwickeln oder Submarken Aufbauen",
           body: "In der App empfängt Sie Aura in Echtzeit. Laden Sie Ihr bestehendes Logo hoch, beschreiben Sie Ihr Geschäftsfeld und aktivieren Sie bei Bedarf Ihre Submarken-Architektur.",
-          cutoutLabel: "UI-AUSSCHNITT 00 · LOGO-UPLOAD & ZIELAUSWAHL",
+          cutoutLabel: "ECHTER SCREENSHOT 0.2 · LOGO-UPLOAD ARCO INGENIERÍA",
           floatingNote: "Aura extrahiert die Farbpalette Ihres Logos und passt alle Fragen an Ihre Branche an."
         },
         it: {
           badge: "PASSO 00 · PUNTO DI PARTENZA E CAPITALE VISIVO",
           title: "Diagnosi Iniziale: Creare da Zero, Evolvere il Logo o Creare Sub-brand",
           body: "Nell'app, Aura ti accoglie in tempo reale. Carica il tuo logo attuale per preservarne o evolverne il capitale visivo, descrivi il tuo settore e attiva l'architettura dei sub-brand.",
-          cutoutLabel: "RITAGLIO UI 00 · CARICAMENTO LOGO BASE E SELETTORE OBIETTIVO",
+          cutoutLabel: "SCREENSHOT REALE 0.2 · CARICAMENTO LOGO BASE ARCO INGENIERÍA",
           floatingNote: "Aura estrae la palette cromatica dal tuo logo attuale e personalizza l'intero percorso."
         }
       }
     },
     {
       step: 1,
-      captureBase: "/assets/app_captures/step1_golden_circle.png",
+      captureBase: "/assets/app_captures/arco_05_paso1_1_proposito_why_sinek.png",
       cutoutFocus: "center",
       accent: "#FF7A00",
       theoryTag: "SIMON SINEK · EL CÍRCULO DORADO",
@@ -629,50 +752,50 @@
         es: {
           badge: "PASO 01 · EL CÍRCULO DORADO Y PROMESA DE VALOR",
           title: "Del Porqué Nuclear a tu Método en 3 Pasos y la Empresa como Persona",
-          body: "A través de una entrevista socrática por voz o texto, Aura estructura tu Círculo Dorado (Why → How → What), sintetiza tu promesa única de valor y define la personalidad humana de tu marca.",
-          cutoutLabel: "RECORTE DE INTERFAZ 01 · LIENZO DEL CÍRCULO DORADO Y VOZ DE AURA",
+          body: "A través de una entrevista socrática por voz o texto, Aura estructura tu Círculo Dorado (Why → How → What), sintetiza tu promesa única de valor y emite un dictamen estratégico en vivo basado específicamente en tu empresa.",
+          cutoutLabel: "CAPTURA REAL PASO 1.1 · PROPÓSITO NUCLEAR (WHY) DE ARCO INGENIERÍA Y DICTAMEN SINEK",
           floatingNote: "Las primeras 8 páginas estratégicas de tu Brandbook se estructuran automáticamente al completar este paso."
         },
         en: {
           badge: "STEP 01 · THE GOLDEN CIRCLE & VALUE PROMISE",
           title: "From Core Why to Your 3-Step Method & The Company as a Person",
           body: "Through a Socratic voice or text interview, Aura structures your Golden Circle (Why → How → What), synthesizes your value promise, and defines your brand's human personality.",
-          cutoutLabel: "UI PRECISION CUTOUT 01 · GOLDEN CIRCLE CANVAS & AURA VOICE",
+          cutoutLabel: "REAL CAPTURE STEP 1.1 · GOLDEN CIRCLE CANVAS & AURA AI VERDICT",
           floatingNote: "The first 8 strategic pages of your Brandbook are structured automatically upon completing this step."
         },
         fr: {
           badge: "ÉTAPE 01 · LE CERCLE D'OR ET PROMESSE DE VALEUR",
           title: "Du Pourquoi Nucléaire à Votre Méthode en 3 Étapes et l'Entreprise comme Personne",
           body: "Par entretien socratique vocal ou écrit, Aura structure votre Cercle d'Or (Why → How → What), synthétise votre promesse de valeur et définit la personnalité humaine de votre marque.",
-          cutoutLabel: "DÉCOUPE UI 01 · CANEVAS DU CERCLE D'OR ET VOIX D'AURA",
+          cutoutLabel: "CAPTURE RÉELLE 1.1 · CANEVAS DU CERCLE D'OR ARCO INGENIERÍA",
           floatingNote: "Les 8 premières pages stratégiques de votre Brandbook sont structurées automatiquement."
         },
         pt: {
           badge: "PASSO 01 · O CÍRCULO DOURADO E PROMESSA DE VALOR",
           title: "Do Porquê Nuclear ao Método em 3 Passos e a Empresa como Pessoa",
           body: "Através de uma entrevista socrática por voz ou texto, a Aura estrutura o seu Círculo Dourado (Why → How → What), sintetiza a sua promessa de valor e define a personalidade da marca.",
-          cutoutLabel: "RECORTE UI 01 · TELA DO CÍRCULO DOURADO E VOZ DA AURA",
+          cutoutLabel: "CAPTURA REAL 1.1 · TELA DO CÍRCULO DOURADO ARCO INGENIERÍA",
           floatingNote: "As primeiras 8 páginas estratégicas do seu Brandbook são estruturadas automaticamente."
         },
         de: {
           badge: "SCHRITT 01 · DER GOLDEN CIRCLE & WERTVERSPRECHEN",
           title: "Vom Kern-Warum zur 3-Schritte-Methode & dem Unternehmen als Person",
           body: "Im sokratischen Sprach- oder Textdialog strukturiert Aura Ihren Golden Circle (Why → How → What), Ihr Wertversprechen und die menschliche Markenpersönlichkeit.",
-          cutoutLabel: "UI-AUSSCHNITT 01 · GOLDEN-CIRCLE-CANVAS & AURA-STIMME",
+          cutoutLabel: "ECHTER SCREENSHOT 1.1 · GOLDEN-CIRCLE-CANVAS ARCO INGENIERÍA",
           floatingNote: "Die ersten 8 strategischen Seiten Ihres Brandbooks werden automatisch aufgebaut."
         },
         it: {
           badge: "PASSO 01 · IL CERCHIO D'ORO E PROMESSA DI VALORE",
           title: "Dal Perché Centrale al Metodo in 3 Passi e l'Azienda come Persona",
           body: "Attraverso un'intervista socratica vocale o testuale, Aura struttura il tuo Cerchio d'Oro (Why → How → What), sintetizza la promessa di valore e definisce la personalità del brand.",
-          cutoutLabel: "RITAGLIO UI 01 · CANVAS DEL CERCHIO D'ORO E VOCE DI AURA",
+          cutoutLabel: "SCREENSHOT REALE 1.1 · CANVAS DEL CERCHIO D'ORO ARCO INGENIERÍA",
           floatingNote: "Le prime 8 pagine strategiche del tuo Brandbook vengono strutturate automaticamente."
         }
       }
     },
     {
       step: 2,
-      captureBase: "/assets/app_captures/step2_touchpoints.png",
+      captureBase: "/assets/app_captures/arco_12_paso2_1_touchpoints_antes_carlzon.png",
       cutoutFocus: "center",
       accent: "#4C9DE6",
       theoryTag: "JAN CARLZON · MOMENTOS DE LA VERDAD",
@@ -680,247 +803,247 @@
         es: {
           badge: "PASO 02 · ARQUITECTURA DE TOUCHPOINTS REALES",
           title: "Mapeo Operativo Antes, Durante y Después de la Compra",
-          body: "Seleccionas con un toque los puntos de contacto reales donde tu cliente te descubre (Antes), vive tu servicio sin fricción (Durante) y regresa o te recomienda (Después).",
-          cutoutLabel: "RECORTE DE INTERFAZ 02 · MATRIZ INTERACTIVA ANTES · DURANTE · DESPUÉS",
-          floatingNote: "Cada touchpoint elegido determina las aplicaciones reales y mockups que incluirá tu Brandbook."
+          body: "Seleccionas y detallas los puntos de contacto reales donde tu cliente te descubre (Antes: Licitaciones, LinkedIn, Portafolio), vive tu servicio sin fricción (Durante: Cascos, Planos BIM, Reportes) y regresa o te recomienda (Después: Bitácora Post-Obra).",
+          cutoutLabel: "CAPTURA REAL PASO 2.1 · MATRIZ DE TOUCHPOINTS DE OBRA CIVIL (ARCO INGENIERÍA)",
+          floatingNote: "Cada touchpoint elegido determina las aplicaciones reales y mockups que incluirá tu Brandbook de 36 láminas."
         },
         en: {
           badge: "STEP 02 · REAL TOUCHPOINT ARCHITECTURE",
           title: "Operational Mapping Before, During & After the Purchase",
           body: "Select with one tap the real touchpoints where customers discover you (Before), experience zero-friction delivery (During), and return or refer you (After).",
-          cutoutLabel: "UI PRECISION CUTOUT 02 · INTERACTIVE BEFORE · DURING · AFTER MATRIX",
+          cutoutLabel: "REAL CAPTURE STEP 2.1 · INTERACTIVE BEFORE · DURING · AFTER MATRIX",
           floatingNote: "Every selected touchpoint dictates the real-world applications and mockups inside your Brandbook."
         },
         fr: {
           badge: "ÉTAPE 02 · ARCHITECTURE DES TOUCHPOINTS RÉELS",
           title: "Cartographie Opérationnelle Avant, Pendant et Après l'Achat",
           body: "Sélectionnez en un clic les points de contact réels où votre client vous découvre (Avant), vit une expérience sans friction (Pendant) et vous recommande (Après).",
-          cutoutLabel: "DÉCOUPE UI 02 · MATRICE INTERACTIVE AVANT · PENDANT · APRÈS",
+          cutoutLabel: "CAPTURE RÉELLE 2.1 · MATRICE INTERACTIVE AVANT · PENDANT · APRÈS",
           floatingNote: "Chaque touchpoint choisi détermine les applications et mockups intégrés à votre Brandbook."
         },
         pt: {
           badge: "PASSO 02 · ARQUITETURA DE TOUCHPOINTS REAIS",
           title: "Mapeamento Operacional Antes, Durante e Depois da Compra",
           body: "Selecione com um toque os pontos de contacto reais onde o cliente o descobre (Antes), vive o serviço sem fricção (Durante) e regressa ou recomenda (Depois).",
-          cutoutLabel: "RECORTE UI 02 · MATRIZ INTERATIVA ANTES · DURANTE · DEPOIS",
+          cutoutLabel: "CAPTURA REAL 2.1 · MATRIZ INTERATIVA ANTES · DURANTE · DEPOIS",
           floatingNote: "Cada touchpoint escolhido define as aplicações reais e mockups do seu Brandbook."
         },
         de: {
           badge: "SCHRITT 02 · ECHTE TOUCHPOINT-ARCHITEKTUR",
           title: "Operatives Mapping Vor, Während und Nach dem Kauf",
           body: "Wählen Sie die realen Kontaktpunkte, an denen Kunden Sie entdecken (Vorher), reibungslosen Service erleben (Während) und Sie weiterempfehlen (Nachher).",
-          cutoutLabel: "UI-AUSSCHNITT 02 · INTERAKTIVE VORHER · WÄHREND · NACHHER MATRIX",
+          cutoutLabel: "ECHTER SCREENSHOT 2.1 · INTERAKTIVE TOUCHPOINT-MATRIX",
           floatingNote: "Jeder gewählte Touchpoint steuert die realen Anwendungen und Mockups in Ihrem Brandbook."
         },
         it: {
           badge: "PASSO 02 · ARCHITETTURA DEI TOUCHPOINT REALI",
           title: "Mappatura Operativa Prima, Durante e Dopo l'Acquisto",
           body: "Seleziona con un tocco i punti di contatto reali in cui il cliente ti scopre (Prima), vive il servizio senza attrito (Durante) e ti consiglia (Dopo).",
-          cutoutLabel: "RITAGLIO UI 02 · MATRICE INTERATTIVA PRIMA · DURANTE · DOPO",
+          cutoutLabel: "SCREENSHOT REALE 2.1 · MATRICE INTERATTIVA PRIMA · DURANTE · DOPO",
           floatingNote: "Ogni touchpoint scelto determina le applicazioni reali e i mockup del tuo Brandbook."
         }
       }
     },
     {
       step: 3,
-      captureBase: "/assets/app_captures/step3_naming_nice.png",
+      captureBase: "/assets/app_captures/arco_17_paso3_3_confirmacion_eslogan_clase_niza37_ries_trout.png",
       cutoutFocus: "center",
       accent: "#0D2540",
       theoryTag: "ALEXANDRA WATKINS · MODELO SMILE & OMPI NIZA",
       i18n: {
         es: {
           badge: "PASO 03 · INGENIERÍA DE NAMING, FONÉTICA Y REGISTRO",
-          title: "Evaluación Acústica SMILE, Monograma 1:1 y Clases Internacionales de Niza",
-          body: "Confirmas tu nombre actual o generas candidatos fonéticos de 2 a 3 sílabas con evaluación SMILE, descriptor comercial y clasificación oficial de Niza para blindar tu registro.",
-          cutoutLabel: "RECORTE DE INTERFAZ 03 · AUDITORÍA FONÉTICA SMILE Y CLASES DE NIZA",
-          floatingNote: "Hasta aquí avanzas 100% gratis en la Demo en Vivo antes del desbloqueo del Paso 4 ($49 USD)."
+          title: "Evaluación Acústica SMILE, Eslogan Comercial y Clases Internacionales de Niza",
+          body: "Confirmas tu nombre actual (como «ARCO Ingeniería») o generas variantes fonéticas con evaluación SMILE, defines tu eslogan comercial y obtienes la clasificación oficial de Niza (Clases 37 y 42) para blindar tu registro.",
+          cutoutLabel: "CAPTURA REAL PASO 3.3 · CONFIRMACIÓN «ARCO INGENIERÍA» Y CLASES DE NIZA 37 / 42",
+          floatingNote: "Hasta aquí avanzas 100% gratis en la Demo en Vivo antes del desbloqueo del Paso 4."
         },
         en: {
           badge: "STEP 03 · NAMING ENGINEERING, PHONETICS & TRADEMARK",
           title: "SMILE Acoustic Scoring, 1:1 Monogram & WIPO Nice Classes",
           body: "Confirm your existing name or generate 2–3 syllable phonetic candidates with SMILE scoring, commercial tagline, and official Nice classes for trademark protection.",
-          cutoutLabel: "UI PRECISION CUTOUT 03 · SMILE PHONETIC AUDIT & NICE CLASSES",
-          floatingNote: "You advance 100% free through Step 3 in the Live Demo before the Step 4 Pro unlock ($49 USD)."
+          cutoutLabel: "REAL CAPTURE STEP 3.3 · SMILE PHONETIC AUDIT & NICE CLASSES 37 / 42",
+          floatingNote: "You advance 100% free through Step 3 in the Live Demo before the Step 4 Pro unlock."
         },
         fr: {
           badge: "ÉTAPE 03 · INGÉNIERIE DU NAMING, PHONÉTIQUE ET DÉPÔT",
           title: "Évaluation Acoustique SMILE, Monogramme 1:1 et Classes de Nice",
           body: "Confirmez votre nom actuel ou générez des candidats phonétiques avec score SMILE, slogan commercial et classification officielle OMPI de Nice.",
-          cutoutLabel: "DÉCOUPE UI 03 · AUDIT PHONÉTIQUE SMILE ET CLASSES DE NICE",
-          floatingNote: "Vous avancez gratuitement jusqu'à l'Étape 3 avant le déblocage Pro de l'Étape 4 (49 $ USD)."
+          cutoutLabel: "CAPTURE RÉELLE 3.3 · AUDIT PHONÉTIQUE SMILE ET CLASSES DE NICE",
+          floatingNote: "Vous avancez gratuitement jusqu'à l'Étape 3 avant le déblocage Pro de l'Étape 4."
         },
         pt: {
           badge: "PASSO 03 · ENGENHARIA DE NAMING, FONÉTICA E REGISTO",
           title: "Avaliação Acústica SMILE, Monograma 1:1 e Classes de Nice",
           body: "Confirme o seu nome atual ou gere candidatos fonéticos com avaliação SMILE, eslogan comercial e classificação oficial de Nice para proteção de marca.",
-          cutoutLabel: "RECORTE UI 03 · AUDITORIA FONÉTICA SMILE E CLASSES DE NICE",
-          floatingNote: "Avança 100% grátis até ao Passo 3 na Demo ao Vivo antes do desbloqueio do Passo 4 ($49 USD)."
+          cutoutLabel: "CAPTURA REAL 3.3 · AUDITORIA FONÉTICA SMILE E CLASSES DE NICE",
+          floatingNote: "Avança 100% grátis até ao Passo 3 na Demo ao Vivo antes do desbloqueio do Passo 4."
         },
         de: {
           badge: "SCHRITT 03 · NAMING-ENGINEERING, PHONETIK & MARKENSCHUTZ",
           title: "SMILE-Phonetik-Score, 1:1-Monogramm & Internationale Nizza-Klassen",
           body: "Bestätigen Sie Ihren Namen oder generieren Sie phonetisch starke Kandidaten mit SMILE-Bewertung, Slogan und offiziellen Nizza-Klassen.",
-          cutoutLabel: "UI-AUSSCHNITT 03 · SMILE-PHONETIK-AUDIT & NIZZA-KLASSEN",
-          floatingNote: "Bis Schritt 3 testen Sie in der Live-Demo kostenlos, bevor Schritt 4 ($49 USD) freigeschaltet wird."
+          cutoutLabel: "ECHTER SCREENSHOT 3.3 · SMILE-PHONETIK-AUDIT & NIZZA-KLASSEN",
+          floatingNote: "Bis Schritt 3 testen Sie in der Live-Demo kostenlos, bevor Schritt 4 freigeschaltet wird."
         },
         it: {
           badge: "PASSO 03 · INGEGNERIA DEL NAMING, FONETICA E REGISTRAZIONE",
           title: "Valutazione Acustica SMILE, Monogramma 1:1 e Classi di Nizza",
           body: "Conferma il tuo nome attuale o genera candidati fonetici con punteggio SMILE, slogan commerciale e classificazione ufficiale di Nizza.",
-          cutoutLabel: "RITAGLIO UI 03 · AUDIT FONETICO SMILE E CLASSI DI NIZZA",
-          floatingNote: "Avanzi gratuitamente fino al Passo 3 nella Demo dal Vivo prima dello sblocco del Passo 4 ($49 USD)."
+          cutoutLabel: "SCREENSHOT REALE 3.3 · AUDIT FONETICO SMILE E CLASSI DI NIZZA",
+          floatingNote: "Avanzi gratuitamente fino al Passo 3 nella Demo dal Vivo prima dello sblocco del Passo 4."
         }
       }
     },
     {
       step: 4,
-      captureBase: "/assets/app_captures/step4_kansei_axes.png",
+      captureBase: "/assets/app_captures/arco_21_paso4_4_tipografia_montserrat_arquitectura.png",
       cutoutFocus: "center",
       accent: "#426EAE",
       theoryTag: "MITSUO NAGAMACHI · KANSEI & DIFERENCIAL DE OSGOOD",
       i18n: {
         es: {
           badge: "PASO 04 · INGENIERÍA KANSEI Y DIFERENCIAL DE OSGOOD",
-          title: "Calibración de los 7 Ejes Visuales, Par Tipográfico y Semilla Constructiva",
-          body: "Deslizas 7 ejes bipolares (de orgánico a geométrico, de clásico a vanguardista) para traducir emociones en vectores matemáticos, seleccionando tu tipografía oficial y estructura base.",
-          cutoutLabel: "RECORTE DE INTERFAZ 04 · CALIBRADOR BIPOLAR DE 7 EJES DE OSGOOD",
-          floatingNote: "Al desbloquear el Paso 4 ($49 USD), todas tus respuestas de los Pasos 0 al 3 migran automáticamente."
+          title: "Calibración de los 7 Ejes Visuales, Tríada Tipográfica y Semilla Constructiva",
+          body: "Deslizas 7 ejes bipolares (de orgánico a geométrico, de clásico a vanguardista) para traducir emociones en vectores matemáticos, seleccionando la tríada Montserrat + Plus Jakarta Sans + JetBrains Mono y tu semilla constructiva.",
+          cutoutLabel: "CAPTURA REAL PASO 4.4 · SELECCIÓN TIPOGRÁFICA ARQUITECTÓNICA (ARCO INGENIERÍA)",
+          floatingNote: "Al desbloquear el Paso 4, todas tus respuestas de los Pasos 0 al 3 migran automáticamente."
         },
         en: {
           badge: "STEP 04 · KANSEI ENGINEERING & OSGOOD DIFFERENTIAL",
           title: "Calibrating the 7 Visual Axes, Font Pairing & Structural Seed",
           body: "Slide 7 bipolar axes (from organic to geometric, classic to avant-garde) to translate human emotion into mathematical vectors, selecting your official typography and base structure.",
-          cutoutLabel: "UI PRECISION CUTOUT 04 · 7-AXIS OSGOOD BIPOLAR CALIBRATOR",
-          floatingNote: "Upon unlocking Step 4 ($49 USD), all your answers from Steps 0 to 3 migrate automatically."
+          cutoutLabel: "REAL CAPTURE STEP 4.4 · ARCHITECTURAL TYPOGRAPHY & KANSEI CALIBRATOR",
+          floatingNote: "Upon unlocking Step 4, all your answers from Steps 0 to 3 migrate automatically."
         },
         fr: {
           badge: "ÉTAPE 04 · INGÉNIERIE KANSEI ET DIFFÉRENTIEL D'OSGOOD",
           title: "Calibrage des 7 Axes Visuels, Duo Typographique et Structure de Base",
           body: "Faites glisser 7 axes bipolaires (de l'organique au géométrique, du classique à l'avant-garde) pour traduire les émotions en vecteurs mathématiques et choisir votre typographie.",
-          cutoutLabel: "DÉCOUPE UI 04 · CALIBRATEUR BIPOLAIRE À 7 AXES D'OSGOOD",
-          floatingNote: "En débloquant l'Étape 4 (49 $ USD), toutes vos réponses des Étapes 0 à 3 sont migrées automatiquement."
+          cutoutLabel: "CAPTURE RÉELLE 4.4 · CALIBRATEUR KANSEI ET TYPOGRAPHIE",
+          floatingNote: "En débloquant l'Étape 4, toutes vos réponses des Étapes 0 à 3 sont migrées automatiquement."
         },
         pt: {
           badge: "PASSO 04 · ENGENHARIA KANSEI E DIFERENCIAL DE OSGOOD",
           title: "Calibração dos 7 Eixos Visuais, Par Tipográfico e Semente Construtiva",
           body: "Deslize 7 eixos bipolares (do orgânico ao geométrico, do clássico ao vanguardista) para traduzir emoções em vetores matemáticos e escolher a sua tipografia oficial.",
-          cutoutLabel: "RECORTE UI 04 · CALIBRADOR BIPOLAR DE 7 EIXOS DE OSGOOD",
-          floatingNote: "Ao desbloquear o Passo 4 ($49 USD), todas as respostas dos Passos 0 a 3 migram automaticamente."
+          cutoutLabel: "CAPTURA REAL 4.4 · CALIBRADOR KANSEI E TIPOGRAFIA",
+          floatingNote: "Ao desbloquear o Passo 4, todas as respostas dos Passos 0 a 3 migram automaticamente."
         },
         de: {
           badge: "SCHRITT 04 · KANSEI-ENGINEERING & OSGOOD-DIFFERENTIAL",
           title: "Kalibrierung der 7 Visuellen Achsen, Schriftpaarung & Grundstruktur",
           body: "Steuern Sie 7 bipolare Achsen (von organisch bis geometrisch, klassisch bis avantgardistisch), um Emotionen in mathematische Vektoren und Typografie zu übersetzen.",
-          cutoutLabel: "UI-AUSSCHNITT 04 · BIPOLARER 7-ACHSEN-KALIBRIERER NACH OSGOOD",
-          floatingNote: "Beim Freischalten von Schritt 4 ($49 USD) werden alle Daten aus Schritt 0 bis 3 automatisch übernommen."
+          cutoutLabel: "ECHTER SCREENSHOT 4.4 · KANSEI-KALIBRIERER & TYPOGRAFIE",
+          floatingNote: "Beim Freischalten von Schritt 4 werden alle Daten aus Schritt 0 bis 3 automatisch übernommen."
         },
         it: {
           badge: "PASSO 04 · INGEGNERIA KANSEI E DIFFERENZIALE DI OSGOOD",
           title: "Calibrazione dei 7 Assi Visivi, Coppia Tipografica e Struttura Base",
           body: "Scorri i 7 assi bipolari (da organico a geometrico, da classico ad avanguardista) per tradurre le emozioni in vettori matematici e selezionare la tipografia ufficiale.",
-          cutoutLabel: "RITAGLIO UI 04 · CALIBRATORE BIPOLARE A 7 ASSI DI OSGOOD",
-          floatingNote: "Sbloccando il Passo 4 ($49 USD), tutte le risposte dei Passi da 0 a 3 migrano automaticamente."
+          cutoutLabel: "SCREENSHOT REALE 4.4 · CALIBRATORE KANSEI E TIPOGRAFIA",
+          floatingNote: "Sbloccando il Passo 4, tutte le risposte dei Passi da 0 a 3 migrano automaticamente."
         }
       }
     },
     {
       step: 5,
-      captureBase: "/assets/app_captures/step5_logo_studio.png",
+      captureBase: "/assets/app_captures/arco_28_paso5_2_iter5_nanobanana_lineal_minimalista.png",
       cutoutFocus: "center",
       accent: "#FF7A00",
       theoryTag: "PAUL RAND · SAGI HAVIV · INGENIERÍA KAIZEN",
       i18n: {
         es: {
           badge: "PASO 05 · TALLER DE LOGOTIPO EN CURVAS E ITERACIÓN KAIZEN",
-          title: "10 Iteraciones Progresivas, Psicología Cromática y Vectores Bézier Puros",
-          body: "El estudio sintetiza propuestas en curvas Bézier sobre retícula 8X×3X, valida contraste en fondo claro y oscuro, homologa submarcas y genera tu ícono App 1:1 en vivo.",
-          cutoutLabel: "RECORTE DE INTERFAZ 05 · TALLER VECTORIAL Y COMPARADOR DE ITERACIONES",
-          floatingNote: "Exportación inmediata en trazos vectoriales puros (.SVG y .AI) listos para imprenta y pantallas Retina."
+          title: "Rueda Circular de Color, Iteraciones NanoBanana PRO y Selección #5 Lineal Minimalista",
+          body: "El estudio sintetiza propuestas de alta riqueza gráfica sobre retícula 8X×3X respetando tu semilla visual, permite regresar a elegir cualquier iteración previa (como la Selección #5 Lineal Minimalista de ARCO Ingeniería) y genera tu isotipo 1:1 en vivo.",
+          cutoutLabel: "CAPTURA REAL PASO 5.2 · SELECCIÓN #5 LINEAL MINIMALISTA (ARCO INGENIERÍA)",
+          floatingNote: "Exportación inmediata en trazos vectoriales puros (.SVG y .AI) listos para imprenta, cascos, bordado y pantallas Retina."
         },
         en: {
           badge: "STEP 05 · VECTOR LOGO STUDIO & KAIZEN ITERATION",
-          title: "10 Progressive Iterations, Color Psychology & Pure Bézier Vectors",
-          body: "The studio synthesizes Bézier vector proposals on an 8X×3X grid, validates contrast on light and dark canvases, homologates sub-brands, and generates your 1:1 App Icon live.",
-          cutoutLabel: "UI PRECISION CUTOUT 05 · VECTOR STUDIO & ITERATION COMPARATOR",
+          title: "Color Spectrum Wheel, NanoBanana PRO Iterations & Selection #5 Minimalist Linear",
+          body: "The studio synthesizes high-craft proposals on an 8X×3X grid, lets you select any iteration (such as ARCO Ingeniería's #5 Minimalist Linear), and generates your 1:1 App Icon live.",
+          cutoutLabel: "REAL CAPTURE STEP 5.2 · SELECTION #5 MINIMALIST LINEAR (ARCO INGENIERÍA)",
           floatingNote: "Instant export in pure vector paths (.SVG and .AI) ready for print and Retina displays."
         },
         fr: {
           badge: "ÉTAPE 05 · ATELIER LOGO VECTORIEL ET ITÉRATION KAIZEN",
           title: "10 Itérations Progressives, Psychologie Chromatique et Vecteurs Bézier",
           body: "L'atelier synthétise des propositions en courbes de Bézier sur grille 8X×3X, valide le contraste sur fonds clair et sombre, homologue les sous-marques et crée votre icône 1:1.",
-          cutoutLabel: "DÉCOUPE UI 05 · ATELIER VECTORIEL ET COMPARATEUR D'ITÉRATIONS",
+          cutoutLabel: "CAPTURE RÉELLE 5.2 · SÉLECTION #5 LINÉAIRE MINIMALISTE (ARCO INGENIERÍA)",
           floatingNote: "Export immédiat en tracés vectoriels purs (.SVG et .AI) prêts pour l'impression et le web."
         },
         pt: {
           badge: "PASSO 05 · ESTÚDIO DE LOGÓTIPO EM CURVAS E ITERAÇÃO KAIZEN",
           title: "10 Iterações Progressivas, Psicologia da Cor e Vetores Bézier Puros",
           body: "O estúdio sintetiza propostas em curvas Bézier sobre grelha 8X×3X, valida o contraste em fundo claro e escuro, homologa submarcas e gera o seu ícone App 1:1 ao vivo.",
-          cutoutLabel: "RECORTE UI 05 · ESTÚDIO VETORIAL E COMPARADOR DE ITERAÇÕES",
+          cutoutLabel: "CAPTURA REAL 5.2 · SELEÇÃO #5 LINEAR MINIMALISTA (ARCO INGENIERÍA)",
           floatingNote: "Exportação imediata em traços vetoriais puros (.SVG e .AI) prontos para gráfica e ecrãs."
         },
         de: {
           badge: "SCHRITT 05 · VEKTOR-LOGO-STUDIO & KAIZEN-ITERATION",
           title: "10 Progressive Iterationen, Farbpsychologie & Reine Bézier-Vektoren",
           body: "Das Studio erzeugt Bézier-Vektorvorschläge auf einem 8X×3X-Raster, prüft den Kontrast auf hellem und dunklem Grund, homologiert Submarken und erstellt Ihr 1:1 App-Icon.",
-          cutoutLabel: "UI-AUSSCHNITT 05 · VEKTOR-STUDIO & ITERATIONS-VERGLEICH",
+          cutoutLabel: "ECHTER SCREENSHOT 5.2 · AUSWAHL #5 LINEAR MINIMALISTISCH (ARCO INGENIERÍA)",
           floatingNote: "Sofortiger Export in reinen Vektorpfaden (.SVG und .AI) für Druck und hochauflösende Displays."
         },
         it: {
           badge: "PASSO 05 · STUDIO DEL LOGO IN CURVE E ITERAZIONE KAIZEN",
           title: "10 Iterazioni Progressive, Psicologia del Colore e Vettori Bézier Puri",
           body: "Lo studio sintetizza proposte in curve di Bézier su griglia 8X×3X, valida il contrasto su sfondo chiaro e scuro, omologa i sub-brand e genera la tua icona App 1:1.",
-          cutoutLabel: "RITAGLIO UI 05 · STUDIO VETTORIALE E COMPARATORE DI ITERAZIONI",
+          cutoutLabel: "SCREENSHOT REALE 5.2 · SELEZIONE #5 LINEARE MINIMALISTA (ARCO INGENIERÍA)",
           floatingNote: "Esportazione immediata in tracciati vettoriali puri (.SVG e .AI) pronti per la stampa."
         }
       }
     },
     {
       step: 6,
-      captureBase: "/assets/app_captures/step6_brandbook_36.png",
+      captureBase: "/assets/app_captures/arco_30_paso6_1_brandbook_lamina01_portada.png",
       cutoutFocus: "center",
       accent: "#0D2540",
-      theoryTag: "MASSIMO VIGNELLI · BRANDBOOK +30 PÁGINAS",
+      theoryTag: "MASSIMO VIGNELLI · BRANDBOOK 36 LÁMINAS",
       i18n: {
         es: {
-          badge: "PASO 06 · BRANDBOOK OFICIAL (+30 PÁGINAS) Y 9 ENTREGABLES",
-          title: "Gobernanza Editorial en Curvas Abiertas y Descarga Instantánea",
-          body: "Tu recorrido completo se ensambla en un Brandbook oficial de más de 30 páginas (ajustable según el giro del negocio) junto con tu bóveda de 9 entregables listos para producción.",
-          cutoutLabel: "RECORTE DE INTERFAZ 06 · VISOR DE BRANDBOOK (+30 PÁGINAS) Y BÓVEDA",
-          floatingNote: "Incluye PDF editorial, HTML interactivo, vectores .SVG/.AI, plantillas Word/PowerPoint, firma y fuentes."
+          badge: "PASO 06 · BRANDBOOK OFICIAL (36 LÁMINAS) Y BÓVEDA DE ENTREGABLES",
+          title: "Gobernanza Editorial en Curvas Abiertas y Descarga Instantánea en .PDF y .HTML",
+          body: "Tu recorrido completo se ensambla en el Manual Oficial de Marca de 36 láminas apaisadas (.PDF editorial de alta resolución y visor .HTML interactivo) junto con tu bóveda completa de entregables vectoriales y corporativos.",
+          cutoutLabel: "CAPTURA REAL PASO 6.1 · PORTADA DEL BRANDBOOK DE 36 LÁMINAS DE ARCO INGENIERÍA",
+          floatingNote: "Incluye PDF editorial de 36 láminas, HTML interactivo, vectores .SVG/.AI, plantillas Word/PowerPoint, firma y fuentes."
         },
         en: {
-          badge: "STEP 06 · OFFICIAL BRANDBOOK (30+ PAGES) & 9 DELIVERABLES",
-          title: "Open-Curve Editorial Governance & Instant Vault Download",
-          body: "Your entire journey is compiled into an official Brandbook of over 30 pages (adaptable to your business sector) alongside your vault of 9 production-ready deliverables.",
-          cutoutLabel: "UI PRECISION CUTOUT 06 · 30+ PAGE BRANDBOOK VIEWER & VAULT",
+          badge: "STEP 06 · OFFICIAL BRANDBOOK (36 PLATES) & DELIVERABLES VAULT",
+          title: "Open-Curve Editorial Governance & Instant .PDF + .HTML Vault Download",
+          body: "Your entire journey is compiled into an official 36-plate Brandbook (.PDF and interactive .HTML) alongside your vault of production-ready deliverables.",
+          cutoutLabel: "REAL CAPTURE STEP 6.1 · 36-PLATE BRANDBOOK COVER (ARCO INGENIERÍA)",
           floatingNote: "Includes editorial PDF, interactive HTML, .SVG/.AI vectors, Word/PowerPoint templates, email signature, and fonts."
         },
         fr: {
-          badge: "ÉTAPE 06 · BRANDBOOK OFFICIEL (+30 PAGES) ET 9 LIVRABLES",
+          badge: "ÉTAPE 06 · BRANDBOOK OFFICIEL (36 PLANCHES) ET LIVRABLES",
           title: "Gouvernance Éditoriale en Courbes Ouvertes et Téléchargement Immédiat",
-          body: "Tout votre parcours est assemblé dans un Brandbook officiel de plus de 30 pages (adaptable selon votre secteur d'activité) avec votre voûte de 9 livrables prêts pour la production.",
-          cutoutLabel: "DÉCOUPE UI 06 · VISIONNEUSE BRANDBOOK (+30 PAGES) ET VOÛTE",
+          body: "Tout votre parcours est assemblé dans un Brandbook officiel de 36 planches avec votre voûte de livrables prêts pour la production.",
+          cutoutLabel: "CAPTURE RÉELLE 6.1 · COUVERTURE BRANDBOOK 36 PLANCHES (ARCO INGENIERÍA)",
           floatingNote: "Inclut PDF éditorial, HTML interactif, vecteurs .SVG/.AI, modèles Word/PowerPoint, signature et polices."
         },
         pt: {
-          badge: "PASSO 06 · BRANDBOOK OFICIAL (+30 PÁGINAS) E 9 ENTREGÁVEIS",
+          badge: "PASSO 06 · BRANDBOOK OFICIAL (36 LÂMINAS) E ENTREGÁVEIS",
           title: "Governança Editorial em Curvas Abertas e Descarga Instantânea",
-          body: "Todo o seu percurso é compilado num Brandbook oficial com mais de 30 páginas (ajustável conforme o ramo do negócio) juntamente com o cofre de 9 entregáveis prontos a usar.",
-          cutoutLabel: "RECORTE UI 06 · VISOR DE BRANDBOOK (+30 PÁGINAS) E COFRE",
+          body: "Todo o seu percurso é compilado num Brandbook oficial de 36 lâminas juntamente com o cofre de entregáveis prontos a usar.",
+          cutoutLabel: "CAPTURA REAL 6.1 · CAPA BRANDBOOK 36 LÂMINAS (ARCO INGENIERÍA)",
           floatingNote: "Inclui PDF editorial, HTML interativo, vetores .SVG/.AI, modelos Word/PowerPoint, assinatura e fontes."
         },
         de: {
-          badge: "SCHRITT 06 · OFFIZIELLES BRANDBOOK (+30 SEITEN) & 9 DELIVERABLES",
+          badge: "SCHRITT 06 · OFFIZIELLES BRANDBOOK (36 SEITEN) & DELIVERABLES",
           title: "Editorische Markenführung in Offenen Kurven & Sofort-Download",
-          body: "Ihr gesamter Prozess wird in einem offiziellen Brandbook mit über 30 Seiten (anpassbar je nach Branche) sowie Ihrem Tresor mit 9 produktionsfertigen Deliverables gebündelt.",
-          cutoutLabel: "UI-AUSSCHNITT 06 · BRANDBOOK-VIEWER (+30 SEITEN) & TRESOR",
+          body: "Ihr gesamter Prozess wird in einem offiziellen 36-Seiten-Brandbook sowie Ihrem Tresor mit produktionsfertigen Deliverables gebündelt.",
+          cutoutLabel: "ECHTER SCREENSHOT 6.1 · 36-SEITEN BRANDBOOK-COVER (ARCO INGENIERÍA)",
           floatingNote: "Enthält PDF, interaktives HTML, .SVG/.AI-Vektoren, Word/PowerPoint-Vorlagen, E-Mail-Signatur und Schriften."
         },
         it: {
-          badge: "PASSO 06 · BRANDBOOK UFFICIALE (+30 PAGINE) E 9 DELIVERABLE",
+          badge: "PASSO 06 · BRANDBOOK UFFICIALE (36 TAVOLE) E DELIVERABLE",
           title: "Governance Editoriale in Curve Aperte e Download Istantaneo",
-          body: "L'intero percorso viene assemblato in un Brandbook ufficiale di oltre 30 pagine (adattabile al settore aziendale) insieme al caveau con i 9 deliverable pronti per la produzione.",
-          cutoutLabel: "RITAGLIO UI 06 · VISORE BRANDBOOK (+30 PAGINE) E CAVEAU",
+          body: "L'intero percorso viene assemblato in un Brandbook ufficiale di 36 tavole insieme al caveau con i deliverable pronti per la produzione.",
+          cutoutLabel: "SCREENSHOT REALE 6.1 · COPERTINA BRANDBOOK 36 TAVOLE (ARCO INGENIERÍA)",
           floatingNote: "Include PDF editoriale, HTML interattivo, vettori .SVG/.AI, modelli Word/PowerPoint, firma email e font."
         }
       }
@@ -932,7 +1055,7 @@
     {
       num: "01",
       format: ".PDF + .HTML INTERACTIVO",
-      sampleUrl: "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf",
+      sampleUrl: "/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf",
       thumb: "/assets/app_captures/arco_30_paso6_1_brandbook_lamina01_portada.png",
       plateNum: 1,
       isPrimaryBrandbook: true,
@@ -948,7 +1071,7 @@
     {
       num: "02",
       format: ".SVG · VECTOR EN CURVAS",
-      sampleUrl: "/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.svg",
+      sampleUrl: "/assets/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.svg",
       thumb: "/assets/app_captures/arco_31_paso6_1_brandbook_lamina13_terna.png",
       plateNum: 13,
       i18n: {
@@ -963,7 +1086,7 @@
     {
       num: "03",
       format: ".AI · ADOBE ILLUSTRATOR",
-      sampleUrl: "/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.ai",
+      sampleUrl: "/assets/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.ai",
       thumb: "/assets/app_captures/arco_28_paso5_2_iter5_nanobanana_lineal_minimalista.png",
       plateNum: 11,
       i18n: {
@@ -978,8 +1101,8 @@
     {
       num: "04",
       format: ".PNG · MASTERPIECE & APP ICON 1:1",
-      sampleUrl: "/samples/Logotipo_Masterpiece_NanoBanana_ARCO_Ingenieria.png",
-      thumb: "/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png",
+      sampleUrl: "/assets/samples/Logotipo_Masterpiece_NanoBanana_ARCO_Ingenieria.png",
+      thumb: "/assets/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png",
       plateNum: 14,
       i18n: {
         es: { title: "Logotipo Masterpiece Alta Resolución e Isotipo 1:1 Centrado (.PNG)", desc: "Versión completa de la Iteración #5 (Lineal Minimalista) de ARCO Ingeniería junto con su Isotipo 1:1 de 1024×1024 px sin texto duplicado para ícono de App y avatar." },
@@ -993,7 +1116,7 @@
     {
       num: "05",
       format: ".DOCX · HOJA MEMBRETADA",
-      sampleUrl: "/samples/Plantilla_Hoja_Membretada_arco_ingenieria.docx",
+      sampleUrl: "/assets/samples/Plantilla_Hoja_Membretada_arco_ingenieria.docx",
       thumb: "/assets/app_captures/arco_33_paso6_2_boveda_ejecutiva_descargas.png",
       plateNum: 25,
       i18n: {
@@ -1008,7 +1131,7 @@
     {
       num: "06",
       format: ".PPTX · PRESENTACIÓN 16:9",
-      sampleUrl: "/samples/Plantilla_Presentacion_Ejecutiva_arco_ingenieria.pptx",
+      sampleUrl: "/assets/samples/Plantilla_Presentacion_Ejecutiva_arco_ingenieria.pptx",
       thumb: "/assets/app_captures/arco_32_paso6_1_brandbook_lamina21_paleta.png",
       plateNum: 26,
       i18n: {
@@ -1023,7 +1146,7 @@
     {
       num: "07",
       format: ".HTML · FIRMA CORPORATIVA",
-      sampleUrl: "/samples/Firma_Corporativa_Luis_Ponce_ARCO_Ingenieria.html",
+      sampleUrl: "/assets/samples/Firma_Corporativa_Luis_Ponce_ARCO_Ingenieria.html",
       thumb: "/assets/app_captures/arco_34_modal_firma_corporativa_luis_ponce.png",
       plateNum: 27,
       i18n: {
@@ -1038,7 +1161,7 @@
     {
       num: "08",
       format: ".ZIP · KIT DE FUENTES .TTF",
-      sampleUrl: "/samples/Kit_Fuentes_Oficiales_arco_ingenieria.zip",
+      sampleUrl: "/assets/samples/Kit_Fuentes_Oficiales_arco_ingenieria.zip",
       thumb: "/assets/app_captures/arco_21_paso4_4_tipografia_montserrat_arquitectura.png",
       plateNum: 17,
       i18n: {
@@ -1053,7 +1176,7 @@
     {
       num: "09",
       format: ".JSON / .SVG · TOKENS & SELLO",
-      sampleUrl: "/samples/Sello_Circular_Curvas_arco_ingenieria.svg",
+      sampleUrl: "/assets/samples/Sello_Circular_Curvas_arco_ingenieria.svg",
       thumb: "/assets/app_captures/arco_23_paso5_1_rueda_circular_colores_arco.png",
       plateNum: 21,
       i18n: {
@@ -1783,31 +1906,31 @@
   ];
 
   const ARCO_PDF_PLATES_SHOWCASE = [
-    { plate: "Lámina 01 / 36", title: "Portada Oficial de Marca · ARCO Ingeniería (#5 Lineal Minimalista)", img: "/assets/app_captures/pdf_lamina_01_portada.png" },
-    { plate: "Lámina 03 / 36", title: "Manifiesto Central y Filosofía Operativa (Del Caos al Sistema)", img: "/assets/app_captures/pdf_lamina_03_why_circulo_dorado.png" },
-    { plate: "Lámina 08 / 36", title: "Mapa de Empatía del Cliente Ideal (Desarrolladores e Inversionistas)", img: "/assets/app_captures/pdf_lamina_08_touchpoints.png" },
-    { plate: "Lámina 11 / 36", title: "Ingeniería de Touchpoints en Obra + Mockup Camisa Técnica y Chaleco", img: "/assets/app_captures/pdf_lamina_11_naming_niza37.png" },
-    { plate: "Lámina 13 / 36", title: "Terna Oficial en Curvas Bézier: Horizontal, Avatar 1:1 y Sello Circular", img: "/assets/app_captures/pdf_lamina_13_terna_curvas.png" },
-    { plate: "Lámina 16 / 36", title: "Área de Aislamiento (Margen X) y Reducción Mínima del Isotipo #5", img: "/assets/app_captures/pdf_lamina_16_reticula_8x3x.png" },
-    { plate: "Lámina 21 / 36", title: "Paleta Cromática Oficial (HEX · RGB · CMYK · Pantone #0078C0 / #88E0E0 / #585850)", img: "/assets/app_captures/pdf_lamina_21_paleta_cromatica.png" },
-    { plate: "Lámina 25 / 36", title: "Papelería Ejecutiva: Hoja Membretada y Tarjeta de Dirección General", img: "/assets/app_captures/pdf_lamina_25_tipografia_montserrat.png" },
-    { plate: "Lámina 30 / 36", title: "Gobernanza y Certificado Oficial de Entrega con Sello #5", img: "/assets/app_captures/pdf_lamina_30_papeleria_hoja_membretada.png" },
-    { plate: "Lámina 36 / 36", title: "Certificación Técnica de Trazado Vectorial en Curvas Bézier (.SVG / .AI)", img: "/assets/app_captures/pdf_lamina_36_constitucion_cierre.png" }
+    { code: "LÁMINA 01 / 36", plate: "Lámina 01 / 36", title: "Portada Oficial de Marca · ARCO Ingeniería (#5 Lineal Minimalista)", img: "/assets/app_captures/pdf_lamina_01_portada.png" },
+    { code: "LÁMINA 03 / 36", plate: "Lámina 03 / 36", title: "Manifiesto Central y Filosofía Operativa (Del Caos al Sistema)", img: "/assets/app_captures/pdf_lamina_03_why_circulo_dorado.png" },
+    { code: "LÁMINA 08 / 36", plate: "Lámina 08 / 36", title: "Mapa de Empatía del Cliente Ideal (Desarrolladores e Inversionistas)", img: "/assets/app_captures/pdf_lamina_08_touchpoints.png" },
+    { code: "LÁMINA 11 / 36", plate: "Lámina 11 / 36", title: "Ingeniería de Touchpoints en Obra + Mockup Camisa Técnica y Chaleco", img: "/assets/app_captures/pdf_lamina_11_naming_niza37.png" },
+    { code: "LÁMINA 13 / 36", plate: "Lámina 13 / 36", title: "Terna Oficial en Curvas Bézier: Horizontal, Avatar 1:1 y Sello Circular", img: "/assets/app_captures/pdf_lamina_13_terna_curvas.png" },
+    { code: "LÁMINA 16 / 36", plate: "Lámina 16 / 36", title: "Área de Aislamiento (Margen X) y Reducción Mínima del Isotipo #5", img: "/assets/app_captures/pdf_lamina_16_reticula_8x3x.png" },
+    { code: "LÁMINA 21 / 36", plate: "Lámina 21 / 36", title: "Paleta Cromática Oficial (HEX · RGB · CMYK · Pantone #0078C0 / #88E0E0 / #585850)", img: "/assets/app_captures/pdf_lamina_21_paleta_cromatica.png" },
+    { code: "LÁMINA 25 / 36", plate: "Lámina 25 / 36", title: "Papelería Ejecutiva: Hoja Membretada y Tarjeta de Dirección General", img: "/assets/app_captures/pdf_lamina_25_tipografia_montserrat.png" },
+    { code: "LÁMINA 30 / 36", plate: "Lámina 30 / 36", title: "Gobernanza y Certificado Oficial de Entrega con Sello #5", img: "/assets/app_captures/pdf_lamina_30_papeleria_hoja_membretada.png" },
+    { code: "LÁMINA 36 / 36", plate: "Lámina 36 / 36", title: "Certificación Técnica de Trazado Vectorial en Curvas Bézier (.SVG / .AI)", img: "/assets/app_captures/pdf_lamina_36_constitucion_cierre.png" }
   ];
 
   const ARCO_ALL_12_DELIVERABLES = [
-    { num: "01", fmt: ".PDF (36 Págs)", name: "Manual Oficial de Marca en PDF (36 Láminas Apaisadas)", url: "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf", previewImg: "/assets/app_captures/pdf_lamina_01_portada.png" },
-    { num: "02", fmt: ".HTML (36 Págs)", name: "Manual Web Interactivo Autónomo (36 Láminas)", url: "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.html", previewImg: "/assets/app_captures/arco_30_paso6_1_brandbook_lamina01_portada.png" },
-    { num: "03", fmt: ".PNG (1600×1100)", name: "Logotipo Masterpiece #5 Lineal Minimalista Alta Resolución", url: "/samples/Logotipo_Masterpiece_NanoBanana_ARCO_Ingenieria.png", previewImg: "/samples/Logotipo_Masterpiece_NanoBanana_ARCO_Ingenieria.png" },
-    { num: "04", fmt: ".PNG (1024×1024)", name: "Isotipo 1:1 Centrado sin Texto Duplicado (App Icon / Favicon)", url: "/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png", previewImg: "/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" },
-    { num: "05", fmt: ".SVG (Curvas)", name: "Logotipo Horizontal 100% en Curvas Bézier", url: "/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.svg", previewImg: "/assets/app_captures/pdf_lamina_13_terna_curvas.png" },
-    { num: "06", fmt: ".AI (Illustrator)", name: "Original Maestro Nativo Adobe Illustrator en Curvas", url: "/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.ai", previewImg: "/assets/app_captures/arco_28_paso5_2_iter5_nanobanana_lineal_minimalista.png" },
-    { num: "07", fmt: ".SVG (Símbolo)", name: "Isotipo / Símbolo Puro en Curvas Bézier", url: "/samples/Isotipo_Simbolo_Curvas_arco_ingenieria.svg", previewImg: "/assets/app_captures/pdf_lamina_16_reticula_8x3x.png" },
-    { num: "08", fmt: ".SVG (Avatar 1:1)", name: "Avatar Social 1:1 en Curvas Bézier", url: "/samples/Avatar_Social_1x1_Curvas_arco_ingenieria.svg", previewImg: "/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" },
-    { num: "09", fmt: ".SVG (Sello)", name: "Sello Circular Corporativo en Curvas Bézier", url: "/samples/Sello_Circular_Curvas_arco_ingenieria.svg", previewImg: "/assets/app_captures/pdf_lamina_30_papeleria_hoja_membretada.png" },
-    { num: "10", fmt: ".DOCX (Word)", name: "Plantilla Editable de Hoja Membretada Corporativa", url: "/samples/Plantilla_Hoja_Membretada_arco_ingenieria.docx", previewImg: "/assets/app_captures/pdf_lamina_25_tipografia_montserrat.png" },
-    { num: "11", fmt: ".PPTX (16:9)", name: "Presentación Ejecutiva Panorámica Editable (6 Diapositivas)", url: "/samples/Plantilla_Presentacion_Ejecutiva_arco_ingenieria.pptx", previewImg: "/assets/app_captures/pdf_lamina_21_paleta_cromatica.png" },
-    { num: "12", fmt: ".HTML + .ZIP + .JSON", name: "Firma de Correo Ing. Luis Ponce (.HTML), Kit de Fuentes (.ZIP) y Tokens (.JSON)", url: "/samples/Firma_Corporativa_Luis_Ponce_ARCO_Ingenieria.html", extraZip: "/samples/Kit_Fuentes_Oficiales_arco_ingenieria.zip", extraJson: "/samples/Design_Tokens_ARCO_Ingenieria.json", previewImg: "/assets/app_captures/arco_34_modal_firma_corporativa_luis_ponce.png" }
+    { num: "01", ext: ".PDF", size: "16.3 MB", label: "Manual Oficial de Marca en PDF (36 Láminas Apaisadas)", fmt: ".PDF (36 Págs)", name: "Manual Oficial de Marca en PDF (36 Láminas Apaisadas)", url: "/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf", previewImg: "/assets/app_captures/pdf_lamina_01_portada.png" },
+    { num: "02", ext: ".HTML", size: "44.5 MB", label: "Manual Web Interactivo Autónomo (36 Láminas)", fmt: ".HTML (36 Págs)", name: "Manual Web Interactivo Autónomo (36 Láminas)", url: "/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.html", previewImg: "/assets/app_captures/arco_30_paso6_1_brandbook_lamina01_portada.png" },
+    { num: "03", ext: ".PNG 4K", size: "380 KB", label: "Logotipo Masterpiece #5 Lineal Minimalista (1600×1100)", fmt: ".PNG (1600×1100)", name: "Logotipo Masterpiece #5 Lineal Minimalista Alta Resolución", url: "/assets/samples/Logotipo_Masterpiece_NanoBanana_ARCO_Ingenieria.png", previewImg: "/assets/samples/Logotipo_Masterpiece_NanoBanana_ARCO_Ingenieria.png" },
+    { num: "04", ext: ".PNG 1:1", size: "290 KB", label: "Isotipo 1:1 Centrado App Icon / Favicon (1024×1024)", fmt: ".PNG (1024×1024)", name: "Isotipo 1:1 Centrado sin Texto Duplicado (App Icon / Favicon)", url: "/assets/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png", previewImg: "/assets/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" },
+    { num: "05", ext: ".SVG", size: "1.1 MB", label: "Logotipo Horizontal 100% en Curvas Bézier", fmt: ".SVG (Curvas)", name: "Logotipo Horizontal 100% en Curvas Bézier", url: "/assets/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.svg", previewImg: "/assets/app_captures/pdf_lamina_13_terna_curvas.png" },
+    { num: "06", ext: ".AI", size: "1.0 MB", label: "Original Maestro Nativo Adobe Illustrator en Curvas", fmt: ".AI (Illustrator)", name: "Original Maestro Nativo Adobe Illustrator en Curvas", url: "/assets/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.ai", previewImg: "/assets/app_captures/arco_28_paso5_2_iter5_nanobanana_lineal_minimalista.png" },
+    { num: "07", ext: ".SVG", size: "1.1 MB", label: "Isotipo / Símbolo Puro en Curvas Bézier", fmt: ".SVG (Símbolo)", name: "Isotipo / Símbolo Puro en Curvas Bézier", url: "/assets/samples/Isotipo_Simbolo_Curvas_arco_ingenieria.svg", previewImg: "/assets/app_captures/pdf_lamina_16_reticula_8x3x.png" },
+    { num: "08", ext: ".SVG 1:1", size: "1.1 MB", label: "Avatar Social 1:1 en Curvas Bézier", fmt: ".SVG (Avatar 1:1)", name: "Avatar Social 1:1 en Curvas Bézier", url: "/assets/samples/Avatar_Social_1x1_Curvas_arco_ingenieria.svg", previewImg: "/assets/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" },
+    { num: "09", ext: ".SVG SELLO", size: "1.1 MB", label: "Sello Circular Corporativo en Curvas Bézier", fmt: ".SVG (Sello)", name: "Sello Circular Corporativo en Curvas Bézier", url: "/assets/samples/Sello_Circular_Curvas_arco_ingenieria.svg", previewImg: "/assets/app_captures/pdf_lamina_30_papeleria_hoja_membretada.png" },
+    { num: "10", ext: ".DOCX", size: "139 KB", label: "Plantilla Editable de Hoja Membretada Corporativa (Word)", fmt: ".DOCX (Word)", name: "Plantilla Editable de Hoja Membretada Corporativa", url: "/assets/samples/Plantilla_Hoja_Membretada_arco_ingenieria.docx", previewImg: "/assets/app_captures/pdf_lamina_25_tipografia_montserrat.png" },
+    { num: "11", ext: ".PPTX", size: "230 KB", label: "Presentación Ejecutiva Panorámica 16:9 (6 Diapositivas)", fmt: ".PPTX (16:9)", name: "Presentación Ejecutiva Panorámica Editable (6 Diapositivas)", url: "/assets/samples/Plantilla_Presentacion_Ejecutiva_arco_ingenieria.pptx", previewImg: "/assets/app_captures/pdf_lamina_21_paleta_cromatica.png" },
+    { num: "12", ext: ".HTML/.ZIP", size: "973 KB", label: "Firma de Correo Ing. Luis Ponce (.HTML) + Fuentes (.ZIP) + Tokens (.JSON)", fmt: ".HTML + .ZIP + .JSON", name: "Firma de Correo Ing. Luis Ponce (.HTML), Kit de Fuentes (.ZIP) y Tokens (.JSON)", url: "/assets/samples/Firma_Corporativa_Luis_Ponce_ARCO_Ingenieria.html", extraZip: "/assets/samples/Kit_Fuentes_Oficiales_arco_ingenieria.zip", extraJson: "/assets/samples/Design_Tokens_ARCO_Ingenieria.json", previewImg: "/assets/app_captures/arco_34_modal_firma_corporativa_luis_ponce.png" }
   ];
 
   window.tbbPlayYouTubeAuthorVideo = function (videoId) {
@@ -2391,11 +2514,11 @@
               <span style="font-family:'JetBrains Mono',monospace; font-size:${compact ? '0.52rem' : '0.56rem'}; color:#0D2540; background:#F0F9FF; border:1px solid #88E0E0; padding:2px 6px; border-radius:999px; font-weight:800;">${escHtml(item.badge)}</span>
             </div>
             <div
-              onclick="event.stopPropagation(); window.tbbOpenPlateLightboxModal(${item.id}, '${escHtml(item.screenImg)}', '${escHtml(item.code)} · ${escHtml(item.name)}', '${escHtml(item.logoImg)}');"
+              onclick="event.stopPropagation(); window.tbbOpenPlateLightboxModal(${item.id}, '${escHtml(tbbImgSrc(item.screenImg))}', '${escHtml(item.code)} · ${escHtml(item.name)}', '${escHtml(tbbImgSrc(item.logoImg))}');"
               title="Haz clic para ampliar captura real"
               style="width:100%; aspect-ratio:16/11; border-radius:10px; overflow:hidden; border:1px solid #E2E8F0; margin-bottom:6px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; padding:6px;"
             >
-              <img src="${escHtml(item.logoImg)}" alt="${escHtml(item.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" />
+              <img src="${escHtml(tbbImgSrc(item.logoImg))}" data-orig-src="${escHtml(item.logoImg)}" onerror="window.tbbImgFallback(this)" alt="${escHtml(item.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" />
             </div>
             ${!compact ? `<div style="font-size:0.64rem; color:#334155; line-height:1.35; margin-bottom:6px; font-weight:600;">${escHtml(item.rationale)}</div>` : ""}
           </div>
@@ -2408,9 +2531,9 @@
               ${isSel ? '✓ Iteración Activa en App' : 'Ver Captura de Iteración'}
             </button>
             <a
-              href="/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.svg"
+              href="/assets/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.svg"
               download="Logotipo_Horizontal_Curvas_arco_ingenieria.svg"
-              onclick="event.stopPropagation();"
+              onclick="event.stopPropagation(); return window.tbbHandleSampleClick(event, this);"
               title="Descargar Vector Oficial .SVG de ARCO Ingeniería"
               style="background:#F0F9FF; color:#0078C0; border:1px solid #0078C0; border-radius:7px; padding:${compact ? '5px 6px' : '6px 7px'}; font-size:0.56rem; font-weight:800; font-family:'JetBrains Mono',monospace; text-decoration:none; display:inline-block;"
             >⬇ .SVG/.AI</a>
@@ -2439,21 +2562,23 @@
               <span style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; font-weight:800; color:#0078C0; background:#F0F9FF; border:1px solid #88E0E0; padding:3px 9px; border-radius:999px;">CASO REAL: ING. LUIS PONCE · ARCO INGENIERÍA</span>
               <button
                 type="button"
-                onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(selectedCapObj.img)}', '${escHtml(selectedCapObj.title)}', '/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
+                onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(tbbImgSrc(selectedCapObj.img))}', '${escHtml(selectedCapObj.title)}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
                 style="background:#0D2540; color:#FFFFFF; border:none; border-radius:999px; padding:3px 9px; font-size:0.58rem; font-weight:800; cursor:pointer;"
               >🔍 Ampliar Captura HD</button>
             </div>
           </div>
           <div
-            onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(selectedCapObj.img)}', '${escHtml(selectedCapObj.title)}', '/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
+            onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(tbbImgSrc(selectedCapObj.img))}', '${escHtml(selectedCapObj.title)}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
             title="Haz clic para abrir en pantalla completa"
             style="width:100%; border-radius:10px; overflow:hidden; border:1px solid #E2E8F0; background:#F8FAFC; cursor:zoom-in;"
           >
-            <img src="${escHtml(selectedCapObj.img)}" alt="${escHtml(selectedCapObj.title)}" style="width:100%; height:auto; display:block;" />
+            <img src="${escHtml(tbbImgSrc(selectedCapObj.img))}" data-orig-src="${escHtml(selectedCapObj.img)}" onerror="window.tbbImgFallback(this)" alt="${escHtml(selectedCapObj.title)}" style="width:100%; height:auto; display:block;" />
           </div>
         </div>
       </div>
     `;
+
+    const arcoIconSrc = tbbImgSrc("/assets/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png");
 
     // =========================================================================
     // 1. FORMATO CELULAR (MÓVIL VERTICAL): ARCO INGENIERÍA (#5 LINEAL MINIMALISTA)
@@ -2466,7 +2591,7 @@
             <div class="tbb-home-device-screen" style="background:#F8FAFC; color:#0D2540; padding:11px; gap:8px;">
               <div style="background:#0D2540; color:#FFFFFF; border-radius:13px; padding:9px 11px; display:flex; align-items:center; justify-content:space-between; border:1.5px solid #0078C0;">
                 <div style="display:flex; align-items:center; gap:7px;">
-                  <img src="/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" alt="ARCO" style="width:24px; height:24px; border-radius:6px; background:#FFFFFF; padding:2px;" />
+                  <img src="${escHtml(arcoIconSrc)}" data-orig-src="/assets/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" onerror="window.tbbImgFallback(this)" alt="ARCO" style="width:24px; height:24px; border-radius:6px; background:#FFFFFF; padding:2px;" />
                   <div style="text-align:left;">
                     <div style="font-family:'JetBrains Mono',monospace; font-size:0.52rem; color:#88E0E0; font-weight:800;">CASO REAL AUDITADO · ING. LUIS PONCE</div>
                     <div style="font-family:'Montserrat',sans-serif; font-size:0.76rem; font-weight:900; color:#FFFFFF;">ARCO INGENIERÍA · #5 Minimalista</div>
@@ -2485,7 +2610,7 @@
                       <span style="font-family:'JetBrains Mono',monospace; font-size:0.56rem; font-weight:900; color:#0078C0;">CAPTURA REAL EN PASO 5.2 (${escHtml(selectedLogoObj.shortCode)}):</span>
                       <span style="font-family:'JetBrains Mono',monospace; font-size:0.54rem; background:#0D2540; color:#88E0E0; padding:2px 7px; border-radius:999px; font-weight:800;">NanoBanana PRO</span>
                     </div>
-                    <img src="${escHtml(selectedLogoObj.screenImg)}" alt="${escHtml(selectedLogoObj.name)}" style="width:100%; border-radius:8px; border:1px solid #E2E8F0; display:block;" />
+                    <img src="${escHtml(tbbImgSrc(selectedLogoObj.screenImg))}" data-orig-src="${escHtml(selectedLogoObj.screenImg)}" onerror="window.tbbImgFallback(this)" alt="${escHtml(selectedLogoObj.name)}" style="width:100%; border-radius:8px; border:1px solid #E2E8F0; display:block;" />
                   </div>
                   <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
                     ${TBB_MOCKUP_LOGO_PROPOSALS.map((item) => renderRealAppLogoLockupCard(item, true)).join("")}
@@ -2513,7 +2638,7 @@
             <div class="tbb-home-device-screen" style="background:#F8FAFC; color:#0D2540; padding:14px; gap:10px;">
               <div style="background:#0D2540; color:#FFFFFF; border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; border:1.5px solid #0078C0;">
                 <div style="display:flex; align-items:center; gap:9px;">
-                  <img src="/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" alt="ARCO" style="width:28px; height:28px; border-radius:7px; background:#FFFFFF; padding:2px;" />
+                  <img src="${escHtml(arcoIconSrc)}" data-orig-src="/assets/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" onerror="window.tbbImgFallback(this)" alt="ARCO" style="width:28px; height:28px; border-radius:7px; background:#FFFFFF; padding:2px;" />
                   <div style="text-align:left;">
                     <div style="font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:#88E0E0; font-weight:800;">VISTA TABLET · CASO REAL: ARCO INGENIERÍA (ING. LUIS PONCE)</div>
                     <div style="font-family:'Montserrat',sans-serif; font-size:0.92rem; font-weight:900; color:#FFFFFF;">Modernización de Logotipo: Selección #5 · Lineal Minimalista</div>
@@ -2530,7 +2655,7 @@
                       <span style="font-family:'Montserrat',sans-serif; font-size:0.76rem; font-weight:900; color:#0D2540;">CAPTURA EN VIVO DEL PASO 5.2 · ${escHtml(selectedLogoObj.code)}</span>
                       <button type="button" onclick="window.tbbSwitchMainSection(5)" style="background:#0078C0; color:#FFFFFF; border:none; border-radius:999px; padding:4px 12px; font-size:0.62rem; font-weight:800; cursor:pointer;">Ir al Pack de Descargas →</button>
                     </div>
-                    <img src="${escHtml(selectedLogoObj.screenImg)}" alt="${escHtml(selectedLogoObj.name)}" style="width:100%; border-radius:10px; border:1px solid #E2E8F0; display:block;" />
+                    <img src="${escHtml(tbbImgSrc(selectedLogoObj.screenImg))}" data-orig-src="${escHtml(selectedLogoObj.screenImg)}" onerror="window.tbbImgFallback(this)" alt="${escHtml(selectedLogoObj.name)}" style="width:100%; border-radius:10px; border:1px solid #E2E8F0; display:block;" />
                   </div>
                   <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
                     ${TBB_MOCKUP_LOGO_PROPOSALS.map((item) => renderRealAppLogoLockupCard(item, true)).join("")}
@@ -2561,7 +2686,7 @@
           <div class="tbb-home-device-screen" style="background:#F8FAFC; color:#0D2540; padding:16px; gap:12px;">
             <div style="background:#0D2540; color:#FFFFFF; border-radius:16px; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; border:1.5px solid #0078C0;">
               <div style="display:flex; align-items:center; gap:12px;">
-                <img src="/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" alt="ARCO Ingeniería" style="width:34px; height:34px; border-radius:8px; background:#FFFFFF; padding:3px;" />
+                <img src="${escHtml(arcoIconSrc)}" data-orig-src="/assets/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" onerror="window.tbbImgFallback(this)" alt="ARCO Ingeniería" style="width:34px; height:34px; border-radius:8px; background:#FFFFFF; padding:3px;" />
                 <div style="text-align:left;">
                   <div style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:#88E0E0; font-weight:800;">SESIÓN COMPLETA AUDITADA (PASOS 0 AL 6) · ING. LUIS PONCE · ARCO INGENIERÍA</div>
                   <div style="font-family:'Montserrat',sans-serif; font-size:1.04rem; font-weight:900; color:#FFFFFF;">Evolución de Logotipo con NanoBanana PRO · <span style="color:#88E0E0;">Iteración #5 Lineal Minimalista</span></div>
@@ -2579,7 +2704,7 @@
                       <span style="font-family:'Montserrat',sans-serif; font-size:0.80rem; font-weight:900; color:#0D2540;">CAPTURA REAL DE LA APP · ${escHtml(selectedLogoObj.code)}</span>
                       <span style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; background:#F0F9FF; color:#0078C0; border:1px solid #88E0E0; padding:3px 9px; border-radius:999px; font-weight:800;">${escHtml(selectedLogoObj.badge)}</span>
                     </div>
-                    <img src="${escHtml(selectedLogoObj.screenImg)}" alt="${escHtml(selectedLogoObj.name)}" style="width:100%; border-radius:10px; border:1px solid #E2E8F0; display:block; margin-bottom:8px;" />
+                    <img src="${escHtml(tbbImgSrc(selectedLogoObj.screenImg))}" data-orig-src="${escHtml(selectedLogoObj.screenImg)}" onerror="window.tbbImgFallback(this)" alt="${escHtml(selectedLogoObj.name)}" style="width:100%; border-radius:10px; border:1px solid #E2E8F0; display:block; margin-bottom:8px;" />
                     <div style="font-size:0.72rem; color:#334155; font-weight:600; line-height:1.45;">${escHtml(selectedLogoObj.rationale)}</div>
                   </div>
                   <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
@@ -2823,10 +2948,10 @@
                   <h3 style="font-family:'Montserrat',sans-serif; font-size:1.15rem; font-weight:900; color:#0D2540; margin:2px 0 0;">Descarga o Inspecciona los Entregables Generados para «ARCO Ingeniería» (Iteración #5)</h3>
                 </div>
                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                  <a href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf" target="_blank" rel="noopener" style="background:#0078C0; color:#FFFFFF; text-decoration:none; padding:9px 16px; border-radius:999px; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; display:inline-flex; align-items:center; gap:6px;">
+                  <a href="/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf" onclick="return window.tbbHandleSampleClick(event, this);" target="_blank" rel="noopener" style="background:#0078C0; color:#FFFFFF; text-decoration:none; padding:9px 16px; border-radius:999px; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; display:inline-flex; align-items:center; gap:6px;">
                     📄 Abrir Manual .PDF (36 Láminas)
                   </a>
-                  <a href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.html" target="_blank" rel="noopener" style="background:#0D2540; color:#FFFFFF; text-decoration:none; padding:9px 16px; border-radius:999px; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; display:inline-flex; align-items:center; gap:6px;">
+                  <a href="/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.html" onclick="return window.tbbHandleSampleClick(event, this);" target="_blank" rel="noopener" style="background:#0D2540; color:#FFFFFF; text-decoration:none; padding:9px 16px; border-radius:999px; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; display:inline-flex; align-items:center; gap:6px;">
                     🌐 Abrir Brandbook Interactivo .HTML
                   </a>
                   <button type="button" onclick="window.tbbSwitchMainSection(5)" style="background:#FFF7ED; color:#FF7A00; border:1.5px solid #FF7A00; padding:9px 16px; border-radius:999px; font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; cursor:pointer;">
@@ -2838,6 +2963,7 @@
                 ${ARCO_ALL_12_DELIVERABLES.map((d) => `
                   <a
                     href="${escHtml(d.url)}"
+                    onclick="return window.tbbHandleSampleClick(event, this);"
                     ${d.url.endsWith('.html') || d.url.endsWith('.pdf') ? 'target="_blank" rel="noopener"' : `download="${escHtml(d.url.split('/').pop())}"`}
                     style="background:#F8FAFC; color:#0D2540; border:1px solid #CBD5E1; border-radius:10px; padding:6px 11px; font-size:0.74rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;"
                   >
@@ -3025,8 +3151,9 @@
     if (upperTitle) upperTitle.textContent = (mapNode.title[l] || mapNode.title.es);
     const upperImg = document.getElementById("tbbUpperLayerScreenImg");
     if (upperImg) {
-      upperImg.src = capUrl;
-      upperImg.onerror = function () { this.src = item.captureBase + "?v=" + ASSET_VERSION; };
+      upperImg.removeAttribute("data-tbb-fb-tried");
+      upperImg.src = tbbImgSrc(capUrl);
+      upperImg.onerror = function () { window.tbbImgFallback(this, item.captureBase); };
     }
     const upperDiagram = document.getElementById("tbbUpperLayerMiniDiagram");
     if (upperDiagram && stageTheory) {
@@ -3244,8 +3371,8 @@
                         <div class="tbb-upper-layer-shot-thumb">
                           <img
                             id="tbbUpperLayerScreenImg"
-                            src="${escHtml(activeCapUrl)}"
-                            onerror="this.src='${escHtml(activeItem.captureBase)}?v=${ASSET_VERSION}'"
+                            src="${escHtml(tbbImgSrc(activeCapUrl))}"
+                            onerror="window.tbbImgFallback(this, '${escHtml(activeItem.captureBase)}')"
                             alt="${escHtml(activeLoc.title)}"
                           />
                         </div>
@@ -3326,13 +3453,13 @@
                       <!-- Bloque A: Screenshot Real de la Interfaz del Paso (Clic para Ampliar en Lightbox) -->
                       <div
                         class="tbb-precision-cutout-frame"
-                        onclick="event.stopPropagation(); window.tbbOpenPlateLightboxModal(${idx + 1}, '${escHtml(capImg)}', '${escHtml(loc.badge)} · ${escHtml(loc.title)}', '/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf');"
+                        onclick="event.stopPropagation(); window.tbbOpenPlateLightboxModal(${idx + 1}, '${escHtml(capImg)}', '${escHtml(loc.badge)} · ${escHtml(loc.title)}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf');"
                         title="Haz clic para ampliar esta captura real de ARCO Ingeniería"
                         style="cursor:zoom-in;"
                       >
                         <img
-                          src="${escHtml(capImg)}"
-                          onerror="this.src='${escHtml(it.captureBase)}?v=${ASSET_VERSION}'"
+                          src="${escHtml(tbbImgSrc(capImg))}"
+                          onerror="window.tbbImgFallback(this, '${escHtml(it.captureBase)}')"
                           alt="${escHtml(loc.cutoutLabel)}"
                           loading="lazy"
                         />
@@ -3402,8 +3529,8 @@
                 <div class="tbb-ba-card-content is-after">
                   <span class="tbb-ba-badge after">DESPUÉS · SELECCIÓN #5 LINEAL MINIMALISTA (NANOBANANA PRO + RETÍCULA 8X×3X)</span>
                   <div style="display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap; margin:8px 0;">
-                    <img src="/assets/logos/arco_iter5_full.png" alt="ARCO Ingeniería Iteración #5 Lineal Minimalista" style="max-height:130px; width:auto; border-radius:12px; background:#FFFFFF; padding:8px; border:1px solid #CBD5E1;" />
-                    <img src="/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" alt="Isotipo 1:1 ARCO Ingeniería" style="max-height:110px; width:auto; border-radius:12px; background:#FFFFFF; padding:8px; border:1px solid #CBD5E1;" />
+                    <img src="${escHtml(tbbImgSrc('/assets/logos/arco_iter5_full.png'))}" onerror="window.tbbImgFallback(this, '/assets/logos/arco_iter5_full.png')" alt="ARCO Ingeniería Iteración #5 Lineal Minimalista" style="max-height:130px; width:auto; border-radius:12px; background:#FFFFFF; padding:8px; border:1px solid #CBD5E1;" />
+                    <img src="${escHtml(tbbImgSrc('/assets/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png'))}" onerror="window.tbbImgFallback(this, '/assets/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png')" alt="Isotipo 1:1 ARCO Ingeniería" style="max-height:110px; width:auto; border-radius:12px; background:#FFFFFF; padding:8px; border:1px solid #CBD5E1;" />
                   </div>
                   <p>Trazo monolineal continuo en proporción áurea (8X×3X), paleta validada (<code>#0D2540</code>, <code>#0078C0</code>, <code>#88E0E0</code>) y Brandbook de 36 láminas.</p>
                 </div>
@@ -3412,7 +3539,7 @@
                 <div class="tbb-ba-card-content is-before">
                   <span class="tbb-ba-badge before">ANTES · LOGOTIPO BASE CARGADO EN EL PASO 0.2 (ARCO INGENIERÍA)</span>
                   <div style="display:flex; align-items:center; justify-content:center; margin:8px 0;">
-                    <img src="/assets/logos/arco_ingenieria_logo4k_original.png" alt="ARCO Ingeniería Logotipo Original" style="max-height:125px; width:auto; border-radius:12px; background:#FFFFFF; padding:10px; border:1px solid #CBD5E1;" />
+                    <img src="${escHtml(tbbImgSrc('/assets/logos/arco_ingenieria_logo4k_original.png'))}" onerror="window.tbbImgFallback(this, '/assets/logos/arco_ingenieria_logo4k_original.png')" alt="ARCO Ingeniería Logotipo Original" style="max-height:125px; width:auto; border-radius:12px; background:#FFFFFF; padding:10px; border:1px solid #CBD5E1;" />
                   </div>
                   <p>Logotipo original subido por el Ing. Luis Ponce como semilla de capital visual para su modernización arquitectónica.</p>
                 </div>
@@ -3432,7 +3559,7 @@
             </div>
 
             <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:28px;">
-              <a href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf" target="_blank" rel="noopener" class="tbb-btn-primary-vibrant" style="text-decoration:none;">
+              <a href="/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf" target="_blank" rel="noopener" onclick="return window.tbbHandleSampleClick(event, this)" class="tbb-btn-primary-vibrant" style="text-decoration:none;">
                 ${TBB_ICONS.book}
                 <span>Abrir Manual .PDF de ARCO Ingeniería (36 Láminas)</span>
               </a>
@@ -3785,25 +3912,116 @@
     });
   };
 
-  // SUBPÁGINA 4: DEMO EN VIVO (TRASLADADA AL FINAL DEL FLUJO EDUCATIVO · EJECUTA EL CÓDIGO REAL DENTRO DEL MOCKUP DE IPHONE + PAYWALL $49 USD EN PASO 4)
+  // MODO CLON INMERSIVO DE /STUDIO A PANTALLA COMPLETA (DESAPARECE HEADER, FOOTER Y TODO LO DEMÁS · UN SOLO BOTÓN FLOTANTE «REGRESAR A LA WEB» + BANNER EN PASO 4)
+  window.tbbEnterImmersiveStudioClone = function (startStep) {
+    const l = getLang();
+    document.body.classList.add("tbb-immersive-studio-mode");
+    let ov = document.getElementById("tbbImmersiveStudioCloneOverlay");
+    if (!ov) {
+      ov = document.createElement("div");
+      ov.id = "tbbImmersiveStudioCloneOverlay";
+      document.body.appendChild(ov);
+    }
+    const stepParam = typeof startStep === "number" ? `&step=${startStep}` : "";
+    const cloneSrc = `/studio?demo=true&embed=immersive_clone&novideo=1&lang=${encodeURIComponent(l)}${stepParam}`;
+    const existingIframe = document.getElementById("tbbImmersiveStudioCloneIframe");
+    if (!existingIframe) {
+      ov.innerHTML = `
+        <iframe
+          id="tbbImmersiveStudioCloneIframe"
+          title="The Best Brand Studio Clone"
+          src="${escHtml(cloneSrc)}"
+          style="width:100vw; height:100dvh; border:none; display:block; background:#F8FAFC;"
+          allow="microphone; autoplay; clipboard-write; fullscreen"
+        ></iframe>
+        <button
+          type="button"
+          id="tbbImmersiveFloatingReturnBtn"
+          onclick="window.tbbExitImmersiveStudioClone()"
+          title="Regresar a la Web"
+        >
+          ${TBB_ICONS.arrowLeft}
+          <span>${l === "es" ? "Regresar a la Web" : "Back to Website"}</span>
+        </button>
+        <div id="tbbImmersiveStep4PaywallBanner" style="display:none;">
+          <div class="tbb-immersive-step4-banner-inner">
+            <div class="tbb-immersive-step4-banner-copy">
+              <span class="tbb-immersive-step4-pill">${TBB_ICONS.lock} <span>PASO 4 · INGENIERÍA KANSEI, LOGOS Y BRANDBOOK 36 LÁMINAS</span></span>
+              <strong>¡Completaste los Pasos 0 al 3 gratuitos! Desbloquea los Pasos 4 al 6 o regresa a la web.</strong>
+            </div>
+            <div class="tbb-immersive-step4-banner-actions">
+              <button type="button" class="tbb-btn-primary-vibrant" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')">
+                ${TBB_ICONS.spark}
+                <span>Comprar y Desbloquear Marca Completa · $49 USD</span>
+              </button>
+              <button type="button" class="tbb-btn-secondary-clean" onclick="window.tbbExitImmersiveStudioClone()">
+                ${TBB_ICONS.arrowLeft}
+                <span>Regresar a la Web</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    } else if (typeof startStep === "number" && existingIframe.contentWindow) {
+      try {
+        existingIframe.contentWindow.postMessage({ type: "TBB_JUMP_TO_STEP", step: startStep }, "*");
+      } catch (e) {}
+    }
+    ov.style.display = "block";
+  };
+
+  window.tbbExitImmersiveStudioClone = function () {
+    document.body.classList.remove("tbb-immersive-studio-mode");
+    const ov = document.getElementById("tbbImmersiveStudioCloneOverlay");
+    if (ov) {
+      ov.style.display = "none";
+    }
+    const banner = document.getElementById("tbbImmersiveStep4PaywallBanner");
+    if (banner) {
+      banner.style.display = "none";
+    }
+  };
+
+  window.tbbShowImmersiveStep4Banner = function () {
+    const banner = document.getElementById("tbbImmersiveStep4PaywallBanner");
+    if (banner) {
+      banner.style.display = "flex";
+    }
+  };
+
+  // SUBPÁGINA 4: DEMO EN VIVO (TRASLADADA AL FINAL DEL FLUJO EDUCATIVO · EJECUTA EL CÓDIGO REAL DENTRO DEL MOCKUP DE IPHONE + BOTÓN «ENTRA A LA APP» + PAYWALL EN PASO 4)
   window.tbbBuildSubpage4DemoHTML = function () {
     const l = getLang();
     const st = window.tbbCommercialDemoState;
     const isPro = hasProLicense();
     const isFull = st.demoViewportMode === "full";
     const iframeSrc = `/studio?demo=true&embed=commercial&lang=${encodeURIComponent(l)}`;
+    const freeLabel = l === "es" ? "GRATIS" : "FREE";
+    const enterAppLabel = l === "es" ? "Entra a la App" : "Enter the App";
 
     return `
       <section class="tbb-subpage-section tbb-live-demo-section">
         <div class="tbb-container-wide">
-          <!-- Cabecera de Demo Interactiva Real -->
+          <!-- Cabecera de Demo Interactiva Real + Botón Muy Visible «Entra a la App» -->
           <div class="tbb-section-header-large tbb-reveal-on-scroll is-visible" style="margin-bottom:24px;">
             <span class="tbb-eyebrow-pill">${TBB_ICONS.demo} <span>${escHtml(t("demoEyebrow"))}</span></span>
             <h1 class="tbb-section-title-xl">${escHtml(t("demoTitle"))}</h1>
             <p class="tbb-section-lead-xl">${escHtml(t("demoLead"))}</p>
+            <div style="margin-top:20px; display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap;">
+              <button
+                type="button"
+                id="tbbBtnEnterFullAppHero"
+                class="tbb-btn-enter-full-app-cta"
+                onclick="window.tbbEnterImmersiveStudioClone()"
+              >
+                ${TBB_ICONS.spark}
+                <span>${escHtml(enterAppLabel)}</span>
+                ${TBB_ICONS.expand}
+              </button>
+            </div>
           </div>
 
-          <!-- Barra de Control de Pasos (Pasos 0, 1, 2 y 3 Libres | Paso 4 activa Paywall $49 USD con Migración Automática) -->
+          <!-- Barra de Control de Pasos (Solo indica los pasos que son GRATIS: Pasos 0, 1, 2 y 3 · Cero etiqueta $49 repetida en cada píldora) -->
           <div class="tbb-demo-control-bar">
             <div class="tbb-demo-steps-strip">
               ${[0, 1, 2, 3, 4, 5, 6].map((s) => {
@@ -3816,18 +4034,28 @@
                   >
                     ${locked ? TBB_ICONS.lock : TBB_ICONS.check}
                     <span>${escHtml(stepLabelForLang(s))}</span>
-                    ${s < 4 ? `<small class="tbb-free-tag">FREE</small>` : `<small class="tbb-pro-tag">${isPro ? 'PRO' : '$49'}</small>`}
+                    ${s < 4 ? `<small class="tbb-free-tag">${escHtml(freeLabel)}</small>` : (isPro ? `<small class="tbb-pro-tag">PRO</small>` : ``)}
                   </button>
                 `;
               }).join("")}
             </div>
 
-            <div class="tbb-demo-viewport-toggles">
+            <div class="tbb-demo-viewport-toggles" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <button type="button" id="tbbBtnDemoModeIphone" class="tbb-mode-pill ${!isFull ? 'active' : ''}" onclick="window.tbbSetDemoViewportMode('iphone')">
                 ${TBB_ICONS.phone} <span>${escHtml(t("demoModeIphone"))}</span>
               </button>
               <button type="button" id="tbbBtnDemoModeFull" class="tbb-mode-pill ${isFull ? 'active' : ''}" onclick="window.tbbSetDemoViewportMode('full')">
                 ${TBB_ICONS.expand} <span>${escHtml(t("demoModeFull"))}</span>
+              </button>
+              <button
+                type="button"
+                id="tbbBtnEnterFullAppBar"
+                class="tbb-btn-primary-vibrant"
+                style="padding:9px 18px; font-size:0.84rem;"
+                onclick="window.tbbEnterImmersiveStudioClone()"
+              >
+                ${TBB_ICONS.spark}
+                <span>${escHtml(enterAppLabel)}</span>
               </button>
             </div>
           </div>
@@ -3839,13 +4067,22 @@
               <div class="tbb-demo-guide-card">
                 <div class="tbb-demo-status-pill free">${TBB_ICONS.check} <span>${escHtml(t("demoFreeStepsBadge"))}</span></div>
                 <h3>1. Habla o escribe a Aura en vivo</h3>
-                <p>El mockup ejecuta el código real de The Best Brand Studio. Responde los Pasos 0, 1 (Círculo Dorado), 2 (Touchpoints) y 3 (Naming y Niza) sin costo.</p>
+                <p>El mockup ejecuta el código real de The Best Brand Studio. Responde los Pasos 0, 1 (Círculo Dorado), 2 (Touchpoints) y 3 (Naming y Niza) gratis, o haz clic en <strong>«${escHtml(enterAppLabel)}»</strong> para usar la aplicación en su dimensión completa.</p>
+                <button
+                  type="button"
+                  class="tbb-btn-primary-vibrant"
+                  style="width:100%; margin-top:12px; background:linear-gradient(135deg, #0078C0 0%, #0D2540 100%);"
+                  onclick="window.tbbEnterImmersiveStudioClone()"
+                >
+                  ${TBB_ICONS.expand}
+                  <span>${escHtml(enterAppLabel)} (Dimensión Completa)</span>
+                </button>
               </div>
 
               <div class="tbb-demo-guide-card highlight">
                 <div class="tbb-demo-status-pill paywall">${isPro ? TBB_ICONS.unlock : TBB_ICONS.lock} <span>${escHtml(t("demoPaywallStep4Badge"))}</span></div>
-                <h3>2. Desbloqueo del Paso 4 ($49 USD) y Migración Automática</h3>
-                <p>Al avanzar al Paso 4 (Ingeniería Kansei), el sistema activa el bloqueo de pago de $49 USD, crea tu cuenta ejecutiva y migra automáticamente el 100% de tus respuestas de los Pasos 0 al 3.</p>
+                <h3>2. Desbloqueo del Taller Completo y Migración Automática</h3>
+                <p>Al llegar al Paso 4 (Ingeniería Kansei), aparece el banner para comprar la experiencia completa o regresar a la web, migrando automáticamente el 100% de tus respuestas de los Pasos 0 al 3.</p>
                 <button type="button" class="tbb-btn-primary-vibrant" style="width:100%; margin-top:12px;" onclick="window.tbbOpenBuyAppCheckoutModal('pro_atelier')">
                   ${TBB_ICONS.shield}
                   <span>${escHtml(t("demoUnlockBtn"))}</span>
@@ -3901,9 +4138,10 @@
               <p class="tbb-cb-desc">${escHtml(pbLoc.desc)}</p>
               <div class="tbb-cb-actions" style="display:flex; gap:10px; flex-wrap:wrap;">
                 <a
-                  href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
+                  href="/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
                   target="_blank"
                   rel="noopener"
+                  onclick="return window.tbbHandleSampleClick(event, this)"
                   class="tbb-btn-primary-vibrant"
                   style="text-decoration:none;"
                 >
@@ -3911,8 +4149,9 @@
                   <span>Abrir Manual en .PDF (36 Láminas)</span>
                 </a>
                 <a
-                  href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
+                  href="/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
                   download="Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
+                  onclick="return window.tbbHandleSampleClick(event, this)"
                   class="tbb-btn-secondary-clean"
                   style="text-decoration:none;"
                 >
@@ -3920,9 +4159,10 @@
                   <span>⬇ Descargar .PDF (16.3 MB)</span>
                 </a>
                 <a
-                  href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.html"
+                  href="/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.html"
                   target="_blank"
                   rel="noopener"
+                  onclick="return window.tbbHandleSampleClick(event, this)"
                   class="tbb-btn-secondary-clean"
                   style="text-decoration:none;"
                 >
@@ -3939,7 +4179,7 @@
               </div>
             </div>
             <div class="tbb-cb-right" onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(primaryBrandbook.thumb)}', '${escHtml(pbLoc.title)}', '${escHtml(primaryBrandbook.sampleUrl)}')">
-              <img src="${escHtml(primaryBrandbook.thumb)}" alt="${escHtml(pbLoc.title)}" class="tbb-cb-preview-img" />
+              <img src="${escHtml(tbbImgSrc(primaryBrandbook.thumb))}" onerror="window.tbbImgFallback(this, '${escHtml(primaryBrandbook.thumb)}')" alt="${escHtml(pbLoc.title)}" class="tbb-cb-preview-img" />
               <div class="tbb-cb-overlay-pill">${TBB_ICONS.expand} <span>${escHtml(primaryBrandbook.format)}</span></div>
             </div>
           </div>
@@ -3952,9 +4192,10 @@
                 <h3 style="font-family:'Montserrat',sans-serif; font-size:1.28rem; font-weight:900; color:#0D2540; margin:4px 0 0;">Láminas Oficiales del Manual de Marca .PDF de ARCO Ingeniería (36 Láminas)</h3>
               </div>
               <a
-                href="/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
+                href="/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
                 target="_blank"
                 rel="noopener"
+                onclick="return window.tbbHandleSampleClick(event, this)"
                 style="background:#0078C0; color:#FFFFFF; text-decoration:none; padding:10px 18px; border-radius:999px; font-family:'Montserrat',sans-serif; font-size:0.80rem; font-weight:800;"
               >
                 📄 Ver las 36 Páginas en .PDF →
@@ -3963,14 +4204,14 @@
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px;">
               ${ARCO_PDF_PLATES_SHOWCASE.map((pl, idx) => `
                 <div
-                  onclick="window.tbbOpenPlateLightboxModal(${idx + 1}, '${escHtml(pl.img)}', '${escHtml(pl.code)} · ${escHtml(pl.title)}', '/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
+                  onclick="window.tbbOpenPlateLightboxModal(${idx + 1}, '${escHtml(pl.img)}', '${escHtml(pl.code)} · ${escHtml(pl.title)}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
                   style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:10px; cursor:zoom-in; transition:all 0.2s ease;"
                 >
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                     <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:800; color:#FFFFFF; background:#0D2540; padding:2px 8px; border-radius:999px;">${escHtml(pl.code)}</span>
                     <span style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; font-weight:800; color:#0078C0;">.PDF HD</span>
                   </div>
-                  <img src="${escHtml(pl.img)}" alt="${escHtml(pl.title)}" loading="lazy" style="width:100%; border-radius:8px; border:1px solid #E2E8F0; display:block; margin-bottom:6px;" />
+                  <img src="${escHtml(tbbImgSrc(pl.img))}" onerror="window.tbbImgFallback(this, '${escHtml(pl.img)}')" alt="${escHtml(pl.title)}" loading="lazy" style="width:100%; border-radius:8px; border:1px solid #E2E8F0; display:block; margin-bottom:6px;" />
                   <div style="font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:800; color:#0D2540;">${escHtml(pl.title)}</div>
                 </div>
               `).join("")}
@@ -3986,7 +4227,7 @@
               return `
                 <article class="tbb-deliverable-card" onclick="window.tbbOpenPlateLightboxModal(${item.plateNum}, '${escHtml(item.thumb)}', '${escHtml(loc.title)}', '${escHtml(item.sampleUrl)}')">
                   <div class="tbb-deliv-thumb-wrap">
-                    <img src="${escHtml(item.thumb)}" alt="${escHtml(loc.title)}" loading="lazy" />
+                    <img src="${escHtml(tbbImgSrc(item.thumb))}" onerror="window.tbbImgFallback(this, '${escHtml(item.thumb)}')" alt="${escHtml(loc.title)}" loading="lazy" />
                     <span class="tbb-deliv-num-badge">#${escHtml(item.num)}</span>
                     <span class="tbb-deliv-fmt-badge">${escHtml(item.format)}</span>
                   </div>
@@ -4004,7 +4245,7 @@
                       <a
                         href="${escHtml(item.sampleUrl)}"
                         ${isWebViewable ? 'target="_blank" rel="noopener"' : `download="${escHtml(fileName)}"`}
-                        onclick="event.stopPropagation();"
+                        onclick="event.stopPropagation(); return window.tbbHandleSampleClick(event, this);"
                         style="background:#0D2540; color:#FFFFFF; border-radius:8px; padding:6px 11px; font-size:0.72rem; font-weight:800; text-decoration:none; display:inline-flex; align-items:center; gap:4px;"
                       >
                         ⬇ ${isWebViewable ? 'Abrir Archivo' : 'Descargar'}
@@ -4036,6 +4277,7 @@
                   <a
                     href="${escHtml(d.url)}"
                     ${isView ? 'target="_blank" rel="noopener"' : `download="${escHtml(fn)}"`}
+                    onclick="return window.tbbHandleSampleClick(event, this)"
                     style="background:rgba(255,255,255,0.07); border:1px solid rgba(136,224,224,0.32); border-radius:12px; padding:11px 14px; color:#FFFFFF; text-decoration:none; display:flex; align-items:center; justify-content:space-between; gap:10px;"
                   >
                     <div style="display:flex; align-items:center; gap:9px; text-align:left;">
@@ -4358,7 +4600,7 @@
       ...ARCO_PDF_PLATES_SHOWCASE.map((pl) => ({
         img: pl.img,
         title: `Manual .PDF ARCO Ingeniería · ${pl.code}: ${pl.title}`,
-        sampleUrl: "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
+        sampleUrl: "/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf"
       })),
       ...OFFICIAL_9_DELIVERABLES.map((dl) => {
         const loc = dl.i18n[getLang()] || dl.i18n.es;
@@ -4376,7 +4618,7 @@
 
     const imgUrl = customImgUrl || fallbackItem.img;
     const titleStr = customTitle || fallbackItem.title;
-    const sampleHref = customSampleUrl || fallbackItem.sampleUrl || "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf";
+    const sampleHref = customSampleUrl || fallbackItem.sampleUrl || "/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf";
 
     let ov = document.getElementById("tbbPlateLightboxOverlay");
     if (!ov) {
@@ -4404,10 +4646,10 @@
             <button type="button" class="tbb-btn-secondary-clean" style="padding:6px 12px;" onclick="window.tbbOpenPlateLightboxModal(${nextNum}, '${escHtml(nextItem.img)}', '${escHtml(nextItem.title)}', '${escHtml(nextItem.sampleUrl)}')">
               <span>${escHtml(t("lightboxNext"))}</span> ${TBB_ICONS.arrowRight}
             </button>
-            <a href="${escHtml(sampleHref)}" target="_blank" rel="noopener" class="tbb-btn-primary-vibrant" style="padding:7px 14px; text-decoration:none;">
+            <a href="${escHtml(sampleHref)}" target="_blank" rel="noopener" onclick="return window.tbbHandleSampleClick(event, this)" class="tbb-btn-primary-vibrant" style="padding:7px 14px; text-decoration:none;">
               ${TBB_ICONS.expand} <span>Abrir Original</span>
             </a>
-            <a href="${escHtml(sampleHref)}" download="${escHtml(dlFileName)}" class="tbb-btn-secondary-clean" style="padding:7px 14px; text-decoration:none;">
+            <a href="${escHtml(sampleHref)}" download="${escHtml(dlFileName)}" onclick="return window.tbbHandleSampleClick(event, this)" class="tbb-btn-secondary-clean" style="padding:7px 14px; text-decoration:none;">
               ⬇ Descargar Archivo
             </a>
             <button type="button" class="tbb-modal-close-ic" onclick="window.tbbClosePlateLightboxModal()">
@@ -4416,7 +4658,7 @@
           </div>
         </div>
         <div style="background:#F8FAFC; border-radius:18px; overflow:hidden; text-align:center; padding:12px;">
-          <img src="${escHtml(imgUrl)}" alt="${escHtml(titleStr)}" style="max-width:100%; max-height:74vh; border-radius:12px; box-shadow:0 16px 40px rgba(13,37,64,0.12);" />
+          <img src="${escHtml(tbbImgSrc(imgUrl))}" onerror="window.tbbImgFallback(this, '${escHtml(imgUrl)}')" alt="${escHtml(titleStr)}" style="max-width:100%; max-height:74vh; border-radius:12px; box-shadow:0 16px 40px rgba(13,37,64,0.12);" />
         </div>
       </div>
     `;
@@ -4469,7 +4711,11 @@
       migrationSnapshot: migrationSnapshot,
       continueAtStep: 4
     };
-    ["tbbRealStudioDemoIframe", "tbbTourIphoneLiveIframe"].forEach((id) => {
+    const banner = document.getElementById("tbbImmersiveStep4PaywallBanner");
+    if (banner) {
+      banner.style.display = "none";
+    }
+    ["tbbRealStudioDemoIframe", "tbbTourIphoneLiveIframe", "tbbImmersiveStudioCloneIframe"].forEach((id) => {
       const ifr = document.getElementById(id);
       if (ifr && ifr.contentWindow) {
         try {
@@ -4535,7 +4781,7 @@
           <button
             type="button"
             class="tbb-btn-primary-vibrant"
-            onclick="window.tbbCloseBuyAppCheckoutModal(); window.tbbSwitchMainSection(4); setTimeout(()=>window.tbbJumpDemoToStep(4), 180);"
+            onclick="window.tbbCloseBuyAppCheckoutModal(); if(!document.body.classList.contains('tbb-immersive-studio-mode')){ window.tbbSwitchMainSection(4); setTimeout(()=>window.tbbJumpDemoToStep(4), 180); }"
           >
             ${TBB_ICONS.spark}
             <span>Continuar Ahora en el Paso 4</span>
@@ -4563,7 +4809,7 @@
     box.innerHTML = `
       <div class="tbb-checkout-head">
         <div style="display:flex; align-items:center; gap:10px;">
-          <img src="/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png" alt="The Best Brand" style="width:42px; height:42px; border-radius:11px;" />
+          <img src="${escHtml(tbbImgSrc('/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png'))}" onerror="window.tbbImgFallback(this, '/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png')" alt="The Best Brand" style="width:42px; height:42px; border-radius:11px;" />
           <div>
             <span class="tbb-eyebrow-pill" style="margin:0;">${TBB_ICONS.shield} <span>DESBLOQUEO PASO 4 AL 6 · $49 USD PAGO ÚNICO</span></span>
             <h3 style="font-family:'Montserrat',sans-serif; font-size:1.28rem; font-weight:900; color:#0D2540; margin:4px 0 0;">${escHtml(t("checkoutTitle"))}</h3>
@@ -4632,10 +4878,12 @@
       ov = document.createElement("div");
       ov.id = "tbbBuyAppCheckoutModalOverlay";
       ov.className = "tbb-modal-overlay";
+      ov.style.zIndex = "100050";
       ov.onclick = (e) => { if (e.target === ov) window.tbbCloseBuyAppCheckoutModal(); };
       ov.innerHTML = `<div id="tbbCheckoutModalContentBox" class="tbb-checkout-modal-card" onclick="event.stopPropagation()"></div>`;
       document.body.appendChild(ov);
     }
+    ov.style.zIndex = "100050";
     window.tbbRenderCheckoutModalContent();
     ov.classList.add("open");
   };
@@ -4657,8 +4905,8 @@
 
     window.tbbRefreshCommercialPortalDOM();
 
-    // Sincronizar iframes activos de Studio (/demo y /app-tour)
-    ["tbbRealStudioDemoIframe", "tbbTourIphoneLiveIframe"].forEach((id) => {
+    // Sincronizar iframes activos de Studio (/demo, /app-tour y clon inmersivo)
+    ["tbbRealStudioDemoIframe", "tbbTourIphoneLiveIframe", "tbbImmersiveStudioCloneIframe"].forEach((id) => {
       const ifr = document.getElementById(id);
       if (ifr && ifr.contentWindow) {
         try {
@@ -4704,6 +4952,122 @@
       }
       .tbb-svg-ic { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 
+      /* MODO CLON INMERSIVO DE /STUDIO: DESAPARECE EL ENCABEZADO, PIE DE PÁGINA Y TODO LO DEMÁS */
+      body.tbb-immersive-studio-mode {
+        overflow: hidden !important;
+      }
+      body.tbb-immersive-studio-mode .tbb-master-header,
+      body.tbb-immersive-studio-mode #tbbMainCommercialFooter,
+      body.tbb-immersive-studio-mode .tbb-mobile-bottom-dock,
+      body.tbb-immersive-studio-mode #tbbScrollProgressBar,
+      body.tbb-immersive-studio-mode #tbbStandaloneCommercialPageRoot,
+      body.tbb-immersive-studio-mode #tbbCommercialPortalInner {
+        display: none !important;
+      }
+      #tbbImmersiveStudioCloneOverlay {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100dvh;
+        z-index: 99985;
+        background: #F8FAFC;
+        display: none;
+      }
+      #tbbImmersiveFloatingReturnBtn {
+        position: fixed;
+        top: 14px;
+        left: 16px;
+        z-index: 99995;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: rgba(13, 37, 64, 0.94);
+        color: #FFFFFF;
+        border: 1.5px solid #FF7A00;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 10px 28px rgba(13, 37, 64, 0.28);
+        backdrop-filter: blur(12px);
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+      #tbbImmersiveFloatingReturnBtn:hover {
+        transform: translateY(-1px);
+        background: #0D2540;
+      }
+      #tbbImmersiveStep4PaywallBanner {
+        position: fixed;
+        bottom: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(94vw, 980px);
+        z-index: 99998;
+        background: linear-gradient(135deg, #0D2540 0%, #163A63 100%);
+        color: #FFFFFF;
+        border: 2px solid #FF7A00;
+        border-radius: 22px;
+        padding: 16px 22px;
+        box-shadow: 0 22px 54px rgba(13, 37, 64, 0.45);
+        display: none;
+      }
+      .tbb-immersive-step4-banner-inner {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .tbb-immersive-step4-banner-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .tbb-immersive-step4-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.70rem;
+        font-weight: 800;
+        color: #FFB366;
+      }
+      .tbb-immersive-step4-banner-copy strong {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.98rem;
+        font-weight: 800;
+        color: #FFFFFF;
+      }
+      .tbb-immersive-step4-banner-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .tbb-btn-enter-full-app-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 32px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #FF7A00 0%, #EA580C 100%);
+        color: #FFFFFF;
+        border: 2px solid #FFFFFF;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.06rem;
+        font-weight: 900;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        box-shadow: 0 16px 38px rgba(255, 122, 0, 0.36), 0 0 0 4px rgba(255, 122, 0, 0.16);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .tbb-btn-enter-full-app-cta:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 20px 44px rgba(255, 122, 0, 0.48), 0 0 0 6px rgba(255, 122, 0, 0.22);
+      }
       /* HEADER SUPERIOR FIJO (SE PRESERVA SIEMPRE AL HACER SCROLL Y MUESTRA EL LOGO + "THE BEST BRAND") */
       .tbb-master-header {
         position: fixed;
@@ -7696,7 +8060,7 @@
     } catch (e) {}
   }
 
-  // Escuchar eventos desde el iframe de /studio (Sincronización de Pasos 0-3 y Bloqueo de Pago $49 USD en Paso 4)
+  // Escuchar eventos desde el iframe de /studio (Sincronización de Pasos 0-3, Banner en Paso 4 y Regreso a la Web)
   window.addEventListener("message", (ev) => {
     try {
       const msg = ev && ev.data;
@@ -7710,13 +8074,33 @@
           localStorage.setItem("tbb_demo_steps_0_to_3_backup", JSON.stringify(msg.stateSnapshot));
         } catch (e) {}
       }
-      if (msg.type === "TBB_OPEN_CHECKOUT_PAYWALL_STEP4" || msg.type === "TBB_TRIGGER_PAYWALL") {
-        if (msg.stateSnapshot) {
-          st.migratedSteps0to3Snapshot = msg.stateSnapshot;
+      if (msg.type === "TBB_EXIT_IMMERSIVE_STUDIO") {
+        window.tbbExitImmersiveStudioClone();
+        return;
+      }
+      if (msg.type === "TBB_TRIGGER_STEP4_PAYWALL" || msg.type === "TBB_DEMO_COMPLETED_STEP_3") {
+        const snap = msg.stateSnapshot || msg.payload;
+        if (snap && typeof snap === "object") {
+          st.migratedSteps0to3Snapshot = snap;
           try {
-            localStorage.setItem("tbb_demo_steps_0_to_3_backup", JSON.stringify(msg.stateSnapshot));
+            localStorage.setItem("tbb_demo_steps_0_to_3_backup", JSON.stringify(snap));
           } catch (e) {}
         }
+        window.tbbShowImmersiveStep4Banner();
+        if (!document.body.classList.contains("tbb-immersive-studio-mode")) {
+          window.tbbOpenBuyAppCheckoutModal("pro_atelier");
+        }
+        return;
+      }
+      if (msg.type === "TBB_OPEN_CHECKOUT_PAYWALL_STEP4" || msg.type === "TBB_TRIGGER_PAYWALL") {
+        const snap = msg.stateSnapshot || msg.payload;
+        if (snap && typeof snap === "object") {
+          st.migratedSteps0to3Snapshot = snap;
+          try {
+            localStorage.setItem("tbb_demo_steps_0_to_3_backup", JSON.stringify(snap));
+          } catch (e) {}
+        }
+        window.tbbShowImmersiveStep4Banner();
         window.tbbOpenBuyAppCheckoutModal("pro_atelier");
       }
     } catch (e) {}
@@ -7731,6 +8115,12 @@
     tbbInjectAwwwardsStyles();
     applyUrlParamsState();
     window.tbbRefreshCommercialPortalDOM();
+    try {
+      if (!sessionStorage.getItem("tbb_gh_synced_v109")) {
+        sessionStorage.setItem("tbb_gh_synced_v109", "1");
+        fetch("/api/v1/system/sync-github", { method: "POST" }).catch(() => {});
+      }
+    } catch (e) {}
   }
 
   if (document.readyState === "loading") {
@@ -7739,3 +8129,4 @@
     bootCommercialExperience();
   }
 })();
+

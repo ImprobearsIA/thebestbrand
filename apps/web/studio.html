@@ -6,9 +6,11 @@
     var isEmbedded = window.self !== window.top;
     var params = new URLSearchParams(window.location.search);
     var isDemoParam = params.get("demo") === "true";
-    var isIphoneEmbed = params.get("embed") === "iphone";
+    var embedMode = params.get("embed") || "";
+    var isImmersiveClone = embedMode === "immersive_clone";
+    var isIphoneEmbed = embedMode === "iphone" || embedMode === "iphone_tour" || embedMode === "commercial";
     var isDemo = isEmbedded || isDemoParam;
-    if (isIphoneEmbed || isEmbedded) {
+    if ((isIphoneEmbed || isEmbedded) && !isImmersiveClone) {
       document.documentElement.classList.add("tbb-embed-iphone-mode");
     }
     if (isDemo) {
@@ -20,7 +22,9 @@
       window.addEventListener("DOMContentLoaded", function() {
         if (document.body) {
           document.body.classList.add("tbb-is-demo-mode");
-          if (isIphoneEmbed || isEmbedded) document.body.classList.add("tbb-embed-iphone-mode");
+          if ((isIphoneEmbed || isEmbedded) && !isImmersiveClone) {
+            document.body.classList.add("tbb-embed-iphone-mode");
+          }
         }
         ["tbbBtnTopCommercialWeb", "tbbBtnTopBuyAppNow", "tbbAlwaysOnBuyFloatingBar", "tbbBtnTopAdminTbb"].forEach(function(id) {
           var el = document.getElementById(id);
@@ -8923,14 +8927,19 @@
 
     window.tbbTriggerStep4PaywallAndNotifyParent = function (fromStep, targetStep) {
       const stateSnapshot = window.tbbBuildProgressMigrationSnapshot();
+      const isImmersiveClone = new URLSearchParams(window.location.search).get("embed") === "immersive_clone";
       if (window.parent && window.parent !== window) {
         try {
           window.parent.postMessage({
             type: "TBB_TRIGGER_STEP4_PAYWALL",
             fromStep: typeof fromStep === "number" ? fromStep : 3,
             targetStep: typeof targetStep === "number" ? targetStep : 4,
+            isImmersiveClone: isImmersiveClone,
             stateSnapshot
           }, "*");
+          if (isImmersiveClone) {
+            showDemoCompletionPaywallModal();
+          }
           return;
         } catch (e) {}
       }
@@ -8941,6 +8950,38 @@
       }
     };
 
+    window.tbbOpenParentCheckoutFromDemo = function () {
+      const modal = document.getElementById("tbbDemoCompletionPaywallModal");
+      if (modal) modal.style.display = "none";
+      const stateSnapshot = window.tbbBuildProgressMigrationSnapshot();
+      if (window.parent && window.parent !== window) {
+        try {
+          window.parent.postMessage({
+            type: "TBB_OPEN_CHECKOUT_PAYWALL_STEP4",
+            fromStep: 3,
+            targetStep: 4,
+            stateSnapshot
+          }, "*");
+          return;
+        } catch (e) {}
+      }
+      if (typeof window.tbbOpenBuyAppCheckoutModal === "function") {
+        window.tbbOpenBuyAppCheckoutModal("pro_atelier");
+      }
+    };
+
+    window.tbbReturnToWebFromDemo = function () {
+      const modal = document.getElementById("tbbDemoCompletionPaywallModal");
+      if (modal) modal.style.display = "none";
+      if (window.parent && window.parent !== window) {
+        try {
+          window.parent.postMessage({ type: "TBB_EXIT_IMMERSIVE_STUDIO" }, "*");
+          return;
+        } catch (e) {}
+      }
+      window.location.href = "/";
+    };
+
     function showDemoCompletionPaywallModal() {
       let modal = document.getElementById("tbbDemoCompletionPaywallModal");
       if (!modal) {
@@ -8948,22 +8989,25 @@
         modal.id = "tbbDemoCompletionPaywallModal";
         modal.style.cssText = "position:fixed; inset:0; z-index:999999; background:rgba(9,13,22,0.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); display:flex; align-items:center; justify-content:center; padding:20px;";
         modal.innerHTML = `
-          <div style="background:#FFFFFF; border:2.5px solid #1D4ED8; border-top:6px solid #0D2540; border-radius:24px; padding:32px 28px; max-width:540px; width:100%; box-shadow:0 30px 80px rgba(0,0,0,0.6); text-align:center; position:relative; font-family:'Plus Jakarta Sans',sans-serif;">
-            <div style="display:inline-flex; align-items:center; gap:8px; background:#EFF6FF; border:1px solid #93C5FD; border-radius:999px; padding:5px 14px; font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#1D4ED8; margin-bottom:12px;">
-              ★ PASOS 1, 2 Y 3 COMPLETADOS SIN COSTO
+          <div style="background:#FFFFFF; border:2.5px solid #FF7A00; border-top:6px solid #0D2540; border-radius:24px; padding:32px 28px; max-width:560px; width:100%; box-shadow:0 30px 80px rgba(0,0,0,0.65); text-align:center; position:relative; font-family:'Plus Jakarta Sans',sans-serif;">
+            <div style="display:inline-flex; align-items:center; gap:8px; background:#FFF7ED; border:1px solid #FDBA74; border-radius:999px; padding:5px 14px; font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#EA580C; margin-bottom:12px;">
+              ★ HAS LLEGADO AL PASO 4 · PASOS 0 AL 3 COMPLETADOS GRATIS
             </div>
-            <h3 style="font-family:'Montserrat',sans-serif; font-size:1.45rem; font-weight:900; color:#090D16; margin:0 0 10px 0; line-height:1.2;">
-              ¡Tu Estrategia y Naming Oficial están Listos!
+            <h3 style="font-family:'Montserrat',sans-serif; font-size:1.45rem; font-weight:900; color:#0D2540; margin:0 0 10px 0; line-height:1.2;">
+              ¡Desbloquea el Paso 4 al 6 o Regresa a la Web!
             </h3>
-            <p style="font-size:0.88rem; color:#475569; line-height:1.55; margin:0 0 20px 0;">
-              Has completado tu Objetivo, Círculo Dorado, Touchpoints y Naming Fonético. Para desbloquear el <strong>Paso 4 (Ingeniería Kansei y Tipografía)</strong>, el <strong>Paso 5 (Logotipo Vectorial Liquid Glass)</strong> y el <strong>Paso 6 (Brandbook de más de 30 páginas + 9 Entregables)</strong>, activa tu Licencia Pro de <strong>$49 USD</strong>. Tus respuestas se migrarán automáticamente a tu nueva cuenta.
+            <p style="font-size:0.90rem; color:#475569; line-height:1.55; margin:0 0 22px 0;">
+              Has completado la fase estratégica gratuita (Pasos 0, 1, 2 y 3). Para continuar al <strong>Paso 4 (ADN Visual Kansei y Tipografía)</strong>, <strong>Paso 5 (Taller de Logotipo en Curvas)</strong> y <strong>Paso 6 (Brandbook de 36 Láminas + Pack de Descargas)</strong> con migración automática de tus respuestas, activa tu Licencia Pro o regresa a la web principal.
             </p>
             <div style="display:flex; flex-direction:column; gap:10px;">
-              <button type="button" onclick="document.getElementById('tbbDemoCompletionPaywallModal').style.display='none'; window.tbbTriggerStep4PaywallAndNotifyParent(3, 4);" style="background:#0D2540; color:#FFFFFF; border:none; border-radius:999px; padding:14px 24px; font-size:0.94rem; font-weight:800; cursor:pointer; box-shadow:0 8px 24px rgba(13,37,64,0.4); border:1.5px solid #4C9DE6;">
-                Desbloquear Paso 4 al 6 + Crear Cuenta · $49 USD →
+              <button type="button" onclick="window.tbbOpenParentCheckoutFromDemo();" style="background:linear-gradient(135deg, #FF7A00 0%, #E05E00 100%); color:#FFFFFF; border:none; border-radius:999px; padding:15px 24px; font-family:'Montserrat',sans-serif; font-size:0.96rem; font-weight:900; cursor:pointer; box-shadow:0 10px 26px rgba(255,122,0,0.38);">
+                ✨ Comprar y Desbloquear Marca Completa · $49 USD →
               </button>
-              <button type="button" onclick="document.getElementById('tbbDemoCompletionPaywallModal').style.display='none'; switchStep(3);" style="background:#F8FAFC; border:1.5px solid #CBD5E1; color:#090D16; border-radius:999px; padding:10px 20px; font-size:0.82rem; font-weight:700; cursor:pointer;">
-                ← Regresar a Revisar Naming (Paso 3)
+              <button type="button" onclick="window.tbbReturnToWebFromDemo();" style="background:#0D2540; color:#FFFFFF; border:1.5px solid #4C9DE6; border-radius:999px; padding:13px 22px; font-family:'Montserrat',sans-serif; font-size:0.90rem; font-weight:800; cursor:pointer;">
+                ← Regresar a la Web
+              </button>
+              <button type="button" onclick="document.getElementById('tbbDemoCompletionPaywallModal').style.display='none'; switchStep(3);" style="background:#F8FAFC; border:1.5px solid #CBD5E1; color:#475569; border-radius:999px; padding:9px 18px; font-size:0.80rem; font-weight:700; cursor:pointer;">
+                Seguir revisando mis respuestas del Paso 3 (Gratis)
               </button>
             </div>
           </div>
@@ -26812,12 +26856,13 @@
       window.addEventListener("message", function (ev) {
         const msg = ev && ev.data;
         if (!msg || typeof msg !== "object") return;
-        if (msg.type === "TBB_LICENSE_UNLOCKED_CONTINUE_STEP4") {
+        if (msg.type === "TBB_LICENSE_UNLOCKED_CONTINUE_STEP4" || msg.type === "TBB_PRO_LICENSE_UNLOCKED") {
           try {
-            if (msg.receipt) {
-              localStorage.setItem("tbb_pro_license_v56", JSON.stringify(msg.receipt));
-              if (msg.receipt.licenseCode) {
-                localStorage.setItem("thebestbrand_pro_license", msg.receipt.licenseCode);
+            const rcp = msg.receipt || msg.license;
+            if (rcp) {
+              localStorage.setItem("tbb_pro_license_v56", JSON.stringify(rcp));
+              if (rcp.licenseCode || rcp.licenseId) {
+                localStorage.setItem("thebestbrand_pro_license", rcp.licenseCode || rcp.licenseId);
               }
             }
             localStorage.setItem("tbb_license_active_pro_atelier", "true");
@@ -26826,12 +26871,13 @@
               localStorage.setItem("tbb_user_account_v30", JSON.stringify(msg.account));
               if (typeof updateAccountHeaderBadges === "function") updateAccountHeaderBadges();
             }
-            if (msg.migratedState && typeof msg.migratedState === "object") {
-              if (msg.migratedState.step0State && window.step0State) Object.assign(window.step0State, msg.migratedState.step0State);
-              if (msg.migratedState.canvasState && typeof canvasState === "object") Object.assign(canvasState, msg.migratedState.canvasState);
-              if (msg.migratedState.tpExtractedItems && typeof tpExtractedItems === "object") Object.assign(tpExtractedItems, msg.migratedState.tpExtractedItems);
-              if (Array.isArray(msg.migratedState.acceptedNamingVault) && msg.migratedState.acceptedNamingVault.length > 0) {
-                window.acceptedNamingVault = msg.migratedState.acceptedNamingVault;
+            const mig = msg.migratedState || msg.migrationSnapshot;
+            if (mig && typeof mig === "object") {
+              if (mig.step0State && window.step0State) Object.assign(window.step0State, mig.step0State);
+              if (mig.canvasState && typeof canvasState === "object") Object.assign(canvasState, mig.canvasState);
+              if (mig.tpExtractedItems && typeof tpExtractedItems === "object") Object.assign(tpExtractedItems, mig.tpExtractedItems);
+              if (Array.isArray(mig.acceptedNamingVault) && mig.acceptedNamingVault.length > 0) {
+                window.acceptedNamingVault = mig.acceptedNamingVault;
               }
             }
             window.tbbIsDemoMode = false;
@@ -26846,7 +26892,7 @@
               openPhaseTransitionVideoCapsule(3, 4);
             }
           } catch (e) {}
-        } else if (msg.type === "TBB_IPHONE_JUMP_STEP") {
+        } else if (msg.type === "TBB_IPHONE_JUMP_STEP" || msg.type === "TBB_JUMP_TO_STEP") {
           const targetS = Number(msg.step ?? 0);
           window.tbbJumpToStep(targetS, Number(msg.subStep || 1));
         } else if (msg.type === "TBB_IPHONE_OPEN_STEP_VIDEO") {

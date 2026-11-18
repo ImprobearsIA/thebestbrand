@@ -1,0 +1,31 @@
+{
+  "brand": "ARCO Ingeniería",
+  "founder": "Ing. Luis Ponce",
+  "selectedIteration": "#5 · Lineal Minimalista",
+  "tagline": "Ingeniería Estructural, Arquitectura y Construcción de Alto Nivel",
+  "niceClasses": [
+    37,
+    42
+  ],
+  "palette": {
+    "primaryCobalt": "#0078C0",
+    "accentTurquoise": "#88E0E0",
+    "structuralGray": "#585850",
+    "deepBlueprintNavy": "#0D2540",
+    "canvasLight": "#F8FAFC"
+  },
+  "typography": {
+    "display": "Montserrat",
+    "body": "Plus Jakarta Sans",
+    "mono": "JetBrains Mono"
+  },
+  "kanseiAxes": {
+    "tradicion_vanguardia": 0.78,
+    "silencio_expresion": 0.65,
+    "cercania_autoridad": 0.85,
+    "organico_geometrico": 0.9,
+    "calma_dinamismo": 0.72,
+    "sintesis_detalle": 0.55,
+    "fisico_digital": 0.35
+  }
+}
