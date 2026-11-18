@@ -23011,7 +23011,7 @@
           btnAct.classList.add("is-hidden");
         }
         if (lblPrev) lblPrev.textContent = (st.step === 0 && st.subStep === 1) ? "Mapa" : "Atrás";
-        if (lblNext) lblNext.textContent = "Adelante";
+        if (lblNext) lblNext.textContent = "Siguiente";
 
         // ---------------------------------------------------------------------
         // PASO 0: CONFIGURACIÓN INICIAL (3 SUB-VISTAS SIN SCROLL)
@@ -23043,13 +23043,12 @@
                   </button>
                 </div>
                 <div style="font-size:0.80rem; color:#64748B; text-align:center; font-weight:600;">
-                  Selecciona una opción y presiona Adelante en la barra inferior.
+                  Selecciona una opción y presiona Siguiente en la barra inferior.
                 </div>
               </div>
             `;
           } else if (st.subStep === 2) {
             const uploadedLogoUrl = cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
-            const existingLogoMode = cs.existing_logo_mode || window.step0State?.existingLogoMode || "keep";
             const extColors = cs.uploaded_logo_colors || window.step0State?.uploadedLogoColors || [st.logoPriHex || "#1D4ED8", st.logoSecHex || "#0D2540"];
             const isNamelessDiscovery = Boolean(
               cs.nameless_discovery_mode ||
@@ -23060,74 +23059,68 @@
             );
             const displayInputName = (isNamelessDiscovery || /^Marca en Creaci|^Proyecto Gastron/i.test(curName)) ? "" : curName;
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
+              <div class="tbb-atomic-card" style="padding:16px 20px; gap:14px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8; margin-bottom:1px;">PASO 0 · 2 DE 3 · PUNTO DE PARTIDA NOMINAL, LOGO Y PALETA (2 A 6 COLORES)</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.05rem; font-weight:900; color:#090D16; margin:0 0 2px 0; line-height:1.2;">
-                    ¿Tu proyecto ya tiene nombre o prefieres crearlo desde cero? Elige también tu paleta de 2 a 6 colores:
+                  <div style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#1D4ED8; margin-bottom:4px;">PASO 0 · 2 DE 3 · NOMBRE DE TU MARCA</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.28rem; font-weight:900; color:#090D16; margin:0; line-height:1.25;">
+                    ¿Tu proyecto ya tiene nombre o prefieres crearlo durante el recorrido?
                   </h2>
                 </div>
-                <div style="display:flex; flex-direction:column; gap:6px; flex:1; justify-content:center; min-height:0;">
-                  <div style="display:grid; grid-template-columns:1.15fr 0.85fr; gap:8px;">
-                    <button type="button" id="tbbBtnStartNamelessDiscovery" class="tbb-duo-btn ${isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbActivateNamelessDiscoveryMode(false);" style="min-height:40px !important; padding:5px 10px !important; font-size:0.77rem !important; line-height:1.18;">
-                      ✨ Aún no tengo nombre · Crearlo desde cero en el Paso 3
+
+                <div style="display:flex; flex-direction:column; gap:12px; flex:1; justify-content:center; min-height:0;">
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <button type="button" id="tbbBtnHasExistingName" class="tbb-duo-btn ${!isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbDeactivateNamelessDiscoveryMode();" style="min-height:48px !important; padding:8px 14px !important; font-size:0.86rem !important; line-height:1.25;">
+                      ✓ Ya tengo el nombre de mi marca
                     </button>
-                    <button type="button" id="tbbBtnHasExistingName" class="tbb-duo-btn ${!isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbDeactivateNamelessDiscoveryMode();" style="min-height:40px !important; padding:5px 10px !important; font-size:0.77rem !important; line-height:1.18;">
-                      ✓ Ya tengo mi nombre
+                    <button type="button" id="tbbBtnStartNamelessDiscovery" class="tbb-duo-btn ${isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbActivateNamelessDiscoveryMode(false);" style="min-height:48px !important; padding:8px 14px !important; font-size:0.86rem !important; line-height:1.25;">
+                      ✨ Aún no tengo nombre · Crearlo en el proceso
                     </button>
                   </div>
 
                   ${isNamelessDiscovery ? `
-                    <div style="background:linear-gradient(135deg,#FFFBEB,#FEF3C7); border:1.5px solid #D97706; border-radius:12px; padding:7px 11px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
-                      <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:220px;">
-                        <div style="width:28px; height:28px; border-radius:8px; background:#9E3B24; color:#FFFBEB; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.85rem; flex-shrink:0;">✦</div>
-                        <div style="font-size:0.71rem; color:#78350F; font-weight:700; line-height:1.25;">
-                          <strong style="color:#9E3B24; display:block; font-size:0.74rem;">Modo «Generación de Nombre desde Cero» Activo (Método SMILE)</strong>
-                          En el <strong>Paso 3</strong> sintetizaremos tu nombre oficial cruzando tu Giro (Paso 0.3), Propósito (Paso 1) y Touchpoints (Paso 2).
-                        </div>
+                    <div style="background:#EFF6FF; border:2px solid #1D4ED8; border-radius:16px; padding:16px 18px; display:flex; align-items:center; gap:14px;">
+                      <div style="width:40px; height:40px; border-radius:12px; background:#1D4ED8; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.15rem; flex-shrink:0;">✓</div>
+                      <div style="font-size:0.86rem; color:#0F172A; font-weight:700; line-height:1.42;">
+                        <strong style="color:#1D4ED8; display:block; font-size:0.94rem; margin-bottom:2px;">Listo: crearemos el nombre de tu marca durante el proceso</strong>
+                        Primero conoceremos a qué se dedica tu proyecto y qué lo hace único, y más adelante generaremos tu nombre ideal. <strong>Solo presiona «Siguiente» en la barra inferior para continuar.</strong>
                       </div>
-                      <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.onTbbAtomicNext();" style="min-height:36px !important; padding:4px 12px !important; font-size:0.78rem !important; font-weight:900 !important; flex-shrink:0;">
-                        Continuar al Paso 0.3 →
-                      </button>
                     </div>
                   ` : `
-                    <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:12px; padding:6px 10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                      <label for="tbbStep0NameInput" style="font-size:0.73rem; font-weight:800; color:#334155; flex-shrink:0;">
-                        Nombre actual de tu marca:
+                    <div style="background:#F8FAFC; border:2px solid #090D16; border-radius:16px; padding:14px 16px; display:flex; flex-direction:column; gap:8px;">
+                      <label for="tbbStep0NameInput" style="font-size:0.82rem; font-weight:900; color:#090D16;">
+                        Escribe aquí el nombre de tu marca:
                       </label>
-                      <input type="text" id="tbbStep0NameInput" value="${displayInputName.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Escribe aquí el nombre de tu marca" style="flex:1; min-width:170px; height:36px; padding:0 10px; border-radius:9px; border:2px solid #94A3B8; font-size:0.88rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
-                      <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.onTbbAtomicNext();" style="min-height:36px !important; padding:0 12px !important; font-size:0.78rem !important; flex-shrink:0;">
-                        Continuar →
-                      </button>
+                      <input type="text" id="tbbStep0NameInput" value="${displayInputName.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Ej. Nombre de tu empresa, producto o proyecto..." style="width:100%; height:44px; padding:0 14px; border-radius:12px; border:2px solid #CBD5E1; font-size:0.98rem; font-weight:800; color:#090D16; background:#FFFFFF; box-sizing:border-box;" />
                     </div>
                   `}
 
-                  <!-- Selector Interactivo de Paleta Total de Marca (entre 2 y 6 colores) -->
-                  ${typeof window.tbbRenderBrandPaletteSelectorHTML === "function" ? window.tbbRenderBrandPaletteSelectorHTML("step0_2") : ""}
-
-                  <!-- Opción de Subir Logotipo Existente (Mantenerlo o Tomarlo como Base) -->
-                  <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:12px; padding:6px 10px; display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+                  <!-- Opción de Subir Logotipo Existente (Opcional) -->
+                  <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
                     <input type="file" id="tbbExistingLogoFileInput" accept="image/png,image/jpeg,image/webp,image/svg+xml,.svg,.png,.jpg,.jpeg,.webp" onchange="window.tbbHandleExistingLogoUpload(this)" style="display:none;" />
                     ${!uploadedLogoUrl ? `
-                      <div style="font-size:0.72rem; font-weight:800; color:#1D4ED8;">
-                        ¿Ya tienes un logotipo actual? (Opcional · extrae sus colores automáticamente)
+                      <div style="font-size:0.78rem; font-weight:700; color:#475569;">
+                        ¿Ya cuentas con un logotipo actual? <span style="color:#64748B; font-weight:600;">(Opcional · también podrás subirlo o crearlo en la sección de Logotipo)</span>
                       </div>
-                      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="min-height:32px !important; padding:4px 10px !important; font-size:0.74rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; background:#FFFFFF !important;">
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="min-height:34px !important; padding:4px 12px !important; font-size:0.76rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; background:#FFFFFF !important;">
                         Subir mi Logo (.PNG, .JPG, .SVG)
                       </button>
                     ` : `
-                      <div style="display:flex; align-items:center; gap:8px; min-width:0; flex:1;">
-                        <img src="${uploadedLogoUrl}" alt="Logo actual" style="width:32px; height:32px; object-fit:contain; border-radius:7px; border:1px solid #E2E8F0; background:#F8FAFC; flex-shrink:0;" />
-                        <div style="min-width:0; flex:1; font-size:0.73rem; font-weight:900; color:#090D16;">
+                      <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
+                        <img src="${uploadedLogoUrl}" alt="Logo actual" style="width:36px; height:36px; object-fit:contain; border-radius:8px; border:1px solid #CBD5E1; background:#FFFFFF; flex-shrink:0;" />
+                        <div style="min-width:0; flex:1; font-size:0.80rem; font-weight:900; color:#090D16;">
                           Logo actual cargado (${extColors[0] || '#1D4ED8'} · ${extColors[1] || '#0D2540'})
                         </div>
-                        <div style="display:flex; gap:5px;">
-                          <button type="button" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="background:#FFFFFF; color:#1D4ED8; border:1.5px solid #1D4ED8; border-radius:7px; padding:2px 8px; font-size:0.68rem; font-weight:800; cursor:pointer;">Cambiar</button>
-                          <button type="button" onclick="window.tbbClearExistingLogo()" style="background:#FEF2F2; color:#DC2626; border:1.5px solid #FCA5A5; border-radius:7px; padding:2px 8px; font-size:0.68rem; font-weight:800; cursor:pointer;">Quitar</button>
+                        <div style="display:flex; gap:6px;">
+                          <button type="button" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="background:#FFFFFF; color:#1D4ED8; border:1.5px solid #1D4ED8; border-radius:8px; padding:4px 10px; font-size:0.72rem; font-weight:800; cursor:pointer;">Cambiar</button>
+                          <button type="button" onclick="window.tbbClearExistingLogo()" style="background:#FEF2F2; color:#DC2626; border:1.5px solid #FCA5A5; border-radius:8px; padding:4px 10px; font-size:0.72rem; font-weight:800; cursor:pointer;">Quitar</button>
                         </div>
                       </div>
                     `}
                   </div>
+                </div>
+
+                <div style="font-size:0.80rem; color:#64748B; text-align:center; font-weight:600;">
+                  Selecciona tu opción y presiona <strong>Siguiente</strong> en la barra inferior.
                 </div>
               </div>
             `;
@@ -23722,9 +23715,9 @@
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 5 · 1 DE 2 · ACABADO, LOGO BASE Y PALETA TOTAL (DE 2 A 6 COLORES)</div>
+                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 5 · 1 DE 2 · ACABADO, LOGO BASE Y SELECTOR CIRCULAR DE COLOR (2 A 6 COLORES)</div>
                   <h2 style="font-family:var(--font-display); font-size:1.06rem; font-weight:900; color:#090D16; margin:2px 0 2px 0;">
-                    Selecciona el Acabado y tu Paleta Oficial de 2 a 6 Colores para «${displayBrandStep5}»
+                    Selecciona el Acabado y tu Paleta Oficial en el Espectro Circular para «${displayBrandStep5}»
                   </h2>
                 </div>
 
@@ -23761,10 +23754,13 @@
                   `).join("")}
                 </div>
 
-                <!-- Selector Interactivo de Paleta Total (entre 2 y 6 colores) -->
+                <!-- Selector Circular de Espectro Completo (entre 2 y 6 colores) -->
                 ${typeof window.tbbRenderBrandPaletteSelectorHTML === "function" ? window.tbbRenderBrandPaletteSelectorHTML("step5_1") : ""}
               </div>
             `;
+            if (typeof window.tbbInitCircularSpectrumWheel === "function") {
+              setTimeout(() => window.tbbInitCircularSpectrumWheel(), 0);
+            }
           } else {
             // Sub-vista 5.2: Lienzo de Logotipo a Pantalla Completa + Prompt <=40 palabras + Cuadro Único de Iteración (Cero Scroll)
             const firstIt = st.logoIterations[0];
@@ -24458,42 +24454,42 @@
       };
 
       // =========================================================================
-      // MOTOR DE PALETA TOTAL SELECCIONABLE (ENTRE 2 Y 6 COLORES DE MARCA)
+      // MOTOR DE PALETA CON SELECTOR CIRCULAR DE ESPECTRO COMPLETO (2 A 6 COLORES)
       // =========================================================================
       window.TBB_TOTAL_COLOR_SWATCHES_24 = [
         { hex: "#090D16", name: "Obsidiana Imperial" },
-        { hex: "#161311", name: "Barro Negro Oaxaca" },
         { hex: "#0D2540", name: "Azul Profundo" },
         { hex: "#1B365D", name: "Azul Acero" },
         { hex: "#426EAE", name: "Azul Cobalto" },
         { hex: "#1D4ED8", name: "Zafiro Real" },
         { hex: "#0284C7", name: "Azul Cielo" },
-        { hex: "#0D9488", name: "Turquesa Pacífico" },
-        { hex: "#047857", name: "Verde Agave" },
-        { hex: "#15803D", name: "Bosque Esmeralda" },
+        { hex: "#0D9488", name: "Turquesa" },
+        { hex: "#047857", name: "Verde Esmeralda" },
+        { hex: "#15803D", name: "Verde Bosque" },
         { hex: "#4D7C0F", name: "Verde Olivo" },
-        { hex: "#D4AF37", name: "Oro Michelin" },
+        { hex: "#D4AF37", name: "Oro Imperial" },
         { hex: "#C89D54", name: "Oro Champán" },
         { hex: "#F59E0B", name: "Ámbar Sol" },
         { hex: "#FF7A00", name: "Naranja Acción" },
-        { hex: "#C85A32", name: "Terracota Barro" },
-        { hex: "#9E3B24", name: "Carmesí Lotería" },
+        { hex: "#C85A32", name: "Terracota Cálido" },
+        { hex: "#9E3B24", name: "Carmesí Profundo" },
         { hex: "#B91C1C", name: "Rojo Granate" },
-        { hex: "#DB2777", name: "Rosa Mexicano" },
+        { hex: "#DB2777", name: "Magenta Vibrante" },
         { hex: "#7C3AED", name: "Violeta Real" },
         { hex: "#78350F", name: "Cobre Tostado" },
         { hex: "#334155", name: "Gris Grafito" },
-        { hex: "#F7F2EA", name: "Crema Maíz Criollo" },
-        { hex: "#FFFFFF", name: "Blanco Lienzo" }
+        { hex: "#64748B", name: "Gris Pizarra" },
+        { hex: "#F7F2EA", name: "Marfil Cálido" },
+        { hex: "#FFFFFF", name: "Blanco Puro" }
       ];
 
       window.TBB_HARMONY_PRESETS_2_TO_6 = [
         { label: "Bicolor Obsidiana & Oro (2)", colors: ["#090D16", "#D4AF37"] },
-        { label: "Zafiro, Azul Profundo & Cielo (3)", colors: ["#1D4ED8", "#0D2540", "#38BDF8"] },
-        { label: "Barro, Terracota & Michelin (4)", colors: ["#C85A32", "#161311", "#D4AF37", "#F7F2EA"] },
+        { label: "Zafiro, Marino & Cielo (3)", colors: ["#1D4ED8", "#0D2540", "#38BDF8"] },
         { label: "Ejecutivo Azul & Naranja (4)", colors: ["#0D2540", "#426EAE", "#FF7A00", "#FFFFFF"] },
-        { label: "Agave, Cobre & Maíz (5)", colors: ["#047857", "#78350F", "#C89D54", "#161311", "#F7F2EA"] },
-        { label: "Galería Lotería Contemporánea (6)", colors: ["#9E3B24", "#161311", "#D4AF37", "#1B365D", "#047857", "#F7F2EA"] }
+        { label: "Editorial Terracota & Oro (4)", colors: ["#C85A32", "#090D16", "#D4AF37", "#F7F2EA"] },
+        { label: "Esmeralda, Cobre & Marfil (5)", colors: ["#047857", "#78350F", "#C89D54", "#090D16", "#F7F2EA"] },
+        { label: "Espectro Contemporáneo (6)", colors: ["#1D4ED8", "#0D2540", "#FF7A00", "#047857", "#D4AF37", "#F8FAFC"] }
       ];
 
       window.TBB_PALETTE_ROLE_NAMES = [
@@ -24505,16 +24501,57 @@
         "6 · Destaque"
       ];
 
+      window.tbbHsvToHex = function (h, s, v) {
+        const hue = ((Number(h) || 0) % 360 + 360) % 360;
+        const sat = Math.max(0, Math.min(1, Number(s) || 0));
+        const val = Math.max(0, Math.min(1, Number(v) || 0));
+        const c = val * sat;
+        const x = c * (1 - Math.abs(((hue / 60) % 2) - 1));
+        const m = val - c;
+        let r1 = 0, g1 = 0, b1 = 0;
+        if (hue < 60) { r1 = c; g1 = x; b1 = 0; }
+        else if (hue < 120) { r1 = x; g1 = c; b1 = 0; }
+        else if (hue < 180) { r1 = 0; g1 = c; b1 = x; }
+        else if (hue < 240) { r1 = 0; g1 = x; b1 = c; }
+        else if (hue < 300) { r1 = x; g1 = 0; b1 = c; }
+        else { r1 = c; g1 = 0; b1 = x; }
+        const toHex = n => Math.round((n + m) * 255).toString(16).padStart(2, "0").toUpperCase();
+        return `#${toHex(r1)}${toHex(g1)}${toHex(b1)}`;
+      };
+
+      window.tbbHexToHsv = function (hexStr) {
+        const clean = String(hexStr || "#1D4ED8").replace(/[^0-9A-Fa-f]/g, "");
+        const full = clean.length === 3
+          ? clean.split("").map(ch => ch + ch).join("")
+          : (clean.padEnd(6, "0").slice(0, 6));
+        const r = parseInt(full.slice(0, 2), 16) / 255;
+        const g = parseInt(full.slice(2, 4), 16) / 255;
+        const b = parseInt(full.slice(4, 6), 16) / 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        const d = max - min;
+        let h = 0;
+        if (d !== 0) {
+          if (max === r) h = 60 * (((g - b) / d) % 6);
+          else if (max === g) h = 60 * (((b - r) / d) + 2);
+          else h = 60 * (((r - g) / d) + 4);
+        }
+        if (h < 0) h += 360;
+        const s = max === 0 ? 0 : d / max;
+        const v = max;
+        return { h, s, v };
+      };
+
       window.tbbGetActiveBrandPalette = function () {
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const st = window.tbbState || {};
         if (Array.isArray(cs.brand_palette_colors) && cs.brand_palette_colors.length >= 2 && cs.brand_palette_colors.length <= 6) {
           return cs.brand_palette_colors.slice(0, 6);
         }
-        const pri = cs.primary_color || st.logoPriHex || "#C85A32";
-        const sec = cs.secondary_color || st.logoSecHex || "#161311";
+        const pri = cs.primary_color || st.logoPriHex || "#1D4ED8";
+        const sec = cs.secondary_color || st.logoSecHex || "#0D2540";
         const acc = cs.accent_color || "#D4AF37";
-        const initial = [pri, sec, acc, "#F7F2EA"];
+        const initial = [pri, sec, acc, "#F8FAFC"];
         if (typeof canvasState === "object" && canvasState) {
           canvasState.brand_palette_colors = initial.slice();
         }
@@ -24570,7 +24607,7 @@
         const count = Math.max(2, Math.min(6, Number(targetCount) || 4));
         if (typeof playAcousticClick === "function") playAcousticClick(760, 0.05);
         const cur = window.tbbGetActiveBrandPalette().slice();
-        const fallbackPool = ["#D4AF37", "#161311", "#F7F2EA", "#426EAE", "#047857", "#FF7A00", "#0D2540", "#C85A32"];
+        const fallbackPool = ["#D4AF37", "#0D2540", "#F8FAFC", "#426EAE", "#047857", "#FF7A00", "#1D4ED8", "#C85A32"];
         while (cur.length < count) {
           const nextCand = fallbackPool.find(h => !cur.includes(h)) || "#D4AF37";
           cur.push(nextCand);
@@ -24587,7 +24624,13 @@
       window.tbbSelectPaletteSlot = function (slotIdx) {
         if (typeof playAcousticClick === "function") playAcousticClick(700, 0.04);
         const st = window.tbbState || {};
-        st.activePaletteSlotIdx = Math.max(0, Math.min(5, Number(slotIdx) || 0));
+        const cur = window.tbbGetActiveBrandPalette();
+        const idx = Math.max(0, Math.min(cur.length - 1, Number(slotIdx) || 0));
+        st.activePaletteSlotIdx = idx;
+        const hsv = window.tbbHexToHsv(cur[idx] || "#1D4ED8");
+        st.spectrumWheelHue = hsv.h;
+        st.spectrumWheelSat = hsv.s;
+        st.spectrumWheelVal = Math.max(0.08, hsv.v);
         if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
       };
 
@@ -24601,23 +24644,31 @@
         if (slot < 0 || slot >= cur.length) slot = 0;
 
         cur[slot] = hex;
-        st.activePaletteSlotIdx = (slot + 1) % cur.length;
+        const hsv = window.tbbHexToHsv(hex);
+        st.spectrumWheelHue = hsv.h;
+        st.spectrumWheelSat = hsv.s;
+        st.spectrumWheelVal = Math.max(0.08, hsv.v);
 
         window.tbbSyncBrandPaletteToEngine(cur, st.step === 5, colorName ? `Color ${slot + 1}: ${colorName} (${hex})` : `Color ${slot + 1}: ${hex}`);
         if (typeof window.triggerAuraEmpatheticFeedback === "function") {
-          window.triggerAuraEmpatheticFeedback("input_logo_done", `Color #${slot + 1} actualizado a ${colorName || hex} en tu paleta de ${cur.length} colores.`, false);
+          window.triggerAuraEmpatheticFeedback("input_logo_done", `Color #${slot + 1} actualizado a ${colorName || hex}.`, false);
         }
         if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
       };
 
       window.tbbUpdatePaletteSlotHex = function (slotIdx, newHex) {
-        const hex = String(newHex || "").trim().toUpperCase();
+        let hex = String(newHex || "").trim().toUpperCase();
+        if (hex && !hex.startsWith("#")) hex = "#" + hex;
         if (!/^#[0-9A-F]{6}$/i.test(hex)) return;
         const cur = window.tbbGetActiveBrandPalette().slice();
         const idx = Math.max(0, Math.min(cur.length - 1, Number(slotIdx) || 0));
         cur[idx] = hex;
         const st = window.tbbState || {};
         st.activePaletteSlotIdx = idx;
+        const hsv = window.tbbHexToHsv(hex);
+        st.spectrumWheelHue = hsv.h;
+        st.spectrumWheelSat = hsv.s;
+        st.spectrumWheelVal = Math.max(0.08, hsv.v);
         window.tbbSyncBrandPaletteToEngine(cur, st.step === 5, `Tono personalizado ${hex}`);
         if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
       };
@@ -24640,6 +24691,10 @@
         if (typeof playAcousticClick === "function") playAcousticClick(880, 0.06);
         const st = window.tbbState || {};
         st.activePaletteSlotIdx = 0;
+        const hsv = window.tbbHexToHsv(preset.colors[0] || "#1D4ED8");
+        st.spectrumWheelHue = hsv.h;
+        st.spectrumWheelSat = hsv.s;
+        st.spectrumWheelVal = Math.max(0.08, hsv.v);
         window.tbbSyncBrandPaletteToEngine(preset.colors, st.step === 5, `Armonía: ${preset.label}`);
         if (typeof window.triggerAuraEmpatheticFeedback === "function") {
           window.triggerAuraEmpatheticFeedback("input_logo_done", `Paleta ${preset.label} aplicada (${preset.colors.length} colores).`, false);
@@ -24647,25 +24702,205 @@
         if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
       };
 
-      window.tbbRenderBrandPaletteSelectorHTML = function (contextMode = "step0_2") {
+      // Dibuja el Selector Circular de Espectro Completo 360° y sincroniza clic / arrastre en tiempo real
+      window.tbbDrawCircularSpectrumCanvas = function (canvas, activeHue, activeSat, activeVal) {
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+        const w = canvas.width;
+        const h = canvas.height;
+        const cx = w / 2;
+        const cy = h / 2;
+        const radius = (Math.min(w, h) / 2) - 4;
+        const val = Math.max(0.08, Math.min(1, Number(activeVal) || 0.95));
+
+        const imgData = ctx.createImageData(w, h);
+        const data = imgData.data;
+
+        for (let py = 0; py < h; py++) {
+          for (let px = 0; px < w; px++) {
+            const dx = px - cx;
+            const dy = py - cy;
+            const dist = Math.hypot(dx, dy);
+            const idx = (py * w + px) * 4;
+            if (dist <= radius + 1.2) {
+              const sat = Math.min(1, dist / radius);
+              const angle = ((Math.atan2(dy, dx) * 180 / Math.PI) + 360) % 360;
+              const c = val * sat;
+              const x = c * (1 - Math.abs(((angle / 60) % 2) - 1));
+              const m = val - c;
+              let r1 = 0, g1 = 0, b1 = 0;
+              if (angle < 60) { r1 = c; g1 = x; b1 = 0; }
+              else if (angle < 120) { r1 = x; g1 = c; b1 = 0; }
+              else if (angle < 180) { r1 = 0; g1 = c; b1 = x; }
+              else if (angle < 240) { r1 = 0; g1 = x; b1 = c; }
+              else if (angle < 300) { r1 = x; g1 = 0; b1 = c; }
+              else { r1 = c; g1 = 0; b1 = x; }
+
+              const edgeAlpha = dist > radius ? Math.max(0, 1 - (dist - radius) / 1.2) : 1;
+              data[idx] = Math.round((r1 + m) * 255);
+              data[idx + 1] = Math.round((g1 + m) * 255);
+              data[idx + 2] = Math.round((b1 + m) * 255);
+              data[idx + 3] = Math.round(edgeAlpha * 255);
+            } else {
+              data[idx + 3] = 0;
+            }
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
+
+        // Anillo exterior limpio
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = "#090D16";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Indicador de posición del color activo sobre la rueda
+        const rad = ((Number(activeHue) || 0) * Math.PI) / 180;
+        const rDist = Math.max(0, Math.min(1, Number(activeSat) || 0)) * radius;
+        const ix = cx + Math.cos(rad) * rDist;
+        const iy = cy + Math.sin(rad) * rDist;
+        const selectedHex = window.tbbHsvToHex(activeHue, activeSat, val);
+
+        ctx.beginPath();
+        ctx.arc(ix, iy, 8, 0, Math.PI * 2);
+        ctx.fillStyle = selectedHex;
+        ctx.fill();
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = "#FFFFFF";
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(ix, iy, 10, 0, Math.PI * 2);
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = "#090D16";
+        ctx.stroke();
+      };
+
+      window.tbbApplyLiveWheelColorToActiveSlot = function (hex, commitIteration = false) {
+        const cleanHex = String(hex || "").trim().toUpperCase();
+        if (!/^#[0-9A-F]{6}$/i.test(cleanHex)) return;
+        const st = window.tbbState || {};
+        const cur = window.tbbGetActiveBrandPalette().slice();
+        const slot = Math.max(0, Math.min(cur.length - 1, Number(st.activePaletteSlotIdx) || 0));
+        cur[slot] = cleanHex;
+
+        // Actualizar DOM en tiempo real sin parpadeo durante el arrastre
+        const slotCard = document.getElementById(`tbbPaletteSlotCard_${slot}`);
+        const slotHexTxt = document.getElementById(`tbbPaletteSlotHexText_${slot}`);
+        const hexInput = document.getElementById("tbbActiveSlotHexInput");
+        const isLight = /^#(F|E|D4AF|FFF)/i.test(cleanHex);
+        if (slotCard) {
+          slotCard.style.background = cleanHex;
+          slotCard.style.color = isLight ? "#090D16" : "#FFFFFF";
+        }
+        if (slotHexTxt) slotHexTxt.textContent = cleanHex;
+        if (hexInput && document.activeElement !== hexInput) hexInput.value = cleanHex;
+
+        window.tbbSyncBrandPaletteToEngine(cur, commitIteration && st.step === 5, `Espectro Circular #${slot + 1}: ${cleanHex}`);
+      };
+
+      window.tbbOnSpectrumValueSliderInput = function (valPct, commitIteration = false) {
+        const st = window.tbbState || {};
+        const v = Math.max(0.08, Math.min(1, (Number(valPct) || 95) / 100));
+        st.spectrumWheelVal = v;
+        const h = Number.isFinite(st.spectrumWheelHue) ? st.spectrumWheelHue : 220;
+        const s = Number.isFinite(st.spectrumWheelSat) ? st.spectrumWheelSat : 0.85;
+        const hex = window.tbbHsvToHex(h, s, v);
+        const canvas = document.getElementById("tbbCircularSpectrumWheel");
+        if (canvas) {
+          window.tbbDrawCircularSpectrumCanvas(canvas, h, s, v);
+        }
+        const lbl = document.getElementById("tbbSpectrumValPctLabel");
+        if (lbl) lbl.textContent = `${Math.round(v * 100)}%`;
+        window.tbbApplyLiveWheelColorToActiveSlot(hex, commitIteration);
+      };
+
+      window.tbbInitCircularSpectrumWheel = function () {
+        const canvas = document.getElementById("tbbCircularSpectrumWheel");
+        if (!canvas) return;
+        const st = window.tbbState || {};
+        const activeColors = window.tbbGetActiveBrandPalette();
+        const slot = Math.max(0, Math.min(activeColors.length - 1, Number(st.activePaletteSlotIdx) || 0));
+        const curHex = activeColors[slot] || "#1D4ED8";
+        const hsv = window.tbbHexToHsv(curHex);
+
+        st.spectrumWheelHue = hsv.h;
+        st.spectrumWheelSat = hsv.s;
+        st.spectrumWheelVal = Math.max(0.08, hsv.v);
+
+        window.tbbDrawCircularSpectrumCanvas(canvas, st.spectrumWheelHue, st.spectrumWheelSat, st.spectrumWheelVal);
+
+        let isDragging = false;
+        const pickFromEvent = (ev, isCommit) => {
+          const rect = canvas.getBoundingClientRect();
+          const scaleX = canvas.width / (rect.width || canvas.width);
+          const scaleY = canvas.height / (rect.height || canvas.height);
+          const px = (ev.clientX - rect.left) * scaleX;
+          const py = (ev.clientY - rect.top) * scaleY;
+          const cx = canvas.width / 2;
+          const cy = canvas.height / 2;
+          const radius = (Math.min(canvas.width, canvas.height) / 2) - 4;
+          const dx = px - cx;
+          const dy = py - cy;
+          const dist = Math.hypot(dx, dy);
+          const hue = ((Math.atan2(dy, dx) * 180 / Math.PI) + 360) % 360;
+          const sat = Math.max(0, Math.min(1, dist / radius));
+          const val = Math.max(0.08, Math.min(1, Number(st.spectrumWheelVal) || 0.95));
+
+          st.spectrumWheelHue = hue;
+          st.spectrumWheelSat = sat;
+
+          const hex = window.tbbHsvToHex(hue, sat, val);
+          window.tbbDrawCircularSpectrumCanvas(canvas, hue, sat, val);
+          window.tbbApplyLiveWheelColorToActiveSlot(hex, isCommit);
+        };
+
+        canvas.onpointerdown = function (ev) {
+          ev.preventDefault();
+          isDragging = true;
+          try { canvas.setPointerCapture(ev.pointerId); } catch (_) {}
+          if (typeof playAcousticClick === "function") playAcousticClick(820, 0.03);
+          pickFromEvent(ev, false);
+        };
+        canvas.onpointermove = function (ev) {
+          if (!isDragging) return;
+          ev.preventDefault();
+          pickFromEvent(ev, false);
+        };
+        canvas.onpointerup = function (ev) {
+          if (!isDragging) return;
+          isDragging = false;
+          try { canvas.releasePointerCapture(ev.pointerId); } catch (_) {}
+          pickFromEvent(ev, true);
+        };
+        canvas.onpointercancel = function () {
+          isDragging = false;
+        };
+      };
+
+      window.tbbRenderBrandPaletteSelectorHTML = function () {
         const activeColors = window.tbbGetActiveBrandPalette();
         const count = activeColors.length;
         const st = window.tbbState || {};
         const activeSlot = Math.max(0, Math.min(count - 1, Number(st.activePaletteSlotIdx) || 0));
-        const swatches = window.TBB_TOTAL_COLOR_SWATCHES_24 || [];
+        const activeHex = activeColors[activeSlot] || "#1D4ED8";
+        const hsv = window.tbbHexToHsv(activeHex);
+        const valPct = Math.round(Math.max(8, Math.min(100, (hsv.v || 0.95) * 100)));
+        const pureHueHex = window.tbbHsvToHex(hsv.h, Math.max(0.25, hsv.s), 1);
         const presets = window.TBB_HARMONY_PRESETS_2_TO_6 || [];
         const roles = window.TBB_PALETTE_ROLE_NAMES || [];
-        const isCompact = contextMode === "step0_2";
 
         return `
-          <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:${isCompact ? '8px 10px' : '10px 12px'}; display:flex; flex-direction:column; gap:${isCompact ? '6px' : '8px'};">
+          <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:10px 12px; display:flex; flex-direction:column; gap:8px;">
             <!-- Encabezado y Selector de Cantidad (2 a 6 Colores) -->
             <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap;">
-              <div style="font-size:0.74rem; font-weight:900; color:#090D16;">
-                🎨 Paleta Total de tu Marca <span style="color:#1D4ED8; font-weight:800;">(Elige de 2 a 6 colores · Tocando ranura #${activeSlot + 1})</span>
+              <div style="font-size:0.75rem; font-weight:900; color:#090D16;">
+                🎨 Selector Circular de Espectro Completo <span style="color:#1D4ED8; font-weight:800;">(Editando ranura #${activeSlot + 1}: ${roles[activeSlot] || ""})</span>
               </div>
               <div style="display:flex; align-items:center; gap:4px;">
-                <span style="font-size:0.66rem; font-weight:800; color:#475569; margin-right:2px;">N° Colores:</span>
+                <span style="font-size:0.68rem; font-weight:800; color:#475569; margin-right:2px;">N° Colores:</span>
                 ${[2, 3, 4, 5, 6].map(n => `
                   <button type="button" onclick="window.tbbSetBrandPaletteCount(${n})" style="min-width:26px; height:24px; padding:0 6px; border-radius:7px; border:1.5px solid ${count === n ? '#1D4ED8' : '#CBD5E1'}; background:${count === n ? '#1D4ED8' : '#FFFFFF'}; color:${count === n ? '#FFFFFF' : '#0F172A'}; font-family:var(--font-mono); font-size:0.68rem; font-weight:900; cursor:pointer;">
                     ${n}
@@ -24674,65 +24909,86 @@
               </div>
             </div>
 
-            <!-- Barra de Tus Colores Seleccionados (entre 2 y 6 ranuras interactivas) -->
-            <div style="display:grid; grid-template-columns:repeat(${count}, minmax(0, 1fr)); gap:6px;">
-              ${activeColors.map((hex, idx) => {
-                const isSlotSelected = idx === activeSlot;
-                const isLight = /^#(F|E|D4AF|FFF)/i.test(hex);
-                const txtCol = isLight ? "#090D16" : "#FFFFFF";
-                return `
-                  <div onclick="window.tbbSelectPaletteSlot(${idx})" style="position:relative; border-radius:10px; border:${isSlotSelected ? '2.5px solid #1D4ED8' : '1.5px solid #94A3B8'}; box-shadow:${isSlotSelected ? '0 0 0 2px rgba(29,78,216,0.22)' : 'none'}; background:${hex}; color:${txtCol}; padding:5px 6px; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; min-height:${isCompact ? '40px' : '46px'}; transition:all 0.15s ease;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; gap:3px;">
-                      <span style="font-family:var(--font-mono); font-size:0.58rem; font-weight:900; background:${isLight ? 'rgba(9,13,22,0.12)' : 'rgba(255,255,255,0.18)'}; padding:1px 4px; border-radius:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                        ${roles[idx] || `#${idx + 1}`}
-                      </span>
-                      <div style="display:flex; align-items:center; gap:2px;">
-                        <label onclick="event.stopPropagation();" title="Ajuste libre de tono exacto" style="cursor:pointer; font-size:0.64rem; line-height:1; background:${isLight ? 'rgba(9,13,22,0.12)' : 'rgba(255,255,255,0.22)'}; padding:2px 4px; border-radius:4px;">
-                          ✎<input type="color" value="${hex}" onchange="window.tbbUpdatePaletteSlotHex(${idx}, this.value)" style="position:absolute; opacity:0; width:1px; height:1px; pointer-events:none;" />
-                        </label>
-                        ${count > 2 ? `
-                          <button type="button" onclick="window.tbbRemovePaletteSlot(${idx}, event)" title="Quitar este color" style="border:none; background:${isLight ? 'rgba(9,13,22,0.15)' : 'rgba(255,255,255,0.24)'}; color:${txtCol}; border-radius:4px; width:15px; height:15px; font-size:0.62rem; font-weight:900; line-height:1; cursor:pointer; padding:0;">×</button>
-                        ` : ""}
-                      </div>
-                    </div>
-                    <div style="font-family:var(--font-mono); font-size:0.66rem; font-weight:900; margin-top:3px; letter-spacing:0.02em;">
-                      ${hex}
-                    </div>
+            <!-- Cuerpo Principal: Rueda Circular 360° a la izquierda + Ranuras de Color y Armonías a la derecha -->
+            <div style="display:grid; grid-template-columns:156px 1fr; gap:12px; align-items:center;">
+              <!-- Columna Izquierda: Rueda de Espectro Completo + Control de Luz/Brillo -->
+              <div style="display:flex; flex-direction:column; align-items:center; gap:6px; background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:8px;">
+                <canvas id="tbbCircularSpectrumWheel" width="132" height="132" style="width:132px; height:132px; border-radius:50%; cursor:crosshair; touch-action:none; display:block;"></canvas>
+                <div style="width:100%; display:flex; flex-direction:column; gap:2px;">
+                  <div style="display:flex; justify-content:space-between; font-size:0.62rem; font-weight:800; color:#475569;">
+                    <span>Luz / Brillo</span>
+                    <span id="tbbSpectrumValPctLabel" style="font-family:var(--font-mono); color:#090D16;">${valPct}%</span>
                   </div>
-                `;
-              }).join("")}
-            </div>
-
-            <!-- Paleta Total de 24 Colores Seleccionables -->
-            <div>
-              <div style="font-size:0.65rem; font-weight:800; color:#475569; margin-bottom:4px;">
-                Toca cualquier tono de la Paleta Total para asignarlo a la ranura activa (#${activeSlot + 1} · ${roles[activeSlot] || ""}):
+                  <input id="tbbSpectrumValueSlider" type="range" min="8" max="100" value="${valPct}" oninput="window.tbbOnSpectrumValueSliderInput(this.value, false)" onchange="window.tbbOnSpectrumValueSliderInput(this.value, true)" style="width:100%; height:8px; border-radius:999px; accent-color:#1D4ED8; background:linear-gradient(90deg, #090D16 0%, ${pureHueHex} 100%); cursor:pointer;" />
+                </div>
               </div>
-              <div style="display:grid; grid-template-columns:repeat(12, minmax(0, 1fr)); gap:4px;">
-                ${swatches.map(sw => {
-                  const usedSlotIdx = activeColors.findIndex(c => c.toUpperCase() === sw.hex.toUpperCase());
-                  const isUsed = usedSlotIdx !== -1;
-                  const isLightSw = /^#(F7F2EA|FFFFFF|F59E0B|D4AF37|C89D54)$/i.test(sw.hex);
-                  return `
-                    <button type="button" onclick="window.tbbPickSwatchFromTotalPalette('${sw.hex}', '${sw.name.replace(/'/g, "\\'")}')" title="${sw.name} (${sw.hex})" style="height:${isCompact ? '22px' : '25px'}; border-radius:6px; background:${sw.hex}; border:${isUsed ? '2px solid #1D4ED8' : '1px solid rgba(15,23,42,0.22)'}; cursor:pointer; position:relative; padding:0; display:flex; align-items:center; justify-content:center; box-shadow:${isUsed ? '0 0 0 1.5px #FFFFFF inset' : 'none'};">
-                      ${isUsed ? `<span style="font-family:var(--font-mono); font-size:0.58rem; font-weight:900; color:${isLightSw ? '#090D16' : '#FFFFFF'};">${usedSlotIdx + 1}</span>` : ""}
+
+              <!-- Columna Derecha: Ranuras de 2 a 6 Colores + Código HEX + Armonías -->
+              <div style="display:flex; flex-direction:column; gap:8px; min-width:0;">
+                <div style="font-size:0.68rem; font-weight:800; color:#475569;">
+                  1. Toca una ranura abajo · 2. Gira o haz clic en el círculo para elegir cualquier tono del espectro:
+                </div>
+
+                <!-- Ranuras Interactivas (2 a 6 colores) -->
+                <div style="display:grid; grid-template-columns:repeat(${count}, minmax(0, 1fr)); gap:6px;">
+                  ${activeColors.map((hex, idx) => {
+                    const isSlotSelected = idx === activeSlot;
+                    const isLight = /^#(F|E|D4AF|FFF)/i.test(hex);
+                    const txtCol = isLight ? "#090D16" : "#FFFFFF";
+                    return `
+                      <div id="tbbPaletteSlotCard_${idx}" onclick="window.tbbSelectPaletteSlot(${idx})" style="position:relative; border-radius:10px; border:${isSlotSelected ? '2.5px solid #1D4ED8' : '1.5px solid #94A3B8'}; box-shadow:${isSlotSelected ? '0 0 0 3px rgba(29,78,216,0.22)' : 'none'}; background:${hex}; color:${txtCol}; padding:6px 7px; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; min-height:52px; transition:border 0.15s ease, box-shadow 0.15s ease;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:3px;">
+                          <span style="font-family:var(--font-mono); font-size:0.58rem; font-weight:900; background:${isLight ? 'rgba(9,13,22,0.12)' : 'rgba(255,255,255,0.18)'}; padding:1px 4px; border-radius:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                            ${roles[idx] || `#${idx + 1}`}
+                          </span>
+                          ${count > 2 ? `
+                            <button type="button" onclick="window.tbbRemovePaletteSlot(${idx}, event)" title="Quitar este color" style="border:none; background:${isLight ? 'rgba(9,13,22,0.15)' : 'rgba(255,255,255,0.24)'}; color:${txtCol}; border-radius:4px; width:15px; height:15px; font-size:0.62rem; font-weight:900; line-height:1; cursor:pointer; padding:0;">×</button>
+                          ` : ""}
+                        </div>
+                        <div id="tbbPaletteSlotHexText_${idx}" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:900; margin-top:4px; letter-spacing:0.02em;">
+                          ${hex}
+                        </div>
+                      </div>
+                    `;
+                  }).join("")}
+                </div>
+
+                <!-- Barra de Precisión HEX + Tonos Neutros Rápidos -->
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; flex-wrap:wrap; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:5px 8px;">
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="font-size:0.66rem; font-weight:800; color:#334155;">Código HEX (#${activeSlot + 1}):</span>
+                    <input id="tbbActiveSlotHexInput" type="text" value="${activeHex}" maxlength="7" onchange="window.tbbUpdatePaletteSlotHex(${activeSlot}, this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.tbbUpdatePaletteSlotHex(${activeSlot}, this.value);}" style="width:78px; height:25px; padding:0 6px; border-radius:6px; border:1.5px solid #94A3B8; font-family:var(--font-mono); font-size:0.72rem; font-weight:900; color:#090D16; text-transform:uppercase;" />
+                  </div>
+                  <div style="display:flex; align-items:center; gap:4px; flex-wrap:wrap;">
+                    <span style="font-size:0.62rem; font-weight:800; color:#64748B;">Neutros:</span>
+                    ${[
+                      { hex: "#FFFFFF", lbl: "Blanco" },
+                      { hex: "#F7F2EA", lbl: "Marfil" },
+                      { hex: "#334155", lbl: "Grafito" },
+                      { hex: "#090D16", lbl: "Negro" },
+                      { hex: "#D4AF37", lbl: "Oro" }
+                    ].map(n => `
+                      <button type="button" onclick="window.tbbPickSwatchFromTotalPalette('${n.hex}', '${n.lbl}')" style="display:inline-flex; align-items:center; gap:3px; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:6px; padding:2px 6px; font-size:0.61rem; font-weight:800; color:#0F172A; cursor:pointer;">
+                        <span style="width:8px; height:8px; border-radius:50%; background:${n.hex}; border:1px solid rgba(15,23,42,0.3); display:inline-block;"></span>
+                        ${n.lbl}
+                      </button>
+                    `).join("")}
+                  </div>
+                </div>
+
+                <!-- Armonías Pre-Curadas de 2 a 6 Colores -->
+                <div style="display:flex; align-items:center; gap:4px; flex-wrap:wrap;">
+                  <span style="font-size:0.63rem; font-weight:800; color:#475569;">Armonías sugeridas:</span>
+                  ${presets.map((p, pIdx) => `
+                    <button type="button" onclick="window.tbbApplyHarmonyPreset(${pIdx})" style="display:inline-flex; align-items:center; gap:4px; background:#FFFFFF; border:1px solid #CBD5E1; border-radius:999px; padding:2px 7px; font-size:0.62rem; font-weight:800; color:#0F172A; cursor:pointer;">
+                      <span style="display:inline-flex; gap:1.5px;">
+                        ${p.colors.map(c => `<span style="width:7px; height:7px; border-radius:50%; background:${c}; border:0.5px solid rgba(0,0,0,0.2); display:inline-block;"></span>`).join("")}
+                      </span>
+                      <span>${p.label}</span>
                     </button>
-                  `;
-                }).join("")}
+                  `).join("")}
+                </div>
               </div>
-            </div>
-
-            <!-- Armonías Pre-Curadas de 2 a 6 Colores -->
-            <div style="display:flex; align-items:center; gap:5px; flex-wrap:wrap;">
-              <span style="font-size:0.64rem; font-weight:800; color:#475569;">Armonías rápidas:</span>
-              ${presets.map((p, pIdx) => `
-                <button type="button" onclick="window.tbbApplyHarmonyPreset(${pIdx})" style="display:inline-flex; align-items:center; gap:4px; background:#FFFFFF; border:1px solid #CBD5E1; border-radius:999px; padding:2px 7px; font-size:0.63rem; font-weight:800; color:#0F172A; cursor:pointer;">
-                  <span style="display:inline-flex; gap:1.5px;">
-                    ${p.colors.map(c => `<span style="width:7px; height:7px; border-radius:50%; background:${c}; border:0.5px solid rgba(0,0,0,0.2); display:inline-block;"></span>`).join("")}
-                  </span>
-                  <span>${p.label}</span>
-                </button>
-              `).join("")}
             </div>
           </div>
         `;
@@ -25245,8 +25501,18 @@
         const st = window.tbbState;
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
 
-        // Retroalimentación de Aura al completar el párrafo completo
-        if (st.step === 0 && st.subStep === 3) {
+        // Paso 0.2: Si escribió nombre lo guarda; si no escribió nombre, activa modo de creación de nombre en el proceso
+        if (st.step === 0 && st.subStep === 2) {
+          const step0NameInp = document.getElementById("tbbStep0NameInput");
+          if (step0NameInp) {
+            const typedName = String(step0NameInp.value || "").trim();
+            if (typedName) {
+              window.tbbUpdateBrandNameFromInput(typedName);
+            } else {
+              window.tbbActivateNamelessDiscoveryMode(false);
+            }
+          }
+        } else if (st.step === 0 && st.subStep === 3) {
           const bizText = (cs.custom_business_type || "").trim();
           if (bizText.length >= 10 && typeof window.triggerAuraEmpatheticFeedback === "function") {
             window.triggerAuraEmpatheticFeedback("input_biz", bizText, false, false);
