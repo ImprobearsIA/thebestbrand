@@ -20051,17 +20051,18 @@
     #screen-journey button,
     #tbbGeneralMenuModal button,
     #accountVaultModalOverlay button {
-      min-height: 50px !important;
-      padding: 10px 18px !important;
-      border-radius: 16px !important;
+      min-height: 44px !important;
+      padding: 8px 14px !important;
+      border-radius: 14px !important;
       font-family: var(--font-ui) !important;
-      font-size: 0.92rem !important;
-      font-weight: 800 !important;
-      line-height: 1.2 !important;
+      font-size: 0.86rem !important;
+      font-weight: 600 !important;
+      letter-spacing: -0.005em !important;
+      line-height: 1.22 !important;
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: 8px !important;
+      gap: 6px !important;
       cursor: pointer !important;
       transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease !important;
       box-sizing: border-box !important;
@@ -20272,16 +20273,24 @@
       height: 100%;
       max-height: 100%;
       background: #FFFFFF;
-      border: 2px solid #E2E8F0;
-      border-radius: 22px;
-      padding: 14px 18px;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 12px 16px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      overflow-y: auto !important;
-      overflow-x: hidden !important;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+      gap: 6px;
+      overflow: hidden !important;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+    }
+    .tbb-atomic-card h2 {
+      font-weight: 650 !important;
+      letter-spacing: -0.015em !important;
+      line-height: 1.24 !important;
+    }
+    .tbb-atomic-card > * {
+      flex-shrink: 0;
     }
 
     /* Consola Inferior de Botones Adelante/Atrás + Barra General */
@@ -20488,56 +20497,86 @@
 
     @media (max-width: 768px) {
       #tbbTopDiscreteBar {
-        gap: 6px !important;
-        padding: 6px 10px !important;
-        height: 52px !important;
+        gap: 5px !important;
+        padding: 4px 8px !important;
+        height: 44px !important;
         flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
+        overflow: hidden !important;
+        justify-content: space-between !important;
       }
       #tbbTopDiscreteBar::-webkit-scrollbar {
         display: none;
       }
       #tbbDiscreteProgressTrack {
-        min-width: 45px;
-        flex: 1 1 45px;
+        display: none !important;
+      }
+      #tbbBtnTopVoice,
+      #tbbTopDiscreteBar a[href='/'] {
+        display: none !important;
       }
       #tbbTopQuickStepJumper {
-        max-width: 140px;
-        font-size: 0.68rem !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        max-width: 175px !important;
+        font-size: 0.70rem !important;
+        font-weight: 600 !important;
         height: 30px !important;
-        padding: 0 4px !important;
+        padding: 0 6px !important;
       }
       #tbbTopDiscreteBar .tbb-duo-btn {
-        padding: 5px 8px !important;
-        font-size: 0.74rem !important;
+        padding: 4px 8px !important;
+        font-size: 0.72rem !important;
+        font-weight: 600 !important;
         min-height: 30px !important;
         white-space: nowrap !important;
+        flex-shrink: 0 !important;
       }
       #tbbAuraTopOuterHeroSection {
-        width: calc(100% - 24px);
-        gap: 4px;
+        width: calc(100% - 20px) !important;
+        margin: 2px auto 2px auto !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 10px !important;
+      }
+      #tbbAuraOrbHeroOuterWrap {
+        width: auto !important;
+        padding: 0 !important;
+        flex-shrink: 0 !important;
       }
       #tbbLiveAuraOrbCanvas {
-        width: 144px;
-        height: 144px;
+        width: 54px !important;
+        height: 54px !important;
+        border-width: 2px !important;
       }
       #tbbAuraTopPresenceRow {
-        width: 100%;
-        padding: 6px 12px;
-        gap: 8px;
-        min-height: 44px;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        width: auto !important;
+        padding: 6px 10px !important;
+        gap: 6px !important;
+        min-height: 52px !important;
+        border-radius: 14px !important;
+        border-bottom-width: 3px !important;
+      }
+      #tbbAuraEmpatheticBubble {
+        align-items: flex-start !important;
+        text-align: left !important;
       }
       #tbbBtnTopAdminAuraColors .tbb-admin-aura-btn-lbl {
         display: none !important;
       }
       #tbbAuraPresenceMetaBadge {
-        font-size: 0.63rem;
+        font-size: 0.58rem !important;
+        font-weight: 700 !important;
+        justify-content: flex-start !important;
       }
       #tbbAuraEmpatheticText {
-        font-size: 0.74rem;
-        line-height: 1.24;
-        -webkit-line-clamp: 2;
+        font-size: 0.74rem !important;
+        font-weight: 500 !important;
+        line-height: 1.26 !important;
+        -webkit-line-clamp: 2 !important;
+        text-align: left !important;
       }
       .tbb-video-modal-grid {
         grid-template-columns: 1fr !important;
@@ -23154,35 +23193,29 @@
         const s = Number(stepNum || 0);
         const board = window.TBB_MASTER_AUTHORS_BOARD || {};
         const stepAuthorMap = {
-          0: board.aaker || { name: "David Aaker", role: "Relevancia de Categoría & Brand Equity", book: "Building Strong Brands", monogram: "DA", shortName: "Aaker" },
-          1: board.sinek || { name: "Simon Sinek", role: "Propósito Nuclear & El Círculo Dorado", book: "Start With Why", monogram: "SS", shortName: "Sinek" },
-          2: board.carlzon || { name: "Jan Carlzon", role: "Momentos de la Verdad & Touchpoints", book: "Moments of Truth", monogram: "JC", shortName: "Carlzon" },
-          3: board.ries_trout || { name: "Al Ries & Jack Trout", role: "Posicionamiento en la Mente & Naming", book: "Positioning", monogram: "RT", shortName: "Ries & Trout" },
-          4: board.rand || { name: "Paul Rand", role: "Rigor Simbólico & Test de Rand", book: "A Designer's Art", monogram: "PR", shortName: "Rand" },
-          5: board.nagamachi || { name: "Mitsuhiro Nagamachi", role: "Ingeniería Kansei & Proporción 70/20/10", book: "Kansei Engineering", monogram: "MN", shortName: "Nagamachi" },
-          6: board.porter || { name: "Michael Porter", role: "Estrategia Competitiva & Gobernanza", book: "Competitive Strategy", monogram: "MP", shortName: "Porter" }
+          0: board.aaker || { name: "David Aaker", role: "Brand Equity", book: "Building Strong Brands", monogram: "DA", shortName: "Aaker" },
+          1: board.sinek || { name: "Simon Sinek", role: "El Círculo Dorado", book: "Start With Why", monogram: "SS", shortName: "Sinek" },
+          2: board.carlzon || { name: "Jan Carlzon", role: "Touchpoints", book: "Moments of Truth", monogram: "JC", shortName: "Carlzon" },
+          3: board.ries_trout || { name: "Ries & Trout", role: "Posicionamiento & Naming", book: "Positioning", monogram: "RT", shortName: "Ries & Trout" },
+          4: board.rand || { name: "Paul Rand", role: "Rigor Simbólico", book: "A Designer's Art", monogram: "PR", shortName: "Rand" },
+          5: board.nagamachi || { name: "M. Nagamachi", role: "Ingeniería Kansei", book: "Kansei Engineering", monogram: "MN", shortName: "Nagamachi" },
+          6: board.porter || { name: "Michael Porter", role: "Gobernanza Estratégica", book: "Competitive Strategy", monogram: "MP", shortName: "Porter" }
         };
         const author = stepAuthorMap[s] || stepAuthorMap[0];
 
         return `
-          <div class="tbb-author-audit-card" style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-left:4px solid #FF7A00; border-radius:14px; padding:10px 14px; margin-top:8px; box-shadow:0 2px 8px rgba(13,37,64,0.04);">
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
-              <div style="display:flex; align-items:center; gap:9px; min-width:0;">
-                <div style="width:32px; height:32px; border-radius:50%; background:#0D2540; color:#FFFFFF; border:1.5px solid #FF7A00; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:900; flex-shrink:0;">
+          <div class="tbb-author-audit-card" style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:3.5px solid #FF7A00; border-radius:10px; padding:5px 10px; margin-top:2px; flex-shrink:0;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:nowrap;">
+              <div style="display:flex; align-items:center; gap:7px; min-width:0; flex:1;">
+                <div style="width:24px; height:24px; border-radius:50%; background:#0D2540; color:#FFFFFF; border:1px solid #FF7A00; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:0.62rem; font-weight:700; flex-shrink:0;">
                   ${author.monogram}
                 </div>
-                <div style="min-width:0;">
-                  <div style="font-size:0.78rem; font-weight:900; color:#090D16; display:flex; align-items:center; gap:6px;">
-                    <span>${author.name}</span>
-                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:800; color:#FF7A00; background:rgba(255,122,0,0.10); padding:1px 6px; border-radius:4px; border:1px solid rgba(255,122,0,0.35);">CONSEJERO OFICIAL</span>
-                  </div>
-                  <div style="font-size:0.68rem; font-weight:700; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                    ${author.role} · <em>${author.book}</em>
-                  </div>
+                <div style="min-width:0; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:0.72rem; color:#090D16;">
+                  <strong style="font-weight:700;">${author.name}</strong> <span style="color:#64748B; font-weight:500;">· ${author.role}</span>
                 </div>
               </div>
-              <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbRunLiveAuthorAudit(${s}, '${fieldRole}')" style="min-height:30px !important; padding:4px 11px !important; font-size:0.72rem !important; border-color:#0D2540 !important; color:#0D2540 !important; background:#FFFFFF !important; white-space:nowrap; border-radius:8px !important;">
-                <span style="color:#FF7A00;">✦</span> Solicitar Dictamen a ${author.shortName}
+              <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbRunLiveAuthorAudit(${s}, '${fieldRole}')" style="min-height:26px !important; padding:2px 9px !important; font-size:0.68rem !important; font-weight:600 !important; border-color:#0D2540 !important; color:#0D2540 !important; background:#FFFFFF !important; white-space:nowrap; border-radius:7px !important; flex-shrink:0;">
+                <span style="color:#FF7A00;">✦</span> Dictamen ${author.shortName}
               </button>
             </div>
             <div id="tbbAuthorAuditResult_${s}" style="display:none;"></div>
@@ -23331,11 +23364,11 @@
 
           if (st.subStep === 1) {
             stage.innerHTML = `
-              <div class="tbb-atomic-card">
+              <div class="tbb-atomic-card" style="padding:14px 18px; gap:10px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#1D4ED8; margin-bottom:4px;">PASO 0 · 1 DE 3 · OBJETIVO</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.35rem; font-weight:900; color:#090D16; margin:0 0 12px 0;">
-                    ¿Cuál es tu objetivo principal al construir tu marca hoy?
+                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:700; color:#1D4ED8; margin-bottom:2px;">PASO 0 · 1 DE 3 · OBJETIVO</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.18rem; font-weight:700; color:#090D16; margin:0;">
+                    ¿Cuál es tu objetivo principal hoy?
                   </h2>
                 </div>
                 <div style="display:flex; flex-direction:column; gap:10px; flex:1; justify-content:center;">
@@ -23348,9 +23381,6 @@
                   <button type="button" class="tbb-duo-btn ${curGoal === 'subbrand' ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="selectStep0Goal('subbrand'); triggerAuraEmpatheticFeedback('input_goal', 'Crear una nueva sub-marca o división', false); renderTbbZeroScrollStage();">
                     Crear una nueva sub-marca o división
                   </button>
-                </div>
-                <div style="font-size:0.80rem; color:#64748B; text-align:center; font-weight:600;">
-                  Selecciona una opción y presiona Siguiente en la barra inferior.
                 </div>
               </div>
             `;
@@ -23366,74 +23396,70 @@
             );
             const displayInputName = (isNamelessDiscovery || /^Marca en Creaci|^Proyecto Gastron/i.test(curName)) ? "" : curName;
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:16px 20px; gap:14px;">
+              <div class="tbb-atomic-card" style="padding:14px 16px; gap:10px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#1D4ED8; margin-bottom:4px;">PASO 0 · 2 DE 3 · NOMBRE DE TU MARCA</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.28rem; font-weight:900; color:#090D16; margin:0; line-height:1.25;">
-                    ¿Tu proyecto ya tiene nombre o prefieres crearlo durante el recorrido?
+                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:700; color:#1D4ED8; margin-bottom:2px;">PASO 0 · 2 DE 3 · NOMBRE DE TU MARCA</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.12rem; font-weight:700; color:#090D16; margin:0; line-height:1.24;">
+                    ¿Tu proyecto ya tiene nombre o lo creamos en el proceso?
                   </h2>
                 </div>
 
-                <div style="display:flex; flex-direction:column; gap:12px; flex:1; justify-content:center; min-height:0;">
-                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <button type="button" id="tbbBtnHasExistingName" class="tbb-duo-btn ${!isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbDeactivateNamelessDiscoveryMode();" style="min-height:48px !important; padding:8px 14px !important; font-size:0.86rem !important; line-height:1.25;">
-                      ✓ Ya tengo el nombre de mi marca
+                <div style="display:flex; flex-direction:column; gap:10px; flex:1; justify-content:center;">
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <button type="button" id="tbbBtnHasExistingName" class="tbb-duo-btn ${!isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbDeactivateNamelessDiscoveryMode();" style="min-height:44px !important; padding:6px 10px !important; font-size:0.82rem !important; font-weight:600 !important;">
+                      ✓ Ya tengo nombre
                     </button>
-                    <button type="button" id="tbbBtnStartNamelessDiscovery" class="tbb-duo-btn ${isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbActivateNamelessDiscoveryMode(false);" style="min-height:48px !important; padding:8px 14px !important; font-size:0.86rem !important; line-height:1.25;">
-                      ✨ Aún no tengo nombre · Crearlo en el proceso
+                    <button type="button" id="tbbBtnStartNamelessDiscovery" class="tbb-duo-btn ${isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbActivateNamelessDiscoveryMode(false);" style="min-height:44px !important; padding:6px 10px !important; font-size:0.82rem !important; font-weight:600 !important;">
+                      ✨ Crearlo en el proceso
                     </button>
                   </div>
 
                   ${isNamelessDiscovery ? `
-                    <div style="background:#EFF6FF; border:2px solid #1D4ED8; border-radius:16px; padding:16px 18px; display:flex; align-items:center; gap:14px;">
-                      <div style="width:40px; height:40px; border-radius:12px; background:#1D4ED8; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.15rem; flex-shrink:0;">✓</div>
-                      <div style="font-size:0.86rem; color:#0F172A; font-weight:700; line-height:1.42;">
-                        <strong style="color:#1D4ED8; display:block; font-size:0.94rem; margin-bottom:2px;">Listo: crearemos el nombre de tu marca durante el proceso</strong>
-                        Primero conoceremos a qué se dedica tu proyecto y qué lo hace único, y más adelante generaremos tu nombre ideal. <strong>Solo presiona «Siguiente» en la barra inferior para continuar.</strong>
+                    <div style="background:#EFF6FF; border:1.5px solid #1D4ED8; border-radius:14px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
+                      <div style="width:32px; height:32px; border-radius:10px; background:#1D4ED8; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.95rem; flex-shrink:0;">✓</div>
+                      <div style="font-size:0.80rem; color:#0F172A; font-weight:500; line-height:1.34;">
+                        <strong style="color:#1D4ED8; display:block; font-size:0.85rem; font-weight:700; margin-bottom:1px;">Listo: crearemos el nombre en el Paso 3</strong>
+                        Primero conoceremos tu giro y diferenciador para proponerte opciones ideales.
                       </div>
                     </div>
                   ` : `
-                    <div style="background:#F8FAFC; border:2px solid #090D16; border-radius:16px; padding:14px 16px; display:flex; flex-direction:column; gap:8px;">
-                      <label for="tbbStep0NameInput" style="font-size:0.82rem; font-weight:900; color:#090D16;">
-                        Escribe aquí el nombre de tu marca:
+                    <div style="background:#F8FAFC; border:1.5px solid #090D16; border-radius:14px; padding:10px 14px; display:flex; flex-direction:column; gap:6px;">
+                      <label for="tbbStep0NameInput" style="font-size:0.78rem; font-weight:600; color:#090D16;">
+                        Nombre de tu marca:
                       </label>
-                      <input type="text" id="tbbStep0NameInput" value="${displayInputName.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Ej. Nombre de tu empresa, producto o proyecto..." style="width:100%; height:44px; padding:0 14px; border-radius:12px; border:2px solid #CBD5E1; font-size:0.98rem; font-weight:800; color:#090D16; background:#FFFFFF; box-sizing:border-box;" />
+                      <input type="text" id="tbbStep0NameInput" value="${displayInputName.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Ej. Nombre de tu empresa o proyecto..." style="width:100%; height:40px; padding:0 12px; border-radius:10px; border:1.5px solid #CBD5E1; font-size:0.92rem; font-weight:600; color:#090D16; background:#FFFFFF; box-sizing:border-box;" />
                     </div>
                   `}
 
                   <!-- Opción de Subir Logotipo Existente (Opcional) -->
-                  <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+                  <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:12px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
                     <input type="file" id="tbbExistingLogoFileInput" accept="image/png,image/jpeg,image/webp,image/svg+xml,.svg,.png,.jpg,.jpeg,.webp" onchange="window.tbbHandleExistingLogoUpload(this)" style="display:none;" />
                     ${!uploadedLogoUrl ? `
-                      <div style="font-size:0.78rem; font-weight:700; color:#475569;">
-                        ¿Ya cuentas con un logotipo actual? <span style="color:#64748B; font-weight:600;">(Opcional · también podrás subirlo o crearlo en la sección de Logotipo)</span>
+                      <div style="font-size:0.75rem; font-weight:600; color:#475569;">
+                        ¿Tienes logotipo actual? <span style="color:#64748B; font-weight:500;">(Opcional)</span>
                       </div>
-                      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="min-height:34px !important; padding:4px 12px !important; font-size:0.76rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; background:#FFFFFF !important;">
-                        Subir mi Logo (.PNG, .JPG, .SVG)
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="min-height:32px !important; padding:4px 10px !important; font-size:0.74rem !important; font-weight:600 !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; background:#FFFFFF !important; flex-shrink:0;">
+                        Subir Logo (.PNG/.SVG)
                       </button>
                     ` : `
-                      <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1; flex-wrap:wrap;">
-                        <img src="${cs.raw_uploaded_logo_data_url || uploadedLogoUrl}" alt="Logo actual" style="width:42px; height:42px; object-fit:contain; border-radius:8px; border:1px solid #CBD5E1; background:#FFFFFF; flex-shrink:0;" />
+                      <div style="display:flex; align-items:center; gap:8px; min-width:0; flex:1; flex-wrap:wrap;">
+                        <img src="${cs.raw_uploaded_logo_data_url || uploadedLogoUrl}" alt="Logo actual" style="width:36px; height:36px; object-fit:contain; border-radius:8px; border:1px solid #CBD5E1; background:#FFFFFF; flex-shrink:0;" />
                         <div style="min-width:0; flex:1;">
-                          <div style="font-size:0.80rem; font-weight:900; color:#090D16;">
-                            Logo actual cargado (${extColors[0] || '#0078C0'} · ${extColors[1] || '#88E0E0'})
+                          <div style="font-size:0.76rem; font-weight:700; color:#090D16;">
+                            Logo cargado (${extColors[0] || '#0078C0'})
                           </div>
-                          <div style="display:flex; gap:6px; margin-top:4px; flex-wrap:wrap;">
-                            <button type="button" onclick="window.tbbSetExistingLogoMode('evolve')" style="background:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'evolve' ? '#1D4ED8' : '#FFFFFF'}; color:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'evolve' ? '#FFFFFF' : '#1D4ED8'}; border:1.5px solid #1D4ED8; border-radius:7px; padding:3px 9px; font-size:0.70rem; font-weight:800; cursor:pointer;">✦ Modernizar / Evolucionar</button>
-                            <button type="button" onclick="window.tbbSetExistingLogoMode('keep')" style="background:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'keep' ? '#1D4ED8' : '#FFFFFF'}; color:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'keep' ? '#FFFFFF' : '#1D4ED8'}; border:1.5px solid #1D4ED8; border-radius:7px; padding:3px 9px; font-size:0.70rem; font-weight:800; cursor:pointer;">Mantener Igual</button>
+                          <div style="display:flex; gap:5px; margin-top:2px;">
+                            <button type="button" onclick="window.tbbSetExistingLogoMode('evolve')" style="background:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'evolve' ? '#1D4ED8' : '#FFFFFF'}; color:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'evolve' ? '#FFFFFF' : '#1D4ED8'}; border:1px solid #1D4ED8; border-radius:6px; padding:2px 8px; font-size:0.68rem; font-weight:600; cursor:pointer;">✦ Evolucionar</button>
+                            <button type="button" onclick="window.tbbSetExistingLogoMode('keep')" style="background:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'keep' ? '#1D4ED8' : '#FFFFFF'}; color:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'keep' ? '#FFFFFF' : '#1D4ED8'}; border:1px solid #1D4ED8; border-radius:6px; padding:2px 8px; font-size:0.68rem; font-weight:600; cursor:pointer;">Mantener</button>
                           </div>
                         </div>
-                        <div style="display:flex; gap:6px;">
-                          <button type="button" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="background:#FFFFFF; color:#1D4ED8; border:1.5px solid #1D4ED8; border-radius:8px; padding:4px 10px; font-size:0.72rem; font-weight:800; cursor:pointer;">Cambiar</button>
-                          <button type="button" onclick="window.tbbClearExistingLogo()" style="background:#FEF2F2; color:#DC2626; border:1.5px solid #FCA5A5; border-radius:8px; padding:4px 10px; font-size:0.72rem; font-weight:800; cursor:pointer;">Quitar</button>
+                        <div style="display:flex; gap:5px;">
+                          <button type="button" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="background:#FFFFFF; color:#1D4ED8; border:1px solid #1D4ED8; border-radius:7px; padding:3px 8px; font-size:0.70rem; font-weight:600; cursor:pointer;">Cambiar</button>
+                          <button type="button" onclick="window.tbbClearExistingLogo()" style="background:#FEF2F2; color:#DC2626; border:1px solid #FCA5A5; border-radius:7px; padding:3px 8px; font-size:0.70rem; font-weight:600; cursor:pointer;">Quitar</button>
                         </div>
                       </div>
                     `}
                   </div>
-                </div>
-
-                <div style="font-size:0.80rem; color:#64748B; text-align:center; font-weight:600;">
-                  Selecciona tu opción y presiona <strong>Siguiente</strong> en la barra inferior.
                 </div>
               </div>
             `;
@@ -23446,25 +23472,22 @@
             }
             if (lblNext) lblNext.textContent = "Guardar e Ir al Paso 1";
             stage.innerHTML = `
-              <div class="tbb-atomic-card">
+              <div class="tbb-atomic-card" style="padding:12px 16px; gap:8px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#0D2540; font-weight:900; margin-bottom:4px;">PASO 0 · 3 DE 3 · GIRO Y ACTIVIDAD</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.28rem; font-weight:900; color:#090D16; margin:0 0 6px 0;">
-                    ¿En qué giro o actividad se enfoca tu empresa y qué ofrece?
+                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:700; color:#0D2540; margin-bottom:2px;">PASO 0 · 3 DE 3 · GIRO Y ACTIVIDAD</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.12rem; font-weight:700; color:#090D16; margin:0;">
+                    ¿En qué giro se enfoca tu empresa y qué ofrece?
                   </h2>
                 </div>
-                <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px;">
-                  <textarea id="tbbStep0BizTextarea" rows="3" oninput="tbbUpdateBusinessTypeFromInput(this.value)" placeholder="Describe con tus palabras a qué se dedica tu empresa, qué producto o servicio entregas y para quién..." style="width:100%; padding:12px 14px; border-radius:16px; border:2px solid #090D16; font-size:0.94rem; font-weight:700; color:#090D16; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.42;">${curBiz}</textarea>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnPolishStep0Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep0BizTextarea', 'giro')" style="min-height:38px !important; padding:6px 12px !important; font-size:0.78rem !important; border-color:#0D2540 !important; color:#0D2540 !important; width:100%;">
-                    Corregir ortografía y expresar mi idea con claridad ejecutiva
+                <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:7px;">
+                  <textarea id="tbbStep0BizTextarea" rows="3" oninput="tbbUpdateBusinessTypeFromInput(this.value)" placeholder="Describe a qué se dedica tu empresa, qué entregas y para quién..." style="width:100%; padding:10px 12px; border-radius:14px; border:1.5px solid #090D16; font-size:0.88rem; font-weight:500; color:#090D16; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.38;">${curBiz}</textarea>
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnPolishStep0Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep0BizTextarea', 'giro')" style="min-height:34px !important; padding:5px 10px !important; font-size:0.75rem !important; font-weight:600 !important; border-color:#0D2540 !important; color:#0D2540 !important; width:100%;">
+                    ✦ Pulir redacción con claridad ejecutiva
                   </button>
-                  <div style="background:#F0F7FF; border:1.5px solid #93C5FD; border-radius:14px; padding:9px 12px; font-size:0.80rem; font-weight:700; color:#0D2540;">
-                    Síntesis detectada por el sistema: <span id="tbbStep0LiveEssencePreview">${cs.step0_short_essence || curBiz || "Escribe arriba tu giro para que el sistema adapte todo tu recorrido."}</span>
+                  <div style="background:#F0F7FF; border:1px solid #93C5FD; border-radius:11px; padding:6px 10px; font-size:0.75rem; font-weight:600; color:#0D2540; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    Síntesis: <span id="tbbStep0LiveEssencePreview" style="font-weight:500;">${cs.step0_short_essence || curBiz || "Describe arriba tu actividad principal."}</span>
                   </div>
                   ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(0, "giro") : ""}
-                </div>
-                <div style="font-size:0.78rem; color:#64748B; text-align:center; font-weight:600;">
-                  El sistema generará las preguntas, puntos de contacto, nombres y logotipo a partir de lo que escribas aquí.
                 </div>
               </div>
             `;
@@ -23488,30 +23511,25 @@
           if (lblNext) lblNext.textContent = st.subStep < 7 ? "Comprobar y Siguiente" : "Completar Paso 1";
 
           stage.innerHTML = `
-            <div class="tbb-atomic-card">
-              <div style="display:flex; align-items:center; gap:12px;">
-                <div style="width:48px; height:48px; border-radius:999px; background:#EFF6FF; border:2px solid #1D4ED8; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                  ${window.TBBVectorArt("aura", "#1D4ED8", 26)}
-                </div>
-                <div style="flex:1;">
-                  <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#1D4ED8;">PASO 1 · PREGUNTA ${st.subStep} DE 7 · ${qObj.title.toUpperCase()}</div>
-                  <div style="font-family:var(--font-display); font-size:1.12rem; font-weight:900; color:#090D16; line-height:1.3;">
-                    ${qObj.q}
-                  </div>
-                </div>
+            <div class="tbb-atomic-card" style="padding:12px 16px; gap:8px;">
+              <div>
+                <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:700; color:#1D4ED8; margin-bottom:2px;">PASO 1 · ${st.subStep} DE 7 · ${qObj.title.toUpperCase()}</div>
+                <h2 style="font-family:var(--font-display); font-size:1.05rem; font-weight:700; color:#090D16; margin:0; line-height:1.25;">
+                  ${qObj.q}
+                </h2>
               </div>
 
-              <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px;">
-                <textarea id="tbbStep1AnswerInput" rows="3" oninput="tbbSaveStep1Answer('${qObj.key}', this.value)" placeholder="Escribe o dicta tu respuesta para esta dimensión de tu marca..." style="width:100%; padding:11px 14px; border-radius:16px; border:2px solid #1D4ED8; font-size:0.94rem; font-weight:700; color:#090D16; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.38;">${curVal}</textarea>
-                <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnPolishStep1Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep1AnswerInput', '${qObj.key}')" style="min-height:36px !important; padding:5px 12px !important; font-size:0.76rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important;">
-                  Corregir ortografía y redactar mi idea con claridad
+              <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:7px;">
+                <textarea id="tbbStep1AnswerInput" rows="3" oninput="tbbSaveStep1Answer('${qObj.key}', this.value)" placeholder="Escribe o dicta tu respuesta..." style="width:100%; padding:9px 12px; border-radius:14px; border:1.5px solid #1D4ED8; font-size:0.88rem; font-weight:500; color:#090D16; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.36;">${curVal}</textarea>
+                <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnPolishStep1Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep1AnswerInput', '${qObj.key}')" style="min-height:32px !important; padding:4px 10px !important; font-size:0.74rem !important; font-weight:600 !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important;">
+                  ✦ Pulir redacción con claridad
                 </button>
-                <div style="display:flex; flex-direction:column; gap:6px;">
-                  <div style="font-size:0.74rem; font-weight:800; color:#475569;">Opciones sintetizadas desde la información de tu marca:</div>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbApplyStep1Suggestion('${qObj.key}', this.textContent)" style="text-align:left; font-size:0.82rem !important; min-height:42px !important; padding:6px 12px !important;">
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                  <div style="font-size:0.72rem; font-weight:600; color:#475569;">Sugerencias para tu marca (toca para usar):</div>
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbApplyStep1Suggestion('${qObj.key}', this.textContent)" style="text-align:left; justify-content:flex-start !important; font-size:0.78rem !important; font-weight:500 !important; min-height:38px !important; padding:5px 10px !important;">
                     ${dynChips[0]}
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbApplyStep1Suggestion('${qObj.key}', this.textContent)" style="text-align:left; font-size:0.82rem !important; min-height:42px !important; padding:6px 12px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbApplyStep1Suggestion('${qObj.key}', this.textContent)" style="text-align:left; justify-content:flex-start !important; font-size:0.78rem !important; font-weight:500 !important; min-height:38px !important; padding:5px 10px !important;">
                     ${dynChips[1]}
                   </button>
                 </div>
@@ -23527,9 +23545,9 @@
         // ---------------------------------------------------------------------
         if (st.step === 2) {
           const phases = [
-            { key: "before", title: "1. ANTES DE LA COMPRA", q: "¿Por qué medios te descubren y evalúan tus clientes antes de comprar?" },
-            { key: "during", title: "2. DURANTE LA COMPRA", q: "¿Dónde ocurre la experiencia principal y el contacto directo durante el servicio o compra?" },
-            { key: "after", title: "3. DESPUÉS DE LA COMPRA", q: "¿Cómo mantienes la relación, el soporte y la lealtad después de la entrega?" }
+            { key: "before", title: "1. ANTES DE LA COMPRA", q: "¿Por qué medios te descubren y evalúan antes de comprar?" },
+            { key: "during", title: "2. DURANTE LA COMPRA", q: "¿Dónde ocurre la experiencia principal durante el servicio o compra?" },
+            { key: "after", title: "3. DESPUÉS DE LA COMPRA", q: "¿Cómo mantienes la relación y lealtad después de la entrega?" }
           ];
           const ph = phases[st.subStep - 1] || phases[0];
           const currentList = (typeof tpExtractedItems === "object" && tpExtractedItems[ph.key]) ? tpExtractedItems[ph.key] : [];
@@ -23537,29 +23555,29 @@
           const mergedOptions = [...new Set([...dynOptions, ...currentList])].slice(0, 6);
 
           stage.innerHTML = `
-            <div class="tbb-atomic-card">
+            <div class="tbb-atomic-card" style="padding:12px 16px; gap:8px;">
               <div>
-                <div style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#1D4ED8;">PASO 2 · ETAPA ${st.subStep} DE 3 · ${ph.title}</div>
-                <h2 style="font-family:var(--font-display); font-size:1.18rem; font-weight:900; color:#090D16; margin:4px 0 8px 0;">
+                <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:700; color:#1D4ED8;">PASO 2 · ETAPA ${st.subStep} DE 3 · ${ph.title}</div>
+                <h2 style="font-family:var(--font-display); font-size:1.08rem; font-weight:700; color:#090D16; margin:2px 0 4px 0;">
                   ${ph.q}
                 </h2>
               </div>
 
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; flex:1; align-content:center;">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px; flex:1; align-content:center;">
                 ${mergedOptions.map(opt => {
                   const isSel = currentList.includes(opt);
                   const safeOpt = opt.replace(/'/g, "\\'");
                   return `
-                    <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbToggleTouchpointItem('${ph.key}', '${safeOpt}')">
+                    <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbToggleTouchpointItem('${ph.key}', '${safeOpt}')" style="min-height:42px !important; padding:6px 10px !important; font-size:0.80rem !important; font-weight:600 !important;">
                       ${opt}
                     </button>
                   `;
                 }).join("")}
               </div>
 
-              <div style="display:flex; gap:8px; align-items:center; padding-top:6px;">
-                <input type="text" id="tbbCustomTpInput" placeholder="Agregar otro punto de contacto propio..." style="flex:1; height:50px; padding:0 14px; border-radius:14px; border:2px solid #CBD5E1; font-size:0.92rem; font-weight:700; box-sizing:border-box;" />
-                <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="tbbAddCustomTouchpoint('${ph.key}')">
+              <div style="display:flex; gap:7px; align-items:center;">
+                <input type="text" id="tbbCustomTpInput" placeholder="Otro punto de contacto..." style="flex:1; height:40px; padding:0 12px; border-radius:11px; border:1.5px solid #CBD5E1; font-size:0.84rem; font-weight:500; box-sizing:border-box;" />
+                <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="tbbAddCustomTouchpoint('${ph.key}')" style="min-height:40px !important; padding:0 14px !important; font-size:0.80rem !important;">
                   Agregar
                 </button>
               </div>
@@ -23759,31 +23777,31 @@
               cs.primary_nice_class = autoNiceClass;
             }
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:10px 16px; gap:8px;">
+              <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 3 · 3 DE 3 · CONFIRMACIÓN DE NOMBRE OFICIAL, ESLOGAN Y CLASE DE NIZA</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.08rem; font-weight:900; color:#090D16; margin:2px 0 2px 0;">
-                    Confirma tu Nombre Oficial, tu Eslogan Descriptivo y tu Clasificación de Registro Marcario
+                  <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#1D4ED8;">PASO 3 · 3 DE 3 · NOMBRE OFICIAL, ESLOGAN Y CLASE DE NIZA</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.02rem; font-weight:700; color:#090D16; margin:2px 0;">
+                    Confirma tu Nombre Oficial, Eslogan y Clasificación de Registro Marcario
                   </h2>
                 </div>
-                <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px;">
-                  <div style="background:#F0F7FF; border:2px solid #1D4ED8; border-radius:14px; padding:8px 14px;">
-                    <label for="tbbStep3FinalBrandInput" style="display:block; font-family:var(--font-mono); font-size:0.66rem; color:#1D4ED8; font-weight:900; letter-spacing:0.05em; margin-bottom:3px;">
+                <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:6px;">
+                  <div style="background:#F0F7FF; border:1.5px solid #1D4ED8; border-radius:12px; padding:6px 12px;">
+                    <label for="tbbStep3FinalBrandInput" style="display:block; font-family:var(--font-mono); font-size:0.64rem; color:#1D4ED8; font-weight:700; letter-spacing:0.04em; margin-bottom:2px;">
                       ★ NOMBRE OFICIAL DE TU MARCA (EDITABLE):
                     </label>
-                    <input type="text" id="tbbStep3FinalBrandInput" value="${confirmedBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" placeholder="Escribe el nombre oficial de tu marca..." style="width:100%; height:40px; padding:0 12px; border-radius:10px; border:2px solid #090D16; background:#FFFFFF; font-family:var(--font-display); font-size:1.18rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
+                    <input type="text" id="tbbStep3FinalBrandInput" value="${confirmedBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" placeholder="Escribe el nombre oficial de tu marca..." style="width:100%; height:36px; padding:0 10px; border-radius:8px; border:1.5px solid #090D16; background:#FFFFFF; font-family:var(--font-display); font-size:1.05rem; font-weight:700; color:#090D16; box-sizing:border-box;" />
                   </div>
                   <div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
-                      <label for="tbbStep3TaglineInput" style="font-size:0.74rem; font-weight:800; color:#334155;">
-                        Eslogan o Frase Descriptiva (acompañará a tu logotipo y portada del Brandbook):
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                      <label for="tbbStep3TaglineInput" style="font-size:0.72rem; font-weight:600; color:#334155;">
+                        Eslogan o Frase Descriptiva:
                       </label>
-                      <button type="button" onclick="window.tbbPolishInputFieldClarity('tbbStep3TaglineInput', 'tagline')" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; border-radius:6px; padding:2px 8px; font-size:0.68rem; font-weight:800; cursor:pointer;">✦ Refinar Eslogan con IA</button>
+                      <button type="button" onclick="window.tbbPolishInputFieldClarity('tbbStep3TaglineInput', 'tagline')" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; border-radius:6px; padding:2px 8px; font-size:0.66rem; font-weight:600; cursor:pointer;">✦ Refinar con IA</button>
                     </div>
-                    <input type="text" id="tbbStep3TaglineInput" value="${taglineVal.replace(/"/g, '&quot;')}" oninput="canvasState.tagline=this.value; saveBrandSessionToLocalStorage();" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Ej. Claridad y precisión en tiempo real..." style="width:100%; height:38px; padding:0 12px; border-radius:10px; border:2px solid #090D16; background:#FFFFFF; font-size:0.86rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <input type="text" id="tbbStep3TaglineInput" value="${taglineVal.replace(/"/g, '&quot;')}" oninput="canvasState.tagline=this.value; saveBrandSessionToLocalStorage();" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Ej. Claridad y precisión en tiempo real..." style="width:100%; height:36px; padding:0 10px; border-radius:8px; border:1.5px solid #090D16; background:#FFFFFF; font-size:0.82rem; font-weight:600; color:#090D16; box-sizing:border-box;" />
                   </div>
-                  <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:12px; padding:7px 12px; font-size:0.74rem; color:#0F172A; line-height:1.35;">
-                    <strong style="color:#1D4ED8; font-family:var(--font-mono);">CLASIFICACIÓN INTERNACIONAL DE NIZA (IMPI / WIPO):</strong> ${autoNiceClass}
+                  <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:10px; padding:5px 10px; font-size:0.70rem; color:#0F172A; line-height:1.3;">
+                    <strong style="color:#1D4ED8; font-family:var(--font-mono); font-weight:700;">CLASE DE NIZA (IMPI / WIPO):</strong> ${autoNiceClass}
                   </div>
                   ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(3, "brandName") : ""}
                 </div>
@@ -24011,40 +24029,40 @@
 
           // Paso 4 · 5 de 5: Estructura Base + Idea u Objeto de Partida dentro de la App
           const fams = [
-            { lbl: "1. Monograma Constructivo y Ligadura", sub: "Geometría modular e iniciales entrelazadas", img: "/assets/avi/step4_dir1_swiss_geometric.png" },
-            { lbl: "2. Emblema y Escudo de Autoridad", sub: "Heráldica contemporánea y simetría axial", img: "/assets/avi/step4_dir2_modern_heraldic.png" },
-            { lbl: "3. Símbolo Continuo y Espacio Negativo", sub: "Fluidez orgánica y proporción áurea", img: "/assets/avi/step4_dir3_organic_golden_flow.png" },
-            { lbl: "4. Volumen Tridimensional y Prisma", sub: "Facetas escultóricas y refracción de luz", img: "/assets/avi/step4_dir4_architectural_origami.png" }
+            { lbl: "1. Monograma y Ligadura", sub: "Geometría modular e iniciales", img: "/assets/avi/step4_dir1_swiss_geometric.png" },
+            { lbl: "2. Emblema y Escudo", sub: "Heráldica y simetría axial", img: "/assets/avi/step4_dir2_modern_heraldic.png" },
+            { lbl: "3. Símbolo Continuo", sub: "Fluidez orgánica y áurea", img: "/assets/avi/step4_dir3_organic_golden_flow.png" },
+            { lbl: "4. Volumen 3D y Prisma", sub: "Facetas y refracción de luz", img: "/assets/avi/step4_dir4_architectural_origami.png" }
           ];
           const curFam = Number(selectedLiveSketchIndex || 0) % 4;
           const curSeedIdea = cs.step4_seed_idea || "";
           stage.innerHTML = `
-            <div class="tbb-atomic-card" style="padding:10px 14px; gap:8px;">
+            <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
               <div>
-                <div style="font-family:var(--font-mono); font-size:0.74rem; font-weight:800; color:#0D2540; font-weight:900;">PASO 4 · 5 DE 5 · ESTRUCTURA BASE E IDEA DE PARTIDA</div>
-                <h2 style="font-family:var(--font-display); font-size:1.12rem; font-weight:900; color:#090D16; margin:2px 0 4px 0;">
-                  Elige la estructura base y, si lo deseas, escribe una idea o símbolo inicial para «${cs.brandName || "TheBestBrand"}»
+                <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#0D2540;">PASO 4 · 5 DE 5 · ESTRUCTURA BASE E IDEA DE PARTIDA</div>
+                <h2 style="font-family:var(--font-display); font-size:1.02rem; font-weight:700; color:#090D16; margin:2px 0;">
+                  Elige la estructura base y un símbolo inicial opcional para «${cs.brandName || "TheBestBrand"}»
                 </h2>
               </div>
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; flex:1; min-height:0;">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px; flex:1; align-content:center;">
                 ${fams.map((f, idx) => `
-                  <button type="button" class="tbb-duo-btn ${curFam === idx ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbSelectBaseStructureFamily(${idx})" style="display:flex !important; align-items:center !important; justify-content:flex-start !important; gap:10px !important; padding:8px 12px !important; text-align:left !important;">
-                    <img src="${f.img}" alt="${escapeHTML(f.lbl)}" style="width:48px; height:48px; object-fit:cover; border-radius:10px; border:1.5px solid #CBD5E1; flex-shrink:0; background:#090D16;" />
-                    <div style="min-width:0; flex:1;">
-                      <div style="font-size:0.84rem; font-weight:900; line-height:1.2; color:#090D16;">${f.lbl}</div>
-                      <div style="font-size:0.70rem; font-weight:700; color:#475569; margin-top:2px;">${f.sub}</div>
+                  <button type="button" class="tbb-duo-btn ${curFam === idx ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbSelectBaseStructureFamily(${idx})" style="display:flex !important; align-items:center !important; justify-content:flex-start !important; gap:8px !important; padding:6px 10px !important; min-height:54px !important; text-align:left !important;">
+                    <img src="${f.img}" alt="${escapeHTML(f.lbl)}" style="width:40px; height:40px; object-fit:cover; border-radius:8px; border:1px solid #CBD5E1; flex-shrink:0; background:#090D16;" />
+                    <div style="min-width:0; flex:1; overflow:hidden;">
+                      <div style="font-size:0.78rem; font-weight:700; line-height:1.18; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${f.lbl}</div>
+                      <div style="font-size:0.66rem; font-weight:500; color:#475569; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${f.sub}</div>
                     </div>
                   </button>
                 `).join("")}
               </div>
               <div>
-                <label style="display:block; font-size:0.76rem; font-weight:800; color:#0F172A; margin-bottom:4px;">
-                  ¿Tienes una idea, símbolo u objeto de partida para tu logotipo? (Opcional · ej. unas alas, una estrella, un escudo, una montaña):
+                <label style="display:block; font-size:0.72rem; font-weight:600; color:#0F172A; margin-bottom:3px;">
+                  Símbolo u objeto de partida (Opcional · ej. alas, estrella, escudo, montaña):
                 </label>
-                <input type="text" id="tbbStep4SeedIdeaInput" value="${escapeHTML(curSeedIdea)}" oninput="tbbUpdateStep4SeedIdea(this.value)" placeholder="Déjalo en blanco para que el sistema lo infiera de tu giro o escribe aquí tu símbolo inicial..." style="width:100%; padding:10px 14px; border-radius:14px; border:2px solid #090D16; font-size:0.88rem; font-weight:700; color:#090D16; background:#FFFFFF; box-sizing:border-box;" />
+                <input type="text" id="tbbStep4SeedIdeaInput" value="${escapeHTML(curSeedIdea)}" oninput="tbbUpdateStep4SeedIdea(this.value)" placeholder="Déjalo en blanco o escribe tu símbolo inicial..." style="width:100%; height:36px; padding:0 12px; border-radius:10px; border:1.5px solid #090D16; font-size:0.84rem; font-weight:500; color:#090D16; background:#FFFFFF; box-sizing:border-box;" />
               </div>
-              <div style="font-size:0.76rem; color:#0D2540; background:#F0F7FF; border:1.5px solid #93C5FD; border-radius:12px; padding:6px; text-align:center; font-weight:700;">
-                Paradigma inferido por tus deslizadores: ${(SYSTEMIC_LOGO_PARADIGMS.find(p => p.id === st.logoParadigm) || SYSTEMIC_LOGO_PARADIGMS[0]).label}
+              <div style="font-size:0.70rem; color:#0D2540; background:#F0F7FF; border:1px solid #93C5FD; border-radius:9px; padding:4px 8px; text-align:center; font-weight:600;">
+                Paradigma sugerido: ${(SYSTEMIC_LOGO_PARADIGMS.find(p => p.id === st.logoParadigm) || SYSTEMIC_LOGO_PARADIGMS[0]).label}
               </div>
               ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(4, "step4_seed_idea") : ""}
             </div>
@@ -24188,63 +24206,65 @@
             if (btnAct) {
               btnAct.classList.remove("is-hidden");
               btnAct.style.display = "inline-flex";
-              if (lblAct) lblAct.textContent = st.geminiBusy ? "NanoBanana diseñando..." : "✦ Iterar con NanoBanana";
-              if (iconAct) iconAct.innerHTML = window.TBBVectorArt("iterate", "#0D2540", 18);
+              if (lblAct) lblAct.textContent = st.geminiBusy ? "Diseñando..." : "✦ Iterar";
+              if (iconAct) iconAct.innerHTML = window.TBBVectorArt("iterate", "#0D2540", 16);
             }
-            if (lblNext) lblNext.textContent = "Confirmar Logo e Ir al Manual";
+            if (lblNext) lblNext.textContent = "Confirmar Logo →";
 
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:10px 14px; gap:7px;">
+              <div class="tbb-atomic-card" style="padding:8px 12px; gap:5px;">
                 <!-- Fila Superior del Lienzo: Historial de Iteraciones + 4 Modos de Dirección Creativa NanoBanana PRO -->
-                <div style="display:flex; flex-direction:column; gap:5px;">
-                  <div id="tbbIterationPillsStrip" style="display:flex; gap:6px; overflow-x:auto; align-items:center; width:100%; min-width:0; scroll-behavior:smooth; padding-bottom:2px;">
-                    ${st.logoIterations.map((it, idx) => `
-                      <button type="button" class="tbb-duo-btn ${st.logoIterationIndex === idx + 1 ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbRestoreLogoIteration(${idx})" style="padding:4px 10px !important; flex-shrink:0; font-size:0.74rem !important;">
-                        ${idx === 0 ? (it.isUploadedUserLogo ? "#1 · Tu Logo Base" : (it.shortPill || "#1 · Emblema de Autor")) : (it.shortPill || `#${idx + 1}${it.conceptLabel ? " · " + String(it.conceptLabel).split(/\s+/).slice(0, 2).join(" ").slice(0, 15) : ""}`)}
-                      </button>
-                    `).join("")}
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                  <div style="display:flex; gap:5px; align-items:center; justify-content:space-between;">
+                    <div id="tbbIterationPillsStrip" style="display:flex; gap:4px; overflow-x:auto; align-items:center; flex:1; min-width:0; scroll-behavior:smooth;">
+                      ${st.logoIterations.map((it, idx) => `
+                        <button type="button" class="tbb-duo-btn ${st.logoIterationIndex === idx + 1 ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbRestoreLogoIteration(${idx})" style="min-height:28px !important; padding:2px 8px !important; flex-shrink:0; font-size:0.68rem !important; font-weight:600 !important;">
+                          ${idx === 0 ? (it.isUploadedUserLogo ? "#1 · Base" : "#1 · Autor") : `#${idx + 1}`}
+                        </button>
+                      `).join("")}
+                    </div>
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; if(window.tbbSyncImproBearsLogoDarkVariant){window.tbbSyncImproBearsLogoDarkVariant();} triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="min-height:28px !important; padding:2px 8px !important; font-size:0.68rem !important; font-weight:600 !important; flex-shrink:0;">
+                      Claro/Oscuro
+                    </button>
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="min-height:28px !important; padding:2px 8px !important; font-size:0.68rem !important; font-weight:600 !important; flex-shrink:0;" title="Abrir vista de aplicaciones físicas y digitales adaptadas al giro de tu negocio">
+                      ✨ Mockups
+                    </button>
                   </div>
-                  <div style="display:flex; gap:5px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+                  <div style="display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:4px;">
                     ${[
-                      { id: "emblem_masterpiece", lbl: "✦ 1. Emblema de Autor", tip: "Composición artística rica multi-elemento con el ADN completo de tu marca" },
-                      { id: "monogram_fusion", lbl: "✦ 2. Monograma + Giro", tip: "Fusión de iniciales de tu marca con el símbolo central de tu giro y descriptor" },
-                      { id: "editorial_crest", lbl: "✦ 3. Insignia / Sello", tip: "Escudo, sello arquitectónico o insignia de prestigio institucional" },
-                      { id: "minimal_couture", lbl: "✦ 4. Lineal Minimalista", tip: "Síntesis geométrica monolineal de alta precisión para grabado, casco, bordado y app" }
+                      { id: "emblem_masterpiece", lbl: "1. Emblema", tip: "Composición artística rica multi-elemento con el ADN completo de tu marca" },
+                      { id: "monogram_fusion", lbl: "2. Monograma", tip: "Fusión de iniciales de tu marca con el símbolo central de tu giro y descriptor" },
+                      { id: "editorial_crest", lbl: "3. Insignia", tip: "Escudo, sello arquitectónico o insignia de prestigio institucional" },
+                      { id: "minimal_couture", lbl: "4. Minimalista", tip: "Síntesis geométrica monolineal de alta precisión para grabado, casco, bordado y app" }
                     ].map(cm => `
-                      <button type="button" class="tbb-duo-btn ${activeCreativeMode === cm.id ? 'tbb-duo-btn-emerald' : 'tbb-duo-btn-secondary'}" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value.trim():'', {creativeMode:'${cm.id}', switchCreativeMode:true, evolveCurrent:${Boolean(hasExternalUploadedLogo && cm.id==='emblem_masterpiece')}, freshFromScratch:${Boolean(!hasExternalUploadedLogo || cm.id!=='emblem_masterpiece')}});}" style="padding:5px 9px !important; font-size:0.71rem !important; flex:1 1 auto;" title="${cm.tip}">
+                      <button type="button" class="tbb-duo-btn ${activeCreativeMode === cm.id ? 'tbb-duo-btn-emerald' : 'tbb-duo-btn-secondary'}" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value.trim():'', {creativeMode:'${cm.id}', switchCreativeMode:true, evolveCurrent:${Boolean(hasExternalUploadedLogo && cm.id==='emblem_masterpiece')}, freshFromScratch:${Boolean(!hasExternalUploadedLogo || cm.id!=='emblem_masterpiece')}});}" style="min-height:30px !important; padding:3px 4px !important; font-size:0.68rem !important; font-weight:600 !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${cm.tip}">
                         ${cm.lbl}
                       </button>
                     `).join("")}
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; if(window.tbbSyncImproBearsLogoDarkVariant){window.tbbSyncImproBearsLogoDarkVariant();} triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="padding:5px 9px !important; font-size:0.71rem !important; flex:0 1 auto;">
-                      Fondo Claro/Oscuro
-                    </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="padding:5px 9px !important; font-size:0.71rem !important; flex:0 1 auto;" title="Abrir vista de aplicaciones físicas y digitales adaptadas al giro de tu negocio">
-                      ✨ Mockups Flow
-                    </button>
                   </div>
                 </div>
 
                 <!-- Lienzo Central a Pantalla Completa (Showcase de Estudio NanoBanana PRO + App Icon 1:1) -->
-                <div style="flex:1; min-height:190px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:4px; position:relative;">
+                <div style="flex:1; min-height:130px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:14px; padding:4px; position:relative;">
                   ${svgCanvas}
                   ${st.geminiBusy ? `
-                    <div style="position:absolute; inset:0; background:rgba(9,13,22,0.76); backdrop-filter:blur(4px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; z-index:20; color:#FFFFFF; padding:20px; text-align:center;">
-                      <div style="font-size:1.02rem; font-weight:900; color:#FDE68A; letter-spacing:0.04em;">✦ NANOBANANA PRO DISEÑANDO TU IDENTIDAD DE MARCA...</div>
-                      <div style="font-size:0.84rem; font-weight:600; color:#E2E8F0; max-width:540px;">${st.geminiStatusText || "Integrando el 100% del ADN de tu marca, giro, personalidad Kansei y paleta cromática..."}</div>
+                    <div style="position:absolute; inset:0; background:rgba(9,13,22,0.76); backdrop-filter:blur(4px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; z-index:20; color:#FFFFFF; padding:16px; text-align:center;">
+                      <div style="font-size:0.92rem; font-weight:700; color:#FDE68A; letter-spacing:0.03em;">✦ NANOBANANA PRO DISEÑANDO...</div>
+                      <div style="font-size:0.78rem; font-weight:500; color:#E2E8F0; max-width:540px;">${st.geminiStatusText || "Integrando el ADN de tu marca, giro y paleta cromática..."}</div>
                     </div>
                   ` : ""}
                 </div>
 
                 <!-- Síntesis Estratégica de la Iteración Activa -->
-                <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:12px; padding:5px 10px; font-size:0.73rem; color:#090D16; line-height:1.3;">
-                  <strong style="color:#1D4ED8;">ADN Aplicado (${activeArchObj.label}):</strong> ${(activeItObj && activeItObj.note) ? escapeHTML(String(activeItObj.note).slice(0, 155)) : promptInfo.text}
+                <div style="background:#EFF6FF; border:1px solid #93C5FD; border-radius:9px; padding:4px 8px; font-size:0.68rem; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                  <strong style="color:#1D4ED8; font-weight:700;">ADN (${activeArchObj.label}):</strong> ${(activeItObj && activeItObj.note) ? escapeHTML(String(activeItObj.note).slice(0, 95)) : promptInfo.text}
                 </div>
 
                 <!-- Cuadro Conversacional Multimodal (Image-to-Image con NanoBanana PRO) -->
-                <div style="display:flex; gap:8px; align-items:stretch; flex-wrap:wrap;">
-                  <textarea id="tbbSingleLogoIterationBox" rows="2" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Itera conversacionalmente con NanoBanana PRO sobre esta imagen: ej. «Simplifícalo e integra las iniciales ARCO con el doble arco y torres residenciales», «Ponlo en sello arquitectónico»..." style="flex:1 1 220px; min-width:0; padding:8px 12px; border-radius:14px; border:2px solid #090D16; font-size:0.84rem; font-weight:700; color:#090D16; background:#FFFFFF; resize:none; box-sizing:border-box; line-height:1.32;"></textarea>
-                  <button type="button" id="tbbInlineApplyLogoPromptBtn" class="tbb-duo-btn tbb-duo-btn-gold" ${st.geminiBusy ? "disabled" : ""} onclick="onTbbAtomicCenterAction()" style="flex:0 0 auto; padding:0 16px !important; font-size:0.84rem !important; min-height:44px !important;">
-                    ${st.geminiBusy ? "Diseñando..." : "✦ Evolucionar Diseño"}
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <input type="text" id="tbbSingleLogoIterationBox" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter'){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Pide un ajuste: ej. «Integra iniciales», «Hazlo más minimalista»..." style="flex:1; min-width:0; height:36px; padding:0 12px; border-radius:10px; border:1.5px solid #090D16; font-size:0.80rem; font-weight:500; color:#090D16; background:#FFFFFF; box-sizing:border-box;" />
+                  <button type="button" id="tbbInlineApplyLogoPromptBtn" class="tbb-duo-btn tbb-duo-btn-gold" ${st.geminiBusy ? "disabled" : ""} onclick="onTbbAtomicCenterAction()" style="flex:0 0 auto; padding:0 12px !important; font-size:0.76rem !important; font-weight:600 !important; min-height:36px !important;">
+                    ${st.geminiBusy ? "..." : "✦ Evolucionar"}
                   </button>
                 </div>
               </div>
@@ -24531,49 +24551,46 @@
             const activeMonoFont = cs.mono_font || st.selectedMonoFont || "JetBrains Mono";
             const activeTypekitId = cs.adobe_typekit_id || st.adobeTypekitId || "";
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:10px 16px; gap:6px;">
+              <div class="tbb-atomic-card" style="padding:10px 14px; gap:5px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:900; color:#0D2540;">PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS Y PRODUCCIÓN EJECUTIVA V83.0</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.08rem; font-weight:900; color:#090D16; margin:2px 0 2px 0;">
-                    Manual Oficial (${totalPlates} Láminas), Vectores (.SVG / .AI), Kit Híbrido de Fuentes (.TTF + Typekit) y Suite Editable de «${escapeHTML(bName)}»
+                  <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#0D2540;">PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS EJECUTIVAS</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.0rem; font-weight:700; color:#090D16; margin:1px 0;">
+                    Manual Oficial (${totalPlates} Láminas), Vectores (.SVG / .AI), Fuentes (.TTF) y Suite de «${escapeHTML(bName)}»
                   </h2>
-                  <div style="font-size:0.73rem; color:#475569; font-weight:600;">
-                    Todos tus activos listos para imprenta, Adobe Illustrator, Gmail/Outlook, Word, PowerPoint y tu sistema tipográfico híbrido 100% libre de riesgos de copyright.
-                  </div>
                 </div>
-                <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:6px; align-content:center;">
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{downloadFullBrandbookPDFDirect(this);}" style="grid-column:1 / -1; min-height:40px !important;">
-                    1. Descargar Manual Oficial Completo en PDF Directo (${totalPlates} Láminas .PDF)
+                <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:5px; align-content:center;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{downloadFullBrandbookPDFDirect(this);}" style="grid-column:1 / -1; min-height:36px !important; font-size:0.78rem !important;">
+                    1. Descargar Manual Oficial Completo en PDF (${totalPlates} Láminas .PDF)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Logotipo SVG en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','svg',this);}else{window.exportActive3DLogoSVG(this);}" style="min-height:38px !important; font-size:0.75rem !important;">
-                    2. Logotipo Horizontal 100% en Curvas (.SVG Vectorizado)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Logotipo SVG en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','svg',this);}else{window.exportActive3DLogoSVG(this);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                    2. Logotipo en Curvas (.SVG)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Archivo Illustrator AI', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','ai',this);}" style="min-height:38px !important; font-size:0.75rem !important;">
-                    3. Archivo Nativo Adobe Illustrator en Curvas (.AI)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Archivo Illustrator AI', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','ai',this);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                    3. Adobe Illustrator (.AI)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Firma Corporativa HTML', false); if(window.tbbOpenEmailSignatureModal){window.tbbOpenEmailSignatureModal();}" style="min-height:38px !important; font-size:0.75rem !important;">
-                    4. Firma Corporativa de Correo (.HTML Gmail / Outlook)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Firma Corporativa HTML', false); if(window.tbbOpenEmailSignatureModal){window.tbbOpenEmailSignatureModal();}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                    4. Firma de Correo (.HTML)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Hoja Membretada DOCX', false); if(window.tbbDownloadEditableLetterheadDOCX){window.tbbDownloadEditableLetterheadDOCX(this);}" style="min-height:38px !important; font-size:0.75rem !important;">
-                    5. Plantilla Editable Hoja Membretada (.DOCX Word / Docs)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Hoja Membretada DOCX', false); if(window.tbbDownloadEditableLetterheadDOCX){window.tbbDownloadEditableLetterheadDOCX(this);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                    5. Hoja Membretada (.DOCX)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Presentación Ejecutiva PPTX', false); if(window.tbbDownloadEditableDeckPPTX){window.tbbDownloadEditableDeckPPTX(this);}" style="min-height:38px !important; font-size:0.75rem !important;">
-                    6. Presentación Ejecutiva Editable 16:9 (.PPTX PowerPoint)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Presentación Ejecutiva PPTX', false); if(window.tbbDownloadEditableDeckPPTX){window.tbbDownloadEditableDeckPPTX(this);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                    6. Presentación 16:9 (.PPTX)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Avatar y Sello en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('avatar','svg',this); setTimeout(()=>window.tbbExportLogoInCurves('seal','svg'), 450);}" style="min-height:38px !important; font-size:0.74rem !important;">
-                    7. Avatar 1:1 + Sello Circular en Curvas (.SVG)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Avatar y Sello en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('avatar','svg',this); setTimeout(()=>window.tbbExportLogoInCurves('seal','svg'), 450);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                    7. Avatar 1:1 + Sello (.SVG)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual Interactivo HTML', false); window.downloadCompleteBrandbookHTML()" style="min-height:38px !important; font-size:0.74rem !important;">
-                    8. Manual Web Interactivo Autónomo (.HTML ${totalPlates} Láminas)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual Interactivo HTML', false); window.downloadCompleteBrandbookHTML()" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                    8. Manual Interactivo (.HTML)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" id="tbbBtnDownloadBrandFontsKitZip" onclick="triggerAuraEmpatheticFeedback('input_font', '${escapeHTML(activePriFont)}', false); if(window.tbbDownloadBrandFontsZip){window.tbbDownloadBrandFontsZip(this);}" style="grid-column:1 / -1; min-height:40px !important; font-size:0.76rem !important;">
-                    9. Descargar Kit Híbrido de Fuentes (.ZIP: ${escapeHTML(activePriFont)} + ${escapeHTML(activeSecFont)} + ${escapeHTML(activeMonoFont)} .TTF SIL OFL${activeTypekitId ? ` + Typekit ${escapeHTML(activeTypekitId)}` : " + Snippet Adobe Typekit"})
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" id="tbbBtnDownloadBrandFontsKitZip" onclick="triggerAuraEmpatheticFeedback('input_font', '${escapeHTML(activePriFont)}', false); if(window.tbbDownloadBrandFontsZip){window.tbbDownloadBrandFontsZip(this);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                    9. Kit de Fuentes (.ZIP .TTF)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="min-height:36px !important; font-size:0.74rem !important;">
-                    ✨ Google Flow · Remix de Mockups (Por Giro)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                    ✨ Mockups Flow (Por Giro)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.subStep=1; renderTbbZeroScrollStage();" style="min-height:36px !important; font-size:0.74rem !important;">
-                    ← Volver al Visor de las ${totalPlates} Láminas
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.subStep=1; renderTbbZeroScrollStage();" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                    ← Volver a las ${totalPlates} Láminas
                   </button>
                 </div>
                 ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(6, "governance") : ""}
@@ -25301,16 +25318,16 @@
         const roles = window.TBB_PALETTE_ROLE_NAMES || [];
 
         return `
-          <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:10px 12px; display:flex; flex-direction:column; gap:8px;">
+          <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:12px; padding:7px 10px; display:flex; flex-direction:column; gap:6px; flex:1; justify-content:center;">
             <!-- Encabezado y Selector de Cantidad (2 a 6 Colores) -->
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; flex-wrap:wrap;">
-              <div style="font-size:0.75rem; font-weight:900; color:#090D16;">
-                🎨 Selector Circular de Espectro Completo <span style="color:#1D4ED8; font-weight:800;">(Editando ranura #${activeSlot + 1}: ${roles[activeSlot] || ""})</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:4px; flex-wrap:wrap;">
+              <div style="font-size:0.72rem; font-weight:700; color:#090D16;">
+                🎨 Espectro Circular <span style="color:#1D4ED8; font-weight:600;">(#${activeSlot + 1}: ${roles[activeSlot] || ""})</span>
               </div>
-              <div style="display:flex; align-items:center; gap:4px;">
-                <span style="font-size:0.68rem; font-weight:800; color:#475569; margin-right:2px;">N° Colores:</span>
+              <div style="display:flex; align-items:center; gap:3px;">
+                <span style="font-size:0.65rem; font-weight:600; color:#475569;">N°:</span>
                 ${[2, 3, 4, 5, 6].map(n => `
-                  <button type="button" onclick="window.tbbSetBrandPaletteCount(${n})" style="min-width:26px; height:24px; padding:0 6px; border-radius:7px; border:1.5px solid ${count === n ? '#1D4ED8' : '#CBD5E1'}; background:${count === n ? '#1D4ED8' : '#FFFFFF'}; color:${count === n ? '#FFFFFF' : '#0F172A'}; font-family:var(--font-mono); font-size:0.68rem; font-weight:900; cursor:pointer;">
+                  <button type="button" onclick="window.tbbSetBrandPaletteCount(${n})" style="min-width:24px; height:22px; padding:0 5px; border-radius:6px; border:1px solid ${count === n ? '#1D4ED8' : '#CBD5E1'}; background:${count === n ? '#1D4ED8' : '#FFFFFF'}; color:${count === n ? '#FFFFFF' : '#0F172A'}; font-family:var(--font-mono); font-size:0.65rem; font-weight:700; cursor:pointer;">
                     ${n}
                   </button>
                 `).join("")}
@@ -25318,42 +25335,38 @@
             </div>
 
             <!-- Cuerpo Principal: Rueda Circular 360° a la izquierda + Ranuras de Color y Armonías a la derecha -->
-            <div style="display:grid; grid-template-columns:156px 1fr; gap:12px; align-items:center;">
+            <div style="display:grid; grid-template-columns:112px 1fr; gap:8px; align-items:center;">
               <!-- Columna Izquierda: Rueda de Espectro Completo + Control de Luz/Brillo -->
-              <div style="display:flex; flex-direction:column; align-items:center; gap:6px; background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:8px;">
-                <canvas id="tbbCircularSpectrumWheel" width="132" height="132" style="width:132px; height:132px; border-radius:50%; cursor:crosshair; touch-action:none; display:block;"></canvas>
-                <div style="width:100%; display:flex; flex-direction:column; gap:2px;">
-                  <div style="display:flex; justify-content:space-between; font-size:0.62rem; font-weight:800; color:#475569;">
-                    <span>Luz / Brillo</span>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:4px; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:5px;">
+                <canvas id="tbbCircularSpectrumWheel" width="96" height="96" style="width:96px; height:96px; border-radius:50%; cursor:crosshair; touch-action:none; display:block;"></canvas>
+                <div style="width:100%; display:flex; flex-direction:column; gap:1px;">
+                  <div style="display:flex; justify-content:space-between; font-size:0.58rem; font-weight:600; color:#475569;">
+                    <span>Brillo</span>
                     <span id="tbbSpectrumValPctLabel" style="font-family:var(--font-mono); color:#090D16;">${valPct}%</span>
                   </div>
-                  <input id="tbbSpectrumValueSlider" type="range" min="8" max="100" value="${valPct}" oninput="window.tbbOnSpectrumValueSliderInput(this.value, false)" onchange="window.tbbOnSpectrumValueSliderInput(this.value, true)" style="width:100%; height:8px; border-radius:999px; accent-color:#1D4ED8; background:linear-gradient(90deg, #090D16 0%, ${pureHueHex} 100%); cursor:pointer;" />
+                  <input id="tbbSpectrumValueSlider" type="range" min="8" max="100" value="${valPct}" oninput="window.tbbOnSpectrumValueSliderInput(this.value, false)" onchange="window.tbbOnSpectrumValueSliderInput(this.value, true)" style="width:100%; height:6px; border-radius:999px; accent-color:#1D4ED8; background:linear-gradient(90deg, #090D16 0%, ${pureHueHex} 100%); cursor:pointer;" />
                 </div>
               </div>
 
               <!-- Columna Derecha: Ranuras de 2 a 6 Colores + Código HEX + Armonías -->
-              <div style="display:flex; flex-direction:column; gap:8px; min-width:0;">
-                <div style="font-size:0.68rem; font-weight:800; color:#475569;">
-                  1. Toca una ranura abajo · 2. Gira o haz clic en el círculo para elegir cualquier tono del espectro:
-                </div>
-
+              <div style="display:flex; flex-direction:column; gap:5px; min-width:0;">
                 <!-- Ranuras Interactivas (2 a 6 colores) -->
-                <div style="display:grid; grid-template-columns:repeat(${count}, minmax(0, 1fr)); gap:6px;">
+                <div style="display:grid; grid-template-columns:repeat(${count}, minmax(0, 1fr)); gap:4px;">
                   ${activeColors.map((hex, idx) => {
                     const isSlotSelected = idx === activeSlot;
                     const isLight = /^#(F|E|D4AF|FFF)/i.test(hex);
                     const txtCol = isLight ? "#090D16" : "#FFFFFF";
                     return `
-                      <div id="tbbPaletteSlotCard_${idx}" onclick="window.tbbSelectPaletteSlot(${idx})" style="position:relative; border-radius:10px; border:${isSlotSelected ? '2.5px solid #1D4ED8' : '1.5px solid #94A3B8'}; box-shadow:${isSlotSelected ? '0 0 0 3px rgba(29,78,216,0.22)' : 'none'}; background:${hex}; color:${txtCol}; padding:6px 7px; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; min-height:52px; transition:border 0.15s ease, box-shadow 0.15s ease;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; gap:3px;">
-                          <span style="font-family:var(--font-mono); font-size:0.58rem; font-weight:900; background:${isLight ? 'rgba(9,13,22,0.12)' : 'rgba(255,255,255,0.18)'}; padding:1px 4px; border-radius:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                      <div id="tbbPaletteSlotCard_${idx}" onclick="window.tbbSelectPaletteSlot(${idx})" style="position:relative; border-radius:8px; border:${isSlotSelected ? '2px solid #1D4ED8' : '1px solid #94A3B8'}; background:${hex}; color:${txtCol}; padding:4px 5px; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; min-height:42px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:2px;">
+                          <span style="font-family:var(--font-mono); font-size:0.54rem; font-weight:700; background:${isLight ? 'rgba(9,13,22,0.12)' : 'rgba(255,255,255,0.18)'}; padding:1px 3px; border-radius:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                             ${roles[idx] || `#${idx + 1}`}
                           </span>
                           ${count > 2 ? `
-                            <button type="button" onclick="window.tbbRemovePaletteSlot(${idx}, event)" title="Quitar este color" style="border:none; background:${isLight ? 'rgba(9,13,22,0.15)' : 'rgba(255,255,255,0.24)'}; color:${txtCol}; border-radius:4px; width:15px; height:15px; font-size:0.62rem; font-weight:900; line-height:1; cursor:pointer; padding:0;">×</button>
+                            <button type="button" onclick="window.tbbRemovePaletteSlot(${idx}, event)" title="Quitar" style="border:none; background:${isLight ? 'rgba(9,13,22,0.15)' : 'rgba(255,255,255,0.24)'}; color:${txtCol}; border-radius:3px; width:13px; height:13px; font-size:0.58rem; font-weight:700; line-height:1; cursor:pointer; padding:0;">×</button>
                           ` : ""}
                         </div>
-                        <div id="tbbPaletteSlotHexText_${idx}" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:900; margin-top:4px; letter-spacing:0.02em;">
+                        <div id="tbbPaletteSlotHexText_${idx}" style="font-family:var(--font-mono); font-size:0.62rem; font-weight:700; margin-top:2px;">
                           ${hex}
                         </div>
                       </div>
@@ -25362,13 +25375,12 @@
                 </div>
 
                 <!-- Barra de Precisión HEX + Tonos Neutros Rápidos -->
-                <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; flex-wrap:wrap; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:5px 8px;">
-                  <div style="display:flex; align-items:center; gap:6px;">
-                    <span style="font-size:0.66rem; font-weight:800; color:#334155;">Código HEX (#${activeSlot + 1}):</span>
-                    <input id="tbbActiveSlotHexInput" type="text" value="${activeHex}" maxlength="7" onchange="window.tbbUpdatePaletteSlotHex(${activeSlot}, this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.tbbUpdatePaletteSlotHex(${activeSlot}, this.value);}" style="width:78px; height:25px; padding:0 6px; border-radius:6px; border:1.5px solid #94A3B8; font-family:var(--font-mono); font-size:0.72rem; font-weight:900; color:#090D16; text-transform:uppercase;" />
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:4px; flex-wrap:wrap; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:3px 6px;">
+                  <div style="display:flex; align-items:center; gap:4px;">
+                    <span style="font-size:0.62rem; font-weight:600; color:#334155;">HEX:</span>
+                    <input id="tbbActiveSlotHexInput" type="text" value="${activeHex}" maxlength="7" onchange="window.tbbUpdatePaletteSlotHex(${activeSlot}, this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.tbbUpdatePaletteSlotHex(${activeSlot}, this.value);}" style="width:68px; height:22px; padding:0 5px; border-radius:5px; border:1px solid #94A3B8; font-family:var(--font-mono); font-size:0.66rem; font-weight:700; color:#090D16; text-transform:uppercase;" />
                   </div>
-                  <div style="display:flex; align-items:center; gap:4px; flex-wrap:wrap;">
-                    <span style="font-size:0.62rem; font-weight:800; color:#64748B;">Neutros:</span>
+                  <div style="display:flex; align-items:center; gap:3px; flex-wrap:wrap;">
                     ${[
                       { hex: "#FFFFFF", lbl: "Blanco" },
                       { hex: "#F7F2EA", lbl: "Marfil" },
@@ -25376,8 +25388,8 @@
                       { hex: "#090D16", lbl: "Negro" },
                       { hex: "#D4AF37", lbl: "Oro" }
                     ].map(n => `
-                      <button type="button" onclick="window.tbbPickSwatchFromTotalPalette('${n.hex}', '${n.lbl}')" style="display:inline-flex; align-items:center; gap:3px; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:6px; padding:2px 6px; font-size:0.61rem; font-weight:800; color:#0F172A; cursor:pointer;">
-                        <span style="width:8px; height:8px; border-radius:50%; background:${n.hex}; border:1px solid rgba(15,23,42,0.3); display:inline-block;"></span>
+                      <button type="button" onclick="window.tbbPickSwatchFromTotalPalette('${n.hex}', '${n.lbl}')" style="display:inline-flex; align-items:center; gap:2px; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:5px; padding:1px 5px; font-size:0.58rem; font-weight:600; color:#0F172A; cursor:pointer;">
+                        <span style="width:7px; height:7px; border-radius:50%; background:${n.hex}; border:1px solid rgba(15,23,42,0.3); display:inline-block;"></span>
                         ${n.lbl}
                       </button>
                     `).join("")}
@@ -25385,12 +25397,11 @@
                 </div>
 
                 <!-- Armonías Pre-Curadas de 2 a 6 Colores -->
-                <div style="display:flex; align-items:center; gap:4px; flex-wrap:wrap;">
-                  <span style="font-size:0.63rem; font-weight:800; color:#475569;">Armonías sugeridas:</span>
+                <div style="display:flex; align-items:center; gap:3px; overflow-x:auto; white-space:nowrap;">
                   ${presets.map((p, pIdx) => `
-                    <button type="button" onclick="window.tbbApplyHarmonyPreset(${pIdx})" style="display:inline-flex; align-items:center; gap:4px; background:#FFFFFF; border:1px solid #CBD5E1; border-radius:999px; padding:2px 7px; font-size:0.62rem; font-weight:800; color:#0F172A; cursor:pointer;">
-                      <span style="display:inline-flex; gap:1.5px;">
-                        ${p.colors.map(c => `<span style="width:7px; height:7px; border-radius:50%; background:${c}; border:0.5px solid rgba(0,0,0,0.2); display:inline-block;"></span>`).join("")}
+                    <button type="button" onclick="window.tbbApplyHarmonyPreset(${pIdx})" style="display:inline-flex; align-items:center; gap:3px; background:#FFFFFF; border:1px solid #CBD5E1; border-radius:999px; padding:2px 6px; font-size:0.58rem; font-weight:600; color:#0F172A; cursor:pointer; flex-shrink:0;">
+                      <span style="display:inline-flex; gap:1px;">
+                        ${p.colors.map(c => `<span style="width:6px; height:6px; border-radius:50%; background:${c}; border:0.5px solid rgba(0,0,0,0.2); display:inline-block;"></span>`).join("")}
                       </span>
                       <span>${p.label}</span>
                     </button>
@@ -27272,13 +27283,13 @@
   </style>
   <script src="/assets/vendor/opentype.min.js?v=1.3.4"></script>
   <script src="/assets/vendor/html2canvas.min.js?v=1.4.1"></script>
-  <script src="/tbb-executive-deliverables-suite.js?v=99.0"></script>
-  <script src="/tbb-cloud-vector-outliner.js?v=99.0"></script>
-  <script src="/tbb-v80-brandbook-plates.js?v=99.0"></script>
-  <script src="/universal-brandbook-30-engine.js?v=99.0"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=99.0"></script>
-  <script src="/improbears-preset-engine.js?v=99.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=99.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=99.0"></script>
+  <script src="/tbb-executive-deliverables-suite.js?v=100.0"></script>
+  <script src="/tbb-cloud-vector-outliner.js?v=100.0"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=100.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=100.0"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=100.0"></script>
+  <script src="/improbears-preset-engine.js?v=100.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=100.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=100.0"></script>
 </body>
 </html>

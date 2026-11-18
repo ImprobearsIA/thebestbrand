@@ -3740,7 +3740,7 @@
         topSel = document.createElement("select");
         topSel.id = "tbbStudioTopLangSelect";
         topSel.setAttribute("aria-label", "Idioma / Language");
-        topSel.style.cssText = "height:32px; padding:0 6px; border-radius:8px; border:1.5px solid #0284C7; border-bottom:2.5px solid #FF7A00; background:#F0F9FF; font-family:var(--font-mono); font-size:0.72rem; font-weight:900; color:#0D2540; cursor:pointer; flex-shrink:0;";
+        topSel.style.cssText = "height:30px; padding:0 5px; border-radius:8px; border:1.5px solid #0284C7; border-bottom:2px solid #FF7A00; background:#F0F9FF; font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#0D2540; cursor:pointer; flex-shrink:0;";
         topSel.onchange = function () {
           window.tbbSetLanguage(this.value);
         };
