@@ -2118,7 +2118,9 @@
     const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
 
     const directRaster = (brand && brand.uploadedLogoDataUrl)
-      || (activeIt && activeIt.uploadedLogoDataUrl)
+      || (activeIt && (activeIt.nanoBananaSymbolUrl || activeIt.nanoBananaFullArtworkUrl || activeIt.uploadedLogoDataUrl))
+      || cs.nano_banana_symbol_url
+      || cs.nano_banana_full_artwork_url
       || cs.uploaded_logo_data_url
       || s0.uploadedLogoDataUrl
       || "";
@@ -2704,59 +2706,257 @@
   window.tbbDetectGiroMockupPlan = tbbDetectGiroMockupPlan;
   window.tbbOpenGoogleFlowMockupStudioModal = tbbOpenGoogleFlowMockupStudioModal;
 
-  async function tbbGenerateNanoBananaBrandSymbol(userHint) {
+  // ==========================================================================
+  // 6.B. MOTOR SISTEMÁTICO UNIVERSAL DE DIRECCIÓN DE ARTE NANOBANANA (CUALQUIER MARCA / GIRO)
+  // Traduce 100% del ADN capturado (Pasos 0 a 5: Giro, Círculo Dorado, Persona, Touchpoints,
+  // Ejes de Naming, 7 Ejes Kansei/Osgood, Tipografía, Semilla Visual y Paleta de 2-6 Colores)
+  // en composiciones ricas de alta costura visual y soporta Evolución Conversacional Imagen-a-Imagen.
+  // ==========================================================================
+  const TBB_NANOBANANA_CREATIVE_MODES = {
+    emblem_masterpiece: {
+      id: "emblem_masterpiece",
+      shortPill: "Emblema de Autor",
+      label: "Emblema Artístico Multi-Elemento",
+      directive: "COMPOSITION MODE — RICH MULTI-ELEMENT ARTISTIC EMBLEM & EDITORIAL LOCKUP: Create a breathtaking, museum-grade brand identity composition that weaves together multiple symbolic elements of the brand's essence, craft, origin, and value proposition into a cohesive centerpiece emblem, paired harmoniously with the brand name and descriptor in refined high-contrast editorial typography. Allow intricate linework, dimensional reliefs, artisanal textures, and rich symbolic storytelling (never a generic flat single-shape clipart icon)."
+    },
+    monogram_fusion: {
+      id: "monogram_fusion",
+      shortPill: "Monograma + Símbolos",
+      label: "Monograma Integrado con Símbolos del Giro",
+      directive: "COMPOSITION MODE — BESPOKE INTERLOCKING MONOGRAM FUSED WITH SECTOR SYMBOLS: Design a masterful custom typographic monogram using the brand's initials as the architectural spine, organically intertwined and fused with the signature symbolic motifs, tools, flora, or textures of the business sector. Include the full brand name and tagline in balanced editorial typography below or around the emblem."
+    },
+    editorial_crest: {
+      id: "editorial_crest",
+      shortPill: "Insignia / Sello",
+      label: "Insignia, Carta o Sello Arquitectónico de Autor",
+      directive: "COMPOSITION MODE — ARCHITECTURAL CREST, TAROT/LOTERÍA CARD OR HERALDIC ATELIER SEAL: Frame the brand's core symbolic scene and metaphors inside a bespoke architectural border, modern crest, engraved seal, or gallery card proportion with fine ornamental corner geometry, sacred symmetry, and integrated banner/cartouche typography for the brand name and descriptor."
+    },
+    minimal_couture: {
+      id: "minimal_couture",
+      shortPill: "Lineal Minimalista",
+      label: "Síntesis Lineal Contemporánea de Alta Costura",
+      directive: "COMPOSITION MODE — CONTEMPORARY HIGH-COUTURE MONOLINE & GEOMETRIC SYNTHESIS: Distill the brand's metaphors and monogram into an ultra-refined, high-contrast continuous line and sacred-geometry vector emblem (Pentagram / Savvy Studio / Michelin fine-dining aesthetic) with razor-sharp negative space and gallery-grade editorial typography."
+    }
+  };
+  window.TBB_NANOBANANA_CREATIVE_MODES = TBB_NANOBANANA_CREATIVE_MODES;
+
+  function tbbTranslateKanseiSlidersToArtDirection(cs) {
+    const s = (cs && cs.bipolarSliderValues) || {};
+    const norm = (val, def) => {
+      const n = Number(val);
+      if (isNaN(n)) return def;
+      return n > 1 ? n / 100 : n;
+    };
+    const orgGeo = norm(s.organico_geometrico, 0.50);
+    const tradInn = norm(s.tradicional_innovador, 0.65);
+    const serJug = norm(s.serio_jugueton, 0.35);
+    const accExcl = norm(s.accesible_exclusivo, 0.72);
+    const sutilImp = norm(s.sutil_impactante, 0.70);
+    const humTec = norm(s.humano_tecnologico, 0.45);
+    const simComp = norm(s.simple_complejo, 0.68);
+
+    const traits = [];
+    if (orgGeo < 0.42) traits.push("organic hand-sculpted curves, botanical/artisanal fluidity, and natural tactile contours");
+    else if (orgGeo > 0.62) traits.push("golden-ratio architectural geometry, precision symmetry, and structural facets");
+    else traits.push("harmonious fusion of organic artisanal curves with modernist architectural geometry");
+
+    if (tradInn < 0.42) traits.push("deep cultural heritage, classic woodcut/engraving mastery, and timeless permanence");
+    else if (tradInn > 0.65) traits.push("avant-garde contemporary reinterpretation, modernist gallery aesthetic, and visionary originality");
+    else traits.push("contemporary reinterpretation of classic heritage (bridge between ancestral roots and modernist design)");
+
+    if (accExcl > 0.60) traits.push("Michelin-starred / haute-couture luxury prestige, museum-grade refinement, and collector sophistication");
+    else if (accExcl < 0.38) traits.push("warm, inviting, approachable human magnetism");
+
+    if (simComp > 0.58) traits.push("rich multi-layered symbolic detail, intricate textures, and rewarding visual depth");
+    else if (simComp < 0.35) traits.push("distilled iconic synthesis and immediate visual clarity");
+
+    if (humTec < 0.48) traits.push("warm human craft, tactile materials (burnished clay, brushed copper, gold leaf, natural fibers)");
+    else if (humTec > 0.65) traits.push("precision optical surfaces, luminous gradients, and high-tech clarity");
+
+    if (sutilImp > 0.60) traits.push("commanding stage presence and unforgettable visual contrast");
+    if (serJug > 0.62) traits.push("clever visual wit, cultural charm, and expressive character");
+
+    return traits.join("; ");
+  }
+
+  function tbbBuildNanoBananaCreativeDirectorPrompt(options = {}) {
     const cs = (typeof window.canvasState === "object" && window.canvasState) ? window.canvasState : {};
     const st = window.tbbState || {};
     const s0 = window.step0State || {};
-    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca";
-    const giro = (cs.custom_business_type || cs.step0_short_essence || "Servicios profesionales").trim();
+
+    const bName = (cs.brandName && !/^(mi nueva marca|marca en creaci[oó]n.*)$/i.test(cs.brandName))
+      ? cs.brandName.trim()
+      : "Tu Marca";
+    const words = bName.replace(/([a-z])([A-Z])/g, "$1 $2").split(/\s+/).filter(Boolean);
+    const initials = (words.length >= 2 ? (words[0][0] + words[1][0]) : bName.slice(0, 2)).toUpperCase() || "TM";
+
+    const giro = (cs.custom_business_type || s0.customBusinessType || cs.step0_short_essence || "Empresa de alto valor").trim();
+    const tagline = (cs.tagline || cs.step0_short_essence || "").trim();
+    const why = (cs.golden_circle || "").trim();
+    const how = (cs.process_steps_text || "").trim();
+    const what = (cs.value_offer || "").trim();
     const persona = (cs.brand_persona || "").trim();
-    const seedIdea = String(userHint || cs.step4_logo_seed_idea || "").trim();
+    const buyer = (cs.ideal_customer || cs.step0_buyer_actor || "").trim();
+    const coreMsg = (cs.core_message || "").trim();
+
+    const tpBefore = Array.isArray(cs.tp_before) ? cs.tp_before.join(", ") : "";
+    const tpDuring = Array.isArray(cs.tp_during) ? cs.tp_during.join(", ") : "";
+    const tpAfter = Array.isArray(cs.tp_after) ? cs.tp_after.join(", ") : "";
+
+    const namingRoots = [cs.naming_axis_1, cs.naming_axis_2, cs.naming_axis_3, cs.naming_axis_4]
+      .map(x => String(x || "").trim())
+      .filter(Boolean)
+      .join(" · ");
+
+    // Corregido: leer tanto cs.step4_seed_idea (nombre real del campo en Paso 4.5) como cs.step4_logo_seed_idea
+    const savedSeedIdea = String(cs.step4_seed_idea || cs.step4_logo_seed_idea || "").trim();
+    const userInstruction = String(options.userHint || "").trim();
+    const creativeModeKey = options.creativeMode || st.nanoBananaCreativeMode || "emblem_masterpiece";
+    const modeObj = TBB_NANOBANANA_CREATIVE_MODES[creativeModeKey] || TBB_NANOBANANA_CREATIVE_MODES.emblem_masterpiece;
+
+    const activePalette = (typeof window.tbbGetActiveBrandPalette === "function")
+      ? window.tbbGetActiveBrandPalette()
+      : (Array.isArray(cs.brand_palette_colors) && cs.brand_palette_colors.length ? cs.brand_palette_colors : [st.logoPriHex || "#9E3B24", st.logoSecHex || "#C89D54", cs.accent_color || "#14110F"]);
+    const paletteStr = activePalette.join(", ");
+    const pri = activePalette[0] || st.logoPriHex || "#0D2540";
+    const sec = activePalette[1] || st.logoSecHex || "#C89D54";
+    const acc = activePalette[2] || cs.accent_color || sec;
+
+    const chosenFont = cs.primary_font || st.selectedFontFamily || "Cormorant Garamond";
+    const kanseiArtDirection = tbbTranslateKanseiSlidersToArtDirection(cs);
+    const famIdx = Number(cs.selected_family_index ?? 0);
+    const familyNames = [
+      "Constructive Monogram & Central Emblem",
+      "Heraldic Crest, Card & Authority Seal",
+      "Continuous Symbol & Negative Space Synthesis",
+      "Sculptural 3D Volume & Tactile Relief"
+    ];
+    const structuralFamily = familyNames[famIdx % 4] || familyNames[0];
+    const wantsLiquidGlass = /liquid\s*glass|apple|vision\s*os|ios\s*27|cristal\s*l[ií]quido|transl[uú]cido|refracci[oó]n/i.test(`${userInstruction} ${savedSeedIdea} ${persona} ${st.logoParadigm || ""}`);
+    const isDarkCanvas = Boolean(st.logoDarkBg);
+
+    const hasReferenceImage = Boolean(options.hasReferenceImage);
+    const isExternalUpload = Boolean(options.isExternalUpload);
+
+    const sections = [
+      `You are NanoBanana PRO, World-Class Executive Creative Director & Master Brand Identity Designer (Pentagram, Savvy Studio, Anagrama, Chermayeff & Geismar level).`,
+      `Design a complete, jaw-dropping, high-craft brand identity logo presentation for the brand "${bName}" (Monogram Initials: "${initials}"${tagline ? `, Official Tagline / Descriptor: "${tagline}"` : ""}).`,
+      "",
+      `=== 1. COMPLETE BRAND DNA & STRATEGIC DOSSIER (100% SPECIFIC TO THIS COMPANY) ===`,
+      `• Business Sector / Giro & Concept: ${giro}`,
+      why ? `• Purpose & Golden Circle (WHY): ${why}` : "",
+      how ? `• Signature Methodology & Craft (HOW): ${how}` : "",
+      what ? `• Core Value Proposition & Product/Service (WHAT): ${what}` : "",
+      persona ? `• Brand Character & Persona: ${persona}` : "",
+      buyer ? `• Ideal Customer Profile & Tier: ${buyer}` : "",
+      coreMsg ? `• Central Brand Promise: ${coreMsg}` : "",
+      (tpBefore || tpDuring || tpAfter) ? `• Physical & Digital Touchpoint Atmosphere: ${[tpBefore, tpDuring, tpAfter].filter(Boolean).join(" | ")}` : "",
+      namingRoots ? `• Symbolic & Etymological Roots: ${namingRoots}` : "",
+      savedSeedIdea ? `• Founder's Visual Metaphors & Seed Symbol Idea: ${savedSeedIdea}` : "",
+      "",
+      `=== 2. ART DIRECTION, KANSEI AESTHETICS & PALETTE ===`,
+      `• Creative Mode Selected: ${modeObj.directive}`,
+      `• Kansei / Osgood Aesthetic Profile: ${kanseiArtDirection}`,
+      `• Base Structural Family Preference: ${structuralFamily}`,
+      `• Typography Direction: ${chosenFont} (render the brand title "${bName.toUpperCase()}"${tagline ? ` and subtitle "${tagline.toUpperCase()}"` : ""} with impeccable kerning, hierarchy, and proportion)`,
+      `• Official Brand Color Palette (2 to 6 colors): ${paletteStr} (Primary: ${pri}, Secondary: ${sec}, Accent: ${acc}). Use rich tonal depth, metallic gold/copper/terracotta/mineral highlights or luminous gradients coherent with these exact hex colors.`,
+      wantsLiquidGlass
+        ? `• Special Materiality: Apple visionOS / iOS 27 Optical Liquid Glass refraction, caustic highlights, and multi-layered translucent crystal depth.`
+        : `• Special Materiality: High-craft tactile illustration & vector engraving mastery—combine crisp geometric lines, organic cultural/industrial motifs, subtle dimensional relief, and gallery-grade finish.`,
+      isDarkCanvas
+        ? `• Canvas Presentation: Present the complete logo lockup centered on a refined, uniform deep obsidian/charcoal studio background (#12100E) with generous breathing room around the entire composition.`
+        : `• Canvas Presentation: Present the complete logo lockup centered on a clean, uniform warm ivory/parchment or pure studio background (#FAF6F0 or #FFFFFF) with generous breathing room around the entire composition.`
+    ];
+
+    if (hasReferenceImage) {
+      sections.push(
+        "",
+        `=== 3. CONVERSATIONAL IMAGE-TO-IMAGE EVOLUTION DIRECTIVE ===`,
+        isExternalUpload
+          ? `• An existing base logo image is attached. Preserve its core recognizable identity and palette (${pri}, ${sec}, ${acc}), while elevating its artistic richness, detail, and typography to world-class studio perfection.`
+          : `• The attached image is the PREVIOUS ITERATION of "${bName}". Evolve, refine, and transform that design directly according to the new creative direction below while maintaining strong brand continuity.`,
+        userInstruction
+          ? `• USER'S SPECIFIC REFINEMENT / ITERATION REQUEST: "${userInstruction}". Execute this request with bold artistic intelligence and unmistakable visual impact.`
+          : `• Evolution goal: Elevate the composition into the "${modeObj.label}" style (${modeObj.directive}), enriching the symbolic storytelling and typographic integration.`
+      );
+    } else if (userInstruction) {
+      sections.push(
+        "",
+        `=== 3. PRIORITY USER CREATIVE INSTRUCTION ===`,
+        `• Specific visual request from the founder: "${userInstruction}". Make sure every element requested here is visibly, artistically, and unmistakably represented in the centerpiece logo composition.`
+      );
+    }
+
+    sections.push(
+      "",
+      `=== 4. QUALITY GUARANTEES ===`,
+      `• NEVER output a simplistic, generic, single-shape flat icon. Synthesize the specific metaphors of "${bName}" (${giro}${savedSeedIdea ? `, ${savedSeedIdea}` : ""}) into a bespoke, culturally and commercially resonant work of art.`,
+      `• Ensure all lettering ("${bName.toUpperCase()}") is spelled accurately, legibly, and integrated with master-level graphic design balance.`
+    );
+
+    return sections.filter(Boolean).join("\n");
+  }
+  window.tbbBuildNanoBananaCreativeDirectorPrompt = tbbBuildNanoBananaCreativeDirectorPrompt;
+
+  async function tbbGenerateNanoBananaBrandSymbol(userHint, options = {}) {
+    const cs = (typeof window.canvasState === "object" && window.canvasState) ? window.canvasState : {};
+    const st = window.tbbState || {};
+    const s0 = window.step0State || {};
+    if (st.geminiBusy) return "";
+
+    const bName = (cs.brandName && !/^(mi nueva marca|marca en creaci[oó]n.*)$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca";
+    const giro = (cs.custom_business_type || s0.customBusinessType || cs.step0_short_essence || "Servicios profesionales").trim();
+    const seedIdea = String(userHint || cs.step4_seed_idea || cs.step4_logo_seed_idea || "").trim();
+
+    if (options.creativeMode) {
+      st.nanoBananaCreativeMode = options.creativeMode;
+    }
+    const creativeModeKey = options.creativeMode || st.nanoBananaCreativeMode || "emblem_masterpiece";
+    const modeObj = TBB_NANOBANANA_CREATIVE_MODES[creativeModeKey] || TBB_NANOBANANA_CREATIVE_MODES.emblem_masterpiece;
+
+    const activePalette = (typeof window.tbbGetActiveBrandPalette === "function")
+      ? window.tbbGetActiveBrandPalette()
+      : (Array.isArray(cs.brand_palette_colors) && cs.brand_palette_colors.length ? cs.brand_palette_colors : []);
     const uploadedCols = (Array.isArray(cs.uploaded_logo_colors) && cs.uploaded_logo_colors.length)
       ? cs.uploaded_logo_colors
       : (Array.isArray(s0.uploadedLogoColors) ? s0.uploadedLogoColors : []);
-    const pri = (uploadedCols[0]) || st.logoPriHex || cs.primary_color || (Array.isArray(cs.selected_colors_hex) && cs.selected_colors_hex[2]) || "#0078C0";
-    const sec = (uploadedCols[1]) || st.logoSecHex || cs.secondary_color || (Array.isArray(cs.selected_colors_hex) && cs.selected_colors_hex[3]) || pri;
-    const acc = (uploadedCols[2]) || cs.accent_color || sec;
 
-    const firstIter = (Array.isArray(st.logoIterations) && st.logoIterations[0]) ? st.logoIterations[0] : null;
-    const baseLogoDataUrl = (firstIter && firstIter.isUploadedUserLogo && firstIter.uploadedLogoDataUrl)
-      || cs.base_uploaded_logo_data_url
-      || cs.uploaded_logo_data_url
-      || s0.uploadedLogoDataUrl
+    const pri = activePalette[0] || uploadedCols[0] || st.logoPriHex || cs.primary_color || "#9E3B24";
+    const sec = activePalette[1] || uploadedCols[1] || st.logoSecHex || cs.secondary_color || "#C89D54";
+    const acc = activePalette[2] || uploadedCols[2] || cs.accent_color || sec;
+
+    // Determinar si hay una imagen previa para evolución conversacional (ya sea la iteración activa de NanoBanana o un logo subido por el usuario)
+    const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
+    const externalUploadUrl = (cs.user_uploaded_external_logo && (cs.base_uploaded_logo_data_url || cs.uploaded_logo_data_url))
+      || (s0.userUploadedExternalLogo && s0.uploadedLogoDataUrl)
       || "";
-    const isEvolveMode = Boolean(baseLogoDataUrl && (cs.existing_logo_mode === "evolve" || s0.existingLogoMode === "evolve" || userHint));
+    const previousIterationImgUrl = (activeIt && (activeIt.nanoBananaFullArtworkUrl || activeIt.nanoBananaSymbolUrl || (activeIt.isUploadedUserLogo && activeIt.uploadedLogoDataUrl)))
+      || externalUploadUrl
+      || "";
+
+    // Usar imagen previa como referencia cuando el usuario escribe un ajuste conversacional o pide evolucionar su logo base
+    const shouldAttachReferenceImage = Boolean(
+      previousIterationImgUrl &&
+      !options.freshFromScratch &&
+      (Boolean(userHint) || Boolean(externalUploadUrl) || Boolean(options.evolveCurrent))
+    );
 
     st.geminiBusy = true;
-    st.geminiStatusText = isEvolveMode
-      ? `NanoBanana PRO evolucionando tu logotipo base preservando su paleta original (${pri}, ${sec}, ${acc})...`
-      : "NanoBanana PRO diseñando tu símbolo de agencia y trazando curvas Bézier...";
+    st.geminiStatusText = shouldAttachReferenceImage
+      ? `NanoBanana PRO evolucionando tu diseño («${modeObj.shortPill}» · ${pri}, ${sec})...`
+      : `NanoBanana PRO componiendo identidad de autor («${modeObj.shortPill}») con 100% del ADN de «${bName}»...`;
     if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
 
-    const wantsLiquidGlass = /liquid\s*glass|apple|vision\s*os|ios\s*27|cristal\s*l[ií]quido|transl[uú]cido|refracci[oó]n/i.test(`${seedIdea} ${persona} ${st.logoParadigm || ""}`);
-    const prompt = isEvolveMode
-      ? [
-          `Take the attached current base logo of "${bName}" (${giro}) as direct structural inspiration and evolve it into a world-class executive brand emblem (ICON MARK ONLY, ZERO TEXT, NO WORDS, NO LETTERS).`,
-          wantsLiquidGlass
-            ? `STYLE DIRECTION — APPLE LIQUID GLASS (visionOS / iOS 27 Optical Glass Masterpiece): Transform the exact motif of the attached base logo into a breathtaking Apple-grade 3D Liquid Glass icon mark. Render the outer ring, internal dark optical sphere, radial translucent petals/ellipses, and glowing core with physically accurate translucent crystal refraction, specular caustic highlights, frosted glass depth, subsurface scattering, and precision micro-bevels.`
-            : `Preserve the recognizable core motif and structural essence of the base logo, but elevate its geometry to mathematical perfection: golden-ratio architectural precision, clean bold dimensional facets, commanding presence, and timeless authority.`,
-          seedIdea ? `Specific evolution direction: ${seedIdea}.` : "",
-          persona ? `Brand character: ${persona}.` : "",
-          `STRICT COLOR RULE: Preserve 100% the original brand color palette from the base logo: primary (${pri}), secondary (${sec}), and structural accent (${acc}). Center the emblem on a pure solid stark white #FFFFFF background with generous margin.`
-        ].filter(Boolean).join(" ")
-      : [
-          `Masterpiece corporate logo symbol (ICON MARK ONLY, ZERO TEXT, NO LETTERS, NO WORDS, NO TYPOGRAPHY) for brand "${bName}" in sector: ${giro}.`,
-          seedIdea ? `Visual concept & motif requested: ${seedIdea}.` : "",
-          persona ? `Brand personality: ${persona}.` : "",
-          wantsLiquidGlass
-            ? `Apple visionOS / iOS 27 Liquid Glass emblem design: translucent optical glass geometry, specular caustic refractions, multi-layered 3D crystal depth, strictly using the brand palette (${pri} primary, ${sec} secondary, and ${acc} accent) centered on a pure solid stark white #FFFFFF background.`
-            : `Pentagram / Chermayeff & Geismar / Sagi Haviv award-winning emblem design: bold architectural vector geometry, balanced negative space, strictly using the brand palette (${pri} primary, ${sec} secondary, and ${acc} accent) centered on a pure solid stark white #FFFFFF background.`,
-          `No photorealistic clutter, no thin hairlines, no mockups, no frames touching edges, generous white margin around the emblem.`
-        ].filter(Boolean).join(" ");
+    const prompt = tbbBuildNanoBananaCreativeDirectorPrompt({
+      userHint: userHint,
+      creativeMode: creativeModeKey,
+      hasReferenceImage: shouldAttachReferenceImage,
+      isExternalUpload: Boolean(externalUploadUrl && previousIterationImgUrl === externalUploadUrl)
+    });
 
     const requestParts = [];
-    if (isEvolveMode && /^data:image\/(png|jpeg|jpg|webp);base64,/i.test(baseLogoDataUrl)) {
-      const m = baseLogoDataUrl.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,(.+)$/);
+    if (shouldAttachReferenceImage && /^data:image\/(png|jpeg|jpg|webp);base64,/i.test(previousIterationImgUrl)) {
+      const m = previousIterationImgUrl.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,(.+)$/);
       if (m) {
         requestParts.push({
           inlineData: {
@@ -2769,7 +2969,7 @@
     requestParts.push({ text: prompt });
 
     const proxyUrl = (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
-    const models = ["gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview", "gemini-2.5-flash-image"];
+    const models = ["gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview", "gemini-2.5-flash-image", "gemini-3.1-flash-lite-image"];
     let rawImgUrl = "";
 
     for (const model of models) {
@@ -2800,84 +3000,75 @@
     }
 
     if (rawImgUrl) {
-      const centeredPng = await tbbAutoTrimAndCenterRasterLogo(rawImgUrl, 1024, 0.80);
+      const centeredPng = await tbbAutoTrimAndCenterRasterLogo(rawImgUrl, 1024, 0.84);
       const tracedCurves = await tbbVectorizeRasterLogoToSvgCurves(centeredPng);
 
-      if (!window.step0State) window.step0State = {};
-      if (baseLogoDataUrl && !cs.base_uploaded_logo_data_url) {
-        cs.base_uploaded_logo_data_url = baseLogoDataUrl;
-        window.step0State.baseUploadedLogoDataUrl = baseLogoDataUrl;
-      }
-      window.step0State.uploadedLogoDataUrl = centeredPng;
-      window.step0State.uploadedLogoTracedCurvesSvg = tracedCurves || "";
-      cs.uploaded_logo_data_url = centeredPng;
+      // Guardar referencia en canvasState para exportación .SVG/.AI/.DOCX/.PPTX sin secuestrar la bandera de logo externo subido en Paso 0
+      cs.nano_banana_full_artwork_url = rawImgUrl;
+      cs.nano_banana_symbol_url = centeredPng;
       cs.uploaded_logo_traced_curves_svg = tracedCurves || "";
-      cs.existing_logo_mode = "evolve";
-
-      if (!Array.isArray(st.logoIterations) || st.logoIterations.length === 0) {
-        if (baseLogoDataUrl) {
-          st.logoIterations = [{
-            idx: 1,
-            isInitialSystemic: false,
-            isUploadedUserLogo: true,
-            uploadedLogoDataUrl: baseLogoDataUrl,
-            uploadedLogoSvgMarkup: "",
-            paradigm: st.logoParadigm || "volumetric_glass",
-            archetype: "uploaded_user_logo",
-            conceptLabel: "Tu Logo Base Actual",
-            pri: pri,
-            sec: sec,
-            accentHex: acc,
-            scale: 1.0,
-            darkBg: Boolean(st.logoDarkBg),
-            fontFamily: cs.primary_font || st.selectedFontFamily || "Montserrat",
-            layout: "horizontal",
-            mods: {},
-            geminiCustomSvg: "",
-            svgOverlayAdditions: "",
-            note: `Logotipo actual tomado como base para ${bName}`,
-            prompt: `Logotipo actual subido como punto de partida para evolucionar la identidad de «${bName}».`,
-            geminiPrompt40w: `Logotipo actual subido como punto de partida para evolucionar la identidad de «${bName}».`
-          }];
-        } else {
-          st.logoIterations = [];
-        }
+      if (window.step0State) {
+        window.step0State.uploadedLogoTracedCurvesSvg = tracedCurves || "";
       }
 
-      const nextIdx = st.logoIterations.length + 1;
-      const nbLabel = wantsLiquidGlass ? `Liquid Glass #${nextIdx}` : "Evolución NanoBanana PRO";
+      if (!Array.isArray(st.logoIterations)) {
+        st.logoIterations = [];
+      }
+
+      // Si la iteración #1 era únicamente el placeholder geométrico inicial y no una obra de NanoBanana ni un logo subido por el usuario, reemplazarla limpiamente en la primera generación automática
+      const replacePlaceholderFirst = Boolean(
+        options.replaceInitialPlaceholder &&
+        st.logoIterations.length === 1 &&
+        st.logoIterations[0].isInitialSystemic &&
+        !st.logoIterations[0].isNanoBananaGenerated &&
+        !st.logoIterations[0].isUploadedUserLogo
+      );
+
+      const nextIdx = replacePlaceholderFirst ? 1 : (st.logoIterations.length + 1);
+      const shortPillLabel = `#${nextIdx} · ${modeObj.shortPill}`;
+      const summaryPrompt40w = `Identidad de autor NanoBanana PRO («${modeObj.label}») para «${bName}» (${giro.slice(0, 36)}), integrando su ADN estratégico, paleta oficial (${pri}, ${sec}, ${acc}) y trazado en curvas Bézier.`;
+
       const nbEntry = {
         idx: nextIdx,
         isInitialSystemic: false,
-        isUploadedUserLogo: true,
+        isUploadedUserLogo: false,
         isNanoBananaGenerated: true,
+        creativeMode: creativeModeKey,
+        nanoBananaFullArtworkUrl: rawImgUrl,
+        nanoBananaSymbolUrl: centeredPng,
         uploadedLogoDataUrl: centeredPng,
         tracedCurvesSvg: tracedCurves || "",
         uploadedLogoSvgMarkup: "",
-        paradigm: st.logoParadigm || "volumetric_glass",
-        archetype: "uploaded_user_logo",
-        conceptLabel: nbLabel,
+        shortPill: shortPillLabel,
+        paradigm: st.logoParadigm || "detailed_emblem",
+        archetype: "nanobanana_masterpiece",
+        conceptLabel: `${modeObj.label} · NanoBanana PRO`,
         pri: pri,
         sec: sec,
         accentHex: acc,
         scale: 1.0,
         darkBg: Boolean(st.logoDarkBg),
-        fontFamily: cs.primary_font || st.selectedFontFamily || "Montserrat",
-        layout: "horizontal",
+        fontFamily: cs.primary_font || st.selectedFontFamily || "Cormorant Garamond",
+        layout: "masterpiece_lockup",
         mods: {},
         geminiCustomSvg: "",
         svgOverlayAdditions: "",
-        note: seedIdea || `Evolución NanoBanana PRO desde tu Logo Base para ${bName}`,
-        prompt: wantsLiquidGlass
-          ? `Evolución Apple Liquid Glass sobre tu logo base de «${bName}» (${pri}, ${sec}, ${acc}) con refracción cáustica, pétalos translúcidos y centrado óptico a 0.00px.`
-          : `Evolución arquitectónica NanoBanana PRO tomando tu logo actual como base para «${bName}» (${pri}, ${sec}, ${acc}), centrado a 0.00px y vectorizado en curvas Bézier.`,
-        geminiPrompt40w: wantsLiquidGlass
-          ? `Evolución Apple Liquid Glass sobre tu logo base de «${bName}» (${pri}, ${sec}, ${acc}) con refracción cáustica, pétalos translúcidos y centrado óptico a 0.00px.`
-          : `Evolución arquitectónica NanoBanana PRO tomando tu logo actual como base para «${bName}» (${pri}, ${sec}, ${acc}), centrado a 0.00px y vectorizado en curvas Bézier.`
+        note: userHint || seedIdea || `${modeObj.label} para ${bName}`,
+        prompt: summaryPrompt40w,
+        geminiPrompt40w: summaryPrompt40w
       };
-      st.logoIterations.push(nbEntry);
-      st.logoIterationIndex = st.logoIterations.length;
+
+      if (replacePlaceholderFirst) {
+        st.logoIterations[0] = nbEntry;
+        st.logoIterationIndex = 1;
+      } else {
+        st.logoIterations.push(nbEntry);
+        st.logoIterationIndex = st.logoIterations.length;
+      }
       if (typeof window.saveBrandSessionToLocalStorage === "function") window.saveBrandSessionToLocalStorage();
+      if (typeof window.triggerAuraEmpatheticFeedback === "function") {
+        window.triggerAuraEmpatheticFeedback("input_logo_done", `${modeObj.label}: ${userHint || seedIdea || bName}`, true);
+      }
     }
 
     st.geminiBusy = false;
@@ -2885,6 +3076,7 @@
     if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
     return rawImgUrl;
   }
+  window.tbbGenerateNanoBananaBrandSymbol = tbbGenerateNanoBananaBrandSymbol;
 
   // ==========================================================================
   // 7. EXPORTADOR DE KIT DE FUENTES OFICIALES DE LA MARCA (.ZIP CON ARCHIVOS .TTF + LICENCIA SIL OFL + MODO HÍBRIDO ADOBE FONTS TYPEKIT)

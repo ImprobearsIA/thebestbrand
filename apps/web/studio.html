@@ -22058,11 +22058,13 @@
               if (!window.step0State) window.step0State = { goal: "redesign", assets: "has_name" };
               window.step0State.assets = "has_name";
               window.step0State.existingLogoMode = window.step0State.existingLogoMode || "keep";
+              window.step0State.userUploadedExternalLogo = true;
               window.step0State.uploadedLogoDataUrl = compactUrl;
               window.step0State.uploadedLogoSvgMarkup = innerMarkup;
               window.step0State.uploadedLogoColors = [extractedPri, extractedSec, extractedAcc];
 
               const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+              cs.user_uploaded_external_logo = true;
               cs.uploaded_logo_data_url = compactUrl;
               cs.base_uploaded_logo_data_url = compactUrl;
               cs.uploaded_logo_svg_markup = innerMarkup;
@@ -22144,11 +22146,13 @@
             if (!window.step0State) window.step0State = { goal: "redesign", assets: "has_name" };
             window.step0State.assets = "has_name";
             window.step0State.existingLogoMode = window.step0State.existingLogoMode || "keep";
+            window.step0State.userUploadedExternalLogo = true;
             window.step0State.uploadedLogoDataUrl = compactPngUrl;
             delete window.step0State.uploadedLogoSvgMarkup;
             window.step0State.uploadedLogoColors = [extractedPri, extractedSec, extractedAcc];
 
             const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+            cs.user_uploaded_external_logo = true;
             cs.uploaded_logo_data_url = compactPngUrl;
             cs.base_uploaded_logo_data_url = compactPngUrl;
             delete cs.uploaded_logo_svg_markup;
@@ -22213,12 +22217,14 @@
 
       window.tbbClearExistingLogo = function () {
         if (window.step0State) {
+          delete window.step0State.userUploadedExternalLogo;
           delete window.step0State.uploadedLogoDataUrl;
           delete window.step0State.uploadedLogoSvgMarkup;
           delete window.step0State.uploadedLogoColors;
           delete window.step0State.existingLogoMode;
         }
         if (typeof canvasState === "object" && canvasState) {
+          delete canvasState.user_uploaded_external_logo;
           delete canvasState.uploaded_logo_data_url;
           delete canvasState.uploaded_logo_svg_markup;
           delete canvasState.uploaded_logo_colors;
@@ -22246,7 +22252,8 @@
         if (window.step0State) window.step0State.existingLogoMode = "evolve";
         if (typeof window.tbbGenerateNanoBananaBrandSymbol === "function") {
           const nbResult = await window.tbbGenerateNanoBananaBrandSymbol(
-            customNote || "Evolucionar logotipo base a nivel agencia arquitectónica internacional conservando su esencia estructural y paleta."
+            customNote || "Evolucionar logotipo base a nivel agencia arquitectónica internacional conservando su esencia estructural y paleta.",
+            { evolveCurrent: true }
           );
           if (nbResult) return;
         }
@@ -22295,7 +22302,7 @@
         return s;
       };
 
-      // Construye el Lienzo Dual a Pantalla Completa (Lockup Superior + Squircle iOS 27 Liquid Glass App 1:1 Inferior)
+      // Construye el Lienzo Dual a Pantalla Completa (Showcase de Estudio NanoBanana PRO + Squircle iOS 27 Liquid Glass App 1:1)
       window.buildSystemicDualLogoSVG = function () {
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const st = window.tbbState;
@@ -22332,6 +22339,90 @@
         const txtSub = isDark ? "#94A3B8" : "#1E293B";
         const chosenFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || cs.primary_font || "Plus Jakarta Sans";
         const layoutMode = (activeIt && activeIt.layout) || mods.layout || "horizontal";
+
+        // SHOWCASE DE ALTA COSTURA NANOBANANA PRO: Cuando la iteración activa fue creada por NanoBanana PRO,
+        // mostramos la Obra Maestra Completa en gran formato (502x412 px) a la izquierda y el Ícono App 1:1 a la derecha
+        if (activeIt && activeIt.isNanoBananaGenerated && (activeIt.nanoBananaFullArtworkUrl || activeIt.nanoBananaSymbolUrl)) {
+          const fullArtUrl = activeIt.nanoBananaFullArtworkUrl || activeIt.nanoBananaSymbolUrl;
+          const symArtUrl = activeIt.nanoBananaSymbolUrl || activeIt.nanoBananaFullArtworkUrl;
+          const priCol = activeIt.pri || st.logoPriHex || "#9E3B24";
+          const secCol = activeIt.sec || st.logoSecHex || "#C89D54";
+          const accCol = activeIt.accentHex || cs.accent_color || "#14110F";
+          const modeLabel = (activeIt.shortPill || activeIt.conceptLabel || "NanoBanana PRO").toUpperCase().slice(0, 30);
+
+          const nbSvgOut = `
+            <svg viewBox="0 0 760 440" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="max-height:100%; display:block; margin:0 auto;">
+              <defs>
+                <linearGradient id="bgDual_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="${bgTop}"/>
+                  <stop offset="100%" stop-color="${bgBot}"/>
+                </linearGradient>
+                <linearGradient id="sqSurf_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="${isDark ? '#1E293B' : '#FFFFFF'}"/>
+                  <stop offset="50%" stop-color="${isDark ? '#0F172A' : '#F8FAFC'}"/>
+                  <stop offset="100%" stop-color="${isDark ? '#020617' : '#E2E8F0'}"/>
+                </linearGradient>
+                <linearGradient id="sqRimBevel_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="${secCol}" stop-opacity="0.95"/>
+                  <stop offset="50%" stop-color="${priCol}" stop-opacity="0.75"/>
+                  <stop offset="100%" stop-color="${secCol}" stop-opacity="0.95"/>
+                </linearGradient>
+                <filter id="sqShad_${uid}" x="-20%" y="-20%" width="145%" height="145%">
+                  <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#090D16" flood-opacity="0.24"/>
+                </filter>
+                <clipPath id="artFrameClip_${uid}">
+                  <rect x="14" y="14" width="504" height="412" rx="18"/>
+                </clipPath>
+                <clipPath id="sqClip_${uid}">
+                  <rect x="0" y="0" width="176" height="176" rx="40"/>
+                </clipPath>
+              </defs>
+              <rect width="760" height="440" rx="18" fill="url(#bgDual_${uid})"/>
+
+              <!-- Escenario Principal Izquierdo: Obra Maestra Completa NanoBanana PRO (504x412 px) -->
+              <rect x="14" y="14" width="504" height="412" rx="18" fill="${isDark ? '#12100E' : '#FAF6F0'}" stroke="url(#sqRimBevel_${uid})" stroke-width="2.2" filter="url(#sqShad_${uid})"/>
+              <g clip-path="url(#artFrameClip_${uid})">
+                <image href="${fullArtUrl}" xlink:href="${fullArtUrl}" x="18" y="18" width="496" height="404" preserveAspectRatio="xMidYMid meet"/>
+              </g>
+              <rect x="26" y="24" width="188" height="24" rx="12" fill="rgba(9,13,22,0.78)" stroke="${secCol}" stroke-width="1"/>
+              <text x="120" y="40" text-anchor="middle" fill="#FDE68A" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="9.5" letter-spacing="0.8">✦ ${escapeHTML(modeLabel)}</text>
+
+              <!-- Columna Derecha: Ícono App 1:1 en Squircle + ADN Cromático Activo -->
+              <rect x="532" y="14" width="214" height="412" rx="18" fill="${isDark ? '#111827' : '#FFFFFF'}" stroke="${isDark ? '#334155' : '#CBD5E1'}" stroke-width="1.5"/>
+              <text x="639" y="44" text-anchor="middle" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="900" font-size="13.5" letter-spacing="0.5">APP ICON 1:1</text>
+              <text x="639" y="61" text-anchor="middle" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.5">Símbolo Centrado &amp; Vectorizado</text>
+
+              <g transform="translate(551, 74)">
+                <rect x="0" y="0" width="176" height="176" rx="40" fill="url(#sqSurf_${uid})" stroke="url(#sqRimBevel_${uid})" stroke-width="2.6" filter="url(#sqShad_${uid})"/>
+                <g clip-path="url(#sqClip_${uid})">
+                  <image href="${symArtUrl}" xlink:href="${symArtUrl}" x="8" y="8" width="160" height="160" preserveAspectRatio="xMidYMid meet"/>
+                </g>
+                <rect x="3" y="3" width="170" height="170" rx="37" fill="none" stroke="#FFFFFF" stroke-width="1.8" opacity="0.75"/>
+              </g>
+
+              <!-- Ficha Técnica de Marca y Paleta Activa -->
+              <text x="639" y="282" text-anchor="middle" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="900" font-size="14" letter-spacing="0.6">${escapeHTML(rawBrand.toUpperCase().slice(0, 20))}</text>
+              <text x="639" y="299" text-anchor="middle" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="8.8">${escapeHTML(subtitle.slice(0, 30))}</text>
+
+              <g transform="translate(551, 316)">
+                <rect x="0" y="0" width="176" height="44" rx="10" fill="${isDark ? '#1E293B' : '#F8FAFC'}" stroke="${isDark ? '#334155' : '#E2E8F0'}" stroke-width="1"/>
+                <circle cx="28" cy="22" r="11" fill="${priCol}" stroke="#FFFFFF" stroke-width="1.5"/>
+                <circle cx="58" cy="22" r="11" fill="${secCol}" stroke="#FFFFFF" stroke-width="1.5"/>
+                <circle cx="88" cy="22" r="11" fill="${accCol}" stroke="#FFFFFF" stroke-width="1.5"/>
+                <text x="110" y="19" fill="${txtMain}" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="8.5">${escapeHTML(priCol)}</text>
+                <text x="110" y="32" fill="${txtSub}" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="8.2">${escapeHTML(secCol)}</text>
+              </g>
+
+              <rect x="551" y="372" width="176" height="36" rx="10" fill="${isDark ? 'rgba(30,58,138,0.35)' : '#EFF6FF'}" stroke="#93C5FD" stroke-width="1"/>
+              <text x="639" y="388" text-anchor="middle" fill="${isDark ? '#93C5FD' : '#1D4ED8'}" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="8.2">✓ CURVAS BÉZIER TRAZADAS</text>
+              <text x="639" y="401" text-anchor="middle" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="7.8">Listo para .SVG · .AI · Manual 30p</text>
+            </svg>
+          `;
+          if (typeof canvasState === "object" && canvasState) {
+            canvasState.selected_logo_svg = nbSvgOut;
+          }
+          return nbSvgOut;
+        }
 
         const symTop = window.synthesizeSystemicSymbol180(uid + "_t");
         const symApp = window.synthesizeSystemicSymbol180(uid + "_a");
@@ -25304,12 +25395,18 @@
         st.logoSecHex = item.sec || item.secHex || "#0D2540";
         st.logoScale = item.scale || 1.0;
         st.logoDarkBg = Boolean(item.darkBg);
+        if (item.creativeMode) {
+          st.nanoBananaCreativeMode = item.creativeMode;
+        }
         if (item.fontFamily) {
           st.selectedFontFamily = item.fontFamily;
           if (typeof canvasState === "object" && canvasState) canvasState.primary_font = item.fontFamily;
         }
         if (typeof canvasState === "object" && canvasState) {
-          if (item.uploadedLogoDataUrl) {
+          if (item.isNanoBananaGenerated) {
+            canvasState.nano_banana_full_artwork_url = item.nanoBananaFullArtworkUrl || item.uploadedLogoDataUrl || "";
+            canvasState.nano_banana_symbol_url = item.nanoBananaSymbolUrl || item.uploadedLogoDataUrl || "";
+          } else if (item.isUploadedUserLogo && item.uploadedLogoDataUrl) {
             canvasState.uploaded_logo_data_url = item.uploadedLogoDataUrl;
             if (window.step0State) window.step0State.uploadedLogoDataUrl = item.uploadedLogoDataUrl;
           }
@@ -25527,7 +25624,7 @@
         window.renderTbbZeroScrollStage();
       };
 
-      window.onTbbAtomicCenterAction = function () {
+      window.onTbbAtomicCenterAction = async function () {
         const st = window.tbbState;
         if (st.step === 0 && st.subStep === 3) {
           if (typeof toggleContinuousVoice === "function") toggleContinuousVoice("tbbStep0BizTextarea");
@@ -25546,11 +25643,33 @@
           const giro = (cs.custom_business_type || cs.step0_short_essence || "Aplicación digital de identidad corporativa").trim();
           const init = brandName.split(/\s+/).map(w => w[0] || "").join("").slice(0, 2).toUpperCase() || "TB";
 
+          if (box) box.value = "";
+          window.triggerAuraEmpatheticFeedback("input_logo_start", txt || "Nueva evolución creativa con NanoBanana PRO", false);
+
+          // Detectar si el usuario pidió explícitamente uno de los 4 modos en su texto
+          let detectedMode = st.nanoBananaCreativeMode || "emblem_masterpiece";
+          if (/\b(monograma|iniciales|entrelazad|letras)\b/i.test(txt)) detectedMode = "monogram_fusion";
+          else if (/\b(carta|loter[ií]a|sello|escudo|insignia|marco|tarot|emblema enmarcado)\b/i.test(txt)) detectedMode = "editorial_crest";
+          else if (/\b(minimal|lineal|l[ií]neas|monol[ií]nea|sencillo|limpio|geom[eé]trico puro)\b/i.test(txt)) detectedMode = "minimal_couture";
+
+          // PRIORIDAD 1: Motor de Imagen NanoBanana PRO con Evolución Conversacional Imagen-a-Imagen
+          if (typeof window.tbbGenerateNanoBananaBrandSymbol === "function") {
+            const nbImg = await window.tbbGenerateNanoBananaBrandSymbol(
+              txt || `Evoluciona el diseño de "${brandName}" (${giro}) con una composición más rica, memorable y emblemática.`,
+              {
+                creativeMode: detectedMode,
+                evolveCurrent: Boolean(txt),
+                freshFromScratch: !txt
+              }
+            );
+            if (nbImg) return;
+          }
+
+          // Respaldo SVG en caso de falta de conexión al motor de imagen
           const prevIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
           const prevArch = (prevIt && prevIt.archetype) || window.resolveActiveLogoArchetype();
           const prevMods = (prevIt && prevIt.mods) ? Object.assign({}, prevIt.mods) : {};
 
-          // Capturar el SVG exacto que el usuario está viendo ahora mismo para pasárselo a Gemini como punto de partida
           const prevSvgMarkup = (prevIt && prevIt.geminiCustomSvg && String(prevIt.geminiCustomSvg).trim().length > 10)
             ? prevIt.geminiCustomSvg
             : window.buildBaseArchetypeInnerMarkup(
@@ -25563,8 +25682,6 @@
                 prevMods
               );
 
-          if (box) box.value = "";
-          window.triggerAuraEmpatheticFeedback("input_logo_start", txt || "Nueva propuesta creativa", false);
           const newEntry = window.tbbAppendLogoIteration(
             txt || `Propuesta Abierta Gemini #${(st.logoIterations?.length || 1) + 1}`,
             prevArch,

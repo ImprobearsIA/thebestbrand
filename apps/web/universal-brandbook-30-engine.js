@@ -2387,7 +2387,12 @@
     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "the_best_brand";
     
     const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
-    const uploadedUrl = (activeIt && activeIt.uploadedLogoDataUrl) || cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
+    const uploadedUrl = (activeIt && (activeIt.nanoBananaSymbolUrl || activeIt.nanoBananaFullArtworkUrl || activeIt.uploadedLogoDataUrl))
+      || cs.nano_banana_symbol_url
+      || cs.nano_banana_full_artwork_url
+      || cs.uploaded_logo_data_url
+      || window.step0State?.uploadedLogoDataUrl
+      || "";
     const uploadedSvg = (activeIt && activeIt.uploadedLogoSvgMarkup) || cs.uploaded_logo_svg_markup || window.step0State?.uploadedLogoSvgMarkup || "";
     const hasUploadedLogo = Boolean(uploadedUrl || uploadedSvg);
     const hasGeminiCustom = Boolean(activeIt && activeIt.geminiCustomSvg && String(activeIt.geminiCustomSvg).trim().length > 10);
@@ -2415,7 +2420,7 @@
     const priFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || cs.primary_font || "Montserrat";
     const secFont = "Avenir Next";
     const pal = extractColorsFromLogoState(activeIt, st);
-    const useEvolvedOverUpload = Boolean(st._uploadedLogoEvolvedOnce && hasGeminiCustom);
+    const useEvolvedOverUpload = Boolean(st._uploadedLogoEvolvedOnce && hasGeminiCustom && !(activeIt && activeIt.isNanoBananaGenerated));
     
     let symCorePos = "";
     let symCoreNeg = "";
@@ -2469,6 +2474,8 @@
       secondaryFont: secFont,
       isEstablished: hasUploadedLogo,
       isMultibrand: /improbears/i.test(bName),
+      uploadedLogoDataUrl: uploadedUrl,
+      nanoBananaFullArtworkUrl: (activeIt && activeIt.nanoBananaFullArtworkUrl) || cs.nano_banana_full_artwork_url || "",
       svgCore: symCorePos,
       svgCoreNeg: symCoreNeg
     };
