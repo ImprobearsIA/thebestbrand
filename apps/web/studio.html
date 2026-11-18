@@ -5646,21 +5646,21 @@
     </div>
   </div>
 
-  <!-- CLOSING & TRANSITION VIDEO CAPSULE MODAL (DISEÑO LIMPIO · 6 IDIOMAS SINCRONIZADOS · 9:16 + RESUMEN DIRECTO) -->
+  <!-- CLOSING & TRANSITION AURA CAPSULE MODAL (AURA ANIMADA + AUDIO MULTILINGÜE SINCRONIZADO EN 6 IDIOMAS) -->
   <div class="welcome-modal-overlay" id="phaseTransitionVideoModal" style="z-index: 9999; padding: 14px; background: rgba(9, 13, 22, 0.88); backdrop-filter: blur(16px); overflow-y: auto;" onclick="if(event.target===this){this.classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}}">
     <div class="welcome-modal-card tbb-atomic-card" style="max-width: 940px; width: 100%; max-height: calc(100dvh - 28px); overflow-y: auto !important; overflow-x: hidden !important; align-items: stretch !important; background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 28px; box-shadow: 0 28px 70px rgba(15, 23, 42, 0.22); color: #0F172A; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; text-align: left; box-sizing: border-box;" onclick="event.stopPropagation()">
-      <!-- 1. Cabecera Limpia + Selector de Idioma (6 Idiomas) + Selector de Paso -->
+      <!-- 1. Cabecera Limpia + Selector de Idioma de Audio (6 Idiomas) + Selector de Paso -->
       <div style="display:flex; flex-direction:column; gap:8px; border-bottom:1px solid #E2E8F0; padding-bottom:10px; flex-shrink:0;">
         <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
             <span id="transitionVideoBadge" style="font-family:var(--font-mono); background:#FFF7ED; color:#EA580C; border:1px solid #FFEDD5; font-size:0.68rem; font-weight:700; padding:4px 12px; border-radius:999px; letter-spacing:0.04em;">
-              CÁPSULA EJECUTIVA · THE BEST BRAND &amp; AURA
+              CÁPSULA INTERACTIVA DE AURA · THE BEST BRAND
             </span>
             <span id="transitionVideoChapterTag" style="font-family:var(--font-mono); font-size:0.70rem; color:#64748B; font-weight:600;"></span>
             <span id="transitionVideoStatusPill" style="display:none;"></span>
           </div>
           <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-            <span style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; color:#475569;">IDIOMA AUDIO/VIDEO:</span>
+            <span style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; color:#475569;">IDIOMA DE AUDIO:</span>
             <div id="transitionVideoLangSelectorRow" style="display:inline-flex; gap:4px; background:#F1F5F9; padding:3px; border-radius:999px; border:1px solid #CBD5E1;">
               <button type="button" class="tbb-video-lang-pill" data-vlang="es" onclick="window.tbbSetStudioVideoLang('es')" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:3px 8px; border-radius:999px; border:none; background:#0D2540; color:#FFFFFF; cursor:pointer;">ES</button>
               <button type="button" class="tbb-video-lang-pill" data-vlang="en" onclick="window.tbbSetStudioVideoLang('en')" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:3px 8px; border-radius:999px; border:none; background:transparent; color:#0F172A; cursor:pointer;">EN</button>
@@ -5683,32 +5683,58 @@
         </div>
       </div>
 
-      <!-- 2. Cuerpo Limpio: Video Vertical 9:16 Protagonista + Síntesis Breve al Lado -->
+      <!-- 2. Cuerpo Limpio: Escenario de Aura Animada 3D + Audio Multilingüe + Síntesis al Lado -->
       <div class="tbb-video-modal-grid" style="flex:1; min-height:0; display:grid; grid-template-columns:minmax(270px, 330px) 1fr; gap:24px; align-items:center;">
-        <!-- Reproductor 9:16 Limpio (Cero Ondas, Cero Cajas Extra) -->
-        <div id="transitionTheoryVideoContainer" style="background:#090D16; border-radius:20px; overflow:hidden; position:relative; box-shadow:0 16px 36px rgba(15, 23, 42, 0.16); display:flex; flex-direction:column;">
+        <!-- Escenario 9:16 con Aura Animada en Tiempo Real (Cero Video de Persona, Audio Intacto en 6 Idiomas) -->
+        <div id="transitionTheoryVideoContainer" style="background:radial-gradient(circle at 50% 38%, #0F2442 0%, #071120 58%, #030710 100%); border-radius:22px; border:1.5px solid rgba(76, 157, 230, 0.35); overflow:hidden; position:relative; box-shadow:0 16px 36px rgba(15, 23, 42, 0.22); display:flex; flex-direction:column; justify-content:space-between; align-items:center; padding:18px 16px 14px; min-height:380px; box-sizing:border-box;">
           <span id="transitionTheoryHeaderBadge" style="display:none;"></span>
-          <span id="transitionTheoryFrameworkPill" style="display:none;"></span>
-          <img
-            id="transitionTheoryVideoPosterOverlay"
-            src="/assets/videos/poster_paso_0.jpg"
-            alt="Cápsula Ejecutiva"
-            style="position:absolute; inset:0 0 44px 0; width:100%; height:calc(100% - 44px); object-fit:cover; pointer-events:none; transition:opacity 0.25s ease; z-index:2;"
-          />
+
+          <!-- Píldora Superior de Estado de Aura -->
+          <div style="display:inline-flex; align-items:center; gap:7px; padding:5px 12px; border-radius:999px; background:rgba(9, 13, 22, 0.82); border:1.5px solid rgba(255, 122, 0, 0.55); font-family:var(--font-mono); font-size:0.64rem; font-weight:800; color:#93C5FD; letter-spacing:0.08em; text-transform:uppercase; z-index:2;">
+            <span id="tbbCapsuleAuraLiveDot" style="width:7px; height:7px; border-radius:999px; background:#FF7A00; box-shadow:0 0 10px #FF7A00; display:inline-block;"></span>
+            <span id="tbbCapsuleAuraStatusLabel">AURA · MENTORA DE IDENTIDAD</span>
+          </div>
+
+          <!-- Esfera Cuántica 3D Animada de Aura (Reactiva al Audio de la Cápsula) -->
+          <div style="position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; margin:10px 0; z-index:2;">
+            <canvas
+              id="tbbCapsuleAuraOrbCanvas"
+              width="400"
+              height="400"
+              onclick="window.tbbToggleCapsuleAudioPlayPause()"
+              title="Haz clic para reproducir o pausar la explicación de Aura"
+              style="width:196px; height:196px; border-radius:999px; border:2.5px solid #1D4ED8; box-shadow:0 0 54px rgba(29, 78, 216, 0.55), 0 0 96px rgba(249, 115, 22, 0.34); background:#04060B; cursor:pointer; display:block;"
+            ></canvas>
+            <span id="transitionTheoryFrameworkPill" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; color:#FDBA74; background:rgba(255, 122, 0, 0.14); border:1px solid rgba(255, 122, 0, 0.4); padding:4px 10px; border-radius:999px; text-align:center; max-width:92%;">
+              METODOLOGÍA CIENTÍFICA
+            </span>
+          </div>
+
+          <!-- Controles de Audio de la Cápsula en el Idioma Seleccionado -->
+          <div style="width:100%; background:rgba(15, 23, 42, 0.78); border:1px solid rgba(148, 163, 184, 0.25); border-radius:14px; padding:10px 12px; display:flex; flex-direction:column; gap:8px; box-sizing:border-box; z-index:2;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+              <button type="button" id="tbbCapsuleAudioPlayPauseBtn" onclick="window.tbbToggleCapsuleAudioPlayPause()" style="background:linear-gradient(135deg, #FF7A00 0%, #EA580C 100%); color:#FFFFFF; border:none; border-radius:999px; padding:6px 14px; font-family:var(--font-display); font-size:0.75rem; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 12px rgba(255,122,0,0.3);">
+                <span id="tbbCapsuleAudioPlayPauseIcon">❚❚</span>
+                <span id="tbbCapsuleAudioPlayPauseText">Escuchando</span>
+              </button>
+              <button type="button" onclick="window.tbbReplayCapsuleAudio()" style="background:rgba(255,255,255,0.08); color:#CBD5E1; border:1px solid rgba(255,255,255,0.18); border-radius:999px; padding:5px 10px; font-family:var(--font-mono); font-size:0.66rem; font-weight:700; cursor:pointer;" title="Reiniciar audio">
+                ↺ Repetir
+              </button>
+              <span id="tbbCapsuleAudioTimeLabel" style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#93C5FD;">0:00</span>
+            </div>
+            <div style="height:6px; background:rgba(255,255,255,0.14); border-radius:999px; overflow:hidden; cursor:pointer;" onclick="window.tbbSeekCapsuleAudio(event, this)">
+              <div id="transitionVideoProgressBar" style="width:0%; height:100%; background:linear-gradient(90deg, #4C9DE6 0%, #FF7A00 100%); border-radius:999px; transition:width 0.2s linear;"></div>
+            </div>
+          </div>
+
+          <!-- Motor de Audio Multilingüe Oculto (Conserva el Audio Original en ES/EN/FR/PT/DE/IT) -->
           <video
             id="transitionTheoryVideoPlayer"
-            controls
             playsinline
             preload="metadata"
             src="/assets/videos/capsula_teoria_paso_0.mp4"
-            poster="/assets/videos/poster_paso_0.jpg"
-            style="width:100%; max-height:64vh; aspect-ratio:9/16; display:block; background:url('/assets/videos/poster_paso_0.jpg') center/cover no-repeat #090D16; object-fit:cover;"
-          >
-            Tu navegador no soporta reproducción de video HTML5.
-          </video>
-          <div style="height:4px; background:#1E293B; overflow:hidden;">
-            <div id="transitionVideoProgressBar" style="width:0%; height:100%; background:#EA580C; transition:width 0.25s linear;"></div>
-          </div>
+            style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; left:-9999px; top:-9999px;"
+          ></video>
           <div style="display:none;"><div id="transitionVideoCaptionText"></div><div id="transitionVideoNextHint"></div></div>
         </div>
 
@@ -5716,10 +5742,10 @@
         <div class="tbb-video-support-texts-col" style="display:flex; flex-direction:column; justify-content:center; gap:16px;">
           <div>
             <h2 id="transitionVideoTitle" style="font-family:var(--font-display); font-size:1.38rem; font-weight:700; color:#0F172A; margin:0 0 6px 0; line-height:1.25;">
-              Video Introductorio del Paso
+              Cápsula Introductoria con Aura
             </h2>
             <p id="transitionVideoSubtitle" style="font-size:0.9rem; color:#475569; font-weight:400; margin:0; line-height:1.5;">
-              Escucha la explicación del fundador antes de continuar.
+              Escucha la explicación en el idioma seleccionado antes de continuar.
             </p>
           </div>
 
@@ -5742,7 +5768,7 @@
               <span id="btnFinishTransitionVideoText">Continuar al Paso</span>
             </button>
             <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('phaseTransitionVideoModal').classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}" style="padding:0 18px;">
-              <span>Omitir video</span>
+              <span>Omitir cápsula</span>
             </button>
           </div>
         </div>
@@ -6386,10 +6412,13 @@
 
     function renderAuraLoop() {
       const cfgSpeed = Number((window.tbbAuraOrbConfig && window.tbbAuraOrbConfig.orbSpeed) || 1.0);
-      const speedMult = (isSpeakingLive ? 2.45 : 1.0) * cfgSpeed;
+      const capVid = document.getElementById("transitionTheoryVideoPlayer");
+      const isCapsuleAudioPlaying = Boolean(capVid && !capVid.paused && !capVid.ended);
+      const activeSpeaking = Boolean(isSpeakingLive || isCapsuleAudioPlaying);
+      const speedMult = (activeSpeaking ? 2.45 : 1.0) * cfgSpeed;
       auraAngle += 0.016 * speedMult;
       for (let p of auraParticles) {
-        p.angle += (isSpeakingLive ? p.speed * 1.8 : p.speed) * cfgSpeed;
+        p.angle += (activeSpeaking ? p.speed * 1.8 : p.speed) * cfgSpeed;
       }
 
       if (auraCtx && auraCanvas) {
@@ -6401,6 +6430,14 @@
         const topCtx = topLiveCanvas.getContext("2d");
         if (topCtx) {
           drawAura3DFrameOnCanvas(topLiveCanvas, topCtx);
+        }
+      }
+
+      const capsuleOrbCanvas = document.getElementById("tbbCapsuleAuraOrbCanvas");
+      if (capsuleOrbCanvas) {
+        const capCtx = capsuleOrbCanvas.getContext("2d");
+        if (capCtx) {
+          drawAura3DFrameOnCanvas(capsuleOrbCanvas, capCtx);
         }
       }
 
@@ -10214,40 +10251,52 @@
 
       const modalI18nMap = {
         es: {
-          chTag: (s) => `PASO ${s} · CÁPSULA EJECUTIVA DEL FUNDADOR`,
+          chTag: (s) => `PASO ${s} · CÁPSULA EJECUTIVA DE AURA`,
           sumHead: (s) => `PARTE 1 · SÍNTESIS ESTRATÉGICA DEL PASO ${s}:`,
-          subTxt: "Mira la cápsula explicada por Jorge Benítez con ejemplos reales de la aplicación antes de responder:",
-          contBtn: (s) => `Continuar en Paso ${s}`
+          subTxt: "Escucha la cápsula guiada por Aura con ejemplos reales de la aplicación antes de responder:",
+          contBtn: (s) => `Continuar en Paso ${s}`,
+          listening: "Escuchando a Aura",
+          paused: "Reproducir audio"
         },
         en: {
-          chTag: (s) => `STEP ${s} · EXECUTIVE FOUNDER CAPSULE`,
+          chTag: (s) => `STEP ${s} · AURA EXECUTIVE CAPSULE`,
           sumHead: (s) => `PART 1 · STRATEGIC SYNTHESIS OF STEP ${s}:`,
-          subTxt: "Watch the capsule explained by Jorge Benítez with real app examples before answering:",
-          contBtn: (s) => `Continue in Step ${s}`
+          subTxt: "Listen to the capsule guided by Aura with real app examples before answering:",
+          contBtn: (s) => `Continue in Step ${s}`,
+          listening: "Listening to Aura",
+          paused: "Play audio"
         },
         fr: {
-          chTag: (s) => `ÉTAPE ${s} · CAPSULE EXÉCUTIVE DU FONDATEUR`,
+          chTag: (s) => `ÉTAPE ${s} · CAPSULE EXÉCUTIVE D'AURA`,
           sumHead: (s) => `PARTIE 1 · SYNTHÈSE STRATÉGIQUE DE L'ÉTAPE ${s} :`,
-          subTxt: "Regardez la capsule expliquée par Jorge Benítez avec des exemples réels de l'application :",
-          contBtn: (s) => `Continuer à l'Étape ${s}`
+          subTxt: "Écoutez la capsule guidée par Aura avec des exemples réels de l'application :",
+          contBtn: (s) => `Continuer à l'Étape ${s}`,
+          listening: "Écoute en cours",
+          paused: "Écouter l'audio"
         },
         pt: {
-          chTag: (s) => `PASSO ${s} · CÁPSULA EXECUTIVA DO FUNDADOR`,
+          chTag: (s) => `PASSO ${s} · CÁPSULA EXECUTIVA DA AURA`,
           sumHead: (s) => `PARTE 1 · SÍNTESE ESTRATÉGICA DO PASSO ${s}:`,
-          subTxt: "Assista à cápsula explicada por Jorge Benítez com exemplos reais da aplicação antes de responder:",
-          contBtn: (s) => `Continuar no Passo ${s}`
+          subTxt: "Ouça a cápsula guiada pela Aura com exemplos reais da aplicação antes de responder:",
+          contBtn: (s) => `Continuar no Passo ${s}`,
+          listening: "Ouvindo a Aura",
+          paused: "Reproduzir áudio"
         },
         de: {
-          chTag: (s) => `SCHRITT ${s} · EXECUTIVE GRÜNDER-KAPSEL`,
+          chTag: (s) => `SCHRITT ${s} · AURA EXECUTIVE-KAPSEL`,
           sumHead: (s) => `TEIL 1 · STRATEGISCHE SYNTHESE VON SCHRITT ${s}:`,
-          subTxt: "Sehen Sie sich die Kapsel von Jorge Benítez mit echten App-Beispielen an:",
-          contBtn: (s) => `Weiter in Schritt ${s}`
+          subTxt: "Hören Sie sich die von Aura geführte Kapsel mit echten App-Beispielen an:",
+          contBtn: (s) => `Weiter in Schritt ${s}`,
+          listening: "Aura spricht",
+          paused: "Audio abspielen"
         },
         it: {
-          chTag: (s) => `PASSO ${s} · CAPSULA ESECUTIVA DEL FONDATORE`,
+          chTag: (s) => `PASSO ${s} · CAPSULA ESECUTIVA DI AURA`,
           sumHead: (s) => `PARTE 1 · SINTESI STRATEGICA DEL PASSO ${s}:`,
-          subTxt: "Guarda la capsula spiegata da Jorge Benítez con esempi reali dell'applicazione:",
-          contBtn: (s) => `Continua nel Passo ${s}`
+          subTxt: "Ascolta la capsula guidata da Aura con esempi reali dell'applicazione:",
+          contBtn: (s) => `Continua nel Passo ${s}`,
+          listening: "In ascolto",
+          paused: "Riproduci audio"
         }
       };
       const locM = modalI18nMap[curLang] || modalI18nMap.es;
@@ -10278,6 +10327,56 @@
       }
       if (progBar) progBar.style.width = "15%";
 
+      const formatAudioSec = (sec) => {
+        if (!Number.isFinite(sec) || sec < 0) return "0:00";
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return `${m}:${s < 10 ? "0" + s : s}`;
+      };
+
+      const syncCapsuleAudioButtonsUI = () => {
+        const vp = document.getElementById("transitionTheoryVideoPlayer");
+        const ico = document.getElementById("tbbCapsuleAudioPlayPauseIcon");
+        const txt = document.getElementById("tbbCapsuleAudioPlayPauseText");
+        const dot = document.getElementById("tbbCapsuleAuraLiveDot");
+        const isPlaying = Boolean(vp && !vp.paused && !vp.ended);
+        if (ico) ico.textContent = isPlaying ? "❚❚" : "▶";
+        if (txt) txt.textContent = isPlaying ? locM.listening : locM.paused;
+        if (dot) {
+          dot.style.background = isPlaying ? "#10B981" : "#FF7A00";
+          dot.style.boxShadow = isPlaying ? "0 0 12px #10B981" : "0 0 8px #FF7A00";
+        }
+      };
+
+      window.tbbToggleCapsuleAudioPlayPause = function () {
+        const vp = document.getElementById("transitionTheoryVideoPlayer");
+        if (!vp) return;
+        if (vp.paused || vp.ended) {
+          vp.muted = false;
+          vp.play().catch(() => {});
+        } else {
+          vp.pause();
+        }
+        syncCapsuleAudioButtonsUI();
+      };
+
+      window.tbbReplayCapsuleAudio = function () {
+        const vp = document.getElementById("transitionTheoryVideoPlayer");
+        if (!vp) return;
+        try { vp.currentTime = 0; } catch (e) {}
+        vp.muted = false;
+        vp.play().catch(() => {});
+        syncCapsuleAudioButtonsUI();
+      };
+
+      window.tbbSeekCapsuleAudio = function (ev, trackEl) {
+        const vp = document.getElementById("transitionTheoryVideoPlayer");
+        if (!vp || !trackEl || !Number.isFinite(vp.duration) || vp.duration <= 0) return;
+        const rect = trackEl.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (ev.clientX - rect.left) / Math.max(1, rect.width)));
+        try { vp.currentTime = ratio * vp.duration; } catch (e) {}
+      };
+
       if (review.theorySpec) {
         if (theoryHeaderEl) theoryHeaderEl.textContent = review.theorySpec.headerLabel;
         if (theoryFrameworkEl) theoryFrameworkEl.textContent = review.theorySpec.frameworkBadge;
@@ -10290,18 +10389,6 @@
           `;
         }
         if (videoPlayer) {
-          const posterOv = document.getElementById("transitionTheoryVideoPosterOverlay");
-          if (review.theorySpec.posterUrl) {
-            videoPlayer.setAttribute("poster", review.theorySpec.posterUrl);
-            videoPlayer.style.backgroundImage = `url('${review.theorySpec.posterUrl}')`;
-            videoPlayer.style.backgroundSize = "cover";
-            videoPlayer.style.backgroundPosition = "center";
-            videoPlayer.style.backgroundRepeat = "no-repeat";
-            if (posterOv) {
-              posterOv.src = review.theorySpec.posterUrl;
-              posterOv.style.opacity = "1";
-            }
-          }
           const targetVidUrl = review.theorySpec.videoUrl;
           const handleVidFallback = () => {
             const relClean = String(targetVidUrl || "").split("?")[0];
@@ -10326,19 +10413,19 @@
           }
           videoPlayer.defaultPlaybackRate = 1.0;
           videoPlayer.playbackRate = 1.0;
+          videoPlayer.onplay = syncCapsuleAudioButtonsUI;
+          videoPlayer.onpause = syncCapsuleAudioButtonsUI;
+          videoPlayer.onended = syncCapsuleAudioButtonsUI;
           videoPlayer.ontimeupdate = () => {
-            if (posterOv && videoPlayer.currentTime > 0.08 && !videoPlayer.paused) {
-              posterOv.style.opacity = "0";
-            }
             if (progBar && videoPlayer.duration > 0) {
-              const pct = Math.min(100, Math.max(8, Math.round((videoPlayer.currentTime / videoPlayer.duration) * 100)));
+              const pct = Math.min(100, Math.max(4, Math.round((videoPlayer.currentTime / videoPlayer.duration) * 100)));
               progBar.style.width = `${pct}%`;
             }
-          };
-          videoPlayer.onpause = () => {
-            if (posterOv && videoPlayer.currentTime < 0.08) {
-              posterOv.style.opacity = "1";
+            const timeLbl = document.getElementById("tbbCapsuleAudioTimeLabel");
+            if (timeLbl && videoPlayer.duration > 0) {
+              timeLbl.textContent = `${formatAudioSec(videoPlayer.currentTime)} / ${formatAudioSec(videoPlayer.duration)}`;
             }
+            syncCapsuleAudioButtonsUI();
           };
           try {
             if (typeof window.tbbStopAllAuraVoicePlayback === "function") window.tbbStopAllAuraVoicePlayback();
@@ -10346,7 +10433,7 @@
             if (currentAudioObj) currentAudioObj.pause();
           } catch (e) {}
           videoPlayer.muted = Boolean(voiceMuted);
-          videoPlayer.play().catch(() => {});
+          videoPlayer.play().then(syncCapsuleAudioButtonsUI).catch(syncCapsuleAudioButtonsUI);
         }
       }
 
@@ -20339,12 +20426,19 @@
         line-height: 1.3 !important;
       }
       #phaseTransitionVideoModal #transitionTheoryVideoPlayer {
-        width: 100% !important;
-        max-width: 245px !important;
-        max-height: none !important;
-        height: auto !important;
-        aspect-ratio: 9 / 16 !important;
-        margin: 0 auto !important;
+        width: 1px !important;
+        height: 1px !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        pointer-events: none !important;
+      }
+      #phaseTransitionVideoModal #transitionTheoryVideoContainer {
+        min-height: 290px !important;
+        padding: 14px 12px 12px !important;
+      }
+      #phaseTransitionVideoModal #tbbCapsuleAuraOrbCanvas {
+        width: 148px !important;
+        height: 148px !important;
       }
       #phaseTransitionVideoModal #transitionTheoryCardsGrid {
         display: grid !important;
@@ -20641,9 +20735,9 @@
       <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" id="tbbBtnTopAdminTbb" onclick="window.tbbLoadCasaLoteriaRestaurantPreset(5)" title="Cargar caso de estudio real: Restaurante de Cocina Mexicana Modernista con Estrella Michelin (Casa Lotería)" style="padding:0 9px; font-size:0.70rem; min-height:32px !important; white-space:nowrap; border-bottom:2.5px solid #C85A32; color:#0D2540; background:#FEF3C7; border-color:#F59E0B;">
         <span>★ Casa Lotería</span>
       </button>
-      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnTopStepVideo" onclick="tbbOpenCurrentStepVideoCapsule()" title="Ver Video Introductorio y Cierre de este Paso">
+      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnTopStepVideo" onclick="tbbOpenCurrentStepVideoCapsule()" title="Escuchar Cápsula Introductoria y Síntesis con Aura">
         <span id="tbbIconTopVideo"></span>
-        <span id="tbbLblTopVideo">Video</span>
+        <span id="tbbLblTopVideo">Cápsula</span>
       </button>
       <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnTopVoice" onclick="tbbToggleVoiceMute()" title="Activar o silenciar voz de Aura">
         <span id="tbbIconTopVoice"></span>
@@ -22967,7 +23061,7 @@
         const videoLblEl = document.getElementById("tbbLblTopVideo");
         if (videoLblEl) {
           const isNarrowMobile = window.innerWidth <= 520;
-          videoLblEl.textContent = isNarrowMobile ? "Video" : `Video Paso ${st.step}`;
+          videoLblEl.textContent = isNarrowMobile ? "Cápsula" : `Cápsula Paso ${st.step}`;
         }
 
         // Actualizar mensaje breve de Aura (<= 10s con referencia de autor) al cambiar de sub-paso
