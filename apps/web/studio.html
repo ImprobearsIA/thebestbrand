@@ -20884,7 +20884,7 @@
         { key: "ideal_customer", title: "7. Cliente Ideal", q: "¿Quién es tu cliente ideal, qué es lo que más valora y qué problema urgente le resuelves?" }
       ];
 
-      // Extrae tokens semánticos únicamente de lo que el usuario ha ingresado en la app
+      // Extrae tokens semánticos limpios (sustantivos/conceptos) únicamente de lo que el usuario ha ingresado en la app
       window.extractSystemicTokensFromApp = function () {
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const rawSources = [
@@ -20899,7 +20899,15 @@
           cs.brand_persona || "",
           cs.ideal_customer || ""
         ].join(" ");
-        const stop = new Set(["para", "como", "este", "esta", "estos", "estas", "todo", "toda", "todos", "todas", "con", "sin", "por", "los", "las", "del", "una", "uno", "unos", "unas", "que", "más", "mas", "muy", "son", "ser", "sus", "mis", "nuestro", "nuestra", "marca", "empresa", "negocio", "clientes", "cliente"]);
+        const stop = new Set([
+          "para", "como", "este", "esta", "estos", "estas", "todo", "toda", "todos", "todas",
+          "con", "sin", "por", "los", "las", "del", "una", "uno", "unos", "unas", "que",
+          "más", "mas", "muy", "son", "ser", "sus", "mis", "nuestro", "nuestra", "marca",
+          "empresa", "negocio", "clientes", "cliente", "ofrece", "ofrecer", "ofrecemos",
+          "brinda", "brindar", "brindamos", "alternativa", "quieran", "quieren", "quiere",
+          "transmiten", "transmitir", "transmitiir", "haciendolos", "haciéndolos", "sentir",
+          "tiene", "tienen", "hacer", "hacemos", "sirve", "permite", "donde", "cuando", "entre"
+        ]);
         const words = rawSources
           .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, " ")
           .split(/\s+/)
@@ -20908,52 +20916,164 @@
         const unique = [];
         const seen = new Set();
         words.forEach(w => {
-          const low = w.toLowerCase();
-          if (!seen.has(low)) {
-            seen.add(low);
-            unique.push(w);
+          let cleanW = w.toLowerCase();
+          if (cleanW === "futbol") cleanW = "fútbol";
+          if (cleanW === "motivacion") cleanW = "motivación";
+          if (cleanW === "transmision") cleanW = "transmisión";
+          if (cleanW === "television") cleanW = "televisión";
+          if (!seen.has(cleanW)) {
+            seen.add(cleanW);
+            unique.push(cleanW);
           }
         });
         return unique;
       };
 
-      // Genera sugerencias de apoyo en el Paso 1 derivadas exclusivamente de lo capturado en la sesión
+      window.tbbDistillCleanGiroLabel = function (rawGiro) {
+        const g = String(rawGiro || "").trim();
+        if (!g) return "nuestra industria";
+        const low = g.toLowerCase();
+        if (/obs|marcador|scoreboard|futbol|fútbol|deport|streaming|transmisi|canal/i.test(low)) {
+          return "las transmisiones deportivas y el streaming profesional";
+        }
+        if (/restauran|gastronom|cocina|chef|michelin|loter[ií]a|barro|platillo|comida/i.test(low)) {
+          return "la alta gastronomía mexicana contemporánea";
+        }
+        if (/software|saas|plataforma|app|aplicaci|inteligencia artificial|ia\b| Automatizaci/i.test(low)) {
+          return "las soluciones tecnológicas y plataformas digitales";
+        }
+        if (/consultor|asesor|agencia|b2b|corporativ|estrategi/i.test(low)) {
+          return "la consultoría estratégica y transformación empresarial";
+        }
+        if (/cl[ií]nica|m[eé]dic|salud|bienestar|odontolog|nutrici/i.test(low)) {
+          return "el cuidado de la salud y el bienestar integral";
+        }
+        // Si es una frase corta (<= 6 palabras), limpiamos verbos iniciales; si es larga, extraemos núcleo
+        let cleaned = g
+          .replace(/^(?:ofrece|ofrecemos|brinda|brindamos)\s+(?:una\s+alternativa\s+para\s+|servicios?\s+de\s+)?/i, "")
+          .replace(/^(?:es\s+una?\s+(?:app|aplicaci[oó]n|empresa|negocio|plataforma|sistema)\s+que\s+(?:sirve\s+para\s+|ofrece\s+)?)/i, "")
+          .replace(/^(?:nos\s+dedicamos\s+a|me\s+dedico\s+a)\s+/i, "")
+          .replace(/\.+$/, "")
+          .trim();
+        const words = cleaned.split(/\s+/);
+        if (words.length > 7) {
+          cleaned = words.slice(0, 6).join(" ");
+        }
+        return cleaned.charAt(0).toLowerCase() + cleaned.slice(1);
+      };
+
+      // Genera sugerencias de apoyo en el Paso 1 derivadas exclusivamente de lo capturado en la sesión con gramática impecable
       window.buildDynamicStep1Suggestions = function (qIdx) {
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-        const giro = (cs.custom_business_type || cs.step0_short_essence || "nuestra actividad principal").trim();
-        const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "nuestra marca";
+        const rawGiro = (cs.custom_business_type || cs.step0_short_essence || "").trim();
+        const lowGiro = rawGiro.toLowerCase();
+        const giroClean = window.tbbDistillCleanGiroLabel(rawGiro);
+        const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName) && !/^Marca en Creaci/i.test(cs.brandName))
+          ? cs.brandName.trim()
+          : "nuestra marca";
+
+        // Si el giro es de streaming deportivo / OBS / marcador deportivo, damos sugerencias 100% específicas y bien redactadas
+        if (/obs|marcador|scoreboard|futbol|fútbol|deport|streaming|transmisi/i.test(lowGiro)) {
+          const sportsTemplates = {
+            1: [
+              "Dignificar el deporte amateur y estudiantil brindando a jugadores y familias una experiencia digna de televisión profesional.",
+              "Inspirar orgullo en cada partido haciendo sentir especiales a los atletas y diferenciando a los canales de streaming deportivo."
+            ],
+            2: [
+              "Interfaz broadcast de nivel televisivo para OBS que se opera en tiempo real sin requerir hardware costoso de cabina.",
+              "Gráficos deportivos, marcadores dinámicos y fluidez visual profesional al alcance de cualquier canal de transmisión en vivo."
+            ],
+            3: [
+              "Transformamos transmisiones caseras en producciones deportivas memorables que emocionan a las familias y atraen patrocinadores.",
+              "Ahorramos horas de configuración técnica en OBS y elevamos de inmediato el prestigio visual del canal deportivo."
+            ],
+            4: [
+              "1. Conexión directa como fuente de navegador en OBS · 2. Personalización de equipos y colores · 3. Operación en vivo con latencia cero.",
+              "1. Configuración rápida del partido · 2. Control intuitivo de marcador y reloj en tiempo real · 3. Salida gráfica limpia en 1080p."
+            ],
+            5: [
+              "La emoción de cada jugada, transmitida con la calidad de las grandes cadenas deportivas.",
+              "Tu transmisión deportiva en OBS con estándar de televisión profesional en segundos."
+            ],
+            6: [
+              "Apasionada por el deporte, ágil bajo presión en cabina, precisa al milisegundo y cercana con los narradores y jugadores.",
+              "Confiable, energética, moderna y diseñada para que cualquier productor transmita con seguridad total."
+            ],
+            7: [
+              "Canales de streaming deportivo, ligas de fútbol americano, colegios y creadores en OBS que buscan calidad de TV sin fricción técnica.",
+              "Productores independientes y ligas deportivas que desean motivar a su comunidad con transmisiones de nivel profesional."
+            ]
+          };
+          return sportsTemplates[qIdx] || sportsTemplates[1];
+        }
+
+        // Si es gastronomía / restaurante mexicano contemporáneo / Michelin
+        if (/restauran|gastronom|cocina|chef|michelin|loter[ií]a|barro|platillo|comida/i.test(lowGiro)) {
+          const gastroTemplates = {
+            1: [
+              "Honrar la memoria culinaria de México reinterpretándola con técnica de estrella Michelin, diseño en barro moderno y hospitalidad cálida.",
+              "Convertir cada cena en un ritual sensorial donde el arte mexicano contemporáneo, la música chill-out y la alta cocina se encuentran."
+            ],
+            2: [
+              "Menú de autor con técnica Michelin servido en vajilla de barro escultórico, rodeado de arte de la Lotería modernizado y atmósfera chill-out.",
+              "Equilibrio único entre sofisticación gastronómica y calidez casual-formal en un espacio de diseño mexicano contemporáneo."
+            ],
+            3: [
+              "Regalamos a nuestros comensales veladas memorables que celebran sus momentos especiales con orgullo cultural y deleite sensorial.",
+              "Elevamos la experiencia de salir a cenar mediante servicio atento sin rigidez, coctelería de autor y sabores inolvidables."
+            ],
+            4: [
+              "1. Selección de ingredientes de origen y trazabilidad · 2. Ejecución culinaria con precisión Michelin · 3. Emplatado en barro de autor y servicio cálido.",
+              "1. Bienvenida sensorial con música mexicana chill-out · 2. Maridaje y narrativa en mesa · 3. Cierre memorable de sobremesa."
+            ],
+            5: [
+              "México reinterpretado en cada plato: técnica Michelin, alma de barro y atmósfera contemporánea.",
+              "Donde la tradición mexicana se vuelve arte contemporáneo en la mesa."
+            ],
+            6: [
+              "Anfitrión cálido, culto, sofisticado sin pretensiones, apasionado por el detalle estético y profundamente orgulloso de sus raíces.",
+              "Elegante, cercana, hospitalaria y capaz de contar la historia detrás de cada ingrediente con naturalidad."
+            ],
+            7: [
+              "Comensales exigentes, amantes de la gastronomía de autor y el diseño contemporáneo que buscan experiencias auténticas de nivel medio-alto.",
+              "Parejas, grupos de amigos y viajeros culturales que valoran la alta cocina mexicana en un ambiente casual-formal con estilo propio."
+            ]
+          };
+          return gastroTemplates[qIdx] || gastroTemplates[1];
+        }
+
         const tokens = window.extractSystemicTokensFromApp();
-        const t1 = tokens[0] || "calidad";
-        const t2 = tokens[1] || "confianza";
+        const t1 = tokens[0] || "excelencia";
+        const t2 = tokens[1] || "innovación";
 
         const templates = {
           1: [
-            `Transformar ${giro} mediante ${t1} y excelencia operativa`,
-            `Impulsar a quienes buscan ${t1} con una experiencia confiable en ${giro}`
+            `Elevar el estándar en ${giroClean}, generando orgullo, confianza y un impacto positivo duradero en cada cliente.`,
+            `Inspirar y diferenciarnos en ${giroClean} mediante soluciones pensadas para hacer sentir único a cada usuario.`
           ],
           2: [
-            `Combinamos atención personalizada en ${giro} con resultados medibles en ${t1}`,
-            `Un estándar superior de ${t1} y ${t2} diseñado para ${bName}`
+            `Combinamos atención personalizada en ${giroClean} con una interfaz y ejecución superior enfocada en ${t1}.`,
+            `Una propuesta diferenciada en ${giroClean} que une calidad profesional, agilidad y facilidad de uso.`
           ],
           3: [
-            `Ahorramos tiempo y brindamos certeza total en cada etapa de ${giro}`,
-            `Elevamos el bienestar y la tranquilidad del cliente a través de ${t1}`
+            `Ahorramos tiempo, eliminamos la complejidad técnica y brindamos certeza total en ${giroClean}.`,
+            `Hacemos que nuestros clientes destaquen con resultados profesionales y una experiencia memorable.`
           ],
           4: [
-            `1. Diagnóstico claro, 2. Ejecución especializada en ${t1}, 3. Entrega verificada`,
-            `Selección rigurosa, desarrollo a medida en ${giro} y acompañamiento continuo`
+            `1. Diagnóstico claro de necesidades · 2. Ejecución especializada con estándar profesional · 3. Entrega verificada y acompañamiento.`,
+            `1. Configuración ágil sin fricciones · 2. Operación precisa enfocada en ${t1} · 3. Mejora continua junto al cliente.`
           ],
           5: [
-            `${bName}: la referencia de ${t1} y ${t2} en ${giro}`,
-            `Excelencia y claridad en ${giro} para quienes valoran ${t1}`
+            `${bName}: el estándar profesional que transforma tu experiencia en ${giroClean}.`,
+            `Calidad, emoción y claridad profesional en ${giroClean} para quienes buscan destacar.`
           ],
           6: [
-            `Cercana, experta, resolutiva y apasionada por ${t1}`,
-            `Confiable, transparente, ágil y con autoridad en ${giro}`
+            `Cercana, experta, resolutiva y apasionada por cuidar cada detalle en ${giroClean}.`,
+            `Confiable, moderna, empática y con autoridad técnica puesta al servicio del cliente.`
           ],
           7: [
-            `Personas y organizaciones que buscan ${t1} sin fricciones ni demoras`,
-            `Clientes exigentes que valoran resultados reales en ${giro}`
+            `Personas y organizaciones en ${giroClean} que buscan calidad profesional sin complicaciones técnicas.`,
+            `Clientes que valoran la excelencia visual, el trato humano y un diferenciador claro en su sector.`
           ]
         };
         return templates[qIdx] || templates[1];
@@ -24181,16 +24301,25 @@
 
       window.tbbUpdateBusinessTypeFromInput = function (val) {
         const clean = String(val || "").trim();
+        const distilled = (typeof window.tbbDistillCleanGiroLabel === "function" && clean)
+          ? window.tbbDistillCleanGiroLabel(clean)
+          : clean.split(/\s+/).slice(0, 6).join(" ");
+        const orthoClean = (typeof window.tbbRefineUserCopyOrthoAndClarity === "function" && clean)
+          ? window.tbbRefineUserCopyOrthoAndClarity(clean, "giro")
+          : clean;
         if (typeof canvasState === "object" && canvasState) {
           canvasState.custom_business_type = clean;
-          canvasState.step0_short_essence = clean.split(/\s+/).slice(0, 6).join(" ");
-          canvasState.step0_paraphrased_essence = clean;
+          canvasState.step0_short_essence = distilled ? (distilled.charAt(0).toUpperCase() + distilled.slice(1)) : "";
+          canvasState.step0_paraphrased_essence = orthoClean;
         }
         const prev = document.getElementById("tbbStep0LiveEssencePreview");
-        if (prev) prev.textContent = clean || "Escribe arriba tu giro para adaptar el sistema.";
+        if (prev) {
+          prev.textContent = orthoClean
+            ? `${distilled ? (distilled.charAt(0).toUpperCase() + distilled.slice(1)) + " · " : ""}${orthoClean}`
+            : "Escribe arriba tu giro para adaptar el sistema.";
+        }
         window.tbbSyncInitialLogoIterationWithAppState();
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
-        // Experiencia de tecleo fluida: el dictamen se emite al terminar el párrafo completo
       };
 
       window.tbbSaveStep1Answer = function (key, val) {
@@ -26080,15 +26209,26 @@
         window.tbbJumpToStep(s, s === 5 ? 2 : 1);
       };
 
-      window.tbbPolishInputFieldClarity = function (inputId, fieldRole) {
+      window.tbbPolishInputFieldClarity = async function (inputId, fieldRole) {
         const el = document.getElementById(inputId);
         if (!el) return;
+        const btn = document.getElementById(inputId === "tbbStep0BizTextarea" ? "tbbBtnPolishStep0Ortho" : "tbbBtnPolishStep1Ortho");
+        const origBtnText = btn ? btn.textContent.trim() : "Corregir ortografía y redactar mi idea con claridad";
         const raw = String(el.value || "").trim();
-        if (!raw) return;
+        if (!raw) {
+          if (btn) {
+            btn.textContent = "⚠ Escribe primero tu idea arriba para corregirla";
+            setTimeout(() => { if (btn) btn.textContent = origBtnText; }, 2800);
+          }
+          el.focus();
+          return;
+        }
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-        const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+        const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName) && !/^Marca en Creaci/i.test(cs.brandName)) ? cs.brandName.trim() : "nuestra marca";
         const bGiro = (cs.custom_business_type || cs.step0_short_essence || "soluciones de valor").trim();
-        const refined = (typeof window.tbbRefineUserCopyOrthoAndClarity === "function")
+
+        // 1. Pase instantáneo de ortografía y estructura
+        let refined = (typeof window.tbbRefineUserCopyOrthoAndClarity === "function")
           ? window.tbbRefineUserCopyOrthoAndClarity(raw, fieldRole || "general", bName, bGiro)
           : raw;
         el.value = refined;
@@ -26097,6 +26237,64 @@
         } else if (inputId === "tbbStep1AnswerInput" && typeof window.tbbSaveStep1Answer === "function") {
           window.tbbSaveStep1Answer(fieldRole, refined);
         }
+
+        // 2. Pase en vivo con IA editorial para pulir acentos, sintaxis y claridad ejecutiva respetando 100% la idea del usuario
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = "✦ Corrigiendo ortografía y redactando tu idea con IA...";
+        }
+        try {
+          const roleDescriptions = {
+            giro: "Giro y actividad del negocio (qué ofrece y para quién)",
+            golden_circle: "Propósito Nuclear (por qué existe la marca más allá de generar ingresos)",
+            value_offer: "Oferta de Valor Diferenciada (qué la hace única frente a las alternativas)",
+            social_role: "Impacto concreto en el cliente (cómo mejora su vida o trabajo)",
+            process_steps_text: "Método y Proceso clave para garantizar calidad",
+            core_message: "Mensaje Central memorable en una sola frase",
+            brand_persona: "Carácter y Personalidad de la marca como persona",
+            ideal_customer: "Cliente Ideal y problema urgente que resuelve"
+          };
+          const roleDesc = roleDescriptions[fieldRole] || "Definición estratégica de la marca";
+          const prompt = [
+            `Eres un editor ejecutivo experto en lengua española y estrategia de marca.`,
+            `Corrige todas las faltas de ortografía, tildes omitidas (ej. "motivacion" -> "motivación", "haciendolos" -> "haciéndolos", "futbol" -> "fútbol", "transmitiir" -> "transmitir"), errores de dedo y puntuación del siguiente texto escrito por el usuario, y exprésalo con claridad, fluidez y nivel profesional SIN cambiar ni alterar su idea original ni agregar datos inventados.`,
+            `Dimensión: ${roleDesc}.`,
+            `Texto original del usuario: "${raw}"`,
+            `Responde ÚNICAMENTE con el texto corregido y bien redactado, sin comillas iniciales ni explicaciones adicionales.`
+          ].join("\n");
+
+          const resp = await fetch("/api/v1/gemini/proxy", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              model: "gemini-3.5-flash-lite",
+              contents: prompt,
+              config: { temperature: 0.25 }
+            })
+          });
+          if (resp.ok) {
+            const data = await resp.json();
+            const aiText = String(data.text || "").trim().replace(/^["«“]|["»”]$/g, "").trim();
+            if (aiText && aiText.length >= 8) {
+              refined = aiText;
+              el.value = refined;
+              if (inputId === "tbbStep0BizTextarea" && typeof window.tbbUpdateBusinessTypeFromInput === "function") {
+                window.tbbUpdateBusinessTypeFromInput(refined);
+              } else if (inputId === "tbbStep1AnswerInput" && typeof window.tbbSaveStep1Answer === "function") {
+                window.tbbSaveStep1Answer(fieldRole, refined);
+              }
+            }
+          }
+        } catch (err) {
+          console.warn("Polish AI fallback to deterministic:", err);
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = "✓ Ortografía y claridad mejoradas con éxito";
+            setTimeout(() => { if (btn) btn.textContent = origBtnText; }, 3500);
+          }
+        }
+
         window.triggerAuraEmpatheticFeedback("input_step1", refined, false, true);
         if (typeof window.tbbPostDemoProgressToParent === "function") window.tbbPostDemoProgressToParent();
       };

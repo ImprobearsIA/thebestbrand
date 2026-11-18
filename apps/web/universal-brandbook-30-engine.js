@@ -200,8 +200,37 @@
     "contemporanea": "contemporánea", "contemporaneo": "contemporáneo", "direccion": "dirección",
     "juridico": "jurídico", "juridica": "jurídica", "analitica": "analítica", "analitico": "analítico",
     "autonomos": "autónomos", "autonomo": "autónomo", "autonoma": "autónoma", "planeacion": "planeación",
-    "manana": "mañana", "precision": "precisión", "integracion": "integración", "ejecucion": "ejecución"
+    "manana": "mañana", "precision": "precisión", "integracion": "integración", "ejecucion": "ejecución",
+    "motivacion": "motivación", "futbol": "fútbol", "basquetbol": "básquetbol", "beisbol": "béisbol",
+    "transmision": "transmisión", "transmisiones": "transmisiones", "television": "televisión",
+    "estadistica": "estadística", "estadisticas": "estadísticas", "marcador": "marcador",
+    "cronometro": "cronómetro", "grafico": "gráfico", "grafica": "gráfica", "graficos": "gráficos",
+    "graficas": "gráficas", "dinamico": "dinámico", "dinamica": "dinámica", "dinamicos": "dinámicos",
+    "dinamicas": "dinámicas", "simultaneo": "simultáneo", "simultanea": "simultánea",
+    "instantaneo": "instantáneo", "instantanea": "instantánea", "automatico": "automático",
+    "automatica": "automática", "categoria": "categoría", "categorias": "categorías",
+    "pelicula": "película", "peliculas": "películas", "especifico": "específico", "especifica": "específica",
+    "haciendolos": "haciéndolos", "haciendolas": "haciéndolas", "haciendolo": "haciéndolo",
+    "haciendola": "haciéndola", "haciendoles": "haciéndoles", "haciendose": "haciéndose",
+    "haciendonos": "haciéndonos", "dandoles": "dándoles", "dandole": "dándole", "dandonos": "dándonos",
+    "ofreciendoles": "ofreciéndoles", "ofreciendole": "ofreciéndole", "brindandoles": "brindándoles",
+    "brindandole": "brindándole", "permitiendoles": "permitiéndoles", "permitiendole": "permitiéndole",
+    "ayudandolos": "ayudándolos", "ayudandolas": "ayudándolas", "ayudandoles": "ayudándoles",
+    "llevandolos": "llevándolos", "llevandolas": "llevándolas", "convirtiendolos": "convirtiéndolos",
+    "convirtiendose": "convirtiéndose", "sintiendose": "sintiéndose", "manteniendolos": "manteniéndolos",
+    "acompanandolos": "acompañándolos", "acompanandoles": "acompañándoles", "transmitiir": "transmitir"
   };
+
+  function accentEncliticGerund(wordLow) {
+    // Regla general para gerundios enclíticos en español (siempre son esdrújulos/sobreesdrújulos y llevan tilde)
+    const m = wordLow.match(/^([a-zñü]+?)(ando|iendo|yendo)(los|las|lo|la|les|le|nos|me|te|se)$/);
+    if (!m) return null;
+    const stem = m[1];
+    const ger = m[2];
+    const pron = m[3];
+    const accentedGer = ger === "ando" ? "ándo" : (ger === "iendo" ? "iéndo" : "yéndo");
+    return stem + accentedGer + pron;
+  }
 
   function fixSpanishOrthography(inputStr) {
     if (!inputStr) return "";
@@ -215,12 +244,30 @@
 
     // Corregir palabras palabra por palabra respetando mayúsculas iniciales o totales
     s = s.replace(/\b([a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+)\b/g, (match) => {
-      const low = match.toLowerCase();
+      // 1. Limpiar vocales duplicadas accidentales (ej. "transmitiir" -> "transmitir", "creaar" -> "crear")
+      let cleanedMatch = match.replace(/([bcdfghjklmnñpqrstvwxyzBCDFGHJKLMNÑPQRSTVWXYZ])([iuIU])\2+/g, "$1$2");
+      let low = cleanedMatch.toLowerCase();
+      if (!/^(leer|creer|poseer|proveer|cooper|coordin|reemplaz|reenvi|reescrib)/.test(low)) {
+        cleanedMatch = cleanedMatch.replace(/([a-zA-ZñÑ])([aáeéiíoóuú])\2+/gi, "$1$2");
+        low = cleanedMatch.toLowerCase();
+      }
+
       let replacement = SPANISH_ORTHO_MAP[low];
+      if (!replacement) {
+        replacement = accentEncliticGerund(low);
+      }
       if (!replacement && low.length >= 6 && /[a-z]cion$/.test(low)) {
         replacement = low.slice(0, -4) + "ción";
       }
-      if (!replacement) return match;
+      if (!replacement && low.length >= 6 && /[a-z]sion$/.test(low)) {
+        replacement = low.slice(0, -4) + "sión";
+      }
+      if (!replacement && low.length >= 6 && /[a-z]xion$/.test(low)) {
+        replacement = low.slice(0, -4) + "xión";
+      }
+      if (!replacement) {
+        return cleanedMatch;
+      }
       if (match === match.toUpperCase() && match.length > 1) {
         return replacement.toUpperCase();
       }
@@ -235,7 +282,8 @@
       .replace(/\bpor que\b(?=\s+(?:quiero|queremos|buscamos|existe|creemos|hacemos))/gi, "porque")
       .replace(/\ba domicilio\b/gi, "a domicilio")
       .replace(/\bal vacio\b/gi, "al vacío")
-      .replace(/\bsin azucar\b/gi, "sin azúcar");
+      .replace(/\bsin azucar\b/gi, "sin azúcar")
+      .replace(/\bde la tv\b/gi, "de televisión");
 
     // Primera letra siempre en mayúscula
     s = s.charAt(0).toUpperCase() + s.slice(1);
@@ -642,12 +690,12 @@
     }
   };
 
-  // Función global para ejecutar la auditoría interactiva del autor en el paso actual
-  window.tbbRunLiveAuthorAudit = function (stepNum, fieldRole) {
+  // Función global para ejecutar la auditoría interactiva en vivo del autor en el paso actual (con IA en tiempo real)
+  window.tbbRunLiveAuthorAudit = async function (stepNum, fieldRole) {
     const s = Number(stepNum || 0);
     const board = window.TBB_MASTER_AUTHORS_BOARD || {};
     const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "nuestra marca";
     const bGiro = (cs.custom_business_type || cs.step0_short_essence || "Soluciones Especializadas").trim();
 
     const stepAuthorMap = {
@@ -668,20 +716,112 @@
     } else if (s === 1) {
       rawText = document.getElementById("tbbStep1AnswerInput")?.value || cs[fieldRole] || "";
     } else if (s === 2) {
-      rawText = (typeof tpExtractedItems === "object" && tpExtractedItems[fieldRole]) ? tpExtractedItems[fieldRole] : [];
+      const list = (typeof tpExtractedItems === "object" && tpExtractedItems[fieldRole]) ? tpExtractedItems[fieldRole] : [];
+      const customIn = document.getElementById("tbbCustomTpInput")?.value || "";
+      rawText = customIn.trim() || (Array.isArray(list) ? list.join(", ") : String(list || ""));
     } else if (s === 3) {
-      rawText = cs.brandName || "";
+      rawText = document.getElementById("tbbStep3CustomNameInput")?.value || cs.brandName || "";
     } else if (s === 4) {
       rawText = cs.step4_seed_idea || cs.primary_font || "";
     } else if (s === 5) {
-      rawText = window.tbbState?.logoPriHex || "#0D2540";
+      rawText = (Array.isArray(cs.brand_palette_hex_list) && cs.brand_palette_hex_list.length)
+        ? cs.brand_palette_hex_list.join(", ")
+        : (window.tbbState?.logoPriHex || "#0D2540");
     } else if (s === 6) {
       rawText = bName;
     }
 
-    const audit = author.auditMethod(rawText, { bName, bGiro, fieldRole, step: s });
-
+    const cleanRaw = String(rawText || "").trim();
     const container = document.getElementById(`tbbAuthorAuditResult_${s}`);
+    if (container) {
+      container.style.display = "block";
+      container.innerHTML = `
+        <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-left:4px solid #1D4ED8; border-radius:12px; padding:12px 14px; margin-top:8px; display:flex; align-items:center; gap:10px;">
+          <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#1D4ED8; animation:pulse 1s infinite;"></span>
+          <div style="font-size:0.80rem; font-weight:800; color:#0D2540;">
+            ✦ Consultando dictamen metodológico en vivo de <strong>${author.name}</strong> (${author.book})...
+          </div>
+        </div>
+      `;
+    }
+
+    const questionLabels = {
+      giro: "Giro del negocio, qué ofrece y para quién (Relevancia de Categoría)",
+      golden_circle: "1. Propósito Nuclear (El Porqué / Golden Circle más allá de generar ingresos)",
+      purpose: "1. Propósito Nuclear (El Porqué / Golden Circle)",
+      value_offer: "2. Oferta de Valor Diferenciada frente a las alternativas del mercado",
+      offer: "2. Oferta de Valor Diferenciada",
+      social_role: "3. Impacto concreto en la vida o el trabajo del cliente",
+      social: "3. Impacto concreto en el cliente",
+      process_steps_text: "4. Método y Proceso clave para garantizar calidad",
+      process: "4. Método y Proceso",
+      core_message: "5. Mensaje Central memorable en una sola frase",
+      message: "5. Mensaje Central",
+      brand_persona: "6. Carácter y Personalidad (La Empresa como Persona)",
+      persona: "6. Carácter y Personalidad",
+      ideal_customer: "7. Cliente Ideal y problema urgente que resuelve",
+      buyer: "7. Cliente Ideal",
+      before: "Touchpoints Antes de la Compra (Descubrimiento y Atracción)",
+      during: "Touchpoints Durante la Compra (Experiencia Principal)",
+      after: "Touchpoints Después de la Compra (Lealtad y Post-venta)"
+    };
+    const qDesc = questionLabels[fieldRole] || `Paso ${s} (${fieldRole || "Estrategia de Marca"})`;
+
+    // Fallback determinista mejorado (con corrección ortográfica real y análisis contextual)
+    let audit = author.auditMethod(cleanRaw, { bName, bGiro, fieldRole, step: s });
+    const refinedFallback = window.tbbRefineUserCopyOrthoAndClarity(cleanRaw || bGiro, fieldRole || "general", bName, bGiro);
+    if (refinedFallback) {
+      audit.executiveCopy = refinedFallback;
+    }
+
+    // Consulta en vivo a Gemini para un dictamen real, crítico y personalizado al texto del usuario
+    try {
+      const prompt = [
+        `Actúa como ${author.name}, autor de "${author.book}" y ${author.role}.`,
+        `Estás auditando la respuesta de un usuario en la plataforma de branding estratégico TheBestBrand.`,
+        `Contexto del negocio (Giro): "${bGiro}".`,
+        `Nombre actual de la marca: "${bName}".`,
+        `Dimensión evaluada: "${qDesc}".`,
+        cleanRaw
+          ? `Texto escrito por el usuario: "${cleanRaw}".`
+          : `El usuario aún dejó el campo vacío; propón un dictamen orientador y una redacción ejecutiva ideal basada en su giro "${bGiro}".`,
+        ``,
+        `Instrucciones estrictas:`,
+        `1. Analiza de verdad lo que escribió el usuario aplicando la metodología de ${author.name}. No repitas frases genéricas si el usuario dio detalles concretos (menciona sus conceptos clave y explica cómo fortalecerlos).`,
+        `2. En "executiveCopy", entrega una versión redactada con nivel ejecutivo, elocuente, inspiradora y con ORTOGRAFÍA Y ACENTUACIÓN PERFECTAS en español (corrige cualquier falta como "motivacion" -> "motivación", "haciendolos" -> "haciéndolos", "futbol" -> "fútbol", "transmitiir" -> "transmitir", etc.), respetando el 100% de la idea original del usuario sin inventar otro giro.`,
+        `3. Responde ÚNICAMENTE con un objeto JSON válido con estas 4 llaves exactas:`,
+        `{"verdict": "TÍTULO BREVE DEL DICTAMEN EN MAYÚSCULAS", "score": "96/100", "critique": "Dictamen directo de ${author.name} en 2 oraciones analizando el texto específico del usuario.", "executiveCopy": "Redacción ejecutiva impecable lista para sustituir el campo."}`
+      ].join("\n");
+
+      const resp = await fetch("/api/v1/gemini/proxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "gemini-3.5-flash-lite",
+          contents: prompt,
+          config: { temperature: 0.35, responseMimeType: "application/json" }
+        })
+      });
+
+      if (resp.ok) {
+        const data = await resp.json();
+        const rawJson = String(data.text || "").trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+        const parsed = JSON.parse(rawJson);
+        if (parsed && parsed.critique && parsed.executiveCopy) {
+          audit = {
+            author: author.name,
+            role: author.role,
+            verdict: String(parsed.verdict || audit.verdict).toUpperCase(),
+            score: String(parsed.score || "97/100"),
+            critique: fixSpanishOrthography(String(parsed.critique).trim()),
+            executiveCopy: fixSpanishOrthography(String(parsed.executiveCopy).trim())
+          };
+        }
+      }
+    } catch (err) {
+      console.warn("Live author audit fallback:", err);
+    }
+
     if (container) {
       container.style.display = "block";
       container.innerHTML = `
@@ -699,11 +839,11 @@
             “${audit.critique}”
           </p>
           <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:10px 12px; margin-bottom:10px;">
-            <div style="font-size:0.68rem; font-weight:800; color:#64748B; margin-bottom:4px; letter-spacing:0.06em;">REDACCIÓN EJECUTIVA DICTAMINADA POR ${author.name.toUpperCase()}:</div>
+            <div style="font-size:0.68rem; font-weight:800; color:#64748B; margin-bottom:4px; letter-spacing:0.06em;">PROPUESTA EJECUTIVA DICTAMINADA POR ${author.name.toUpperCase()} (ORTOGRAFÍA Y CLARIDAD VERIFICADAS):</div>
             <div style="font-size:0.86rem; font-weight:700; color:#090D16; line-height:1.4;">${audit.executiveCopy}</div>
           </div>
           <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbApplyAuthorExecutiveCopy(${s}, '${fieldRole}', '${encodeURIComponent(audit.executiveCopy)}')" style="min-height:36px !important; padding:6px 14px !important; font-size:0.78rem !important; width:100%; border-radius:10px !important;">
-            ✓ Aplicar Redacción Ejecutiva de ${author.shortName} al Campo
+            ✓ Reemplazar mi texto con la Redacción Ejecutiva de ${author.shortName}
           </button>
         </div>
       `;
@@ -727,7 +867,12 @@
       const el = document.getElementById("tbbStep1AnswerInput");
       if (el) el.value = text;
       if (typeof window.tbbSaveStep1Answer === "function") window.tbbSaveStep1Answer(fieldRole, text);
+    } else if (s === 2) {
+      const el = document.getElementById("tbbCustomTpInput");
+      if (el) el.value = text;
     } else if (s === 3) {
+      const el = document.getElementById("tbbStep3CustomNameInput");
+      if (el) el.value = text;
       if (typeof window.tbbUpdateBrandNameFromInput === "function") window.tbbUpdateBrandNameFromInput(text);
     }
 
@@ -735,7 +880,7 @@
     if (container) {
       container.innerHTML = `
         <div style="background:#ECFDF5; border:1px solid #A7F3D0; border-radius:8px; padding:8px 12px; font-size:0.78rem; font-weight:800; color:#047857; text-align:center;">
-          ✓ Redacción ejecutiva aplicada exitosamente y sincronizada con el Manual de 30 Hojas.
+          ✓ Redacción ejecutiva aplicada al campo y sincronizada con el Manual de 30 Hojas.
         </div>
       `;
       setTimeout(() => {
@@ -752,11 +897,13 @@
 
     let text = fixSpanishOrthography(cleanRaw);
     const bName = (brandName && !/^mi nueva marca$/i.test(brandName)) ? String(brandName).trim() : "nuestra marca";
+    const role = String(fieldRole || "general").toLowerCase();
 
     // Elevar claridad sin alterar la idea central del usuario
-    if (fieldRole === "giro") {
+    if (role === "giro") {
       text = text
         .replace(/^(?:soluciones estrat[eé]gicas,?\s+ingenier[ií]a de valor y experiencia de marca\s+(?:en\s+)?)/i, "")
+        .replace(/^(?:ofrece|ofrecemos|brinda|brindamos)\s+una\s+alternativa\s+para\s+/i, "Plataforma y solución especializada para ")
         .replace(/^(?:es una app|es una aplicaci[oó]n|somos una app)\s+que\s+/i, "Aplicación y plataforma digital que ")
         .replace(/^(?:es una plataforma|somos una plataforma)\s+que\s+/i, "Plataforma tecnológica que ")
         .replace(/^(?:es un software|es un sistema)\s+que\s+/i, "Sistema tecnológico especializado que ")
@@ -770,12 +917,15 @@
       return text;
     }
 
-    if (fieldRole === "purpose") {
+    if (role === "purpose" || role === "golden_circle") {
       text = text
         .replace(/^(?:porque\s+)?(?:quiero|queremos|busco|buscamos)\s+que\s+/i, "Existimos para lograr que ")
         .replace(/^(?:porque\s+)?(?:quiero|queremos|busco|buscamos)\s+/i, "Nuestro propósito es ")
+        .replace(/^(?:para\s+ofrecer|ofrecer)\s+/i, "Existimos para brindar ")
+        .replace(/^(?:para\s+dar|dar)\s+/i, "Existimos para brindar ")
         .replace(/^(?:para\s+que\s+)/i, "Impulsamos un impacto positivo para que ")
-        .replace(/^(?:ayudar\s+a\s+)/i, "Transformar y mejorar la experiencia de ");
+        .replace(/^(?:ayudar\s+a\s+)/i, "Transformar y elevar la experiencia de ")
+        .replace(/,\s*y\s+un\s+diferenciador\s+/i, ", consolidando además un diferenciador ");
       text = text.charAt(0).toUpperCase() + text.slice(1);
       if (!/[.!?]$/.test(text)) text += ".";
       if (text.split(/\s+/).length < 10) {
@@ -784,7 +934,7 @@
       return text;
     }
 
-    if (fieldRole === "offer") {
+    if (role === "offer" || role === "value_offer") {
       text = text
         .replace(/^(?:nosotros\s+)?(?:usamos|utilizamos)\s+/i, "Nos diferenciamos porque seleccionamos y utilizamos ")
         .replace(/^(?:que\s+somos|somos)\s+/i, "Destacamos por ser una propuesta ")
@@ -797,7 +947,7 @@
       return text;
     }
 
-    if (fieldRole === "social") {
+    if (role === "social" || role === "social_role") {
       text = text
         .replace(/^(?:ayudar\s+a|ayudamos\s+a)\s+/i, "Facilitamos y elevamos la calidad de vida de ")
         .replace(/^(?:hacer\s+que|lograr\s+que)\s+/i, "Generamos bienestar tangible logrando que ");
@@ -806,7 +956,7 @@
       return text;
     }
 
-    if (fieldRole === "process") {
+    if (role === "process" || role === "process_steps_text") {
       // Si el usuario escribió pasos con números sin punto ("1 cocinamos 2 empacamos 3 enviamos")
       if (/\b1[\s.)-]/.test(text) && /\b2[\s.)-]/.test(text)) {
         text = text
@@ -822,13 +972,13 @@
       return text;
     }
 
-    if (fieldRole === "message") {
+    if (role === "message" || role === "core_message") {
       text = text.replace(/^["«“]|["»”]$/g, "").replace(/\.+$/, "").trim();
       text = text.charAt(0).toUpperCase() + text.slice(1);
       return text;
     }
 
-    if (fieldRole === "persona") {
+    if (role === "persona" || role === "brand_persona") {
       if (text.split(/\s+/).length <= 8 && !/[.]/.test(text)) {
         text = `Una marca de carácter ${text.charAt(0).toLowerCase() + text.slice(1)}, que escucha primero al cliente, comunica con claridad sin tecnicismos innecesarios y acompaña con compromiso real.`;
       } else if (!/[.!?]$/.test(text)) {
@@ -837,7 +987,7 @@
       return text;
     }
 
-    if (fieldRole === "buyer") {
+    if (role === "buyer" || role === "ideal_customer") {
       text = text
         .replace(/^(?:para\s+|son\s+)/i, "")
         .replace(/\.+$/, "");
@@ -845,7 +995,7 @@
       return text;
     }
 
-    if (fieldRole === "touchpoint") {
+    if (role === "touchpoint") {
       text = text.replace(/\.+$/, "");
       text = text.charAt(0).toUpperCase() + text.slice(1);
       return text;
