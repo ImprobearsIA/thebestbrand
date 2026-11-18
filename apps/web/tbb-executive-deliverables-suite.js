@@ -2873,7 +2873,7 @@
         "",
         `=== 3. CONVERSATIONAL IMAGE-TO-IMAGE EVOLUTION DIRECTIVE ===`,
         isExternalUpload
-          ? `• An existing base logo image is attached. Preserve its core recognizable identity and palette (${pri}, ${sec}, ${acc}), while elevating its artistic richness, detail, and typography to world-class studio perfection.`
+          ? `• An existing legacy company logo image is attached. MODERNIZE and REDESIGN it to world-class contemporary architectural/corporate studio standards: replace any dated script or calligraphic lettering with bold, modern, high-authority typography ("${chosenFont}"), preserve and elevate its signature visual DNA (such as its double sweeping arch, structural pillars/towers, and iconic "${initials}" monogram) and its official color palette (${pri}, ${sec}, ${acc}), integrating authentic symbols of its business (${giro}${savedSeedIdea ? `, ${savedSeedIdea}` : ""}) into a cohesive, master-crafted contemporary brand identity.`
           : `• The attached image is the PREVIOUS ITERATION of "${bName}". Evolve, refine, and transform that design directly according to the new creative direction below while maintaining strong brand continuity.`,
         userInstruction
           ? `• USER'S SPECIFIC REFINEMENT / ITERATION REQUEST: "${userInstruction}". Execute this request with bold artistic intelligence and unmistakable visual impact.`

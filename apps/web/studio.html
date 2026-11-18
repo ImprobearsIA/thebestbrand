@@ -22057,7 +22057,8 @@
 
               if (!window.step0State) window.step0State = { goal: "redesign", assets: "has_name" };
               window.step0State.assets = "has_name";
-              window.step0State.existingLogoMode = window.step0State.existingLogoMode || "keep";
+              const defModeSvg = window.step0State.goal === "redesign" ? "evolve" : "keep";
+              window.step0State.existingLogoMode = window.step0State.existingLogoMode || defModeSvg;
               window.step0State.userUploadedExternalLogo = true;
               window.step0State.uploadedLogoDataUrl = compactUrl;
               window.step0State.uploadedLogoSvgMarkup = innerMarkup;
@@ -22065,21 +22066,27 @@
 
               const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
               cs.user_uploaded_external_logo = true;
+              cs.raw_uploaded_logo_data_url = compactUrl;
               cs.uploaded_logo_data_url = compactUrl;
               cs.base_uploaded_logo_data_url = compactUrl;
               cs.uploaded_logo_svg_markup = innerMarkup;
-              cs.existing_logo_mode = cs.existing_logo_mode || "keep";
+              cs.existing_logo_mode = cs.existing_logo_mode || defModeSvg;
               cs.uploaded_logo_colors = [extractedPri, extractedSec, extractedAcc];
               cs.primary_color = extractedPri;
               cs.secondary_color = extractedSec;
               cs.accent_color = extractedAcc;
               cs.selected_colors_hex = ["#FFFFFF", "#090D16", extractedPri, extractedSec];
+              cs.brand_palette_colors = [extractedPri, extractedSec, extractedAcc, "#F8FAFC"];
+              if (typeof window.tbbSyncBrandPaletteToEngine === "function") {
+                window.tbbSyncBrandPaletteToEngine([extractedPri, extractedSec, extractedAcc, "#F8FAFC"], false);
+              }
 
               const st = window.tbbState;
               if (st) {
                 st.logoPriHex = extractedPri;
                 st.logoSecHex = extractedSec;
                 st._uploadedLogoEvolvedOnce = false;
+                st._autoNanoBananaTriggered = false;
               }
 
               window.tbbSyncUploadedLogoIntoIterations();
@@ -22145,7 +22152,8 @@
 
             if (!window.step0State) window.step0State = { goal: "redesign", assets: "has_name" };
             window.step0State.assets = "has_name";
-            window.step0State.existingLogoMode = window.step0State.existingLogoMode || "keep";
+            const defModeRaster = window.step0State.goal === "redesign" ? "evolve" : "keep";
+            window.step0State.existingLogoMode = window.step0State.existingLogoMode || defModeRaster;
             window.step0State.userUploadedExternalLogo = true;
             window.step0State.uploadedLogoDataUrl = compactPngUrl;
             delete window.step0State.uploadedLogoSvgMarkup;
@@ -22153,15 +22161,20 @@
 
             const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
             cs.user_uploaded_external_logo = true;
+            cs.raw_uploaded_logo_data_url = rawDataUrl;
             cs.uploaded_logo_data_url = compactPngUrl;
             cs.base_uploaded_logo_data_url = compactPngUrl;
             delete cs.uploaded_logo_svg_markup;
-            cs.existing_logo_mode = cs.existing_logo_mode || "keep";
+            cs.existing_logo_mode = cs.existing_logo_mode || defModeRaster;
             cs.uploaded_logo_colors = [extractedPri, extractedSec, extractedAcc];
             cs.primary_color = extractedPri;
             cs.secondary_color = extractedSec;
             cs.accent_color = extractedAcc;
             cs.selected_colors_hex = ["#FFFFFF", "#090D16", extractedPri, extractedSec];
+            cs.brand_palette_colors = [extractedPri, extractedSec, extractedAcc, "#F8FAFC"];
+            if (typeof window.tbbSyncBrandPaletteToEngine === "function") {
+              window.tbbSyncBrandPaletteToEngine([extractedPri, extractedSec, extractedAcc, "#F8FAFC"], false);
+            }
 
             // Pre-trazar versión 100% en curvas Bézier para exportación inmediata en .SVG / .AI
             if (typeof window.tbbVectorizeRasterLogoToSvgCurves === "function") {
@@ -22178,6 +22191,7 @@
               st.logoPriHex = extractedPri;
               st.logoSecHex = extractedSec;
               st._uploadedLogoEvolvedOnce = false;
+              st._autoNanoBananaTriggered = false;
             }
 
             window.tbbSyncUploadedLogoIntoIterations();
@@ -22340,15 +22354,26 @@
         const chosenFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || cs.primary_font || "Plus Jakarta Sans";
         const layoutMode = (activeIt && activeIt.layout) || mods.layout || "horizontal";
 
-        // SHOWCASE DE ALTA COSTURA NANOBANANA PRO: Cuando la iteración activa fue creada por NanoBanana PRO,
-        // mostramos la Obra Maestra Completa en gran formato (502x412 px) a la izquierda y el Ícono App 1:1 a la derecha
-        if (activeIt && activeIt.isNanoBananaGenerated && (activeIt.nanoBananaFullArtworkUrl || activeIt.nanoBananaSymbolUrl)) {
-          const fullArtUrl = activeIt.nanoBananaFullArtworkUrl || activeIt.nanoBananaSymbolUrl;
-          const symArtUrl = activeIt.nanoBananaSymbolUrl || activeIt.nanoBananaFullArtworkUrl;
-          const priCol = activeIt.pri || st.logoPriHex || "#9E3B24";
-          const secCol = activeIt.sec || st.logoSecHex || "#C89D54";
-          const accCol = activeIt.accentHex || cs.accent_color || "#14110F";
-          const modeLabel = (activeIt.shortPill || activeIt.conceptLabel || "NanoBanana PRO").toUpperCase().slice(0, 30);
+        // SHOWCASE DE ALTA COSTURA NANOBANANA PRO Y LOGO BASE SUBIDO:
+        // Cuando la iteración activa fue creada por NanoBanana PRO o es un logotipo base subido por el usuario,
+        // mostramos la Obra Completa en gran formato (504x412 px) a la izquierda y el Ícono App 1:1 a la derecha
+        const isShowcaseArtwork = Boolean(
+          activeIt && (
+            (activeIt.isNanoBananaGenerated && (activeIt.nanoBananaFullArtworkUrl || activeIt.nanoBananaSymbolUrl || activeIt.uploadedLogoDataUrl)) ||
+            (activeIt.isUploadedUserLogo && (activeIt.uploadedLogoDataUrl || cs.raw_uploaded_logo_data_url))
+          )
+        );
+        if (isShowcaseArtwork) {
+          const fullArtUrl = activeIt.isUploadedUserLogo
+            ? (cs.raw_uploaded_logo_data_url || activeIt.uploadedLogoDataUrl)
+            : (activeIt.nanoBananaFullArtworkUrl || activeIt.nanoBananaSymbolUrl || activeIt.uploadedLogoDataUrl);
+          const symArtUrl = activeIt.isUploadedUserLogo
+            ? (activeIt.uploadedLogoDataUrl || cs.raw_uploaded_logo_data_url)
+            : (activeIt.nanoBananaSymbolUrl || activeIt.nanoBananaFullArtworkUrl || activeIt.uploadedLogoDataUrl);
+          const priCol = activeIt.pri || st.logoPriHex || "#0078C0";
+          const secCol = activeIt.sec || st.logoSecHex || "#88E0E0";
+          const accCol = activeIt.accentHex || cs.accent_color || "#585850";
+          const modeLabel = (activeIt.isUploadedUserLogo ? "TU LOGOTIPO BASE ORIGINAL" : (activeIt.shortPill || activeIt.conceptLabel || "NanoBanana PRO")).toUpperCase().slice(0, 32);
 
           const nbSvgOut = `
             <svg viewBox="0 0 760 440" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="max-height:100%; display:block; margin:0 auto;">
@@ -22379,13 +22404,13 @@
               </defs>
               <rect width="760" height="440" rx="18" fill="url(#bgDual_${uid})"/>
 
-              <!-- Escenario Principal Izquierdo: Obra Maestra Completa NanoBanana PRO (504x412 px) -->
-              <rect x="14" y="14" width="504" height="412" rx="18" fill="${isDark ? '#12100E' : '#FAF6F0'}" stroke="url(#sqRimBevel_${uid})" stroke-width="2.2" filter="url(#sqShad_${uid})"/>
+              <!-- Escenario Principal Izquierdo: Obra Completa en Marco de Galería (504x412 px) -->
+              <rect x="14" y="14" width="504" height="412" rx="18" fill="${isDark ? '#12100E' : '#FFFFFF'}" stroke="url(#sqRimBevel_${uid})" stroke-width="2.2" filter="url(#sqShad_${uid})"/>
               <g clip-path="url(#artFrameClip_${uid})">
-                <image href="${fullArtUrl}" xlink:href="${fullArtUrl}" x="18" y="18" width="496" height="404" preserveAspectRatio="xMidYMid meet"/>
+                <image href="${fullArtUrl}" xlink:href="${fullArtUrl}" x="22" y="22" width="488" height="396" preserveAspectRatio="xMidYMid meet"/>
               </g>
-              <rect x="26" y="24" width="188" height="24" rx="12" fill="rgba(9,13,22,0.78)" stroke="${secCol}" stroke-width="1"/>
-              <text x="120" y="40" text-anchor="middle" fill="#FDE68A" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="9.5" letter-spacing="0.8">✦ ${escapeHTML(modeLabel)}</text>
+              <rect x="26" y="24" width="218" height="24" rx="12" fill="rgba(9,13,22,0.82)" stroke="${secCol}" stroke-width="1"/>
+              <text x="135" y="40" text-anchor="middle" fill="#FDE68A" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="9.2" letter-spacing="0.7">✦ ${escapeHTML(modeLabel)}</text>
 
               <!-- Columna Derecha: Ícono App 1:1 en Squircle + ADN Cromático Activo -->
               <rect x="532" y="14" width="214" height="412" rx="18" fill="${isDark ? '#111827' : '#FFFFFF'}" stroke="${isDark ? '#334155' : '#CBD5E1'}" stroke-width="1.5"/>
@@ -23248,10 +23273,16 @@
                         Subir mi Logo (.PNG, .JPG, .SVG)
                       </button>
                     ` : `
-                      <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
-                        <img src="${uploadedLogoUrl}" alt="Logo actual" style="width:36px; height:36px; object-fit:contain; border-radius:8px; border:1px solid #CBD5E1; background:#FFFFFF; flex-shrink:0;" />
-                        <div style="min-width:0; flex:1; font-size:0.80rem; font-weight:900; color:#090D16;">
-                          Logo actual cargado (${extColors[0] || '#1D4ED8'} · ${extColors[1] || '#0D2540'})
+                      <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1; flex-wrap:wrap;">
+                        <img src="${cs.raw_uploaded_logo_data_url || uploadedLogoUrl}" alt="Logo actual" style="width:42px; height:42px; object-fit:contain; border-radius:8px; border:1px solid #CBD5E1; background:#FFFFFF; flex-shrink:0;" />
+                        <div style="min-width:0; flex:1;">
+                          <div style="font-size:0.80rem; font-weight:900; color:#090D16;">
+                            Logo actual cargado (${extColors[0] || '#0078C0'} · ${extColors[1] || '#88E0E0'})
+                          </div>
+                          <div style="display:flex; gap:6px; margin-top:4px; flex-wrap:wrap;">
+                            <button type="button" onclick="window.tbbSetExistingLogoMode('evolve')" style="background:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'evolve' ? '#1D4ED8' : '#FFFFFF'}; color:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'evolve' ? '#FFFFFF' : '#1D4ED8'}; border:1.5px solid #1D4ED8; border-radius:7px; padding:3px 9px; font-size:0.70rem; font-weight:800; cursor:pointer;">✦ Modernizar / Evolucionar</button>
+                            <button type="button" onclick="window.tbbSetExistingLogoMode('keep')" style="background:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'keep' ? '#1D4ED8' : '#FFFFFF'}; color:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'keep' ? '#FFFFFF' : '#1D4ED8'}; border:1.5px solid #1D4ED8; border-radius:7px; padding:3px 9px; font-size:0.70rem; font-weight:800; cursor:pointer;">Mantener Igual</button>
+                          </div>
                         </div>
                         <div style="display:flex; gap:6px;">
                           <button type="button" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="background:#FFFFFF; color:#1D4ED8; border:1.5px solid #1D4ED8; border-radius:8px; padding:4px 10px; font-size:0.72rem; font-weight:800; cursor:pointer;">Cambiar</button>
@@ -23574,26 +23605,46 @@
           } else {
             const confirmedBrand = curBrand || (dynamicCandidates[0] && dynamicCandidates[0].name) || "TU MARCA";
             const taglineVal = cs.tagline || cs.step0_short_essence || "EXCELENCIA Y CLARIDAD EN CADA DETALLE";
+            const giroLowNice = String(cs.custom_business_type || cs.step0_short_essence || "").toLowerCase();
+            let autoNiceClass = cs.primary_nice_class || "";
+            if (!autoNiceClass) {
+              if (/construc|arquitect|obra\s*civil|edificac|inmobiliar|urbanizac|ingenier[ií]a\s*civil|desarrollador/i.test(giroLowNice)) {
+                autoNiceClass = "Clase 37 (Construcción, edificación residencial, obra civil y urbanización) y Clase 42 (Ingeniería estructural y proyectos arquitectónicos)";
+              } else if (/restauran|gastronom|cocina|chef|alimento|bebida|hospitalidad|caf[eé]|bar/i.test(giroLowNice)) {
+                autoNiceClass = "Clase 43 (Servicios de restauración, alta gastronomía y hospitalidad) y Clase 30/33 (Productos gourmet y bebidas)";
+              } else if (/software|saas|app|tecnolog|ia|inteligencia\s*artificial| marcador|streaming|plataforma/i.test(giroLowNice)) {
+                autoNiceClass = "Clase 9 (Software descargable y aplicaciones digitales) y Clase 42 (SaaS, desarrollo tecnológico e inteligencia artificial)";
+              } else {
+                autoNiceClass = "Clase 35 (Gestión comercial, estrategia de marca y servicios corporativos) y Clase 42 (Consultoría técnica especializada)";
+              }
+              cs.primary_nice_class = autoNiceClass;
+            }
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:12px 16px; gap:10px;">
+              <div class="tbb-atomic-card" style="padding:10px 16px; gap:8px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#1D4ED8;">PASO 3 · 3 DE 3 · CONFIRMACIÓN DE NOMBRE OFICIAL Y ESLOGAN</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.14rem; font-weight:900; color:#090D16; margin:2px 0 4px 0;">
-                    Confirma o ajusta cómo aparecerá tu nombre y tu eslogan en el logotipo y en tu manual
+                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 3 · 3 DE 3 · CONFIRMACIÓN DE NOMBRE OFICIAL, ESLOGAN Y CLASE DE NIZA</div>
+                  <h2 style="font-family:var(--font-display); font-size:1.08rem; font-weight:900; color:#090D16; margin:2px 0 2px 0;">
+                    Confirma tu Nombre Oficial, tu Eslogan Descriptivo y tu Clasificación de Registro Marcario
                   </h2>
                 </div>
-                <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:10px;">
-                  <div style="background:#F0F7FF; border:2px solid #1D4ED8; border-radius:14px; padding:10px 14px;">
-                    <label for="tbbStep3FinalBrandInput" style="display:block; font-family:var(--font-mono); font-size:0.68rem; color:#1D4ED8; font-weight:900; letter-spacing:0.05em; margin-bottom:4px;">
+                <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:8px;">
+                  <div style="background:#F0F7FF; border:2px solid #1D4ED8; border-radius:14px; padding:8px 14px;">
+                    <label for="tbbStep3FinalBrandInput" style="display:block; font-family:var(--font-mono); font-size:0.66rem; color:#1D4ED8; font-weight:900; letter-spacing:0.05em; margin-bottom:3px;">
                       ★ NOMBRE OFICIAL DE TU MARCA (EDITABLE):
                     </label>
-                    <input type="text" id="tbbStep3FinalBrandInput" value="${confirmedBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" placeholder="Escribe el nombre oficial de tu marca..." style="width:100%; height:44px; padding:0 14px; border-radius:10px; border:2px solid #090D16; background:#FFFFFF; font-family:var(--font-display); font-size:1.25rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
+                    <input type="text" id="tbbStep3FinalBrandInput" value="${confirmedBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" placeholder="Escribe el nombre oficial de tu marca..." style="width:100%; height:40px; padding:0 12px; border-radius:10px; border:2px solid #090D16; background:#FFFFFF; font-family:var(--font-display); font-size:1.18rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
                   </div>
                   <div>
-                    <label for="tbbStep3TaglineInput" style="display:block; font-size:0.76rem; font-weight:800; color:#334155; margin-bottom:4px;">
-                      Eslogan o Frase Descriptiva (acompañará a tu logotipo y portada del Brandbook):
-                    </label>
-                    <input type="text" id="tbbStep3TaglineInput" value="${taglineVal.replace(/"/g, '&quot;')}" oninput="canvasState.tagline=this.value; saveBrandSessionToLocalStorage();" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Ej. Claridad y precisión en tiempo real..." style="width:100%; height:42px; padding:0 14px; border-radius:10px; border:2px solid #090D16; background:#FFFFFF; font-size:0.88rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
+                      <label for="tbbStep3TaglineInput" style="font-size:0.74rem; font-weight:800; color:#334155;">
+                        Eslogan o Frase Descriptiva (acompañará a tu logotipo y portada del Brandbook):
+                      </label>
+                      <button type="button" onclick="window.tbbPolishInputFieldClarity('tbbStep3TaglineInput', 'tagline')" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; border-radius:6px; padding:2px 8px; font-size:0.68rem; font-weight:800; cursor:pointer;">✦ Refinar Eslogan con IA</button>
+                    </div>
+                    <input type="text" id="tbbStep3TaglineInput" value="${taglineVal.replace(/"/g, '&quot;')}" oninput="canvasState.tagline=this.value; saveBrandSessionToLocalStorage();" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Ej. Claridad y precisión en tiempo real..." style="width:100%; height:38px; padding:0 12px; border-radius:10px; border:2px solid #090D16; background:#FFFFFF; font-size:0.86rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                  </div>
+                  <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:12px; padding:7px 12px; font-size:0.74rem; color:#0F172A; line-height:1.35;">
+                    <strong style="color:#1D4ED8; font-family:var(--font-mono);">CLASIFICACIÓN INTERNACIONAL DE NIZA (IMPI / WIPO):</strong> ${autoNiceClass}
                   </div>
                   ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(3, "brandName") : ""}
                 </div>
@@ -23866,12 +23917,18 @@
         // PASO 5: ESTUDIO SISTEMÁTICO DE LOGOTIPO (2 SUB-VISTAS SIN SCROLL)
         // ---------------------------------------------------------------------
         if (st.step === 5) {
-          const uploadedLogoUrl = cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
+          const hasExternalUploadedLogo = Boolean(
+            (cs.user_uploaded_external_logo && (cs.base_uploaded_logo_data_url || cs.uploaded_logo_data_url)) ||
+            (window.step0State?.userUploadedExternalLogo && window.step0State?.uploadedLogoDataUrl)
+          );
+          const uploadedLogoUrl = hasExternalUploadedLogo
+            ? (cs.base_uploaded_logo_data_url || cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "")
+            : "";
           const existingLogoMode = cs.existing_logo_mode || window.step0State?.existingLogoMode || "evolve";
-          const extColors = cs.uploaded_logo_colors || window.step0State?.uploadedLogoColors || [st.logoPriHex || "#1D4ED8", st.logoSecHex || "#0D2540"];
+          const extColors = cs.uploaded_logo_colors || window.step0State?.uploadedLogoColors || [st.logoPriHex || "#0078C0", st.logoSecHex || "#88E0E0"];
           const displayBrandStep5 = (cs.brandName && !/^(mi nueva marca|marca en creaci[oó]n.*|proyecto gastron.*)$/i.test(cs.brandName)) ? cs.brandName : "Tu Marca";
 
-          if (uploadedLogoUrl) {
+          if (hasExternalUploadedLogo) {
             window.tbbSyncUploadedLogoIntoIterations();
           } else if (!st.logoIterations || st.logoIterations.length === 0) {
             st.logoParadigm = window.inferParadigmFromAppSliders();
@@ -23921,12 +23978,12 @@
                     </button>
                   ` : `
                     <div style="display:flex; align-items:center; gap:8px; min-width:0; flex:1;">
-                      <img src="${uploadedLogoUrl}" alt="Logo base" style="width:32px; height:32px; object-fit:contain; border-radius:7px; border:1px solid #93C5FD; background:#FFFFFF; flex-shrink:0;" />
+                      <img src="${cs.raw_uploaded_logo_data_url || uploadedLogoUrl}" alt="Logo base" style="width:36px; height:36px; object-fit:contain; border-radius:7px; border:1px solid #93C5FD; background:#FFFFFF; flex-shrink:0;" />
                       <div style="min-width:0;">
                         <div style="font-size:0.73rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Logo Base Cargado (${extColors[0]} · ${extColors[1]})</div>
                         <div style="display:flex; gap:6px; margin-top:2px;">
                           <button type="button" onclick="window.tbbSetExistingLogoMode('keep')" style="background:${existingLogoMode === 'keep' ? '#1D4ED8' : '#FFFFFF'}; color:${existingLogoMode === 'keep' ? '#FFFFFF' : '#1D4ED8'}; border:1.5px solid #1D4ED8; border-radius:6px; padding:2px 7px; font-size:0.66rem; font-weight:800; cursor:pointer;">Mantenerlo</button>
-                          <button type="button" onclick="window.tbbSetExistingLogoMode('evolve')" style="background:${existingLogoMode === 'evolve' ? '#1D4ED8' : '#FFFFFF'}; color:${existingLogoMode === 'evolve' ? '#FFFFFF' : '#1D4ED8'}; border:1.5px solid #1D4ED8; border-radius:6px; padding:2px 7px; font-size:0.66rem; font-weight:800; cursor:pointer;">Evolucionar como base</button>
+                          <button type="button" onclick="window.tbbSetExistingLogoMode('evolve')" style="background:${existingLogoMode === 'evolve' ? '#1D4ED8' : '#FFFFFF'}; color:${existingLogoMode === 'evolve' ? '#FFFFFF' : '#1D4ED8'}; border:1.5px solid #1D4ED8; border-radius:6px; padding:2px 7px; font-size:0.66rem; font-weight:800; cursor:pointer;">✦ Modernizar / Evolucionar como base</button>
                           <button type="button" onclick="document.getElementById('tbbStep5LogoFileInput').click()" style="background:#FFFFFF; color:#475569; border:1px solid #CBD5E1; border-radius:6px; padding:2px 6px; font-size:0.65rem; font-weight:800; cursor:pointer;">Cambiar</button>
                         </div>
                       </div>
@@ -23950,22 +24007,34 @@
               setTimeout(() => window.tbbInitCircularSpectrumWheel(), 0);
             }
           } else {
-            // Sub-vista 5.2: Lienzo de Logotipo a Pantalla Completa + Prompt <=40 palabras + Cuadro Único de Iteración (Cero Scroll)
-            const firstIt = st.logoIterations[0];
+            // Sub-vista 5.2: Lienzo de Logotipo NanoBanana PRO a Pantalla Completa + 4 Modos de Dirección Creativa + Iteración Conversacional
+            const firstIt = st.logoIterations && st.logoIterations[0];
             const seedIdeaTrim = String(cs.step4_seed_idea || "").trim();
+            const brandKeyForAuto = `${displayBrandStep5}_${seedIdeaTrim.slice(0, 24)}_${hasExternalUploadedLogo ? "ext" : "new"}_${existingLogoMode}`;
+
             if (
-              !uploadedLogoUrl &&
+              st._autoNanoBananaBrandKey !== brandKeyForAuto &&
               st.logoIterations.length === 1 &&
-              firstIt &&
-              seedIdeaTrim.length > 2 &&
-              !firstIt._seedEvaluatedByGemini &&
               !st.geminiBusy &&
-              typeof window.tbbRunLiveGeminiLogoIteration === "function"
+              typeof window.tbbGenerateNanoBananaBrandSymbol === "function"
             ) {
-              firstIt._seedEvaluatedByGemini = true;
-              setTimeout(() => {
-                window.tbbRunLiveGeminiLogoIteration(firstIt, seedIdeaTrim);
-              }, 40);
+              if (hasExternalUploadedLogo && existingLogoMode === "evolve") {
+                st._autoNanoBananaBrandKey = brandKeyForAuto;
+                setTimeout(() => {
+                  window.tbbGenerateNanoBananaBrandSymbol(
+                    seedIdeaTrim || `Moderniza el logotipo de ${displayBrandStep5} conservando su esencia estructural y su paleta oficial, elevándolo a nivel estudio arquitectónico internacional.`,
+                    { creativeMode: st.nanoBananaCreativeMode || "emblem_masterpiece", evolveCurrent: true }
+                  );
+                }, 60);
+              } else if (!hasExternalUploadedLogo && firstIt && !firstIt.isNanoBananaGenerated) {
+                st._autoNanoBananaBrandKey = brandKeyForAuto;
+                setTimeout(() => {
+                  window.tbbGenerateNanoBananaBrandSymbol(
+                    seedIdeaTrim,
+                    { creativeMode: st.nanoBananaCreativeMode || "emblem_masterpiece", replaceInitialPlaceholder: true, freshFromScratch: true }
+                  );
+                }, 60);
+              }
             }
 
             const promptInfo = window.compileSystemic40WordPrompt();
@@ -23974,69 +24043,69 @@
             const activeArchId = window.resolveActiveLogoArchetype();
             const activeArchObj = (activeItObj && activeItObj.conceptLabel)
               ? { label: activeItObj.conceptLabel }
-              : ((window.MASTER_3D_ARCHETYPES || []).find(a => a.id === activeArchId) || { label: "Diseño Vectorial de Autor" });
+              : ((window.MASTER_3D_ARCHETYPES || []).find(a => a.id === activeArchId) || { label: "Diseño de Autor NanoBanana PRO" });
+            const activeCreativeMode = (activeItObj && activeItObj.creativeMode) || st.nanoBananaCreativeMode || "emblem_masterpiece";
+
             if (btnAct) {
               btnAct.classList.remove("is-hidden");
               btnAct.style.display = "inline-flex";
-              if (lblAct) lblAct.textContent = st.geminiBusy ? "Aura diseñando..." : "Iterar en Vivo";
+              if (lblAct) lblAct.textContent = st.geminiBusy ? "NanoBanana diseñando..." : "✦ Iterar con NanoBanana";
               if (iconAct) iconAct.innerHTML = window.TBBVectorArt("iterate", "#0D2540", 18);
             }
             if (lblNext) lblNext.textContent = "Confirmar Logo e Ir al Manual";
 
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:10px 14px; gap:8px;">
-                <!-- Fila Superior del Lienzo: Historial de Iteraciones + Botones de Acción -->
-                <div style="display:flex; flex-direction:column; gap:6px;">
+              <div class="tbb-atomic-card" style="padding:10px 14px; gap:7px;">
+                <!-- Fila Superior del Lienzo: Historial de Iteraciones + 4 Modos de Dirección Creativa NanoBanana PRO -->
+                <div style="display:flex; flex-direction:column; gap:5px;">
                   <div id="tbbIterationPillsStrip" style="display:flex; gap:6px; overflow-x:auto; align-items:center; width:100%; min-width:0; scroll-behavior:smooth; padding-bottom:2px;">
                     ${st.logoIterations.map((it, idx) => `
-                      <button type="button" class="tbb-duo-btn ${st.logoIterationIndex === idx + 1 ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbRestoreLogoIteration(${idx})" style="padding:5px 10px !important; flex-shrink:0; font-size:0.75rem !important;">
-                        ${idx === 0 ? (it.isUploadedUserLogo ? "#1 · Tu Logo Base" : (it.shortPill || "#1 · Propuesta Base")) : (it.shortPill || `#${idx + 1}${it.conceptLabel ? " · " + String(it.conceptLabel).split(/\s+/).slice(0, 2).join(" ").slice(0, 15) : ""}`)}
+                      <button type="button" class="tbb-duo-btn ${st.logoIterationIndex === idx + 1 ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbRestoreLogoIteration(${idx})" style="padding:4px 10px !important; flex-shrink:0; font-size:0.74rem !important;">
+                        ${idx === 0 ? (it.isUploadedUserLogo ? "#1 · Tu Logo Base" : (it.shortPill || "#1 · Emblema de Autor")) : (it.shortPill || `#${idx + 1}${it.conceptLabel ? " · " + String(it.conceptLabel).split(/\s+/).slice(0, 2).join(" ").slice(0, 15) : ""}`)}
                       </button>
                     `).join("")}
                   </div>
-                  <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
-                    <button type="button" id="tbbBtnNanoBananaSymbol" class="tbb-duo-btn tbb-duo-btn-emerald" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value:'');}" style="padding:6px 11px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Sintetizar símbolo visual de alta costura en el Motor Vectorial de Aura y trazarlo en curvas Bézier">
-                      ✦ Sintetizar Símbolo en el Motor Vectorial de Aura
-                    </button>
-                    ${uploadedLogoUrl ? `
-                      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="window.tbbTriggerEvolutionFromUploadedLogo()" style="padding:6px 11px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Generar nueva evolución tomando tu logo subido como base">
-                        Evolucionar mi Logo
+                  <div style="display:flex; gap:5px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+                    ${[
+                      { id: "emblem_masterpiece", lbl: "✦ 1. Emblema de Autor", tip: "Composición artística rica multi-elemento con el ADN completo de tu marca" },
+                      { id: "monogram_fusion", lbl: "✦ 2. Monograma + Giro", tip: "Fusión de iniciales de tu marca con el símbolo central de tu giro y descriptor" },
+                      { id: "editorial_crest", lbl: "✦ 3. Insignia / Sello", tip: "Escudo, sello arquitectónico o insignia de prestigio institucional" },
+                      { id: "minimal_couture", lbl: "✦ 4. Lineal Minimalista", tip: "Síntesis geométrica monolineal de alta precisión para grabado, casco, bordado y app" }
+                    ].map(cm => `
+                      <button type="button" class="tbb-duo-btn ${activeCreativeMode === cm.id ? 'tbb-duo-btn-emerald' : 'tbb-duo-btn-secondary'}" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value.trim():'', {creativeMode:'${cm.id}', evolveCurrent:${Boolean(hasExternalUploadedLogo || (bx && bx.value.trim()))}, freshFromScratch:${!hasExternalUploadedLogo}});}" style="padding:5px 9px !important; font-size:0.71rem !important; flex:1 1 auto;" title="${cm.tip}">
+                        ${cm.lbl}
                       </button>
-                    ` : `
-                      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="tbbCycleSculpturalArchetype()" style="padding:6px 12px !important; flex:1 1 auto;" title="Explorar las composiciones vectoriales de autor">
-                        Siguiente Propuesta (${st.logoIterationIndex}/${st.logoIterations.length})
-                      </button>
-                    `}
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; if(window.tbbSyncImproBearsLogoDarkVariant){window.tbbSyncImproBearsLogoDarkVariant();} triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="padding:6px 12px !important; flex:1 1 auto;">
+                    `).join("")}
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; if(window.tbbSyncImproBearsLogoDarkVariant){window.tbbSyncImproBearsLogoDarkVariant();} triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="padding:5px 9px !important; font-size:0.71rem !important; flex:0 1 auto;">
                       Fondo Claro/Oscuro
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="padding:6px 12px !important; flex:1 1 auto;" title="Abrir vista de aplicaciones físicas y digitales adaptadas al giro de tu negocio">
-                      ✨ Mockups Flow (Por Giro)
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="padding:5px 9px !important; font-size:0.71rem !important; flex:0 1 auto;" title="Abrir vista de aplicaciones físicas y digitales adaptadas al giro de tu negocio">
+                      ✨ Mockups Flow
                     </button>
                   </div>
                 </div>
 
-                <!-- Lienzo Central a Pantalla Completa (Lockup + App en proporción 1:1) -->
+                <!-- Lienzo Central a Pantalla Completa (Showcase de Estudio NanoBanana PRO + App Icon 1:1) -->
                 <div style="flex:1; min-height:190px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:16px; padding:4px; position:relative;">
                   ${svgCanvas}
                   ${st.geminiBusy ? `
-                    <div style="position:absolute; inset:0; background:rgba(9,13,22,0.72); backdrop-filter:blur(4px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; z-index:20; color:#FFFFFF; padding:20px; text-align:center;">
-                      <div style="font-size:1rem; font-weight:900; color:#93C5FD; letter-spacing:0.04em;">AURA REDISEÑANDO TU LOGOTIPO EN CURVAS...</div>
-                      <div style="font-size:0.84rem; font-weight:600; color:#E2E8F0; max-width:520px;">${st.geminiStatusText || "Construyendo nueva geometría vectorial a partir de tu instrucción..."}</div>
+                    <div style="position:absolute; inset:0; background:rgba(9,13,22,0.76); backdrop-filter:blur(4px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; z-index:20; color:#FFFFFF; padding:20px; text-align:center;">
+                      <div style="font-size:1.02rem; font-weight:900; color:#FDE68A; letter-spacing:0.04em;">✦ NANOBANANA PRO DISEÑANDO TU IDENTIDAD DE MARCA...</div>
+                      <div style="font-size:0.84rem; font-weight:600; color:#E2E8F0; max-width:540px;">${st.geminiStatusText || "Integrando el 100% del ADN de tu marca, giro, personalidad Kansei y paleta cromática..."}</div>
                     </div>
                   ` : ""}
                 </div>
 
-                <!-- Párrafo Único de <= 40 Palabras Generado por el Sistema -->
-                <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:12px; padding:6px 10px; font-size:0.74rem; color:#090D16; line-height:1.3;">
-                  <strong style="color:#1D4ED8;">Síntesis Vectorial (${promptInfo.count}/40 palabras · ${activeArchObj.label}):</strong> ${promptInfo.text}
+                <!-- Síntesis Estratégica de la Iteración Activa -->
+                <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:12px; padding:5px 10px; font-size:0.73rem; color:#090D16; line-height:1.3;">
+                  <strong style="color:#1D4ED8;">ADN Aplicado (${activeArchObj.label}):</strong> ${(activeItObj && activeItObj.note) ? escapeHTML(String(activeItObj.note).slice(0, 155)) : promptInfo.text}
                 </div>
 
-                <!-- Un Solo Cuadro Grande de Texto + Botón Directo de Aplicación -->
+                <!-- Cuadro Conversacional Multimodal (Image-to-Image con NanoBanana PRO) -->
                 <div style="display:flex; gap:8px; align-items:stretch; flex-wrap:wrap;">
-                  <textarea id="tbbSingleLogoIterationBox" rows="2" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Refina tu logotipo en tiempo real: pide ajustes de símbolo, formas geométricas, iniciales, colores o estilo visual..." style="flex:1 1 220px; min-width:0; padding:10px 12px; border-radius:14px; border:2px solid #090D16; font-size:0.86rem; font-weight:700; color:#090D16; background:#FFFFFF; resize:none; box-sizing:border-box; line-height:1.35;"></textarea>
-                  <button type="button" id="tbbInlineApplyLogoPromptBtn" class="tbb-duo-btn tbb-duo-btn-gold" ${st.geminiBusy ? "disabled" : ""} onclick="onTbbAtomicCenterAction()" style="flex:0 0 auto; padding:0 16px !important; font-size:0.86rem !important; min-height:44px !important;">
-                    ${st.geminiBusy ? "Diseñando..." : "Aplicar Ajuste"}
+                  <textarea id="tbbSingleLogoIterationBox" rows="2" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Itera conversacionalmente con NanoBanana PRO sobre esta imagen: ej. «Simplifícalo e integra las iniciales ARCO con el doble arco y torres residenciales», «Ponlo en sello arquitectónico»..." style="flex:1 1 220px; min-width:0; padding:8px 12px; border-radius:14px; border:2px solid #090D16; font-size:0.84rem; font-weight:700; color:#090D16; background:#FFFFFF; resize:none; box-sizing:border-box; line-height:1.32;"></textarea>
+                  <button type="button" id="tbbInlineApplyLogoPromptBtn" class="tbb-duo-btn tbb-duo-btn-gold" ${st.geminiBusy ? "disabled" : ""} onclick="onTbbAtomicCenterAction()" style="flex:0 0 auto; padding:0 16px !important; font-size:0.84rem !important; min-height:44px !important;">
+                    ${st.geminiBusy ? "Diseñando..." : "✦ Evolucionar Diseño"}
                   </button>
                 </div>
               </div>
