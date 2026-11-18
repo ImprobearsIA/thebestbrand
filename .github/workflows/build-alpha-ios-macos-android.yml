@@ -75,4 +75,4 @@ jobs:
       - name: Compile Unsigned iOS Simulator Build (Smoke Verification)
         working-directory: ./ios/App
         run: |
-          xcodebuild -project App.xcodeproj -scheme App -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO build
+          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO build
