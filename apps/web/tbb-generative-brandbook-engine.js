@@ -2956,7 +2956,7 @@ Instrucciones obligatorias:
 
     const rawName = cs.brandName || s0.brandName || s0.existingBrandName || "";
     const bName = (rawName && !/^mi nueva marca$/i.test(rawName)) ? rawName.trim() : "The Best Brand";
-    const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "the_best_brand";
+    const slug = bName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "") || "the_best_brand";
     const isTbbSlug = /^the_?best_?brand$/i.test(slug);
 
     const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;

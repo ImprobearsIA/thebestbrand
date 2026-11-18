@@ -24072,7 +24072,7 @@
                       { id: "editorial_crest", lbl: "✦ 3. Insignia / Sello", tip: "Escudo, sello arquitectónico o insignia de prestigio institucional" },
                       { id: "minimal_couture", lbl: "✦ 4. Lineal Minimalista", tip: "Síntesis geométrica monolineal de alta precisión para grabado, casco, bordado y app" }
                     ].map(cm => `
-                      <button type="button" class="tbb-duo-btn ${activeCreativeMode === cm.id ? 'tbb-duo-btn-emerald' : 'tbb-duo-btn-secondary'}" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value.trim():'', {creativeMode:'${cm.id}', evolveCurrent:${Boolean(hasExternalUploadedLogo || (bx && bx.value.trim()))}, freshFromScratch:${!hasExternalUploadedLogo}});}" style="padding:5px 9px !important; font-size:0.71rem !important; flex:1 1 auto;" title="${cm.tip}">
+                      <button type="button" class="tbb-duo-btn ${activeCreativeMode === cm.id ? 'tbb-duo-btn-emerald' : 'tbb-duo-btn-secondary'}" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value.trim():'', {creativeMode:'${cm.id}', switchCreativeMode:true, evolveCurrent:${Boolean(hasExternalUploadedLogo && cm.id==='emblem_masterpiece')}, freshFromScratch:${Boolean(!hasExternalUploadedLogo || cm.id!=='emblem_masterpiece')}});}" style="padding:5px 9px !important; font-size:0.71rem !important; flex:1 1 auto;" title="${cm.tip}">
                         ${cm.lbl}
                       </button>
                     `).join("")}
@@ -24232,7 +24232,7 @@
         window.downloadCompleteBrandbookHTML = function () {
           const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
           const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
-          const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
+          const slug = bName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "") || "thebestbrand";
           const metaList = (typeof window.getBenefic30PlatesMeta === "function") ? window.getBenefic30PlatesMeta() : [];
           const count = metaList.length || 36;
           const fileName = `Manual_Identidad_${count}_Laminas_${slug}.html`;
@@ -24258,7 +24258,7 @@
           }
           const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
           const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
-          const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
+          const slug = bName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "") || "thebestbrand";
           const fileName = `Logotipo_Oficial_Curvas_${slug}.svg`;
           const svgStr = window.buildSystemicDualLogoSVG();
           const blob = new Blob([svgStr], { type: "image/svg+xml;charset=utf-8" });
@@ -24666,6 +24666,7 @@
         window.triggerAuraEmpatheticFeedback("input_seed", famLabels[numIdx] || "Estructura Base", false);
         window.renderTbbZeroScrollStage();
       };
+      window.tbbSelectStructuralFamily = window.tbbSelectBaseStructureFamily;
 
       window.tbbUpdateStep4SeedIdea = function (val) {
         const cleanVal = String(val || "");

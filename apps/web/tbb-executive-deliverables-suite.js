@@ -2873,17 +2873,23 @@
         "",
         `=== 3. CONVERSATIONAL IMAGE-TO-IMAGE EVOLUTION DIRECTIVE ===`,
         isExternalUpload
-          ? `• An existing legacy company logo image is attached. MODERNIZE and REDESIGN it to world-class contemporary architectural/corporate studio standards: replace any dated script or calligraphic lettering with bold, modern, high-authority typography ("${chosenFont}"), preserve and elevate its signature visual DNA (such as its double sweeping arch, structural pillars/towers, and iconic "${initials}" monogram) and its official color palette (${pri}, ${sec}, ${acc}), integrating authentic symbols of its business (${giro}${savedSeedIdea ? `, ${savedSeedIdea}` : ""}) into a cohesive, master-crafted contemporary brand identity.`
-          : `• The attached image is the PREVIOUS ITERATION of "${bName}". Evolve, refine, and transform that design directly according to the new creative direction below while maintaining strong brand continuity.`,
+          ? `• An existing legacy company logo image is attached. MODERNIZE and REDESIGN it to world-class contemporary architectural/corporate studio standards in the "${modeObj.label}" style (${modeObj.directive}): replace any dated script or calligraphic lettering with bold, modern, high-authority typography ("${chosenFont}"), preserve and elevate its signature visual DNA (such as its double sweeping arch, structural pillars/towers, and iconic "${initials}" monogram) and its official color palette (${pri}, ${sec}, ${acc}), integrating authentic symbols of its business (${giro}${savedSeedIdea ? `, ${savedSeedIdea}` : ""}) into a cohesive, master-crafted contemporary brand identity.`
+          : `• The attached image is the PREVIOUS ITERATION of "${bName}". Evolve, refine, and transform that design directly according to the user's request below while maintaining strong brand continuity.`,
         userInstruction
           ? `• USER'S SPECIFIC REFINEMENT / ITERATION REQUEST: "${userInstruction}". Execute this request with bold artistic intelligence and unmistakable visual impact.`
           : `• Evolution goal: Elevate the composition into the "${modeObj.label}" style (${modeObj.directive}), enriching the symbolic storytelling and typographic integration.`
       );
-    } else if (userInstruction) {
+    } else {
       sections.push(
         "",
-        `=== 3. PRIORITY USER CREATIVE INSTRUCTION ===`,
-        `• Specific visual request from the founder: "${userInstruction}". Make sure every element requested here is visibly, artistically, and unmistakably represented in the centerpiece logo composition.`
+        `=== 3. DISTINCT CREATIVE MODE COMPOSITION DIRECTIVE (${modeObj.label.toUpperCase()}) ===`,
+        `• Create a 100% NEW, visually distinct composition specifically engineered for the "${modeObj.label}" paradigm: ${modeObj.directive}`,
+        options.hasLegacyDnaContext
+          ? `• LEGACY BRAND DNA TO HONOR & MODERNIZE: Keep the recognizable soul of "${bName}" (its iconic "${initials}" structural monogram, double sweeping engineering arch, high-rise architectural silhouette, and official palette ${pri}, ${sec}, ${acc}), but reimagine the entire layout into a fresh "${modeObj.label}" structure with modern "${chosenFont}" typography.`
+          : "",
+        userInstruction
+          ? `• SPECIFIC CREATIVE INSTRUCTION FROM THE FOUNDER: "${userInstruction}". Make sure every element requested here is visibly, artistically, and unmistakably represented in the centerpiece logo composition.`
+          : ""
       );
     }
 
@@ -2927,17 +2933,24 @@
 
     // Determinar si hay una imagen previa para evolución conversacional (ya sea la iteración activa de NanoBanana o un logo subido por el usuario)
     const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
-    const externalUploadUrl = (cs.user_uploaded_external_logo && (cs.base_uploaded_logo_data_url || cs.uploaded_logo_data_url))
+    const externalUploadUrl = (cs.user_uploaded_external_logo && (cs.raw_uploaded_logo_data_url || cs.base_uploaded_logo_data_url || cs.uploaded_logo_data_url))
       || (s0.userUploadedExternalLogo && s0.uploadedLogoDataUrl)
       || "";
-    const previousIterationImgUrl = (activeIt && (activeIt.nanoBananaFullArtworkUrl || activeIt.nanoBananaSymbolUrl || (activeIt.isUploadedUserLogo && activeIt.uploadedLogoDataUrl)))
-      || externalUploadUrl
-      || "";
 
-    // Usar imagen previa como referencia cuando el usuario escribe un ajuste conversacional o pide evolucionar su logo base
+    // Cuando el usuario pulsa uno de los 4 botones de modo creativo (switchCreativeMode), queremos una composición
+    // verdaderamente distinta para ese modo (no una edición menor de la iteración anterior de NanoBanana).
+    const isSwitchingCreativeMode = Boolean(options.switchCreativeMode);
+    const previousIterationImgUrl = isSwitchingCreativeMode
+      ? (creativeModeKey === "emblem_masterpiece" ? externalUploadUrl : "")
+      : ((activeIt && (activeIt.nanoBananaFullArtworkUrl || activeIt.nanoBananaSymbolUrl || (activeIt.isUploadedUserLogo && activeIt.uploadedLogoDataUrl)))
+          || externalUploadUrl
+          || "");
+
+    // Usar imagen previa como referencia cuando el usuario escribe un ajuste conversacional o en la modernización inicial del logo subido
     const shouldAttachReferenceImage = Boolean(
       previousIterationImgUrl &&
       !options.freshFromScratch &&
+      (!isSwitchingCreativeMode || creativeModeKey === "emblem_masterpiece") &&
       (Boolean(userHint) || Boolean(externalUploadUrl) || Boolean(options.evolveCurrent))
     );
 
@@ -2951,7 +2964,8 @@
       userHint: userHint,
       creativeMode: creativeModeKey,
       hasReferenceImage: shouldAttachReferenceImage,
-      isExternalUpload: Boolean(externalUploadUrl && previousIterationImgUrl === externalUploadUrl)
+      isExternalUpload: Boolean(externalUploadUrl && previousIterationImgUrl === externalUploadUrl),
+      hasLegacyDnaContext: Boolean(externalUploadUrl)
     });
 
     const requestParts = [];
@@ -3360,6 +3374,7 @@
   window.tbbDownloadEmailSignatureHTML = tbbDownloadEmailSignatureHTML;
   window.tbbGenerateChapterVisualsWithFlow = tbbGenerateChapterVisualsWithFlow;
   window.tbbDownloadBrandFontsZip = tbbDownloadBrandFontsZip;
+  window.tbbDownloadBrandFontsKitZip = tbbDownloadBrandFontsZip;
   window.TBB_FONT_FILES_INDEX = TBB_FONT_FILES_INDEX;
   window.TBB_ADOBE_FONTS_EQUIVALENT_MAP = TBB_ADOBE_FONTS_EQUIVALENT_MAP;
   window.tbbEnsureAdobeTypekitCssInjected = tbbEnsureAdobeTypekitCssInjected;
