@@ -7013,6 +7013,147 @@
                 .trim();
     }
 
+    let _tbbMediaRecorder = null;
+    let _tbbMediaStream = null;
+    let _tbbAudioChunks = [];
+
+    function updateAtomicDictationButtonUI(listening, statusLabel) {
+      const btnAct = document.getElementById("tbbBtnAtomicAction");
+      const lblAct = document.getElementById("tbbLblAtomicAction");
+      const st = window.tbbState || {};
+      if (!btnAct || (st.step !== 0 && st.step !== 1)) return;
+      if (listening) {
+        btnAct.style.setProperty("background", "#FEF2F2", "important");
+        btnAct.style.setProperty("border-color", "#DC2626", "important");
+        btnAct.style.setProperty("color", "#DC2626", "important");
+        if (lblAct) lblAct.textContent = statusLabel || "● Escuchando (Detener)";
+      } else {
+        btnAct.style.removeProperty("background");
+        btnAct.style.removeProperty("border-color");
+        btnAct.style.removeProperty("color");
+        if (lblAct) lblAct.textContent = st.step === 0 ? "Dictar Giro" : "Hablar";
+      }
+    }
+
+    function applyDictatedTranscriptToTarget(targetInputEl, inputId, cleanedText) {
+      if (!targetInputEl || !cleanedText) return;
+      window._tbbLastUserTypingTs = Date.now();
+      targetInputEl.value = cleanedText;
+      if (inputId === "tbbStep0BizTextarea" && typeof window.tbbUpdateBusinessTypeFromInput === "function") {
+        window.tbbUpdateBusinessTypeFromInput(cleanedText);
+      } else if (inputId === "tbbStep1AnswerInput" && typeof window.tbbSaveStep1Answer === "function") {
+        const st = window.tbbState || { subStep: 1 };
+        const qObj = (typeof STEP1_QUESTIONS !== "undefined" && STEP1_QUESTIONS[(st.subStep || 1) - 1]) || { key: "golden_circle" };
+        window.tbbSaveStep1Answer(qObj.key, cleanedText);
+      } else if (inputId === "chatInput" && typeof onChatInputChanged === "function") {
+        onChatInputChanged(cleanedText);
+      } else if (inputId === "step0CustomBusinessInput" && typeof onStep0CustomBusinessTyped === "function") {
+        onStep0CustomBusinessTyped(cleanedText);
+      }
+      targetInputEl.dispatchEvent(new Event("input", { bubbles: true }));
+    }
+
+    async function startGeminiMicrophoneFallbackDictation(targetInputId) {
+      const targetInputEl = document.getElementById(targetInputId) || document.getElementById("chatInput");
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        if (targetInputEl) targetInputEl.focus();
+        if (typeof window.updateAuraTopPresenceDOM === "function") {
+          window.updateAuraTopPresenceDOM("✦ Toca el icono de micrófono en tu teclado de iPhone/Mac para dictar directamente.");
+        }
+        return;
+      }
+      try {
+        _tbbMediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        _tbbAudioChunks = [];
+        const mimeType = (typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported("audio/mp4"))
+          ? "audio/mp4"
+          : ((typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported("audio/webm")) ? "audio/webm" : "");
+        _tbbMediaRecorder = mimeType ? new MediaRecorder(_tbbMediaStream, { mimeType }) : new MediaRecorder(_tbbMediaStream);
+        isListening = true;
+        activeVoiceInputId = targetInputId;
+        updateAtomicDictationButtonUI(true, "● Grabando (Toca para transcribir)");
+        if (typeof window.updateAuraTopPresenceDOM === "function") {
+          window.updateAuraTopPresenceDOM("✦ Escuchando tu voz... Habla con naturalidad y toca «Detener» al terminar.");
+        }
+
+        _tbbMediaRecorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) _tbbAudioChunks.push(e.data);
+        };
+        _tbbMediaRecorder.onstop = async () => {
+          const recMime = (_tbbMediaRecorder && _tbbMediaRecorder.mimeType) || mimeType || "audio/mp4";
+          if (_tbbMediaStream) {
+            _tbbMediaStream.getTracks().forEach(t => t.stop());
+            _tbbMediaStream = null;
+          }
+          if (!_tbbAudioChunks.length) {
+            updateAtomicDictationButtonUI(false);
+            return;
+          }
+          updateAtomicDictationButtonUI(true, "✦ Transcribiendo...");
+          if (typeof window.updateAuraTopPresenceDOM === "function") {
+            window.updateAuraTopPresenceDOM("✦ Transcribiendo tu dictado con IA...");
+          }
+          try {
+            const blob = new Blob(_tbbAudioChunks, { type: recMime });
+            const base64Audio = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                const res = String(reader.result || "");
+                resolve(res.split(",")[1] || "");
+              };
+              reader.onerror = reject;
+              reader.readAsDataURL(blob);
+            });
+            if (base64Audio) {
+              const resp = await fetch("/api/v1/gemini/proxy", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  model: "gemini-3.8-flash",
+                  contents: [{
+                    parts: [
+                      { text: "Transcribe exactamente lo que dice el usuario en este audio en español, con ortografía y puntuación impecables. Devuelve ÚNICAMENTE el texto transcrito, sin comillas ni comentarios adicionales." },
+                      { inlineData: { mimeType: recMime.split(";")[0], data: base64Audio } }
+                    ]
+                  }],
+                  generationConfig: { temperature: 0.1 }
+                })
+              });
+              if (resp.ok) {
+                const data = await resp.json();
+                const transcript = ((data.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join(" ") || "").trim();
+                if (transcript) {
+                  const currentEl = document.getElementById(targetInputId) || targetInputEl;
+                  const prevTxt = (currentEl && currentEl.value ? currentEl.value.trim() + " " : "");
+                  const merged = cleanSpokenFillersClient(prevTxt + transcript);
+                  applyDictatedTranscriptToTarget(currentEl, targetInputId, merged);
+                  if (typeof window.updateAuraTopPresenceDOM === "function") {
+                    window.updateAuraTopPresenceDOM("✦ Dictado transcrito y guardado en tu respuesta.");
+                  }
+                }
+              }
+            }
+          } catch (err) {
+            console.warn("Audio transcription error:", err);
+          } finally {
+            _tbbAudioChunks = [];
+            _tbbMediaRecorder = null;
+            isListening = false;
+            updateAtomicDictationButtonUI(false);
+          }
+        };
+        _tbbMediaRecorder.start();
+      } catch (err) {
+        console.warn("Microphone access fallback:", err);
+        isListening = false;
+        updateAtomicDictationButtonUI(false);
+        if (targetInputEl) targetInputEl.focus();
+        if (typeof window.updateAuraTopPresenceDOM === "function") {
+          window.updateAuraTopPresenceDOM("✦ Permiso de micrófono no concedido o ocupado. Puedes usar el micrófono del teclado de tu iPhone/Mac.");
+        }
+      }
+    }
+
     function toggleContinuousVoice(targetInputId = "chatInput") {
       unlockBrowserAudio();
       silenceAuraImmediatelyForUserBargeIn();
@@ -7026,22 +7167,29 @@
     function startContinuousVoice(targetInputId = "chatInput") {
       silenceAuraImmediatelyForUserBargeIn();
       const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRec) {
-        alert("Tu navegador no soporta dictado por voz directo. Puedes escribir libremente en el recuadro y pulsar Enviar.");
-        return;
-      }
-      if (isListening || recognition) {
+      if (isListening || recognition || _tbbMediaRecorder) {
         stopContinuousVoice();
       }
       activeVoiceInputId = targetInputId || (currentStep === 2 ? "tpChatInput" : "chatInput");
-
       const targetInputEl = document.getElementById(activeVoiceInputId) || document.getElementById("chatInput");
+
+      if (!SpeechRec) {
+        startGeminiMicrophoneFallbackDictation(activeVoiceInputId);
+        return;
+      }
+
       recognition = new SpeechRec();
-      recognition.lang = "es-MX";
+      const curLang = (typeof window.tbbGetLang === "function" ? window.tbbGetLang() : "es");
+      const langMap = { es: "es-MX", en: "en-US", fr: "fr-FR", pt: "pt-BR", de: "de-DE", it: "it-IT" };
+      recognition.lang = langMap[curLang] || "es-MX";
       recognition.continuous = true;
       recognition.interimResults = true;
       accumulatedTranscript = targetInputEl && targetInputEl.value ? targetInputEl.value + " " : "";
       isListening = true;
+      updateAtomicDictationButtonUI(true, "● Escuchando (Detener)");
+      if (typeof window.updateAuraTopPresenceDOM === "function") {
+        window.updateAuraTopPresenceDOM("✦ Escuchando tu voz en vivo... Habla con naturalidad.");
+      }
 
       const micBtn = document.getElementById("micBtn");
       const tpMicBtn = document.getElementById("tpMicBtn");
@@ -7079,10 +7227,9 @@
           }
         }
         const cleaned = cleanSpokenFillersClient(accumulatedTranscript + interim);
-        if (targetInputEl && isListening) {
-          targetInputEl.value = cleaned;
-          if (activeVoiceInputId === "chatInput") onChatInputChanged(cleaned);
-          else if (activeVoiceInputId === "step0CustomBusinessInput") onStep0CustomBusinessTyped(cleaned);
+        const currentTargetEl = document.getElementById(activeVoiceInputId) || targetInputEl;
+        if (currentTargetEl && isListening) {
+          applyDictatedTranscriptToTarget(currentTargetEl, activeVoiceInputId, cleaned);
         }
         const wcBadge = document.getElementById("liveDictationWordCountBadge");
         if (wcBadge) {
@@ -7095,7 +7242,11 @@
         if (ev && ev.error === "no-speech" && isListening) {
           return;
         }
+        const errCode = ev && ev.error ? String(ev.error) : "";
         stopContinuousVoice();
+        if (errCode === "not-allowed" || errCode === "service-not-allowed" || errCode === "audio-capture") {
+          startGeminiMicrophoneFallbackDictation(activeVoiceInputId);
+        }
       };
       recognition.onend = () => {
         if (isListening && recognition) {
@@ -7107,12 +7258,18 @@
         recognition.start();
       } catch (e) {
         stopContinuousVoice();
+        startGeminiMicrophoneFallbackDictation(activeVoiceInputId);
       }
     }
 
     function stopContinuousVoice() {
       isListening = false;
       accumulatedTranscript = "";
+      if (_tbbMediaRecorder && _tbbMediaRecorder.state !== "inactive") {
+        try { _tbbMediaRecorder.stop(); } catch (e) {}
+        return;
+      }
+      updateAtomicDictationButtonUI(false);
       if (recognition) {
         const recRef = recognition;
         recognition = null;
@@ -16816,6 +16973,13 @@
       if (numericRev > 0 && numericRev <= Number(window._tbbLastAppliedRevisionTs || 0)) {
         return false;
       }
+      // Si el usuario está escribiendo o acaba de escribir en una caja de texto en los últimos 8 segundos, no sobrescribir ni re-renderizar su pantalla
+      const activeEl = document.activeElement;
+      const isUserTypingNow = (activeEl && (activeEl.tagName === "TEXTAREA" || activeEl.tagName === "INPUT")) ||
+                              (window._tbbLastUserTypingTs && (Date.now() - window._tbbLastUserTypingTs < 8000));
+      if (isUserTypingNow) {
+        return false;
+      }
       const prevStep = window.tbbState ? Number(window.tbbState.step || 0) : 0;
       const prevSubStep = window.tbbState ? Number(window.tbbState.subStep || 1) : 1;
 
@@ -24656,6 +24820,7 @@
       };
 
       window.tbbUpdateBusinessTypeFromInput = function (val) {
+        window._tbbLastUserTypingTs = Date.now();
         const clean = String(val || "").trim();
         const distilled = (typeof window.tbbDistillCleanGiroLabel === "function" && clean)
           ? window.tbbDistillCleanGiroLabel(clean)
@@ -24685,6 +24850,7 @@
       };
 
       window.tbbSaveStep1Answer = function (key, val) {
+        window._tbbLastUserTypingTs = Date.now();
         const clean = String(val || "").trim();
         if (typeof canvasState === "object" && canvasState) {
           canvasState[key] = clean;
@@ -27283,13 +27449,13 @@
   </style>
   <script src="/assets/vendor/opentype.min.js?v=1.3.4"></script>
   <script src="/assets/vendor/html2canvas.min.js?v=1.4.1"></script>
-  <script src="/tbb-executive-deliverables-suite.js?v=100.0"></script>
-  <script src="/tbb-cloud-vector-outliner.js?v=100.0"></script>
-  <script src="/tbb-v80-brandbook-plates.js?v=100.0"></script>
-  <script src="/universal-brandbook-30-engine.js?v=100.0"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=100.0"></script>
-  <script src="/improbears-preset-engine.js?v=100.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=100.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=100.0"></script>
+  <script src="/tbb-executive-deliverables-suite.js?v=101.0"></script>
+  <script src="/tbb-cloud-vector-outliner.js?v=101.0"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=101.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=101.0"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=101.0"></script>
+  <script src="/improbears-preset-engine.js?v=101.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=101.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=101.0"></script>
 </body>
 </html>

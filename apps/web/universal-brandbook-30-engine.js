@@ -712,17 +712,25 @@
     let rawText = "";
 
     if (s === 0) {
-      rawText = document.getElementById("tbbStep0BizTextarea")?.value || cs.custom_business_type || "";
+      const el0 = document.getElementById("tbbStep0BizTextarea");
+      rawText = (el0 && el0.value ? el0.value : "") || cs.custom_business_type || "";
+      if (rawText && typeof window.tbbUpdateBusinessTypeFromInput === "function") {
+        window.tbbUpdateBusinessTypeFromInput(rawText);
+      }
     } else if (s === 1) {
-      rawText = document.getElementById("tbbStep1AnswerInput")?.value || cs[fieldRole] || "";
+      const el1 = document.getElementById("tbbStep1AnswerInput");
+      rawText = (el1 && el1.value ? el1.value : "") || cs[fieldRole] || "";
+      if (rawText && typeof window.tbbSaveStep1Answer === "function") {
+        window.tbbSaveStep1Answer(fieldRole, rawText);
+      }
     } else if (s === 2) {
       const list = (typeof tpExtractedItems === "object" && tpExtractedItems[fieldRole]) ? tpExtractedItems[fieldRole] : [];
       const customIn = document.getElementById("tbbCustomTpInput")?.value || "";
       rawText = customIn.trim() || (Array.isArray(list) ? list.join(", ") : String(list || ""));
     } else if (s === 3) {
-      rawText = document.getElementById("tbbStep3CustomNameInput")?.value || cs.brandName || "";
+      rawText = document.getElementById("tbbStep3FinalBrandInput")?.value || document.getElementById("tbbStep3Sub2NameInput")?.value || document.getElementById("tbbStep3DirectNameInput")?.value || cs.brandName || "";
     } else if (s === 4) {
-      rawText = cs.step4_seed_idea || cs.primary_font || "";
+      rawText = document.getElementById("tbbStep4SeedIdeaInput")?.value || cs.step4_seed_idea || cs.primary_font || "";
     } else if (s === 5) {
       rawText = (Array.isArray(cs.brand_palette_hex_list) && cs.brand_palette_hex_list.length)
         ? cs.brand_palette_hex_list.join(", ")
@@ -732,14 +740,26 @@
     }
 
     const cleanRaw = String(rawText || "").trim();
+    const preserveInputValue = () => {
+      if (!cleanRaw) return;
+      if (s === 0) {
+        const el0 = document.getElementById("tbbStep0BizTextarea");
+        if (el0 && !el0.value) el0.value = cleanRaw;
+        cs.custom_business_type = cleanRaw;
+      } else if (s === 1) {
+        const el1 = document.getElementById("tbbStep1AnswerInput");
+        if (el1 && !el1.value) el1.value = cleanRaw;
+        cs[fieldRole] = cleanRaw;
+      }
+    };
     const container = document.getElementById(`tbbAuthorAuditResult_${s}`);
     if (container) {
       container.style.display = "block";
       container.innerHTML = `
-        <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-left:4px solid #1D4ED8; border-radius:12px; padding:12px 14px; margin-top:8px; display:flex; align-items:center; gap:10px;">
-          <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#1D4ED8; animation:pulse 1s infinite;"></span>
-          <div style="font-size:0.80rem; font-weight:800; color:#0D2540;">
-            ✦ Consultando dictamen metodológico en vivo de <strong>${author.name}</strong> (${author.book})...
+        <div style="background:#F8FAFC; border:1px solid #93C5FD; border-left:3.5px solid #1D4ED8; border-radius:10px; padding:7px 10px; margin-top:4px; display:flex; align-items:center; gap:8px;">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#1D4ED8; animation:pulse 1s infinite; flex-shrink:0;"></span>
+          <div style="font-size:0.72rem; font-weight:600; color:#0D2540;">
+            ✦ Consultando dictamen en vivo de <strong>${author.name}</strong>...
           </div>
         </div>
       `;
@@ -836,28 +856,29 @@
       console.warn("Live author audit fallback:", err);
     }
 
+    preserveInputValue();
     if (container) {
       container.style.display = "block";
       container.innerHTML = `
-        <div style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-top:3.5px solid #0D2540; border-radius:12px; padding:12px 14px; margin-top:8px; box-shadow:0 8px 24px rgba(13,37,64,0.08);">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10B981;"></span>
-              <span style="font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:900; color:#0D2540;">${author.name} · ${author.role}</span>
+        <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-top:3px solid #0D2540; border-radius:10px; padding:8px 10px; margin-top:4px; box-shadow:0 4px 12px rgba(13,37,64,0.06);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; flex-wrap:wrap; gap:4px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#10B981;"></span>
+              <span style="font-family:'Montserrat',sans-serif; font-size:0.72rem; font-weight:700; color:#0D2540;">${author.name}</span>
             </div>
-            <span style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#047857; background:#ECFDF5; padding:3px 8px; border-radius:6px; border:1px solid #A7F3D0;">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:700; color:#047857; background:#ECFDF5; padding:2px 6px; border-radius:5px; border:1px solid #A7F3D0;">
               ✦ ${audit.verdict} (${audit.score})
             </span>
           </div>
-          <p style="font-size:0.80rem; color:#334155; line-height:1.48; margin:0 0 10px 0; font-style:italic;">
+          <p style="font-size:0.74rem; color:#334155; line-height:1.35; margin:0 0 6px 0; font-style:italic;">
             “${audit.critique}”
           </p>
-          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:10px 12px; margin-bottom:10px;">
-            <div style="font-size:0.68rem; font-weight:800; color:#64748B; margin-bottom:4px; letter-spacing:0.06em;">PROPUESTA EJECUTIVA DICTAMINADA POR ${author.name.toUpperCase()} (ORTOGRAFÍA Y CLARIDAD VERIFICADAS):</div>
-            <div style="font-size:0.86rem; font-weight:700; color:#090D16; line-height:1.4;">${audit.executiveCopy}</div>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:6px 8px; margin-bottom:6px;">
+            <div style="font-size:0.62rem; font-weight:700; color:#64748B; margin-bottom:2px; letter-spacing:0.04em;">PROPUESTA EJECUTIVA DE ${author.shortName.toUpperCase()}:</div>
+            <div style="font-size:0.78rem; font-weight:600; color:#090D16; line-height:1.32;">${audit.executiveCopy}</div>
           </div>
-          <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbApplyAuthorExecutiveCopy(${s}, '${fieldRole}', '${encodeURIComponent(audit.executiveCopy)}')" style="min-height:36px !important; padding:6px 14px !important; font-size:0.78rem !important; width:100%; border-radius:10px !important;">
-            ✓ Reemplazar mi texto con la Redacción Ejecutiva de ${author.shortName}
+          <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbApplyAuthorExecutiveCopy(${s}, '${fieldRole}', '${encodeURIComponent(audit.executiveCopy)}')" style="min-height:32px !important; padding:4px 10px !important; font-size:0.72rem !important; font-weight:600 !important; width:100%; border-radius:8px !important;">
+            ✓ Usar Redacción de ${author.shortName}
           </button>
         </div>
       `;
@@ -866,6 +887,7 @@
     if (typeof window.triggerAuraEmpatheticFeedback === "function") {
       window.triggerAuraEmpatheticFeedback("author_audit", `Dictamen metodológico emitido por ${author.name}`, false, true);
     }
+    setTimeout(preserveInputValue, 50);
   };
 
   window.tbbApplyAuthorExecutiveCopy = function (stepNum, fieldRole, encodedCopy) {

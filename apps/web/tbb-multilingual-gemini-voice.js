@@ -3607,6 +3607,8 @@
 
     const valEls = rootEl.querySelectorAll("textarea, input[type='text']");
     valEls.forEach(el => {
+      if (document.activeElement === el) return;
+      if (el.id && /tbbStep|Input|Textarea|IterationBox/i.test(el.id)) return;
       const val = el.value;
       if (!val || !val.trim()) return;
       if (!el._tbbOrigValEs) el._tbbOrigValEs = val;
@@ -3634,12 +3636,6 @@
           el.setAttribute(attr, el[origKey]);
         }
       });
-    });
-    const valEls = rootEl.querySelectorAll("textarea, input[type='text']");
-    valEls.forEach(el => {
-      if (el._tbbOrigValEs !== undefined) {
-        el.value = el._tbbOrigValEs;
-      }
     });
   }
 
