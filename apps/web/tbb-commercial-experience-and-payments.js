@@ -938,7 +938,7 @@
     {
       num: "01",
       format: ".PDF + .HTML INTERACTIVO",
-      sampleUrl: "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.html",
+      sampleUrl: "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf",
       thumb: "/assets/app_captures/arco_30_paso6_1_brandbook_lamina01_portada.png",
       plateNum: 1,
       isPrimaryBrandbook: true,
