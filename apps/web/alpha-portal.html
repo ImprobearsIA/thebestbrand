@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Asistente de Lanzamiento Alpha · The Best Brand (iOS · iPadOS · macOS · Android)</title>
+  <style>
+    :root {
+      --navy: #0D2540;
+      --blue: #426EAE;
+      --sky: #4C9DE6;
+      --orange: #FF7A00;
+      --green: #059669;
+      --bg: #FFFFFF;
+      --line: #E2E8F0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", "Montserrat", sans-serif;
+      background: #FFFFFF; color: var(--navy);
+      line-height: 1.5;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    .header-banner {
+      background: linear-gradient(135deg, #0D2540 0%, #1E3A8A 100%);
+      color: #FFFFFF; border-radius: 22px; padding: 24px 28px;
+      border-bottom: 5px solid var(--orange); margin-bottom: 22px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,122,0,0.2); border: 1px solid #FF7A00; color: #FFEDD5;
+      font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.72rem; font-weight: 800;
+      padding: 4px 12px; border-radius: 999px; margin-bottom: 8px;
+    }
+    h1 { margin: 0 0 6px; font-size: 1.45rem; font-weight: 900; }
+    .sub { margin: 0; font-size: 0.9rem; color: #E2E8F0; max-width: 660px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; margin-bottom: 20px; }
+    .card {
+      background: #FFFFFF; border: 1.5px solid var(--line); border-radius: 18px;
+      padding: 20px; box-shadow: 0 10px 28px rgba(13,37,64,0.05);
+    }
+    .card.apple { border-top: 5px solid #0D2540; }
+    .card.android { border-top: 5px solid #059669; }
+    .card.codes { border-top: 5px solid #FF7A00; }
+    .step-badge {
+      display: inline-block; background: #EFF6FF; color: #1D4ED8;
+      font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 999px; margin-bottom: 8px;
+    }
+    h2 { font-size: 1.1rem; font-weight: 900; margin: 0 0 8px; color: var(--navy); }
+    p { font-size: 0.85rem; color: #475569; margin: 0 0 12px; }
+    .field-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 10px;
+      padding: 8px 11px; margin-bottom: 8px; font-size: 0.8rem;
+    }
+    .field-row code { font-weight: 800; color: #0D2540; word-break: break-all; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: none; border-radius: 999px; padding: 11px 18px;
+      font-weight: 800; font-size: 0.84rem; cursor: pointer; text-decoration: none;
+      transition: transform 0.12s ease; width: 100%; margin-top: 6px;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: linear-gradient(135deg, #FF7A00 0%, #E05E00 100%); color: #FFFFFF; }
+    .btn-navy { background: #0D2540; color: #FFFFFF; }
+    .btn-green { background: #059669; color: #FFFFFF; }
+    .btn-copy {
+      background: #FFFFFF; border: 1px solid #94A3B8; color: #0D2540;
+      border-radius: 7px; padding: 4px 9px; font-size: 0.72rem; font-weight: 800; cursor: pointer; white-space: nowrap;
+    }
+    .toast {
+      display: none; position: fixed; bottom: 18px; right: 18px;
+      background: #065F46; color: #FFFFFF; padding: 10px 18px; border-radius: 999px;
+      font-size: 0.82rem; font-weight: 800; box-shadow: 0 12px 30px rgba(0,0,0,0.25); z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header-banner">
+      <div>
+        <div class="pill">★ CONSOLA INTERACTIVA DE LANZAMIENTO ALPHA HOY · iOS · iPadOS · macOS · ANDROID</div>
+        <h1>Centro de Mando Alpha — The Best Brand</h1>
+        <p class="sub">Haz clic en cada botón en orden desde tu navegador en tu Mac: te abrirá la pantalla exacta de Apple Developer / App Store Connect y te dejará copiar cada dato con 1 clic.</p>
+      </div>
+      <a href="https://thebestbrand.app/?coupon=ALPHA100&section=4" target="_blank" class="btn btn-primary" style="width:auto; padding:12px 22px;">
+        🎁 Probar WebApp con Pase ALPHA100 →
+      </a>
+    </div>
+
+    <div class="grid">
+      <!-- PASO 1 APPLE: REGISTRAR BUNDLE ID -->
+      <div class="card apple">
+        <span class="step-badge">PASO 1 EN TU NAVEGADOR (1 MINUTO)</span>
+        <h2>1. Registrar Bundle ID en Apple</h2>
+        <p>Haz clic abajo para abrir directamente la página de creación de Bundle ID en tu cuenta Apple Developer, selecciona <strong>Explicit</strong> y pega estos dos campos:</p>
+        <div class="field-row">
+          <span>Description: <code>The Best Brand Atelier</code></span>
+          <button class="btn-copy" onclick="copyTxt('The Best Brand Atelier')">Copiar</button>
+        </div>
+        <div class="field-row">
+          <span>Bundle ID: <code>com.improbears.thebestbrand</code></span>
+          <button class="btn-copy" onclick="copyTxt('com.improbears.thebestbrand')">Copiar</button>
+        </div>
+        <a href="https://developer.apple.com/account/resources/identifiers/add/bundleId" target="_blank" class="btn btn-navy">
+          🍎 Abrir Apple Developer (Crear Bundle ID) →
+        </a>
+      </div>
+
+      <!-- PASO 2 APPLE: CREAR FICHA EN APP STORE CONNECT -->
+      <div class="card apple">
+        <span class="step-badge">PASO 2 EN TU NAVEGADOR (2 MINUTOS)</span>
+        <h2>2. Crear App en App Store Connect</h2>
+        <p>Abre App Store Connect, dale al botón azul <strong>(+) → Nueva App</strong>, marca <strong>iOS y macOS</strong> y pega estos valores:</p>
+        <div class="field-row">
+          <span>Nombre: <code>The Best Brand</code></span>
+          <button class="btn-copy" onclick="copyTxt('The Best Brand')">Copiar</button>
+        </div>
+        <div class="field-row">
+          <span>SKU: <code>TBB-IMPROBEARS-2026</code></span>
+          <button class="btn-copy" onclick="copyTxt('TBB-IMPROBEARS-2026')">Copiar</button>
+        </div>
+        <div class="field-row">
+          <span>Privacidad: <code>https://thebestbrand.app/privacidad</code></span>
+          <button class="btn-copy" onclick="copyTxt('https://thebestbrand.app/privacidad')">Copiar</button>
+        </div>
+        <a href="https://appstoreconnect.apple.com/apps" target="_blank" class="btn btn-navy">
+          🚀 Abrir App Store Connect (Mis Apps) →
+        </a>
+      </div>
+
+      <!-- PASO 3 APPLE: SUBIR DESDE XCODE A TESTFLIGHT -->
+      <div class="card apple">
+        <span class="step-badge">PASO 3 EN TU MAC (2 MINUTOS)</span>
+        <h2>3. Subir a TestFlight desde Xcode</h2>
+        <p>Copia este comando y pégalo en la <strong>Terminal de tu Mac</strong> (dentro de la carpeta <code>thebestbrand</code>). Abrirá Xcode listo para darle a <strong>Product → Archive → Distribute App</strong>:</p>
+        <div class="field-row">
+          <code>bash scripts/publicar_alpha_apple_testflight_hoy.sh</code>
+          <button class="btn-copy" onclick="copyTxt('bash scripts/publicar_alpha_apple_testflight_hoy.sh')">Copiar</button>
+        </div>
+        <div class="field-row">
+          <span>Nota Revisor Apple: <code>Pase gratis Paso 4: ALPHA100</code></span>
+          <button class="btn-copy" onclick="copyTxt('Los Pasos 0 al 3 son abiertos. Para desbloquear gratis los Pasos 4 al 6 ingrese el código ALPHA100 ($0 USD).')">Copiar Nota</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- ANDROID APK HOY MISMO + GOOGLE PLAY -->
+      <div class="card android">
+        <span class="step-badge" style="background:#ECFDF5; color:#065F46;">ANDROID LISTO HOY (CON Y SIN TIENDA)</span>
+        <h2>🤖 Android Alpha (.APK Directo + .AAB)</h2>
+        <p>Ya compilamos el instalador nativo <strong><code>TheBestBrand_Alpha_v1.0.0.apk</code> (5.2 MB)</strong>. Tus testers de Android pueden descargarlo e instalarlo <strong>hoy mismo</strong> sin esperar la cuenta de Google Play:</p>
+        <a href="https://thebestbrand.app/assets/releases/TheBestBrand_Alpha_v1.0.0.apk" target="_blank" class="btn btn-green">
+          📲 Descargar Instalador Android (.APK · 5.2 MB) →
+        </a>
+        <a href="https://play.google.com/console/signup" target="_blank" class="btn btn-navy" style="margin-top:8px;">
+          Abrir Registro Google Play Console ($25 USD) →
+        </a>
+      </div>
+
+      <!-- PASES E INVITACIONES PARA TESTERS Y RESEÑAS -->
+      <div class="card codes">
+        <span class="step-badge" style="background:#FFF7ED; color:#C2410C;">PASES GRATIS ($0 USD) PARA TESTERS Y RESEÑAS</span>
+        <h2>🎁 Links de Invitación con Código Pre-Cargado</h2>
+        <p>Copia cualquiera de estos links para mandarlos por WhatsApp a las personas que harán el test y dejarán su reseña de 5 estrellas:</p>
+        <div class="field-row">
+          <span>Pase General (100% Gratis): <code>ALPHA100</code></span>
+          <button class="btn-copy" onclick="copyTxt('https://thebestbrand.app/?coupon=ALPHA100&section=4')">Copiar Link</button>
+        </div>
+        <div class="field-row">
+          <span>Pase Invitado VIP (100% Gratis): <code>TESTER-VIP</code></span>
+          <button class="btn-copy" onclick="copyTxt('https://thebestbrand.app/?coupon=TESTER-VIP&section=4')">Copiar Link</button>
+        </div>
+        <div class="field-row">
+          <span>Pase de Reseña Verificada: <code>RESENA-TBB</code></span>
+          <button class="btn-copy" onclick="copyTxt('https://thebestbrand.app/?coupon=RESENA-TBB&section=4')">Copiar Link</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">✅ Copiado al portapapeles</div>
+  <script>
+    function copyTxt(str) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(str);
+      }
+      var t = document.getElementById("toast");
+      t.textContent = "✅ Copiado: " + (str.length > 38 ? str.slice(0, 38) + "..." : str);
+      t.style.display = "block";
+      setTimeout(function () { t.style.display = "none"; }, 2400);
+    }
+  </script>
+</body>
+</html>

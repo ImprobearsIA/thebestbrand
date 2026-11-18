@@ -347,6 +347,15 @@ def serve_account_deletion_page():
     return HTMLResponse(content=html)
 
 
+@app.api_route("/alpha", methods=["GET", "HEAD"], response_class=HTMLResponse)
+def serve_alpha_launch_and_tester_portal():
+    html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/alpha-portal.html"))
+    if os.path.isfile(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read(), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+    return HTMLResponse(content="<meta http-equiv='refresh' content='0;url=/?coupon=ALPHA100&section=4'>")
+
+
 @app.api_route("/{script_name}.js", methods=["GET", "HEAD"])
 def serve_web_root_js(script_name: str):
     js_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"../web/{script_name}.js"))
