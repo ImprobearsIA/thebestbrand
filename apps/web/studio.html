@@ -22921,8 +22921,14 @@
             const uploadedLogoUrl = cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
             const existingLogoMode = cs.existing_logo_mode || window.step0State?.existingLogoMode || "keep";
             const extColors = cs.uploaded_logo_colors || window.step0State?.uploadedLogoColors || [st.logoPriHex || "#1D4ED8", st.logoSecHex || "#0D2540"];
-            const isNamelessDiscovery = Boolean(cs.nameless_discovery_mode || (curAssets === "none" && (!curName || /^the\s*best\s*brand$/i.test(curName))));
-            const displayInputName = isNamelessDiscovery ? "" : curName;
+            const isNamelessDiscovery = Boolean(
+              cs.nameless_discovery_mode ||
+              cs.step0_nameless_mode ||
+              curAssets === "nameless_discovery" ||
+              /^Marca en Creaci|^Proyecto Gastron/i.test(curName) ||
+              (curAssets === "none" && (!curName || /^the\s*best\s*brand$/i.test(curName)))
+            );
+            const displayInputName = (isNamelessDiscovery || /^Marca en Creaci|^Proyecto Gastron/i.test(curName)) ? "" : curName;
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:12px 14px; gap:8px;">
                 <div>
@@ -22933,7 +22939,7 @@
                 </div>
                 <div style="display:flex; flex-direction:column; gap:7px; flex:1; justify-content:center; min-height:0;">
                   <div style="display:grid; grid-template-columns:1.15fr 0.85fr; gap:8px;">
-                    <button type="button" id="tbbBtnStartNamelessDiscovery" class="tbb-duo-btn ${isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbActivateNamelessDiscoveryMode();" style="min-height:44px !important; padding:6px 10px !important; font-size:0.79rem !important; line-height:1.2;">
+                    <button type="button" id="tbbBtnStartNamelessDiscovery" class="tbb-duo-btn ${isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbActivateNamelessDiscoveryMode(true);" style="min-height:44px !important; padding:6px 10px !important; font-size:0.79rem !important; line-height:1.2;">
                       ✨ Aún no tengo nombre · Crearlo desde cero en el Paso 3
                     </button>
                     <button type="button" id="tbbBtnHasExistingName" class="tbb-duo-btn ${!isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbDeactivateNamelessDiscoveryMode();" style="min-height:44px !important; padding:6px 10px !important; font-size:0.79rem !important; line-height:1.2;">
@@ -22942,19 +22948,29 @@
                   </div>
 
                   ${isNamelessDiscovery ? `
-                    <div style="background:linear-gradient(135deg,#FFFBEB,#FEF3C7); border:1.5px solid #D97706; border-radius:13px; padding:8px 12px; display:flex; align-items:center; gap:10px;">
-                      <div style="width:34px; height:34px; border-radius:10px; background:#9E3B24; color:#FFFBEB; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.95rem; flex-shrink:0;">✦</div>
-                      <div style="font-size:0.74rem; color:#78350F; font-weight:700; line-height:1.32;">
-                        <strong style="color:#9E3B24; display:block; font-size:0.77rem;">Modo «Generación de Nombre desde Cero» Activo (Método SMILE & Raíces Semánticas)</strong>
-                        Primero definiremos tu Giro (Paso 0.3), Propósito (Paso 1) y Touchpoints (Paso 2). En el <strong>Paso 3</strong> el motor cruzará tus 4 ejes semánticos para bautizar tu marca con validación fonética y Clase de Niza.
+                    <div style="background:linear-gradient(135deg,#FFFBEB,#FEF3C7); border:1.5px solid #D97706; border-radius:13px; padding:10px 12px; display:flex; flex-direction:column; gap:8px;">
+                      <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="width:34px; height:34px; border-radius:10px; background:#9E3B24; color:#FFFBEB; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.95rem; flex-shrink:0;">✦</div>
+                        <div style="font-size:0.74rem; color:#78350F; font-weight:700; line-height:1.32;">
+                          <strong style="color:#9E3B24; display:block; font-size:0.77rem;">Modo «Generación de Nombre desde Cero» Activo (Método SMILE & Raíces Semánticas)</strong>
+                          Primero definiremos tu Giro (Paso 0.3), Propósito (Paso 1) y Touchpoints (Paso 2). En el <strong>Paso 3</strong> el motor cruzará tus 4 ejes semánticos para bautizar tu marca con validación fonética y Clase de Niza.
+                        </div>
                       </div>
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.onTbbAtomicNext();" style="width:100%; min-height:42px !important; font-size:0.84rem !important; font-weight:900 !important;">
+                        Continuar a Definir Giro y Actividad (Paso 0 · 3 de 3) →
+                      </button>
                     </div>
                   ` : `
-                    <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:8px 12px;">
-                      <label for="tbbStep0NameInput" style="display:block; font-size:0.74rem; font-weight:800; color:#334155; margin-bottom:4px;">
+                    <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:8px 12px; display:flex; flex-direction:column; gap:6px;">
+                      <label for="tbbStep0NameInput" style="display:block; font-size:0.74rem; font-weight:800; color:#334155;">
                         Nombre actual de tu marca:
                       </label>
-                      <input type="text" id="tbbStep0NameInput" value="${displayInputName.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" placeholder="Escribe aquí el nombre de tu marca" style="width:100%; height:40px; padding:0 12px; border-radius:10px; border:2px solid #94A3B8; font-size:0.92rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                      <div style="display:flex; gap:8px; align-items:center;">
+                        <input type="text" id="tbbStep0NameInput" value="${displayInputName.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Escribe aquí el nombre de tu marca" style="flex:1; height:40px; padding:0 12px; border-radius:10px; border:2px solid #94A3B8; font-size:0.92rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                        <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.onTbbAtomicNext();" style="min-height:40px !important; padding:0 14px !important; font-size:0.80rem !important; flex-shrink:0;">
+                          Continuar →
+                        </button>
+                      </div>
                     </div>
                   `}
 
@@ -25284,7 +25300,7 @@
       // NUEVO REQUERIMIENTO: MODO DESCUBRIMIENTO DE NOMBRE DESDE CERO (PASO 0 -> PASO 3)
       // Y CASO DE ESTUDIO REAL: RESTAURANTE MEXICANO MODERNISTA MICHELIN (CASA LOTERÍA)
       // =========================================================================
-      window.tbbActivateNamelessDiscoveryMode = function () {
+      window.tbbActivateNamelessDiscoveryMode = function (autoAdvance = true) {
         if (typeof playAcousticClick === "function") playAcousticClick(740, 0.06);
         if (!window.step0State) window.step0State = {};
         window.step0State.assets = "nameless_discovery";
@@ -25295,18 +25311,26 @@
           canvasState.isOfficialImproBearsPreset = false;
           canvasState.brandName = "Marca en Creación (Paso 3)";
           canvasState.userLockedBrandName = false;
+          canvasState.nameless_discovery_mode = true;
           canvasState.step0_nameless_mode = true;
         }
-        const inp = document.getElementById("tbbStep0BrandInput");
+        const inp = document.getElementById("tbbStep0NameInput") || document.getElementById("tbbStep0BrandInput");
         if (inp) {
           inp.value = "";
           inp.placeholder = "Se descubrirá científicamente en el Paso 3 con tus respuestas...";
         }
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
         if (typeof window.triggerAuraEmpatheticFeedback === "function") {
-          window.triggerAuraEmpatheticFeedback("input_assets", "Modo descubrimiento de nombre desde cero activado: primero definiremos tu Propósito (Paso 1) y Touchpoints (Paso 2), y en el Paso 3 sintetizaremos tu nombre oficial.", false);
+          window.triggerAuraEmpatheticFeedback("input_assets", "Modo descubrimiento de nombre desde cero activado: primero definiremos tu Giro (Paso 0.3), Propósito (Paso 1) y Touchpoints (Paso 2), y en el Paso 3 sintetizaremos tu nombre oficial.", false);
         }
         if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
+        if (autoAdvance !== false && window.tbbState && Number(window.tbbState.step) === 0 && Number(window.tbbState.subStep) === 2) {
+          setTimeout(() => {
+            if (window.tbbState && Number(window.tbbState.step) === 0 && Number(window.tbbState.subStep) === 2 && typeof window.onTbbAtomicNext === "function") {
+              window.onTbbAtomicNext();
+            }
+          }, 360);
+        }
       };
 
       window.tbbDeactivateNamelessDiscoveryMode = function () {
@@ -25314,14 +25338,16 @@
         if (!window.step0State) window.step0State = {};
         window.step0State.assets = "has_name";
         if (typeof canvasState === "object" && canvasState) {
+          canvasState.nameless_discovery_mode = false;
           canvasState.step0_nameless_mode = false;
-          if (/^Marca en Creación/i.test(canvasState.brandName || "")) {
+          if (/^Marca en Creaci|^Proyecto Gastron/i.test(canvasState.brandName || "")) {
             canvasState.brandName = "";
           }
         }
+        if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
         if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
         setTimeout(() => {
-          const inp = document.getElementById("tbbStep0BrandInput");
+          const inp = document.getElementById("tbbStep0NameInput") || document.getElementById("tbbStep0BrandInput");
           if (inp) inp.focus();
         }, 40);
       };
@@ -25333,6 +25359,7 @@
         if (typeof canvasState === "object" && canvasState) {
           canvasState.brandName = cleanName;
           canvasState.userLockedBrandName = true;
+          canvasState.nameless_discovery_mode = false;
           canvasState.step0_nameless_mode = false;
           if (candidateTagline) {
             canvasState.tagline = String(candidateTagline).trim();
@@ -25560,6 +25587,7 @@
         delete canvasState.uploaded_logo_colors;
         canvasState.isOfficialAdminTbbPreset = false;
         canvasState.isOfficialImproBearsPreset = false;
+        canvasState.nameless_discovery_mode = isPreNamingStep;
         canvasState.step0_nameless_mode = isPreNamingStep;
         canvasState.brandName = activeName;
         canvasState.userLockedBrandName = !isPreNamingStep;
