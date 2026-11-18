@@ -933,142 +933,142 @@
     }
   ];
 
-  // Consolidación de Entregables (Mención única del Brandbook oficial de "más de 30 páginas (ajustable según el giro del negocio)")
+  // Consolidación de Entregables Reales · Caso Real Completo: ARCO Ingeniería (Ing. Luis Ponce · Iteración #5 Lineal Minimalista)
   const OFFICIAL_9_DELIVERABLES = [
     {
       num: "01",
       format: ".PDF + .HTML INTERACTIVO",
-      sampleUrl: "/samples/Brandbook_Casa_Loteria_Michelin.html",
-      thumb: "/assets/app_captures/step6_brandbook_36.png",
+      sampleUrl: "/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.html",
+      thumb: "/assets/app_captures/arco_30_paso6_1_brandbook_lamina01_portada.png",
       plateNum: 1,
       isPrimaryBrandbook: true,
       i18n: {
-        es: { title: "Brandbook Oficial de Más de 30 Páginas · Caso Real Inédito: CASA LOTERÍA (Cocina Mexicana Modernista · Chef Estrella Michelin)", desc: "Constitución visual y estratégica unificada en flujo de curvas abiertas creada desde cero (empezando sin nombre): Círculo Dorado, La Empresa como Persona, Touchpoints de Hospitalidad (Antes/Durante/Después), Naming SMILE (CASA LOTERÍA 99/100 · Clase Niza 43), Retícula 8X×3X, Paleta Barro Negro/Terracota, Tipografía Cormorant Garamond y 8 Propuestas Vectoriales." },
-        en: { title: "Official Brandbook of 30+ Pages · Real Case Study: CASA LOTERÍA (Modernist Mexican Cuisine · Michelin-Starred Chef)", desc: "Unified strategic and visual constitution in open vector curves created from scratch (starting nameless): Golden Circle, Company as a Person, Hospitality Touchpoints, SMILE Naming (CASA LOTERÍA 99/100 · Nice Class 43), 8X×3X Grid, Oaxacan Black Clay/Terracotta Palette, Cormorant Garamond Typography, and 8 Vector Proposals." },
-        fr: { title: "Brandbook Officiel de Plus de 30 Pages · Cas Réel : CASA LOTERÍA (Cuisine Mexicaine Moderniste · Chef Étoilé Michelin)", desc: "Constitution visuelle et stratégique unifiée en courbes ouvertes créée de zéro (sans nom initial) : Cercle d'Or, Entreprise comme Personne, Touchpoints Hospitalité, Naming SMILE (CASA LOTERÍA 99/100 · Classe Nice 43), Grille 8X×3X, Palette Argile Noire/Terracotta et 8 Logos Vectoriels." },
-        pt: { title: "Brandbook Oficial com Mais de 30 Páginas · Caso Real: CASA LOTERÍA (Cozinha Mexicana Modernista · Chef Estrela Michelin)", desc: "Constituição visual e estratégica unificada em curvas abertas criada do zero (sem nome inicial): Círculo Dourado, Empresa como Pessoa, Touchpoints de Hospitalidade, Naming SMILE (CASA LOTERÍA 99/100 · Classe Nice 43), Grelha 8X×3X, Paleta Barro Negro/Terracota e 8 Logos Vetoriais." },
-        de: { title: "Offizielles Brandbook mit Über 30 Seiten · Fallstudie: CASA LOTERÍA (Modernistische Mexikanische Küche · Michelin-Sternekoch)", desc: "Einheitliche strategische und visuelle Markenverfassung in offenen Vektorkurven von Grund auf erstellt (ohne Startnamen): Golden Circle, Hospitality-Touchpoints, SMILE-Naming (CASA LOTERÍA 99/100 · Nizza-Klasse 43), 8X×3X-Raster und 8 Vektor-Logos." },
-        it: { title: "Brandbook Ufficiale di Oltre 30 Pagine · Caso Reale: CASA LOTERÍA (Cucina Messicana Modernista · Chef Stellato Michelin)", desc: "Costituzione visiva e strategica unificata in curve aperte creata da zero (senza nome iniziale): Cerchio d'Oro, Touchpoint Ospitalità, Naming SMILE (CASA LOTERÍA 99/100 · Classe Nizza 43), Griglia 8X×3X, Palette Argilla Nera/Terracotta e 8 Loghi Vettoriali." }
+        es: { title: "Brandbook Oficial de 36 Láminas · Caso Real Auditado: ARCO INGENIERÍA (Ing. Luis Ponce · Modernización Lineal Minimalista #5)", desc: "Constitución visual y estratégica completa generada a partir de la Iteración #5 (Lineal Minimalista): Diagnóstico y Evolución del Logo Base, Círculo Dorado (Why/How/What), La Empresa como Persona, Touchpoints de Obra Civil (Antes/Durante/Después), Clases Niza 37 y 42, Ejes Kansei, Tríada Montserrat + Plus Jakarta Sans + JetBrains Mono, Rueda Cromática (#0078C0 / #88E0E0 / #585850) y Terna Vectorial." },
+        en: { title: "Official 36-Plate Brandbook · Real Audited Case: ARCO INGENIERÍA (Eng. Luis Ponce · Minimalist Linear Modernization #5)", desc: "Complete visual and strategic brand constitution generated from Iteration #5 (Minimalist Linear): Base Logo Evolution, Golden Circle, Company as a Person, Civil Engineering Touchpoints (Before/During/After), Nice Classes 37 & 42, Kansei Axes, Montserrat + Plus Jakarta Sans + JetBrains Mono Triad, Color Wheel (#0078C0 / #88E0E0 / #585850), and Vector Suite." },
+        fr: { title: "Brandbook Officiel de 36 Planches · Cas Réel Audité : ARCO INGENIERÍA (Ing. Luis Ponce · Modernisation Linéaire Minimaliste #5)", desc: "Constitution visuelle et stratégique complète générée à partir de l'Itération #5 (Linéaire Minimaliste) : Évolution du Logo de Base, Cercle d'Or, Touchpoints Génie Civil, Classes de Nice 37 et 42, Axes Kansei et Suite Vectorielle." },
+        pt: { title: "Brandbook Oficial de 36 Lâminas · Caso Real Auditado: ARCO INGENIERÍA (Eng. Luis Ponce · Modernização Linear Minimalista #5)", desc: "Constituição visual e estratégica completa gerada a partir da Iteração #5 (Linear Minimalista): Evolução do Logo Base, Círculo Dourado, Touchpoints de Engenharia Civil, Classes Nice 37 e 42, Eixos Kansei e Suite Vetorial." },
+        de: { title: "Offizielles 36-Seiten-Brandbook · Geprüfte Fallstudie: ARCO INGENIERÍA (Ing. Luis Ponce · Minimalistisch-Lineare Modernisierung #5)", desc: "Vollständige visuelle und strategische Markenverfassung aus Iteration #5 (Linear Minimalistisch): Logo-Evolution, Golden Circle, Bauingenieur-Touchpoints, Nizza-Klassen 37 & 42, Kansei-Achsen und Vektor-Suite." },
+        it: { title: "Brandbook Ufficiale di 36 Tavole · Caso Reale Certificato: ARCO INGENIERÍA (Ing. Luis Ponce · Modernizzazione Lineare Minimalista #5)", desc: "Costituzione visiva e strategica completa generata dall'Iterazione #5 (Lineare Minimalista): Evoluzione Logo Base, Cerchio d'Oro, Touchpoint Ingegneria Civile, Classi di Nizza 37 e 42, Assi Kansei e Suite Vettoriale." }
       }
     },
     {
       num: "02",
-      format: ".SVG · VECTOR PURO",
-      sampleUrl: "/samples/Logotipo_Oficial_TheBestBrand_Curvas.svg",
-      thumb: "/assets/brandbook_plates_tbb/plate-09.jpg",
-      plateNum: 9,
+      format: ".SVG · VECTOR EN CURVAS",
+      sampleUrl: "/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.svg",
+      thumb: "/assets/app_captures/arco_31_paso6_1_brandbook_lamina13_terna.png",
+      plateNum: 13,
       i18n: {
-        es: { title: "Logotipo Maestro en Curvas Bézier (.SVG)", desc: "Archivo vectorial escalable sin pérdida desde 16px hasta espectacular, en versiones positivo, negativo y monocromático." },
-        en: { title: "Master Logo in Pure Bézier Curves (.SVG)", desc: "Lossless scalable vector file from 16px to billboard scale, in positive, negative, and monochrome versions." },
-        fr: { title: "Logo Maître en Courbes de Bézier (.SVG)", desc: "Fichier vectoriel extensible sans perte de 16px aux grands formats, en versions positive, négative et monochrome." },
-        pt: { title: "Logótipo Mestre em Curvas Bézier (.SVG)", desc: "Ficheiro vetorial escalável sem perda desde 16px até grande formato, em versões positiva, negativa e monocromática." },
-        de: { title: "Master-Logo in Reinen Bézier-Kurven (.SVG)", desc: "Verlustfrei skalierbare Vektordatei von 16px bis Großformat in Positiv-, Negativ- und Monochrom-Varianten." },
-        it: { title: "Logo Master in Curve di Bézier Pure (.SVG)", desc: "File vettoriale scalabile senza perdita da 16px a grande formato, nelle versioni positivo, negativo e monocromatico." }
+        es: { title: "Terna de Logotipos en Curvas Bézier (.SVG): Horizontal, Avatar 1:1 y Sello", desc: "Vectores matemáticos de ARCO Ingeniería (Iteración #5 Lineal Minimalista) trazados en curvas Bézier puras sin fuentes externas para web, planos CAD, cascos y gran formato." },
+        en: { title: "Bézier Curve Logo Suite (.SVG): Horizontal, 1:1 Avatar & Seal", desc: "Mathematical vectors of ARCO Ingeniería (Iteration #5 Minimalist Linear) traced in pure Bézier curves for web, CAD blueprints, hardhats, and large-format signage." },
+        fr: { title: "Suite de Logos en Courbes de Bézier (.SVG) : Horizontal, Avatar 1:1 et Sceau", desc: "Vecteurs mathématiques d'ARCO Ingeniería (Itération #5) tracés en courbes de Bézier pures pour le web, les plans CAO et la signalétique de chantier." },
+        pt: { title: "Terna de Logótipos em Curvas Bézier (.SVG): Horizontal, Avatar 1:1 e Selo", desc: "Vetores matemáticos da ARCO Ingeniería (Iteração #5) traçados em curvas Bézier puras para web, plantas CAD e sinalética de obra." },
+        de: { title: "Bézier-Vektor-Logopaket (.SVG): Horizontal, 1:1 Avatar & Siegel", desc: "Mathematische Vektoren von ARCO Ingeniería (Iteration #5) in reinen Bézier-Kurven für Web, CAD-Pläne und Baustellenbeschilderung." },
+        it: { title: "Suite Loghi in Curve di Bézier (.SVG): Orizzontale, Avatar 1:1 e Sigillo", desc: "Vettori matematici di ARCO Ingeniería (Iterazione #5) tracciati in curve di Bézier pure per web, tavole CAD e cantieri." }
       }
     },
     {
       num: "03",
-      format: ".AI / .EPS · PRE-PRENSA",
-      sampleUrl: "/samples/Logotipo_Master_Illustrator_TheBestBrand.ai.svg",
-      thumb: "/assets/brandbook_plates_tbb/plate-11.jpg",
+      format: ".AI · ADOBE ILLUSTRATOR",
+      sampleUrl: "/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.ai",
+      thumb: "/assets/app_captures/arco_28_paso5_2_iter5_nanobanana_lineal_minimalista.png",
       plateNum: 11,
       i18n: {
-        es: { title: "Originales de Imprenta y Bordado (.AI / .EPS)", desc: "Capas constructivas separadas con equivalencias Pantone Solid Coated, CMYK FOGRA39 y líneas de corte." },
-        en: { title: "Print & Embroidery Master Originals (.AI / .EPS)", desc: "Layered construction files with Pantone Solid Coated, CMYK FOGRA39 equivalents, and die-cut lines." },
-        fr: { title: "Originaux d'Imprimerie et Broderie (.AI / .EPS)", desc: "Calques de construction séparés avec équivalences Pantone Solid Coated et CMYK FOGRA39." },
-        pt: { title: "Originais de Gráfica e Bordado (.AI / .EPS)", desc: "Camadas construtivas separadas com equivalências Pantone Solid Coated e CMYK FOGRA39." },
-        de: { title: "Druck- & Stickerei-Originaldateien (.AI / .EPS)", desc: "Getrennte Konstruktionsebenen mit Pantone Solid Coated und CMYK FOGRA39 Farbwerten." },
-        it: { title: "Originali per Stampa e Ricamo (.AI / .EPS)", desc: "Livelli costruttivi separati con equivalenze Pantone Solid Coated e CMYK FOGRA39." }
+        es: { title: "Original Maestro Nativo para Adobe Illustrator e Imprenta (.AI)", desc: "Archivo PostScript/PDF 1.6 nativo en curvas con las capas del arco estructural y las dos torres de ARCO Ingeniería (#0078C0, #88E0E0, #585850) listo para pre-prensa y bordado." },
+        en: { title: "Native Adobe Illustrator & Pre-Press Master Original (.AI)", desc: "Native PostScript/PDF 1.6 vector file with separated structural arch and twin tower layers (#0078C0, #88E0E0, #585850) ready for print and embroidery." },
+        fr: { title: "Original Maître Natif Adobe Illustrator et Pré-presse (.AI)", desc: "Fichier natif en courbes avec calques séparés de l'arche structurelle et des tours d'ARCO Ingeniería (#0078C0, #88E0E0, #585850)." },
+        pt: { title: "Original Mestre Nativo Adobe Illustrator e Pré-impressão (.AI)", desc: "Ficheiro nativo em curvas com camadas separadas do arco estrutural e das torres da ARCO Ingeniería (#0078C0, #88E0E0, #585850)." },
+        de: { title: "Natives Adobe Illustrator & Druckvorstufen-Master (.AI)", desc: "Native Vektordatei mit getrennten Ebenen des Bogens und der Türme von ARCO Ingeniería (#0078C0, #88E0E0, #585850)." },
+        it: { title: "Originale Master Nativo Adobe Illustrator e Pre-stampa (.AI)", desc: "File nativo in curve con livelli separati dell'arco strutturale e delle torri di ARCO Ingeniería (#0078C0, #88E0E0, #585850)." }
       }
     },
     {
       num: "04",
-      format: ".PNG · CANAL ALFA 4K",
-      sampleUrl: "/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png",
-      thumb: "/assets/brandbook_plates_tbb/plate-14.jpg",
+      format: ".PNG · MASTERPIECE & APP ICON 1:1",
+      sampleUrl: "/samples/Logotipo_Masterpiece_NanoBanana_ARCO_Ingenieria.png",
+      thumb: "/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png",
       plateNum: 14,
       i18n: {
-        es: { title: "Pack de Transparencias 4K e Ícono App 1:1 (.PNG)", desc: "Logotipo horizontal, vertical e isotipo 1:1 calados sin fondo blanco listos para web, video y redes sociales." },
-        en: { title: "4K Alpha Transparency Pack & 1:1 App Icon (.PNG)", desc: "Horizontal, stacked, and 1:1 icon assets with transparent background ready for web, video, and social media." },
-        fr: { title: "Pack Transparences 4K et Icône App 1:1 (.PNG)", desc: "Logos horizontal, vertical et icône 1:1 détourés sans fond blanc pour web, vidéo et réseaux sociaux." },
-        pt: { title: "Pack de Transparências 4K e Ícone App 1:1 (.PNG)", desc: "Logótipo horizontal, vertical e ícone 1:1 sem fundo branco prontos para web, vídeo e redes sociais." },
-        de: { title: "4K Alpha-Transparenz-Paket & 1:1 App-Icon (.PNG)", desc: "Freigestellte Horizontal-, Vertikal- und 1:1-Icon-Dateien ohne weißen Hintergrund für Web und Video." },
-        it: { title: "Pack Trasparenze 4K e Icona App 1:1 (.PNG)", desc: "Logo orizzontale, verticale e icona 1:1 scontornati senza sfondo bianco per web, video e social." }
+        es: { title: "Logotipo Masterpiece Alta Resolución e Isotipo 1:1 Centrado (.PNG)", desc: "Versión completa de la Iteración #5 (Lineal Minimalista) de ARCO Ingeniería junto con su Isotipo 1:1 de 1024×1024 px sin texto duplicado para ícono de App y avatar." },
+        en: { title: "High-Res Masterpiece Logo & Centered 1:1 App Icon (.PNG)", desc: "Full lockup of Iteration #5 (Minimalist Linear) of ARCO Ingeniería plus its 1024×1024 px 1:1 symbol for App Icon and social avatar." },
+        fr: { title: "Logo Masterpiece Haute Résolution et Icône App 1:1 (.PNG)", desc: "Version complète de l'Itération #5 d'ARCO Ingeniería avec son symbole 1:1 de 1024×1024 px centré pour icône d'application." },
+        pt: { title: "Logótipo Masterpiece Alta Resolução e Ícone App 1:1 (.PNG)", desc: "Versão completa da Iteração #5 da ARCO Ingeniería com o seu símbolo 1:1 de 1024×1024 px centrado para ícone de aplicação." },
+        de: { title: "Hochauflösendes Masterpiece-Logo & 1:1 App-Icon (.PNG)", desc: "Vollversion der Iteration #5 von ARCO Ingeniería inklusive zentriertem 1024×1024 px 1:1-Symbol für App-Icons." },
+        it: { title: "Logo Masterpiece Alta Risoluzione e Icona App 1:1 (.PNG)", desc: "Versione completa dell'Iterazione #5 di ARCO Ingeniería con il simbolo 1:1 da 1024×1024 px centrato per icona app." }
       }
     },
     {
       num: "05",
-      format: ".DOCX · PAPELERÍA CORPORATIVA",
-      sampleUrl: "/samples/5_Hoja_Membretada_Corporativa_Word.html",
-      thumb: "/assets/brandbook_plates_tbb/plate-25.jpg",
+      format: ".DOCX · HOJA MEMBRETADA",
+      sampleUrl: "/samples/Plantilla_Hoja_Membretada_arco_ingenieria.docx",
+      thumb: "/assets/app_captures/arco_33_paso6_2_boveda_ejecutiva_descargas.png",
       plateNum: 25,
       i18n: {
-        es: { title: "Hoja Membretada y Propuesta Ejecutiva (.DOCX)", desc: "Plantilla editable para procesadores de texto en computadora, tablet o móvil con encabezado en curvas, estilos tipográficos y pie legal." },
-        en: { title: "Corporate Letterhead & Executive Proposal (.DOCX)", desc: "Editable document template for desktop, tablet, or mobile with open-curve header, typographic styles, and legal footer." },
-        fr: { title: "Papier à En-tête et Proposition Exécutive (.DOCX)", desc: "Modèle de document éditable sur ordinateur, tablette ou mobile avec en-tête en courbes, styles typographiques et pied de page." },
-        pt: { title: "Folha Timbrada e Proposta Executiva (.DOCX)", desc: "Modelo de documento editável em computador, tablet ou telemóvel com cabeçalho em curvas, estilos tipográficos e rodapé." },
-        de: { title: "Geschäftsbriefbogen & Angebotsvorlage (.DOCX)", desc: "Editierbare Dokumentvorlage für Computer, Tablet oder Mobilgerät mit Kurven-Kopfzeile, Absatzformaten und Fußzeile." },
-        it: { title: "Carta Intestata e Proposta Esecutiva (.DOCX)", desc: "Modello di documento modificabile su computer, tablet o dispositivo mobile con intestazione in curve e stili tipografici." }
+        es: { title: "Plantilla de Hoja Membretada y Licitación de Obra (.DOCX)", desc: "Documento nativo de Microsoft Word / Google Docs para ARCO Ingeniería con el isotipo #5 Lineal Minimalista en el encabezado, tipografía Montserrat y pie corporativo." },
+        en: { title: "Editable Corporate Letterhead & Engineering Bid Template (.DOCX)", desc: "Native Microsoft Word / Google Docs template for ARCO Ingeniería featuring the #5 Minimalist Linear symbol in the header and corporate footer." },
+        fr: { title: "Modèle de Papier à En-tête et Appel d'Offres (.DOCX)", desc: "Document natif Microsoft Word / Google Docs pour ARCO Ingeniería avec le symbole #5 Linéaire Minimaliste en en-tête." },
+        pt: { title: "Modelo de Folha Timbrada e Proposta de Engenharia (.DOCX)", desc: "Documento nativo Microsoft Word / Google Docs para a ARCO Ingeniería com o símbolo #5 Linear Minimalista no cabeçalho." },
+        de: { title: "Editierbarer Geschäftsbriefbogen & Ausschreibungsvorlage (.DOCX)", desc: "Native Microsoft Word / Google Docs Vorlage für ARCO Ingeniería mit dem #5 Linear-Minimalistischen Symbol in der Kopfzeile." },
+        it: { title: "Modello di Carta Intestata e Capitolato d'Appalto (.DOCX)", desc: "Documento nativo Microsoft Word / Google Docs per ARCO Ingeniería con il simbolo #5 Lineare Minimalista nell'intestazione." }
       }
     },
     {
       num: "06",
       format: ".PPTX · PRESENTACIÓN 16:9",
-      sampleUrl: "/samples/6_Presentacion_Ejecutiva_Keynote_16_9.html",
-      thumb: "/assets/brandbook_plates_tbb/plate-26.jpg",
+      sampleUrl: "/samples/Plantilla_Presentacion_Ejecutiva_arco_ingenieria.pptx",
+      thumb: "/assets/app_captures/arco_32_paso6_1_brandbook_lamina21_paleta.png",
       plateNum: 26,
       i18n: {
-        es: { title: "Presentación Comercial Panorámica 16:9 (.PPTX)", desc: "Deck maestro para ventas y consejo directivo con portadas, gráficas financieras y láminas de caso de éxito." },
-        en: { title: "Widescreen 16:9 Commercial Pitch Deck (.PPTX)", desc: "Master sales and board presentation with cover slides, financial charts, and case study layouts." },
-        fr: { title: "Présentation Commerciale Panoramique 16:9 (.PPTX)", desc: "Deck maître pour ventes et direction avec couvertures, graphiques financiers et études de cas." },
-        pt: { title: "Apresentação Comercial Panorâmica 16:9 (.PPTX)", desc: "Deck mestre para vendas e direção com capas, gráficos financeiros e casos de sucesso." },
-        de: { title: "Widescreen 16:9 Vertriebspräsentation (.PPTX)", desc: "Master-Pitch-Deck mit Titelfolien, Finanzdiagrammen und Case-Study-Layouts." },
-        it: { title: "Presentazione Commerciale Panoramica 16:9 (.PPTX)", desc: "Deck master per vendite e direzione con copertine, grafici finanziari e casi di successo." }
+        es: { title: "Presentación Ejecutiva Panorámica 16:9 Editable (.PPTX · 6 Diapositivas)", desc: "Deck nativo de PowerPoint / Keynote para el Ing. Luis Ponce con portada institucional, Círculo Dorado, Perfil de Desarrolladoras, Touchpoints de Obra y Propuesta Económica." },
+        en: { title: "Editable 16:9 Widescreen Executive Pitch Deck (.PPTX · 6 Slides)", desc: "Native PowerPoint / Keynote deck for Eng. Luis Ponce with cover slide, Golden Circle, Real Estate Developer Profile, Construction Touchpoints, and Commercial Proposal." },
+        fr: { title: "Présentation Exécutive Panoramique 16:9 Éditable (.PPTX · 6 Diapositives)", desc: "Deck natif PowerPoint / Keynote pour l'Ing. Luis Ponce avec couverture, Cercle d'Or, Touchpoints de Chantier et Proposition Commerciale." },
+        pt: { title: "Apresentação Executiva Panorâmica 16:9 Editável (.PPTX · 6 Diapositivos)", desc: "Deck nativo PowerPoint / Keynote para o Eng. Luis Ponce com capa, Círculo Dourado, Touchpoints de Obra e Proposta Comercial." },
+        de: { title: "Editierbare 16:9 Widescreen-Präsentation (.PPTX · 6 Folien)", desc: "Natives PowerPoint / Keynote Deck für Ing. Luis Ponce mit Titelfolie, Golden Circle, Baustellen-Touchpoints und Angebot." },
+        it: { title: "Presentazione Esecutiva Panoramica 16:9 Modificabile (.PPTX · 6 Slide)", desc: "Deck nativo PowerPoint / Keynote per l'Ing. Luis Ponce con copertina, Cerchio d'Oro, Touchpoint Cantiere e Proposta Commerciale." }
       }
     },
     {
       num: "07",
-      format: ".HTML · FIRMA INTERACTIVA",
-      sampleUrl: "/samples/7_Firma_interactiva_Correo_CEO.html",
-      thumb: "/assets/brandbook_plates_tbb/plate-27.jpg",
+      format: ".HTML · FIRMA CORPORATIVA",
+      sampleUrl: "/samples/Firma_Corporativa_Luis_Ponce_ARCO_Ingenieria.html",
+      thumb: "/assets/app_captures/arco_34_modal_firma_corporativa_luis_ponce.png",
       plateNum: 27,
       i18n: {
-        es: { title: "Firma de Correo Ejecutiva para Móvil, Tablet y Computadora", desc: "Código HTML responsivo con logotipo en alta densidad y enlaces directos a mensajería instantánea, sitio web y agenda." },
-        en: { title: "Executive Email Signature for Mobile, Tablet & Computer", desc: "Responsive HTML signature with high-DPI logo and direct links to instant messaging, website, and booking." },
-        fr: { title: "Signature E-mail Exécutive pour Mobile, Tablette et Ordinateur", desc: "Signature HTML responsive avec logo haute densité et liens directs vers messagerie, site web et agenda." },
-        pt: { title: "Assinatura de E-mail Executiva para Telemóvel, Tablet e Computador", desc: "Assinatura HTML responsiva com logótipo de alta densidade e ligações diretas para mensagens, site e agenda." },
-        de: { title: "Executive E-Mail-Signatur für Mobilgerät, Tablet & Computer", desc: "Responsive HTML-Signatur mit hochauflösendem Logo und Direktlinks zu Messenger, Website und Kalender." },
-        it: { title: "Firma Email Esecutiva per Mobile, Tablet e Computer", desc: "Firma HTML responsive con logo ad alta densità e link diretti a messaggistica, sito web e agenda." }
+        es: { title: "Firma de Correo Corporativa del Ing. Luis Ponce (.HTML · Gmail / Outlook)", desc: "Firma HTML interactiva lista para copiar y pegar con el isotipo #5 Lineal Minimalista de ARCO Ingeniería, cargo de Director General y enlaces directos." },
+        en: { title: "Corporate Email Signature for Eng. Luis Ponce (.HTML · Gmail / Outlook)", desc: "Ready-to-paste HTML signature featuring the #5 Minimalist Linear symbol of ARCO Ingeniería, CEO title, and direct contact links." },
+        fr: { title: "Signature E-mail Corporative de l'Ing. Luis Ponce (.HTML · Gmail / Outlook)", desc: "Signature HTML prête à coller avec le symbole #5 Linéaire Minimaliste d'ARCO Ingeniería et liens directs." },
+        pt: { title: "Assinatura de E-mail Corporativa do Eng. Luis Ponce (.HTML · Gmail / Outlook)", desc: "Assinatura HTML pronta a colar com o símbolo #5 Linear Minimalista da ARCO Ingeniería e ligações diretas." },
+        de: { title: "E-Mail-Signatur für Ing. Luis Ponce (.HTML · Gmail / Outlook)", desc: "Kopierfertige HTML-Signatur mit dem #5 Linear-Minimalistischen Symbol von ARCO Ingeniería und Direktlinks." },
+        it: { title: "Firma Email Aziendale dell'Ing. Luis Ponce (.HTML · Gmail / Outlook)", desc: "Firma HTML pronta da incollare con il simbolo #5 Lineare Minimalista di ARCO Ingeniería e link diretti." }
       }
     },
     {
       num: "08",
-      format: ".TTF / .WOFF2 · LICENCIA",
-      sampleUrl: "/samples/8_Especificacion_Tipografica_y_Licencias.html",
-      thumb: "/assets/brandbook_plates_tbb/plate-17.jpg",
+      format: ".ZIP · KIT DE FUENTES .TTF",
+      sampleUrl: "/samples/Kit_Fuentes_Oficiales_arco_ingenieria.zip",
+      thumb: "/assets/app_captures/arco_21_paso4_4_tipografia_montserrat_arquitectura.png",
       plateNum: 17,
       i18n: {
-        es: { title: "Familia Tipográfica Oficial para Escritorio y Web (.TTF / .WOFF2)", desc: "Paquete de fuentes para titulares, cuerpo y cifras tabulares junto con su hoja de estilos CSS y licencia comercial." },
-        en: { title: "Official Desktop & Web Font Family (.TTF / .WOFF2)", desc: "Headline, body, and tabular numeral font files with ready-to-use CSS stylesheet and commercial license." },
-        fr: { title: "Famille Typographique Officielle Bureau et Web (.TTF / .WOFF2)", desc: "Polices de titres, corps et chiffres tabulaires avec feuille de style CSS et licence commerciale." },
-        pt: { title: "Família Tipográfica Oficial para Desktop e Web (.TTF / .WOFF2)", desc: "Pacote de fontes para títulos, corpo e números tabulares com folha de estilos CSS e licença comercial." },
-        de: { title: "Offizielle Desktop- & Web-Schriftfamilie (.TTF / .WOFF2)", desc: "Titel-, Fließtext- und Tabellenziffern-Fonts inklusive CSS-Stylesheet und kommerzieller Lizenz." },
-        it: { title: "Famiglia Tipografica Ufficiale Desktop e Web (.TTF / .WOFF2)", desc: "Pacchetto font per titoli, corpo e cifre tabulari con foglio di stile CSS e licenza commerciale." }
+        es: { title: "Kit de Fuentes Oficiales Instalables (.ZIP con .TTF + Licencia SIL OFL)", desc: "Paquete comprimido con los archivos .TTF listos para instalar en Windows/Mac de la tríada arquitectónica de ARCO Ingeniería: Montserrat, Plus Jakarta Sans y JetBrains Mono." },
+        en: { title: "Installable Official Font Kit (.ZIP with .TTF + SIL OFL License)", desc: "ZIP bundle with desktop-installable .TTF files for ARCO Ingeniería's architectural typography triad: Montserrat, Plus Jakarta Sans, and JetBrains Mono." },
+        fr: { title: "Kit de Polices Officielles Installables (.ZIP avec .TTF + Licence SIL OFL)", desc: "Archive ZIP contenant les fichiers .TTF installables de la triade typographique d'ARCO Ingeniería : Montserrat, Plus Jakarta Sans et JetBrains Mono." },
+        pt: { title: "Kit de Fontes Oficiais Instaláveis (.ZIP com .TTF + Licença SIL OFL)", desc: "Pacote ZIP com os ficheiros .TTF instaláveis da tríade tipográfica da ARCO Ingeniería: Montserrat, Plus Jakarta Sans e JetBrains Mono." },
+        de: { title: "Installierbares Schriftarten-Kit (.ZIP mit .TTF + SIL OFL Lizenz)", desc: "ZIP-Archiv mit installierbaren .TTF-Dateien der Typografie-Triade von ARCO Ingeniería: Montserrat, Plus Jakarta Sans und JetBrains Mono." },
+        it: { title: "Kit Font Ufficiali Installabili (.ZIP con .TTF + Licenza SIL OFL)", desc: "Archivio ZIP con i file .TTF installabili della triade tipografica di ARCO Ingeniería: Montserrat, Plus Jakarta Sans e JetBrains Mono." }
       }
     },
     {
       num: "09",
-      format: ".JSON / .CSS · DESIGN TOKENS",
-      sampleUrl: "/samples/9_Design_Tokens_y_Variables_CSS.html",
-      thumb: "/assets/brandbook_plates_tbb/plate-15.jpg",
-      plateNum: 15,
+      format: ".JSON / .SVG · TOKENS & SELLO",
+      sampleUrl: "/samples/Sello_Circular_Curvas_arco_ingenieria.svg",
+      thumb: "/assets/app_captures/arco_23_paso5_1_rueda_circular_colores_arco.png",
+      plateNum: 21,
       i18n: {
-        es: { title: "Design Tokens, Variables CSS y Guía de Implementación Web", desc: "Paleta hexadecimal validada WCAG AAA, sombras, radios de curvatura y tokens listos para tu equipo de desarrollo." },
-        en: { title: "Design Tokens, CSS Variables & Web Implementation Guide", desc: "WCAG AAA validated hex palette, elevation tokens, corner radii, and variables ready for your engineering team." },
-        fr: { title: "Design Tokens, Variables CSS et Guide d'Implémentation Web", desc: "Palette hexadécimale validée WCAG AAA, ombres, rayons de courbure et tokens prêts pour vos développeurs." },
-        pt: { title: "Design Tokens, Variáveis CSS e Guia de Implementação Web", desc: "Paleta hexadecimal validada WCAG AAA, sombras, raios de curvatura e tokens prontos para a equipa técnica." },
-        de: { title: "Design Tokens, CSS-Variablen & Web-Implementierungsleitfaden", desc: "WCAG-AAA-validierte Hex-Palette, Schatten, Radien und Tokens für Ihr Entwicklerteam." },
-        it: { title: "Design Token, Variabili CSS e Guida all'Implementazione Web", desc: "Palette esadecimale validata WCAG AAA, ombre, raggi di curvatura e token pronti per il team di sviluppo." }
+        es: { title: "Sello Circular en Curvas y Design Tokens Cromáticos (.SVG / .JSON)", desc: "Sello institucional circular en curvas Bézier para planos y cascos de obra junto con los tokens cromáticos oficiales (#0078C0, #88E0E0, #585850, #0D2540, #F8FAFC)." },
+        en: { title: "Circular Vector Seal & Color Design Tokens (.SVG / .JSON)", desc: "Circular institutional seal in Bézier curves for blueprints and hardhats plus the official color tokens (#0078C0, #88E0E0, #585850, #0D2540, #F8FAFC)." },
+        fr: { title: "Sceau Circulaire Vectoriel et Design Tokens Chromatiques (.SVG / .JSON)", desc: "Sceau circulaire institutionnel en courbes de Bézier pour plans et casques de chantier avec tokens chromatiques officiels." },
+        pt: { title: "Selo Circular Vetorial e Design Tokens Cromáticos (.SVG / .JSON)", desc: "Selo circular institucional em curvas Bézier para plantas e capacetes de obra com tokens cromáticos oficiais." },
+        de: { title: "Rundes Vektorsiegel & Farb-Design-Tokens (.SVG / .JSON)", desc: "Rundes Siegel in Bézier-Kurven für Baupläne und Schutzhelme sowie offizielle Farb-Tokens (#0078C0, #88E0E0, #585850, #0D2540, #F8FAFC)." },
+        it: { title: "Sigillo Circolare Vettoriale e Design Token Cromatici (.SVG / .JSON)", desc: "Sigillo circolare istituzionale in curve di Bézier per tavole tecniche e caschi da cantiere con token cromatici ufficiali." }
       }
     }
   ];
@@ -1951,126 +1951,104 @@
     </g>`;
   }
 
+  const TBB_ARCO_PROCESS_CAPTURES = [
+    { id: "p0", label: "Paso 0 · Logo Base", title: "Paso 0.2 · Subida de Logo Actual y Modo «Modernizar»", img: "/assets/app_captures/arco_02_paso0_2_nombre_y_logo_actual_modernizar.png" },
+    { id: "p03", label: "Paso 0.3 · Giro + Aaker", title: "Paso 0.3 · Giro de Ingeniería Civil + Dictamen de David Aaker", img: "/assets/app_captures/arco_03_paso0_3_giro_y_dictamen_aaker.png" },
+    { id: "p1", label: "Paso 1 · Círculo Dorado", title: "Paso 1.1 · Propósito Nuclear (Why) + Dictamen de Simon Sinek", img: "/assets/app_captures/arco_05_paso1_1_proposito_why_sinek.png" },
+    { id: "p2", label: "Paso 2 · Touchpoints", title: "Paso 2.1 · Touchpoints de Obra (Antes · Durante · Después)", img: "/assets/app_captures/arco_12_paso2_1_touchpoints_antes_carlzon.png" },
+    { id: "p3", label: "Paso 3 · Naming Niza 37", title: "Paso 3.3 · Confirmación ARCO Ingeniería + Clases Niza 37 y 42", img: "/assets/app_captures/arco_17_paso3_3_confirmacion_eslogan_clase_niza37_ries_trout.png" },
+    { id: "p4", label: "Paso 4 · Semilla + Rand", title: "Paso 4.5 · Idea Semilla de Modernización + Dictamen de Paul Rand", img: "/assets/app_captures/arco_22_paso4_5_familia_estructural_semilla_dictamen_rand.png" },
+    { id: "p51", label: "Paso 5.1 · Rueda Color", title: "Paso 5.1 · Rueda Circular de Espectro (#0078C0 · #88E0E0 · #585850)", img: "/assets/app_captures/arco_23_paso5_1_rueda_circular_colores_arco.png" },
+    { id: "p52", label: "Paso 5.2 · Logo #5", title: "Paso 5.2 · Selección del Logo #5 · Lineal Minimalista + Ícono 1:1", img: "/assets/app_captures/arco_28_paso5_2_iter5_nanobanana_lineal_minimalista.png" },
+    { id: "p61", label: "Paso 6.1 · Brandbook 36p", title: "Paso 6.1 · Portada del Manual de 36 Láminas con Logo #5", img: "/assets/app_captures/arco_30_paso6_1_brandbook_lamina01_portada.png" },
+    { id: "p62", label: "Paso 6.2 · Bóveda & Firma", title: "Paso 6.2 · Firma Corporativa HTML del Ing. Luis Ponce", img: "/assets/app_captures/arco_34_modal_firma_corporativa_luis_ponce.png" }
+  ];
+
   const TBB_MOCKUP_LOGO_PROPOSALS = [
     {
       id: 1,
-      code: "#01 · CARTA «LA ESTRELLA» & VASIJA DE BARRO",
-      shortCode: "#01",
-      name: "Carta «La Estrella» & Barro",
-      badge: "99% Match · Michelin & Lotería",
-      rationale: "Marco arquitectónico inspirado en la carta N° 32 «La Estrella» de la Lotería Mexicana con vasija escultórica de barro bruñido y lucero Michelin en oro #D4AF37.",
-      darkBg: false,
-      archetype: "loteria_estrella_barro"
+      code: "#1 · TU LOGO BASE ORIGINAL",
+      shortCode: "#1 · Base",
+      name: "Logo Original ARCO (Base)",
+      badge: "Capital Visual Extraído",
+      rationale: "Logotipo original subido por el Ing. Luis Ponce en el Paso 0.2. El sistema extrae su paleta (#0078C0, #88E0E0, #585850) y preserva su esencia arquitectónica.",
+      logoImg: "/assets/logos/arco_ingenieria_logo4k_original.png",
+      screenImg: "/assets/app_captures/arco_24_paso5_2_iter1_logo_base_original.png"
     },
     {
       id: 2,
-      code: "#02 · OLLA ESCULTÓRICA DE BARRO NEGRO & MICHELIN",
-      shortCode: "#02",
-      name: "Olla Barro Negro & Michelin",
-      badge: "Alfarería Contemporánea",
-      rationale: "Silueta contemporánea de olla globular de barro negro de Oaxaca con asas asimétricas modernistas, ondas aromáticas y roseta Michelin en la cúspide.",
-      darkBg: false,
-      archetype: "barro_michelin_vessel"
+      code: "#2 · ✦ 1. EMBLEMA DE AUTOR",
+      shortCode: "#2 · Emblema",
+      name: "Emblema de Autor",
+      badge: "Modernización Automática",
+      rationale: "Primera evolución con NanoBanana PRO: moderniza la tipografía cursiva antigua por Montserrat Bold e integra puente atirantado y torres residenciales.",
+      logoImg: "/assets/logos/arco_iter2_full.png",
+      screenImg: "/assets/app_captures/arco_25_paso5_2_iter2_nanobanana_emblema_autor.png"
     },
     {
       id: 3,
-      code: "#03 · MONOGRAMA ARQUITECTÓNICO «CL» CÓDICE",
-      shortCode: "#03",
-      name: "Monograma «CL» Códice",
-      badge: "Alta Costura Gastronómica",
-      rationale: "Ligadura editorial «C» (arco de casona y media vasija) entrelazada con «L» (columna en greca de Mitla) coronada por estrella polar en oro.",
-      darkBg: true,
-      archetype: "codice_loteria_monogram"
+      code: "#3 · ✦ 2. MONOGRAMA + GIRO",
+      shortCode: "#3 · Monograma",
+      name: "Monograma Arquitectónico «A»",
+      badge: "Fusión Estructural",
+      rationale: "Letra «A» estructural en gris acero (#585850) fusionada con el doble arco envolvente en azul cobalto (#0078C0) y turquesa (#88E0E0).",
+      logoImg: "/assets/logos/arco_iter3_full.png",
+      screenImg: "/assets/app_captures/arco_26_paso5_2_iter3_nanobanana_monograma_giro.png"
     },
     {
       id: 4,
-      code: "#04 · EL SOL DE COMAL & ONDA MEXICAN CHILL-OUT",
-      shortCode: "#04",
-      name: "Sol de Comal & Chill-Out",
-      badge: "Atmósfera Sonora & Fuego",
-      rationale: "Disco de comal de barro ancestral en eclipse con el sol de la Lotería y ondas acústicas sinusoidales que evocan la música mexicana en versión Chill-Out.",
-      darkBg: true,
-      archetype: "comal_sol_acustico"
+      code: "#4 · ✦ 3. INSIGNIA / SELLO",
+      shortCode: "#4 · Insignia",
+      name: "Sello Institucional de Obra",
+      badge: "Escudo Corporativo",
+      rationale: "Insignia circular contemporánea con anillo perimetral ARCO INGENIERÍA · DISEÑO Y CONSTRUCCIÓN ideal para cascos, planos y lacres.",
+      logoImg: "/assets/logos/arco_iter4_full.png",
+      screenImg: "/assets/app_captures/arco_27_paso5_2_iter4_nanobanana_insignia_sello.png"
     },
     {
       id: 5,
-      code: "#05 · EL AGAVE & LA LUNA · CARTA N° 27 GRABADO",
-      shortCode: "#05",
-      name: "Agave, Luna & Carta N° 27",
-      badge: "Mixología & Destilados",
-      rationale: "Pencares geométricos de agave cenizo en abanico simétrico sobre media luna y copa de cerámica contemporánea para mezcales de autor.",
-      darkBg: true,
-      archetype: "agave_luna_loteria"
+      code: "#5 · ✦ 4. LINEAL MINIMALISTA",
+      shortCode: "#5 · Minimalista",
+      name: "Lineal Minimalista (Elegido)",
+      badge: "★ SELECCIÓN OFICIAL",
+      rationale: "Isotipo monolineal de precisión arquitectónica: arco estructural envolvente con dos torres esbeltas en #0078C0, #88E0E0 y #585850. Seleccionado para generar los 12 entregables.",
+      logoImg: "/assets/logos/arco_iter5_full.png",
+      screenImg: "/assets/app_captures/arco_28_paso5_2_iter5_nanobanana_lineal_minimalista.png"
     },
     {
       id: 6,
-      code: "#06 · PLATO DE BARRO EN ESPIRAL ÁUREA (φ=1.618)",
-      shortCode: "#06",
-      name: "Plato Espiral Áurea",
-      badge: "Emplatado Estrella Michelin",
-      rationale: "Vista cenital de un plato de degustación en cerámica artesanal con anillos en proporción áurea (Fibonacci) y estrella de autor en el centro.",
-      darkBg: false,
-      archetype: "plato_barro_aureo"
-    },
-    {
-      id: 7,
-      code: "#07 · TRÍPTICO GALERÍA LOTERÍA · SELLO DE AUTOR",
-      shortCode: "#07",
-      name: "Tríptico Galería Lotería",
-      badge: "Interiorismo & Galería",
-      rationale: "Tres bastidores arquitectónicos en perspectiva que rinden homenaje a los cuadros modernistas de la Lotería (El Sol, La Estrella y El Jarrito) del salón principal.",
-      darkBg: false,
-      archetype: "galeria_loteria_triptico"
-    },
-    {
-      id: 8,
-      code: "#08 · MOLCAJETE ESCULTÓRICO & LUCERO NOCTURNO",
-      shortCode: "#08",
-      name: "Molcajete Escultórico",
-      badge: "Lienzo Nocturno & Fachada",
-      rationale: "Geometría monolítica de piedra volcánica basáltica y barro bruñido sobre tres soportes arquitectónicos, ideal para fachadas y carta nocturna.",
-      darkBg: true,
-      archetype: "molcajete_estrella_minimal"
+      code: "#6 · EVOLUCIÓN CONVERSACIONAL",
+      shortCode: "#6 · Evolución IA",
+      name: "Refinamiento Conversacional",
+      badge: "Prompt en Vivo",
+      rationale: "Variante generada desde la caja de texto conversacional pidiendo integrar la «A» con dos torres residenciales y el doble arco dinámico.",
+      logoImg: "/assets/logos/arco_iter6_full.png",
+      screenImg: "/assets/app_captures/arco_29_paso5_2_iter6_nanobanana_evolucion_conversacional_final.png"
     }
-  ].map((item) => {
-    item.svgLockup = (strokeScale = 1, hasShield = false, invert = false) => {
-      const useDark = invert ? !item.darkBg : item.darkBg;
-      const bg = useDark ? "#14110F" : "#FAF6F0";
-      const fg = useDark ? "#FAF6F0" : "#14110F";
-      const pri = "#C85A32";
-      const gold = "#D4AF37";
-      return `<svg viewBox="0 0 520 310" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-        <rect width="520" height="310" rx="18" fill="${bg}"/>
-        <rect x="14" y="14" width="492" height="282" rx="12" fill="none" stroke="${gold}" stroke-opacity="0.32" stroke-width="1.4"/>
-        <g transform="translate(24, 65)">
-          ${buildCasaLoteriaMockupSymbol(item.archetype, strokeScale, hasShield, pri, "#14110F", gold)}
-        </g>
-        <line x1="212" y1="76" x2="212" y2="234" stroke="${gold}" stroke-opacity="0.45" stroke-width="1.8"/>
-        <text x="232" y="114" fill="${pri}" font-family="JetBrains Mono,monospace" font-weight="800" font-size="9.5" letter-spacing="2.4">RESTAURANTE · ESTRELLA MICHELIN</text>
-        <text x="232" y="156" fill="${fg}" font-family="Cormorant Garamond,Georgia,serif" font-weight="700" font-size="31" letter-spacing="2.5">CASA LOTERÍA</text>
-        <text x="232" y="184" fill="${gold}" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="11.5" letter-spacing="3.2">COCINA MEXICANA MODERNISTA</text>
-        <rect x="232" y="202" width="248" height="26" rx="13" fill="rgba(200,90,50,0.14)" stroke="${pri}" stroke-width="1"/>
-        <text x="356" y="219" text-anchor="middle" fill="${fg}" font-family="JetBrains Mono,monospace" font-weight="700" font-size="8.8" letter-spacing="1.8">BARRO ESCULTÓRICO · MEXICAN CHILL-OUT</text>
-      </svg>`;
-    };
-    return item;
-  });
+  ];
 
-  // Renderizador Fiel 1:1 del Paso 5 Real de studio.html (Caso Real: Restaurante Mexicano Modernista con Estrella Michelin · CASA LOTERÍA)
+  window.tbbSelectHomeArcoCapture = function (capId) {
+    if (!window.tbbCommercialDemoState) window.tbbCommercialDemoState = {};
+    window.tbbCommercialDemoState.homeArcoCapId = capId;
+    window.tbbCommercialDemoState.homeMockupStep5Subscreen = "5A";
+    const stage = document.getElementById("tbbHomeMultiDeviceMockupStage");
+    if (stage) {
+      stage.innerHTML = window.tbbRenderHomeDeviceMockupContent(window.tbbCommercialDemoState.homeDeviceForm || "mobile");
+    }
+  };
+
+  // Renderizador Multidispositivo Real (Celular, Tablet, Computadora) con las Capturas Reales de ARCO Ingeniería (Ing. Luis Ponce · Selección #5 Lineal Minimalista)
   window.tbbRenderHomeDeviceMockupContent = function (deviceForm) {
     const st = window.tbbCommercialDemoState || {};
     const form = deviceForm || st.homeDeviceForm || "mobile";
     const isLiveStudio = Boolean(st.homeDeviceLiveStudio);
-    const subScreen = st.homeMockupStep5Subscreen || "5B"; // "5A" | "5B"
-    const selectedLogoId = Number(st.homeMockupSelectedLogoId) || 1;
-    const activeMod = st.homeMockupModifier || "normal";
-    const invertCanvas = Boolean(st.homeMockupInvertCanvas);
-    const abChoice = st.homeMockupAbChoice || "B"; // "A" | "B"
+    const subScreen = st.homeMockupStep5Subscreen || "5B"; // "5A" (Recorrido Paso a Paso) | "5B" (6 Iteraciones de Logo · #5 Elegido)
+    const selectedLogoId = Number(st.homeMockupSelectedLogoId) || 5;
+    const activeCapId = st.homeArcoCapId || "p52";
     const l = getLang();
 
-    const strokeScale = activeMod === "thin" ? 0.74 : activeMod === "bold" ? 1.35 : 1;
-    const hasShield = activeMod === "shield";
-    const selectedLogoObj = TBB_MOCKUP_LOGO_PROPOSALS.find((p) => p.id === selectedLogoId) || TBB_MOCKUP_LOGO_PROPOSALS[0];
+    const selectedLogoObj = TBB_MOCKUP_LOGO_PROPOSALS.find((p) => p.id === selectedLogoId) || TBB_MOCKUP_LOGO_PROPOSALS[4];
+    const selectedCapObj = TBB_ARCO_PROCESS_CAPTURES.find((c) => c.id === activeCapId) || TBB_ARCO_PROCESS_CAPTURES[7];
 
     if (isLiveStudio) {
       return `
@@ -2078,185 +2056,131 @@
           <div class="tbb-home-device-chassis is-${escHtml(form)}">
             <div class="tbb-home-device-top-bezel">
               <span class="tbb-bezel-dots"><i class="r"></i><i class="y"></i><i class="g"></i></span>
-              <span class="tbb-bezel-title">THE BEST BRAND STUDIO EN VIVO (/studio · Caso Real: CASA LOTERÍA) · FORMATO ${form === 'mobile' ? 'CELULAR' : form === 'tablet' ? 'TABLET' : 'COMPUTADORA'}</span>
-              <button type="button" class="tbb-bezel-mode-btn" onclick="window.tbbToggleHomeDeviceLiveStudio(false)">← Volver a Vista de las 8 Propuestas (Paso 5)</button>
+              <span class="tbb-bezel-title">THE BEST BRAND STUDIO EN VIVO (/studio · Caso Real: ARCO INGENIERÍA) · FORMATO ${form === 'mobile' ? 'CELULAR' : form === 'tablet' ? 'TABLET' : 'COMPUTADORA'}</span>
+              <button type="button" class="tbb-bezel-mode-btn" onclick="window.tbbToggleHomeDeviceLiveStudio(false)">← Volver a Capturas de ARCO Ingeniería</button>
             </div>
             <div class="tbb-home-device-screen">
-              <iframe src="/studio?brand=casa_loteria&step=5&novideo=1&embed=home_${escHtml(form)}&lang=${escHtml(l)}" title="The Best Brand Live App - Casa Lotería" class="tbb-home-device-live-iframe"></iframe>
+              <iframe src="/studio?brand=arco_ingenieria&step=5&novideo=1&embed=home_${escHtml(form)}&lang=${escHtml(l)}" title="The Best Brand Live App - ARCO Ingeniería" class="tbb-home-device-live-iframe"></iframe>
             </div>
           </div>
         </div>
       `;
     }
 
-    // Sub-navegador interactivo idéntico a studio.html: Pantalla 5A (Paleta y Decisiones A/B) vs Pantalla 5B (Estudio de 8 Logotipos con IA para CASA LOTERÍA)
     const renderSubscreenSwitchBar = (compact = false) => `
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; background:#14110F; padding:5px; border-radius:999px; border:1.5px solid #D4AF37;">
-        <button
-          type="button"
-          onclick="window.tbbSetMockupStep5Subscreen('5A')"
-          style="background:${subScreen === '5A' ? '#D4AF37' : 'transparent'}; color:${subScreen === '5A' ? '#14110F' : '#FAF6F0'}; border:none; border-radius:999px; padding:${compact ? '6px 8px' : '7px 14px'}; font-family:'Montserrat',sans-serif; font-size:${compact ? '0.62rem' : '0.72rem'}; font-weight:900; cursor:pointer; transition:all 0.2s;"
-        >
-          1 · ${compact ? 'Paleta Barro & Decisiones (5A)' : 'Pantalla 5A · Paleta Terracota/Barro & Decisiones A/B'}
-        </button>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; background:#0D2540; padding:5px; border-radius:999px; border:1.5px solid #88E0E0;">
         <button
           type="button"
           onclick="window.tbbSetMockupStep5Subscreen('5B')"
-          style="background:${subScreen === '5B' ? '#D4AF37' : 'transparent'}; color:${subScreen === '5B' ? '#14110F' : '#FAF6F0'}; border:none; border-radius:999px; padding:${compact ? '6px 8px' : '7px 14px'}; font-family:'Montserrat',sans-serif; font-size:${compact ? '0.62rem' : '0.72rem'}; font-weight:900; cursor:pointer; transition:all 0.2s;"
+          style="background:${subScreen === '5B' ? '#0078C0' : 'transparent'}; color:#FFFFFF; border:none; border-radius:999px; padding:${compact ? '6px 8px' : '7px 14px'}; font-family:'Montserrat',sans-serif; font-size:${compact ? '0.62rem' : '0.72rem'}; font-weight:900; cursor:pointer; transition:all 0.2s;"
         >
-          2 · ${compact ? '8 Logos Casa Lotería (5B)' : 'Pantalla 5B · 8 Propuestas Vectoriales «CASA LOTERÍA»'}
+          1 · ${compact ? '6 Iteraciones Logo (#5 Elegido)' : '6 Iteraciones de Logo «ARCO Ingeniería» (#5 Lineal Minimalista)'}
+        </button>
+        <button
+          type="button"
+          onclick="window.tbbSetMockupStep5Subscreen('5A')"
+          style="background:${subScreen === '5A' ? '#0078C0' : 'transparent'}; color:#FFFFFF; border:none; border-radius:999px; padding:${compact ? '6px 8px' : '7px 14px'}; font-family:'Montserrat',sans-serif; font-size:${compact ? '0.62rem' : '0.72rem'}; font-weight:900; cursor:pointer; transition:all 0.2s;"
+        >
+          2 · ${compact ? 'Capturas Pasos 0 al 6' : 'Capturas Reales Paso a Paso (Pasos 0 al 6 · Ing. Luis Ponce)'}
         </button>
       </div>
     `;
 
-    // Renderizador de Tarjeta Real de studio.html
     const renderRealAppLogoLockupCard = (item, compact = false) => {
       const isSel = item.id === selectedLogoId;
       return `
         <div
           onclick="window.tbbSelectMockupLogoOption(${item.id})"
-          style="background:#FFFFFF; border:${isSel ? '2.5px solid #C85A32' : '1.5px solid rgba(20,17,15,0.14)'}; border-radius:14px; padding:${compact ? '8px' : '10px'}; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; transition:all 0.2s ease; box-shadow:${isSel ? '0 10px 24px rgba(200,90,50,0.20)' : '0 4px 12px rgba(20,17,15,0.05)'}; text-align:left;"
+          style="background:#FFFFFF; border:${isSel ? '2.5px solid #0078C0' : '1.5px solid #CBD5E1'}; border-radius:14px; padding:${compact ? '8px' : '10px'}; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; transition:all 0.2s ease; box-shadow:${isSel ? '0 10px 24px rgba(0,120,192,0.22)' : '0 4px 12px rgba(15,23,42,0.05)'}; text-align:left;"
         >
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; gap:4px; margin-bottom:6px; flex-wrap:wrap;">
-              <span style="font-family:'JetBrains Mono',monospace; font-size:${compact ? '0.55rem' : '0.60rem'}; color:#FAF6F0; font-weight:800; background:#14110F; padding:2px 7px; border-radius:999px;">${escHtml(item.code)}</span>
-              <span style="font-family:'JetBrains Mono',monospace; font-size:${compact ? '0.54rem' : '0.58rem'}; color:#9A3412; background:#FFF7ED; border:1px solid #FDBA74; padding:2px 6px; border-radius:999px; font-weight:800;">${escHtml(item.badge)}</span>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:${compact ? '0.54rem' : '0.58rem'}; color:#FFFFFF; font-weight:800; background:${isSel ? '#0078C0' : '#0D2540'}; padding:2px 7px; border-radius:999px;">${escHtml(item.code)}</span>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:${compact ? '0.52rem' : '0.56rem'}; color:#0D2540; background:#F0F9FF; border:1px solid #88E0E0; padding:2px 6px; border-radius:999px; font-weight:800;">${escHtml(item.badge)}</span>
             </div>
-            <div style="width:100%; aspect-ratio:520/310; border-radius:10px; overflow:hidden; border:1px solid rgba(20,17,15,0.12); margin-bottom:6px;">
-              ${item.svgLockup(strokeScale, hasShield, invertCanvas)}
+            <div style="width:100%; aspect-ratio:16/11; border-radius:10px; overflow:hidden; border:1px solid #E2E8F0; margin-bottom:6px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; padding:6px;">
+              <img src="${escHtml(item.logoImg)}" alt="${escHtml(item.name)}" style="max-width:100%; max-height:100%; object-fit:contain;" />
             </div>
-            ${!compact ? `<div style="font-size:0.65rem; color:#1E293B; line-height:1.35; margin-bottom:6px; font-weight:600;">${escHtml(item.rationale)}</div>` : ""}
+            ${!compact ? `<div style="font-size:0.64rem; color:#334155; line-height:1.35; margin-bottom:6px; font-weight:600;">${escHtml(item.rationale)}</div>` : ""}
           </div>
-          <div style="display:grid; grid-template-columns:1fr auto auto; gap:4px;">
+          <div style="display:grid; grid-template-columns:1fr auto; gap:4px;">
             <button
               type="button"
               onclick="event.stopPropagation(); window.tbbSelectMockupLogoOption(${item.id});"
-              style="background:${isSel ? '#C85A32' : '#14110F'}; color:#FFFFFF; border:none; border-radius:7px; padding:${compact ? '5px 6px' : '6px 8px'}; font-size:${compact ? '0.58rem' : '0.62rem'}; font-weight:800; cursor:pointer;"
+              style="background:${isSel ? '#0078C0' : '#0D2540'}; color:#FFFFFF; border:none; border-radius:7px; padding:${compact ? '5px 6px' : '6px 8px'}; font-size:${compact ? '0.56rem' : '0.60rem'}; font-weight:800; cursor:pointer;"
             >
-              ${isSel ? '✓ Logo Oficial Elegido' : 'Elegir como Logo Oficial'}
+              ${isSel ? '✓ Iteración Activa en App' : 'Ver Captura de Iteración'}
             </button>
-            <span style="background:#FAF6F0; color:#14110F; border:1px solid rgba(20,17,15,0.25); border-radius:7px; padding:${compact ? '5px 6px' : '6px 7px'}; font-size:0.58rem; font-weight:800; font-family:'JetBrains Mono',monospace;">.SVG</span>
-            <button
-              type="button"
-              onclick="event.stopPropagation(); window.tbbSelectMockupLogoOption(${item.id});"
-              style="background:rgba(212,175,55,0.18); color:#78350F; border:1px solid rgba(212,175,55,0.55); border-radius:7px; padding:${compact ? '5px 6px' : '6px 7px'}; font-size:0.58rem; font-weight:800; cursor:pointer;"
-            >
-              Afinar
-            </button>
+            <span style="background:#F8FAFC; color:#0D2540; border:1px solid #CBD5E1; border-radius:7px; padding:${compact ? '5px 6px' : '6px 7px'}; font-size:0.56rem; font-weight:800; font-family:'JetBrains Mono',monospace;">.SVG/.AI</span>
           </div>
         </div>
       `;
     };
 
-    // Renderizador de la Pantalla 5A Real de studio.html (Caso Real: CASA LOTERÍA)
-    const renderRealScreen5AContent = (isCompactMobile = false) => `
+    const renderStepByStepGallery = (compact = false) => `
       <div style="display:flex; flex-direction:column; gap:10px; text-align:left;">
-        <div style="background:#FFFFFF; border:1.5px solid #D4AF37; border-radius:12px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;">
-          <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:900; color:#14110F;">SEMILLAS DEL CASO REAL «CASA LOTERÍA» (RESTAURANTE MEXICANO MODERNISTA MICHELIN):</span>
-          <div style="display:flex; flex-wrap:wrap; gap:4px; align-items:center;">
-            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#FFF7ED; border:1px solid #C85A32; color:#9A3412; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">★ Carta La Estrella &amp; Barro</button>
-            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">🏺 Olla Barro Negro</button>
-            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:999px; padding:3px 8px; font-size:0.62rem; font-weight:800; cursor:pointer;">☀️ Sol de Comal &amp; Chill-Out</button>
-            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#14110F; color:#FDE68A; border:1px solid #D4AF37; border-radius:999px; padding:4px 10px; font-size:0.62rem; font-weight:900; cursor:pointer;">Ver las 8 Propuestas →</button>
-          </div>
-        </div>
-
-        <div style="background:#FFFFFF; border:2px solid #14110F; border-radius:16px; padding:12px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
-            <div style="display:flex; gap:5px; flex-wrap:wrap;">
-              <span style="background:#14110F; color:#FDE68A; border-radius:999px; padding:3px 10px; font-size:0.62rem; font-weight:900;">1 · Terracota Barro &amp; Obsidiana (#C85A32 / #14110F)</span>
-              <span style="background:#FEF3C7; color:#92400E; border-radius:999px; padding:3px 10px; font-size:0.62rem; font-weight:800;">2 · Tipografía: Cormorant Garamond + Plus Jakarta Sans</span>
-            </div>
-            <span style="font-family:'JetBrains Mono',monospace; font-size:0.66rem; font-weight:900; color:#FFFFFF; background:#C85A32; padding:3px 10px; border-radius:999px;">Calibración Kansei · Casa Lotería</span>
-          </div>
-
-          <div style="display:grid; grid-template-columns:${isCompactMobile ? '1fr' : '1fr 1fr'}; gap:10px;">
-            <div
-              onclick="window.tbbSelectMockupAbChoice('A')"
-              style="background:#FAF6F0; border:${abChoice === 'A' ? '2.5px solid #C85A32' : '1.5px solid #CBD5E1'}; border-radius:14px; padding:12px; cursor:pointer; text-align:center;"
+        <div style="display:flex; flex-wrap:wrap; gap:5px; background:#FFFFFF; padding:8px; border-radius:12px; border:1.5px solid #CBD5E1;">
+          ${TBB_ARCO_PROCESS_CAPTURES.map((c) => `
+            <button
+              type="button"
+              onclick="window.tbbSelectHomeArcoCapture('${c.id}')"
+              style="background:${c.id === activeCapId ? '#0078C0' : '#F8FAFC'}; color:${c.id === activeCapId ? '#FFFFFF' : '#0D2540'}; border:1px solid ${c.id === activeCapId ? '#0078C0' : '#CBD5E1'}; border-radius:999px; padding:${compact ? '4px 8px' : '5px 11px'}; font-family:'Montserrat',sans-serif; font-size:${compact ? '0.58rem' : '0.64rem'}; font-weight:800; cursor:pointer;"
             >
-              <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:800; margin-bottom:6px;">
-                <span style="color:#14110F;">OPCIÓN A · CURVA DE BARRO ESCULTÓRICO</span>
-                ${abChoice === 'A' ? '<span style="background:#C85A32; color:#FFFFFF; padding:1px 7px; border-radius:999px;">✓ ACTIVA</span>' : '<span style="color:#64748B;">Seleccionar</span>'}
-              </div>
-              <svg viewBox="0 0 220 110" width="100%" height="88" style="background:#FFFFFF; border-radius:10px; border:1px solid #E2E8F0; margin-bottom:6px;">
-                <path d="M 75 30 C 75 22, 145 22, 145 30 C 158 55, 150 92, 110 95 C 70 92, 62 55, 75 30 Z" fill="#C85A32" stroke="#14110F" stroke-width="2.5"/>
-                <path d="M 45 78 Q 80 62 110 78 T 175 78" fill="none" stroke="#D4AF37" stroke-width="3" stroke-linecap="round"/>
-              </svg>
-              <div style="font-family:'Cormorant Garamond',serif; font-size:0.92rem; font-weight:700; color:#14110F;">Calidez de Olla de Barro &amp; Onda Acústica Chill-Out</div>
-            </div>
-
-            <div
-              onclick="window.tbbSelectMockupAbChoice('B')"
-              style="background:#FAF6F0; border:${abChoice === 'B' ? '2.5px solid #C85A32' : '1.5px solid #CBD5E1'}; border-radius:14px; padding:12px; cursor:pointer; text-align:center;"
-            >
-              <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:800; margin-bottom:6px;">
-                <span style="color:#14110F;">OPCIÓN B · CARTA LOTERÍA MODERNISTA &amp; MICHELIN</span>
-                ${abChoice === 'B' ? '<span style="background:#C85A32; color:#FFFFFF; padding:1px 7px; border-radius:999px;">✓ ACTIVA</span>' : '<span style="color:#64748B;">Seleccionar</span>'}
-              </div>
-              <svg viewBox="0 0 220 110" width="100%" height="88" style="background:#14110F; border-radius:10px; border:1px solid #D4AF37; margin-bottom:6px;">
-                <rect x="76" y="10" width="68" height="90" rx="6" fill="#FAF6F0" stroke="#D4AF37" stroke-width="2"/>
-                <polygon points="110,24 115,38 130,38 118,46 122,60 110,52 98,60 102,46 90,38 105,38" fill="#C85A32"/>
-                <path d="M 92 68 L 128 68 C 132 82, 126 92, 110 92 C 94 92, 88 82, 92 68 Z" fill="#14110F"/>
-              </svg>
-              <div style="font-family:'Cormorant Garamond',serif; font-size:0.92rem; font-weight:700; color:#14110F;">Marco de Galería Lotería + Estrella Michelin</div>
-            </div>
-          </div>
-
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top:10px; padding-top:8px; border-top:1px solid #E2E8F0;">
-            <span style="font-size:0.66rem; font-weight:700; color:#475569;">Al combinar ambos ejes, Aura sintetiza las <strong>8 Propuestas Oficiales de «CASA LOTERÍA» en Pantalla 5B</strong>.</span>
-            <button type="button" onclick="window.tbbSetMockupStep5Subscreen('5B')" style="background:#C85A32; color:#FFFFFF; border:none; border-radius:999px; padding:6px 14px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
-              Ver las 8 Propuestas de CASA LOTERÍA (5B) →
+              ${escHtml(c.label)}
             </button>
+          `).join("")}
+        </div>
+        <div style="background:#FFFFFF; border:2px solid #0078C0; border-radius:14px; padding:10px; box-shadow:0 12px 28px rgba(13,37,64,0.10);">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
+            <span style="font-family:'Montserrat',sans-serif; font-size:${compact ? '0.70rem' : '0.82rem'}; font-weight:900; color:#0D2540;">${escHtml(selectedCapObj.title)}</span>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; font-weight:800; color:#0078C0; background:#F0F9FF; border:1px solid #88E0E0; padding:3px 9px; border-radius:999px;">CASO REAL: ING. LUIS PONCE · ARCO INGENIERÍA</span>
+          </div>
+          <div style="width:100%; border-radius:10px; overflow:hidden; border:1px solid #E2E8F0; background:#F8FAFC;">
+            <img src="${escHtml(selectedCapObj.img)}" alt="${escHtml(selectedCapObj.title)}" style="width:100%; height:auto; display:block;" />
           </div>
         </div>
       </div>
     `;
 
     // =========================================================================
-    // 1. FORMATO CELULAR (MÓVIL VERTICAL): PASO 5 REAL DE STUDIO.HTML (CASA LOTERÍA)
+    // 1. FORMATO CELULAR (MÓVIL VERTICAL): ARCO INGENIERÍA (#5 LINEAL MINIMALISTA)
     // =========================================================================
     if (form === "mobile") {
       return `
         <div class="tbb-home-device-stage-centered">
           <div class="tbb-home-device-chassis is-mobile">
             <div class="tbb-home-mobile-notch"></div>
-            <div class="tbb-home-device-screen" style="background:#FAF6F0; color:#14110F; padding:11px; gap:8px;">
-              <div style="background:#14110F; color:#FFFFFF; border-radius:13px; padding:9px 11px; display:flex; align-items:center; justify-content:space-between; border:1px solid #D4AF37;">
+            <div class="tbb-home-device-screen" style="background:#F8FAFC; color:#0D2540; padding:11px; gap:8px;">
+              <div style="background:#0D2540; color:#FFFFFF; border-radius:13px; padding:9px 11px; display:flex; align-items:center; justify-content:space-between; border:1.5px solid #0078C0;">
                 <div style="display:flex; align-items:center; gap:7px;">
-                  <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:20px; height:20px;" />
+                  <img src="/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" alt="ARCO" style="width:24px; height:24px; border-radius:6px; background:#FFFFFF; padding:2px;" />
                   <div style="text-align:left;">
-                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.54rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · CASO REAL: CASA LOTERÍA</div>
-                    <div style="font-family:'Cormorant Garamond',serif; font-size:0.82rem; font-weight:700; color:#FFFFFF;">Restaurante Mexicano Modernista · Michelin</div>
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.52rem; color:#88E0E0; font-weight:800;">CASO REAL AUDITADO · ING. LUIS PONCE</div>
+                    <div style="font-family:'Montserrat',sans-serif; font-size:0.76rem; font-weight:900; color:#FFFFFF;">ARCO INGENIERÍA · #5 Minimalista</div>
                   </div>
                 </div>
-                <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="font-family:'JetBrains Mono',monospace; font-size:0.56rem; background:#C85A32; color:#FFFFFF; border:none; padding:4px 8px; border-radius:999px; font-weight:800; cursor:pointer;">App en Vivo</button>
+                <button type="button" onclick="window.tbbSwitchMainSection(5)" style="font-family:'JetBrains Mono',monospace; font-size:0.54rem; background:#0078C0; color:#FFFFFF; border:none; padding:4px 8px; border-radius:999px; font-weight:800; cursor:pointer;">12 Descargas</button>
               </div>
 
               ${renderSubscreenSwitchBar(true)}
 
               ${subScreen === "5A"
-                ? renderRealScreen5AContent(true)
+                ? renderStepByStepGallery(true)
                 : `
-                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px;">
-                    ${TBB_MOCKUP_LOGO_PROPOSALS.slice(0, 4).map((item) => renderRealAppLogoLockupCard(item, true)).join("")}
+                  <div style="background:#FFFFFF; border:2px solid #0078C0; border-radius:12px; padding:8px; text-align:left;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.56rem; font-weight:900; color:#0078C0;">CAPTURA REAL EN PASO 5.2 (${escHtml(selectedLogoObj.shortCode)}):</span>
+                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.54rem; background:#0D2540; color:#88E0E0; padding:2px 7px; border-radius:999px; font-weight:800;">NanoBanana PRO</span>
+                    </div>
+                    <img src="${escHtml(selectedLogoObj.screenImg)}" alt="${escHtml(selectedLogoObj.name)}" style="width:100%; border-radius:8px; border:1px solid #E2E8F0; display:block;" />
                   </div>
-
-                  <div style="background:#FFFFFF; border:1.5px solid #D4AF37; border-radius:11px; padding:7px 9px; text-align:left;">
-                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.56rem; font-weight:900; color:#14110F; margin-bottom:4px;">
-                      PASO 3 · AFINAR ${escHtml(selectedLogoObj.shortCode)} (${escHtml(selectedLogoObj.name.toUpperCase())}):
-                    </div>
-                    <div style="display:flex; flex-wrap:wrap; gap:4px;">
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Trazo fino</button>
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Trazo fuerte</button>
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Marco Lotería</button>
-                      <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#C85A32' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 7px; font-size:0.58rem; font-weight:800; cursor:pointer;">Fondo Barro Negro / Claro</button>
-                    </div>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                    ${TBB_MOCKUP_LOGO_PROPOSALS.map((item) => renderRealAppLogoLockupCard(item, true)).join("")}
                   </div>
                 `}
 
-              <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="width:100%; background:linear-gradient(135deg, #C85A32 0%, #9A3412 100%); color:#FFFFFF; border:1.5px solid #D4AF37; border-radius:11px; padding:9px 10px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
-                ✓ Abrir Caso Real «CASA LOTERÍA» en Estudio en Vivo (/studio) →
+              <button type="button" onclick="window.tbbSwitchMainSection(5)" style="width:100%; background:linear-gradient(135deg, #0078C0 0%, #0D2540 100%); color:#FFFFFF; border:1.5px solid #88E0E0; border-radius:11px; padding:9px 10px; font-family:'Montserrat',sans-serif; font-size:0.66rem; font-weight:800; cursor:pointer;">
+                ✓ Ver Pack de Descargas de «ARCO Ingeniería» (Logo #5) →
               </button>
             </div>
             <div class="tbb-home-mobile-bar"></div>
@@ -2266,42 +2190,37 @@
     }
 
     // =========================================================================
-    // 2. FORMATO TABLET: PASO 5 REAL DE STUDIO.HTML (CASA LOTERÍA)
+    // 2. FORMATO TABLET: ARCO INGENIERÍA (#5 LINEAL MINIMALISTA)
     // =========================================================================
     if (form === "tablet") {
       return `
         <div class="tbb-home-device-stage-centered">
           <div class="tbb-home-device-chassis is-tablet">
             <div class="tbb-home-tablet-cam"></div>
-            <div class="tbb-home-device-screen" style="background:#FAF6F0; color:#14110F; padding:14px; gap:10px;">
-              <div style="background:#14110F; color:#FFFFFF; border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; border:1.5px solid #D4AF37;">
+            <div class="tbb-home-device-screen" style="background:#F8FAFC; color:#0D2540; padding:14px; gap:10px;">
+              <div style="background:#0D2540; color:#FFFFFF; border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; border:1.5px solid #0078C0;">
                 <div style="display:flex; align-items:center; gap:9px;">
-                  <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:24px; height:24px;" />
+                  <img src="/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" alt="ARCO" style="width:28px; height:28px; border-radius:7px; background:#FFFFFF; padding:2px;" />
                   <div style="text-align:left;">
-                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · VISTA TABLET · CASO REAL: CASA LOTERÍA (MICHELIN)</div>
-                    <div style="font-family:'Cormorant Garamond',serif; font-size:0.96rem; font-weight:700; color:#FFFFFF;">Selección de Logotipo: Alta Cocina Mexicana Modernista, Barro &amp; Lotería</div>
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:#88E0E0; font-weight:800;">VISTA TABLET · CASO REAL: ARCO INGENIERÍA (ING. LUIS PONCE)</div>
+                    <div style="font-family:'Montserrat',sans-serif; font-size:0.92rem; font-weight:900; color:#FFFFFF;">Modernización de Logotipo: Selección #5 · Lineal Minimalista</div>
                   </div>
                 </div>
                 ${renderSubscreenSwitchBar(true)}
               </div>
 
               ${subScreen === "5A"
-                ? renderRealScreen5AContent(false)
+                ? renderStepByStepGallery(false)
                 : `
-                  <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;">
-                    ${TBB_MOCKUP_LOGO_PROPOSALS.slice(0, 4).map((item) => renderRealAppLogoLockupCard(item, false)).join("")}
-                  </div>
-                  <div style="background:#FFFFFF; border:1.5px solid #D4AF37; border-radius:12px; padding:9px 12px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-                    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:900; color:#14110F;">PASO 3 · AFINAR ${escHtml(selectedLogoObj.shortCode)}:</span>
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fino</button>
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fuerte</button>
-                      <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Marco Lotería</button>
-                      <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#C85A32' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:4px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Invertir fondo</button>
+                  <div style="background:#FFFFFF; border:2px solid #0078C0; border-radius:14px; padding:10px; text-align:left;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                      <span style="font-family:'Montserrat',sans-serif; font-size:0.76rem; font-weight:900; color:#0D2540;">CAPTURA EN VIVO DEL PASO 5.2 · ${escHtml(selectedLogoObj.code)}</span>
+                      <button type="button" onclick="window.tbbSwitchMainSection(5)" style="background:#0078C0; color:#FFFFFF; border:none; border-radius:999px; padding:4px 12px; font-size:0.62rem; font-weight:800; cursor:pointer;">Ir al Pack de Descargas →</button>
                     </div>
-                    <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="background:#C85A32; color:#FFFFFF; border:none; border-radius:999px; padding:6px 14px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
-                      ✓ Confirmar Logotipo de CASA LOTERÍA →
-                    </button>
+                    <img src="${escHtml(selectedLogoObj.screenImg)}" alt="${escHtml(selectedLogoObj.name)}" style="width:100%; border-radius:10px; border:1px solid #E2E8F0; display:block;" />
+                  </div>
+                  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
+                    ${TBB_MOCKUP_LOGO_PROPOSALS.map((item) => renderRealAppLogoLockupCard(item, true)).join("")}
                   </div>
                 `}
             </div>
@@ -2311,7 +2230,7 @@
     }
 
     // =========================================================================
-    // 3. FORMATO COMPUTADORA: PASO 5 REAL DE STUDIO.HTML (LAS 8 PROPUESTAS DE CASA LOTERÍA)
+    // 3. FORMATO COMPUTADORA: ARCO INGENIERÍA (CAPTURA REAL + 6 ITERACIONES DE LOGOTIPO)
     // =========================================================================
     return `
       <div class="tbb-home-device-stage-centered">
@@ -2320,47 +2239,39 @@
             <span class="dot red"></span>
             <span class="dot yellow"></span>
             <span class="dot green"></span>
-            <span class="tbb-home-desktop-url">https://thebestbrand.app/studio?brand=casa_loteria&amp;step=5 · Caso Real: Restaurante Mexicano Modernista «CASA LOTERÍA» (Estrella Michelin)</span>
-            <button type="button" onclick="window.tbbToggleHomeDeviceLiveStudio(true)" style="margin-left:auto; background:#C85A32; color:#FFFFFF; border:none; border-radius:999px; padding:4px 12px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
-              Interactuar con «CASA LOTERÍA» en Vivo Aquí →
+            <span class="tbb-home-desktop-url">https://thebestbrand.app/studio · Caso Real Auditado: «ARCO INGENIERÍA» (Ing. Luis Ponce · Selección #5 Lineal Minimalista)</span>
+            <button type="button" onclick="window.tbbSwitchMainSection(5)" style="margin-left:auto; background:#0078C0; color:#FFFFFF; border:none; border-radius:999px; padding:4px 12px; font-family:'Montserrat',sans-serif; font-size:0.68rem; font-weight:800; cursor:pointer;">
+              Descargar los Entregables de ARCO Ingeniería →
             </button>
           </div>
 
-          <div class="tbb-home-device-screen" style="background:#FAF6F0; color:#14110F; padding:16px; gap:12px;">
-            <div style="background:#14110F; color:#FFFFFF; border-radius:16px; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; border:1.5px solid #D4AF37;">
+          <div class="tbb-home-device-screen" style="background:#F8FAFC; color:#0D2540; padding:16px; gap:12px;">
+            <div style="background:#0D2540; color:#FFFFFF; border-radius:16px; padding:12px 18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; border:1.5px solid #0078C0;">
               <div style="display:flex; align-items:center; gap:12px;">
-                <img src="${TBB_ISOTIPO_DATA_URI}" alt="" style="width:28px; height:28px;" />
+                <img src="/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png" alt="ARCO Ingeniería" style="width:34px; height:34px; border-radius:8px; background:#FFFFFF; padding:3px;" />
                 <div style="text-align:left;">
-                  <div style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; color:#FDE68A; font-weight:800;">PASO 5 DE 6 · ENSAYO REAL DE MARCA DESDE CERO (SIN NOMBRE INICIAL → «CASA LOTERÍA»)</div>
-                  <div style="font-family:'Cormorant Garamond',serif; font-size:1.12rem; font-weight:700; color:#FFFFFF;">8 Propuestas Vectoriales para <span style="color:#FDE68A;">CASA LOTERÍA</span> (Cocina Mexicana Modernista · Estrella Michelin)</div>
+                  <div style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:#88E0E0; font-weight:800;">SESIÓN COMPLETA AUDITADA (PASOS 0 AL 6) · ING. LUIS PONCE · ARCO INGENIERÍA</div>
+                  <div style="font-family:'Montserrat',sans-serif; font-size:1.04rem; font-weight:900; color:#FFFFFF;">Evolución de Logotipo con NanoBanana PRO · <span style="color:#88E0E0;">Iteración #5 Lineal Minimalista</span></div>
                 </div>
               </div>
               ${renderSubscreenSwitchBar(false)}
             </div>
 
             ${subScreen === "5A"
-              ? renderRealScreen5AContent(false)
+              ? renderStepByStepGallery(false)
               : `
-                <div style="background:#FFFFFF; border:1.5px solid rgba(20,17,15,0.12); border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; text-align:left;">
-                  <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:900; color:#FAF6F0; background:#14110F; border:1px solid #D4AF37; padding:4px 10px; border-radius:999px;">
-                      PASO 2 · 8 ARQUETIPOS CREADOS A MEDIDA PARA EL RESTAURANTE (LOTERÍA · BARRO · COMAL · MICHELIN)
-                    </span>
-                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; background:#FFF7ED; color:#9A3412; border:1px solid #FDBA74; padding:3px 9px; border-radius:999px; font-weight:800;">
-                      8 Vectores .SVG Reales en Curvas Bézier
-                    </span>
+                <div style="display:grid; grid-template-columns:1.25fr 1fr; gap:12px; align-items:start;">
+                  <div style="background:#FFFFFF; border:2px solid #0078C0; border-radius:14px; padding:12px; text-align:left; box-shadow:0 10px 26px rgba(0,120,192,0.12);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+                      <span style="font-family:'Montserrat',sans-serif; font-size:0.80rem; font-weight:900; color:#0D2540;">CAPTURA REAL DE LA APP · ${escHtml(selectedLogoObj.code)}</span>
+                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.60rem; background:#F0F9FF; color:#0078C0; border:1px solid #88E0E0; padding:3px 9px; border-radius:999px; font-weight:800;">${escHtml(selectedLogoObj.badge)}</span>
+                    </div>
+                    <img src="${escHtml(selectedLogoObj.screenImg)}" alt="${escHtml(selectedLogoObj.name)}" style="width:100%; border-radius:10px; border:1px solid #E2E8F0; display:block; margin-bottom:8px;" />
+                    <div style="font-size:0.72rem; color:#334155; font-weight:600; line-height:1.45;">${escHtml(selectedLogoObj.rationale)}</div>
                   </div>
-                  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                    <span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; font-weight:800; color:#475569;">AFINAR SELECCIONADO (${escHtml(selectedLogoObj.shortCode)}):</span>
-                    <button type="button" onclick="window.tbbSetMockupLogoModifier('thin')" style="background:${activeMod === 'thin' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'thin' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fino</button>
-                    <button type="button" onclick="window.tbbSetMockupLogoModifier('bold')" style="background:${activeMod === 'bold' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'bold' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Trazo más fuerte</button>
-                    <button type="button" onclick="window.tbbSetMockupLogoModifier('shield')" style="background:${activeMod === 'shield' ? '#14110F' : '#F8FAFC'}; color:${activeMod === 'shield' ? '#FDE68A' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Marco Lotería</button>
-                    <button type="button" onclick="window.tbbToggleMockupInvertCanvas()" style="background:${invertCanvas ? '#C85A32' : '#F8FAFC'}; color:${invertCanvas ? '#FFFFFF' : '#0F172A'}; border:1px solid #CBD5E1; border-radius:999px; padding:3px 9px; font-size:0.62rem; font-weight:800; cursor:pointer;">Invertir fondo</button>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    ${TBB_MOCKUP_LOGO_PROPOSALS.map((item) => renderRealAppLogoLockupCard(item, true)).join("")}
                   </div>
-                </div>
-
-                <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;">
-                  ${TBB_MOCKUP_LOGO_PROPOSALS.map((item) => renderRealAppLogoLockupCard(item, false)).join("")}
                 </div>
               `}
           </div>

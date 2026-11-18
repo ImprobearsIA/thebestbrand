@@ -2960,11 +2960,23 @@ Instrucciones obligatorias:
     const isTbbSlug = /^the_?best_?brand$/i.test(slug);
 
     const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
-    const uploadedUrl = (activeIt && activeIt.uploadedLogoDataUrl) || cs.uploaded_logo_data_url || s0.uploadedLogoDataUrl || "";
-    const uploadedSvg = (activeIt && activeIt.uploadedLogoSvgMarkup) || cs.uploaded_logo_svg_markup || s0.uploadedLogoSvgMarkup || "";
+    const isOrigUploadSelected = Boolean(activeIt && activeIt.isUploadedOriginal);
+    const uploadedUrl = isOrigUploadSelected
+      ? (activeIt.uploadedLogoDataUrl || cs.uploaded_logo_data_url || s0.uploadedLogoDataUrl || "")
+      : ((activeIt && (activeIt.nanoBananaSymbolUrl || activeIt.nanoBananaFullArtworkUrl || activeIt.uploadedLogoDataUrl))
+        || cs.nano_banana_symbol_url
+        || cs.nano_banana_full_artwork_url
+        || cs.uploaded_logo_data_url
+        || s0.uploadedLogoDataUrl
+        || "");
+    const uploadedSvg = (activeIt && (activeIt.tracedCurvesSvg || activeIt.uploadedLogoSvgMarkup))
+      || (!isOrigUploadSelected && cs.uploaded_logo_traced_curves_svg)
+      || cs.uploaded_logo_svg_markup
+      || s0.uploadedLogoSvgMarkup
+      || "";
     const hasUploadedLogo = Boolean(uploadedUrl || uploadedSvg);
     const hasGeminiCustom = Boolean(activeIt && activeIt.geminiCustomSvg && String(activeIt.geminiCustomSvg).trim().length > 10);
-    const useEvolvedCustomOverUpload = Boolean(st._uploadedLogoEvolvedOnce && hasGeminiCustom);
+    const useEvolvedCustomOverUpload = Boolean(st._uploadedLogoEvolvedOnce && hasGeminiCustom && !uploadedUrl);
 
     const hasCustomUserInputs = Boolean(
       hasUploadedLogo ||

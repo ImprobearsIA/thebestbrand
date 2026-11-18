@@ -25473,10 +25473,12 @@
           if (typeof canvasState === "object" && canvasState) canvasState.primary_font = item.fontFamily;
         }
         if (typeof canvasState === "object" && canvasState) {
-          if (item.isNanoBananaGenerated) {
+          if (item.isNanoBananaGenerated || item.nanoBananaFullArtworkUrl || item.nanoBananaSymbolUrl) {
             canvasState.nano_banana_full_artwork_url = item.nanoBananaFullArtworkUrl || item.uploadedLogoDataUrl || "";
             canvasState.nano_banana_symbol_url = item.nanoBananaSymbolUrl || item.uploadedLogoDataUrl || "";
-          } else if (item.isUploadedUserLogo && item.uploadedLogoDataUrl) {
+          } else if ((item.isUploadedUserLogo || item.isUploadedOriginal) && item.uploadedLogoDataUrl) {
+            canvasState.nano_banana_full_artwork_url = "";
+            canvasState.nano_banana_symbol_url = "";
             canvasState.uploaded_logo_data_url = item.uploadedLogoDataUrl;
             if (window.step0State) window.step0State.uploadedLogoDataUrl = item.uploadedLogoDataUrl;
           }
