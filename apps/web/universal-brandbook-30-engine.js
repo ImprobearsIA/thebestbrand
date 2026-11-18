@@ -774,39 +774,53 @@
       audit.executiveCopy = refinedFallback;
     }
 
-    // Consulta en vivo a Gemini para un dictamen real, crítico y personalizado al texto del usuario
+    // Consulta en vivo a Gemini (gemini-3.8-flash) para un dictamen real, crítico y personalizado a TODA la información de la marca
     try {
+      const fullDossier = (typeof window.tbbBuildFullBrandContextDossier === "function")
+        ? window.tbbBuildFullBrandContextDossier()
+        : `Giro: ${bGiro}. Nombre: ${bName}.`;
       const prompt = [
         `Actúa como ${author.name}, autor de "${author.book}" y ${author.role}.`,
         `Estás auditando la respuesta de un usuario en la plataforma de branding estratégico TheBestBrand.`,
-        `Contexto del negocio (Giro): "${bGiro}".`,
-        `Nombre actual de la marca: "${bName}".`,
-        `Dimensión evaluada: "${qDesc}".`,
+        `EXPEDIENTE COMPLETO DE LA MARCA QUE SE ESTÁ CREANDO:`,
+        fullDossier,
+        ``,
+        `Dimensión evaluada ahora: "${qDesc}".`,
         cleanRaw
-          ? `Texto escrito por el usuario: "${cleanRaw}".`
-          : `El usuario aún dejó el campo vacío; propón un dictamen orientador y una redacción ejecutiva ideal basada en su giro "${bGiro}".`,
+          ? `Texto escrito por el usuario en este campo: "${cleanRaw}".`
+          : `El usuario aún dejó este campo vacío; propón un dictamen orientador y una redacción ejecutiva ideal basada en el expediente completo de su marca arriba.`,
         ``,
         `Instrucciones estrictas:`,
-        `1. Analiza de verdad lo que escribió el usuario aplicando la metodología de ${author.name}. No repitas frases genéricas si el usuario dio detalles concretos (menciona sus conceptos clave y explica cómo fortalecerlos).`,
-        `2. En "executiveCopy", entrega una versión redactada con nivel ejecutivo, elocuente, inspiradora y con ORTOGRAFÍA Y ACENTUACIÓN PERFECTAS en español (corrige cualquier falta como "motivacion" -> "motivación", "haciendolos" -> "haciéndolos", "futbol" -> "fútbol", "transmitiir" -> "transmitir", etc.), respetando el 100% de la idea original del usuario sin inventar otro giro.`,
+        `1. Analiza de verdad lo que escribió el usuario y el contexto específico de su marca aplicando la metodología de ${author.name}. Menciona los conceptos reales de su negocio (PROHIBIDO usar frases genéricas de plantilla).`,
+        `2. En "executiveCopy", entrega una versión redactada con nivel ejecutivo, elocuente, inspiradora y con ORTOGRAFÍA Y ACENTUACIÓN PERFECTAS en español (corrige cualquier falta como "motivacion" -> "motivación", "haciendolos" -> "haciéndolos", "futbol" -> "fútbol", "transmitiir" -> "transmitir", "obrecer" -> "ofrecer", etc.), respetando el 100% de la idea original del usuario.`,
         `3. Responde ÚNICAMENTE con un objeto JSON válido con estas 4 llaves exactas:`,
-        `{"verdict": "TÍTULO BREVE DEL DICTAMEN EN MAYÚSCULAS", "score": "96/100", "critique": "Dictamen directo de ${author.name} en 2 oraciones analizando el texto específico del usuario.", "executiveCopy": "Redacción ejecutiva impecable lista para sustituir el campo."}`
+        `{"verdict": "TÍTULO BREVE DEL DICTAMEN EN MAYÚSCULAS", "score": "96/100", "critique": "Dictamen directo de ${author.name} en 2 oraciones analizando el texto y negocio específico del usuario.", "executiveCopy": "Redacción ejecutiva impecable lista para sustituir el campo."}`
       ].join("\n");
 
-      const resp = await fetch("/api/v1/gemini/proxy", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "gemini-3.5-flash-lite",
-          contents: prompt,
-          config: { temperature: 0.35, responseMimeType: "application/json" }
-        })
-      });
+      let rawJson = "";
+      if (typeof window.tbbCallGeminiAI === "function") {
+        rawJson = await window.tbbCallGeminiAI(prompt, { temperature: 0.4, json: true });
+      } else {
+        const resp = await fetch("/api/v1/gemini/proxy", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "gemini-3.8-flash",
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.4, responseMimeType: "application/json" }
+          })
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          rawJson = ((data.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("\n") || data.text || "").trim();
+        }
+      }
 
-      if (resp.ok) {
-        const data = await resp.json();
-        const rawJson = String(data.text || "").trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
-        const parsed = JSON.parse(rawJson);
+      if (rawJson) {
+        const cleanJson = String(rawJson).trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+        const firstB = cleanJson.indexOf("{");
+        const lastB = cleanJson.lastIndexOf("}");
+        const parsed = JSON.parse(firstB !== -1 && lastB > firstB ? cleanJson.slice(firstB, lastB + 1) : cleanJson);
         if (parsed && parsed.critique && parsed.executiveCopy) {
           audit = {
             author: author.name,

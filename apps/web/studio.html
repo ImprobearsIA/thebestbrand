@@ -22750,15 +22750,74 @@
         }
       };
 
+      // Construye el expediente completo con toda la información capturada de la marca actual
+      window.tbbBuildFullBrandContextDossier = function () {
+        const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+        const st = window.tbbState || {};
+        const lines = [];
+        if (cs.brandName && !/^(mi nueva marca|the\s*best\s*brand|marca en creaci.*)$/i.test(cs.brandName)) {
+          lines.push(`- Nombre actual o preliminar: "${cs.brandName}"`);
+        }
+        if (cs.custom_business_type) lines.push(`- Giro y Actividad del negocio (Paso 0.3): "${cs.custom_business_type}"`);
+        else if (cs.step0_short_essence) lines.push(`- Esencia del giro: "${cs.step0_short_essence}"`);
+        if (cs.golden_circle) lines.push(`- Propósito Nuclear / Porqué (Paso 1.1): "${cs.golden_circle}"`);
+        if (cs.value_offer) lines.push(`- Oferta de Valor Diferenciada (Paso 1.2): "${cs.value_offer}"`);
+        if (cs.social_role) lines.push(`- Impacto en la vida/trabajo del cliente (Paso 1.3): "${cs.social_role}"`);
+        if (cs.process_steps_text) lines.push(`- Método y Proceso clave (Paso 1.4): "${cs.process_steps_text}"`);
+        if (cs.core_message) lines.push(`- Mensaje Central (Paso 1.5): "${cs.core_message}"`);
+        if (cs.brand_persona) lines.push(`- Personalidad / La Empresa como Persona (Paso 1.6): "${cs.brand_persona}"`);
+        if (cs.ideal_customer) lines.push(`- Cliente Ideal y problema que resuelve (Paso 1.7): "${cs.ideal_customer}"`);
+        if (cs.tp_before) lines.push(`- Touchpoints Antes de la compra (Paso 2.1): "${cs.tp_before}"`);
+        if (cs.tp_during) lines.push(`- Touchpoints Durante la experiencia (Paso 2.2): "${cs.tp_during}"`);
+        if (cs.tp_after) lines.push(`- Touchpoints Después de la compra (Paso 2.3): "${cs.tp_after}"`);
+        if (cs.naming_axis_1) lines.push(`- Idea Naming 1 (Qué hace/vende): "${cs.naming_axis_1}"`);
+        if (cs.naming_axis_2) lines.push(`- Idea Naming 2 (Beneficio principal): "${cs.naming_axis_2}"`);
+        if (cs.naming_axis_3) lines.push(`- Idea Naming 3 (Estilo/Personalidad): "${cs.naming_axis_3}"`);
+        if (cs.naming_axis_4) lines.push(`- Idea Naming 4 (Palabras o raíces): "${cs.naming_axis_4}"`);
+        if (cs.tagline) lines.push(`- Eslogan actual: "${cs.tagline}"`);
+        if (cs.step4_seed_idea) lines.push(`- Símbolo o idea visual (Paso 4.5): "${cs.step4_seed_idea}"`);
+        return lines.length > 0 ? lines.join("\n") : "- Proyecto de marca en fase de definición inicial.";
+      };
+
+      // Cliente universal para consultar Gemini en tiempo real a través del proxy seguro (/api/v1/gemini/proxy)
+      window.tbbCallGeminiAI = async function (promptText, opts = {}) {
+        const apiKey = window.TBB_GEMINI_KEY || "";
+        const models = opts.models || ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite"];
+        const genConfig = { temperature: opts.temperature !== undefined ? opts.temperature : 0.65 };
+        if (opts.json) genConfig.responseMimeType = "application/json";
+
+        for (const modelName of models) {
+          try {
+            const endpointUrl = apiKey
+              ? `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`
+              : (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
+            const resp = await fetch(endpointUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                model: modelName,
+                contents: [{ parts: [{ text: String(promptText || "") }] }],
+                generationConfig: genConfig
+              })
+            });
+            if (!resp.ok) continue;
+            const data = await resp.json();
+            const text = ((data.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("\n") || data.text || "").trim();
+            if (text) return text;
+          } catch (err) {
+            console.warn(`tbbCallGeminiAI error with ${modelName}:`, err);
+          }
+        }
+        return "";
+      };
+
       window.requestLiveGeminiAuraEmpatheticComment = async function (contextLabel, userValue) {
-        const cleanVal = String(userValue || "").trim();
-        if (cleanVal.length < 4) return;
         const st = window.tbbState;
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-        const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "la marca";
-        const bGiro = (cs.custom_business_type || cs.step0_short_essence || "su proyecto").trim();
+        const dossier = window.tbbBuildFullBrandContextDossier();
+        const cleanVal = String(userValue || cs.custom_business_type || "").trim();
+        if (cleanVal.length < 4 && dossier.length < 45) return;
         const recentUsed = (st.auraUsedMessages || []).slice(-10).join(" | ");
-        const apiKey = window.TBB_GEMINI_KEY || "";
 
         const stepAuthors = {
           0: "Peter Drucker, Marty Neumeier, David Aaker o Sagi Haviv",
@@ -22771,47 +22830,33 @@
         };
 
         const prompt = [
-          "Eres Aura, la mentora de marca cálida y estratégica de TheBestBrand.",
-          `Marca: "${bName}". Giro: "${bGiro}". Paso actual: Paso ${st.step}.${st.subStep} (${contextLabel}).`,
-          `El usuario acaba de ingresar o elegir: "${cleanVal.slice(0, 180)}".`,
+          "Eres Aura, la mentora estratégica de marca de TheBestBrand.",
+          "INFORMACIÓN ESPECÍFICA DE LA MARCA QUE SE ESTÁ CREANDO:",
+          dossier,
+          `Paso actual: Paso ${st.step}.${st.subStep} (${contextLabel}).`,
+          cleanVal ? `Último dato ingresado o acción: "${cleanVal.slice(0, 200)}".` : "",
           `Frases recientes prohibidas de repetir: [${recentUsed}].`,
           "REGLAS ESTRICTAS:",
-          `1. Escribe UNA SOLA oración breve de MÁXIMO 18 PALABRAS (para que hablada dure menos de 8 segundos, estrictamente <= 10 segundos).`,
-          `2. Incluye obligatoriamente una referencia breve a un autor reconocido del tema (${stepAuthors[st.step] || "David Aaker o Simon Sinek"}).`,
+          "1. Escribe UNA SOLA oración breve (máximo 22 palabras) comentando ESPECÍFICAMENTE sobre el negocio/marca que el usuario está creando (menciona su giro, beneficio o idea concreta).",
+          `2. Incluye una referencia breve a un autor reconocido del tema (${stepAuthors[st.step] || "David Aaker o Simon Sinek"}).`,
           "3. CERO EMOJIS. Devuelve únicamente el texto plano en español."
-        ].join("\n");
+        ].filter(Boolean).join("\n");
 
         try {
-          const auraModel = "gemini-3.5-flash-lite";
-          const endpointUrl = apiKey
-            ? `https://generativelanguage.googleapis.com/v1beta/models/${auraModel}:generateContent?key=${apiKey}`
-            : (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
-          const resp = await fetch(endpointUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              model: auraModel,
-              contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: { temperature: 0.6, maxOutputTokens: 60 }
-            })
-          });
-          if (!resp.ok) return;
-          const data = await resp.json();
-          let reply = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join(" ").replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
-          reply = reply.replace(/^["«“]|["»”]$/g, "").replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "").trim();
+          let reply = await window.tbbCallGeminiAI(prompt, { temperature: 0.6 });
+          reply = reply.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").replace(/^["«“]|["»”]$/g, "").replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "").trim();
           const words = reply.split(" ").filter(Boolean);
-          if (words.length > 20) {
-            reply = words.slice(0, 20).join(" ") + ".";
+          if (words.length > 26) {
+            reply = words.slice(0, 26).join(" ") + ".";
           }
           if (reply && reply.length >= 16 && !st.auraUsedMessages.includes(reply)) {
             st.auraUsedMessages.push(reply);
             window.updateAuraTopPresenceDOM(reply);
-            window.speakAuraBriefResponse(reply, 9500);
           }
         } catch (e) {}
       };
 
-      window.triggerAuraEmpatheticFeedback = function (eventType, detailText = "", askLiveGemini = false, speakNow = true) {
+      window.triggerAuraEmpatheticFeedback = function (eventType, detailText = "", askLiveGemini = true, speakNow = true) {
         if (auraInputDebounceTimer) {
           clearTimeout(auraInputDebounceTimer);
           auraInputDebounceTimer = null;
@@ -22824,9 +22869,9 @@
           window.speakAuraBriefResponse(msg, 9500);
         } else {
           window.pulseAuraTopOrbActivity(2200);
-          if (askLiveGemini && String(detailText || "").trim().length >= 15) {
-            window.requestLiveGeminiAuraEmpatheticComment(eventType, detailText);
-          }
+        }
+        if (askLiveGemini !== false) {
+          window.requestLiveGeminiAuraEmpatheticComment(eventType, detailText);
         }
       };
 
@@ -22980,17 +23025,24 @@
           videoLblEl.textContent = isNarrowMobile ? "Cápsula" : `Cápsula Paso ${st.step}`;
         }
 
-        // Actualizar mensaje breve de Aura (<= 10s con referencia de autor) al cambiar de sub-paso
+        // Actualizar mensaje breve de Aura con IA real basada en la información de la marca al cambiar de sub-paso
         const subStepKey = `${st.step}.${st.subStep}`;
         if (st.auraLastSubStepKey !== subStepKey) {
           const hadPreviousKey = Boolean(st.auraLastSubStepKey);
           st.auraLastSubStepKey = subStepKey;
-          const nextMsg = window.getNextNonRepetitiveAuraMessage(`substep_${st.step}_${st.subStep}`);
-          window.updateAuraTopPresenceDOM(nextMsg);
-          if (hadPreviousKey && typeof window.speakAuraBriefResponse === "function") {
-            window.speakAuraBriefResponse(nextMsg, 9500);
+          const hasBrandContext = Boolean((cs.custom_business_type && cs.custom_business_type.trim().length > 6) || (cs.golden_circle && cs.golden_circle.trim().length > 6) || (cs.value_offer && cs.value_offer.trim().length > 6));
+          if (hasBrandContext && typeof window.requestLiveGeminiAuraEmpatheticComment === "function") {
+            window.updateAuraTopPresenceDOM("✦ Analizando la información específica de tu marca con IA...");
+            window.pulseAuraTopOrbActivity(2200);
+            window.requestLiveGeminiAuraEmpatheticComment(`substep_${st.step}_${st.subStep}`, cs.custom_business_type || cs.value_offer || cs.golden_circle || "");
           } else {
-            window.pulseAuraTopOrbActivity(1800);
+            const nextMsg = window.getNextNonRepetitiveAuraMessage(`substep_${st.step}_${st.subStep}`);
+            window.updateAuraTopPresenceDOM(nextMsg);
+            if (hadPreviousKey && typeof window.speakAuraBriefResponse === "function") {
+              window.speakAuraBriefResponse(nextMsg, 9500);
+            } else {
+              window.pulseAuraTopOrbActivity(1800);
+            }
           }
         } else {
           window.updateAuraTopPresenceDOM();
@@ -23257,7 +23309,7 @@
         }
 
         // ---------------------------------------------------------------------
-        // PASO 3: CREACIÓN Y SELECCIÓN DEL NOMBRE DE MARCA (100% UNIVERSAL Y EDITABLE)
+        // PASO 3: CREACIÓN Y SELECCIÓN DEL NOMBRE DE MARCA CON IA REAL
         // ---------------------------------------------------------------------
         if (st.step === 3) {
           const isPlaceholderBrand = (nameStr) => {
@@ -23274,48 +23326,62 @@
             : {
                 axis1: cs.naming_axis_1 || cs.step0_short_essence || "",
                 axis2: cs.naming_axis_2 || "",
-                axis3: cs.naming_axis_3 || "Moderno, confiable y profesional",
+                axis3: cs.naming_axis_3 || "",
                 axis4: cs.naming_axis_4 || ""
               };
+
+          // Si el usuario entra a Paso 3.1 y aún no se han sintetizado las 4 casillas con IA para su marca, disparar síntesis IA en vivo
+          if (st.subStep === 1 && !window._tbbAiNamingAxesSynthesized && !window._tbbAiNamingAxesLoading && typeof window.tbbSynthesizeNamingAxesWithAI === "function") {
+            const hasUserBrandData = Boolean((cs.custom_business_type && cs.custom_business_type.trim().length > 6) || (cs.golden_circle && cs.golden_circle.trim().length > 6));
+            if (hasUserBrandData) {
+              setTimeout(() => { window.tbbSynthesizeNamingAxesWithAI(false); }, 30);
+            }
+          }
 
           const dynamicCandidates = (typeof window.tbbBuildUniversalSixNamingCandidates === "function")
             ? window.tbbBuildUniversalSixNamingCandidates()
             : [];
+          const hasRealAiCandidates = Array.isArray(window._tbbAiGeneratedNamingCandidates) && window._tbbAiGeneratedNamingCandidates.length > 0;
 
           if (st.subStep === 1) {
-            if (lblNext) lblNext.textContent = "Ver 6 Propuestas de Nombre →";
+            if (lblNext) lblNext.textContent = hasRealAiCandidates ? "Ver 6 Propuestas de IA →" : "✦ Generar 6 Nombres con IA →";
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:8px;">
-                <div>
-                  <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#1D4ED8;">PASO 3 · 1 DE 3 · IDEAS Y PALABRAS CLAVE PARA TU NOMBRE</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.10rem; font-weight:900; color:#090D16; margin:2px 0 2px 0;">
-                    Escribe o edita en las 4 casillas las ideas que quieres reflejar en el nombre de tu marca
-                  </h2>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <div>
+                    <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 3 · 1 DE 3 · IDEAS Y PALABRAS CLAVE PARA TU NOMBRE</div>
+                    <h2 style="font-family:var(--font-display); font-size:1.06rem; font-weight:900; color:#090D16; margin:2px 0 0 0;">
+                      Revisa o edita las 4 ideas clave extraídas de tu marca para que la IA cree tus nombres
+                    </h2>
+                  </div>
+                  <button type="button" id="tbbBtnSynthesizeAxesAI" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbSynthesizeNamingAxesWithAI(true)" style="min-height:32px !important; padding:4px 10px !important; font-size:0.70rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; flex-shrink:0;">
+                    ${window._tbbAiNamingAxesLoading ? "✦ Analizando tu marca con IA..." : "✦ Sintetizar 4 casillas con IA según mi marca"}
+                  </button>
                 </div>
 
                 <!-- 4 Casillas 100% Editables por el Usuario -->
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                   <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
                     <label for="tbbNamingAxis1Input" style="font-family:var(--font-mono); font-size:0.64rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">1. ¿QUÉ HACE O VENDE TU NEGOCIO?</label>
-                    <input type="text" id="tbbNamingAxis1Input" value="${String(axesObj.axis1 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(1, this.value)" placeholder="Ej. Marcadores deportivos, software, consultoría..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <input type="text" id="tbbNamingAxis1Input" value="${String(axesObj.axis1 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(1, this.value)" placeholder="Ej. Marcadores deportivos para transmisiones en OBS..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
                   <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
                     <label for="tbbNamingAxis2Input" style="font-family:var(--font-mono); font-size:0.64rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">2. ¿QUÉ BENEFICIO PRINCIPAL ENTREGAS?</label>
-                    <input type="text" id="tbbNamingAxis2Input" value="${String(axesObj.axis2 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(2, this.value)" placeholder="Ej. Claridad en tiempo real, rapidez, precisión..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <input type="text" id="tbbNamingAxis2Input" value="${String(axesObj.axis2 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(2, this.value)" placeholder="Ej. Emoción de estadio profesional en cada transmisión..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
                   <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
                     <label for="tbbNamingAxis3Input" style="font-family:var(--font-mono); font-size:0.64rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">3. ¿QUÉ ESTILO O PERSONALIDAD BUSCAS?</label>
-                    <input type="text" id="tbbNamingAxis3Input" value="${String(axesObj.axis3 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(3, this.value)" placeholder="Ej. Profesional, dinámico, tecnológico, cercano..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <input type="text" id="tbbNamingAxis3Input" value="${String(axesObj.axis3 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(3, this.value)" placeholder="Ej. Dinámico, apasionado, televisivo, tecnológico..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
                   <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
-                    <label for="tbbNamingAxis4Input" style="font-family:var(--font-mono); font-size:0.64rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">4. PALABRAS O RAÍCES QUE TE GUSTEN (OPCIONAL)</label>
-                    <input type="text" id="tbbNamingAxis4Input" value="${String(axesObj.axis4 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(4, this.value)" placeholder="Ej. Pro, Live, Score, Studio, Nexus, iniciales..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <label for="tbbNamingAxis4Input" style="font-family:var(--font-mono); font-size:0.64rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">4. PALABRAS O RAÍCES SUGERIDAS / PROPIAS</label>
+                    <input type="text" id="tbbNamingAxis4Input" value="${String(axesObj.axis4 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(4, this.value)" placeholder="Ej. Gridiron, Score, Live, Broadcast, Pro, Touchdown..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
                 </div>
 
-                <!-- Selector de Estilo de Nombre (Lenguaje claro y universal) -->
+                <!-- Selector de Estilo de Nombre (Al seleccionar, genera con IA para ese estilo) -->
                 <div>
-                  <div style="font-size:0.72rem; font-weight:800; color:#334155; margin-bottom:4px;">¿Qué tipo de nombre prefieres explorar?</div>
+                  <div style="font-size:0.72rem; font-weight:800; color:#334155; margin-bottom:4px;">Elige el estilo de nombre que quieres que la IA genere para tu marca:</div>
                   <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:6px;">
                     ${[
                       { id: "compuesto", lbl: "1. Compuesto (2 palabras)" },
@@ -23323,63 +23389,94 @@
                       { id: "directo", lbl: "3. Directo y Profesional" },
                       { id: "creativo", lbl: "4. Creativo y Con Fuerza" }
                     ].map(t => `
-                      <button type="button" class="tbb-duo-btn ${activeStyle === t.id ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectNamingStyle('${t.id}');" style="min-height:34px !important; padding:4px 6px !important; font-size:0.70rem !important;">
+                      <button type="button" class="tbb-duo-btn ${activeStyle === t.id ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectNamingStyle('${t.id}', this);" style="min-height:34px !important; padding:4px 6px !important; font-size:0.70rem !important;">
                         ${t.lbl}
                       </button>
                     `).join("")}
                   </div>
                 </div>
 
-                <!-- Barra para escribir nombre directo o generar 6 propuestas con IA -->
+                <!-- Barra para escribir nombre directo o generar 6 propuestas con IA en vivo -->
                 <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:13px; padding:8px 12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                   <label for="tbbStep3DirectNameInput" style="font-size:0.74rem; font-weight:800; color:#0D2540; flex-shrink:0;">
-                    ¿Ya tienes un nombre o idea? Escríbelo aquí:
+                    ¿Ya tienes un nombre? Escríbelo o genera con IA:
                   </label>
-                  <input type="text" id="tbbStep3DirectNameInput" value="${curBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Escribe tu nombre aquí o genera 6 propuestas con IA →" style="flex:1; min-width:170px; height:36px; padding:0 12px; border-radius:9px; border:2px solid #090D16; background:#FFFFFF; font-size:0.90rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
+                  <input type="text" id="tbbStep3DirectNameInput" value="${curBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Escribe tu nombre aquí o presiona Generar 6 Propuestas con IA →" style="flex:1; min-width:170px; height:36px; padding:0 12px; border-radius:9px; border:2px solid #090D16; background:#FFFFFF; font-size:0.90rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
                   <button type="button" id="tbbBtnGenerateNamingAI_1" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbGenerateLiveAINamingProposals(this, true)" style="min-height:36px !important; padding:0 12px !important; font-size:0.75rem !important; flex-shrink:0;">
-                    ✦ Generar 6 Propuestas con IA →
+                    ${window._tbbAiNamingIsLoading ? "✦ Creando 6 nombres con IA..." : "✦ Generar 6 Propuestas con IA →"}
                   </button>
                 </div>
               </div>
             `;
           } else if (st.subStep === 2) {
+            if (!hasRealAiCandidates && !window._tbbAiNamingIsLoading && typeof window.tbbGenerateLiveAINamingProposals === "function") {
+              setTimeout(() => {
+                const btn2 = document.getElementById("tbbBtnGenerateNamingAI_2");
+                window.tbbGenerateLiveAINamingProposals(btn2, false);
+              }, 30);
+            }
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:10px 14px; gap:7px;">
+              <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
                   <div>
-                    <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 3 · 2 DE 3 · 6 PROPUESTAS DE NOMBRE PARA TU MARCA</div>
-                    <h2 style="font-family:var(--font-display); font-size:1.05rem; font-weight:900; color:#090D16; margin:2px 0 0 0;">
-                      Toca el nombre que más te guste o escribe/ajusta el tuyo abajo
+                    <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 3 · 2 DE 3 · 6 PROPUESTAS GENERADAS CON IA PARA TU MARCA</div>
+                    <h2 style="font-family:var(--font-display); font-size:1.02rem; font-weight:900; color:#090D16; margin:2px 0 0 0;">
+                      Toca el nombre que más te guste, cambia de estilo arriba o escribe el tuyo abajo
                     </h2>
                   </div>
-                  <button type="button" id="tbbBtnGenerateNamingAI_2" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbGenerateLiveAINamingProposals(this, false)" style="min-height:34px !important; padding:4px 11px !important; font-size:0.73rem !important; flex-shrink:0;">
-                    ✦ Generar 6 Nuevas Propuestas con IA
+                  <button type="button" id="tbbBtnGenerateNamingAI_2" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbGenerateLiveAINamingProposals(this, false)" style="min-height:32px !important; padding:4px 10px !important; font-size:0.72rem !important; flex-shrink:0;">
+                    ${window._tbbAiNamingIsLoading ? "✦ Generando con IA..." : "✦ Generar 6 Nuevas con IA"}
                   </button>
                 </div>
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px; flex:1; align-content:center; min-height:0;">
-                  ${dynamicCandidates.slice(0, 6).map(item => {
-                    const isSel = curBrand && curBrand.toLowerCase() === String(item.name || "").toLowerCase();
-                    const safeName = String(item.name || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-                    const safeTag = String(item.tagline || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-                    return `
-                      <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectEvaluatedNamingCandidate('${safeName}', '${safeTag}');" style="display:flex !important; flex-direction:column !important; align-items:flex-start !important; justify-content:space-between !important; text-align:left !important; padding:7px 10px !important; min-height:62px !important; gap:3px !important;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:6px;">
-                          <span style="font-family:var(--font-display); font-size:0.92rem; font-weight:900; color:#090D16; letter-spacing:0.01em;">${item.name}</span>
-                          <span style="font-family:var(--font-mono); font-size:0.62rem; font-weight:900; background:${isSel ? '#1D4ED8' : '#EFF6FF'}; color:${isSel ? '#FFFFFF' : '#1D4ED8'}; padding:2px 6px; border-radius:6px; flex-shrink:0;">[${item.monogram}]</span>
-                        </div>
-                        <div style="font-size:0.68rem; font-weight:800; color:#1D4ED8; line-height:1.15;">${item.tech}</div>
-                        <div style="font-size:0.65rem; font-weight:600; color:#475569; line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${item.roots}</div>
-                      </button>
-                    `;
-                  }).join("")}
+                <!-- Selector rápido de estilo también en 3.2 para regenerar con IA al instante -->
+                <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:5px;">
+                  ${[
+                    { id: "compuesto", lbl: "1. Compuesto" },
+                    { id: "corto", lbl: "2. Corto (1 palabra)" },
+                    { id: "directo", lbl: "3. Directo" },
+                    { id: "creativo", lbl: "4. Creativo" }
+                  ].map(t => `
+                    <button type="button" class="tbb-duo-btn ${activeStyle === t.id ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectNamingStyle('${t.id}', this);" style="min-height:28px !important; padding:2px 6px !important; font-size:0.68rem !important;">
+                      ${t.lbl}
+                    </button>
+                  `).join("")}
                 </div>
 
+                ${window._tbbAiNamingIsLoading ? `
+                  <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#F8FAFC; border:2px dashed #93C5FD; border-radius:14px; padding:18px; gap:8px; text-align:center;">
+                    <div style="font-family:var(--font-display); font-size:1.02rem; font-weight:900; color:#1D4ED8;">
+                      ✦ La IA está diseñando 6 propuestas de nombre exclusivas para tu marca...
+                    </div>
+                    <div style="font-size:0.80rem; font-weight:700; color:#475569; max-width:520px;">
+                      Analizando tu giro («${(axesObj.axis1 || cs.custom_business_type || "tu proyecto").slice(0, 70)}»), el beneficio que entregas y tu personalidad de marca.
+                    </div>
+                  </div>
+                ` : `
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; flex:1; align-content:center; min-height:0;">
+                    ${dynamicCandidates.slice(0, 6).map(item => {
+                      const isSel = curBrand && curBrand.toLowerCase() === String(item.name || "").toLowerCase();
+                      const safeName = String(item.name || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                      const safeTag = String(item.tagline || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+                      return `
+                        <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectEvaluatedNamingCandidate('${safeName}', '${safeTag}');" style="display:flex !important; flex-direction:column !important; align-items:flex-start !important; justify-content:space-between !important; text-align:left !important; padding:6px 10px !important; min-height:58px !important; gap:2px !important;">
+                          <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:6px;">
+                            <span style="font-family:var(--font-display); font-size:0.90rem; font-weight:900; color:#090D16; letter-spacing:0.01em;">${item.name}</span>
+                            <span style="font-family:var(--font-mono); font-size:0.60rem; font-weight:900; background:${isSel ? '#1D4ED8' : '#EFF6FF'}; color:${isSel ? '#FFFFFF' : '#1D4ED8'}; padding:2px 6px; border-radius:6px; flex-shrink:0;">[${item.monogram}]</span>
+                          </div>
+                          <div style="font-size:0.66rem; font-weight:800; color:#1D4ED8; line-height:1.15;">${item.tech}</div>
+                          <div style="font-size:0.64rem; font-weight:600; color:#475569; line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${item.roots}</div>
+                        </button>
+                      `;
+                    }).join("")}
+                  </div>
+                `}
+
                 <div style="background:#F0F7FF; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  <label for="tbbStep3Sub2NameInput" style="font-size:0.75rem; font-weight:800; color:#0D2540; flex-shrink:0;">
-                    Nombre elegido (puedes editarlo libremente):
+                  <label for="tbbStep3Sub2NameInput" style="font-size:0.74rem; font-weight:800; color:#0D2540; flex-shrink:0;">
+                    Nombre elegido (editable):
                   </label>
-                  <input type="text" id="tbbStep3Sub2NameInput" value="${curBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Toca una opción arriba o escribe aquí el nombre de tu marca..." style="flex:1; min-width:180px; height:34px; padding:0 10px; border-radius:8px; border:2px solid #1D4ED8; background:#FFFFFF; font-size:0.88rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
+                  <input type="text" id="tbbStep3Sub2NameInput" value="${curBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Toca una propuesta de IA arriba o escribe el nombre de tu marca..." style="flex:1; min-width:180px; height:32px; padding:0 10px; border-radius:8px; border:2px solid #1D4ED8; background:#FFFFFF; font-size:0.86rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
                 </div>
               </div>
             `;
@@ -24254,7 +24351,13 @@
           canvasState.custom_business_type = clean;
           canvasState.step0_short_essence = distilled ? (distilled.charAt(0).toUpperCase() + distilled.slice(1)) : "";
           canvasState.step0_paraphrased_essence = orthoClean;
+          delete canvasState.naming_axis_1;
+          delete canvasState.naming_axis_2;
+          delete canvasState.naming_axis_3;
+          delete canvasState.naming_axis_4;
         }
+        window._tbbAiNamingAxesSynthesized = false;
+        window._tbbAiGeneratedNamingCandidates = null;
         const prev = document.getElementById("tbbStep0LiveEssencePreview");
         if (prev) {
           prev.textContent = orthoClean
@@ -24269,7 +24372,12 @@
         const clean = String(val || "").trim();
         if (typeof canvasState === "object" && canvasState) {
           canvasState[key] = clean;
+          delete canvasState.naming_axis_2;
+          delete canvasState.naming_axis_3;
+          delete canvasState.naming_axis_4;
         }
+        window._tbbAiNamingAxesSynthesized = false;
+        window._tbbAiGeneratedNamingCandidates = null;
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
         // Experiencia de tecleo fluida: guardado en tiempo real sin interrupción por voz
       };
@@ -25532,8 +25640,10 @@
           if (dirInp && dirInp.value.trim()) {
             window.tbbUpdateBrandNameFromInput(dirInp.value.trim());
           }
-          if (!Array.isArray(window._tbbAiGeneratedNamingCandidates) && typeof window.tbbGenerateLiveAINamingProposals === "function") {
-            setTimeout(() => { window.tbbGenerateLiveAINamingProposals(null, false); }, 20);
+          if ((!Array.isArray(window._tbbAiGeneratedNamingCandidates) || window._tbbAiGeneratedNamingCandidates.length === 0) && typeof window.tbbGenerateLiveAINamingProposals === "function") {
+            const nextBtn = document.getElementById("tbbBtnGenerateNamingAI_1") || document.getElementById("tbbBtnAtomicNext");
+            window.tbbGenerateLiveAINamingProposals(nextBtn, true);
+            return;
           }
         } else if (st.step === 3 && st.subStep === 2) {
           const s2Inp = document.getElementById("tbbStep3Sub2NameInput");
@@ -25992,16 +26102,90 @@
       window.tbbGetUniversalNamingAxes = function () {
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const cleanGiro = cs.step0_short_essence || (cs.custom_business_type && typeof window.tbbDistillCleanGiroLabel === "function" ? window.tbbDistillCleanGiroLabel(cs.custom_business_type) : cs.custom_business_type) || "";
-        const rawBenefit = cs.value_offer || cs.golden_circle || cs.core_message || "";
+        const rawBenefit = cs.value_offer || cs.golden_circle || cs.social_role || cs.core_message || "";
         const cleanBenefit = rawBenefit
-          ? String(rawBenefit).replace(/^(WHY|HOW|WHAT)\s*(\([^)]*\))?\s*:\s*/i, "").split(/[.;]/)[0].trim().slice(0, 75)
+          ? String(rawBenefit).replace(/^(WHY|HOW|WHAT)\s*(\([^)]*\))?\s*:\s*/i, "").split(/[.;]/)[0].trim().slice(0, 85)
           : "";
+        const rawPersonality = cs.brand_persona || cs.core_message || "";
+        const cleanPersonality = rawPersonality
+          ? String(rawPersonality).split(/[.;]/)[0].trim().slice(0, 85)
+          : (cleanGiro ? `Profesional, apasionado y especializado en ${cleanGiro.slice(0, 40)}` : "Moderno, confiable y profesional");
         return {
-          axis1: cs.naming_axis_1 !== undefined ? String(cs.naming_axis_1) : String(cleanGiro).slice(0, 75),
+          axis1: cs.naming_axis_1 !== undefined ? String(cs.naming_axis_1) : String(cleanGiro).slice(0, 85),
           axis2: cs.naming_axis_2 !== undefined ? String(cs.naming_axis_2) : cleanBenefit,
-          axis3: cs.naming_axis_3 !== undefined ? String(cs.naming_axis_3) : "Moderno, confiable y profesional",
+          axis3: cs.naming_axis_3 !== undefined ? String(cs.naming_axis_3) : cleanPersonality,
           axis4: cs.naming_axis_4 !== undefined ? String(cs.naming_axis_4) : ""
         };
+      };
+
+      window.tbbSynthesizeNamingAxesWithAI = async function (forceOverwrite = false) {
+        if (window._tbbAiNamingAxesLoading) return;
+        const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+        const dossier = typeof window.tbbBuildFullBrandContextDossier === "function" ? window.tbbBuildFullBrandContextDossier() : (cs.custom_business_type || "");
+        if (!dossier || dossier.trim().length < 10) return;
+
+        window._tbbAiNamingAxesLoading = true;
+        const synthBtn = document.getElementById("tbbBtnSynthesizeAxesAI");
+        if (synthBtn) {
+          synthBtn.disabled = true;
+          synthBtn.textContent = "✦ Analizando tu marca con IA...";
+        }
+
+        try {
+          const styleId = (window.tbbState && window.tbbState.namingTechniqueAxis) || "compuesto";
+          const prompt = [
+            "Eres un Director de Estrategia de Marca y Naming de talla mundial (nivel Lexicon Branding / Interbrand).",
+            "Analiza TODA la información específica que el usuario ha capturado sobre su marca:",
+            dossier,
+            "",
+            "Con base EXCLUSIVAMENTE en esa marca que se está creando, genera un objeto JSON con:",
+            "1. Las 4 ideas sintetizadas, claras, sin faltas de ortografía y 100% específicas para las 4 casillas de naming:",
+            "   - axis1: ¿Qué hace o vende el negocio? (frase sustantiva concisa de 5 a 10 palabras, ej. 'Marcadores deportivos interactivos para transmisiones de fútbol americano en OBS')",
+            "   - axis2: ¿Qué beneficio principal entrega? (frase concisa de 5 a 10 palabras con ortografía impecable, ej. 'Transmitir la emoción real del partido con calidad televisiva')",
+            "   - axis3: ¿Qué estilo o personalidad busca esta marca específica? (4 a 8 palabras basadas en su propósito y cliente ideal, ej. 'Apasionado, dinámico, televisivo y de alta precisión')",
+            "   - axis4: 4 o 5 palabras clave, raíces o conceptos potentes sugeridos específicamente para el nombre de este negocio separados por comas",
+            `2. Y un arreglo 'candidates' con 6 propuestas de nombre de marca originales, memorables y específicas para este negocio en estilo '${styleId}'.`,
+            "",
+            "Responde ÚNICAMENTE con un objeto JSON válido con esta estructura exacta:",
+            '{"axis1":"...","axis2":"...","axis3":"...","axis4":"...","candidates":[{"name":"NOMBRE EN MAYÚSCULAS","tech":"Estilo del nombre (máx 5 palabras)","roots":"Por qué funciona para esta marca específica (máx 14 palabras)","tagline":"Eslogan sugerido específico para esta marca"}]}'
+          ].join("\n");
+
+          const rawText = await window.tbbCallGeminiAI(prompt, { temperature: 0.65, json: true });
+          const cleanJson = String(rawText || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+          const firstBrace = cleanJson.indexOf("{");
+          const lastBrace = cleanJson.lastIndexOf("}");
+          if (firstBrace !== -1 && lastBrace > firstBrace) {
+            const parsed = JSON.parse(cleanJson.slice(firstBrace, lastBrace + 1));
+            if (parsed.axis1 && (forceOverwrite || !cs.naming_axis_1)) cs.naming_axis_1 = String(parsed.axis1).trim();
+            if (parsed.axis2 && (forceOverwrite || !cs.naming_axis_2)) cs.naming_axis_2 = String(parsed.axis2).trim();
+            if (parsed.axis3 && (forceOverwrite || !cs.naming_axis_3 || cs.naming_axis_3 === "Moderno, confiable y profesional")) cs.naming_axis_3 = String(parsed.axis3).trim();
+            if (parsed.axis4 && (forceOverwrite || !cs.naming_axis_4)) cs.naming_axis_4 = String(parsed.axis4).trim();
+
+            if (Array.isArray(parsed.candidates) && parsed.candidates.length > 0) {
+              window._tbbAiGeneratedNamingCandidates = parsed.candidates.slice(0, 6).map((item, idx) => {
+                const cleanName = String(item.name || `OPCIÓN ${idx + 1}`).trim().toUpperCase();
+                const words = cleanName.split(/\s+/).filter(Boolean);
+                const monogram = (words.length >= 2 ? (words[0][0] + words[1][0]) : cleanName.slice(0, 2)).toUpperCase();
+                return {
+                  name: cleanName,
+                  monogram,
+                  tech: String(item.tech || "Propuesta IA a Medida").trim(),
+                  roots: String(item.roots || "Creado por IA según la información de tu marca").trim(),
+                  tagline: String(item.tagline || cs.tagline || cs.naming_axis_2 || "EXCELENCIA EN CADA DETALLE").trim()
+                };
+              });
+            }
+            window._tbbAiNamingAxesSynthesized = true;
+            if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
+          }
+        } catch (err) {
+          console.warn("Synthesize naming axes AI error:", err);
+        } finally {
+          window._tbbAiNamingAxesLoading = false;
+          if (typeof window.renderTbbZeroScrollStage === "function" && window.tbbState && window.tbbState.step === 3) {
+            window.renderTbbZeroScrollStage();
+          }
+        }
       };
 
       window.tbbUpdateNamingAxis = function (axisIdx, val) {
@@ -26012,11 +26196,15 @@
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
       };
 
-      window.tbbSelectNamingStyle = function (styleId) {
+      window.tbbSelectNamingStyle = async function (styleId, clickedBtnEl) {
         if (!window.tbbState) return;
         window.tbbState.namingTechniqueAxis = styleId || "compuesto";
         window._tbbAiGeneratedNamingCandidates = null;
         if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
+        // Disparar generación real con IA para el estilo seleccionado basado en la marca actual
+        const targetBtn = clickedBtnEl || document.getElementById("tbbBtnGenerateNamingAI_1") || document.getElementById("tbbBtnGenerateNamingAI_2");
+        const isSubStep2 = window.tbbState.step === 3 && window.tbbState.subStep === 2;
+        await window.tbbGenerateLiveAINamingProposals(targetBtn, isSubStep2);
       };
 
       window.tbbBuildUniversalSixNamingCandidates = function () {
@@ -26045,7 +26233,7 @@
 
         const favWord = String(axes.axis4 || "").trim().split(/[\s,]+/)[0] || "";
         const kw1Raw = favWord || userWords[0] || "Nexo";
-        const kw2Raw = userWords[1] || " Pulso";
+        const kw2Raw = userWords[1] || "Pulso";
         const cap = (s) => {
           const clean = String(s || "").trim();
           return clean ? clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase() : "Nova";
@@ -26088,7 +26276,6 @@
             { name: `ZENIT ${w1.toUpperCase()}`, tech: "Cumbre de Calidad", roots: `Evoca el punto más alto de desempeño y servicio` }
           ];
         } else {
-          // "compuesto" (por defecto: 2 palabras equilibradas)
           list = [
             { name: `${w1.toUpperCase()} PRO`, tech: "Compuesto Profesional (2 palabras)", roots: `Une tu actividad principal (${w1}) con estándar de alta precisión` },
             { name: `${w1.toUpperCase()} STUDIO`, tech: "Compuesto de Especialidad", roots: `Proyecta diseño, dedicación y maestría en ${axes.axis1 || "tu giro"}` },
@@ -26109,6 +26296,7 @@
       };
 
       window.tbbGenerateLiveAINamingProposals = async function (btnEl, goToStep3_2 = false) {
+        if (window._tbbAiNamingIsLoading) return;
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const st = window.tbbState || {};
 
@@ -26125,67 +26313,76 @@
         const styleId = st.namingTechniqueAxis || "compuesto";
         const styleDescriptions = {
           compuesto: "Nombres compuestos de 2 palabras claras, memorables y profesionales",
-          corto: "Nombres cortos de 1 sola palabra (neologismos limpios, acrónimos o palabras con fuerza)",
-          directo: "Nombres directos, descriptivos y ejecutivos que digan claramente qué hace el negocio",
-          creativo: "Nombres creativos, evocadores, modernos y con mucha personalidad"
+          corto: "Nombres cortos y únicos de 1 sola palabra (neologismos sonoramente potentes, acrónimos inteligentes o conceptos únicos)",
+          directo: "Nombres directos, descriptivos y ejecutivos que transmitan autoridad inmediata en el sector",
+          creativo: "Nombres creativos, evocadores, modernos y con mucha fuerza emocional"
         };
 
+        window._tbbAiNamingIsLoading = true;
         const origText = btnEl ? btnEl.textContent : "";
         if (btnEl) {
           btnEl.disabled = true;
-          btnEl.textContent = "✦ Generando 6 propuestas con IA...";
+          btnEl.textContent = "✦ Creando 6 nombres con IA según tu marca...";
+        }
+        const genBtn1 = document.getElementById("tbbBtnGenerateNamingAI_1");
+        if (genBtn1 && genBtn1 !== btnEl) {
+          genBtn1.disabled = true;
+          genBtn1.textContent = "✦ Creando 6 nombres con IA...";
+        }
+        const nextLbl = document.getElementById("tbbLblAtomicNext");
+        if (nextLbl && st.step === 3 && st.subStep === 1) {
+          nextLbl.textContent = "✦ Generando con IA...";
+        }
+        if (st.step === 3 && st.subStep === 2 && typeof window.renderTbbZeroScrollStage === "function") {
+          window.renderTbbZeroScrollStage();
         }
 
         try {
+          const dossier = typeof window.tbbBuildFullBrandContextDossier === "function" ? window.tbbBuildFullBrandContextDossier() : "";
           const prompt = [
-            "Eres un director experto en creación de nombres de marca (Naming) para todo tipo de empresas, productos y servicios.",
-            "Genera EXACTAMENTE 6 propuestas de nombre de marca originales, atractivas, fáciles de pronunciar y 100% adaptadas a la siguiente información del usuario:",
-            `- ¿Qué hace o vende el negocio?: "${axes.axis1 || cs.custom_business_type || "Servicios y soluciones profesionales"}"`,
-            `- ¿Qué beneficio principal entrega?: "${axes.axis2 || cs.value_offer || "Calidad, claridad y resultados"}"`,
-            `- ¿Qué estilo o personalidad busca?: "${axes.axis3 || "Moderno, confiable y profesional"}"`,
-            `- Palabras, raíces o ideas que le gustan al usuario: "${axes.axis4 || "Ninguna específica, proponlas libremente"}"`,
-            `- Estilo de nombre preferido: ${styleDescriptions[styleId] || styleDescriptions.compuesto}.`,
-            "- PROHIBIDO usar palabras de restaurantes, lotería o barro a menos que el usuario lo haya escrito explícitamente arriba.",
-            "Devuelve ÚNICAMENTE un arreglo JSON válido con 6 objetos con esta estructura exacta, sin markdown ni texto adicional:",
-            '[{"name":"NOMBRE EN MAYÚSCULAS","tech":"Estilo del nombre (máx 5 palabras)","roots":"Por qué funciona para este negocio (máx 12 palabras)","tagline":"Eslogan sugerido claro y atractivo"}]'
+            "Eres un Director Mundial de Naming Estratégico (nivel Lexicon Branding / Landor).",
+            "Analiza TODA la información específica de la marca que el usuario está construyendo:",
+            dossier,
+            "",
+            "Ejes clave indicados en las 4 casillas de naming:",
+            `- 1. ¿Qué hace o vende el negocio?: "${axes.axis1 || cs.custom_business_type || "Servicios y soluciones profesionales"}"`,
+            `- 2. ¿Qué beneficio principal entrega?: "${axes.axis2 || cs.value_offer || "Calidad, claridad y resultados"}"`,
+            `- 3. ¿Qué estilo o personalidad busca?: "${axes.axis3 || "Moderno, confiable y profesional"}"`,
+            `- 4. Palabras, raíces o ideas sugeridas/favoritas: "${axes.axis4 || "Proponlas libremente según el giro"}"`,
+            `- Estilo de nombre solicitado ahora: ${styleDescriptions[styleId] || styleDescriptions.compuesto}.`,
+            "",
+            "Instrucciones estrictas:",
+            "- Genera EXACTAMENTE 6 propuestas de nombre de marca 100% específicas para este giro y proyecto (ej. si es software de marcadores de fútbol americano para OBS, usa conceptos de broadcast, marcador, emparrillado, estadio, directo, score, etc.; adapta al 100% a lo que el usuario describió).",
+            "- PROHIBIDO usar plantillas genéricas o palabras de restaurantes/lotería a menos que el usuario lo haya pedido.",
+            "Devuelve ÚNICAMENTE un arreglo JSON válido con 6 objetos con esta estructura exacta, sin texto adicional:",
+            '[{"name":"NOMBRE EN MAYÚSCULAS","tech":"Estilo del nombre (máx 5 palabras)","roots":"Por qué funciona específicamente para esta marca (máx 14 palabras)","tagline":"Eslogan sugerido potente y específico para esta marca"}]'
           ].join("\n");
 
-          const resp = await fetch("/api/v1/gemini/proxy", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              model: "gemini-3.5-flash-lite",
-              contents: prompt,
-              config: { temperature: 0.7 }
-            })
-          });
-
-          if (resp.ok) {
-            const data = await resp.json();
-            const rawText = String(data.text || "").trim().replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
-            const firstBracket = rawText.indexOf("[");
-            const lastBracket = rawText.lastIndexOf("]");
-            if (firstBracket !== -1 && lastBracket > firstBracket) {
-              const parsed = JSON.parse(rawText.slice(firstBracket, lastBracket + 1));
-              if (Array.isArray(parsed) && parsed.length > 0) {
-                window._tbbAiGeneratedNamingCandidates = parsed.slice(0, 6).map((item, idx) => {
-                  const cleanName = String(item.name || `OPCIÓN ${idx + 1}`).trim().toUpperCase();
-                  const words = cleanName.split(/\s+/).filter(Boolean);
-                  const monogram = (words.length >= 2 ? (words[0][0] + words[1][0]) : cleanName.slice(0, 2)).toUpperCase();
-                  return {
-                    name: cleanName,
-                    monogram: monogram,
-                    tech: String(item.tech || "Propuesta a Medida").trim(),
-                    roots: String(item.roots || "Basado en tu giro y beneficios").trim(),
-                    tagline: String(item.tagline || cs.tagline || axes.axis2 || "EXCELENCIA EN CADA DETALLE").trim()
-                  };
-                });
-              }
+          const rawText = await window.tbbCallGeminiAI(prompt, { temperature: 0.78, json: true });
+          const cleanJson = String(rawText || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+          const firstBracket = cleanJson.indexOf("[");
+          const lastBracket = cleanJson.lastIndexOf("]");
+          if (firstBracket !== -1 && lastBracket > firstBracket) {
+            const parsed = JSON.parse(cleanJson.slice(firstBracket, lastBracket + 1));
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              window._tbbAiGeneratedNamingCandidates = parsed.slice(0, 6).map((item, idx) => {
+                const cleanName = String(item.name || `OPCIÓN ${idx + 1}`).trim().toUpperCase();
+                const words = cleanName.split(/\s+/).filter(Boolean);
+                const monogram = (words.length >= 2 ? (words[0][0] + words[1][0]) : cleanName.slice(0, 2)).toUpperCase();
+                return {
+                  name: cleanName,
+                  monogram: monogram,
+                  tech: String(item.tech || "Propuesta IA a Medida").trim(),
+                  roots: String(item.roots || "Basado en tu giro y beneficios").trim(),
+                  tagline: String(item.tagline || cs.tagline || axes.axis2 || "EXCELENCIA EN CADA DETALLE").trim()
+                };
+              });
             }
           }
         } catch (err) {
           console.warn("Fallback a generador universal de nombres:", err);
         } finally {
+          window._tbbAiNamingIsLoading = false;
           if (btnEl) {
             btnEl.disabled = false;
             btnEl.textContent = origText;
@@ -26341,22 +26538,12 @@
         const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName) && !/^Marca en Creaci/i.test(cs.brandName)) ? cs.brandName.trim() : "nuestra marca";
         const bGiro = (cs.custom_business_type || cs.step0_short_essence || "soluciones de valor").trim();
 
-        // 1. Pase instantáneo de ortografía y estructura
-        let refined = (typeof window.tbbRefineUserCopyOrthoAndClarity === "function")
-          ? window.tbbRefineUserCopyOrthoAndClarity(raw, fieldRole || "general", bName, bGiro)
-          : raw;
-        el.value = refined;
-        if (inputId === "tbbStep0BizTextarea" && typeof window.tbbUpdateBusinessTypeFromInput === "function") {
-          window.tbbUpdateBusinessTypeFromInput(refined);
-        } else if (inputId === "tbbStep1AnswerInput" && typeof window.tbbSaveStep1Answer === "function") {
-          window.tbbSaveStep1Answer(fieldRole, refined);
-        }
-
-        // 2. Pase en vivo con IA editorial para pulir acentos, sintaxis y claridad ejecutiva respetando 100% la idea del usuario
+        // Mostrar estado de procesamiento real con IA (sin sobrescribir en 0ms con plantilla fija)
         if (btn) {
           btn.disabled = true;
-          btn.textContent = "✦ Corrigiendo ortografía y redactando tu idea con IA...";
+          btn.textContent = "✦ Redactando y corrigiendo con IA según tu marca...";
         }
+        let refined = raw;
         try {
           const roleDescriptions = {
             giro: "Giro y actividad del negocio (qué ofrece y para quién)",
@@ -26369,42 +26556,43 @@
             ideal_customer: "Cliente Ideal y problema urgente que resuelve"
           };
           const roleDesc = roleDescriptions[fieldRole] || "Definición estratégica de la marca";
+          const dossier = typeof window.tbbBuildFullBrandContextDossier === "function" ? window.tbbBuildFullBrandContextDossier() : `Giro: ${bGiro}`;
           const prompt = [
-            `Eres un editor ejecutivo experto en lengua española y estrategia de marca.`,
-            `Corrige todas las faltas de ortografía, tildes omitidas (ej. "motivacion" -> "motivación", "haciendolos" -> "haciéndolos", "futbol" -> "fútbol", "transmitiir" -> "transmitir"), errores de dedo y puntuación del siguiente texto escrito por el usuario, y exprésalo con claridad, fluidez y nivel profesional SIN cambiar ni alterar su idea original ni agregar datos inventados.`,
-            `Dimensión: ${roleDesc}.`,
-            `Texto original del usuario: "${raw}"`,
-            `Responde ÚNICAMENTE con el texto corregido y bien redactado, sin comillas iniciales ni explicaciones adicionales.`
+            `Eres un director editorial y estratega de marca experto.`,
+            `Contexto acumulado de la marca que se está creando:`,
+            dossier,
+            ``,
+            `Dimensión actual que el usuario está respondiendo: ${roleDesc}.`,
+            `Texto escrito por el usuario: "${raw}"`,
+            ``,
+            `Instrucciones:`,
+            `1. Corrige todas las faltas de ortografía, tildes omitidas (ej. "motivacion" -> "motivación", "haciendolos" -> "haciéndolos", "futbol" -> "fútbol", "transmitiir" -> "transmitir", "obrecer" -> "ofrecer") y errores de dedo.`,
+            `2. Redacta la idea del usuario con claridad ejecutiva, fluidez y fuerza estratégica, manteniendo el 100% de los detalles específicos de su marca (sin cambiar de giro ni usar frases genéricas de plantilla).`,
+            `3. Responde ÚNICAMENTE con el texto corregido y mejorado (1 a 3 oraciones concisas), sin comillas iniciales ni explicaciones adicionales.`
           ].join("\n");
 
-          const resp = await fetch("/api/v1/gemini/proxy", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              model: "gemini-3.5-flash-lite",
-              contents: prompt,
-              config: { temperature: 0.25 }
-            })
-          });
-          if (resp.ok) {
-            const data = await resp.json();
-            const aiText = String(data.text || "").trim().replace(/^["«“]|["»”]$/g, "").trim();
-            if (aiText && aiText.length >= 8) {
-              refined = aiText;
-              el.value = refined;
-              if (inputId === "tbbStep0BizTextarea" && typeof window.tbbUpdateBusinessTypeFromInput === "function") {
-                window.tbbUpdateBusinessTypeFromInput(refined);
-              } else if (inputId === "tbbStep1AnswerInput" && typeof window.tbbSaveStep1Answer === "function") {
-                window.tbbSaveStep1Answer(fieldRole, refined);
-              }
-            }
+          const rawAi = await window.tbbCallGeminiAI(prompt, { temperature: 0.3 });
+          const aiText = String(rawAi || "").trim().replace(/^["«“]|["»”]$/g, "").trim();
+          if (aiText && aiText.length >= 8) {
+            refined = aiText;
+          } else if (typeof window.tbbRefineUserCopyOrthoAndClarity === "function") {
+            refined = window.tbbRefineUserCopyOrthoAndClarity(raw, fieldRole || "general", bName, bGiro);
           }
         } catch (err) {
           console.warn("Polish AI fallback to deterministic:", err);
+          if (typeof window.tbbRefineUserCopyOrthoAndClarity === "function") {
+            refined = window.tbbRefineUserCopyOrthoAndClarity(raw, fieldRole || "general", bName, bGiro);
+          }
         } finally {
+          el.value = refined;
+          if (inputId === "tbbStep0BizTextarea" && typeof window.tbbUpdateBusinessTypeFromInput === "function") {
+            window.tbbUpdateBusinessTypeFromInput(refined);
+          } else if (inputId === "tbbStep1AnswerInput" && typeof window.tbbSaveStep1Answer === "function") {
+            window.tbbSaveStep1Answer(fieldRole, refined);
+          }
           if (btn) {
             btn.disabled = false;
-            btn.textContent = "✓ Ortografía y claridad mejoradas con éxito";
+            btn.textContent = "✓ Redacción y ortografía mejoradas con IA";
             setTimeout(() => { if (btn) btn.textContent = origBtnText; }, 3500);
           }
         }
