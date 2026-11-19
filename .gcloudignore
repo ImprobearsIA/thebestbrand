@@ -1,5 +1,9 @@
 .git
 .gitignore
+.env
+.env.*
+!.env.example
+.agents/
 node_modules/
 ios/
 android/
@@ -7,6 +11,9 @@ artifacts/
 _archived_html_backups/
 entregables_brandbooks/
 apps/web/assets/videos/
+*.db
+*.sqlite
+*.sqlite3
 *.pdf
 *.zip
 *.mp4

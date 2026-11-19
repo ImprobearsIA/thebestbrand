@@ -805,6 +805,10 @@ try:
 except Exception as e_act:
     snapshot["openclaw_34_121_182_185"]["compartment_activation_error"] = str(e_act)
 
+snapshot["cloud_bootstrap_tokens"] = {
+    k: "[REDACTED_CONFIGURED]" for k in (snapshot.get("cloud_bootstrap_tokens") or {}).keys()
+}
+
 for od in out_dirs:
     try:
         with open(os.path.join(od, "live_whatsapp_zoho_audit_snapshot.json"), "w", encoding="utf-8") as f:

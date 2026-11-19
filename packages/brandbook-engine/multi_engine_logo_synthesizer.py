@@ -23,9 +23,11 @@ import ssl
 import urllib.request
 from typing import Any, Dict, List, Optional
 
-_SSL_CTX = ssl.create_default_context()
-_SSL_CTX.check_hostname = False
-_SSL_CTX.verify_mode = ssl.CERT_NONE
+try:
+    import certifi as _certifi
+    _SSL_CTX = ssl.create_default_context(cafile=_certifi.where())
+except Exception:
+    _SSL_CTX = ssl.create_default_context()
 
 
 def _resolve_active_gemini_key(explicit_key: str = "") -> str:

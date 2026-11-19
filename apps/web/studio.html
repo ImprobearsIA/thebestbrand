@@ -17336,10 +17336,10 @@
 
     let _tbbRealtimeSyncIntervalId = null;
     function tbbStartRealtimeMultiDeviceSyncLoop() {
-      if (_tbbRealtimeSyncIntervalId) clearInterval(_tbbRealtimeSyncIntervalId);
-      _tbbRealtimeSyncIntervalId = setInterval(() => {
-        tbbPollRealtimeMultiDeviceCloudState(false);
-      }, 1400);
+      if (_tbbRealtimeSyncIntervalId) {
+        clearInterval(_tbbRealtimeSyncIntervalId);
+        _tbbRealtimeSyncIntervalId = null;
+      }
       tbbPollRealtimeMultiDeviceCloudState(false);
     }
     window.tbbStartRealtimeMultiDeviceSyncLoop = tbbStartRealtimeMultiDeviceSyncLoop;

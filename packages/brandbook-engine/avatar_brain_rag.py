@@ -20,7 +20,11 @@ import urllib.request
 import urllib.error
 import ssl
 
-_SSL_CTX = ssl._create_unverified_context()
+try:
+    import certifi as _certifi
+    _SSL_CTX = ssl.create_default_context(cafile=_certifi.where())
+except Exception:
+    _SSL_CTX = ssl.create_default_context()
 
 def _load_env_fallback():
     env_paths = [

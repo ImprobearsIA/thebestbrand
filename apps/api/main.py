@@ -77,14 +77,14 @@ app = FastAPI(
 _ALLOWED_CORS_ORIGINS = [
     o.strip() for o in os.environ.get(
         "TBB_CORS_ORIGINS",
-        "https://thebestbrand.app,https://www.thebestbrand.app,https://thebestbrand-studio.web.app,https://crm-improbears.web.app,https://improbears.com,http://localhost:8000,http://127.0.0.1:8000,http://localhost:5173,http://127.0.0.1:5173,null"
-    ).split(",") if o.strip()
+        "https://thebestbrand.app,https://www.thebestbrand.app,https://thebestbrand-studio.web.app,https://crm-improbears.web.app,https://improbears.com,http://localhost:8000,http://127.0.0.1:8000,http://localhost:5173,http://127.0.0.1:5173"
+    ).split(",") if o.strip() and o.strip().lower() != "null"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=_ALLOWED_CORS_ORIGINS if os.environ.get("TBB_STRICT_CORS") == "1" else ["*"],
-    allow_origin_regex=r"https://.*\.(thebestbrand\.app|web\.app|firebaseapp\.com|improbears\.com|replit\.app)|http://(localhost|127\.0\.0\.1)(:\d+)?",
+    allow_origins=_ALLOWED_CORS_ORIGINS if os.environ.get("TBB_STRICT_CORS", "1") != "0" else ["*"],
+    allow_origin_regex=r"https://.*\.(thebestbrand\.app|web\.app|firebaseapp\.com|improbears\.com)|http://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -236,13 +236,14 @@ def _read_web_file_with_github_sync(rel_path: str) -> str:
 
 
 def _verify_admin_access(request: Request, explicit_secret: str = "") -> bool:
+    import hmac as _hmac_mod
     expected = (os.environ.get("TBB_ADMIN_SECRET") or os.environ.get("ADMIN_SECRET") or "").strip()
     provided = (
         explicit_secret
         or request.headers.get("x-admin-secret", "")
-        or request.query_params.get("admin_key", "")
+        or request.headers.get("authorization", "").removeprefix("Bearer ").strip()
     ).strip()
-    if expected and provided and expected == provided:
+    if expected and provided and _hmac_mod.compare_digest(expected.encode("utf-8"), provided.encode("utf-8")):
         return True
     return False
 
@@ -389,12 +390,39 @@ def serve_account_deletion_page():
 <style>body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#FFFFFF;color:#0D2540;max-width:720px;margin:0 auto;padding:48px 24px;line-height:1.65;}input,button{padding:12px 16px;border-radius:10px;font-size:15px;}input{border:1.5px solid #CBD5E1;width:100%;max-width:420px;margin-bottom:12px;}button{background:#DC2626;color:#FFF;border:none;font-weight:600;cursor:pointer;}</style>
 </head><body>
 <h1>Solicitud de Eliminación Definitiva de Cuenta (Apple 5.1.1v & Google Play)</h1>
-<p>Ingresa el correo electrónico de tu cuenta de <strong>The Best Brand</strong> para eliminar de forma permanente tu cuenta y el historial de marcas almacenado en nuestra bóveda:</p>
-<form onsubmit="event.preventDefault();document.getElementById('delMsg').style.display='block';localStorage.clear();">
-  <input type="email" required placeholder="tu-correo@empresa.com"><br>
+<p>Ingresa el correo electrónico y contraseña de tu cuenta de <strong>The Best Brand</strong> para eliminar de forma permanente tu cuenta y el historial de marcas almacenado en nuestra bóveda:</p>
+<form id="delForm">
+  <input id="delEmail" type="email" required placeholder="tu-correo@empresa.com"><br>
+  <input id="delPassword" type="password" placeholder="Contraseña de tu cuenta (si configuraste una)"><br>
   <button type="submit">Eliminar Mi Cuenta y Datos Permanentemente</button>
 </form>
-<p id="delMsg" style="display:none;background:#ECFDF5;border:1px solid #10B981;color:#065F46;padding:12px;border-radius:10px;font-weight:600;">✅ Tu cuenta y datos asociados han sido eliminados permanentemente.</p>
+<p id="delMsg" style="display:none;padding:12px;border-radius:10px;font-weight:600;"></p>
+<script>
+document.getElementById('delForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var msg = document.getElementById('delMsg');
+  try {
+    var r = await fetch('/api/v1/account/delete', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ email: document.getElementById('delEmail').value, password: document.getElementById('delPassword').value })
+    });
+    var d = await r.json();
+    msg.style.display = 'block';
+    if (r.ok && d.ok) {
+      localStorage.clear();
+      msg.style.background = '#ECFDF5'; msg.style.border = '1px solid #10B981'; msg.style.color = '#065F46';
+      msg.textContent = '✅ Tu cuenta y todos los datos asociados han sido eliminados permanentemente de nuestros servidores.';
+    } else {
+      msg.style.background = '#FEF2F2'; msg.style.border = '1px solid #EF4444'; msg.style.color = '#991B1B';
+      msg.textContent = d.message || 'No se pudo verificar la cuenta.';
+    }
+  } catch (err) {
+    msg.style.display = 'block'; msg.style.background = '#FEF2F2'; msg.style.color = '#991B1B';
+    msg.textContent = 'Error de conexión al procesar la solicitud.';
+  }
+});
+</script>
 <p style="margin-top:28px;"><a href="/">← Regresar a The Best Brand</a></p>
 </body></html>"""
     return HTMLResponse(content=html)
@@ -1540,12 +1568,25 @@ def _build_intelligent_aura_executive_reply(user_text: str, history: List[Any]) 
 _CLOUD_WHATSAPP_INBOUND_QUEUE: List[Dict[str, Any]] = []
 
 
+def _verify_meta_webhook_signature(request: Request, raw_bytes: bytes) -> bool:
+    import hmac as _hmac_mod
+    meta_secret = (os.environ.get("META_APP_SECRET") or "").strip()
+    if not meta_secret:
+        return True
+    sig = (request.headers.get("x-hub-signature-256") or "").strip()
+    expected = "sha256=" + _hmac_mod.new(meta_secret.encode("utf-8"), raw_bytes, hashlib.sha256).hexdigest()
+    return bool(sig) and _hmac_mod.compare_digest(sig.encode("utf-8"), expected.encode("utf-8"))
+
+
 @app.get("/api/webhooks/whatsapp")
 def verify_meta_whatsapp_cloud_webhook(request: Request):
     params = dict(request.query_params)
     mode = params.get("hub.mode")
     challenge = params.get("hub.challenge")
+    expected_token = (os.environ.get("WHATSAPP_VERIFY_TOKEN") or "").strip()
     if mode == "subscribe" and challenge:
+        if expected_token and params.get("hub.verify_token") != expected_token:
+            return JSONResponse(status_code=403, content={"ok": False, "error": "invalid_verify_token"})
         return Response(content=str(challenge), media_type="text/plain")
     return {"ok": True, "cloud_24x7": True, "inbound_messages_count": len(_CLOUD_WHATSAPP_INBOUND_QUEUE)}
 
@@ -1553,8 +1594,11 @@ def verify_meta_whatsapp_cloud_webhook(request: Request):
 @app.post("/api/webhooks/whatsapp")
 async def receive_meta_whatsapp_cloud_webhook(request: Request):
     import datetime
+    raw_bytes = await request.body()
+    if not _verify_meta_webhook_signature(request, raw_bytes):
+        return JSONResponse(status_code=401, content={"ok": False, "error": "invalid_signature"})
     try:
-        body = await request.json()
+        body = json.loads(raw_bytes.decode("utf-8") or "{}")
     except Exception:
         body = {}
     entry = {
@@ -1589,12 +1633,18 @@ async def cloud_whatsapp_compartment_webhook(request: Request):
     import json
     if request.method == "GET":
         params = dict(request.query_params)
+        expected_token = (os.environ.get("WHATSAPP_VERIFY_TOKEN") or "").strip()
         if params.get("hub.mode") == "subscribe" and params.get("hub.challenge"):
+            if expected_token and params.get("hub.verify_token") != expected_token:
+                return JSONResponse(status_code=403, content={"ok": False, "error": "invalid_verify_token"})
             return Response(content=str(params.get("hub.challenge")), media_type="text/plain")
         return {"ok": True, "cloud_24x7": True, "officialReceptorNumber": "+52 442 181 2822"}
 
+    raw_bytes = await request.body()
+    if not _verify_meta_webhook_signature(request, raw_bytes) and not _verify_admin_access(request):
+        return JSONResponse(status_code=401, content={"ok": False, "error": "invalid_signature"})
     try:
-        body = await request.json()
+        body = json.loads(raw_bytes.decode("utf-8") or "{}")
     except Exception:
         body = {}
 
@@ -1788,7 +1838,8 @@ async def cloud_whatsapp_compartment_webhook(request: Request):
 
 @app.get("/api/whatsapp-compartment/audit-unregistered-tasks")
 @app.post("/api/whatsapp-compartment/audit-unregistered-tasks")
-async def cloud_audit_unregistered_crm_tasks():
+async def cloud_audit_unregistered_crm_tasks(request: Request):
+    is_admin = _verify_admin_access(request)
     zoho_live = _fetch_live_zoho_telemetry()
     wa_live = _fetch_live_openclaw_whatsapp_cloud()
     return {
@@ -1797,37 +1848,33 @@ async def cloud_audit_unregistered_crm_tasks():
         "mac_dependency": False,
         "liveConnectionStatus": {
             "whatsappWebhookRealMessages": len(_CLOUD_WHATSAPP_INBOUND_QUEUE),
-            "openClawNodeUrl": wa_live.get("url"),
             "openClawReachableFromCloud": wa_live.get("connected", False),
             "openClawMessagesCount": wa_live.get("messages_count", 0),
-            "openClawDiagnostic": wa_live.get("reason"),
             "zohoCrmOAuthConnected": zoho_live.get("connected", False),
             "zohoCrmLiveTasksCount": zoho_live.get("tasks_count", 0),
             "zohoCrmLiveDealsCount": zoho_live.get("deals_count", 0),
             "zohoBooksLiveInvoicesCount": zoho_live.get("invoices_count", 0)
         },
-        "zohoLiveTasks": zoho_live.get("tasks", []),
-        "whatsappLiveMessages": wa_live.get("messages", []),
+        "zohoLiveTasks": zoho_live.get("tasks", []) if is_admin else [],
+        "whatsappLiveMessages": wa_live.get("messages", []) if is_admin else [],
         "tasks": []
     }
 
 
 @app.get("/health")
-@app.get("/api/health")
 def health_check():
     return {"status": "ok", "version": "129.0", "tagline": "Your Brand, Now!!!"}
 
 
 @app.get("/api/aura/history")
 @app.get("/api/gina/history")
-def get_aura_cloud_history():
-    wa_live = _fetch_live_openclaw_whatsapp_cloud()
+def get_aura_cloud_history(request: Request):
+    is_admin = _verify_admin_access(request)
     return {
         "ok": True,
         "cloud_24x7": True,
         "project": "Proyecto Aura ImproBears",
-        "openclaw_bridge": wa_live,
-        "items": _AURA_CLOUD_HISTORY[:20]
+        "items": _AURA_CLOUD_HISTORY[:20] if is_admin else []
     }
 
 
@@ -2537,6 +2584,14 @@ def api_preview_editorial_brandbook_html(req: CompileBrandbookRequest):
     return {"brand_name": raw_name, "pages_count": 30, "html": html_doc}
 
 
+def _sanitize_untrusted_print_html(raw_html: str) -> str:
+    import re as _re
+    cleaned = _re.sub(r"<\s*(script|iframe|object|embed|applet|meta\s+http-equiv)[^>]*>.*?</\s*\1\s*>", "", raw_html, flags=_re.IGNORECASE | _re.DOTALL)
+    cleaned = _re.sub(r"<\s*(script|iframe|object|embed|applet|base)\b[^>]*/?>", "", cleaned, flags=_re.IGNORECASE)
+    cleaned = _re.sub(r"file://[^\s\"')>]+", "", cleaned, flags=_re.IGNORECASE)
+    return cleaned
+
+
 @app.post("/api/step6/download-pdf")
 def api_download_brandbook_pdf(req: CompileBrandbookRequest):
     """
@@ -2544,9 +2599,11 @@ def api_download_brandbook_pdf(req: CompileBrandbookRequest):
     100% en Vectores y Curvas) usando Chromium Headless real (`page.pdf`) y devuelve el binario .PDF vectorial.
     """
     raw_name, brand_dict, color_table = _build_benefic_brand_payload(req)
-    abs_assets_uri = f"file://{os.path.abspath(_ASSETS_DIR)}"
+    abs_assets_dir = os.path.abspath(_ASSETS_DIR)
+    abs_assets_uri = f"file://{abs_assets_dir}"
     if req.html_override and len(req.html_override.strip()) > 500:
-        html_doc = req.html_override.replace('src="/assets/', f'src="{abs_assets_uri}/')
+        safe_override = _sanitize_untrusted_print_html(req.html_override)
+        html_doc = safe_override.replace('src="/assets/', f'src="{abs_assets_uri}/')
     else:
         html_doc = generate_benefic_editorial_brandbook_html(brand_dict, color_table, assets_base_url=abs_assets_uri)
 
@@ -2561,16 +2618,24 @@ def api_download_brandbook_pdf(req: CompileBrandbookRequest):
                 sys.executable,
                 "-c",
                 (
-                    "import sys; from playwright.sync_api import sync_playwright; "
-                    "p = sync_playwright().start(); b = p.chromium.launch(headless=True); "
-                    "page = b.new_page(viewport={'width': 1123, 'height': 794}); "
-                    "page.goto('file://' + sys.argv[1], wait_until='domcontentloaded'); "
-                    "page.pdf(path=sys.argv[2], format='A4', landscape=True, print_background=True, "
+                    "import os, sys; from playwright.sync_api import sync_playwright; "
+                    "html_p = os.path.abspath(sys.argv[1]); pdf_p = sys.argv[2]; assets_p = os.path.abspath(sys.argv[3]); "
+                    "p = sync_playwright().start(); b = p.chromium.launch(headless=True, args=['--disable-file-access-from-files']); "
+                    "ctx = b.new_context(viewport={'width': 1123, 'height': 794}, java_script_enabled=False); "
+                    "page = ctx.new_page(); "
+                    "def _guard(route): "
+                    "  u = route.request.url; "
+                    "  ok = u.startswith('data:') or u == 'file://' + html_p or u.startswith('file://' + assets_p + '/') or u.startswith('https://fonts.googleapis.com/') or u.startswith('https://fonts.gstatic.com/'); "
+                    "  route.continue_() if ok else route.abort()\n"
+                    "page.route('**/*', _guard); "
+                    "page.goto('file://' + html_p, wait_until='domcontentloaded'); "
+                    "page.pdf(path=pdf_p, format='A4', landscape=True, print_background=True, "
                     "margin={'top':'0mm','bottom':'0mm','left':'0mm','right':'0mm'}); "
-                    "b.close(); p.stop()"
+                    "ctx.close(); b.close(); p.stop()"
                 ),
                 tmp_html,
-                tmp_pdf
+                tmp_pdf,
+                abs_assets_dir,
             ],
             check=True,
             timeout=45
@@ -2597,7 +2662,12 @@ import json
 import hashlib
 from datetime import datetime, timezone
 
-_ACCOUNTS_DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "tbb_accounts_vault.db"))
+_PERSISTENT_DATA_DIR = (os.environ.get("TBB_DATA_DIR") or ("/data" if os.path.isdir("/data") and os.access("/data", os.W_OK) else "")).strip()
+if _PERSISTENT_DATA_DIR:
+    os.makedirs(_PERSISTENT_DATA_DIR, exist_ok=True)
+    _ACCOUNTS_DB_PATH = os.path.abspath(os.path.join(_PERSISTENT_DATA_DIR, "tbb_accounts_vault.db"))
+else:
+    _ACCOUNTS_DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "tbb_accounts_vault.db"))
 
 
 _REPLIT_CLEAN_BUILD_TAG = "v40.0_replit_clean_2026_10_30"
@@ -2757,9 +2827,17 @@ def api_account_login_or_register(req: AccountLoginRequest):
             account_id = row["account_id"]
             existing_hash = row["password_hash"] if "password_hash" in row.keys() else ""
             existing_salt = (row["password_salt"] if "password_salt" in row.keys() else "") or hashlib.sha256(f"salt:{clean_email}".encode("utf-8")).hexdigest()[:24]
-            if existing_hash and raw_password:
+            if existing_hash:
+                if not raw_password:
+                    return JSONResponse(
+                        status_code=401,
+                        content={
+                            "status": "error",
+                            "message": "Esta cuenta está protegida con contraseña. Ingresa tu contraseña para continuar."
+                        }
+                    )
                 candidate_hash = _hash_account_password(raw_password, existing_salt)
-                if candidate_hash != existing_hash:
+                if not _tbb_hmac.compare_digest(candidate_hash, existing_hash):
                     return JSONResponse(
                         status_code=401,
                         content={
@@ -2916,6 +2994,37 @@ def api_account_reset_brand(req: AccountResetBrandRequest):
     }
 
 
+class AccountDeleteRequest(BaseModel):
+    email: str
+    password: str = ""
+
+
+@app.post("/api/v1/account/delete")
+def api_account_delete(req: AccountDeleteRequest):
+    clean_email = (req.email or "").strip().lower()
+    raw_password = (req.password or "").strip()
+    if not clean_email or "@" not in clean_email:
+        return JSONResponse(status_code=400, content={"ok": False, "message": "Ingresa un correo electrónico válido."})
+    with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute("SELECT * FROM accounts WHERE email = ?", (clean_email,)).fetchone()
+        if not row:
+            return {"ok": True, "deleted": True}
+        existing_hash = row["password_hash"] if "password_hash" in row.keys() else ""
+        existing_salt = (row["password_salt"] if "password_salt" in row.keys() else "") or hashlib.sha256(f"salt:{clean_email}".encode("utf-8")).hexdigest()[:24]
+        if existing_hash:
+            if not raw_password:
+                return JSONResponse(status_code=401, content={"ok": False, "message": "Ingresa la contraseña de tu cuenta para confirmar la eliminación definitiva."})
+            candidate_hash = _hash_account_password(raw_password, existing_salt)
+            if not _tbb_hmac.compare_digest(candidate_hash, existing_hash):
+                return JSONResponse(status_code=401, content={"ok": False, "message": "Contraseña incorrecta."})
+        acc_id = row["account_id"]
+        conn.execute("DELETE FROM brand_workspaces WHERE account_id = ?", (acc_id,))
+        conn.execute("DELETE FROM accounts WHERE account_id = ?", (acc_id,))
+        conn.commit()
+    return {"ok": True, "deleted": True}
+
+
 class GeminiProxyRequest(BaseModel):
     model: str = "gemini-3.8-flash"
     contents: List[Any] = []
@@ -3041,7 +3150,7 @@ def api_export_illustrator_ai(req: ExportIllustratorAiRequest):
     a partir del SVG 100% en curvas (0 etiquetas <text>). Al abrirlo en Adobe Illustrator, todas las curvas
     Bézier y nodos son editables directamente sin requerir fuentes instaladas.
     """
-    svg_str = (req.outlined_svg or "").strip()
+    svg_str = _sanitize_untrusted_print_html((req.outlined_svg or "").strip())
     if not svg_str or "<svg" not in svg_str:
         return JSONResponse(status_code=400, content={"error": "valid outlined_svg required"})
 
@@ -3083,6 +3192,7 @@ def api_export_illustrator_ai(req: ExportIllustratorAiRequest):
                     chrome_bin,
                     "--headless",
                     "--disable-gpu",
+                    "--disable-file-access-from-files",
                     f"--print-to-pdf={tmp_ai}",
                     "--no-pdf-header-footer",
                     f"file://{tmp_html}"
@@ -3097,13 +3207,15 @@ def api_export_illustrator_ai(req: ExportIllustratorAiRequest):
                     sys.executable,
                     "-c",
                     (
-                        "import sys; from playwright.sync_api import sync_playwright; "
-                        "p = sync_playwright().start(); b = p.chromium.launch(headless=True); "
-                        "page = b.new_page(); "
-                        "page.goto('file://' + sys.argv[1], wait_until='domcontentloaded'); "
+                        "import os, sys; from playwright.sync_api import sync_playwright; "
+                        "html_p = os.path.abspath(sys.argv[1]); "
+                        "p = sync_playwright().start(); b = p.chromium.launch(headless=True, args=['--disable-file-access-from-files']); "
+                        "ctx = b.new_context(java_script_enabled=False); page = ctx.new_page(); "
+                        "page.route('**/*', lambda r: r.continue_() if (r.request.url.startswith('data:') or r.request.url == 'file://' + html_p) else r.abort()); "
+                        "page.goto('file://' + html_p, wait_until='domcontentloaded'); "
                         "page.pdf(path=sys.argv[2], width=sys.argv[3], height=sys.argv[4], print_background=True, "
                         "margin={'top':'0mm','bottom':'0mm','left':'0mm','right':'0mm'}); "
-                        "b.close(); p.stop()"
+                        "ctx.close(); b.close(); p.stop()"
                     ),
                     tmp_html,
                     tmp_ai,
@@ -3403,6 +3515,15 @@ _BUILTIN_COUPONS_CATALOG: Dict[str, Dict[str, Any]] = {
 }
 
 
+import secrets as _tbb_secrets
+_RUNTIME_EPHEMERAL_GRANT_SECRET = _tbb_secrets.token_hex(32)
+
+
+def _get_grant_secret() -> str:
+    env_sec = (os.environ.get("TBB_GRANT_SECRET") or "").strip()
+    return env_sec if env_sec else _RUNTIME_EPHEMERAL_GRANT_SECRET
+
+
 def _resolve_promo_coupon(raw_code: str) -> Optional[Dict[str, Any]]:
     clean = (raw_code or "").strip().upper()
     if not clean:
@@ -3421,6 +3542,7 @@ def _resolve_promo_coupon(raw_code: str) -> Optional[Dict[str, Any]]:
                         "label": row["label"],
                         "tier": row["tier"],
                     }
+                return None
     except Exception:
         pass
     if clean in _BUILTIN_COUPONS_CATALOG:
@@ -3432,15 +3554,6 @@ def _resolve_promo_coupon(raw_code: str) -> Optional[Dict[str, Any]]:
             "used_count": 0,
             "label": info["label"],
             "tier": info["tier"],
-        }
-    if clean.startswith("TBB-TEST-") or clean.startswith("ALPHA-") or clean.startswith("VIP-"):
-        return {
-            "code": clean,
-            "discount_percent": 100,
-            "max_uses": 50,
-            "used_count": 0,
-            "label": f"Pase Personalizado Alpha Tester ({clean} · 100% Gratis)",
-            "tier": "atelier_pro",
         }
     return None
 
@@ -3558,9 +3671,11 @@ def api_submit_tester_review(req: TesterReviewSubmitRequest):
 
 
 @app.post("/api/v1/payments/issue-download-grant")
-def api_issue_payment_download_grant(req: PaymentDownloadGrantRequest):
-    """Emite un token criptográfico HMAC-SHA256 con vigencia de 24h."""
-    secret = os.environ.get("TBB_GRANT_SECRET", "improbears-c00-default-grant-secret-v82")
+def api_issue_payment_download_grant(req: PaymentDownloadGrantRequest, request: Request):
+    """Emite un token criptográfico HMAC-SHA256 con vigencia de 24h (solo uso administrativo autenticado)."""
+    if not _verify_admin_access(request):
+        return JSONResponse(status_code=403, content={"ok": False, "error": "admin_auth_required"})
+    secret = _get_grant_secret()
     exp = int(_tbb_time.time()) + 86400
     msg = f"{req.brand_name}|{req.order_folio}|{req.tier}|{exp}"
     sig = _tbb_hmac.new(secret.encode("utf-8"), msg.encode("utf-8"), _tbb_hashlib.sha256).hexdigest()
@@ -3707,7 +3822,7 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest, request: Request)
     - Si el monto es > $0 USD, crea una sesión real de Stripe Checkout (Apple Pay, Google Pay, Tarjeta)
       sin regalar licencias gratis ni aceptar tarjetas falsas en el navegador.
     """
-    secret = os.environ.get("TBB_GRANT_SECRET", "improbears-c00-default-grant-secret-v82")
+    secret = _get_grant_secret()
     now_ts = int(_tbb_time.time())
     exp = now_ts + 86400 * 365
     base_amount_usd = 149.00 if (req.plan_id == "agency_suite" or req.tier == "agency_suite") else 49.00
@@ -3871,7 +3986,7 @@ def api_verify_stripe_checkout_session(session_id: str = ""):
     short_hash = _tbb_hashlib.sha256(clean_sid.encode("utf-8")).hexdigest()[:8].upper()
     order_folio = f"TBB-STRIPE-{short_hash}"
     license_code = f"TBB-PRO-{short_hash[:4]}-{short_hash[4:]}"
-    secret = os.environ.get("TBB_GRANT_SECRET", "improbears-c00-default-grant-secret-v82")
+    secret = _get_grant_secret()
     msg = f"{brand_name}|{order_folio}|{tier_code}|{exp}"
     sig = _tbb_hmac.new(secret.encode("utf-8"), msg.encode("utf-8"), _tbb_hashlib.sha256).hexdigest()
     grant_token = f"{exp}.{sig}"
@@ -4056,45 +4171,52 @@ def _persist_feedback_record(rec: Dict[str, Any]) -> Dict[str, Any]:
     # 2. Escritura directa en Neon PostgreSQL 18 (TheBestBrand · green-cherry-54371329)
     db_url = (os.environ.get("DATABASE_URL") or "").strip()
     if db_url:
+        pg_conn = None
         try:
             import psycopg2
-            with psycopg2.connect(db_url, connect_timeout=6) as pg_conn:
-                with pg_conn.cursor() as cur:
-                    cur.execute(
-                        """
-                        INSERT INTO tbb_feedback_inbox (
-                            feedback_id, source, platform, status, brand_name, customer_email,
-                            step_num, sub_step, lang, viewport, device_model, os_version,
-                            app_build, category, rating, comment_text, aura_last_message,
-                            screenshot_url, metadata_json
-                        ) VALUES (%s, %s, %s, 'open', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s::jsonb)
-                        ON CONFLICT (feedback_id) DO NOTHING
-                        """,
-                        (
-                            fid,
-                            str(rec.get("source") or "in_app")[:32],
-                            str(rec.get("platform") or "web")[:48],
-                            str(rec.get("brand_name") or "")[:160],
-                            str(rec.get("customer_email") or "")[:160],
-                            int(rec.get("step_num") or 0),
-                            int(rec.get("sub_step") or 1),
-                            str(rec.get("lang") or "es")[:12],
-                            str(rec.get("viewport") or "")[:64],
-                            str(rec.get("device_model") or "")[:120],
-                            str(rec.get("os_version") or "")[:64],
-                            str(rec.get("app_build") or "")[:64],
-                            str(rec.get("category") or "general")[:48],
-                            max(1, min(5, int(rec.get("rating") or 5))),
-                            str(rec.get("comment_text") or "")[:4000],
-                            str(rec.get("aura_last_message") or "")[:500],
-                            str(rec.get("screenshot_url") or "")[:1000],
-                            meta_str,
-                        ),
-                    )
-                pg_conn.commit()
-                stored_neon = True
+            pg_conn = psycopg2.connect(db_url, connect_timeout=6)
+            with pg_conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO tbb_feedback_inbox (
+                        feedback_id, source, platform, status, brand_name, customer_email,
+                        step_num, sub_step, lang, viewport, device_model, os_version,
+                        app_build, category, rating, comment_text, aura_last_message,
+                        screenshot_url, metadata_json
+                    ) VALUES (%s, %s, %s, 'open', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s::jsonb)
+                    ON CONFLICT (feedback_id) DO NOTHING
+                    """,
+                    (
+                        fid,
+                        str(rec.get("source") or "in_app")[:32],
+                        str(rec.get("platform") or "web")[:48],
+                        str(rec.get("brand_name") or "")[:160],
+                        str(rec.get("customer_email") or "")[:160],
+                        int(rec.get("step_num") or 0),
+                        int(rec.get("sub_step") or 1),
+                        str(rec.get("lang") or "es")[:12],
+                        str(rec.get("viewport") or "")[:64],
+                        str(rec.get("device_model") or "")[:120],
+                        str(rec.get("os_version") or "")[:64],
+                        str(rec.get("app_build") or "")[:64],
+                        str(rec.get("category") or "general")[:48],
+                        max(1, min(5, int(rec.get("rating") or 5))),
+                        str(rec.get("comment_text") or "")[:4000],
+                        str(rec.get("aura_last_message") or "")[:500],
+                        str(rec.get("screenshot_url") or "")[:1000],
+                        meta_str,
+                    ),
+                )
+            pg_conn.commit()
+            stored_neon = True
         except Exception:
             stored_neon = False
+        finally:
+            if pg_conn is not None:
+                try:
+                    pg_conn.close()
+                except Exception:
+                    pass
 
     return {"ok": True, "feedback_id": fid, "stored_neon": stored_neon, "created_at": now_iso}
 
@@ -4210,23 +4332,30 @@ def api_list_feedback_inbox(request: Request, status: str = "open", limit: int =
     cap = max(1, min(200, int(limit or 50)))
     db_url = (os.environ.get("DATABASE_URL") or "").strip()
     if db_url:
+        pg_conn = None
         try:
             import psycopg2
             import psycopg2.extras
-            with psycopg2.connect(db_url, connect_timeout=6) as pg_conn:
-                with pg_conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-                    if status == "all":
-                        cur.execute("SELECT * FROM tbb_feedback_inbox ORDER BY created_at DESC LIMIT %s", (cap,))
-                    else:
-                        cur.execute("SELECT * FROM tbb_feedback_inbox WHERE status = %s ORDER BY created_at DESC LIMIT %s", (status, cap))
-                    rows = [dict(r) for r in cur.fetchall()]
-                    for r in rows:
-                        for k, v in list(r.items()):
-                            if hasattr(v, "isoformat"):
-                                r[k] = v.isoformat()
-                    return {"ok": True, "engine": "neon_postgres", "count": len(rows), "items": rows}
+            pg_conn = psycopg2.connect(db_url, connect_timeout=6)
+            with pg_conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                if status == "all":
+                    cur.execute("SELECT * FROM tbb_feedback_inbox ORDER BY created_at DESC LIMIT %s", (cap,))
+                else:
+                    cur.execute("SELECT * FROM tbb_feedback_inbox WHERE status = %s ORDER BY created_at DESC LIMIT %s", (status, cap))
+                rows = [dict(r) for r in cur.fetchall()]
+                for r in rows:
+                    for k, v in list(r.items()):
+                        if hasattr(v, "isoformat"):
+                            r[k] = v.isoformat()
+                return {"ok": True, "engine": "neon_postgres", "count": len(rows), "items": rows}
         except Exception:
             pass
+        finally:
+            if pg_conn is not None:
+                try:
+                    pg_conn.close()
+                except Exception:
+                    pass
 
     items = []
     try:
@@ -4261,17 +4390,24 @@ def api_resolve_feedback_item(req: FeedbackResolveRequest, request: Request):
         pass
     db_url = (os.environ.get("DATABASE_URL") or "").strip()
     if db_url:
+        pg_conn = None
         try:
             import psycopg2
-            with psycopg2.connect(db_url, connect_timeout=6) as pg_conn:
-                with pg_conn.cursor() as cur:
-                    cur.execute(
-                        "UPDATE tbb_feedback_inbox SET status = %s, resolved_at = NOW() WHERE feedback_id = %s",
-                        (clean_status, req.feedback_id),
-                    )
-                pg_conn.commit()
+            pg_conn = psycopg2.connect(db_url, connect_timeout=6)
+            with pg_conn.cursor() as cur:
+                cur.execute(
+                    "UPDATE tbb_feedback_inbox SET status = %s, resolved_at = NOW() WHERE feedback_id = %s",
+                    (clean_status, req.feedback_id),
+                )
+            pg_conn.commit()
         except Exception:
             pass
+        finally:
+            if pg_conn is not None:
+                try:
+                    pg_conn.close()
+                except Exception:
+                    pass
     return {"ok": True, "feedback_id": req.feedback_id, "status": clean_status}
 
 

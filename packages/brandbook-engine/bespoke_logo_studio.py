@@ -25,7 +25,11 @@ import urllib.request
 import urllib.error
 from typing import Dict, Any, List, Optional, Tuple
 
-_STUDIO_SSL_CTX = ssl._create_unverified_context()
+try:
+    import certifi as _certifi
+    _STUDIO_SSL_CTX = ssl.create_default_context(cafile=_certifi.where())
+except Exception:
+    _STUDIO_SSL_CTX = ssl.create_default_context()
 
 
 def _load_studio_gemini_key() -> str:
