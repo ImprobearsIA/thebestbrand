@@ -25,6 +25,10 @@
         "destination": "/studio.html"
       },
       {
+        "source": "/voz",
+        "destination": "/voz.html"
+      },
+      {
         "source": "/lab",
         "destination": "/aura_orb_3d_lab.html"
       },

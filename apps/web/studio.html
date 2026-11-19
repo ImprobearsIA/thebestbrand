@@ -20751,14 +20751,14 @@
       <div id="tbbDiscreteProgressTrack" title="Progreso del paso actual">
         <div id="tbbDiscreteProgressFill" style="width:20%;"></div>
       </div>
-      <select id="tbbTopQuickStepJumper" aria-label="Saltar al Paso" onchange="tbbJumpToStep(Number(this.value), 1);" style="height:32px; padding:0 8px; border-radius:8px; border:1.5px solid #CBD5E1; border-bottom:2.5px solid #FF7A00; background:#FFFFFF; font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#0D2540; cursor:pointer;">
-        <option value="0">Paso 0 · Inicio &amp; Giro</option>
-        <option value="1">Paso 1 · Círculo Dorado</option>
-        <option value="2">Paso 2 · Touchpoints</option>
-        <option value="3">Paso 3 · Creación de Nombre</option>
-        <option value="4">Paso 4 · Personalidad</option>
-        <option value="5">Paso 5 · Logotipos</option>
-        <option value="6">Paso 6 · Manual más de 30 páginas</option>
+      <select id="tbbTopQuickStepJumper" aria-label="Saltar al Paso" onchange="tbbJumpToStep(Number(this.value), 1);" style="height:36px; padding:0 10px; border-radius:10px; border:1.5px solid #CBD5E1; border-bottom:2.5px solid #FF7A00; background:#FFFFFF; font-family:'Plus Jakarta Sans',sans-serif; font-size:0.875rem; font-weight:600; color:#0D2540; cursor:pointer;">
+        <option value="0">Paso 0 · Tu Negocio</option>
+        <option value="1">Paso 1 · Tu Esencia</option>
+        <option value="2">Paso 2 · Dónde te Ven</option>
+        <option value="3">Paso 3 · Nombre y Eslogan</option>
+        <option value="4">Paso 4 · Estilo y Letras</option>
+        <option value="5">Paso 5 · Colores y Logo</option>
+        <option value="6">Paso 6 · Tu Brandbook (+30 págs)</option>
       </select>
       <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnTopStepVideo" onclick="tbbOpenCurrentStepVideoCapsule()" title="Escuchar Cápsula Introductoria y Síntesis con Aura">
         <span id="tbbIconTopVideo"></span>
@@ -20767,7 +20767,11 @@
       <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnTopVoice" onclick="tbbToggleVoiceMute()" title="Activar o silenciar voz de Aura">
         <span id="tbbIconTopVoice"></span>
       </button>
-      <a href="/" class="tbb-duo-btn tbb-duo-btn-secondary" style="text-decoration:none; padding:0 10px; font-size:0.72rem; min-height:32px !important; display:inline-flex; align-items:center; border-color:#CBD5E1; color:#0D2540;" title="Volver a la Página Web Comercial">
+      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnTopFeedback" onclick="window.tbbOpenBetaFeedbackModal()" title="Enviar comentario o sugerencia al equipo" style="flex-shrink:0 !important;">
+        <span aria-hidden="true">💬</span>
+        <span id="tbbLblTopFeedback">Opinión</span>
+      </button>
+      <a href="/" class="tbb-duo-btn tbb-duo-btn-secondary" style="text-decoration:none; padding:0 10px; font-size:0.875rem; min-height:36px !important; display:inline-flex; align-items:center; border-color:#CBD5E1; color:#0D2540;" title="Volver a la Página Web Comercial">
         <span>Web ↗</span>
       </a>
     </header>
@@ -23985,38 +23989,38 @@
             if (btnAct) {
               btnAct.classList.remove("is-hidden");
               btnAct.style.display = "inline-flex";
-              if (lblAct) lblAct.textContent = st.geminiBusy ? "Diseñando..." : "✦ Iterar";
+              if (lblAct) lblAct.textContent = st.geminiBusy ? "Diseñando..." : "Iterar";
               if (iconAct) iconAct.innerHTML = window.TBBVectorArt("iterate", "#0D2540", 16);
             }
-            if (lblNext) lblNext.textContent = "Confirmar Logo →";
+            if (lblNext) lblNext.textContent = "Confirmar Logo";
 
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:8px 12px; gap:5px;">
-                <!-- Fila Superior del Lienzo: Historial de Iteraciones + 4 Modos de Dirección Creativa NanoBanana PRO -->
-                <div style="display:flex; flex-direction:column; gap:4px;">
-                  <div style="display:flex; gap:5px; align-items:center; justify-content:space-between;">
-                    <div id="tbbIterationPillsStrip" style="display:flex; gap:4px; overflow-x:auto; align-items:center; flex:1; min-width:0; scroll-behavior:smooth;">
+              <div class="tbb-atomic-card" style="padding:10px 12px; gap:6px;">
+                <!-- Fila Superior del Lienzo: Historial de Iteraciones + 4 Modos de Dirección Creativa -->
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <div style="display:flex; gap:6px; align-items:center; justify-content:space-between;">
+                    <div id="tbbIterationPillsStrip" style="display:flex; gap:5px; overflow-x:auto; align-items:center; flex:1; min-width:0; padding:2px 2px; scrollbar-width:none; -webkit-overflow-scrolling:touch; scroll-behavior:smooth;">
                       ${st.logoIterations.map((it, idx) => `
-                        <button type="button" class="tbb-duo-btn ${st.logoIterationIndex === idx + 1 ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbRestoreLogoIteration(${idx})" style="min-height:28px !important; padding:2px 8px !important; flex-shrink:0; font-size:0.68rem !important; font-weight:600 !important;">
+                        <button type="button" class="tbb-duo-btn ${st.logoIterationIndex === idx + 1 ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbRestoreLogoIteration(${idx})" style="min-height:34px !important; padding:4px 11px !important; flex-shrink:0; font-size:0.875rem !important; font-weight:600 !important; white-space:nowrap;">
                           ${idx === 0 ? (it.isUploadedUserLogo ? "#1 · Base" : "#1 · Autor") : `#${idx + 1}`}
                         </button>
                       `).join("")}
                     </div>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; if(window.tbbSyncImproBearsLogoDarkVariant){window.tbbSyncImproBearsLogoDarkVariant();} triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="min-height:28px !important; padding:2px 8px !important; font-size:0.68rem !important; font-weight:600 !important; flex-shrink:0;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; if(window.tbbSyncImproBearsLogoDarkVariant){window.tbbSyncImproBearsLogoDarkVariant();} triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="min-height:34px !important; padding:4px 10px !important; font-size:0.875rem !important; font-weight:600 !important; flex-shrink:0; white-space:nowrap;">
                       Claro/Oscuro
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="min-height:28px !important; padding:2px 8px !important; font-size:0.68rem !important; font-weight:600 !important; flex-shrink:0;" title="Abrir vista de aplicaciones físicas y digitales adaptadas al giro de tu negocio">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="min-height:34px !important; padding:4px 11px !important; font-size:0.875rem !important; font-weight:600 !important; flex-shrink:0; white-space:nowrap;" title="Abrir vista de aplicaciones físicas y digitales adaptadas al giro de tu negocio">
                       ✨ Mockups
                     </button>
                   </div>
-                  <div style="display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:4px;">
+                  <div style="display:flex; gap:6px; overflow-x:auto; padding:2px 2px 4px; scrollbar-width:none; -webkit-overflow-scrolling:touch;">
                     ${[
                       { id: "emblem_masterpiece", lbl: "1. Emblema", tip: "Composición artística rica multi-elemento con el ADN completo de tu marca" },
                       { id: "monogram_fusion", lbl: "2. Monograma", tip: "Fusión de iniciales de tu marca con el símbolo central de tu giro y descriptor" },
                       { id: "editorial_crest", lbl: "3. Insignia", tip: "Escudo, sello arquitectónico o insignia de prestigio institucional" },
                       { id: "minimal_couture", lbl: "4. Minimalista", tip: "Síntesis geométrica monolineal de alta precisión para grabado, casco, bordado y app" }
                     ].map(cm => `
-                      <button type="button" class="tbb-duo-btn ${activeCreativeMode === cm.id ? 'tbb-duo-btn-emerald' : 'tbb-duo-btn-secondary'}" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value.trim():'', {creativeMode:'${cm.id}', switchCreativeMode:true, evolveCurrent:${Boolean(hasExternalUploadedLogo && cm.id==='emblem_masterpiece')}, freshFromScratch:${Boolean(!hasExternalUploadedLogo || cm.id!=='emblem_masterpiece')}});}" style="min-height:30px !important; padding:3px 4px !important; font-size:0.68rem !important; font-weight:600 !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${cm.tip}">
+                      <button type="button" class="tbb-duo-btn ${activeCreativeMode === cm.id ? 'tbb-duo-btn-emerald' : 'tbb-duo-btn-secondary'}" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value.trim():'', {creativeMode:'${cm.id}', switchCreativeMode:true, evolveCurrent:${Boolean(hasExternalUploadedLogo && cm.id==='emblem_masterpiece')}, freshFromScratch:${Boolean(!hasExternalUploadedLogo || cm.id!=='emblem_masterpiece')}});}" style="flex:1 0 auto; min-height:36px !important; padding:4px 12px !important; font-size:0.875rem !important; font-weight:600 !important; white-space:nowrap;" title="${cm.tip}">
                         ${cm.lbl}
                       </button>
                     `).join("")}
@@ -24039,10 +24043,10 @@
                   <strong style="color:#1D4ED8; font-weight:700;">ADN (${activeArchObj.label}):</strong> ${(activeItObj && activeItObj.note) ? escapeHTML(String(activeItObj.note).slice(0, 95)) : promptInfo.text}
                 </div>
 
-                <!-- Cuadro Conversacional Multimodal (Image-to-Image con NanoBanana PRO) -->
+                <!-- Cuadro Conversacional Multimodal -->
                 <div style="display:flex; gap:6px; align-items:center;">
-                  <input type="text" id="tbbSingleLogoIterationBox" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter'){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Pide un ajuste: ej. «Integra iniciales», «Hazlo más minimalista»..." style="flex:1; min-width:0; height:36px; padding:0 12px; border-radius:10px; border:1.5px solid #090D16; font-size:0.80rem; font-weight:500; color:#090D16; background:#FFFFFF; box-sizing:border-box;" />
-                  <button type="button" id="tbbInlineApplyLogoPromptBtn" class="tbb-duo-btn tbb-duo-btn-gold" ${st.geminiBusy ? "disabled" : ""} onclick="onTbbAtomicCenterAction()" style="flex:0 0 auto; padding:0 12px !important; font-size:0.76rem !important; font-weight:600 !important; min-height:36px !important;">
+                  <input type="text" id="tbbSingleLogoIterationBox" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter'){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Ej. Hazlo más simple o cambia un detalle..." style="flex:1; min-width:0; height:40px; padding:0 12px; border-radius:12px; border:1.5px solid #090D16; font-size:1rem; font-weight:500; color:#090D16; background:#FFFFFF; box-sizing:border-box;" />
+                  <button type="button" id="tbbInlineApplyLogoPromptBtn" class="tbb-duo-btn tbb-duo-btn-gold" ${st.geminiBusy ? "disabled" : ""} onclick="onTbbAtomicCenterAction()" style="flex:0 0 auto; padding:0 14px !important; font-size:0.875rem !important; font-weight:600 !important; min-height:40px !important; white-space:nowrap;">
                     ${st.geminiBusy ? "..." : "✦ Evolucionar"}
                   </button>
                 </div>
@@ -27272,8 +27276,16 @@
     }
 
     @media (max-width: 768px) {
-      #tbbTopQuickStepJumper { max-width: 142px !important; }
-      #tbbBtnTopStepVideo span#tbbLblTopVideo { display: none !important; }
+      #tbbTopQuickStepJumper { display: none !important; }
+      #tbbDiscreteProgressTrack {
+        display: block !important;
+        flex: 1 1 auto !important;
+        min-width: 132px !important;
+        height: 14px !important;
+      }
+      #tbbBtnTopStepVideo span#tbbLblTopVideo,
+      #tbbBtnTopFeedback span#tbbLblTopFeedback { display: none !important; }
+      #tbbTopDiscreteBar .tbb-duo-btn { min-height: 38px !important; padding: 0 9px !important; }
     }
   </style>
   <script id="tbbViewportAndValidationHelperV129">
@@ -27305,8 +27317,14 @@
         var incomplete = false;
         if (st.step === 0 && st.subStep === 3) {
           incomplete = String(cs.custom_business_type || "").trim().length < 3;
+        } else if (st.step === 1) {
+          var s1Inp = document.getElementById("tbbStep1AnswerInput");
+          if (s1Inp) {
+            incomplete = String(s1Inp.value || "").trim().length < 3;
+          }
         }
         btn.classList.toggle("is-step-incomplete", incomplete);
+        btn.classList.toggle("is-ready", !incomplete);
       };
 
       var origRender = window.renderTbbZeroScrollStage;
@@ -27327,6 +27345,152 @@
           deck.style.transform = kbHeight > 110 ? ("translateY(-" + kbHeight + "px)") : "";
         });
       }
+
+      // =======================================================================
+      // BUZÓN DIRECTO DE OPINIÓN 1-TOQUE (TESTFLIGHT / MÓVIL / WEB -> NEON DB)
+      // =======================================================================
+      var _fbCategory = "general";
+      var _fbRec = null;
+
+      function detectClientPlatform() {
+        var ua = navigator.userAgent || "";
+        var isCap = Boolean(window.Capacitor || /Capacitor/i.test(ua));
+        if (/iPhone|iPad|iPod/i.test(ua)) return isCap ? "ios_testflight_app" : "ios_safari";
+        if (/Android/i.test(ua)) return isCap ? "android_app" : "android_web";
+        return "desktop_web";
+      }
+
+      window.tbbSelectFeedbackCategory = function(cat) {
+        _fbCategory = cat || "general";
+        document.querySelectorAll("[data-tbb-fb-cat]").forEach(function(b) {
+          var active = b.getAttribute("data-tbb-fb-cat") === _fbCategory;
+          b.style.background = active ? "#0D2540" : "#F8FAFC";
+          b.style.color = active ? "#FFFFFF" : "#0D2540";
+          b.style.borderColor = active ? "#0D2540" : "#CBD5E1";
+        });
+      };
+
+      window.tbbDictateFeedbackNote = function() {
+        var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        var btn = document.getElementById("tbbFbDictateBtn");
+        var ta = document.getElementById("tbbQuickFeedbackTextarea");
+        if (!SR || !ta) return;
+        if (_fbRec) {
+          try { _fbRec.stop(); } catch (e) {}
+          _fbRec = null;
+          if (btn) btn.textContent = "🎙️ Dictar";
+          return;
+        }
+        var rec = new SR();
+        var langMap = { es: "es-MX", en: "en-US", fr: "fr-FR", pt: "pt-BR", de: "de-DE", it: "it-IT" };
+        var curL = (window.tbbGetLang ? window.tbbGetLang() : "es") || "es";
+        rec.lang = langMap[curL] || "es-MX";
+        rec.interimResults = false;
+        rec.onstart = function() { if (btn) btn.textContent = "⏹ Escuchando..."; };
+        rec.onresult = function(ev) {
+          var t = ev.results && ev.results[0] && ev.results[0][0] ? ev.results[0][0].transcript : "";
+          if (t) ta.value = (ta.value ? ta.value + " " : "") + t;
+        };
+        rec.onend = function() { _fbRec = null; if (btn) btn.textContent = "🎙️ Dictar"; };
+        rec.onerror = function() { _fbRec = null; if (btn) btn.textContent = "🎙️ Dictar"; };
+        _fbRec = rec;
+        rec.start();
+      };
+
+      window.tbbCloseBetaFeedbackModal = function() {
+        if (_fbRec) { try { _fbRec.stop(); } catch (e) {} _fbRec = null; }
+        var ov = document.getElementById("tbbQuickFeedbackModalOverlay");
+        if (ov) ov.style.display = "none";
+      };
+
+      window.tbbSubmitBetaFeedback = async function() {
+        var ta = document.getElementById("tbbQuickFeedbackTextarea");
+        var stMsg = document.getElementById("tbbQuickFeedbackStatus");
+        var btn = document.getElementById("tbbQuickFeedbackSendBtn");
+        var text = String(ta ? ta.value : "").trim();
+        if (text.length < 3) {
+          if (stMsg) { stMsg.style.display = "block"; stMsg.style.color = "#B91C1C"; stMsg.textContent = "Escribe o dicta una nota breve primero."; }
+          return;
+        }
+        if (btn) btn.disabled = true;
+        var st = window.tbbState || {};
+        var cs = window.canvasState || {};
+        var acc = window.tbbUserAccount || {};
+        var auraBubble = document.getElementById("tbbAuraEmpatheticText");
+        var payload = {
+          source: "studio_app",
+          platform: detectClientPlatform(),
+          brand_name: cs.brandName || "",
+          customer_email: acc.email || "",
+          step_num: Number(st.step || 0),
+          sub_step: Number(st.subStep || 1),
+          lang: (window.tbbGetLang ? window.tbbGetLang() : document.documentElement.lang) || "es",
+          viewport: window.innerWidth + "x" + window.innerHeight,
+          category: _fbCategory,
+          comment_text: text,
+          aura_last_message: auraBubble ? String(auraBubble.textContent || "").trim().slice(0, 240) : "",
+          metadata: {
+            creative_mode: st.nanoBananaCreativeMode || "",
+            logo_iteration: st.logoIterationIndex || 0,
+            user_agent: (navigator.userAgent || "").slice(0, 180)
+          }
+        };
+        try {
+          var res = await fetch("/api/v1/feedback/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            if (ta) ta.value = "";
+            if (stMsg) { stMsg.style.display = "block"; stMsg.style.color = "#065F46"; stMsg.textContent = "✓ ¡Gracias! Tu comentario ya llegó al equipo con el contexto de este paso."; }
+            setTimeout(function() { window.tbbCloseBetaFeedbackModal(); }, 1100);
+          } else {
+            throw new Error("http_" + res.status);
+          }
+        } catch (err) {
+          if (stMsg) { stMsg.style.display = "block"; stMsg.style.color = "#B91C1C"; stMsg.textContent = "No pudimos enviarlo en este instante. Intenta de nuevo."; }
+        } finally {
+          if (btn) btn.disabled = false;
+        }
+      };
+
+      window.tbbOpenBetaFeedbackModal = function() {
+        _fbCategory = "general";
+        var ov = document.getElementById("tbbQuickFeedbackModalOverlay");
+        if (!ov) {
+          ov = document.createElement("div");
+          ov.id = "tbbQuickFeedbackModalOverlay";
+          ov.style.cssText = "position:fixed;inset:0;z-index:120000;background:rgba(13,37,64,0.58);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px;";
+          ov.onclick = function(e) { if (e.target === ov) window.tbbCloseBetaFeedbackModal(); };
+          document.body.appendChild(ov);
+        }
+        var st = window.tbbState || {};
+        var cs = window.canvasState || {};
+        var stepLbl = "Paso " + Number(st.step || 0) + (cs.brandName ? " · " + cs.brandName : "");
+        var hasSR = Boolean(window.SpeechRecognition || window.webkitSpeechRecognition);
+        ov.innerHTML =
+          '<div style="background:#FFFFFF;border-radius:22px;max-width:460px;width:100%;padding:20px;box-shadow:0 24px 60px rgba(13,37,64,0.25);font-family:\'Plus Jakarta Sans\',sans-serif;color:#0D2540;" onclick="event.stopPropagation()">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
+              '<strong style="font-size:1.08rem;font-weight:700;">💬 Cuéntanos qué mejorarías</strong>' +
+              '<button type="button" onclick="window.tbbCloseBetaFeedbackModal()" style="border:none;background:#F1F5F9;border-radius:999px;width:34px;height:34px;font-size:1rem;cursor:pointer;color:#0D2540;">✕</button>' +
+            '</div>' +
+            '<p style="margin:0 0 12px;font-size:0.9rem;color:#475569;line-height:1.45;">Llega directo a nuestro equipo junto con tu ubicación actual (<strong>' + stepLbl + '</strong>).</p>' +
+            '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">' +
+              '<button type="button" data-tbb-fb-cat="ui_design" onclick="window.tbbSelectFeedbackCategory(\'ui_design\')" style="padding:6px 11px;border-radius:999px;border:1.5px solid #CBD5E1;background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">🎨 Pantalla / Texto</button>' +
+              '<button type="button" data-tbb-fb-cat="voice_speed" onclick="window.tbbSelectFeedbackCategory(\'voice_speed\')" style="padding:6px 11px;border-radius:999px;border:1.5px solid #CBD5E1;background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">🔊 Voz de Aura</button>' +
+              '<button type="button" data-tbb-fb-cat="bug" onclick="window.tbbSelectFeedbackCategory(\'bug\')" style="padding:6px 11px;border-radius:999px;border:1.5px solid #CBD5E1;background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">🐞 Algo falló</button>' +
+              '<button type="button" data-tbb-fb-cat="idea" onclick="window.tbbSelectFeedbackCategory(\'idea\')" style="padding:6px 11px;border-radius:999px;border:1.5px solid #CBD5E1;background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">💡 Idea</button>' +
+            '</div>' +
+            '<textarea id="tbbQuickFeedbackTextarea" rows="3" placeholder="Escribe o dicta qué sentiste raro o qué te gustaría ver..." style="width:100%;padding:12px;border-radius:14px;border:1.5px solid #CBD5E1;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:1rem;color:#0D2540;box-sizing:border-box;resize:vertical;"></textarea>' +
+            '<div id="tbbQuickFeedbackStatus" style="display:none;margin-top:8px;font-size:0.875rem;font-weight:600;"></div>' +
+            '<div style="display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:12px;">' +
+              (hasSR ? '<button type="button" id="tbbFbDictateBtn" onclick="window.tbbDictateFeedbackNote()" style="padding:10px 14px;border-radius:12px;border:1.5px solid #CBD5E1;background:#F8FAFC;font-size:0.9rem;font-weight:600;color:#0D2540;cursor:pointer;">🎙️ Dictar</button>' : '<span></span>') +
+              '<button type="button" id="tbbQuickFeedbackSendBtn" onclick="window.tbbSubmitBetaFeedback()" style="flex:1;padding:11px 16px;border-radius:12px;border:none;background:#FF7A00;color:#FFFFFF;font-size:0.95rem;font-weight:700;cursor:pointer;">Enviar al equipo →</button>' +
+            '</div>' +
+          '</div>';
+        ov.style.display = "flex";
+      };
     })();
   </script>
 

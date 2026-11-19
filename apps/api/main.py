@@ -328,6 +328,13 @@ def serve_studio_direct():
     return HTMLResponse(content=content, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
+@app.api_route("/voz", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/voz.html", methods=["GET", "HEAD"], response_class=HTMLResponse)
+def serve_voz_direct():
+    content = _read_web_file_with_github_sync("voz.html")
+    return HTMLResponse(content=content, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+
+
 @app.api_route("/privacidad", methods=["GET", "HEAD"], response_class=HTMLResponse)
 @app.api_route("/privacy", methods=["GET", "HEAD"], response_class=HTMLResponse)
 def serve_store_privacy_policy():
@@ -3745,7 +3752,9 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest, request: Request)
             return {
                 "ok": True,
                 "status": "requires_stripe_redirect",
+                "session_id": stripe_res["session_id"],
                 "stripe_session_id": stripe_res["session_id"],
+                "checkout_url": stripe_res["checkout_url"],
                 "stripe_checkout_url": stripe_res["checkout_url"],
                 "amount_usd": amount_usd,
                 "currency": "USD",
@@ -3762,6 +3771,7 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest, request: Request)
             return {
                 "ok": True,
                 "status": "requires_stripe_redirect",
+                "checkout_url": fallback_link,
                 "stripe_checkout_url": fallback_link,
                 "amount_usd": amount_usd,
                 "currency": "USD",
@@ -3928,6 +3938,341 @@ async def api_log_client_error(request: Request):
     except Exception:
         pass
     return {"ok": True}
+
+
+# ==============================================================================
+# BUZÓN UNIFICADO DE COMENTARIOS (TESTFLIGHT WEBHOOK + IN-APP + WEB -> NEON DB)
+# ==============================================================================
+class UnifiedFeedbackSubmitRequest(BaseModel):
+    source: str = "studio_app"
+    platform: str = "web"
+    brand_name: str = ""
+    customer_email: str = ""
+    step_num: int = 0
+    sub_step: int = 1
+    lang: str = "es"
+    viewport: str = ""
+    device_model: str = ""
+    os_version: str = ""
+    app_build: str = ""
+    category: str = "general"
+    rating: int = 5
+    comment_text: str
+    aura_last_message: str = ""
+    screenshot_url: str = ""
+    metadata: Dict[str, Any] = {}
+
+
+class FeedbackResolveRequest(BaseModel):
+    feedback_id: str
+    status: str = "resolved"
+
+
+def _ensure_local_feedback_table():
+    try:
+        with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS tbb_feedback_inbox (
+                    feedback_id TEXT PRIMARY KEY,
+                    source TEXT NOT NULL DEFAULT 'in_app',
+                    platform TEXT NOT NULL DEFAULT 'web',
+                    status TEXT NOT NULL DEFAULT 'open',
+                    brand_name TEXT NOT NULL DEFAULT '',
+                    customer_email TEXT NOT NULL DEFAULT '',
+                    step_num INTEGER NOT NULL DEFAULT 0,
+                    sub_step INTEGER NOT NULL DEFAULT 1,
+                    lang TEXT NOT NULL DEFAULT 'es',
+                    viewport TEXT NOT NULL DEFAULT '',
+                    device_model TEXT NOT NULL DEFAULT '',
+                    os_version TEXT NOT NULL DEFAULT '',
+                    app_build TEXT NOT NULL DEFAULT '',
+                    category TEXT NOT NULL DEFAULT 'general',
+                    rating INTEGER NOT NULL DEFAULT 5,
+                    comment_text TEXT NOT NULL DEFAULT '',
+                    aura_last_message TEXT NOT NULL DEFAULT '',
+                    screenshot_url TEXT NOT NULL DEFAULT '',
+                    metadata_json TEXT NOT NULL DEFAULT '{}',
+                    created_at TEXT NOT NULL,
+                    resolved_at TEXT DEFAULT ''
+                )
+                """
+            )
+            conn.commit()
+    except Exception:
+        pass
+
+
+_ensure_local_feedback_table()
+
+
+def _persist_feedback_record(rec: Dict[str, Any]) -> Dict[str, Any]:
+    now_iso = datetime.now(timezone.utc).isoformat()
+    fid = rec.get("feedback_id") or (
+        "fb_" + hashlib.sha256(f"{now_iso}:{rec.get('comment_text','')}:{os.urandom(4).hex()}".encode("utf-8")).hexdigest()[:14]
+    )
+    meta_str = json.dumps(rec.get("metadata") or {}, ensure_ascii=False)
+    stored_neon = False
+
+    # 1. Respaldo local instantáneo en SQLite
+    try:
+        _ensure_local_feedback_table()
+        with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO tbb_feedback_inbox (
+                    feedback_id, source, platform, status, brand_name, customer_email,
+                    step_num, sub_step, lang, viewport, device_model, os_version,
+                    app_build, category, rating, comment_text, aura_last_message,
+                    screenshot_url, metadata_json, created_at
+                ) VALUES (?, ?, ?, 'open', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    fid,
+                    str(rec.get("source") or "in_app")[:32],
+                    str(rec.get("platform") or "web")[:48],
+                    str(rec.get("brand_name") or "")[:160],
+                    str(rec.get("customer_email") or "")[:160],
+                    int(rec.get("step_num") or 0),
+                    int(rec.get("sub_step") or 1),
+                    str(rec.get("lang") or "es")[:12],
+                    str(rec.get("viewport") or "")[:64],
+                    str(rec.get("device_model") or "")[:120],
+                    str(rec.get("os_version") or "")[:64],
+                    str(rec.get("app_build") or "")[:64],
+                    str(rec.get("category") or "general")[:48],
+                    max(1, min(5, int(rec.get("rating") or 5))),
+                    str(rec.get("comment_text") or "")[:4000],
+                    str(rec.get("aura_last_message") or "")[:500],
+                    str(rec.get("screenshot_url") or "")[:1000],
+                    meta_str,
+                    now_iso,
+                ),
+            )
+            conn.commit()
+    except Exception:
+        pass
+
+    # 2. Escritura directa en Neon PostgreSQL 18 (TheBestBrand · green-cherry-54371329)
+    db_url = (os.environ.get("DATABASE_URL") or "").strip()
+    if db_url:
+        try:
+            import psycopg2
+            with psycopg2.connect(db_url, connect_timeout=6) as pg_conn:
+                with pg_conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        INSERT INTO tbb_feedback_inbox (
+                            feedback_id, source, platform, status, brand_name, customer_email,
+                            step_num, sub_step, lang, viewport, device_model, os_version,
+                            app_build, category, rating, comment_text, aura_last_message,
+                            screenshot_url, metadata_json
+                        ) VALUES (%s, %s, %s, 'open', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s::jsonb)
+                        ON CONFLICT (feedback_id) DO NOTHING
+                        """,
+                        (
+                            fid,
+                            str(rec.get("source") or "in_app")[:32],
+                            str(rec.get("platform") or "web")[:48],
+                            str(rec.get("brand_name") or "")[:160],
+                            str(rec.get("customer_email") or "")[:160],
+                            int(rec.get("step_num") or 0),
+                            int(rec.get("sub_step") or 1),
+                            str(rec.get("lang") or "es")[:12],
+                            str(rec.get("viewport") or "")[:64],
+                            str(rec.get("device_model") or "")[:120],
+                            str(rec.get("os_version") or "")[:64],
+                            str(rec.get("app_build") or "")[:64],
+                            str(rec.get("category") or "general")[:48],
+                            max(1, min(5, int(rec.get("rating") or 5))),
+                            str(rec.get("comment_text") or "")[:4000],
+                            str(rec.get("aura_last_message") or "")[:500],
+                            str(rec.get("screenshot_url") or "")[:1000],
+                            meta_str,
+                        ),
+                    )
+                pg_conn.commit()
+                stored_neon = True
+        except Exception:
+            stored_neon = False
+
+    return {"ok": True, "feedback_id": fid, "stored_neon": stored_neon, "created_at": now_iso}
+
+
+@app.post("/api/v1/feedback/submit")
+def api_submit_unified_feedback(req: UnifiedFeedbackSubmitRequest):
+    """Recibe comentarios de 1 toque desde Studio App (iOS TestFlight, Android, Web) y Web Comercial."""
+    clean_comment = (req.comment_text or "").strip()
+    if len(clean_comment) < 2:
+        return JSONResponse(status_code=400, content={"ok": False, "error": "empty_comment"})
+    return _persist_feedback_record(
+        {
+            "source": req.source,
+            "platform": req.platform,
+            "brand_name": req.brand_name,
+            "customer_email": req.customer_email,
+            "step_num": req.step_num,
+            "sub_step": req.sub_step,
+            "lang": req.lang,
+            "viewport": req.viewport,
+            "device_model": req.device_model,
+            "os_version": req.os_version,
+            "app_build": req.app_build,
+            "category": req.category,
+            "rating": req.rating,
+            "comment_text": clean_comment,
+            "aura_last_message": req.aura_last_message,
+            "screenshot_url": req.screenshot_url,
+            "metadata": req.metadata,
+        }
+    )
+
+
+@app.post("/api/v1/feedback/testflight-webhook")
+async def api_receive_testflight_webhook(request: Request):
+    """
+    Receptor oficial de Webhooks de App Store Connect (TestFlight Beta Feedback & Crash Reports).
+    Soporta validación HMAC-SHA256 opcional vía APP_STORE_CONNECT_WEBHOOK_SECRET y ping de prueba.
+    """
+    raw_body = await request.body()
+    webhook_secret = (os.environ.get("APP_STORE_CONNECT_WEBHOOK_SECRET") or "").strip()
+    if webhook_secret:
+        apple_sig = (request.headers.get("X-Apple-SIGNATURE") or request.headers.get("x-apple-signature") or "").strip()
+        clean_sig = apple_sig.replace("hmacsha256=", "").strip()
+        expected_sig = _tbb_hmac.new(webhook_secret.encode("utf-8"), raw_body, _tbb_hashlib.sha256).hexdigest()
+        if clean_sig and not _tbb_hmac.compare_digest(clean_sig.lower(), expected_sig.lower()):
+            return JSONResponse(status_code=401, content={"ok": False, "error": "invalid_webhook_signature"})
+
+    try:
+        payload = json.loads(raw_body.decode("utf-8") or "{}")
+    except Exception:
+        return JSONResponse(status_code=400, content={"ok": False, "error": "invalid_json"})
+
+    data_node = payload.get("data") or {}
+    event_type = str(data_node.get("type") or payload.get("eventType") or "testflight_event")
+
+    # Ping de verificación de App Store Connect al registrar el webhook
+    if "ping" in event_type.lower():
+        return {"ok": True, "event": event_type, "pong": True}
+
+    attrs = data_node.get("attributes") or payload.get("attributes") or {}
+    sub_id = str(data_node.get("id") or payload.get("id") or "")
+    comment = (
+        attrs.get("comment")
+        or attrs.get("feedbackText")
+        or attrs.get("crashLog")
+        or f"[Evento TestFlight: {event_type}]"
+    )
+    device_model = str(attrs.get("deviceModel") or attrs.get("deviceFamily") or "iPhone")
+    os_ver = str(attrs.get("osVersion") or "iOS")
+    build_num = str(attrs.get("buildBundleShortVersion") or attrs.get("appUptimeInMilliseconds") or "")
+    screen_w = attrs.get("screenWidthInPoints")
+    screen_h = attrs.get("screenHeightInPoints")
+    viewport_str = f"{screen_w}x{screen_h}" if (screen_w and screen_h) else ""
+    screenshots = attrs.get("screenshots") or []
+    first_shot_url = ""
+    if isinstance(screenshots, list) and screenshots:
+        first = screenshots[0]
+        if isinstance(first, dict):
+            first_shot_url = str(first.get("url") or "")
+
+    res = _persist_feedback_record(
+        {
+            "feedback_id": f"tf_{sub_id[:48]}" if sub_id else "",
+            "source": "testflight_webhook",
+            "platform": "ios_testflight",
+            "customer_email": str(attrs.get("email") or ""),
+            "viewport": viewport_str,
+            "device_model": device_model,
+            "os_version": os_ver,
+            "app_build": build_num,
+            "category": "crash" if "crash" in event_type.lower() else "testflight_screenshot",
+            "comment_text": str(comment),
+            "screenshot_url": first_shot_url,
+            "metadata": payload,
+        }
+    )
+    return {"ok": True, "event": event_type, **res}
+
+
+def _is_local_or_admin(request: Request) -> bool:
+    if _verify_admin_access(request):
+        return True
+    client_host = (request.client.host if request.client else "") or ""
+    return client_host in ("127.0.0.1", "::1", "localhost")
+
+
+@app.get("/api/v1/feedback/inbox")
+def api_list_feedback_inbox(request: Request, status: str = "open", limit: int = 50):
+    """Devuelve los comentarios pendientes para que el equipo y /schedule en Antigravity trabajen sobre ellos."""
+    if not _is_local_or_admin(request):
+        return JSONResponse(status_code=403, content={"ok": False, "error": "admin_auth_required"})
+    cap = max(1, min(200, int(limit or 50)))
+    db_url = (os.environ.get("DATABASE_URL") or "").strip()
+    if db_url:
+        try:
+            import psycopg2
+            import psycopg2.extras
+            with psycopg2.connect(db_url, connect_timeout=6) as pg_conn:
+                with pg_conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                    if status == "all":
+                        cur.execute("SELECT * FROM tbb_feedback_inbox ORDER BY created_at DESC LIMIT %s", (cap,))
+                    else:
+                        cur.execute("SELECT * FROM tbb_feedback_inbox WHERE status = %s ORDER BY created_at DESC LIMIT %s", (status, cap))
+                    rows = [dict(r) for r in cur.fetchall()]
+                    for r in rows:
+                        for k, v in list(r.items()):
+                            if hasattr(v, "isoformat"):
+                                r[k] = v.isoformat()
+                    return {"ok": True, "engine": "neon_postgres", "count": len(rows), "items": rows}
+        except Exception:
+            pass
+
+    items = []
+    try:
+        _ensure_local_feedback_table()
+        with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            if status == "all":
+                rows = conn.execute("SELECT * FROM tbb_feedback_inbox ORDER BY created_at DESC LIMIT ?", (cap,)).fetchall()
+            else:
+                rows = conn.execute("SELECT * FROM tbb_feedback_inbox WHERE status = ? ORDER BY created_at DESC LIMIT ?", (status, cap)).fetchall()
+            items = [dict(r) for r in rows]
+    except Exception:
+        items = []
+    return {"ok": True, "engine": "sqlite_local", "count": len(items), "items": items}
+
+
+@app.post("/api/v1/feedback/resolve")
+def api_resolve_feedback_item(req: FeedbackResolveRequest, request: Request):
+    """Marca un comentario como resuelto después de aplicar la mejora."""
+    if not _is_local_or_admin(request):
+        return JSONResponse(status_code=403, content={"ok": False, "error": "admin_auth_required"})
+    now_iso = datetime.now(timezone.utc).isoformat()
+    clean_status = req.status if req.status in ("open", "in_progress", "resolved") else "resolved"
+    try:
+        with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+            conn.execute(
+                "UPDATE tbb_feedback_inbox SET status = ?, resolved_at = ? WHERE feedback_id = ?",
+                (clean_status, now_iso if clean_status == "resolved" else "", req.feedback_id),
+            )
+            conn.commit()
+    except Exception:
+        pass
+    db_url = (os.environ.get("DATABASE_URL") or "").strip()
+    if db_url:
+        try:
+            import psycopg2
+            with psycopg2.connect(db_url, connect_timeout=6) as pg_conn:
+                with pg_conn.cursor() as cur:
+                    cur.execute(
+                        "UPDATE tbb_feedback_inbox SET status = %s, resolved_at = NOW() WHERE feedback_id = %s",
+                        (clean_status, req.feedback_id),
+                    )
+                pg_conn.commit()
+        except Exception:
+            pass
+    return {"ok": True, "feedback_id": req.feedback_id, "status": clean_status}
 
 
 if __name__ == "__main__":

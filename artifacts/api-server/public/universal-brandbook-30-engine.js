@@ -200,8 +200,37 @@
     "contemporanea": "contemporánea", "contemporaneo": "contemporáneo", "direccion": "dirección",
     "juridico": "jurídico", "juridica": "jurídica", "analitica": "analítica", "analitico": "analítico",
     "autonomos": "autónomos", "autonomo": "autónomo", "autonoma": "autónoma", "planeacion": "planeación",
-    "manana": "mañana", "precision": "precisión", "integracion": "integración", "ejecucion": "ejecución"
+    "manana": "mañana", "precision": "precisión", "integracion": "integración", "ejecucion": "ejecución",
+    "motivacion": "motivación", "futbol": "fútbol", "basquetbol": "básquetbol", "beisbol": "béisbol",
+    "transmision": "transmisión", "transmisiones": "transmisiones", "television": "televisión",
+    "estadistica": "estadística", "estadisticas": "estadísticas", "marcador": "marcador",
+    "cronometro": "cronómetro", "grafico": "gráfico", "grafica": "gráfica", "graficos": "gráficos",
+    "graficas": "gráficas", "dinamico": "dinámico", "dinamica": "dinámica", "dinamicos": "dinámicos",
+    "dinamicas": "dinámicas", "simultaneo": "simultáneo", "simultanea": "simultánea",
+    "instantaneo": "instantáneo", "instantanea": "instantánea", "automatico": "automático",
+    "automatica": "automática", "categoria": "categoría", "categorias": "categorías",
+    "pelicula": "película", "peliculas": "películas", "especifico": "específico", "especifica": "específica",
+    "haciendolos": "haciéndolos", "haciendolas": "haciéndolas", "haciendolo": "haciéndolo",
+    "haciendola": "haciéndola", "haciendoles": "haciéndoles", "haciendose": "haciéndose",
+    "haciendonos": "haciéndonos", "dandoles": "dándoles", "dandole": "dándole", "dandonos": "dándonos",
+    "ofreciendoles": "ofreciéndoles", "ofreciendole": "ofreciéndole", "brindandoles": "brindándoles",
+    "brindandole": "brindándole", "permitiendoles": "permitiéndoles", "permitiendole": "permitiéndole",
+    "ayudandolos": "ayudándolos", "ayudandolas": "ayudándolas", "ayudandoles": "ayudándoles",
+    "llevandolos": "llevándolos", "llevandolas": "llevándolas", "convirtiendolos": "convirtiéndolos",
+    "convirtiendose": "convirtiéndose", "sintiendose": "sintiéndose", "manteniendolos": "manteniéndolos",
+    "acompanandolos": "acompañándolos", "acompanandoles": "acompañándoles", "transmitiir": "transmitir"
   };
+
+  function accentEncliticGerund(wordLow) {
+    // Regla general para gerundios enclíticos en español (siempre son esdrújulos/sobreesdrújulos y llevan tilde)
+    const m = wordLow.match(/^([a-zñü]+?)(ando|iendo|yendo)(los|las|lo|la|les|le|nos|me|te|se)$/);
+    if (!m) return null;
+    const stem = m[1];
+    const ger = m[2];
+    const pron = m[3];
+    const accentedGer = ger === "ando" ? "ándo" : (ger === "iendo" ? "iéndo" : "yéndo");
+    return stem + accentedGer + pron;
+  }
 
   function fixSpanishOrthography(inputStr) {
     if (!inputStr) return "";
@@ -215,12 +244,30 @@
 
     // Corregir palabras palabra por palabra respetando mayúsculas iniciales o totales
     s = s.replace(/\b([a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+)\b/g, (match) => {
-      const low = match.toLowerCase();
+      // 1. Limpiar vocales duplicadas accidentales (ej. "transmitiir" -> "transmitir", "creaar" -> "crear")
+      let cleanedMatch = match.replace(/([bcdfghjklmnñpqrstvwxyzBCDFGHJKLMNÑPQRSTVWXYZ])([iuIU])\2+/g, "$1$2");
+      let low = cleanedMatch.toLowerCase();
+      if (!/^(leer|creer|poseer|proveer|cooper|coordin|reemplaz|reenvi|reescrib)/.test(low)) {
+        cleanedMatch = cleanedMatch.replace(/([a-zA-ZñÑ])([aáeéiíoóuú])\2+/gi, "$1$2");
+        low = cleanedMatch.toLowerCase();
+      }
+
       let replacement = SPANISH_ORTHO_MAP[low];
+      if (!replacement) {
+        replacement = accentEncliticGerund(low);
+      }
       if (!replacement && low.length >= 6 && /[a-z]cion$/.test(low)) {
         replacement = low.slice(0, -4) + "ción";
       }
-      if (!replacement) return match;
+      if (!replacement && low.length >= 6 && /[a-z]sion$/.test(low)) {
+        replacement = low.slice(0, -4) + "sión";
+      }
+      if (!replacement && low.length >= 6 && /[a-z]xion$/.test(low)) {
+        replacement = low.slice(0, -4) + "xión";
+      }
+      if (!replacement) {
+        return cleanedMatch;
+      }
       if (match === match.toUpperCase() && match.length > 1) {
         return replacement.toUpperCase();
       }
@@ -235,7 +282,8 @@
       .replace(/\bpor que\b(?=\s+(?:quiero|queremos|buscamos|existe|creemos|hacemos))/gi, "porque")
       .replace(/\ba domicilio\b/gi, "a domicilio")
       .replace(/\bal vacio\b/gi, "al vacío")
-      .replace(/\bsin azucar\b/gi, "sin azúcar");
+      .replace(/\bsin azucar\b/gi, "sin azúcar")
+      .replace(/\bde la tv\b/gi, "de televisión");
 
     // Primera letra siempre en mayúscula
     s = s.charAt(0).toUpperCase() + s.slice(1);
@@ -642,12 +690,12 @@
     }
   };
 
-  // Función global para ejecutar la auditoría interactiva del autor en el paso actual
-  window.tbbRunLiveAuthorAudit = function (stepNum, fieldRole) {
+  // Función global para ejecutar la auditoría interactiva en vivo del autor en el paso actual (con IA en tiempo real)
+  window.tbbRunLiveAuthorAudit = async function (stepNum, fieldRole) {
     const s = Number(stepNum || 0);
     const board = window.TBB_MASTER_AUTHORS_BOARD || {};
     const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "nuestra marca";
     const bGiro = (cs.custom_business_type || cs.step0_short_essence || "Soluciones Especializadas").trim();
 
     const stepAuthorMap = {
@@ -664,46 +712,173 @@
     let rawText = "";
 
     if (s === 0) {
-      rawText = document.getElementById("tbbStep0BizTextarea")?.value || cs.custom_business_type || "";
+      const el0 = document.getElementById("tbbStep0BizTextarea");
+      rawText = (el0 && el0.value ? el0.value : "") || cs.custom_business_type || "";
+      if (rawText && typeof window.tbbUpdateBusinessTypeFromInput === "function") {
+        window.tbbUpdateBusinessTypeFromInput(rawText);
+      }
     } else if (s === 1) {
-      rawText = document.getElementById("tbbStep1AnswerInput")?.value || cs[fieldRole] || "";
+      const el1 = document.getElementById("tbbStep1AnswerInput");
+      rawText = (el1 && el1.value ? el1.value : "") || cs[fieldRole] || "";
+      if (rawText && typeof window.tbbSaveStep1Answer === "function") {
+        window.tbbSaveStep1Answer(fieldRole, rawText);
+      }
     } else if (s === 2) {
-      rawText = (typeof tpExtractedItems === "object" && tpExtractedItems[fieldRole]) ? tpExtractedItems[fieldRole] : [];
+      const list = (typeof tpExtractedItems === "object" && tpExtractedItems[fieldRole]) ? tpExtractedItems[fieldRole] : [];
+      const customIn = document.getElementById("tbbCustomTpInput")?.value || "";
+      rawText = customIn.trim() || (Array.isArray(list) ? list.join(", ") : String(list || ""));
     } else if (s === 3) {
-      rawText = cs.brandName || "";
+      rawText = document.getElementById("tbbStep3FinalBrandInput")?.value || document.getElementById("tbbStep3Sub2NameInput")?.value || document.getElementById("tbbStep3DirectNameInput")?.value || cs.brandName || "";
     } else if (s === 4) {
-      rawText = cs.step4_seed_idea || cs.primary_font || "";
+      rawText = document.getElementById("tbbStep4SeedIdeaInput")?.value || cs.step4_seed_idea || cs.primary_font || "";
     } else if (s === 5) {
-      rawText = window.tbbState?.logoPriHex || "#0D2540";
+      rawText = (Array.isArray(cs.brand_palette_hex_list) && cs.brand_palette_hex_list.length)
+        ? cs.brand_palette_hex_list.join(", ")
+        : (window.tbbState?.logoPriHex || "#0D2540");
     } else if (s === 6) {
       rawText = bName;
     }
 
-    const audit = author.auditMethod(rawText, { bName, bGiro, fieldRole, step: s });
-
+    const cleanRaw = String(rawText || "").trim();
+    const preserveInputValue = () => {
+      if (!cleanRaw) return;
+      if (s === 0) {
+        const el0 = document.getElementById("tbbStep0BizTextarea");
+        if (el0 && !el0.value) el0.value = cleanRaw;
+        cs.custom_business_type = cleanRaw;
+      } else if (s === 1) {
+        const el1 = document.getElementById("tbbStep1AnswerInput");
+        if (el1 && !el1.value) el1.value = cleanRaw;
+        cs[fieldRole] = cleanRaw;
+      }
+    };
     const container = document.getElementById(`tbbAuthorAuditResult_${s}`);
     if (container) {
       container.style.display = "block";
       container.innerHTML = `
-        <div style="background:#FFFFFF; border:1.5px solid #CBD5E1; border-top:3.5px solid #0D2540; border-radius:12px; padding:12px 14px; margin-top:8px; box-shadow:0 8px 24px rgba(13,37,64,0.08);">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10B981;"></span>
-              <span style="font-family:'Montserrat',sans-serif; font-size:0.78rem; font-weight:900; color:#0D2540;">${author.name} · ${author.role}</span>
+        <div style="background:#F8FAFC; border:1px solid #93C5FD; border-left:3.5px solid #1D4ED8; border-radius:10px; padding:7px 10px; margin-top:4px; display:flex; align-items:center; gap:8px;">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#1D4ED8; animation:pulse 1s infinite; flex-shrink:0;"></span>
+          <div style="font-size:0.72rem; font-weight:600; color:#0D2540;">
+            ✦ Consultando dictamen en vivo de <strong>${author.name}</strong>...
+          </div>
+        </div>
+      `;
+    }
+
+    const questionLabels = {
+      giro: "Giro del negocio, qué ofrece y para quién (Relevancia de Categoría)",
+      golden_circle: "1. Propósito Nuclear (El Porqué / Golden Circle más allá de generar ingresos)",
+      purpose: "1. Propósito Nuclear (El Porqué / Golden Circle)",
+      value_offer: "2. Oferta de Valor Diferenciada frente a las alternativas del mercado",
+      offer: "2. Oferta de Valor Diferenciada",
+      social_role: "3. Impacto concreto en la vida o el trabajo del cliente",
+      social: "3. Impacto concreto en el cliente",
+      process_steps_text: "4. Método y Proceso clave para garantizar calidad",
+      process: "4. Método y Proceso",
+      core_message: "5. Mensaje Central memorable en una sola frase",
+      message: "5. Mensaje Central",
+      brand_persona: "6. Carácter y Personalidad (La Empresa como Persona)",
+      persona: "6. Carácter y Personalidad",
+      ideal_customer: "7. Cliente Ideal y problema urgente que resuelve",
+      buyer: "7. Cliente Ideal",
+      before: "Touchpoints Antes de la Compra (Descubrimiento y Atracción)",
+      during: "Touchpoints Durante la Compra (Experiencia Principal)",
+      after: "Touchpoints Después de la Compra (Lealtad y Post-venta)"
+    };
+    const qDesc = questionLabels[fieldRole] || `Paso ${s} (${fieldRole || "Estrategia de Marca"})`;
+
+    // Fallback determinista mejorado (con corrección ortográfica real y análisis contextual)
+    let audit = author.auditMethod(cleanRaw, { bName, bGiro, fieldRole, step: s });
+    const refinedFallback = window.tbbRefineUserCopyOrthoAndClarity(cleanRaw || bGiro, fieldRole || "general", bName, bGiro);
+    if (refinedFallback) {
+      audit.executiveCopy = refinedFallback;
+    }
+
+    // Consulta en vivo a Gemini (gemini-3.8-flash) para un dictamen real, crítico y personalizado a TODA la información de la marca
+    try {
+      const fullDossier = (typeof window.tbbBuildFullBrandContextDossier === "function")
+        ? window.tbbBuildFullBrandContextDossier()
+        : `Giro: ${bGiro}. Nombre: ${bName}.`;
+      const prompt = [
+        `Actúa como ${author.name}, autor de "${author.book}" y ${author.role}.`,
+        `Estás auditando la respuesta de un usuario en la plataforma de branding estratégico TheBestBrand.`,
+        `EXPEDIENTE COMPLETO DE LA MARCA QUE SE ESTÁ CREANDO:`,
+        fullDossier,
+        ``,
+        `Dimensión evaluada ahora: "${qDesc}".`,
+        cleanRaw
+          ? `Texto escrito por el usuario en este campo: "${cleanRaw}".`
+          : `El usuario aún dejó este campo vacío; propón un dictamen orientador y una redacción ejecutiva ideal basada en el expediente completo de su marca arriba.`,
+        ``,
+        `Instrucciones estrictas:`,
+        `1. Analiza de verdad lo que escribió el usuario y el contexto específico de su marca aplicando la metodología de ${author.name}. Menciona los conceptos reales de su negocio (PROHIBIDO usar frases genéricas de plantilla).`,
+        `2. En "executiveCopy", entrega una versión redactada con nivel ejecutivo, elocuente, inspiradora y con ORTOGRAFÍA Y ACENTUACIÓN PERFECTAS en español (corrige cualquier falta como "motivacion" -> "motivación", "haciendolos" -> "haciéndolos", "futbol" -> "fútbol", "transmitiir" -> "transmitir", "obrecer" -> "ofrecer", etc.), respetando el 100% de la idea original del usuario.`,
+        `3. Responde ÚNICAMENTE con un objeto JSON válido con estas 4 llaves exactas:`,
+        `{"verdict": "TÍTULO BREVE DEL DICTAMEN EN MAYÚSCULAS", "score": "96/100", "critique": "Dictamen directo de ${author.name} en 2 oraciones analizando el texto y negocio específico del usuario.", "executiveCopy": "Redacción ejecutiva impecable lista para sustituir el campo."}`
+      ].join("\n");
+
+      let rawJson = "";
+      if (typeof window.tbbCallGeminiAI === "function") {
+        rawJson = await window.tbbCallGeminiAI(prompt, { temperature: 0.4, json: true });
+      } else {
+        const resp = await fetch("/api/v1/gemini/proxy", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "gemini-3.8-flash",
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.4, responseMimeType: "application/json" }
+          })
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          rawJson = ((data.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("\n") || data.text || "").trim();
+        }
+      }
+
+      if (rawJson) {
+        const cleanJson = String(rawJson).trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+        const firstB = cleanJson.indexOf("{");
+        const lastB = cleanJson.lastIndexOf("}");
+        const parsed = JSON.parse(firstB !== -1 && lastB > firstB ? cleanJson.slice(firstB, lastB + 1) : cleanJson);
+        if (parsed && parsed.critique && parsed.executiveCopy) {
+          audit = {
+            author: author.name,
+            role: author.role,
+            verdict: String(parsed.verdict || audit.verdict).toUpperCase(),
+            score: String(parsed.score || "97/100"),
+            critique: fixSpanishOrthography(String(parsed.critique).trim()),
+            executiveCopy: fixSpanishOrthography(String(parsed.executiveCopy).trim())
+          };
+        }
+      }
+    } catch (err) {
+      console.warn("Live author audit fallback:", err);
+    }
+
+    preserveInputValue();
+    if (container) {
+      container.style.display = "block";
+      container.innerHTML = `
+        <div style="background:#FFFFFF; border:1px solid #CBD5E1; border-top:3px solid #0D2540; border-radius:10px; padding:8px 10px; margin-top:4px; box-shadow:0 4px 12px rgba(13,37,64,0.06);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; flex-wrap:wrap; gap:4px;">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#10B981;"></span>
+              <span style="font-family:'Montserrat',sans-serif; font-size:0.72rem; font-weight:700; color:#0D2540;">${author.name}</span>
             </div>
-            <span style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; font-weight:800; color:#047857; background:#ECFDF5; padding:3px 8px; border-radius:6px; border:1px solid #A7F3D0;">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:700; color:#047857; background:#ECFDF5; padding:2px 6px; border-radius:5px; border:1px solid #A7F3D0;">
               ✦ ${audit.verdict} (${audit.score})
             </span>
           </div>
-          <p style="font-size:0.80rem; color:#334155; line-height:1.48; margin:0 0 10px 0; font-style:italic;">
+          <p style="font-size:0.74rem; color:#334155; line-height:1.35; margin:0 0 6px 0; font-style:italic;">
             “${audit.critique}”
           </p>
-          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:10px 12px; margin-bottom:10px;">
-            <div style="font-size:0.68rem; font-weight:800; color:#64748B; margin-bottom:4px; letter-spacing:0.06em;">REDACCIÓN EJECUTIVA DICTAMINADA POR ${author.name.toUpperCase()}:</div>
-            <div style="font-size:0.86rem; font-weight:700; color:#090D16; line-height:1.4;">${audit.executiveCopy}</div>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:6px 8px; margin-bottom:6px;">
+            <div style="font-size:0.62rem; font-weight:700; color:#64748B; margin-bottom:2px; letter-spacing:0.04em;">PROPUESTA EJECUTIVA DE ${author.shortName.toUpperCase()}:</div>
+            <div style="font-size:0.78rem; font-weight:600; color:#090D16; line-height:1.32;">${audit.executiveCopy}</div>
           </div>
-          <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbApplyAuthorExecutiveCopy(${s}, '${fieldRole}', '${encodeURIComponent(audit.executiveCopy)}')" style="min-height:36px !important; padding:6px 14px !important; font-size:0.78rem !important; width:100%; border-radius:10px !important;">
-            ✓ Aplicar Redacción Ejecutiva de ${author.shortName} al Campo
+          <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbApplyAuthorExecutiveCopy(${s}, '${fieldRole}', '${encodeURIComponent(audit.executiveCopy)}')" style="min-height:32px !important; padding:4px 10px !important; font-size:0.72rem !important; font-weight:600 !important; width:100%; border-radius:8px !important;">
+            ✓ Usar Redacción de ${author.shortName}
           </button>
         </div>
       `;
@@ -712,6 +887,7 @@
     if (typeof window.triggerAuraEmpatheticFeedback === "function") {
       window.triggerAuraEmpatheticFeedback("author_audit", `Dictamen metodológico emitido por ${author.name}`, false, true);
     }
+    setTimeout(preserveInputValue, 50);
   };
 
   window.tbbApplyAuthorExecutiveCopy = function (stepNum, fieldRole, encodedCopy) {
@@ -727,7 +903,16 @@
       const el = document.getElementById("tbbStep1AnswerInput");
       if (el) el.value = text;
       if (typeof window.tbbSaveStep1Answer === "function") window.tbbSaveStep1Answer(fieldRole, text);
+    } else if (s === 2) {
+      const el = document.getElementById("tbbCustomTpInput");
+      if (el) el.value = text;
     } else if (s === 3) {
+      const el =
+        document.getElementById("tbbStep3FinalBrandInput") ||
+        document.getElementById("tbbStep3Sub2NameInput") ||
+        document.getElementById("tbbStep3DirectNameInput") ||
+        document.getElementById("tbbStep3CustomNameInput");
+      if (el) el.value = text;
       if (typeof window.tbbUpdateBrandNameFromInput === "function") window.tbbUpdateBrandNameFromInput(text);
     }
 
@@ -735,7 +920,7 @@
     if (container) {
       container.innerHTML = `
         <div style="background:#ECFDF5; border:1px solid #A7F3D0; border-radius:8px; padding:8px 12px; font-size:0.78rem; font-weight:800; color:#047857; text-align:center;">
-          ✓ Redacción ejecutiva aplicada exitosamente y sincronizada con el Manual de 30 Hojas.
+          ✓ Redacción ejecutiva aplicada al campo y sincronizada con el Manual de 30 Hojas.
         </div>
       `;
       setTimeout(() => {
@@ -752,11 +937,13 @@
 
     let text = fixSpanishOrthography(cleanRaw);
     const bName = (brandName && !/^mi nueva marca$/i.test(brandName)) ? String(brandName).trim() : "nuestra marca";
+    const role = String(fieldRole || "general").toLowerCase();
 
     // Elevar claridad sin alterar la idea central del usuario
-    if (fieldRole === "giro") {
+    if (role === "giro") {
       text = text
         .replace(/^(?:soluciones estrat[eé]gicas,?\s+ingenier[ií]a de valor y experiencia de marca\s+(?:en\s+)?)/i, "")
+        .replace(/^(?:ofrece|ofrecemos|brinda|brindamos)\s+una\s+alternativa\s+para\s+/i, "Plataforma y solución especializada para ")
         .replace(/^(?:es una app|es una aplicaci[oó]n|somos una app)\s+que\s+/i, "Aplicación y plataforma digital que ")
         .replace(/^(?:es una plataforma|somos una plataforma)\s+que\s+/i, "Plataforma tecnológica que ")
         .replace(/^(?:es un software|es un sistema)\s+que\s+/i, "Sistema tecnológico especializado que ")
@@ -770,12 +957,15 @@
       return text;
     }
 
-    if (fieldRole === "purpose") {
+    if (role === "purpose" || role === "golden_circle") {
       text = text
         .replace(/^(?:porque\s+)?(?:quiero|queremos|busco|buscamos)\s+que\s+/i, "Existimos para lograr que ")
         .replace(/^(?:porque\s+)?(?:quiero|queremos|busco|buscamos)\s+/i, "Nuestro propósito es ")
+        .replace(/^(?:para\s+ofrecer|ofrecer)\s+/i, "Existimos para brindar ")
+        .replace(/^(?:para\s+dar|dar)\s+/i, "Existimos para brindar ")
         .replace(/^(?:para\s+que\s+)/i, "Impulsamos un impacto positivo para que ")
-        .replace(/^(?:ayudar\s+a\s+)/i, "Transformar y mejorar la experiencia de ");
+        .replace(/^(?:ayudar\s+a\s+)/i, "Transformar y elevar la experiencia de ")
+        .replace(/,\s*y\s+un\s+diferenciador\s+/i, ", consolidando además un diferenciador ");
       text = text.charAt(0).toUpperCase() + text.slice(1);
       if (!/[.!?]$/.test(text)) text += ".";
       if (text.split(/\s+/).length < 10) {
@@ -784,7 +974,7 @@
       return text;
     }
 
-    if (fieldRole === "offer") {
+    if (role === "offer" || role === "value_offer") {
       text = text
         .replace(/^(?:nosotros\s+)?(?:usamos|utilizamos)\s+/i, "Nos diferenciamos porque seleccionamos y utilizamos ")
         .replace(/^(?:que\s+somos|somos)\s+/i, "Destacamos por ser una propuesta ")
@@ -797,7 +987,7 @@
       return text;
     }
 
-    if (fieldRole === "social") {
+    if (role === "social" || role === "social_role") {
       text = text
         .replace(/^(?:ayudar\s+a|ayudamos\s+a)\s+/i, "Facilitamos y elevamos la calidad de vida de ")
         .replace(/^(?:hacer\s+que|lograr\s+que)\s+/i, "Generamos bienestar tangible logrando que ");
@@ -806,7 +996,7 @@
       return text;
     }
 
-    if (fieldRole === "process") {
+    if (role === "process" || role === "process_steps_text") {
       // Si el usuario escribió pasos con números sin punto ("1 cocinamos 2 empacamos 3 enviamos")
       if (/\b1[\s.)-]/.test(text) && /\b2[\s.)-]/.test(text)) {
         text = text
@@ -822,13 +1012,13 @@
       return text;
     }
 
-    if (fieldRole === "message") {
+    if (role === "message" || role === "core_message") {
       text = text.replace(/^["«“]|["»”]$/g, "").replace(/\.+$/, "").trim();
       text = text.charAt(0).toUpperCase() + text.slice(1);
       return text;
     }
 
-    if (fieldRole === "persona") {
+    if (role === "persona" || role === "brand_persona") {
       if (text.split(/\s+/).length <= 8 && !/[.]/.test(text)) {
         text = `Una marca de carácter ${text.charAt(0).toLowerCase() + text.slice(1)}, que escucha primero al cliente, comunica con claridad sin tecnicismos innecesarios y acompaña con compromiso real.`;
       } else if (!/[.!?]$/.test(text)) {
@@ -837,7 +1027,7 @@
       return text;
     }
 
-    if (fieldRole === "buyer") {
+    if (role === "buyer" || role === "ideal_customer") {
       text = text
         .replace(/^(?:para\s+|son\s+)/i, "")
         .replace(/\.+$/, "");
@@ -845,7 +1035,7 @@
       return text;
     }
 
-    if (fieldRole === "touchpoint") {
+    if (role === "touchpoint") {
       text = text.replace(/\.+$/, "");
       text = text.charAt(0).toUpperCase() + text.slice(1);
       return text;
@@ -2223,7 +2413,12 @@
     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "the_best_brand";
     
     const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
-    const uploadedUrl = (activeIt && activeIt.uploadedLogoDataUrl) || cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "";
+    const uploadedUrl = (activeIt && (activeIt.nanoBananaSymbolUrl || activeIt.nanoBananaFullArtworkUrl || activeIt.uploadedLogoDataUrl))
+      || cs.nano_banana_symbol_url
+      || cs.nano_banana_full_artwork_url
+      || cs.uploaded_logo_data_url
+      || window.step0State?.uploadedLogoDataUrl
+      || "";
     const uploadedSvg = (activeIt && activeIt.uploadedLogoSvgMarkup) || cs.uploaded_logo_svg_markup || window.step0State?.uploadedLogoSvgMarkup || "";
     const hasUploadedLogo = Boolean(uploadedUrl || uploadedSvg);
     const hasGeminiCustom = Boolean(activeIt && activeIt.geminiCustomSvg && String(activeIt.geminiCustomSvg).trim().length > 10);
@@ -2249,9 +2444,9 @@
 
     const mods = (activeIt && activeIt.mods) || {};
     const priFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || cs.primary_font || "Montserrat";
-    const secFont = "Avenir Next";
+    const secFont = cs.secondary_font || st.selectedSecondaryFont || "Plus Jakarta Sans";
     const pal = extractColorsFromLogoState(activeIt, st);
-    const useEvolvedOverUpload = Boolean(st._uploadedLogoEvolvedOnce && hasGeminiCustom);
+    const useEvolvedOverUpload = Boolean(st._uploadedLogoEvolvedOnce && hasGeminiCustom && !(activeIt && activeIt.isNanoBananaGenerated));
     
     let symCorePos = "";
     let symCoreNeg = "";
@@ -2305,6 +2500,8 @@
       secondaryFont: secFont,
       isEstablished: hasUploadedLogo,
       isMultibrand: /improbears/i.test(bName),
+      uploadedLogoDataUrl: uploadedUrl,
+      nanoBananaFullArtworkUrl: (activeIt && activeIt.nanoBananaFullArtworkUrl) || cs.nano_banana_full_artwork_url || "",
       svgCore: symCorePos,
       svgCoreNeg: symCoreNeg
     };
@@ -7278,7 +7475,7 @@
           { code: "SELLO 02", name: "Geometría Euclidiana", author: "Massimo Vignelli", desc: "Aval de retícula constructiva 8X, proporciones exactas y vectores limpios.", icon: "8X" },
           { code: "SELLO 03", name: "Calibración Kansei", author: "Mitsuhiro Nagamachi", desc: "Garantía de respuesta emocional positiva, balance cromático y empatía humana.", icon: "KAN" },
           { code: "SELLO 04", name: "Arquitectura Monolítica", author: "David Aaker", desc: "Certificación de concentración de valor en un solo nombre sin submarcas forzadas.", icon: "MONO" },
-          { code: "SELLO 05", name: "Auditoría Directiva C-00", author: "Consejo Crítico", desc: "Superación del estándar implacable de Steve Jobs: cero plantillas y cero relleno.", icon: "C-00" },
+          { code: "SELLO 05", name: "Estándar Editorial Oficial", author: "Consejo Crítico", desc: "Superación del estándar implacable de Steve Jobs: cero plantillas y cero relleno.", icon: "C-00" },
           { code: "SELLO 06", name: "Promulgación Oficial", author: "The Best Brand", desc: "Sello de vigencia constitucional e inmutabilidad de activos de marca.", icon: "LEX" }
         ];
 

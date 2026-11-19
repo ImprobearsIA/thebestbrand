@@ -319,21 +319,26 @@
     };
   }
 
-  function enforceMax10sSpokenText(text) {
+  function enforceMax10sSpokenText(text, maxWords = 18) {
     let clean = String(text || "")
       .replace(/<[^>]+>/g, " ")
       .replace(/[*_#`~>]/g, "")
+      .replace(/^(?:seg[úu]n|como\s+ense[ñn]a|bajo\s+el\s+modelo\s+de|according\s+to)\s+[^,.:;]+[,.:;]\s*/i, "")
+      .replace(/\b(?:Simon\s+Sinek|C[íi]rculo\s+Dorado|Charles\s+E\.?\s+Osgood|Osgood|Kansei|Nagamachi|Alexandra\s+Watkins|SMILE|Sagi\s+Haviv|David\s+Aaker|Massimo\s+Vignelli|Paul\s+Rand|Masaaki\s+Imai|Kaizen|Jan\s+Carlzon)\b[,:\s]*/gi, "")
       .replace(/\s+/g, " ")
       .trim();
     if (!clean) return "";
+    const limit = Math.max(8, Math.min(22, Number(maxWords) || 18));
     const words = clean.split(" ");
     // Máximo 18 palabras para que a ritmo ágil (1.14x) dure siempre entre 4.5s y 8.5s sin truncar ideas
-    if (words.length > 18) {
-      const slice = words.slice(0, 18).join(" ").replace(/[,;:\-]+$/, "");
+    if (words.length > limit) {
+      const slice = words.slice(0, limit).join(" ").replace(/[,;:\-]+$/, "");
       clean = /[.!?¡¿]$/.test(slice) ? slice : slice + ".";
     }
     return clean;
   }
+  window.enforceMax10sSpokenText = enforceMax10sSpokenText;
+  window.shortenForNaturalSpeech = enforceMax10sSpokenText;
 
   function ensureBrowserAudioUnlockedSync() {
     try {
@@ -618,6 +623,7 @@
   const TBBAudioDirector = {
     genId: 1,
     ticketId: 0,
+    playbackRate: AURA_DIALOGUE_PLAYBACK_RATE,
     controllers: new Set(),
     activeBufferSources: new Set(),
     activeGainNode: null,
@@ -1265,7 +1271,7 @@
     if (typeof document !== "undefined") {
       const capModal = document.getElementById("phaseTransitionVideoModal");
       const webCapModal = document.getElementById("tbbVideoPopupModalOverlay");
-      if ((capModal && capModal.classList.contains("open")) || (webCapModal && webCapModal.classList.contains("is-open"))) {
+      if ((capModal && capModal.classList.contains("open")) || (webCapModal && (webCapModal.classList.contains("is-open") || webCapModal.classList.contains("open")))) {
         return;
       }
     }

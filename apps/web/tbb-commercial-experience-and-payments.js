@@ -597,7 +597,7 @@
       num: "03",
       format: ".AI · IMPRENTA",
       sampleUrl: "/assets/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.ai",
-      thumb: "/assets/app_captures/arco_28_paso5_2_iter5_nanobanana_lineal_minimalista.png",
+      thumb: "/assets/app_captures/arco_28_paso5_2_iter5_lineal_minimalista.png",
       plateNum: 3,
       i18n: {
         es: { title: "Archivo Maestro para Imprenta y Bordado (.AI)", desc: "El archivo original editable para Adobe Illustrator que te pide cualquier imprenta profesional para tarjetas, cajas, letreros o uniformes bordados." },
@@ -611,7 +611,7 @@
     {
       num: "04",
       format: ".PNG · ALTA CALIDAD",
-      sampleUrl: "/assets/samples/Logotipo_Masterpiece_NanoBanana_ARCO_Ingenieria.png",
+      sampleUrl: "/assets/samples/Logotipo_Oficial_Alta_Resolucion_ARCO_Ingenieria.png",
       thumb: "/assets/samples/Isotipo_1x1_Centrado_ARCO_Ingenieria_1024px.png",
       plateNum: 4,
       i18n: {
@@ -789,7 +789,7 @@
       step: 5,
       time: "14 min",
       free: false,
-      img: "/assets/app_captures/arco_28_paso5_2_iter5_nanobanana_lineal_minimalista.png",
+      img: "/assets/app_captures/arco_28_paso5_2_iter5_lineal_minimalista.png",
       color: "#FF7A00",
       i18n: {
         es: { badge: "Paso 5 · Pro ($49 USD)", title: "Tus colores exactos y el diseño de tu logotipo", body: "Eliges tu paleta de colores armónica, comparas propuestas limpias de logotipo, pides ajustes con tus propias palabras si quieres cambiar un detalle y apruebas tu favorito." },
@@ -820,11 +820,11 @@
   // Propuestas limpias del caso real ARCO Ingeniería (Cero codenames internos)
   const ARCO_LOGO_ITERATIONS = [
     { id: 1, badge: "Punto de Partida", name: "Logo Anterior del Cliente", desc: "Imagen original subida en el Paso 0. Aura rescata sus colores azul, turquesa y gris acero.", logoImg: "/assets/logos/arco_ingenieria_logo4k_original.png", screenImg: "/assets/app_captures/arco_24_paso5_2_iter1_logo_base_original.png" },
-    { id: 2, badge: "Opción #2", name: "Emblema Arquitectónico", desc: "Actualiza la letra cursiva antigua por una tipografía firme e integra el puente estructural.", logoImg: "/assets/logos/arco_iter2_full.png", screenImg: "/assets/app_captures/arco_25_paso5_2_iter2_nanobanana_emblema_autor.png" },
-    { id: 3, badge: "Opción #3", name: "Monograma «A» Estructural", desc: "Une la inicial «A» en gris acero con un doble arco envolvente limpio y fácil de bordar.", logoImg: "/assets/logos/arco_iter3_full.png", screenImg: "/assets/app_captures/arco_26_paso5_2_iter3_nanobanana_monograma_giro.png" },
-    { id: 4, badge: "Opción #4", name: "Sello Circular para Cascos y Planos", desc: "Versión redonda pensada para sellos oficiales, cascos de obra y stickers.", logoImg: "/assets/logos/arco_iter4_full.png", screenImg: "/assets/app_captures/arco_27_paso5_2_iter4_nanobanana_insignia_sello.png" },
-    { id: 5, badge: "★ Elegido por el Cliente", name: "Lineal Minimalista (#5)", desc: "Arco estructural limpio con dos torres esbeltas. Elegido para construir su Brandbook de 36 páginas.", logoImg: "/assets/logos/arco_iter5_full.png", screenImg: "/assets/app_captures/arco_28_paso5_2_iter5_nanobanana_lineal_minimalista.png" },
-    { id: 6, badge: "Opción #6", name: "Variante Refinada por Voz/Texto", desc: "Ajuste pedido en una frase para fusionar la inicial con las torres residenciales.", logoImg: "/assets/logos/arco_iter6_full.png", screenImg: "/assets/app_captures/arco_29_paso5_2_iter6_nanobanana_evolucion_conversacional_final.png" }
+    { id: 2, badge: "Opción #2", name: "Emblema Arquitectónico", desc: "Actualiza la letra cursiva antigua por una tipografía firme e integra el puente estructural.", logoImg: "/assets/logos/arco_iter2_full.png", screenImg: "/assets/app_captures/arco_25_paso5_2_iter2_emblema_autor.png" },
+    { id: 3, badge: "Opción #3", name: "Monograma «A» Estructural", desc: "Une la inicial «A» en gris acero con un doble arco envolvente limpio y fácil de bordar.", logoImg: "/assets/logos/arco_iter3_full.png", screenImg: "/assets/app_captures/arco_26_paso5_2_iter3_monograma_giro.png" },
+    { id: 4, badge: "Opción #4", name: "Sello Circular para Cascos y Planos", desc: "Versión redonda pensada para sellos oficiales, cascos de obra y stickers.", logoImg: "/assets/logos/arco_iter4_full.png", screenImg: "/assets/app_captures/arco_27_paso5_2_iter4_insignia_sello.png" },
+    { id: 5, badge: "★ Elegido por el Cliente", name: "Lineal Minimalista (#5)", desc: "Arco estructural limpio con dos torres esbeltas. Elegido para construir su Brandbook de 36 páginas.", logoImg: "/assets/logos/arco_iter5_full.png", screenImg: "/assets/app_captures/arco_28_paso5_2_iter5_lineal_minimalista.png" },
+    { id: 6, badge: "Opción #6", name: "Variante Refinada por Voz/Texto", desc: "Ajuste pedido en una frase para fusionar la inicial con las torres residenciales.", logoImg: "/assets/logos/arco_iter6_full.png", screenImg: "/assets/app_captures/arco_29_paso5_2_iter6_evolucion_conversacional_final.png" }
   ];
 
   const ARCO_PDF_PLATES_SHOWCASE = [
@@ -2145,11 +2145,12 @@
       });
       if (stripeRes.ok) {
         const sData = await stripeRes.json();
-        if (sData && sData.checkout_url && /^https?:\/\//i.test(sData.checkout_url)) {
-          window.location.href = sData.checkout_url;
+        const redirectUrl = sData && (sData.stripe_checkout_url || sData.checkout_url);
+        if (redirectUrl && /^https?:\/\//i.test(redirectUrl)) {
+          window.location.href = redirectUrl;
           return;
         }
-        if (sData && sData.status === "unlocked_free" && sData.license_code) {
+        if (sData && (sData.status === "unlocked_free" || (sData.status === "authorized" && Number(sData.amount_usd) === 0)) && sData.license_code) {
           const receiptObj = {
             licenseId: sData.license_code,
             plan: sData.tier || "founder_pro",
@@ -2186,8 +2187,9 @@
         })
       });
       const fbData = await fallbackRes.json();
-      if (fbData && fbData.checkout_url && /^https?:\/\//i.test(fbData.checkout_url)) {
-        window.location.href = fbData.checkout_url;
+      const fbRedirectUrl = fbData && (fbData.stripe_checkout_url || fbData.checkout_url);
+      if (fbRedirectUrl && /^https?:\/\//i.test(fbRedirectUrl)) {
+        window.location.href = fbRedirectUrl;
         return;
       }
       if (fbData && fbData.license_code && isFreeCoupon) {
@@ -2483,6 +2485,10 @@
               </select>
             </label>
 
+            <button type="button" class="tbb-header-account-btn" onclick="window.tbbOpenWebFeedbackModal()" title="Enviar comentario o sugerencia">
+              <span>💬 Opinión</span>
+            </button>
+
             <button type="button" class="tbb-header-account-btn" onclick="window.tbbOpenRestoreAccountModal()">
               ${TBB_ICONS.user}
               <span>${escHtml(t("navMyAccount"))}</span>
@@ -2517,6 +2523,9 @@
                   ${tb.icon} <span class="tbb-drawer-lbl">${escHtml(tb.label)}</span> ${TBB_ICONS.arrowRight}
                 </button>
               `).join("")}
+              <button type="button" class="tbb-mobile-drawer-item" onclick="window.tbbCloseMobileNavDrawer(); window.tbbOpenWebFeedbackModal();">
+                <span>💬</span> <span class="tbb-drawer-lbl">Enviar comentario</span> ${TBB_ICONS.arrowRight}
+              </button>
               <button type="button" class="tbb-mobile-drawer-item" onclick="window.tbbCloseMobileNavDrawer(); window.tbbOpenRestoreAccountModal();">
                 ${TBB_ICONS.user} <span class="tbb-drawer-lbl">${escHtml(t("navMyAccount"))}</span> ${TBB_ICONS.arrowRight}
               </button>
@@ -2536,6 +2545,93 @@
         ${window.tbbRenderActiveSubpageHTML(sec)}
       </main>
     `;
+  };
+
+  window.tbbCloseWebFeedbackModal = function () {
+    const ov = document.getElementById("tbbWebFeedbackModalOverlay");
+    if (ov) ov.classList.remove("open");
+  };
+
+  window.tbbSubmitWebFeedback = async function () {
+    const ta = document.getElementById("tbbWebFeedbackText");
+    const msg = document.getElementById("tbbWebFeedbackStatus");
+    const btn = document.getElementById("tbbWebFeedbackBtn");
+    const txt = String(ta ? ta.value : "").trim();
+    if (txt.length < 3) {
+      if (msg) {
+        msg.style.display = "block";
+        msg.textContent = "Escribe una nota breve antes de enviar.";
+      }
+      return;
+    }
+    if (btn) btn.disabled = true;
+    const st = window.tbbCommercialDemoState || {};
+    try {
+      const res = await fetch("/api/v1/feedback/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "commercial_web",
+          platform: /iPhone|iPad|iPod/i.test(navigator.userAgent || "") ? "ios_web" : (/Android/i.test(navigator.userAgent || "") ? "android_web" : "desktop_web"),
+          brand_name: st.brandName || "",
+          step_num: Number(st.activeMainSection || 1),
+          sub_step: Number(st.activeDemoStep || 0),
+          lang: getLang(),
+          viewport: `${window.innerWidth}x${window.innerHeight}`,
+          category: "web_ux",
+          comment_text: txt,
+          metadata: { path: window.location.pathname }
+        })
+      });
+      if (res.ok) {
+        if (ta) ta.value = "";
+        if (msg) {
+          msg.className = "tbb-promo-ok-msg";
+          msg.style.display = "block";
+          msg.textContent = "✓ ¡Gracias! Tu comentario ya llegó directo al equipo.";
+        }
+        setTimeout(() => window.tbbCloseWebFeedbackModal(), 1100);
+      } else {
+        throw new Error("submit_failed");
+      }
+    } catch (e) {
+      if (msg) {
+        msg.className = "tbb-promo-err-msg";
+        msg.style.display = "block";
+        msg.textContent = "No pudimos enviarlo en este momento. Intenta nuevamente.";
+      }
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  };
+
+  window.tbbOpenWebFeedbackModal = function () {
+    let ov = document.getElementById("tbbWebFeedbackModalOverlay");
+    if (!ov) {
+      ov = document.createElement("div");
+      ov.id = "tbbWebFeedbackModalOverlay";
+      ov.className = "tbb-modal-overlay";
+      ov.style.zIndex = "100080";
+      ov.onclick = (e) => { if (e.target === ov) window.tbbCloseWebFeedbackModal(); };
+      document.body.appendChild(ov);
+    }
+    const secNum = Number((window.tbbCommercialDemoState || {}).activeMainSection || 1);
+    const secMeta = SUBPAGE_META[secNum] || SUBPAGE_META[1];
+    ov.innerHTML = `
+      <div class="tbb-modal-card" onclick="event.stopPropagation()">
+        <div class="tbb-modal-head">
+          <h3>💬 Cuéntanos qué mejorarías</h3>
+          <button type="button" class="tbb-icon-close-btn" onclick="window.tbbCloseWebFeedbackModal()">${TBB_ICONS.close}</button>
+        </div>
+        <p class="tbb-muted-p" style="margin:0 0 12px;">Tu comentario llega directo a nuestro equipo junto con la sección actual (<strong>/${escHtml(secMeta.slug)}</strong>).</p>
+        <textarea id="tbbWebFeedbackText" rows="4" placeholder="Escribe con tus propias palabras qué te gustó, qué te confundió o qué cambiarías..." class="tbb-input" style="height:auto;padding:12px;"></textarea>
+        <div id="tbbWebFeedbackStatus" class="tbb-promo-err-msg" style="display:none;margin-top:10px;"></div>
+        <button id="tbbWebFeedbackBtn" type="button" class="tbb-btn-primary is-full" style="margin-top:14px;" onclick="window.tbbSubmitWebFeedback()">
+          <span>Enviar comentario al equipo</span> ${TBB_ICONS.arrowRight}
+        </button>
+      </div>
+    `;
+    ov.classList.add("open");
   };
 
   window.tbbUpdateLocalizedFooterDOM = function () {
@@ -2568,6 +2664,7 @@
       } catch (e) {}
     }
   };
+  window.tbbChangeCommercialLanguage = window.tbbSwitchCommercialLanguage;
 
   // ============================================================================
   // ESTILOS ORGÁNICOS, ESCALA TIPOGRÁFICA ≥14px (0.875rem) Y CERO NEGRITAS EXCESIVAS
