@@ -27441,6 +27441,13 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
           });
+          if (!res.ok) {
+            res = await fetch("https://thebestbrand-api-studio-production.up.railway.app/api/v1/feedback/submit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            });
+          }
           if (res.ok) {
             if (ta) ta.value = "";
             if (stMsg) { stMsg.style.display = "block"; stMsg.style.color = "#065F46"; stMsg.textContent = "✓ ¡Gracias! Tu comentario ya llegó al equipo con el contexto de este paso."; }

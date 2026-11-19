@@ -2567,22 +2567,30 @@
     if (btn) btn.disabled = true;
     const st = window.tbbCommercialDemoState || {};
     try {
-      const res = await fetch("/api/v1/feedback/submit", {
+      const fbPayload = JSON.stringify({
+        source: "commercial_web",
+        platform: /iPhone|iPad|iPod/i.test(navigator.userAgent || "") ? "ios_web" : (/Android/i.test(navigator.userAgent || "") ? "android_web" : "desktop_web"),
+        brand_name: st.brandName || "",
+        step_num: Number(st.activeMainSection || 1),
+        sub_step: Number(st.activeDemoStep || 0),
+        lang: getLang(),
+        viewport: `${window.innerWidth}x${window.innerHeight}`,
+        category: "web_ux",
+        comment_text: txt,
+        metadata: { path: window.location.pathname }
+      });
+      let res = await fetch("/api/v1/feedback/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          source: "commercial_web",
-          platform: /iPhone|iPad|iPod/i.test(navigator.userAgent || "") ? "ios_web" : (/Android/i.test(navigator.userAgent || "") ? "android_web" : "desktop_web"),
-          brand_name: st.brandName || "",
-          step_num: Number(st.activeMainSection || 1),
-          sub_step: Number(st.activeDemoStep || 0),
-          lang: getLang(),
-          viewport: `${window.innerWidth}x${window.innerHeight}`,
-          category: "web_ux",
-          comment_text: txt,
-          metadata: { path: window.location.pathname }
-        })
+        body: fbPayload
       });
+      if (!res.ok) {
+        res = await fetch("https://thebestbrand-api-studio-production.up.railway.app/api/v1/feedback/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: fbPayload
+        });
+      }
       if (res.ok) {
         if (ta) ta.value = "";
         if (msg) {

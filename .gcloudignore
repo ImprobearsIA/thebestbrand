@@ -1,5 +1,9 @@
 .git
 .gitignore
+node_modules/
+ios/
+android/
+artifacts/
 _archived_html_backups/
 entregables_brandbooks/
 apps/web/assets/videos/
