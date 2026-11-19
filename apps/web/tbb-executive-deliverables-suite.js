@@ -1989,7 +1989,7 @@
   window._tbbFlowMockupStateByBrand = window._tbbFlowMockupStateByBrand || {};
 
   // ==========================================================================
-  // 6. GOOGLE FLOW · REMIX OF MOCKUP (NANO BANANA 2.1 / PRO POR GIRO DEL NEGOCIO)
+  // 6. ESTUDIO DE MOCKUPS REALES (NANO BANANA 2.1 / PRO POR GIRO DEL NEGOCIO)
   // ==========================================================================
   const TBB_GOOGLE_FLOW_MOCKUP_URL = "https://flow.google.com/project/4bae0087-9fb0-4dc7-b5fb-6c975161bf17/tool/11f5131c-d37e-4aa9-9350-2bed08c47560?mode=APP&fromViewSource=tools";
 
@@ -2505,15 +2505,15 @@
       ];
 
       overlay.innerHTML = `
-        <div style="width:100%;max-width:1120px;background:#111318;color:#F8FAFC;border:1.5px solid rgba(255,255,255,0.14);border-radius:24px;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,0.65);font-family:'Plus Jakarta Sans',sans-serif;display:grid;grid-template-columns:minmax(310px, 380px) 1fr;max-height:92vh;">
+        <div style="width:100%;max-width:1120px;background:#111318;color:#F8FAFC;border:1.5px solid rgba(255,255,255,0.14);border-radius:24px;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,0.65);font-family:'Plus Jakarta Sans',sans-serif;display:grid;grid-template-columns:repeat(auto-fit, minmax(295px, 1fr));max-height:92vh;overflow-y:auto;">
           <!-- Panel Izquierdo: Google Flow Canvas Media & Píldoras de Superficie -->
           <div style="padding:20px;border-right:1px solid rgba(255,255,255,0.10);display:flex;flex-direction:column;justify-content:space-between;gap:14px;overflow-y:auto;background:#16181F;">
             <div>
               <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
                 <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,122,0,0.14);border:1px solid rgba(255,122,0,0.45);color:#FDBA74;padding:4px 10px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;">
-                  <span>✨</span> GOOGLE FLOW · REMIX OF MOCKUP
+                  <span>✨</span> ESTUDIO DE MOCKUPS REALES
                 </div>
-                <span style="font-family:'JetBrains Mono',monospace;font-size:0.66rem;color:#94A3B8;font-weight:700;">Nano Banana 2.1</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:0.66rem;color:#94A3B8;font-weight:700;">Alta Resolución 4:3</span>
               </div>
 
               <div style="font-size:1.02rem;font-weight:900;color:#FFFFFF;margin-bottom:4px;">
@@ -2593,7 +2593,7 @@
 
             <div id="tbbFlowModalStatusBanner" style="display:none;margin-bottom:12px;padding:9px 14px;border-radius:10px;background:rgba(66,110,174,0.22);border:1px solid #4C9DE6;color:#E2E8F0;font-size:0.78rem;font-weight:700;"></div>
 
-            <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;flex:1;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));gap:14px;flex:1;">
               ${slotPreviewList.map((item, idx) => {
                 const slotMeta = (activeEntry._metaBySlot && activeEntry._metaBySlot[item.key]) || giroPlan.slots[item.key];
                 const imgSrc = activeEntry[item.key] || activeEntry[item.alias] || item.defaultImg;
@@ -2956,8 +2956,8 @@
 
     st.geminiBusy = true;
     st.geminiStatusText = shouldAttachReferenceImage
-      ? `NanoBanana PRO evolucionando tu diseño («${modeObj.shortPill}» · ${pri}, ${sec})...`
-      : `NanoBanana PRO componiendo identidad de autor («${modeObj.shortPill}») con 100% del ADN de «${bName}»...`;
+      ? `Aura evolucionando tu logotipo («${modeObj.shortPill}» · ${pri}, ${sec})...`
+      : `Aura diseñando tu logotipo («${modeObj.shortPill}») con 100% del ADN de «${bName}»...`;
     if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
 
     const prompt = tbbBuildNanoBananaCreativeDirectorPrompt({
@@ -3040,7 +3040,7 @@
 
       const nextIdx = replacePlaceholderFirst ? 1 : (st.logoIterations.length + 1);
       const shortPillLabel = `#${nextIdx} · ${modeObj.shortPill}`;
-      const summaryPrompt40w = `Identidad de autor NanoBanana PRO («${modeObj.label}») para «${bName}» (${giro.slice(0, 36)}), integrando su ADN estratégico, paleta oficial (${pri}, ${sec}, ${acc}) y trazado en curvas Bézier.`;
+      const summaryPrompt40w = `Identidad visual oficial («${modeObj.label}») para «${bName}» (${giro.slice(0, 36)}), integrando su ADN estratégico, paleta oficial (${pri}, ${sec}, ${acc}) y trazado en curvas Bézier.`;
 
       const nbEntry = {
         idx: nextIdx,
@@ -3056,7 +3056,7 @@
         shortPill: shortPillLabel,
         paradigm: st.logoParadigm || "detailed_emblem",
         archetype: "nanobanana_masterpiece",
-        conceptLabel: `${modeObj.label} · NanoBanana PRO`,
+        conceptLabel: `${modeObj.label} · Diseño Oficial`,
         pri: pri,
         sec: sec,
         accentHex: acc,
@@ -3386,3 +3386,39 @@
 
   console.log("✓ Suite Ejecutiva de Entregables (.SVG/.AI Curvas, .DOCX, .PPTX, Firma .HTML, Kit Fuentes .ZIP, Auto-Center & Google Flow Visuals V83.0) activa.");
 })();
+
+  window.tbbDownloadAllDeliverablesBundleZip = async function (btnEl) {
+    const orig = btnEl ? btnEl.textContent : "";
+    if (btnEl) {
+      btnEl.disabled = true;
+      btnEl.textContent = "📦 Empaquetando tus archivos...";
+    }
+    try {
+      if (typeof window.tbbExportLogoInCurves === "function") {
+        await window.tbbExportLogoInCurves("horizontal", "svg");
+        setTimeout(() => window.tbbExportLogoInCurves("horizontal", "ai"), 350);
+      }
+      if (typeof window.tbbDownloadEditableLetterheadDOCX === "function") {
+        setTimeout(() => window.tbbDownloadEditableLetterheadDOCX(), 700);
+      }
+      if (typeof window.tbbDownloadEditableDeckPPTX === "function") {
+        setTimeout(() => window.tbbDownloadEditableDeckPPTX(), 1050);
+      }
+      if (typeof window.tbbDownloadBrandFontsZip === "function") {
+        setTimeout(() => window.tbbDownloadBrandFontsZip(), 1400);
+      }
+      if (typeof window.downloadCompleteBrandbookHTML === "function") {
+        setTimeout(() => window.downloadCompleteBrandbookHTML(), 1750);
+      }
+    } catch (e) {
+      console.warn("Bundle download warning:", e);
+    } finally {
+      setTimeout(() => {
+        if (btnEl) {
+          btnEl.disabled = false;
+          btnEl.textContent = orig || "📦 Descargar Paquete Completo";
+        }
+      }, 2100);
+    }
+  };
+

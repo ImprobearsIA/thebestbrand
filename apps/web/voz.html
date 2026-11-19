@@ -546,18 +546,29 @@
         return p;
       }
 
-      function speakText(text) {
+      async function speakText(text) {
+        if (window.TBBAudioDirector) window.TBBAudioDirector.stopAll('voz_new_turn');
+        if (typeof window.speakAuraBriefResponse === 'function') {
+          currentState = 'speaking';
+          try {
+            await window.speakAuraBriefResponse(text, 9500);
+          } finally {
+            currentState = 'idle';
+          }
+          return;
+        }
         if (!('speechSynthesis' in window)) return;
         window.speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
         u.lang = 'es-MX';
-        u.rate = 1.02;
+        u.rate = 1.12;
         u.onstart = function () { currentState = 'speaking'; };
         u.onend = function () { currentState = 'idle'; };
         window.speechSynthesis.speak(u);
       }
 
       async function sendCommand(text) {
+        if (window.TBBAudioDirector) window.TBBAudioDirector.stopAll('voz_user_send');
         const clean = String(text || '').trim();
         const filesToSend = pendingAttachments.slice();
         if (!clean && filesToSend.length === 0) return;
@@ -672,5 +683,6 @@
       }
     })();
   </script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=129.0"></script>
 </body>
 </html>

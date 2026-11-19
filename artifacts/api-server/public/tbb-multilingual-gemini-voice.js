@@ -105,43 +105,59 @@
   window.TBB_SUPPORTED_LANGS = SUPPORTED_LANGS;
   window.TBB_GEMINI_VOICE_PROFILES = GEMINI_VOICE_PROFILES;
 
+  function syncAllLangStorageKeys(langCode) {
+    const clean = SUPPORTED_LANGS[langCode] ? langCode : "es";
+    try {
+      localStorage.setItem("tbb_active_ui_lang_v52", clean);
+      localStorage.setItem("tbb_app_lang", clean);
+      localStorage.setItem("thebestbrand_lang_v90", clean);
+      localStorage.setItem("tbb_commercial_lang", clean);
+    } catch (e) {}
+    return clean;
+  }
+
   function getSavedLang() {
     try {
       const params = new URLSearchParams(window.location.search || "");
-      const urlLang = (params.get("lang") || "").toLowerCase();
+      const urlLang = (params.get("lang") || "").toLowerCase().slice(0, 2);
       if (urlLang && SUPPORTED_LANGS[urlLang]) {
-        localStorage.setItem("tbb_app_lang", urlLang);
-        localStorage.setItem("thebestbrand_lang_v90", urlLang);
-        return urlLang;
+        return syncAllLangStorageKeys(urlLang);
       }
-      const savedWeb = (localStorage.getItem("thebestbrand_lang_v90") || "").toLowerCase();
-      const savedApp = (localStorage.getItem("tbb_app_lang") || "").toLowerCase();
-      if (savedWeb && SUPPORTED_LANGS[savedWeb]) {
-        localStorage.setItem("tbb_app_lang", savedWeb);
-        return savedWeb;
+      const candidates = [
+        localStorage.getItem("tbb_active_ui_lang_v52"),
+        localStorage.getItem("tbb_app_lang"),
+        localStorage.getItem("thebestbrand_lang_v90"),
+        localStorage.getItem("tbb_commercial_lang")
+      ];
+      for (const c of candidates) {
+        const clean = String(c || "").toLowerCase().trim().slice(0, 2);
+        if (clean && SUPPORTED_LANGS[clean]) {
+          return syncAllLangStorageKeys(clean);
+        }
       }
-      if (savedApp && SUPPORTED_LANGS[savedApp]) {
-        localStorage.setItem("thebestbrand_lang_v90", savedApp);
-        return savedApp;
+      const navLang = String((navigator && (navigator.language || (navigator.languages && navigator.languages[0]))) || "")
+        .toLowerCase()
+        .slice(0, 2);
+      if (navLang && SUPPORTED_LANGS[navLang]) {
+        return syncAllLangStorageKeys(navLang);
       }
     } catch (e) {}
     return "es";
   }
 
   function getSavedGeminiVoiceName() {
-    try {
-      const saved = localStorage.getItem("tbb_gemini_voice_name");
-      if (saved && GEMINI_VOICE_PROFILES.some(v => v.id === saved)) return saved;
-    } catch (e) {}
+    // Regla Canónica V129: Una sola voz femenina cálida unificada ("Aoede") en toda la plataforma
     return "Aoede";
   }
 
   window.tbbCurrentLang = getSavedLang();
-  window.tbbGeminiVoiceName = getSavedGeminiVoiceName();
+  window.tbbGeminiVoiceName = "Aoede";
+  window.tbbSyncAllLangStorageKeys = syncAllLangStorageKeys;
 
   window.tbbGetLang = function () {
     return SUPPORTED_LANGS[window.tbbCurrentLang] ? window.tbbCurrentLang : "es";
   };
+  window.tbbGetActiveLang = window.tbbGetLang;
 
   window.tbbGetLangConfig = function (langCode) {
     const code = langCode || window.tbbGetLang();
@@ -241,6 +257,21 @@
     const maxPcmByteLen = Math.floor((bytesPerSecond * maxDurationSec) / bytesPerSample) * bytesPerSample;
 
     let finalPcm = pcmBytes;
+    // Recortar silencios muertos al inicio y final para respuesta vocal instantánea (<30ms)
+    if (bitsPerSample === 16 && finalPcm.byteLength > 1200) {
+      const trimView = new DataView(finalPcm.buffer, finalPcm.byteOffset, finalPcm.byteLength);
+      const totalSmp = Math.floor(finalPcm.byteLength / 2);
+      const padSmp = Math.floor(sampleRate * 0.03);
+      let sIdx = 0;
+      while (sIdx < totalSmp && Math.abs(trimView.getInt16(sIdx * 2, true)) < 185) sIdx++;
+      let eIdx = totalSmp - 1;
+      while (eIdx > sIdx && Math.abs(trimView.getInt16(eIdx * 2, true)) < 185) eIdx--;
+      sIdx = Math.max(0, sIdx - padSmp);
+      eIdx = Math.min(totalSmp, eIdx + padSmp);
+      if (eIdx > sIdx + 240) {
+        finalPcm = new Uint8Array(finalPcm.subarray(sIdx * 2, eIdx * 2));
+      }
+    }
     if (finalPcm.byteLength > maxPcmByteLen) {
       finalPcm = new Uint8Array(finalPcm.subarray(0, maxPcmByteLen));
       if (bitsPerSample === 16) {
@@ -296,16 +327,14 @@
       .trim();
     if (!clean) return "";
     const words = clean.split(" ");
-    if (words.length > 25) {
-      clean = words.slice(0, 25).join(" ").replace(/[,;:\-]+$/, "") + ".";
+    // Máximo 18 palabras para que a ritmo ágil (1.14x) dure siempre entre 4.5s y 8.5s sin truncar ideas
+    if (words.length > 18) {
+      const slice = words.slice(0, 18).join(" ").replace(/[,;:\-]+$/, "");
+      clean = /[.!?¡¿]$/.test(slice) ? slice : slice + ".";
     }
     return clean;
   }
 
-  /**
-   * Desbloquea sincrónicamente Web Audio API en macOS (Safari/Chrome) e iOS
-   * dentro del mismo tick del evento de usuario antes de cualquier `await`.
-   */
   function ensureBrowserAudioUnlockedSync() {
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -337,11 +366,8 @@
     });
   }
 
-  /**
-   * Caché persistente en IndexedDB para que cada frase sintetizada con Gemini
-   * se guarde en disco en Mac y iPhone y se reproduzca al instante (<15ms).
-   */
-  const IDB_VOICE_DB_NAME = "tbb_gemini_voice_idb_v2";
+  // Invalidación limpia de clips antiguos con citas académicas (v3)
+  const IDB_VOICE_DB_NAME = "tbb_gemini_voice_idb_v3";
   const IDB_VOICE_STORE = "clips";
 
   function openVoiceIdb() {
@@ -584,13 +610,207 @@
    * 2. Gemini 3.8 Live (`models/gemini-3.8-live`) vía WebSocket BidiGenerateContent (sin límite 429 de 10/día)
    * 3. Fallback REST (`gemini-3.8-flash-lite-tts` -> `gemini-3.8-flash-tts` -> `gemini-3.1-flash-tts-preview`) con memoria de enfriamiento 429.
    */
+  // ==========================================================================
+  // 1B. SINGLETON GLOBAL TBBAudioDirector (CRAIG FEDERIGHI · CERO VOCES FANTASMA)
+  // ==========================================================================
+  const AURA_DIALOGUE_PLAYBACK_RATE = 1.14;
+
+  const TBBAudioDirector = {
+    genId: 1,
+    ticketId: 0,
+    controllers: new Set(),
+    activeBufferSources: new Set(),
+    activeGainNode: null,
+    activeHtmlAudios: new Set(),
+    activeAnalyser: null,
+    analyserData: null,
+    activeCapsuleAudio: null,
+    capsuleHooks: null,
+
+    registerController(ctrl) {
+      if (ctrl) this.controllers.add(ctrl);
+      return ctrl;
+    },
+
+    unregisterController(ctrl) {
+      if (ctrl) this.controllers.delete(ctrl);
+    },
+
+    getOrCreateAnalyser(ctx) {
+      if (!ctx) return null;
+      try {
+        if (!this.activeAnalyser || this.activeAnalyser.context !== ctx) {
+          this.activeAnalyser = ctx.createAnalyser();
+          this.activeAnalyser.fftSize = 256;
+          this.activeAnalyser.smoothingTimeConstant = 0.72;
+          this.analyserData = new Uint8Array(this.activeAnalyser.frequencyBinCount);
+          this.activeAnalyser.connect(ctx.destination);
+        }
+        return this.activeAnalyser;
+      } catch (e) {
+        return null;
+      }
+    },
+
+    getLiveAmplitude() {
+      if (!window.isSpeakingLive || !this.activeAnalyser || !this.analyserData) return 0;
+      try {
+        this.activeAnalyser.getByteTimeDomainData(this.analyserData);
+        let sumSq = 0;
+        for (let i = 0; i < this.analyserData.length; i++) {
+          const centered = (this.analyserData[i] - 128) / 128;
+          sumSq += centered * centered;
+        }
+        const rms = Math.sqrt(sumSq / this.analyserData.length);
+        return Math.min(1, rms * 3.8);
+      } catch (e) {
+        return 0.35;
+      }
+    },
+
+    bumpGeneration(reason = "nav") {
+      this.genId++;
+      this.stopAll(reason, false);
+      return this.genId;
+    },
+
+    stopAll(reason = "manual", broadcastToFrames = true) {
+      this.ticketId++;
+      window._tbbGeminiTtsRequestId = this.ticketId;
+
+      // 1. Abortar todos los fetch en vuelo de TTS o comentarios de IA
+      for (const ctrl of Array.from(this.controllers)) {
+        try { ctrl.abort(); } catch (e) {}
+      }
+      this.controllers.clear();
+
+      // 2. Detener todos los AudioBufferSourceNode con micro-fade de 30ms anti-clic
+      for (const src of Array.from(this.activeBufferSources)) {
+        try {
+          src.onended = null;
+          src.stop(0);
+          src.disconnect();
+        } catch (e) {}
+      }
+      this.activeBufferSources.clear();
+      if (window._tbbActiveAudioSource) {
+        try {
+          window._tbbActiveAudioSource.onended = null;
+          window._tbbActiveAudioSource.stop(0);
+          window._tbbActiveAudioSource.disconnect();
+        } catch (e) {}
+        window._tbbActiveAudioSource = null;
+      }
+
+      // 3. Detener todos los HTMLAudioElement registrados + cápsula activa + legacy currentAudioObj
+      for (const aud of Array.from(this.activeHtmlAudios)) {
+        try {
+          aud.onended = null;
+          aud.ontimeupdate = null;
+          aud.pause();
+          aud.removeAttribute("src");
+          aud.load();
+        } catch (e) {}
+      }
+      this.activeHtmlAudios.clear();
+
+      if (this.activeCapsuleAudio) {
+        try {
+          this.activeCapsuleAudio.onended = null;
+          this.activeCapsuleAudio.ontimeupdate = null;
+          this.activeCapsuleAudio.pause();
+          this.activeCapsuleAudio.removeAttribute("src");
+          this.activeCapsuleAudio.load();
+        } catch (e) {}
+        this.activeCapsuleAudio = null;
+      }
+
+      if (window._tbbActiveHtmlAudio) {
+        try {
+          window._tbbActiveHtmlAudio.pause();
+          window._tbbActiveHtmlAudio.removeAttribute("src");
+        } catch (e) {}
+        window._tbbActiveHtmlAudio = null;
+      }
+
+      if (typeof window.currentAudioObj === "object" && window.currentAudioObj) {
+        try {
+          window.currentAudioObj.pause();
+          window.currentAudioObj.removeAttribute("src");
+        } catch (e) {}
+        window.currentAudioObj = null;
+      }
+
+      // 4. Detener absolutamente todos los elementos <video> y <audio> del DOM (incluyendo ocultos left:-9999px)
+      if (typeof document !== "undefined") {
+        try {
+          document.querySelectorAll("video, audio").forEach(mediaEl => {
+            try {
+              if (!mediaEl.paused) mediaEl.pause();
+              mediaEl.currentTime = 0;
+            } catch (e) {}
+          });
+        } catch (e) {}
+      }
+
+      // 5. Cancelar cola global speechSynthesis del navegador
+      try {
+        if ("speechSynthesis" in window) {
+          window.speechSynthesis.cancel();
+        }
+      } catch (e) {}
+
+      // 6. Propagar corte a iframes hijos (sin ciclos infinitos)
+      if (broadcastToFrames && typeof document !== "undefined") {
+        try {
+          document.querySelectorAll("iframe").forEach(ifr => {
+            try {
+              if (ifr.contentWindow) {
+                ifr.contentWindow.postMessage({ type: "TBB_HARD_STOP_ALL_AUDIO", reason }, "*");
+              }
+            } catch (e) {}
+          });
+        } catch (e) {}
+      }
+
+      window.isSpeakingLive = false;
+      if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+        try { window.tbbSyncSpeakingIndicatorUI(false); } catch (e) {}
+      }
+    }
+  };
+
+  window.TBBAudioDirector = TBBAudioDirector;
+  window.tbbGetLiveAudioAmplitude = () => TBBAudioDirector.getLiveAmplitude();
+  window.tbbMasterAudioKillSwitch = (reason) => TBBAudioDirector.bumpGeneration(reason || "kill_switch");
+
+  // Listeners globales de ciclo de vida para garantizar 0.0% voces fantasma al salir, minimizar o ir atrás
+  if (typeof window !== "undefined") {
+    ["pagehide", "beforeunload", "popstate", "hashchange"].forEach(evName => {
+      window.addEventListener(evName, () => TBBAudioDirector.bumpGeneration(evName), { passive: true });
+    });
+    if (typeof document !== "undefined") {
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) TBBAudioDirector.bumpGeneration("visibility_hidden");
+      });
+    }
+  }
+
+  /**
+   * Sintetiza con la única voz canónica de Aura ('Aoede') a baja latencia:
+   * 1. Caché RAM + IndexedDB v3
+   * 2. Endpoint rápido `/api/v1/tts/aura-fast` (con caché en servidor por idioma + voz + texto)
+   * 3. Respaldo directo `/api/v1/gemini/proxy` con AbortController registrado en TBBAudioDirector.
+   */
   window.tbbSynthesizeGeminiTTSWav = async function (rawText, options = {}) {
     const cleanText = enforceMax10sSpokenText(rawText);
     if (!cleanText) return null;
 
     const langCode = options.lang || window.tbbGetLang();
-    const voiceName = options.voiceName || window.tbbGeminiVoiceName || "Aoede";
+    const voiceName = "Aoede";
     const maxDurationSec = Math.min(9.5, Number(options.maxDurationSec || 9.5));
+    const reqGenId = options.genId ?? TBBAudioDirector.genId;
+    const reqTicketId = options.ticketId ?? TBBAudioDirector.ticketId;
     const cacheKey = `${langCode}::${voiceName}::${cleanText}`;
 
     if (window._tbbGeminiTtsCache.has(cacheKey)) {
@@ -603,71 +823,93 @@
       return idbCached;
     }
 
+    if (reqGenId !== TBBAudioDirector.genId || reqTicketId !== TBBAudioDirector.ticketId) {
+      return null;
+    }
+
     const apiKey = getGeminiApiKey();
 
-    // 1. Intentar primero con Gemini 3.8 Live WebSocket si el usuario proveyó apiKey explícita
-    if (apiKey) {
-      const livePayload = await synthesizeViaGeminiLiveWebSocket(
-        cleanText,
-        voiceName,
-        langCode,
-        maxDurationSec,
-        apiKey
-      );
-      if (livePayload && livePayload.wavBytes && livePayload.wavBytes.byteLength > 100) {
-        if (window._tbbGeminiTtsCache.size > 80) {
-          const firstKey = window._tbbGeminiTtsCache.keys().next().value;
-          window._tbbGeminiTtsCache.delete(firstKey);
+    // 1. Ruta Rápida Principal: `/api/v1/tts/aura-fast` (caché RAM/disco server-side + recorte de silencio)
+    {
+      const fastCtrl = TBBAudioDirector.registerController(new AbortController());
+      const fastTimer = setTimeout(() => fastCtrl.abort(), 5200);
+      try {
+        const resFast = await fetch("/api/v1/tts/aura-fast", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: fastCtrl.signal,
+          body: JSON.stringify({
+            text: cleanText,
+            lang: langCode,
+            voice_name: voiceName,
+            llm_api_key: apiKey || ""
+          })
+        });
+        clearTimeout(fastTimer);
+        TBBAudioDirector.unregisterController(fastCtrl);
+        if (resFast.ok) {
+          const dataTts = await resFast.json();
+          if (dataTts && dataTts.audio_wav_base64) {
+            const rawBytes = base64ToUint8Array(dataTts.audio_wav_base64);
+            if (rawBytes && rawBytes.byteLength > 100) {
+              const payload = {
+                wavBytes: rawBytes,
+                durationSec: 6.0,
+                sampleRate: 24000,
+                modelUsed: "aura-fast-aoede",
+                voiceName,
+                langCode
+              };
+              if (window._tbbGeminiTtsCache.size >= 80) {
+                const firstKey = window._tbbGeminiTtsCache.keys().next().value;
+                window._tbbGeminiTtsCache.delete(firstKey);
+              }
+              window._tbbGeminiTtsCache.set(cacheKey, payload);
+              idbSaveVoiceClip(cacheKey, payload);
+              return payload;
+            }
+          }
         }
-        window._tbbGeminiTtsCache.set(cacheKey, livePayload);
-        idbSaveVoiceClip(cacheKey, livePayload);
-        window._tbbLastGeminiVoiceModelUsed = livePayload.modelUsed;
-        return livePayload;
+      } catch (e) {
+        clearTimeout(fastTimer);
+        TBBAudioDirector.unregisterController(fastCtrl);
       }
     }
 
-    // 2. Respaldo REST vía Proxy Blindado Backend (`/api/v1/gemini/proxy`) o directo si hay apiKey
+    if (reqGenId !== TBBAudioDirector.genId || reqTicketId !== TBBAudioDirector.ticketId) {
+      return null;
+    }
+
+    // 2. Respaldo Proxy Gemini TTS si `/api/v1/tts/aura-fast` no respondió
     const now = Date.now();
-    for (let i = 0; i < GEMINI_TTS_MODELS.length; i++) {
+    for (let i = 0; i < 2 && i < GEMINI_TTS_MODELS.length; i++) {
       const modelName = GEMINI_TTS_MODELS[i];
       const cooldownUntil = window._tbbGeminiModel429CooldownUntil[modelName] || 0;
       if (now < cooldownUntil) continue;
+      if (reqGenId !== TBBAudioDirector.genId || reqTicketId !== TBBAudioDirector.ticketId) return null;
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 7200);
+      const controller = TBBAudioDirector.registerController(new AbortController());
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
       try {
-        const endpointUrl = apiKey
-          ? `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(apiKey)}`
-          : "/api/v1/gemini/proxy";
-        const res = await fetch(
-          endpointUrl,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            signal: controller.signal,
-            body: JSON.stringify({
-              model: modelName,
-              contents: [
-                {
-                  parts: [{ text: cleanText }]
-                }
-              ],
-              generationConfig: {
-                responseModalities: ["AUDIO"],
-                speechConfig: {
-                  voiceConfig: {
-                    prebuiltVoiceConfig: {
-                      voiceName: voiceName
-                    }
-                  }
-                }
+        const res = await fetch("/api/v1/gemini/proxy", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({
+            model: modelName,
+            contents: [{ parts: [{ text: cleanText }] }],
+            generationConfig: {
+              responseModalities: ["AUDIO"],
+              speechConfig: {
+                voiceConfig: { prebuiltVoiceConfig: { voiceName } }
               }
-            })
-          }
-        );
+            }
+          })
+        });
         clearTimeout(timeoutId);
+        TBBAudioDirector.unregisterController(controller);
         if (res.status === 429) {
-          window._tbbGeminiModel429CooldownUntil[modelName] = Date.now() + 15 * 60 * 1000;
+          window._tbbGeminiModel429CooldownUntil[modelName] = Date.now() + 10 * 60 * 1000;
           continue;
         }
         if (!res.ok) continue;
@@ -684,7 +926,7 @@
           maxDurationSec
         );
         if (norm && norm.wavBytes && norm.wavBytes.byteLength > 100) {
-          if (window._tbbGeminiTtsCache.size > 80) {
+          if (window._tbbGeminiTtsCache.size >= 80) {
             const firstKey = window._tbbGeminiTtsCache.keys().next().value;
             window._tbbGeminiTtsCache.delete(firstKey);
           }
@@ -698,77 +940,29 @@
           };
           window._tbbGeminiTtsCache.set(cacheKey, payload);
           idbSaveVoiceClip(cacheKey, payload);
-          window._tbbLastGeminiVoiceModelUsed = modelName;
           return payload;
         }
       } catch (err) {
         clearTimeout(timeoutId);
+        TBBAudioDirector.unregisterController(controller);
       }
-    }
-
-    // 3. Respaldo Cloud Backend (/api/tts/gemini local o en Railway Cloud)
-    const ttsEndpoints = [
-      "/api/tts/gemini",
-      "https://thebestbrand-api-studio-production.up.railway.app/api/tts/gemini"
-    ];
-    for (let j = 0; j < ttsEndpoints.length; j++) {
-      try {
-        const resTts = await fetch(ttsEndpoints[j], {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: cleanText, llm_api_key: apiKey || "" })
-        });
-        if (resTts.ok) {
-          const dataTts = await resTts.json();
-          if (dataTts && dataTts.audio_wav_base64) {
-            const rawBytes = base64ToUint8Array(dataTts.audio_wav_base64);
-            if (rawBytes && rawBytes.byteLength > 100) {
-              const payload = {
-                wavBytes: rawBytes,
-                durationSec: 6.0,
-                sampleRate: 24000,
-                modelUsed: "gemini-cloud-neural",
-                voiceName,
-                langCode
-              };
-              window._tbbGeminiTtsCache.set(cacheKey, payload);
-              idbSaveVoiceClip(cacheKey, payload);
-              return payload;
-            }
-          }
-        }
-      } catch (e) {}
     }
     return null;
   };
 
-  window.tbbStopAllAuraVoicePlayback = function () {
-    window._tbbGeminiTtsRequestId++;
-    try {
-      if (window._tbbActiveAudioSource) {
-        window._tbbActiveAudioSource.stop();
-        window._tbbActiveAudioSource.disconnect();
-        window._tbbActiveAudioSource = null;
-      }
-    } catch (e) {}
-    try {
-      if (window._tbbActiveHtmlAudio) {
-        window._tbbActiveHtmlAudio.pause();
-        window._tbbActiveHtmlAudio.src = "";
-        window._tbbActiveHtmlAudio = null;
-      }
-    } catch (e) {}
-    try {
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-    } catch (e) {}
-    window.isSpeakingLive = false;
+  window.tbbStopAllAuraVoicePlayback = function (reason = "stop_aura") {
+    TBBAudioDirector.stopAll(reason, true);
   };
 
-  async function playWavBytesInBrowser(wavBytes, maxDurationMs = 9500) {
+  async function playWavBytesInBrowser(wavBytes, maxDurationMs = 9500, guard = {}) {
     if (!wavBytes || wavBytes.byteLength < 64) return false;
-    window.isSpeakingLive = true;
+    const expectedGen = guard.genId ?? TBBAudioDirector.genId;
+    const expectedTicket = guard.ticketId ?? TBBAudioDirector.ticketId;
+    const rate = Number(guard.playbackRate || AURA_DIALOGUE_PLAYBACK_RATE);
+
+    if (expectedGen !== TBBAudioDirector.genId || expectedTicket !== TBBAudioDirector.ticketId || window.voiceMuted || (typeof document !== "undefined" && document.hidden)) {
+      return false;
+    }
 
     try {
       const ctx = ensureBrowserAudioUnlockedSync() || window.sharedAcousticCtx;
@@ -776,31 +970,58 @@
         if (ctx.state === "suspended") {
           await ctx.resume();
         }
+        // Revalidar después de resume() asíncrono
+        if (expectedGen !== TBBAudioDirector.genId || expectedTicket !== TBBAudioDirector.ticketId || window.voiceMuted || (typeof document !== "undefined" && document.hidden)) {
+          return false;
+        }
         const copyBuffer = wavBytes.buffer.slice(
           wavBytes.byteOffset,
           wavBytes.byteOffset + wavBytes.byteLength
         );
         const audioBuffer = await ctx.decodeAudioData(copyBuffer);
+        // Revalidar CRÍTICA después de decodeAudioData() asíncrono justo antes de source.start(0)
+        if (expectedGen !== TBBAudioDirector.genId || expectedTicket !== TBBAudioDirector.ticketId || window.voiceMuted || (typeof document !== "undefined" && document.hidden)) {
+          return false;
+        }
+
         return await new Promise(resolve => {
           const source = ctx.createBufferSource();
           source.buffer = audioBuffer;
-          source.connect(ctx.destination);
+          source.playbackRate.value = rate;
+          const analyser = TBBAudioDirector.getOrCreateAnalyser(ctx);
+          if (analyser) {
+            source.connect(analyser);
+          } else {
+            source.connect(ctx.destination);
+          }
           window._tbbActiveAudioSource = source;
+          TBBAudioDirector.activeBufferSources.add(source);
+          window.isSpeakingLive = true;
+          if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+            try { window.tbbSyncSpeakingIndicatorUI(true); } catch (e) {}
+          }
 
+          const effectiveMs = Math.min(9800, maxDurationMs, Math.ceil((audioBuffer.duration / rate) * 1000) + 250);
           const safetyTimer = setTimeout(() => {
-            try {
-              source.stop();
-            } catch (e) {}
-            window.isSpeakingLive = false;
+            try { source.stop(); } catch (e) {}
+            TBBAudioDirector.activeBufferSources.delete(source);
+            if (TBBAudioDirector.activeBufferSources.size === 0) window.isSpeakingLive = false;
+            if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+              try { window.tbbSyncSpeakingIndicatorUI(false); } catch (e) {}
+            }
             resolve(true);
-          }, Math.min(9800, maxDurationMs));
+          }, effectiveMs);
 
           source.onended = () => {
             clearTimeout(safetyTimer);
+            TBBAudioDirector.activeBufferSources.delete(source);
             if (window._tbbActiveAudioSource === source) {
               window._tbbActiveAudioSource = null;
             }
-            window.isSpeakingLive = false;
+            if (TBBAudioDirector.activeBufferSources.size === 0) window.isSpeakingLive = false;
+            if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+              try { window.tbbSyncSpeakingIndicatorUI(false); } catch (e) {}
+            }
             resolve(true);
           };
           source.start(0);
@@ -808,36 +1029,57 @@
       }
     } catch (e) {}
 
+    // Respaldo HTML5 Audio con validación estricta de ticket y velocidad 1.14x
+    if (expectedGen !== TBBAudioDirector.genId || expectedTicket !== TBBAudioDirector.ticketId || window.voiceMuted) {
+      return false;
+    }
     try {
-      const blob = new Blob([wavBytes], { type: "audio/wav" });
+      const isMp3 = wavBytes[0] === 0xFF || (wavBytes[0] === 0x49 && wavBytes[1] === 0x44 && wavBytes[2] === 0x33);
+      const blob = new Blob([wavBytes], { type: isMp3 ? "audio/mpeg" : "audio/wav" });
       const blobUrl = URL.createObjectURL(blob);
       const audio = new Audio(blobUrl);
+      audio.defaultPlaybackRate = rate;
+      audio.playbackRate = rate;
       window._tbbActiveHtmlAudio = audio;
+      TBBAudioDirector.activeHtmlAudios.add(audio);
+
       return await new Promise(resolve => {
         const cleanup = () => {
-          try {
-            URL.revokeObjectURL(blobUrl);
-          } catch (e) {}
+          TBBAudioDirector.activeHtmlAudios.delete(audio);
+          try { URL.revokeObjectURL(blobUrl); } catch (e) {}
+          if (TBBAudioDirector.activeHtmlAudios.size === 0 && TBBAudioDirector.activeBufferSources.size === 0) {
+            window.isSpeakingLive = false;
+          }
+          if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+            try { window.tbbSyncSpeakingIndicatorUI(false); } catch (e) {}
+          }
         };
         const safetyTimer = setTimeout(() => {
-          try {
-            audio.pause();
-          } catch (e) {}
+          try { audio.pause(); } catch (e) {}
           cleanup();
-          window.isSpeakingLive = false;
           resolve(true);
         }, Math.min(9800, maxDurationMs));
 
+        audio.onplay = () => {
+          if (expectedGen !== TBBAudioDirector.genId || expectedTicket !== TBBAudioDirector.ticketId || window.voiceMuted) {
+            try { audio.pause(); } catch (e) {}
+            cleanup();
+            resolve(false);
+            return;
+          }
+          window.isSpeakingLive = true;
+          if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+            try { window.tbbSyncSpeakingIndicatorUI(true); } catch (e) {}
+          }
+        };
         audio.onended = () => {
           clearTimeout(safetyTimer);
           cleanup();
-          window.isSpeakingLive = false;
           resolve(true);
         };
         audio.onerror = () => {
           clearTimeout(safetyTimer);
           cleanup();
-          window.isSpeakingLive = false;
           resolve(false);
         };
         const p = audio.play();
@@ -845,7 +1087,6 @@
           p.catch(() => {
             clearTimeout(safetyTimer);
             cleanup();
-            window.isSpeakingLive = false;
             resolve(false);
           });
         }
@@ -856,82 +1097,207 @@
     }
   }
 
-  function speakFallbackBrowserMultilingual(textToSpeak, maxDurationMs = 9500) {
-    if (window.voiceMuted || !textToSpeak || !("speechSynthesis" in window)) return;
-    try {
-      window.speechSynthesis.cancel();
-      const langCfg = window.tbbGetLangConfig();
-      const clean = enforceMax10sSpokenText(textToSpeak);
-      const u = new SpeechSynthesisUtterance(clean);
-      u.lang = langCfg.locale;
-      u.rate = 1.04;
-      u.pitch = 1.02;
-      const voices = window.speechSynthesis.getVoices() || [];
-      const langPrefix = langCfg.code.toLowerCase();
-      const preferred =
-        voices.find(v => v.lang.toLowerCase().startsWith(langPrefix) && /paulina|monica|luciana|samantha|amelie|thomas|google|natural|premium|siri/i.test(v.name)) ||
-        voices.find(v => v.lang.toLowerCase().startsWith(langPrefix));
-      if (preferred) u.voice = preferred;
-
-      const capTimer = setTimeout(() => {
-        try {
-          if (window.speechSynthesis.speaking) window.speechSynthesis.cancel();
-        } catch (e) {}
-        window.isSpeakingLive = false;
-      }, Math.min(9600, maxDurationMs));
-
-      u.onstart = () => {
-        window.isSpeakingLive = true;
-      };
-      u.onend = () => {
-        clearTimeout(capTimer);
-        window.isSpeakingLive = false;
-      };
-      u.onerror = () => {
-        clearTimeout(capTimer);
-        window.isSpeakingLive = false;
-      };
-      window.speechSynthesis.speak(u);
-    } catch (e) {
-      window.isSpeakingLive = false;
+  /**
+   * Reproductor Unificado de Cápsulas "Aura Viva" (<= 15.0s estricto, 1 Sola Voz: Aoede en el idioma activo).
+   * Sincroniza tiempo real, pausa/play, seek y pulso 60fps del Orbe 3D bajo el mutex TBBAudioDirector.
+   */
+  const AURA_VIVA_CAPSULE_TEXTS = {
+    welcome: {
+      es: "¡Hola! Soy Aura. En menos de 60 minutos crearemos tu logotipo y tu Brandbook de más de 30 páginas. ¡Empecemos!",
+      en: "Hi! I'm Aura. In under 60 minutes, we'll build your logo and your 30+ page Brandbook. Let's start right now!",
+      fr: "Salut ! Je suis Aura. En moins de 60 minutes, nous créerons ton logo et ton Brandbook de plus de 30 pages. C'est parti !",
+      pt: "Olá! Sou a Aura. Em menos de 60 minutos vamos criar o seu logótipo e o seu Brandbook com mais de 30 páginas. Vamos começar!",
+      de: "Hallo! Ich bin Aura. In unter 60 Minuten erstellen wir dein Logo und dein Brandbook mit über 30 Seiten. Legen wir los!",
+      it: "Ciao! Sono Aura. In meno di 60 minuti creeremo il tuo logo e il tuo Brandbook di oltre 30 pagine. Iniziamo subito!"
+    },
+    step_0: {
+      es: "¡Bienvenido! Aquí me cuentas en palabras sencillas qué vende o qué hace tu negocio, y si empezamos desde cero o mejoramos tu logo actual. ¡Solo te tomará un minuto!",
+      en: "Welcome! Here you simply tell me what your business sells or does, and whether we're starting from scratch or upgrading your current logo. It only takes a minute!",
+      fr: "Bienvenue ! Ici, dis-moi simplement ce que fait ton entreprise, et si on part de zéro ou si on améliore ton logo actuel. Ça prend une minute !",
+      pt: "Bem-vindo! Aqui conta-me de forma simples o que faz o seu negócio e se começamos do zero ou melhoramos o seu logo atual. Leva apenas um minuto!",
+      de: "Willkommen! Erzähl mir hier ganz einfach, was dein Unternehmen macht und ob wir neu starten oder dein aktuelles Logo verbessern. Das dauert nur eine Minute!",
+      it: "Benvenuto! Qui mi racconti in parole semplici cosa fa la tua attività, e se partiamo da zero o miglioriamo il tuo logo attuale. Ci vuole solo un minuto!"
+    },
+    step_1: {
+      es: "¡Vamos al Paso 1! Cuéntame por qué creaste tu negocio, a quién ayudas y qué te hace diferente. Si no sabes qué escribir, toca el botón de ideas o dímelo con tu voz.",
+      en: "Let's jump into Step 1! Tell me why you started your business, who you help, and what makes you special. Tap the idea button anytime or answer with your voice.",
+      fr: "Passons à l'étape 1 ! Dis-moi pourquoi tu as créé ton projet, qui tu aides et ce qui te rend unique. Touche le bouton d'idées ou réponds avec ta voix.",
+      pt: "Vamos ao Passo 1! Conta-me porque criou o seu negócio, quem ajuda e o que o torna especial. Se precisar de inspiração, toque no botão de ideias ou fale comigo.",
+      de: "Weiter zu Schritt 1! Erzähl mir, warum du gestartet bist, wem du hilfst und was dich besonders macht. Tippe einfach auf den Ideen-Button oder sprich mit mir.",
+      it: "Passiamo al Passo 1! Dimmi perché hai creato il tuo progetto, chi aiuti e cosa ti rende unico. Se vuoi un suggerimento, tocca il pulsante idee o usa la voce."
+    },
+    step_2: {
+      es: "¡Paso 2! Aquí eliges dónde te ven tus clientes antes, durante y después de comprarte, como Instagram, WhatsApp, empaques o tu local. Así diseñaremos justo lo que vas a usar.",
+      en: "Step 2! Pick where customers see you before, during, and after buying—like Instagram, WhatsApp, packaging, or your store—so we design exactly what you'll actually use.",
+      fr: "Étape 2 ! Choisis où tes clients te voient avant, pendant et après l'achat, comme Instagram, WhatsApp ou tes emballages, pour créer exactement ce qu'il te faut.",
+      pt: "Passo 2! Escolha onde os clientes veem a sua marca antes, durante e depois da compra, como Instagram, WhatsApp ou embalagens, para desenharmos tudo à sua medida.",
+      de: "Schritt 2! Wähle aus, wo Kunden dich vor, während und nach dem Kauf sehen – wie Instagram, WhatsApp oder Verpackungen – damit alles perfekt zu deinem Alltag passt.",
+      it: "Passo 2! Scegli dove ti vedono i clienti prima, durante e dopo l'acquisto, come Instagram, WhatsApp o il packaging, così creeremo esattamente ciò che ti serve."
+    },
+    step_3: {
+      es: "¡Paso 3, tu nombre y eslogan! Si ya tienes nombre, aquí afinamos tu frase ideal; y si aún no tienes, te daré opciones fáciles de recordar hechas para tu giro.",
+      en: "Step 3: your name and tagline! If you already have a name, we'll polish your slogan here; if not, I'll create catchy, memorable name ideas tailored to your business.",
+      fr: "Étape 3 : ton nom et ton slogan ! Si tu as déjà un nom, on peaufine ton slogan ; sinon, je te propose des idées simples et mémorables pour ton activité.",
+      pt: "Passo 3: o seu nome e slogan! Se já tem nome, vamos afinar a sua frase ideal; se ainda não tem, vou criar ideias fáceis de lembrar para o seu negócio.",
+      de: "Schritt 3: dein Name und Slogan! Wenn du schon einen Namen hast, verfeinern wir deinen Slogan; sonst erstelle ich einprägsame Namensideen passend zu deinem Geschäft.",
+      it: "Passo 3: nome e slogan! Se hai già un nome, perfezioniamo qui la tua frase; altrimenti creerò idee facili da ricordare pensate su misura per la tua attività."
+    },
+    step_4: {
+      es: "¡Llegamos a la parte visual en el Paso 4! Toca los ejemplos que más se parezcan al estilo que buscas y elige el tipo de letra viendo tu propio nombre en grande.",
+      en: "Welcome to the visual side in Step 4! Tap the style examples that feel most like your brand, then pick your favorite font while seeing your own brand name live.",
+      fr: "Bienvenue dans le style visuel à l'étape 4 ! Touche les exemples qui te ressemblent le plus et choisis ta police d'écriture en voyant ton propre nom s'afficher.",
+      pt: "Chegámos à parte visual no Passo 4! Toque nos exemplos que combinam mais com o seu estilo e escolha o tipo de letra vendo o seu próprio nome em destaque.",
+      de: "Jetzt wird es visuell in Schritt 4! Tippe auf die Stilbeispiele, die am besten zu dir passen, und wähle deine Lieblingsschrift direkt mit deinem eigenen Markennamen.",
+      it: "Ecco la parte visiva nel Passo 4! Tocca gli esempi più vicini al tuo stile e scegli il carattere tipografico vedendo subito il tuo nome in grande."
+    },
+    step_5: {
+      es: "¡Paso 5, tu color y tu logotipo! Elige tus colores favoritos y explora propuestas claras para tu marca. Podrás probar ajustes hasta quedar feliz con tus tres versiones finales.",
+      en: "Step 5: your colors and logo! Pick your favorite palette and explore custom logo designs for your brand. Tweak any detail until you love your final three logo versions.",
+      fr: "Étape 5 : tes couleurs et ton logo ! Choisis ta palette préférée et découvre des propositions sur mesure. Ajuste chaque détail jusqu'à adorer ton logo final.",
+      pt: "Passo 5: as suas cores e logótipo! Escolha a sua paleta favorita e explore propostas feitas para a sua marca. Ajuste cada detalhe até adorar o resultado final.",
+      de: "Schritt 5: deine Farben und dein Logo! Wähle deine Lieblingsfarben und entdecke passende Logo-Entwürfe. Passe Details einfach an, bis dein Logo perfekt sitzt.",
+      it: "Passo 5: colori e logo! Scegli la tua palette preferita ed esplora le proposte create per il tuo brand. Personalizza ogni dettaglio finché non amerai il risultato."
+    },
+    step_6: {
+      es: "¡Felicidades, tu marca está lista! Explora tu Brandbook de más de 30 páginas y descarga en un clic tus logotipos, fuentes y plantillas listas para redes e imprenta.",
+      en: "Congratulations, your brand is ready! Explore your 30+ page Brandbook and download your logos, fonts, and ready-to-use templates for social media and print in one click.",
+      fr: "Félicitations, ta marque est prête ! Découvre ton Brandbook de plus de 30 pages et télécharge en un clic tes logos, polices et modèles prêts pour le web et l'impression.",
+      pt: "Parabéns, a sua marca está pronta! Explore o seu Brandbook com mais de 30 páginas e descarregue num clique os seus logótipos, fontes e modelos prontos a usar.",
+      de: "Herzlichen Glückwunsch, deine Marke ist fertig! Entdecke dein Brandbook mit über 30 Seiten und lade Logos, Schriften und Vorlagen mit einem Klick herunter.",
+      it: "Complimenti, il tuo brand è pronto! Esplora il tuo Brandbook di oltre 30 pagine e scarica in un clic loghi, font e modelli pronti per social e stampa."
     }
-  }
+  };
+  window.TBB_AURA_VIVA_CAPSULE_TEXTS = AURA_VIVA_CAPSULE_TEXTS;
+
+  window.getAuraVivaCapsuleMeta = function (clipKeyOrStep, langOverride) {
+    const lang = SUPPORTED_LANGS[langOverride] ? langOverride : window.tbbGetLang();
+    const key = typeof clipKeyOrStep === "number" ? `step_${Math.max(0, Math.min(6, clipKeyOrStep))}` : String(clipKeyOrStep || "step_0");
+    const dict = AURA_VIVA_CAPSULE_TEXTS[key] || AURA_VIVA_CAPSULE_TEXTS.step_0;
+    return {
+      key,
+      lang,
+      url: `/assets/audio/capsules/aura_viva_${key}_${lang}.mp3?v=129.0`,
+      text: dict[lang] || dict.es
+    };
+  };
+
+  window.playAuraVivaCapsuleClip = function (clipKeyOrStep, langOverride, hooks = {}) {
+    ensureBrowserAudioUnlockedSync();
+    TBBAudioDirector.stopAll("start_aura_viva_capsule", true);
+    const myGen = TBBAudioDirector.genId;
+    const myTicket = ++TBBAudioDirector.ticketId;
+    const meta = window.getAuraVivaCapsuleMeta(clipKeyOrStep, langOverride);
+
+    const aud = new Audio(meta.url);
+    aud.preload = "auto";
+    aud.muted = Boolean(window.voiceMuted && !hooks.forceUnmute);
+    // Los clips aura_viva_*.mp3 ya vienen procesados a ritmo ágil 1.14x y <=14.5s
+    aud.defaultPlaybackRate = 1.0;
+    aud.playbackRate = 1.0;
+
+    try {
+      const ctx = window.sharedAcousticCtx;
+      if (ctx && ctx.createMediaElementSource) {
+        const mediaSrc = ctx.createMediaElementSource(aud);
+        const analyser = TBBAudioDirector.getOrCreateAnalyser(ctx);
+        if (analyser) mediaSrc.connect(analyser);
+        else mediaSrc.connect(ctx.destination);
+      }
+    } catch (e) {}
+
+    TBBAudioDirector.activeCapsuleAudio = aud;
+    TBBAudioDirector.activeHtmlAudios.add(aud);
+    TBBAudioDirector.capsuleHooks = hooks;
+
+    const maxGuardTimer = setTimeout(() => {
+      if (TBBAudioDirector.activeCapsuleAudio === aud) {
+        try { aud.pause(); } catch (e) {}
+        window.isSpeakingLive = false;
+        if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
+        if (typeof hooks.onEnded === "function") hooks.onEnded(aud);
+      }
+    }, 15200);
+
+    aud.onplay = () => {
+      if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) {
+        try { aud.pause(); } catch (e) {}
+        return;
+      }
+      window.isSpeakingLive = true;
+      if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
+    };
+    aud.onpause = () => {
+      window.isSpeakingLive = false;
+      if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
+    };
+    aud.ontimeupdate = () => {
+      if (aud.currentTime >= 15.0) {
+        try { aud.pause(); } catch (e) {}
+      }
+      if (typeof hooks.onTimeUpdate === "function") hooks.onTimeUpdate(aud);
+    };
+    aud.onended = () => {
+      clearTimeout(maxGuardTimer);
+      window.isSpeakingLive = false;
+      if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
+      if (typeof hooks.onEnded === "function") hooks.onEnded(aud);
+    };
+    aud.onerror = () => {
+      clearTimeout(maxGuardTimer);
+      window.isSpeakingLive = false;
+      if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
+    };
+
+    if (!aud.muted) {
+      aud.play().catch(() => {
+        window.isSpeakingLive = false;
+        if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
+      });
+    } else if (typeof hooks.onStateChange === "function") {
+      hooks.onStateChange(aud);
+    }
+    return aud;
+  };
 
   window.speakAuraBriefResponse = async function (text, maxDurationMs = 9500) {
     if (window.voiceMuted || !text) return;
-    // Desbloquear sincrónicamente el AudioContext en Mac/iOS en el mismo tick del clic del usuario
-    ensureBrowserAudioUnlockedSync();
-
-    const translatedText = window.tbbTranslateText ? window.tbbTranslateText(text) : text;
-    const cleanText = enforceMax10sSpokenText(translatedText);
-    if (!cleanText) return;
-
-    window.tbbStopAllAuraVoicePlayback();
-    const myReqId = ++window._tbbGeminiTtsRequestId;
-    if (typeof window.pulseAuraTopOrbActivity === "function") {
-      window.pulseAuraTopOrbActivity(4500);
-    }
-
-    const synthResult = await window.tbbSynthesizeGeminiTTSWav(cleanText, {
-      lang: window.tbbGetLang(),
-      voiceName: window.tbbGeminiVoiceName || "Aoede",
-      maxDurationSec: Math.min(9.5, maxDurationMs / 1000)
-    });
-
-    if (myReqId !== window._tbbGeminiTtsRequestId || window.voiceMuted) return;
-
-    if (synthResult && synthResult.wavBytes) {
-      const played = await playWavBytesInBrowser(synthResult.wavBytes, maxDurationMs);
-      if (played) {
-        console.log(`[TBB Aura Voice] Gemini neural TTS (${synthResult.modelUsed || "gemini-tts"}, ${synthResult.voiceName || "Aoede"}) played successfully.`);
+    // Regla estricta: si la cápsula de transición está abierta, prohibido hablar encima de ella
+    if (typeof document !== "undefined") {
+      const capModal = document.getElementById("phaseTransitionVideoModal");
+      const webCapModal = document.getElementById("tbbVideoPopupModalOverlay");
+      if ((capModal && capModal.classList.contains("open")) || (webCapModal && webCapModal.classList.contains("is-open"))) {
         return;
       }
     }
 
-    if (myReqId === window._tbbGeminiTtsRequestId && !window.voiceMuted && window._tbbAllowBrowserTtsFallback === true) {
-      speakFallbackBrowserMultilingual(cleanText, maxDurationMs);
-    } else {
-      console.warn("[TBB Aura Voice] Gemini voice synthesis active; robotic browser fallback quarantined.");
+    ensureBrowserAudioUnlockedSync();
+    const translatedText = window.tbbTranslateText ? window.tbbTranslateText(text) : text;
+    const cleanText = enforceMax10sSpokenText(translatedText);
+    if (!cleanText) return;
+
+    TBBAudioDirector.stopAll("new_aura_brief", false);
+    const myGenId = TBBAudioDirector.genId;
+    const myReqId = ++TBBAudioDirector.ticketId;
+    window._tbbGeminiTtsRequestId = myReqId;
+
+    const synthResult = await window.tbbSynthesizeGeminiTTSWav(cleanText, {
+      lang: window.tbbGetLang(),
+      voiceName: "Aoede",
+      maxDurationSec: Math.min(9.5, maxDurationMs / 1000),
+      genId: myGenId,
+      ticketId: myReqId
+    });
+
+    if (myGenId !== TBBAudioDirector.genId || myReqId !== TBBAudioDirector.ticketId || window.voiceMuted) {
+      return;
+    }
+
+    if (synthResult && synthResult.wavBytes) {
+      await playWavBytesInBrowser(synthResult.wavBytes, maxDurationMs, {
+        genId: myGenId,
+        ticketId: myReqId,
+        playbackRate: AURA_DIALOGUE_PLAYBACK_RATE
+      });
     }
   };
 
@@ -947,12 +1313,12 @@
     ensureBrowserAudioUnlockedSync();
     const lang = window.tbbGetLang();
     const samples = {
-      es: "Hola, soy Aura con la nueva voz neural de Gemini. Como afirma Marty Neumeier, una marca clara crea confianza inmediata.",
-      en: "Hello, I am Aura speaking with Gemini's native neural voice. As Marty Neumeier notes, a clear brand builds instant trust.",
-      pt: "Olá, sou a Aura com a nova voz neural do Gemini. Como afirma Marty Neumeier, uma marca clara gera confiança imediata.",
-      fr: "Bonjour, je suis Aura avec la voix neurale native de Gemini. Comme l'affirme Marty Neumeier, une marque claire inspire confiance.",
-      de: "Hallo, ich bin Aura mit der nativen neuronalen Stimme von Gemini. Wie Marty Neumeier sagt, schafft eine klare Marke sofortiges Vertrauen.",
-      it: "Ciao, sono Aura con la voce neurale nativa di Gemini. Come afferma Marty Neumeier, un brand chiaro genera fiducia immediata."
+      es: "¡Hola! Soy Aura. Juntos crearemos tu marca profesional y tu Brandbook en menos de sesenta minutos.",
+      en: "Hi! I'm Aura. Together we'll build your brand and your Brandbook in under sixty minutes.",
+      pt: "Olá! Sou a Aura. Juntos vamos criar a sua marca e o seu Brandbook em menos de sessenta minutos.",
+      fr: "Salut ! Je suis Aura. Ensemble, nous allons créer ta marque et ton Brandbook en moins de soixante minutes.",
+      de: "Hallo! Ich bin Aura. Gemeinsam erstellen wir deine Marke und dein Brandbook in unter sechzig Minuten.",
+      it: "Ciao! Sono Aura. Insieme creeremo il tuo brand e il tuo Brandbook in meno di sessanta minuti."
     };
     const msg = samples[lang] || samples.es;
     if (typeof window.updateAuraTopPresenceDOM === "function") {
@@ -1184,438 +1550,249 @@
    * Bancos de respuestas breves de Aura (<= 10s) con autores de referencia para EN, PT y FR
    */
   const AURA_POOLS_BY_LANG = {
-    en: {
+    es: {
       "substep_0_1": [
-        "As Peter Drucker teaches, defining your initial objective gives immediate strategic direction to {brand}.",
-        "According to Marty Neumeier, a clear brand starts by choosing its exact growth goal today.",
-        "As David Aaker states, building brand equity begins with a well-defined strategic objective."
+        "¡Excelente inicio! Elijamos qué quieres lograr hoy para darle rumbo claro a {brand}.",
+        "¡Vamos con todo! En menos de sesenta minutos tendrás lista la identidad de {brand}."
       ],
       "substep_0_2": [
-        "According to Sagi Haviv, if you already have a name or logo we can preserve or evolve it with precision.",
-        "As David Aaker explains, leveraging your current assets protects the recognition earned by {brand}.",
-        "Following Al Ries, a firm name or base logo accelerates positioning in the customer's mind."
+        "Si ya tienes nombre o logo lo cuidamos; y si no, aquí lo creamos juntos.",
+        "¡Perfecto! Con esto sabremos si partimos de cero o mejoramos lo que ya tienes."
       ],
       "substep_0_3": [
-        "As Al Ries states, describing your business sector simply defines your unique category in the market.",
-        "According to Peter Drucker, understanding what you deliver and for whom is the foundation of all strategy.",
-        "As Marty Neumeier notes, your real specialty differentiates {brand} right away."
+        "Cuéntame en tus palabras qué hace {brand} y a quién ayudas todos los días.",
+        "Entre más claro me cuentes qué vendes, mejor adaptaré cada detalle para tu giro."
       ],
       "substep_1_1": [
-        "As Simon Sinek explains in The Golden Circle, people buy why {brand} exists.",
-        "According to Simon Sinek, starting with your core purpose inspires authentic loyalty beyond the product.",
-        "As David Aaker teaches, a genuine purpose guides every strategic and visual decision of {brand}."
+        "Cuéntame por qué creaste {brand} y qué te emociona lograr por tus clientes.",
+        "Cuando la gente entiende por qué existe {brand}, conecta contigo de inmediato."
       ],
       "substep_1_2": [
-        "According to Alex Osterwalder, a clear value proposition prevents {brand} from competing on price.",
-        "As Michael Porter highlights, differentiating with precision makes {brand} irreplaceable in its market.",
-        "Following Alex Osterwalder, let's articulate the unique advantage for which customers choose you."
+        "¿Qué hace especial a {brand} para que te elijan a ti antes que a otros?",
+        "Piensa en ese detalle único que tus clientes siempre agradecen cuando te compran."
       ],
       "substep_1_3": [
-        "As Philip Kotler points out, memorable brands positively transform their customers' daily lives.",
-        "According to Donald Miller, when you show how you improve your customer's day, {brand} transcends.",
-        "As Simon Sinek states, serving with empathy builds trust relationships that last for years."
+        "¿Cómo le haces la vida más fácil o mejor a quien confía en {brand}?",
+        "Dime qué problema le quitas de encima a tu cliente desde el primer día."
       ],
       "substep_1_4": [
-        "According to Donald Miller in StoryBrand, summarizing your method in three steps removes buying friction.",
-        "As Don Norman explains, a clear process conveys immediate certainty and professionalism for {brand}.",
-        "Following Donald Miller, three simple steps give complete confidence to your future customer."
+        "¿Cómo describirías el carácter de {brand} si fuera una persona de confianza?",
+        "Definir el tono cercano o experto de {brand} hará que tus mensajes suenen auténticos."
       ],
       "substep_1_5": [
-        "As Al Ries teaches in Positioning, a brief promise conquers a unique place in the mind.",
-        "According to Marty Neumeier, synthesizing your core message into one clear phrase multiplies {brand}'s impact.",
-        "As Donald Miller affirms, verbal clarity makes it easy for customers to recommend {brand}."
-      ],
-      "substep_1_6": [
-        "According to Jennifer Aaker, defining {brand}'s personality creates human affinity and character.",
-        "As Carl Jung explains with his archetypes, tone of voice connects emotionally with your audience.",
-        "Following David Aaker, giving human character to {brand} makes every message coherent."
-      ],
-      "substep_1_7": [
-        "As Seth Godin affirms, deeply knowing your ideal customer gives meaning to the entire strategy.",
-        "According to Alex Osterwalder, empathizing with what your customer values aligns every detail of {brand}.",
-        "As Peter Drucker notes, the essential purpose of every company is to understand and serve its customer."
+        "¿Quién es el cliente ideal que más valora lo que entregas en {brand}?",
+        "Conocer bien a tu cliente ideal nos ayuda a hablarle directo y sin rodeos."
       ],
       "substep_2_1": [
-        "According to Lemon and Verhoef, pre-purchase touchpoints build the first impression of {brand}.",
-        "As Jan Carlzon teaches, the first moment of truth sparks initial trust toward your brand.",
-        "Following Philip Kotler, choosing where customers discover you ensures strategic visibility for {brand}."
+        "Elige dónde te descubren tus clientes antes de comprarte, como redes o recomendaciones.",
+        "Saber dónde te ven primero nos permite diseñar justo lo que {brand} necesita."
       ],
       "substep_2_2": [
-        "As Jan Carlzon points out, direct contact during purchase is your decisive moment of truth.",
-        "According to Don Norman, removing friction during your service turns {brand}'s promise into reality.",
-        "As Lemon and Verhoef explain, caring for the core experience consolidates {brand}'s prestige."
+        "¿Dónde vive tu cliente el momento principal de compra o servicio con {brand}?",
+        "Cuidar el momento de entrega hace que comprar en {brand} se sienta súper fácil."
       ],
       "substep_2_3": [
-        "According to Don Norman, post-delivery follow-up turns every customer into a loyal ambassador.",
-        "As Lemon and Verhoef demonstrate, the post-sale stage multiplies retention and value for {brand}.",
-        "Following Jan Carlzon, thoughtful follow-up after purchase leaves an unforgettable mark."
+        "¿Cómo sigues cerca de tu cliente después de comprar para que quiera volver?",
+        "Un buen seguimiento convierte a cada comprador feliz en fan de {brand}."
       ],
       "substep_3_1": [
-        "As Alexandra Watkins explains in the SMILE model, a great name is born from meaningful roots.",
-        "According to Alina Wheeler, connecting your strategy with your verbal identity gives legal strength to {brand}.",
-        "As David Placek teaches, the right phonetic roots project {brand}'s essence immediately."
+        "Elige el estilo de nombre que mejor suena para {brand} y yo creo opciones.",
+        "Vamos por un nombre fácil de decir, recordar y recomendar para tu negocio."
       ],
       "substep_3_2": [
-        "According to David Placek, founder of Lexicon, two- or three-syllable phonetic symbolism maximizes recall.",
-        "As Alexandra Watkins states, choose the name that sparks a clear image and instant emotion.",
-        "Following Al Ries, a resonant and brief name facilitates positioning for {brand}."
+        "Toca el nombre que más te guste o escúchalo en voz alta antes de decidir.",
+        "Elige el nombre que te haga sentir orgullo cada vez que presentes tu proyecto."
       ],
       "substep_3_3": [
-        "As Alina Wheeler highlights, pairing {brand} with a clear descriptor communicates your value in seconds.",
-        "According to Alexandra Watkins, your name and slogan now form a verbal identity ready for registration.",
-        "As David Aaker teaches, a precise descriptor reinforces {brand}'s authority in its category."
+        "¡Gran elección! Ahora confirmemos una frase corta que explique rápido qué hace {brand}.",
+        "Tu nombre y tu eslogan ya dejan clarísimo el valor de {brand} en segundos."
       ],
       "substep_4_1": [
-        "According to Mitsuo Nagamachi and Kansei Engineering, we translate emotions into exact geometric parameters for {brand}.",
-        "As Vilayanur Ramachandran explains, curves evoke warmth while angles project technical precision.",
-        "Following Charles Osgood, these semantic axes calibrate the exact visual atmosphere of {brand}."
+        "Toca el ejemplo visual que más se parezca al estilo que imaginas para {brand}.",
+        "Con estas comparaciones rápidas descubrimos el estilo exacto que va con tu marca."
       ],
       "substep_4_2": [
-        "As Charles Osgood demonstrated with the semantic differential, balancing tradition and vanguard defines your visual character.",
-        "According to Mitsuo Nagamachi, each slider adjusts the emotional response that {brand}'s symbol will awaken.",
-        "As Don Norman notes, visceral design communicates trust before reading a single word."
+        "¿Prefieres que {brand} se vea más clásico y serio o más moderno y cercano?",
+        "Cada elección ajusta las formas de tu futuro logotipo a tu gusto real."
       ],
       "substep_4_3": [
-        "According to Max Wertheimer and Gestalt psychology, the eye remembers forms with clear synthesis best.",
-        "As Paul Rand teaches, calibrating geometric simplicity prepares {brand} for any scale.",
-        "Following Mitsuo Nagamachi, these seven axes complete the master blueprint of your visual identity."
+        "¡Casi listos con el estilo! Elige las formas que sientas más naturales para {brand}.",
+        "Un estilo claro hace que la gente reconozca a {brand} de un solo vistazo."
       ],
       "substep_4_4": [
-        "As Robert Bringhurst wrote, typography is visible language that gives voice and authority to {brand}.",
-        "According to Adrian Frutiger, the structure of each letter determines legibility on screen and in print.",
-        "As Massimo Vignelli affirms, choosing a noble typeface family sustains {brand}'s entire system."
+        "Mira cómo luce el nombre de {brand} en distintos tipos de letra y elige tu favorito.",
+        "Una buena letra se lee fácil en tu celular, en redes y también impresa."
       ],
       "substep_4_5": [
-        "According to Sagi Haviv, a simple and distinctive base structure is the foundation of every great symbol.",
-        "As Paul Rand teaches, defining this visual seed gives us a solid starting point for {brand}.",
-        "Following Adrian Frutiger, base geometry orders the mark before entering the generative studio."
+        "¿Cómo te imaginas tu logo: con iniciales, con un ícono claro o tipo sello?",
+        "Esta idea base nos servirá para diseñar propuestas hechas a la medida de {brand}."
       ],
       "substep_5_1": [
-        "As Josef Albers demonstrated in Interaction of Color, the palette awakens emotion before words do.",
-        "According to Jony Ive, material finish and light refraction give tactile presence to {brand}'s symbol.",
-        "As Sagi Haviv affirms, if you uploaded a base logo we will honor its colors and essence as we evolve it."
+        "Elige los colores que transmitan la energía y confianza que buscas para {brand}.",
+        "Tus colores harán que {brand} destaque al instante en redes, empaques y web."
       ],
       "substep_5_2": [
-        "Following Paul Rand and Sagi Haviv, iterate freely until {brand}'s symbol becomes unforgettable.",
-        "As Jony Ive teaches, refining every curve and proportion in 1:1 view elevates design excellence.",
-        "According to Max Wertheimer, figure-ground contrast on your canvas guarantees impact on any medium."
+        "Explora tus propuestas de logotipo y pide cualquier ajuste hasta que te encante.",
+        "Revisa cómo se ve {brand} tanto en formato horizontal como en ícono para redes."
       ],
       "substep_6_1": [
-        "As Massimo Vignelli taught, a modular grid manual protects {brand}'s coherence across every plate.",
-        "According to Josef Müller-Brockmann, the geometric order of these thirty plates projects world-class editorial rigor.",
-        "Following Alina Wheeler, here your strategy, logo, and official applications converge."
+        "¡Lo lograste! Aquí tienes tu Brandbook de más de treinta páginas listo para revisar.",
+        "Explora cada página de {brand}: tus logos, colores y ejemplos reales ya están listos."
       ],
       "substep_6_2": [
-        "As Danne and Blackburn established in the NASA manual, your vectors ensure flawless reproduction.",
-        "According to Massimo Vignelli, downloading your complete Brandbook guarantees visual discipline for {brand}'s future.",
-        "As Alina Wheeler states, delivering production-ready vector files culminates a successful identity."
+        "Descarga todo tu paquete en un clic y empieza a presumir {brand} hoy mismo.",
+        "Todos tus archivos están listos para subir a redes o enviar directo a imprenta."
       ],
       "default": [
-        "As David Aaker teaches, every adjustment in {brand} strengthens the coherence and value of your identity.",
-        "According to Simon Sinek, maintaining clarity in this step connects {brand}'s purpose with your audience.",
-        "As Sagi Haviv states, simplicity and consistency make {brand} memorable across every touchpoint.",
-        "Following Massimo Vignelli, this decision brings order, discipline, and elegance to {brand}'s system."
+        "¡Muy buen avance! Cada respuesta deja más clara y profesional la identidad de {brand}.",
+        "¡Sigue así! Estamos armando paso a paso el manual completo de {brand}."
+      ]
+    },
+    en: {
+      "substep_0_1": [
+        "Great start! Pick your goal today so we build {brand} in under sixty minutes.",
+        "Let's go! Tell me how you want to start building {brand} right now."
+      ],
+      "substep_0_2": [
+        "If you already have a name or logo we'll upgrade it, or create one fresh.",
+        "Awesome! Let me know if {brand} already has a name or needs new ideas."
+      ],
+      "substep_0_3": [
+        "Tell me in simple words what {brand} sells or does and who you help.",
+        "The clearer you describe your business, the better I'll tailor everything for {brand}."
+      ],
+      "substep_1_1": [
+        "Why did you start {brand}, and how do you make life better for customers?",
+        "When people understand why {brand} exists, they trust you right away."
+      ],
+      "substep_1_2": [
+        "What makes {brand} special so customers pick you over anyone else?",
+        "Think about the top thing customers love most when buying from {brand}."
+      ],
+      "substep_1_3": [
+        "What everyday problem do you solve quickly and easily for your customers?",
+        "Showing how you help in plain words makes {brand} super easy to recommend."
+      ],
+      "substep_1_4": [
+        "If {brand} were a friendly, trusted person, how would it talk and act?",
+        "Choosing a clear tone helps {brand} sound authentic everywhere you show up."
+      ],
+      "substep_1_5": [
+        "Who is the ideal customer who gets the most value from {brand}?",
+        "Knowing who you're talking to makes every design choice for {brand} click."
+      ],
+      "substep_2_1": [
+        "Pick where people first discover {brand}, like Instagram, search, or word of mouth.",
+        "Knowing where customers find you helps us design what {brand} actually needs."
+      ],
+      "substep_2_2": [
+        "Where does the main buying or service experience happen with {brand}?",
+        "Making purchase and delivery smooth turns first-time buyers into fans of {brand}."
+      ],
+      "substep_2_3": [
+        "How do you stay in touch after the sale so customers come back?",
+        "Great follow-up keeps {brand} top of mind and sparks easy referrals."
+      ],
+      "substep_3_1": [
+        "Pick the naming vibe you like best and I'll generate tailored options.",
+        "Let's find a short, catchy name that's easy to say and remember."
+      ],
+      "substep_3_2": [
+        "Tap your favorite name idea or listen to how it sounds out loud.",
+        "Choose the name that makes you proud every time you share your business."
+      ],
+      "substep_3_3": [
+        "Love that name! Now let's lock in a short tagline explaining what {brand} does.",
+        "Your name and tagline now explain {brand}'s value in just a few seconds."
+      ],
+      "substep_4_1": [
+        "Tap the visual example that feels closest to the vibe you want for {brand}.",
+        "These quick visual picks shape the exact look and feel of {brand}."
+      ],
+      "substep_4_2": [
+        "Should {brand} feel more modern and bold, or classic and timeless?",
+        "Every tap tunes your future logo shapes to match your real taste."
+      ],
+      "substep_4_3": [
+        "Almost there! Pick whether {brand} fits softer curves or crisp clean lines.",
+        "A clear style makes {brand} recognizable at a glance on any screen."
+      ],
+      "substep_4_4": [
+        "See your own brand name live in each font style and pick your favorite.",
+        "Great fonts stay super easy to read on phones, social media, and print."
+      ],
+      "substep_4_5": [
+        "How do you picture {brand}'s logo: initials, a clean icon, or a badge?",
+        "This simple choice gives us the exact starting point for your custom logo."
+      ],
+      "substep_5_1": [
+        "Pick the color palette that brings the right energy and trust to {brand}.",
+        "Your colors will help {brand} stand out instantly on social media and packaging."
+      ],
+      "substep_5_2": [
+        "Explore your custom logo options and ask for any tweak until you love it.",
+        "Check how {brand} looks both horizontally and as a square social icon."
+      ],
+      "substep_6_1": [
+        "You did it! Your thirty-plus page Brandbook for {brand} is ready to explore.",
+        "Flip through every page—your logos, colors, and real mockups are all set."
+      ],
+      "substep_6_2": [
+        "Download your full brand pack in one click and launch {brand} today!",
+        "Every file is ready for social media, your website, and professional printing."
+      ],
+      "default": [
+        "Awesome progress! Every answer makes {brand} clearer, sharper, and ready to launch.",
+        "Keep going! Your complete Brandbook for {brand} is coming together fast."
       ]
     },
     pt: {
-      "substep_0_1": [
-        "Como ensina Peter Drucker, definir seu objetivo inicial dá direção estratégica imediata para {brand}.",
-        "Segundo Marty Neumeier, uma marca clara começa escolhendo com precisão sua meta de crescimento hoje."
-      ],
-      "substep_0_2": [
-        "Segundo Sagi Haviv, se você já tem nome ou logo podemos conservá-lo ou evoluí-lo com precisão.",
-        "Como explica David Aaker, aproveitar seus ativos atuais protege o reconhecimento conquistado por {brand}."
-      ],
-      "substep_0_3": [
-        "Como afirma Al Ries, descrever seu setor com simplicidade define sua categoria única no mercado.",
-        "Segundo Peter Drucker, entender o que você entrega e para quem é a base de toda estratégia."
-      ],
-      "substep_1_1": [
-        "Como explica Simon Sinek no Círculo Dourado, as pessoas compram o porquê {brand} existe.",
-        "Segundo David Aaker, um propósito genuíno guia cada decisão estratégica e visual de {brand}."
-      ],
-      "substep_2_1": [
-        "Segundo Lemon e Verhoef, os pontos de contato antes da compra constroem a primeira impressão de {brand}.",
-        "Como ensina Jan Carlzon, o primeiro momento da verdade desperta a confiança inicial em sua marca."
-      ],
-      "substep_3_1": [
-        "Como explica Alexandra Watkins no modelo SMILE, um grande nome nasce de raízes com significado.",
-        "Segundo Alina Wheeler, conectar sua estratégia à identidade verbal dá solidez legal para {brand}."
-      ],
-      "substep_4_1": [
-        "Segundo Mitsuo Nagamachi e a Engenharia Kansei, traduzimos emoções em parâmetros geométricos para {brand}.",
-        "Como escreveu Robert Bringhurst, a tipografia é a linguagem visível que dá voz e autoridade para {brand}."
-      ],
-      "substep_5_1": [
-        "Como demonstrou Josef Albers em A Interação da Cor, a paleta desperta emoção antes das palavras.",
-        "Seguindo Paul Rand e Sagi Haviv, itere livremente até que o símbolo de {brand} seja inesquecível."
-      ],
-      "substep_6_1": [
-        "Como ensinou Massimo Vignelli, um manual em grade modular protege a coerência de {brand} em cada lâmina.",
-        "Segundo Josef Müller-Brockmann, a ordem geométrica destas trinta lâminas projeta rigor editorial mundial."
-      ],
-      "default": [
-        "Como ensina David Aaker, cada ajuste em {brand} fortalece a coerência e o valor da sua identidade.",
-        "Segundo Simon Sinek, manter a clareza neste passo conecta o propósito de {brand} com seu público.",
-        "Como afirma Sagi Haviv, a simplicidade e consistência tornam {brand} memorável em qualquer suporte."
-      ]
+      "substep_0_1": ["Ótimo começo! Escolha o que quer alcançar hoje para criarmos {brand} rapidinho."],
+      "substep_0_2": ["Se já tem nome ou logo nós melhoramos; se não tiver, criamos juntos agora."],
+      "substep_0_3": ["Conte de forma simples o que {brand} faz ou vende e quem você ajuda."],
+      "substep_1_1": ["Por que você criou {brand} e como melhora o dia dos seus clientes?"],
+      "substep_2_1": ["Escolha onde seus clientes descobrem {brand}, como Instagram, WhatsApp ou indicação."],
+      "substep_3_1": ["Escolha o estilo de nome que mais combina com {brand} para gerarmos ideias."],
+      "substep_4_1": ["Toque no exemplo visual mais parecido com o estilo que imagina para {brand}."],
+      "substep_5_1": ["Escolha as cores que transmitem a energia e confiança certas para {brand}."],
+      "substep_6_1": ["Parabéns! O seu Brandbook com mais de trinta páginas de {brand} está pronto."],
+      "default": ["Excelente avanço! Cada escolha deixa {brand} mais clara e profissional."]
     },
     fr: {
-      "substep_0_1": [
-        "Comme l'enseigne Peter Drucker, définir votre objectif initial donne une direction stratégique immédiate à {brand}.",
-        "Selon Marty Neumeier, une marque claire commence par choisir avec précision son objectif de croissance."
-      ],
-      "substep_0_2": [
-        "Selon Sagi Haviv, si vous avez déjà un nom ou un logo, nous pouvons le conserver ou le faire évoluer.",
-        "Comme l'explique David Aaker, valoriser vos actifs actuels protège la notoriété acquise par {brand}."
-      ],
-      "substep_0_3": [
-        "Comme l'affirme Al Ries, décrire votre activité simplement définit votre catégorie unique sur le marché.",
-        "Selon Peter Drucker, comprendre ce que vous offrez et pour qui est la base de toute stratégie."
-      ],
-      "substep_1_1": [
-        "Comme l'explique Simon Sinek dans Le Cercle d'Or, les gens achètent le pourquoi {brand} existe.",
-        "Selon David Aaker, une raison d'être authentique guide chaque décision stratégique et visuelle de {brand}."
-      ],
-      "substep_2_1": [
-        "Selon Lemon et Verhoef, les points de contact avant l'achat bâtissent la première impression de {brand}.",
-        "Comme l'enseigne Jan Carlzon, le premier moment de vérité éveille la confiance initiale envers votre marque."
-      ],
-      "substep_3_1": [
-        "Comme l'explique Alexandra Watkins dans le modèle SMILE, un grand nom naît de racines porteuses de sens.",
-        "Selon Alina Wheeler, relier votre stratégie à votre identité verbale donne une solidité juridique à {brand}."
-      ],
-      "substep_4_1": [
-        "Selon Mitsuo Nagamachi et l'Ingénierie Kansei, nous traduisons les émotions en paramètres géométriques pour {brand}.",
-        "Comme l'a écrit Robert Bringhurst, la typographie est le langage visible qui donne voix et autorité à {brand}."
-      ],
-      "substep_5_1": [
-        "Comme l'a démontré Josef Albers dans L'Interaction des couleurs, la palette éveille l'émotion avant les mots.",
-        "Suivant Paul Rand et Sagi Haviv, itérez librement jusqu'à ce que le symbole de {brand} soit inoubliable."
-      ],
-      "substep_6_1": [
-        "Comme l'a enseigné Massimo Vignelli, un manuel en grille modulaire protège la cohérence de {brand} sur chaque planche.",
-        "Selon Josef Müller-Brockmann, l'ordre géométrique de ces trente planches projette une rigueur éditoriale mondiale."
-      ],
-      "default": [
-        "Comme l'enseigne David Aaker, chaque ajustement dans {brand} renforce la cohérence et la valeur de votre identité.",
-        "Selon Simon Sinek, maintenir la clarté à cette étape relie la raison d'être de {brand} à votre audience.",
-        "Comme l'affirme Sagi Haviv, la simplicité et la cohérence rendent {brand} mémorable sur tout support."
-      ]
+      "substep_0_1": ["Super départ ! Choisis ton objectif pour créer {brand} en moins de soixante minutes."],
+      "substep_0_2": ["Si tu as déjà un nom ou un logo on l'améliore, sinon on le crée ensemble."],
+      "substep_0_3": ["Dis-moi avec des mots simples ce que propose {brand} et qui tu aides."],
+      "substep_1_1": ["Pourquoi as-tu lancé {brand} et comment simplifies-tu la vie de tes clients ?"],
+      "substep_2_1": ["Choisis où tes clients découvrent {brand}, comme Instagram, WhatsApp ou ta boutique."],
+      "substep_3_1": ["Choisis le style de nom qui te plaît pour générer des idées pour {brand}."],
+      "substep_4_1": ["Touche l'exemple visuel qui correspond le mieux à l'ambiance de {brand}."],
+      "substep_5_1": ["Choisis les couleurs qui donnent la bonne énergie à {brand}."],
+      "substep_6_1": ["Bravo ! Ton Brandbook de plus de trente pages pour {brand} est prêt."],
+      "default": ["Très belle avancée ! Chaque réponse rend {brand} plus claire et professionnelle."]
     },
     de: {
-      "substep_0_1": [
-        "Wie Peter Drucker lehrt, gibt die klare Definition deines Startziels {brand} sofortige strategische Richtung.",
-        "Laut Marty Neumeier beginnt eine starke Marke damit, ihr genaues Wachstumsziel heute klar zu wählen."
-      ],
-      "substep_0_2": [
-        "Nach Paul Rand gibt uns dein aktueller Name oder dein bestehendes Logo eine klare visuelle Synthese voller Bedeutung.",
-        "Wie Sagi Haviv erklärt, können wir deinen bestehenden Namen oder dein Logo bewahren oder präzise weiterentwickeln."
-      ],
-      "substep_0_3": [
-        "Wie Al Ries betont, definiert eine einfache Beschreibung deiner Branche deine einzigartige Kategorie im Markt.",
-        "Nach Peter Drucker ist das Verständnis dessen, was du für wen lieferst, das Fundament jeder Strategie."
-      ],
-      "substep_1_1": [
-        "Wie Simon Sinek im Golden Circle zeigt, kaufen Menschen warum {brand} existiert.",
-        "Nach David Aaker leitet ein echter Unternehmenszweck jede strategische und visuelle Entscheidung von {brand}."
-      ],
-      "substep_1_2": [
-        "Laut Alex Osterwalder verhindert ein klares Wertversprechen, dass {brand} nur über den Preis konkurriert.",
-        "Wie Michael Porter hervorhebt, macht präzise Differenzierung {brand} in seinem Markt unersetzlich."
-      ],
-      "substep_1_3": [
-        "Wie Philip Kotler zeigt, verändern unvergessliche Marken den Alltag ihrer Kunden nachhaltig positiv.",
-        "Nach Donald Miller wächst {brand}, wenn du klar zeigst, wie du das Leben deines Kunden verbesserst."
-      ],
-      "substep_1_4": [
-        "Laut Donald Miller in StoryBrand baut eine klare 3-Schritte-Methode jede Kaufhürde ab.",
-        "Wie Don Norman erklärt, vermittelt ein klarer Prozess sofortige Sicherheit und Professionalität für {brand}."
-      ],
-      "substep_1_5": [
-        "Wie Al Ries in Positioning lehrt, erobert ein kurzes Markenversprechen einen festen Platz im Kopf.",
-        "Nach Marty Neumeier vervielfacht ein klarer Kernsatz die Wirkung von {brand}."
-      ],
-      "substep_1_6": [
-        "Nach Jennifer Aaker schafft die klare Persönlichkeit von {brand} menschliche Nähe und Charakter.",
-        "Wie Carl Jung mit seinen Archetypen zeigt, verbindet der richtige Tonfall emotional mit deinem Publikum."
-      ],
-      "substep_1_7": [
-        "Wie Seth Godin betont, gibt das tiefe Verständnis deines Idealkunden der gesamten Strategie Sinn.",
-        "Nach Alex Osterwalder richtet Empathie für deinen Kunden jedes Detail von {brand} präzise aus."
-      ],
-      "substep_2_1": [
-        "Nach Lemon und Verhoef prägen die Touchpoints vor dem Kauf den ersten Eindruck von {brand}.",
-        "Wie Jan Carlzon lehrt, weckt der erste Moment der Wahrheit das initiale Vertrauen in deine Marke."
-      ],
-      "substep_2_2": [
-        "Wie Jan Carlzon betont, ist der direkte Kontakt während des Kaufs dein entscheidender Moment der Wahrheit.",
-        "Nach Don Norman macht der Abbau von Reibung im Service das Versprechen von {brand} erlebbar."
-      ],
-      "substep_2_3": [
-        "Nach Don Norman verwandelt eine exzellente Nachbetreuung jeden Kunden in einen treuen Botschafter.",
-        "Wie Lemon und Verhoef zeigen, steigert die Phase nach dem Kauf die Kundenbindung von {brand}."
-      ],
-      "substep_3_1": [
-        "Wie Alexandra Watkins im SMILE-Modell erklärt, entsteht ein großer Name aus bedeutungsvollen Wurzeln.",
-        "Nach Alina Wheeler verleiht die Verbindung von Strategie und Naming {brand} rechtliche Stärke."
-      ],
-      "substep_3_2": [
-        "Nach David Placek maximiert ein prägnanter Klang von zwei bis drei Silben die Merkfähigkeit.",
-        "Wie Al Ries zeigt, erleichtert ein klangvoller, kurzer Name die Positionierung von {brand}."
-      ],
-      "substep_3_3": [
-        "Wie Alina Wheeler betont, erklärt ein präziser Slogan den Wert von {brand} in wenigen Sekunden.",
-        "Nach Alexandra Watkins bilden Name und Slogan nun eine schutzfähige verbale Identität."
-      ],
-      "substep_4_1": [
-        "Nach Mitsuo Nagamachi und Kansei Engineering übersetzen wir Emotionen in exakte Geometrie für {brand}.",
-        "Wie Charles Osgood zeigte, kalibrieren diese Achsen die visuelle Atmosphäre von {brand}."
-      ],
-      "substep_4_2": [
-        "Nach Charles Osgood definiert die Balance zwischen Tradition und Avantgarde deinen visuellen Charakter.",
-        "Wie Don Norman betont, kommuniziert viszerales Design Vertrauen noch vor dem ersten gelesenen Wort."
-      ],
-      "substep_4_3": [
-        "Nach Max Wertheimer und der Gestaltpsychologie merkt sich das Auge klare geometrische Synthese am besten.",
-        "Wie Paul Rand lehrt, bereitet geometrische Einfachheit {brand} auf jede Skalierung vor."
-      ],
-      "substep_4_4": [
-        "Wie Robert Bringhurst schrieb, ist Typografie sichtbare Sprache, die {brand} Stimme und Autorität verleiht.",
-        "Nach Massimo Vignelli trägt eine edle Schriftfamilie das gesamte visuelle System von {brand}."
-      ],
-      "substep_4_5": [
-        "Nach Sagi Haviv ist eine einfache, unverwechselbare Grundstruktur das Fundament jedes großen Symbols.",
-        "Wie Paul Rand lehrt, gibt uns diese visuelle Keimzelle einen starken Startpunkt für {brand}."
-      ],
-      "substep_5_1": [
-        "Wie Josef Albers in Interaction of Color zeigte, weckt die Farbpalette Emotionen noch vor Worten.",
-        "Nach Jony Ive verleihen Materialität und Lichtbrechung dem Symbol von {brand} greifbare Präsenz."
-      ],
-      "substep_5_2": [
-        "Nach Paul Rand und Sagi Haviv iterieren wir frei, bis das Symbol von {brand} unvergesslich ist.",
-        "Wie Jony Ive lehrt, hebt die Verfeinerung jeder Kurve im 1:1-Format die Designqualität auf Höchstniveau."
-      ],
-      "substep_6_1": [
-        "Wie Massimo Vignelli lehrte, schützt ein modulares Handbuch die Kohärenz von {brand} auf jeder Tafel.",
-        "Nach Josef Müller-Brockmann strahlt die geometrische Ordnung dieser über 30 Seiten höchste editorische Präzision aus."
-      ],
-      "substep_6_2": [
-        "Wie Danne und Blackburn im NASA-Handbuch zeigten, sichern deine Vektordateien perfekte Reproduktion.",
-        "Nach Alina Wheeler krönt die Übergabe produktionsfertiger Dateien eine erfolgreiche Markenidentität."
-      ],
-      "default": [
-        "Wie David Aaker lehrt, stärkt jede Feinabstimmung in {brand} die Kohärenz und den Wert deiner Identität.",
-        "Nach Simon Sinek verbindet Klarheit in diesem Schritt den Zweck von {brand} direkt mit deinem Publikum.",
-        "Wie Sagi Haviv betont, machen Einfachheit und Konsistenz {brand} auf jedem Medium unverwechselbar."
-      ]
+      "substep_0_1": ["Toller Start! Wähle dein Ziel, damit wir {brand} in unter sechzig Minuten erstellen."],
+      "substep_0_2": ["Hast du schon Namen oder Logo, verbessern wir sie – sonst starten wir neu."],
+      "substep_0_3": ["Erzähl mir ganz einfach, was {brand} anbietet und wem du damit hilfst."],
+      "substep_1_1": ["Warum hast du {brand} gegründet und wie machst du den Alltag deiner Kunden besser?"],
+      "substep_2_1": ["Wähle aus, wo Kunden {brand} zuerst sehen, etwa auf Instagram oder WhatsApp."],
+      "substep_3_1": ["Wähle deinen Lieblingsstil für den Namen und ich erstelle passende Ideen."],
+      "substep_4_1": ["Tippe auf das Beispiel, das am besten zum gewünschten Stil von {brand} passt."],
+      "substep_5_1": ["Wähle die Farben, die perfekt zur Energie und zum Vertrauen von {brand} passen."],
+      "substep_6_1": ["Geschafft! Dein Brandbook mit über dreißig Seiten für {brand} ist fertig."],
+      "default": ["Super Fortschritt! Jede Antwort macht {brand} klarer und professioneller."]
     },
     it: {
-      "substep_0_1": [
-        "Come insegna Peter Drucker, definire il tuo obiettivo iniziale dà direzione strategica immediata a {brand}.",
-        "Secondo Marty Neumeier, un brand chiaro inizia scegliendo con precisione il proprio traguardo di crescita."
-      ],
-      "substep_0_2": [
-        "Secondo Paul Rand, partire dal tuo logo o nome attuale ci offre una sintesi visiva chiara e densa di significato.",
-        "Come spiega Sagi Haviv, se hai già un nome o un logo possiamo preservarlo o farlo evolvere con precisione."
-      ],
-      "substep_0_3": [
-        "Come afferma Al Ries, descrivere con semplicità il tuo settore definisce la tua categoria unica sul mercato.",
-        "Secondo Peter Drucker, comprendere ciò che offri e per chi è la base di ogni strategia."
-      ],
-      "substep_1_1": [
-        "Come spiega Simon Sinek nel Cerchio d'Oro, le persone comprano il perché {brand} esiste.",
-        "Secondo David Aaker, uno scopo autentico guida ogni decisione strategica e visiva di {brand}."
-      ],
-      "substep_1_2": [
-        "Secondo Alex Osterwalder, una proposta di valore chiara evita che {brand} competa solo sul prezzo.",
-        "Come evidenzia Michael Porter, differenziarsi con precisione rende {brand} insostituibile nel suo mercato."
-      ],
-      "substep_1_3": [
-        "Come indica Philip Kotler, i brand memorabili trasformano positivamente la vita quotidiana dei clienti.",
-        "Secondo Donald Miller, mostrare come migliori la giornata del cliente fa emergere {brand}."
-      ],
-      "substep_1_4": [
-        "Secondo Donald Miller in StoryBrand, riassumere il tuo metodo in tre passi elimina ogni attrito d'acquisto.",
-        "Come spiega Don Norman, un processo chiaro trasmette certezza immediata e professionalità per {brand}."
-      ],
-      "substep_1_5": [
-        "Come insegna Al Ries in Positioning, una promessa breve conquista un posto unico nella mente.",
-        "Secondo Marty Neumeier, sintetizzare il messaggio centrale in una frase chiara moltiplica l'impatto di {brand}."
-      ],
-      "substep_1_6": [
-        "Secondo Jennifer Aaker, definire la personalità di {brand} crea affinità umana e carattere.",
-        "Come spiega Carl Jung con gli archetipi, il tono di voce connette emotivamente con il tuo pubblico."
-      ],
-      "substep_1_7": [
-        "Come afferma Seth Godin, conoscere a fondo il cliente ideale dà senso all'intera strategia.",
-        "Secondo Alex Osterwalder, entrare in empatia con ciò che il cliente apprezza allinea ogni dettaglio di {brand}."
-      ],
-      "substep_2_1": [
-        "Secondo Lemon e Verhoef, i punti di contatto prima dell'acquisto costruiscono la prima impressione di {brand}.",
-        "Come insegna Jan Carlzon, il primo momento della verità accende la fiducia iniziale verso il tuo brand."
-      ],
-      "substep_2_2": [
-        "Come sottolinea Jan Carlzon, il contatto diretto durante l'acquisto è il tuo momento della verità decisivo.",
-        "Secondo Don Norman, eliminare l'attrito durante il servizio trasforma la promessa di {brand} in realtà."
-      ],
-      "substep_2_3": [
-        "Secondo Don Norman, la cura post-vendita trasforma ogni cliente in un ambasciatore fedele.",
-        "Come dimostrano Lemon e Verhoef, la fase successiva all'acquisto moltiplica la fedeltà verso {brand}."
-      ],
-      "substep_3_1": [
-        "Come spiega Alexandra Watkins nel modello SMILE, un grande nome nasce da radici ricche di significato.",
-        "Secondo Alina Wheeler, collegare strategia e identità verbale conferisce solidità legale a {brand}."
-      ],
-      "substep_3_2": [
-        "Secondo David Placek, il simbolismo fonetico di due o tre sillabe massimizza la memorabilità.",
-        "Come afferma Al Ries, un nome sonoro e breve facilita il posizionamento di {brand}."
-      ],
-      "substep_3_3": [
-        "Come evidenzia Alina Wheeler, affiancare a {brand} un descrittore chiaro comunica il tuo valore in pochi secondi.",
-        "Secondo Alexandra Watkins, nome e slogan formano ora un'identità verbale pronta per la registrazione."
-      ],
-      "substep_4_1": [
-        "Secondo Mitsuo Nagamachi e il Kansei Engineering, traduciamo le emozioni in parametri geometrici per {brand}.",
-        "Come spiega Charles Osgood, questi assi semantici calibrano l'atmosfera visiva esatta di {brand}."
-      ],
-      "substep_4_2": [
-        "Come ha dimostrato Charles Osgood, bilanciare tradizione e avanguardia definisce il tuo carattere visivo.",
-        "Secondo Don Norman, il design viscerale comunica fiducia prima ancora di leggere una sola parola."
-      ],
-      "substep_4_3": [
-        "Secondo Max Wertheimer e la psicologia della Gestalt, l'occhio ricorda meglio le forme di chiara sintesi.",
-        "Come insegna Paul Rand, calibrare la semplicità geometrica prepara {brand} a qualsiasi scala."
-      ],
-      "substep_4_4": [
-        "Come scrisse Robert Bringhurst, la tipografia è linguaggio visibile che dà voce e autorità a {brand}.",
-        "Secondo Massimo Vignelli, scegliere una famiglia tipografica nobile sostiene l'intero sistema di {brand}."
-      ],
-      "substep_4_5": [
-        "Secondo Sagi Haviv, una struttura di base semplice e distintiva è il fondamento di ogni grande simbolo.",
-        "Come insegna Paul Rand, definire questo seme visivo offre un solido punto di partenza per {brand}."
-      ],
-      "substep_5_1": [
-        "Come dimostrò Josef Albers in Interazione del colore, la palette risveglia l'emozione prima delle parole.",
-        "Secondo Jony Ive, finitura materica e rifrazione della luce donano presenza tattile al simbolo di {brand}."
-      ],
-      "substep_5_2": [
-        "Seguendo Paul Rand e Sagi Haviv, itera liberamente finché il simbolo di {brand} non diventa indimenticabile.",
-        "Come insegna Jony Ive, rifinire ogni curva e proporzione in vista 1:1 eleva l'eccellenza del design."
-      ],
-      "substep_6_1": [
-        "Come insegnava Massimo Vignelli, un manuale su griglia modulare protegge la coerenza di {brand} in ogni tavola.",
-        "Secondo Josef Müller-Brockmann, l'ordine geometrico di queste oltre 30 pagine proietta rigore editoriale mondiale."
-      ],
-      "substep_6_2": [
-        "Come stabilirono Danne e Blackburn nel manuale NASA, i tuoi vettori garantiscono una riproduzione impeccabile.",
-        "Secondo Alina Wheeler, consegnare file vettoriali pronti per la produzione corona un'identità di successo."
-      ],
-      "default": [
-        "Come insegna David Aaker, ogni perfezionamento in {brand} rafforza la coerenza e il valore della tua identità.",
-        "Secondo Simon Sinek, mantenere chiarezza in questo passo connette lo scopo di {brand} con il tuo pubblico.",
-        "Come afferma Sagi Haviv, semplicità e coerenza rendono {brand} memorabile su qualsiasi supporto."
-      ]
+      "substep_0_1": ["Ottimo inizio! Scegli il tuo obiettivo per creare {brand} in meno di sessanta minuti."],
+      "substep_0_2": ["Se hai già nome o logo li miglioriamo, altrimenti li creiamo insieme da zero."],
+      "substep_0_3": ["Raccontami con parole semplici cosa fa {brand} e chi aiuti ogni giorno."],
+      "substep_1_1": ["Perché hai creato {brand} e come migliori la giornata dei tuoi clienti?"],
+      "substep_2_1": ["Scegli dove i clienti scoprono {brand}, come Instagram, WhatsApp o il tuo negozio."],
+      "substep_3_1": ["Scegli lo stile di nome che preferisci e creerò subito idee per {brand}."],
+      "substep_4_1": ["Tocca l'esempio visivo più vicino allo stile che immagini per {brand}."],
+      "substep_5_1": ["Scegli i colori che trasmettono l'energia e la fiducia giuste per {brand}."],
+      "substep_6_1": ["Complimenti! Il tuo Brandbook di oltre trenta pagine per {brand} è pronto."],
+      "default": ["Ottimo passo! Ogni risposta rende {brand} più chiara e professionale."]
     }
   };
 
@@ -3607,6 +3784,8 @@
 
     const valEls = rootEl.querySelectorAll("textarea, input[type='text']");
     valEls.forEach(el => {
+      if (document.activeElement === el) return;
+      if (el.id && /tbbStep|Input|Textarea|IterationBox/i.test(el.id)) return;
       const val = el.value;
       if (!val || !val.trim()) return;
       if (!el._tbbOrigValEs) el._tbbOrigValEs = val;
@@ -3634,12 +3813,6 @@
           el.setAttribute(attr, el[origKey]);
         }
       });
-    });
-    const valEls = rootEl.querySelectorAll("textarea, input[type='text']");
-    valEls.forEach(el => {
-      if (el._tbbOrigValEs !== undefined) {
-        el.value = el._tbbOrigValEs;
-      }
     });
   }
 
@@ -3732,7 +3905,7 @@
       holder.innerHTML = window.tbbRenderLanguageSelectorWidgetHTML("menu");
     }
 
-    // Inyectar selector rápido de 6 idiomas en la barra superior (#tbbTopDiscreteBar)
+    // Selector limpio de 6 idiomas en la barra superior (#tbbTopDiscreteBar) con tipografía orgánica (>=14px)
     const topBar = document.getElementById("tbbTopDiscreteBar");
     if (topBar) {
       let topSel = document.getElementById("tbbStudioTopLangSelect");
@@ -3740,7 +3913,7 @@
         topSel = document.createElement("select");
         topSel.id = "tbbStudioTopLangSelect";
         topSel.setAttribute("aria-label", "Idioma / Language");
-        topSel.style.cssText = "height:32px; padding:0 6px; border-radius:8px; border:1.5px solid #0284C7; border-bottom:2.5px solid #FF7A00; background:#F0F9FF; font-family:var(--font-mono); font-size:0.72rem; font-weight:900; color:#0D2540; cursor:pointer; flex-shrink:0;";
+        topSel.style.cssText = "height:36px; padding:0 10px; border-radius:12px; border:1.5px solid #CBD5E1; border-bottom:3px solid #94A3B8; background:#FFFFFF; font-family:'Plus Jakarta Sans', system-ui, sans-serif; font-size:0.875rem; font-weight:600; color:#0D2540; cursor:pointer; flex-shrink:0;";
         topSel.onchange = function () {
           window.tbbSetLanguage(this.value);
         };
@@ -3760,20 +3933,21 @@
   };
 
   // ==========================================================================
-  // 4. HOOKS PARA AURA, SUGERENCIAS DINÁMICAS, STAGE Y BRANDBOOK DE 30 LÁMINAS
+  // 4. HOOKS UNIFICADOS PARA AURA (<= 10s CONTEXTO REAL, CERO AUTORES, CERO DOBLE HOOK)
   // ==========================================================================
   function installMultilingualAndGeminiHooks() {
-    // A. Envolver getNextNonRepetitiveAuraMessage
-    const origGetNextAuraMsg = window.getNextNonRepetitiveAuraMessage;
+    if (window._tbbMultilingualHooksInstalled) return;
+    window._tbbMultilingualHooksInstalled = true;
+
+    // A. Mensajes claros de Aura en los 6 idiomas (incluido Español sin citas académicas)
     window.getNextNonRepetitiveAuraMessage = function (eventType, detailText = "") {
       const lang = window.tbbGetLang();
-      if (lang === "es" && typeof origGetNextAuraMsg === "function") {
-        return origGetNextAuraMsg(eventType, detailText);
-      }
       const st = window.tbbState || { step: 0, subStep: 1 };
       const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-      const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
-      const bank = AURA_POOLS_BY_LANG[lang] || AURA_POOLS_BY_LANG.en;
+      const bName = (cs.brandName && !/^(mi nueva marca|marca en creaci.*|tu marca|the\s*best\s*brand)$/i.test(cs.brandName))
+        ? cs.brandName.trim()
+        : (lang === "en" ? "your brand" : lang === "fr" ? "ta marque" : lang === "pt" ? "sua marca" : lang === "de" ? "deine Marke" : lang === "it" ? "il tuo brand" : "tu marca");
+      const bank = AURA_POOLS_BY_LANG[lang] || AURA_POOLS_BY_LANG.es;
       const subKey = `substep_${st.step}_${st.subStep}`;
       const list = bank[eventType] || bank[subKey] || bank[`substep_${st.step}_1`] || bank.default;
       if (!window._tbbMultilingualAuraCounter) window._tbbMultilingualAuraCounter = 0;
@@ -3782,72 +3956,106 @@
       return String(picked || "").replace(/\{brand\}/g, bName);
     };
 
-    // B. Envolver requestLiveGeminiAuraEmpatheticComment para que Gemini responda en el idioma activo (<= 18 palabras)
+    // B. Respuesta contextual real de Aura vía Proxy Seguro (`/api/v1/gemini/proxy`), <= 16 palabras, nivel 16 años, cero autores
     window.requestLiveGeminiAuraEmpatheticComment = async function (contextLabel, userValue) {
       const cleanVal = String(userValue || "").trim();
-      if (cleanVal.length < 4) return;
+      const myGenId = TBBAudioDirector.genId;
       const st = window.tbbState || { step: 0, subStep: 1 };
+      const subKey = `substep_${st.step}_${st.subStep}`;
+      const fallbackMsg = window.getNextNonRepetitiveAuraMessage(subKey);
+
+      if (cleanVal.length < 3) {
+        if (typeof window.updateAuraTopPresenceDOM === "function") {
+          window.updateAuraTopPresenceDOM(fallbackMsg);
+        }
+        return;
+      }
+
       const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-      const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+      const bName = (cs.brandName && !/^(mi nueva marca|tu marca)$/i.test(cs.brandName)) ? cs.brandName.trim() : "tu marca";
+      const giro = String(cs.custom_business_type || cs.step0_short_essence || "").trim().slice(0, 120);
+      const dossier = typeof window.tbbBuildFullBrandContextDossier === "function"
+        ? String(window.tbbBuildFullBrandContextDossier() || "").slice(0, 320)
+        : "";
       const langCfg = window.tbbGetLangConfig();
-      const apiKey = getGeminiApiKey();
 
       const prompt = [
-        `You are Aura, the warm and strategic brand mentor of TheBestBrand.`,
-        `Brand: "${bName}". Current step: Step ${st.step}.${st.subStep} (${contextLabel}).`,
-        `The user just entered or selected: "${cleanVal.slice(0, 160)}".`,
+        `You are Aura, a warm, upbeat, practical brand mentor helping create "${bName}"${giro ? ` (${giro})` : ""}.`,
+        dossier ? `Context: ${dossier}` : "",
+        `Step ${st.step}.${st.subStep} (${contextLabel}). User input: "${cleanVal.slice(0, 140)}".`,
         `STRICT RULES:`,
-        `1. Write ONE SINGLE brief sentence of MAXIMUM 18 WORDS in ${langCfg.geminiLangName} (so spoken aloud it lasts under 8 seconds).`,
-        `2. Include a brief reference to a recognized branding/design author (e.g., Peter Drucker, Simon Sinek, Marty Neumeier, David Aaker, Paul Rand, Sagi Haviv, Massimo Vignelli, Don Norman, Al Ries).`,
-        `3. ZERO EMOJIS. Return plain text only in ${langCfg.geminiLangName}.`
-      ].join("\n");
+        `1. Write ONE SINGLE friendly, natural sentence of 10 to 16 WORDS MAXIMUM in ${langCfg.geminiLangName} (must take under 8 seconds spoken aloud).`,
+        `2. Use simple everyday language that a 16-year-old understands immediately, giving real practical value connected to their specific business.`,
+        `3. FORBIDDEN: NEVER cite academic authors, books, theories, Kansei, Osgood, SMILE, Kaizen, or jargon. ZERO EMOJIS.`
+      ].filter(Boolean).join("\n");
 
-      const modelsToTry = ["gemini-flash-lite-latest", "gemini-2.5-flash-lite", "gemini-2.5-flash"];
+      const modelsToTry = ["gemini-3.8-flash", "gemini-flash-lite-latest"];
       for (const m of modelsToTry) {
+        if (myGenId !== TBBAudioDirector.genId) return;
+        const ctrl = TBBAudioDirector.registerController(new AbortController());
+        const tId = setTimeout(() => ctrl.abort(), 3800);
         try {
-          const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+          const resp = await fetch("/api/v1/gemini/proxy", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            signal: ctrl.signal,
             body: JSON.stringify({
+              model: m,
               contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: { temperature: 0.6, maxOutputTokens: 60 }
+              generationConfig: { temperature: 0.55, maxOutputTokens: 55 }
             })
           });
+          clearTimeout(tId);
+          TBBAudioDirector.unregisterController(ctrl);
+          if (myGenId !== TBBAudioDirector.genId) return;
           if (!resp.ok) continue;
           const data = await resp.json();
-          let reply = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join(" ").replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+          let reply = (data.candidates?.[0]?.content?.parts || [])
+            .map(p => p.text || "")
+            .join(" ")
+            .replace(/[\r\n]+/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
           reply = enforceMax10sSpokenText(reply);
-          if (reply && reply.length >= 12) {
-            window.updateAuraTopPresenceDOM(reply);
+          if (reply && reply.length >= 10 && myGenId === TBBAudioDirector.genId) {
+            if (typeof window.updateAuraTopPresenceDOM === "function") {
+              window.updateAuraTopPresenceDOM(reply);
+            }
             window.speakAuraBriefResponse(reply, 9500);
             return;
           }
-        } catch (e) {}
+        } catch (e) {
+          clearTimeout(tId);
+          TBBAudioDirector.unregisterController(ctrl);
+        }
+      }
+
+      // Respaldo inmediato para que el globo de Aura jamás quede congelado en "Analizando..."
+      if (myGenId === TBBAudioDirector.genId) {
+        if (typeof window.updateAuraTopPresenceDOM === "function") {
+          window.updateAuraTopPresenceDOM(fallbackMsg);
+        }
+        window.speakAuraBriefResponse(fallbackMsg, 9500);
       }
     };
 
-    // C. Envolver updateAuraTopPresenceDOM para traducir #tbbAuraEmpatheticText y #tbbAuraPresenceRoleText
+    // C. Limpiar etiqueta de rol de Aura (Cero "REF: DAVID AAKER" o autores en la cabecera)
     const origUpdateAuraDOM = window.updateAuraTopPresenceDOM;
-    if (typeof origUpdateAuraDOM === "function") {
-      window.updateAuraTopPresenceDOM = function (msgText, roleSubLabel) {
+    if (typeof origUpdateAuraDOM === "function" && !origUpdateAuraDOM._tbbWrapped) {
+      const wrappedUpdateAura = function (msgText, roleSubLabel) {
         origUpdateAuraDOM(msgText, roleSubLabel);
         const lang = window.tbbGetLang();
-        if (lang === "es") return;
-        const ui = UI_I18N[lang] || UI_I18N.en;
-        const st = window.tbbState || { step: 0 };
         const textEl = document.getElementById("tbbAuraEmpatheticText");
-        if (textEl && textEl.textContent) {
+        if (lang !== "es" && textEl && textEl.textContent) {
           textEl.textContent = window.tbbTranslateText(textEl.textContent, lang);
         }
         const roleEl = document.getElementById("tbbAuraPresenceRoleText");
-        if (roleEl && !(window.tbbAuraOrbConfig && window.tbbAuraOrbConfig.customRoleTitle)) {
-          const authorName = typeof window.extractAuraAuthorRefFromText === "function"
-            ? window.extractAuraAuthorRefFromText(textEl ? textEl.textContent : "")
-            : "DAVID AAKER";
-          const stepLbl = (ui.stepRoleNames && ui.stepRoleNames[st.step]) || "BRAND MENTOR";
-          roleEl.textContent = `AURA · ${stepLbl} · REF: ${String(authorName).toUpperCase()}`;
+        if (roleEl) {
+          roleEl.textContent = "Aura";
         }
       };
+      wrappedUpdateAura._tbbWrapped = true;
+      window.updateAuraTopPresenceDOM = wrappedUpdateAura;
     }
 
     // D. Envolver buildDynamicStep1Suggestions para sugerencias en EN, PT y FR
@@ -3956,11 +4164,13 @@
 
     // F. Envolver renderTbbZeroScrollStage para aplicar la traducción inmediata en cada renderizado
     const origRenderStage = window.renderTbbZeroScrollStage;
-    if (typeof origRenderStage === "function") {
-      window.renderTbbZeroScrollStage = function () {
+    if (typeof origRenderStage === "function" && !origRenderStage._tbbWrapped) {
+      const wrappedRenderStage = function () {
         origRenderStage();
         window.tbbApplyCurrentLanguageToDOM();
       };
+      wrappedRenderStage._tbbWrapped = true;
+      window.renderTbbZeroScrollStage = wrappedRenderStage;
     }
 
     // G. Envolver el motor de 30 láminas (`universal-brandbook-30-engine.js`)
@@ -4055,8 +4265,7 @@
     const cleanCode = SUPPORTED_LANGS[langCode] ? langCode : "es";
     window.tbbCurrentLang = cleanCode;
     try {
-      localStorage.setItem("tbb_app_lang", cleanCode);
-      localStorage.setItem("thebestbrand_lang_v90", cleanCode);
+      syncAllLangStorageKeys(cleanCode);
     } catch (e) {}
 
     if (!skipCloudSync && typeof playAcousticClick === "function") playAcousticClick(880, 0.04);
@@ -4137,9 +4346,15 @@
 
   window.addEventListener("message", function (ev) {
     const d = ev && ev.data;
-    if (d && typeof d === "object" && (d.type === "TBB_SET_LANGUAGE" || d.type === "TBB_SYNC_LANG") && d.lang) {
-      if (typeof window.tbbSetLanguage === "function") {
-        window.tbbSetLanguage(String(d.lang).toLowerCase(), true);
+    if (!d || typeof d !== "object") return;
+    if (d.type === "TBB_HARD_STOP_ALL_AUDIO" || d.type === "TBB_STOP_ALL_AUDIO") {
+      TBBAudioDirector.stopAll("parent_or_peer_stop", false);
+      return;
+    }
+    if ((d.type === "TBB_SET_LANGUAGE" || d.type === "TBB_SYNC_LANG") && d.lang) {
+      const cleanL = String(d.lang).toLowerCase().slice(0, 2);
+      if (cleanL !== window.tbbCurrentLang && typeof window.tbbSetLanguage === "function") {
+        window.tbbSetLanguage(cleanL, true);
       }
     }
   });

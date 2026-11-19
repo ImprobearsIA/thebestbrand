@@ -19,7 +19,16 @@ try:
     from dotenv import load_dotenv
     load_dotenv()
 except ImportError:
-    pass
+    _env_candidate = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.env"))
+    if os.path.isfile(_env_candidate):
+        with open(_env_candidate, "r", encoding="utf-8") as _ef:
+            for _eline in _ef:
+                _s = _eline.strip()
+                if _s and not _s.startswith("#") and "=" in _s:
+                    _ek, _ev = _s.split("=", 1)
+                    _ek = _ek.strip()
+                    if _ek and _ek not in os.environ:
+                        os.environ[_ek] = _ev.strip().strip('"').strip("'")
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../packages/brandbook-engine")))
 
@@ -132,6 +141,8 @@ class ChatTurnRequest(BaseModel):
 
 class TTSRequest(BaseModel):
     text: str
+    lang: str = "es"
+    voice_name: str = "Aoede"
     llm_api_key: str = ""
 
 
@@ -224,10 +235,24 @@ def _read_web_file_with_github_sync(rel_path: str) -> str:
         return text
 
 
+def _verify_admin_access(request: Request, explicit_secret: str = "") -> bool:
+    expected = (os.environ.get("TBB_ADMIN_SECRET") or os.environ.get("ADMIN_SECRET") or "").strip()
+    provided = (
+        explicit_secret
+        or request.headers.get("x-admin-secret", "")
+        or request.query_params.get("admin_key", "")
+    ).strip()
+    if expected and provided and expected == provided:
+        return True
+    return False
+
+
 @app.post("/api/v1/system/sync-github")
 @app.get("/api/v1/system/sync-github")
-def force_sync_from_github():
-    """Pulls latest origin/main on disk (only if working tree is clean) and clears edge web cache."""
+def force_sync_from_github(request: Request):
+    """Pulls latest origin/main on disk ONLY for authenticated admin maintenance."""
+    if not _verify_admin_access(request):
+        return JSONResponse(status_code=403, content={"ok": False, "error": "admin_auth_required"})
     import subprocess
     import time as _time
     _EDGE_WEB_CACHE.clear()
@@ -249,11 +274,22 @@ def force_sync_from_github():
 
 @app.api_route("/", methods=["GET", "HEAD"], response_class=HTMLResponse)
 @app.api_route("/inicio", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/demo", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/entregables", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/que-recibes", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/pack-descargas", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/recorrido", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/como-funciona", methods=["GET", "HEAD"], response_class=HTMLResponse)
 @app.api_route("/app-tour", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/tour", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/aplicacion", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/ejemplos", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/casos-reales", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/referencias", methods=["GET", "HEAD"], response_class=HTMLResponse)
 @app.api_route("/bases-teoricas", methods=["GET", "HEAD"], response_class=HTMLResponse)
 @app.api_route("/bases-tecnicas", methods=["GET", "HEAD"], response_class=HTMLResponse)
-@app.api_route("/demo", methods=["GET", "HEAD"], response_class=HTMLResponse)
-@app.api_route("/pack-descargas", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/web", methods=["GET", "HEAD"], response_class=HTMLResponse)
+@app.api_route("/site", methods=["GET", "HEAD"], response_class=HTMLResponse)
 def serve_web_app():
     content = _read_web_file_with_github_sync("index.html")
     return HTMLResponse(
@@ -262,16 +298,26 @@ def serve_web_app():
             "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
             "Pragma": "no-cache",
             "Expires": "0",
-            "X-TBB-Release": "v105.0-200improvements-audit"
+            "X-TBB-Release": "v129.0-your-brand-now-400improvements"
         }
     )
 
 
-@app.api_route("/web", methods=["GET", "HEAD"], response_class=HTMLResponse)
-@app.api_route("/site", methods=["GET", "HEAD"], response_class=HTMLResponse)
-def serve_commercial_website():
-    content = _read_web_file_with_github_sync("website.html")
-    return HTMLResponse(content=content, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+@app.get("/robots.txt")
+def serve_robots_txt():
+    body = "User-agent: *\nAllow: /\nDisallow: /alpha\nDisallow: /api/\nSitemap: https://thebestbrand.app/sitemap.xml\n"
+    return Response(content=body, media_type="text/plain; charset=utf-8")
+
+
+@app.get("/sitemap.xml")
+def serve_sitemap_xml():
+    urls = ["/", "/entregables", "/como-funciona", "/ejemplos", "/referencias", "/privacidad", "/soporte"]
+    items = "".join(
+        f"<url><loc>https://thebestbrand.app{u}</loc><changefreq>weekly</changefreq><priority>{'1.0' if u == '/' else '0.8'}</priority></url>"
+        for u in urls
+    )
+    xml = f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</urlset>'
+    return Response(content=xml, media_type="application/xml; charset=utf-8")
 
 
 @app.api_route("/studio", methods=["GET", "HEAD"], response_class=HTMLResponse)
@@ -311,16 +357,16 @@ def serve_store_privacy_policy():
 def serve_store_support_page():
     html = """<!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Soporte Oficial y Centro de Ayuda Alpha · The Best Brand</title>
+<title>Soporte Oficial y Centro de Ayuda · The Best Brand</title>
 <style>body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#FFFFFF;color:#0D2540;max-width:860px;margin:0 auto;padding:48px 24px;line-height:1.65;}.card{background:#F8FAFC;border:1.5px solid #CBD5E1;border-radius:16px;padding:20px;margin:16px 0;}</style>
 </head><body>
-<h1>Soporte Oficial y Atención a Alpha Testers — The Best Brand</h1>
-<p>Bienvenido al centro de soporte para usuarios de <strong>iOS (iPhone), iPadOS (iPad), macOS (Mac), Android y Web</strong>.</p>
+<h1>Soporte Oficial y Atención al Cliente — The Best Brand</h1>
+<p>Bienvenido al centro de ayuda para usuarios de <strong>iOS (iPhone), iPadOS (iPad), macOS (Mac), Android y Web</strong>.</p>
 <div class="card">
-  <h3>Contacto Directo de Soporte Técnico</h3>
+  <h3>Contacto Directo de Soporte y Facturación</h3>
   <p><strong>Correo:</strong> <a href="mailto:jorge.benitez@improbears.com">jorge.benitez@improbears.com</a><br>
   <strong>Tiempo de respuesta:</strong> Menos de 24 horas hábiles.<br>
-  <strong>Pase Alpha Tester de Prueba:</strong> Usa el código <code>ALPHA100</code> o <code>TESTER-VIP</code> en el Paso 4 para desbloquear sin costo ($0 USD).</p>
+  <strong>Derechos Comerciales:</strong> El 100% de los derechos comerciales de tu logotipo y Brandbook pertenecen exclusivamente a tu marca.</p>
 </div>
 <p><a href="/">← Regresar a The Best Brand</a> · <a href="/privacidad">Política de Privacidad</a> · <a href="/eliminar-cuenta">Eliminar Cuenta</a></p>
 </body></html>"""
@@ -333,7 +379,7 @@ def serve_account_deletion_page():
     html = """<!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Eliminación de Cuenta y Datos · The Best Brand</title>
-<style>body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#FFFFFF;color:#0D2540;max-width:720px;margin:0 auto;padding:48px 24px;line-height:1.65;}input,button{padding:12px 16px;border-radius:10px;font-size:15px;}input{border:1.5px solid #CBD5E1;width:100%;max-width:420px;margin-bottom:12px;}button{background:#DC2626;color:#FFF;border:none;font-weight:800;cursor:pointer;}</style>
+<style>body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#FFFFFF;color:#0D2540;max-width:720px;margin:0 auto;padding:48px 24px;line-height:1.65;}input,button{padding:12px 16px;border-radius:10px;font-size:15px;}input{border:1.5px solid #CBD5E1;width:100%;max-width:420px;margin-bottom:12px;}button{background:#DC2626;color:#FFF;border:none;font-weight:600;cursor:pointer;}</style>
 </head><body>
 <h1>Solicitud de Eliminación Definitiva de Cuenta (Apple 5.1.1v & Google Play)</h1>
 <p>Ingresa el correo electrónico de tu cuenta de <strong>The Best Brand</strong> para eliminar de forma permanente tu cuenta y el historial de marcas almacenado en nuestra bóveda:</p>
@@ -341,19 +387,21 @@ def serve_account_deletion_page():
   <input type="email" required placeholder="tu-correo@empresa.com"><br>
   <button type="submit">Eliminar Mi Cuenta y Datos Permanentemente</button>
 </form>
-<p id="delMsg" style="display:none;background:#ECFDF5;border:1px solid #10B981;color:#065F46;padding:12px;border-radius:10px;font-weight:700;">✅ Tu cuenta y datos asociados han sido eliminados permanentemente.</p>
+<p id="delMsg" style="display:none;background:#ECFDF5;border:1px solid #10B981;color:#065F46;padding:12px;border-radius:10px;font-weight:600;">✅ Tu cuenta y datos asociados han sido eliminados permanentemente.</p>
 <p style="margin-top:28px;"><a href="/">← Regresar a The Best Brand</a></p>
 </body></html>"""
     return HTMLResponse(content=html)
 
 
 @app.api_route("/alpha", methods=["GET", "HEAD"], response_class=HTMLResponse)
-def serve_alpha_launch_and_tester_portal():
+def serve_alpha_launch_and_tester_portal(request: Request):
+    if not _verify_admin_access(request):
+        return JSONResponse(status_code=403, content={"error": "admin_access_required"})
     html_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/alpha-portal.html"))
     if os.path.isfile(html_path):
         with open(html_path, "r", encoding="utf-8") as f:
             return HTMLResponse(content=f.read(), headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
-    return HTMLResponse(content="<meta http-equiv='refresh' content='0;url=/?coupon=ALPHA100&section=4'>")
+    return RedirectResponse(url="/", status_code=302)
 
 
 @app.api_route("/{script_name}.js", methods=["GET", "HEAD"])
@@ -493,53 +541,39 @@ def get_step_intro_video(step_id: int, lang: str = "es"):
     clean_lang = (lang or "es").strip().lower()[:2]
     if clean_lang not in ("es", "en", "fr", "pt", "de", "it"):
         clean_lang = "es"
-    sfx = "" if clean_lang == "es" else f"_{clean_lang}"
-    manifest_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/assets/videos/capsules_manifest.json"))
-    capsule_data = None
+    audio_manifest_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../web/assets/audio/capsules/manifest.json"))
+    rel_audio = f"/assets/audio/capsules/aura_viva_step_{s_id}_{clean_lang}.mp3"
+    audio_url = f"{rel_audio}?v=129.0"
+    duration_sec = 13.0
+    exact_script = ""
     try:
-        if os.path.isfile(manifest_path):
-            with open(manifest_path, "r", encoding="utf-8") as mf:
-                manifest = json.load(mf)
-                caps_list = manifest if isinstance(manifest, list) else manifest.get("capsules", [])
-                for cap in caps_list:
-                    if isinstance(cap, dict) and cap.get("step") == s_id:
-                        capsule_data = cap
-                        break
+        if os.path.isfile(audio_manifest_path):
+            with open(audio_manifest_path, "r", encoding="utf-8") as amf:
+                am = json.load(amf)
+                clip_info = (am.get("clips") or {}).get(f"step_{s_id}", {}).get(clean_lang, {})
+                if clip_info:
+                    exact_script = clip_info.get("text", "")
+                    duration_sec = float(clip_info.get("duration_sec") or 13.0)
     except Exception:
-        capsule_data = None
-
-    fallback = LiveGeminiSocraticBrain.STEP_INTRO_VIDEOS.get(s_id, LiveGeminiSocraticBrain.STEP_INTRO_VIDEOS.get(1, {}))
-    rel_vid = f"/assets/videos/capsula_teoria_paso_{s_id}{sfx}.mp4"
-    rel_poster = f"/assets/videos/poster_paso_{s_id}{sfx}.jpg"
-    video_url = f"{rel_vid}?v=111.0"
-    cdn_video_url = f"{_JSDELIVR_WEB_BASE}{rel_vid}"
-    poster_url = f"{rel_poster}?v=111.0"
-    cdn_poster_url = f"{_JSDELIVR_WEB_BASE}{rel_poster}"
-    scenes = (capsule_data or {}).get("scenes", [])
-    exact_script = " ".join([sc.get("narration", "") for sc in scenes if sc.get("narration")]).strip()
+        pass
     return {
         "status": "ok",
         "step": s_id,
         "lang": clean_lang,
-        "video_url": video_url,
-        "cdn_video_url": cdn_video_url,
-        "poster_url": poster_url,
-        "cdn_poster_url": cdn_poster_url,
+        "audio_url": audio_url,
+        "video_url": audio_url,
+        "duration_sec": min(15.0, duration_sec),
+        "voice": "Aoede",
+        "single_voice_unified": True,
         "synchronized": True,
-        "google_flow_broll": True,
-        "production_engine": "The Best Brand Executive Avatar (Jorge Benítez) + Dynamic B-Rolls",
-        "clips": scenes,
+        "production_engine": "Aura Viva Single Neural Voice (Aoede <=15s)",
         "exact_script": exact_script,
-        "capsule": capsule_data,
         "video": {
-            **(fallback if isinstance(fallback, dict) else {}),
-            "title": (capsule_data or {}).get("title") or (fallback if isinstance(fallback, dict) else {}).get("title", ""),
-            "narration": exact_script or (fallback if isinstance(fallback, dict) else {}).get("narration", ""),
-            "video_url": video_url,
-            "cdn_video_url": cdn_video_url,
-            "poster_url": poster_url,
-            "cdn_poster_url": cdn_poster_url,
-            "capsule_manifest": capsule_data
+            "title": f"Paso {s_id} · Aura Viva",
+            "narration": exact_script,
+            "audio_url": audio_url,
+            "video_url": audio_url,
+            "duration_sec": min(15.0, duration_sec),
         }
     }
 
@@ -568,9 +602,19 @@ def get_official_9_deliverables_status():
 
 
 @app.post("/api/tts/gemini")
+@app.post("/api/v1/tts/aura-fast")
 def synthesize_gemini_voice(req: TTSRequest):
-    wav_b64 = GeminiNeuralVoiceSynthesizer.synthesize_gemini_voice_wav_b64(req.text, req.llm_api_key)
-    return {"audio_wav_base64": wav_b64}
+    wav_b64 = GeminiNeuralVoiceSynthesizer.synthesize_gemini_voice_wav_b64(
+        req.text,
+        req.llm_api_key,
+        lang=req.lang,
+        voice_name=req.voice_name or "Aoede",
+    )
+    return {
+        "audio_wav_base64": wav_b64,
+        "lang": (req.lang or "es").strip().lower()[:2],
+        "voice": req.voice_name or "Aoede",
+    }
 
 
 _AURA_CLOUD_HISTORY: List[Dict[str, Any]] = [
@@ -1759,6 +1803,12 @@ async def cloud_audit_unregistered_crm_tasks():
         "whatsappLiveMessages": wa_live.get("messages", []),
         "tasks": []
     }
+
+
+@app.get("/health")
+@app.get("/api/health")
+def health_check():
+    return {"status": "ok", "version": "129.0", "tagline": "Your Brand, Now!!!"}
 
 
 @app.get("/api/aura/history")
@@ -3390,7 +3440,7 @@ def _resolve_promo_coupon(raw_code: str) -> Optional[Dict[str, Any]]:
 
 @app.post("/api/v1/payments/validate-coupon")
 def api_validate_promo_coupon(req: PromoCouponValidateRequest):
-    """Valida un código de descuento o pase Alpha Tester (100% gratis o % de descuento)."""
+    """Valida un código promocional en servidor sin exponer códigos internos en el cliente."""
     raw_code = (req.promo_code or req.code or "").strip()
     base_price = 149.00 if (req.plan_id == "agency_suite" or req.tier == "agency_suite") else 49.00
     coupon = _resolve_promo_coupon(raw_code)
@@ -3400,7 +3450,7 @@ def api_validate_promo_coupon(req: PromoCouponValidateRequest):
             "valid": False,
             "code": raw_code.upper(),
             "promo_code": raw_code.upper(),
-            "message": "Código no reconocido o expirado. Usa por ejemplo ALPHA100, TESTER-VIP o FOUNDER50.",
+            "message": "Código promocional no válido o expirado.",
         }
     pct = max(0, min(100, int(coupon["discount_percent"])))
     final_usd = round(base_price * (100 - pct) / 100.0, 2)
@@ -3420,8 +3470,10 @@ def api_validate_promo_coupon(req: PromoCouponValidateRequest):
 
 
 @app.post("/api/v1/payments/create-coupon")
-def api_create_promo_coupon(req: PromoCouponCreateRequest):
-    """Permite a Jorge generar nuevos códigos personalizados para testers y reseñas."""
+def api_create_promo_coupon(req: PromoCouponCreateRequest, request: Request):
+    """Permite generar nuevos códigos únicamente con autenticación administrativa."""
+    if not _verify_admin_access(request, req.admin_secret):
+        return JSONResponse(status_code=403, content={"ok": False, "error": "admin_auth_required"})
     clean = (req.promo_code or req.code or "").strip().upper()
     if not clean or len(clean) < 3:
         return {"ok": False, "error": "El código debe tener al menos 3 caracteres."}
@@ -3447,13 +3499,15 @@ def api_create_promo_coupon(req: PromoCouponCreateRequest):
         "discount_percent": pct,
         "max_uses": max_u,
         "label": req.label,
-        "share_url": f"https://thebestbrand.app/?coupon={clean}&section=4",
+        "share_url": f"https://thebestbrand.app/?coupon={clean}",
     }
 
 
 @app.get("/api/v1/payments/coupons-catalog")
-def api_list_promo_coupons():
-    """Lista los códigos activos para pruebas Alpha y reseñas."""
+def api_list_promo_coupons(request: Request):
+    """Lista códigos activos únicamente para administración autenticada."""
+    if not _verify_admin_access(request):
+        return JSONResponse(status_code=403, content={"ok": False, "error": "admin_auth_required"})
     items = []
     try:
         with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
@@ -3475,10 +3529,10 @@ def api_list_promo_coupons():
 
 @app.post("/api/v1/payments/submit-tester-review")
 def api_submit_tester_review(req: TesterReviewSubmitRequest):
-    """Guarda la reseña y calificación del Alpha Tester en SQLite."""
+    """Guarda la reseña y calificación del usuario en SQLite."""
     now_iso = datetime.now(timezone.utc).isoformat()
-    code_used = (req.promo_code or req.code or "ALPHA100").strip().upper()
-    author_name = (req.customer_name or req.name or "Alpha Tester").strip()
+    code_used = (req.promo_code or req.code or "REVIEW").strip().upper()
+    author_name = (req.customer_name or req.name or "Fundador").strip()
     brand_or_role = (req.company_or_role or req.brand_name or "Mi Marca").strip()
     red_id = "rev_" + hashlib.sha256(f"{req.email}:{now_iso}".encode("utf-8")).hexdigest()[:12]
     try:
@@ -3498,7 +3552,7 @@ def api_submit_tester_review(req: TesterReviewSubmitRequest):
 
 @app.post("/api/v1/payments/issue-download-grant")
 def api_issue_payment_download_grant(req: PaymentDownloadGrantRequest):
-    """[#0304] Emite un token criptográfico HMAC-SHA256 con vigencia de 24h para desbloquear el paquete maestro (.AI/.DOCX/.PPTX/.XLSX)."""
+    """Emite un token criptográfico HMAC-SHA256 con vigencia de 24h."""
     secret = os.environ.get("TBB_GRANT_SECRET", "improbears-c00-default-grant-secret-v82")
     exp = int(_tbb_time.time()) + 86400
     msg = f"{req.brand_name}|{req.order_folio}|{req.tier}|{exp}"
@@ -3512,43 +3566,81 @@ def api_issue_payment_download_grant(req: PaymentDownloadGrantRequest):
     }
 
 
-@app.post("/api/v1/payments/checkout-live")
-def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
-    """Procesa la orden de compra real (Tarjeta 3DS, Apple Pay, Google Pay, PayPal o Código Alpha Tester 100% Gratis), emite folio oficial, firma token HMAC-SHA256 y crea/migra automáticamente la cuenta y progreso de los Pasos 1-3."""
-    secret = os.environ.get("TBB_GRANT_SECRET", "improbears-c00-default-grant-secret-v82")
-    now_ts = int(_tbb_time.time())
-    exp = now_ts + 86400 * 365
-    base_amount_usd = 149.00 if (req.plan_id == "agency_suite" or req.tier == "agency_suite") else 49.00
-    tier_code = "agency_suite" if (req.plan_id == "agency_suite" or req.tier == "agency_suite") else "atelier_pro"
+def _create_stripe_checkout_session_https(
+    amount_usd: float,
+    brand_name: str,
+    customer_email: str,
+    customer_name: str,
+    plan_id: str,
+    account_id: str,
+    brand_id: str,
+    origin_url: str,
+) -> Dict[str, Any]:
+    """Crea una sesión real de Stripe Checkout (Tarjeta, Apple Pay, Google Pay) vía HTTPS."""
+    import urllib.parse
+    import urllib.request
+    import ssl
+    stripe_sk = (os.environ.get("STRIPE_SECRET_KEY") or "").strip()
+    if not stripe_sk:
+        return {"ok": False, "error": "stripe_secret_key_missing"}
+    cents = max(50, int(round(amount_usd * 100)))
+    base_origin = (origin_url or "https://thebestbrand.app").rstrip("/")
+    success_url = f"{base_origin}/studio?stripe_session_id={{CHECKOUT_SESSION_ID}}&step=4"
+    cancel_url = f"{base_origin}/?checkout=cancelled"
+    form_fields = {
+        "mode": "payment",
+        "success_url": success_url,
+        "cancel_url": cancel_url,
+        "customer_email": customer_email,
+        "line_items[0][price_data][currency]": "usd",
+        "line_items[0][price_data][unit_amount]": str(cents),
+        "line_items[0][price_data][product_data][name]": f"The Best Brand Pro — {brand_name or 'Tu Marca'}",
+        "line_items[0][price_data][product_data][description]": "Brandbook Oficial (+30 páginas), Logotipos Vectoriales y 9 Entregables Listos.",
+        "line_items[0][quantity]": "1",
+        "metadata[brand_name]": (brand_name or "Tu Marca")[:120],
+        "metadata[customer_name]": (customer_name or "Fundador")[:120],
+        "metadata[plan_id]": plan_id,
+        "metadata[account_id]": account_id,
+        "metadata[brand_id]": brand_id,
+    }
+    encoded = urllib.parse.urlencode(form_fields).encode("utf-8")
+    req = urllib.request.Request(
+        "https://api.stripe.com/v1/checkout/sessions",
+        data=encoded,
+        headers={
+            "Authorization": f"Bearer {stripe_sk}",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=15, context=ssl.create_default_context()) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            if data.get("url") and data.get("id"):
+                return {"ok": True, "session_id": data["id"], "checkout_url": data["url"]}
+    except Exception as exc:
+        return {"ok": False, "error": str(exc)}
+    return {"ok": False, "error": "stripe_session_failed"}
 
-    coupon_obj = _resolve_promo_coupon(req.promo_code)
-    discount_pct = int(coupon_obj["discount_percent"]) if coupon_obj else 0
-    amount_usd = round(base_amount_usd * (100 - discount_pct) / 100.0, 2)
-    applied_coupon_code = coupon_obj["code"] if coupon_obj else ""
-    if coupon_obj and coupon_obj.get("tier") == "agency_suite":
-        tier_code = "agency_suite"
 
-    clean_email = (req.customer_email or "cliente@thebestbrand.app").strip().lower()
-    if "@" not in clean_email:
-        clean_email = f"{clean_email}@thebestbrand.app"
-    clean_name = (req.customer_name or req.card_holder or "Fundador").strip() or "Fundador"
-    raw_seed = f"{req.brand_name}|{clean_email}|{now_ts}"
-    short_hash = _tbb_hashlib.sha256(raw_seed.encode("utf-8")).hexdigest()[:8].upper()
-    order_folio = f"TBB-ALPHA-{short_hash}" if applied_coupon_code else f"TBB-LIVE-{short_hash}"
-    license_code = f"TBB-VIP-{short_hash[:4]}-{short_hash[4:]}" if discount_pct == 100 else f"TBB-PRO-{short_hash[:4]}-{short_hash[4:]}"
-
-    msg = f"{req.brand_name}|{order_folio}|{tier_code}|{exp}"
-    sig = _tbb_hmac.new(secret.encode("utf-8"), msg.encode("utf-8"), _tbb_hashlib.sha256).hexdigest()
-    grant_token = f"{exp}.{sig}"
-
-    # Crear cuenta automáticamente y migrar respuestas de los Pasos 0 al 3
+def _persist_account_and_brand_snapshot(
+    clean_email: str,
+    clean_name: str,
+    raw_pwd: str,
+    brand_name: str,
+    current_step: int,
+    state_snapshot: Dict[str, Any],
+    license_code: str = "",
+    order_folio: str = "",
+    applied_coupon_code: str = "",
+    discount_pct: int = 0,
+) -> Dict[str, str]:
     account_id = "acc_" + hashlib.sha256(clean_email.encode("utf-8")).hexdigest()[:16]
     now_iso = datetime.now(timezone.utc).isoformat()
-    raw_pwd = (req.account_password or "").strip()
-    brand_slug = "".join([c.lower() if c.isalnum() else "_" for c in (req.brand_name or "thebestbrand").strip()])[:40] or "active_brand_default"
+    now_ts = int(_tbb_time.time())
+    brand_slug = "".join([c.lower() if c.isalnum() else "_" for c in (brand_name or "tu_marca").strip()])[:40] or "active_brand_default"
     brand_id = f"brand_{brand_slug}"
     mig_code = _build_migration_code(clean_email, account_id)
-
     try:
         with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
@@ -3557,7 +3649,7 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
                 red_id = "red_" + hashlib.sha256(f"{applied_coupon_code}:{clean_email}:{now_ts}".encode("utf-8")).hexdigest()[:12]
                 conn.execute(
                     "INSERT INTO promo_redemptions (redemption_id, code, email, brand_name, reviewer_note, rating, redeemed_at) VALUES (?, ?, ?, ?, ?, 5, ?)",
-                    (red_id, applied_coupon_code, clean_email, req.brand_name or "THE BEST BRAND", req.reviewer_note or "", now_iso)
+                    (red_id, applied_coupon_code, clean_email, brand_name or "Tu Marca", "", now_iso)
                 )
             row = conn.execute("SELECT * FROM accounts WHERE email = ?", (clean_email,)).fetchone()
             if not row:
@@ -3571,11 +3663,14 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
             else:
                 account_id = row["account_id"]
                 mig_code = (row["migration_code"] if "migration_code" in row.keys() and row["migration_code"] else mig_code)
-            state_payload = dict(req.state_snapshot or {})
-            state_payload["license_code"] = license_code
-            state_payload["order_folio"] = order_folio
-            state_payload["promo_code"] = applied_coupon_code
-            state_payload["discount_percent"] = discount_pct
+
+            state_payload = dict(state_snapshot or {})
+            if license_code:
+                state_payload["license_code"] = license_code
+                state_payload["order_folio"] = order_folio
+            if applied_coupon_code:
+                state_payload["promo_code"] = applied_coupon_code
+                state_payload["discount_percent"] = discount_pct
             state_payload["migrated_steps_0_to_3"] = True
             state_str = json.dumps(state_payload, ensure_ascii=False)
             conn.execute(
@@ -3588,16 +3683,114 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
                     state_json = excluded.state_json,
                     updated_at = excluded.updated_at
                 """,
-                (brand_id, account_id, req.brand_name or "THE BEST BRAND", max(4, int(req.current_step or 4)), state_str, now_iso)
+                (brand_id, account_id, brand_name or "Tu Marca", max(3, int(current_step or 4)), state_str, now_iso)
             )
             conn.commit()
     except Exception:
         pass
+    return {"account_id": account_id, "brand_id": brand_id, "migration_code": mig_code}
 
-    stripe_checkout_url = (
-        os.environ.get("STRIPE_CHECKOUT_URL_AGENCY", "")
-        if req.plan_id == "agency_suite"
-        else os.environ.get("STRIPE_CHECKOUT_URL_PRO", "")
+
+@app.post("/api/v1/payments/checkout-live")
+@app.post("/api/v1/payments/create-stripe-session")
+def api_process_live_checkout(req: PaymentCheckoutLiveRequest, request: Request):
+    """
+    Respalda el progreso de los Pasos 0–3 y:
+    - Si aplica un cupón válido del 100% ($0 USD), autoriza y desbloquea el Paso 4.
+    - Si el monto es > $0 USD, crea una sesión real de Stripe Checkout (Apple Pay, Google Pay, Tarjeta)
+      sin regalar licencias gratis ni aceptar tarjetas falsas en el navegador.
+    """
+    secret = os.environ.get("TBB_GRANT_SECRET", "improbears-c00-default-grant-secret-v82")
+    now_ts = int(_tbb_time.time())
+    exp = now_ts + 86400 * 365
+    base_amount_usd = 149.00 if (req.plan_id == "agency_suite" or req.tier == "agency_suite") else 49.00
+    tier_code = "agency_suite" if (req.plan_id == "agency_suite" or req.tier == "agency_suite") else "atelier_pro"
+
+    coupon_obj = _resolve_promo_coupon(req.promo_code) if (req.promo_code or "").strip() else None
+    discount_pct = int(coupon_obj["discount_percent"]) if coupon_obj else 0
+    amount_usd = round(base_amount_usd * (100 - discount_pct) / 100.0, 2)
+    applied_coupon_code = coupon_obj["code"] if coupon_obj else ""
+    if coupon_obj and coupon_obj.get("tier") == "agency_suite":
+        tier_code = "agency_suite"
+
+    clean_email = (req.customer_email or "").strip().lower()
+    if not clean_email or "@" not in clean_email:
+        return JSONResponse(status_code=400, content={"ok": False, "error": "Ingresa un correo electrónico válido para guardar tu marca."})
+    clean_name = (req.customer_name or "Fundador").strip() or "Fundador"
+
+    # Caso A: Monto a pagar > $0 USD -> Crear sesión real en Stripe Checkout previa persistencia del avance
+    if amount_usd > 0.0:
+        acc_meta = _persist_account_and_brand_snapshot(
+            clean_email=clean_email,
+            clean_name=clean_name,
+            raw_pwd=(req.account_password or "").strip(),
+            brand_name=req.brand_name or "Tu Marca",
+            current_step=3,
+            state_snapshot=req.state_snapshot or {},
+            applied_coupon_code=applied_coupon_code,
+            discount_pct=discount_pct,
+        )
+        req_origin = request.headers.get("origin") or f"{request.url.scheme}://{request.url.netloc}"
+        stripe_res = _create_stripe_checkout_session_https(
+            amount_usd=amount_usd,
+            brand_name=req.brand_name or "Tu Marca",
+            customer_email=clean_email,
+            customer_name=clean_name,
+            plan_id=req.plan_id,
+            account_id=acc_meta["account_id"],
+            brand_id=acc_meta["brand_id"],
+            origin_url=req_origin,
+        )
+        if stripe_res.get("ok") and stripe_res.get("checkout_url"):
+            return {
+                "ok": True,
+                "status": "requires_stripe_redirect",
+                "stripe_session_id": stripe_res["session_id"],
+                "stripe_checkout_url": stripe_res["checkout_url"],
+                "amount_usd": amount_usd,
+                "currency": "USD",
+                "account": {
+                    "account_id": acc_meta["account_id"],
+                    "email": clean_email,
+                    "name": clean_name,
+                    "brand_id": acc_meta["brand_id"],
+                    "migration_code": acc_meta["migration_code"],
+                },
+            }
+        fallback_link = os.environ.get("STRIPE_CHECKOUT_URL_PRO", "")
+        if fallback_link:
+            return {
+                "ok": True,
+                "status": "requires_stripe_redirect",
+                "stripe_checkout_url": fallback_link,
+                "amount_usd": amount_usd,
+                "currency": "USD",
+            }
+        return JSONResponse(
+            status_code=502,
+            content={"ok": False, "error": "No se pudo conectar con la pasarela segura Stripe. Intenta de nuevo en unos segundos."},
+        )
+
+    # Caso B: Cupón promocional 100% verificado en servidor ($0.00 USD)
+    raw_seed = f"{req.brand_name}|{clean_email}|{now_ts}"
+    short_hash = _tbb_hashlib.sha256(raw_seed.encode("utf-8")).hexdigest()[:8].upper()
+    order_folio = f"TBB-PROMO-{short_hash}"
+    license_code = f"TBB-VIP-{short_hash[:4]}-{short_hash[4:]}"
+    msg = f"{req.brand_name}|{order_folio}|{tier_code}|{exp}"
+    sig = _tbb_hmac.new(secret.encode("utf-8"), msg.encode("utf-8"), _tbb_hashlib.sha256).hexdigest()
+    grant_token = f"{exp}.{sig}"
+
+    acc_meta = _persist_account_and_brand_snapshot(
+        clean_email=clean_email,
+        clean_name=clean_name,
+        raw_pwd=(req.account_password or "").strip(),
+        brand_name=req.brand_name or "Tu Marca",
+        current_step=4,
+        state_snapshot=req.state_snapshot or {},
+        license_code=license_code,
+        order_folio=order_folio,
+        applied_coupon_code=applied_coupon_code,
+        discount_pct=discount_pct,
     )
 
     return {
@@ -3610,27 +3803,131 @@ def api_process_live_checkout(req: PaymentCheckoutLiveRequest):
         "base_amount_usd": base_amount_usd,
         "discount_percent": discount_pct,
         "promo_code": applied_coupon_code,
-        "amount_usd": amount_usd,
+        "amount_usd": 0.0,
         "currency": "USD",
-        "payment_method": "promo_coupon" if discount_pct == 100 else req.payment_method,
+        "payment_method": "promo_coupon",
         "brand_name": req.brand_name,
         "customer_email": clean_email,
         "account": {
-            "account_id": account_id,
+            "account_id": acc_meta["account_id"],
             "email": clean_email,
             "name": clean_name,
-            "brand_id": brand_id,
-            "migration_code": mig_code,
+            "brand_id": acc_meta["brand_id"],
+            "migration_code": acc_meta["migration_code"],
             "security_verified": True,
             "license_tier": tier_code,
             "unlocked_step": 4,
-            "migrated_steps_0_to_3": True
+            "migrated_steps_0_to_3": True,
         },
         "expires_at_unix": exp,
         "download_grant_token": grant_token,
-        "stripe_checkout_url": stripe_checkout_url,
         "authorized_at": _tbb_time.strftime("%Y-%m-%dT%H:%M:%SZ", _tbb_time.gmtime(now_ts)),
     }
+
+
+@app.get("/api/v1/payments/verify-stripe-session")
+def api_verify_stripe_checkout_session(session_id: str = ""):
+    """Verifica criptográficamente en Stripe API una sesión pagada al regresar al Paso 4."""
+    import urllib.request
+    import ssl
+    clean_sid = (session_id or "").strip()
+    stripe_sk = (os.environ.get("STRIPE_SECRET_KEY") or "").strip()
+    if not clean_sid or not clean_sid.startswith("cs_") or not stripe_sk:
+        return JSONResponse(status_code=400, content={"ok": False, "error": "invalid_session"})
+
+    req = urllib.request.Request(
+        f"https://api.stripe.com/v1/checkout/sessions/{clean_sid}",
+        headers={"Authorization": f"Bearer {stripe_sk}"},
+        method="GET",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=12, context=ssl.create_default_context()) as resp:
+            sdata = json.loads(resp.read().decode("utf-8"))
+    except Exception as exc:
+        return JSONResponse(status_code=502, content={"ok": False, "error": str(exc)})
+
+    if sdata.get("payment_status") != "paid":
+        return {"ok": False, "paid": False, "payment_status": sdata.get("payment_status")}
+
+    meta = sdata.get("metadata") or {}
+    brand_name = meta.get("brand_name") or "Tu Marca"
+    plan_id = meta.get("plan_id") or "pro_atelier"
+    tier_code = "agency_suite" if plan_id == "agency_suite" else "atelier_pro"
+    customer_email = (sdata.get("customer_email") or (sdata.get("customer_details") or {}).get("email") or "cliente@thebestbrand.app").strip().lower()
+    customer_name = meta.get("customer_name") or (sdata.get("customer_details") or {}).get("name") or "Fundador"
+
+    now_ts = int(_tbb_time.time())
+    exp = now_ts + 86400 * 365
+    short_hash = _tbb_hashlib.sha256(clean_sid.encode("utf-8")).hexdigest()[:8].upper()
+    order_folio = f"TBB-STRIPE-{short_hash}"
+    license_code = f"TBB-PRO-{short_hash[:4]}-{short_hash[4:]}"
+    secret = os.environ.get("TBB_GRANT_SECRET", "improbears-c00-default-grant-secret-v82")
+    msg = f"{brand_name}|{order_folio}|{tier_code}|{exp}"
+    sig = _tbb_hmac.new(secret.encode("utf-8"), msg.encode("utf-8"), _tbb_hashlib.sha256).hexdigest()
+    grant_token = f"{exp}.{sig}"
+
+    # Cargar snapshot guardado antes de ir a Stripe y actualizarlo con licencia activa
+    existing_snapshot = {}
+    account_id = meta.get("account_id") or ("acc_" + hashlib.sha256(customer_email.encode("utf-8")).hexdigest()[:16])
+    brand_id = meta.get("brand_id") or "active_brand_default"
+    try:
+        with sqlite3.connect(_ACCOUNTS_DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            wrow = conn.execute(
+                "SELECT state_json FROM brand_workspaces WHERE account_id = ? AND brand_id = ?",
+                (account_id, brand_id),
+            ).fetchone()
+            if wrow and wrow["state_json"]:
+                existing_snapshot = json.loads(wrow["state_json"])
+    except Exception:
+        existing_snapshot = {}
+
+    acc_meta = _persist_account_and_brand_snapshot(
+        clean_email=customer_email,
+        clean_name=customer_name,
+        raw_pwd="",
+        brand_name=brand_name,
+        current_step=4,
+        state_snapshot=existing_snapshot,
+        license_code=license_code,
+        order_folio=order_folio,
+    )
+
+    return {
+        "ok": True,
+        "paid": True,
+        "status": "authorized",
+        "order_folio": order_folio,
+        "license_code": license_code,
+        "tier": tier_code,
+        "amount_usd": round(float(sdata.get("amount_total") or 4900) / 100.0, 2),
+        "brand_name": brand_name,
+        "customer_email": customer_email,
+        "download_grant_token": grant_token,
+        "expires_at_unix": exp,
+        "state_snapshot": existing_snapshot,
+        "account": {
+            "account_id": acc_meta["account_id"],
+            "email": customer_email,
+            "name": customer_name,
+            "brand_id": acc_meta["brand_id"],
+            "migration_code": acc_meta["migration_code"],
+            "security_verified": True,
+            "license_tier": tier_code,
+            "unlocked_step": 4,
+            "migrated_steps_0_to_3": True,
+        },
+    }
+
+
+@app.post("/api/v1/telemetry/client-error")
+async def api_log_client_error(request: Request):
+    """Recibe telemetría ligera de errores en cliente sin bloquear."""
+    try:
+        _ = await request.json()
+    except Exception:
+        pass
+    return {"ok": True}
 
 
 if __name__ == "__main__":

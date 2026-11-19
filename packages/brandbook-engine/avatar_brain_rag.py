@@ -150,18 +150,64 @@ class GeminiNeuralVoiceSynthesizer:
         t = re.sub(r"\s+", " ", t).strip()
         return t
 
+    _EDGE_FEMALE_VOICES = {
+        "es": "es-MX-DaliaNeural",
+        "en": "en-US-AvaMultilingualNeural",
+        "fr": "fr-FR-VivienneMultilingualNeural",
+        "pt": "pt-BR-ThalitaMultilingualNeural",
+        "de": "de-DE-SeraphinaMultilingualNeural",
+        "it": "it-IT-IsabellaNeural",
+    }
+
+    _MACOS_FEMALE_VOICES = {
+        "es": "Paulina",
+        "en": "Samantha",
+        "fr": "Amelie",
+        "pt": "Luciana",
+        "de": "Anna",
+        "it": "Alice",
+    }
+
+    @staticmethod
+    def _trim_pcm16_silence(pcm_bytes: bytes, sample_rate: int = 24000, threshold: int = 190) -> bytes:
+        """Recorta silencios muertos al inicio y final del PCM16 mono para arranque <25ms."""
+        if not pcm_bytes or len(pcm_bytes) < 960:
+            return pcm_bytes
+        import array
+        samples = array.array("h")
+        even_len = (len(pcm_bytes) // 2) * 2
+        samples.frombytes(pcm_bytes[:even_len])
+        n = len(samples)
+        pad = int(sample_rate * 0.03)  # conservar 30ms naturales
+        start = 0
+        while start < n and abs(samples[start]) < threshold:
+            start += 1
+        end = n - 1
+        while end > start and abs(samples[end]) < threshold:
+            end -= 1
+        start = max(0, start - pad)
+        end = min(n, end + pad)
+        if end <= start + 240:
+            return pcm_bytes[:even_len]
+        return samples[start:end].tobytes()
+
     @classmethod
-    def _synthesize_edge_neural_dalia_b64(cls, clean_text: str) -> Optional[str]:
+    def _synthesize_edge_neural_dalia_b64(cls, clean_text: str, lang: str = "es") -> Optional[str]:
         """
-        Sintetiza voz neural humana de alta definición en español de México (Microsoft Edge Neural
-        es-MX-DaliaNeural) en ~1.1 segundos. Elimina por completo el tono robótico del sintetizador local.
+        Sintetiza voz neural femenina humana en el idioma exacto solicitado (es, en, fr, pt, de, it)
+        a ritmo ágil (+12%) sin caer jamás en español cuando el usuario usa otro idioma.
         """
+        clean_lang = (lang or "es").strip().lower()[:2]
+        edge_voice = cls._EDGE_FEMALE_VOICES.get(clean_lang, "es-MX-DaliaNeural")
+        cache_key = f"{clean_lang}:edge:{clean_text}"
+        if cache_key in _TTS_MEMORY_CACHE:
+            return _TTS_MEMORY_CACHE[cache_key]
         try:
             import asyncio
             import edge_tts
 
             async def _run_edge() -> bytes:
-                comm = edge_tts.Communicate(clean_text, "es-MX-DaliaNeural", rate="+3%")
+                comm = edge_tts.Communicate(clean_text, edge_voice, rate="+12%")
                 chunks = []
                 async for chunk in comm.stream():
                     if chunk.get("type") == "audio" and chunk.get("data"):
@@ -170,27 +216,27 @@ class GeminiNeuralVoiceSynthesizer:
 
             loop = asyncio.new_event_loop()
             try:
-                audio_bytes = loop.run_until_complete(asyncio.wait_for(_run_edge(), timeout=6.5))
+                audio_bytes = loop.run_until_complete(asyncio.wait_for(_run_edge(), timeout=5.5))
             finally:
                 loop.close()
 
             if audio_bytes and len(audio_bytes) > 200:
                 b64_out = base64.b64encode(audio_bytes).decode("ascii")
-                if len(_TTS_MEMORY_CACHE) < 256:
-                    _TTS_MEMORY_CACHE[clean_text] = b64_out
+                if len(_TTS_MEMORY_CACHE) < 512:
+                    _TTS_MEMORY_CACHE[cache_key] = b64_out
                 return b64_out
         except Exception:
             pass
         return None
 
     @classmethod
-    def _synthesize_google_cloud_neural_mp3_b64(cls, clean_text: str) -> Optional[str]:
-        """
-        Respaldo neural directo por HTTPS (Google Cloud / Translate TTS es-MX) que funciona
-        en cualquier contenedor Linux (Railway / Cloud Run) en <0.4s sin dependencias binarias.
-        Divide textos largos en fragmentos de <=180 caracteres por oración.
-        """
+    def _synthesize_google_cloud_neural_mp3_b64(cls, clean_text: str, lang: str = "es") -> Optional[str]:
+        """Respaldo neural HTTPS multilingüe respetando el idioma exacto solicitado."""
         import urllib.parse
+        clean_lang = (lang or "es").strip().lower()[:2]
+        tl_map = {"es": "es-MX", "en": "en", "fr": "fr", "pt": "pt", "de": "de", "it": "it"}
+        tl_code = tl_map.get(clean_lang, "es-MX")
+        cache_key = f"{clean_lang}:gtts_http:{clean_text}"
         try:
             raw_sentences = re.split(r"(?<=[.!?])\s+", clean_text)
             chunks_text: List[str] = []
@@ -215,31 +261,35 @@ class GeminiNeuralVoiceSynthesizer:
                 chunks_text.append(current)
 
             mp3_parts: List[bytes] = []
-            for part_txt in chunks_text[:6]:
+            for part_txt in chunks_text[:4]:
                 q = urllib.parse.quote(part_txt)
-                url = f"https://translate.googleapis.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es-MX&q={q}"
+                url = f"https://translate.googleapis.com/translate_tts?ie=UTF-8&client=tw-ob&tl={tl_code}&q={q}"
                 req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-                with urllib.request.urlopen(req, timeout=5, context=_SSL_CTX) as r:
+                with urllib.request.urlopen(req, timeout=4.5, context=_SSL_CTX) as r:
                     b = r.read()
                     if b and len(b) > 100:
                         mp3_parts.append(b)
             if mp3_parts:
                 full_mp3 = b"".join(mp3_parts)
                 b64_out = base64.b64encode(full_mp3).decode("ascii")
-                if len(_TTS_MEMORY_CACHE) < 256:
-                    _TTS_MEMORY_CACHE[clean_text] = b64_out
+                if len(_TTS_MEMORY_CACHE) < 512:
+                    _TTS_MEMORY_CACHE[cache_key] = b64_out
                 return b64_out
         except Exception:
             pass
         return None
 
     @classmethod
-    def _synthesize_local_consistent_aura_wav_b64(cls, clean_text: str) -> Optional[str]:
-        """
-        Primero intenta la voz neural humana es-MX-DaliaNeural (~1.1s), luego Google TTS en español de México
-        (gTTS lang='es', tld='com.mx'), y finalmente el motor local del sistema operativo.
-        """
-        neural_b64 = cls._synthesize_edge_neural_dalia_b64(clean_text)
+    def _synthesize_local_consistent_aura_wav_b64(cls, clean_text: str, lang: str = "es") -> Optional[str]:
+        """Respaldo femenino multilingüe consistente con el idioma exacto (es, en, fr, pt, de, it)."""
+        clean_lang = (lang or "es").strip().lower()[:2]
+        if clean_lang not in ("es", "en", "fr", "pt", "de", "it"):
+            clean_lang = "es"
+        cache_key = f"{clean_lang}:local:{clean_text}"
+        if cache_key in _TTS_MEMORY_CACHE:
+            return _TTS_MEMORY_CACHE[cache_key]
+
+        neural_b64 = cls._synthesize_edge_neural_dalia_b64(clean_text, lang=clean_lang)
         if neural_b64:
             return neural_b64
 
@@ -247,13 +297,14 @@ class GeminiNeuralVoiceSynthesizer:
             import io
             from gtts import gTTS
             mp3_buf = io.BytesIO()
-            tts_obj = gTTS(text=clean_text, lang="es", tld="com.mx", slow=False)
+            tld_val = "com.mx" if clean_lang == "es" else "com"
+            tts_obj = gTTS(text=clean_text, lang=clean_lang, tld=tld_val, slow=False)
             tts_obj.write_to_fp(mp3_buf)
             mp3_bytes = mp3_buf.getvalue()
             if mp3_bytes and len(mp3_bytes) > 200:
                 b64_out = base64.b64encode(mp3_bytes).decode("ascii")
-                if len(_TTS_MEMORY_CACHE) < 256:
-                    _TTS_MEMORY_CACHE[clean_text] = b64_out
+                if len(_TTS_MEMORY_CACHE) < 512:
+                    _TTS_MEMORY_CACHE[cache_key] = b64_out
                 return b64_out
         except Exception:
             pass
@@ -261,19 +312,20 @@ class GeminiNeuralVoiceSynthesizer:
         import subprocess
         import tempfile
         wav_path = None
+        mac_voice = cls._MACOS_FEMALE_VOICES.get(clean_lang, "Paulina")
         try:
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tf:
                 wav_path = tf.name
             subprocess.run(
-                ["say", "-v", "Paulina", "-r", "180", "--data-format=LEI16@24000", "-o", wav_path, clean_text],
+                ["say", "-v", mac_voice, "-r", "195", "--data-format=LEI16@24000", "-o", wav_path, clean_text],
                 check=True,
-                timeout=8
+                timeout=6
             )
             if os.path.exists(wav_path) and os.path.getsize(wav_path) > 100:
                 with open(wav_path, "rb") as rf:
                     b64_out = base64.b64encode(rf.read()).decode("ascii")
-                if len(_TTS_MEMORY_CACHE) < 256:
-                    _TTS_MEMORY_CACHE[clean_text] = b64_out
+                if len(_TTS_MEMORY_CACHE) < 512:
+                    _TTS_MEMORY_CACHE[cache_key] = b64_out
                 return b64_out
         except Exception:
             pass
@@ -286,18 +338,45 @@ class GeminiNeuralVoiceSynthesizer:
         return None
 
     @classmethod
-    def synthesize_gemini_voice_wav_b64(cls, text_to_speak: str, api_key: str = "") -> Optional[str]:
+    def synthesize_gemini_voice_wav_b64(
+        cls,
+        text_to_speak: str,
+        api_key: str = "",
+        lang: str = "es",
+        voice_name: str = "Aoede",
+    ) -> Optional[str]:
         clean_t = cls.humanize_text_for_natural_speech(text_to_speak)
         if not clean_t:
             return None
-        if clean_t in _TTS_MEMORY_CACHE:
-            return _TTS_MEMORY_CACHE[clean_t]
+        clean_lang = (lang or "es").strip().lower()[:2]
+        if clean_lang not in ("es", "en", "fr", "pt", "de", "it"):
+            clean_lang = "es"
+        v_name = (voice_name or os.environ.get("AURA_NEUTRAL_VOICE", "Aoede") or "Aoede").strip()
+        cache_key = f"{clean_lang}:{v_name}:{clean_t}"
+        if cache_key in _TTS_MEMORY_CACHE:
+            return _TTS_MEMORY_CACHE[cache_key]
 
-        # Prioridad 1: Gemini 2.5 Flash Neural TTS (Voz Aoede 24kHz) si hay API Key activa
+        # Caché persistente en disco por (idioma + voz + texto) para latencia <15ms en frases recurrentes
+        disk_cache_file = None
+        try:
+            cache_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../apps/web/assets/audio/tts_cache"))
+            os.makedirs(cache_dir, exist_ok=True)
+            digest = hashlib.sha256(cache_key.encode("utf-8")).hexdigest()[:24]
+            disk_cache_file = os.path.join(cache_dir, f"{clean_lang}_{v_name.lower()}_{digest}.b64")
+            if os.path.isfile(disk_cache_file) and os.path.getsize(disk_cache_file) > 200:
+                with open(disk_cache_file, "r", encoding="utf-8") as cf:
+                    cached_b64 = cf.read().strip()
+                if cached_b64:
+                    if len(_TTS_MEMORY_CACHE) < 512:
+                        _TTS_MEMORY_CACHE[cache_key] = cached_b64
+                    return cached_b64
+        except Exception:
+            disk_cache_file = None
+
+        # Prioridad 1: Gemini Neural TTS (Voz única canónica Aoede 24kHz con recorte de silencios)
         key = (os.environ.get("GEMINI_API_KEY", "") or DEFAULT_GEMINI_API_KEY or api_key).strip()
         if key and cls._CLOUD_TTS_AVAILABLE:
             tts_models = ["gemini-2.5-flash-preview-tts", "gemini-3.1-flash-tts-preview"]
-            neutral_voice_name = os.environ.get("AURA_NEUTRAL_VOICE", "Aoede")
             for model_name in tts_models:
                 url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={key}"
                 payload = {
@@ -306,7 +385,7 @@ class GeminiNeuralVoiceSynthesizer:
                         "responseModalities": ["AUDIO"],
                         "speechConfig": {
                             "voiceConfig": {
-                                "prebuiltVoiceConfig": {"voiceName": neutral_voice_name}
+                                "prebuiltVoiceConfig": {"voiceName": v_name}
                             }
                         }
                     }
@@ -317,16 +396,27 @@ class GeminiNeuralVoiceSynthesizer:
                         data=json.dumps(payload).encode("utf-8"),
                         headers={"Content-Type": "application/json"}
                     )
-                    with urllib.request.urlopen(req, timeout=7, context=_SSL_CTX) as resp:
+                    with urllib.request.urlopen(req, timeout=5.5, context=_SSL_CTX) as resp:
                         data = json.loads(resp.read().decode("utf-8"))
                         parts = data["candidates"][0]["content"]["parts"]
                         for p in parts:
                             if "inlineData" in p and p["inlineData"].get("data"):
                                 pcm_raw = base64.b64decode(p["inlineData"]["data"])
-                                wav_bytes = cls._pcm16_to_wav_bytes(pcm_raw, sample_rate=24000, channels=1)
+                                pcm_trimmed = cls._trim_pcm16_silence(pcm_raw, sample_rate=24000)
+                                # Tope estricto <= 9.8s (24000 Hz * 2 bytes * 9.8s)
+                                max_bytes = int(24000 * 2 * 9.8)
+                                if len(pcm_trimmed) > max_bytes:
+                                    pcm_trimmed = pcm_trimmed[:max_bytes]
+                                wav_bytes = cls._pcm16_to_wav_bytes(pcm_trimmed, sample_rate=24000, channels=1)
                                 b64_out = base64.b64encode(wav_bytes).decode("ascii")
-                                if len(_TTS_MEMORY_CACHE) < 256:
-                                    _TTS_MEMORY_CACHE[clean_t] = b64_out
+                                if len(_TTS_MEMORY_CACHE) < 512:
+                                    _TTS_MEMORY_CACHE[cache_key] = b64_out
+                                if disk_cache_file:
+                                    try:
+                                        with open(disk_cache_file, "w", encoding="utf-8") as wf:
+                                            wf.write(b64_out)
+                                    except Exception:
+                                        pass
                                 return b64_out
                 except urllib.error.HTTPError as he:
                     if he.code in (402, 403):
@@ -335,13 +425,13 @@ class GeminiNeuralVoiceSynthesizer:
                 except Exception:
                     continue
 
-        # Prioridad 2: Voz Neural Humana Ultrarrápida en Español (es-MX-DaliaNeural ~1.1s, 100% natural y cálida)
-        fast_neural = cls._synthesize_edge_neural_dalia_b64(clean_t)
+        # Prioridad 2: Voz Neural Femenina Multilingüe exacta en el idioma solicitado (~0.9s)
+        fast_neural = cls._synthesize_edge_neural_dalia_b64(clean_t, lang=clean_lang)
         if fast_neural:
             return fast_neural
 
-        # Prioridad 3: Stream Neural HTTPS de Google Cloud/Translate es-MX (~0.4s) + Fallback Local
-        return cls._synthesize_local_consistent_aura_wav_b64(clean_t)
+        # Prioridad 3: Fallback femenino en el idioma exacto (jamás mezcla español con otro idioma)
+        return cls._synthesize_local_consistent_aura_wav_b64(clean_t, lang=clean_lang)
 
 
 class DynamicConversationalProfiler:

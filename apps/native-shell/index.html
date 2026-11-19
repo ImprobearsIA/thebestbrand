@@ -2,39 +2,50 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <title>The Best Brand — Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>The Best Brand — Your Brand, Now!!!</title>
   <style>
     html, body {
       margin: 0; padding: 0; width: 100%; height: 100%;
-      background: #0D2540; color: #FFFFFF;
-      font-family: -apple-system, BlinkMacSystemFont, "Montserrat", "Plus Jakarta Sans", sans-serif;
+      background: #FFFFFF; color: #0D2540;
+      font-family: -apple-system, BlinkMacSystemFont, "Plus Jakarta Sans", "Montserrat", sans-serif;
       display: flex; align-items: center; justify-content: center; text-align: center;
     }
-    .loader-card { max-width: 360px; padding: 32px 24px; }
-    .logo { width: 88px; height: 88px; border-radius: 22px; box-shadow: 0 16px 40px rgba(0,0,0,0.45); margin-bottom: 18px; }
-    h1 { font-size: 1.25rem; font-weight: 900; margin: 0 0 8px; letter-spacing: 0.02em; }
-    p { font-size: 0.88rem; color: #CBD5E1; line-height: 1.5; margin: 0 0 20px; }
+    .loader-card { max-width: 380px; padding: 32px 24px; }
+    .logo { width: 84px; height: 84px; border-radius: 22px; box-shadow: 0 12px 30px rgba(13,37,64,0.12); margin-bottom: 16px; }
+    .tag { display: inline-block; padding: 5px 12px; border-radius: 999px; background: #FFF7ED; color: #C2410C; font-size: 0.875rem; font-weight: 700; margin-bottom: 10px; }
+    h1 { font-size: 1.35rem; font-weight: 700; margin: 0 0 8px; color: #0D2540; }
+    p { font-size: 0.96rem; color: #475569; line-height: 1.55; margin: 0 0 22px; }
     .btn {
-      display: inline-block; background: linear-gradient(135deg, #FF7A00, #E05E00);
-      color: #FFFFFF; text-decoration: none; font-weight: 800; font-size: 0.9rem;
-      padding: 13px 24px; border-radius: 999px; border: none; cursor: pointer;
+      display: inline-block; background: #FF7A00;
+      color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 0.96rem;
+      padding: 13px 26px; border-radius: 14px; border: none; cursor: pointer;
+      box-shadow: 0 4px 0 #D96500;
     }
+    .offline-msg { display: none; margin-top: 14px; padding: 10px 14px; border-radius: 12px; background: #FEF2F2; color: #B91C1C; font-size: 0.875rem; }
   </style>
 </head>
 <body>
   <div class="loader-card">
     <img src="assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png" alt="The Best Brand" class="logo" />
-    <h1>THE BEST BRAND</h1>
-    <p>Conectando con el Atelier de Identidad Visual Algorítmica y Voz IA (Aura)...</p>
-    <a class="btn" href="https://thebestbrand.app/studio">Entrar al Estudio →</a>
+    <div><span class="tag">YOUR BRAND, NOW!!!</span></div>
+    <h1>The Best Brand</h1>
+    <p id="statusCopy">Abriendo tu estudio para crear tu marca y tu Brandbook de más de 30 páginas...</p>
+    <button type="button" class="btn" onclick="launchStudio()">Reintentar conexión →</button>
+    <div id="offlineBox" class="offline-msg">Sin conexión a internet. Conéctate a Wi-Fi o datos móviles y toca Reintentar.</div>
   </div>
   <script>
-    setTimeout(function () {
-      if (navigator.onLine !== false) {
-        window.location.replace("https://thebestbrand.app/studio");
+    function launchStudio() {
+      var offlineBox = document.getElementById("offlineBox");
+      if (navigator.onLine === false) {
+        if (offlineBox) offlineBox.style.display = "block";
+        return;
       }
-    }, 350);
+      if (offlineBox) offlineBox.style.display = "none";
+      window.location.replace("https://thebestbrand.app/studio");
+    }
+    window.addEventListener("online", launchStudio);
+    setTimeout(launchStudio, 260);
   </script>
 </body>
 </html>

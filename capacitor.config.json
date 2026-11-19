@@ -8,7 +8,8 @@
     "allowNavigation": [
       "thebestbrand.app",
       "*.thebestbrand.app",
-      "*.improbears.com"
+      "*.improbears.com",
+      "checkout.stripe.com"
     ]
   },
   "ios": {
@@ -26,15 +27,15 @@
   },
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 1400,
+      "launchShowDuration": 900,
       "launchAutoHide": true,
-      "backgroundColor": "#0D2540",
+      "backgroundColor": "#FFFFFF",
       "androidSplashResourceName": "splash",
       "showSpinner": false
     },
     "StatusBar": {
-      "style": "DARK",
-      "backgroundColor": "#0D2540"
+      "style": "LIGHT",
+      "backgroundColor": "#FFFFFF"
     }
   }
 }

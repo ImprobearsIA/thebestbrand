@@ -8,7 +8,7 @@
     var isDemoParam = params.get("demo") === "true";
     var embedMode = params.get("embed") || "";
     var isImmersiveClone = embedMode === "immersive_clone";
-    var isIphoneEmbed = embedMode === "iphone" || embedMode === "iphone_tour" || embedMode === "commercial";
+    var isIphoneEmbed = Boolean(embedMode);
     var isDemo = isEmbedded || isDemoParam;
     if ((isIphoneEmbed || isEmbedded) && !isImmersiveClone) {
       document.documentElement.classList.add("tbb-embed-iphone-mode");
@@ -35,30 +35,17 @@
   })();
 </script>
 
-<!-- ======================= TBB EDGE API & ACCOUNT VAULT V36 ======================= -->
-<script id="tbbEdgeApiAndAccountVaultV36">
+<!-- ======================= TBB SECURE BACKEND API CLIENT V129 (ZERO CLIENT SECRETS) ======================= -->
+<script id="tbbSecureApiVaultV129">
 (function() {
-  var CLEAN_KEY_V36 = "tbb_clean_boot_v36_accounts_ready";
-  if (!localStorage.getItem(CLEAN_KEY_V36)) {
-    localStorage.removeItem("tbb_active_brand_session_v24");
-    localStorage.setItem(CLEAN_KEY_V36, new Date().toISOString());
-  }
-
-  var VAULT_ACCOUNTS_KEY = "tbb_cloud_vault_accounts_v36";
   var VAULT_WORKSPACES_KEY = "tbb_cloud_vault_workspaces_v36";
-  var NEON_SQL_ENDPOINT = "https://ep-lively-band-b4dztbn5-pooler.c-6.us-east-2.aws.neon.tech/sql";
-  var NEON_CONN_HEADER = "postgresql://neondb_owner:npg_OeTfyNlntV74@ep-lively-band-b4dztbn5-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require";
+  var nativeFetch = window.fetch.bind(window);
 
   function loadVaultMap(key) {
     try { return JSON.parse(localStorage.getItem(key) || "{}") || {}; } catch (e) { return {}; }
   }
   function saveVaultMap(key, obj) {
     try { localStorage.setItem(key, JSON.stringify(obj || {})); } catch (e) {}
-  }
-  function makeAccountId(email) {
-    var clean = String(email || "fundador@thebestbrand.com").trim().toLowerCase();
-    var slug = clean.replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
-    return "acc_" + (slug || "fundador");
   }
   function jsonResponse(obj, status) {
     return new Response(JSON.stringify(obj), {
@@ -67,284 +54,105 @@
     });
   }
 
-  var nativeFetch = window.fetch.bind(window);
-
-  async function queryNeonCloudSQL(query, params) {
-    try {
-      var res = await nativeFetch(NEON_SQL_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Neon-Connection-String": NEON_CONN_HEADER
-        },
-        body: JSON.stringify({ query: query, params: params || [] })
-      });
-      if (res.ok) {
-        return await res.json();
-      }
-    } catch (e) {
-      console.warn("Neon Cloud SQL fallback local:", e);
-    }
-    return null;
-  }
-
   window.fetch = async function(input, init) {
     var urlStr = typeof input === "string" ? input : (input && input.url ? input.url : String(input));
     var isApiCall = urlStr.indexOf("/api/") === 0 || urlStr.indexOf(window.location.origin + "/api/") === 0;
-
     if (!isApiCall) {
       return nativeFetch(input, init);
     }
-
+    try {
+      var srvRes = await nativeFetch(input, init);
+      if (srvRes.status !== 502 && srvRes.status !== 503 && srvRes.status !== 504) {
+        return srvRes;
+      }
+    } catch (netErr) {}
     var pathOnly = urlStr.replace(window.location.origin, "");
     var bodyObj = {};
     if (init && init.body && typeof init.body === "string") {
       try { bodyObj = JSON.parse(init.body); } catch (e) {}
     }
-
-    // -------------------------------------------------------------------------
-    // 1. GESTIÓN DE CUENTAS Y SINCRONIZACIÓN CLOUD EN NEON POSTGRESQL 18
-    // -------------------------------------------------------------------------
-    if (pathOnly.indexOf("/api/v1/account/login") === 0) {
-      var cleanEmail = String(bodyObj.email || "").trim().toLowerCase();
-      var cleanName = String(bodyObj.name || "Fundador").trim() || "Fundador";
-      var accId = makeAccountId(cleanEmail);
-      var nowIso = new Date().toISOString();
-
-      // Guardar en Neon Cloud PostgreSQL
-      await queryNeonCloudSQL(
-        "INSERT INTO tbb_accounts (account_id, email, name, created_at) VALUES ($1, $2, $3, $4) ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name RETURNING account_id, email, name;",
-        [accId, cleanEmail, cleanName, nowIso]
-      );
-
-      // Consultar si la cuenta ya tiene marcas guardadas en Neon Cloud PostgreSQL
-      var neonBrandsRes = await queryNeonCloudSQL(
-        "SELECT brand_id, brand_name, current_step, state_json, updated_at FROM tbb_brand_workspaces WHERE account_id = $1 ORDER BY updated_at DESC;",
-        [accId]
-      );
-
-      var accounts = loadVaultMap(VAULT_ACCOUNTS_KEY);
-      accounts[accId] = { account_id: accId, email: cleanEmail, name: cleanName, updated_at: nowIso };
-      saveVaultMap(VAULT_ACCOUNTS_KEY, accounts);
-
-      var brandsList = [];
-      var activeBrand = null;
-      if (neonBrandsRes && Array.isArray(neonBrandsRes.rows) && neonBrandsRes.rows.length > 0) {
-        neonBrandsRes.rows.forEach(function(r, idx) {
-          var parsed = {};
-          try { parsed = JSON.parse(r.state_json || "{}"); } catch (e) {}
-          var item = {
-            brand_id: r.brand_id,
-            brand_name: r.brand_name,
-            current_step: Number(r.current_step || 1),
-            updated_at: r.updated_at,
-            state_payload: parsed
-          };
-          brandsList.push(item);
-          if (idx === 0) activeBrand = item;
-        });
-      } else {
-        var wsMap = loadVaultMap(VAULT_WORKSPACES_KEY);
-        var localWs = wsMap[accId + "::active_brand_default"];
-        if (localWs) {
-          brandsList.push(localWs);
-          activeBrand = localWs;
-        }
-      }
-
-      return jsonResponse({
-        status: "ok",
-        account: {
-          account_id: accId,
-          email: cleanEmail,
-          name: cleanName,
-          created_at: nowIso
-        },
-        brands: brandsList,
-        active_brand: activeBrand
-      }, 200);
-    }
-
     if (pathOnly.indexOf("/api/v1/account/save-state") === 0) {
       var accIdSave = String(bodyObj.account_id || "guest_default").trim() || "guest_default";
       var brandIdSave = String(bodyObj.brand_id || "active_brand_default").trim() || "active_brand_default";
-      var brandNameSave = String(bodyObj.brand_name || "TheBestBrand").trim() || "TheBestBrand";
-      var stepSave = Number(bodyObj.current_step || 1);
-      var nowSave = new Date().toISOString();
-      var stateStr = JSON.stringify(bodyObj.state_payload || {});
-
       var wsMapSave = loadVaultMap(VAULT_WORKSPACES_KEY);
       wsMapSave[accIdSave + "::" + brandIdSave] = {
         account_id: accIdSave,
-        email: bodyObj.email || "",
         brand_id: brandIdSave,
-        brand_name: brandNameSave,
-        current_step: stepSave,
+        brand_name: String(bodyObj.brand_name || "Mi Marca"),
+        current_step: Number(bodyObj.current_step || 0),
         state_payload: bodyObj.state_payload || {},
-        updated_at: nowSave
+        updated_at: new Date().toISOString()
       };
       saveVaultMap(VAULT_WORKSPACES_KEY, wsMapSave);
-
-      if (accIdSave !== "guest_default") {
-        await queryNeonCloudSQL(
-          "INSERT INTO tbb_brand_workspaces (brand_id, account_id, brand_name, current_step, state_json, updated_at) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (account_id, brand_id) DO UPDATE SET brand_name = EXCLUDED.brand_name, current_step = EXCLUDED.current_step, state_json = EXCLUDED.state_json, updated_at = EXCLUDED.updated_at;",
-          [brandIdSave, accIdSave, brandNameSave, stepSave, stateStr, nowSave]
-        );
-      }
-
-      return jsonResponse({
-        status: "saved",
-        account_id: accIdSave,
-        brand_id: brandIdSave,
-        brand_name: brandNameSave,
-        current_step: stepSave,
-        saved_at: nowSave
-      }, 200);
+      return jsonResponse({ status: "saved_local", account_id: accIdSave, brand_id: brandIdSave }, 200);
     }
-
     if (pathOnly.indexOf("/api/v1/account/load-state") === 0) {
       var qIdx = pathOnly.indexOf("?");
-      var params = new URLSearchParams(qIdx !== -1 ? pathOnly.slice(qIdx + 1) : "");
-      var accIdLoad = (params.get("account_id") || "guest_default").trim();
-      var brandIdLoad = (params.get("brand_id") || "active_brand_default").trim();
-      if (!accIdLoad || accIdLoad === "guest_default") {
-        return jsonResponse({ status: "empty", account_id: "guest_default", brand_id: brandIdLoad, state_payload: null }, 200);
-      }
-
-      var neonLoad = await queryNeonCloudSQL(
-        "SELECT brand_id, account_id, brand_name, current_step, state_json, updated_at FROM tbb_brand_workspaces WHERE account_id = $1 AND brand_id = $2 LIMIT 1;",
-        [accIdLoad, brandIdLoad]
-      );
-      if (neonLoad && Array.isArray(neonLoad.rows) && neonLoad.rows.length > 0) {
-        var r0 = neonLoad.rows[0];
-        var parsedPayload = {};
-        try { parsedPayload = JSON.parse(r0.state_json || "{}"); } catch (e) {}
-        return jsonResponse({
-          status: "loaded",
-          account_id: r0.account_id,
-          brand_id: r0.brand_id,
-          brand_name: r0.brand_name,
-          current_step: Number(r0.current_step || 1),
-          updated_at: r0.updated_at,
-          state_payload: parsedPayload
-        }, 200);
-      }
-
+      var qParams = new URLSearchParams(qIdx !== -1 ? pathOnly.slice(qIdx + 1) : "");
+      var accIdLoad = (qParams.get("account_id") || "guest_default").trim();
+      var brandIdLoad = (qParams.get("brand_id") || "active_brand_default").trim();
       var wsMapLoad = loadVaultMap(VAULT_WORKSPACES_KEY);
       var row = wsMapLoad[accIdLoad + "::" + brandIdLoad];
-      if (!row) {
-        return jsonResponse({ status: "empty", account_id: accIdLoad, brand_id: brandIdLoad, state_payload: null }, 200);
-      }
-      return jsonResponse({
-        status: "loaded",
-        account_id: row.account_id,
-        brand_id: row.brand_id,
-        brand_name: row.brand_name,
-        current_step: row.current_step,
-        updated_at: row.updated_at,
-        state_payload: row.state_payload
-      }, 200);
+      if (row) return jsonResponse({ status: "loaded", state_payload: row.state_payload, brand_name: row.brand_name, current_step: row.current_step }, 200);
+      return jsonResponse({ status: "empty", state_payload: null }, 200);
     }
-
-    if (pathOnly.indexOf("/api/v1/account/reset-brand") === 0) {
-      var accIdRst = String(bodyObj.account_id || "guest_default").trim();
-      var brandIdRst = String(bodyObj.brand_id || "active_brand_default").trim();
-      var wsMapRst = loadVaultMap(VAULT_WORKSPACES_KEY);
-      delete wsMapRst[accIdRst + "::" + brandIdRst];
-      saveVaultMap(VAULT_WORKSPACES_KEY, wsMapRst);
-      if (accIdRst && accIdRst !== "guest_default") {
-        await queryNeonCloudSQL(
-          "DELETE FROM tbb_brand_workspaces WHERE account_id = $1 AND brand_id = $2;",
-          [accIdRst, brandIdRst]
-        );
-      }
-      return jsonResponse({
-        status: "reset_complete",
-        account_id: accIdRst,
-        brand_id: brandIdRst,
-        purged_at: new Date().toISOString(),
-        residue_remaining: 0
-      }, 200);
-    }
-
-    // -------------------------------------------------------------------------
-    // 1.5 PROXY SEGURO DE GEMINI TTS Y VISION EN EL NAVEGADOR
-    // -------------------------------------------------------------------------
-    if (pathOnly.indexOf("/api/v1/gemini/proxy") === 0) {
-      try {
-        var gKey = (typeof window.getGeminiApiKey === "function" ? window.getGeminiApiKey() : "") ||
-                   (typeof localStorage !== "undefined" ? localStorage.getItem("tbb_gemini_api_key") : "") ||
-                   (typeof window.TBB_GEMINI_KEY === "string" ? window.TBB_GEMINI_KEY : "");
-        if (!gKey) {
-          // Delegar al backend corporativo real (/api/v1/gemini/proxy) sin exponer llaves en cliente
-          var srvRes = await nativeFetch((window.TBB_API_BASE || "") + "/api/v1/gemini/proxy", init);
-          if (srvRes.ok && ((srvRes.headers && srvRes.headers.get("content-type")) || "").indexOf("application/json") !== -1) {
-            return srvRes;
-          }
-          return jsonResponse({ error: "server_proxy_unavailable", status: srvRes.status }, 503);
-        }
-        var gModel = bodyObj.model || "gemini-flash-lite-latest";
-        var gUrl = "https://generativelanguage.googleapis.com/v1beta/models/" + encodeURIComponent(gModel) + ":generateContent?key=" + encodeURIComponent(gKey);
-        var gPayload = {
-          contents: bodyObj.contents || [],
-          generationConfig: bodyObj.generationConfig || {}
-        };
-        var gRes = await nativeFetch(gUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(gPayload)
-        });
-        if (gRes.ok) {
-          var gData = await gRes.json();
-          return jsonResponse(gData, 200);
-        } else {
-          return jsonResponse({ error: "upstream_error", status: gRes.status }, gRes.status);
-        }
-      } catch (gErr) {
-        return jsonResponse({ error: "proxy_fallback_exception", details: String(gErr) }, 502);
-      }
-    }
-
-    // -------------------------------------------------------------------------
-    // 2. PARA EL RESTO DE ENDPOINTS (/api/...), PROBAR BACKEND REAL (RAILWAY / CLOUD RUN)
-    // -------------------------------------------------------------------------
-    try {
-      var realRes = await nativeFetch(input, init);
-      var ctype = (realRes.headers && realRes.headers.get("content-type")) || "";
-      if (realRes.ok && (ctype.indexOf("application/json") !== -1 || ctype.indexOf("application/pdf") !== -1 || ctype.indexOf("audio/") !== -1)) {
-        return realRes;
-      }
-    } catch (netErr) {}
-
-    try {
-      var railwayUrl = "https://thebestbrand-api-studio-production.up.railway.app" + pathOnly;
-      var rwRes = await nativeFetch(railwayUrl, init);
-      var rwCtype = (rwRes.headers && rwRes.headers.get("content-type")) || "";
-      if (rwRes.ok && (rwCtype.indexOf("application/json") !== -1 || rwCtype.indexOf("application/pdf") !== -1 || rwCtype.indexOf("audio/") !== -1)) {
-        return rwRes;
-      }
-    } catch (rwErr) {}
-
-    return jsonResponse({ error: "edge_fallback_mode", path: pathOnly }, 503);
+    return jsonResponse({ error: "offline_mode", path: pathOnly }, 503);
   };
 })();
 </script>
-<!-- ======================= END TBB EDGE API V36 ======================= -->
+<!-- ======================= END TBB SECURE API CLIENT V129 ======================= -->
 
 
 
 <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>TheBestBrand — Luxury Brand Identity Atelier</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>The Best Brand — Your Brand, Now!!!</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="TheBestBrand" />
   <meta name="theme-color" content="#F8F9FA" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='28' fill='%2318181B'/%3E%3Ctext x='50' y='64' font-family='sans-serif' font-weight='900' font-size='42' fill='%23FFFFFF' text-anchor='middle'%3ETB%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='45' fill='%2318181B'/%3E%3Ctext x='90' y='115' font-family='sans-serif' font-weight='900' font-size='78' fill='%23FFFFFF' text-anchor='middle'%3ETB%3C/text%3E%3C/svg%3E" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bebas+Neue&family=Cinzel:wght@600;700;800;900&family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..700&family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Lato:wght@400;700;900&family=League+Spartan:wght@500;700;800;900&family=Libre+Baskerville:wght@400;700&family=Manrope:wght@400;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&family=Oswald:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Sora:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&family=Urbanist:wght@500;600;700;800;900&family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style id="tbbLocalCoreFontsV129">
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('/assets/fonts/PlusJakartaSans-Regular.ttf') format('truetype');
+    font-weight: 400 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Plus Jakarta Sans';
+    src: url('/assets/fonts/PlusJakartaSans-Bold.ttf') format('truetype');
+    font-weight: 600 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Montserrat';
+    src: url('/assets/fonts/Montserrat-Bold.ttf') format('truetype');
+    font-weight: 600 800;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    src: url('/assets/fonts/JetBrainsMono-Regular.ttf') format('truetype');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
+<script>
+  window.tbbEnsureStep4DisplayFontsLoaded = function() {
+    if (document.getElementById("tbbDeferredStep4FontsLink")) return;
+    var lk = document.createElement("link");
+    lk.id = "tbbDeferredStep4FontsLink";
+    lk.rel = "stylesheet";
+    lk.href = "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@600;700&family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700&family=Lato:wght@400;700&family=League+Spartan:wght@600;700&family=Manrope:wght@500;700&family=Oswald:wght@500;700&family=Outfit:wght@500;700&family=Playfair+Display:wght@600;700&family=Sora:wght@500;700&family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;700&family=Urbanist:wght@500;700&family=Work+Sans:wght@400;600&display=swap";
+    document.head.appendChild(lk);
+  };
+</script>
   
   <style>
     /* ==========================================================================
@@ -5673,7 +5481,7 @@
               <button type="button" class="tbb-video-lang-pill" data-vlang="de" onclick="window.tbbSetStudioVideoLang('de')" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:3px 8px; border-radius:999px; border:none; background:transparent; color:#0F172A; cursor:pointer;">DE</button>
               <button type="button" class="tbb-video-lang-pill" data-vlang="it" onclick="window.tbbSetStudioVideoLang('it')" style="font-family:var(--font-mono); font-size:0.66rem; font-weight:800; padding:3px 8px; border-radius:999px; border:none; background:transparent; color:#0F172A; cursor:pointer;">IT</button>
             </div>
-            <button type="button" onclick="document.getElementById('phaseTransitionVideoModal').classList.remove('open'); try{document.getElementById('transitionTheoryVideoPlayer').pause();}catch(e){}" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; border-radius:999px; padding:5px 12px; font-size:0.78rem; font-weight:600; cursor:pointer;" aria-label="Cerrar">×</button>
+            <button type="button" onclick="if(window.TBBAudioDirector){window.TBBAudioDirector.bumpGeneration('skip_capsule');} document.getElementById('phaseTransitionVideoModal').classList.remove('open');" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; border-radius:999px; padding:5px 12px; font-size:0.78rem; font-weight:600; cursor:pointer;" aria-label="Cerrar">×</button>
           </div>
         </div>
         <div id="transitionVideoThemeSelectorRow" style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;">
@@ -5945,7 +5753,7 @@
        ======================================================================== -->
   <script>
     // ESTADO GLOBAL
-    let currentStep = 1;
+    var currentStep = window.currentStep = 1;
     let currentSubStep = 1;
     let audioUnlocked = false;
     var voiceMuted = false;
@@ -5976,7 +5784,7 @@
     // ACCESSIBILITY HIGH-LEGIBILITY LARGE TEXT TOGGLE (WCAG AAA)
     let a11yLargeTextEnabled = localStorage.getItem("tbb_a11y_large") === "1";
     function applyA11yModeState() {
-      document.body.classList.toggle("a11y-large-mode", a11yLargeTextEnabled);
+      document.body.classList.toggle("a11y-large-mode", a11yLargeTextEnabled); document.documentElement.classList.toggle("a11y-large-mode", a11yLargeTextEnabled);
       const btnJ = document.getElementById("btnA11yJourney");
       if (btnJ) {
         btnJ.style.background = a11yLargeTextEnabled ? "#090D16" : "";
@@ -6048,100 +5856,100 @@
     }
 
     const bipolarSliderValues = {
-      tradicional_innovador: 0.6,
-      minimalista_complejo: -0.2,
-      amigable_autoritario: 0.4,
-      humano_tecnologico: 0.5,
-      serio_jugueton: -0.1,
-      convencional_rebelde: 0.3,
-      organico_geometrico: 0.7
+      tradicional_innovador: 0.72,
+      minimalista_complejo: 0.35,
+      amigable_autoritario: 0.60,
+      humano_tecnologico: 0.65,
+      serio_jugueton: 0.45,
+      convencional_rebelde: 0.60,
+      organico_geometrico: 0.75
     };
     window.bipolarSliderValues = bipolarSliderValues;
 
     const BIPOLAR_SLIDERS_SPEC = [
       {
         id: "tradicional_innovador",
-        title: "1. Tradición Clásica vs. Vanguardia Tecnológica",
-        leftPole: "Herencia Clásica (Rolex)",
-        leftBrand: "ROLEX · 1905",
-        leftTrait: "Corona Heráldica & Serifas",
-        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><circle cx="22" cy="12" r="2.2" fill="#D4AF37"/><circle cx="13" cy="14" r="2" fill="#D4AF37"/><circle cx="31" cy="14" r="2" fill="#D4AF37"/><circle cx="7" cy="19" r="1.8" fill="#D4AF37"/><circle cx="37" cy="19" r="1.8" fill="#D4AF37"/><path d="M9 21 L14 29 H30 L35 21 L28 25 L22 15 L16 25 Z" fill="#D4AF37"/><ellipse cx="22" cy="32" rx="8" ry="2" fill="none" stroke="#FDE68A" stroke-width="1.5"/></svg>`,
-        rightPole: "Vanguardia Pura (Apple / Tesla)",
-        rightBrand: "APPLE / TESLA",
-        rightTrait: "Silueta Monolítica Minimalista",
-        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M25 9 C27 6 30 6 30 6 C30 9 28 12 25 13 C23 13 24 10 25 9 Z" fill="#FFFFFF"/><path d="M29 15 C32 15 35 17 36 20 C32 22 33 27 36 29 C35 32 32 36 29 36 C27 36 26 35 24 35 C22 35 20 36 18 36 C15 36 11 31 11 24 C11 18 15 15 18 15 C21 15 22 16 24 16 C26 16 27 15 29 15 Z" fill="#FFFFFF"/></svg>`
+        title: "1. Clásico de toda la vida vs. Moderno y actual",
+        leftPole: "Clásico y Elegante",
+        leftBrand: "ESTILO CLÁSICO",
+        leftTrait: "Tradición y confianza",
+        leftSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><circle cx="22" cy="12" r="2.2" fill="#D4AF37"/><path d="M9 21 L14 29 H30 L35 21 L28 25 L22 15 L16 25 Z" fill="#D4AF37"/></svg>`,
+        rightPole: "Moderno y Limpio",
+        rightBrand: "ESTILO MODERNO",
+        rightTrait: "Simple y actual",
+        rightSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><circle cx="22" cy="22" r="12" fill="none" stroke="#FFFFFF" stroke-width="3"/></svg>`
       },
       {
         id: "minimalista_complejo",
-        title: "2. Síntesis de 1 Trazo vs. Riqueza Heráldica",
-        leftPole: "Síntesis Absoluta (Nike)",
-        leftBrand: "NIKE SWOOSH",
-        leftTrait: "1 Solo Trazo Fluido Continuo",
-        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M12 28 C9 28 7 25 9 20 C11 16 15 13 15 13 C13 18 14 22 18 22 C22 22 37 14 37 14 C25 25 17 28 12 28 Z" fill="#FFFFFF"/></svg>`,
-        rightPole: "Blasón Multicapa (Porsche)",
-        rightBrand: "PORSCHE CREST",
-        rightTrait: "Escudo Cuadripartito Detallado",
-        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M10 8 H34 V23 C34 32 22 38 22 38 C22 38 10 32 10 23 Z" fill="none" stroke="#D4AF37" stroke-width="2.2"/><line x1="22" y1="8" x2="22" y2="37" stroke="#D4AF37" stroke-width="1.5"/><line x1="10" y1="21" x2="34" y2="21" stroke="#D4AF37" stroke-width="1.5"/><rect x="18" y="16" width="8" height="10" rx="2" fill="#DC2626" stroke="#FDE68A" stroke-width="1.2"/></svg>`
+        title: "2. Súper simple vs. Con más detalles",
+        leftPole: "Súper Simple",
+        leftBrand: "UN SOLO TRAZO",
+        leftTrait: "Fácil de recordar al instante",
+        leftSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><path d="M10 26 Q22 12 34 20" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/></svg>`,
+        rightPole: "Escudo con Detalle",
+        rightBrand: "TIPO ESCUDO",
+        rightTrait: "Más elementos e historia",
+        rightSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><path d="M12 10 H32 V23 C32 31 22 36 22 36 C22 36 12 31 12 23 Z" fill="none" stroke="#D4AF37" stroke-width="2.2"/></svg>`
       },
       {
         id: "amigable_autoritario",
-        title: "3. Cercanía Humana vs. Prestigio de Ingeniería",
-        leftPole: "Calidez Orgánica (Airbnb)",
-        leftBrand: "AIRBNB BÉLO",
-        leftTrait: "Bucle Continuo Acogedor",
-        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M22 9 C18 9 10 24 11 30 C12 34 16 35 19 33 C20.5 32 22 30 22 30 C22 30 23.5 32 25 33 C28 35 32 34 33 30 C34 24 26 9 22 9 Z" fill="none" stroke="#FB7185" stroke-width="2.5" stroke-linecap="round"/><circle cx="22" cy="24" r="3.5" fill="none" stroke="#FB7185" stroke-width="2"/></svg>`,
-        rightPole: "Alta Precisión (TAG Heuer / NVIDIA)",
-        rightBrand: "TAG HEUER",
-        rightTrait: "Geometría Angular de Precisión",
-        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><polygon points="10,9 34,9 34,26 22,37 10,26" fill="none" stroke="#38BDF8" stroke-width="2.2"/><path d="M10 17 H34" stroke="#38BDF8" stroke-width="1.8"/><polygon points="22,21 27,27 17,27" fill="#38BDF8"/></svg>`
+        title: "3. Cercano y amigable vs. Serio y experto",
+        leftPole: "Cercano y Cálido",
+        leftBrand: "AMIGABLE",
+        leftTrait: "Trato cálido y accesible",
+        leftSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><circle cx="22" cy="22" r="12" fill="none" stroke="#FB7185" stroke-width="2.5"/></svg>`,
+        rightPole: "Experto y Firme",
+        rightBrand: "ALTA PRECISIÓN",
+        rightTrait: "Proyecta mucha seguridad",
+        rightSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><polygon points="10,10 34,10 34,26 22,36 10,26" fill="none" stroke="#38BDF8" stroke-width="2.2"/></svg>`
       },
       {
         id: "humano_tecnologico",
-        title: "4. Sello Artesanal de Autor vs. Velocidad Digital",
-        leftPole: "Óptica & Autor (Leica)",
-        leftBrand: "LEICA RED DOT",
-        leftTrait: "Medallón Caligráfico Táctil",
-        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><circle cx="22" cy="22" r="14" fill="#DC2626" stroke="#FCA5A5" stroke-width="1.2"/><path d="M14 25 C17 16 21 15 20 24 C19 27 25 26 30 21" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/></svg>`,
-        rightPole: "Aerodinámica Digital (Formula 1)",
-        rightBrand: "FORMULA 1",
-        rightTrait: "Vectores de Velocidad a 25°",
-        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M7 29 L17 15 H31 L27 20 H19 L12 29 Z" fill="#EF4444"/><path d="M17 29 L22 22 H29 L24 29 Z" fill="#EF4444"/><path d="M27 29 L37 15 H40 L30 29 Z" fill="#FFFFFF"/></svg>`
+        title: "4. Hecho a mano vs. Digital y rápido",
+        leftPole: "Toque Artesanal",
+        leftBrand: "HUMANO / CÁLIDO",
+        leftTrait: "Se siente hecho con cuidado",
+        leftSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><circle cx="22" cy="22" r="13" fill="#DC2626"/><path d="M15 24 Q22 15 29 23" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+        rightPole: "Digital y Veloz",
+        rightBrand: "TECNOLÓGICO",
+        rightTrait: "Ágil e innovador",
+        rightSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><path d="M9 28 L19 15 H34 L25 28 Z" fill="#38BDF8"/></svg>`
       },
       {
         id: "serio_jugueton",
-        title: "5. Solidez Institucional vs. Energía Competitiva",
-        leftPole: "Monolito Corporativo (IBM)",
-        leftBrand: "IBM 8-BAR",
-        leftTrait: "Estabilidad Horizontal Ortogonal",
-        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><g fill="#60A5FA"><rect x="9" y="12" width="26" height="2.4"/><rect x="9" y="16.5" width="26" height="2.4"/><rect x="12" y="21" width="20" height="2.4"/><rect x="12" y="25.5" width="20" height="2.4"/><rect x="9" y="30" width="26" height="2.4"/></g></svg>`,
-        rightPole: "Adrenalina Angular (Valorant / Red Bull)",
-        rightBrand: "VALORANT / RED BULL",
-        rightTrait: "Cortes Diagonales de Impacto",
-        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><polygon points="9,12 22,28 22,34 9,19" fill="#F43F5E"/><polygon points="35,12 25,25 32,25 35,21" fill="#F43F5E"/></svg>`
+        title: "5. Formal y tranquilo vs. Con mucha energía",
+        leftPole: "Formal y Estable",
+        leftBrand: "INSTITUCIONAL",
+        leftTrait: "Orden y calma",
+        leftSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><rect x="10" y="14" width="24" height="16" rx="3" fill="none" stroke="#60A5FA" stroke-width="2.4"/></svg>`,
+        rightPole: "Dinámico y Divertido",
+        rightBrand: "CON ENERGÍA",
+        rightTrait: "Juvenil y en movimiento",
+        rightSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><polygon points="22,8 35,32 9,32" fill="none" stroke="#F43F5E" stroke-width="2.4"/></svg>`
       },
       {
         id: "convencional_rebelde",
-        title: "6. Canon Clásico de Lujo vs. Disrupción Radical",
-        leftPole: "Monograma Simétrico (Chanel)",
-        leftBrand: "CHANEL MONOGRAM",
-        leftTrait: "Anillos Entrelazados Eternos",
-        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M20 13 A9 9 0 1 0 20 31" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/><path d="M24 13 A9 9 0 1 1 24 31" fill="none" stroke="#D4AF37" stroke-width="3" stroke-linecap="round"/></svg>`,
-        rightPole: "Vanguardia Disruptiva (Nothing / Twitch)",
-        rightBrand: "NOTHING / TWITCH",
-        rightTrait: "Matriz de Puntos & Prisma",
-        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><g fill="#A855F7"><circle cx="12" cy="12" r="2.2"/><circle cx="12" cy="20" r="2.2"/><circle cx="12" cy="28" r="2.2"/><circle cx="20" cy="18" r="2.2"/><circle cx="26" cy="24" r="2.2"/><circle cx="32" cy="12" r="2.2"/><circle cx="32" cy="20" r="2.2"/><circle cx="32" cy="28" r="2.2"/></g></svg>`
+        title: "6. Confiable y conocido vs. Diferente y atrevido",
+        leftPole: "Equilibrado",
+        leftBrand: "SEGURO Y CLARO",
+        leftTrait: "Armonía que da confianza",
+        leftSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><circle cx="19" cy="22" r="8" fill="none" stroke="#FFFFFF" stroke-width="2.4"/><circle cx="25" cy="22" r="8" fill="none" stroke="#D4AF37" stroke-width="2.4"/></svg>`,
+        rightPole: "Atrevido y Único",
+        rightBrand: "ROMPE EL MOLDE",
+        rightTrait: "Destaca de inmediato",
+        rightSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><path d="M12 32 L24 10 L24 22 L34 14 L20 34 Z" fill="#A855F7"/></svg>`
       },
       {
         id: "organico_geometrico",
-        title: "7. Curvas Fibonacci Orgánicas vs. Retícula Suiza Pura",
-        leftPole: "Espiral Orgánica (Nautilus)",
-        leftBrand: "GOLDEN SPIRAL",
-        leftTrait: "Curvas Continuas sin Esquinas",
-        leftSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><path d="M22 22 m0 -13 a13 13 0 1 1 -13 13 a8 8 0 1 1 8 8 a5 5 0 1 1 5 -5" fill="none" stroke="#34D399" stroke-width="2.4" stroke-linecap="round"/></svg>`,
-        rightPole: "Retícula Bauhaus 45°/90° (Braun)",
-        rightBrand: "BAUHAUS / BRAUN",
-        rightTrait: "Círculo, Cuadrado y Triángulo Puros",
-        rightSvg: `<svg viewBox="0 0 44 44" width="34" height="34"><rect x="8" y="8" width="28" height="28" fill="none" stroke="#FBBF24" stroke-width="1.8"/><polygon points="22,10 34,32 10,32" fill="none" stroke="#38BDF8" stroke-width="1.8"/><circle cx="22" cy="24" r="6" fill="#D4AF37"/></svg>`
+        title: "7. Formas suaves y curvas vs. Líneas rectas y exactas",
+        leftPole: "Curvas Suaves",
+        leftBrand: "ORGÁNICO",
+        leftTrait: "Bordes redondeados y fluidos",
+        leftSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><circle cx="22" cy="22" r="12" fill="none" stroke="#34D399" stroke-width="2.5"/></svg>`,
+        rightPole: "Líneas Exactas",
+        rightBrand: "GEOMÉTRICO",
+        rightTrait: "Ángulos limpios y precisos",
+        rightSvg: `<svg viewBox="0 0 44 44" width="32" height="32"><rect x="11" y="11" width="22" height="22" fill="none" stroke="#FBBF24" stroke-width="2.4"/></svg>`
       }
     ];
 
@@ -6349,7 +6157,9 @@
       ctx.globalCompositeOperation = "screen";
 
       // 2. 4 Lóbulos Volumétricos de Luz Líquida (#1D4ED8, #E04700, #EA7300)
-      const pulseAmpLight = isSpeakingLive ? 1.25 + Math.sin(auraAngle * 4.2) * 0.15 : 1.0;
+      const liveAmp = typeof window.tbbGetLiveAudioAmplitude === "function" ? window.tbbGetLiveAudioAmplitude() : 0;
+      const speakingNow = Boolean(window.isSpeakingLive || isSpeakingLive || liveAmp > 0.02);
+      const pulseAmpLight = speakingNow ? (1.22 + liveAmp * 0.55 + Math.sin(auraAngle * 4.2) * 0.12) : 1.0;
       const lobeColors = [
         [r1, g1, b1, 0.72],
         [r2, g2, b2, 0.78],
@@ -6360,7 +6170,7 @@
         const ang = auraAngle * (i % 2 === 0 ? 1.1 : -0.9) + i * 1.57;
         const lx = cx + Math.cos(ang) * maxR * 0.28 * pulseAmpLight;
         const ly = cy + Math.sin(ang * 1.2) * maxR * 0.28 * pulseAmpLight;
-        const lr = maxR * 0.62 * (isSpeakingLive ? 1.15 : 1.0);
+        const lr = maxR * 0.62 * (speakingNow ? (1.12 + liveAmp * 0.22) : 1.0);
         const lg = ctx.createRadialGradient(lx, ly, lr * 0.05, lx, ly, lr);
         const [rC, gC, bC, aC] = lobeColors[i];
         lg.addColorStop(0, `rgba(${rC}, ${gC}, ${bC}, ${aC})`);
@@ -6394,7 +6204,7 @@
 
       // 4. Núcleo Luminoso Central
       ctx.globalCompositeOperation = "source-over";
-      const coreLightR = (isSpeakingLive ? 34 : 26) * scaleRatio;
+      const coreLightR = (speakingNow ? (34 + liveAmp * 14) : 26) * scaleRatio;
       const coreLightGrad = ctx.createRadialGradient(cx, cy, 1, cx, cy, coreLightR);
       coreLightGrad.addColorStop(0, "rgba(255, 255, 255, 0.98)");
       coreLightGrad.addColorStop(0.5, `rgba(${r2}, ${g2}, ${b2}, 0.62)`);
@@ -6416,10 +6226,9 @@
 
     function renderAuraLoop() {
       const cfgSpeed = Number((window.tbbAuraOrbConfig && window.tbbAuraOrbConfig.orbSpeed) || 1.0);
-      const capVid = document.getElementById("transitionTheoryVideoPlayer");
-      const isCapsuleAudioPlaying = Boolean(capVid && !capVid.paused && !capVid.ended);
-      const activeSpeaking = Boolean(isSpeakingLive || isCapsuleAudioPlaying);
-      const speedMult = (activeSpeaking ? 2.45 : 1.0) * cfgSpeed;
+      const liveAmpLoop = typeof window.tbbGetLiveAudioAmplitude === "function" ? window.tbbGetLiveAudioAmplitude() : 0;
+      const activeSpeaking = Boolean(window.isSpeakingLive || isSpeakingLive || liveAmpLoop > 0.02);
+      const speedMult = (activeSpeaking ? (2.15 + liveAmpLoop * 1.4) : 1.0) * cfgSpeed;
       auraAngle += 0.016 * speedMult;
       for (let p of auraParticles) {
         p.angle += (activeSpeaking ? p.speed * 1.8 : p.speed) * cfgSpeed;
@@ -6427,6 +6236,17 @@
 
       if (auraCtx && auraCanvas) {
         drawAura3DFrameOnCanvas(auraCanvas, auraCtx);
+      }
+      const topOrbCnv = document.getElementById("tbbLiveAuraOrbCanvas");
+      if (topOrbCnv) {
+        const topCtx = topOrbCnv.getContext("2d");
+        if (topCtx) drawAura3DFrameOnCanvas(topOrbCnv, topCtx);
+      }
+      const capOrbCnv = document.getElementById("tbbCapsuleAuraOrbCanvas");
+      const capMod = document.getElementById("phaseTransitionVideoModal");
+      if (capOrbCnv && capMod && capMod.classList.contains("open")) {
+        const capCtx = capOrbCnv.getContext("2d");
+        if (capCtx) drawAura3DFrameOnCanvas(capOrbCnv, capCtx);
       }
 
       const topLiveCanvas = document.getElementById("tbbLiveAuraOrbCanvas");
@@ -10477,6 +10297,9 @@
 
     window.openPhaseTransitionVideoCapsule = openPhaseTransitionVideoCapsule;
     function openPhaseTransitionVideoCapsule(fromStep, toStep, options = {}) {
+      if (window.TBBAudioDirector && typeof window.TBBAudioDirector.bumpGeneration === "function") {
+        window.TBBAudioDirector.bumpGeneration("capsule_open");
+      }
       const resolvedToStep = (typeof toStep === "number" && toStep >= 0) ? Math.min(6, toStep) : Math.min(6, (fromStep || 0) + 1);
       const resolvedFromStep = (typeof fromStep === "number" && fromStep >= 0) ? fromStep : Math.max(0, resolvedToStep - 1);
 
@@ -10487,304 +10310,184 @@
           window.parent.postMessage({ type: "TBB_DEMO_COMPLETED_STEP_3", fromStep: resolvedFromStep, targetStep: resolvedToStep }, "*");
         }
         if (typeof window.tbbOpenBuyAppCheckoutModal === "function") {
-          window.tbbOpenBuyAppCheckoutModal("pro_atelier");
-        } else {
+          window.tbbOpenBuyAppCheckoutModal("founder_pro");
+        } else if (typeof showDemoCompletionPaywallModal === "function") {
           showDemoCompletionPaywallModal();
         }
         return;
       }
 
-      pendingTransitionToStep = resolvedToStep;
-      pendingTransitionOptions = options || {};
-      window._tbbActiveTransitionModalParams = { fromStep: resolvedFromStep, toStep: resolvedToStep, options: options || {} };
-
-      const splashEl = document.getElementById("tbbAuraSplashBootOverlay");
-      if (splashEl && !splashEl.classList.contains("is-dismissed")) {
-        splashEl.classList.add("is-dismissed");
-      }
-
-      const modal = document.getElementById("phaseTransitionVideoModal");
-      if (!modal) {
+      if (!window._tbbVisitedCapsuleSteps) window._tbbVisitedCapsuleSteps = {};
+      const isManualTrigger = Boolean(options && (options.manualOpen || options.keepCurrentSubStep));
+      if (!isManualTrigger && window._tbbVisitedCapsuleSteps[resolvedToStep]) {
         if (typeof window.tbbJumpToStep === "function") {
           window.tbbJumpToStep(resolvedToStep, 1);
-        } else {
-          switchStep(resolvedToStep);
         }
         return;
       }
+      window._tbbVisitedCapsuleSteps[resolvedToStep] = true;
 
-      const review = buildPhaseDiscoveryReview(resolvedFromStep, resolvedToStep);
-      const tagEl = document.getElementById("transitionVideoChapterTag");
-      const summaryHeadEl = document.getElementById("transitionSummaryHeadingLabel");
-      const titleEl = document.getElementById("transitionVideoTitle");
-      const subEl = document.getElementById("transitionVideoSubtitle");
-      const listEl = document.getElementById("transitionVideoDiscoveriesList");
-      const btnTxtEl = document.getElementById("btnFinishTransitionVideoText");
-      const statusPill = document.getElementById("transitionVideoStatusPill");
-      const progBar = document.getElementById("transitionVideoProgressBar");
-      const theoryHeaderEl = document.getElementById("transitionTheoryHeaderBadge");
-      const theoryFrameworkEl = document.getElementById("transitionTheoryFrameworkPill");
-      const theoryCardsGrid = document.getElementById("transitionTheoryCardsGrid");
-      const videoPlayer = document.getElementById("transitionTheoryVideoPlayer");
-      const videoSource = document.getElementById("transitionTheoryVideoSource");
+      pendingTransitionToStep = resolvedToStep;
+      pendingTransitionOptions = options || {};
+      window.tbbActiveVideoCapsuleStep = resolvedToStep;
+      window._tbbActiveTransitionModalParams = { fromStep: resolvedFromStep, toStep: resolvedToStep, options: options || {} };
 
-      // Resaltar píldora activa del selector de videos (Pasos 0 al 6)
+      const modal = document.getElementById("phaseTransitionVideoModal");
+      if (!modal) {
+        if (typeof window.tbbJumpToStep === "function") window.tbbJumpToStep(resolvedToStep, 1);
+        return;
+      }
+
+      const curLang = (typeof tbbGetActiveStudioLang === "function" ? tbbGetActiveStudioLang() : "es") || "es";
       document.querySelectorAll(".tbb-video-theme-pill").forEach(btn => {
         const isAct = Number(btn.getAttribute("data-vstep")) === resolvedToStep;
         btn.style.background = isAct ? "#0D2540" : "#F8FAFC";
         btn.style.color = isAct ? "#FFFFFF" : "#0F172A";
         btn.style.borderColor = isAct ? "#FF7A00" : "#CBD5E1";
       });
-
-      const curLang = typeof tbbGetActiveStudioLang === "function" ? tbbGetActiveStudioLang() : "es";
       document.querySelectorAll(".tbb-video-lang-pill").forEach(btn => {
         const isLangAct = String(btn.getAttribute("data-vlang") || "") === curLang;
-        btn.style.background = isLangAct ? "#0D2540" : "transparent";
+        btn.style.background = isLangAct ? "#FF7A00" : "transparent";
         btn.style.color = isLangAct ? "#FFFFFF" : "#0F172A";
       });
-      const topSel = document.getElementById("tbbTopStudioLangSelect");
-      if (topSel) topSel.value = curLang;
 
-      const modalI18nMap = {
-        es: {
-          chTag: (s) => `PASO ${s} · CÁPSULA EJECUTIVA DE AURA`,
-          sumHead: (s) => `PARTE 1 · SÍNTESIS ESTRATÉGICA DEL PASO ${s}:`,
-          subTxt: "Escucha la cápsula guiada por Aura con ejemplos reales de la aplicación antes de responder:",
-          contBtn: (s) => `Continuar en Paso ${s}`,
-          listening: "Escuchando a Aura",
-          paused: "Reproducir audio"
-        },
-        en: {
-          chTag: (s) => `STEP ${s} · AURA EXECUTIVE CAPSULE`,
-          sumHead: (s) => `PART 1 · STRATEGIC SYNTHESIS OF STEP ${s}:`,
-          subTxt: "Listen to the capsule guided by Aura with real app examples before answering:",
-          contBtn: (s) => `Continue in Step ${s}`,
-          listening: "Listening to Aura",
-          paused: "Play audio"
-        },
-        fr: {
-          chTag: (s) => `ÉTAPE ${s} · CAPSULE EXÉCUTIVE D'AURA`,
-          sumHead: (s) => `PARTIE 1 · SYNTHÈSE STRATÉGIQUE DE L'ÉTAPE ${s} :`,
-          subTxt: "Écoutez la capsule guidée par Aura avec des exemples réels de l'application :",
-          contBtn: (s) => `Continuer à l'Étape ${s}`,
-          listening: "Écoute en cours",
-          paused: "Écouter l'audio"
-        },
-        pt: {
-          chTag: (s) => `PASSO ${s} · CÁPSULA EXECUTIVA DA AURA`,
-          sumHead: (s) => `PARTE 1 · SÍNTESE ESTRATÉGICA DO PASSO ${s}:`,
-          subTxt: "Ouça a cápsula guiada pela Aura com exemplos reais da aplicação antes de responder:",
-          contBtn: (s) => `Continuar no Passo ${s}`,
-          listening: "Ouvindo a Aura",
-          paused: "Reproduzir áudio"
-        },
-        de: {
-          chTag: (s) => `SCHRITT ${s} · AURA EXECUTIVE-KAPSEL`,
-          sumHead: (s) => `TEIL 1 · STRATEGISCHE SYNTHESE VON SCHRITT ${s}:`,
-          subTxt: "Hören Sie sich die von Aura geführte Kapsel mit echten App-Beispielen an:",
-          contBtn: (s) => `Weiter in Schritt ${s}`,
-          listening: "Aura spricht",
-          paused: "Audio abspielen"
-        },
-        it: {
-          chTag: (s) => `PASSO ${s} · CAPSULA ESECUTIVA DI AURA`,
-          sumHead: (s) => `PARTE 1 · SINTESI STRATEGICA DEL PASSO ${s}:`,
-          subTxt: "Ascolta la capsula guidata da Aura con esempi reali dell'applicazione:",
-          contBtn: (s) => `Continua nel Passo ${s}`,
-          listening: "In ascolto",
-          paused: "Riproduci audio"
-        }
+      const simpleCapsules = {
+        es: [
+          { title: "Paso 0 · Punto de Partida", body: "Cuéntame de qué trata tu negocio y si ya tienes nombre o logo. En menos de 60 minutos tendrás tu marca lista.", cta: "Empezar Paso 0" },
+          { title: "Paso 1 · Esencia de tu Marca", body: "En 5 preguntas cortas definimos qué haces, a quién ayudas y qué te hace único. Usa «Dame una idea» si te trabas.", cta: "Entrar al Paso 1" },
+          { title: "Paso 2 · Dónde te ven tus clientes", body: "Elige con simples toques dónde te ven y compran tus clientes para diseñar justo lo que vas a usar.", cta: "Entrar al Paso 2" },
+          { title: "Paso 3 · Nombre y Frase Clave", body: "Confirma tu nombre actual o elige entre ideas fáciles de recordar junto con tu eslogan comercial.", cta: "Entrar al Paso 3" },
+          { title: "Paso 4 · Estilo Visual y Letras", body: "Ajusta con controles simples el estilo de tu marca y mira tu nombre escrito en letras profesionales.", cta: "Entrar al Paso 4" },
+          { title: "Paso 5 · Tus Colores y Logotipo", body: "Elige tus colores exactos y diseña tu logotipo limpio y profesional listo para cualquier tamaño.", cta: "Entrar al Paso 5" },
+          { title: "Paso 6 · Tu Brandbook de +30 Páginas", body: "¡Listo! Revisa tu manual completo y descarga tus 9 archivos listos para imprenta, web y redes.", cta: "Ver Mi Brandbook" }
+        ],
+        en: [
+          { title: "Step 0 · Starting Point", body: "Tell me what your business does and whether you already have a name or logo. Your brand will be ready in under 60 minutes.", cta: "Start Step 0" },
+          { title: "Step 1 · Your Brand Essence", body: "In 5 short questions we capture what you do, who you help, and how you stand out. Tap 'Give me an idea' anytime.", cta: "Enter Step 1" },
+          { title: "Step 2 · Where Customers See You", body: "Tap the places where customers find and buy from you so we design what you actually need.", cta: "Enter Step 2" },
+          { title: "Step 3 · Name & Tagline", body: "Keep your current name or pick from memorable suggestions along with your commercial tagline.", cta: "Enter Step 3" },
+          { title: "Step 4 · Visual Style & Fonts", body: "Use simple controls to shape your style and preview your own brand name in curated fonts.", cta: "Enter Step 4" },
+          { title: "Step 5 · Colors & Logo Design", body: "Pick your exact color palette and craft a clean, versatile logo ready for every size.", cta: "Enter Step 5" },
+          { title: "Step 6 · Your 30+ Page Brandbook", body: "All set! Browse your finished Brandbook and download all 9 ready-to-use files.", cta: "Open My Brandbook" }
+        ]
       };
-      const locM = modalI18nMap[curLang] || modalI18nMap.es;
+      const langPack = simpleCapsules[curLang] || simpleCapsules.es;
+      const spec = langPack[resolvedToStep] || langPack[0];
 
-      if (typeof window.tbbApplyCurrentLanguageToDOM === "function") {
-        window.tbbApplyCurrentLanguageToDOM();
+      const tagEl = document.getElementById("transitionVideoChapterTag");
+      const titleEl = document.getElementById("transitionVideoTitle");
+      const subEl = document.getElementById("transitionVideoSubtitle");
+      const theoryFrameworkEl = document.getElementById("transitionTheoryFrameworkPill");
+      const theoryCardsGrid = document.getElementById("transitionTheoryCardsGrid");
+      const listEl = document.getElementById("transitionVideoDiscoveriesList");
+      const btnTxtEl = document.getElementById("btnFinishTransitionVideoText");
+      const progBar = document.getElementById("transitionVideoProgressBar");
+      const timeLbl = document.getElementById("tbbCapsuleAudioTimeLabel");
+      const icoEl = document.getElementById("tbbCapsuleAudioPlayPauseIcon");
+      const txtEl = document.getElementById("tbbCapsuleAudioPlayPauseText");
+
+      if (tagEl) tagEl.textContent = `AURA VIVA · ${curLang.toUpperCase()} · ≤15s`;
+      if (theoryFrameworkEl) theoryFrameworkEl.textContent = `AURA VIVA · VOZ ÚNICA (${curLang.toUpperCase()})`;
+      if (titleEl) titleEl.textContent = spec.title;
+      if (subEl) subEl.textContent = "Cápsula breve de máximo 15 segundos en lenguaje claro:";
+      if (theoryCardsGrid) {
+        theoryCardsGrid.innerHTML = `<div id="tbbLiveCapsuleTranscriptBox" style="background:#F8FAFC;border-left:4px solid #FF7A00;padding:12px 14px;border-radius:12px;font-size:0.96rem;color:#0F172A;line-height:1.55;">“${spec.body}”</div>`;
       }
-
-      if (tagEl) tagEl.textContent = curLang === "es" ? review.chapterTag : locM.chTag(resolvedToStep);
-      if (summaryHeadEl) summaryHeadEl.textContent = curLang === "es" ? (review.summaryHeading || locM.sumHead(resolvedToStep)) : locM.sumHead(resolvedToStep);
-      if (titleEl) titleEl.textContent = (curLang === "es" || !review.theorySpec) ? review.title : `${review.theorySpec.headerLabel} · ${review.theorySpec.theoryTitle}`;
-      if (subEl) subEl.textContent = curLang === "es" ? review.subtitle : locM.subTxt;
       if (listEl) {
-        const firstDiscovery = curLang === "es"
-          ? ((review.bullets && review.bullets[0]) ? review.bullets[0] : "")
-          : (review.theorySpec ? `<strong>${review.theorySpec.frameworkBadge}:</strong> ${review.theorySpec.theoryBody}` : "");
-        listEl.innerHTML = firstDiscovery
-          ? `<div style="padding:8px 12px; background:#F8FAFC; border:1px solid #E2E8F0; border-left:3px solid #1D4ED8; border-radius:10px; color:#334155; font-size:0.80rem; line-height:1.45;">${firstDiscovery}</div>`
-          : "";
+        const bNameNow = (window.canvasState && window.canvasState.brandName && !/^the\s*best\s*brand$/i.test(window.canvasState.brandName)) ? window.canvasState.brandName : "Tu marca";
+        listEl.innerHTML = `<div style="font-size:0.9rem;color:#334155;">Progreso guardado automáticamente para <strong>${bNameNow}</strong>.</div>`;
       }
-      if (btnTxtEl) {
-        btnTxtEl.textContent = curLang === "es"
-          ? (options.keepCurrentSubStep ? `Continuar en Paso ${window.tbbState?.step ?? resolvedToStep}` : review.ctaLabel)
-          : locM.contBtn(resolvedToStep);
-      }
-      if (statusPill) {
-        statusPill.textContent = `${locM.chTag(resolvedToStep).split(" · ")[0]} · The Best Brand`;
-      }
-      if (progBar) progBar.style.width = "15%";
+      if (btnTxtEl) btnTxtEl.textContent = spec.cta;
+      if (progBar) progBar.style.width = "12%";
+      if (timeLbl) timeLbl.textContent = "≤ 0:15";
+      if (icoEl) icoEl.textContent = "❚❚";
+      if (txtEl) txtEl.textContent = "Aura hablando";
 
-      const formatAudioSec = (sec) => {
-        if (!Number.isFinite(sec) || sec < 0) return "0:00";
-        const m = Math.floor(sec / 60);
-        const s = Math.floor(sec % 60);
-        return `${m}:${s < 10 ? "0" + s : s}`;
-      };
+      const legacyVid = document.getElementById("transitionTheoryVideoPlayer");
+      if (legacyVid) {
+        try { legacyVid.pause(); legacyVid.removeAttribute("src"); } catch (e) {}
+      }
 
-      const syncCapsuleAudioButtonsUI = () => {
-        const vp = document.getElementById("transitionTheoryVideoPlayer");
-        const ico = document.getElementById("tbbCapsuleAudioPlayPauseIcon");
-        const txt = document.getElementById("tbbCapsuleAudioPlayPauseText");
-        const dot = document.getElementById("tbbCapsuleAuraLiveDot");
-        const isPlaying = Boolean(vp && !vp.paused && !vp.ended);
-        if (ico) ico.textContent = isPlaying ? "❚❚" : "▶";
-        if (txt) txt.textContent = isPlaying ? locM.listening : locM.paused;
-        if (dot) {
-          dot.style.background = isPlaying ? "#10B981" : "#FF7A00";
-          dot.style.boxShadow = isPlaying ? "0 0 12px #10B981" : "0 0 8px #FF7A00";
+      const playCapsuleNow = () => {
+        if (typeof window.playAuraVivaCapsuleClip === "function") {
+          const startedAt = Date.now();
+          const progTimer = setInterval(() => {
+            if (!modal.classList.contains("open")) { clearInterval(progTimer); return; }
+            const elapsed = (Date.now() - startedAt) / 1000;
+            const pct = Math.min(100, Math.round((elapsed / 10) * 100));
+            if (progBar) progBar.style.width = pct + "%";
+            if (timeLbl) timeLbl.textContent = `0:${String(Math.min(15, Math.floor(elapsed))).padStart(2, "0")}`;
+            if (!window.isSpeakingLive && elapsed > 1.2) {
+              clearInterval(progTimer);
+              if (progBar) progBar.style.width = "100%";
+              if (icoEl) icoEl.textContent = "▶";
+              if (txtEl) txtEl.textContent = "Escuchar de nuevo";
+            }
+          }, 180);
+
+          window.playAuraVivaCapsuleClip(resolvedToStep, curLang, {
+            onText: (tStr) => {
+              const trBox = document.getElementById("tbbLiveCapsuleTranscriptBox");
+              if (trBox && tStr) trBox.textContent = `“${tStr}”`;
+            },
+            onDone: () => {
+              clearInterval(progTimer);
+              if (progBar) progBar.style.width = "100%";
+              if (icoEl) icoEl.textContent = "▶";
+              if (txtEl) txtEl.textContent = "Escuchar de nuevo";
+            }
+          });
+        } else if (typeof window.speakAuraBriefResponse === "function") {
+          window.speakAuraBriefResponse(spec.body, 12000);
         }
-      };
-
-      window.tbbToggleCapsuleAudioPlayPause = function () {
-        const vp = document.getElementById("transitionTheoryVideoPlayer");
-        if (!vp) return;
-        if (vp.paused || vp.ended) {
-          vp.muted = false;
-          vp.play().catch(() => {});
-        } else {
-          vp.pause();
-        }
-        syncCapsuleAudioButtonsUI();
       };
 
       window.tbbReplayCapsuleAudio = function () {
-        const vp = document.getElementById("transitionTheoryVideoPlayer");
-        if (!vp) return;
-        try { vp.currentTime = 0; } catch (e) {}
-        vp.muted = false;
-        vp.play().catch(() => {});
-        syncCapsuleAudioButtonsUI();
+        if (icoEl) icoEl.textContent = "❚❚";
+        if (txtEl) txtEl.textContent = "Aura hablando";
+        playCapsuleNow();
       };
-
-      window.tbbSeekCapsuleAudio = function (ev, trackEl) {
-        const vp = document.getElementById("transitionTheoryVideoPlayer");
-        if (!vp || !trackEl || !Number.isFinite(vp.duration) || vp.duration <= 0) return;
-        const rect = trackEl.getBoundingClientRect();
-        const ratio = Math.max(0, Math.min(1, (ev.clientX - rect.left) / Math.max(1, rect.width)));
-        try { vp.currentTime = ratio * vp.duration; } catch (e) {}
+      window.tbbToggleCapsuleAudioPlayPause = function () {
+        if (window.isSpeakingLive) {
+          if (window.TBBAudioDirector) window.TBBAudioDirector.bumpGeneration("pause_capsule");
+          if (icoEl) icoEl.textContent = "▶";
+          if (txtEl) txtEl.textContent = "Reproducir";
+        } else {
+          window.tbbReplayCapsuleAudio();
+        }
       };
-
-      if (review.theorySpec) {
-        if (theoryHeaderEl) theoryHeaderEl.textContent = review.theorySpec.headerLabel;
-        if (theoryFrameworkEl) theoryFrameworkEl.textContent = review.theorySpec.frameworkBadge;
-        if (theoryCardsGrid) {
-          theoryCardsGrid.innerHTML = `
-            <div style="color:#1E293B; font-size:0.86rem; line-height:1.58;">
-              <div style="font-weight:700; color:#0F172A; margin-bottom:4px; font-size:0.84rem;">${review.theorySpec.theoryTitle}</div>
-              <div style="color:#475569; font-weight:400;">${review.theorySpec.theoryBody}</div>
-            </div>
-          `;
-        }
-        if (videoPlayer) {
-          const targetVidUrl = review.theorySpec.videoUrl;
-          const handleVidFallback = () => {
-            const relClean = String(targetVidUrl || "").split("?")[0];
-            if (!videoPlayer.dataset.triedFallback) {
-              videoPlayer.dataset.triedFallback = "1";
-              const fbUrl = tbbResolveHeyGenVideoFallback(relClean.startsWith("/assets/") ? relClean : `/assets/videos/capsula_teoria_paso_${resolvedToStep}${curLang === "es" ? "" : "_" + curLang}.mp4`);
-              if (videoSource) videoSource.setAttribute("src", fbUrl);
-              videoPlayer.src = fbUrl;
-              videoPlayer.load();
-              videoPlayer.play().catch(() => {});
-            }
-          };
-          videoPlayer.onerror = handleVidFallback;
-          if (videoSource) videoSource.onerror = handleVidFallback;
-          delete videoPlayer.dataset.triedFallback;
-          if (videoPlayer.getAttribute("src") !== targetVidUrl) {
-            if (videoSource) videoSource.setAttribute("src", targetVidUrl);
-            videoPlayer.src = targetVidUrl;
-            videoPlayer.load();
-          } else {
-            try { videoPlayer.currentTime = 0; } catch (e) {}
-          }
-          videoPlayer.defaultPlaybackRate = 1.0;
-          videoPlayer.playbackRate = 1.0;
-          videoPlayer.onplay = syncCapsuleAudioButtonsUI;
-          videoPlayer.onpause = syncCapsuleAudioButtonsUI;
-          videoPlayer.onended = syncCapsuleAudioButtonsUI;
-          videoPlayer.ontimeupdate = () => {
-            if (progBar && videoPlayer.duration > 0) {
-              const pct = Math.min(100, Math.max(4, Math.round((videoPlayer.currentTime / videoPlayer.duration) * 100)));
-              progBar.style.width = `${pct}%`;
-            }
-            const timeLbl = document.getElementById("tbbCapsuleAudioTimeLabel");
-            if (timeLbl && videoPlayer.duration > 0) {
-              timeLbl.textContent = `${formatAudioSec(videoPlayer.currentTime)} / ${formatAudioSec(videoPlayer.duration)}`;
-            }
-            syncCapsuleAudioButtonsUI();
-          };
-          try {
-            if (typeof window.tbbStopAllAuraVoicePlayback === "function") window.tbbStopAllAuraVoicePlayback();
-            if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-            if (currentAudioObj) currentAudioObj.pause();
-          } catch (e) {}
-          videoPlayer.muted = Boolean(voiceMuted);
-          videoPlayer.play().then(syncCapsuleAudioButtonsUI).catch(syncCapsuleAudioButtonsUI);
-        }
-      }
+      window.tbbSeekCapsuleAudio = function () {};
 
       modal.classList.add("open");
+      if (!window.voiceMuted) {
+        playCapsuleNow();
+      }
     }
 
-    window.addEventListener("message", (ev) => {
-      try {
-        const d = ev && ev.data;
-        if (!d || typeof d !== "object") return;
-        if (d.type === "TBB_SET_LANGUAGE" && d.lang) {
-          const cleanL = String(d.lang).toLowerCase().trim();
-          if (["es", "en", "fr", "pt", "de", "it"].includes(cleanL)) {
-            try {
-              localStorage.setItem("tbb_active_ui_lang_v52", cleanL);
-              localStorage.setItem("tbb_app_lang", cleanL);
-            } catch (e) {}
-            document.documentElement.lang = cleanL;
-            if (typeof window.tbbApplyCurrentLanguageToDOM === "function") {
-              window.tbbApplyCurrentLanguageToDOM();
-            }
-            const modal = document.getElementById("phaseTransitionVideoModal");
-            if (modal && modal.classList.contains("open") && typeof window.tbbSwitchVideoCapsuleTheme === "function") {
-              window.tbbSwitchVideoCapsuleTheme(window.tbbActiveVideoCapsuleStep ?? currentStep ?? 0);
-            }
-          }
-        }
-      } catch (e) {}
-    });
-
-    function renderTransitionVideoLoop() {
-      // Presentación limpia enfocada en el video ejecutivo
-    }
+    function renderTransitionVideoLoop() {}
 
     function finishTransitionVideoAndEnterNextStep() {
+      if (window.TBBAudioDirector && typeof window.TBBAudioDirector.bumpGeneration === "function") {
+        window.TBBAudioDirector.bumpGeneration("finish_capsule");
+      }
       const videoPlayer = document.getElementById("transitionTheoryVideoPlayer");
       if (videoPlayer) {
         try { videoPlayer.pause(); } catch (e) {}
       }
       const modal = document.getElementById("phaseTransitionVideoModal");
       if (modal) modal.classList.remove("open");
-      if (transitionVideoAnimId) {
+      if (typeof transitionVideoAnimId !== "undefined" && transitionVideoAnimId) {
         cancelAnimationFrame(transitionVideoAnimId);
         transitionVideoAnimId = null;
       }
       const opts = pendingTransitionOptions || {};
-      const target = pendingTransitionToStep || Math.min(6, currentStep + 1);
+      const target = pendingTransitionToStep ?? Math.min(6, currentStep + 1);
       pendingTransitionToStep = null;
       pendingTransitionOptions = null;
       window._auraGuideShownOnce = true;
 
       if (opts.goToJourneyMap) {
-        if (typeof window.tbbOpenJourneyMap === "function") {
-          window.tbbOpenJourneyMap();
-        }
+        if (typeof window.tbbOpenJourneyMap === "function") window.tbbOpenJourneyMap();
         return;
       }
       if (opts.keepCurrentSubStep && window.tbbState) {
@@ -16705,22 +16408,8 @@
     // =========================================================================
     // MOTOR DE CUENTAS, SESIONES SIMULTÁNEAS EN TIEMPO REAL Y BÓVEDA CLOUD (v49.0)
     // =========================================================================
-    const TBB_NEON_SQL_ENDPOINT = "https://ep-lively-band-b4dztbn5-pooler.c-6.us-east-2.aws.neon.tech/sql";
-    const TBB_NEON_CONN_STR = "postgresql://neondb_owner:npg_OeTfyNlntV74@ep-lively-band-b4dztbn5-pooler.c-6.us-east-2.aws.neon.tech/neondb?sslmode=require";
-
-    async function tbbNeonCloudSql(query, params = []) {
-      const resp = await fetch(TBB_NEON_SQL_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain",
-          "Neon-Connection-String": TBB_NEON_CONN_STR
-        },
-        body: JSON.stringify({ query, params })
-      });
-      if (!resp.ok) {
-        throw new Error(`Neon HTTP ${resp.status}`);
-      }
-      return await resp.json();
+    async function tbbNeonCloudSql() {
+      return { rows: [] };
     }
     window.tbbNeonCloudSql = tbbNeonCloudSql;
 
@@ -19571,8 +19260,12 @@
       let restoredAny = false;
       const urlParams = new URLSearchParams(window.location.search);
       const hasExplicitBrandPreset = !!urlParams.get("brand") || urlParams.get("admin") === "1" || urlParams.get("admin") === "true";
-      const shouldResume = urlParams.get("resume") === "true" && !hasExplicitBrandPreset;
-      if (shouldResume) {
+      const forceFreshReset = urlParams.get("reset") === "1" || urlParams.get("fresh") === "1";
+      if (forceFreshReset && !hasExplicitBrandPreset) {
+        if (typeof window.startFreshBrandSession === "function") {
+          window.startFreshBrandSession();
+        }
+      } else if (!hasExplicitBrandPreset) {
         try {
           const savedRaw = localStorage.getItem(TBB_ACTIVE_SESSION_STORAGE_KEY);
           if (savedRaw) {
@@ -19582,12 +19275,6 @@
             }
           }
         } catch (e) {}
-      } else if (!hasExplicitBrandPreset) {
-        // Sesión 100% aislada e independiente por defecto (Directiva Max C-00)
-        console.log("Iniciando con lienzo limpio (Directiva Max C-00 · Cero contaminación entre marcas)...");
-        if (typeof window.startFreshBrandSession === "function") {
-          window.startFreshBrandSession();
-        }
       }
 
       if (!restoredAny && !hasExplicitBrandPreset) {
@@ -20274,7 +19961,8 @@
     }
 
     .tbb-duo-btn.is-hidden,
-    #tbbBtnAtomicAction.is-hidden {
+    #tbbBtnAtomicAction.is-hidden,
+    #tbbBtnPolishStep1Ortho.is-hidden {
       display: none !important;
     }
 
@@ -21093,10 +20781,10 @@
         <div id="tbbAuraEmpatheticBubble">
           <div id="tbbAuraPresenceMetaBadge">
             <span style="width:7px; height:7px; border-radius:999px; background:#E04700; display:inline-block; flex-shrink:0;"></span>
-            <span id="tbbAuraPresenceRoleText">AURA · PASO 0 · INICIO · REF: PETER DRUCKER</span>
+            <span id="tbbAuraPresenceRoleText">AURA · PASO 0 · INICIO</span>
           </div>
           <div id="tbbAuraEmpatheticText">
-            Como enseña Peter Drucker, definir tu objetivo inicial da dirección estratégica inmediata a tu marca.
+            ¡Hola! Soy Aura. Elige cómo empezamos hoy para crear tu marca en menos de 60 minutos.
           </div>
         </div>
       </div>
@@ -21172,8 +20860,8 @@
         <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="tbbToggleGeneralMenu(false); if(window.tbbOpenBuyAppCheckoutModal){window.tbbOpenBuyAppCheckoutModal('pro_atelier');}">
           Comprar la App (Pago Directo)
         </button>
-        <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="tbbToggleGeneralMenu(false); window.tbbReplayAuraSplashBoot();" style="grid-column:1 / -1;">
-          Ver Intro Visual de Aura (Splashboot)
+        <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbToggleGeneralMenu(false); window.open('/referencias','_blank');" style="grid-column:1 / -1;">
+          📚 Ver Referencias, Libros y Bases del Método
         </button>
       </div>
       <div style="border-top:1.5px solid #E2E8F0; padding-top:10px; display:flex; flex-direction:column; gap:8px;">
@@ -21291,13 +20979,13 @@
         logoIterationIndex: 1,
         logoIterations: [],
         auraUsedMessages: [],
-        auraCurrentMessage: "Como enseña Peter Drucker, definir tu objetivo inicial da dirección estratégica inmediata a tu marca.",
+        auraCurrentMessage: "¡Hola! Soy Aura. Elige cómo empezamos hoy para crear tu marca en menos de 60 minutos.",
         auraLastSubStepKey: ""
       };
 
       const SUBSTEPS_COUNT = {
         0: 3, // 0.1 Objetivo, 0.2 Estado de Nombre, 0.3 Giro de la empresa
-        1: 7, // 1.1 a 1.7 Los 7 pilares socráticos
+        1: 5, // 1.1 a 1.7 Los 7 pilares socráticos
         2: 3, // 2.1 Antes, 2.2 Durante, 2.3 Después
         3: 3, // 3.1 Nombre/Raíces, 3.2 Propuestas del Sistema, 3.3 Confirmación
         4: 5, // 4.1 Ejes 1-2 (con iconos), 4.2 Ejes 3-4 (con iconos), 4.3 Ejes 5-7 (con iconos), 4.4 Selección de Fuentes, 4.5 Estructura Base + Idea en App
@@ -21306,13 +20994,11 @@
       };
 
       const STEP1_QUESTIONS = [
-        { key: "golden_circle", title: "1. Propósito Nuclear", q: "¿Por qué existe tu marca más allá de generar ingresos y qué cambio positivo busca lograr?" },
-        { key: "value_offer", title: "2. Oferta de Valor Diferenciada", q: "¿Qué hace única a tu propuesta frente a las alternativas actuales del mercado?" },
-        { key: "social_role", title: "3. Impacto en el Cliente", q: "¿Cómo mejora concretamente la vida o el trabajo de quienes eligen tu marca?" },
-        { key: "process_steps_text", title: "4. Método y Proceso", q: "¿Cuáles son los pasos clave con los que garantizas calidad en tu producto o servicio?" },
-        { key: "core_message", title: "5. Mensaje Central", q: "¿En una sola frase clara, qué quieres que tus clientes recuerden siempre de tu marca?" },
-        { key: "brand_persona", title: "6. Carácter y Personalidad", q: "Si tu marca fuera una persona, ¿cómo hablaría, cómo trataría al cliente y qué actitud tendría?" },
-        { key: "ideal_customer", title: "7. Cliente Ideal", q: "¿Quién es tu cliente ideal, qué es lo que más valora y qué problema urgente le resuelves?" }
+        { key: "golden_circle", title: "1. Por qué existe tu negocio", q: "¿Qué te motivó a crear este negocio y qué cambio positivo quieres lograr en la gente?" },
+        { key: "value_offer", syncKey: "social_role", title: "2. Qué te hace diferente", q: "¿Por qué un cliente debería elegirte a ti en lugar de otras opciones y cómo mejoras su día?" },
+        { key: "process_steps_text", title: "3. Cómo trabajas en 3 pasos", q: "Explica en 3 pasos sencillos cómo entregas tu producto o servicio para dar confianza:" },
+        { key: "core_message", syncKey: "brand_persona", title: "4. Tu frase y personalidad", q: "Si tu marca fuera una persona, ¿cómo trataría al cliente y qué frase quieres que recuerden?" },
+        { key: "ideal_customer", title: "5. Tu cliente ideal", q: "¿A quién le vendes principalmente y qué problema urgente le resuelves?" }
       ];
 
       // Extrae tokens semánticos limpios (sustantivos/conceptos) únicamente de lo que el usuario ha ingresado en la app
@@ -22956,198 +22642,120 @@
         const st = window.tbbState;
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         if (!Array.isArray(st.auraUsedMessages)) st.auraUsedMessages = [];
-        const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "tu marca";
-        const bGiro = (cs.custom_business_type || cs.step0_short_essence || "tu giro").trim().split(/\s+/).slice(0, 4).join(" ");
+        const bName = (cs.brandName && !/^(mi nueva marca|the\s*best\s*brand|marca en creaci.*)$/i.test(cs.brandName)) ? cs.brandName.trim() : "tu marca";
+        const bGiro = (cs.custom_business_type || cs.step0_short_essence || "tu proyecto").trim().split(/\s+/).slice(0, 4).join(" ");
         const cleanDetail = String(detailText || "").replace(/\s+/g, " ").trim().split(/\s+/).slice(0, 4).join(" ");
 
-        // Todas las respuestas tienen entre 14 y 20 palabras (duración hablada de 5 a 8 segundos, siempre <= 10s) e incluyen un autor de referencia del tema
         const pools = {
           "substep_0_1": [
-            `Como enseña Peter Drucker, definir tu objetivo inicial da dirección estratégica inmediata a ${bName}.`,
-            `Según Marty Neumeier, una marca clara empieza eligiendo con precisión su meta de crecimiento hoy.`,
-            `Como afirma David Aaker, construir capital de marca inicia con un objetivo estratégico bien definido.`
+            `¡Hola! Elige cómo quieres empezar hoy para dejar lista ${bName} en menos de 60 minutos.`,
+            `Toca tu objetivo principal y yo te acompaño paso a paso de forma súper sencilla.`
           ],
           "substep_0_2": [
-            `Según Sagi Haviv, si ya tienes nombre o logo podemos conservarlo o evolucionarlo con precisión.`,
-            `Como explica David Aaker, aprovechar tus activos actuales protege el reconocimiento ganado por ${bName}.`,
-            `Siguiendo a Al Ries, un nombre firme o logotipo base acelera el posicionamiento en la mente.`
+            `¿Ya tienes nombre o logotipo actual? Súbelo aquí o dime si creamos el nombre juntos.`,
+            `Si ya cuentas con un logo, lo tomaremos como base para modernizar ${bName}.`
           ],
           "substep_0_3": [
-            `Como afirma Al Ries, describir tu giro con sencillez define tu categoría única en el mercado.`,
-            `Según Peter Drucker, entender qué entregas y para quién es la base de toda estrategia.`,
-            `Como señala Marty Neumeier, tu especialidad real en ${bGiro} diferencia a ${bName} al instante.`
+            `Cuéntame con palabras simples qué vendes y a quién ayudas en tu negocio.`,
+            `Con una sola frase clara sobre tu giro adapto todas las ideas para ${bName}.`
           ],
           "substep_1_1": [
-            `Como explica Simon Sinek en El Círculo Dorado, la gente compra el porqué existe ${bName}.`,
-            `Según Simon Sinek, iniciar por tu propósito nuclear inspira lealtad auténtica más allá del producto.`,
-            `Como enseña David Aaker, un propósito genuino guía cada decisión estratégica y visual de ${bName}.`
+            `Cuéntame qué te inspiró a crear ${bName}. Si no sabes qué poner, toca «Dame una idea».`,
+            `Responde como si se lo platicaras a un amigo; aquí no necesitas palabras complicadas.`
           ],
           "substep_1_2": [
-            `Según Alex Osterwalder, una oferta de valor clara en ${bGiro} evita que compitas por precio.`,
-            `Como destaca Michael Porter, diferenciarte con precisión hace que ${bName} sea irreemplazable en su mercado.`,
-            `Siguiendo a Alex Osterwalder, articulemos la ventaja única por la que tus clientes te eligen.`
+            `¿Qué hace especial a ${bName} frente a los demás en ${bGiro}?`,
+            `Piensa en la razón práctica por la que tus clientes quedan felices contigo.`
           ],
           "substep_1_3": [
-            `Como señala Philip Kotler, las marcas memorables transforman positivamente la vida diaria de sus clientes.`,
-            `Según Donald Miller, cuando muestras cómo mejoras el día de tu cliente, ${bName} trasciende.`,
-            `Como afirma Simon Sinek, servir con empatía construye relaciones de confianza que duran años.`
+            `Resume en tres pasos simples cómo atiendes o entregas tu producto al cliente.`,
+            `Cuando explicas fácil cómo trabajas, la gente confía mucho más rápido en ${bName}.`
           ],
           "substep_1_4": [
-            `Según Donald Miller en StoryBrand, resumir tu método en tres pasos elimina toda incertidumbre al comprar.`,
-            `Como explica Don Norman, un proceso claro transmite certidumbre y profesionalismo inmediato en ${bGiro}.`,
-            `Siguiendo a Donald Miller, tres pasos simples le dan confianza total a tu futuro cliente.`
+            `Imagina que ${bName} es una persona: ¿cómo habla y qué frase la define mejor?`,
+            `Elige un trato cercano y una idea corta que cualquiera recuerde al instante.`
           ],
           "substep_1_5": [
-            `Como enseña Al Ries en Posicionamiento, una promesa breve conquista un lugar único en la mente.`,
-            `Según Marty Neumeier, sintetizar tu mensaje central en una frase clara multiplica el impacto de ${bName}.`,
-            `Como afirma Donald Miller, la claridad verbal hace que tus clientes recomienden a ${bName} fácilmente.`
-          ],
-          "substep_1_6": [
-            `Según Jennifer Aaker, definir la personalidad de ${bName} crea afinidad humana y carácter propio.`,
-            `Como explica Carl Jung con sus arquetipos, el tono de voz conecta emocionalmente con tu audiencia.`,
-            `Siguiendo a David Aaker, dar carácter humano a ${bName} vuelve coherente cada mensaje.`
-          ],
-          "substep_1_7": [
-            `Como afirma Seth Godin, conocer a fondo a tu cliente ideal da sentido a toda la estrategia.`,
-            `Según Alex Osterwalder, empatizar con lo que valora tu cliente alinea cada detalle de ${bName}.`,
-            `Como señala Peter Drucker, el propósito esencial de toda empresa es comprender y servir a su cliente.`
+            `Última pregunta de este paso: ¿quién es el cliente que más necesita lo que haces?`,
+            `Definir bien a tu cliente ideal nos ayuda a diseñar exactamente para él.`
           ],
           "substep_2_1": [
-            `Según Lemon y Verhoef, los touchpoints previos a la compra construyen la primera impresión de ${bName}.`,
-            `Como enseña Jan Carlzon, el primer momento de verdad despierta la confianza inicial hacia tu marca.`,
-            `Siguiendo a Philip Kotler, elegir dónde te descubren asegura visibilidad estratégica para ${bName}.`
+            `Toca los medios donde la gente descubre a ${bName} por primera vez.`,
+            `Elige dónde te ven tus clientes antes de comprarte.`
           ],
           "substep_2_2": [
-            `Como señala Jan Carlzon, el contacto directo durante la compra es tu momento de verdad decisivo.`,
-            `Según Don Norman, eliminar fricciones durante tu servicio en ${bGiro} convierte la promesa en realidad.`,
-            `Como explican Lemon y Verhoef, cuidar la experiencia central consolida el prestigio de ${bName}.`
+            `Ahora marca dónde ocurre la entrega o compra principal de tu producto o servicio.`,
+            `Así tu Brandbook mostrará aplicaciones reales pensadas para ${bName}.`
           ],
           "substep_2_3": [
-            `Según Don Norman, el acompañamiento posterior a la entrega convierte a cada cliente en embajador leal.`,
-            `Como demuestran Lemon y Verhoef, la etapa post-venta multiplica la retención y el valor de ${bName}.`,
-            `Siguiendo a Jan Carlzon, un buen seguimiento después de comprar deja una huella inolvidable.`
+            `¿Cómo sigues en contacto con tu cliente después de venderle para que regrese?`,
+            `Toca las opciones que uses y pasamos directo a tu nombre comercial.`
           ],
           "substep_3_1": [
-            `Como explica Alexandra Watkins en el modelo SMILE, un gran nombre nace de raíces con significado.`,
-            `Según Alina Wheeler, conectar tu estrategia con tu identidad verbal da solidez legal a ${bName}.`,
-            `Como enseña David Placek, las raíces fonéticas correctas proyectan la esencia de ${bGiro} al instante.`
+            `Revisa estas ideas clave de tu negocio o conserva tu nombre actual en un toque.`,
+            `Con estas palabras crearé propuestas de nombre cortas y fáciles de recordar.`
           ],
           "substep_3_2": [
-            `Según David Placek, fundador de Lexicon, el simbolismo fonético de dos o tres sílabas maximiza recordación.`,
-            `Como afirma Alexandra Watkins, elige el nombre que despierte una imagen clara y emoción inmediata.`,
-            `Siguiendo a Al Ries, un nombre sonoro y breve facilita el posicionamiento de ${bName}.`
+            `Toca el nombre que más te guste o escribe el tuyo abajo con total libertad.`,
+            `Busca un nombre que suene bien en voz alta y sea fácil de escribir.`
           ],
           "substep_3_3": [
-            `Como destaca Alina Wheeler, acompañar a ${bName} con un descriptor claro comunica tu valor en segundos.`,
-            `Según Alexandra Watkins, tu nombre y eslogan ya forman una identidad verbal lista para registrarse.`,
-            `Como enseña David Aaker, un descriptor preciso refuerza la autoridad de ${bName} en su categoría.`
+            `¡Excelente! Confirma cómo se escribirá ${bName} y ajusta tu frase comercial.`,
+            `Tu nombre y eslogan ya quedaron listos para pasar al estilo visual.`
           ],
           "substep_4_1": [
-            `Según Mitsuo Nagamachi y la Ingeniería Kansei, traducimos emociones en parámetros geométricos precisos para ${bName}.`,
-            `Como explica Vilayanur Ramachandran, las curvas evocan cercanía mientras los ángulos proyectan precisión técnica.`,
-            `Siguiendo a Charles Osgood, estos ejes semánticos calibran la atmósfera visual exacta de ${bName}.`
+            `Toca o mueve cada barra según el estilo que mejor le quede a ${bName}.`,
+            `No hay respuestas malas: elige cómo quieres que se sienta tu marca.`
           ],
           "substep_4_2": [
-            `Como demostró Charles Osgood con el diferencial semántico, equilibrar tradición y vanguardia define tu carácter visual.`,
-            `Según Mitsuo Nagamachi, cada deslizador ajusta la respuesta emocional que despertará el símbolo de ${bName}.`,
-            `Como señala Don Norman, el diseño visceral comunica confianza antes de leer una sola palabra.`
+            `Ajustemos un poco más el carácter visual de ${bName} con estos dos controles.`,
+            `Elige entre un trato más cálido o un perfil más técnico y directo.`
           ],
           "substep_4_3": [
-            `Según Max Wertheimer y la psicología Gestalt, el ojo recuerda mejor las formas con síntesis clara.`,
-            `Como enseña Paul Rand, calibrar la simplicidad geométrica prepara a ${bName} para cualquier escala.`,
-            `Siguiendo a Mitsuo Nagamachi, estos siete ejes completan el plano rector de tu identidad visual.`
+            `Último ajuste de estilo: define qué tan curvas o exactas prefieres las formas.`,
+            `Con esto tengo claro el estilo ideal para las letras y el logo de ${bName}.`
           ],
           "substep_4_4": [
-            `Como escribió Robert Bringhurst, la tipografía es el lenguaje visible que da voz y autoridad a ${bName}.`,
-            `Según Adrian Frutiger, la estructura de cada letra determina la legibilidad en pantallas e imprenta.`,
-            `Como afirma Massimo Vignelli, elegir una familia tipográfica noble sostiene todo el sistema de ${bName}.`
+            `Mira cómo luce «${bName}» en distintos estilos de letra y toca tu favorita.`,
+            `Elegimos letras súper legibles tanto para celular como para imprenta.`
           ],
           "substep_4_5": [
-            `Según Sagi Haviv, una estructura base simple y distintiva es el cimiento de todo gran símbolo.`,
-            `Como enseña Paul Rand, definir esta semilla visual nos dará un punto de partida sólido para ${bName}.`,
-            `Siguiendo a Adrian Frutiger, la geometría base ordena el signo antes de pasar al taller generativo.`
+            `Elige qué tipo de símbolo prefieres y dime si quieres incluir alguna figura especial.`,
+            `Puedes dejar la idea en blanco o pedir un ícono específico para ${bName}.`
           ],
           "substep_5_1": [
-            `Como demostró Josef Albers en La interacción del color, la paleta despierta emoción antes que las palabras.`,
-            `Según Jony Ive, el acabado material y la refracción lumínica dan presencia táctil al símbolo de ${bName}.`,
-            `Como afirma Sagi Haviv, si subiste tu logo base respetaremos sus colores y esencia al evolucionarlo.`
+            `Elige la combinación de colores que mejor represente la energía de ${bName}.`,
+            `Puedes tocar una paleta lista o ajustar cada tono en la rueda de color.`
           ],
           "substep_5_2": [
-            `Siguiendo a Paul Rand y Sagi Haviv, itera libremente hasta que el símbolo de ${bName} sea inolvidable.`,
-            `Como enseña Jony Ive, refinar cada curva y proporción en vista 1:1 eleva la excelencia del diseño.`,
-            `Según Max Wertheimer, el contraste figura-fondo en tu lienzo garantiza impacto en cualquier soporte.`
+            `¡Aquí está el logotipo de ${bName}! Prueba los estilos arriba o pídeme cambios abajo.`,
+            `Revisa cómo luce completo y también como ícono cuadrado para tus redes.`
           ],
           "substep_6_1": [
-            `Como enseñó Massimo Vignelli, un manual en retícula modular protege la coherencia de ${bName} en cada lámina.`,
-            `Según Josef Müller-Brockmann, el orden geométrico de estas treinta láminas proyecta rigor editorial de clase mundial.`,
-            `Siguiendo a Alina Wheeler, aquí convergen tu estrategia, tu logotipo y tus aplicaciones oficiales.`
+            `¡Felicidades! Explora página por página el Brandbook oficial de ${bName}.`,
+            `Aquí tienes más de treinta páginas profesionales listas para presentar y vender.`
           ],
           "substep_6_2": [
-            `Como establecieron Danne y Blackburn en el manual de la NASA, tus vectores aseguran reproducción impecable.`,
-            `Según Massimo Vignelli, descargar tu Brandbook completo garantiza disciplina visual para el futuro de ${bName}.`,
-            `Como afirma Alina Wheeler, entregar archivos en curvas listas para producción culmina una identidad exitosa.`
-          ],
-          "input_goal": [
-            `Excelente meta: como señala Peter Drucker, definir el rumbo inicial enfoca toda la estrategia de ${bName}.`,
-            `Gran elección; según Marty Neumeier, partir con un objetivo claro alinea negocio y diseño desde hoy.`,
-            `Muy bien decidido: como enseña David Aaker, esta meta guiará el capital de marca de ${bName}.`
-          ],
-          "input_assets": [
-            `Como afirma Sagi Haviv, definir si conservas o creas tus activos da claridad total al taller visual.`,
-            `Según David Aaker, aprovechar tu nombre o abrir nuevas opciones fortalece la arquitectura de ${bName}.`,
-            `Excelente paso: como señala Alina Wheeler, alinear tus activos actuales ordena todo el proceso creativo.`
+            `Descarga tu Brandbook en PDF, tus logos editables y tus plantillas en un clic.`,
+            `Todos los archivos de ${bName} son cien por ciento tuyos y listos para usar.`
           ],
           "input_biz": [
-            `Según Al Ries, enfocarte en «${cleanDetail || bGiro}» posiciona a ${bName} con autoridad en su categoría.`,
-            `Como enseña Peter Drucker, describir «${cleanDetail || bGiro}» con claridad define el valor real para tu mercado.`,
-            `Qué buen giro: según Marty Neumeier, especializarte en «${cleanDetail || bGiro}» te distingue de inmediato.`
+            `¡Me encanta ese giro! Ya adapté las sugerencias para «${cleanDetail || bGiro}».`
           ],
           "input_step1": [
-            `Como afirma Simon Sinek, integrar «${cleanDetail}» fortalece la convicción y autenticidad de ${bName}.`,
-            `Según Alex Osterwalder, este pilar estratégico diferencia a ${bName} con valor real para tus clientes.`,
-            `Excelente reflexión: como señala Donald Miller, la claridad de este pilar conectará con tu audiencia.`,
-            `Muy bien expresado; según David Aaker, esta definición respalda la promesa central de ${bName}.`,
-            `Como destaca Philip Kotler, plasmar esta idea da coherencia humana y comercial a ${bName}.`
+            `¡Quedó súper claro! Esa idea le da mucha fuerza a ${bName}.`
           ],
           "input_touchpoint": [
-            `Según Jan Carlzon, cuidar «${cleanDetail}» transforma ese punto de contacto en un momento de verdad memorable.`,
-            `Como explican Lemon y Verhoef, sumar «${cleanDetail}» fortalece la continuidad de experiencia en ${bName}.`,
-            `Gran acierto: según Don Norman, diseñar bien «${cleanDetail}» elimina fricciones y genera lealtad.`
+            `Perfecto, sumamos «${cleanDetail}» a las aplicaciones reales de ${bName}.`
           ],
           "input_name": [
-            `Según David Placek, la sonoridad de «${cleanDetail || bName}» tiene ritmo firme y gran recordación fonética.`,
-            `Como enseña Alexandra Watkins en SMILE, «${cleanDetail || bName}» proyecta carácter y un monograma impecable.`,
-            `Excelente nombre: según Al Ries, «${cleanDetail || bName}» es breve, claro y fácil de posicionar.`
-          ],
-          "input_slider": [
-            `Según Mitsuo Nagamachi y el método Kansei, este ajuste equilibra la emoción geométrica de ${bName}.`,
-            `Como demostró Charles Osgood, calibrar este eje afina con precisión el carácter visual de tu símbolo.`,
-            `Buen criterio: según Max Wertheimer, esta proporción fortalece la armonía perceptual de ${bName}.`
+            `«${cleanDetail || bName}» suena genial y es muy fácil de recordar.`
           ],
           "input_font": [
-            `Como afirma Robert Bringhurst, la fuente «${cleanDetail}» le da a ${bName} una voz visible con autoridad.`,
-            `Según Adrian Frutiger, «${cleanDetail}» garantiza legibilidad impecable tanto en móvil como en tus láminas.`,
-            `Gran elección tipográfica: como enseñó Massimo Vignelli, «${cleanDetail}» aporta orden y carácter atemporal.`
-          ],
-          "input_seed": [
-            `Según Paul Rand, partir de «${cleanDetail}» nos da una síntesis visual clara y llena de significado.`,
-            `Como explica Sagi Haviv, tomaremos «${cleanDetail}» como base para esculpir un símbolo memorable en ${bName}.`,
-            `Excelente referencia: según Jony Ive, evolucionaremos «${cleanDetail}» cuidando cada proporción y detalle.`
-          ],
-          "input_logo_start": [
-            `Siguiendo a Paul Rand y Sagi Haviv, estamos trazando «${cleanDetail}» con precisión vectorial para ${bName}.`,
-            `Como enseña Jony Ive, Gemini está refinando la geometría de «${cleanDetail}» en tu lienzo ahora mismo.`,
-            `Según Max Wertheimer, estamos estructurando figura y proporción para plasmar «${cleanDetail}» en ${bName}.`
+            `Muy buena elección: «${cleanDetail}» hace que ${bName} se lea impecable.`
           ],
           "input_logo_done": [
-            `Como afirma Sagi Haviv, evalúa «${cleanDetail}» tanto en tamaño completo como en el ícono App 1:1.`,
-            `Según Paul Rand, esta iteración «${cleanDetail}» equilibra simplicidad y carácter distintivo para ${bName}.`,
-            `Listo: siguiendo a Josef Albers, observa cómo armonizan las formas y colores de «${cleanDetail}» en pantalla.`
-          ],
-          "input_plate_nav": [
-            `Como enseñó Massimo Vignelli, cada lámina de ${bName} mantiene una retícula consistente y sin saturación.`,
-            `Según Josef Müller-Brockmann, revisar tus láminas paso a paso asegura proporción y jerarquía editorial.`,
-            `Como señala Alina Wheeler, cada sección de este manual protege la correcta aplicación de ${bName}.`
+            `¡Listo! Mira cómo luce esta nueva versión del logotipo de ${bName}.`
           ]
         };
 
@@ -23159,52 +22767,31 @@
             return candidate;
           }
         }
-
-        // Si ya se usaron las variantes de esa categoría, generar una frase breve (<= 18 palabras, <= 7s) con autor de referencia
-        const authorFallbacks = [
-          `Como enseña David Aaker, cada ajuste en ${bName} fortalece la coherencia y el valor de tu identidad.`,
-          `Según Simon Sinek, mantener claridad en este paso conecta el propósito de ${bName} con tu audiencia.`,
-          `Como afirma Sagi Haviv, la simplicidad y consistencia hacen que ${bName} sea memorable en todo soporte.`,
-          `Siguiendo a Massimo Vignelli, esta decisión aporta orden, disciplina y elegancia al sistema de ${bName}.`,
-          `Como explica Don Norman, cuidar este detalle hace que la experiencia de ${bName} sea clara y humana.`,
-          `Según Marty Neumeier, alinear estrategia y diseño en ${bName} construye una ventaja competitiva duradera.`
-        ];
-        const seqNum = st.auraUsedMessages.length + 1;
-        const picked = authorFallbacks[(seqNum + st.step + st.subStep) % authorFallbacks.length];
-        st.auraUsedMessages.push(picked);
-        return picked;
+        return list[0];
       };
 
       window.updateAuraTopPresenceDOM = function (msgText, roleSubLabel) {
         const st = window.tbbState;
-        const cfg = window.tbbAuraOrbConfig || {};
         if (msgText) {
           st.auraCurrentMessage = msgText;
         }
-        const activeMsg = (cfg.customMessage && String(cfg.customMessage).trim() && !msgText)
-          ? String(cfg.customMessage).trim()
-          : (st.auraCurrentMessage || "");
+        const activeMsg = st.auraCurrentMessage || "¡Hola! Soy Aura. Vamos paso a paso para dejar lista tu marca.";
         const textEl = document.getElementById("tbbAuraEmpatheticText");
-        if (textEl && activeMsg) {
+        if (textEl) {
           textEl.textContent = activeMsg;
         }
-        const authorName = window.extractAuraAuthorRefFromText(activeMsg);
         const roleEl = document.getElementById("tbbAuraPresenceRoleText");
         if (roleEl) {
-          if (cfg.customRoleTitle && String(cfg.customRoleTitle).trim()) {
-            roleEl.textContent = `${String(cfg.customRoleTitle).trim().toUpperCase()} · REF: ${authorName.toUpperCase()}`;
-          } else {
-            const stepNames = {
-              0: "PASO 0 · INICIO",
-              1: "PASO 1 · PROPÓSITO",
-              2: "PASO 2 · TOUCHPOINTS",
-              3: "PASO 3 · NOMBRE",
-              4: "PASO 4 · PERSONALIDAD",
-              5: "PASO 5 · LOGOTIPO",
-              6: "PASO 6 · 36 LÁMINAS"
-            };
-            roleEl.textContent = roleSubLabel || `AURA · ${stepNames[st.step] || "MENTORA"} · REF: ${authorName.toUpperCase()}`;
-          }
+          const stepNames = {
+            0: "PASO 0 · INICIO",
+            1: "PASO 1 · ESENCIA",
+            2: "PASO 2 · CLIENTES",
+            3: "PASO 3 · NOMBRE",
+            4: "PASO 4 · ESTILO",
+            5: "PASO 5 · LOGOTIPO",
+            6: "PASO 6 · TU BRANDBOOK"
+          };
+          roleEl.textContent = roleSubLabel || `AURA · ${stepNames[st.step] || "GUÍA EN VIVO"}`;
         }
       };
 
@@ -23296,7 +22883,7 @@
           `Frases recientes prohibidas de repetir: [${recentUsed}].`,
           "REGLAS ESTRICTAS:",
           "1. Escribe UNA SOLA oración breve (máximo 22 palabras) comentando ESPECÍFICAMENTE sobre el negocio/marca que el usuario está creando (menciona su giro, beneficio o idea concreta).",
-          `2. Incluye una referencia breve a un autor reconocido del tema (${stepAuthors[st.step] || "David Aaker o Simon Sinek"}).`,
+          "2. PROHIBIDO citar autores, libros o teorías académicas. Habla con lenguaje sencillo, cálido y directo para cualquier joven de 16 años (máximo 16 palabras).",
           "3. CERO EMOJIS. Devuelve únicamente el texto plano en español."
         ].filter(Boolean).join("\n");
 
@@ -23336,11 +22923,11 @@
       window.tbbSwitchVideoCapsuleTheme = function (targetStepIdx) {
         const s = Math.max(0, Math.min(6, Number(targetStepIdx || 0)));
         if (s === 0) {
-          openPhaseTransitionVideoCapsule(0, 0, { keepCurrentSubStep: true });
+          openPhaseTransitionVideoCapsule(0, 0, { keepCurrentSubStep: true, manualOpen: true });
         } else if (s >= 1 && s <= 5) {
-          openPhaseTransitionVideoCapsule(s - 1, s, { keepCurrentSubStep: true });
+          openPhaseTransitionVideoCapsule(s - 1, s, { keepCurrentSubStep: true, manualOpen: true });
         } else {
-          openPhaseTransitionVideoCapsule(5, 6, { keepCurrentSubStep: true });
+          openPhaseTransitionVideoCapsule(5, 6, { keepCurrentSubStep: true, manualOpen: true });
         }
       };
 
@@ -23354,6 +22941,9 @@
       // FICHA OFICIAL DEL AUTOR CONSULTOR METODOLÓGICO Y AUDITORÍA EN TIEMPO REAL
       // -------------------------------------------------------------------------
       window.renderTbbAuthorConsultantCardHTML = function (stepNum, fieldRole) {
+        return "";
+      };
+      window._renderLegacyAuthorConsultantCardHTML = function (stepNum, fieldRole) {
         const s = Number(stepNum || 0);
         const board = window.TBB_MASTER_AUTHORS_BOARD || {};
         const stepAuthorMap = {
@@ -23644,14 +23234,23 @@
                   </h2>
                 </div>
                 <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:7px;">
-                  <textarea id="tbbStep0BizTextarea" rows="3" oninput="tbbUpdateBusinessTypeFromInput(this.value)" placeholder="Describe a qué se dedica tu empresa, qué entregas y para quién..." style="width:100%; padding:10px 12px; border-radius:14px; border:1.5px solid #090D16; font-size:0.88rem; font-weight:500; color:#090D16; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.38;">${curBiz}</textarea>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnPolishStep0Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep0BizTextarea', 'giro')" style="min-height:34px !important; padding:5px 10px !important; font-size:0.75rem !important; font-weight:600 !important; border-color:#0D2540 !important; color:#0D2540 !important; width:100%;">
-                    ✦ Pulir redacción con claridad ejecutiva
-                  </button>
-                  <div style="background:#F0F7FF; border:1px solid #93C5FD; border-radius:11px; padding:6px 10px; font-size:0.75rem; font-weight:600; color:#0D2540; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                    Síntesis: <span id="tbbStep0LiveEssencePreview" style="font-weight:500;">${cs.step0_short_essence || curBiz || "Describe arriba tu actividad principal."}</span>
+                  <textarea id="tbbStep0BizTextarea" rows="3" oninput="tbbUpdateBusinessTypeFromInput(this.value)" placeholder="Ej. Cafetería de especialidad para estudiantes y trabajo remoto, o tienda de ropa deportiva..." style="width:100%; padding:12px 14px; border-radius:16px; border:2px solid #CBD5E1; font-size:1rem; font-weight:500; color:#090D16; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.48;">${curBiz}</textarea>
+                  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbToggleStep0BizIdeas()" style="min-height:40px !important; padding:6px 14px !important; font-size:0.88rem !important; font-weight:600 !important;">
+                      💡 ¿No sabes qué poner? Ver ejemplos
+                    </button>
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnPolishStep0Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep0BizTextarea', 'giro')" style="display:${curBiz.trim().length >= 15 ? 'inline-flex' : 'none'}; min-height:40px !important; padding:6px 14px !important; font-size:0.88rem !important; font-weight:600 !important; border-color:#426EAE !important; color:#0D2540 !important;">
+                      ✦ Mejorar mi texto
+                    </button>
                   </div>
-                  ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(0, "giro") : ""}
+                  <div id="tbbStep0BizIdeasDrawer" style="display:${window.tbbState._showStep0Ideas ? 'grid' : 'none'}; grid-template-columns:1fr; gap:6px;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="const t='Cafetería artesanal con pan recién horneado y espacio cómodo para estudiar o trabajar'; document.getElementById('tbbStep0BizTextarea').value=t; tbbUpdateBusinessTypeFromInput(t); window.tbbState._showStep0Ideas=false; renderTbbZeroScrollStage();" style="justify-content:flex-start !important; text-align:left !important; font-size:0.88rem !important; font-weight:500 !important; min-height:42px !important;">
+                      Cafetería artesanal con pan recién horneado y espacio cómodo
+                    </button>
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="const t='Despacho de arquitectura y construcción residencial con diseño moderno llave en mano'; document.getElementById('tbbStep0BizTextarea').value=t; tbbUpdateBusinessTypeFromInput(t); window.tbbState._showStep0Ideas=false; renderTbbZeroScrollStage();" style="justify-content:flex-start !important; text-align:left !important; font-size:0.88rem !important; font-weight:500 !important; min-height:42px !important;">
+                      Despacho de arquitectura y construcción residencial llave en mano
+                    </button>
+                  </div>
                 </div>
               </div>
             `;
@@ -23672,32 +23271,39 @@
             if (lblAct) lblAct.textContent = "Hablar";
             if (iconAct) iconAct.innerHTML = window.TBBVectorArt("mic", "#0D2540", 18);
           }
-          if (lblNext) lblNext.textContent = st.subStep < 7 ? "Comprobar y Siguiente" : "Completar Paso 1";
+          if (lblNext) lblNext.textContent = st.subStep < 5 ? "Continuar" : "Completar Paso 1";
+          const ideasOpen = Boolean(st._openIdeasSubStep === st.subStep);
 
           stage.innerHTML = `
-            <div class="tbb-atomic-card" style="padding:12px 16px; gap:8px;">
+            <div class="tbb-atomic-card" style="padding:16px 20px; gap:12px;">
               <div>
-                <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:700; color:#1D4ED8; margin-bottom:2px;">PASO 1 · ${st.subStep} DE 7 · ${qObj.title.toUpperCase()}</div>
-                <h2 style="font-family:var(--font-display); font-size:1.05rem; font-weight:700; color:#090D16; margin:0; line-height:1.25;">
+                <div style="font-size:0.875rem; font-weight:600; color:#426EAE; margin-bottom:4px;">Paso 1 · Pregunta ${st.subStep} de 5 · ${qObj.title}</div>
+                <h2 style="font-family:var(--font-display); font-size:1.22rem; font-weight:700; color:#090D16; margin:0; line-height:1.3;">
                   ${qObj.q}
                 </h2>
               </div>
 
-              <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:7px;">
-                <textarea id="tbbStep1AnswerInput" rows="3" oninput="tbbSaveStep1Answer('${qObj.key}', this.value)" placeholder="Escribe o dicta tu respuesta..." style="width:100%; padding:9px 12px; border-radius:14px; border:1.5px solid #1D4ED8; font-size:0.88rem; font-weight:500; color:#090D16; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.36;">${curVal}</textarea>
-                <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnPolishStep1Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep1AnswerInput', '${qObj.key}')" style="min-height:32px !important; padding:4px 10px !important; font-size:0.74rem !important; font-weight:600 !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important;">
-                  ✦ Pulir redacción con claridad
-                </button>
-                <div style="display:flex; flex-direction:column; gap:5px;">
-                  <div style="font-size:0.72rem; font-weight:600; color:#475569;">Sugerencias para tu marca (toca para usar):</div>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbApplyStep1Suggestion('${qObj.key}', this.textContent)" style="text-align:left; justify-content:flex-start !important; font-size:0.78rem !important; font-weight:500 !important; min-height:38px !important; padding:5px 10px !important;">
+              <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:10px;">
+                <textarea id="tbbStep1AnswerInput" rows="3" oninput="tbbSaveStep1Answer('${qObj.key}', this.value)" placeholder="Escribe con tus propias palabras o toca Hablar abajo..." style="width:100%; padding:12px 14px; border-radius:16px; border:2px solid #CBD5E1; font-size:1rem; font-weight:500; color:#090D16; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.48;">${curVal}</textarea>
+
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnToggleStep1Ideas" onclick="window.tbbToggleStep1Ideas()" style="min-height:42px !important; padding:6px 14px !important; font-size:0.9rem !important; font-weight:600 !important; border-color:#CBD5E1 !important; color:#0D2540 !important;">
+                    💡 ${ideasOpen ? "Ocultar ideas" : "¿No sabes qué poner? Dame una idea"}
+                  </button>
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary ${String(curVal).trim().length >= 15 ? '' : 'is-hidden'}" id="tbbBtnPolishStep1Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep1AnswerInput', '${qObj.key}')" style="display:${String(curVal).trim().length >= 15 ? 'inline-flex' : 'none'}; min-height:42px !important; padding:6px 14px !important; font-size:0.9rem !important; font-weight:600 !important; border-color:#426EAE !important; color:#1D4ED8 !important;">
+                    ✦ Mejorar mi texto
+                  </button>
+                </div>
+
+                <div id="tbbStep1IdeasDrawer" style="display:${ideasOpen ? 'flex' : 'none'}; flex-direction:column; gap:8px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:10px;">
+                  <div style="font-size:0.875rem; font-weight:600; color:#475569;">Toca una idea para usarla y editarla a tu gusto:</div>
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbApplyStep1Suggestion('${qObj.key}', this.textContent)" style="text-align:left; justify-content:flex-start !important; font-size:0.9rem !important; font-weight:500 !important; min-height:44px !important; padding:8px 12px !important;">
                     ${dynChips[0]}
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbApplyStep1Suggestion('${qObj.key}', this.textContent)" style="text-align:left; justify-content:flex-start !important; font-size:0.78rem !important; font-weight:500 !important; min-height:38px !important; padding:5px 10px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="tbbApplyStep1Suggestion('${qObj.key}', this.textContent)" style="text-align:left; justify-content:flex-start !important; font-size:0.9rem !important; font-weight:500 !important; min-height:44px !important; padding:8px 12px !important;">
                     ${dynChips[1]}
                   </button>
                 </div>
-                ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(1, qObj.key) : ""}
               </div>
             </div>
           `;
@@ -23839,6 +23445,14 @@
                   </div>
                 </div>
 
+                ${curBrand ? `
+                  <div style="background:#ECFDF5; border:1.5px solid #10B981; border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+                    <span style="font-size:0.92rem; font-weight:600; color:#065F46;">✓ Ya indicaste tu nombre: <strong>${escapeHTML(curBrand)}</strong></span>
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbState.subStep=3; window.renderTbbZeroScrollStage();" style="min-height:40px !important; padding:6px 14px !important; font-size:0.88rem !important;">
+                      Conservar «${escapeHTML(curBrand)}» e ir a mi Eslogan →
+                    </button>
+                  </div>
+                ` : ""}
                 <!-- Barra para escribir nombre directo o generar 6 propuestas con IA en vivo -->
                 <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:13px; padding:8px 12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                   <label for="tbbStep3DirectNameInput" style="font-size:0.74rem; font-weight:800; color:#0D2540; flex-shrink:0;">
@@ -24048,6 +23662,7 @@
           }
 
           if (st.subStep === 4) {
+            if (typeof window.tbbEnsureStep4DisplayFontsLoaded === "function") window.tbbEnsureStep4DisplayFontsLoaded();
             const fontCategories = [
               {
                 catId: "geometrica",
@@ -24147,14 +23762,16 @@
                   }).join("")}
                 </div>
 
-                <!-- Barra de Conexión Híbrida Adobe Fonts (Typekit Web Project ID) -->
-                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:10px; padding:5px 10px;">
-                  <span style="font-family:var(--font-mono); font-size:0.64rem; font-weight:900; color:#FFFFFF; background:#FF0000; border-radius:5px; padding:2px 6px; letter-spacing:0.4px; flex-shrink:0;">Ai · Adobe Fonts</span>
-                  <span style="font-size:0.70rem; font-weight:700; color:#0F172A;">Modo Híbrido (Opcional · Web Project ID):</span>
-                  <input type="text" id="tbbAdobeTypekitIdInput" value="${escapeHTML(curAdobeKitId)}" oninput="window.tbbUpdateAdobeTypekitId(this.value)" placeholder="Ej. xab1cde o URL https://use.typekit.net/xab1cde.css" style="flex:1; min-width:160px; height:28px; padding:2px 8px; border-radius:7px; border:1.5px solid #94A3B8; font-family:var(--font-mono); font-size:0.72rem; font-weight:700; color:#090D16; background:#FFFFFF;" />
-                  <span style="font-size:0.65rem; font-weight:700; color:#047857; background:#ECFDF5; border:1px solid #A7F3D0; border-radius:6px; padding:2px 7px;">
-                    ${curAdobeKitId ? `✓ Typekit Activo (${escapeHTML(curAdobeKitId)}) + .TTF SIL OFL` : "✓ 100% Legal: Web/Curvas/PDF + .TTF Libres en tu .ZIP"}
-                  </span>
+                <div>
+                  <button type="button" onclick="window.tbbState._showTypekitBox=!window.tbbState._showTypekitBox; window.renderTbbZeroScrollStage();" style="background:none; border:none; color:#426EAE; font-size:0.875rem; font-weight:600; cursor:pointer; padding:2px 0;">
+                    ${window.tbbState._showTypekitBox || curAdobeKitId ? "▴ Ocultar opción avanzada de Adobe Fonts" : "▾ ¿Tienes cuenta de Adobe Fonts? Conectar ID (Opcional)"}
+                  </button>
+                  ${(window.tbbState._showTypekitBox || curAdobeKitId) ? `
+                    <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:12px; padding:8px 12px; margin-top:4px;">
+                      <span style="font-size:0.875rem; font-weight:600; color:#0F172A;">ID de Proyecto Adobe Fonts:</span>
+                      <input type="text" id="tbbAdobeTypekitIdInput" value="${escapeHTML(curAdobeKitId)}" oninput="window.tbbUpdateAdobeTypekitId(this.value)" placeholder="Ej. xab1cde" style="flex:1; min-width:160px; height:36px; padding:0 10px; border-radius:8px; border:1px solid #94A3B8; font-size:0.9rem; color:#090D16; background:#FFFFFF;" />
+                    </div>
+                  ` : ""}
                 </div>
 
                 <!-- 4 Tríadas Curadas de la Categoría Activa -->
@@ -24182,9 +23799,7 @@
 
                 <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; font-size:0.72rem; color:#0D2540; background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:12px; padding:5px 12px; font-weight:700;">
                   <span>✓ Sistema Híbrido Activo: <strong>${curFont}</strong> (Logo/Títulos) + <strong>${curSecFont}</strong> (Cuerpo) + <strong>${curMonoFont}</strong> (Datos)${curAdobeKitId ? ` · Typekit: <code>${escapeHTML(curAdobeKitId)}</code>` : ""}</span>
-                  <button type="button" onclick="if(window.tbbDownloadBrandFontsZip){window.tbbDownloadBrandFontsZip(this);}" style="background:#0D2540; color:#FFFFFF; border:none; border-radius:8px; padding:4px 10px; font-size:0.69rem; font-weight:800; cursor:pointer;">
-                    ↓ Descargar Kit Híbrido (.ZIP: .TTF + Typekit CSS)
-                  </button>
+<span style="font-size:0.875rem;color:#047857;">✓ Se incluirá listo para instalar en el Paso 6</span>
                 </div>
               </div>
             `;
@@ -24364,7 +23979,7 @@
             const activeArchId = window.resolveActiveLogoArchetype();
             const activeArchObj = (activeItObj && activeItObj.conceptLabel)
               ? { label: activeItObj.conceptLabel }
-              : ((window.MASTER_3D_ARCHETYPES || []).find(a => a.id === activeArchId) || { label: "Diseño de Autor NanoBanana PRO" });
+              : ((window.MASTER_3D_ARCHETYPES || []).find(a => a.id === activeArchId) || { label: "Diseño Oficial de Marca" });
             const activeCreativeMode = (activeItObj && activeItObj.creativeMode) || st.nanoBananaCreativeMode || "emblem_masterpiece";
 
             if (btnAct) {
@@ -24413,7 +24028,7 @@
                   ${svgCanvas}
                   ${st.geminiBusy ? `
                     <div style="position:absolute; inset:0; background:rgba(9,13,22,0.76); backdrop-filter:blur(4px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; z-index:20; color:#FFFFFF; padding:16px; text-align:center;">
-                      <div style="font-size:0.92rem; font-weight:700; color:#FDE68A; letter-spacing:0.03em;">✦ NANOBANANA PRO DISEÑANDO...</div>
+                      <div style="font-size:0.92rem; font-weight:700; color:#FDE68A; letter-spacing:0.03em;">✦ AURA DISEÑANDO TU LOGOTIPO...</div>
                       <div style="font-size:0.78rem; font-weight:500; color:#E2E8F0; max-width:540px;">${st.geminiStatusText || "Integrando el ADN de tu marca, giro y paleta cromática..."}</div>
                     </div>
                   ` : ""}
@@ -24679,7 +24294,7 @@
                   ov.id = "tbbStep6LiveAssemblyOverlay";
                   ov.style.cssText = "position:absolute;inset:0;background:rgba(255,255,255,0.94);backdrop-filter:blur(4px);z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;border-radius:12px;transition:opacity 0.28s ease;";
                   ov.innerHTML = `
-                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.70rem;font-weight:800;color:#FF7A00;letter-spacing:1.4px;margin-bottom:6px;">SÍNTESIS EDITORIAL EN CURVAS · DIRECTIVA MAX C-00</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.70rem;font-weight:800;color:#FF7A00;letter-spacing:1.4px;margin-bottom:6px;">ARMANDO TU BRANDBOOK OFICIAL</div>
                     <div style="font-family:'Montserrat',sans-serif;font-size:1.05rem;font-weight:900;color:#0D2540;margin-bottom:10px;text-align:center;">Construyendo las ${totalPlates} Láminas de «${escapeHTML(bName)}»</div>
                     <div id="tbbStep6AsmTxt" style="font-size:0.78rem;color:#475569;font-weight:700;margin-bottom:12px;">Integrando logotipo activo, paleta y retícula A4 Horizontal (01/${totalPlates})...</div>
                     <div style="width:260px;max-width:85%;height:8px;background:#E2E8F0;border-radius:999px;overflow:hidden;">
@@ -24723,8 +24338,11 @@
                   </h2>
                 </div>
                 <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:5px; align-content:center;">
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{downloadFullBrandbookPDFDirect(this);}" style="grid-column:1 / -1; min-height:36px !important; font-size:0.78rem !important;">
-                    1. Descargar Manual Oficial Completo en PDF (${totalPlates} Láminas .PDF)
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="if(window.tbbDownloadAllDeliverablesBundleZip){window.tbbDownloadAllDeliverablesBundleZip(this);}" style="grid-column:1 / -1; min-height:46px !important; font-size:0.95rem !important;">
+                    📦 Descargar Paquete Completo de Mi Marca (Logos + Plantillas + Fuentes + Manual)
+                  </button>
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{downloadFullBrandbookPDFDirect(this);}" style="grid-column:1 / -1; min-height:44px !important; font-size:0.92rem !important;">
+                    1. Descargar Brandbook Oficial en PDF (${totalPlates} Páginas .PDF)
                   </button>
                   <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Logotipo SVG en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','svg',this);}else{window.exportActive3DLogoSVG(this);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
                     2. Logotipo en Curvas (.SVG)
@@ -24815,6 +24433,9 @@
         }
         const topNameEl = document.getElementById("headerActiveBrandBadge");
         if (topNameEl && clean) topNameEl.textContent = clean;
+        const polish0 = document.getElementById("tbbBtnPolishStep0Ortho");
+        if (polish0) polish0.style.display = clean.length >= 15 ? "inline-flex" : "none";
+        if (typeof window.tbbSyncBottomNextValidationState === "function") window.tbbSyncBottomNextValidationState();
         window.tbbSyncInitialLogoIterationWithAppState();
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
       };
@@ -24849,26 +24470,46 @@
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
       };
 
+      window.tbbToggleStep0BizIdeas = function () {
+        window.tbbState._showStep0Ideas = !window.tbbState._showStep0Ideas;
+        window.renderTbbZeroScrollStage();
+      };
+
+      window.tbbToggleStep1Ideas = function () {
+        const st = window.tbbState;
+        st._openIdeasSubStep = (st._openIdeasSubStep === st.subStep) ? null : st.subStep;
+        window.renderTbbZeroScrollStage();
+      };
+
       window.tbbSaveStep1Answer = function (key, val) {
         window._tbbLastUserTypingTs = Date.now();
         const clean = String(val || "").trim();
         if (typeof canvasState === "object" && canvasState) {
           canvasState[key] = clean;
+          if (key === "value_offer" && !canvasState.social_role) canvasState.social_role = clean;
+          if (key === "core_message" && !canvasState.brand_persona) canvasState.brand_persona = clean;
           delete canvasState.naming_axis_2;
           delete canvasState.naming_axis_3;
           delete canvasState.naming_axis_4;
         }
+        const polishBtn = document.getElementById("tbbBtnPolishStep1Ortho");
+        if (polishBtn) {
+          polishBtn.classList.toggle("is-hidden", clean.length < 15);
+          polishBtn.style.display = clean.length >= 15 ? "inline-flex" : "none";
+        }
+        if (typeof window.tbbSyncBottomNextValidationState === "function") window.tbbSyncBottomNextValidationState();
         window._tbbAiNamingAxesSynthesized = false;
         window._tbbAiGeneratedNamingCandidates = null;
         if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
-        // Experiencia de tecleo fluida: guardado en tiempo real sin interrupción por voz
       };
 
       window.tbbApplyStep1Suggestion = function (key, text) {
         const clean = String(text || "").trim();
+        window.tbbState._openIdeasSubStep = null;
         window.tbbSaveStep1Answer(key, clean);
         const inp = document.getElementById("tbbStep1AnswerInput");
         if (inp) inp.value = clean;
+        window.renderTbbZeroScrollStage();
         window.triggerAuraEmpatheticFeedback("input_step1", clean, false, true);
       };
 
@@ -26094,6 +25735,7 @@
       };
 
       window.onTbbAtomicPrev = function () {
+        if (window.TBBAudioDirector) window.TBBAudioDirector.bumpGeneration('atomic_prev');
         const st = window.tbbState;
         if (st.subStep > 1) {
           st.subStep -= 1;
@@ -26111,6 +25753,20 @@
       };
 
       window.onTbbAtomicNext = function () {
+        if (window.TBBAudioDirector) window.TBBAudioDirector.bumpGeneration('atomic_next');
+        const stCheck = window.tbbState;
+        const csCheck = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+        if (stCheck && stCheck.step === 0 && stCheck.subStep === 3 && String(csCheck.custom_business_type || "").trim().length < 3) {
+          const inp0 = document.getElementById("tbbStep0BizTextarea");
+          if (inp0) { inp0.focus(); inp0.style.borderColor = "#FF7A00"; }
+          window.updateAuraTopPresenceDOM("Cuéntame en dos o tres palabras qué vende tu negocio para continuar.");
+          return;
+        }
+        const nextBtnPulse = document.getElementById("tbbBtnAtomicNext");
+        if (nextBtnPulse) {
+          nextBtnPulse.classList.add("tbb-micro-celebrate");
+          setTimeout(() => nextBtnPulse.classList.remove("tbb-micro-celebrate"), 210);
+        }
         const st = window.tbbState;
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
 
@@ -26938,6 +26594,8 @@
       };
 
       window.tbbJumpToStep = function (stepNum, subStepNum = 1) {
+        if (window.TBBAudioDirector) window.TBBAudioDirector.bumpGeneration('jump_step');
+        currentStep = Math.max(1, Number(stepNum) || 1);
         const target = Number.isFinite(Number(stepNum)) ? Number(stepNum) : 0;
         const splashOverlayEl = document.getElementById("tbbAuraSplashBootOverlay");
         if (splashOverlayEl) splashOverlayEl.classList.add("is-dismissed");
@@ -26965,6 +26623,7 @@
       window.tbbGoToSubStep = window.tbbJumpToStep;
 
       window.tbbOpenJourneyMap = function () {
+        if (window.TBBAudioDirector) window.TBBAudioDirector.bumpGeneration('open_map');
         window.tbbState.activeMode = "journey";
         window.renderTbbZeroScrollStage();
       };
@@ -27215,7 +26874,7 @@
         const skipIntroVideo = params.get("novideo") === "1" || isIphoneEmbed;
         if (!skipIntroVideo && !window._tbbFounderIntroVideoShown && window.tbbState && window.tbbState.step === 0 && typeof openPhaseTransitionVideoCapsule === "function") {
           window._tbbFounderIntroVideoShown = true;
-          openPhaseTransitionVideoCapsule(0, 0, { keepCurrentSubStep: true });
+          openPhaseTransitionVideoCapsule(0, 0, { keepCurrentSubStep: true, manualOpen: true });
           return;
         }
         if (speakWelcome && typeof window.speakAuraBriefResponse === "function") {
@@ -27226,16 +26885,29 @@
 
       window.tbbStartAuraSplashBootEngine = function () {
         const ov = document.getElementById("tbbAuraSplashBootOverlay");
-        const cnv = document.getElementById("tbbSplashAuraCanvas");
-        if (!ov || !cnv) return;
-        const params = new URLSearchParams(window.location.search);
-        if (params.get("embed") === "iphone" || params.get("novideo") === "1" || params.has("step") || params.has("brand")) {
-          if (params.get("embed") === "iphone") {
-            document.body.classList.add("tbb-embed-iphone-mode");
-          }
+        if (ov) {
+          ov.classList.add("is-dismissed");
           ov.style.display = "none";
-          return;
         }
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("embed")) {
+          document.body.classList.add("tbb-embed-iphone-mode");
+        }
+        const stripeSid = params.get("stripe_session_id");
+        if (stripeSid) {
+          fetch("/api/v1/payments/verify-stripe-session?session_id=" + encodeURIComponent(stripeSid))
+            .then(r => r.ok ? r.json() : null)
+            .then(d => {
+              if (d && d.paid && d.license_code) {
+                localStorage.setItem("tbb_pro_license_v56", JSON.stringify({ licenseId: d.license_code, plan: d.tier || "founder_pro", amountUsd: 49, stepsUnlocked: [0,1,2,3,4,5,6] }));
+                localStorage.setItem("tbb_license_active_pro_atelier", "true");
+                window.tbbIsDemoMode = false;
+                document.documentElement.classList.remove("tbb-is-demo-mode");
+                window.tbbJumpToStep(4, 1);
+              }
+            }).catch(() => {});
+        }
+        return;
         ov.style.display = "flex";
         ov.classList.remove("is-dismissed");
         const ctx = cnv.getContext("2d");
@@ -27367,7 +27039,7 @@
       setTimeout(() => {
         try {
           const params = new URLSearchParams(window.location.search);
-          if (params.get("embed") === "iphone") {
+          if (params.get("embed")) {
             document.body.classList.add("tbb-embed-iphone-mode");
           }
           // Restaurar datos migrados si el usuario acaba de desbloquear Paso 4
@@ -27442,20 +27114,221 @@
       min-height: 56px !important;
     }
     html.tbb-embed-iphone-mode #tbbAuraEmpatheticText {
-      font-size: 11.5px !important;
-      line-height: 1.35 !important;
+      font-size: 0.9rem !important;
+      line-height: 1.4 !important;
       text-align: left !important;
     }
   </style>
   <script src="/assets/vendor/opentype.min.js?v=1.3.4"></script>
   <script src="/assets/vendor/html2canvas.min.js?v=1.4.1"></script>
-  <script src="/tbb-executive-deliverables-suite.js?v=101.0"></script>
-  <script src="/tbb-cloud-vector-outliner.js?v=101.0"></script>
-  <script src="/tbb-v80-brandbook-plates.js?v=101.0"></script>
-  <script src="/universal-brandbook-30-engine.js?v=101.0"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=101.0"></script>
-  <script src="/improbears-preset-engine.js?v=101.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=101.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=101.0"></script>
+  <script src="/tbb-executive-deliverables-suite.js?v=129.0"></script>
+  <script src="/tbb-cloud-vector-outliner.js?v=129.0"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=129.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=129.0"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=129.0"></script>
+  <script src="/improbears-preset-engine.js?v=129.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=129.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=129.0"></script>
+
+  <style id="tbbDuolingoOrganicErgonomicsV129">
+    html.a11y-large-mode { font-size: 18.5px !important; }
+    #tbbAuraSplashBootOverlay { display: none !important; }
+
+    /* Ocultar la barra global de pestañas durante los pasos activos (como Duolingo en lección) para eliminar la doble barra inferior */
+    body[data-tbb-scroll-locked="true"] #tbbDuolingoBottomNav {
+      display: none !important;
+    }
+    body[data-tbb-scroll-locked="true"] #tbbBottomControlDeck {
+      padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px)) 16px !important;
+      border-top: 2px solid #E2E8F0 !important;
+      background: #FFFFFF !important;
+    }
+
+    /* Barra Superior estilo Duolingo con Barra de Progreso SIEMPRE VISIBLE en Móvil y Escritorio */
+    #tbbTopDiscreteBar {
+      height: 54px !important;
+      padding: calc(6px + env(safe-area-inset-top, 0px)) 14px 6px 14px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      background: #FFFFFF !important;
+      border-bottom: 1.5px solid #E2E8F0 !important;
+    }
+    #tbbDiscreteProgressTrack {
+      display: block !important;
+      flex: 1 1 auto !important;
+      min-width: 72px !important;
+      height: 14px !important;
+      background: #E2E8F0 !important;
+      border-radius: 999px !important;
+      overflow: hidden !important;
+      position: relative !important;
+    }
+    #tbbDiscreteProgressFill {
+      height: 100% !important;
+      background: linear-gradient(90deg, #FF7A00 0%, #FB923C 100%) !important;
+      border-radius: 999px !important;
+      transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1) !important;
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.32) !important;
+    }
+
+    /* Presencia Horizontal Compacta de Aura + Globo de Diálogo Único (Estilo Personaje Duolingo en Móvil y Escritorio) */
+    #tbbAuraTopOuterHeroSection {
+      width: calc(100% - 28px) !important;
+      max-width: 900px !important;
+      margin: 8px auto 4px auto !important;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 12px !important;
+    }
+    #tbbAuraOrbHeroOuterWrap {
+      width: auto !important;
+      padding: 0 !important;
+      flex-shrink: 0 !important;
+    }
+    #tbbLiveAuraOrbCanvas {
+      width: 56px !important;
+      height: 56px !important;
+      min-width: 56px !important;
+      min-height: 56px !important;
+      border-width: 2.5px !important;
+    }
+    #tbbAuraTopPresenceRow {
+      flex: 1 1 auto !important;
+      width: auto !important;
+      padding: 10px 16px !important;
+      border-radius: 18px !important;
+      border: 2px solid #E2E8F0 !important;
+      border-bottom: 4px solid #CBD5E1 !important;
+      background: #FFFFFF !important;
+      justify-content: flex-start !important;
+    }
+    #tbbAuraEmpatheticBubble {
+      align-items: flex-start !important;
+      text-align: left !important;
+    }
+    #tbbAuraPresenceMetaBadge {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 0.875rem !important;
+      font-weight: 600 !important;
+      color: #426EAE !important;
+      letter-spacing: 0.01em !important;
+      justify-content: flex-start !important;
+    }
+    #tbbAuraEmpatheticText {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 0.96rem !important;
+      font-weight: 500 !important;
+      color: #0F172A !important;
+      line-height: 1.42 !important;
+      text-align: left !important;
+      -webkit-line-clamp: 3 !important;
+    }
+
+    /* Botones Táctiles Estilo Duolingo (Labio 3D inferior, tipografía limpia sin exceso de negritas) */
+    .tbb-duo-btn {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 0.94rem !important;
+      font-weight: 600 !important;
+      border-radius: 16px !important;
+      min-height: 48px !important;
+      transition: transform 0.1s ease, background 0.15s ease, opacity 0.15s ease !important;
+    }
+    .tbb-duo-btn:active {
+      transform: translateY(2px) !important;
+    }
+    #tbbBtnAtomicNext.is-step-incomplete {
+      background: #E2E8F0 !important;
+      color: #64748B !important;
+      border-color: #CBD5E1 !important;
+      box-shadow: none !important;
+    }
+    @keyframes tbbMicroCelebratePulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    .tbb-micro-celebrate {
+      animation: tbbMicroCelebratePulse 0.2s ease-out;
+    }
+
+    /* Escala Tipográfica Mínima Legible (>=14px / 0.875rem) en toda la App */
+    #tbbTopQuickStepJumper,
+    #tbbTopDiscreteBar .tbb-duo-btn,
+    .duolingo-bottom-tab-label,
+    .tbb-font-cat-pill,
+    #tbbZeroScrollMasterStage label,
+    #tbbZeroScrollMasterStage button,
+    #tbbZeroScrollMasterStage select {
+      font-size: 0.9rem !important;
+    }
+    #tbbZeroScrollMasterStage input[type="text"],
+    #tbbZeroScrollMasterStage input[type="email"],
+    #tbbZeroScrollMasterStage textarea {
+      font-size: 16px !important;
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+
+    @media (max-width: 768px) {
+      #tbbTopQuickStepJumper { max-width: 142px !important; }
+      #tbbBtnTopStepVideo span#tbbLblTopVideo { display: none !important; }
+    }
+  </style>
+  <script id="tbbViewportAndValidationHelperV129">
+    (function() {
+      window.tbbNormalizeStageReadableTypography = function() {
+        var root = document.getElementById("tbbZeroScrollMasterStage");
+        if (!root) return;
+        var nodes = root.querySelectorAll("div, span, p, label, button, select, li, a");
+        for (var i = 0; i < nodes.length; i++) {
+          var el = nodes[i];
+          if (el.closest("#tbbStep6PlateViewport") || el.closest("svg")) continue;
+          var cs = window.getComputedStyle(el);
+          var fs = parseFloat(cs.fontSize);
+          if (fs > 0 && fs < 13.8) {
+            el.style.setProperty("font-size", "0.875rem", "important");
+          }
+          var fw = parseInt(cs.fontWeight, 10);
+          if (fw >= 800 && el.tagName !== "H1" && el.tagName !== "H2") {
+            el.style.setProperty("font-weight", "600", "important");
+          }
+        }
+      };
+
+      window.tbbSyncBottomNextValidationState = function() {
+        var btn = document.getElementById("tbbBtnAtomicNext");
+        if (!btn || !window.tbbState) return;
+        var st = window.tbbState;
+        var cs = window.canvasState || {};
+        var incomplete = false;
+        if (st.step === 0 && st.subStep === 3) {
+          incomplete = String(cs.custom_business_type || "").trim().length < 3;
+        }
+        btn.classList.toggle("is-step-incomplete", incomplete);
+      };
+
+      var origRender = window.renderTbbZeroScrollStage;
+      if (typeof origRender === "function") {
+        window.renderTbbZeroScrollStage = function() {
+          var r = origRender.apply(this, arguments);
+          window.tbbSyncBottomNextValidationState();
+          window.tbbNormalizeStageReadableTypography();
+          return r;
+        };
+      }
+
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", function() {
+          var deck = document.getElementById("tbbBottomControlDeck");
+          if (!deck) return;
+          var kbHeight = Math.max(0, window.innerHeight - window.visualViewport.height);
+          deck.style.transform = kbHeight > 110 ? ("translateY(-" + kbHeight + "px)") : "";
+        });
+      }
+    })();
+  </script>
+
 </body>
 </html>

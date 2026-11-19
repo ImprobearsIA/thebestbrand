@@ -1,0 +1,407 @@
+{
+  "version": "129.0-aura-viva-aoede",
+  "voice": "Aoede",
+  "max_capsule_seconds": 15.0,
+  "clips": {
+    "welcome": {
+      "es": {
+        "file": "/assets/audio/capsules/aura_viva_welcome_es.mp3",
+        "duration_sec": 6.74,
+        "size_bytes": 54572,
+        "text": "¡Hola! Soy Aura. En menos de sesenta minutos crearemos tu logotipo y tu Brandbook de más de treinta páginas. ¡Empecemos!",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "en": {
+        "file": "/assets/audio/capsules/aura_viva_welcome_en.mp3",
+        "duration_sec": 6.77,
+        "size_bytes": 54956,
+        "text": "Hi! I'm Aura. In under sixty minutes, we'll build your logo and your thirty-plus page Brandbook. Let's start right now!",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "fr": {
+        "file": "/assets/audio/capsules/aura_viva_welcome_fr.mp3",
+        "duration_sec": 6.1,
+        "size_bytes": 49580,
+        "text": "Salut ! Je suis Aura. En moins de soixante minutes, nous créerons ton logo et ton Brandbook de plus de trente pages. C'est parti !",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "pt": {
+        "file": "/assets/audio/capsules/aura_viva_welcome_pt.mp3",
+        "duration_sec": 8.6,
+        "size_bytes": 69548,
+        "text": "Olá! Sou a Aura. Em menos de sessenta minutos vamos criar o seu logótipo e o seu Brandbook com mais de trinta páginas. Vamos começar!",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "de": {
+        "file": "/assets/audio/capsules/aura_viva_welcome_de.mp3",
+        "duration_sec": 6.48,
+        "size_bytes": 52652,
+        "text": "Hallo! Ich bin Aura. In unter sechzig Minuten erstellen wir dein Logo und dein Brandbook mit über dreißig Seiten. Legen wir los!",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "it": {
+        "file": "/assets/audio/capsules/aura_viva_welcome_it.mp3",
+        "duration_sec": 6.81,
+        "size_bytes": 55148,
+        "text": "Ciao! Sono Aura. In meno di sessanta minuti creeremo il tuo logo e il tuo Brandbook di oltre trenta pagine. Iniziamo subito!",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      }
+    },
+    "step_0": {
+      "es": {
+        "file": "/assets/audio/capsules/aura_viva_step_0_es.mp3",
+        "duration_sec": 8.98,
+        "size_bytes": 72620,
+        "text": "¡Bienvenido! Aquí me cuentas en palabras sencillas qué vende o qué hace tu negocio, y si empezamos desde cero o mejoramos tu logo actual. ¡Solo te tomará un minuto!",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "en": {
+        "file": "/assets/audio/capsules/aura_viva_step_0_en.mp3",
+        "duration_sec": 7.55,
+        "size_bytes": 61100,
+        "text": "Welcome! Here you simply tell me what your business sells or does, and whether we're starting from scratch or upgrading your current logo. It only takes a minute!",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "fr": {
+        "file": "/assets/audio/capsules/aura_viva_step_0_fr.mp3",
+        "duration_sec": 6.55,
+        "size_bytes": 53036,
+        "text": "Bienvenue ! Ici, dis-moi simplement ce que fait ton entreprise, et si on part de zéro ou si on améliore ton logo actuel. Ça prend une minute !",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "pt": {
+        "file": "/assets/audio/capsules/aura_viva_step_0_pt.mp3",
+        "duration_sec": 8.25,
+        "size_bytes": 66668,
+        "text": "Bem-vindo! Aqui conta-me de forma simples o que faz o seu negócio e se começamos do zero ou melhoramos o seu logo atual. Leva apenas um minuto!",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "de": {
+        "file": "/assets/audio/capsules/aura_viva_step_0_de.mp3",
+        "duration_sec": 7.29,
+        "size_bytes": 58988,
+        "text": "Willkommen! Erzähl mir hier ganz einfach, was dein Unternehmen macht und ob wir neu starten oder dein aktuelles Logo verbessern. Das dauert nur eine Minute!",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "it": {
+        "file": "/assets/audio/capsules/aura_viva_step_0_it.mp3",
+        "duration_sec": 8.22,
+        "size_bytes": 66476,
+        "text": "Benvenuto! Qui mi racconti in parole semplici cosa fa la tua attività, e se partiamo da zero o miglioriamo il tuo logo attuale. Ci vuole solo un minuto!",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      }
+    },
+    "step_1": {
+      "es": {
+        "file": "/assets/audio/capsules/aura_viva_step_1_es.mp3",
+        "duration_sec": 9.48,
+        "size_bytes": 76652,
+        "text": "¡Vamos al Paso uno! Cuéntame por qué creaste tu negocio, a quién ayudas y qué te hace diferente. Si no sabes qué escribir, toca el botón de ideas o dímelo con tu voz.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "en": {
+        "file": "/assets/audio/capsules/aura_viva_step_1_en.mp3",
+        "duration_sec": 8.53,
+        "size_bytes": 68972,
+        "text": "Let's jump into Step one! Tell me why you started your business, who you help, and what makes you special. Tap the idea button anytime or answer with your voice.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "fr": {
+        "file": "/assets/audio/capsules/aura_viva_step_1_fr.mp3",
+        "duration_sec": 7.4,
+        "size_bytes": 59948,
+        "text": "Passons à l'étape un ! Dis-moi pourquoi tu as créé ton projet, qui tu aides et ce qui te rend unique. Touche le bouton d'idées ou réponds avec ta voix.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "pt": {
+        "file": "/assets/audio/capsules/aura_viva_step_1_pt.mp3",
+        "duration_sec": 9.01,
+        "size_bytes": 72812,
+        "text": "Vamos ao Passo um! Conta-me porque criou o seu negócio, quem ajuda e o que o torna especial. Se precisar de inspiração, toque no botão de ideias ou fale comigo.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "de": {
+        "file": "/assets/audio/capsules/aura_viva_step_1_de.mp3",
+        "duration_sec": 7.76,
+        "size_bytes": 62828,
+        "text": "Weiter zu Schritt eins! Erzähl mir, warum du gestartet bist, wem du hilfst und was dich besonders macht. Tippe einfach auf den Ideen-Button oder sprich mit mir.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "it": {
+        "file": "/assets/audio/capsules/aura_viva_step_1_it.mp3",
+        "duration_sec": 8.46,
+        "size_bytes": 68396,
+        "text": "Passiamo al Passo uno! Dimmi perché hai creato il tuo progetto, chi aiuti e cosa ti rende unico. Se vuoi un suggerimento, tocca il pulsante idee o usa la voce.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      }
+    },
+    "step_2": {
+      "es": {
+        "file": "/assets/audio/capsules/aura_viva_step_2_es.mp3",
+        "duration_sec": 10.42,
+        "size_bytes": 84140,
+        "text": "¡Paso dos! Aquí eliges dónde te ven tus clientes antes, durante y después de comprarte, como Instagram, WhatsApp, empaques o tu local. Así diseñaremos justo lo que vas a usar.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "en": {
+        "file": "/assets/audio/capsules/aura_viva_step_2_en.mp3",
+        "duration_sec": 10.5,
+        "size_bytes": 84716,
+        "text": "Step two! Pick where customers see you before, during, and after buying—like Instagram, WhatsApp, packaging, or your store—so we design exactly what you'll actually use.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "fr": {
+        "file": "/assets/audio/capsules/aura_viva_step_2_fr.mp3",
+        "duration_sec": 9.39,
+        "size_bytes": 75884,
+        "text": "Étape deux ! Choisis où tes clients te voient avant, pendant et après l'achat, comme Instagram, WhatsApp ou tes emballages, pour créer exactement ce qu'il te faut.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "pt": {
+        "file": "/assets/audio/capsules/aura_viva_step_2_pt.mp3",
+        "duration_sec": 10.74,
+        "size_bytes": 86636,
+        "text": "Passo dois! Escolha onde os clientes veem a sua marca antes, durante e depois da compra, como Instagram, WhatsApp ou embalagens, para desenharmos tudo à sua medida.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "de": {
+        "file": "/assets/audio/capsules/aura_viva_step_2_de.mp3",
+        "duration_sec": 8.48,
+        "size_bytes": 68588,
+        "text": "Schritt zwei! Wähle aus, wo Kunden dich vor, während und nach dem Kauf sehen – wie Instagram, WhatsApp oder Verpackungen – damit alles perfekt zu deinem Alltag passt.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "it": {
+        "file": "/assets/audio/capsules/aura_viva_step_2_it.mp3",
+        "duration_sec": 9.47,
+        "size_bytes": 76460,
+        "text": "Passo due! Scegli dove ti vedono i clienti prima, durante e dopo l'acquisto, come Instagram, WhatsApp o il packaging, così creeremo esattamente ciò che ti serve.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      }
+    },
+    "step_3": {
+      "es": {
+        "file": "/assets/audio/capsules/aura_viva_step_3_es.mp3",
+        "duration_sec": 9.15,
+        "size_bytes": 73964,
+        "text": "¡Paso tres, tu nombre y eslogan! Si ya tienes nombre, aquí afinamos tu frase ideal; y si aún no tienes, te daré opciones fáciles de recordar hechas para tu giro.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "en": {
+        "file": "/assets/audio/capsules/aura_viva_step_3_en.mp3",
+        "duration_sec": 8.19,
+        "size_bytes": 66284,
+        "text": "Step three: your name and tagline! If you already have a name, we'll polish your slogan here; if not, I'll create catchy, memorable name ideas tailored to your business.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "fr": {
+        "file": "/assets/audio/capsules/aura_viva_step_3_fr.mp3",
+        "duration_sec": 7.88,
+        "size_bytes": 63788,
+        "text": "Étape trois : ton nom et ton slogan ! Si tu as déjà un nom, on peaufine ton slogan ; sinon, je te propose des idées simples et mémorables pour ton activité.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "pt": {
+        "file": "/assets/audio/capsules/aura_viva_step_3_pt.mp3",
+        "duration_sec": 9.64,
+        "size_bytes": 77804,
+        "text": "Passo três: o seu nome e slogan! Se já tem nome, vamos afinar a sua frase ideal; se ainda não tem, vou criar ideias fáceis de lembrar para o seu negócio.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "de": {
+        "file": "/assets/audio/capsules/aura_viva_step_3_de.mp3",
+        "duration_sec": 9.24,
+        "size_bytes": 74540,
+        "text": "Schritt drei: dein Name und Slogan! Wenn du schon einen Namen hast, verfeinern wir deinen Slogan; sonst erstelle ich einprägsame Namensideen passend zu deinem Geschäft.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "it": {
+        "file": "/assets/audio/capsules/aura_viva_step_3_it.mp3",
+        "duration_sec": 9.27,
+        "size_bytes": 74924,
+        "text": "Passo tre: nome e slogan! Se hai già un nome, perfezioniamo qui la tua frase; altrimenti creerò idee facili da ricordare pensate su misura per la tua attività.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      }
+    },
+    "step_4": {
+      "es": {
+        "file": "/assets/audio/capsules/aura_viva_step_4_es.mp3",
+        "duration_sec": 8.93,
+        "size_bytes": 72236,
+        "text": "¡Llegamos a la parte visual en el Paso cuatro! Toca los ejemplos que más se parezcan al estilo que buscas y elige el tipo de letra viendo tu propio nombre en grande.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "en": {
+        "file": "/assets/audio/capsules/aura_viva_step_4_en.mp3",
+        "duration_sec": 8.58,
+        "size_bytes": 69356,
+        "text": "Welcome to the visual side in Step four! Tap the style examples that feel most like your brand, then pick your favorite font while seeing your own brand name live.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "fr": {
+        "file": "/assets/audio/capsules/aura_viva_step_4_fr.mp3",
+        "duration_sec": 7.7,
+        "size_bytes": 62252,
+        "text": "Bienvenue dans le style visuel à l'étape quatre ! Touche les exemples qui te ressemblent le plus et choisis ta police d'écriture en voyant ton propre nom s'afficher.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "pt": {
+        "file": "/assets/audio/capsules/aura_viva_step_4_pt.mp3",
+        "duration_sec": 8.47,
+        "size_bytes": 68396,
+        "text": "Chegámos à parte visual no Passo quatro! Toque nos exemplos que combinam mais com o seu estilo e escolha o tipo de letra vendo o seu próprio nome em destaque.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "de": {
+        "file": "/assets/audio/capsules/aura_viva_step_4_de.mp3",
+        "duration_sec": 8.65,
+        "size_bytes": 69932,
+        "text": "Jetzt wird es visuell in Schritt vier! Tippe auf die Stilbeispiele, die am besten zu dir passen, und wähle deine Lieblingsschrift direkt mit deinem eigenen Markennamen.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "it": {
+        "file": "/assets/audio/capsules/aura_viva_step_4_it.mp3",
+        "duration_sec": 7.93,
+        "size_bytes": 64172,
+        "text": "Ecco la parte visiva nel Passo quattro! Tocca gli esempi più vicini al tuo stile e scegli il carattere tipografico vedendo subito il tuo nome in grande.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      }
+    },
+    "step_5": {
+      "es": {
+        "file": "/assets/audio/capsules/aura_viva_step_5_es.mp3",
+        "duration_sec": 10.43,
+        "size_bytes": 84140,
+        "text": "¡Paso cinco, tu color y tu logotipo! Elige tus colores favoritos y explora propuestas claras para tu marca. Podrás probar ajustes hasta quedar feliz con tus tres versiones finales.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "en": {
+        "file": "/assets/audio/capsules/aura_viva_step_5_en.mp3",
+        "duration_sec": 10.08,
+        "size_bytes": 81452,
+        "text": "Step five: your colors and logo! Pick your favorite palette and explore custom logo designs for your brand. Tweak any detail until you love your final three logo versions.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "fr": {
+        "file": "/assets/audio/capsules/aura_viva_step_5_fr.mp3",
+        "duration_sec": 9.29,
+        "size_bytes": 75116,
+        "text": "Étape cinq : tes couleurs et ton logo ! Choisis ta palette préférée et découvre des propositions sur mesure. Ajuste chaque détail jusqu'à adorer ton logo final.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "pt": {
+        "file": "/assets/audio/capsules/aura_viva_step_5_pt.mp3",
+        "duration_sec": 10.08,
+        "size_bytes": 81260,
+        "text": "Passo cinco: as suas cores e logótipo! Escolha a sua paleta favorita e explore propostas feitas para a sua marca. Ajuste cada detalhe até adorar o resultado final.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "de": {
+        "file": "/assets/audio/capsules/aura_viva_step_5_de.mp3",
+        "duration_sec": 8.65,
+        "size_bytes": 69932,
+        "text": "Schritt fünf: deine Farben und dein Logo! Wähle deine Lieblingsfarben und entdecke passende Logo-Entwürfe. Passe Details einfach an, bis dein Logo perfekt sitzt.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "it": {
+        "file": "/assets/audio/capsules/aura_viva_step_5_it.mp3",
+        "duration_sec": 9.24,
+        "size_bytes": 74540,
+        "text": "Passo cinque: colori e logo! Scegli la tua palette preferita ed esplora le proposte create per il tuo brand. Personalizza ogni dettaglio finché non amerai il risultato.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      }
+    },
+    "step_6": {
+      "es": {
+        "file": "/assets/audio/capsules/aura_viva_step_6_es.mp3",
+        "duration_sec": 9.75,
+        "size_bytes": 78764,
+        "text": "¡Felicidades, tu marca está lista! Explora tu Brandbook de más de treinta páginas y descarga en un clic tus logotipos, fuentes y plantillas listas para redes e imprenta.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "en": {
+        "file": "/assets/audio/capsules/aura_viva_step_6_en.mp3",
+        "duration_sec": 8.81,
+        "size_bytes": 71084,
+        "text": "Congratulations, your brand is ready! Explore your thirty-plus page Brandbook and download your logos, fonts, and ready-to-use templates for social media and print in one click.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "fr": {
+        "file": "/assets/audio/capsules/aura_viva_step_6_fr.mp3",
+        "duration_sec": 9.28,
+        "size_bytes": 74924,
+        "text": "Félicitations, ta marque est prête ! Découvre ton Brandbook de plus de trente pages et télécharge en un clic tes logos, polices et modèles prêts pour le web et l'impression.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "pt": {
+        "file": "/assets/audio/capsules/aura_viva_step_6_pt.mp3",
+        "duration_sec": 8.97,
+        "size_bytes": 72428,
+        "text": "Parabéns, a sua marca está pronta! Explore o seu Brandbook com mais de trinta páginas e descarregue num clique os seus logótipos, fontes e modelos prontos a usar.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "de": {
+        "file": "/assets/audio/capsules/aura_viva_step_6_de.mp3",
+        "duration_sec": 7.87,
+        "size_bytes": 63596,
+        "text": "Herzlichen Glückwunsch, deine Marke ist fertig! Entdecke dein Brandbook mit über dreißig Seiten und lade Logos, Schriften und Vorlagen mit einem Klick herunter.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      },
+      "it": {
+        "file": "/assets/audio/capsules/aura_viva_step_6_it.mp3",
+        "duration_sec": 8.81,
+        "size_bytes": 71276,
+        "text": "Complimenti, il tuo brand è pronto! Sfogliate il tuo Brandbook di oltre trenta pagine e scarica in un clic loghi, font e modelli pronti per social e stampa.",
+        "voice": "Aoede",
+        "engine": "gemini-aoede"
+      }
+    }
+  }
+}

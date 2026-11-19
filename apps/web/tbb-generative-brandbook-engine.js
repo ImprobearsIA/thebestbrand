@@ -1,6 +1,6 @@
 // ============================================================================
 // THE BEST BRAND · MOTOR GENERATIVO EDITORIAL DE BRANDBOOK V81.0 (FLAWLESS)
-// Cero Plantillas Rígidas · Terna de Logos Profesional · Directiva Max C-00
+// Cero Plantillas Rígidas · Terna de Logos Profesional · Estándar Editorial Oficial
 // ============================================================================
 
 (function () {
@@ -196,7 +196,7 @@
     };
   }
 
-  // --- ESTILOS VECTORIALES GLOBALES (DIRECTIVA MAX C-00) ---
+  // --- ESTILOS VECTORIALES GLOBALES (ESTÁNDAR EDITORIAL OFICIAL) ---
   function getDynamicBrandbookStyles(forInApp) {
     const bodyCss = forInApp ? "" : `
       body {
@@ -341,7 +341,7 @@
         color: #64748B;
       }
 
-      /* FLUJO EDITORIAL ABIERTO ESTILO REVISTA DE AUTOR (DIRECTIVA MAX C-00 · CERO CAJAS RÍGIDAS · CERO SOMBRAS GRISES · LECTURA AMPLIA) */
+      /* FLUJO EDITORIAL ABIERTO ESTILO REVISTA DE AUTOR (ESTÁNDAR EDITORIAL OFICIAL · CERO CAJAS RÍGIDAS · CERO SOMBRAS GRISES · LECTURA AMPLIA) */
       .tbb-card {
         position: relative;
         z-index: 2;
@@ -836,7 +836,7 @@
       `;
     }
 
-    // Trazos vectoriales fluidos en curvas tipo Illustrator (Directiva Max C-00 · 100% Lienzo Claro #FFFFFF)
+    // Trazos vectoriales fluidos en curvas tipo Illustrator (Estándar Editorial Oficial · 100% Lienzo Claro #FFFFFF)
     const curveBackdrop = (pNum) => {
       const flip = pNum % 2 === 0;
       return `
@@ -873,7 +873,7 @@
           <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${acc};"></span>
           <span><strong style="color:${darkInk};">${esc(bUpper)}</strong> · MANUAL OFICIAL DE IDENTIDAD Y ARQUITECTURA DE MARCA</span>
         </div>
-        <div style="color:${sec};font-weight:700;letter-spacing:0px;">DIRECTIVA MAX C-00 · FLUJO VECTORIAL EN CURVAS</div>
+        <div style="color:${sec};font-weight:700;letter-spacing:0px;">ESTÁNDAR EDITORIAL · FLUJO VECTORIAL EN CURVAS</div>
         <div style="font-weight:800;color:${darkInk};">PÁG. ${String(pNum).padStart(2, "0")} / __TOTAL_PLATES__</div>
       </footer>
     `;
@@ -951,7 +951,7 @@
               IDENTIDAD OFICIAL CENTRADA EN POSITIVO
             </div>
             <div style="font-size:12.5px; color:${midGray}; margin-top:4px; font-weight:600; position:relative; z-index:2;">
-              Lienzo Claro Puro (#FFFFFF) · Directiva Max C-00
+              Lienzo Claro Puro (#FFFFFF) · Estándar Editorial Oficial
             </div>
           </div>
         </div>
@@ -1652,7 +1652,7 @@
             </div>
           </div>
           <div class="tbb-editorial-pillar" style="border-left-color:${pri};">
-            <div class="tbb-card-title">NORMATIVA DE LIENZO CLARO (DIRECTIVA MAX C-00)</div>
+            <div class="tbb-card-title">NORMATIVA OFICIAL DE LIENZO CLARO</div>
             <div class="tbb-card-body">Esta es la versión primaria por defecto. Debe aplicarse siempre sobre fondo blanco puro (#FFFFFF) o superficies con luminancia superior al 95%. Prohibido aplicar sombras paralelas, contornos artificiales o parches grises alrededor del logotipo.</div>
           </div>
         </div>
@@ -1915,7 +1915,7 @@
             </div>
             <div class="tbb-editorial-pillar" style="border-left-color:${acc};">
               <div class="tbb-card-title">Microcopy y Especificaciones Técnicas (${esc(brand.monoFont || "JetBrains Mono")})</div>
-              <div style="font-family:'${esc(brand.monoFont || "JetBrains Mono")}', 'JetBrains Mono', monospace; font-size:13.5px; font-weight:700; color:${pri};">CLASE NIZA OFICIAL · DIRECTIVA MAX C-00 · TRAZABILIDAD 100%</div>
+              <div style="font-family:'${esc(brand.monoFont || "JetBrains Mono")}', 'JetBrains Mono', monospace; font-size:13.5px; font-weight:700; color:${pri};">CLASE NIZA OFICIAL · ESTÁNDAR EDITORIAL OFICIAL · TRAZABILIDAD 100%</div>
             </div>
           </div>
         </div>
@@ -2165,7 +2165,7 @@
             <div style="display:flex; align-items:center; gap:16px;">
               <img src="/assets/improbears/logo-improbears-master.png" alt="IMPROBEARS Business Improvement" style="width:74px; height:74px; object-fit:contain; display:block; flex-shrink:0;" />
               <div>
-                <span class="tbb-editorial-kicker" style="color:${acc}; margin-bottom:2px;">MARCA MADRE OFICIAL · DIRECTIVA MAX C-00</span>
+                <span class="tbb-editorial-kicker" style="color:${acc}; margin-bottom:2px;">ARQUITECTURA DE MARCA MADRE OFICIAL</span>
                 <div style="font-family:'Montserrat', sans-serif; font-size:19px; font-weight:900; color:${darkInk}; letter-spacing:0.5px;">IMPROBEARS — <span style="color:${sec};">BUSINESS IMPROVEMENT</span></div>
                 <div style="font-size:13.5px; color:#334155; margin-top:2px;">Del Caos al Sistema: Conecta estrategia, operación, ciencia, producción audiovisual e Inteligencia Artificial.</div>
               </div>
@@ -2208,7 +2208,7 @@
             </div>
           </div>
           <div style="border-top:1.5px solid ${lightGray}; padding-top:10px; margin-top:10px; font-size:13.2px; color:#334155;">
-            <strong>Regla Maestra de Convivencia (Directiva Max C-00):</strong> Las 4 submarcas conservan íntegro su nombre y su símbolo especializado (Barras, Molécula, Cámara y Grafo Neuronal) con el descriptor oficial en Naranja Acción (<strong>#FF7A00</strong>).
+            <strong>Regla Maestra de Convivencia (Estándar Editorial Oficial):</strong> Las 4 submarcas conservan íntegro su nombre y su símbolo especializado (Barras, Molécula, Cámara y Grafo Neuronal) con el descriptor oficial en Naranja Acción (<strong>#FF7A00</strong>).
           </div>
           ${ftr(30)}
         </article>
@@ -2229,7 +2229,7 @@
               CONSTITUCIÓN DE IDENTIDAD VECTORIAL EN CURVAS PURAS
             </div>
             <p style="font-size:15.5px; line-height:1.68; color:#334155; max-width:680px; margin:0 0 18px 0;">
-              Se certifica que la presente identidad de marca ha sido generada bajo la <strong>Directiva Max C-00</strong> sobre lienzo claro puro (#FFFFFF), con flujo editorial abierto, retícula proporcional áurea y vectores matemáticos sin dependencia de plantillas prefabricadas.
+              Se certifica que la presente identidad de marca ha sido generada bajo la <strong>Estándar Editorial Oficial</strong> sobre lienzo claro puro (#FFFFFF), con flujo editorial abierto, retícula proporcional áurea y vectores matemáticos sin dependencia de plantillas prefabricadas.
             </p>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:44px; border-top:1.5px solid ${lightGray}; padding-top:14px; width:100%; max-width:580px;">
               <div>
@@ -2378,7 +2378,7 @@
               </div>
             </div>
             <div style="display:flex; justify-content:space-between; border-top:1.5px solid ${acc}; padding-top:6px; font-size:11.5px; color:${midGray};">
-              <span>${esc(bName)} · Lienzo Claro Directiva Max C-00</span>
+              <span>${esc(bName)} · Lienzo Claro Estándar Editorial Oficial</span>
               <span style="color:${pri}; font-weight:800;">Archivo Editable .DOCX</span>
             </div>
           </div>
@@ -2681,8 +2681,8 @@ Instrucciones obligatorias:
       { num: "14", sec: "03 · IDENTIDAD VISUAL", title: "Anatomía y Fundamentación Conceptual del Símbolo", leadAuthor: "Adrian Frutiger & Paul Rand", auditVerdict: "SÍMBOLO OFICIAL RESPETADO 100%" },
       { num: "15", sec: "03 · IDENTIDAD VISUAL", title: "Retícula de Construcción y Proporción Áurea", leadAuthor: "Wim Crouwel & Müller-Brockmann", auditVerdict: "PRECISIÓN GEOMÉTRICA APROBADA" },
       { num: "16", sec: "03 · IDENTIDAD VISUAL", title: "Área de Aislamiento y Escala Mínima", leadAuthor: "Massimo Vignelli", auditVerdict: "ZONA DE SEGURIDAD 1.5X ACTIVA" },
-      { num: "17", sec: "03 · IDENTIDAD VISUAL", title: "Versión Oficial en Positivo sobre Lienzo Claro", leadAuthor: "Directiva Max C-00", auditVerdict: "POSITIVO POR DEFECTO APROBADO" },
-      { num: "18", sec: "03 · IDENTIDAD VISUAL", title: "Versión Oficial sobre Soporte Oscuro / Negativo", leadAuthor: "Directiva Max C-00", auditVerdict: "CONTRASTE ÓPTICO CERTIFICADO" },
+      { num: "17", sec: "03 · IDENTIDAD VISUAL", title: "Versión Oficial en Positivo sobre Lienzo Claro", leadAuthor: "Estándar Editorial Oficial", auditVerdict: "POSITIVO POR DEFECTO APROBADO" },
+      { num: "18", sec: "03 · IDENTIDAD VISUAL", title: "Versión Oficial sobre Soporte Oscuro / Negativo", leadAuthor: "Estándar Editorial Oficial", auditVerdict: "CONTRASTE ÓPTICO CERTIFICADO" },
       { num: "19", sec: "03 · IDENTIDAD VISUAL", title: "Versión Monocromática, Grabado Láser y Sello", leadAuthor: "Sagi Haviv & Herb Lubalin", auditVerdict: "REPRODUCCIÓN 1 TINTA VALIDADA" },
       { num: "20", sec: "03 · IDENTIDAD VISUAL", title: "Usos Incorrectos y Restricciones Normativas", leadAuthor: "Pentagram & Paula Scher", auditVerdict: "INTEGRIDAD VISUAL BLINDADA" },
       { num: "21", sec: "04 · COLOR Y TIPOGRAFÍA", title: "Paleta Cromática Oficial (HEX · RGB · CMYK · Pantone)", leadAuthor: "Josef Albers & Johannes Itten", auditVerdict: "COLORIMETRÍA CERTIFICADA" },
@@ -2734,7 +2734,7 @@ Instrucciones obligatorias:
               ${plates.length} LÁMINAS EN CURVAS · ${esc(bName.toUpperCase())}
             </div>
             <div style="font-size:0.72rem; color:#64748B;">
-              Manual Oficial Generado en Vivo · Directiva Max C-00
+              Manual Oficial Generado en Vivo · Estándar Editorial Oficial
             </div>
           </div>
         </div>
@@ -3050,7 +3050,7 @@ Instrucciones obligatorias:
         pureSymbolNeg = `<g transform="translate(10,10)"><rect x="4" y="4" width="172" height="172" rx="30" fill="#FFFFFF" fill-opacity="0.98"/>${uploadedSvg.trim()}</g>`;
       } else {
         pureSymbolPos = `<g transform="translate(10,10)"><image data-tbb-uploaded-logo="1" href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="8" y="8" width="164" height="164" preserveAspectRatio="xMidYMid meet" /></g>`;
-        // Directiva Max C-00: cápsula neutra blanca aislada sobre soporte oscuro para respetar 100% los colores originales del logo subido sin parches negros/blancos
+        // Estándar Editorial Oficial: cápsula neutra blanca aislada sobre soporte oscuro para respetar 100% los colores originales del logo subido sin parches negros/blancos
         pureSymbolNeg = `<g transform="translate(10,10)"><rect x="4" y="4" width="172" height="172" rx="30" fill="#FFFFFF" fill-opacity="0.98"/><image data-tbb-uploaded-logo="1" href="${uploadedUrl}" xlink:href="${uploadedUrl}" x="16" y="16" width="148" height="148" preserveAspectRatio="xMidYMid meet" /></g>`;
       }
     } else {
@@ -3322,7 +3322,7 @@ Instrucciones obligatorias:
       <div style="width:100%;max-width:480px;background:#FFFFFF;border:2px solid ${pri};border-bottom:5px solid ${acc};border-radius:18px 34px 18px 18px;padding:24px 22px;font-family:'Plus Jakarta Sans',sans-serif;text-align:center;">
         <div style="display:inline-flex;align-items:center;gap:8px;background:#FFF7ED;color:#C2410C;border:1px solid #FDBA74;border-radius:999px;padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:0.70rem;font-weight:800;margin-bottom:10px;">
           <span style="width:7px;height:7px;border-radius:50%;background:${acc};display:inline-block;"></span>
-          MOTOR EDITORIAL EN CURVAS · DIRECTIVA MAX C-00
+          MOTOR EDITORIAL EN CURVAS · THE BEST BRAND
         </div>
         <h3 style="font-family:'Montserrat',sans-serif;font-size:1.12rem;font-weight:900;color:#090D16;margin:0 0 4px 0;">
           Generando las ${totalCount} Láminas de «${esc(bName)}»

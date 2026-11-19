@@ -907,7 +907,11 @@
       const el = document.getElementById("tbbCustomTpInput");
       if (el) el.value = text;
     } else if (s === 3) {
-      const el = document.getElementById("tbbStep3CustomNameInput");
+      const el =
+        document.getElementById("tbbStep3FinalBrandInput") ||
+        document.getElementById("tbbStep3Sub2NameInput") ||
+        document.getElementById("tbbStep3DirectNameInput") ||
+        document.getElementById("tbbStep3CustomNameInput");
       if (el) el.value = text;
       if (typeof window.tbbUpdateBrandNameFromInput === "function") window.tbbUpdateBrandNameFromInput(text);
     }
@@ -2440,7 +2444,7 @@
 
     const mods = (activeIt && activeIt.mods) || {};
     const priFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || cs.primary_font || "Montserrat";
-    const secFont = "Avenir Next";
+    const secFont = cs.secondary_font || st.selectedSecondaryFont || "Plus Jakarta Sans";
     const pal = extractColorsFromLogoState(activeIt, st);
     const useEvolvedOverUpload = Boolean(st._uploadedLogoEvolvedOnce && hasGeminiCustom && !(activeIt && activeIt.isNanoBananaGenerated));
     
@@ -7471,7 +7475,7 @@
           { code: "SELLO 02", name: "Geometría Euclidiana", author: "Massimo Vignelli", desc: "Aval de retícula constructiva 8X, proporciones exactas y vectores limpios.", icon: "8X" },
           { code: "SELLO 03", name: "Calibración Kansei", author: "Mitsuhiro Nagamachi", desc: "Garantía de respuesta emocional positiva, balance cromático y empatía humana.", icon: "KAN" },
           { code: "SELLO 04", name: "Arquitectura Monolítica", author: "David Aaker", desc: "Certificación de concentración de valor en un solo nombre sin submarcas forzadas.", icon: "MONO" },
-          { code: "SELLO 05", name: "Auditoría Directiva C-00", author: "Consejo Crítico", desc: "Superación del estándar implacable de Steve Jobs: cero plantillas y cero relleno.", icon: "C-00" },
+          { code: "SELLO 05", name: "Estándar Editorial Oficial", author: "Consejo Crítico", desc: "Superación del estándar implacable de Steve Jobs: cero plantillas y cero relleno.", icon: "C-00" },
           { code: "SELLO 06", name: "Promulgación Oficial", author: "The Best Brand", desc: "Sello de vigencia constitucional e inmutabilidad de activos de marca.", icon: "LEX" }
         ];
 
