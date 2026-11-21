@@ -902,7 +902,7 @@
       num: "07",
       format: ".HTML · CORREO",
       sampleUrl: "/assets/samples/Firma_Corporativa_Luis_Ponce_ARCO_Ingenieria.html",
-      thumb: "/assets/avi/brandbook_plate_digital_ecosystem.jpg",
+      thumb: tbbImgSrc("/assets/avi/brandbook_plate_digital_ecosystem.jpg"),
       plateNum: 7,
       i18n: {
         es: { title: "Firma Profesional para tu Correo (.HTML)", desc: "Lista para copiar y pegar en Gmail, Outlook o Apple Mail con tu logo, tu puesto y botones directos de contacto." },
