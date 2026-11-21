@@ -1449,11 +1449,24 @@
       <section class="tbb-section tbb-home-hero-demo-section">
         <div class="tbb-hero-ambient-grid" aria-hidden="true"></div>
         <div class="tbb-container">
-          <!-- HOOK PRINCIPAL ENTUSIASTA Y DIRECTO -->
+          <!-- FIRMA PROTAGONISTA DE MARCA (SOLO EN PORTADA) + HOOK PRINCIPAL -->
           <div class="tbb-home-hero-header">
-            <div class="tbb-tagline-hero-badge">
-              ${TBB_ICONS.spark}
-              <span>${escHtml(t("taglineBadge"))}</span>
+            <div class="tbb-hero-brand-showcase" aria-label="The Best Brand">
+              <div class="tbb-hero-brand-orb-wrap">
+                <img
+                  src="${escHtml(tbbImgSrc('/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png'))}"
+                  onerror="this.onerror=null;this.src='${TBB_ISOTIPO_DATA_URI}'"
+                  alt="The Best Brand"
+                  class="tbb-hero-brand-orb-img"
+                />
+              </div>
+              <div class="tbb-hero-brand-wordmark-stack">
+                <div class="tbb-hero-brand-name">THE BEST BRAND</div>
+                <div class="tbb-tagline-hero-badge is-under-brand">
+                  ${TBB_ICONS.spark}
+                  <span>${escHtml(t("taglineBadge"))}</span>
+                </div>
+              </div>
             </div>
             <h1 class="tbb-hero-h1">${escHtml(t("heroHeadline"))}</h1>
             <p class="tbb-hero-lead">${escHtml(t("heroSubheadline"))}</p>
@@ -3177,8 +3190,15 @@
     return `
       <header class="tbb-master-header">
         <div class="tbb-header-inner">
-          <a href="/" class="tbb-brand-logo-link" onclick="event.preventDefault(); window.tbbSwitchMainSection(1);">
-            <img src="${TBB_CLEAN_LOGO_DATA_URI}" alt="The Best Brand" class="tbb-header-wordmark-svg" />
+          <a href="/" class="tbb-brand-logo-link" onclick="event.preventDefault(); window.tbbSwitchMainSection(1);" aria-label="The Best Brand">
+            <img
+              src="${escHtml(tbbImgSrc('/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png'))}"
+              onerror="this.onerror=null;this.src='${TBB_ISOTIPO_DATA_URI}'"
+              alt=""
+              class="tbb-header-brand-orb"
+            />
+            <span class="tbb-header-brand-divider" aria-hidden="true"></span>
+            <span class="tbb-header-brand-wordmark">THE BEST BRAND</span>
           </a>
 
           <nav class="tbb-desktop-nav" aria-label="Navegación Principal">
@@ -3561,9 +3581,41 @@
         justify-content: space-between;
         gap: 10px;
       }
-      .tbb-brand-logo-link { display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 0; transition: transform 0.18s var(--tbb-ds-ease-out); }
+      .tbb-brand-logo-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        flex-shrink: 0;
+        transition: transform 0.18s var(--tbb-ds-ease-out);
+      }
       .tbb-brand-logo-link:active { transform: scale(0.985); }
-      .tbb-header-wordmark-svg { height: 36px; width: auto; display: block; }
+      .tbb-header-wordmark-svg { height: 42px; width: auto; display: block; }
+      .tbb-header-brand-orb {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        object-fit: contain;
+        display: block;
+        flex-shrink: 0;
+        filter: drop-shadow(0 3px 8px rgba(13, 37, 64, 0.16));
+      }
+      .tbb-header-brand-divider {
+        width: 1.5px;
+        height: 24px;
+        background: rgba(13, 37, 64, 0.15);
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+      .tbb-header-brand-wordmark {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.06rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        color: #0D2540;
+        line-height: 1;
+        white-space: nowrap;
+      }
       .tbb-desktop-nav {
         display: flex;
         align-items: center;
@@ -3699,10 +3751,62 @@
         color: #426EAE;
         box-shadow: none;
       }
+      .tbb-home-hero-demo-section { padding-top: 24px; }
       .tbb-home-hero-header {
         text-align: center;
         max-width: 980px;
-        margin: 0 auto 32px;
+        margin: 0 auto 28px;
+      }
+      .tbb-hero-brand-showcase {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin: 0 auto 20px;
+      }
+      .tbb-hero-brand-orb-wrap {
+        position: relative;
+        width: 112px;
+        height: 112px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tbb-hero-brand-orb-wrap::before {
+        content: "";
+        position: absolute;
+        inset: -14px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 122, 0, 0.20) 0%, rgba(76, 157, 230, 0.14) 50%, rgba(255, 255, 255, 0) 74%);
+        pointer-events: none;
+      }
+      .tbb-hero-brand-orb-img {
+        position: relative;
+        z-index: 1;
+        width: 112px;
+        height: 112px;
+        object-fit: contain;
+        display: block;
+        filter: drop-shadow(0 14px 28px rgba(13, 37, 64, 0.16)) drop-shadow(0 4px 12px rgba(255, 122, 0, 0.18));
+      }
+      .tbb-hero-brand-wordmark-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .tbb-hero-brand-name {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(1.75rem, 3.2vw, 2.55rem);
+        font-weight: 800;
+        letter-spacing: 0.10em;
+        color: #0D2540;
+        line-height: 1.05;
+        text-align: center;
+      }
+      .tbb-tagline-hero-badge.is-under-brand {
+        margin-bottom: 0;
       }
       .tbb-section-header {
         text-align: center;
@@ -4943,7 +5047,15 @@
       @media (max-width: 680px) {
         .tbb-container { padding: 0 16px; }
         .tbb-section { padding: 26px 0 56px; }
-        .tbb-header-wordmark-svg { height: 32px; }
+        .tbb-header-wordmark-svg { height: 34px; }
+        .tbb-brand-logo-link { gap: 7px; }
+        .tbb-header-brand-orb { width: 34px; height: 34px; }
+        .tbb-header-brand-divider { height: 20px; }
+        .tbb-header-brand-wordmark { font-size: 0.82rem; letter-spacing: 0.025em; }
+        .tbb-home-hero-demo-section { padding-top: 18px; }
+        .tbb-hero-brand-showcase { gap: 10px; margin-bottom: 16px; }
+        .tbb-hero-brand-orb-wrap, .tbb-hero-brand-orb-img { width: 92px; height: 92px; }
+        .tbb-hero-brand-name { font-size: 1.55rem; letter-spacing: 0.08em; }
         .tbb-buy-lbl-full { display: none; }
         .tbb-buy-lbl-short { display: inline; font-weight: 700; font-size: 0.875rem; }
         .tbb-header-buy-btn { padding: 0 12px; gap: 4px; }
