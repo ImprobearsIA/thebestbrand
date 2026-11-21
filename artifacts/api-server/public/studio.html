@@ -20360,12 +20360,10 @@
       gap: 8px;
       padding: 10px 14px;
     }
-    @media (min-width: 769px) {
-      .tbb-atomic-card.is-hug-card {
-        height: auto !important;
-        max-height: 100% !important;
-        margin: auto 0 !important;
-      }
+    .tbb-atomic-card.is-hug-card {
+      height: auto !important;
+      max-height: 100% !important;
+      margin: auto 0 !important;
     }
     #tbbZeroScrollMasterStage input::placeholder,
     #tbbZeroScrollMasterStage textarea::placeholder {
@@ -22668,7 +22666,7 @@
         const isGenericPlaceholder = /^es una app que sirve para$/i.test(rawSub);
         const subtitle = (mods.hideSubtitle || subOverride === "") ? "" : ((rawSub && !isGenericPlaceholder && rawSub.length <= 48)
           ? rawSub.toUpperCase()
-          : "MANUAL DE IDENTIDAD CORPORATIVA");
+          : "IDENTIDAD OFICIAL DE MARCA");
         const isDark = Boolean(st.logoDarkBg);
         const bgTop = isDark ? "#090D16" : "#F8FAFC";
         const bgBot = isDark ? "#111827" : "#EAEEF5";
@@ -22755,7 +22753,7 @@
 
               <!-- Ficha Técnica de Marca y Paleta Activa -->
               <text x="639" y="282" text-anchor="middle" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="900" font-size="13.5" letter-spacing="0.5">${escapeHTML(rawBrand.toUpperCase().slice(0, 18))}</text>
-              <text x="639" y="299" text-anchor="middle" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="8.0">${escapeHTML(subtitle.slice(0, 25))}</text>
+              <text x="639" y="299" text-anchor="middle" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="8.2">${escapeHTML(subtitle.length > 26 ? subtitle.slice(0, 25).trim() + "…" : subtitle)}</text>
 
               <g transform="translate(551, 316)">
                 <rect x="0" y="0" width="176" height="44" rx="10" fill="${isDark ? '#1E293B' : '#F8FAFC'}" stroke="${isDark ? '#334155' : '#E2E8F0'}" stroke-width="1"/>
@@ -23261,14 +23259,14 @@
           <div class="tbb-author-audit-card" style="background:#FFFFFF; border:1px solid #CBD5E1; border-left:3.5px solid #FF7A00; border-radius:10px; padding:5px 10px; margin-top:2px; flex-shrink:0;">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:nowrap;">
               <div style="display:flex; align-items:center; gap:7px; min-width:0; flex:1;">
-                <div style="width:24px; height:24px; border-radius:50%; background:#0D2540; color:#FFFFFF; border:1px solid #FF7A00; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:0.62rem; font-weight:700; flex-shrink:0;">
+                <div style="width:24px; height:24px; border-radius:50%; background:#0D2540; color:#FFFFFF; border:1px solid #FF7A00; display:flex; align-items:center; justify-content:center; font-family:'Montserrat',sans-serif; font-size:0.875rem; font-weight:700; flex-shrink:0;">
                   ${author.monogram}
                 </div>
-                <div style="min-width:0; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:0.72rem; color:#090D16;">
+                <div style="min-width:0; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:0.875rem; color:#090D16;">
                   <strong style="font-weight:700;">${author.name}</strong> <span style="color:#64748B; font-weight:500;">· ${author.role}</span>
                 </div>
               </div>
-              <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbRunLiveAuthorAudit(${s}, '${fieldRole}')" style="min-height:26px !important; padding:2px 9px !important; font-size:0.68rem !important; font-weight:600 !important; border-color:#0D2540 !important; color:#0D2540 !important; background:#FFFFFF !important; white-space:nowrap; border-radius:7px !important; flex-shrink:0;">
+              <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbRunLiveAuthorAudit(${s}, '${fieldRole}')" style="min-height:26px !important; padding:2px 9px !important; font-size:0.875rem !important; font-weight:600 !important; border-color:#0D2540 !important; color:#0D2540 !important; background:#FFFFFF !important; white-space:nowrap; border-radius:7px !important; flex-shrink:0;">
                 <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#FF7A00;vertical-align:middle;margin-right:4px;"></span> Dictamen ${author.shortName}
               </button>
             </div>
@@ -23355,10 +23353,13 @@
         const totalSub = SUBSTEPS_COUNT[st.step] || 1;
         st.subStep = Math.max(1, Math.min(totalSub, Number(st.subStep || 1)));
 
-        // Progreso discreto superior y botón de Video del Paso
+        // Progreso discreto superior (100% GPU scaleX) y botón de Video del Paso
         const pct = Math.round(((st.step * 10 + (st.subStep / totalSub) * 10) / 70) * 100);
         const fillEl = document.getElementById("tbbDiscreteProgressFill");
-        if (fillEl) fillEl.style.width = Math.max(8, Math.min(100, pct)) + "%";
+        if (fillEl) {
+          const normScale = Math.max(0.08, Math.min(1, pct / 100));
+          fillEl.style.transform = `scaleX(${normScale.toFixed(4)})`;
+        }
         const counterEl = document.getElementById("tbbDiscreteStepCounter");
         if (counterEl) counterEl.textContent = `Paso ${st.step} · ${st.subStep}/${totalSub}`;
         const videoLblEl = document.getElementById("tbbLblTopVideo");
@@ -23417,22 +23418,29 @@
 
           if (st.subStep === 1) {
             stage.innerHTML = `
-              <div class="tbb-atomic-card is-hug-card" style="padding:18px 20px; gap:12px;">
+              <div class="tbb-atomic-card is-hug-card" style="padding:20px 22px; gap:14px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:700; color:#1D4ED8; margin-bottom:2px;">PASO 0 · 1 DE 3 · OBJETIVO</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.18rem; font-weight:700; color:#090D16; margin:0;">
+                  <div style="font-size:0.875rem; font-weight:700; color:#426EAE; letter-spacing:0.03em; margin-bottom:4px;">PASO 0 · 1 DE 3 · OBJETIVO</div>
+                  <h2 style="font-family:'Montserrat', var(--font-display); font-size:1.26rem; font-weight:700; letter-spacing:-0.02em; color:#0D2540; margin:0 0 4px 0;">
                     ¿Cuál es tu objetivo principal hoy?
                   </h2>
+                  <p style="margin:0; font-size:0.9rem; color:#475569; font-weight:400;">${({ es: "Elige tu punto de partida para adaptar las preguntas de Aura.", en: "Choose your starting point so Aura tailors each question.", fr: "Choisissez votre point de départ pour adapter les questions d'Aura.", pt: "Escolha o seu ponto de partida para adaptar as perguntas da Aura.", de: "Wählen Sie Ihren Startpunkt, damit Aura die Fragen anpasst.", it: "Scegli il punto di partenza per adattare le domande di Aura." })[(window.tbbGetLang ? window.tbbGetLang() : "es")] || "Elige tu punto de partida para adaptar las preguntas de Aura."}</p>
                 </div>
-                <div style="display:flex; flex-direction:column; gap:10px; flex:1; justify-content:center;">
-                  <button type="button" class="tbb-duo-btn ${curGoal === 'first' ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="selectStep0Goal('first'); triggerAuraEmpatheticFeedback('input_goal', 'Crear mi primera marca desde cero', false); renderTbbZeroScrollStage();">
-                    Crear mi primera marca desde cero
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                  <button type="button" class="tbb-duo-btn tbb-step0-goal-option ${curGoal === 'first' ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="selectStep0Goal('first'); triggerAuraEmpatheticFeedback('input_goal', 'Crear mi primera marca desde cero', false); renderTbbZeroScrollStage();">
+                    <span class="tbb-goal-ic-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2.8l2.1 6.1 6.1 2.1-6.1 2.1L12 19.2l-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/></svg></span>
+                    <span class="tbb-goal-lbl-col">Crear mi primera marca desde cero</span>
+                    <svg class="tbb-goal-chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </button>
-                  <button type="button" class="tbb-duo-btn ${curGoal === 'redesign' ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="selectStep0Goal('redesign'); triggerAuraEmpatheticFeedback('input_goal', 'Evolucionar y profesionalizar mi marca actual', false); renderTbbZeroScrollStage();">
-                    Evolucionar y profesionalizar mi marca actual
+                  <button type="button" class="tbb-duo-btn tbb-step0-goal-option ${curGoal === 'redesign' ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="selectStep0Goal('redesign'); triggerAuraEmpatheticFeedback('input_goal', 'Evolucionar y profesionalizar mi marca actual', false); renderTbbZeroScrollStage();">
+                    <span class="tbb-goal-ic-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 17l5-5 4 3 7-8M15 7h5v5" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    <span class="tbb-goal-lbl-col">Evolucionar y profesionalizar mi marca actual</span>
+                    <svg class="tbb-goal-chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </button>
-                  <button type="button" class="tbb-duo-btn ${curGoal === 'subbrand' ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="selectStep0Goal('subbrand'); triggerAuraEmpatheticFeedback('input_goal', 'Crear una nueva sub-marca o división', false); renderTbbZeroScrollStage();">
-                    Crear una nueva sub-marca o división
+                  <button type="button" class="tbb-duo-btn tbb-step0-goal-option ${curGoal === 'subbrand' ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="selectStep0Goal('subbrand'); triggerAuraEmpatheticFeedback('input_goal', 'Crear una nueva sub-marca o división', false); renderTbbZeroScrollStage();">
+                    <span class="tbb-goal-ic-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="7" height="7" rx="1.8" stroke="currentColor" stroke-width="1.65"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8" stroke="currentColor" stroke-width="1.65"/><rect x="8.5" y="13.5" width="7" height="7" rx="1.8" stroke="currentColor" stroke-width="1.65"/></svg></span>
+                    <span class="tbb-goal-lbl-col">Crear una nueva sub-marca o división</span>
+                    <svg class="tbb-goal-chev" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </button>
                 </div>
               </div>
@@ -23449,68 +23457,68 @@
             );
             const displayInputName = (isNamelessDiscovery || /^Marca en Creaci|^Proyecto Gastron/i.test(curName)) ? "" : curName;
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:14px 16px; gap:10px;">
+              <div class="tbb-atomic-card is-hug-card" style="padding:18px 20px; gap:12px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:700; color:#1D4ED8; margin-bottom:2px;">PASO 0 · 2 DE 3 · NOMBRE DE TU MARCA</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.12rem; font-weight:700; color:#090D16; margin:0; line-height:1.24;">
+                  <div style="font-size:0.875rem; font-weight:700; color:#426EAE; letter-spacing:0.02em; margin-bottom:4px;">PASO 0 · 2 DE 3 · NOMBRE DE TU MARCA</div>
+                  <h2 style="font-family:'Montserrat', var(--font-display); font-size:1.18rem; font-weight:700; letter-spacing:-0.02em; color:#0D2540; margin:0; line-height:1.28;">
                     ¿Tu proyecto ya tiene nombre o lo creamos en el proceso?
                   </h2>
                 </div>
 
-                <div style="display:flex; flex-direction:column; gap:10px; flex:1; justify-content:center;">
+                <div style="display:flex; flex-direction:column; gap:12px;">
                   <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                    <button type="button" id="tbbBtnHasExistingName" class="tbb-duo-btn ${!isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbDeactivateNamelessDiscoveryMode();" style="min-height:44px !important; padding:6px 10px !important; font-size:0.84rem !important; font-weight:600 !important;">
+                    <button type="button" id="tbbBtnHasExistingName" class="tbb-duo-btn ${!isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbDeactivateNamelessDiscoveryMode();" style="min-height:46px !important; padding:6px 10px !important; font-size:0.9rem !important; font-weight:600 !important;">
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       <span>Ya tengo nombre</span>
                     </button>
-                    <button type="button" id="tbbBtnStartNamelessDiscovery" class="tbb-duo-btn ${isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbActivateNamelessDiscoveryMode(false);" style="min-height:44px !important; padding:6px 10px !important; font-size:0.84rem !important; font-weight:600 !important;">
+                    <button type="button" id="tbbBtnStartNamelessDiscovery" class="tbb-duo-btn ${isNamelessDiscovery ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbActivateNamelessDiscoveryMode(false);" style="min-height:46px !important; padding:6px 10px !important; font-size:0.9rem !important; font-weight:600 !important;">
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.2 6L20 11.2l-5.8 2.2L12 19.5l-2.2-6.1L4 11.2 9.8 9 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
                       <span>Crearlo en el proceso</span>
                     </button>
                   </div>
 
                   ${isNamelessDiscovery ? `
-                    <div style="background:#EFF6FF; border:1.5px solid #1D4ED8; border-radius:14px; padding:10px 14px; display:flex; align-items:center; gap:10px;">
-                      <div style="width:32px; height:32px; border-radius:10px; background:#1D4ED8; color:#FFFFFF; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                      <div style="font-size:0.80rem; color:#0F172A; font-weight:500; line-height:1.34;">
-                        <strong style="color:#1D4ED8; display:block; font-size:0.85rem; font-weight:700; margin-bottom:1px;">Listo: crearemos el nombre en el Paso 3</strong>
+                    <div style="background:#EFF6FF; border:1px solid #93C5FD; border-radius:14px; padding:12px 14px; display:flex; align-items:center; gap:10px;">
+                      <div style="width:34px; height:34px; border-radius:10px; background:#426EAE; color:#FFFFFF; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                      <div style="font-size:0.875rem; color:#0D2540; font-weight:500; line-height:1.4;">
+                        <strong style="color:#426EAE; display:block; font-size:0.92rem; font-weight:700; margin-bottom:2px;">Listo: crearemos el nombre en el Paso 3</strong>
                         Primero conoceremos tu giro y diferenciador para proponerte opciones ideales.
                       </div>
                     </div>
                   ` : `
-                    <div style="background:#F8FAFC; border:1.5px solid #090D16; border-radius:14px; padding:10px 14px; display:flex; flex-direction:column; gap:6px;">
-                      <label for="tbbStep0NameInput" style="font-size:0.78rem; font-weight:600; color:#090D16;">
+                    <div style="background:#F8FAFC; border:1px solid rgba(13,37,64,0.12); border-radius:14px; padding:12px 14px; display:flex; flex-direction:column; gap:6px;">
+                      <label for="tbbStep0NameInput" style="font-size:0.875rem; font-weight:600; color:#0D2540;">
                         Nombre de tu marca:
                       </label>
-                      <input type="text" id="tbbStep0NameInput" value="${displayInputName.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Ej. Nombre de tu empresa o proyecto..." style="width:100%; height:40px; padding:0 12px; border-radius:10px; border:1.5px solid #CBD5E1; font-size:0.92rem; font-weight:600; color:#090D16; background:#FFFFFF; box-sizing:border-box;" />
+                      <input type="text" id="tbbStep0NameInput" value="${displayInputName.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Ej. Nombre de tu empresa o proyecto..." style="width:100%; height:44px; padding:0 12px; border-radius:10px; border:1px solid rgba(13,37,64,0.16); font-size:1rem; font-weight:600; color:#0D2540; background:#FFFFFF; box-sizing:border-box;" />
                     </div>
                   `}
 
                   <!-- Opción de Subir Logotipo Existente (Opcional) -->
-                  <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:12px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                  <div style="background:#F8FAFC; border:1px solid rgba(13,37,64,0.10); border-radius:14px; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
                     <input type="file" id="tbbExistingLogoFileInput" accept="image/png,image/jpeg,image/webp,image/svg+xml,.svg,.png,.jpg,.jpeg,.webp" onchange="window.tbbHandleExistingLogoUpload(this)" style="display:none;" />
                     ${!uploadedLogoUrl ? `
-                      <div style="font-size:0.75rem; font-weight:600; color:#475569;">
+                      <div style="font-size:0.875rem; font-weight:600; color:#475569;">
                         ¿Tienes logotipo actual? <span style="color:#64748B; font-weight:500;">(Opcional)</span>
                       </div>
-                      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="min-height:32px !important; padding:4px 10px !important; font-size:0.74rem !important; font-weight:600 !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; background:#FFFFFF !important; flex-shrink:0;">
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="min-height:38px !important; padding:5px 12px !important; font-size:0.875rem !important; font-weight:600 !important; border-color:#426EAE !important; color:#426EAE !important; background:#FFFFFF !important; flex-shrink:0;">
                         Subir Logo (.PNG/.SVG)
                       </button>
                     ` : `
                       <div style="display:flex; align-items:center; gap:8px; min-width:0; flex:1; flex-wrap:wrap;">
-                        <img src="${cs.raw_uploaded_logo_data_url || uploadedLogoUrl}" alt="Logo actual" style="width:36px; height:36px; object-fit:contain; border-radius:8px; border:1px solid #CBD5E1; background:#FFFFFF; flex-shrink:0;" />
+                        <img src="${cs.raw_uploaded_logo_data_url || uploadedLogoUrl}" alt="Logo actual" style="width:38px; height:38px; object-fit:contain; border-radius:8px; border:1px solid #CBD5E1; background:#FFFFFF; flex-shrink:0;" />
                         <div style="min-width:0; flex:1;">
-                          <div style="font-size:0.76rem; font-weight:700; color:#090D16;">
+                          <div style="font-size:0.875rem; font-weight:700; color:#0D2540;">
                             Logo cargado (${extColors[0] || '#0078C0'})
                           </div>
-                          <div style="display:flex; gap:5px; margin-top:2px;">
-                            <button type="button" onclick="window.tbbSetExistingLogoMode('evolve')" style="background:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'evolve' ? '#1D4ED8' : '#FFFFFF'}; color:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'evolve' ? '#FFFFFF' : '#1D4ED8'}; border:1px solid #1D4ED8; border-radius:6px; padding:2px 8px; font-size:0.68rem; font-weight:600; cursor:pointer;">Evolucionar</button>
-                            <button type="button" onclick="window.tbbSetExistingLogoMode('keep')" style="background:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'keep' ? '#1D4ED8' : '#FFFFFF'}; color:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'keep' ? '#FFFFFF' : '#1D4ED8'}; border:1px solid #1D4ED8; border-radius:6px; padding:2px 8px; font-size:0.68rem; font-weight:600; cursor:pointer;">Mantener</button>
+                          <div style="display:flex; gap:6px; margin-top:3px; flex-wrap:wrap;">
+                            <button type="button" onclick="window.tbbSetExistingLogoMode('evolve')" style="background:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'evolve' ? '#0D2540' : '#FFFFFF'}; color:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'evolve' ? '#FFFFFF' : '#0D2540'}; border:1px solid #0D2540; border-radius:8px; padding:4px 10px; font-size:0.875rem; font-weight:600; cursor:pointer;">Evolucionar</button>
+                            <button type="button" onclick="window.tbbSetExistingLogoMode('keep')" style="background:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'keep' ? '#0D2540' : '#FFFFFF'}; color:${(cs.existing_logo_mode || window.step0State?.existingLogoMode || 'evolve') === 'keep' ? '#FFFFFF' : '#0D2540'}; border:1px solid #0D2540; border-radius:8px; padding:4px 10px; font-size:0.875rem; font-weight:600; cursor:pointer;">Mantener</button>
                           </div>
                         </div>
-                        <div style="display:flex; gap:5px;">
-                          <button type="button" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="background:#FFFFFF; color:#1D4ED8; border:1px solid #1D4ED8; border-radius:7px; padding:3px 8px; font-size:0.70rem; font-weight:600; cursor:pointer;">Cambiar</button>
-                          <button type="button" onclick="window.tbbClearExistingLogo()" style="background:#FEF2F2; color:#DC2626; border:1px solid #FCA5A5; border-radius:7px; padding:3px 8px; font-size:0.70rem; font-weight:600; cursor:pointer;">Quitar</button>
+                        <div style="display:flex; gap:6px;">
+                          <button type="button" onclick="document.getElementById('tbbExistingLogoFileInput').click()" style="background:#FFFFFF; color:#426EAE; border:1px solid #426EAE; border-radius:8px; padding:4px 10px; font-size:0.875rem; font-weight:600; cursor:pointer;">Cambiar</button>
+                          <button type="button" onclick="window.tbbClearExistingLogo()" style="background:#FEF2F2; color:#DC2626; border:1px solid #FCA5A5; border-radius:8px; padding:4px 10px; font-size:0.875rem; font-weight:600; cursor:pointer;">Quitar</button>
                         </div>
                       </div>
                     `}
@@ -23527,30 +23535,30 @@
             }
             if (lblNext) lblNext.textContent = "Guardar e Ir al Paso 1";
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:12px 16px; gap:8px;">
+              <div class="tbb-atomic-card is-hug-card" style="padding:18px 20px; gap:12px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:700; color:#0D2540; margin-bottom:2px;">PASO 0 · 3 DE 3 · GIRO Y ACTIVIDAD</div>
-                  <h2 style="font-family:var(--font-display); font-size:1.12rem; font-weight:700; color:#090D16; margin:0;">
+                  <div style="font-size:0.875rem; font-weight:700; color:#426EAE; letter-spacing:0.02em; margin-bottom:4px;">PASO 0 · 3 DE 3 · GIRO Y ACTIVIDAD</div>
+                  <h2 style="font-family:'Montserrat', var(--font-display); font-size:1.18rem; font-weight:700; letter-spacing:-0.02em; color:#0D2540; margin:0; line-height:1.28;">
                     ¿En qué giro se enfoca tu empresa y qué ofrece?
                   </h2>
                 </div>
-                <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:7px;">
-                  <textarea id="tbbStep0BizTextarea" rows="3" oninput="tbbUpdateBusinessTypeFromInput(this.value)" placeholder="Ej. Cafetería de especialidad para estudiantes y trabajo remoto, o tienda de ropa deportiva..." style="width:100%; padding:12px 14px; border-radius:16px; border:2px solid #CBD5E1; font-size:1rem; font-weight:500; color:#090D16; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.48;">${curBiz}</textarea>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                  <textarea id="tbbStep0BizTextarea" rows="3" oninput="tbbUpdateBusinessTypeFromInput(this.value)" placeholder="Ej. Cafetería de especialidad para estudiantes y trabajo remoto, o tienda de ropa deportiva..." style="width:100%; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(13,37,64,0.16); font-size:1rem; font-weight:500; color:#0D2540; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.5;">${curBiz}</textarea>
                   <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbToggleStep0BizIdeas()" style="min-height:40px !important; padding:6px 14px !important; font-size:0.88rem !important; font-weight:600 !important;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbToggleStep0BizIdeas()" style="min-height:42px !important; padding:6px 14px !important; font-size:0.9rem !important; font-weight:600 !important;">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.8 10.6c.7.6 1.3 1.5 1.5 2.4h4.6c.2-.9.8-1.8 1.5-2.4A6 6 0 0 0 12 3z" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       <span>¿No sabes qué poner? Ver ejemplos</span>
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnPolishStep0Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep0BizTextarea', 'giro')" style="display:${curBiz.trim().length >= 15 ? 'inline-flex' : 'none'}; min-height:40px !important; padding:6px 14px !important; font-size:0.88rem !important; font-weight:600 !important; border-color:#426EAE !important; color:#0D2540 !important;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnPolishStep0Ortho" onclick="window.tbbPolishInputFieldClarity('tbbStep0BizTextarea', 'giro')" style="display:${curBiz.trim().length >= 15 ? 'inline-flex' : 'none'}; min-height:42px !important; padding:6px 14px !important; font-size:0.9rem !important; font-weight:600 !important; border-color:#426EAE !important; color:#0D2540 !important;">
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.2 6L20 11.2l-5.8 2.2L12 19.5l-2.2-6.1L4 11.2 9.8 9 12 3z" stroke="#426EAE" stroke-width="1.8" stroke-linejoin="round"/></svg>
                       <span>Mejorar mi texto</span>
                     </button>
                   </div>
                   <div id="tbbStep0BizIdeasDrawer" style="display:${window.tbbState._showStep0Ideas ? 'grid' : 'none'}; grid-template-columns:1fr; gap:6px;">
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="const t='Cafetería artesanal con pan recién horneado y espacio cómodo para estudiar o trabajar'; document.getElementById('tbbStep0BizTextarea').value=t; tbbUpdateBusinessTypeFromInput(t); window.tbbState._showStep0Ideas=false; renderTbbZeroScrollStage();" style="justify-content:flex-start !important; text-align:left !important; font-size:0.88rem !important; font-weight:500 !important; min-height:42px !important;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="const t='Cafetería artesanal con pan recién horneado y espacio cómodo para estudiar o trabajar'; document.getElementById('tbbStep0BizTextarea').value=t; tbbUpdateBusinessTypeFromInput(t); window.tbbState._showStep0Ideas=false; renderTbbZeroScrollStage();" style="justify-content:flex-start !important; text-align:left !important; font-size:0.9rem !important; font-weight:500 !important; min-height:44px !important;">
                       Cafetería artesanal con pan recién horneado y espacio cómodo
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="const t='Despacho de arquitectura y construcción residencial con diseño moderno llave en mano'; document.getElementById('tbbStep0BizTextarea').value=t; tbbUpdateBusinessTypeFromInput(t); window.tbbState._showStep0Ideas=false; renderTbbZeroScrollStage();" style="justify-content:flex-start !important; text-align:left !important; font-size:0.88rem !important; font-weight:500 !important; min-height:42px !important;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="const t='Despacho de arquitectura y construcción residencial con diseño moderno llave en mano'; document.getElementById('tbbStep0BizTextarea').value=t; tbbUpdateBusinessTypeFromInput(t); window.tbbState._showStep0Ideas=false; renderTbbZeroScrollStage();" style="justify-content:flex-start !important; text-align:left !important; font-size:0.9rem !important; font-weight:500 !important; min-height:44px !important;">
                       Despacho de arquitectura y construcción residencial llave en mano
                     </button>
                   </div>
@@ -23566,6 +23574,7 @@
         // ---------------------------------------------------------------------
         if (st.step === 1) {
           const qObj = STEP1_QUESTIONS[st.subStep - 1] || STEP1_QUESTIONS[0];
+          const cleanQTitle = String(qObj.title || "").replace(/^\d+\.\s*/, "");
           const curVal = cs[qObj.key] || "";
           const dynChips = window.buildDynamicStep1Suggestions(st.subStep);
           if (btnAct) {
@@ -23578,16 +23587,16 @@
           const ideasOpen = Boolean(st._openIdeasSubStep === st.subStep);
 
           stage.innerHTML = `
-            <div class="tbb-atomic-card" style="padding:16px 20px; gap:12px;">
+            <div class="tbb-atomic-card is-hug-card" style="padding:20px 22px; gap:14px;">
               <div>
-                <div style="font-size:0.875rem; font-weight:600; color:#426EAE; margin-bottom:4px;">Paso 1 · Pregunta ${st.subStep} de 5 · ${qObj.title}</div>
-                <h2 style="font-family:var(--font-display); font-size:1.22rem; font-weight:700; color:#090D16; margin:0; line-height:1.3;">
+                <div style="font-size:0.875rem; font-weight:600; color:#426EAE; margin-bottom:4px;">Paso 1 · Pregunta ${st.subStep} de 5 · ${cleanQTitle}</div>
+                <h2 style="font-family:'Montserrat', var(--font-display); font-size:1.22rem; font-weight:700; letter-spacing:-0.02em; color:#0D2540; margin:0; line-height:1.3;">
                   ${qObj.q}
                 </h2>
               </div>
 
-              <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:10px;">
-                <textarea id="tbbStep1AnswerInput" rows="3" oninput="tbbSaveStep1Answer('${qObj.key}', this.value)" placeholder="Escribe con tus propias palabras o toca Hablar abajo..." style="width:100%; padding:12px 14px; border-radius:16px; border:2px solid #CBD5E1; font-size:1rem; font-weight:500; color:#090D16; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.48;">${curVal}</textarea>
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <textarea id="tbbStep1AnswerInput" rows="3" oninput="tbbSaveStep1Answer('${qObj.key}', this.value)" placeholder="Escribe con tus propias palabras o toca Hablar abajo..." style="width:100%; padding:13px 15px; border-radius:14px; border:1.5px solid rgba(13,37,64,0.16); font-size:1rem; font-weight:500; color:#0D2540; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.52;">${curVal}</textarea>
 
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                   <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnToggleStep1Ideas" onclick="window.tbbToggleStep1Ideas()" style="min-height:42px !important; padding:6px 14px !important; font-size:0.9rem !important; font-weight:600 !important; border-color:#CBD5E1 !important; color:#0D2540 !important;">
@@ -23630,29 +23639,29 @@
           const mergedOptions = [...new Set([...dynOptions, ...currentList])].slice(0, 6);
 
           stage.innerHTML = `
-            <div class="tbb-atomic-card" style="padding:12px 16px; gap:8px;">
+            <div class="tbb-atomic-card is-hug-card" style="padding:18px 20px; gap:12px;">
               <div>
-                <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:700; color:#1D4ED8;">PASO 2 · ETAPA ${st.subStep} DE 3 · ${ph.title}</div>
-                <h2 style="font-family:var(--font-display); font-size:1.08rem; font-weight:700; color:#090D16; margin:2px 0 4px 0;">
+                <div style="font-size:0.875rem; font-weight:700; color:#426EAE; margin-bottom:2px;">PASO 2 · ETAPA ${st.subStep} DE 3 · ${ph.title}</div>
+                <h2 style="font-family:'Montserrat', var(--font-display); font-size:1.14rem; font-weight:700; letter-spacing:-0.02em; color:#0D2540; margin:2px 0 4px 0;">
                   ${ph.q}
                 </h2>
               </div>
 
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:7px; flex:1; align-content:center;">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                 ${mergedOptions.map(opt => {
                   const isSel = currentList.includes(opt);
                   const safeOpt = opt.replace(/'/g, "\\'");
                   return `
-                    <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbToggleTouchpointItem('${ph.key}', '${safeOpt}')" style="min-height:42px !important; padding:6px 10px !important; font-size:0.80rem !important; font-weight:600 !important;">
+                    <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbToggleTouchpointItem('${ph.key}', '${safeOpt}')" style="min-height:44px !important; padding:6px 10px !important; font-size:0.875rem !important; font-weight:600 !important;">
                       ${opt}
                     </button>
                   `;
                 }).join("")}
               </div>
 
-              <div style="display:flex; gap:7px; align-items:center;">
-                <input type="text" id="tbbCustomTpInput" placeholder="Otro punto de contacto..." style="flex:1; height:40px; padding:0 12px; border-radius:11px; border:1.5px solid #CBD5E1; font-size:0.84rem; font-weight:500; box-sizing:border-box;" />
-                <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="tbbAddCustomTouchpoint('${ph.key}')" style="min-height:40px !important; padding:0 14px !important; font-size:0.80rem !important;">
+              <div style="display:flex; gap:8px; align-items:center;">
+                <input type="text" id="tbbCustomTpInput" placeholder="Otro punto de contacto..." style="flex:1; height:42px; padding:0 12px; border-radius:12px; border:1px solid rgba(13,37,64,0.16); font-size:1rem; font-weight:500; box-sizing:border-box;" />
+                <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="tbbAddCustomTouchpoint('${ph.key}')" style="min-height:42px !important; padding:0 16px !important; font-size:0.875rem !important;">
                   Agregar
                 </button>
               </div>
@@ -23703,12 +23712,12 @@
               <div class="tbb-atomic-card" style="padding:12px 16px; gap:10px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
                   <div>
-                    <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 3 · 1 DE 3 · IDEAS Y PALABRAS CLAVE PARA TU NOMBRE</div>
+                    <div style="font-family:var(--font-mono); font-size:0.875rem; font-weight:800; color:#1D4ED8;">PASO 3 · 1 DE 3 · IDEAS Y PALABRAS CLAVE PARA TU NOMBRE</div>
                     <h2 style="font-family:var(--font-display); font-size:1.06rem; font-weight:900; color:#090D16; margin:2px 0 0 0;">
                       Revisa o edita las 4 ideas clave extraídas de tu marca para que la IA cree tus nombres
                     </h2>
                   </div>
-                  <button type="button" id="tbbBtnSynthesizeAxesAI" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbSynthesizeNamingAxesWithAI(true)" style="min-height:32px !important; padding:4px 10px !important; font-size:0.70rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; flex-shrink:0;">
+                  <button type="button" id="tbbBtnSynthesizeAxesAI" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbSynthesizeNamingAxesWithAI(true)" style="min-height:32px !important; padding:4px 10px !important; font-size:0.875rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; flex-shrink:0;">
                     ${window._tbbAiNamingAxesLoading ? "Analizando tu marca con IA..." : "Sintetizar 4 casillas con IA según mi marca"}
                   </button>
                 </div>
@@ -23716,26 +23725,26 @@
                 <!-- 4 Casillas 100% Editables por el Usuario -->
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                   <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
-                    <label for="tbbNamingAxis1Input" style="font-family:var(--font-mono); font-size:0.64rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">1. ¿QUÉ HACE O VENDE TU NEGOCIO?</label>
-                    <input type="text" id="tbbNamingAxis1Input" value="${String(axesObj.axis1 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(1, this.value)" placeholder="Ej. Marcadores deportivos para transmisiones en OBS..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <label for="tbbNamingAxis1Input" style="font-family:var(--font-mono); font-size:0.875rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">1. ¿QUÉ HACE O VENDE TU NEGOCIO?</label>
+                    <input type="text" id="tbbNamingAxis1Input" value="${String(axesObj.axis1 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(1, this.value)" placeholder="Ej. Marcadores deportivos para transmisiones en OBS..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.875rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
                   <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
-                    <label for="tbbNamingAxis2Input" style="font-family:var(--font-mono); font-size:0.64rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">2. ¿QUÉ BENEFICIO PRINCIPAL ENTREGAS?</label>
-                    <input type="text" id="tbbNamingAxis2Input" value="${String(axesObj.axis2 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(2, this.value)" placeholder="Ej. Emoción de estadio profesional en cada transmisión..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <label for="tbbNamingAxis2Input" style="font-family:var(--font-mono); font-size:0.875rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">2. ¿QUÉ BENEFICIO PRINCIPAL ENTREGAS?</label>
+                    <input type="text" id="tbbNamingAxis2Input" value="${String(axesObj.axis2 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(2, this.value)" placeholder="Ej. Emoción de estadio profesional en cada transmisión..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.875rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
                   <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
-                    <label for="tbbNamingAxis3Input" style="font-family:var(--font-mono); font-size:0.64rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">3. ¿QUÉ ESTILO O PERSONALIDAD BUSCAS?</label>
-                    <input type="text" id="tbbNamingAxis3Input" value="${String(axesObj.axis3 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(3, this.value)" placeholder="Ej. Dinámico, apasionado, televisivo, tecnológico..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <label for="tbbNamingAxis3Input" style="font-family:var(--font-mono); font-size:0.875rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">3. ¿QUÉ ESTILO O PERSONALIDAD BUSCAS?</label>
+                    <input type="text" id="tbbNamingAxis3Input" value="${String(axesObj.axis3 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(3, this.value)" placeholder="Ej. Dinámico, apasionado, televisivo, tecnológico..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.875rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
                   <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
-                    <label for="tbbNamingAxis4Input" style="font-family:var(--font-mono); font-size:0.64rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">4. PALABRAS O RAÍCES SUGERIDAS / PROPIAS</label>
-                    <input type="text" id="tbbNamingAxis4Input" value="${String(axesObj.axis4 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(4, this.value)" placeholder="Ej. Gridiron, Score, Live, Broadcast, Pro, Touchdown..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.82rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
+                    <label for="tbbNamingAxis4Input" style="font-family:var(--font-mono); font-size:0.875rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">4. PALABRAS O RAÍCES SUGERIDAS / PROPIAS</label>
+                    <input type="text" id="tbbNamingAxis4Input" value="${String(axesObj.axis4 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(4, this.value)" placeholder="Ej. Gridiron, Score, Live, Broadcast, Pro, Touchdown..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.875rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
                   </div>
                 </div>
 
                 <!-- Selector de Estilo de Nombre (Al seleccionar, genera con IA para ese estilo) -->
                 <div>
-                  <div style="font-size:0.72rem; font-weight:700; color:#334155; margin-bottom:4px;">Elige el estilo de nombre que quieres que la IA genere para tu marca:</div>
+                  <div style="font-size:0.875rem; font-weight:700; color:#334155; margin-bottom:4px;">Elige el estilo de nombre que quieres que la IA genere para tu marca:</div>
                   <div class="tbb-naming-styles-grid">
                     ${[
                       { id: "compuesto", lbl: "1. Compuesto" },
@@ -23760,11 +23769,11 @@
                 ` : ""}
                 <!-- Barra para escribir nombre directo o generar 6 propuestas con IA en vivo -->
                 <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:13px; padding:8px 12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  <label for="tbbStep3DirectNameInput" style="font-size:0.74rem; font-weight:800; color:#0D2540; flex-shrink:0;">
+                  <label for="tbbStep3DirectNameInput" style="font-size:0.875rem; font-weight:800; color:#0D2540; flex-shrink:0;">
                     ¿Ya tienes un nombre? Escríbelo o genera con IA:
                   </label>
                   <input type="text" id="tbbStep3DirectNameInput" value="${curBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Escribe tu nombre aquí o presiona Generar 6 Propuestas con IA →" style="flex:1; min-width:170px; height:36px; padding:0 12px; border-radius:9px; border:2px solid #090D16; background:#FFFFFF; font-size:0.90rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
-                  <button type="button" id="tbbBtnGenerateNamingAI_1" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbGenerateLiveAINamingProposals(this, true)" style="min-height:36px !important; padding:0 12px !important; font-size:0.75rem !important; flex-shrink:0;">
+                  <button type="button" id="tbbBtnGenerateNamingAI_1" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbGenerateLiveAINamingProposals(this, true)" style="min-height:36px !important; padding:0 12px !important; font-size:0.875rem !important; flex-shrink:0;">
                     ${window._tbbAiNamingIsLoading ? "Creando 6 nombres con IA..." : "Generar 6 Propuestas con IA →"}
                   </button>
                 </div>
@@ -23781,12 +23790,12 @@
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
                   <div>
-                    <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 3 · 2 DE 3 · 6 PROPUESTAS GENERADAS CON IA PARA TU MARCA</div>
+                    <div style="font-family:var(--font-mono); font-size:0.875rem; font-weight:800; color:#1D4ED8;">PASO 3 · 2 DE 3 · 6 PROPUESTAS GENERADAS CON IA PARA TU MARCA</div>
                     <h2 style="font-family:var(--font-display); font-size:1.02rem; font-weight:900; color:#090D16; margin:2px 0 0 0;">
                       Toca el nombre que más te guste, cambia de estilo arriba o escribe el tuyo abajo
                     </h2>
                   </div>
-                  <button type="button" id="tbbBtnGenerateNamingAI_2" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbGenerateLiveAINamingProposals(this, false)" style="min-height:32px !important; padding:4px 10px !important; font-size:0.72rem !important; flex-shrink:0;">
+                  <button type="button" id="tbbBtnGenerateNamingAI_2" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbGenerateLiveAINamingProposals(this, false)" style="min-height:32px !important; padding:4px 10px !important; font-size:0.875rem !important; flex-shrink:0;">
                     ${window._tbbAiNamingIsLoading ? "Generando con IA..." : "Generar 6 Nuevas con IA"}
                   </button>
                 </div>
@@ -23806,12 +23815,18 @@
                 </div>
 
                 ${window._tbbAiNamingIsLoading ? `
-                  <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#F8FAFC; border:2px dashed #93C5FD; border-radius:14px; padding:18px; gap:8px; text-align:center;">
-                    <div style="font-family:var(--font-display); font-size:1.02rem; font-weight:900; color:#1D4ED8;">
-                      La IA está diseñando 6 propuestas de nombre exclusivas para tu marca...
+                  <div class="tbb-naming-skeleton-wrap">
+                    <div class="tbb-shimmer-status-pill">
+                      <svg class="tbb-spin-spark" width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2.8l2.1 6.1 6.1 2.1-6.1 2.1L12 19.2l-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8z" stroke="#FF7A00" stroke-width="1.75" stroke-linejoin="round"/></svg>
+                      <span>Aura sintetizando 6 nombres memorables para tu giro...</span>
                     </div>
-                    <div style="font-size:0.80rem; font-weight:700; color:#475569; max-width:520px;">
-                      Analizando tu giro («${(axesObj.axis1 || cs.custom_business_type || "tu proyecto").slice(0, 70)}»), el beneficio que entregas y tu personalidad de marca.
+                    <div class="tbb-naming-skeleton-grid" aria-hidden="true">
+                      ${[0, 1, 2, 3, 4, 5].map(() => `
+                        <div class="tbb-atelier-skeleton-box" style="height:58px; border-radius:14px; padding:10px 12px; display:flex; flex-direction:column; justify-content:space-between;">
+                          <div style="width:62%; height:12px; border-radius:6px; background:rgba(13,37,64,0.08);"></div>
+                          <div style="width:84%; height:9px; border-radius:5px; background:rgba(13,37,64,0.05);"></div>
+                        </div>
+                      `).join("")}
                     </div>
                   </div>
                 ` : `
@@ -23824,10 +23839,10 @@
                         <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectEvaluatedNamingCandidate('${safeName}', '${safeTag}');" style="display:flex !important; flex-direction:column !important; align-items:flex-start !important; justify-content:space-between !important; text-align:left !important; padding:6px 10px !important; min-height:58px !important; gap:2px !important;">
                           <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:6px;">
                             <span style="font-family:var(--font-display); font-size:0.90rem; font-weight:900; color:#090D16; letter-spacing:0.01em;">${item.name}</span>
-                            <span style="font-family:var(--font-mono); font-size:0.60rem; font-weight:900; background:${isSel ? '#1D4ED8' : '#EFF6FF'}; color:${isSel ? '#FFFFFF' : '#1D4ED8'}; padding:2px 6px; border-radius:6px; flex-shrink:0;">[${item.monogram}]</span>
+                            <span style="font-family:var(--font-mono); font-size:0.875rem; font-weight:900; background:${isSel ? '#1D4ED8' : '#EFF6FF'}; color:${isSel ? '#FFFFFF' : '#1D4ED8'}; padding:2px 6px; border-radius:6px; flex-shrink:0;">[${item.monogram}]</span>
                           </div>
-                          <div style="font-size:0.66rem; font-weight:800; color:#1D4ED8; line-height:1.15;">${item.tech}</div>
-                          <div style="font-size:0.64rem; font-weight:600; color:#475569; line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${item.roots}</div>
+                          <div style="font-size:0.875rem; font-weight:800; color:#1D4ED8; line-height:1.15;">${item.tech}</div>
+                          <div style="font-size:0.875rem; font-weight:600; color:#475569; line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${item.roots}</div>
                         </button>
                       `;
                     }).join("")}
@@ -23835,10 +23850,10 @@
                 `}
 
                 <div style="background:#F0F7FF; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  <label for="tbbStep3Sub2NameInput" style="font-size:0.74rem; font-weight:800; color:#0D2540; flex-shrink:0;">
+                  <label for="tbbStep3Sub2NameInput" style="font-size:0.875rem; font-weight:800; color:#0D2540; flex-shrink:0;">
                     Nombre elegido (editable):
                   </label>
-                  <input type="text" id="tbbStep3Sub2NameInput" value="${curBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Toca una propuesta de IA arriba o escribe el nombre de tu marca..." style="flex:1; min-width:180px; height:32px; padding:0 10px; border-radius:8px; border:2px solid #1D4ED8; background:#FFFFFF; font-size:0.86rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
+                  <input type="text" id="tbbStep3Sub2NameInput" value="${curBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Toca una propuesta de IA arriba o escribe el nombre de tu marca..." style="flex:1; min-width:180px; height:32px; padding:0 10px; border-radius:8px; border:2px solid #1D4ED8; background:#FFFFFF; font-size:0.875rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
                 </div>
               </div>
             `;
@@ -23862,28 +23877,28 @@
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#1D4ED8;">PASO 3 · 3 DE 3 · NOMBRE OFICIAL, ESLOGAN Y CLASE DE NIZA</div>
+                  <div style="font-family:var(--font-mono); font-size:0.875rem; font-weight:700; color:#1D4ED8;">PASO 3 · 3 DE 3 · NOMBRE OFICIAL, ESLOGAN Y CLASE DE NIZA</div>
                   <h2 style="font-family:var(--font-display); font-size:1.02rem; font-weight:700; color:#090D16; margin:2px 0;">
                     Confirma tu Nombre Oficial, Eslogan y Clasificación de Registro Marcario
                   </h2>
                 </div>
                 <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:6px;">
                   <div style="background:#F0F7FF; border:1.5px solid #1D4ED8; border-radius:12px; padding:6px 12px;">
-                    <label for="tbbStep3FinalBrandInput" style="display:block; font-family:var(--font-mono); font-size:0.64rem; color:#1D4ED8; font-weight:700; letter-spacing:0.04em; margin-bottom:2px;">
+                    <label for="tbbStep3FinalBrandInput" style="display:block; font-family:var(--font-mono); font-size:0.875rem; color:#1D4ED8; font-weight:700; letter-spacing:0.04em; margin-bottom:2px;">
                       NOMBRE OFICIAL DE TU MARCA (EDITABLE):
                     </label>
                     <input type="text" id="tbbStep3FinalBrandInput" value="${confirmedBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" placeholder="Escribe el nombre oficial de tu marca..." style="width:100%; height:36px; padding:0 10px; border-radius:8px; border:1.5px solid #090D16; background:#FFFFFF; font-family:var(--font-display); font-size:1.05rem; font-weight:700; color:#090D16; box-sizing:border-box;" />
                   </div>
                   <div>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                      <label for="tbbStep3TaglineInput" style="font-size:0.72rem; font-weight:600; color:#334155;">
+                      <label for="tbbStep3TaglineInput" style="font-size:0.875rem; font-weight:600; color:#334155;">
                         Eslogan o Frase Descriptiva:
                       </label>
-                      <button type="button" onclick="window.tbbPolishInputFieldClarity('tbbStep3TaglineInput', 'tagline')" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; border-radius:6px; padding:2px 8px; font-size:0.66rem; font-weight:600; cursor:pointer;">Refinar con IA</button>
+                      <button type="button" onclick="window.tbbPolishInputFieldClarity('tbbStep3TaglineInput', 'tagline')" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; border-radius:6px; padding:2px 8px; font-size:0.875rem; font-weight:600; cursor:pointer;">Refinar con IA</button>
                     </div>
-                    <input type="text" id="tbbStep3TaglineInput" value="${taglineVal.replace(/"/g, '&quot;')}" oninput="canvasState.tagline=this.value; saveBrandSessionToLocalStorage();" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Ej. Claridad y precisión en tiempo real..." style="width:100%; height:36px; padding:0 10px; border-radius:8px; border:1.5px solid #090D16; background:#FFFFFF; font-size:0.82rem; font-weight:600; color:#090D16; box-sizing:border-box;" />
+                    <input type="text" id="tbbStep3TaglineInput" value="${taglineVal.replace(/"/g, '&quot;')}" oninput="canvasState.tagline=this.value; saveBrandSessionToLocalStorage();" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Ej. Claridad y precisión en tiempo real..." style="width:100%; height:36px; padding:0 10px; border-radius:8px; border:1.5px solid #090D16; background:#FFFFFF; font-size:0.875rem; font-weight:600; color:#090D16; box-sizing:border-box;" />
                   </div>
-                  <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:10px; padding:5px 10px; font-size:0.70rem; color:#0F172A; line-height:1.3;">
+                  <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:10px; padding:5px 10px; font-size:0.875rem; color:#0F172A; line-height:1.3;">
                     <strong style="color:#1D4ED8; font-family:var(--font-mono); font-weight:700;">CLASE DE NIZA (IMPI / WIPO):</strong> ${autoNiceClass}
                   </div>
                   ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(3, "brandName") : ""}
@@ -23908,7 +23923,7 @@
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:${isCompact3 ? '8px 14px' : '12px 16px'}; gap:${isCompact3 ? '6px' : '10px'};">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#1D4ED8;">PASO 4 · ${st.subStep} DE 5 · CALIBRACIÓN VISUAL CON REFERENCIAS</div>
+                  <div style="font-family:var(--font-mono); font-size:0.875rem; font-weight:800; color:#1D4ED8;">PASO 4 · ${st.subStep} DE 5 · CALIBRACIÓN VISUAL CON REFERENCIAS</div>
                   <h2 style="font-family:var(--font-display); font-size:${isCompact3 ? '1.04rem' : '1.16rem'}; font-weight:900; color:#090D16; margin:2px 0 4px 0;">
                     <span class="tbb-bipolar-hint-desktop">Desliza o toca las referencias visuales en los extremos para «${cs.brandName || "TheBestBrand"}»</span>
                     <span class="tbb-bipolar-hint-mobile">Toca cuál de los dos extremos representa mejor a «${cs.brandName || "TheBestBrand"}»</span>
@@ -23925,7 +23940,7 @@
                     const rightSelected = normVal >= 0.5;
                     return `
                       <div style="background:#F8FAFC; border:1.5px solid #CBD5E1; border-radius:14px; padding:${isCompact3 ? '6px 10px' : '10px 12px'}; display:flex; flex-direction:column; gap:${isCompact3 ? '4px' : '8px'};">
-                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; font-weight:800; color:#0F172A;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.875rem; font-weight:800; color:#0F172A;">
                           <span>${spec.title}</span>
                           <span class="tbb-bipolar-pct-badge" style="color:#0D2540; font-weight:900; font-family:var(--font-mono);">${pct}%</span>
                         </div>
@@ -23936,8 +23951,8 @@
                               ${spec.leftSvg || ""}
                             </span>
                             <span style="display:flex; flex-direction:column; line-height:1.15; overflow:hidden; min-width:0; flex:1;">
-                              <span style="font-size:0.70rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${spec.leftBrand || spec.leftPole}</span>
-                              <span style="font-size:0.63rem; font-weight:700; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${spec.leftTrait || ""}</span>
+                              <span style="font-size:0.875rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${spec.leftBrand || spec.leftPole}</span>
+                              <span style="font-size:0.875rem; font-weight:700; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${spec.leftTrait || ""}</span>
                             </span>
                           </button>
 
@@ -23949,8 +23964,8 @@
                           <!-- Extremo Derecho con Imagen Vectorial Representativa -->
                           <button type="button" class="tbb-duo-btn tbb-bipolar-pole-btn ${rightSelected ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbUpdateSliderValue('${spec.id}', 0.85)" style="justify-content:flex-end !important; text-align:right !important;">
                             <span style="display:flex; flex-direction:column; line-height:1.15; overflow:hidden; align-items:flex-end; min-width:0; flex:1;">
-                              <span style="font-size:0.70rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${spec.rightBrand || spec.rightPole}</span>
-                              <span style="font-size:0.63rem; font-weight:700; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${spec.rightTrait || ""}</span>
+                              <span style="font-size:0.875rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${spec.rightBrand || spec.rightPole}</span>
+                              <span style="font-size:0.875rem; font-weight:700; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${spec.rightTrait || ""}</span>
                             </span>
                             <span class="tbb-pole-icon-box" style="width:32px; height:32px; border-radius:8px; background:#090D16; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid #38BDF8;">
                               ${spec.rightSvg || ""}
@@ -24049,7 +24064,7 @@
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 4 · 4 DE 5 · SISTEMA TIPOGRÁFICO HÍBRIDO (OPEN SOURCE .TTF + ADOBE FONTS TYPEKIT · 100% COPYRIGHT)</div>
+                  <div style="font-family:var(--font-mono); font-size:0.875rem; font-weight:800; color:#1D4ED8;">PASO 4 · 4 DE 5 · SISTEMA TIPOGRÁFICO HÍBRIDO (OPEN SOURCE .TTF + ADOBE FONTS TYPEKIT · 100% COPYRIGHT)</div>
                   <h2 style="font-family:var(--font-display); font-size:1.02rem; font-weight:900; color:#090D16; margin:2px 0 0 0;">
                     1. Elige la familia de estilo (o conecta Adobe Fonts) y 2. Toca la tríada para «${previewBrand}»
                   </h2>
@@ -24089,12 +24104,12 @@
                       <button type="button" class="tbb-duo-btn tbb-font-triad-card ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbSelectOfficialFontFamily('${f.id}', '${f.sec}', '${f.mono}')">
                         <div style="display:flex; justify-content:space-between; align-items:baseline; width:100%; gap:4px; min-width:0;">
                           <span class="tbb-triad-brand-preview" style="font-family:'${f.id}', '${fallbackFam}', sans-serif; font-size:1.02rem; font-weight:800; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; flex:1;">${previewBrand}</span>
-                          <span style="font-family:var(--font-mono); font-size:0.56rem; font-weight:800; color:${isAdobe ? '#B91C1C' : '#059669'}; background:${isAdobe ? '#FEF2F2' : '#ECFDF5'}; border:1px solid ${isAdobe ? '#FECACA' : '#A7F3D0'}; border-radius:6px; padding:1px 4px; flex-shrink:0;">${f.badge || "3 .TTF"}</span>
+                          <span style="font-family:var(--font-mono); font-size:0.875rem; font-weight:800; color:${isAdobe ? '#B91C1C' : '#059669'}; background:${isAdobe ? '#FEF2F2' : '#ECFDF5'}; border:1px solid ${isAdobe ? '#FECACA' : '#A7F3D0'}; border-radius:6px; padding:1px 4px; flex-shrink:0;">${f.badge || "3 .TTF"}</span>
                         </div>
-                        <span style="font-family:'${f.sec}', sans-serif; font-size:0.66rem; font-weight:800; color:#0D2540; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">
+                        <span style="font-family:'${f.sec}', sans-serif; font-size:0.875rem; font-weight:800; color:#0D2540; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">
                           ${f.id} + ${f.sec}${isAdobe ? ` (Kit .TTF: ${fallbackFam})` : ""}
                         </span>
-                        <span class="tbb-triad-role-desc" style="font-size:0.63rem; font-weight:600; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">
+                        <span class="tbb-triad-role-desc" style="font-size:0.875rem; font-weight:600; color:#475569; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">
                           ${f.role}
                         </span>
                       </button>
@@ -24102,7 +24117,7 @@
                   }).join("")}
                 </div>
 
-                <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; font-size:0.72rem; color:#0D2540; background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:12px; padding:5px 12px; font-weight:700;">
+                <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; font-size:0.875rem; color:#0D2540; background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:12px; padding:5px 12px; font-weight:700;">
                   <span>Sistema Híbrido Activo: <strong>${curFont}</strong> (Logo/Títulos) + <strong>${curSecFont}</strong> (Cuerpo) + <strong>${curMonoFont}</strong> (Datos)${curAdobeKitId ? ` · Typekit: <code>${escapeHTML(curAdobeKitId)}</code>` : ""}</span>
 <span style="font-size:0.875rem;color:#047857;">Se incluirá listo para instalar en el Paso 6</span>
                 </div>
@@ -24118,34 +24133,34 @@
             { lbl: "3. Símbolo Continuo", sub: "Fluidez orgánica y áurea", img: "/assets/avi/step4_dir3_thumb.webp" },
             { lbl: "4. Volumen 3D y Prisma", sub: "Facetas y refracción de luz", img: "/assets/avi/step4_dir4_thumb.webp" }
           ];
-          const curFam = Number(selectedLiveSketchIndex || 0) % 4;
+            const curFam = Number(selectedLiveSketchIndex || 0) % 4;
           const curSeedIdea = cs.step4_seed_idea || "";
           stage.innerHTML = `
-            <div class="tbb-atomic-card is-hug-card" style="padding:14px 18px; gap:10px;">
+            <div class="tbb-atomic-card is-hug-card" style="padding:16px 20px; gap:12px;">
               <div>
-                <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#0D2540;">PASO 4 · 5 DE 5 · ESTRUCTURA BASE E IDEA DE PARTIDA</div>
-                <h2 style="font-family:var(--font-display); font-size:1.02rem; font-weight:700; color:#090D16; margin:2px 0;">
+                <div style="font-size:0.875rem; font-weight:700; color:#426EAE; letter-spacing:0.02em;">PASO 4 · 5 DE 5 · ESTRUCTURA BASE E IDEA DE PARTIDA</div>
+                <h2 style="font-family:'Montserrat', var(--font-display); font-size:1.14rem; font-weight:700; letter-spacing:-0.02em; color:#0D2540; margin:2px 0;">
                   Elige la estructura base y un símbolo inicial opcional para «${cs.brandName || "TheBestBrand"}»
                 </h2>
               </div>
               <div class="tbb-step45-structure-grid">
                 ${fams.map((f, idx) => `
-                  <button type="button" class="tbb-duo-btn ${curFam === idx ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbSelectBaseStructureFamily(${idx})" style="display:flex !important; align-items:center !important; justify-content:flex-start !important; gap:10px !important; padding:8px 12px !important; min-height:56px !important; text-align:left !important; width:100% !important; min-width:0 !important;">
+                  <button type="button" class="tbb-duo-btn ${curFam === idx ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbSelectBaseStructureFamily(${idx})" style="display:flex !important; align-items:center !important; justify-content:flex-start !important; gap:10px !important; padding:9px 12px !important; min-height:58px !important; text-align:left !important; width:100% !important; min-width:0 !important;">
                     <img src="${f.img}" alt="${escapeHTML(f.lbl)}" width="42" height="42" loading="lazy" decoding="async" style="width:42px; height:42px; object-fit:cover; border-radius:9px; border:1px solid #CBD5E1; flex-shrink:0; background:#090D16;" />
                     <div style="min-width:0; flex:1; overflow:hidden;">
-                      <div style="font-size:0.88rem; font-weight:700; line-height:1.22; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${f.lbl}</div>
-                      <div style="font-size:0.78rem; font-weight:500; color:#475569; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${f.sub}</div>
+                      <div style="font-size:0.94rem; font-weight:700; line-height:1.25; color:#0D2540; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${f.lbl}</div>
+                      <div style="font-size:0.875rem; font-weight:500; color:#475569; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${f.sub}</div>
                     </div>
                   </button>
                 `).join("")}
               </div>
               <div>
-                <label style="display:block; font-size:0.72rem; font-weight:600; color:#0F172A; margin-bottom:3px;">
+                <label style="display:block; font-size:0.875rem; font-weight:600; color:#0D2540; margin-bottom:4px;">
                   Símbolo u objeto de partida (Opcional · ej. alas, estrella, escudo, montaña):
                 </label>
-                <input type="text" id="tbbStep4SeedIdeaInput" value="${escapeHTML(curSeedIdea)}" oninput="tbbUpdateStep4SeedIdea(this.value)" placeholder="Opcional: escribe tu símbolo inicial..." style="width:100%; height:38px; padding:0 12px; border-radius:10px; border:1.5px solid #090D16; font-size:0.88rem; font-weight:500; color:#090D16; background:#FFFFFF; box-sizing:border-box; text-overflow:ellipsis;" />
+                <input type="text" id="tbbStep4SeedIdeaInput" value="${escapeHTML(curSeedIdea)}" oninput="tbbUpdateStep4SeedIdea(this.value)" placeholder="Opcional: escribe tu símbolo inicial..." style="width:100%; height:42px; padding:0 12px; border-radius:12px; border:1px solid rgba(13,37,64,0.16); font-size:1rem; font-weight:500; color:#0D2540; background:#FFFFFF; box-sizing:border-box; text-overflow:ellipsis;" />
               </div>
-              <div style="font-size:0.70rem; color:#0D2540; background:#F0F7FF; border:1px solid #93C5FD; border-radius:9px; padding:4px 8px; text-align:center; font-weight:600;">
+              <div style="font-size:0.875rem; color:#0D2540; background:#F4F8FC; border:1px solid rgba(66,110,174,0.22); border-radius:10px; padding:6px 10px; text-align:center; font-weight:600;">
                 Paradigma sugerido: ${(SYSTEMIC_LOGO_PARADIGMS.find(p => p.id === st.logoParadigm) || SYSTEMIC_LOGO_PARADIGMS[0]).label}
               </div>
               ${window.renderTbbAuthorConsultantCardHTML ? window.renderTbbAuthorConsultantCardHTML(4, "step4_seed_idea") : ""}
@@ -24201,7 +24216,7 @@
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.70rem; font-weight:800; color:#1D4ED8;">PASO 5 · 1 DE 2 · ACABADO, LOGO BASE Y SELECTOR CIRCULAR DE COLOR (2 A 6 COLORES)</div>
+                  <div style="font-family:var(--font-mono); font-size:0.875rem; font-weight:800; color:#1D4ED8;">PASO 5 · 1 DE 2 · ACABADO, LOGO BASE Y SELECTOR CIRCULAR DE COLOR (2 A 6 COLORES)</div>
                   <h2 style="font-family:var(--font-display); font-size:1.06rem; font-weight:900; color:#090D16; margin:2px 0 2px 0;">
                     Selecciona el Acabado y tu Paleta Oficial en el Espectro Circular para «${displayBrandStep5}»
                   </h2>
@@ -24211,21 +24226,21 @@
                 <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:12px; padding:5px 10px; display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
                   <input type="file" id="tbbStep5LogoFileInput" accept="image/png,image/jpeg,image/webp,image/svg+xml,.svg,.png,.jpg,.jpeg,.webp" onchange="window.tbbHandleExistingLogoUpload(this)" style="display:none;" />
                   ${!uploadedLogoUrl ? `
-                    <div style="font-size:0.73rem; font-weight:800; color:#1D4ED8; flex:1; min-width:170px;">
+                    <div style="font-size:0.875rem; font-weight:800; color:#1D4ED8; flex:1; min-width:170px;">
                       ¿Ya tienes un logo y quieres mantenerlo o tomarlo como base?
                     </div>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('tbbStep5LogoFileInput').click()" style="min-height:32px !important; padding:4px 10px !important; font-size:0.74rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="document.getElementById('tbbStep5LogoFileInput').click()" style="min-height:32px !important; padding:4px 10px !important; font-size:0.875rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important;">
                       Subir mi Logo Actual
                     </button>
                   ` : `
                     <div style="display:flex; align-items:center; gap:8px; min-width:0; flex:1;">
                       <img src="${cs.raw_uploaded_logo_data_url || uploadedLogoUrl}" alt="Logo base" style="width:36px; height:36px; object-fit:contain; border-radius:7px; border:1px solid #93C5FD; background:#FFFFFF; flex-shrink:0;" />
                       <div style="min-width:0;">
-                        <div style="font-size:0.73rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Logo Base Cargado (${extColors[0]} · ${extColors[1]})</div>
+                        <div style="font-size:0.875rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Logo Base Cargado (${extColors[0]} · ${extColors[1]})</div>
                         <div style="display:flex; gap:6px; margin-top:2px;">
-                          <button type="button" onclick="window.tbbSetExistingLogoMode('keep')" style="background:${existingLogoMode === 'keep' ? '#1D4ED8' : '#FFFFFF'}; color:${existingLogoMode === 'keep' ? '#FFFFFF' : '#1D4ED8'}; border:1.5px solid #1D4ED8; border-radius:6px; padding:2px 7px; font-size:0.66rem; font-weight:800; cursor:pointer;">Mantenerlo</button>
-                          <button type="button" onclick="window.tbbSetExistingLogoMode('evolve')" style="background:${existingLogoMode === 'evolve' ? '#1D4ED8' : '#FFFFFF'}; color:${existingLogoMode === 'evolve' ? '#FFFFFF' : '#1D4ED8'}; border:1.5px solid #1D4ED8; border-radius:6px; padding:2px 7px; font-size:0.66rem; font-weight:800; cursor:pointer;">Modernizar / Evolucionar como base</button>
-                          <button type="button" onclick="document.getElementById('tbbStep5LogoFileInput').click()" style="background:#FFFFFF; color:#475569; border:1px solid #CBD5E1; border-radius:6px; padding:2px 6px; font-size:0.65rem; font-weight:800; cursor:pointer;">Cambiar</button>
+                          <button type="button" onclick="window.tbbSetExistingLogoMode('keep')" style="background:${existingLogoMode === 'keep' ? '#1D4ED8' : '#FFFFFF'}; color:${existingLogoMode === 'keep' ? '#FFFFFF' : '#1D4ED8'}; border:1.5px solid #1D4ED8; border-radius:6px; padding:2px 7px; font-size:0.875rem; font-weight:800; cursor:pointer;">Mantenerlo</button>
+                          <button type="button" onclick="window.tbbSetExistingLogoMode('evolve')" style="background:${existingLogoMode === 'evolve' ? '#1D4ED8' : '#FFFFFF'}; color:${existingLogoMode === 'evolve' ? '#FFFFFF' : '#1D4ED8'}; border:1.5px solid #1D4ED8; border-radius:6px; padding:2px 7px; font-size:0.875rem; font-weight:800; cursor:pointer;">Modernizar / Evolucionar como base</button>
+                          <button type="button" onclick="document.getElementById('tbbStep5LogoFileInput').click()" style="background:#FFFFFF; color:#475569; border:1px solid #CBD5E1; border-radius:6px; padding:2px 6px; font-size:0.875rem; font-weight:800; cursor:pointer;">Cambiar</button>
                         </div>
                       </div>
                     </div>
@@ -24310,7 +24325,7 @@
                     <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; if(window.tbbSyncImproBearsLogoDarkVariant){window.tbbSyncImproBearsLogoDarkVariant();} triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="min-height:34px !important; padding:4px 10px !important; font-size:0.875rem !important; font-weight:600 !important; flex-shrink:0; white-space:nowrap;">
                       Claro/Oscuro
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="min-height:34px !important; padding:4px 11px !important; font-size:0.84rem !important; font-weight:600 !important; flex-shrink:0; white-space:nowrap;" title="Abrir vista de aplicaciones reales adaptadas al giro de tu negocio">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="min-height:36px !important; padding:4px 11px !important; font-size:0.875rem !important; font-weight:600 !important; flex-shrink:0; white-space:nowrap;" title="Abrir vista de aplicaciones reales adaptadas al giro de tu negocio">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="9" r="1.8" fill="#FDE68A"/><path d="M5 16l4.5-4 3.5 2.5 4.5-5L20 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       <span>Mockups</span>
                     </button>
@@ -24322,7 +24337,7 @@
                       { id: "editorial_crest", lbl: "3. Insignia", tip: "Escudo, sello arquitectónico o insignia de prestigio institucional" },
                       { id: "minimal_couture", lbl: "4. Minimalista", tip: "Síntesis geométrica monolineal de alta precisión para grabado, casco, bordado y app" }
                     ].map(cm => `
-                      <button type="button" class="tbb-duo-btn ${activeCreativeMode === cm.id ? 'tbb-duo-btn-emerald' : 'tbb-duo-btn-secondary'}" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value.trim():'', {creativeMode:'${cm.id}', switchCreativeMode:true, evolveCurrent:${Boolean(hasExternalUploadedLogo && cm.id==='emblem_masterpiece')}, freshFromScratch:${Boolean(!hasExternalUploadedLogo || cm.id!=='emblem_masterpiece')}});}" style="min-height:36px !important; padding:4px 8px !important; font-size:0.84rem !important; font-weight:600 !important; white-space:nowrap; min-width:0; width:100%;" title="${cm.tip}">
+                      <button type="button" class="tbb-duo-btn ${activeCreativeMode === cm.id ? 'tbb-duo-btn-emerald' : 'tbb-duo-btn-secondary'}" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value.trim():'', {creativeMode:'${cm.id}', switchCreativeMode:true, evolveCurrent:${Boolean(hasExternalUploadedLogo && cm.id==='emblem_masterpiece')}, freshFromScratch:${Boolean(!hasExternalUploadedLogo || cm.id!=='emblem_masterpiece')}});}" style="min-height:36px !important; padding:4px 8px !important; font-size:0.875rem !important; font-weight:600 !important; white-space:nowrap; min-width:0; width:100%;" title="${cm.tip}">
                         ${cm.lbl}
                       </button>
                     `).join("")}
@@ -24330,24 +24345,41 @@
                 </div>
 
                 <!-- Lienzo Central a Pantalla Completa (Showcase de Estudio NanoBanana PRO + App Icon 1:1) -->
-                <div style="flex:1; min-height:130px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:14px; padding:4px; position:relative;">
+                <div style="flex:1; min-height:130px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#F8FAFC; border:1px solid rgba(13,37,64,0.09); border-radius:16px; padding:4px; position:relative;">
                   ${svgCanvas}
                   ${st.geminiBusy ? `
-                    <div style="position:absolute; inset:0; background:rgba(9,13,22,0.76); backdrop-filter:blur(4px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; z-index:20; color:#FFFFFF; padding:16px; text-align:center;">
-                      <div style="font-size:0.92rem; font-weight:700; color:#FDE68A; letter-spacing:0.03em;">${window.tbbTranslateText ? window.tbbTranslateText("AURA DISEÑANDO TU LOGOTIPO...") : "AURA DISEÑANDO TU LOGOTIPO..."}</div>
-                      <div style="font-size:0.78rem; font-weight:500; color:#E2E8F0; max-width:540px;">${window.tbbTranslateText ? window.tbbTranslateText(st.geminiStatusText || "Integrando el ADN de tu marca, giro y paleta cromática...") : (st.geminiStatusText || "Integrando el ADN de tu marca, giro y paleta cromática...")}</div>
+                    <div class="tbb-atelier-logo-skeleton-overlay" role="status" aria-live="polite">
+                      <div class="tbb-logo-skel-stage" aria-hidden="true">
+                        <div class="tbb-atelier-skeleton-box is-main-art">
+                          <div class="tbb-skel-emblem-ring"></div>
+                          <div class="tbb-skel-bar is-w60"></div>
+                          <div class="tbb-skel-bar is-w40"></div>
+                        </div>
+                        <div class="tbb-atelier-skeleton-box is-side-icon">
+                          <div class="tbb-skel-squircle"></div>
+                          <div class="tbb-skel-bar is-w70"></div>
+                          <div class="tbb-skel-dots"><i></i><i></i><i></i></div>
+                        </div>
+                      </div>
+                      <div class="tbb-logo-skel-floating-pill">
+                        <svg class="tbb-spin-spark" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2.8l2.1 6.1 6.1 2.1-6.1 2.1L12 19.2l-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8z" stroke="#FF7A00" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                        <div>
+                          <strong>${window.tbbTranslateText ? window.tbbTranslateText("Aura diseñando tu logotipo...") : "Aura diseñando tu logotipo..."}</strong>
+                          <span>${window.tbbTranslateText ? window.tbbTranslateText(st.geminiStatusText || "Trazando geometría, tipografía y paleta de tu marca...") : (st.geminiStatusText || "Trazando geometría, tipografía y paleta de tu marca...")}</span>
+                        </div>
+                      </div>
                     </div>
                   ` : ""}
                 </div>
 
                 <!-- Síntesis Estratégica de la Iteración Activa -->
-                <div style="background:#EFF6FF; border:1px solid #93C5FD; border-radius:9px; padding:4px 8px; font-size:0.68rem; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                  <strong style="color:#1D4ED8; font-weight:700;">${window.tbbTranslateText ? window.tbbTranslateText("ADN") : "ADN"} (${window.tbbTranslateText ? window.tbbTranslateText(activeArchObj.label) : activeArchObj.label}):</strong> ${window.tbbTranslateText ? window.tbbTranslateText((activeItObj && activeItObj.note) ? escapeHTML(String(activeItObj.note).slice(0, 95)) : promptInfo.text) : ((activeItObj && activeItObj.note) ? escapeHTML(String(activeItObj.note).slice(0, 95)) : promptInfo.text)}
+                <div style="background:#F4F8FC; border:1px solid rgba(66,110,174,0.20); border-radius:10px; padding:5px 10px; font-size:0.875rem; color:#0D2540; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                  <strong style="color:#426EAE; font-weight:700;">${window.tbbTranslateText ? window.tbbTranslateText("ADN") : "ADN"} (${window.tbbTranslateText ? window.tbbTranslateText(activeArchObj.label) : activeArchObj.label}):</strong> ${window.tbbTranslateText ? window.tbbTranslateText((activeItObj && activeItObj.note) ? escapeHTML(String(activeItObj.note).slice(0, 95)) : promptInfo.text) : ((activeItObj && activeItObj.note) ? escapeHTML(String(activeItObj.note).slice(0, 95)) : promptInfo.text)}
                 </div>
 
                 <!-- Cuadro Conversacional Multimodal -->
                 <div style="display:flex; gap:6px; align-items:center;">
-                  <input type="text" id="tbbSingleLogoIterationBox" value="${escapeHTML(st._draftLogoPromptText || '')}" oninput="if(window.tbbState){window.tbbState._draftLogoPromptText=this.value;}" onfocus="setTimeout(()=>{try{this.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){}},160)" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter'){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Pide un ajuste (ej. más simple)..." style="flex:1; min-width:0; height:40px; padding:0 12px; border-radius:12px; border:1.5px solid #090D16; font-size:1rem; font-weight:500; color:#090D16; background:#FFFFFF; box-sizing:border-box; text-overflow:ellipsis;" />
+                  <input type="text" id="tbbSingleLogoIterationBox" value="${escapeHTML(st._draftLogoPromptText || '')}" oninput="if(window.tbbState){window.tbbState._draftLogoPromptText=this.value;}" onfocus="setTimeout(()=>{try{this.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){}},160)" ${st.geminiBusy ? "disabled" : ""} onkeydown="if(event.key==='Enter'){ event.preventDefault(); onTbbAtomicCenterAction(); }" placeholder="Pide un ajuste (ej. más simple)..." style="flex:1; min-width:0; height:40px; padding:0 12px; border-radius:12px; border:1px solid rgba(13,37,64,0.16); box-shadow:inset 0 1px 2px rgba(13,37,64,0.03); font-size:1rem; font-weight:500; color:#0D2540; background:#FFFFFF; box-sizing:border-box; text-overflow:ellipsis;" />
                   <button type="button" id="tbbInlineApplyLogoPromptBtn" class="tbb-duo-btn tbb-duo-btn-gold" ${st.geminiBusy ? "disabled" : ""} onclick="onTbbAtomicCenterAction()" style="flex:0 0 auto; padding:0 14px !important; font-size:0.875rem !important; font-weight:600 !important; min-height:40px !important; white-space:nowrap;">
                     ${st.geminiBusy ? "..." : "Evolucionar"}
                   </button>
@@ -24542,7 +24574,7 @@
               <div class="tbb-atomic-card is-step6-plate" style="padding:10px 14px; gap:8px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
                   <div style="min-width:180px; flex:1 1 200px;">
-                    <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:800; color:#1D4ED8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    <div style="font-family:var(--font-mono); font-size:0.875rem; font-weight:800; color:#1D4ED8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                       PASO 6 · LÁMINA ${curPlate.num} DE ${totalPlates} · ${curPlate.sec}
                     </div>
                     <div style="font-family:var(--font-display); font-size:0.94rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
@@ -24550,27 +24582,27 @@
                     </div>
                     <div style="display:flex; align-items:center; gap:6px; margin-top:2px; flex-wrap:wrap;">
                       <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#426EAE;"></span>
-                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:800; color:#0D2540; background:#F1F5F9; padding:1px 6px; border-radius:4px; border:1px solid #CBD5E1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.875rem; font-weight:800; color:#0D2540; background:#F1F5F9; padding:1px 6px; border-radius:4px; border:1px solid #CBD5E1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                         ${curPlate.leadAuthor || "Consejo Metodológico"} · ${curPlate.auditVerdict || "DICTAMEN METODOLÓGICO: APROBADO"}
                       </span>
-                      ${hasUserUploadedLogo ? `<span style="font-family:'JetBrains Mono',monospace; font-size:0.64rem; font-weight:800; color:#FF7A00; background:#FFF7ED; padding:1px 6px; border-radius:4px; border:1px solid #FDBA74;">TU LOGOTIPO OFICIAL CENTRADO EN CURVAS</span>` : ""}
+                      ${hasUserUploadedLogo ? `<span style="font-family:'JetBrains Mono',monospace; font-size:0.875rem; font-weight:800; color:#FF7A00; background:#FFF7ED; padding:1px 6px; border-radius:4px; border:1px solid #FDBA74;">TU LOGOTIPO OFICIAL CENTRADO EN CURVAS</span>` : ""}
                     </div>
                   </div>
                   <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; flex:1 1 auto; justify-content:flex-end;">
-                    <select aria-label="Seleccionar lámina del manual" onchange="window.tbbState.plateIdx=Number(this.value); triggerAuraEmpatheticFeedback('input_plate_nav', 'Lámina ' + (Number(this.value)+1), false); renderTbbZeroScrollStage();" style="height:40px; padding:0 8px; border-radius:10px; border:2px solid #CBD5E1; font-family:var(--font-ui); font-size:0.75rem; font-weight:800; color:#090D16; background:#F8FAFC; cursor:pointer; flex:1 1 135px; max-width:210px;">
+                    <select aria-label="Seleccionar lámina del manual" onchange="window.tbbState.plateIdx=Number(this.value); triggerAuraEmpatheticFeedback('input_plate_nav', 'Lámina ' + (Number(this.value)+1), false); renderTbbZeroScrollStage();" style="height:40px; padding:0 8px; border-radius:10px; border:2px solid #CBD5E1; font-family:var(--font-ui); font-size:0.875rem; font-weight:800; color:#090D16; background:#F8FAFC; cursor:pointer; flex:1 1 135px; max-width:210px;">
                       ${metaList.map((m, idx) => `<option value="${idx}" ${idx === st.plateIdx ? "selected" : ""}>Lámina ${m.num}: ${escapeHTML(m.title.slice(0, 26))}</option>`).join("")}
                     </select>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.plateIdx=(window.tbbState.plateIdx-1+${totalPlates})%${totalPlates}; triggerAuraEmpatheticFeedback('input_plate_nav', 'Lámina anterior', false); renderTbbZeroScrollStage();" style="padding:7px 10px !important; min-height:40px !important; font-size:0.75rem !important;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.plateIdx=(window.tbbState.plateIdx-1+${totalPlates})%${totalPlates}; triggerAuraEmpatheticFeedback('input_plate_nav', 'Lámina anterior', false); renderTbbZeroScrollStage();" style="padding:7px 10px !important; min-height:40px !important; font-size:0.875rem !important;">
                       Anterior
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbState.plateIdx=(window.tbbState.plateIdx+1)%${totalPlates}; triggerAuraEmpatheticFeedback('input_plate_nav', 'Siguiente lámina', false); renderTbbZeroScrollStage();" style="padding:7px 10px !important; min-height:40px !important; font-size:0.75rem !important;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbState.plateIdx=(window.tbbState.plateIdx+1)%${totalPlates}; triggerAuraEmpatheticFeedback('input_plate_nav', 'Siguiente lámina', false); renderTbbZeroScrollStage();" style="padding:7px 10px !important; min-height:40px !important; font-size:0.875rem !important;">
                       Siguiente
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}else if(window.tbbGenerateChapterVisualsWithFlow){window.tbbGenerateChapterVisualsWithFlow(this);}" style="padding:7px 10px !important; min-height:40px !important; font-size:0.74rem !important;" title="Abrir vista de aplicaciones reales según el giro de tu negocio">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}else if(window.tbbGenerateChapterVisualsWithFlow){window.tbbGenerateChapterVisualsWithFlow(this);}" style="padding:7px 10px !important; min-height:40px !important; font-size:0.875rem !important;" title="Abrir vista de aplicaciones reales según el giro de tu negocio">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="9" r="1.8" fill="currentColor"/><path d="M5 16l4.5-4 3.5 2.5 4.5-5L20 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       <span>Aplicaciones Reales</span>
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Descarga PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{window.openPrintable30PlatesBrandbook();}" style="padding:7px 12px !important; min-height:40px !important; font-size:0.76rem !important; flex:1 1 auto;" title="Generar y guardar las ${totalPlates} láminas completas hoja por hoja en archivo PDF">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Descarga PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{window.openPrintable30PlatesBrandbook();}" style="padding:7px 12px !important; min-height:40px !important; font-size:0.875rem !important; flex:1 1 auto;" title="Generar y guardar las ${totalPlates} láminas completas hoja por hoja en archivo PDF">
                       Exportar PDF (${totalPlates} Láminas)
                     </button>
                   </div>
@@ -24601,9 +24633,9 @@
                   ov.id = "tbbStep6LiveAssemblyOverlay";
                   ov.style.cssText = "position:absolute;inset:0;background:rgba(255,255,255,0.94);backdrop-filter:blur(4px);z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;border-radius:12px;transition:opacity 0.28s ease;";
                   ov.innerHTML = `
-                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.70rem;font-weight:800;color:#FF7A00;letter-spacing:1.4px;margin-bottom:6px;">ARMANDO TU BRANDBOOK OFICIAL</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.875rem;font-weight:800;color:#FF7A00;letter-spacing:1.4px;margin-bottom:6px;">ARMANDO TU BRANDBOOK OFICIAL</div>
                     <div style="font-family:'Montserrat',sans-serif;font-size:1.05rem;font-weight:900;color:#0D2540;margin-bottom:10px;text-align:center;">Construyendo las ${totalPlates} Láminas de «${escapeHTML(bName)}»</div>
-                    <div id="tbbStep6AsmTxt" style="font-size:0.78rem;color:#475569;font-weight:700;margin-bottom:12px;">Integrando logotipo activo, paleta y retícula A4 Horizontal (01/${totalPlates})...</div>
+                    <div id="tbbStep6AsmTxt" style="font-size:0.875rem;color:#475569;font-weight:700;margin-bottom:12px;">Integrando logotipo activo, paleta y retícula A4 Horizontal (01/${totalPlates})...</div>
                     <div style="width:260px;max-width:85%;height:8px;background:#E2E8F0;border-radius:999px;overflow:hidden;">
                       <div id="tbbStep6AsmBar" style="width:6%;height:100%;background:linear-gradient(90deg,#0D2540,#FF7A00);border-radius:999px;transition:width 0.12s linear;"></div>
                     </div>
@@ -24639,7 +24671,7 @@
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:5px;">
                 <div>
-                  <div style="font-family:var(--font-mono); font-size:0.68rem; font-weight:700; color:#0D2540;">PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS EJECUTIVAS</div>
+                  <div style="font-family:var(--font-mono); font-size:0.875rem; font-weight:700; color:#0D2540;">PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS EJECUTIVAS</div>
                   <h2 style="font-family:var(--font-display); font-size:1.0rem; font-weight:700; color:#090D16; margin:1px 0;">
                     Manual Oficial (${totalPlates} Láminas), Vectores (.SVG / .AI), Fuentes (.TTF) y Suite de «${escapeHTML(bName)}»
                   </h2>
@@ -24652,35 +24684,35 @@
                   <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{downloadFullBrandbookPDFDirect(this);}" style="grid-column:1 / -1; min-height:44px !important; font-size:0.92rem !important;">
                     1. Descargar Brandbook Oficial en PDF (${totalPlates} Páginas .PDF)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Logotipo SVG en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','svg',this);}else{window.exportActive3DLogoSVG(this);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Logotipo SVG en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','svg',this);}else{window.exportActive3DLogoSVG(this);}" style="min-height:34px !important; font-size:0.875rem !important; padding:4px 8px !important;">
                     2. Logotipo en Curvas (.SVG)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Archivo Illustrator AI', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','ai',this);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Archivo Illustrator AI', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('horizontal','ai',this);}" style="min-height:34px !important; font-size:0.875rem !important; padding:4px 8px !important;">
                     3. Adobe Illustrator (.AI)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Firma Corporativa HTML', false); if(window.tbbOpenEmailSignatureModal){window.tbbOpenEmailSignatureModal();}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Firma Corporativa HTML', false); if(window.tbbOpenEmailSignatureModal){window.tbbOpenEmailSignatureModal();}" style="min-height:34px !important; font-size:0.875rem !important; padding:4px 8px !important;">
                     4. Firma de Correo (.HTML)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Hoja Membretada DOCX', false); if(window.tbbDownloadEditableLetterheadDOCX){window.tbbDownloadEditableLetterheadDOCX(this);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Hoja Membretada DOCX', false); if(window.tbbDownloadEditableLetterheadDOCX){window.tbbDownloadEditableLetterheadDOCX(this);}" style="min-height:34px !important; font-size:0.875rem !important; padding:4px 8px !important;">
                     5. Hoja Membretada (.DOCX)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Presentación Ejecutiva PPTX', false); if(window.tbbDownloadEditableDeckPPTX){window.tbbDownloadEditableDeckPPTX(this);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Presentación Ejecutiva PPTX', false); if(window.tbbDownloadEditableDeckPPTX){window.tbbDownloadEditableDeckPPTX(this);}" style="min-height:34px !important; font-size:0.875rem !important; padding:4px 8px !important;">
                     6. Presentación 16:9 (.PPTX)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Avatar y Sello en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('avatar','svg',this); setTimeout(()=>window.tbbExportLogoInCurves('seal','svg'), 450);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Avatar y Sello en Curvas', false); if(window.tbbExportLogoInCurves){window.tbbExportLogoInCurves('avatar','svg',this); setTimeout(()=>window.tbbExportLogoInCurves('seal','svg'), 450);}" style="min-height:34px !important; font-size:0.875rem !important; padding:4px 8px !important;">
                     7. Avatar 1:1 + Sello (.SVG)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual Interactivo HTML', false); window.downloadCompleteBrandbookHTML()" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Manual Interactivo HTML', false); window.downloadCompleteBrandbookHTML()" style="min-height:34px !important; font-size:0.875rem !important; padding:4px 8px !important;">
                     8. Manual Interactivo (.HTML)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" id="tbbBtnDownloadBrandFontsKitZip" onclick="triggerAuraEmpatheticFeedback('input_font', '${escapeHTML(activePriFont)}', false); if(window.tbbDownloadBrandFontsZip){window.tbbDownloadBrandFontsZip(this);}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" id="tbbBtnDownloadBrandFontsKitZip" onclick="triggerAuraEmpatheticFeedback('input_font', '${escapeHTML(activePriFont)}', false); if(window.tbbDownloadBrandFontsZip){window.tbbDownloadBrandFontsZip(this);}" style="min-height:34px !important; font-size:0.875rem !important; padding:4px 8px !important;">
                     9. Kit de Fuentes (.ZIP .TTF)
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="min-height:34px !important; font-size:0.875rem !important; padding:4px 8px !important;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M5 16l4.5-4 3.5 2.5 4.5-5L20 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     <span>Aplicaciones Reales</span>
                   </button>
-                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.subStep=1; renderTbbZeroScrollStage();" style="min-height:34px !important; font-size:0.72rem !important; padding:4px 8px !important;">
+                  <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.subStep=1; renderTbbZeroScrollStage();" style="min-height:34px !important; font-size:0.875rem !important; padding:4px 8px !important;">
                     ← Volver a las ${totalPlates} Láminas
                   </button>
                 </div>
@@ -25437,13 +25469,13 @@
           <div style="background:#F8FAFC; border:1px solid #CBD5E1; border-radius:12px; padding:7px 10px; display:flex; flex-direction:column; gap:6px; flex:1; justify-content:center;">
             <!-- Encabezado y Selector de Cantidad (2 a 6 Colores) -->
             <div style="display:flex; justify-content:space-between; align-items:center; gap:4px; flex-wrap:wrap;">
-              <div style="font-size:0.72rem; font-weight:700; color:#090D16;">
+              <div style="font-size:0.875rem; font-weight:700; color:#090D16;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="vertical-align:-2px;margin-right:4px;"><circle cx="12" cy="12" r="9" stroke="#1D4ED8" stroke-width="1.8"/><circle cx="9" cy="10" r="1.5" fill="#FF7A00"/><circle cx="15" cy="10" r="1.5" fill="#1D4ED8"/><circle cx="12" cy="15" r="1.5" fill="#10B981"/></svg>Espectro Circular <span style="color:#1D4ED8; font-weight:600;">(#${activeSlot + 1}: ${roles[activeSlot] || ""})</span>
               </div>
               <div style="display:flex; align-items:center; gap:3px;">
-                <span style="font-size:0.65rem; font-weight:600; color:#475569;">N°:</span>
+                <span style="font-size:0.875rem; font-weight:600; color:#475569;">N°:</span>
                 ${[2, 3, 4, 5, 6].map(n => `
-                  <button type="button" onclick="window.tbbSetBrandPaletteCount(${n})" style="min-width:24px; height:22px; padding:0 5px; border-radius:6px; border:1px solid ${count === n ? '#1D4ED8' : '#CBD5E1'}; background:${count === n ? '#1D4ED8' : '#FFFFFF'}; color:${count === n ? '#FFFFFF' : '#0F172A'}; font-family:var(--font-mono); font-size:0.65rem; font-weight:700; cursor:pointer;">
+                  <button type="button" onclick="window.tbbSetBrandPaletteCount(${n})" style="min-width:24px; height:22px; padding:0 5px; border-radius:6px; border:1px solid ${count === n ? '#1D4ED8' : '#CBD5E1'}; background:${count === n ? '#1D4ED8' : '#FFFFFF'}; color:${count === n ? '#FFFFFF' : '#0F172A'}; font-family:var(--font-mono); font-size:0.875rem; font-weight:700; cursor:pointer;">
                     ${n}
                   </button>
                 `).join("")}
@@ -25451,12 +25483,12 @@
             </div>
 
             <!-- Cuerpo Principal: Rueda Circular 360° a la izquierda + Ranuras de Color y Armonías a la derecha -->
-            <div style="display:grid; grid-template-columns:112px 1fr; gap:8px; align-items:center;">
+            <div class="tbb-palette-studio-body" style="display:grid; grid-template-columns:112px minmax(0, 1fr); gap:8px; align-items:center;">
               <!-- Columna Izquierda: Rueda de Espectro Completo + Control de Luz/Brillo -->
               <div style="display:flex; flex-direction:column; align-items:center; gap:4px; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:5px;">
                 <canvas id="tbbCircularSpectrumWheel" width="96" height="96" style="width:96px; height:96px; border-radius:50%; cursor:crosshair; touch-action:none; display:block;"></canvas>
                 <div style="width:100%; display:flex; flex-direction:column; gap:1px;">
-                  <div style="display:flex; justify-content:space-between; font-size:0.58rem; font-weight:600; color:#475569;">
+                  <div style="display:flex; justify-content:space-between; font-size:0.875rem; font-weight:600; color:#475569;">
                     <span>Brillo</span>
                     <span id="tbbSpectrumValPctLabel" style="font-family:var(--font-mono); color:#090D16;">${valPct}%</span>
                   </div>
@@ -25467,7 +25499,7 @@
               <!-- Columna Derecha: Ranuras de 2 a 6 Colores + Código HEX + Armonías -->
               <div style="display:flex; flex-direction:column; gap:5px; min-width:0;">
                 <!-- Ranuras Interactivas (2 a 6 colores) -->
-                <div style="display:grid; grid-template-columns:repeat(${count}, minmax(0, 1fr)); gap:4px;">
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(84px, 1fr)); gap:5px;">
                   ${activeColors.map((hex, idx) => {
                     const isSlotSelected = idx === activeSlot;
                     const isLight = /^#(F|E|D4AF|FFF)/i.test(hex);
@@ -25475,14 +25507,14 @@
                     return `
                       <div id="tbbPaletteSlotCard_${idx}" onclick="window.tbbSelectPaletteSlot(${idx})" style="position:relative; border-radius:8px; border:${isSlotSelected ? '2px solid #1D4ED8' : '1px solid #94A3B8'}; background:${hex}; color:${txtCol}; padding:4px 5px; cursor:pointer; display:flex; flex-direction:column; justify-content:space-between; min-height:42px;">
                         <div style="display:flex; justify-content:space-between; align-items:center; gap:2px;">
-                          <span style="font-family:var(--font-mono); font-size:0.54rem; font-weight:700; background:${isLight ? 'rgba(9,13,22,0.12)' : 'rgba(255,255,255,0.18)'}; padding:1px 3px; border-radius:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                          <span style="font-family:var(--font-mono); font-size:0.875rem; font-weight:700; background:${isLight ? 'rgba(9,13,22,0.12)' : 'rgba(255,255,255,0.18)'}; padding:1px 3px; border-radius:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                             ${roles[idx] || `#${idx + 1}`}
                           </span>
                           ${count > 2 ? `
-                            <button type="button" onclick="window.tbbRemovePaletteSlot(${idx}, event)" title="Quitar" style="border:none; background:${isLight ? 'rgba(9,13,22,0.15)' : 'rgba(255,255,255,0.24)'}; color:${txtCol}; border-radius:3px; width:13px; height:13px; font-size:0.58rem; font-weight:700; line-height:1; cursor:pointer; padding:0;">×</button>
+                            <button type="button" onclick="window.tbbRemovePaletteSlot(${idx}, event)" title="Quitar" style="border:none; background:${isLight ? 'rgba(9,13,22,0.15)' : 'rgba(255,255,255,0.24)'}; color:${txtCol}; border-radius:3px; width:13px; height:13px; font-size:0.875rem; font-weight:700; line-height:1; cursor:pointer; padding:0;">×</button>
                           ` : ""}
                         </div>
-                        <div id="tbbPaletteSlotHexText_${idx}" style="font-family:var(--font-mono); font-size:0.62rem; font-weight:700; margin-top:2px;">
+                        <div id="tbbPaletteSlotHexText_${idx}" style="font-family:var(--font-mono); font-size:0.875rem; font-weight:700; margin-top:2px;">
                           ${hex}
                         </div>
                       </div>
@@ -25493,8 +25525,8 @@
                 <!-- Barra de Precisión HEX + Tonos Neutros Rápidos -->
                 <div style="display:flex; align-items:center; justify-content:space-between; gap:4px; flex-wrap:wrap; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px; padding:3px 6px;">
                   <div style="display:flex; align-items:center; gap:4px;">
-                    <span style="font-size:0.62rem; font-weight:600; color:#334155;">HEX:</span>
-                    <input id="tbbActiveSlotHexInput" type="text" value="${activeHex}" maxlength="7" onchange="window.tbbUpdatePaletteSlotHex(${activeSlot}, this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.tbbUpdatePaletteSlotHex(${activeSlot}, this.value);}" style="width:68px; height:22px; padding:0 5px; border-radius:5px; border:1px solid #94A3B8; font-family:var(--font-mono); font-size:0.66rem; font-weight:700; color:#090D16; text-transform:uppercase;" />
+                    <span style="font-size:0.875rem; font-weight:600; color:#334155;">HEX:</span>
+                    <input id="tbbActiveSlotHexInput" type="text" value="${activeHex}" maxlength="7" onchange="window.tbbUpdatePaletteSlotHex(${activeSlot}, this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.tbbUpdatePaletteSlotHex(${activeSlot}, this.value);}" style="width:68px; height:22px; padding:0 5px; border-radius:5px; border:1px solid #94A3B8; font-family:var(--font-mono); font-size:0.875rem; font-weight:700; color:#090D16; text-transform:uppercase;" />
                   </div>
                   <div style="display:flex; align-items:center; gap:3px; flex-wrap:wrap;">
                     ${[
@@ -25504,7 +25536,7 @@
                       { hex: "#090D16", lbl: "Negro" },
                       { hex: "#D4AF37", lbl: "Oro" }
                     ].map(n => `
-                      <button type="button" onclick="window.tbbPickSwatchFromTotalPalette('${n.hex}', '${n.lbl}')" style="display:inline-flex; align-items:center; gap:2px; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:5px; padding:1px 5px; font-size:0.58rem; font-weight:600; color:#0F172A; cursor:pointer;">
+                      <button type="button" onclick="window.tbbPickSwatchFromTotalPalette('${n.hex}', '${n.lbl}')" style="display:inline-flex; align-items:center; gap:2px; background:#F8FAFC; border:1px solid #CBD5E1; border-radius:5px; padding:1px 5px; font-size:0.875rem; font-weight:600; color:#0F172A; cursor:pointer;">
                         <span style="width:7px; height:7px; border-radius:50%; background:${n.hex}; border:1px solid rgba(15,23,42,0.3); display:inline-block;"></span>
                         ${n.lbl}
                       </button>
@@ -25515,7 +25547,7 @@
                 <!-- Armonías Pre-Curadas de 2 a 6 Colores -->
                 <div style="display:flex; align-items:center; gap:3px; overflow-x:auto; white-space:nowrap;">
                   ${presets.map((p, pIdx) => `
-                    <button type="button" onclick="window.tbbApplyHarmonyPreset(${pIdx})" style="display:inline-flex; align-items:center; gap:3px; background:#FFFFFF; border:1px solid #CBD5E1; border-radius:999px; padding:2px 6px; font-size:0.58rem; font-weight:600; color:#0F172A; cursor:pointer; flex-shrink:0;">
+                    <button type="button" onclick="window.tbbApplyHarmonyPreset(${pIdx})" style="display:inline-flex; align-items:center; gap:3px; background:#FFFFFF; border:1px solid #CBD5E1; border-radius:999px; padding:2px 6px; font-size:0.875rem; font-weight:600; color:#0F172A; cursor:pointer; flex-shrink:0;">
                       <span style="display:inline-flex; gap:1px;">
                         ${p.colors.map(c => `<span style="width:6px; height:6px; border-radius:50%; background:${c}; border:0.5px solid rgba(0,0,0,0.2); display:inline-block;"></span>`).join("")}
                       </span>
@@ -27446,62 +27478,98 @@
   </style>
   <script src="/assets/vendor/opentype.min.js?v=1.3.4"></script>
   <script src="/assets/vendor/html2canvas.min.js?v=1.4.1"></script>
-  <script src="/tbb-executive-deliverables-suite.js?v=129.0"></script>
-  <script src="/tbb-cloud-vector-outliner.js?v=129.0"></script>
-  <script src="/tbb-v80-brandbook-plates.js?v=129.0"></script>
-  <script src="/universal-brandbook-30-engine.js?v=129.0"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=129.0"></script>
-  <script src="/improbears-preset-engine.js?v=129.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=129.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=129.0"></script>
+  <script src="/tbb-executive-deliverables-suite.js?v=131.0"></script>
+  <script src="/tbb-cloud-vector-outliner.js?v=131.0"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=131.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=131.0"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=131.0"></script>
+  <script src="/improbears-preset-engine.js?v=131.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=131.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=131.0"></script>
 
   <style id="tbbDuolingoOrganicErgonomicsV129">
     html.a11y-large-mode { font-size: 18.5px !important; }
     #tbbAuraSplashBootOverlay { display: none !important; }
 
-    /* Ocultar la barra global de pestañas durante los pasos activos (como Duolingo en lección) para eliminar la doble barra inferior */
+    button, a, select, input, textarea, [role="button"] {
+      touch-action: manipulation;
+    }
+    button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid #426EAE;
+      outline-offset: 2px;
+    }
+
+    /* GPU KEYFRAMES (SOLO TRANSFORM Y OPACITY — 60FPS PURO) */
+    @keyframes tbbStageStepEnterGPU {
+      from { opacity: 0; transform: translate3d(0, 6px, 0); }
+      to { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+    @keyframes tbbAtelierShimmerGPU {
+      from { transform: translate3d(-100%, 0, 0); }
+      to { transform: translate3d(100%, 0, 0); }
+    }
+    @keyframes tbbSparkPulseGPU {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.92; }
+      50% { transform: scale(1.14) rotate(12deg); opacity: 1; }
+    }
+    #tbbCenterAtomicStage.tbb-stage-step-enter {
+      animation: tbbStageStepEnterGPU 0.21s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .tbb-spin-spark {
+      animation: tbbSparkPulseGPU 1.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      flex-shrink: 0;
+    }
+
+    /* Ocultar la barra global de pestañas durante los pasos activos para eliminar la doble barra inferior */
     body[data-tbb-scroll-locked="true"] #tbbDuolingoBottomNav {
       display: none !important;
     }
     body[data-tbb-scroll-locked="true"] #tbbBottomControlDeck {
       padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px)) 16px !important;
-      border-top: 2px solid #E2E8F0 !important;
-      background: #FFFFFF !important;
+      border-top: 1px solid rgba(13, 37, 64, 0.085) !important;
+      background: rgba(255, 255, 255, 0.88) !important;
+      backdrop-filter: saturate(180%) blur(20px) !important;
+      -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+      box-shadow: 0 -4px 20px rgba(13, 37, 64, 0.035) !important;
     }
 
-    /* Barra Superior estilo Duolingo con Barra de Progreso SIEMPRE VISIBLE en Móvil y Escritorio */
+    /* Barra Superior Apple Frosted Glass con Barra de Progreso 100% GPU (scaleX) */
     #tbbTopDiscreteBar {
       height: 54px !important;
       padding: calc(6px + env(safe-area-inset-top, 0px)) 14px 6px 14px !important;
       display: flex !important;
       align-items: center !important;
       gap: 10px !important;
-      background: #FFFFFF !important;
-      border-bottom: 1.5px solid #E2E8F0 !important;
+      background: rgba(255, 255, 255, 0.86) !important;
+      backdrop-filter: saturate(180%) blur(20px) !important;
+      -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+      border-bottom: 1px solid rgba(13, 37, 64, 0.08) !important;
     }
     #tbbDiscreteProgressTrack {
       display: block !important;
       flex: 1 1 auto !important;
       min-width: 72px !important;
-      height: 14px !important;
-      background: #E2E8F0 !important;
+      height: 10px !important;
+      background: rgba(13, 37, 64, 0.075) !important;
       border-radius: 999px !important;
       overflow: hidden !important;
       position: relative !important;
     }
     #tbbDiscreteProgressFill {
+      width: 100% !important;
       height: 100% !important;
-      background: linear-gradient(90deg, #FF7A00 0%, #FB923C 100%) !important;
+      background: linear-gradient(90deg, #0D2540 0%, #426EAE 48%, #FF7A00 100%) !important;
       border-radius: 999px !important;
-      transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1) !important;
-      box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.32) !important;
+      transform-origin: 0 50% !important;
+      will-change: transform !important;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1) !important;
     }
 
-    /* Presencia Horizontal Compacta de Aura + Globo de Diálogo Único (Estilo Personaje Duolingo en Móvil y Escritorio) */
+    /* Presencia Horizontal de Aura + Tarjeta Editorial de Baja Opacidad (1px Hairline) */
     #tbbAuraTopOuterHeroSection {
       width: calc(100% - 28px) !important;
       max-width: 900px !important;
-      margin: 8px auto 4px auto !important;
+      margin: 8px auto 6px auto !important;
       display: flex !important;
       flex-direction: row !important;
       align-items: center !important;
@@ -27514,20 +27582,21 @@
       flex-shrink: 0 !important;
     }
     #tbbLiveAuraOrbCanvas {
-      width: 56px !important;
-      height: 56px !important;
-      min-width: 56px !important;
-      min-height: 56px !important;
-      border-width: 2.5px !important;
+      width: 54px !important;
+      height: 54px !important;
+      min-width: 54px !important;
+      min-height: 54px !important;
+      border-width: 2px !important;
+      box-shadow: 0 6px 18px rgba(13, 37, 64, 0.12) !important;
     }
     #tbbAuraTopPresenceRow {
       flex: 1 1 auto !important;
       width: auto !important;
-      padding: 10px 16px !important;
+      padding: 11px 16px !important;
       border-radius: 18px !important;
-      border: 2px solid #E2E8F0 !important;
-      border-bottom: 4px solid #CBD5E1 !important;
+      border: 1px solid rgba(13, 37, 64, 0.09) !important;
       background: #FFFFFF !important;
+      box-shadow: 0 1px 2px rgba(13, 37, 64, 0.04), 0 8px 22px -6px rgba(13, 37, 64, 0.06) !important;
       justify-content: flex-start !important;
     }
     #tbbAuraEmpatheticBubble {
@@ -27546,30 +27615,240 @@
       font-family: 'Plus Jakarta Sans', sans-serif !important;
       font-size: 0.96rem !important;
       font-weight: 500 !important;
-      color: #0F172A !important;
-      line-height: 1.42 !important;
+      color: #0D2540 !important;
+      line-height: 1.46 !important;
       text-align: left !important;
       -webkit-line-clamp: 3 !important;
     }
 
-    /* Botones Táctiles Estilo Duolingo (Labio 3D inferior, tipografía limpia sin exceso de negritas) */
+    /* Tarjeta Atómica Atelier (1px Hairline + Profundidad Sutil por Capas) */
+    .tbb-atomic-card {
+      border: 1px solid rgba(13, 37, 64, 0.085) !important;
+      border-radius: 22px !important;
+      box-shadow: 0 1px 2px rgba(13, 37, 64, 0.038), 0 12px 30px -8px rgba(13, 37, 64, 0.065) !important;
+    }
+
+    /* Botones Táctiles Apple Design Award (Bordes Precisos 1px + Feedback Táctil GPU) */
     .tbb-duo-btn {
       font-family: 'Plus Jakarta Sans', sans-serif !important;
       font-size: 0.94rem !important;
       font-weight: 600 !important;
-      border-radius: 16px !important;
-      min-height: 48px !important;
-      transition: transform 0.1s ease, background 0.15s ease, opacity 0.15s ease !important;
+      border-radius: 14px !important;
+      min-height: 46px !important;
+      transition: transform 0.14s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.15s ease !important;
+      will-change: transform;
+    }
+    .tbb-duo-btn-secondary {
+      background: #FFFFFF !important;
+      color: #0D2540 !important;
+      border: 1px solid rgba(13, 37, 64, 0.115) !important;
+      box-shadow: 0 1px 2px rgba(13, 37, 64, 0.04), inset 0 -1px 0 rgba(13, 37, 64, 0.045) !important;
+    }
+    .tbb-duo-btn-secondary:hover {
+      background: #F8FAFC !important;
+    }
+    .tbb-duo-btn-selected {
+      background: #F4F8FC !important;
+      color: #0D2540 !important;
+      border: 1.5px solid #426EAE !important;
+      box-shadow: 0 0 0 3px rgba(66, 110, 174, 0.10), 0 2px 6px rgba(13, 37, 64, 0.05) !important;
+    }
+    .tbb-duo-btn-primary {
+      background: #426EAE !important;
+      color: #FFFFFF !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+      box-shadow: 0 1px 2px rgba(13, 37, 64, 0.08), 0 6px 16px -4px rgba(66, 110, 174, 0.34) !important;
+    }
+    .tbb-duo-btn-emerald {
+      background: #0D2540 !important;
+      color: #FFFFFF !important;
+      border: 1px solid rgba(255, 255, 255, 0.14) !important;
+      box-shadow: 0 1px 2px rgba(13, 37, 64, 0.12), 0 6px 16px -4px rgba(13, 37, 64, 0.28) !important;
+    }
+    .tbb-duo-btn-gold {
+      background: #FFF7ED !important;
+      color: #C2410C !important;
+      border: 1px solid rgba(255, 122, 0, 0.32) !important;
+      box-shadow: 0 1px 2px rgba(255, 122, 0, 0.08) !important;
+    }
+    #tbbBtnAtomicNext.is-ready {
+      background: #FF7A00 !important;
+      color: #FFFFFF !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+      box-shadow: 0 1px 2px rgba(13, 37, 64, 0.08), 0 8px 20px -4px rgba(255, 122, 0, 0.34) !important;
     }
     .tbb-duo-btn:active {
-      transform: translateY(2px) !important;
+      transform: translate3d(0, 1px, 0) scale(0.984) !important;
     }
     #tbbBtnAtomicNext.is-step-incomplete {
       background: #E2E8F0 !important;
       color: #64748B !important;
-      border-color: #CBD5E1 !important;
+      border: 1px solid rgba(13, 37, 64, 0.08) !important;
       box-shadow: none !important;
     }
+
+    /* Paso 0.1: Opciones Táctiles con Ícono Concéntrico */
+    .tbb-step0-goal-option {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      padding: 10px 14px !important;
+      min-height: 54px !important;
+      text-align: left !important;
+    }
+    .tbb-goal-ic-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #F4F8FC;
+      color: #426EAE;
+      border: 1px solid rgba(66, 110, 174, 0.16);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .tbb-duo-btn-selected .tbb-goal-ic-badge {
+      background: #0D2540;
+      color: #FFFFFF;
+      border-color: #0D2540;
+    }
+    .tbb-goal-lbl-col {
+      flex: 1;
+      min-width: 0;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .tbb-goal-chev {
+      color: #94A3B8;
+      flex-shrink: 0;
+    }
+    .tbb-duo-btn-selected .tbb-goal-chev {
+      color: #426EAE;
+    }
+
+    /* SKELETONS LUMINOSOS GPU (PASO 5.2 LOGOTIPO + PASO 3.2 NAMING) */
+    .tbb-atelier-skeleton-box {
+      position: relative;
+      overflow: hidden;
+      background: #FFFFFF;
+      border: 1px solid rgba(13, 37, 64, 0.08);
+      box-shadow: 0 2px 10px rgba(13, 37, 64, 0.04);
+    }
+    .tbb-atelier-skeleton-box::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(76,157,230,0.12) 45%, rgba(255,122,0,0.10) 55%, rgba(255,255,255,0) 100%);
+      animation: tbbAtelierShimmerGPU 1.45s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      will-change: transform;
+    }
+    .tbb-atelier-logo-skeleton-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      background: rgba(248, 250, 252, 0.93);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      gap: 12px;
+    }
+    .tbb-logo-skel-stage {
+      width: 100%;
+      max-width: 660px;
+      flex: 1;
+      max-height: 280px;
+      display: grid;
+      grid-template-columns: 1.65fr 1fr;
+      gap: 10px;
+    }
+    .tbb-atelier-skeleton-box.is-main-art,
+    .tbb-atelier-skeleton-box.is-side-icon {
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .tbb-skel-emblem-ring {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #EFF6FF 0%, #FFF7ED 100%);
+      border: 1.5px dashed rgba(66, 110, 174, 0.32);
+    }
+    .tbb-skel-squircle {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+      border: 1px solid rgba(13, 37, 64, 0.10);
+    }
+    .tbb-skel-bar { height: 10px; border-radius: 999px; background: rgba(13, 37, 64, 0.075); }
+    .tbb-skel-bar.is-w70 { width: 70%; }
+    .tbb-skel-bar.is-w60 { width: 60%; }
+    .tbb-skel-bar.is-w40 { width: 40%; height: 7px; opacity: 0.7; }
+    .tbb-skel-dots { display: flex; gap: 6px; }
+    .tbb-skel-dots i { width: 14px; height: 14px; border-radius: 50%; background: rgba(13, 37, 64, 0.08); display: inline-block; }
+    .tbb-logo-skel-floating-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #FFFFFF;
+      border: 1px solid rgba(13, 37, 64, 0.10);
+      border-radius: 16px;
+      padding: 9px 15px;
+      max-width: 94%;
+      box-shadow: 0 8px 24px -6px rgba(13, 37, 64, 0.12);
+      text-align: left;
+    }
+    .tbb-logo-skel-floating-pill strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #0D2540;
+      line-height: 1.25;
+    }
+    .tbb-logo-skel-floating-pill span {
+      display: block;
+      font-size: 0.875rem;
+      color: #475569;
+      line-height: 1.35;
+    }
+    .tbb-naming-skeleton-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+      padding: 4px 0;
+    }
+    .tbb-shimmer-status-pill {
+      display: inline-flex;
+      align-items: center;
+      align-self: center;
+      gap: 8px;
+      background: #F8FAFC;
+      border: 1px solid rgba(66, 110, 174, 0.22);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #0D2540;
+    }
+    .tbb-naming-skeleton-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
     @keyframes tbbMicroCelebratePulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.03); }
@@ -27579,7 +27858,17 @@
       animation: tbbMicroCelebratePulse 0.2s ease-out;
     }
 
-    /* Escala Tipográfica Mínima Legible (>=14px / 0.875rem) Declarativa O(1) — RC-02 */
+    /* Escala Tipográfica Mínima Legible (>=14px / 0.875rem Estricto) Declarativa O(1) — RC-02 */
+    #tbbStudioTopLangSelect,
+    #tbbTopQuickStepJumper {
+      border: 1px solid rgba(13, 37, 64, 0.115) !important;
+      border-bottom-width: 1px !important;
+      border-radius: 12px !important;
+      background-color: #FFFFFF !important;
+      box-shadow: 0 1px 2px rgba(13, 37, 64, 0.04), inset 0 -1px 0 rgba(13, 37, 64, 0.04) !important;
+      color: #0D2540 !important;
+      font-weight: 600 !important;
+    }
     #tbbTopQuickStepJumper,
     #tbbTopDiscreteBar .tbb-duo-btn,
     .duolingo-bottom-tab-label,
@@ -27591,13 +27880,14 @@
     }
     #tbbZeroScrollMasterStage .tbb-atomic-card p,
     #tbbZeroScrollMasterStage .tbb-atomic-card li {
-      font-size: 0.88rem;
-      line-height: 1.45;
-      font-weight: 500;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      font-weight: 400;
     }
     #tbbZeroScrollMasterStage .tbb-atomic-card h1,
     #tbbZeroScrollMasterStage .tbb-atomic-card h2 {
       font-weight: 700;
+      letter-spacing: -0.02em;
     }
     #tbbZeroScrollMasterStage input[type="text"],
     #tbbZeroScrollMasterStage input[type="email"],
@@ -27606,8 +27896,22 @@
       font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
     @media (max-width: 620px) {
+      #tbbZeroScrollMasterStage .tbb-palette-studio-body {
+        grid-template-columns: minmax(0, 1fr) !important;
+      }
+      #tbbZeroScrollMasterStage .tbb-step52-modes-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+      }
       #tbbZeroScrollMasterStage .tbb-step52-modes-grid button {
-        font-size: 0.82rem !important;
+        font-size: 0.875rem !important;
+        padding: 4px 10px !important;
+      }
+      .tbb-logo-skel-stage {
+        grid-template-columns: 1fr;
+      }
+      .tbb-atelier-skeleton-box.is-side-icon {
+        display: none;
       }
     }
 
@@ -27622,18 +27926,55 @@
         display: block !important;
         flex: 1 1 auto !important;
         min-width: 64px !important;
-        height: 12px !important;
+        height: 10px !important;
       }
       #tbbBtnTopStepVideo span#tbbLblTopVideo,
       #tbbBtnTopFeedback span#tbbLblTopFeedback { display: none !important; }
-      #tbbTopDiscreteBar .tbb-duo-btn { min-height: 36px !important; padding: 0 9px !important; font-size: 0.84rem !important; }
-      #tbbStudioTopLangSelect { height: 36px !important; padding: 0 7px !important; font-size: 0.84rem !important; }
+      #tbbTopDiscreteBar .tbb-duo-btn { min-height: 36px !important; padding: 0 9px !important; font-size: 0.875rem !important; }
+      #tbbStudioTopLangSelect { height: 36px !important; padding: 0 7px !important; font-size: 0.875rem !important; }
+      #phaseTransitionVideoModal .tbb-video-theme-pill,
+      #phaseTransitionVideoModal #transitionVideoSubtitle,
+      #phaseTransitionVideoModal #transitionVideoDiscoveriesList > div,
+      #phaseTransitionVideoModal #tbbLiveCapsuleTranscriptBox {
+        font-size: 0.875rem !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #tbbCenterAtomicStage.tbb-stage-step-enter,
+      .tbb-atelier-skeleton-box::after,
+      .tbb-spin-spark,
+      .tbb-micro-celebrate { animation: none !important; }
+      .tbb-duo-btn, #tbbDiscreteProgressFill { transition: none !important; }
     }
   </style>
   <script id="tbbViewportAndValidationHelperV129">
     (function() {
-      // RC-02: Declarative CSS handles stage typography without forced synchronous getComputedStyle reflows
-      window.tbbNormalizeStageReadableTypography = function() {};
+      // RC-02 + V131: Zero-reflow O(N) inline style floor (>=14px / 0.875rem) — never calls getComputedStyle
+      window.tbbNormalizeStageReadableTypography = function() {
+        var roots = [
+          document.getElementById("tbbZeroScrollViewport"),
+          document.getElementById("phaseTransitionVideoModal")
+        ];
+        for (var r = 0; r < roots.length; r++) {
+          var root = roots[r];
+          if (!root) continue;
+          var nodes = root.querySelectorAll('[style*="font-size"]');
+          for (var i = 0; i < nodes.length; i++) {
+            var el = nodes[i];
+            if (el.closest && (el.closest("svg") || el.closest("#tbbStep6PlateViewport"))) continue;
+            var fs = el.style && el.style.fontSize ? String(el.style.fontSize).trim() : "";
+            if (!fs) continue;
+            var m = fs.match(/^([0-9.]+)\s*(rem|px)$/i);
+            if (!m) continue;
+            var val = parseFloat(m[1]);
+            var unit = m[2].toLowerCase();
+            if ((unit === "rem" && val < 0.875) || (unit === "px" && val < 14)) {
+              el.style.setProperty("font-size", "0.875rem", "important");
+            }
+          }
+        }
+      };
 
       window.tbbSyncBottomNextValidationState = function() {
         var btn = document.getElementById("tbbBtnAtomicNext");
@@ -27648,17 +27989,32 @@
           if (s1Inp) {
             incomplete = String(s1Inp.value || "").trim().length < 3;
           }
+        } else if (st.step === 5 && st.subStep === 2 && st.geminiBusy) {
+          incomplete = true;
         }
         btn.classList.toggle("is-step-incomplete", incomplete);
         btn.classList.toggle("is-ready", !incomplete);
+        btn.disabled = Boolean(st.step === 5 && st.subStep === 2 && st.geminiBusy);
       };
 
+      var _lastStepTransitionSig = "";
       var origRender = window.renderTbbZeroScrollStage;
       if (typeof origRender === "function") {
         window.renderTbbZeroScrollStage = function() {
+          var stNow = window.tbbState || {};
+          var nextSig = String(stNow.activeMode || "step") + "_" + Number(stNow.step || 0) + "_" + Number(stNow.subStep || 1);
           var r = origRender.apply(this, arguments);
           window.tbbSyncBottomNextValidationState();
           window.tbbNormalizeStageReadableTypography();
+          if (_lastStepTransitionSig && _lastStepTransitionSig !== nextSig) {
+            var stg = document.getElementById("tbbCenterAtomicStage");
+            if (stg) {
+              stg.classList.remove("tbb-stage-step-enter");
+              void stg.offsetWidth;
+              stg.classList.add("tbb-stage-step-enter");
+            }
+          }
+          _lastStepTransitionSig = nextSig;
           return r;
         };
       }
@@ -27794,7 +28150,7 @@
         if (!ov) {
           ov = document.createElement("div");
           ov.id = "tbbQuickFeedbackModalOverlay";
-          ov.style.cssText = "position:fixed;inset:0;z-index:120000;background:rgba(13,37,64,0.58);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px;";
+          ov.style.cssText = "position:fixed;inset:0;z-index:120000;background:rgba(13,37,64,0.54);backdrop-filter:saturate(150%) blur(10px);display:none;align-items:center;justify-content:center;padding:16px;";
           ov.onclick = function(e) { if (e.target === ov) window.tbbCloseBetaFeedbackModal(); };
           document.body.appendChild(ov);
         }
@@ -27803,23 +28159,23 @@
         var stepLbl = "Paso " + Number(st.step || 0) + (cs.brandName ? " · " + cs.brandName : "");
         var hasSR = Boolean(window.SpeechRecognition || window.webkitSpeechRecognition);
         ov.innerHTML =
-          '<div style="background:#FFFFFF;border-radius:22px;max-width:460px;width:100%;padding:20px;box-shadow:0 24px 60px rgba(13,37,64,0.25);font-family:\'Plus Jakarta Sans\',sans-serif;color:#0D2540;" onclick="event.stopPropagation()">' +
+          '<div style="background:#FFFFFF;border:1px solid rgba(13,37,64,0.09);border-radius:24px;max-width:460px;width:100%;padding:20px;box-shadow:0 28px 68px rgba(13,37,64,0.24);font-family:\'Plus Jakarta Sans\',sans-serif;color:#0D2540;" onclick="event.stopPropagation()">' +
             '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
-              '<strong style="font-size:1.08rem;font-weight:700;display:inline-flex;align-items:center;gap:8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Cuéntanos qué mejorarías</span></strong>' +
-              '<button type="button" onclick="window.tbbCloseBetaFeedbackModal()" aria-label="Cerrar" style="border:none;background:#F1F5F9;border-radius:999px;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#0D2540;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>' +
+              '<strong style="font-size:1.08rem;font-weight:700;display:inline-flex;align-items:center;gap:8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.5 11.5a8 8 0 0 1-.8 3.6 8.1 8.1 0 0 1-7.2 4.4 8 8 0 0 1-3.6-.8L3.5 20.5l1.8-5.4a8 8 0 0 1-.8-3.6 8.1 8.1 0 0 1 4.4-7.2 8 8 0 0 1 3.6-.8h.5a8.1 8.1 0 0 1 7.5 7.5v.5z" stroke="#FF7A00" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Cuéntanos qué mejorarías</span></strong>' +
+              '<button type="button" onclick="window.tbbCloseBetaFeedbackModal()" aria-label="Cerrar" style="border:1px solid rgba(13,37,64,0.1);background:#F8FAFC;border-radius:999px;width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#0D2540;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg></button>' +
             '</div>' +
             '<p style="margin:0 0 12px;font-size:0.9rem;color:#475569;line-height:1.45;">Llega directo a nuestro equipo junto con tu ubicación actual (<strong>' + stepLbl + '</strong>).</p>' +
             '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">' +
-              '<button type="button" data-tbb-fb-cat="ui_design" onclick="window.tbbSelectFeedbackCategory(\'ui_design\')" style="padding:6px 11px;border-radius:999px;border:1.5px solid #CBD5E1;background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">Pantalla / Texto</button>' +
-              '<button type="button" data-tbb-fb-cat="voice_speed" onclick="window.tbbSelectFeedbackCategory(\'voice_speed\')" style="padding:6px 11px;border-radius:999px;border:1.5px solid #CBD5E1;background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">Voz de Aura</button>' +
-              '<button type="button" data-tbb-fb-cat="bug" onclick="window.tbbSelectFeedbackCategory(\'bug\')" style="padding:6px 11px;border-radius:999px;border:1.5px solid #CBD5E1;background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">Algo falló</button>' +
-              '<button type="button" data-tbb-fb-cat="idea" onclick="window.tbbSelectFeedbackCategory(\'idea\')" style="padding:6px 11px;border-radius:999px;border:1.5px solid #CBD5E1;background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">Idea</button>' +
+              '<button type="button" data-tbb-fb-cat="ui_design" onclick="window.tbbSelectFeedbackCategory(\'ui_design\')" style="padding:6px 11px;border-radius:999px;border:1px solid rgba(13,37,64,0.12);background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">Pantalla / Texto</button>' +
+              '<button type="button" data-tbb-fb-cat="voice_speed" onclick="window.tbbSelectFeedbackCategory(\'voice_speed\')" style="padding:6px 11px;border-radius:999px;border:1px solid rgba(13,37,64,0.12);background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">Voz de Aura</button>' +
+              '<button type="button" data-tbb-fb-cat="bug" onclick="window.tbbSelectFeedbackCategory(\'bug\')" style="padding:6px 11px;border-radius:999px;border:1px solid rgba(13,37,64,0.12);background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">Algo falló</button>' +
+              '<button type="button" data-tbb-fb-cat="idea" onclick="window.tbbSelectFeedbackCategory(\'idea\')" style="padding:6px 11px;border-radius:999px;border:1px solid rgba(13,37,64,0.12);background:#F8FAFC;font-size:0.875rem;font-weight:600;cursor:pointer;color:#0D2540;">Idea</button>' +
             '</div>' +
-            '<textarea id="tbbQuickFeedbackTextarea" rows="3" placeholder="Escribe o dicta qué sentiste raro o qué te gustaría ver..." style="width:100%;padding:12px;border-radius:14px;border:1.5px solid #CBD5E1;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:1rem;color:#0D2540;box-sizing:border-box;resize:vertical;"></textarea>' +
+            '<textarea id="tbbQuickFeedbackTextarea" rows="3" placeholder="Escribe o dicta qué sentiste raro o qué te gustaría ver..." style="width:100%;padding:12px;border-radius:14px;border:1px solid rgba(13,37,64,0.15);font-family:\'Plus Jakarta Sans\',sans-serif;font-size:1rem;color:#0D2540;box-sizing:border-box;resize:vertical;"></textarea>' +
             '<div id="tbbQuickFeedbackStatus" style="display:none;margin-top:8px;font-size:0.875rem;font-weight:600;"></div>' +
             '<div style="display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:12px;">' +
-              (hasSR ? '<button type="button" id="tbbFbDictateBtn" onclick="window.tbbDictateFeedbackNote()" style="padding:10px 14px;border-radius:12px;border:1.5px solid #CBD5E1;background:#F8FAFC;font-size:0.9rem;font-weight:600;color:#0D2540;cursor:pointer;">Dictar</button>' : '<span></span>') +
-              '<button type="button" id="tbbQuickFeedbackSendBtn" onclick="window.tbbSubmitBetaFeedback()" style="flex:1;padding:11px 16px;border-radius:12px;border:none;background:#FF7A00;color:#FFFFFF;font-size:0.95rem;font-weight:700;cursor:pointer;">Enviar al equipo →</button>' +
+              (hasSR ? '<button type="button" id="tbbFbDictateBtn" onclick="window.tbbDictateFeedbackNote()" style="padding:10px 14px;border-radius:12px;border:1px solid rgba(13,37,64,0.12);background:#F8FAFC;font-size:0.9rem;font-weight:600;color:#0D2540;cursor:pointer;">Dictar</button>' : '<span></span>') +
+              '<button type="button" id="tbbQuickFeedbackSendBtn" onclick="window.tbbSubmitBetaFeedback()" style="flex:1;padding:11px 16px;border-radius:12px;border:none;background:#FF7A00;color:#FFFFFF;font-size:0.95rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;"><span>Enviar al equipo</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0l-4.6-4.6M19 12l-4.6 4.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
             '</div>' +
           '</div>';
         ov.style.display = "flex";

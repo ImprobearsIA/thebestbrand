@@ -17,35 +17,40 @@
 
   const LANG_STORAGE_KEY = "tbb_active_ui_lang_v52";
   const LICENSE_STORAGE_KEY = "tbb_pro_license_v56";
-  const ASSET_VERSION = "129.0";
+  const ASSET_VERSION = "131.0";
 
+  // Unified 1.65px Architectural Stroke SVG Iconography (0% Unicode Emojis / Dingbats)
   const TBB_ICONS = {
-    home: `<svg class="tbb-svg-ic" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6.5h-5V21H4a1 1 0 0 1-1-1v-9.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="10" r="2" fill="#FF7A00"/></svg>`,
-    deliverables: `<svg class="tbb-svg-ic" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 4v11m0 0l-4-4m4 4l4-4" stroke="#FF7A00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    appTour: `<svg class="tbb-svg-ic" width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="6" y="2.5" width="12" height="19" rx="3" stroke="currentColor" stroke-width="2"/><path d="M10 5.5h4" stroke="#FF7A00" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.3" fill="#FF7A00"/></svg>`,
-    cases: `<svg class="tbb-svg-ic" width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="2"/><path d="M7 14l3-3 3 2.5 4-4.5" stroke="#FF7A00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    theory: `<svg class="tbb-svg-ic" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z" stroke="currentColor" stroke-width="2"/><path d="M8 7h8M8 11h5" stroke="#FF7A00" stroke-width="2" stroke-linecap="round"/></svg>`,
-    demo: `<svg class="tbb-svg-ic" width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="2"/><path d="M10 9l5 3-5 3V9z" fill="#FF7A00"/></svg>`,
-    play: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="rgba(255,122,0,0.14)" stroke="#FF7A00" stroke-width="1.8"/><path d="M10 8.5l6 3.5-6 3.5V8.5z" fill="#FF7A00"/></svg>`,
-    lock: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="#FF7A00" stroke-width="2" stroke-linecap="round"/></svg>`,
-    unlock: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2.5" stroke="#10B981" stroke-width="2"/><path d="M8 11V7a4 4 0 0 1 7.5-1.8" stroke="#10B981" stroke-width="2" stroke-linecap="round"/></svg>`,
-    check: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" fill="rgba(16,185,129,0.14)" stroke="#10B981" stroke-width="1.8"/><path d="M8 12.3l2.6 2.6 5.4-5.4" stroke="#10B981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    spark: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z" fill="#FF7A00"/></svg>`,
-    globe: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 12h17M12 3a13.5 13.5 0 0 1 0 18M12 3a13.5 13.5 0 0 0 0 18" stroke="#426EAE" stroke-width="1.6"/></svg>`,
-    close: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>`,
-    expand: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 4h5v5M9 20H4v-5M20 4l-6 6M4 20l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    phone: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="6" y="2.5" width="12" height="19" rx="3" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="18" r="1.2" fill="#FF7A00"/></svg>`,
-    desktop: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="4" width="19" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 20h8M12 17v3" stroke="#FF7A00" stroke-width="2" stroke-linecap="round"/></svg>`,
-    arrowRight: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    arrowLeft: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0l5-5m-5 5l5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    shield: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 5-3.2 8.7-7 10-3.8-1.3-7-5-7-10V6l7-3z" stroke="currentColor" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="#FF7A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    card: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="#FF7A00" stroke-width="2"/></svg>`,
-    volume: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H3v6h3l5 4V5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-    user: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.8" stroke="currentColor" stroke-width="1.8"/><path d="M5 20c1.6-3.4 4.2-5 7-5s5.4 1.6 7 5" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-    feedback: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="12" r="1" fill="#FF7A00"/><circle cx="12.5" cy="12" r="1" fill="#FF7A00"/><circle cx="15.5" cy="12" r="1" fill="#FF7A00"/></svg>`,
-    clock: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/><path d="M12 7v5l3 2" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    menu: `<svg class="tbb-svg-ic" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
-    star: `<svg class="tbb-svg-ic" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5-4.8-4.6 6.6-.9L12 2.5z" fill="#FF7A00"/></svg>`
+    home: `<svg class="tbb-svg-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 10.5L12 3.5l8.5 7V19.5a1.5 1.5 0 0 1-1.5 1.5h-4.8v-5.8h-4.4V21H5a1.5 1.5 0 0 1-1.5-1.5v-9z" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    deliverables: `<svg class="tbb-svg-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 15.5v3A1.5 1.5 0 0 0 6 20h12a1.5 1.5 0 0 0 1.5-1.5v-3" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/><path d="M12 4v11m0 0l-3.8-3.8M12 15l3.8-3.8" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    appTour: `<svg class="tbb-svg-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6.5" y="2.8" width="11" height="18.4" rx="2.8" stroke="currentColor" stroke-width="1.65"/><path d="M10.2 5.6h3.6M11.9 18h.2" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>`,
+    cases: `<svg class="tbb-svg-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2.6" stroke="currentColor" stroke-width="1.65"/><path d="M7.2 14.2l3.1-3.1 2.8 2.3 3.7-4.1" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    theory: `<svg class="tbb-svg-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 19A2.5 2.5 0 0 1 7 16.5h12.5M4.5 19A2.5 2.5 0 0 0 7 21.5h12.5V3H7A2.5 2.5 0 0 0 4.5 5.5V19z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/><path d="M8.5 7.5h7M8.5 11.2h4.5" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>`,
+    demo: `<svg class="tbb-svg-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2.6" stroke="currentColor" stroke-width="1.65"/><path d="M10.2 9.2l4.8 2.8-4.8 2.8V9.2z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/></svg>`,
+    play: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.65"/><path d="M10.3 8.8l5.2 3.2-5.2 3.2V8.8z" fill="currentColor"/></svg>`,
+    lock: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5.5" y="11" width="13" height="9.5" rx="2.3" stroke="currentColor" stroke-width="1.65"/><path d="M8.2 11V7.3a3.8 3.8 0 0 1 7.6 0V11" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>`,
+    unlock: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5.5" y="11" width="13" height="9.5" rx="2.3" stroke="currentColor" stroke-width="1.65"/><path d="M8.2 11V7.3a3.8 3.8 0 0 1 7.1-1.8" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>`,
+    check: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9.2" stroke="#10B981" stroke-width="1.65"/><path d="M8.3 12.3l2.4 2.4 5-5.1" stroke="#10B981" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    spark: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.8l2.1 6.1 6.1 2.1-6.1 2.1L12 19.2l-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/></svg>`,
+    globe: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.8" stroke="currentColor" stroke-width="1.65"/><path d="M3.6 12h16.8M12 3.2a13.2 13.2 0 0 1 0 17.6M12 3.2a13.2 13.2 0 0 0 0 17.6" stroke="#426EAE" stroke-width="1.5"/></svg>`,
+    close: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>`,
+    expand: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 4.5h4.5V9M9 19.5H4.5V15M19.5 4.5l-5.8 5.8M4.5 19.5l5.8-5.8" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    phone: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6.5" y="2.8" width="11" height="18.4" rx="2.6" stroke="currentColor" stroke-width="1.65"/><circle cx="12" cy="18" r="1" fill="currentColor"/></svg>`,
+    desktop: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4.2" width="18" height="12.5" rx="2" stroke="currentColor" stroke-width="1.65"/><path d="M8.5 19.8h7M12 16.7v3.1" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>`,
+    arrowRight: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m0 0l-4.6-4.6M19 12l-4.6 4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    arrowLeft: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5m0 0l4.6-4.6M5 12l4.6 4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    arrowUpRight: `<svg class="tbb-svg-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    chevronDown: `<svg class="tbb-svg-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.5 9.5L12 15l5.5-5.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    chevronUp: `<svg class="tbb-svg-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.5 14.5L12 9l5.5 5.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    gripHorizontal: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.5 8.5L5 12l3.5 3.5M15.5 8.5L19 12l-3.5 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    shield: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.2l6.8 2.8v5c0 4.8-3.1 8.4-6.8 9.8-3.7-1.4-6.8-5-6.8-9.8V6L12 3.2z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/><path d="M9.2 12.1l1.9 1.9 3.8-3.8" stroke="#FF7A00" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    card: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.2" y="5.2" width="17.6" height="13.6" rx="2.4" stroke="currentColor" stroke-width="1.65"/><path d="M3.2 9.8h17.6" stroke="currentColor" stroke-width="1.65"/></svg>`,
+    volume: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11 5.5L6.3 9.2H3.5v5.6h2.8L11 18.5v-13z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/><path d="M15.2 8.8a4.6 4.6 0 0 1 0 6.4M18 6.4a8 8 0 0 1 0 11.2" stroke="#FF7A00" stroke-width="1.65" stroke-linecap="round"/></svg>`,
+    user: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8.2" r="3.6" stroke="currentColor" stroke-width="1.65"/><path d="M5.4 19.8c1.5-3.1 4-4.6 6.6-4.6s5.1 1.5 6.6 4.6" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>`,
+    feedback: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 11.5a8 8 0 0 1-.8 3.6 8.1 8.1 0 0 1-7.2 4.4 8 8 0 0 1-3.6-.8L3.5 20.5l1.8-5.4a8 8 0 0 1-.8-3.6 8.1 8.1 0 0 1 4.4-7.2 8 8 0 0 1 3.6-.8h.5a8.1 8.1 0 0 1 7.5 7.5v.5z" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    clock: `<svg class="tbb-svg-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.8" stroke="currentColor" stroke-width="1.65"/><path d="M12 7.2v4.8l3 1.8" stroke="#FF7A00" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    menu: `<svg class="tbb-svg-ic" width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 7.2h15M4.5 12h15M4.5 16.8h15" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>`,
+    star: `<svg class="tbb-svg-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3z" stroke="#FF7A00" stroke-width="1.65" stroke-linejoin="round"/></svg>`
   };
   window.TBB_ICONS = TBB_ICONS;
 
@@ -78,6 +83,9 @@
 
   function getLang() {
     try {
+      if (window._tbbExplicitWebLang && ["es", "en", "fr", "pt", "de", "it"].includes(window._tbbExplicitWebLang)) {
+        return window._tbbExplicitWebLang;
+      }
       const params = new URLSearchParams(window.location.search || "");
       const urlL = (params.get("lang") || "").toLowerCase().trim().slice(0, 2);
       if (["es", "en", "fr", "pt", "de", "it"].includes(urlL)) return urlL;
@@ -92,6 +100,125 @@
     } catch (e) {
       return "es";
     }
+  }
+
+  const WEB_DYN_EN_MAP = {
+    "Estudio en Vivo · Gratis": "Live Studio · Free",
+    "BRANDBOOK CORPORATIVO · 36 PÁGINAS": "CORPORATE BRANDBOOK · 36 PAGES",
+    "+30 PÁGS · ZIP": "30+ PAGES · ZIP",
+    "Antes · Logo Original": "Before · Original Logo",
+    "Después · Vector Limpio": "After · Clean Vector",
+    "Comparar Antes y Después": "Compare Before and After",
+    "Punto de Partida": "Starting Point",
+    "Logo Anterior del Cliente": "Client's Previous Logo",
+    "Imagen original subida en el Paso 0. Aura rescata sus colores azul, turquesa y gris acero.": "Original image uploaded in Step 0. Aura preserves its signature blue, teal, and steel-gray palette.",
+    "Opción #2": "Option #2",
+    "Emblema Arquitectónico": "Architectural Emblem",
+    "Actualiza la letra cursiva antigua por una tipografía firme e integra el puente estructural.": "Upgrades the dated script into crisp structural typography integrated with a bridge motif.",
+    "Opción #3": "Option #3",
+    "Monograma «A» Estructural": "Structural 'A' Monogram",
+    "Une la inicial «A» en gris acero con un doble arco envolvente limpio y fácil de bordar.": "Combines the steel-gray 'A' initial with a clean double arch ready for embroidery and signage.",
+    "Opción #4": "Option #4",
+    "Sello Circular para Cascos y Planos": "Circular Seal for Helmets & Blueprints",
+    "Versión redonda pensada para sellos oficiales, cascos de obra y stickers.": "Round stamp lockup engineered for official seals, hard hats, and stickers.",
+    "Elegido por el Cliente": "Client's Final Choice",
+    "Lineal Minimalista (#5)": "Minimalist Monoline (#5)",
+    "Arco estructural limpio con dos torres esbeltas. Elegido para construir su Brandbook de 36 páginas.": "Clean structural arch framing two slender towers—selected to build the 36-page Brandbook.",
+    "Opción #6": "Option #6",
+    "Variante Refinada por Voz/Texto": "Voice/Text Refined Variant",
+    "Ajuste pedido en una frase para fusionar la inicial con las torres residenciales.": "Conversational one-sentence tweak fusing the initial directly with residential towers.",
+    "Página 01": "Page 01",
+    "Portada Oficial · ARCO Ingeniería": "Official Cover · ARCO Engineering",
+    "Página 03": "Page 03",
+    "Esencia y Propósito del Negocio": "Brand Essence & Purpose",
+    "Página 08": "Page 08",
+    "Perfil del Cliente Ideal": "Ideal Customer Profile",
+    "Página 11": "Page 11",
+    "Aplicaciones en Obra y Uniformes": "Field & Uniform Applications",
+    "Página 13": "Page 13",
+    "Versiones Oficiales del Logotipo": "Official Logo Lockups",
+    "Página 16": "Page 16",
+    "Espacio Libre y Tamaños Mínimos": "Clearspace & Minimum Sizes",
+    "Página 21": "Page 21",
+    "Colores Oficiales para Pantalla e Imprenta": "Official Digital & Print Palette",
+    "Página 25": "Page 25",
+    "Papelería y Tarjeta de Presentación": "Stationery & Business Cards",
+    "Abrir PDF Completo de Muestra (36 páginas)": "Open Full Sample PDF (36 pages)",
+    "Crear mi propia marca ahora": "Build my own brand now",
+    "01 · Círculo Dorado (Sinek)": "01 · Golden Circle (Sinek)",
+    "02 · Touchpoints (Carlzon)": "02 · Touchpoints (Carlzon)",
+    "03 · Modelo SMILE (Watkins)": "03 · SMILE Model (Watkins)",
+    "04 · Diferencial Osgood / Kansei": "04 · Osgood / Kansei Differential",
+    "05 · Síntesis & Kaizen (Rand / Imai)": "05 · Iconic Synthesis & Kaizen (Rand / Imai)",
+    "ETAPA 00": "STAGE 00",
+    "ETAPA 01": "STAGE 01",
+    "ETAPA 02": "STAGE 02",
+    "ETAPA 03": "STAGE 03",
+    "ETAPA 04": "STAGE 04",
+    "ETAPA 05": "STAGE 05",
+    "ETAPA 06": "STAGE 06",
+    "Diagnóstico de Punto de Partida y Capital de Marca": "Starting-Point Diagnostic & Brand Equity",
+    "Define el giro real orientado al beneficio del cliente (Levitt & Drucker) y preserva los activos visuales reconocidos cuando una empresa ya opera en el mercado (Aaker & Haviv).": "Defines customer-oriented business value (Levitt & Drucker) and protects recognized visual equity when modernizing an existing brand (Aaker & Haviv).",
+    "Círculo Dorado (Why → How → What), Narrativa Clara y Arquetipo Humano": "Golden Circle (Why → How → What), Clear Story & Archetype",
+    "Las marcas memorables comunican desde su propósito central (Sinek), posicionan al cliente como protagonista con un plan simple (Miller) y mantienen una voz humana coherente (Jung).": "Memorable brands communicate from core purpose (Sinek), position the customer as the hero with a clear plan (Miller), and keep a coherent human voice (Jung).",
+    "Momentos de la Verdad y Disponibilidad Física/Digital": "Moments of Truth & Physical/Digital Availability",
+    "Cada contacto de 15 segundos Antes, Durante y Después de la compra construye la confianza real del cliente y define dónde debe brillar el sistema visual (Carlzon & Sharp).": "Every 15-second interaction Before, During, and After purchase builds trust and dictates where the visual identity must perform (Carlzon & Sharp).",
+    "Modelo Fonético SMILE, Posicionamiento Verbal y Registro Marcario": "SMILE Naming Model, Verbal Positioning & Trademark Class",
+    "Evalúa sonoridad, facilidad de recuerdo y extensión comercial del nombre (Watkins), acompañado de un eslogan claro (Ries & Trout) y sus clases internacionales de Niza.": "Evaluates phonetic memorability and commercial legibility (Watkins), paired with a sharp tagline (Ries & Trout) and WIPO Nice trademark classes.",
+    "Diferencial Semántico de Osgood, Ingeniería Kansei y Armonía Tipográfica": "Osgood Semantic Differential, Kansei Engineering & Typography",
+    "Traduce adjetivos emocionales en proporciones geométricas, radios de curvatura, tensión visual (efecto Bouba/Kiki) y selección tipográfica legible.": "Translates emotional traits into geometric proportions, corner radii, visual tension, and high-legibility font pairings.",
+    "Síntesis Icónica de Paul Rand, Psicología del Color e Iteración Continua Kaizen": "Paul Rand Iconic Synthesis, Color Science & Kaizen Iteration",
+    "Un gran símbolo combina simplicidad, recordación y versatilidad a cualquier escala (Rand), refinado paso a paso (Imai) con contraste cromático verificado (Albers).": "An enduring mark balances simplicity, distinctiveness, and scalability at every size (Rand), refined iteratively (Imai) with verified contrast (Albers).",
+    "Canon Editorial de Vignelli, Sistemas de Retículas y Manual de Marca": "The Vignelli Editorial Canon, Swiss Grids & Brandbook System",
+    "Codifica todas las reglas estratégicas, cromáticas, tipográficas y vectoriales en un Brandbook claro de más de 30 páginas listo para escalar el negocio sin perder coherencia.": "Codifies every strategic, color, typographic, and vector rule into a 30+ page Brandbook ready to scale coherently.",
+    "Autores clave:": "Key authors:",
+    "Obras base:": "Foundational works:",
+    "Todos": "All",
+    "Marca y Propósito": "Brand & Purpose",
+    "Diseño Visual": "Visual Design",
+    "Estrategia y Claridad": "Strategy & Clarity",
+    "Propósito": "Purpose",
+    "Experiencia": "Experience",
+    "Valor de Marca": "Brand Equity",
+    "Logotipos": "Logo Design",
+    "Estrategia + Diseño": "Strategy + Design",
+    "Mensaje Claro": "Clear Messaging",
+    "Modelo de Negocio": "Business Model",
+    "Agilidad": "Agility",
+    "Ver libro de referencia": "View reference book",
+    "Reproducir charla": "Watch lecture",
+    "Etapa 01 · Propósito": "Stage 01 · Purpose",
+    "Etapa 02 · Puntos de Contacto": "Stage 02 · Touchpoints",
+    "Etapa 03 · Posicionamiento": "Stage 03 · Positioning",
+    "Etapa 04 · Ingeniería Kansei": "Stage 04 · Kansei Engineering",
+    "Etapa 05 · Diseño de Identidad": "Stage 05 · Identity Design",
+    "Etapa 06 · Estrategia y Sistemas": "Stage 06 · Strategy & Systems",
+    "Repetir voz de Aura": "Replay Aura's voice",
+    "Ir a la Demo en Vivo": "Go to Live Demo",
+    "Abrir archivo": "Open file",
+    "Descargar": "Download",
+    "Antes": "Before",
+    "Durante": "During",
+    "Después": "After",
+    "Por qué los clientes conectan primero con el propósito real de una empresa antes que con las características técnicas.": "Why customers connect first with a company's core purpose before technical features.",
+    "Cómo cada contacto breve entre tu cliente y tu empresa define la reputación de tu marca.": "How every brief customer interaction defines your brand's real-world reputation.",
+    "Cómo proteger y multiplicar el reconocimiento visual y comercial al modernizar una marca.": "How to protect and compound visual and commercial recognition when modernizing a brand.",
+    "Las tres reglas prácticas de un gran símbolo: simple, memorable y funcional en cualquier tamaño.": "The three practical rules of an enduring mark: appropriate, distinctive & simple at any scale.",
+    "El puente directo entre la estrategia comercial de negocio y una identidad visual clara.": "The direct bridge between business strategy and a clear visual identity.",
+    "Cómo explicar lo que vendes con tanta claridad que cualquier persona lo entienda en segundos.": "How to clarify your message so anyone understands what you offer in seconds.",
+    "Cómo alinear tu propuesta de valor con tus clientes ideales y tus canales de venta.": "How to align your value proposition with ideal customers and distribution channels.",
+    "Lanzar con agilidad, aprender rápido en el mercado real y mejorar de forma continua.": "Launch fast, learn from real customers, and iterate continuously."
+  };
+
+  function trWeb(esStr) {
+    const l = getLang();
+    if (l === "es" || !esStr) return esStr;
+    if (l === "en" && WEB_DYN_EN_MAP[esStr]) return WEB_DYN_EN_MAP[esStr];
+    if (typeof window.tbbTranslateText === "function") {
+      const out = window.tbbTranslateText(esStr, l);
+      if (out && out !== esStr) return out;
+    }
+    return WEB_DYN_EN_MAP[esStr] || esStr;
   }
 
   function hasProLicense() {
@@ -1154,7 +1281,11 @@
     }
 
     window.tbbRefreshCommercialPortalDOM();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    try {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    } catch (e) {
+      window.scrollTo(0, 0);
+    }
   };
 
   window.tbbOpenMobileNavDrawer = function () {
@@ -1185,9 +1316,32 @@
           allow="microphone; autoplay; clipboard-write"
         ></iframe>
       `;
+      const createdIfr = host.querySelector("#tbbRealStudioDemoIframe");
+      if (createdIfr) {
+        createdIfr.addEventListener("load", () => {
+          try {
+            const activeL = getLang();
+            if (createdIfr.contentWindow) {
+              if (typeof createdIfr.contentWindow.tbbSetLanguage === "function") {
+                createdIfr.contentWindow.tbbSetLanguage(activeL, true);
+              }
+              createdIfr.contentWindow.postMessage({ type: "TBB_SET_LANGUAGE", lang: activeL }, "*");
+            }
+          } catch (e) {}
+        });
+      }
     }
     const slot = document.getElementById("tbbHomeLiveDemoMountSlot");
     if (slot && host.parentElement !== slot) {
+      const ifrInside = host.querySelector("#tbbRealStudioDemoIframe");
+      if (ifrInside) {
+        const activeL = getLang();
+        const curSrc = ifrInside.getAttribute("src") || "";
+        if (curSrc && /[?&]lang=/.test(curSrc)) {
+          const nextSrc = curSrc.replace(/([?&]lang=)[a-zA-Z-]+/, "$1" + encodeURIComponent(activeL));
+          if (nextSrc !== curSrc) ifrInside.setAttribute("src", nextSrc);
+        }
+      }
       slot.innerHTML = "";
       slot.appendChild(host);
       host.style.display = "block";
@@ -1259,9 +1413,11 @@
     const isPro = hasProLicense();
     const curDemoStep = Number(st.activeDemoStep) || 0;
     const viewMode = st.demoViewportMode || "full";
+    const cleanTrustBtn = String(t("homeTrustBtn") || "").replace(/\s*[→↗]+\s*$/, "");
 
     return `
       <section class="tbb-section tbb-home-hero-demo-section">
+        <div class="tbb-hero-ambient-grid" aria-hidden="true"></div>
         <div class="tbb-container">
           <!-- HOOK PRINCIPAL ENTUSIASTA Y DIRECTO -->
           <div class="tbb-home-hero-header">
@@ -1280,12 +1436,15 @@
             </div>
           </div>
 
-          <!-- DEMO EN VIVO COMO PROTAGONISTA DE INICIO -->
+          <!-- DEMO EN VIVO COMO PROTAGONISTA DE INICIO (ATELIER STUDIO WINDOW · 1-ROW TITLEBAR) -->
           <div id="tbbHomeLiveDemoCard" class="tbb-live-demo-master-card">
             <div class="tbb-live-demo-toolbar">
               <div class="tbb-live-demo-toolbar-left">
-                <span class="tbb-live-dot"></span>
-                <strong class="tbb-live-demo-toolbar-title">${escHtml(t("demoBarTitle"))}</strong>
+                <span class="tbb-studio-window-dots" aria-hidden="true">
+                  <i></i><i></i><i></i>
+                </span>
+                <span class="tbb-live-dot" aria-hidden="true"></span>
+                <strong class="tbb-live-demo-toolbar-title">${escHtml(getLang() === "en" ? "Live Studio · Free" : "Estudio en Vivo · Gratis")}</strong>
               </div>
 
               <div class="tbb-live-demo-step-pills" role="group" aria-label="Steps">
@@ -1306,12 +1465,6 @@
               </div>
 
               <div class="tbb-live-demo-toolbar-actions">
-                <button
-                  type="button"
-                  class="tbb-toolbar-ghost-btn"
-                  onclick="window.tbbOpenVideoPopupModal(${curDemoStep})"
-                >${TBB_ICONS.volume} <span>${escHtml(t("demoListenAuraBtn"))}</span></button>
-
                 <div class="tbb-view-toggle-group">
                   <button
                     type="button"
@@ -1330,8 +1483,9 @@
                 <button
                   type="button"
                   class="tbb-toolbar-expand-btn"
+                  title="${escHtml(t("heroStartFullscreenBtn"))}"
                   onclick="window.tbbOpenImmersiveStudioClone(${curDemoStep})"
-                >${TBB_ICONS.expand} <span>${escHtml(t("heroStartFullscreenBtn"))}</span></button>
+                >${TBB_ICONS.expand} <span>${escHtml({ es: "Pantalla Completa", en: "Fullscreen", fr: "Plein Écran", pt: "Ecrã Inteiro", de: "Vollbild", it: "Schermo Intero" }[getLang()] || t("heroStartFullscreenBtn"))}</span></button>
               </div>
             </div>
 
@@ -1340,10 +1494,16 @@
             </div>
 
             <div class="tbb-live-demo-bottom-bar">
-              <button type="button" class="tbb-btn-secondary" onclick="window.tbbSwitchMainSection(2)">
-                ${TBB_ICONS.deliverables}
-                <span>${escHtml(t("heroSeeDeliverablesBtn"))}</span>
-              </button>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <button type="button" class="tbb-btn-secondary" onclick="window.tbbSwitchMainSection(2)">
+                  ${TBB_ICONS.deliverables}
+                  <span>${escHtml(t("heroSeeDeliverablesBtn"))}</span>
+                </button>
+                <button type="button" class="tbb-btn-secondary" onclick="window.tbbOpenVideoPopupModal(${curDemoStep})">
+                  ${TBB_ICONS.volume}
+                  <span>${escHtml(t("demoListenAuraBtn"))}</span>
+                </button>
+              </div>
               ${isPro ? `
                 <button type="button" class="tbb-btn-primary" onclick="window.tbbOpenImmersiveStudioClone(4)">
                   ${TBB_ICONS.unlock}
@@ -1361,14 +1521,15 @@
           </div>
 
           <!-- RESUMEN RÁPIDO DE CONFIANZA (SIN CARGAR CON TEORÍA; INVITA A REFERENCIAS A QUIEN LO CUESTIONE) -->
-          <div class="tbb-home-reassurance-strip">
+          <div class="tbb-home-reassurance-strip tbb-reveal-on-scroll">
             <div class="tbb-home-reassurance-copy">
               <h2>${escHtml(t("homeTrustTitle"))}</h2>
               <p>${escHtml(t("homeTrustBody"))}</p>
             </div>
             <button type="button" class="tbb-btn-secondary" onclick="window.tbbSwitchMainSection(5)">
               ${TBB_ICONS.theory}
-              <span>${escHtml(t("homeTrustBtn"))}</span>
+              <span>${escHtml(cleanTrustBtn)}</span>
+              ${TBB_ICONS.arrowRight}
             </button>
           </div>
         </div>
@@ -1379,6 +1540,58 @@
   // ============================================================================
   // SECCIÓN 2: QUÉ RECIBES (BRANDBOOK +30 PÁGINAS + 9 ARCHIVOS + GLOSARIO SIMPLE)
   // ============================================================================
+  function buildFeaturedBrandbookSpreadHTML(l) {
+    const lblCover = { es: "PORTADA OFICIAL", en: "OFFICIAL COVER", fr: "COUVERTURE", pt: "CAPA OFICIAL", de: "TITELSEITE", it: "COPERTINA" }[l] || "PORTADA OFICIAL";
+    const lblSys = { es: "SISTEMA VISUAL · +30 PÁGS", en: "VISUAL SYSTEM · 30+ PAGES", fr: "SYSTÈME VISUEL · +30 P.", pt: "SISTEMA VISUAL · +30 PÁGS", de: "MARKENSYSTEM · 30+ S.", it: "SISTEMA VISIVO · +30 PAG." }[l] || "SISTEMA VISUAL · +30 PÁGS";
+    const lblSub = {
+      es: "BRANDBOOK CORPORATIVO · 36 PÁGINAS",
+      en: "CORPORATE BRANDBOOK · 36 PAGES",
+      fr: "BRANDBOOK OFFICIEL · 36 PAGES",
+      pt: "BRANDBOOK CORPORATIVO · 36 PÁGINAS",
+      de: "MARKENHANDBUCH · 36 SEITEN",
+      it: "BRANDBOOK UFFICIALE · 36 PAGINE"
+    }[l] || "BRANDBOOK CORPORATIVO · 36 PÁGINAS";
+    return `
+      <div class="tbb-atelier-spread-stage" aria-hidden="true">
+        <div class="tbb-atelier-spread-sheet is-left">
+          <span class="tbb-spread-kicker">${escHtml(lblCover)}</span>
+          <div class="tbb-spread-mark-box">
+            <svg viewBox="0 0 120 76" width="96" height="60" fill="none">
+              <path d="M18 62C18 33 42 14 60 14C78 14 102 33 102 62" stroke="#0D2540" stroke-width="5" stroke-linecap="round"/>
+              <path d="M34 62C34 43 47 30 60 30C73 30 86 43 86 62" stroke="#426EAE" stroke-width="4" stroke-linecap="round"/>
+              <path d="M52 62V20M68 62V20" stroke="#FF7A00" stroke-width="3.5" stroke-linecap="round"/>
+            </svg>
+            <strong>ARCO INGENIERÍA</strong>
+            <small>${escHtml(lblSub)}</small>
+          </div>
+          <div class="tbb-spread-foot"><span>01 / 36</span><span>VECTOR · CMYK · RGB</span></div>
+        </div>
+        <div class="tbb-atelier-spread-sheet is-right">
+          <span class="tbb-spread-kicker">${escHtml(lblSys)}</span>
+          <div class="tbb-spread-grid-mini">
+            <div class="tbb-spread-reticle">
+              <svg viewBox="0 0 110 68" width="100%" height="58" fill="none">
+                <rect x="6" y="6" width="98" height="56" rx="8" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 3"/>
+                <path d="M28 52C28 31 44 18 55 18C66 18 82 31 82 52" stroke="#0D2540" stroke-width="3.5" stroke-linecap="round"/>
+                <circle cx="55" cy="36" r="5" fill="#FF7A00"/>
+              </svg>
+            </div>
+            <div class="tbb-spread-swatches">
+              <span style="background:#0D2540;"><i>#0D2540</i></span>
+              <span style="background:#426EAE;"><i>#426EAE</i></span>
+              <span style="background:#FF7A00;"><i>#FF7A00</i></span>
+            </div>
+            <div class="tbb-spread-type-row">
+              <strong>Aa Montserrat</strong>
+              <span>Plus Jakarta Sans · 100% Editable</span>
+            </div>
+          </div>
+          <div class="tbb-spread-foot"><span>16 / 36</span><span>PDF HD · 300 DPI</span></div>
+        </div>
+      </div>
+    `;
+  }
+
   window.tbbBuildSubpage2DeliverablesHTML = function () {
     const l = getLang();
     return `
@@ -1391,7 +1604,7 @@
           </div>
 
           <div class="tbb-deliverables-grid">
-            ${OFFICIAL_9_DELIVERABLES.map((dl) => {
+            ${OFFICIAL_9_DELIVERABLES.map((dl, idx) => {
               const loc = dl.i18n[l] || dl.i18n.es;
               const fileName = String(dl.sampleUrl).split("/").pop();
               const fmtMap = {
@@ -1401,20 +1614,26 @@
                 ".ZIP · FUENTES": { es: ".ZIP · FUENTES", en: ".ZIP · FONTS", fr: ".ZIP · POLICES", pt: ".ZIP · FONTES", de: ".ZIP · SCHRIFTEN", it: ".ZIP · FONT" }
               };
               const locFormat = (fmtMap[dl.format] && (fmtMap[dl.format][l] || fmtMap[dl.format].en)) || dl.format;
+              const lightboxThumb = dl.isPrimaryBrandbook ? "/assets/app_captures/pdf_lamina_13_terna_curvas.png" : dl.thumb;
               return `
-                <article class="tbb-deliv-card ${dl.isPrimaryBrandbook ? "is-featured" : ""}">
-                  <div class="tbb-deliv-thumb-wrap" onclick="window.tbbOpenPlateLightboxModal(${dl.plateNum}, '${escHtml(dl.thumb)}', '${escHtml(loc.title)}', '${escHtml(dl.sampleUrl)}')">
-                    <img src="${escHtml(tbbImgSrc(dl.thumb))}" onerror="window.tbbImgFallback(this)" alt="${escHtml(loc.title)}" loading="lazy" />
+                <article class="tbb-deliv-card tbb-reveal-on-scroll ${dl.isPrimaryBrandbook ? "is-featured" : ""}" style="--tbb-stagger:${idx % 3};">
+                  <div class="tbb-deliv-thumb-wrap ${dl.isPrimaryBrandbook ? "is-spread-wrap" : "is-gallery-mat"}" onclick="window.tbbOpenPlateLightboxModal(${dl.plateNum}, '${escHtml(lightboxThumb)}', '${escHtml(loc.title)}', '${escHtml(dl.sampleUrl)}')">
+                    ${dl.isPrimaryBrandbook
+                      ? buildFeaturedBrandbookSpreadHTML(l)
+                      : `<div class="tbb-deliv-mat-frame"><img src="${escHtml(tbbImgSrc(dl.thumb))}" onerror="window.tbbImgFallback(this)" alt="${escHtml(loc.title)}" loading="lazy" /></div>`
+                    }
                     <span class="tbb-deliv-format-pill">${escHtml(dl.num)} · ${escHtml(locFormat)}</span>
                   </div>
                   <div class="tbb-deliv-body">
-                    <h3>${escHtml(loc.title)}</h3>
-                    <p>${escHtml(loc.desc)}</p>
+                    <div>
+                      <h3>${escHtml(loc.title)}</h3>
+                      <p>${escHtml(loc.desc)}</p>
+                    </div>
                     <div class="tbb-deliv-actions">
-                      <button type="button" class="tbb-btn-secondary" onclick="window.tbbOpenPlateLightboxModal(${dl.plateNum}, '${escHtml(dl.thumb)}', '${escHtml(loc.title)}', '${escHtml(dl.sampleUrl)}')">
+                      <button type="button" class="tbb-btn-secondary" onclick="window.tbbOpenPlateLightboxModal(${dl.plateNum}, '${escHtml(lightboxThumb)}', '${escHtml(loc.title)}', '${escHtml(dl.sampleUrl)}')">
                         ${TBB_ICONS.expand} <span>${escHtml(t("viewSampleBtn"))}</span>
                       </button>
-                      <a href="${escHtml(dl.sampleUrl)}" download="${escHtml(fileName)}" class="tbb-link-btn">${escHtml(t("downloadSampleBtn"))} ${TBB_ICONS.deliverables}</a>
+                      <a href="${escHtml(dl.sampleUrl)}" download="${escHtml(fileName)}" class="tbb-link-btn"><span>${escHtml(t("downloadSampleBtn"))}</span> ${TBB_ICONS.deliverables}</a>
                     </div>
                   </div>
                 </article>
@@ -1423,7 +1642,7 @@
           </div>
 
           <!-- GLOSARIO AMIGABLE DE FORMATOS -->
-          <div class="tbb-glossary-box">
+          <div class="tbb-glossary-box tbb-reveal-on-scroll">
             <h2>${escHtml(t("glossaryTitle"))}</h2>
             <p class="tbb-muted-p">${escHtml(t("glossarySub"))}</p>
             <div class="tbb-glossary-grid">
@@ -1453,8 +1672,112 @@
   };
 
   // ============================================================================
-  // SECCIÓN 3: CÓMO FUNCIONA (RECORRIDO SIMPLE 0–6 + CÁPSULAS ≤15S + ANTES/DESPUÉS)
+  // SECCIÓN 3: CÓMO FUNCIONA (SCROLLYTELLING STICKY + VISTAS ATELIER LIMPIAS + ANTES/DESPUÉS)
   // ============================================================================
+  function buildAtelierStepPreviewHTML(stepNum, l) {
+    const isEn = l === "en";
+    if (stepNum === 0) {
+      return `
+        <div class="tbb-step-atelier-ui">
+          <div class="tbb-ui-mini-top"><span>AURA · 00</span><span class="tbb-ui-lang-chip">${l.toUpperCase()}</span></div>
+          <div class="tbb-ui-choice-stack">
+            <div class="tbb-ui-choice is-active">${TBB_ICONS.spark} <span>${isEn ? "Create new brand from scratch" : "Crear marca nueva desde cero"}</span></div>
+            <div class="tbb-ui-choice">${TBB_ICONS.cases} <span>${isEn ? "Modernize my current logo" : "Modernizar mi logo actual"}</span></div>
+          </div>
+        </div>`;
+    }
+    if (stepNum === 1) {
+      return `
+        <div class="tbb-step-atelier-ui">
+          <div class="tbb-ui-mini-top"><span>AURA · 01</span><span class="tbb-ui-voice-wave"><i></i><i></i><i></i><i></i></span></div>
+          <div class="tbb-ui-bubble">${isEn ? "“What makes your customers choose you first?”" : "«¿Qué hace que tus clientes te elijan a ti?»"}</div>
+          <div class="tbb-ui-input-mock">
+            <span>${isEn ? "Fast delivery & warm personal service..." : "Entrega ágil y trato cercano sin complicaciones..."}</span>
+            <em class="tbb-ui-idea-pill">${isEn ? "+ Idea" : "+ Dame una idea"}</em>
+          </div>
+        </div>`;
+    }
+    if (stepNum === 2) {
+      const tags = isEn
+        ? ["Instagram & TikTok", "Packaging & Boxes", "Website", "Storefront", "Uniforms"]
+        : ["Instagram y TikTok", "Empaques y Cajas", "Sitio Web", "Local / Fachada", "Uniformes"];
+      return `
+        <div class="tbb-step-atelier-ui">
+          <div class="tbb-ui-mini-top"><span>AURA · 02</span><span>5 / 5</span></div>
+          <div class="tbb-ui-chip-cloud">
+            ${tags.map((tg, i) => `<span class="tbb-ui-touch-chip ${i < 3 ? "is-on" : ""}">${i < 3 ? TBB_ICONS.check : ""} ${escHtml(tg)}</span>`).join("")}
+          </div>
+        </div>`;
+    }
+    if (stepNum === 3) {
+      return `
+        <div class="tbb-step-atelier-ui">
+          <div class="tbb-ui-mini-top"><span>AURA · 03</span><span>SMILE · 98%</span></div>
+          <div class="tbb-ui-naming-card">
+            <strong>ARCO INGENIERÍA</strong>
+            <span>${isEn ? "“Precision structures built to last.”" : "«Estructuras precisas diseñadas para trascender.»"}</span>
+            <div class="tbb-ui-nice-badge">${TBB_ICONS.shield} <span>${isEn ? "Trademark Class 37 & 42 Ready" : "Clase Internacional 37 y 42 Lista"}</span></div>
+          </div>
+        </div>`;
+    }
+    if (stepNum === 4) {
+      return `
+        <div class="tbb-step-atelier-ui">
+          <div class="tbb-ui-mini-top"><span>AURA · 04</span><span>Aa</span></div>
+          <div class="tbb-ui-sliders-mini">
+            <div class="tbb-ui-bar-row"><span>${isEn ? "Classic" : "Clásico"}</span><div class="tbb-ui-track"><i style="left:72%;"></i></div><span>${isEn ? "Modern" : "Moderno"}</span></div>
+            <div class="tbb-ui-bar-row"><span>${isEn ? "Soft" : "Suave"}</span><div class="tbb-ui-track"><i style="left:64%;background:#426EAE;"></i></div><span>${isEn ? "Geometric" : "Exacto"}</span></div>
+          </div>
+          <div class="tbb-ui-font-pair"><strong>Montserrat Bold</strong><span>+ Plus Jakarta Sans</span></div>
+        </div>`;
+    }
+    if (stepNum === 5) {
+      return `
+        <div class="tbb-step-atelier-ui">
+          <div class="tbb-ui-mini-top"><span>AURA · 05</span><span>VECTOR .SVG</span></div>
+          <div class="tbb-ui-logo-preview-row">
+            <div class="tbb-ui-vector-box">
+              <svg viewBox="0 0 100 58" width="84" height="48" fill="none">
+                <path d="M16 48C16 25 35 11 50 11C65 11 84 25 84 48" stroke="#0D2540" stroke-width="4.5" stroke-linecap="round"/>
+                <path d="M43 48V16M57 48V16" stroke="#FF7A00" stroke-width="3.4" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="tbb-ui-palette-col">
+              <span style="background:#0D2540;"></span>
+              <span style="background:#426EAE;"></span>
+              <span style="background:#FF7A00;"></span>
+            </div>
+          </div>
+        </div>`;
+    }
+    const zipKicker = {
+      es: "+30 PÁGS · ZIP",
+      en: "30+ PAGES · ZIP",
+      fr: "+30 PAGES · ZIP",
+      pt: "+30 PÁGS · ZIP",
+      de: "30+ SEITEN · ZIP",
+      it: "+30 PAG. · ZIP"
+    }[l] || "+30 PÁGS · ZIP";
+    return `
+      <div class="tbb-step-atelier-ui">
+        <div class="tbb-ui-mini-top"><span>AURA · 06</span><span>${escHtml(zipKicker)}</span></div>
+        <div class="tbb-ui-export-grid">
+          <span>.PDF</span><span>.SVG</span><span>.AI</span><span>.PNG</span><span>.DOCX</span><span>.PPTX</span>
+        </div>
+        <div class="tbb-ui-ready-bar">${TBB_ICONS.check} <span>${isEn ? "9 Production Files Ready" : escHtml(trWeb("9 Archivos Oficiales Listos"))}</span></div>
+      </div>`;
+  }
+
+  window.tbbScrollToHowStep = function (stepIdx) {
+    const card = document.getElementById("tbbHowStepCard_" + stepIdx);
+    if (card) {
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    document.querySelectorAll("[data-how-rail-pill]").forEach((btn) => {
+      btn.classList.toggle("is-active", Number(btn.getAttribute("data-how-rail-pill")) === Number(stepIdx));
+    });
+  };
+
   window.tbbUpdateBeforeAfterSlider = function (val) {
     const num = Math.max(5, Math.min(95, Number(val) || 50));
     window.tbbCommercialDemoState.beforeAfterVal = num;
@@ -1467,6 +1790,14 @@
   window.tbbBuildSubpage3HowItWorksHTML = function () {
     const l = getLang();
     const baVal = Number(window.tbbCommercialDemoState.beforeAfterVal) || 52;
+    const railSummaryTitle = {
+      es: "7 pasos cortos · Menos de 60 min",
+      en: "7 short steps · Under 60 min",
+      fr: "7 étapes courtes · Moins de 60 min",
+      pt: "7 passos curtos · Menos de 60 min",
+      de: "7 kurze Schritte · Unter 60 Min.",
+      it: "7 brevi passi · Meno di 60 min"
+    }[l] || "7 pasos cortos · Menos de 60 min";
 
     return `
       <section class="tbb-section">
@@ -1477,58 +1808,89 @@
             <p class="tbb-lead">${escHtml(t("howLead"))}</p>
           </div>
 
-          <div class="tbb-how-steps-list">
-            ${CLEAN_TOUR_STEPS.map((stItem) => {
-              const loc = stItem.i18n[l] || stItem.i18n.es;
-              return `
-                <article class="tbb-how-step-card">
-                  <div class="tbb-how-step-copy">
-                    <div class="tbb-how-step-meta">
-                      <span class="tbb-step-pill-tag ${stItem.free ? "is-free" : "is-pro"}">${escHtml(loc.badge)}</span>
-                      <span class="tbb-step-time-pill">${TBB_ICONS.clock} ~${escHtml(stItem.time)}</span>
-                    </div>
-                    <h2>${escHtml(loc.title)}</h2>
-                    <p>${escHtml(loc.body)}</p>
-                    <div class="tbb-how-step-btns">
-                      <button type="button" class="tbb-btn-secondary" onclick="window.tbbOpenVideoPopupModal(${stItem.step})">
-                        ${TBB_ICONS.volume}
-                        <span>${escHtml(t("howListenCapsule"))}</span>
+          <div class="tbb-how-scrolly-layout">
+            <aside class="tbb-how-sticky-rail" aria-label="Índice del recorrido">
+              <div class="tbb-how-rail-card">
+                <span class="tbb-rail-time-kicker">${TBB_ICONS.clock} <span>${escHtml(railSummaryTitle)}</span></span>
+                <div class="tbb-how-rail-nav">
+                  ${CLEAN_TOUR_STEPS.map((stItem, idx) => {
+                    const loc = stItem.i18n[l] || stItem.i18n.es;
+                    return `
+                      <button
+                        type="button"
+                        data-how-rail-pill="${stItem.step}"
+                        class="tbb-how-rail-btn ${idx === 0 ? "is-active" : ""}"
+                        onclick="window.tbbScrollToHowStep(${stItem.step})"
+                      >
+                        <span class="tbb-rail-num">0${stItem.step}</span>
+                        <span class="tbb-rail-lbl">${escHtml(loc.title)}</span>
+                        <small>${escHtml(stItem.time)}</small>
                       </button>
-                      <button type="button" class="tbb-link-btn" onclick="window.tbbSwitchMainSection(1); setTimeout(()=>window.tbbJumpDemoToStep(${stItem.step}), 120);">
-                        <span>${escHtml(t("tryStepLiveBtn"))}</span> ${TBB_ICONS.arrowRight}
-                      </button>
+                    `;
+                  }).join("")}
+                </div>
+                <button type="button" class="tbb-btn-primary is-full" onclick="window.tbbSwitchMainSection(1)">
+                  ${TBB_ICONS.play}
+                  <span>${escHtml(t("startFreeDemoNow"))}</span>
+                </button>
+              </div>
+            </aside>
+
+            <div class="tbb-how-steps-list">
+              ${CLEAN_TOUR_STEPS.map((stItem) => {
+                const loc = stItem.i18n[l] || stItem.i18n.es;
+                return `
+                  <article id="tbbHowStepCard_${stItem.step}" data-how-step="${stItem.step}" class="tbb-how-step-card tbb-reveal-on-scroll">
+                    <div class="tbb-how-step-copy">
+                      <div class="tbb-how-step-meta">
+                        <span class="tbb-step-pill-tag ${stItem.free ? "is-free" : "is-pro"}">${escHtml(loc.badge)}</span>
+                        <span class="tbb-step-time-pill">${TBB_ICONS.clock} ~${escHtml(stItem.time)}</span>
+                      </div>
+                      <h2>${escHtml(loc.title)}</h2>
+                      <p>${escHtml(loc.body)}</p>
+                      <div class="tbb-how-step-btns">
+                        <button type="button" class="tbb-btn-secondary" onclick="window.tbbOpenVideoPopupModal(${stItem.step})">
+                          ${TBB_ICONS.volume}
+                          <span>${escHtml(t("howListenCapsule"))}</span>
+                        </button>
+                        <button type="button" class="tbb-link-btn" onclick="window.tbbSwitchMainSection(1); setTimeout(()=>window.tbbJumpDemoToStep(${stItem.step}), 120);">
+                          <span>${escHtml(t("tryStepLiveBtn"))}</span> ${TBB_ICONS.arrowRight}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div class="tbb-how-step-visual" onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(stItem.img)}', '${escHtml(loc.title)}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')">
-                    <img src="${escHtml(tbbImgSrc(stItem.img))}" onerror="window.tbbImgFallback(this)" alt="${escHtml(loc.title)}" loading="lazy" />
-                  </div>
-                </article>
-              `;
-            }).join("")}
+                    <div class="tbb-how-step-visual" onclick="window.tbbSwitchMainSection(1); setTimeout(()=>window.tbbJumpDemoToStep(${stItem.step}), 120);" title="${escHtml(t("tryStepLiveBtn"))}">
+                      ${buildAtelierStepPreviewHTML(stItem.step, l)}
+                    </div>
+                  </article>
+                `;
+              }).join("")}
+            </div>
           </div>
 
-          <!-- COMPARADOR INTERACTIVO ANTES / DESPUÉS (CERO AUTORES) -->
-          <div class="tbb-before-after-card">
+          <!-- COMPARADOR INTERACTIVO ANTES / DESPUÉS (CERO AUTORES · ETIQUETAS SIN TRASLAPES MÓVILES) -->
+          <div class="tbb-before-after-card tbb-reveal-on-scroll">
             <div class="tbb-before-after-head">
               <h2>${escHtml(t("howBeforeAfterTitle"))}</h2>
               <p>${escHtml(t("howBeforeAfterSub"))}</p>
             </div>
             <div class="tbb-ba-stage">
               <div class="tbb-ba-layer is-after">
-                <img src="/assets/logos/arco_iter5_full.png" alt="Logo Modernizado" />
-                <span class="tbb-ba-tag is-after-tag">Después · Vector Limpio</span>
+                <img src="/assets/logos/arco_iter5_full.png" alt="${escHtml(trWeb("Después · Vector Limpio"))}" />
               </div>
               <div id="tbbBeforeClipLayer" class="tbb-ba-layer is-before" style="clip-path:inset(0 ${100 - baVal}% 0 0);">
-                <img src="/assets/logos/arco_ingenieria_logo4k_original.png" alt="Logo Anterior" />
-                <span class="tbb-ba-tag is-before-tag">Antes · Logo Original</span>
+                <img src="/assets/logos/arco_ingenieria_logo4k_original.png" alt="${escHtml(trWeb("Antes · Logo Original"))}" />
               </div>
-              <div id="tbbBeforeAfterHandle" class="tbb-ba-handle" style="left:${baVal}%;"></div>
+              <span class="tbb-ba-tag is-before-tag">${escHtml(trWeb("Antes · Logo Original"))}</span>
+              <span class="tbb-ba-tag is-after-tag">${escHtml(trWeb("Después · Vector Limpio"))}</span>
+              <div id="tbbBeforeAfterHandle" class="tbb-ba-handle" style="left:${baVal}%;">
+                <span class="tbb-ba-knob" aria-hidden="true">${TBB_ICONS.gripHorizontal}</span>
+              </div>
               <input
                 type="range"
                 min="5"
                 max="95"
                 value="${baVal}"
-                aria-label="Comparar Antes y Después"
+                aria-label="${escHtml(trWeb("Comparar Antes y Después"))}"
                 class="tbb-ba-range-input"
                 oninput="window.tbbUpdateBeforeAfterSlider(this.value)"
               />
@@ -1543,7 +1905,27 @@
   // SECCIÓN 4: EJEMPLOS REALES (CASO ARCO INGENIERÍA LIMPIO + LIGHTBOX HD)
   // ============================================================================
   window.tbbSelectArcoCaseIteration = function (iterId) {
-    window.tbbCommercialDemoState.selectedArcoIterId = Number(iterId) || 5;
+    const cleanId = Number(iterId) || 5;
+    window.tbbCommercialDemoState.selectedArcoIterId = cleanId;
+    const activeIter = ARCO_LOGO_ITERATIONS.find((x) => x.id === cleanId) || ARCO_LOGO_ITERATIONS[4];
+    const mainWrap = document.getElementById("tbbArcoCaseMainPreview");
+    if (mainWrap) {
+      mainWrap.classList.remove("is-swapping");
+      void mainWrap.offsetWidth;
+      mainWrap.classList.add("is-swapping");
+      mainWrap.innerHTML = `
+        <span class="tbb-step-pill-tag is-free">${escHtml(trWeb(activeIter.badge))}</span>
+        <h2>${escHtml(trWeb(activeIter.name))}</h2>
+        <p>${escHtml(trWeb(activeIter.desc))}</p>
+        <div class="tbb-case-main-img-wrap" onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(activeIter.logoImg)}', '${escHtml(trWeb(activeIter.name))}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')">
+          <img src="${escHtml(tbbImgSrc(activeIter.logoImg))}" alt="${escHtml(trWeb(activeIter.name))}" />
+        </div>
+      `;
+      document.querySelectorAll(".tbb-case-iter-btn").forEach((btn) => {
+        btn.classList.toggle("active", Number(btn.getAttribute("data-arco-iter-id")) === cleanId);
+      });
+      return;
+    }
     window.tbbRefreshCommercialPortalDOM();
   };
 
@@ -1561,13 +1943,13 @@
           </div>
 
           <!-- EVOLUCIÓN DE OPCIONES DEL CASO REAL -->
-          <div class="tbb-case-hero-box">
-            <div class="tbb-case-preview-main">
-              <span class="tbb-step-pill-tag is-free">${escHtml(activeIter.badge)}</span>
-              <h2>${escHtml(activeIter.name)}</h2>
-              <p>${escHtml(activeIter.desc)}</p>
-              <div class="tbb-case-main-img-wrap" onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(activeIter.screenImg)}', '${escHtml(activeIter.name)}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')">
-                <img src="${escHtml(tbbImgSrc(activeIter.logoImg))}" alt="${escHtml(activeIter.name)}" />
+          <div class="tbb-case-hero-box tbb-reveal-on-scroll">
+            <div id="tbbArcoCaseMainPreview" class="tbb-case-preview-main">
+              <span class="tbb-step-pill-tag is-free">${escHtml(trWeb(activeIter.badge))}</span>
+              <h2>${escHtml(trWeb(activeIter.name))}</h2>
+              <p>${escHtml(trWeb(activeIter.desc))}</p>
+              <div class="tbb-case-main-img-wrap" onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(activeIter.logoImg)}', '${escHtml(trWeb(activeIter.name))}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')">
+                <img src="${escHtml(tbbImgSrc(activeIter.logoImg))}" alt="${escHtml(trWeb(activeIter.name))}" />
               </div>
             </div>
 
@@ -1575,12 +1957,13 @@
               ${ARCO_LOGO_ITERATIONS.map((it) => `
                 <button
                   type="button"
+                  data-arco-iter-id="${it.id}"
                   class="tbb-case-iter-btn ${it.id === selId ? "active" : ""}"
                   onclick="window.tbbSelectArcoCaseIteration(${it.id})"
                 >
-                  <img src="${escHtml(tbbImgSrc(it.logoImg))}" alt="${escHtml(it.name)}" loading="lazy" />
-                  <strong>${escHtml(it.name)}</strong>
-                  <span>${escHtml(it.badge)}</span>
+                  <img src="${escHtml(tbbImgSrc(it.logoImg))}" alt="${escHtml(trWeb(it.name))}" loading="lazy" />
+                  <strong>${escHtml(trWeb(it.name))}</strong>
+                  <span>${escHtml(trWeb(it.badge))}</span>
                 </button>
               `).join("")}
             </div>
@@ -1592,13 +1975,16 @@
             <div class="tbb-plates-gallery-grid">
               ${ARCO_PDF_PLATES_SHOWCASE.map((pl, idx) => `
                 <div
-                  class="tbb-plate-thumb-card"
-                  onclick="window.tbbOpenPlateLightboxModal(${idx + 1}, '${escHtml(pl.img)}', '${escHtml(pl.code)} · ${escHtml(pl.title)}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
+                  class="tbb-plate-thumb-card tbb-reveal-on-scroll"
+                  style="--tbb-stagger:${idx % 4};"
+                  onclick="window.tbbOpenPlateLightboxModal(${idx + 1}, '${escHtml(pl.img)}', '${escHtml(trWeb(pl.code))} · ${escHtml(trWeb(pl.title))}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
                 >
-                  <img src="${escHtml(tbbImgSrc(pl.img))}" alt="${escHtml(pl.title)}" loading="lazy" />
+                  <div class="tbb-plate-crop-frame">
+                    <img src="${escHtml(tbbImgSrc(pl.img))}" alt="${escHtml(trWeb(pl.title))}" loading="lazy" />
+                  </div>
                   <div class="tbb-plate-thumb-caption">
-                    <span>${escHtml(pl.code)}</span>
-                    <strong>${escHtml(pl.title)}</strong>
+                    <span>${escHtml(trWeb(pl.code))}</span>
+                    <strong>${escHtml(trWeb(pl.title))}</strong>
                   </div>
                 </div>
               `).join("")}
@@ -1608,11 +1994,12 @@
           <div class="tbb-centered-cta-row">
             <a href="/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf" target="_blank" rel="noopener" class="tbb-btn-secondary">
               ${TBB_ICONS.deliverables}
-              <span>Abrir PDF Completo de Muestra (36 páginas)</span>
+              <span>${escHtml(trWeb("Abrir PDF Completo de Muestra (36 páginas)"))}</span>
             </a>
             <button type="button" class="tbb-btn-primary" onclick="window.tbbSwitchMainSection(1)">
               ${TBB_ICONS.spark}
-              <span>Crear mi propia marca ahora →</span>
+              <span>${escHtml(trWeb("Crear mi propia marca ahora"))}</span>
+              ${TBB_ICONS.arrowRight}
             </button>
           </div>
         </div>
@@ -1628,7 +2015,7 @@
       return `<svg viewBox="0 0 320 200" width="100%" height="180" xmlns="http://www.w3.org/2000/svg"><circle cx="160" cy="100" r="82" fill="#F8FAFC" stroke="#0D2540" stroke-width="2" stroke-dasharray="4 3"/><circle cx="160" cy="100" r="54" fill="rgba(66,110,174,0.12)" stroke="#426EAE" stroke-width="2"/><circle cx="160" cy="100" r="28" fill="#FF7A00"/><text x="160" y="104" text-anchor="middle" fill="#FFFFFF" font-family="Montserrat,sans-serif" font-weight="700" font-size="13">WHY</text><text x="160" y="58" text-anchor="middle" fill="#0D2540" font-family="Plus Jakarta Sans,sans-serif" font-weight="600" font-size="12">HOW</text><text x="160" y="29" text-anchor="middle" fill="#426EAE" font-family="Plus Jakarta Sans,sans-serif" font-weight="600" font-size="12">WHAT</text></svg>`;
     }
     if (diagramType === "touchpoints_wave") {
-      return `<svg viewBox="0 0 320 200" width="100%" height="180" xmlns="http://www.w3.org/2000/svg"><line x1="24" y1="105" x2="296" y2="105" stroke="#CBD5E1" stroke-width="2"/><path d="M 28 135 C 75 45, 115 45, 160 105 C 205 165, 245 45, 292 75" fill="none" stroke="#426EAE" stroke-width="3.2" stroke-linecap="round"/><circle cx="68" cy="72" r="8" fill="#4C9DE6"/><circle cx="160" cy="105" r="9" fill="#FF7A00"/><circle cx="256" cy="76" r="8" fill="#0D2540"/><text x="68" y="52" text-anchor="middle" fill="#0D2540" font-family="Plus Jakarta Sans,sans-serif" font-weight="600" font-size="12">Antes</text><text x="160" y="138" text-anchor="middle" fill="#FF7A00" font-family="Plus Jakarta Sans,sans-serif" font-weight="700" font-size="12">Durante</text><text x="256" y="54" text-anchor="middle" fill="#0D2540" font-family="Plus Jakarta Sans,sans-serif" font-weight="600" font-size="12">Después</text></svg>`;
+      return `<svg viewBox="0 0 320 200" width="100%" height="180" xmlns="http://www.w3.org/2000/svg"><line x1="24" y1="105" x2="296" y2="105" stroke="#CBD5E1" stroke-width="2"/><path d="M 28 135 C 75 45, 115 45, 160 105 C 205 165, 245 45, 292 75" fill="none" stroke="#426EAE" stroke-width="3.2" stroke-linecap="round"/><circle cx="68" cy="72" r="8" fill="#4C9DE6"/><circle cx="160" cy="105" r="9" fill="#FF7A00"/><circle cx="256" cy="76" r="8" fill="#0D2540"/><text x="68" y="52" text-anchor="middle" fill="#0D2540" font-family="Plus Jakarta Sans,sans-serif" font-weight="600" font-size="12">${escHtml(trWeb("Antes"))}</text><text x="160" y="138" text-anchor="middle" fill="#FF7A00" font-family="Plus Jakarta Sans,sans-serif" font-weight="700" font-size="12">${escHtml(trWeb("Durante"))}</text><text x="256" y="54" text-anchor="middle" fill="#0D2540" font-family="Plus Jakarta Sans,sans-serif" font-weight="600" font-size="12">${escHtml(trWeb("Después"))}</text></svg>`;
     }
     if (diagramType === "smile_radar") {
       return `<svg viewBox="0 0 320 200" width="100%" height="180" xmlns="http://www.w3.org/2000/svg"><polygon points="160,24 234,78 206,164 114,164 86,78" fill="rgba(66,110,174,0.08)" stroke="#94A3B8" stroke-width="1.5"/><polygon points="160,38 220,84 196,152 124,152 100,84" fill="rgba(255,122,0,0.18)" stroke="#FF7A00" stroke-width="2.4"/><text x="160" y="18" text-anchor="middle" fill="#0D2540" font-family="Plus Jakarta Sans,sans-serif" font-weight="600" font-size="12">SMILE</text></svg>`;
@@ -1651,9 +2038,9 @@
     const box = document.getElementById("tbbRefSelectedPillarDetail");
     if (box) {
       box.innerHTML = `
-        <strong>${escHtml(stObj.code)} · ${escHtml(stObj.title)}</strong>
-        <p>${escHtml(stObj.thesis)}</p>
-        <span>Autores clave: ${escHtml(stObj.authors)}</span>
+        <strong>${escHtml(trWeb(stObj.code))} · ${escHtml(trWeb(stObj.title))}</strong>
+        <p>${escHtml(trWeb(stObj.thesis))}</p>
+        <span>${escHtml(trWeb("Autores clave:"))} ${escHtml(stObj.authors)}</span>
       `;
     }
     document.querySelectorAll(".tbb-ref-pillar-btn").forEach((b, i) => b.classList.toggle("active", i === cleanIdx));
@@ -1770,13 +2157,13 @@
                   type="button"
                   class="tbb-ref-pillar-btn ${idx === selPillarIdx ? "active" : ""}"
                   onclick="window.tbbSelectHeroTheoryNode(${idx})"
-                >${escHtml(lbl)}</button>
+                >${escHtml(trWeb(lbl))}</button>
               `).join("")}
             </div>
             <div id="tbbRefSelectedPillarDetail" class="tbb-ref-pillar-detail">
-              <strong>${escHtml(activeStage.code)} · ${escHtml(activeStage.title)}</strong>
-              <p>${escHtml(activeStage.thesis)}</p>
-              <span>Autores clave: ${escHtml(activeStage.authors)}</span>
+              <strong>${escHtml(trWeb(activeStage.code))} · ${escHtml(trWeb(activeStage.title))}</strong>
+              <p>${escHtml(trWeb(activeStage.thesis))}</p>
+              <span>${escHtml(trWeb("Autores clave:"))} ${escHtml(activeStage.authors)}</span>
             </div>
           </div>
 
@@ -1806,16 +2193,16 @@
           <div class="tbb-subsection-block">
             <h2 class="tbb-h2">${escHtml(t("refAuthorsTitle"))}</h2>
             <div class="tbb-authors-stages-grid">
-              ${ACADEMIC_INFOGRAPHIC_STAGES.map((stg) => `
-                <article class="tbb-author-stage-card">
+              ${ACADEMIC_INFOGRAPHIC_STAGES.map((stg, idx) => `
+                <article class="tbb-author-stage-card tbb-reveal-on-scroll" style="--tbb-stagger:${idx % 3};">
                   <div class="tbb-author-stage-top">
-                    <span class="tbb-step-pill-tag is-free">${escHtml(stg.code)}</span>
+                    <span class="tbb-step-pill-tag is-free">${escHtml(trWeb(stg.code))}</span>
                     <span class="tbb-author-names">${escHtml(stg.authors)}</span>
                   </div>
-                  <h3>${escHtml(stg.title)}</h3>
-                  <p>${escHtml(stg.thesis)}</p>
+                  <h3>${escHtml(trWeb(stg.title))}</h3>
+                  <p>${escHtml(trWeb(stg.thesis))}</p>
                   <div class="tbb-author-diagram-wrap">${buildAcademicDiagramSVG(stg.diagramType)}</div>
-                  <div class="tbb-author-works">Obras base: ${escHtml(stg.works)}</div>
+                  <div class="tbb-author-works">${escHtml(trWeb("Obras base:"))} ${escHtml(stg.works)}</div>
                 </article>
               `).join("")}
             </div>
@@ -1826,22 +2213,22 @@
             <div class="tbb-books-head-row">
               <h2 class="tbb-h2">${escHtml(t("refBooksTitle"))}</h2>
               <div class="tbb-book-filter-bar" role="group" aria-label="Book Filters">
-                <button type="button" data-cat="all" class="tbb-book-filter-pill is-active" onclick="window.tbbFilterBooksCategory('all')">Todos</button>
-                <button type="button" data-cat="branding" class="tbb-book-filter-pill" onclick="window.tbbFilterBooksCategory('branding')">Marca y Propósito</button>
-                <button type="button" data-cat="design" class="tbb-book-filter-pill" onclick="window.tbbFilterBooksCategory('design')">Diseño Visual</button>
-                <button type="button" data-cat="strategy" class="tbb-book-filter-pill" onclick="window.tbbFilterBooksCategory('strategy')">Estrategia y Claridad</button>
+                <button type="button" data-cat="all" class="tbb-book-filter-pill is-active" onclick="window.tbbFilterBooksCategory('all')">${escHtml(trWeb("Todos"))}</button>
+                <button type="button" data-cat="branding" class="tbb-book-filter-pill" onclick="window.tbbFilterBooksCategory('branding')">${escHtml(trWeb("Marca y Propósito"))}</button>
+                <button type="button" data-cat="design" class="tbb-book-filter-pill" onclick="window.tbbFilterBooksCategory('design')">${escHtml(trWeb("Diseño Visual"))}</button>
+                <button type="button" data-cat="strategy" class="tbb-book-filter-pill" onclick="window.tbbFilterBooksCategory('strategy')">${escHtml(trWeb("Estrategia y Claridad"))}</button>
               </div>
             </div>
             <div class="tbb-books-grid">
               ${FOUNDER_ESSENTIAL_BOOKS.map((bk) => `
-                <article class="tbb-book-card" data-cat="${escHtml(bk.category)}">
+                <article class="tbb-book-card tbb-reveal-on-scroll" data-cat="${escHtml(bk.category)}">
                   <div>
-                    <span class="tbb-book-badge">${escHtml(bk.categoryLabel)} · ${escHtml(bk.year)}</span>
+                    <span class="tbb-book-badge">${escHtml(trWeb(bk.categoryLabel))} · ${escHtml(bk.year)}</span>
                     <h3>${escHtml(bk.title)}</h3>
                     <strong class="tbb-book-author">${escHtml(bk.author)}</strong>
-                    <p>${escHtml(bk.takeaway)}</p>
+                    <p>${escHtml(trWeb(bk.takeaway))}</p>
                   </div>
-                  <a href="${escHtml(bk.kindleUrl)}" target="_blank" rel="noopener noreferrer" class="tbb-link-btn">Ver libro de referencia ↗</a>
+                  <a href="${escHtml(bk.kindleUrl)}" target="_blank" rel="noopener noreferrer" class="tbb-link-btn"><span>${escHtml(trWeb("Ver libro de referencia"))}</span> ${TBB_ICONS.arrowUpRight}</a>
                 </article>
               `).join("")}
             </div>
@@ -1852,14 +2239,14 @@
             <h2 class="tbb-h2">${escHtml(t("refVideosTitle"))}</h2>
             <div class="tbb-videos-grid">
               ${YOUTUBE_METHODOLOGY_AUTHORS.map((vd) => `
-                <article class="tbb-yt-card" onclick="window.tbbPlayYouTubeAuthorVideo('${escHtml(vd.id)}')">
+                <article class="tbb-yt-card tbb-reveal-on-scroll" onclick="window.tbbPlayYouTubeAuthorVideo('${escHtml(vd.id)}')">
                   <div class="tbb-yt-head">
-                    <span>${escHtml(vd.step)}</span>
+                    <span>${escHtml(trWeb(vd.step))}</span>
                     <span>${escHtml(vd.duration)}</span>
                   </div>
                   <h3>${escHtml(vd.title)}</h3>
                   <p>${escHtml(vd.author)}</p>
-                  <span class="tbb-link-btn">${TBB_ICONS.play} <span>Reproducir charla</span></span>
+                  <span class="tbb-link-btn">${TBB_ICONS.play} <span>${escHtml(trWeb("Reproducir charla"))}</span></span>
                 </article>
               `).join("")}
             </div>
@@ -1987,7 +2374,7 @@
             <span class="tbb-capsule-live-tag">AURA VIVA · ${l.toUpperCase()} · ≤15s</span>
             <canvas id="tbbWebCapsuleAuraCanvas" width="190" height="190"></canvas>
             <button type="button" class="tbb-capsule-replay-btn" onclick="window.tbbReplayActiveWebCapsule(${s}, '${l}')">
-              ${TBB_ICONS.volume} <span>Repetir voz de Aura</span>
+              ${TBB_ICONS.volume} <span>${escHtml(trWeb("Repetir voz de Aura"))}</span>
             </button>
           </div>
           <div class="tbb-capsule-copy-col">
@@ -1996,11 +2383,11 @@
             <div class="tbb-capsule-actions">
               ${s < 6 ? `
                 <button type="button" class="tbb-btn-primary" onclick="window.tbbOpenVideoPopupModal(${s + 1}, '${l}')">
-                  <span>Siguiente cápsula (Paso 0${s + 1})</span> ${TBB_ICONS.arrowRight}
+                  <span>${escHtml(l === "en" ? `Next capsule (Step 0${s + 1})` : `${trWeb("Siguiente cápsula")} (${t("stepWord")} 0${s + 1})`)}</span> ${TBB_ICONS.arrowRight}
                 </button>
               ` : `
                 <button type="button" class="tbb-btn-primary" onclick="window.tbbCloseVideoPopupModal(); window.tbbSwitchMainSection(1);">
-                  <span>Ir a la Demo en Vivo</span> ${TBB_ICONS.arrowRight}
+                  <span>${escHtml(trWeb("Ir a la Demo en Vivo"))}</span> ${TBB_ICONS.arrowRight}
                 </button>
               `}
               <button type="button" class="tbb-btn-secondary" onclick="window.tbbCloseVideoPopupModal()">${escHtml(t("lightboxClose"))}</button>
@@ -2049,7 +2436,7 @@
   // ============================================================================
   window.tbbOpenPlateLightboxModal = function (plateNum, customImgUrl, customTitle, customSampleUrl) {
     const imgUrl = customImgUrl || "/assets/app_captures/pdf_lamina_01_portada.png";
-    const titleStr = customTitle || "Muestra en Alta Resolución";
+    const titleStr = customTitle || (getLang() === "en" ? "High-Resolution Sample" : "Muestra en Alta Resolución");
     const sampleHref = customSampleUrl || "/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf";
     const dlFileName = String(sampleHref).split("/").pop();
 
@@ -2067,8 +2454,8 @@
         <div class="tbb-modal-head">
           <h3>${escHtml(titleStr)}</h3>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-            <a href="${escHtml(sampleHref)}" target="_blank" rel="noopener" class="tbb-btn-secondary">Abrir archivo</a>
-            <a href="${escHtml(sampleHref)}" download="${escHtml(dlFileName)}" class="tbb-btn-primary">Descargar ↓</a>
+            <a href="${escHtml(sampleHref)}" target="_blank" rel="noopener" class="tbb-btn-secondary"><span>${escHtml(trWeb("Abrir archivo"))}</span> ${TBB_ICONS.arrowUpRight}</a>
+            <a href="${escHtml(sampleHref)}" download="${escHtml(dlFileName)}" class="tbb-btn-primary"><span>${escHtml(trWeb("Descargar"))}</span> ${TBB_ICONS.deliverables}</a>
             <button type="button" class="tbb-icon-close-btn" onclick="window.tbbClosePlateLightboxModal()">${TBB_ICONS.close}</button>
           </div>
         </div>
@@ -2358,12 +2745,13 @@
       draftEmail = sessionStorage.getItem("tbb_checkout_draft_email") || "";
     } catch (e) {}
 
+    const isEn = getLang() === "en";
     box.innerHTML = `
       <div class="tbb-modal-head">
         <div style="display:flex;align-items:center;gap:12px;">
           <img src="${TBB_ISOTIPO_DATA_URI}" alt="The Best Brand" style="width:42px;height:42px;border-radius:12px;" />
           <div>
-            <span class="tbb-eyebrow">${TBB_ICONS.shield} <span>100% PROPIEDAD TUYA · PAGO ÚNICO</span></span>
+            <span class="tbb-eyebrow">${TBB_ICONS.shield} <span>${isEn ? "100% OWNED BY YOU · ONE-TIME PAYMENT" : "100% PROPIEDAD TUYA · PAGO ÚNICO"}</span></span>
             <h3>${escHtml(t("checkoutTitle"))}</h3>
           </div>
         </div>
@@ -2374,8 +2762,8 @@
 
       <div class="tbb-checkout-summary-box">
         <div>
-          <strong>Incluye: Pasos 4 al 6 + Brandbook (+30 páginas) + 9 archivos editables</strong>
-          <span>${detectedBrand ? `Progreso listo para migrar: «${escHtml(detectedBrand)}»` : "Tus respuestas de los Pasos 0 al 3 pasan directo al Paso 4."}</span>
+          <strong>${isEn ? "Includes: Steps 4 to 6 + Brandbook (30+ pages) + 9 editable files" : "Incluye: Pasos 4 al 6 + Brandbook (+30 páginas) + 9 archivos editables"}</strong>
+          <span>${detectedBrand ? (isEn ? `Ready to migrate: “${escHtml(detectedBrand)}”` : `Progreso listo para migrar: «${escHtml(detectedBrand)}»`) : (isEn ? "Your answers from Steps 0 to 3 carry straight into Step 4." : "Tus respuestas de los Pasos 0 al 3 pasan directo al Paso 4.")}</span>
         </div>
         <div class="tbb-checkout-price-tag">
           ${coupon ? `<s>$49</s> $${finalPrice.toFixed(2)} USD` : `$49 USD`}
@@ -2395,7 +2783,7 @@
 
       <div class="tbb-promo-collapsible">
         <button type="button" class="tbb-link-btn" onclick="window.tbbToggleCheckoutPromoDrawer()">
-          ${escHtml(t("checkoutPromoToggle"))} ${promoOpen ? "▴" : "▾"}
+          <span>${escHtml(t("checkoutPromoToggle"))}</span> ${promoOpen ? TBB_ICONS.chevronUp : TBB_ICONS.chevronDown}
         </button>
         ${promoOpen ? `
           <div class="tbb-promo-row">
@@ -2409,9 +2797,9 @@
               onkeydown="if(event.key==='Enter'){event.preventDefault();window.tbbApplyPromoCouponCode();}"
             />
             <button type="button" class="tbb-btn-secondary" onclick="window.tbbApplyPromoCouponCode()">${escHtml(t("checkoutPromoApply"))}</button>
-            ${coupon ? `<button type="button" class="tbb-link-btn" onclick="window.tbbClearPromoCouponCode()">Quitar</button>` : ""}
+            ${coupon ? `<button type="button" class="tbb-link-btn" onclick="window.tbbClearPromoCouponCode()">${isEn ? "Remove" : "Quitar"}</button>` : ""}
           </div>
-          ${coupon ? `<div class="tbb-promo-ok-msg">${TBB_ICONS.check} Código <strong>${escHtml(coupon.code)}</strong> aplicado — Total: <strong>$${finalPrice.toFixed(2)} USD</strong></div>` : ""}
+          ${coupon ? `<div class="tbb-promo-ok-msg">${TBB_ICONS.check} ${isEn ? "Code" : "Código"} <strong>${escHtml(coupon.code)}</strong> ${isEn ? "applied — Total:" : "aplicado — Total:"} <strong>$${finalPrice.toFixed(2)} USD</strong></div>` : ""}
           <div id="tbbCheckoutPromoStatusMsg" class="tbb-promo-err-msg" style="display:none;"></div>
         ` : ""}
       </div>
@@ -2420,13 +2808,13 @@
 
       <button id="tbbCheckoutSubmitBtn" type="button" class="tbb-btn-primary is-full" style="margin-top:16px;" onclick="window.tbbProcessCheckoutPayment()">
         ${TBB_ICONS.card}
-        <span>${coupon && finalPrice <= 0 ? "Activar Licencia con Código Verificado" : (coupon ? `Continuar al Pago Seguro · $${finalPrice.toFixed(2)} USD` : escHtml(t("checkoutPayBtn")))}</span>
+        <span>${coupon && finalPrice <= 0 ? (isEn ? "Activate License with Verified Code" : "Activar Licencia con Código Verificado") : (coupon ? `${isEn ? "Continue to Secure Checkout" : "Continuar al Pago Seguro"} · $${finalPrice.toFixed(2)} USD` : escHtml(t("checkoutPayBtn")))}</span>
         ${TBB_ICONS.arrowRight}
       </button>
 
       <div class="tbb-checkout-footer-note">
-        <span>Pago procesado con cifrado bancario por Stripe · Tarjeta, Apple Pay o Google Pay.</span>
-        <button type="button" class="tbb-link-btn" onclick="window.tbbCloseBuyAppCheckoutModal(); window.tbbOpenRestoreAccountModal();">¿Ya compraste antes? Restaurar mi cuenta</button>
+        <span>${isEn ? "Bank-grade encrypted checkout by Stripe · Card, Apple Pay, or Google Pay." : "Pago procesado con cifrado bancario por Stripe · Tarjeta, Apple Pay o Google Pay."}</span>
+        <button type="button" class="tbb-link-btn" onclick="window.tbbCloseBuyAppCheckoutModal(); window.tbbOpenRestoreAccountModal();">${isEn ? "Already purchased? Restore my account" : "¿Ya compraste antes? Restaurar mi cuenta"}</button>
       </div>
     `;
   };
@@ -2463,11 +2851,12 @@
       ov.onclick = (e) => { if (e.target === ov) window.tbbCloseRestoreAccountModal(); };
       document.body.appendChild(ov);
     }
+    const isEn = getLang() === "en";
     ov.innerHTML = `
       <div class="tbb-modal-card" onclick="event.stopPropagation()">
         <div class="tbb-modal-head">
           <div>
-            <span class="tbb-eyebrow">${TBB_ICONS.user} <span>RESPALDO EN LA NUBE</span></span>
+            <span class="tbb-eyebrow">${TBB_ICONS.user} <span>${isEn ? "CLOUD BACKUP" : "RESPALDO EN LA NUBE"}</span></span>
             <h3>${escHtml(t("restoreTitle"))}</h3>
           </div>
           <button type="button" class="tbb-icon-close-btn" onclick="window.tbbCloseRestoreAccountModal()">${TBB_ICONS.close}</button>
@@ -2475,11 +2864,11 @@
         <p class="tbb-muted-p">${escHtml(t("restoreSub"))}</p>
         <div class="tbb-checkout-fields">
           <label class="tbb-field-label">
-            <span>Correo electrónico registrado</span>
-            <input id="tbbRestoreEmailInput" type="email" placeholder="tu@correo.com" class="tbb-input" autocomplete="email" />
+            <span>${isEn ? "Registered email address" : "Correo electrónico registrado"}</span>
+            <input id="tbbRestoreEmailInput" type="email" placeholder="${isEn ? "you@company.com" : "tu@correo.com"}" class="tbb-input" autocomplete="email" />
           </label>
           <label class="tbb-field-label">
-            <span>Contraseña (opcional si solo activaste con correo)</span>
+            <span>${isEn ? "Password (optional if activated by email)" : "Contraseña (opcional si solo activaste con correo)"}</span>
             <input id="tbbRestorePassInput" type="password" placeholder="••••••••" class="tbb-input" autocomplete="current-password" />
           </label>
         </div>
@@ -2758,15 +3147,63 @@
     ov.classList.add("open");
   };
 
+  const FOOTER_LEGAL_I18N = {
+    es: { aria: "Navegación del pie de página", privacy: "Privacidad", support: "Soporte y Ayuda", account: "Gestión de Cuenta" },
+    en: { aria: "Footer navigation", privacy: "Privacy", support: "Support & Help", account: "Account Management" },
+    fr: { aria: "Navigation de pied de page", privacy: "Confidentialité", support: "Aide et Support", account: "Gestion du Compte" },
+    pt: { aria: "Navegação de rodapé", privacy: "Privacidade", support: "Suporte e Ajuda", account: "Gestão de Conta" },
+    de: { aria: "Fußzeilennavigation", privacy: "Datenschutz", support: "Hilfe & Support", account: "Kontoverwaltung" },
+    it: { aria: "Navigazione piè di pagina", privacy: "Privacy", support: "Supporto e Aiuto", account: "Gestione Account" }
+  };
+
   window.tbbUpdateLocalizedFooterDOM = function () {
-    const descEl = document.querySelector("[data-tbb-i18n-footer='desc']");
+    const l = getLang();
+    const leg = FOOTER_LEGAL_I18N[l] || FOOTER_LEGAL_I18N.es;
+    const descEl = document.getElementById("tbbFooterBrandDesc") || document.querySelector("[data-tbb-i18n-footer='desc']");
     if (descEl) descEl.textContent = t("footerDesc");
+    const navEl = document.getElementById("tbbFooterNavLinks");
+    if (navEl) {
+      navEl.setAttribute("aria-label", leg.aria);
+      navEl.innerHTML = `
+        <a href="/" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(1);}" style="color:#0D2540; font-weight:600; text-decoration:none;">${escHtml(t("navHome"))}</a>
+        <span style="color:#CBD5E1;">·</span>
+        <a href="/entregables" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(2);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navDeliverables"))}</a>
+        <span style="color:#CBD5E1;">·</span>
+        <a href="/como-funciona" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(3);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navHowItWorks"))}</a>
+        <span style="color:#CBD5E1;">·</span>
+        <a href="/ejemplos" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(4);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navRealCases"))}</a>
+        <span style="color:#CBD5E1;">·</span>
+        <a href="/referencias" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(5);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navReferences"))}</a>
+        <span style="color:#CBD5E1;">·</span>
+        <a href="#desbloquear" onclick="if(window.tbbOpenBuyAppCheckoutModal){event.preventDefault(); window.tbbOpenBuyAppCheckoutModal('pro_atelier');}" style="color:#FF7A00; font-weight:600; text-decoration:none;">${escHtml(t("navBuyCta"))}</a>
+      `;
+    }
+    const legEl = document.getElementById("tbbFooterLegalLinks");
+    if (legEl) {
+      legEl.innerHTML = `
+        <a href="/privacidad" style="color:#475569; font-weight:500; text-decoration:none;">${escHtml(leg.privacy)}</a>
+        <span style="color:#CBD5E1;">·</span>
+        <a href="/soporte" style="color:#475569; font-weight:500; text-decoration:none;">${escHtml(leg.support)}</a>
+        <span style="color:#CBD5E1;">·</span>
+        <a href="/eliminar-cuenta" style="color:#475569; font-weight:500; text-decoration:none;">${escHtml(leg.account)}</a>
+      `;
+    }
   };
 
   window.tbbSwitchCommercialLanguage = function (langCode) {
-    const clean = String(langCode || "es").toLowerCase().trim();
+    const clean = String(langCode || "es").toLowerCase().trim().slice(0, 2);
     if (!["es", "en", "fr", "pt", "de", "it"].includes(clean)) return;
+    window._tbbExplicitWebLang = clean;
     hardStopAllWebAudio("lang_switch_" + clean);
+    try {
+      if (window.history && window.history.replaceState) {
+        const u = new URL(window.location.href);
+        if (u.searchParams.has("lang")) {
+          u.searchParams.set("lang", clean);
+          window.history.replaceState(window.history.state, "", u.pathname + u.search + u.hash);
+        }
+      }
+    } catch (e) {}
     if (typeof window.syncAllLangStorageKeys === "function") {
       window.syncAllLangStorageKeys(clean);
     } else {
@@ -2783,16 +3220,16 @@
 
     document.querySelectorAll('iframe[src*="studio"], #tbbRealStudioDemoIframe').forEach((ifr) => {
       try {
+        if (ifr.contentWindow && typeof ifr.contentWindow.tbbSetLanguage === "function") {
+          ifr.contentWindow.tbbSetLanguage(clean, true);
+        }
+        if (ifr.contentWindow) {
+          ifr.contentWindow.postMessage({ type: "TBB_SET_LANGUAGE", lang: clean }, "*");
+        }
         const curSrc = ifr.getAttribute("src") || "";
         if (curSrc && /[?&]lang=/.test(curSrc)) {
           const nextSrc = curSrc.replace(/([?&]lang=)[a-zA-Z-]+/, "$1" + encodeURIComponent(clean));
           if (nextSrc !== curSrc) ifr.setAttribute("src", nextSrc);
-        }
-        if (ifr.contentWindow) {
-          if (typeof ifr.contentWindow.tbbSetLanguage === "function") {
-            ifr.contentWindow.tbbSetLanguage(clean);
-          }
-          ifr.contentWindow.postMessage({ type: "TBB_SET_LANGUAGE", lang: clean }, "*");
         }
       } catch (e) {}
     });
@@ -2800,7 +3237,10 @@
   window.tbbChangeCommercialLanguage = window.tbbSwitchCommercialLanguage;
 
   // ============================================================================
-  // ESTILOS ORGÁNICOS, ESCALA TIPOGRÁFICA ≥14px (0.875rem) Y CERO NEGRITAS EXCESIVAS
+  // SISTEMA DE DISEÑO COMPACTO V131 · ATELIER LUMIÈRE (AWWWARDS SOTD & ADA)
+  // - 100% Lienzo Claro (#FFFFFF) · Bordes precisos 1px de baja opacidad
+  // - Escala tipográfica real (≥14px / 0.875rem estricto, tracking óptico, tabular-nums)
+  // - Movimiento 60fps 100% GPU (SOLO transform & opacity + prefers-reduced-motion)
   // ============================================================================
   function tbbInjectOrganicStyles() {
     if (document.getElementById("tbbOrganicV129Styles")) return;
@@ -2812,13 +3252,21 @@
         --tbb-blue: #426EAE;
         --tbb-sky: #4C9DE6;
         --tbb-orange: #FF7A00;
-        --tbb-ink: #1E293B;
+        --tbb-ink: #0D2540;
         --tbb-muted: #475569;
-        --tbb-line: #E2E8F0;
+        --tbb-line: rgba(13, 37, 64, 0.085);
+        --tbb-line-strong: rgba(13, 37, 64, 0.14);
         --tbb-bg: #FFFFFF;
         --tbb-surface: #F8FAFC;
+        --tbb-surface-tint: #F4F8FC;
+        --tbb-ds-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        --tbb-ds-ease-press: cubic-bezier(0.32, 0.72, 0, 1);
+        --tbb-ds-shadow-xs: 0 1px 2px rgba(13, 37, 64, 0.04);
+        --tbb-ds-shadow-sm: 0 1px 2px rgba(13, 37, 64, 0.038), 0 8px 20px -6px rgba(13, 37, 64, 0.06);
+        --tbb-ds-shadow-md: 0 1px 3px rgba(13, 37, 64, 0.045), 0 16px 36px -10px rgba(13, 37, 64, 0.085);
+        --tbb-ds-shadow-atelier: 0 1px 2px rgba(13, 37, 64, 0.04), 0 18px 40px -10px rgba(13, 37, 64, 0.075), 0 38px 76px -20px rgba(13, 37, 64, 0.10);
       }
-      html { scroll-behavior: smooth; font-size: 16px; }
+      html { scroll-behavior: smooth; font-size: 16px; overflow-x: clip; }
       body.tbb-commercial-standalone-body {
         margin: 0;
         padding: 0;
@@ -2826,48 +3274,100 @@
         color: #0D2540;
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         font-size: 1rem;
-        line-height: 1.6;
-        overflow-x: hidden;
+        line-height: 1.62;
+        overflow-x: clip;
         -webkit-font-smoothing: antialiased;
       }
+      button, a, select, input, [role="button"] {
+        touch-action: manipulation;
+      }
+      button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
+        outline: 2px solid #426EAE;
+        outline-offset: 2px;
+      }
       .tbb-svg-ic { display: inline-block; vertical-align: middle; flex-shrink: 0; }
-      .tbb-container { max-width: 1220px; margin: 0 auto; padding: 0 24px; box-sizing: border-box; }
-      .tbb-section { padding: 40px 0 76px; background: #FFFFFF; }
+      .tbb-container { max-width: 1240px; margin: 0 auto; padding: 0 24px; box-sizing: border-box; position: relative; z-index: 1; }
+      .tbb-section {
+        position: relative;
+        padding: 44px 0 84px;
+        background: #FFFFFF;
+        animation: tbbViewEnterGPU 0.28s var(--tbb-ds-ease-out) both;
+      }
+      @keyframes tbbViewEnterGPU {
+        from { opacity: 0; transform: translate3d(0, 10px, 0); }
+        to { opacity: 1; transform: translate3d(0, 0, 0); }
+      }
 
-      /* HEADER LIMPIO Y AIREADO */
+      /* GPU SCROLL-LINKED REVEALS (TRANSFORM & OPACITY ONLY) */
+      .tbb-reveal-on-scroll {
+        opacity: 0;
+        transform: translate3d(0, 14px, 0);
+        transition: opacity 0.28s var(--tbb-ds-ease-out), transform 0.28s var(--tbb-ds-ease-out);
+        transition-delay: calc(var(--tbb-stagger, 0) * 30ms);
+        will-change: transform, opacity;
+      }
+      .tbb-reveal-on-scroll.is-visible {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+
+      /* SUTIL TRAMA ARQUITECTÓNICA DE LUZ SOBRE LIENZO 100% BLANCO */
+      .tbb-home-hero-demo-section { overflow: clip; }
+      .tbb-hero-ambient-grid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 440px;
+        pointer-events: none;
+        z-index: 0;
+        background-image:
+          radial-gradient(circle at 50% 0%, rgba(76, 157, 230, 0.08) 0%, rgba(255, 255, 255, 0) 68%),
+          linear-gradient(to right, rgba(13, 37, 64, 0.032) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(13, 37, 64, 0.032) 1px, transparent 1px);
+        background-size: 100% 100%, 40px 40px, 40px 40px;
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+      }
+
+      /* HEADER CRISTAL ESMERILADO (APPLE FROSTED GLASS) */
       .tbb-master-header {
         position: sticky;
         top: 0;
         z-index: 1200;
-        background: rgba(255, 255, 255, 0.96);
-        backdrop-filter: blur(14px);
-        border-bottom: 1px solid #E2E8F0;
+        background: rgba(255, 255, 255, 0.84);
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        border-bottom: 1px solid rgba(13, 37, 64, 0.075);
+        box-shadow: 0 1px 2px rgba(13, 37, 64, 0.03);
       }
       .tbb-header-inner {
         max-width: 1380px;
         margin: 0 auto;
-        padding: 10px 18px;
+        padding: 10px 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 10px;
       }
-      .tbb-brand-logo-link { display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+      .tbb-brand-logo-link { display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 0; transition: transform 0.18s var(--tbb-ds-ease-out); }
+      .tbb-brand-logo-link:active { transform: scale(0.985); }
       .tbb-header-wordmark-svg { height: 36px; width: auto; display: block; }
       .tbb-desktop-nav {
         display: flex;
         align-items: center;
-        gap: 3px;
-        background: #F8FAFC;
+        gap: 2px;
+        background: rgba(248, 250, 252, 0.92);
         padding: 4px;
         border-radius: 999px;
-        border: 1px solid #E2E8F0;
+        border: 1px solid rgba(13, 37, 64, 0.08);
+        box-shadow: inset 0 1px 1px rgba(13, 37, 64, 0.03);
       }
       .tbb-nav-tab-btn {
         display: inline-flex;
         align-items: center;
-        gap: 5px;
-        padding: 7px 11px;
+        gap: 6px;
+        padding: 7px 13px;
         border-radius: 999px;
         border: none;
         background: transparent;
@@ -2876,22 +3376,28 @@
         font-size: 0.875rem;
         font-weight: 600;
         cursor: pointer;
-        transition: background 0.18s ease, color 0.18s ease;
+        transition: transform 0.16s var(--tbb-ds-ease-press), opacity 0.16s ease;
         white-space: nowrap;
       }
-      .tbb-nav-tab-btn:hover { color: #0D2540; background: #EEF2F6; }
-      .tbb-nav-tab-btn.active { background: #0D2540; color: #FFFFFF; }
+      .tbb-nav-tab-btn:hover { color: #0D2540; background: rgba(13, 37, 64, 0.045); }
+      .tbb-nav-tab-btn:active { transform: scale(0.975); }
+      .tbb-nav-tab-btn.active {
+        background: #0D2540;
+        color: #FFFFFF;
+        box-shadow: 0 2px 8px rgba(13, 37, 64, 0.18);
+      }
       .tbb-header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
       .tbb-lang-select-wrap {
         display: inline-flex;
         align-items: center;
         gap: 4px;
         height: 38px;
-        padding: 0 9px;
+        padding: 0 10px;
         border-radius: 999px;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.11);
         background: #FFFFFF;
         color: #0D2540;
+        box-shadow: var(--tbb-ds-shadow-xs);
       }
       .tbb-lang-select-dropdown {
         border: none;
@@ -2906,11 +3412,11 @@
       .tbb-header-account-btn {
         display: inline-flex;
         align-items: center;
-        gap: 5px;
+        gap: 6px;
         height: 38px;
-        padding: 0 11px;
+        padding: 0 12px;
         border-radius: 999px;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.11);
         background: #FFFFFF;
         color: #0D2540;
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -2918,30 +3424,33 @@
         font-weight: 600;
         cursor: pointer;
         white-space: nowrap;
+        box-shadow: var(--tbb-ds-shadow-xs);
+        transition: transform 0.16s var(--tbb-ds-ease-press), opacity 0.16s ease;
       }
+      .tbb-header-account-btn:hover { background: #F8FAFC; }
+      .tbb-header-account-btn:active { transform: scale(0.98); }
       .tbb-header-buy-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 6px;
         height: 38px;
-        padding: 0 15px;
+        padding: 0 16px;
         border-radius: 999px;
-        border: none;
+        border: 1px solid rgba(255, 255, 255, 0.18);
         background: #FF7A00;
         color: #FFFFFF;
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 0.875rem;
         font-weight: 600;
+        font-variant-numeric: tabular-nums;
         cursor: pointer;
-        box-shadow: 0 4px 12px rgba(255, 122, 0, 0.25);
+        box-shadow: 0 1px 2px rgba(13, 37, 64, 0.08), 0 6px 16px rgba(255, 122, 0, 0.24);
         white-space: nowrap;
+        transition: transform 0.16s var(--tbb-ds-ease-press), opacity 0.16s ease;
       }
-      .tbb-header-buy-btn svg path,
-      .tbb-primary-cta-btn svg path,
-      .tbb-orange-btn svg path {
-        fill: currentColor;
-      }
+      .tbb-header-buy-btn:hover { transform: translate3d(0, -1px, 0); }
+      .tbb-header-buy-btn:active { transform: scale(0.98); }
       .tbb-buy-lbl-short { display: none; }
       .tbb-header-buy-btn.is-pro { background: #059669; box-shadow: none; }
       .tbb-mobile-menu-btn {
@@ -2949,61 +3458,79 @@
         width: 40px;
         height: 40px;
         border-radius: 12px;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.12);
         background: #FFFFFF;
         color: #0D2540;
-        font-size: 1.15rem;
         cursor: pointer;
+        box-shadow: var(--tbb-ds-shadow-xs);
+        transition: transform 0.15s var(--tbb-ds-ease-press);
       }
+      .tbb-mobile-menu-btn:active { transform: scale(0.96); }
 
-      /* ESCALA TIPOGRÁFICA ORGÁNICA (CERO <14px / 0.875rem, CERO PESOS 800/900) */
+      /* JERARQUÍA Y TIPOGRAFÍA EDITORIAL (≥14px / 0.875rem ESTRICTO, TRACKING ÓPTICO, BALANCE) */
       .tbb-tagline-hero-badge, .tbb-eyebrow {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 6px 16px;
+        gap: 7px;
+        padding: 6px 15px;
         border-radius: 999px;
         background: #FFF7ED;
-        border: 1px solid #FED7AA;
+        border: 1px solid rgba(255, 122, 0, 0.24);
         color: #C2410C;
-        font-size: 0.9rem;
+        font-size: 0.875rem;
         font-weight: 700;
-        letter-spacing: 0.03em;
+        letter-spacing: 0.04em;
+        box-shadow: 0 1px 2px rgba(255, 122, 0, 0.06);
       }
       .tbb-eyebrow {
         background: #F4F8FC;
-        border-color: #DCE6F2;
+        border-color: rgba(66, 110, 174, 0.18);
         color: #426EAE;
+        box-shadow: none;
       }
-      .tbb-home-hero-header, .tbb-section-header {
+      .tbb-home-hero-header {
         text-align: center;
-        max-width: 840px;
-        margin: 0 auto 28px;
+        max-width: 980px;
+        margin: 0 auto 32px;
+      }
+      .tbb-section-header {
+        text-align: center;
+        max-width: 860px;
+        margin: 0 auto 36px;
       }
       .tbb-hero-h1, .tbb-h1 {
         font-family: 'Montserrat', sans-serif;
-        font-size: clamp(1.9rem, 3.6vw, 2.85rem);
+        font-size: clamp(2rem, 3.85vw, 3.05rem);
         font-weight: 700;
-        line-height: 1.18;
+        line-height: 1.12;
         color: #0D2540;
-        margin: 14px 0 12px;
-        letter-spacing: -0.02em;
+        margin: 16px auto 14px;
+        letter-spacing: -0.032em;
+        text-wrap: balance;
+        font-variant-numeric: tabular-nums;
       }
       .tbb-h2 {
         font-family: 'Montserrat', sans-serif;
-        font-size: clamp(1.45rem, 2.4vw, 1.9rem);
+        font-size: clamp(1.42rem, 2.35vw, 1.92rem);
         font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.024em;
+        text-wrap: balance;
         color: #0D2540;
         margin: 0 0 16px;
+        font-variant-numeric: tabular-nums;
       }
       .tbb-hero-lead, .tbb-lead {
         font-size: 1.08rem;
         font-weight: 400;
         color: #475569;
         line-height: 1.62;
-        margin: 0 auto 20px;
+        max-width: 66ch;
+        margin: 0 auto 22px;
+        text-wrap: pretty;
+        font-variant-numeric: tabular-nums;
       }
-      .tbb-muted-p { font-size: 1rem; color: #475569; margin: 0 0 16px; font-weight: 400; }
+      .tbb-muted-p { font-size: 1rem; color: #475569; margin: 0 0 16px; font-weight: 400; line-height: 1.6; }
 
       .tbb-hero-value-pills {
         display: flex;
@@ -3017,20 +3544,23 @@
         gap: 6px;
         padding: 7px 14px;
         border-radius: 999px;
-        background: #F8FAFC;
-        border: 1px solid #E2E8F0;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(13, 37, 64, 0.09);
+        box-shadow: var(--tbb-ds-shadow-xs);
         color: #0D2540;
-        font-size: 0.92rem;
+        font-size: 0.9rem;
         font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
       }
       .tbb-value-pill.is-highlight {
         background: #ECFDF5;
-        border-color: #A7F3D0;
+        border-color: rgba(16, 185, 129, 0.28);
         color: #065F46;
         font-weight: 600;
       }
 
-      /* BOTONES TÁCTILES ESTILO ORGÁNICO */
+      /* BOTONES TÁCTILES CON FÍSICA GPU (SCALE + TRANSLATE3D) */
       .tbb-btn-primary, .tbb-btn-secondary {
         display: inline-flex;
         align-items: center;
@@ -3040,33 +3570,37 @@
         padding: 0 22px;
         border-radius: 14px;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.96rem;
+        font-size: 0.95rem;
         font-weight: 600;
+        font-variant-numeric: tabular-nums;
         text-decoration: none;
         cursor: pointer;
-        transition: transform 0.14s ease, box-shadow 0.18s ease;
+        transition: transform 0.16s var(--tbb-ds-ease-press), opacity 0.16s ease;
+        will-change: transform;
       }
       .tbb-btn-primary {
         background: #FF7A00;
         color: #FFFFFF;
-        border: none;
-        box-shadow: 0 4px 0 #D96500;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: 0 1px 2px rgba(13, 37, 64, 0.08), 0 8px 20px -4px rgba(255, 122, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.25);
       }
-      .tbb-btn-primary:active { transform: translateY(2px); box-shadow: 0 2px 0 #D96500; }
+      .tbb-btn-primary:hover { transform: translate3d(0, -1.5px, 0); }
+      .tbb-btn-primary:active { transform: translate3d(0, 1px, 0) scale(0.985); }
       .tbb-btn-secondary {
         background: #FFFFFF;
         color: #0D2540;
-        border: 1.5px solid #CBD5E1;
-        box-shadow: 0 3px 0 #E2E8F0;
+        border: 1px solid rgba(13, 37, 64, 0.12);
+        box-shadow: var(--tbb-ds-shadow-xs), inset 0 -1px 0 rgba(13, 37, 64, 0.04);
       }
-      .tbb-btn-secondary:active { transform: translateY(2px); box-shadow: 0 1px 0 #E2E8F0; }
+      .tbb-btn-secondary:hover { background: #F8FAFC; transform: translate3d(0, -1px, 0); }
+      .tbb-btn-secondary:active { transform: translate3d(0, 1px, 0) scale(0.985); }
       .tbb-btn-primary.is-full { width: 100%; }
       .tbb-link-btn {
         background: none;
         border: none;
         color: #426EAE;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.94rem;
+        font-size: 0.93rem;
         font-weight: 600;
         cursor: pointer;
         text-decoration: none;
@@ -3074,17 +3608,18 @@
         align-items: center;
         gap: 6px;
         padding: 4px 0;
+        transition: transform 0.16s var(--tbb-ds-ease-out), opacity 0.16s ease;
       }
-      .tbb-link-btn:hover { color: #FF7A00; text-decoration: underline; }
+      .tbb-link-btn:hover { color: #FF7A00; transform: translate3d(2px, 0, 0); }
 
-      /* DEMO EN VIVO EN INICIO */
+      /* VENTANA ATELIER STUDIO DE LA DEMO EN VIVO (RADIOS CONCÉNTRICOS) */
       .tbb-live-demo-master-card {
         background: #FFFFFF;
-        border: 1.5px solid #CBD5E1;
-        border-radius: 24px;
-        box-shadow: 0 16px 44px rgba(13, 37, 64, 0.08);
+        border: 1px solid rgba(13, 37, 64, 0.095);
+        border-radius: 26px;
+        box-shadow: var(--tbb-ds-shadow-atelier);
         overflow: hidden;
-        margin-bottom: 36px;
+        margin-bottom: 40px;
       }
       .tbb-live-demo-toolbar {
         display: flex;
@@ -3093,35 +3628,52 @@
         flex-wrap: wrap;
         gap: 12px;
         padding: 12px 18px;
-        background: #F8FAFC;
-        border-bottom: 1px solid #E2E8F0;
+        background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+        border-bottom: 1px solid rgba(13, 37, 64, 0.08);
       }
       .tbb-live-demo-toolbar-left { display: flex; align-items: center; gap: 10px; }
+      .tbb-studio-window-dots {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding-right: 4px;
+      }
+      .tbb-studio-window-dots i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(13, 37, 64, 0.14);
+        display: inline-block;
+      }
       .tbb-live-dot {
-        width: 10px;
-        height: 10px;
+        width: 9px;
+        height: 9px;
         border-radius: 50%;
         background: #10B981;
-        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.18);
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.16);
       }
-      .tbb-live-demo-toolbar-title { font-size: 0.95rem; font-weight: 600; color: #0D2540; }
-      .tbb-live-demo-step-pills { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+      .tbb-live-demo-toolbar-title { font-size: 0.93rem; font-weight: 600; color: #0D2540; letter-spacing: -0.01em; }
+      .tbb-live-demo-step-pills { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
       .tbb-step-jump-pill {
         display: inline-flex;
         align-items: center;
         gap: 5px;
         padding: 6px 12px;
         border-radius: 999px;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.10);
         background: #FFFFFF;
         color: #334155;
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 0.875rem;
         font-weight: 600;
+        font-variant-numeric: tabular-nums;
         cursor: pointer;
+        transition: transform 0.15s var(--tbb-ds-ease-press), opacity 0.15s ease;
       }
-      .tbb-step-jump-pill.active { background: #0D2540; color: #FFFFFF; border-color: #0D2540; }
-      .tbb-step-jump-pill.is-pro-step { border-color: #FDBA74; background: #FFF7ED; color: #9A3412; }
+      .tbb-step-jump-pill:hover { background: #F8FAFC; color: #0D2540; }
+      .tbb-step-jump-pill:active { transform: scale(0.97); }
+      .tbb-step-jump-pill.active { background: #0D2540; color: #FFFFFF; border-color: #0D2540; box-shadow: 0 2px 8px rgba(13,37,64,0.16); }
+      .tbb-step-jump-pill.is-pro-step { border-color: rgba(255, 122, 0, 0.34); background: #FFF7ED; color: #9A3412; }
       .tbb-live-demo-toolbar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
       .tbb-toolbar-ghost-btn, .tbb-toolbar-expand-btn {
         display: inline-flex;
@@ -3129,17 +3681,21 @@
         gap: 6px;
         padding: 7px 13px;
         border-radius: 999px;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.11);
         background: #FFFFFF;
         color: #0D2540;
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 0.875rem;
         font-weight: 600;
         cursor: pointer;
+        box-shadow: var(--tbb-ds-shadow-xs);
+        transition: transform 0.15s var(--tbb-ds-ease-press);
       }
+      .tbb-toolbar-ghost-btn:hover, .tbb-toolbar-expand-btn:hover { background: #F8FAFC; }
+      .tbb-toolbar-ghost-btn:active, .tbb-toolbar-expand-btn:active { transform: scale(0.975); }
       .tbb-view-toggle-group {
         display: inline-flex;
-        background: #EEF2F6;
+        background: rgba(13, 37, 64, 0.055);
         padding: 3px;
         border-radius: 999px;
       }
@@ -3156,8 +3712,9 @@
         font-size: 0.875rem;
         font-weight: 600;
         cursor: pointer;
+        transition: transform 0.15s var(--tbb-ds-ease-press);
       }
-      .tbb-view-toggle-btn.active { background: #FFFFFF; color: #0D2540; box-shadow: 0 2px 6px rgba(13,37,64,0.08); }
+      .tbb-view-toggle-btn.active { background: #FFFFFF; color: #0D2540; box-shadow: 0 1px 4px rgba(13,37,64,0.09); }
 
       .tbb-live-demo-outer-stage {
         background: #F4F8FC;
@@ -3165,15 +3722,15 @@
         display: flex;
         justify-content: center;
       }
-      .tbb-live-demo-mount-slot { width: 100%; }
+      .tbb-live-demo-mount-slot { width: 100%; transition: transform 0.24s var(--tbb-ds-ease-out); }
       .tbb-live-demo-frame-shell { width: 100%; height: min(740px, 80vh); min-height: 580px; background: #FFFFFF; }
-      .tbb-live-demo-outer-stage.is-mobile-frame { padding: 24px 12px; }
+      .tbb-live-demo-outer-stage.is-mobile-frame { padding: 28px 14px; }
       .tbb-live-demo-outer-stage.is-mobile-frame .tbb-live-demo-mount-slot {
         max-width: 412px;
-        border: 8px solid #0D2540;
+        border: 7px solid #0D2540;
         border-radius: 36px;
         overflow: hidden;
-        box-shadow: 0 20px 50px rgba(13, 37, 64, 0.18);
+        box-shadow: 0 24px 60px rgba(13, 37, 64, 0.18);
       }
       .tbb-live-demo-iframe { width: 100%; height: 100%; border: none; display: block; background: #FFFFFF; }
       .tbb-live-demo-bottom-bar {
@@ -3184,92 +3741,168 @@
         gap: 12px;
         padding: 14px 20px;
         background: #FFFFFF;
-        border-top: 1px solid #E2E8F0;
+        border-top: 1px solid rgba(13, 37, 64, 0.08);
       }
 
       .tbb-home-reassurance-strip {
         background: #F8FAFC;
-        border: 1px solid #E2E8F0;
-        border-radius: 22px;
-        padding: 26px 30px;
+        border: 1px solid rgba(13, 37, 64, 0.08);
+        border-radius: 24px;
+        padding: 28px 32px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 20px;
         flex-wrap: wrap;
+        box-shadow: var(--tbb-ds-shadow-xs);
       }
       .tbb-home-reassurance-copy { max-width: 680px; }
       .tbb-home-reassurance-copy h2 {
         font-family: 'Montserrat', sans-serif;
         font-size: 1.32rem;
         font-weight: 700;
+        letter-spacing: -0.02em;
         margin: 0 0 6px;
         color: #0D2540;
       }
-      .tbb-home-reassurance-copy p { margin: 0; color: #475569; font-size: 1rem; }
+      .tbb-home-reassurance-copy p { margin: 0; color: #475569; font-size: 1rem; line-height: 1.6; }
 
-      /* ENTREGABLES Y GLOSARIO */
+      /* SECCIÓN 2: ENTREGABLES · GALERÍA ATELIER CON RADIOS CONCÉNTRICOS */
       .tbb-deliverables-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-        gap: 22px;
-        margin-bottom: 36px;
+        gap: 24px;
+        margin-bottom: 40px;
       }
       .tbb-deliv-card {
         background: #FFFFFF;
-        border: 1.5px solid #E2E8F0;
-        border-radius: 20px;
+        border: 1px solid rgba(13, 37, 64, 0.085);
+        border-radius: 24px;
+        padding: 10px;
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        transition: border-color 0.2s ease, transform 0.2s ease;
+        box-shadow: var(--tbb-ds-shadow-sm);
+        transition: transform 0.24s var(--tbb-ds-ease-out), opacity 0.24s ease;
       }
-      .tbb-deliv-card:hover { border-color: #93C5FD; transform: translateY(-2px); }
+      .tbb-deliv-card:hover { transform: translate3d(0, -4px, 0); }
       .tbb-deliv-card.is-featured {
         grid-column: 1 / -1;
         display: grid;
-        grid-template-columns: 1.05fr 1fr;
-        border-color: #426EAE;
-        background: #F8FAFC;
+        grid-template-columns: 1.12fr 0.88fr;
+        gap: 8px;
+        border-color: rgba(66, 110, 174, 0.22);
+        background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+        box-shadow: var(--tbb-ds-shadow-md);
       }
       .tbb-deliv-thumb-wrap {
         position: relative;
         aspect-ratio: 16 / 10;
-        background: #F1F5F9;
+        background: #F4F8FC;
+        border-radius: 16px;
+        border: 1px solid rgba(13, 37, 64, 0.06);
         overflow: hidden;
         cursor: pointer;
       }
-      .tbb-deliv-thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .tbb-deliv-thumb-wrap.is-gallery-mat {
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tbb-deliv-mat-frame {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #FFFFFF;
+        box-shadow: 0 2px 10px rgba(13, 37, 64, 0.06);
+      }
+      .tbb-deliv-mat-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 22%;
+        display: block;
+        transition: transform 0.34s var(--tbb-ds-ease-out);
+      }
+      .tbb-deliv-card:hover .tbb-deliv-mat-frame img { transform: scale(1.028); }
       .tbb-deliv-format-pill {
         position: absolute;
         top: 12px;
         left: 12px;
-        background: rgba(13, 37, 64, 0.92);
+        background: rgba(13, 37, 64, 0.88);
+        backdrop-filter: blur(8px);
         color: #FFFFFF;
         padding: 5px 12px;
         border-radius: 999px;
         font-size: 0.875rem;
         font-weight: 600;
+        font-variant-numeric: tabular-nums;
       }
-      .tbb-deliv-body { padding: 20px 22px; display: flex; flex-direction: column; justify-content: space-between; flex: 1; }
+      /* SPREAD EDITORIAL VECTORIAL PARA EL BRANDBOOK +30 PÁGINAS */
+      .tbb-deliv-thumb-wrap.is-spread-wrap {
+        aspect-ratio: auto;
+        min-height: 290px;
+        padding: 46px 18px 18px;
+        background: radial-gradient(circle at 50% 0%, #EAF2FA 0%, #F4F8FC 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tbb-atelier-spread-stage {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .tbb-atelier-spread-sheet {
+        background: #FFFFFF;
+        border: 1px solid rgba(13, 37, 64, 0.085);
+        border-radius: 12px;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 210px;
+        box-shadow: 0 8px 22px -6px rgba(13, 37, 64, 0.09);
+      }
+      .tbb-spread-kicker { font-size: 0.875rem; font-weight: 700; color: #426EAE; letter-spacing: 0.02em; }
+      .tbb-spread-mark-box { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 8px 0; }
+      .tbb-spread-mark-box strong { font-family: 'Montserrat', sans-serif; font-size: 0.96rem; color: #0D2540; letter-spacing: 0.02em; }
+      .tbb-spread-mark-box small { font-size: 0.875rem; color: #475569; font-weight: 500; }
+      .tbb-spread-grid-mini { display: flex; flex-direction: column; gap: 8px; }
+      .tbb-spread-reticle { background: #F8FAFC; border-radius: 8px; padding: 4px; border: 1px solid rgba(13,37,64,0.06); }
+      .tbb-spread-swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .tbb-spread-swatches span { height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+      .tbb-spread-swatches i { font-style: normal; font-size: 0.875rem; color: #FFFFFF; font-weight: 600; font-variant-numeric: tabular-nums; }
+      .tbb-spread-type-row { display: flex; flex-direction: column; gap: 2px; }
+      .tbb-spread-type-row strong { font-family: 'Montserrat', sans-serif; font-size: 0.92rem; color: #0D2540; }
+      .tbb-spread-type-row span { font-size: 0.875rem; color: #475569; }
+      .tbb-spread-foot { display: flex; justify-content: space-between; font-size: 0.875rem; color: #64748B; font-variant-numeric: tabular-nums; border-top: 1px solid rgba(13,37,64,0.06); padding-top: 6px; }
+
+      .tbb-deliv-body { padding: 16px 14px 12px; display: flex; flex-direction: column; justify-content: space-between; flex: 1; }
+      .tbb-deliv-card.is-featured .tbb-deliv-body { padding: 22px 22px; }
       .tbb-deliv-body h3 {
         font-family: 'Montserrat', sans-serif;
-        font-size: 1.18rem;
+        font-size: 1.16rem;
         font-weight: 700;
+        letter-spacing: -0.018em;
         color: #0D2540;
         margin: 0 0 8px;
       }
-      .tbb-deliv-body p { font-size: 0.96rem; color: #475569; margin: 0 0 16px; line-height: 1.55; }
+      .tbb-deliv-card.is-featured .tbb-deliv-body h3 { font-size: 1.38rem; }
+      .tbb-deliv-body p { font-size: 0.95rem; color: #475569; margin: 0 0 18px; line-height: 1.58; }
       .tbb-deliv-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 
       .tbb-glossary-box {
         background: #F8FAFC;
-        border: 1px solid #E2E8F0;
-        border-radius: 22px;
+        border: 1px solid rgba(13, 37, 64, 0.08);
+        border-radius: 24px;
         padding: 28px;
-        margin-bottom: 32px;
+        margin-bottom: 36px;
       }
-      .tbb-glossary-box h2 { font-family: 'Montserrat', sans-serif; font-size: 1.35rem; font-weight: 700; margin: 0 0 6px; }
+      .tbb-glossary-box h2 { font-family: 'Montserrat', sans-serif; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 6px; }
       .tbb-glossary-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -3278,27 +3911,89 @@
       }
       .tbb-glossary-item {
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 14px;
-        padding: 14px 16px;
+        border: 1px solid rgba(13, 37, 64, 0.08);
+        border-radius: 16px;
+        padding: 15px 17px;
         display: flex;
         flex-direction: column;
         gap: 4px;
+        box-shadow: var(--tbb-ds-shadow-xs);
       }
       .tbb-glossary-ext { font-size: 0.95rem; font-weight: 700; color: #FF7A00; }
-      .tbb-glossary-item span { font-size: 0.92rem; color: #334155; }
+      .tbb-glossary-item span { font-size: 0.92rem; color: #334155; line-height: 1.52; }
 
-      /* CÓMO FUNCIONA */
-      .tbb-how-steps-list { display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px; }
+      /* SECCIÓN 3: CÓMO FUNCIONA · SCROLLYTELLING STICKY + TARJETAS ATELIER UI */
+      .tbb-how-scrolly-layout {
+        display: grid;
+        grid-template-columns: 310px minmax(0, 1fr);
+        gap: 28px;
+        align-items: start;
+        margin-bottom: 44px;
+      }
+      .tbb-how-sticky-rail {
+        position: sticky;
+        top: 86px;
+      }
+      .tbb-how-rail-card {
+        background: #F8FAFC;
+        border: 1px solid rgba(13, 37, 64, 0.085);
+        border-radius: 22px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        box-shadow: var(--tbb-ds-shadow-sm);
+      }
+      .tbb-rail-time-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #0D2540;
+        font-variant-numeric: tabular-nums;
+      }
+      .tbb-how-rail-nav { display: flex; flex-direction: column; gap: 4px; }
+      .tbb-how-rail-btn {
+        display: grid;
+        grid-template-columns: 30px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: #475569;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-align: left;
+        cursor: pointer;
+        transition: transform 0.16s var(--tbb-ds-ease-out);
+      }
+      .tbb-how-rail-btn:hover { background: rgba(13, 37, 64, 0.04); color: #0D2540; }
+      .tbb-how-rail-btn.is-active {
+        background: #FFFFFF;
+        border-color: rgba(13, 37, 64, 0.10);
+        color: #0D2540;
+        font-weight: 600;
+        box-shadow: var(--tbb-ds-shadow-xs);
+      }
+      .tbb-rail-num { font-weight: 700; color: #FF7A00; font-variant-numeric: tabular-nums; }
+      .tbb-rail-lbl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .tbb-how-rail-btn small { font-size: 0.875rem; color: #64748B; font-variant-numeric: tabular-nums; }
+
+      .tbb-how-steps-list { display: flex; flex-direction: column; gap: 20px; }
       .tbb-how-step-card {
         display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
-        gap: 28px;
+        grid-template-columns: 1.12fr 0.88fr;
+        gap: 26px;
         align-items: center;
         background: #FFFFFF;
-        border: 1.5px solid #E2E8F0;
-        border-radius: 22px;
-        padding: 24px 28px;
+        border: 1px solid rgba(13, 37, 64, 0.085);
+        border-radius: 24px;
+        padding: 24px 26px;
+        box-shadow: var(--tbb-ds-shadow-sm);
       }
       .tbb-how-step-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
       .tbb-step-pill-tag {
@@ -3307,45 +4002,94 @@
         border-radius: 999px;
         font-size: 0.875rem;
         font-weight: 600;
+        font-variant-numeric: tabular-nums;
       }
-      .tbb-step-pill-tag.is-free { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
-      .tbb-step-pill-tag.is-pro { background: #FFF7ED; color: #9A3412; border: 1px solid #FED7AA; }
-      .tbb-step-time-pill { font-size: 0.9rem; color: #475569; font-weight: 500; }
+      .tbb-step-pill-tag.is-free { background: #ECFDF5; color: #065F46; border: 1px solid rgba(16,185,129,0.28); }
+      .tbb-step-pill-tag.is-pro { background: #FFF7ED; color: #9A3412; border: 1px solid rgba(255,122,0,0.28); }
+      .tbb-step-time-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 0.9rem; color: #475569; font-weight: 500; font-variant-numeric: tabular-nums; }
       .tbb-how-step-copy h2 {
         font-family: 'Montserrat', sans-serif;
-        font-size: 1.35rem;
+        font-size: 1.32rem;
         font-weight: 700;
+        letter-spacing: -0.02em;
         margin: 0 0 8px;
         color: #0D2540;
       }
-      .tbb-how-step-copy p { font-size: 1rem; color: #475569; margin: 0 0 16px; }
+      .tbb-how-step-copy p { font-size: 0.98rem; color: #475569; margin: 0 0 16px; line-height: 1.6; }
       .tbb-how-step-btns { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
       .tbb-how-step-visual {
         border-radius: 16px;
         overflow: hidden;
-        border: 1px solid #E2E8F0;
-        cursor: zoom-in;
-        background: #F8FAFC;
+        border: 1px solid rgba(13, 37, 64, 0.08);
+        cursor: pointer;
+        background: linear-gradient(180deg, #F8FAFC 0%, #F4F8FC 100%);
+        padding: 14px;
+        transition: transform 0.22s var(--tbb-ds-ease-out);
       }
-      .tbb-how-step-visual img { width: 100%; height: auto; display: block; }
+      .tbb-how-step-visual:hover { transform: translate3d(0, -2px, 0); }
+      /* ATELIER CLEAN UI MICRO-PREVIEWS (0% LEGACY SCREENSHOTS) */
+      .tbb-step-atelier-ui {
+        background: #FFFFFF;
+        border: 1px solid rgba(13, 37, 64, 0.08);
+        border-radius: 12px;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        box-shadow: var(--tbb-ds-shadow-xs);
+      }
+      .tbb-ui-mini-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.875rem; font-weight: 700; color: #426EAE; font-variant-numeric: tabular-nums; }
+      .tbb-ui-lang-chip { background: #F4F8FC; padding: 2px 8px; border-radius: 999px; color: #0D2540; }
+      .tbb-ui-choice-stack { display: flex; flex-direction: column; gap: 7px; }
+      .tbb-ui-choice { display: flex; align-items: center; gap: 8px; padding: 9px 11px; border-radius: 10px; border: 1px solid rgba(13,37,64,0.09); font-size: 0.875rem; font-weight: 600; color: #334155; }
+      .tbb-ui-choice.is-active { background: #0D2540; color: #FFFFFF; border-color: #0D2540; }
+      .tbb-ui-voice-wave { display: inline-flex; align-items: center; gap: 3px; }
+      .tbb-ui-voice-wave i { width: 3px; height: 11px; border-radius: 2px; background: #FF7A00; display: inline-block; }
+      .tbb-ui-voice-wave i:nth-child(2) { height: 16px; }
+      .tbb-ui-voice-wave i:nth-child(4) { height: 8px; }
+      .tbb-ui-bubble { font-size: 0.9rem; font-weight: 600; color: #0D2540; background: #F8FAFC; padding: 9px 11px; border-radius: 10px; border-left: 3px solid #FF7A00; }
+      .tbb-ui-input-mock { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 10px; border: 1px solid rgba(13,37,64,0.1); font-size: 0.875rem; color: #475569; }
+      .tbb-ui-idea-pill { font-style: normal; font-weight: 600; color: #426EAE; background: #F4F8FC; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+      .tbb-ui-chip-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+      .tbb-ui-touch-chip { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(13,37,64,0.1); font-size: 0.875rem; color: #475569; font-weight: 500; }
+      .tbb-ui-touch-chip.is-on { background: #F4F8FC; border-color: rgba(66,110,174,0.35); color: #0D2540; font-weight: 600; }
+      .tbb-ui-naming-card { display: flex; flex-direction: column; gap: 5px; background: #F8FAFC; padding: 11px; border-radius: 10px; }
+      .tbb-ui-naming-card strong { font-family: 'Montserrat', sans-serif; font-size: 1rem; color: #0D2540; }
+      .tbb-ui-naming-card span { font-size: 0.875rem; color: #475569; }
+      .tbb-ui-nice-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 0.875rem; color: #426EAE; font-weight: 600; margin-top: 2px; }
+      .tbb-ui-sliders-mini { display: flex; flex-direction: column; gap: 8px; }
+      .tbb-ui-bar-row { display: grid; grid-template-columns: 62px 1fr 68px; align-items: center; gap: 8px; font-size: 0.875rem; color: #475569; }
+      .tbb-ui-track { position: relative; height: 6px; border-radius: 999px; background: #E2E8F0; }
+      .tbb-ui-track i { position: absolute; top: -4px; width: 14px; height: 14px; border-radius: 50%; background: #FF7A00; border: 2px solid #FFFFFF; box-shadow: 0 1px 4px rgba(13,37,64,0.2); }
+      .tbb-ui-font-pair { display: flex; justify-content: space-between; align-items: center; padding-top: 6px; border-top: 1px solid rgba(13,37,64,0.06); font-size: 0.875rem; color: #475569; }
+      .tbb-ui-font-pair strong { font-family: 'Montserrat', sans-serif; color: #0D2540; }
+      .tbb-ui-logo-preview-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .tbb-ui-vector-box { flex: 1; height: 78px; background: #F8FAFC; border: 1px dashed rgba(66,110,174,0.35); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+      .tbb-ui-palette-col { display: flex; flex-direction: column; gap: 6px; }
+      .tbb-ui-palette-col span { width: 32px; height: 21px; border-radius: 6px; display: block; }
+      .tbb-ui-export-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .tbb-ui-export-grid span { background: #F8FAFC; border: 1px solid rgba(13,37,64,0.08); border-radius: 8px; padding: 6px 0; text-align: center; font-size: 0.875rem; font-weight: 700; color: #0D2540; }
+      .tbb-ui-ready-bar { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.875rem; font-weight: 600; color: #065F46; background: #ECFDF5; border-radius: 8px; padding: 6px 10px; }
 
       .tbb-before-after-card {
         background: #F8FAFC;
-        border: 1.5px solid #E2E8F0;
-        border-radius: 24px;
-        padding: 28px;
+        border: 1px solid rgba(13, 37, 64, 0.085);
+        border-radius: 26px;
+        padding: 32px;
+        box-shadow: var(--tbb-ds-shadow-sm);
       }
-      .tbb-before-after-head { text-align: center; max-width: 680px; margin: 0 auto 20px; }
-      .tbb-before-after-head h2 { font-family: 'Montserrat', sans-serif; font-size: 1.4rem; font-weight: 700; margin: 0 0 6px; }
+      .tbb-before-after-head { text-align: center; max-width: 680px; margin: 0 auto 22px; }
+      .tbb-before-after-head h2 { font-family: 'Montserrat', sans-serif; font-size: 1.42rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 6px; }
       .tbb-before-after-head p { margin: 0; color: #475569; font-size: 1rem; }
       .tbb-ba-stage {
         position: relative;
-        max-width: 720px;
-        height: 320px;
+        max-width: 740px;
+        height: 330px;
         margin: 0 auto;
         border-radius: 18px;
         background: #FFFFFF;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.10);
+        box-shadow: var(--tbb-ds-shadow-sm);
         overflow: hidden;
       }
       .tbb-ba-layer {
@@ -3357,24 +4101,42 @@
         background: #FFFFFF;
         padding: 24px;
       }
-      .tbb-ba-layer img { max-width: 82%; max-height: 82%; object-fit: contain; }
+      .tbb-ba-layer img { max-width: 80%; max-height: 80%; object-fit: contain; }
       .tbb-ba-tag {
         position: absolute;
-        bottom: 14px;
-        padding: 5px 12px;
+        z-index: 3;
+        padding: 6px 13px;
         border-radius: 999px;
         font-size: 0.875rem;
         font-weight: 600;
+        pointer-events: none;
+        box-shadow: var(--tbb-ds-shadow-xs);
       }
-      .tbb-ba-tag.is-before-tag { left: 14px; background: #F1F5F9; color: #334155; }
-      .tbb-ba-tag.is-after-tag { right: 14px; background: #0D2540; color: #FFFFFF; }
+      .tbb-ba-tag.is-before-tag { top: 12px; left: 12px; background: rgba(248, 250, 252, 0.94); color: #0D2540; border: 1px solid rgba(13,37,64,0.10); }
+      .tbb-ba-tag.is-after-tag { bottom: 12px; right: 12px; background: #0D2540; color: #FFFFFF; }
       .tbb-ba-handle {
         position: absolute;
         top: 0;
         bottom: 0;
-        width: 3px;
+        width: 2px;
         background: #FF7A00;
         pointer-events: none;
+      }
+      .tbb-ba-knob {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: #FFFFFF;
+        color: #0D2540;
+        border: 2px solid #FF7A00;
+        box-shadow: 0 6px 18px rgba(13, 37, 64, 0.18);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
       .tbb-ba-range-input {
         position: absolute;
@@ -3386,29 +4148,34 @@
         margin: 0;
       }
 
-      /* EJEMPLOS REALES */
+      /* SECCIÓN 4: EJEMPLOS REALES */
       .tbb-case-hero-box {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 24px;
         background: #F8FAFC;
-        border: 1.5px solid #E2E8F0;
-        border-radius: 24px;
+        border: 1px solid rgba(13, 37, 64, 0.085);
+        border-radius: 26px;
         padding: 26px;
-        margin-bottom: 40px;
+        margin-bottom: 44px;
+        box-shadow: var(--tbb-ds-shadow-sm);
       }
-      .tbb-case-preview-main h2 { font-family: 'Montserrat', sans-serif; font-size: 1.4rem; font-weight: 700; margin: 10px 0 6px; }
+      .tbb-case-preview-main.is-swapping {
+        animation: tbbViewEnterGPU 0.22s var(--tbb-ds-ease-out) both;
+      }
+      .tbb-case-preview-main h2 { font-family: 'Montserrat', sans-serif; font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; margin: 10px 0 6px; }
       .tbb-case-preview-main p { color: #475569; margin: 0 0 14px; font-size: 0.98rem; }
       .tbb-case-main-img-wrap {
         background: #FFFFFF;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.09);
         border-radius: 18px;
         padding: 20px;
-        height: 240px;
+        height: 244px;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: zoom-in;
+        box-shadow: var(--tbb-ds-shadow-xs);
       }
       .tbb-case-main-img-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; }
       .tbb-case-iter-selector-grid {
@@ -3418,7 +4185,7 @@
       }
       .tbb-case-iter-btn {
         background: #FFFFFF;
-        border: 1.5px solid #E2E8F0;
+        border: 1px solid rgba(13, 37, 64, 0.085);
         border-radius: 16px;
         padding: 12px;
         text-align: left;
@@ -3426,13 +4193,17 @@
         display: flex;
         flex-direction: column;
         gap: 4px;
+        box-shadow: var(--tbb-ds-shadow-xs);
+        transition: transform 0.16s var(--tbb-ds-ease-press);
       }
-      .tbb-case-iter-btn.active { border-color: #FF7A00; box-shadow: 0 6px 18px rgba(255,122,0,0.14); }
+      .tbb-case-iter-btn:hover { transform: translate3d(0, -2px, 0); }
+      .tbb-case-iter-btn:active { transform: scale(0.985); }
+      .tbb-case-iter-btn.active { border-color: #FF7A00; box-shadow: 0 0 0 1px #FF7A00, 0 8px 20px rgba(255,122,0,0.14); }
       .tbb-case-iter-btn img { width: 100%; height: 74px; object-fit: contain; margin-bottom: 4px; }
       .tbb-case-iter-btn strong { font-size: 0.92rem; font-weight: 600; color: #0D2540; }
       .tbb-case-iter-btn span { font-size: 0.875rem; color: #475569; }
 
-      .tbb-subsection-block { margin-bottom: 44px; }
+      .tbb-subsection-block { margin-bottom: 48px; }
       .tbb-plates-gallery-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -3440,52 +4211,76 @@
       }
       .tbb-plate-thumb-card {
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 16px;
+        border: 1px solid rgba(13, 37, 64, 0.085);
+        border-radius: 18px;
+        padding: 8px;
         overflow: hidden;
         cursor: zoom-in;
-        transition: transform 0.18s ease;
+        box-shadow: var(--tbb-ds-shadow-xs);
+        transition: transform 0.22s var(--tbb-ds-ease-out);
       }
-      .tbb-plate-thumb-card:hover { transform: translateY(-2px); }
-      .tbb-plate-thumb-card img { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; }
-      .tbb-plate-thumb-caption { padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; }
-      .tbb-plate-thumb-caption span { font-size: 0.875rem; color: #426EAE; font-weight: 600; }
+      .tbb-plate-thumb-card:hover { transform: translate3d(0, -3px, 0); }
+      .tbb-plate-crop-frame {
+        border-radius: 11px;
+        overflow: hidden;
+        aspect-ratio: 16 / 9.4;
+        background: #F8FAFC;
+      }
+      .tbb-plate-crop-frame img {
+        width: 100%;
+        height: 108%;
+        object-fit: cover;
+        object-position: center 14%;
+        display: block;
+      }
+      .tbb-plate-thumb-caption { padding: 10px 8px 6px; display: flex; flex-direction: column; gap: 2px; }
+      .tbb-plate-thumb-caption span { font-size: 0.875rem; color: #426EAE; font-weight: 600; font-variant-numeric: tabular-nums; }
       .tbb-plate-thumb-caption strong { font-size: 0.94rem; color: #0D2540; font-weight: 600; }
 
-      /* REFERENCIAS (SECCIÓN 5) */
+      /* SECCIÓN 5: REFERENCIAS (OBSERVATORIO ARQUITECTÓNICO LUMINOSO · 100% LIENZO CLARO) */
       .tbb-ref-pillars-box {
-        background: #0D2540;
-        color: #FFFFFF;
-        border-radius: 24px;
-        padding: 28px;
-        margin-bottom: 32px;
+        background:
+          linear-gradient(to right, rgba(13, 37, 64, 0.035) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(13, 37, 64, 0.035) 1px, transparent 1px),
+          linear-gradient(180deg, #F8FAFC 0%, #F4F8FC 100%);
+        background-size: 36px 36px, 36px 36px, 100% 100%;
+        color: #0D2540;
+        border: 1px solid rgba(13, 37, 64, 0.09);
+        border-radius: 26px;
+        padding: 30px;
+        margin-bottom: 36px;
+        box-shadow: var(--tbb-ds-shadow-sm);
       }
-      .tbb-ref-pillars-box h2 { font-family: 'Montserrat', sans-serif; font-size: 1.4rem; font-weight: 700; margin: 0 0 6px; color: #FFFFFF; }
-      .tbb-ref-pillars-box .tbb-muted-p { color: #CBD5E1; }
-      .tbb-five-pillars-canvas-wrap { width: 100%; height: 260px; margin: 12px 0; }
+      .tbb-ref-pillars-box h2 { font-family: 'Montserrat', sans-serif; font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 6px; color: #0D2540; }
+      .tbb-ref-pillars-box .tbb-muted-p { color: #475569; }
+      .tbb-five-pillars-canvas-wrap { width: 100%; height: 260px; margin: 12px 0; background: rgba(255,255,255,0.72); border: 1px solid rgba(13,37,64,0.06); border-radius: 18px; }
       .tbb-five-pillars-canvas-wrap canvas { width: 100%; height: 100%; display: block; cursor: pointer; }
       .tbb-ref-pillar-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
       .tbb-ref-pillar-btn {
         padding: 7px 14px;
         border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.24);
-        background: rgba(255,255,255,0.08);
-        color: #FFFFFF;
+        border: 1px solid rgba(13, 37, 64, 0.12);
+        background: #FFFFFF;
+        color: #0D2540;
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 0.875rem;
         font-weight: 600;
         cursor: pointer;
+        box-shadow: var(--tbb-ds-shadow-xs);
+        transition: transform 0.15s var(--tbb-ds-ease-press);
       }
-      .tbb-ref-pillar-btn.active { background: #FF7A00; border-color: #FF7A00; }
+      .tbb-ref-pillar-btn:active { transform: scale(0.975); }
+      .tbb-ref-pillar-btn.active { background: #0D2540; color: #FFFFFF; border-color: #0D2540; }
       .tbb-ref-pillar-detail {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.16);
+        background: #FFFFFF;
+        border: 1px solid rgba(13, 37, 64, 0.085);
         border-radius: 16px;
         padding: 16px 18px;
+        box-shadow: var(--tbb-ds-shadow-xs);
       }
-      .tbb-ref-pillar-detail strong { display: block; font-size: 1.05rem; margin-bottom: 4px; }
-      .tbb-ref-pillar-detail p { margin: 0 0 6px; color: #E2E8F0; font-size: 0.96rem; }
-      .tbb-ref-pillar-detail span { font-size: 0.9rem; color: #FDBA74; font-weight: 500; }
+      .tbb-ref-pillar-detail strong { display: block; font-size: 1.05rem; margin-bottom: 4px; color: #0D2540; }
+      .tbb-ref-pillar-detail p { margin: 0 0 6px; color: #475569; font-size: 0.96rem; }
+      .tbb-ref-pillar-detail span { font-size: 0.9rem; color: #426EAE; font-weight: 600; }
 
       .tbb-kansei-sim-card {
         display: grid;
@@ -3493,12 +4288,13 @@
         gap: 24px;
         align-items: center;
         background: #F8FAFC;
-        border: 1.5px solid #E2E8F0;
-        border-radius: 24px;
-        padding: 26px;
-        margin-bottom: 40px;
+        border: 1px solid rgba(13, 37, 64, 0.085);
+        border-radius: 26px;
+        padding: 28px;
+        margin-bottom: 44px;
+        box-shadow: var(--tbb-ds-shadow-xs);
       }
-      .tbb-kansei-sim-controls h2 { font-family: 'Montserrat', sans-serif; font-size: 1.32rem; font-weight: 700; margin: 0 0 6px; }
+      .tbb-kansei-sim-controls h2 { font-family: 'Montserrat', sans-serif; font-size: 1.32rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 6px; }
       .tbb-kansei-sim-controls p { color: #475569; margin: 0 0 16px; font-size: 0.96rem; }
       .tbb-sim-axis-row { display: block; margin-bottom: 14px; }
       .tbb-sim-axis-labels { display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; color: #334155; margin-bottom: 4px; }
@@ -3511,18 +4307,19 @@
       }
       .tbb-author-stage-card {
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 20px;
-        padding: 20px;
+        border: 1px solid rgba(13, 37, 64, 0.085);
+        border-radius: 22px;
+        padding: 22px;
         display: flex;
         flex-direction: column;
         gap: 8px;
+        box-shadow: var(--tbb-ds-shadow-xs);
       }
       .tbb-author-stage-top { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
       .tbb-author-names { font-size: 0.9rem; font-weight: 600; color: #426EAE; }
       .tbb-author-stage-card h3 { font-family: 'Montserrat', sans-serif; font-size: 1.12rem; font-weight: 700; margin: 4px 0; }
-      .tbb-author-stage-card p { font-size: 0.95rem; color: #475569; margin: 0; }
-      .tbb-author-works { font-size: 0.875rem; color: #64748B; border-top: 1px solid #F1F5F9; padding-top: 8px; }
+      .tbb-author-stage-card p { font-size: 0.95rem; color: #475569; margin: 0; line-height: 1.58; }
+      .tbb-author-works { font-size: 0.875rem; color: #64748B; border-top: 1px solid rgba(13,37,64,0.06); padding-top: 8px; }
 
       .tbb-books-head-row {
         display: flex;
@@ -3536,14 +4333,16 @@
       .tbb-book-filter-pill {
         padding: 7px 15px;
         border-radius: 999px;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.11);
         background: #FFFFFF;
         color: #334155;
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 0.9rem;
         font-weight: 600;
         cursor: pointer;
+        transition: transform 0.15s var(--tbb-ds-ease-press);
       }
+      .tbb-book-filter-pill:active { transform: scale(0.975); }
       .tbb-book-filter-pill.is-active { background: #0D2540; color: #FFFFFF; border-color: #0D2540; }
       .tbb-books-grid, .tbb-videos-grid {
         display: grid;
@@ -3552,19 +4351,22 @@
       }
       .tbb-book-card, .tbb-yt-card {
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 18px;
+        border: 1px solid rgba(13, 37, 64, 0.085);
+        border-radius: 20px;
         padding: 20px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         gap: 12px;
+        box-shadow: var(--tbb-ds-shadow-xs);
+        transition: transform 0.2s var(--tbb-ds-ease-out);
       }
+      .tbb-book-card:hover, .tbb-yt-card:hover { transform: translate3d(0, -3px, 0); }
       .tbb-yt-card { cursor: pointer; }
-      .tbb-book-badge, .tbb-yt-head { font-size: 0.875rem; font-weight: 600; color: #426EAE; display: flex; justify-content: space-between; }
+      .tbb-book-badge, .tbb-yt-head { font-size: 0.875rem; font-weight: 600; color: #426EAE; display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
       .tbb-book-card h3, .tbb-yt-card h3 { font-family: 'Montserrat', sans-serif; font-size: 1.08rem; font-weight: 700; margin: 6px 0 4px; color: #0D2540; }
       .tbb-book-author { font-size: 0.92rem; color: #FF7A00; font-weight: 600; display: block; margin-bottom: 6px; }
-      .tbb-book-card p, .tbb-yt-card p { font-size: 0.94rem; color: #475569; margin: 0; }
+      .tbb-book-card p, .tbb-yt-card p { font-size: 0.94rem; color: #475569; margin: 0; line-height: 1.56; }
 
       .tbb-centered-cta-row {
         display: flex;
@@ -3572,7 +4374,7 @@
         align-items: center;
         gap: 14px;
         flex-wrap: wrap;
-        margin-top: 24px;
+        margin-top: 28px;
       }
 
       /* MODALES (CÁPSULA AURA VIVA, LIGHTBOX, CHECKOUT Y RESTAURACIÓN) */
@@ -3580,8 +4382,9 @@
         position: fixed;
         inset: 0;
         z-index: 9500;
-        background: rgba(13, 37, 64, 0.62);
-        backdrop-filter: blur(8px);
+        background: rgba(13, 37, 64, 0.56);
+        backdrop-filter: saturate(150%) blur(12px);
+        -webkit-backdrop-filter: saturate(150%) blur(12px);
         display: none;
         align-items: center;
         justify-content: center;
@@ -3595,10 +4398,12 @@
         max-height: 92vh;
         overflow-y: auto;
         background: #FFFFFF;
-        border-radius: 24px;
+        border: 1px solid rgba(13, 37, 64, 0.09);
+        border-radius: 26px;
         padding: 24px;
-        box-shadow: 0 24px 64px rgba(13, 37, 64, 0.24);
+        box-shadow: 0 28px 70px rgba(13, 37, 64, 0.24);
         box-sizing: border-box;
+        animation: tbbViewEnterGPU 0.22s var(--tbb-ds-ease-out) both;
       }
       .tbb-modal-card.is-wide { max-width: 920px; }
       .tbb-modal-card.is-capsule { max-width: 760px; }
@@ -3610,31 +4415,34 @@
         flex-wrap: wrap;
         padding-bottom: 14px;
         margin-bottom: 16px;
-        border-bottom: 1px solid #E2E8F0;
+        border-bottom: 1px solid rgba(13, 37, 64, 0.08);
       }
       .tbb-modal-head h3 { font-family: 'Montserrat', sans-serif; font-size: 1.24rem; font-weight: 700; margin: 4px 0 0; color: #0D2540; }
       .tbb-icon-close-btn {
         width: 38px;
         height: 38px;
         border-radius: 50%;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.12);
         background: #F8FAFC;
         color: #0D2540;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        transition: transform 0.15s var(--tbb-ds-ease-press);
       }
+      .tbb-icon-close-btn:active { transform: scale(0.94); }
       .tbb-capsule-top-pills, .tbb-capsule-lang-pills { display: flex; gap: 5px; flex-wrap: wrap; }
       .tbb-mini-pill {
         padding: 5px 11px;
         border-radius: 999px;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.12);
         background: #F8FAFC;
         color: #0D2540;
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 0.875rem;
         font-weight: 600;
+        font-variant-numeric: tabular-nums;
         cursor: pointer;
       }
       .tbb-mini-pill.active { background: #0D2540; color: #FFFFFF; border-color: #0D2540; }
@@ -3655,14 +4463,14 @@
         align-items: center;
         gap: 10px;
       }
-      .tbb-capsule-live-tag { color: #426EAE; background: #F4F8FC; border: 1px solid #DCE6F2; padding: 3px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
+      .tbb-capsule-live-tag { color: #426EAE; background: #F4F8FC; border: 1px solid #DCE6F2; padding: 4px 11px; border-radius: 999px; font-size: 0.875rem; font-weight: 600; font-variant-numeric: tabular-nums; }
       .tbb-capsule-replay-btn {
         display: inline-flex;
         align-items: center;
         gap: 6px;
         padding: 7px 14px;
         border-radius: 999px;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.12);
         background: #F8FAFC;
         color: #0D2540;
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -3694,7 +4502,7 @@
       /* CHECKOUT FIELDS */
       .tbb-checkout-summary-box {
         background: #F4F8FC;
-        border: 1px solid #DCE6F2;
+        border: 1px solid rgba(66, 110, 174, 0.18);
         border-radius: 16px;
         padding: 14px 16px;
         display: flex;
@@ -3708,12 +4516,13 @@
       .tbb-checkout-summary-box span { font-size: 0.9rem; color: #475569; }
       .tbb-checkout-price-tag {
         background: #FFF7ED;
-        border: 1px solid #FED7AA;
+        border: 1px solid rgba(255, 122, 0, 0.28);
         color: #C2410C;
         padding: 6px 14px;
         border-radius: 999px;
         font-size: 0.98rem;
         font-weight: 700;
+        font-variant-numeric: tabular-nums;
         white-space: nowrap;
       }
       .tbb-checkout-fields { display: flex; flex-direction: column; gap: 12px; }
@@ -3723,7 +4532,7 @@
         height: 46px;
         padding: 0 14px;
         border-radius: 12px;
-        border: 1.5px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.16);
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 1rem;
         font-weight: 500;
@@ -3738,7 +4547,7 @@
       .tbb-checkout-footer-note {
         margin-top: 14px;
         padding-top: 12px;
-        border-top: 1px solid #F1F5F9;
+        border-top: 1px solid rgba(13, 37, 64, 0.06);
         display: flex;
         flex-direction: column;
         gap: 4px;
@@ -3751,8 +4560,9 @@
         position: fixed;
         inset: 0;
         z-index: 2500;
-        background: rgba(13, 37, 64, 0.58);
-        backdrop-filter: blur(6px);
+        background: rgba(13, 37, 64, 0.52);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         display: none;
         justify-content: flex-end;
       }
@@ -3766,8 +4576,9 @@
         flex-direction: column;
         justify-content: space-between;
         box-sizing: border-box;
+        box-shadow: -16px 0 48px rgba(13, 37, 64, 0.16);
       }
-      .tbb-mobile-drawer-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid #E2E8F0; }
+      .tbb-mobile-drawer-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid rgba(13,37,64,0.08); }
       .tbb-mobile-drawer-nav-list { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
       .tbb-mobile-drawer-item {
         display: flex;
@@ -3775,7 +4586,7 @@
         justify-content: space-between;
         padding: 13px 16px;
         border-radius: 14px;
-        border: 1px solid #E2E8F0;
+        border: 1px solid rgba(13, 37, 64, 0.08);
         background: #F8FAFC;
         color: #0D2540;
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -3789,7 +4600,7 @@
       .tbb-drawer-lang-btn {
         padding: 9px 0;
         border-radius: 10px;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(13, 37, 64, 0.12);
         background: #FFFFFF;
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 0.875rem;
@@ -3803,6 +4614,8 @@
       @media (max-width: 1080px) {
         .tbb-desktop-nav, .tbb-header-account-btn { display: none; }
         .tbb-mobile-menu-btn { display: inline-flex; align-items: center; justify-content: center; }
+        .tbb-how-scrolly-layout { grid-template-columns: 1fr; }
+        .tbb-how-sticky-rail { display: none; }
         .tbb-deliv-card.is-featured,
         .tbb-how-step-card,
         .tbb-case-hero-box,
@@ -3818,19 +4631,76 @@
         .tbb-buy-lbl-full { display: none; }
         .tbb-buy-lbl-short { display: inline; font-weight: 700; font-size: 0.875rem; }
         .tbb-header-buy-btn { padding: 0 12px; gap: 4px; }
+        .tbb-studio-window-dots { display: none; }
         .tbb-live-demo-frame-shell { height: 76vh; min-height: 520px; }
+        .tbb-atelier-spread-stage { grid-template-columns: 1fr; }
         .tbb-case-iter-selector-grid { grid-template-columns: 1fr; }
+        .tbb-before-after-card { padding: 20px 16px; }
+        .tbb-ba-stage { height: 250px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .tbb-section, .tbb-modal-card, .tbb-case-preview-main.is-swapping { animation: none !important; }
+        .tbb-reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
+        .tbb-btn-primary, .tbb-btn-secondary, .tbb-deliv-card, .tbb-plate-thumb-card, .tbb-book-card, .tbb-yt-card { transition: none !important; }
       }
     `;
     document.head.appendChild(st);
   }
 
   // ============================================================================
-  // INTERACCIONES EN SECCIÓN 5 (CON INTERSECTIONOBSERVER + RESIZEOBSERVER)
+  // INTERACCIONES GPU 60FPS: SCROLL REVEALS, STICKY RAIL & SECCIÓN 5 CANVAS
   // ============================================================================
   window.tbbInitAwwwardsInteractions = function () {
     if (document.getElementById("tbbKanseiLiveVectorPreview")) {
       window.tbbUpdateKanseiInfographicSimulator();
+    }
+
+    // 1. GPU Scroll-Linked Staggered Reveals (Immediate above-fold + generous lookahead)
+    const revealEls = document.querySelectorAll(".tbb-reveal-on-scroll:not([data-reveal-bound])");
+    if (revealEls.length) {
+      const vh = window.innerHeight || 900;
+      const canObserve = "IntersectionObserver" in window;
+      const revObserver = canObserve
+        ? new IntersectionObserver((entries, obs) => {
+            entries.forEach((en) => {
+              if (en.isIntersecting) {
+                en.target.classList.add("is-visible");
+                obs.unobserve(en.target);
+              }
+            });
+          }, { rootMargin: "80px 0px 120px 0px", threshold: 0.01 })
+        : null;
+
+      revealEls.forEach((el) => {
+        el.setAttribute("data-reveal-bound", "1");
+        const rect = el.getBoundingClientRect();
+        if (!revObserver || rect.top < vh * 1.35) {
+          el.classList.add("is-visible");
+        } else {
+          revObserver.observe(el);
+        }
+      });
+    }
+
+    // 2. Sticky Scrollytelling Active Step Tracker in Section 3 (Cómo Funciona)
+    const howCards = document.querySelectorAll("[data-how-step]:not([data-rail-bound])");
+    if (howCards.length && "IntersectionObserver" in window) {
+      const railObs = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            const stNum = Number(en.target.getAttribute("data-how-step"));
+            document.querySelectorAll("[data-how-rail-pill]").forEach((btn) => {
+              btn.classList.toggle("is-active", Number(btn.getAttribute("data-how-rail-pill")) === stNum);
+            });
+          }
+        });
+      }, { rootMargin: "-25% 0px -55% 0px", threshold: 0.05 });
+
+      howCards.forEach((card) => {
+        card.setAttribute("data-rail-bound", "1");
+        railObs.observe(card);
+      });
     }
 
     const pillarsCanvas = document.getElementById("tbbFivePillarsConvergenceCanvas");
@@ -3906,12 +4776,12 @@
             pCtx.beginPath();
             pCtx.moveTo(px, py);
             pCtx.quadraticCurveTo((px + coreX) * 0.5, Math.min(py, coreY) - 24, coreX, coreY);
-            pCtx.strokeStyle = isSel ? p.color : "rgba(148,163,184,0.35)";
-            pCtx.lineWidth = isSel ? 3 : 1.6;
+            pCtx.strokeStyle = isSel ? "#FF7A00" : "rgba(66,110,174,0.28)";
+            pCtx.lineWidth = isSel ? 2.8 : 1.5;
             pCtx.stroke();
 
             pCtx.beginPath();
-            pCtx.fillStyle = isSel ? "#FF7A00" : "#1E3A8A";
+            pCtx.fillStyle = isSel ? "#FF7A00" : "#0D2540";
             pCtx.strokeStyle = "#FFFFFF";
             pCtx.lineWidth = 2;
             pCtx.arc(px, py, isSel ? 21 : 17, 0, Math.PI * 2);
@@ -4028,6 +4898,7 @@
       const langP = params.get("lang");
       if (langP && ["es", "en", "fr", "pt", "de", "it"].includes(langP.toLowerCase())) {
         const cl = langP.toLowerCase();
+        window._tbbExplicitWebLang = cl;
         if (typeof window.syncAllLangStorageKeys === "function") window.syncAllLangStorageKeys(cl);
         else localStorage.setItem(LANG_STORAGE_KEY, cl);
         document.documentElement.lang = cl;

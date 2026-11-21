@@ -1769,32 +1769,32 @@
     modal.style.cssText = "position:fixed;inset:0;background:rgba(9,13,22,0.75);backdrop-filter:blur(8px);z-index:999995;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;";
 
     modal.innerHTML = `
-      <div style="width:100%;max-width:680px;background:#FFFFFF;border:2px solid ${pri};border-bottom:5px solid ${acc};border-radius:20px 38px 20px 20px;padding:22px;font-family:'Plus Jakarta Sans',sans-serif;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div style="width:100%;max-width:680px;background:#FFFFFF;border:1px solid rgba(13,37,64,0.10);border-radius:24px;padding:22px;box-shadow:0 28px 68px rgba(13,37,64,0.22);font-family:'Plus Jakarta Sans',sans-serif;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;">
           <div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:0.70rem;font-weight:800;color:${acc};">ENTREGABLE EJECUTIVO · GMAIL / OUTLOOK / APPLE MAIL / ZOHO</div>
-            <h3 style="font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:900;color:#090D16;margin:2px 0 0 0;">Firma Corporativa en HTML de «${xmlEsc(bName)}»</h3>
+            <div style="font-size:0.875rem;font-weight:700;color:${acc};">ENTREGABLE EJECUTIVO · GMAIL / OUTLOOK / APPLE MAIL / ZOHO</div>
+            <h3 style="font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:700;color:#0D2540;margin:2px 0 0 0;">Firma Corporativa en HTML de «${xmlEsc(bName)}»</h3>
           </div>
-          <button type="button" id="tbbCloseSigModal" style="background:#F1F5F9;border:1.5px solid #CBD5E1;border-radius:10px;padding:6px 12px;font-weight:800;cursor:pointer;">Cerrar</button>
+          <button type="button" id="tbbCloseSigModal" style="background:#F8FAFC;border:1px solid rgba(13,37,64,0.12);border-radius:999px;padding:7px 14px;font-size:0.875rem;font-weight:600;color:#0D2540;cursor:pointer;">Cerrar</button>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-          <input id="sigInpName" value="${xmlEsc(state.personName)}" placeholder="Nombre completo" style="padding:9px 11px;border:1.5px solid #CBD5E1;border-radius:9px;font-size:0.84rem;font-weight:700;"/>
-          <input id="sigInpRole" value="${xmlEsc(state.roleTitle)}" placeholder="Cargo / Puesto" style="padding:9px 11px;border:1.5px solid #CBD5E1;border-radius:9px;font-size:0.84rem;font-weight:700;"/>
-          <input id="sigInpPhone" value="${xmlEsc(state.phone)}" placeholder="Teléfono / WhatsApp" style="padding:9px 11px;border:1.5px solid #CBD5E1;border-radius:9px;font-size:0.84rem;"/>
-          <input id="sigInpEmail" value="${xmlEsc(state.email)}" placeholder="Correo electrónico" style="padding:9px 11px;border:1.5px solid #CBD5E1;border-radius:9px;font-size:0.84rem;"/>
-          <input id="sigInpWeb" value="${xmlEsc(state.web)}" placeholder="Sitio web" style="grid-column:1/-1;padding:9px 11px;border:1.5px solid #CBD5E1;border-radius:9px;font-size:0.84rem;"/>
+          <input id="sigInpName" value="${xmlEsc(state.personName)}" placeholder="Nombre completo" style="padding:9px 11px;border:1px solid rgba(13,37,64,0.16);border-radius:10px;font-size:1rem;font-weight:600;"/>
+          <input id="sigInpRole" value="${xmlEsc(state.roleTitle)}" placeholder="Cargo / Puesto" style="padding:9px 11px;border:1px solid rgba(13,37,64,0.16);border-radius:10px;font-size:1rem;font-weight:600;"/>
+          <input id="sigInpPhone" value="${xmlEsc(state.phone)}" placeholder="Teléfono / WhatsApp" style="padding:9px 11px;border:1px solid rgba(13,37,64,0.16);border-radius:10px;font-size:1rem;"/>
+          <input id="sigInpEmail" value="${xmlEsc(state.email)}" placeholder="Correo electrónico" style="padding:9px 11px;border:1px solid rgba(13,37,64,0.16);border-radius:10px;font-size:1rem;"/>
+          <input id="sigInpWeb" value="${xmlEsc(state.web)}" placeholder="Sitio web" style="grid-column:1/-1;padding:9px 11px;border:1px solid rgba(13,37,64,0.16);border-radius:10px;font-size:1rem;"/>
         </div>
 
-        <div style="background:#F8FAFC;border:1.5px dashed #CBD5E1;border-radius:14px;padding:18px;margin-bottom:14px;overflow-x:auto;">
+        <div style="background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:14px;padding:18px;margin-bottom:14px;overflow-x:auto;">
           <div id="tbbEmailSigLivePreview"></div>
         </div>
 
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <button type="button" id="tbbBtnCopySigRich" style="flex:1;background:#10B981;color:#FFFFFF;border:none;border-bottom:4px solid #047857;border-radius:12px;padding:12px 16px;font-family:'Montserrat',sans-serif;font-weight:900;font-size:0.84rem;cursor:pointer;">
+          <button type="button" id="tbbBtnCopySigRich" style="flex:1;background:#0D2540;color:#FFFFFF;border:none;border-radius:12px;padding:12px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:0.92rem;cursor:pointer;">
             Copiar Firma Lista para Pegar (Gmail / Outlook)
           </button>
-          <button type="button" id="tbbBtnDownloadSigHtml" style="flex:1;background:${pri};color:#FFFFFF;border:none;border-bottom:4px solid #090D16;border-radius:12px;padding:12px 16px;font-family:'Montserrat',sans-serif;font-weight:900;font-size:0.84rem;cursor:pointer;">
+          <button type="button" id="tbbBtnDownloadSigHtml" style="flex:1;background:${pri};color:#FFFFFF;border:none;border-radius:12px;padding:12px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:0.92rem;cursor:pointer;">
             Descargar Archivo .HTML
           </button>
         </div>
@@ -2495,24 +2495,37 @@
       const stEl = document.createElement("style");
       stEl.id = "tbbLightMockupStudioStyles";
       stEl.textContent = `
+        @keyframes tbbFlowModalEnterGPU {
+          from { opacity: 0; transform: translate3d(0, 10px, 0) scale(0.99); }
+          to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+        }
+        @keyframes tbbFlowShimmerGPU {
+          from { transform: translate3d(-100%, 0, 0); }
+          to { transform: translate3d(100%, 0, 0); }
+        }
         #tbbGoogleFlowRemixModal .tbb-mockup-shell {
           width: 100%;
-          max-width: 1100px;
+          max-width: 1120px;
           max-height: calc(100dvh - 28px);
           background: #FFFFFF;
           color: #0D2540;
-          border: 1px solid #E2E8F0;
-          border-radius: 24px;
-          box-shadow: 0 24px 64px rgba(13, 37, 64, 0.18);
+          border: 1px solid rgba(13, 37, 64, 0.095);
+          border-radius: 26px;
+          box-shadow: 0 28px 72px rgba(13, 37, 64, 0.22);
           font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
           display: grid;
-          grid-template-columns: 336px minmax(0, 1fr);
+          grid-template-columns: 344px minmax(0, 1fr);
           overflow: hidden;
           box-sizing: border-box;
+          animation: tbbFlowModalEnterGPU 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        #tbbGoogleFlowRemixModal button,
+        #tbbGoogleFlowRemixModal input {
+          touch-action: manipulation;
         }
         #tbbGoogleFlowRemixModal .tbb-mockup-left {
           padding: 20px;
-          border-right: 1px solid #E2E8F0;
+          border-right: 1px solid rgba(13, 37, 64, 0.08);
           background: #F8FAFC;
           display: flex;
           flex-direction: column;
@@ -2530,8 +2543,45 @@
         }
         #tbbGoogleFlowRemixModal .tbb-mockup-gallery {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(226px, 1fr));
           gap: 14px;
+        }
+        #tbbGoogleFlowRemixModal .tbb-mockup-slot-card {
+          background: #FFFFFF;
+          border: 1px solid rgba(13, 37, 64, 0.085);
+          border-radius: 18px;
+          padding: 7px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          box-shadow: 0 1px 2px rgba(13, 37, 64, 0.04), 0 8px 20px -6px rgba(13, 37, 64, 0.055);
+          transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        #tbbGoogleFlowRemixModal .tbb-mockup-slot-card:hover {
+          transform: translate3d(0, -2px, 0);
+        }
+        #tbbGoogleFlowRemixModal .tbb-mockup-slot-shimmer {
+          position: absolute;
+          inset: 0;
+          background: rgba(248, 250, 252, 0.90);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          display: none;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          z-index: 4;
+        }
+        #tbbGoogleFlowRemixModal .tbb-mockup-slot-card.is-generating .tbb-mockup-slot-shimmer {
+          display: flex;
+        }
+        #tbbGoogleFlowRemixModal .tbb-mockup-slot-shimmer::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%);
+          animation: tbbFlowShimmerGPU 1.35s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+          will-change: transform;
         }
         #tbbGoogleFlowRemixModal .tbb-mockup-mobile-close {
           display: none;
@@ -2543,7 +2593,7 @@
           }
           #tbbGoogleFlowRemixModal .tbb-mockup-left {
             border-right: none;
-            border-bottom: 1px solid #E2E8F0;
+            border-bottom: 1px solid rgba(13, 37, 64, 0.08);
             overflow-y: visible;
           }
           #tbbGoogleFlowRemixModal .tbb-mockup-right {
@@ -2565,6 +2615,10 @@
             padding: 16px;
           }
         }
+        @media (prefers-reduced-motion: reduce) {
+          #tbbGoogleFlowRemixModal .tbb-mockup-shell,
+          #tbbGoogleFlowRemixModal .tbb-mockup-slot-shimmer::after { animation: none !important; }
+        }
       `;
       document.head.appendChild(stEl);
     }
@@ -2579,12 +2633,12 @@
 
     const overlay = document.createElement("div");
     overlay.id = "tbbGoogleFlowRemixModal";
-    overlay.style.cssText = "position:fixed;inset:0;background:rgba(13,37,64,0.48);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:999995;display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box;";
+    overlay.style.cssText = "position:fixed;inset:0;background:rgba(13,37,64,0.52);backdrop-filter:saturate(150%) blur(12px);-webkit-backdrop-filter:saturate(150%) blur(12px);z-index:999995;display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box;";
 
-    const svgSpark = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2.5l2.4 6.5L21 11.4l-6.6 2.4L12 20.5l-2.4-6.7L3 11.4 9.6 9 12 2.5z" fill="currentColor"/></svg>`;
-    const svgRefresh = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 11a8 8 0 1 0 2 5.3M20 4v7h-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-    const svgClose = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
-    const svgDownload = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 4v11m0 0l-4-4m4 4l4-4M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    const svgSpark = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2.8l2.1 6.1 6.1 2.1-6.1 2.1L12 19.2l-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/></svg>`;
+    const svgRefresh = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 11a8 8 0 1 0 2 5.3M20 4v7h-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    const svgClose = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>`;
+    const svgDownload = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 4v11m0 0l-3.8-3.8M12 15l3.8-3.8M4.5 19h15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
     const renderModalBody = () => {
       const modeNow = window.tbbState.flowMockupQualityMode || "fast";
@@ -2603,104 +2657,107 @@
           <div class="tbb-mockup-left">
             <div>
               <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
-                <span style="display:inline-flex;align-items:center;gap:6px;background:#FFF7ED;border:1px solid #FED7AA;color:#C2410C;padding:4px 11px;border-radius:999px;font-size:0.74rem;font-weight:700;">
+                <span style="display:inline-flex;align-items:center;gap:6px;background:#FFF7ED;border:1px solid rgba(255,122,0,0.26);color:#C2410C;padding:4px 11px;border-radius:999px;font-size:0.875rem;font-weight:700;">
                   ${svgSpark} <span>${xmlEsc(tr("VISTA EN LA VIDA REAL"))}</span>
                 </span>
                 <div style="display:inline-flex;align-items:center;gap:8px;">
-                  <span style="font-size:0.74rem;color:#64748B;font-weight:600;">4:3 HD</span>
-                  <button type="button" class="tbb-mockup-mobile-close" data-flow-close="1" aria-label="${xmlEsc(tr("Cerrar"))}" style="width:34px;height:34px;border-radius:50%;border:1px solid #CBD5E1;background:#FFFFFF;color:#0D2540;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
+                  <span style="font-size:0.875rem;color:#64748B;font-weight:600;font-variant-numeric:tabular-nums;">4:3 HD</span>
+                  <button type="button" class="tbb-mockup-mobile-close" data-flow-close="1" aria-label="${xmlEsc(tr("Cerrar"))}" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(13,37,64,0.12);background:#FFFFFF;color:#0D2540;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
                     ${svgClose}
                   </button>
                 </div>
               </div>
 
-              <div style="font-family:'Montserrat',sans-serif;font-size:1.06rem;font-weight:700;color:#0D2540;margin-bottom:4px;">
+              <div style="font-family:'Montserrat',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.02em;color:#0D2540;margin-bottom:4px;">
                 ${xmlEsc(tr("Tu marca aplicada a tu giro"))}
               </div>
-              <div style="font-size:0.84rem;color:#475569;line-height:1.45;margin-bottom:12px;">
+              <div style="font-size:0.88rem;color:#475569;line-height:1.48;margin-bottom:12px;">
                 ${xmlEsc(tr("Sector"))}: <strong style="color:#0D2540;">${xmlEsc(tr(giroPlan.sectorLabel))}</strong>
               </div>
 
-              <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:16px;padding:12px;text-align:center;margin-bottom:14px;box-shadow:0 4px 14px rgba(13,37,64,0.04);">
-                <div style="width:92px;height:92px;margin:0 auto 6px auto;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:8px;display:flex;align-items:center;justify-content:center;">
-                  ${logoPngUrl ? `<img src="${logoPngUrl}" alt="Logo" style="max-width:100%;max-height:100%;object-fit:contain;display:block;" />` : `<span style="color:#0D2540;font-weight:700;font-size:0.82rem;">${xmlEsc(brand.name)}</span>`}
+              <div style="background:#FFFFFF;border:1px solid rgba(13,37,64,0.085);border-radius:18px;padding:12px;text-align:center;margin-bottom:14px;box-shadow:0 1px 2px rgba(13,37,64,0.04);">
+                <div style="width:88px;height:88px;margin:0 auto 6px auto;background:#F8FAFC;border:1px solid rgba(13,37,64,0.07);border-radius:12px;padding:8px;display:flex;align-items:center;justify-content:center;">
+                  ${logoPngUrl ? `<img src="${logoPngUrl}" alt="Logo" style="max-width:100%;max-height:100%;object-fit:contain;display:block;" />` : `<span style="color:#0D2540;font-weight:700;font-size:0.875rem;">${xmlEsc(brand.name)}</span>`}
                 </div>
-                <div style="font-size:0.82rem;color:#0D2540;font-weight:600;">${xmlEsc(brand.name)}</div>
+                <div style="font-size:0.88rem;color:#0D2540;font-weight:600;">${xmlEsc(brand.name)}</div>
               </div>
 
-              <div style="font-size:0.78rem;color:#475569;font-weight:700;margin-bottom:8px;">
+              <div style="font-size:0.875rem;color:#475569;font-weight:600;margin-bottom:8px;">
                 ${xmlEsc(tr("Elige dónde quieres ver tu logo:"))}
               </div>
               <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
-                <button type="button" data-flow-pill="" style="padding:6px 11px;border-radius:999px;border:1.5px solid ${selectedPill === "" ? "#0D2540" : "#CBD5E1"};background:${selectedPill === "" ? "#0D2540" : "#FFFFFF"};color:${selectedPill === "" ? "#FFFFFF" : "#0D2540"};font-size:0.8rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+                <button type="button" data-flow-pill="" style="padding:6px 11px;border-radius:999px;border:1px solid ${selectedPill === "" ? "#0D2540" : "rgba(13,37,64,0.12)"};background:${selectedPill === "" ? "#0D2540" : "#FFFFFF"};color:${selectedPill === "" ? "#FFFFFF" : "#0D2540"};font-size:0.875rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
                   ${TBB_MOCKUP_SURFACE_ICONS.mix} <span>${xmlEsc(tr("Selección automática (6)"))}</span>
                 </button>
                 ${TBB_GOOGLE_FLOW_MOCKUP_SURFACES.map(s => {
                   const isRec = giroPlan.recommendedPills.includes(s.id);
                   const isSel = selectedPill === s.id;
-                  return `<button type="button" data-flow-pill="${s.id}" title="${xmlEsc(tr(s.esTitle))}" style="padding:6px 11px;border-radius:999px;border:1.5px solid ${isSel ? "#0D2540" : (isRec ? "#93C5FD" : "#CBD5E1")};background:${isSel ? "#0D2540" : (isRec ? "#EFF6FF" : "#FFFFFF")};color:${isSel ? "#FFFFFF" : "#0D2540"};font-size:0.8rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+                  return `<button type="button" data-flow-pill="${s.id}" title="${xmlEsc(tr(s.esTitle))}" style="padding:6px 11px;border-radius:999px;border:1px solid ${isSel ? "#0D2540" : (isRec ? "rgba(66,110,174,0.35)" : "rgba(13,37,64,0.12)")};background:${isSel ? "#0D2540" : (isRec ? "#F4F8FC" : "#FFFFFF")};color:${isSel ? "#FFFFFF" : "#0D2540"};font-size:0.875rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
                     ${s.iconSvg} <span>${xmlEsc(tr(s.label))}</span> ${isRec ? `<span style="width:6px;height:6px;border-radius:50%;background:#FF7A00;display:inline-block;"></span>` : ""}
                   </button>`;
                 }).join("")}
               </div>
 
               <div>
-                <input id="tbbFlowCustomMockupInput" type="text" value="${selectedPill && !TBB_GOOGLE_FLOW_MOCKUP_SURFACES.some(s => s.id === selectedPill) ? xmlEsc(selectedPill) : ""}" placeholder="${xmlEsc(tr("Ej. taza, caja, vehículo..."))}" style="width:100%;box-sizing:border-box;height:40px;padding:0 14px;border-radius:12px;border:1.5px solid #CBD5E1;background:#FFFFFF;color:#0D2540;font-size:0.875rem;font-weight:500;outline:none;text-overflow:ellipsis;" />
+                <input id="tbbFlowCustomMockupInput" type="text" value="${selectedPill && !TBB_GOOGLE_FLOW_MOCKUP_SURFACES.some(s => s.id === selectedPill) ? xmlEsc(selectedPill) : ""}" placeholder="${xmlEsc(tr("Ej. taza, caja, vehículo..."))}" style="width:100%;box-sizing:border-box;height:42px;padding:0 14px;border-radius:12px;border:1px solid rgba(13,37,64,0.15);background:#FFFFFF;color:#0D2540;font-size:1rem;font-weight:500;outline:none;text-overflow:ellipsis;" />
               </div>
             </div>
 
-            <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #E2E8F0;padding-top:12px;">
+            <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid rgba(13,37,64,0.08);padding-top:12px;">
               <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-                <div style="display:inline-flex;background:#E2E8F0;border-radius:999px;padding:3px;">
-                  <button type="button" id="tbbFlowModeFastBtn" style="padding:5px 12px;border-radius:999px;border:none;background:${modeNow === "fast" ? "#FFFFFF" : "transparent"};color:${modeNow === "fast" ? "#0D2540" : "#475569"};font-size:0.78rem;font-weight:600;cursor:pointer;">${xmlEsc(tr("Rápido"))}</button>
-                  <button type="button" id="tbbFlowModeProBtn" style="padding:5px 12px;border-radius:999px;border:none;background:${modeNow === "pro" ? "#FFFFFF" : "transparent"};color:${modeNow === "pro" ? "#0D2540" : "#475569"};font-size:0.78rem;font-weight:600;cursor:pointer;">${xmlEsc(tr("Alta Calidad"))}</button>
+                <div style="display:inline-flex;background:rgba(13,37,64,0.06);border-radius:999px;padding:3px;">
+                  <button type="button" id="tbbFlowModeFastBtn" style="padding:5px 12px;border-radius:999px;border:none;background:${modeNow === "fast" ? "#FFFFFF" : "transparent"};color:${modeNow === "fast" ? "#0D2540" : "#475569"};font-size:0.875rem;font-weight:600;cursor:pointer;">${xmlEsc(tr("Rápido"))}</button>
+                  <button type="button" id="tbbFlowModeProBtn" style="padding:5px 12px;border-radius:999px;border:none;background:${modeNow === "pro" ? "#FFFFFF" : "transparent"};color:${modeNow === "pro" ? "#0D2540" : "#475569"};font-size:0.875rem;font-weight:600;cursor:pointer;">${xmlEsc(tr("Alta Calidad"))}</button>
                 </div>
-                <button type="button" id="tbbFlowDownloadLogoPngBtn" style="padding:6px 12px;border-radius:999px;border:1px solid #CBD5E1;background:#FFFFFF;color:#0D2540;font-size:0.78rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+                <button type="button" id="tbbFlowDownloadLogoPngBtn" style="padding:6px 12px;border-radius:999px;border:1px solid rgba(13,37,64,0.12);background:#FFFFFF;color:#0D2540;font-size:0.875rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
                   ${svgDownload} <span>${xmlEsc(tr("Guardar PNG"))}</span>
                 </button>
               </div>
 
-              <button type="button" id="tbbFlowRunGenerateBtn" style="width:100%;min-height:44px;padding:10px 16px;border-radius:14px;border:none;background:#FF7A00;color:#FFFFFF;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(255,122,0,0.25);display:inline-flex;align-items:center;justify-content:center;gap:8px;text-align:center;">
+              <button type="button" id="tbbFlowRunGenerateBtn" style="width:100%;min-height:46px;padding:10px 16px;border-radius:14px;border:1px solid rgba(255,255,255,0.16);background:#FF7A00;color:#FFFFFF;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.92rem;font-weight:600;cursor:pointer;box-shadow:0 8px 20px -4px rgba(255,122,0,0.34);display:inline-flex;align-items:center;justify-content:center;gap:8px;text-align:center;">
                 <span style="display:inline-flex;flex-shrink:0;">${svgSpark}</span> <span>${xmlEsc(tr("Generar y actualizar en mi Brandbook"))}</span>
               </button>
             </div>
           </div>
 
           <div class="tbb-mockup-right">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #E2E8F0;padding-bottom:12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(13,37,64,0.08);padding-bottom:12px;">
               <div style="min-width:0;">
-                <div style="font-size:0.75rem;color:#426EAE;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">
+                <div style="font-size:0.875rem;color:#426EAE;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;">
                   ${xmlEsc(tr("APLICACIONES REALES PARA TU BRANDBOOK"))}
                 </div>
-                <h3 style="font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:700;color:#0D2540;margin:2px 0 0 0;">
+                <h3 style="font-family:'Montserrat',sans-serif;font-size:1.18rem;font-weight:700;letter-spacing:-0.02em;color:#0D2540;margin:2px 0 0 0;">
                   ${xmlEsc(brand.name)}
                 </h3>
               </div>
-              <button type="button" id="tbbFlowCloseModalBtn" class="tbb-mockup-desktop-close" data-flow-close="1" aria-label="${xmlEsc(tr("Cerrar"))}" style="width:38px;height:38px;border-radius:50%;border:1px solid #CBD5E1;background:#F8FAFC;color:#0D2540;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
+              <button type="button" id="tbbFlowCloseModalBtn" class="tbb-mockup-desktop-close" data-flow-close="1" aria-label="${xmlEsc(tr("Cerrar"))}" style="width:38px;height:38px;border-radius:50%;border:1px solid rgba(13,37,64,0.12);background:#F8FAFC;color:#0D2540;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
                 ${svgClose}
               </button>
             </div>
 
-            <div id="tbbFlowModalStatusBanner" style="display:none;padding:10px 14px;border-radius:12px;background:#EFF6FF;border:1px solid #93C5FD;color:#0D2540;font-size:0.86rem;font-weight:600;"></div>
+            <div id="tbbFlowModalStatusBanner" style="display:none;padding:10px 14px;border-radius:12px;background:#F4F8FC;border:1px solid rgba(66,110,174,0.24);color:#0D2540;font-size:0.88rem;font-weight:600;"></div>
 
             <div class="tbb-mockup-gallery">
               ${slotPreviewList.map((item, idx) => {
                 const slotMeta = (activeEntry._metaBySlot && activeEntry._metaBySlot[item.key]) || giroPlan.slots[item.key];
                 const imgSrc = activeEntry[item.key] || activeEntry[item.alias] || item.defaultImg;
                 return `
-                  <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 14px rgba(13,37,64,0.04);">
-                    <div style="position:relative;width:100%;aspect-ratio:4/3;background:#F8FAFC;overflow:hidden;">
+                  <div class="tbb-mockup-slot-card" data-slot-card="${item.key}">
+                    <div style="position:relative;width:100%;aspect-ratio:4/3;background:#F8FAFC;border-radius:12px;overflow:hidden;">
                       <img src="${imgSrc}" alt="${xmlEsc(tr(slotMeta.title))}" style="width:100%;height:100%;object-fit:cover;display:block;" />
-                      <span style="position:absolute;top:8px;left:8px;background:rgba(255,255,255,0.94);color:#0D2540;font-size:0.7rem;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid #E2E8F0;">
+                      <span style="position:absolute;top:8px;left:8px;background:rgba(255,255,255,0.92);backdrop-filter:blur(6px);color:#0D2540;font-size:0.875rem;font-weight:600;font-variant-numeric:tabular-nums;padding:3px 10px;border-radius:999px;border:1px solid rgba(13,37,64,0.09);">
                         0${idx + 1} · ${xmlEsc(tr(slotMeta.badge))}
                       </span>
-                    </div>
-                    <div style="padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
-                      <div style="min-width:0;">
-                        <div style="font-size:0.84rem;font-weight:600;color:#0D2540;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${xmlEsc(tr(slotMeta.title))}</div>
+                      <div class="tbb-mockup-slot-shimmer">
+                        <span style="position:relative;z-index:2;font-size:0.875rem;font-weight:600;color:#0D2540;background:#FFFFFF;padding:5px 12px;border-radius:999px;border:1px solid rgba(13,37,64,0.1);">${xmlEsc(tr("Renderizando..."))}</span>
                       </div>
-                      <button type="button" data-flow-regen-slot="${item.key}" style="padding:5px 10px;border-radius:999px;border:1px solid #CBD5E1;background:#F8FAFC;color:#0D2540;font-size:0.76rem;font-weight:600;cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;gap:4px;" title="${xmlEsc(tr("Generar nueva vista"))}">
-                        ${svgRefresh} <span>${xmlEsc(tr("Cambiar"))}</span>
+                    </div>
+                    <div style="padding:9px 6px 5px;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:42px;">
+                      <div style="min-width:0;flex:1;">
+                        <div style="font-size:0.88rem;font-weight:600;color:#0D2540;line-height:1.28;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal;">${xmlEsc(tr(slotMeta.title))}</div>
+                      </div>
+                      <button type="button" data-flow-regen-slot="${item.key}" aria-label="${xmlEsc(tr("Generar nueva vista"))}" style="width:34px;height:34px;padding:0;border-radius:50%;border:1px solid rgba(13,37,64,0.12);background:#F8FAFC;color:#0D2540;font-size:0.875rem;font-weight:600;cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;" title="${xmlEsc(tr("Generar nueva vista"))}">
+                        ${svgRefresh}
                       </button>
                     </div>
                   </div>
@@ -2745,6 +2802,11 @@
         const chosenSurface = customInputVal || selectedPill || "";
         const banner = overlay.querySelector("#tbbFlowModalStatusBanner");
         const runBtn = overlay.querySelector("#tbbFlowRunGenerateBtn");
+        overlay.querySelectorAll("[data-slot-card]").forEach((card) => {
+          if (!onlySlotKey || card.getAttribute("data-slot-card") === onlySlotKey) {
+            card.classList.add("is-generating");
+          }
+        });
         if (banner) {
           banner.style.display = "block";
           banner.textContent = tr("Aplicando tu logotipo a las superficies reales de tu negocio...");

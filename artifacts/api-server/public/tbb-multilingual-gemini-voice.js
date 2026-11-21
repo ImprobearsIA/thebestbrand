@@ -118,6 +118,11 @@
 
   function getSavedLang() {
     try {
+      try {
+        if (window.self !== window.top && window.parent && window.parent._tbbExplicitWebLang && SUPPORTED_LANGS[window.parent._tbbExplicitWebLang]) {
+          return syncAllLangStorageKeys(window.parent._tbbExplicitWebLang);
+        }
+      } catch (errP) {}
       const params = new URLSearchParams(window.location.search || "");
       const urlLang = (params.get("lang") || "").toLowerCase().slice(0, 2);
       if (urlLang && SUPPORTED_LANGS[urlLang]) {
@@ -4554,6 +4559,8 @@
     window.tbbMountLanguageSelectorsInMenus();
 
     const rootsToTranslate = [
+      document.getElementById("tbbTopDiscreteBar"),
+      document.getElementById("tbbAuraTopOuterHeroSection"),
       document.getElementById("tbbAuraSplashBootOverlay"),
       document.getElementById("tbbZeroScrollMasterStage"),
       document.getElementById("tbbBottomControlDeck"),
@@ -4614,10 +4621,20 @@
     window.tbbCurrentLang = cleanCode;
     try {
       syncAllLangStorageKeys(cleanCode);
+      if (window.history && window.history.replaceState) {
+        const u = new URL(window.location.href);
+        if (u.searchParams.has("lang")) {
+          u.searchParams.set("lang", cleanCode);
+          window.history.replaceState(window.history.state, "", u.pathname + u.search + u.hash);
+        }
+      }
     } catch (e) {}
 
     if (!skipCloudSync && typeof playAcousticClick === "function") playAcousticClick(880, 0.04);
 
+    if (window.tbbState) {
+      window.tbbState.auraLastSubStepKey = "";
+    }
     if (window.tbbState && typeof window.getNextNonRepetitiveAuraMessage === "function") {
       const subKey = `substep_${Number(window.tbbState.step || 0)}_${Number(window.tbbState.subStep || 1)}`;
       const msg = window.getNextNonRepetitiveAuraMessage(subKey);
@@ -4671,17 +4688,21 @@
     const applyInitialLang = () => {
       const cur = getSavedLang();
       window.tbbCurrentLang = cur;
+      const subKey = `substep_${Number(window.tbbState?.step || 0)}_${Number(window.tbbState?.subStep || 1)}`;
+      if (cur !== "es" && window.tbbState) {
+        window.tbbState.auraLastSubStepKey = "";
+      }
       if (cur !== "es" && typeof window.renderTbbZeroScrollStage === "function") {
-        const subKey = `substep_${Number(window.tbbState?.step || 0)}_${Number(window.tbbState?.subStep || 1)}`;
-        if (window.tbbState && typeof window.getNextNonRepetitiveAuraMessage === "function") {
+        window.renderTbbZeroScrollStage();
+      } else {
+        if (window._tbbBootAppliedAuraLang !== cur && window.tbbState && typeof window.getNextNonRepetitiveAuraMessage === "function") {
+          window._tbbBootAppliedAuraLang = cur;
           const msg = window.getNextNonRepetitiveAuraMessage(subKey);
           window.tbbState.auraCurrentMessage = msg;
           if (typeof window.updateAuraTopPresenceDOM === "function") {
             window.updateAuraTopPresenceDOM(msg);
           }
         }
-        window.renderTbbZeroScrollStage();
-      } else {
         window.tbbApplyCurrentLanguageToDOM();
       }
     };
