@@ -345,33 +345,107 @@
   window.enforceMax10sSpokenText = enforceMax10sSpokenText;
   window.shortenForNaturalSpeech = enforceMax10sSpokenText;
 
+  const TBB_SILENT_WAV_DATA_URI = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+
+  function isIosWebKitDevice() {
+    if (typeof navigator === "undefined") return false;
+    const ua = String(navigator.userAgent || "");
+    const isIpadOs = navigator.platform === "MacIntel" && Number(navigator.maxTouchPoints || 0) > 1;
+    return /iPhone|iPad|iPod/i.test(ua) || isIpadOs;
+  }
+
+  function applyPitchPreservation(audioEl, rate = 1.0) {
+    if (!audioEl) return;
+    const safeRate = Math.max(0.92, Math.min(1.04, Number(rate) || 1.0));
+    try { audioEl.preservesPitch = true; } catch (e) {}
+    try { audioEl.webkitPreservesPitch = true; } catch (e) {}
+    try { audioEl.mozPreservesPitch = true; } catch (e) {}
+    try { audioEl.defaultPlaybackRate = safeRate; } catch (e) {}
+    try { audioEl.playbackRate = safeRate; } catch (e) {}
+  }
+
+  function getOrCreatePrimedHtmlAudio() {
+    if (typeof window === "undefined" || typeof Audio === "undefined") return null;
+    if (!window._tbbSharedHtmlAudio) {
+      const a = new Audio();
+      a.preload = "auto";
+      a.playsInline = true;
+      try { a.setAttribute("playsinline", "true"); a.setAttribute("webkit-playsinline", "true"); } catch (e) {}
+      applyPitchPreservation(a, 1.0);
+      window._tbbSharedHtmlAudio = a;
+    }
+    return window._tbbSharedHtmlAudio;
+  }
+
   function ensureBrowserAudioUnlockedSync() {
     try {
+      // iOS 17+/26+/27+ WebKit: forzar categoría "playback" para que Aura se escuche aunque el iPhone tenga el switch en silencio
+      if (typeof navigator !== "undefined" && navigator.audioSession) {
+        try {
+          if (navigator.audioSession.type !== "playback") {
+            navigator.audioSession.type = "playback";
+          }
+        } catch (e) {}
+      }
+
+      // Pre-desbloquear elemento HTML5 <audio> reutilizable síncronamente dentro del toque del usuario (evita bloqueo post-await en iOS)
+      if (!window._tbbHtmlAudioPrimed) {
+        const sharedAud = getOrCreatePrimedHtmlAudio();
+        if (sharedAud && sharedAud.paused && !window.isSpeakingLive) {
+          try {
+            sharedAud.muted = true;
+            sharedAud.src = TBB_SILENT_WAV_DATA_URI;
+            const pr = sharedAud.play();
+            if (pr && typeof pr.then === "function") {
+              pr.then(() => {
+                if (!window.isSpeakingLive) {
+                  try { sharedAud.pause(); sharedAud.currentTime = 0; } catch (e) {}
+                }
+                sharedAud.muted = false;
+                window._tbbHtmlAudioPrimed = true;
+              }).catch(() => {
+                sharedAud.muted = false;
+              });
+            } else {
+              sharedAud.muted = false;
+              window._tbbHtmlAudioPrimed = true;
+            }
+          } catch (e) {
+            sharedAud.muted = false;
+          }
+        }
+      }
+
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (!AudioCtx) return null;
       if (!window.sharedAcousticCtx) {
         window.sharedAcousticCtx = new AudioCtx();
       }
       const ctx = window.sharedAcousticCtx;
-      if (ctx.state === "suspended") {
+      if (ctx.state === "suspended" || ctx.state === "interrupted") {
         ctx.resume().catch(() => {});
       }
-      if (!window._tbbSilentUnlockPlayed && ctx.state === "running") {
-        const silentBuf = ctx.createBuffer(1, 1, 22050);
-        const src = ctx.createBufferSource();
-        src.buffer = silentBuf;
-        src.connect(ctx.destination);
-        src.start(0);
-        window._tbbSilentUnlockPlayed = true;
+      if (!window._tbbSilentUnlockPlayed) {
+        try {
+          const silentBuf = ctx.createBuffer(1, 1, 22050);
+          const src = ctx.createBufferSource();
+          src.buffer = silentBuf;
+          src.connect(ctx.destination);
+          src.start(0);
+          if (ctx.state === "running") {
+            window._tbbSilentUnlockPlayed = true;
+          }
+        } catch (e) {}
       }
       return ctx;
     } catch (e) {
       return null;
     }
   }
+  window.ensureBrowserAudioUnlockedSync = ensureBrowserAudioUnlockedSync;
 
   if (typeof document !== "undefined") {
-    ["pointerdown", "click", "touchstart", "keydown"].forEach(evtName => {
+    ["pointerdown", "touchend", "click", "keydown"].forEach(evtName => {
       document.addEventListener(evtName, ensureBrowserAudioUnlockedSync, { passive: true, capture: true });
     });
   }
@@ -623,7 +697,8 @@
   // ==========================================================================
   // 1B. SINGLETON GLOBAL TBBAudioDirector (CRAIG FEDERIGHI · CERO VOCES FANTASMA)
   // ==========================================================================
-  const AURA_DIALOGUE_PLAYBACK_RATE = 1.14;
+  // 1.00x estricto: preserva el timbre natural y cálido de Aoede sin efecto agudo/caricatura
+  const AURA_DIALOGUE_PLAYBACK_RATE = 1.0;
 
   const TBBAudioDirector = {
     genId: 1,
@@ -664,19 +739,23 @@
     },
 
     getLiveAmplitude() {
-      if (!window.isSpeakingLive || !this.activeAnalyser || !this.analyserData) return 0;
-      try {
-        this.activeAnalyser.getByteTimeDomainData(this.analyserData);
-        let sumSq = 0;
-        for (let i = 0; i < this.analyserData.length; i++) {
-          const centered = (this.analyserData[i] - 128) / 128;
-          sumSq += centered * centered;
-        }
-        const rms = Math.sqrt(sumSq / this.analyserData.length);
-        return Math.min(1, rms * 3.8);
-      } catch (e) {
-        return 0.35;
+      if (!window.isSpeakingLive) return 0;
+      if (this.activeAnalyser && this.analyserData && this.activeBufferSources.size > 0) {
+        try {
+          this.activeAnalyser.getByteTimeDomainData(this.analyserData);
+          let sumSq = 0;
+          for (let i = 0; i < this.analyserData.length; i++) {
+            const centered = (this.analyserData[i] - 128) / 128;
+            sumSq += centered * centered;
+          }
+          const rms = Math.sqrt(sumSq / this.analyserData.length);
+          if (rms > 0.008) return Math.min(1, rms * 3.8);
+        } catch (e) {}
       }
+      // Envolvente acústica orgánica para reproducción HTML5 <audio> en iOS / Safari (mantiene vivo el orbe 3D)
+      const t = (typeof performance !== "undefined" ? performance.now() : Date.now()) * 0.001;
+      const env = 0.24 + 0.20 * Math.abs(Math.sin(t * 6.8)) + 0.14 * Math.abs(Math.sin(t * 13.4 + 0.9)) + 0.08 * Math.sin(t * 21.0);
+      return Math.max(0.12, Math.min(0.85, env));
     },
 
     bumpGeneration(reason = "nav") {
@@ -716,11 +795,16 @@
       // 3. Detener todos los HTMLAudioElement registrados + cápsula activa + legacy currentAudioObj
       for (const aud of Array.from(this.activeHtmlAudios)) {
         try {
+          aud.onplay = null;
+          aud.onpause = null;
           aud.onended = null;
+          aud.onerror = null;
           aud.ontimeupdate = null;
           aud.pause();
-          aud.removeAttribute("src");
-          aud.load();
+          if (aud !== window._tbbSharedHtmlAudio) {
+            aud.removeAttribute("src");
+            aud.load();
+          }
         } catch (e) {}
       }
       this.activeHtmlAudios.clear();
@@ -738,8 +822,13 @@
 
       if (window._tbbActiveHtmlAudio) {
         try {
+          window._tbbActiveHtmlAudio.onplay = null;
+          window._tbbActiveHtmlAudio.onended = null;
+          window._tbbActiveHtmlAudio.onerror = null;
           window._tbbActiveHtmlAudio.pause();
-          window._tbbActiveHtmlAudio.removeAttribute("src");
+          if (window._tbbActiveHtmlAudio !== window._tbbSharedHtmlAudio) {
+            window._tbbActiveHtmlAudio.removeAttribute("src");
+          }
         } catch (e) {}
         window._tbbActiveHtmlAudio = null;
       }
@@ -1013,16 +1102,89 @@
     if (!wavBytes || wavBytes.byteLength < 64) return false;
     const expectedGen = guard.genId ?? TBBAudioDirector.genId;
     const expectedTicket = guard.ticketId ?? TBBAudioDirector.ticketId;
-    const rate = Number(guard.playbackRate || AURA_DIALOGUE_PLAYBACK_RATE);
+    // Jamás alterar el pitch en AudioBufferSourceNode: 1.00x natural
+    const rate = 1.0;
 
     if (expectedGen !== TBBAudioDirector.genId || expectedTicket !== TBBAudioDirector.ticketId || window.voiceMuted || (typeof document !== "undefined" && document.hidden)) {
       return false;
     }
 
+    const playViaHtmlAudio = async () => {
+      if (expectedGen !== TBBAudioDirector.genId || expectedTicket !== TBBAudioDirector.ticketId || window.voiceMuted) {
+        return false;
+      }
+      try {
+        const isMp3 = wavBytes[0] === 0xFF || (wavBytes[0] === 0x49 && wavBytes[1] === 0x44 && wavBytes[2] === 0x33);
+        const blob = new Blob([wavBytes], { type: isMp3 ? "audio/mpeg" : "audio/wav" });
+        const blobUrl = URL.createObjectURL(blob);
+        const audio = getOrCreatePrimedHtmlAudio() || new Audio();
+        audio.muted = false;
+        audio.playsInline = true;
+        applyPitchPreservation(audio, rate);
+        audio.src = blobUrl;
+        window._tbbActiveHtmlAudio = audio;
+        TBBAudioDirector.activeHtmlAudios.add(audio);
+
+        return await new Promise(resolve => {
+          let settled = false;
+          const finish = (ok) => {
+            if (settled) return;
+            settled = true;
+            clearTimeout(safetyTimer);
+            audio.onplay = null;
+            audio.onended = null;
+            audio.onerror = null;
+            TBBAudioDirector.activeHtmlAudios.delete(audio);
+            try { URL.revokeObjectURL(blobUrl); } catch (e) {}
+            if (TBBAudioDirector.activeHtmlAudios.size === 0 && TBBAudioDirector.activeBufferSources.size === 0) {
+              window.isSpeakingLive = false;
+            }
+            if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+              try { window.tbbSyncSpeakingIndicatorUI(false); } catch (e) {}
+            }
+            resolve(ok);
+          };
+          const safetyTimer = setTimeout(() => {
+            try { audio.pause(); } catch (e) {}
+            finish(true);
+          }, Math.min(11500, maxDurationMs + 1500));
+
+          audio.onplay = () => {
+            if (expectedGen !== TBBAudioDirector.genId || expectedTicket !== TBBAudioDirector.ticketId || window.voiceMuted) {
+              try { audio.pause(); } catch (e) {}
+              finish(false);
+              return;
+            }
+            window.isSpeakingLive = true;
+            if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+              try { window.tbbSyncSpeakingIndicatorUI(true); } catch (e) {}
+            }
+          };
+          audio.onended = () => finish(true);
+          audio.onerror = () => finish(false);
+
+          const p = audio.play();
+          if (p && typeof p.catch === "function") {
+            p.catch(() => finish(false));
+          }
+        });
+      } catch (e) {
+        window.isSpeakingLive = false;
+        return false;
+      }
+    };
+
+    // En iOS (Safari, Chrome iOS, TestFlight WKWebView) priorizar el <audio> pre-desbloqueado con preservesPitch=true
+    // porque suena siempre por altavoz incluso con el botón lateral de silencio activado
+    if (isIosWebKitDevice()) {
+      const iosPlayed = await playViaHtmlAudio();
+      if (iosPlayed) return true;
+    }
+
     try {
       const ctx = ensureBrowserAudioUnlockedSync() || window.sharedAcousticCtx;
       if (ctx) {
-        if (ctx.state === "suspended") {
+        if (ctx.state === "suspended" || ctx.state === "interrupted") {
           await ctx.resume();
         }
         // Revalidar después de resume() asíncrono
@@ -1042,7 +1204,7 @@
         return await new Promise(resolve => {
           const source = ctx.createBufferSource();
           source.buffer = audioBuffer;
-          source.playbackRate.value = rate;
+          source.playbackRate.value = 1.0;
           const analyser = TBBAudioDirector.getOrCreateAnalyser(ctx);
           if (analyser) {
             source.connect(analyser);
@@ -1056,7 +1218,7 @@
             try { window.tbbSyncSpeakingIndicatorUI(true); } catch (e) {}
           }
 
-          const effectiveMs = Math.min(9800, maxDurationMs, Math.ceil((audioBuffer.duration / rate) * 1000) + 250);
+          const effectiveMs = Math.min(11500, maxDurationMs + 1500, Math.ceil(audioBuffer.duration * 1000) + 350);
           const safetyTimer = setTimeout(() => {
             try { source.stop(); } catch (e) {}
             TBBAudioDirector.activeBufferSources.delete(source);
@@ -1084,72 +1246,8 @@
       }
     } catch (e) {}
 
-    // Respaldo HTML5 Audio con validación estricta de ticket y velocidad 1.14x
-    if (expectedGen !== TBBAudioDirector.genId || expectedTicket !== TBBAudioDirector.ticketId || window.voiceMuted) {
-      return false;
-    }
-    try {
-      const isMp3 = wavBytes[0] === 0xFF || (wavBytes[0] === 0x49 && wavBytes[1] === 0x44 && wavBytes[2] === 0x33);
-      const blob = new Blob([wavBytes], { type: isMp3 ? "audio/mpeg" : "audio/wav" });
-      const blobUrl = URL.createObjectURL(blob);
-      const audio = new Audio(blobUrl);
-      audio.defaultPlaybackRate = rate;
-      audio.playbackRate = rate;
-      window._tbbActiveHtmlAudio = audio;
-      TBBAudioDirector.activeHtmlAudios.add(audio);
-
-      return await new Promise(resolve => {
-        const cleanup = () => {
-          TBBAudioDirector.activeHtmlAudios.delete(audio);
-          try { URL.revokeObjectURL(blobUrl); } catch (e) {}
-          if (TBBAudioDirector.activeHtmlAudios.size === 0 && TBBAudioDirector.activeBufferSources.size === 0) {
-            window.isSpeakingLive = false;
-          }
-          if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
-            try { window.tbbSyncSpeakingIndicatorUI(false); } catch (e) {}
-          }
-        };
-        const safetyTimer = setTimeout(() => {
-          try { audio.pause(); } catch (e) {}
-          cleanup();
-          resolve(true);
-        }, Math.min(9800, maxDurationMs));
-
-        audio.onplay = () => {
-          if (expectedGen !== TBBAudioDirector.genId || expectedTicket !== TBBAudioDirector.ticketId || window.voiceMuted) {
-            try { audio.pause(); } catch (e) {}
-            cleanup();
-            resolve(false);
-            return;
-          }
-          window.isSpeakingLive = true;
-          if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
-            try { window.tbbSyncSpeakingIndicatorUI(true); } catch (e) {}
-          }
-        };
-        audio.onended = () => {
-          clearTimeout(safetyTimer);
-          cleanup();
-          resolve(true);
-        };
-        audio.onerror = () => {
-          clearTimeout(safetyTimer);
-          cleanup();
-          resolve(false);
-        };
-        const p = audio.play();
-        if (p && typeof p.catch === "function") {
-          p.catch(() => {
-            clearTimeout(safetyTimer);
-            cleanup();
-            resolve(false);
-          });
-        }
-      });
-    } catch (e) {
-      window.isSpeakingLive = false;
-      return false;
-    }
+    // Respaldo HTML5 Audio con validación estricta de ticket y velocidad natural 1.0x
+    return await playViaHtmlAudio();
   }
 
   /**
@@ -1228,7 +1326,7 @@
     const lang = SUPPORTED_LANGS[langOverride] ? langOverride : window.tbbGetLang();
     const key = typeof clipKeyOrStep === "number" ? `step_${Math.max(0, Math.min(6, clipKeyOrStep))}` : String(clipKeyOrStep || "step_0");
     const dict = AURA_VIVA_CAPSULE_TEXTS[key] || AURA_VIVA_CAPSULE_TEXTS.step_0;
-    const relPath = `/assets/audio/capsules/aura_viva_${key}_${lang}.mp3?v=132.0`;
+    const relPath = `/assets/audio/capsules/aura_viva_${key}_${lang}.mp3?v=133.0`;
     const curHost = String((window.location && window.location.hostname) || "").toLowerCase();
     const needsCdn = (curHost === "thebestbrand.app" || curHost === "www.thebestbrand.app");
     const primaryUrl = needsCdn
@@ -1387,10 +1485,99 @@
 
       if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) return;
 
-      // 1. Ruta Primaria: WebAudio AudioBufferSourceNode desbloqueado (100% inmune a bloqueo de <audio> en iOS WKWebView / TestFlight)
+      const playCapsuleViaHtmlAudio = () => {
+        let blobAudioUrl = "";
+        try {
+          if (fetchedArrayBuffer) {
+            blobAudioUrl = URL.createObjectURL(new Blob([fetchedArrayBuffer], { type: "audio/mpeg" }));
+          }
+          const aud = getOrCreatePrimedHtmlAudio() || new Audio();
+          aud.muted = false;
+          if (!blobAudioUrl) aud.crossOrigin = "anonymous";
+          else aud.removeAttribute("crossorigin");
+          aud.preload = "auto";
+          aud.playsInline = true;
+          applyPitchPreservation(aud, 1.0);
+          aud.src = blobAudioUrl || workingAudioUrl;
+          fallbackAud = aud;
+          TBBAudioDirector.activeHtmlAudios.add(aud);
+
+          const revokeBlob = () => {
+            if (blobAudioUrl) {
+              try { URL.revokeObjectURL(blobAudioUrl); } catch (e) {}
+              blobAudioUrl = "";
+            }
+          };
+
+          aud.onplay = () => {
+            if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) {
+              try { aud.pause(); } catch (e) {}
+              revokeBlob();
+              return;
+            }
+            handle.paused = false;
+            handle.autoplayBlocked = false;
+            window.isSpeakingLive = true;
+            if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+              try { window.tbbSyncSpeakingIndicatorUI(true); } catch (e) {}
+            }
+            if (typeof hooks.onStateChange === "function") hooks.onStateChange(handle);
+          };
+          aud.onpause = () => {
+            handle.paused = true;
+            window.isSpeakingLive = false;
+            if (typeof hooks.onStateChange === "function") hooks.onStateChange(handle);
+          };
+          aud.ontimeupdate = () => {
+            handle.currentTime = aud.currentTime || 0;
+            handle.duration = Math.min(15.0, aud.duration || 14.5);
+            if (aud.currentTime >= 15.0) {
+              try { aud.pause(); } catch (e) {}
+              revokeBlob();
+              fireFinished();
+              return;
+            }
+            if (typeof hooks.onTimeUpdate === "function") hooks.onTimeUpdate(handle);
+          };
+          aud.onended = () => { revokeBlob(); fireFinished(); };
+          aud.onerror = async () => {
+            revokeBlob();
+            try {
+              const synth = await window.tbbSynthesizeGeminiTTSWav(meta.text, { lang: meta.lang, genId: myGen, ticketId: myTicket, maxDurationSec: 12 });
+              if (synth && synth.wavBytes && myGen === TBBAudioDirector.genId && myTicket === TBBAudioDirector.ticketId) {
+                const ok = await playWavBytesInBrowser(synth.wavBytes, 13000, { genId: myGen, ticketId: myTicket, playbackRate: 1.0 });
+                if (ok) { fireFinished(); return; }
+              }
+            } catch (e) {}
+            fireFinished();
+          };
+
+          const p = aud.play();
+          if (p && typeof p.catch === "function") {
+            p.catch(err => {
+              revokeBlob();
+              if (err && (err.name === "NotAllowedError" || /interact|gesture|not allowed/i.test(String(err.message || "")))) {
+                fireAutoplayBlocked();
+              } else {
+                fireFinished();
+              }
+            });
+          }
+          return true;
+        } catch (fallbackErr) {
+          return false;
+        }
+      };
+
+      // En iOS WebKit (Safari, Chrome iOS, TestFlight): priorizar reproducción HTML5 pre-desbloqueada para sonar siempre por altavoz
+      if (isIosWebKitDevice()) {
+        if (playCapsuleViaHtmlAudio()) return;
+      }
+
+      // 1. Ruta Primaria Desktop/Android: WebAudio AudioBufferSourceNode desbloqueado con FFT Analyser en vivo (1.00x sin distorsión)
       if (ctx && typeof ctx.decodeAudioData === "function") {
         try {
-          if (ctx.state === "suspended") {
+          if (ctx.state === "suspended" || ctx.state === "interrupted") {
             await ctx.resume().catch(() => {});
           }
           if (!decoded && fetchedArrayBuffer) {
@@ -1456,84 +1643,8 @@
 
       if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) return;
 
-      // 2. Respaldo HTML5 Audio independiente (usando Blob local si ya descargó el MP3 para evitar doble red y problemas CORS)
-      let blobAudioUrl = "";
-      try {
-        if (fetchedArrayBuffer) {
-          blobAudioUrl = URL.createObjectURL(new Blob([fetchedArrayBuffer], { type: "audio/mpeg" }));
-        }
-        const aud = new Audio(blobAudioUrl || workingAudioUrl);
-        if (!blobAudioUrl) aud.crossOrigin = "anonymous";
-        aud.preload = "auto";
-        aud.playsInline = true;
-        aud.defaultPlaybackRate = 1.0;
-        aud.playbackRate = 1.0;
-        fallbackAud = aud;
-        TBBAudioDirector.activeHtmlAudios.add(aud);
-
-        const revokeBlob = () => {
-          if (blobAudioUrl) {
-            try { URL.revokeObjectURL(blobAudioUrl); } catch (e) {}
-            blobAudioUrl = "";
-          }
-        };
-
-        aud.onplay = () => {
-          if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) {
-            try { aud.pause(); } catch (e) {}
-            revokeBlob();
-            return;
-          }
-          handle.paused = false;
-          handle.autoplayBlocked = false;
-          window.isSpeakingLive = true;
-          if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
-            try { window.tbbSyncSpeakingIndicatorUI(true); } catch (e) {}
-          }
-          if (typeof hooks.onStateChange === "function") hooks.onStateChange(handle);
-        };
-        aud.onpause = () => {
-          handle.paused = true;
-          window.isSpeakingLive = false;
-          if (typeof hooks.onStateChange === "function") hooks.onStateChange(handle);
-        };
-        aud.ontimeupdate = () => {
-          handle.currentTime = aud.currentTime || 0;
-          handle.duration = Math.min(15.0, aud.duration || 14.5);
-          if (aud.currentTime >= 15.0) {
-            try { aud.pause(); } catch (e) {}
-            revokeBlob();
-            fireFinished();
-            return;
-          }
-          if (typeof hooks.onTimeUpdate === "function") hooks.onTimeUpdate(handle);
-        };
-        aud.onended = () => { revokeBlob(); fireFinished(); };
-        aud.onerror = async () => {
-          revokeBlob();
-          // Último respaldo: sintetizar cápsula en vivo con Aoede si todos los CDN fallaron
-          try {
-            const synth = await window.tbbSynthesizeGeminiTTSWav(meta.text, { lang: meta.lang, genId: myGen, ticketId: myTicket, maxDurationSec: 12 });
-            if (synth && synth.wavBytes && myGen === TBBAudioDirector.genId && myTicket === TBBAudioDirector.ticketId) {
-              const ok = await playWavBytesInBrowser(synth.wavBytes, 13000, { genId: myGen, ticketId: myTicket, playbackRate: 1.06 });
-              if (ok) { fireFinished(); return; }
-            }
-          } catch (e) {}
-          fireFinished();
-        };
-
-        const p = aud.play();
-        if (p && typeof p.catch === "function") {
-          p.catch(err => {
-            revokeBlob();
-            if (err && (err.name === "NotAllowedError" || /interact|gesture|not allowed/i.test(String(err.message || "")))) {
-              fireAutoplayBlocked();
-            } else {
-              fireFinished();
-            }
-          });
-        }
-      } catch (fallbackErr) {
+      // 2. Respaldo HTML5 Audio independiente
+      if (!playCapsuleViaHtmlAudio()) {
         fireFinished();
       }
     })();
@@ -1590,7 +1701,7 @@
         const ut = new SpeechSynthesisUtterance(cleanText);
         const cfg = window.tbbGetLangConfig();
         ut.lang = (cfg && cfg.locale) || "es-MX";
-        ut.rate = 1.06;
+        ut.rate = 1.0;
         ut.onstart = () => {
           window.isSpeakingLive = true;
           if (typeof window.tbbSyncSpeakingIndicatorUI === "function") window.tbbSyncSpeakingIndicatorUI(true);

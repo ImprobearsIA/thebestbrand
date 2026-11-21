@@ -26408,8 +26408,36 @@
             `{"tagline":"Eslogan conciso y memorable (4 a 8 palabras)","golden_circle":"Propósito esencial del negocio: por qué existe y qué impacto real genera en sus clientes","value_offer":"Oferta de valor diferenciada: qué entrega exactamente y por qué los clientes la prefieren","process_steps_text":"Método en 3 etapas claras separadas por · (1. ... · 2. ... · 3. ...)","brand_persona":"Personalidad y tono de comunicación de la marca como persona","ideal_customer":"Perfil concreto del cliente ideal y qué necesidad resuelve para él","core_message":"Promesa central de la marca en una frase contundente"}`
           ].join("\n");
 
+          // Lanzar en paralelo la síntesis editorial de texto + la generación fotográfica real de los 6 Touchpoints/Capítulos del giro
+          let touchpointsVisualsReadyResolve = null;
+          const touchpointsFirstBatchPromise = new Promise((resolve) => { touchpointsVisualsReadyResolve = resolve; });
+          const flowVisualsPromise = (typeof window.tbbGenerateChapterVisualsWithFlow === "function")
+            ? window.tbbGenerateChapterVisualsWithFlow(undefined, (doneCount, totalCount, latestLabel) => {
+                const visualPct = Math.min(92, 46 + Math.round((doneCount / Math.max(1, totalCount)) * 46));
+                updateCompileProgress(
+                  visualPct,
+                  `3/4 Generando fotografías a medida de los Touchpoints de «${bName}» (${doneCount}/${totalCount})...`
+                );
+                if (doneCount >= 3 && touchpointsVisualsReadyResolve) {
+                  touchpointsVisualsReadyResolve(true);
+                  touchpointsVisualsReadyResolve = null;
+                }
+              }, { forceRegenerate: Boolean(forceRebuild) }).then((res) => {
+                if (touchpointsVisualsReadyResolve) {
+                  touchpointsVisualsReadyResolve(true);
+                  touchpointsVisualsReadyResolve = null;
+                }
+                return res;
+              }).catch(() => {
+                if (touchpointsVisualsReadyResolve) {
+                  touchpointsVisualsReadyResolve(false);
+                  touchpointsVisualsReadyResolve = null;
+                }
+              })
+            : Promise.resolve(null);
+
           const rawJson = await window.tbbCallGeminiAI(synthPrompt, { temperature: 0.45, json: true });
-          updateCompileProgress(54, `2/4 Integrando el logotipo oficial elegido en el Paso 5 y retícula constructiva de «${bName}»...`);
+          updateCompileProgress(48, `2/4 Integrando logotipo oficial, paleta y generando escenas reales de los Touchpoints de «${bName}»...`);
 
           const cleanStr = String(rawJson || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
           const b0 = cleanStr.indexOf("{");
@@ -26425,13 +26453,14 @@
             if (parsed.core_message) cs.core_message = String(parsed.core_message).trim();
           }
 
-          updateCompileProgress(78, `3/4 Calculando códigos Pantone, CMYK, HEX, tipografías y aplicaciones del giro...`);
-          if (typeof window.tbbGenerateChapterVisualsWithFlow === "function") {
-            window.tbbGenerateChapterVisualsWithFlow(undefined).catch(() => {});
-          }
-          await new Promise(r => setTimeout(r, 380));
-          updateCompileProgress(96, `4/4 Maquetando las páginas editoriales de «${bName}»...`);
-          await new Promise(r => setTimeout(r, 240));
+          // Esperar el primer lote paralelo de los 3 Touchpoints (Antes / Durante / Después) con tope de seguridad de 24s; el segundo lote continúa en vivo y refresca automáticamente
+          await Promise.race([
+            touchpointsFirstBatchPromise,
+            flowVisualsPromise,
+            new Promise(r => setTimeout(r, 24000))
+          ]);
+          updateCompileProgress(96, `4/4 Maquetando las páginas editoriales de «${bName}» con tus imágenes reales...`);
+          await new Promise(r => setTimeout(r, 220));
 
           cs._compiledBrandbookSig = window.tbbComputeBrandbookSignature();
           if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
@@ -27954,14 +27983,14 @@
   </style>
   <script src="https://thebestbrand-studio.web.app/assets/vendor/opentype.min.js?v=1.3.4" crossorigin="anonymous"></script>
   <script src="https://thebestbrand-studio.web.app/assets/vendor/html2canvas.min.js?v=1.4.1" crossorigin="anonymous"></script>
-  <script src="/tbb-executive-deliverables-suite.js?v=132.0"></script>
-  <script src="/tbb-cloud-vector-outliner.js?v=132.0"></script>
-  <script src="/tbb-v80-brandbook-plates.js?v=132.0"></script>
-  <script src="/universal-brandbook-30-engine.js?v=132.0"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=132.0"></script>
-  <script src="/improbears-preset-engine.js?v=132.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=132.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=132.0"></script>
+  <script src="/tbb-executive-deliverables-suite.js?v=133.0"></script>
+  <script src="/tbb-cloud-vector-outliner.js?v=133.0"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=133.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=133.0"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=133.0"></script>
+  <script src="/improbears-preset-engine.js?v=133.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=133.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=133.0"></script>
 
   <style id="tbbDuolingoOrganicErgonomicsV129">
     html.a11y-large-mode { font-size: 18.5px !important; }

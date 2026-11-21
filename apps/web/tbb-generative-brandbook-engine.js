@@ -742,11 +742,27 @@
       26
     );
 
-    const pri = (brand.colors && brand.colors.pri) || "#0D2540";
-    const sec = (brand.colors && brand.colors.sec) || "#426EAE";
-    const acc = (brand.colors && brand.colors.acc) || "#FF7A00";
-    const darkInk = (brand.colors && brand.colors.darkInk) || "#090D16";
-    const midGray = (brand.colors && brand.colors.midGray) || "#707070";
+    const hexRelLuminance = (hexStr) => {
+      const clean = String(hexStr || "").replace("#", "").trim();
+      if (!/^[0-9a-f]{3}([0-9a-f]{3})?$/i.test(clean)) return 0.5;
+      const full = clean.length === 3 ? clean.split("").map(c => c + c).join("") : clean;
+      const [r, g, b] = [0, 2, 4].map(o => {
+        const s = parseInt(full.slice(o, o + 2), 16) / 255;
+        return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const ensureDarkOnWhite = (hexStr, fallbackHex) => (hexRelLuminance(hexStr) <= 0.22 ? hexStr : fallbackHex);
+    const ensureReadableAccentOnWhite = (hexStr, fallbackHex) => (hexRelLuminance(hexStr) <= 0.44 ? hexStr : fallbackHex);
+
+    const priRaw = (brand.colors && brand.colors.pri) || "#0D2540";
+    const secRaw = (brand.colors && brand.colors.sec) || "#426EAE";
+    const accRaw = (brand.colors && brand.colors.acc) || "#FF7A00";
+    const pri = ensureReadableAccentOnWhite(priRaw, "#0D2540");
+    const sec = ensureReadableAccentOnWhite(secRaw, "#426EAE");
+    const acc = ensureReadableAccentOnWhite(accRaw, "#C2410C");
+    const darkInk = ensureDarkOnWhite((brand.colors && brand.colors.darkInk) || "#0D2540", "#0D2540");
+    const midGray = (brand.colors && brand.colors.midGray) || "#475569";
     const lightGray = (brand.colors && brand.colors.lightGray) || "#E6E6E6";
     const softBg = (brand.colors && brand.colors.softBg) || "#FAF8F5";
     const priFont = brand.primaryFont || "Montserrat";
@@ -768,7 +784,8 @@
     // Resolver fotografías editoriales y mockups realistas 4:3 de capítulos con AISLAMIENTO ESTRICTO POR MARCA (Cero cruce entre marcas)
     const isArcoBrand = /^arco(_ingenier[ií]a)?$/i.test(slug);
     const isImproBearsBrand = /improbears/i.test(slug) || /improbears/i.test(bName);
-    const editorialPhotoPrefix = isArcoBrand ? "arco" : (isImproBearsBrand ? "improbears" : "tbb");
+    const isOfficialTbbAdmin = Boolean(csRef.isOfficialAdminTbbPreset) && /^the_?best_?brand$/i.test(slug);
+    const editorialPhotoPrefix = isArcoBrand ? "arco" : (isImproBearsBrand ? "improbears" : (isOfficialTbbAdmin ? "tbb" : ""));
     const flowCacheKeyV88 = `photo_v88|${slug}|${(brand.giro || "").slice(0, 32)}`;
     const flowCacheKeyV86 = `photo_v86|${slug}|${(brand.giro || "").slice(0, 32)}`;
     const flowCacheKeyV85 = `photo_v85|${slug}|${(brand.giro || "").slice(0, 32)}`;
@@ -778,16 +795,16 @@
       window._tbbFlowVisualsCache[flowCacheKeyV85]
     )) || {};
     const giroMockupPlan = (typeof window !== "undefined" && typeof window.tbbDetectGiroMockupPlan === "function")
-      ? window.tbbDetectGiroMockupPlan(brand.giro, bName, brand.category)
+      ? window.tbbDetectGiroMockupPlan(brand.giro, bName, brand.category, { tpBefore, tpDuring, tpAfter, buyer, persona })
       : null;
-    // Filtrar cualquier URL residual que apunte a otra marca
+    // Filtrar cualquier URL residual que apunte a otra marca (nunca mostrar tbb_0* en marcas de clientes)
     const flowVisuals = {};
     Object.keys(rawFlowVisuals).forEach((k) => {
       if (k.startsWith("_")) return;
       const val = String(rawFlowVisuals[k] || "");
       if (!isArcoBrand && /arco_/i.test(val)) return;
       if (!isImproBearsBrand && /improbears_0/i.test(val)) return;
-      if ((isArcoBrand || isImproBearsBrand) && /tbb_0/i.test(val)) return;
+      if (!isOfficialTbbAdmin && /tbb_0/i.test(val)) return;
       flowVisuals[k] = val;
     });
 
@@ -800,34 +817,56 @@
       step6_map: "environment"
     };
 
+    const resolvePlateAssetUrl = (u) => {
+      if (!u) return "";
+      if (typeof window !== "undefined" && typeof window.tbbResolveAssetUrl === "function") {
+        return window.tbbResolveAssetUrl(u);
+      }
+      return u;
+    };
+
     function renderChapterVisualFrame(slotKey, fallbackTitle, fallbackSub) {
       const canonicalSlot = slotFallbackAlias[slotKey] || slotKey;
-      const defaultEditorialPhotoMap = {
-        persona: `/assets/editorial_photos/${editorialPhotoPrefix}_01_persona.jpg`,
-        step0_splash: `/assets/editorial_photos/${editorialPhotoPrefix}_01_persona.jpg`,
-        buyer: `/assets/editorial_photos/${editorialPhotoPrefix}_02_buyer.jpg`,
-        step1_golden: `/assets/editorial_photos/${editorialPhotoPrefix}_02_buyer.jpg`,
-        tpBefore: `/assets/editorial_photos/${editorialPhotoPrefix}_03_tp_before.jpg`,
-        step3_touchpoints: `/assets/editorial_photos/${editorialPhotoPrefix}_03_tp_before.jpg`,
-        tpDuring: `/assets/editorial_photos/${editorialPhotoPrefix}_04_tp_during.jpg`,
-        step4_kansei: `/assets/editorial_photos/${editorialPhotoPrefix}_04_tp_during.jpg`,
-        tpAfter: `/assets/editorial_photos/${editorialPhotoPrefix}_05_tp_after.jpg`,
-        step5_atelier: `/assets/editorial_photos/${editorialPhotoPrefix}_05_tp_after.jpg`,
-        environment: `/assets/editorial_photos/${editorialPhotoPrefix}_06_environment.jpg`,
-        step6_map: `/assets/editorial_photos/${editorialPhotoPrefix}_06_environment.jpg`
-      };
+      const defaultEditorialPhotoMap = editorialPhotoPrefix ? {
+        persona: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_01_persona.jpg`),
+        step0_splash: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_01_persona.jpg`),
+        buyer: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_02_buyer.jpg`),
+        step1_golden: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_02_buyer.jpg`),
+        tpBefore: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_03_tp_before.jpg`),
+        step3_touchpoints: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_03_tp_before.jpg`),
+        tpDuring: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_04_tp_during.jpg`),
+        step4_kansei: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_04_tp_during.jpg`),
+        tpAfter: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_05_tp_after.jpg`),
+        step5_atelier: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_05_tp_after.jpg`),
+        environment: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_06_environment.jpg`),
+        step6_map: resolvePlateAssetUrl(`/assets/editorial_photos/${editorialPhotoPrefix}_06_environment.jpg`)
+      } : {};
       const resolvedSrc = (flowVisuals && (flowVisuals[slotKey] || flowVisuals[canonicalSlot]))
         || defaultEditorialPhotoMap[slotKey]
-        || `/assets/editorial_photos/${editorialPhotoPrefix}_06_environment.jpg`;
+        || "";
       const customMeta = (rawFlowVisuals && rawFlowVisuals._metaBySlot && (rawFlowVisuals._metaBySlot[slotKey] || rawFlowVisuals._metaBySlot[canonicalSlot]))
         || (giroMockupPlan && giroMockupPlan.slots && giroMockupPlan.slots[canonicalSlot])
         || null;
       const displayTitle = (customMeta && customMeta.title) || fallbackTitle;
-      const displayBadge = (customMeta && customMeta.badge) || "MOCKUP FLOW · 4:3";
+      const displayBadge = (customMeta && customMeta.badge) || "ESCENA A MEDIDA · 4:3";
+      const isGeneratingNow = Boolean(typeof window !== "undefined" && window._tbbFlowVisualsInFlight && window._tbbFlowVisualsInFlight[flowCacheKeyV88]);
+
+      const mediaInner = resolvedSrc
+        ? `<img src="${resolvedSrc}" alt="${esc(displayTitle)}" />`
+        : `
+          <div style="position:absolute; inset:0; background:linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 58%, ${pri}14 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center; gap:12px;">
+            <div style="width:94px; height:94px; border-radius:24px; background:#FFFFFF; border:1.5px solid ${lightGray}; box-shadow:0 12px 30px rgba(13,37,64,0.10); display:flex; align-items:center; justify-content:center; padding:10px;">
+              <svg viewBox="0 0 200 200" width="74" height="74" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg>
+            </div>
+            <div style="font-family:'${priFont}','Montserrat',sans-serif; font-size:15px; font-weight:800; color:${darkInk}; max-width:300px; line-height:1.3;">${esc(displayTitle)}</div>
+            <div style="font-size:12px; font-weight:600; color:${sec}; max-width:290px; line-height:1.4;">${isGeneratingNow ? `Generando fotografía personalizada del giro de ${esc(bName)} con IA...` : esc(fallbackSub || shortCategory)}</div>
+          </div>
+        `;
+
       return `
         <div class="tbb-visual-frame" style="border-bottom-color:${acc};">
-          <img src="${resolvedSrc}" alt="${esc(displayTitle)}" />
-          <div style="position:absolute; top:12px; right:14px; z-index:4; background:rgba(255,255,255,0.95); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border:1.5px solid ${lightGray}; border-left:3.5px solid ${pri}; border-radius:999px; padding:4px 11px 4px 6px; display:flex; align-items:center; gap:7px;">
+          ${mediaInner}
+          <div style="position:absolute; top:12px; right:14px; z-index:4; background:rgba(255,255,255,0.96); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border:1.5px solid ${lightGray}; border-left:3.5px solid ${pri}; border-radius:999px; padding:4px 11px 4px 6px; display:flex; align-items:center; gap:7px;">
             <svg viewBox="0 0 200 200" width="22" height="22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="flex-shrink:0; display:block;">${symCore}</svg>
             <span style="font-family:'${priFont}','Montserrat',sans-serif; font-size:9.5px; font-weight:900; color:${darkInk}; letter-spacing:0.3px; white-space:nowrap;">${esc(bUpper)}</span>
           </div>

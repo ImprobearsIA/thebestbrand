@@ -221,6 +221,9 @@
     "Etapa 05 · Diseño de Identidad": "Stage 05 · Identity Design",
     "Etapa 06 · Estrategia y Sistemas": "Stage 06 · Strategy & Systems",
     "Repetir voz de Aura": "Replay Aura's voice",
+    "Escuchando": "Listening",
+    "Escuchar a Aura": "Listen to Aura",
+    "Toca para activar voz": "Tap to enable audio",
     "Ir a la Demo en Vivo": "Go to Live Demo",
     "Abrir archivo": "Open file",
     "Descargar": "Download",
@@ -1459,7 +1462,7 @@
               <span class="tbb-value-pill" role="listitem">${TBB_ICONS.check} <span>${escHtml(t("heroPill1"))}</span></span>
               <span class="tbb-value-pill" role="listitem">${TBB_ICONS.check} <span>${escHtml(t("heroPill2"))}</span></span>
               <span class="tbb-value-pill" role="listitem">${TBB_ICONS.check} <span>${escHtml(t("heroPill3"))}</span></span>
-              <span class="tbb-value-pill is-highlight" role="listitem">${TBB_ICONS.spark} <span>${escHtml(t("heroPill4"))}</span></span>
+              <button type="button" class="tbb-value-pill is-highlight is-interactive-cta" role="listitem" onclick="window.tbbOpenImmersiveStudioClone(0)" title="${escHtml(t("heroStartFullscreenBtn"))}">${TBB_ICONS.spark} <span>${escHtml(t("heroPill4"))}</span> ${TBB_ICONS.arrowRight}</button>
             </div>
           </div>
 
@@ -1509,10 +1512,10 @@
 
                 <button
                   type="button"
-                  class="tbb-toolbar-expand-btn"
+                  class="tbb-toolbar-expand-btn is-real-trial-cta"
                   title="${escHtml(t("heroStartFullscreenBtn"))}"
                   onclick="window.tbbOpenImmersiveStudioClone(${curDemoStep})"
-                >${TBB_ICONS.expand} <span>${escHtml({ es: "Pantalla Completa", en: "Fullscreen", fr: "Plein Écran", pt: "Ecrã Inteiro", de: "Vollbild", it: "Schermo Intero" }[getLang()] || t("heroStartFullscreenBtn"))}</span></button>
+                >${TBB_ICONS.expand} <span>${escHtml({ es: "Probar Gratis en Pantalla Completa", en: "Start Free Fullscreen Trial", fr: "Essai Gratuit Plein Écran", pt: "Testar Grátis em Ecrã Inteiro", de: "Kostenlos im Vollbild testen", it: "Prova Gratis a Schermo Intero" }[getLang()] || t("heroStartFullscreenBtn"))}</span> ${TBB_ICONS.arrowRight}</button>
               </div>
             </div>
 
@@ -2297,48 +2300,162 @@
   // ============================================================================
   let _auraModalRafId = 0;
 
+  let _webCapsuleAngle = 0;
+  let _webCapsuleHandle = null;
+  let _webCapsuleMetaStep = 0;
+  let _webCapsuleMetaLang = "es";
+
+  function updateWebCapsuleAudioUI(state) {
+    const playBtn = document.getElementById("tbbWebCapsulePlayPauseBtn");
+    const playTxt = document.getElementById("tbbWebCapsulePlayPauseText");
+    const playIcon = document.getElementById("tbbWebCapsulePlayPauseIcon");
+    const tagEl = document.getElementById("tbbWebCapsuleLiveStatusTag");
+    const barEl = document.getElementById("tbbWebCapsuleProgressBar");
+    const timeEl = document.getElementById("tbbWebCapsuleTimeLabel");
+    if (playTxt && playIcon && playBtn) {
+      if (state === "playing") {
+        playBtn.classList.add("is-playing");
+        playTxt.textContent = trWeb("Escuchando");
+        playIcon.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`;
+      } else if (state === "blocked") {
+        playBtn.classList.remove("is-playing");
+        playTxt.textContent = trWeb("Toca para activar voz");
+        playIcon.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg>`;
+      } else {
+        playBtn.classList.remove("is-playing");
+        playTxt.textContent = trWeb("Escuchar a Aura");
+        playIcon.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg>`;
+      }
+    }
+    if (tagEl) {
+      tagEl.classList.toggle("is-speaking", state === "playing");
+    }
+    if (state === "idle" && barEl && timeEl) {
+      barEl.style.width = "0%";
+      timeEl.textContent = "0:00";
+    }
+  }
+
   function startWebCapsuleOrbAnimation() {
     if (_auraModalRafId) cancelAnimationFrame(_auraModalRafId);
     const canvas = document.getElementById("tbbWebCapsuleAuraCanvas");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    const start = performance.now();
+    let lastTs = performance.now();
 
     function draw(now) {
       if (!document.body.contains(canvas)) return;
+      const dt = Math.min(0.05, Math.max(0.004, (now - lastTs) * 0.001));
+      lastTs = now;
+
       const w = canvas.width;
       const h = canvas.height;
-      ctx.clearRect(0, 0, w, h);
-      const tSec = (now - start) * 0.001;
-      const amp = typeof window.tbbGetLiveAudioAmplitude === "function" ? window.tbbGetLiveAudioAmplitude() : 0;
-      const speaking = Boolean(window.isSpeakingLive) || amp > 0.02;
-      const baseR = 46 + (speaking ? amp * 22 + Math.sin(tSec * 8) * 3 : Math.sin(tSec * 2.4) * 2.5);
       const cx = w / 2;
       const cy = h / 2;
+      const maxR = Math.min(w, h) * 0.43;
+      const scaleRatio = maxR / 150;
 
-      const halo = ctx.createRadialGradient(cx, cy, 8, cx, cy, baseR + 36);
-      halo.addColorStop(0, speaking ? "rgba(255,122,0,0.62)" : "rgba(76,157,230,0.45)");
-      halo.addColorStop(0.6, "rgba(66,110,174,0.22)");
-      halo.addColorStop(1, "rgba(13,37,64,0)");
-      ctx.fillStyle = halo;
+      const liveAmp = typeof window.tbbGetLiveAudioAmplitude === "function" ? window.tbbGetLiveAudioAmplitude() : 0;
+      const speakingNow = Boolean(window.isSpeakingLive) || liveAmp > 0.02;
+      const speedMult = speakingNow ? (2.25 + liveAmp * 1.65) : 1.05;
+      _webCapsuleAngle += dt * 1.15 * speedMult;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // 0. Halo atmosférico vivo exterior (reacciona en tiempo real a la voz de Aura)
+      const outerHaloR = maxR * (speakingNow ? (1.16 + liveAmp * 0.14) : (1.08 + Math.sin(_webCapsuleAngle * 1.8) * 0.02));
+      const outerHalo = ctx.createRadialGradient(cx, cy, maxR * 0.72, cx, cy, outerHaloR);
+      outerHalo.addColorStop(0, speakingNow ? "rgba(255, 122, 0, 0.34)" : "rgba(76, 157, 230, 0.24)");
+      outerHalo.addColorStop(0.65, speakingNow ? "rgba(29, 78, 216, 0.14)" : "rgba(29, 78, 216, 0.08)");
+      outerHalo.addColorStop(1, "rgba(13, 37, 64, 0)");
+      ctx.fillStyle = outerHalo;
       ctx.beginPath();
-      ctx.arc(cx, cy, baseR + 36, 0, Math.PI * 2);
+      ctx.arc(cx, cy, outerHaloR, 0, Math.PI * 2);
       ctx.fill();
 
-      const sphere = ctx.createRadialGradient(cx - 12, cy - 14, 6, cx, cy, baseR);
-      sphere.addColorStop(0, "#FFFFFF");
-      sphere.addColorStop(0.32, speaking ? "#FFEDD5" : "#BAE6FD");
-      sphere.addColorStop(0.72, speaking ? "#FF7A00" : "#4C9DE6");
-      sphere.addColorStop(1, "#0D2540");
-      ctx.fillStyle = sphere;
+      ctx.save();
       ctx.beginPath();
-      ctx.arc(cx, cy, baseR, 0, Math.PI * 2);
+      ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
+      ctx.clip();
+
+      const r1 = 29, g1 = 78, b1 = 216;   // #1D4ED8 Azul Óptico
+      const r2 = 224, g2 = 71, b2 = 0;    // #E04700 Ámbar Profundo
+      const r3 = 234, g3 = 115, b3 = 0;   // #EA7300 Naranja Energía
+
+      // 1. Base de la Esfera Obsidiana Profunda 3D (Idéntica al Orbe Oficial de Aura)
+      const sphereBase = ctx.createRadialGradient(cx, cy * 0.82, maxR * 0.05, cx, cy, maxR);
+      sphereBase.addColorStop(0, `rgba(${r1}, ${g1}, ${b1}, 0.38)`);
+      sphereBase.addColorStop(0.55, "#0B101E");
+      sphereBase.addColorStop(1, "#04060B");
+      ctx.fillStyle = sphereBase;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.globalCompositeOperation = "screen";
+
+      // 2. 4 Lóbulos Volumétricos de Luz Líquida con pulsación acústica
+      const pulseAmpLight = speakingNow ? (1.24 + liveAmp * 0.58 + Math.sin(_webCapsuleAngle * 4.2) * 0.12) : 1.0;
+      const lobeColors = [
+        [r1, g1, b1, 0.76],
+        [r2, g2, b2, 0.80],
+        [r3, g3, b3, 0.66],
+        [r1, g1, b1, 0.70]
+      ];
+      for (let i = 0; i < 4; i++) {
+        const ang = _webCapsuleAngle * (i % 2 === 0 ? 1.1 : -0.9) + i * 1.57;
+        const lx = cx + Math.cos(ang) * maxR * 0.28 * pulseAmpLight;
+        const ly = cy + Math.sin(ang * 1.2) * maxR * 0.28 * pulseAmpLight;
+        const lr = maxR * 0.62 * (speakingNow ? (1.14 + liveAmp * 0.22) : 1.0);
+        const lg = ctx.createRadialGradient(lx, ly, lr * 0.05, lx, ly, lr);
+        const [rC, gC, bC, aC] = lobeColors[i];
+        lg.addColorStop(0, `rgba(${rC}, ${gC}, ${bC}, ${aC})`);
+        lg.addColorStop(1, `rgba(${rC}, ${gC}, ${bC}, 0)`);
+        ctx.fillStyle = lg;
+        ctx.beginPath();
+        ctx.arc(lx, ly, lr, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 3. Geometría Oficial de Aura · Torus Cuántico 3D de 12 Pétalos Paramétricos
+      const rings = 12;
+      const torusBreath = speakingNow ? (1 + liveAmp * 0.12) : (1 + Math.sin(_webCapsuleAngle * 2.0) * 0.025);
+      for (let i = 0; i < rings; i++) {
+        const u = (i / rings) * Math.PI * 2 + _webCapsuleAngle * 0.52;
+        ctx.beginPath();
+        for (let j = 0; j <= 24; j++) {
+          const v = (j / 24) * Math.PI * 2;
+          const R = maxR * 0.52 * torusBreath;
+          const rt = maxR * 0.22 * torusBreath;
+          const sx = cx + (R + rt * Math.cos(v)) * Math.cos(u);
+          const sy = cy + (R + rt * Math.cos(v)) * Math.sin(u) * 0.74 + rt * Math.sin(v) * 0.48;
+          if (j === 0) ctx.moveTo(sx, sy);
+          else ctx.lineTo(sx, sy);
+        }
+        ctx.strokeStyle = i % 2 === 0
+          ? `rgba(76, 157, 230, ${speakingNow ? 0.78 : 0.62})`
+          : `rgba(255, 138, 43, ${speakingNow ? 0.72 : 0.54})`;
+        ctx.lineWidth = Math.max(1.2, 1.9 * scaleRatio);
+        ctx.stroke();
+      }
+
+      // 4. Núcleo Incandescente Central reactivo
+      ctx.globalCompositeOperation = "source-over";
+      const coreLightR = (speakingNow ? (36 + liveAmp * 16) : 26) * scaleRatio;
+      const coreLightGrad = ctx.createRadialGradient(cx, cy, 1, cx, cy, coreLightR);
+      coreLightGrad.addColorStop(0, "rgba(255, 255, 255, 0.98)");
+      coreLightGrad.addColorStop(0.5, `rgba(${r2}, ${g2}, ${b2}, 0.66)`);
+      coreLightGrad.addColorStop(1, `rgba(${r1}, ${g1}, ${b1}, 0)`);
+      ctx.fillStyle = coreLightGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, coreLightR, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.strokeStyle = "rgba(255,255,255,0.48)";
-      ctx.lineWidth = 1.6;
+      ctx.restore();
+
+      // 5. Aro Óptico Exterior Oficial (#1D4ED8 / #4C9DE6)
       ctx.beginPath();
-      ctx.arc(cx, cy, baseR + 8 + Math.sin(tSec * 4) * 2, 0, Math.PI * 2);
+      ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
+      ctx.strokeStyle = speakingNow ? "#4C9DE6" : "#1D4ED8";
+      ctx.lineWidth = Math.max(2.6, 3.4 * scaleRatio);
       ctx.stroke();
 
       _auraModalRafId = requestAnimationFrame(draw);
@@ -2347,8 +2464,13 @@
   }
 
   window.tbbOpenVideoPopupModal = function (stepIdx, overrideLang) {
+    if (typeof window.ensureBrowserAudioUnlockedSync === "function") {
+      window.ensureBrowserAudioUnlockedSync();
+    }
     const s = Math.max(0, Math.min(6, Number(stepIdx) || 0));
     const l = overrideLang && ["es", "en", "fr", "pt", "de", "it"].includes(overrideLang) ? overrideLang : getLang();
+    _webCapsuleMetaStep = s;
+    _webCapsuleMetaLang = l;
     if (overrideLang && overrideLang !== getLang()) {
       if (typeof window.syncAllLangStorageKeys === "function") {
         window.syncAllLangStorageKeys(l);
@@ -2398,8 +2520,28 @@
 
         <div class="tbb-capsule-grid">
           <div class="tbb-capsule-orb-stage">
-            <span class="tbb-capsule-live-tag">AURA VIVA · ${l.toUpperCase()} · ≤15s</span>
-            <canvas id="tbbWebCapsuleAuraCanvas" width="190" height="190"></canvas>
+            <span id="tbbWebCapsuleLiveStatusTag" class="tbb-capsule-live-tag">
+              <span class="tbb-aura-live-pulse-dot" aria-hidden="true"></span>
+              <span>AURA VIVA · ${l.toUpperCase()} · ≤15s</span>
+            </span>
+            <canvas
+              id="tbbWebCapsuleAuraCanvas"
+              width="340"
+              height="340"
+              onclick="window.tbbToggleWebCapsulePlayPause()"
+              title="${escHtml(trWeb("Escuchar a Aura"))}"
+              style="width:168px;height:168px;border-radius:999px;cursor:pointer;display:block;"
+            ></canvas>
+            <div class="tbb-web-capsule-audio-bar">
+              <button type="button" id="tbbWebCapsulePlayPauseBtn" class="tbb-web-capsule-play-btn" onclick="window.tbbToggleWebCapsulePlayPause()">
+                <span id="tbbWebCapsulePlayPauseIcon" style="display:inline-flex;align-items:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg></span>
+                <span id="tbbWebCapsulePlayPauseText">${escHtml(trWeb("Escuchar a Aura"))}</span>
+              </button>
+              <div class="tbb-web-capsule-track">
+                <div id="tbbWebCapsuleProgressBar" class="tbb-web-capsule-progress"></div>
+              </div>
+              <span id="tbbWebCapsuleTimeLabel" class="tbb-web-capsule-time">0:00</span>
+            </div>
             <button type="button" class="tbb-capsule-replay-btn" onclick="window.tbbReplayActiveWebCapsule(${s}, '${l}')">
               ${TBB_ICONS.volume} <span>${escHtml(trWeb("Repetir voz de Aura"))}</span>
             </button>
@@ -2413,7 +2555,7 @@
                   <span>${escHtml(l === "en" ? `Next capsule (Step 0${s + 1})` : `${trWeb("Siguiente cápsula")} (${t("stepWord")} 0${s + 1})`)}</span> ${TBB_ICONS.arrowRight}
                 </button>
               ` : `
-                <button type="button" class="tbb-btn-primary" onclick="window.tbbCloseVideoPopupModal(); window.tbbSwitchMainSection(1);">
+                <button type="button" class="tbb-btn-primary" onclick="window.tbbCloseVideoPopupModal(); window.tbbOpenImmersiveStudioClone(0);">
                   <span>${escHtml(trWeb("Ir a la Demo en Vivo"))}</span> ${TBB_ICONS.arrowRight}
                 </button>
               `}
@@ -2428,14 +2570,54 @@
     window.tbbReplayActiveWebCapsule(s, l);
   };
 
+  window.tbbToggleWebCapsulePlayPause = function () {
+    if (typeof window.ensureBrowserAudioUnlockedSync === "function") {
+      window.ensureBrowserAudioUnlockedSync();
+    }
+    if (_webCapsuleHandle && !_webCapsuleHandle.paused && !_webCapsuleHandle.autoplayBlocked) {
+      _webCapsuleHandle.pause();
+      updateWebCapsuleAudioUI("idle");
+      return;
+    }
+    window.tbbReplayActiveWebCapsule(_webCapsuleMetaStep, _webCapsuleMetaLang);
+  };
+
   window.tbbReplayActiveWebCapsule = function (stepIdx, langCode) {
+    if (typeof window.ensureBrowserAudioUnlockedSync === "function") {
+      window.ensureBrowserAudioUnlockedSync();
+    }
     const s = Math.max(0, Math.min(6, Number(stepIdx) || 0));
     const l = langCode || getLang();
+    _webCapsuleMetaStep = s;
+    _webCapsuleMetaLang = l;
     if (typeof window.playAuraVivaCapsuleClip === "function") {
-      window.playAuraVivaCapsuleClip(s, l, {
+      _webCapsuleHandle = window.playAuraVivaCapsuleClip(s, l, {
+        forceUnmute: true,
         onText: (txt) => {
           const el = document.getElementById("tbbWebCapsuleSubtitleText");
           if (el && txt) el.textContent = `“${txt}”`;
+        },
+        onStateChange: (h) => {
+          if (h && !h.paused) updateWebCapsuleAudioUI("playing");
+          else if (h && h.autoplayBlocked) updateWebCapsuleAudioUI("blocked");
+          else updateWebCapsuleAudioUI("idle");
+        },
+        onAutoplayBlocked: () => {
+          updateWebCapsuleAudioUI("blocked");
+        },
+        onTimeUpdate: (h) => {
+          const barEl = document.getElementById("tbbWebCapsuleProgressBar");
+          const timeEl = document.getElementById("tbbWebCapsuleTimeLabel");
+          const cur = Number((h && h.currentTime) || 0);
+          const dur = Math.max(1, Number((h && h.duration) || 14.5));
+          if (barEl) barEl.style.width = `${Math.min(100, Math.round((cur / dur) * 100))}%`;
+          if (timeEl) {
+            const sec = Math.floor(cur);
+            timeEl.textContent = `0:${sec < 10 ? "0" : ""}${sec}`;
+          }
+        },
+        onDone: () => {
+          updateWebCapsuleAudioUI("idle");
         }
       });
     } else if (typeof window.speakAuraBriefResponse === "function") {
@@ -3582,10 +3764,21 @@
       }
       .tbb-value-pill.is-highlight {
         background: #ECFDF5;
-        border-color: rgba(16, 185, 129, 0.28);
+        border-color: rgba(16, 185, 129, 0.32);
         color: #065F46;
         font-weight: 600;
       }
+      .tbb-value-pill.is-interactive-cta {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        cursor: pointer;
+        background: linear-gradient(135deg, #0D2540 0%, #1B3B62 100%);
+        color: #FFFFFF;
+        border-color: rgba(255, 122, 0, 0.55);
+        box-shadow: 0 4px 14px rgba(13, 37, 64, 0.18), 0 0 0 3px rgba(255, 122, 0, 0.14);
+        transition: transform 0.16s var(--tbb-ds-ease-press), opacity 0.16s ease;
+      }
+      .tbb-value-pill.is-interactive-cta:hover { transform: translate3d(0, -1.5px, 0); }
+      .tbb-value-pill.is-interactive-cta:active { transform: translate3d(0, 1px, 0) scale(0.98); }
 
       /* BOTONES TÁCTILES CON FÍSICA GPU (SCALE + TRANSLATE3D) */
       .tbb-btn-primary, .tbb-btn-secondary {
@@ -3720,6 +3913,23 @@
       }
       .tbb-toolbar-ghost-btn:hover, .tbb-toolbar-expand-btn:hover { background: #F8FAFC; }
       .tbb-toolbar-ghost-btn:active, .tbb-toolbar-expand-btn:active { transform: scale(0.975); }
+      .tbb-toolbar-expand-btn.is-real-trial-cta {
+        background: linear-gradient(135deg, #FF7A00 0%, #EA580C 100%);
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        padding: 9px 18px;
+        font-size: 0.92rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        box-shadow: 0 6px 20px -4px rgba(255, 122, 0, 0.46), 0 0 0 3px rgba(255, 122, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      }
+      .tbb-toolbar-expand-btn.is-real-trial-cta:hover {
+        background: linear-gradient(135deg, #FF8A1A 0%, #F97316 100%);
+        transform: translate3d(0, -1.5px, 0);
+      }
+      .tbb-toolbar-expand-btn.is-real-trial-cta:active {
+        transform: translate3d(0, 1px, 0) scale(0.98);
+      }
       .tbb-view-toggle-group {
         display: inline-flex;
         background: rgba(13, 37, 64, 0.055);
@@ -4490,7 +4700,82 @@
         align-items: center;
         gap: 10px;
       }
-      .tbb-capsule-live-tag { color: #426EAE; background: #F4F8FC; border: 1px solid #DCE6F2; padding: 4px 11px; border-radius: 999px; font-size: 0.875rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+      .tbb-capsule-live-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #0D2540;
+        background: #F4F8FC;
+        border: 1px solid #DCE6F2;
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+      }
+      .tbb-capsule-live-tag.is-speaking {
+        background: #FFF7ED;
+        border-color: #FED7AA;
+        color: #C2410C;
+      }
+      .tbb-aura-live-pulse-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #FF7A00;
+        box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.22);
+      }
+      .tbb-web-capsule-audio-bar {
+        width: 100%;
+        max-width: 240px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #F8FAFC;
+        border: 1px solid rgba(13, 37, 64, 0.11);
+        border-radius: 999px;
+        padding: 5px 9px;
+        box-sizing: border-box;
+      }
+      .tbb-web-capsule-play-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        border: none;
+        border-radius: 999px;
+        background: #0D2540;
+        color: #FFFFFF;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 5px 10px;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .tbb-web-capsule-play-btn.is-playing { background: #FF7A00; }
+      .tbb-web-capsule-track {
+        flex: 1 1 36px;
+        min-width: 32px;
+        height: 5px;
+        border-radius: 999px;
+        background: #E2E8F0;
+        overflow: hidden;
+      }
+      .tbb-web-capsule-progress {
+        width: 0%;
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #426EAE 0%, #FF7A00 100%);
+        transition: width 0.18s linear;
+      }
+      .tbb-web-capsule-time {
+        font-size: 0.76rem;
+        font-weight: 600;
+        color: #475569;
+        font-variant-numeric: tabular-nums;
+        flex-shrink: 0;
+      }
       .tbb-capsule-replay-btn {
         display: inline-flex;
         align-items: center;
@@ -4659,6 +4944,9 @@
         .tbb-buy-lbl-short { display: inline; font-weight: 700; font-size: 0.875rem; }
         .tbb-header-buy-btn { padding: 0 12px; gap: 4px; }
         .tbb-studio-window-dots { display: none; }
+        .tbb-view-toggle-group { display: none !important; }
+        .tbb-live-demo-toolbar-actions { width: 100%; }
+        .tbb-toolbar-expand-btn.is-real-trial-cta { width: 100%; justify-content: center; min-height: 46px; font-size: 0.94rem; }
         .tbb-live-demo-frame-shell { height: 76vh; min-height: 520px; }
         .tbb-atelier-spread-stage { grid-template-columns: 1fr; }
         .tbb-case-iter-selector-grid { grid-template-columns: 1fr; }
