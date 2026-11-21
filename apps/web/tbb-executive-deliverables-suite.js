@@ -993,7 +993,7 @@
 
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Curvas Descargadas";
+        triggerBtn.textContent = "Curvas Descargadas";
         setTimeout(() => { if (origTxt) triggerBtn.innerHTML = origTxt; }, 2600);
       }
     } catch (err) {
@@ -1341,7 +1341,7 @@
 
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Hoja Membretada .DOCX Lista";
+        triggerBtn.textContent = "Hoja Membretada .DOCX Lista";
         setTimeout(() => { if (orig) triggerBtn.innerHTML = orig; }, 2800);
       }
       return docxBlob;
@@ -1692,7 +1692,7 @@
 
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Presentación .PPTX Lista";
+        triggerBtn.textContent = "Presentación .PPTX Lista";
         setTimeout(() => { if (orig) triggerBtn.innerHTML = orig; }, 2800);
       }
       return pptxBlob;
@@ -1775,7 +1775,7 @@
             <div style="font-family:'JetBrains Mono',monospace;font-size:0.70rem;font-weight:800;color:${acc};">ENTREGABLE EJECUTIVO · GMAIL / OUTLOOK / APPLE MAIL / ZOHO</div>
             <h3 style="font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:900;color:#090D16;margin:2px 0 0 0;">Firma Corporativa en HTML de «${xmlEsc(bName)}»</h3>
           </div>
-          <button type="button" id="tbbCloseSigModal" style="background:#F1F5F9;border:1.5px solid #CBD5E1;border-radius:10px;padding:6px 12px;font-weight:800;cursor:pointer;">✕ Cerrar</button>
+          <button type="button" id="tbbCloseSigModal" style="background:#F1F5F9;border:1.5px solid #CBD5E1;border-radius:10px;padding:6px 12px;font-weight:800;cursor:pointer;">Cerrar</button>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
@@ -1832,10 +1832,10 @@
         } else {
           await navigator.clipboard.writeText(latestHtml);
         }
-        this.textContent = "✓ ¡Firma Copiada! Pégala directo en Gmail / Outlook";
+        this.textContent = "¡Firma Copiada! Pégala directo en Gmail / Outlook";
       } catch (e) {
         await navigator.clipboard.writeText(latestHtml);
-        this.textContent = "✓ Código HTML Copiado al Portapapeles";
+        this.textContent = "Código HTML Copiado al Portapapeles";
       }
     };
     document.getElementById("tbbBtnDownloadSigHtml").onclick = async () => {
@@ -1854,7 +1854,7 @@
     const blob = new Blob([fullDoc], { type: "text/html;charset=utf-8" });
     if (triggerBtn) {
       const orig = triggerBtn.innerHTML;
-      triggerBtn.textContent = "✓ Firma .HTML Lista";
+      triggerBtn.textContent = "Firma .HTML Lista";
       setTimeout(() => { triggerBtn.innerHTML = orig; }, 2500);
     }
     return window.tbbDeliverFileNativeOrDownload(blob, `Firma_Correo_Corporativa_${slug}.html`, "text/html", `Firma Corporativa HTML — ${bName}`);
@@ -1991,24 +1991,37 @@
   // ==========================================================================
   // 6. ESTUDIO DE MOCKUPS REALES (NANO BANANA 2.1 / PRO POR GIRO DEL NEGOCIO)
   // ==========================================================================
-  const TBB_GOOGLE_FLOW_MOCKUP_URL = "https://flow.google.com/project/4bae0087-9fb0-4dc7-b5fb-6c975161bf17/tool/11f5131c-d37e-4aa9-9350-2bed08c47560?mode=APP&fromViewSource=tools";
+  const TBB_MOCKUP_SURFACE_ICONS = {
+    mix: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3.5" fill="#FF7A00"/></svg>`,
+    laptop: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="11.5" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M2 19h20" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    phone: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="18" r="1" fill="#FF7A00"/></svg>`,
+    tv: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2.5" y="4.5" width="19" height="12.5" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 20h7M12 17v3" stroke="#FF7A00" stroke-width="1.7" stroke-linecap="round"/></svg>`,
+    shirt: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M8 4l4 2.5L16 4l4.5 3.5-2 4-2.5-1.2V20h-8v-9.7L5.5 11.5l-2-4L8 4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
+    hat: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 15a8 8 0 0 1 16 0H4z" stroke="currentColor" stroke-width="1.7"/><path d="M2.5 15h19" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    bag: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 8h14l-1.2 12.5H6.2L5 8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="#FF7A00" stroke-width="1.7" stroke-linecap="round"/></svg>`,
+    pin: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="10" r="5.5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2" fill="#FF7A00"/><path d="M12 15.5V21" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>`,
+    book: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v18H7.5A2.5 2.5 0 0 0 5 22V4.5z" stroke="currentColor" stroke-width="1.7"/><path d="M9 7h6M9 10.5h4" stroke="#FF7A00" stroke-width="1.7" stroke-linecap="round"/></svg>`,
+    poster: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.7"/><circle cx="9.5" cy="9" r="1.8" fill="#FF7A00"/><path d="M6.5 17l4-4 3 2.5 4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    window: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="4" width="17" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M12 4v16M3.5 12h17" stroke="#FF7A00" stroke-width="1.5"/></svg>`,
+    billboard: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="10.5" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 14.5V20M16 14.5V20" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    mural: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M3 9.5h18M3 14.5h18M9 4v5.5M15 9.5v5M9 14.5V20" stroke="#FF7A00" stroke-width="1.5"/></svg>`
+  };
 
   const TBB_GOOGLE_FLOW_MOCKUP_SURFACES = [
-    { id: "laptop", emoji: "💻", label: "laptop", esTitle: "Laptop / MacBook Pro", surfacePrompt: "a sleek modern aluminum laptop screen and brushed metal lid on an executive desk" },
-    { id: "phone", emoji: "📱", label: "phone", esTitle: "Smartphone / App Móvil", surfacePrompt: "a flagship smartphone screen and minimalist case held in a sunlit contemporary studio" },
-    { id: "tv", emoji: "📺", label: "tv", esTitle: "Pantalla / Monitor 4K", surfacePrompt: "a large ultra-thin 4K architectural display in a modern boardroom or flagship showroom" },
-    { id: "shirt", emoji: "👕", label: "shirt", esTitle: "Indumentaria / Camisa / Polo", surfacePrompt: "a premium heavyweight organic cotton shirt / executive garment with finely embroidered emblem on the chest" },
-    { id: "hat", emoji: "🧢", label: "hat", esTitle: "Gorra / Casco de Obra", surfacePrompt: "a structured luxury cap or professional engineering safety helmet with raised 3D emblem on the front crown" },
-    { id: "bag", emoji: "🛍️", label: "bag", esTitle: "Bolsa / Packaging de Marca", surfacePrompt: "a luxury tactile kraft and cotton tote / shopping bag with embossed foil brand emblem resting on travertine stone" },
-    { id: "pin", emoji: "📍", label: "pin", esTitle: "Pin Metálico / Insignia", surfacePrompt: "a macro close-up of a precision die-struck brushed metal and enamel lapel pin badge on textured wool" },
-    { id: "book", emoji: "📖", label: "book", esTitle: "Libro / Dossier Pasta Dura", surfacePrompt: "an architectural linen-bound hardcover brandbook and executive dossier with debossed emblem on a warm oak table" },
-    { id: "poster", emoji: "🖼️", label: "poster", esTitle: "Póster / Cuadro Editorial", surfacePrompt: "a museum-grade framed architectural gallery poster on a sunlit gallery wall with natural shadows" },
-    { id: "window", emoji: "🪟", label: "window", esTitle: "Escaparate / Cristal Fachada", surfacePrompt: "a street-level boutique glass storefront window with frosted vinyl and brushed metal signage reflecting golden hour light" },
-    { id: "billboard", emoji: "🪧", label: "billboard", esTitle: "Espectacular / Valla Exterior", surfacePrompt: "a contemporary architectural outdoor billboard / urban mupi display in a clean upscale district at golden hour" },
-    { id: "mural", emoji: "🧱", label: "mural", esTitle: "Mural / Fachada Arquitectónica", surfacePrompt: "a monumental architectural concrete and travertine feature wall with 3D backlit dimensional emblem" }
+    { id: "laptop", iconSvg: TBB_MOCKUP_SURFACE_ICONS.laptop, label: "Laptop", esTitle: "Laptop / Computadora", surfacePrompt: "a sleek modern aluminum laptop screen and brushed metal lid on an executive desk" },
+    { id: "phone", iconSvg: TBB_MOCKUP_SURFACE_ICONS.phone, label: "Celular / App", esTitle: "Celular / App Móvil", surfacePrompt: "a flagship smartphone screen and minimalist case held in a sunlit contemporary studio" },
+    { id: "tv", iconSvg: TBB_MOCKUP_SURFACE_ICONS.tv, label: "Pantalla 4K", esTitle: "Pantalla / Monitor", surfacePrompt: "a large ultra-thin 4K architectural display in a modern boardroom or flagship showroom" },
+    { id: "shirt", iconSvg: TBB_MOCKUP_SURFACE_ICONS.shirt, label: "Camisa / Uniforme", esTitle: "Indumentaria / Camisa / Polo", surfacePrompt: "a premium heavyweight organic cotton shirt / executive garment with finely embroidered emblem on the chest" },
+    { id: "hat", iconSvg: TBB_MOCKUP_SURFACE_ICONS.hat, label: "Gorra / Casco", esTitle: "Gorra / Casco de Obra", surfacePrompt: "a structured luxury cap or professional engineering safety helmet with raised 3D emblem on the front crown" },
+    { id: "bag", iconSvg: TBB_MOCKUP_SURFACE_ICONS.bag, label: "Bolsa / Empaque", esTitle: "Bolsa / Empaque de Marca", surfacePrompt: "a luxury tactile kraft and cotton tote / shopping bag with embossed foil brand emblem resting on travertine stone" },
+    { id: "pin", iconSvg: TBB_MOCKUP_SURFACE_ICONS.pin, label: "Pin Metálico", esTitle: "Pin Metálico / Insignia", surfacePrompt: "a macro close-up of a precision die-struck brushed metal and enamel lapel pin badge on textured wool" },
+    { id: "book", iconSvg: TBB_MOCKUP_SURFACE_ICONS.book, label: "Manual Impreso", esTitle: "Libro / Dossier Pasta Dura", surfacePrompt: "an architectural linen-bound hardcover brandbook and executive dossier with debossed emblem on a warm oak table" },
+    { id: "poster", iconSvg: TBB_MOCKUP_SURFACE_ICONS.poster, label: "Póster", esTitle: "Póster / Cuadro Enmarcado", surfacePrompt: "a museum-grade framed architectural gallery poster on a sunlit gallery wall with natural shadows" },
+    { id: "window", iconSvg: TBB_MOCKUP_SURFACE_ICONS.window, label: "Vitrina / Cristal", esTitle: "Vitrina / Cristal de Fachada", surfacePrompt: "a street-level boutique glass storefront window with frosted vinyl and brushed metal signage reflecting golden hour light" },
+    { id: "billboard", iconSvg: TBB_MOCKUP_SURFACE_ICONS.billboard, label: "Espectacular", esTitle: "Espectacular / Valla Exterior", surfacePrompt: "a contemporary architectural outdoor billboard / urban mupi display in a clean upscale district at golden hour" },
+    { id: "mural", iconSvg: TBB_MOCKUP_SURFACE_ICONS.mural, label: "Mural / Fachada", esTitle: "Mural / Fachada Corporativa", surfacePrompt: "a monumental architectural concrete and travertine feature wall with 3D backlit dimensional emblem" }
   ];
 
-  // Detecta el giro del negocio y selecciona automáticamente los 6 mockups ideales de Google Flow para los 6 espacios del Brandbook
   function tbbDetectGiroMockupPlan(giroRaw, brandNameRaw, categoryRaw) {
     const text = `${giroRaw || ""} ${brandNameRaw || ""} ${categoryRaw || ""}`.toLowerCase();
     const bName = brandNameRaw || "Tu Marca";
@@ -2019,12 +2032,12 @@
         sectorLabel: "Gastronomía, Alimentos y Hospitalidad",
         recommendedPills: ["shirt", "bag", "window", "phone", "poster", "mural"],
         slots: {
-          persona: { surfaceId: "shirt", badge: "FLOW MOCKUP · 👕 SHIRT", title: `Indumentaria / Mandil de Autor · ${bName}`, promptObject: `an artisan barista/chef apron and premium linen culinary uniform with the imported "${bName}" logo finely embroidered on the chest` },
-          buyer: { surfaceId: "bag", badge: "FLOW MOCKUP · 🛍️ BAG", title: `Packaging & Takeaway Bag · ${bName}`, promptObject: `a bespoke tactile gourmet takeaway paper bag and artisan packaging box featuring the imported "${bName}" logo embossed on the front, held by a happy customer at a sunlit café table` },
-          tpBefore: { surfaceId: "window", badge: "FLOW MOCKUP · 🪟 WINDOW", title: `Escaparate y Cristal de Fachada · ${bName}`, promptObject: `a warm inviting restaurant/café glass storefront window with the imported "${bName}" logo applied in clean frosted white and brushed brass decal` },
-          tpDuring: { surfaceId: "phone", badge: "FLOW MOCKUP · 📱 PHONE", title: `Menú Digital y Pedidos · ${bName}`, promptObject: `a smartphone on a wooden café table displaying the "${bName}" digital ordering app with the imported logo at the top header alongside a ceramic cup` },
-          tpAfter: { surfaceId: "poster", badge: "FLOW MOCKUP · 🖼️ POSTER", title: `Cuadro y Empaque de Colección · ${bName}`, promptObject: `a framed editorial gastronomic print and sealed specialty pouch with the imported "${bName}" logo in morning sunlight` },
-          environment: { surfaceId: "mural", badge: "FLOW MOCKUP · 🧱 MURAL", title: `Mural Interior y Rótulo 3D · ${bName}`, promptObject: `an architectural brick and warm oak interior feature wall of "${bName}" with a backlit 3D mural of the imported brand logo` }
+          persona: { surfaceId: "shirt", badge: "UNIFORME", title: `Indumentaria / Mandil · ${bName}`, promptObject: `an artisan barista/chef apron and premium linen culinary uniform with the imported "${bName}" logo finely embroidered on the chest` },
+          buyer: { surfaceId: "bag", badge: "EMPAQUE", title: `Bolsa y Empaque · ${bName}`, promptObject: `a bespoke tactile gourmet takeaway paper bag and artisan packaging box featuring the imported "${bName}" logo embossed on the front, held by a happy customer at a sunlit café table` },
+          tpBefore: { surfaceId: "window", badge: "FACHADA", title: `Vitrina y Cristal · ${bName}`, promptObject: `a warm inviting restaurant/café glass storefront window with the imported "${bName}" logo applied in clean frosted white and brushed brass decal` },
+          tpDuring: { surfaceId: "phone", badge: "MENÚ DIGITAL", title: `Menú Digital y Pedidos · ${bName}`, promptObject: `a smartphone on a wooden café table displaying the "${bName}" digital ordering app with the imported logo at the top header alongside a ceramic cup` },
+          tpAfter: { surfaceId: "poster", badge: "CUADRO", title: `Cuadro y Empaque · ${bName}`, promptObject: `a framed editorial gastronomic print and sealed specialty pouch with the imported "${bName}" logo in morning sunlight` },
+          environment: { surfaceId: "mural", badge: "INTERIOR", title: `Mural Interior y Rótulo · ${bName}`, promptObject: `an architectural brick and warm oak interior feature wall of "${bName}" with a backlit 3D mural of the imported brand logo` }
         }
       };
     }
@@ -2035,12 +2048,12 @@
         sectorLabel: "Salud, Clínica Especializada y Bienestar",
         recommendedPills: ["shirt", "phone", "window", "book", "bag", "mural"],
         slots: {
-          persona: { surfaceId: "shirt", badge: "FLOW MOCKUP · 👕 SHIRT", title: `Bata Clínica e Indumentaria · ${bName}`, promptObject: `a tailored medical coat / wellness specialist scrub top with the imported "${bName}" logo embroidered on the left chest pocket in a sunlit clinic` },
-          buyer: { surfaceId: "phone", badge: "FLOW MOCKUP · 📱 PHONE", title: `App de Citas y Expediente · ${bName}`, promptObject: `a smartphone held by a relaxed patient showing the "${bName}" health & wellness portal with the imported brand logo on screen` },
-          tpBefore: { surfaceId: "window", badge: "FLOW MOCKUP · 🪟 WINDOW", title: `Cristal Esmerilado de Recepción · ${bName}`, promptObject: `an architectural frosted glass clinic entrance window featuring the imported "${bName}" logo in clean dimensional signage` },
-          tpDuring: { surfaceId: "book", badge: "FLOW MOCKUP · 📖 BOOK", title: `Carpeta Clínica y Diagnóstico · ${bName}`, promptObject: `a minimalist linen-bound clinical welcome folder and diagnostic guide on a consultation desk with the imported "${bName}" logo embossed on the cover` },
-          tpAfter: { surfaceId: "bag", badge: "FLOW MOCKUP · 🛍️ BAG", title: `Kit de Cuidado y Bolsa de Paciente · ${bName}`, promptObject: `a clean dermatological / wellness kit tote bag and frosted glass bottle featuring the imported "${bName}" logo on travertine stone` },
-          environment: { surfaceId: "mural", badge: "FLOW MOCKUP · 🧱 MURAL", title: `Muro de Recepción y Señalética · ${bName}`, promptObject: `a serene travertine and warm wood medical clinic reception wall featuring a 3D halo-lit sign of the imported "${bName}" logo` }
+          persona: { surfaceId: "shirt", badge: "UNIFORME", title: `Bata e Indumentaria · ${bName}`, promptObject: `a tailored medical coat / wellness specialist scrub top with the imported "${bName}" logo embroidered on the left chest pocket in a sunlit clinic` },
+          buyer: { surfaceId: "phone", badge: "APP MÓVIL", title: `App de Citas y Portal · ${bName}`, promptObject: `a smartphone held by a relaxed patient showing the "${bName}" health & wellness portal with the imported brand logo on screen` },
+          tpBefore: { surfaceId: "window", badge: "RECEPCIÓN", title: `Cristal de Recepción · ${bName}`, promptObject: `an architectural frosted glass clinic entrance window featuring the imported "${bName}" logo in clean dimensional signage` },
+          tpDuring: { surfaceId: "book", badge: "CARPETA", title: `Carpeta Clínica · ${bName}`, promptObject: `a minimalist linen-bound clinical welcome folder and diagnostic guide on a consultation desk with the imported "${bName}" logo embossed on the cover` },
+          tpAfter: { surfaceId: "bag", badge: "KIT", title: `Kit y Bolsa de Cuidado · ${bName}`, promptObject: `a clean dermatological / wellness kit tote bag and frosted glass bottle featuring the imported "${bName}" logo on travertine stone` },
+          environment: { surfaceId: "mural", badge: "SEÑALÉTICA", title: `Muro de Recepción · ${bName}`, promptObject: `a serene travertine and warm wood medical clinic reception wall featuring a 3D halo-lit sign of the imported "${bName}" logo` }
         }
       };
     }
@@ -2051,12 +2064,12 @@
         sectorLabel: "Arquitectura, Ingeniería, Construcción e Inmobiliaria",
         recommendedPills: ["hat", "laptop", "billboard", "shirt", "book", "mural"],
         slots: {
-          persona: { surfaceId: "hat", badge: "FLOW MOCKUP · 🧢 HAT", title: `Casco de Ingeniería y Supervisión · ${bName}`, promptObject: `a high-end white/matte architectural engineering safety hard hat and technical blueprint roll resting on a concrete studio table with the imported "${bName}" logo crisply printed on the front crown` },
-          buyer: { surfaceId: "laptop", badge: "FLOW MOCKUP · 💻 LAPTOP", title: `Presentación BIM y Render en Laptop · ${bName}`, promptObject: `a sleek MacBook Pro in an architectural showroom displaying a 3D building masterplan with the imported "${bName}" logo on the presentation header` },
-          tpBefore: { surfaceId: "billboard", badge: "FLOW MOCKUP · 🪧 BILLBOARD", title: `Valla Perimetral y Espectacular de Obra · ${bName}`, promptObject: `a monumental architectural development outdoor billboard at a modern construction site displaying the imported "${bName}" logo in bold high-contrast signage` },
-          tpDuring: { surfaceId: "shirt", badge: "FLOW MOCKUP · 👕 SHIRT", title: `Camisa Técnica y Chaleco de Obra · ${bName}`, promptObject: `a premium tailored architectural field jacket / executive polo shirt with the imported "${bName}" logo embroidered on the chest` },
-          tpAfter: { surfaceId: "book", badge: "FLOW MOCKUP · 📖 BOOK", title: `Memoria Constructiva y Dossier · ${bName}`, promptObject: `a luxury hardcover architectural project book and metal key entrega box on natural stone with the imported "${bName}" logo embossed on the cover` },
-          environment: { surfaceId: "mural", badge: "FLOW MOCKUP · 🧱 MURAL", title: `Fachada Corporativa en Concreto · ${bName}`, promptObject: `an Architectural Digest style exposed board-formed concrete and glass headquarters facade featuring a monumental 3D brushed steel sign of the imported "${bName}" logo` }
+          persona: { surfaceId: "hat", badge: "CASCO", title: `Casco de Ingeniería · ${bName}`, promptObject: `a high-end white/matte architectural engineering safety hard hat and technical blueprint roll resting on a concrete studio table with the imported "${bName}" logo crisply printed on the front crown` },
+          buyer: { surfaceId: "laptop", badge: "LAPTOP", title: `Presentación en Laptop · ${bName}`, promptObject: `a sleek MacBook Pro in an architectural showroom displaying a 3D building masterplan with the imported "${bName}" logo on the presentation header` },
+          tpBefore: { surfaceId: "billboard", badge: "ESPECTACULAR", title: `Valla y Espectacular · ${bName}`, promptObject: `a monumental architectural development outdoor billboard at a modern construction site displaying the imported "${bName}" logo in bold high-contrast signage` },
+          tpDuring: { surfaceId: "shirt", badge: "INDUMENTARIA", title: `Camisa Técnica y Obra · ${bName}`, promptObject: `a premium tailored architectural field jacket / executive polo shirt with the imported "${bName}" logo embroidered on the chest` },
+          tpAfter: { surfaceId: "book", badge: "DOSSIER", title: `Memoria y Dossier · ${bName}`, promptObject: `a luxury hardcover architectural project book and metal key entrega box on natural stone with the imported "${bName}" logo embossed on the cover` },
+          environment: { surfaceId: "mural", badge: "FACHADA", title: `Fachada Corporativa · ${bName}`, promptObject: `an Architectural Digest style exposed board-formed concrete and glass headquarters facade featuring a monumental 3D brushed steel sign of the imported "${bName}" logo` }
         }
       };
     }
@@ -2067,12 +2080,12 @@
         sectorLabel: "Moda, Retail, E-Commerce y Diseño de Producto",
         recommendedPills: ["shirt", "bag", "window", "hat", "phone", "billboard"],
         slots: {
-          persona: { surfaceId: "shirt", badge: "FLOW MOCKUP · 👕 SHIRT", title: `Prenda Insignia de Colección · ${bName}`, promptObject: `a luxury flagship heavy cotton garment / tailored overshirt on a wooden atelier hanger featuring the imported "${bName}" logo embroidered on the chest and woven label` },
-          buyer: { surfaceId: "bag", badge: "FLOW MOCKUP · 🛍️ BAG", title: `Shopping Bag de Boutique · ${bName}`, promptObject: `a thick matte textured luxury boutique shopping bag with ribbon handles and the imported "${bName}" logo hot-stamped in the center` },
-          tpBefore: { surfaceId: "window", badge: "FLOW MOCKUP · 🪟 WINDOW", title: `Escaparate de Flagship Store · ${bName}`, promptObject: `a high-fashion street-level boutique glass display window with the imported "${bName}" logo in sleek vinyl signage` },
-          tpDuring: { surfaceId: "phone", badge: "FLOW MOCKUP · 📱 PHONE", title: `Tienda E-Commerce Móvil · ${bName}`, promptObject: `a flagship smartphone displaying the "${bName}" mobile e-commerce boutique with the imported brand logo on screen` },
-          tpAfter: { surfaceId: "hat", badge: "FLOW MOCKUP · 🧢 HAT", title: `Gorra y Empaque Unboxing · ${bName}`, promptObject: `a structured designer cap and rigid magnetic unboxing gift box featuring the imported "${bName}" logo` },
-          environment: { surfaceId: "billboard", badge: "FLOW MOCKUP · 🪧 BILLBOARD", title: `Mupi Urbano y Campaña · ${bName}`, promptObject: `an upscale city avenue architectural mupi / billboard poster showcasing the imported "${bName}" logo in golden hour light` }
+          persona: { surfaceId: "shirt", badge: "PRENDA", title: `Prenda Principal · ${bName}`, promptObject: `a luxury flagship heavy cotton garment / tailored overshirt on a wooden atelier hanger featuring the imported "${bName}" logo embroidered on the chest and woven label` },
+          buyer: { surfaceId: "bag", badge: "EMPAQUE", title: `Bolsa de Tienda · ${bName}`, promptObject: `a thick matte textured luxury boutique shopping bag with ribbon handles and the imported "${bName}" logo hot-stamped in the center` },
+          tpBefore: { surfaceId: "window", badge: "VITRINA", title: `Vitrina de Tienda · ${bName}`, promptObject: `a high-fashion street-level boutique glass display window with the imported "${bName}" logo in sleek vinyl signage` },
+          tpDuring: { surfaceId: "phone", badge: "TIENDA MÓVIL", title: `Tienda en Línea Móvil · ${bName}`, promptObject: `a flagship smartphone displaying the "${bName}" mobile e-commerce boutique with the imported brand logo on screen` },
+          tpAfter: { surfaceId: "hat", badge: "ACCESORIO", title: `Gorra y Caja de Entrega · ${bName}`, promptObject: `a structured designer cap and rigid magnetic unboxing gift box featuring the imported "${bName}" logo` },
+          environment: { surfaceId: "billboard", badge: "EXTERIOR", title: `Anuncio Urbano · ${bName}`, promptObject: `an upscale city avenue architectural mupi / billboard poster showcasing the imported "${bName}" logo in golden hour light` }
         }
       };
     }
@@ -2080,31 +2093,30 @@
     if (/\b(educaci|academia|escuela|colegio|universidad|curso|capacitaci|formaci|coaching|taller|enseñanza)\b/i.test(text)) {
       return {
         sectorKey: "education_academy",
-        sectorLabel: "Educación, Academia y Formación Ejecutiva",
+        sectorLabel: "Educación, Academia y Formación",
         recommendedPills: ["book", "laptop", "pin", "shirt", "poster", "mural"],
         slots: {
-          persona: { surfaceId: "book", badge: "FLOW MOCKUP · 📖 BOOK", title: `Manual y Libro Rector · ${bName}`, promptObject: `an authoritative cloth-bound hardcover textbook and executive workbook with the imported "${bName}" logo embossed on the front cover` },
-          buyer: { surfaceId: "laptop", badge: "FLOW MOCKUP · 💻 LAPTOP", title: `Campus Virtual en Laptop · ${bName}`, promptObject: `a modern laptop on a library desk showing the "${bName}" learning platform with the imported logo prominently displayed` },
-          tpBefore: { surfaceId: "poster", badge: "FLOW MOCKUP · 🖼️ POSTER", title: `Póster de Convocatoria Académica · ${bName}`, promptObject: `a framed academic keynote poster in a modern campus corridor featuring the imported "${bName}" logo` },
-          tpDuring: { surfaceId: "shirt", badge: "FLOW MOCKUP · 👕 SHIRT", title: `Indumentaria Institucional · ${bName}`, promptObject: `a collegiate / executive polo shirt with the imported "${bName}" crest logo finely embroidered on the chest` },
-          tpAfter: { surfaceId: "pin", badge: "FLOW MOCKUP · 📍 PIN", title: `Pin de Graduación y Certificación · ${bName}`, promptObject: `a metallic enamel lapel pin and official diploma seal featuring the imported "${bName}" logo in macro detail` },
-          environment: { surfaceId: "mural", badge: "FLOW MOCKUP · 🧱 MURAL", title: `Auditorio y Muro de Campus · ${bName}`, promptObject: `a contemporary lecture hall and acoustic wood reception wall featuring a 3D dimensional sign of the imported "${bName}" logo` }
+          persona: { surfaceId: "book", badge: "LIBRO", title: `Manual y Libro · ${bName}`, promptObject: `an authoritative cloth-bound hardcover textbook and executive workbook with the imported "${bName}" logo embossed on the front cover` },
+          buyer: { surfaceId: "laptop", badge: "PLATAFORMA", title: `Plataforma en Laptop · ${bName}`, promptObject: `a modern laptop on a library desk showing the "${bName}" learning platform with the imported logo prominently displayed` },
+          tpBefore: { surfaceId: "poster", badge: "PÓSTER", title: `Póster Institucional · ${bName}`, promptObject: `a framed academic keynote poster in a modern campus corridor featuring the imported "${bName}" logo` },
+          tpDuring: { surfaceId: "shirt", badge: "UNIFORME", title: `Indumentaria Institucional · ${bName}`, promptObject: `a collegiate / executive polo shirt with the imported "${bName}" crest logo finely embroidered on the chest` },
+          tpAfter: { surfaceId: "pin", badge: "INSIGNIA", title: `Pin y Reconocimiento · ${bName}`, promptObject: `a metallic enamel lapel pin and official diploma seal featuring the imported "${bName}" logo in macro detail` },
+          environment: { surfaceId: "mural", badge: "CAMPUS", title: `Muro de Recepción · ${bName}`, promptObject: `a contemporary lecture hall and acoustic wood reception wall featuring a 3D dimensional sign of the imported "${bName}" logo` }
         }
       };
     }
 
-    // Default / SaaS / Tecnología / Consultoría / Servicios Profesionales
     return {
       sectorKey: "tech_consulting",
-      sectorLabel: "Tecnología, SaaS, Consultoría y Servicios Ejecutivos",
+      sectorLabel: "Tecnología, Consultoría y Servicios",
       recommendedPills: ["laptop", "phone", "book", "shirt", "pin", "mural"],
       slots: {
-        persona: { surfaceId: "laptop", badge: "FLOW MOCKUP · 💻 LAPTOP", title: `Workstation Ejecutiva y Plataforma · ${bName}`, promptObject: `a flagship aluminum MacBook Pro on a travertine and oak executive desk displaying the "${bName}" software interface with the imported brand logo on screen` },
-        buyer: { surfaceId: "phone", badge: "FLOW MOCKUP · 📱 PHONE", title: `App Móvil y Experiencia Digital · ${bName}`, promptObject: `a flagship smartphone resting on an architectural desk showing the "${bName}" mobile app header with the imported brand logo` },
-        tpBefore: { surfaceId: "window", badge: "FLOW MOCKUP · 🪟 WINDOW", title: `Acceso Corporativo en Cristal · ${bName}`, promptObject: `a sleek glass office entrance door and frosted partition wall with the imported "${bName}" logo applied in architectural vinyl` },
-        tpDuring: { surfaceId: "book", badge: "FLOW MOCKUP · 📖 BOOK", title: `Dossier Ejecutivo y Propuesta · ${bName}`, promptObject: `a bespoke hardcover strategy dossier and metallic pen on a boardroom table with the imported "${bName}" logo debossed on the cover` },
-        tpAfter: { surfaceId: "bag", badge: "FLOW MOCKUP · 🛍️ BAG", title: `Welcome Kit y Tote Ejecutiva · ${bName}`, promptObject: `an executive onboarding gift box, structured tote bag and enamel pin featuring the imported "${bName}" logo` },
-        environment: { surfaceId: "mural", badge: "FLOW MOCKUP · 🧱 MURAL", title: `Lobby Corporativo y Rótulo 3D · ${bName}`, promptObject: `an Architectural Digest style corporate headquarters lobby wall in stone and warm wood featuring a 3D backlit sign of the imported "${bName}" logo` }
+        persona: { surfaceId: "laptop", badge: "LAPTOP", title: `Plataforma en Laptop · ${bName}`, promptObject: `a flagship aluminum MacBook Pro on a travertine and oak executive desk displaying the "${bName}" software interface with the imported brand logo on screen` },
+        buyer: { surfaceId: "phone", badge: "APP MÓVIL", title: `App Móvil y Portal · ${bName}`, promptObject: `a flagship smartphone resting on an architectural desk showing the "${bName}" mobile app header with the imported brand logo` },
+        tpBefore: { surfaceId: "window", badge: "OFICINA", title: `Acceso en Cristal · ${bName}`, promptObject: `a sleek glass office entrance door and frosted partition wall with the imported "${bName}" logo applied in architectural vinyl` },
+        tpDuring: { surfaceId: "book", badge: "CARPETA", title: `Carpeta y Propuesta · ${bName}`, promptObject: `a bespoke hardcover strategy dossier and metallic pen on a boardroom table with the imported "${bName}" logo debossed on the cover` },
+        tpAfter: { surfaceId: "bag", badge: "KIT", title: `Kit de Bienvenida · ${bName}`, promptObject: `an executive onboarding gift box, structured tote bag and enamel pin featuring the imported "${bName}" logo` },
+        environment: { surfaceId: "mural", badge: "RECEPCIÓN", title: `Recepción y Rótulo 3D · ${bName}`, promptObject: `an Architectural Digest style corporate headquarters lobby wall in stone and warm wood featuring a 3D backlit sign of the imported "${bName}" logo` }
       }
     };
   }
@@ -2202,7 +2214,7 @@
     const pri = brand?.colors?.pri || "#0D2540";
     const acc = brand?.colors?.acc || "#FF7A00";
     const bName = (brand?.name || "TU MARCA").toUpperCase();
-    const sLabel = (surfaceMeta && surfaceMeta.badge) || "FLOW MOCKUP · 4:3";
+    const sLabel = (surfaceMeta && surfaceMeta.badge) || "APLICACIÓN REAL";
 
     // Tarjeta física de aplicación de marca (estilo etiqueta / placa arquitectónica en esquina inferior izquierda)
     ctx.save();
@@ -2322,7 +2334,7 @@
     const origBtnHtml = triggerBtn ? triggerBtn.innerHTML : "";
     if (triggerBtn) {
       triggerBtn.disabled = true;
-      triggerBtn.textContent = "Google Flow · Generando Mockups por Giro (0/6)...";
+      triggerBtn.textContent = "Generando aplicaciones por giro (0/6)...";
     }
     const brand = (!isDomButton && brandOrBtn && brandOrBtn.slug) ? brandOrBtn : window.buildActiveBrandProfileForV80();
     const giroPlan = tbbDetectGiroMockupPlan(brand.giro, brand.name, brand.category);
@@ -2337,7 +2349,7 @@
     if (!forceRegenerate && window._tbbFlowVisualsCache[cacheKey] && window._tbbFlowVisualsCache[cacheKey]._complete) {
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Mockups Google Flow 4:3 Listos";
+        triggerBtn.textContent = "Aplicaciones 4:3 listas";
         setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2200);
       }
       return window._tbbFlowVisualsCache[cacheKey];
@@ -2369,7 +2381,7 @@
       window._tbbFlowVisualsCache[legacyKey86] = tbbEntry;
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Mockups Google Flow 4:3 de The Best Brand Listos";
+        triggerBtn.textContent = "Aplicaciones 4:3 Listas";
         setTimeout(() => { if (origBtnHtml) triggerBtn.innerHTML = origBtnHtml; }, 2200);
       }
       return tbbEntry;
@@ -2394,7 +2406,7 @@
       }
       return {
         surfaceId: "custom",
-        badge: `FLOW MOCKUP · ✨ CUSTOM`,
+        badge: `APLICACIÓN PERSONALIZADA`,
         title: `${customSurfaceOverride} · ${brand.name}`,
         promptObject: `${customSurfaceOverride} tailored for "${brand.name}" (${brand.giro}), featuring the imported brand logo applied with physical realism`
       };
@@ -2461,7 +2473,7 @@
       delete window._tbbFlowVisualsInFlight[cacheKey];
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = "✓ Mockups Google Flow 4:3 Aplicados";
+        triggerBtn.textContent = "Aplicaciones 4:3 Aplicadas";
         if (typeof window.renderTbbZeroScrollStage === "function") {
           window.renderTbbZeroScrollStage();
         }
@@ -2473,24 +2485,106 @@
     return runPromise;
   }
 
-  // Modal interactivo idéntico a la herramienta "Remix of Mockup" de Google Flow (con selector de superficies por Giro + Fast/Pro Nano Banana 2.1)
+  // Modal interactivo sobre Lienzo Claro #FFFFFF para previsualizar el logotipo aplicado al giro del negocio (Cero jerga interna, 100% responsivo)
   async function tbbOpenGoogleFlowMockupStudioModal() {
     if (typeof document === "undefined" || !document.body) return;
     const existing = document.getElementById("tbbGoogleFlowRemixModal");
     if (existing) existing.remove();
 
+    if (!document.getElementById("tbbLightMockupStudioStyles")) {
+      const stEl = document.createElement("style");
+      stEl.id = "tbbLightMockupStudioStyles";
+      stEl.textContent = `
+        #tbbGoogleFlowRemixModal .tbb-mockup-shell {
+          width: 100%;
+          max-width: 1100px;
+          max-height: calc(100dvh - 28px);
+          background: #FFFFFF;
+          color: #0D2540;
+          border: 1px solid #E2E8F0;
+          border-radius: 24px;
+          box-shadow: 0 24px 64px rgba(13, 37, 64, 0.18);
+          font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+          display: grid;
+          grid-template-columns: 336px minmax(0, 1fr);
+          overflow: hidden;
+          box-sizing: border-box;
+        }
+        #tbbGoogleFlowRemixModal .tbb-mockup-left {
+          padding: 20px;
+          border-right: 1px solid #E2E8F0;
+          background: #F8FAFC;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 14px;
+          overflow-y: auto;
+        }
+        #tbbGoogleFlowRemixModal .tbb-mockup-right {
+          padding: 20px 24px;
+          background: #FFFFFF;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          overflow-y: auto;
+        }
+        #tbbGoogleFlowRemixModal .tbb-mockup-gallery {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+          gap: 14px;
+        }
+        #tbbGoogleFlowRemixModal .tbb-mockup-mobile-close {
+          display: none;
+        }
+        @media (max-width: 840px) {
+          #tbbGoogleFlowRemixModal .tbb-mockup-shell {
+            grid-template-columns: minmax(0, 1fr);
+            overflow-y: auto;
+          }
+          #tbbGoogleFlowRemixModal .tbb-mockup-left {
+            border-right: none;
+            border-bottom: 1px solid #E2E8F0;
+            overflow-y: visible;
+          }
+          #tbbGoogleFlowRemixModal .tbb-mockup-right {
+            overflow-y: visible;
+          }
+          #tbbGoogleFlowRemixModal .tbb-mockup-mobile-close {
+            display: inline-flex !important;
+          }
+          #tbbGoogleFlowRemixModal .tbb-mockup-desktop-close {
+            display: none !important;
+          }
+        }
+        @media (max-width: 520px) {
+          #tbbGoogleFlowRemixModal .tbb-mockup-gallery {
+            grid-template-columns: minmax(0, 1fr);
+          }
+          #tbbGoogleFlowRemixModal .tbb-mockup-left,
+          #tbbGoogleFlowRemixModal .tbb-mockup-right {
+            padding: 16px;
+          }
+        }
+      `;
+      document.head.appendChild(stEl);
+    }
+
+    const tr = (s) => (typeof window.tbbTranslateText === "function" ? window.tbbTranslateText(s) : s);
     const brand = window.buildActiveBrandProfileForV80();
     const giroPlan = tbbDetectGiroMockupPlan(brand.giro, brand.name, brand.category);
     const logoPngUrl = await rasterizeActiveBrandLogoToPngDataUrl(brand);
     const cacheKey = `photo_v88|${brand.slug}|${(brand.giro || "").slice(0, 32)}`;
-    const cachedEntry = window._tbbFlowVisualsCache[cacheKey] || {};
     if (!window.tbbState) window.tbbState = {};
-    const curMode = window.tbbState.flowMockupQualityMode || "fast";
     let selectedPill = window.tbbState.flowSelectedMockupPill || "";
 
     const overlay = document.createElement("div");
     overlay.id = "tbbGoogleFlowRemixModal";
-    overlay.style.cssText = "position:fixed;inset:0;background:rgba(9,13,22,0.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:999995;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto;";
+    overlay.style.cssText = "position:fixed;inset:0;background:rgba(13,37,64,0.48);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:999995;display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box;";
+
+    const svgSpark = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2.5l2.4 6.5L21 11.4l-6.6 2.4L12 20.5l-2.4-6.7L3 11.4 9.6 9 12 2.5z" fill="currentColor"/></svg>`;
+    const svgRefresh = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 11a8 8 0 1 0 2 5.3M20 4v7h-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    const svgClose = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
+    const svgDownload = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 4v11m0 0l-4-4m4 4l4-4M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
     const renderModalBody = () => {
       const modeNow = window.tbbState.flowMockupQualityMode || "fast";
@@ -2505,113 +2599,108 @@
       ];
 
       overlay.innerHTML = `
-        <div style="width:100%;max-width:1120px;background:#111318;color:#F8FAFC;border:1.5px solid rgba(255,255,255,0.14);border-radius:24px;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,0.65);font-family:'Plus Jakarta Sans',sans-serif;display:grid;grid-template-columns:repeat(auto-fit, minmax(295px, 1fr));max-height:92vh;overflow-y:auto;">
-          <!-- Panel Izquierdo: Google Flow Canvas Media & Píldoras de Superficie -->
-          <div style="padding:20px;border-right:1px solid rgba(255,255,255,0.10);display:flex;flex-direction:column;justify-content:space-between;gap:14px;overflow-y:auto;background:#16181F;">
+        <div class="tbb-mockup-shell" onclick="event.stopPropagation()">
+          <div class="tbb-mockup-left">
             <div>
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
-                <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,122,0,0.14);border:1px solid rgba(255,122,0,0.45);color:#FDBA74;padding:4px 10px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:800;">
-                  <span>✨</span> ESTUDIO DE MOCKUPS REALES
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
+                <span style="display:inline-flex;align-items:center;gap:6px;background:#FFF7ED;border:1px solid #FED7AA;color:#C2410C;padding:4px 11px;border-radius:999px;font-size:0.74rem;font-weight:700;">
+                  ${svgSpark} <span>${xmlEsc(tr("VISTA EN LA VIDA REAL"))}</span>
+                </span>
+                <div style="display:inline-flex;align-items:center;gap:8px;">
+                  <span style="font-size:0.74rem;color:#64748B;font-weight:600;">4:3 HD</span>
+                  <button type="button" class="tbb-mockup-mobile-close" data-flow-close="1" aria-label="${xmlEsc(tr("Cerrar"))}" style="width:34px;height:34px;border-radius:50%;border:1px solid #CBD5E1;background:#FFFFFF;color:#0D2540;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
+                    ${svgClose}
+                  </button>
                 </div>
-                <span style="font-family:'JetBrains Mono',monospace;font-size:0.66rem;color:#94A3B8;font-weight:700;">Alta Resolución 4:3</span>
               </div>
 
-              <div style="font-size:1.02rem;font-weight:900;color:#FFFFFF;margin-bottom:4px;">
-                Mockups Inteligentes por Giro
+              <div style="font-family:'Montserrat',sans-serif;font-size:1.06rem;font-weight:700;color:#0D2540;margin-bottom:4px;">
+                ${xmlEsc(tr("Tu marca aplicada a tu giro"))}
               </div>
-              <div style="font-size:0.76rem;color:#94A3B8;line-height:1.45;margin-bottom:12px;">
-                Giro detectado: <strong style="color:#F8FAFC;">${xmlEsc(giroPlan.sectorLabel)}</strong> (${xmlEsc(brand.name)}).
-              </div>
-
-              <!-- Canvas Media (Logo activo importado) -->
-              <div style="background:#1E202B;border:1.5px dashed rgba(255,255,255,0.22);border-radius:16px;padding:14px;text-align:center;margin-bottom:14px;position:relative;">
-                <div style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#94A3B8;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.8px;">
-                  Canvas Media · Logotipo Activo Importado
-                </div>
-                <div style="width:108px;height:108px;margin:0 auto 8px auto;background:#FFFFFF;border-radius:18px;padding:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.35);">
-                  ${logoPngUrl ? `<img src="${logoPngUrl}" alt="Logo" style="max-width:100%;max-height:100%;object-fit:contain;display:block;" />` : `<span style="color:#0D2540;font-weight:900;font-size:0.75rem;">${xmlEsc(brand.name)}</span>`}
-                </div>
-                <div style="font-size:0.72rem;color:#CBD5E1;font-weight:700;">${xmlEsc(brand.name)} · Listo para aplicar en superficies</div>
+              <div style="font-size:0.84rem;color:#475569;line-height:1.45;margin-bottom:12px;">
+                ${xmlEsc(tr("Sector"))}: <strong style="color:#0D2540;">${xmlEsc(tr(giroPlan.sectorLabel))}</strong>
               </div>
 
-              <!-- 12 Píldoras Oficiales de Google Flow Remix of Mockup -->
-              <div style="font-family:'JetBrains Mono',monospace;font-size:0.66rem;color:#94A3B8;font-weight:800;margin-bottom:8px;letter-spacing:0.5px;">
-                SUPERFICIES GOOGLE FLOW (★ RECOMENDADAS PARA TU GIRO)
+              <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:16px;padding:12px;text-align:center;margin-bottom:14px;box-shadow:0 4px 14px rgba(13,37,64,0.04);">
+                <div style="width:92px;height:92px;margin:0 auto 6px auto;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:8px;display:flex;align-items:center;justify-content:center;">
+                  ${logoPngUrl ? `<img src="${logoPngUrl}" alt="Logo" style="max-width:100%;max-height:100%;object-fit:contain;display:block;" />` : `<span style="color:#0D2540;font-weight:700;font-size:0.82rem;">${xmlEsc(brand.name)}</span>`}
+                </div>
+                <div style="font-size:0.82rem;color:#0D2540;font-weight:600;">${xmlEsc(brand.name)}</div>
+              </div>
+
+              <div style="font-size:0.78rem;color:#475569;font-weight:700;margin-bottom:8px;">
+                ${xmlEsc(tr("Elige dónde quieres ver tu logo:"))}
               </div>
               <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
-                <button type="button" data-flow-pill="" style="padding:6px 11px;border-radius:999px;border:1.5px solid ${selectedPill === "" ? "#FF7A00" : "rgba(255,255,255,0.16)"};background:${selectedPill === "" ? "rgba(255,122,0,0.22)" : "#232634"};color:#FFFFFF;font-size:0.73rem;font-weight:800;cursor:pointer;">
-                  🎯 Mix Automático del Giro (6)
+                <button type="button" data-flow-pill="" style="padding:6px 11px;border-radius:999px;border:1.5px solid ${selectedPill === "" ? "#0D2540" : "#CBD5E1"};background:${selectedPill === "" ? "#0D2540" : "#FFFFFF"};color:${selectedPill === "" ? "#FFFFFF" : "#0D2540"};font-size:0.8rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+                  ${TBB_MOCKUP_SURFACE_ICONS.mix} <span>${xmlEsc(tr("Selección automática (6)"))}</span>
                 </button>
                 ${TBB_GOOGLE_FLOW_MOCKUP_SURFACES.map(s => {
                   const isRec = giroPlan.recommendedPills.includes(s.id);
                   const isSel = selectedPill === s.id;
-                  return `<button type="button" data-flow-pill="${s.id}" title="${xmlEsc(s.esTitle)}" style="padding:6px 11px;border-radius:999px;border:1.5px solid ${isSel ? "#FF7A00" : (isRec ? "rgba(76,157,230,0.65)" : "rgba(255,255,255,0.14)")};background:${isSel ? "rgba(255,122,0,0.24)" : (isRec ? "rgba(66,110,174,0.22)" : "#232634")};color:#F8FAFC;font-size:0.73rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
-                    <span>${s.emoji}</span> <span>${s.label}</span> ${isRec ? `<span style="color:#FDBA74;font-size:0.65rem;">★</span>` : ""}
+                  return `<button type="button" data-flow-pill="${s.id}" title="${xmlEsc(tr(s.esTitle))}" style="padding:6px 11px;border-radius:999px;border:1.5px solid ${isSel ? "#0D2540" : (isRec ? "#93C5FD" : "#CBD5E1")};background:${isSel ? "#0D2540" : (isRec ? "#EFF6FF" : "#FFFFFF")};color:${isSel ? "#FFFFFF" : "#0D2540"};font-size:0.8rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+                    ${s.iconSvg} <span>${xmlEsc(tr(s.label))}</span> ${isRec ? `<span style="width:6px;height:6px;border-radius:50%;background:#FF7A00;display:inline-block;"></span>` : ""}
                   </button>`;
                 }).join("")}
               </div>
 
-              <!-- + custom mockup -->
-              <div style="margin-bottom:12px;">
-                <input id="tbbFlowCustomMockupInput" type="text" value="${selectedPill && !TBB_GOOGLE_FLOW_MOCKUP_SURFACES.some(s => s.id === selectedPill) ? xmlEsc(selectedPill) : ""}" placeholder="+ custom mockup (ej. casco de obra, taza cerámica, camión, envase...)" style="width:100%;box-sizing:border-box;padding:9px 12px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.18);background:#1E202B;color:#FFFFFF;font-size:0.76rem;font-weight:600;outline:none;" />
+              <div>
+                <input id="tbbFlowCustomMockupInput" type="text" value="${selectedPill && !TBB_GOOGLE_FLOW_MOCKUP_SURFACES.some(s => s.id === selectedPill) ? xmlEsc(selectedPill) : ""}" placeholder="${xmlEsc(tr("Ej. taza, caja, vehículo..."))}" style="width:100%;box-sizing:border-box;height:40px;padding:0 14px;border-radius:12px;border:1.5px solid #CBD5E1;background:#FFFFFF;color:#0D2540;font-size:0.875rem;font-weight:500;outline:none;text-overflow:ellipsis;" />
               </div>
             </div>
 
-            <!-- Barra Inferior estilo Google Flow: Fast / Pro + Generar + Abrir en Google Flow -->
-            <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid rgba(255,255,255,0.10);padding-top:12px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-                <div style="display:inline-flex;background:#232634;border-radius:999px;padding:3px;border:1px solid rgba(255,255,255,0.14);">
-                  <button type="button" id="tbbFlowModeFastBtn" style="padding:5px 12px;border-radius:999px;border:none;background:${modeNow === "fast" ? "#F8FAFC" : "transparent"};color:${modeNow === "fast" ? "#090D16" : "#CBD5E1"};font-size:0.72rem;font-weight:800;cursor:pointer;">Fast (2.1)</button>
-                  <button type="button" id="tbbFlowModeProBtn" style="padding:5px 12px;border-radius:999px;border:none;background:${modeNow === "pro" ? "#F8FAFC" : "transparent"};color:${modeNow === "pro" ? "#090D16" : "#CBD5E1"};font-size:0.72rem;font-weight:800;cursor:pointer;">Pro</button>
+            <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #E2E8F0;padding-top:12px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+                <div style="display:inline-flex;background:#E2E8F0;border-radius:999px;padding:3px;">
+                  <button type="button" id="tbbFlowModeFastBtn" style="padding:5px 12px;border-radius:999px;border:none;background:${modeNow === "fast" ? "#FFFFFF" : "transparent"};color:${modeNow === "fast" ? "#0D2540" : "#475569"};font-size:0.78rem;font-weight:600;cursor:pointer;">${xmlEsc(tr("Rápido"))}</button>
+                  <button type="button" id="tbbFlowModeProBtn" style="padding:5px 12px;border-radius:999px;border:none;background:${modeNow === "pro" ? "#FFFFFF" : "transparent"};color:${modeNow === "pro" ? "#0D2540" : "#475569"};font-size:0.78rem;font-weight:600;cursor:pointer;">${xmlEsc(tr("Alta Calidad"))}</button>
                 </div>
-                <button type="button" id="tbbFlowOpenExternalBtn" style="padding:6px 11px;border-radius:999px;border:1px solid rgba(255,255,255,0.22);background:#1E202B;color:#E2E8F0;font-size:0.70rem;font-weight:700;cursor:pointer;" title="Descarga tu logo PNG y abre la herramienta Remix of Mockup en flow.google.com">
-                  ↗ Abrir en flow.google.com
+                <button type="button" id="tbbFlowDownloadLogoPngBtn" style="padding:6px 12px;border-radius:999px;border:1px solid #CBD5E1;background:#FFFFFF;color:#0D2540;font-size:0.78rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+                  ${svgDownload} <span>${xmlEsc(tr("Guardar PNG"))}</span>
                 </button>
               </div>
 
-              <button type="button" id="tbbFlowRunGenerateBtn" style="width:100%;padding:11px 16px;border-radius:12px;border:none;background:linear-gradient(90deg,#FF7A00,#F97316);color:#FFFFFF;font-family:'Montserrat',sans-serif;font-size:0.82rem;font-weight:900;cursor:pointer;box-shadow:0 8px 20px rgba(255,122,0,0.35);">
-                ✨ Generar y Actualizar Mockups en el Manual (4:3)
+              <button type="button" id="tbbFlowRunGenerateBtn" style="width:100%;min-height:44px;padding:10px 16px;border-radius:14px;border:none;background:#FF7A00;color:#FFFFFF;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(255,122,0,0.25);display:inline-flex;align-items:center;justify-content:center;gap:8px;text-align:center;">
+                <span style="display:inline-flex;flex-shrink:0;">${svgSpark}</span> <span>${xmlEsc(tr("Generar y actualizar en mi Brandbook"))}</span>
               </button>
             </div>
           </div>
 
-          <!-- Panel Derecho: Galería de los 6 Mockups del Brandbook -->
-          <div style="padding:20px 24px;display:flex;flex-direction:column;justify-content:space-between;overflow-y:auto;background:#0D0F14;">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;">
-              <div>
-                <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#FF7A00;font-weight:800;letter-spacing:1px;">
-                  VISTA PREVIA EN VIVO · LÁMINAS 05, 07, 10, 11, 12, 28, 31 Y 32
+          <div class="tbb-mockup-right">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #E2E8F0;padding-bottom:12px;">
+              <div style="min-width:0;">
+                <div style="font-size:0.75rem;color:#426EAE;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;">
+                  ${xmlEsc(tr("APLICACIONES REALES PARA TU BRANDBOOK"))}
                 </div>
-                <h3 style="font-family:'Montserrat',sans-serif;font-size:1.12rem;font-weight:900;color:#FFFFFF;margin:2px 0 0 0;">
-                  Showcase de Mockups de «${xmlEsc(brand.name)}» Aplicados al Giro
+                <h3 style="font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:700;color:#0D2540;margin:2px 0 0 0;">
+                  ${xmlEsc(brand.name)}
                 </h3>
               </div>
-              <button type="button" id="tbbFlowCloseModalBtn" style="padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.22);background:#1E202B;color:#FFFFFF;font-size:0.75rem;font-weight:800;cursor:pointer;">
-                Cerrar ✕
+              <button type="button" id="tbbFlowCloseModalBtn" class="tbb-mockup-desktop-close" data-flow-close="1" aria-label="${xmlEsc(tr("Cerrar"))}" style="width:38px;height:38px;border-radius:50%;border:1px solid #CBD5E1;background:#F8FAFC;color:#0D2540;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
+                ${svgClose}
               </button>
             </div>
 
-            <div id="tbbFlowModalStatusBanner" style="display:none;margin-bottom:12px;padding:9px 14px;border-radius:10px;background:rgba(66,110,174,0.22);border:1px solid #4C9DE6;color:#E2E8F0;font-size:0.78rem;font-weight:700;"></div>
+            <div id="tbbFlowModalStatusBanner" style="display:none;padding:10px 14px;border-radius:12px;background:#EFF6FF;border:1px solid #93C5FD;color:#0D2540;font-size:0.86rem;font-weight:600;"></div>
 
-            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));gap:14px;flex:1;">
+            <div class="tbb-mockup-gallery">
               ${slotPreviewList.map((item, idx) => {
                 const slotMeta = (activeEntry._metaBySlot && activeEntry._metaBySlot[item.key]) || giroPlan.slots[item.key];
                 const imgSrc = activeEntry[item.key] || activeEntry[item.alias] || item.defaultImg;
                 return `
-                  <div style="background:#16181F;border:1px solid rgba(255,255,255,0.12);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;">
-                    <div style="position:relative;width:100%;aspect-ratio:4/3;background:#090D16;overflow:hidden;">
-                      <img src="${imgSrc}" alt="${xmlEsc(slotMeta.title)}" style="width:100%;height:100%;object-fit:cover;display:block;" />
-                      <span style="position:absolute;top:8px;left:8px;background:rgba(9,13,22,0.86);color:#FDBA74;font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:800;padding:3px 8px;border-radius:999px;border:1px solid rgba(255,122,0,0.4);">
-                        0${idx + 1} · ${xmlEsc(slotMeta.badge)}
+                  <div style="background:#FFFFFF;border:1px solid #E2E8F0;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 4px 14px rgba(13,37,64,0.04);">
+                    <div style="position:relative;width:100%;aspect-ratio:4/3;background:#F8FAFC;overflow:hidden;">
+                      <img src="${imgSrc}" alt="${xmlEsc(tr(slotMeta.title))}" style="width:100%;height:100%;object-fit:cover;display:block;" />
+                      <span style="position:absolute;top:8px;left:8px;background:rgba(255,255,255,0.94);color:#0D2540;font-size:0.7rem;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid #E2E8F0;">
+                        0${idx + 1} · ${xmlEsc(tr(slotMeta.badge))}
                       </span>
                     </div>
                     <div style="padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
                       <div style="min-width:0;">
-                        <div style="font-size:0.76rem;font-weight:800;color:#FFFFFF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${xmlEsc(slotMeta.title)}</div>
-                        <div style="font-size:0.66rem;color:#94A3B8;">Proporción 4:3 bloqueada</div>
+                        <div style="font-size:0.84rem;font-weight:600;color:#0D2540;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${xmlEsc(tr(slotMeta.title))}</div>
                       </div>
-                      <button type="button" data-flow-regen-slot="${item.key}" style="padding:4px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.18);background:#232634;color:#F8FAFC;font-size:0.66rem;font-weight:800;cursor:pointer;flex-shrink:0;" title="Regenerar este mockup con la superficie seleccionada">
-                        ↻ Remix
+                      <button type="button" data-flow-regen-slot="${item.key}" style="padding:5px 10px;border-radius:999px;border:1px solid #CBD5E1;background:#F8FAFC;color:#0D2540;font-size:0.76rem;font-weight:600;cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center;gap:4px;" title="${xmlEsc(tr("Generar nueva vista"))}">
+                        ${svgRefresh} <span>${xmlEsc(tr("Cambiar"))}</span>
                       </button>
                     </div>
                   </div>
@@ -2622,8 +2711,7 @@
         </div>
       `;
 
-      // Bindings interactivos del modal
-      overlay.querySelector("#tbbFlowCloseModalBtn")?.addEventListener("click", () => overlay.remove());
+      overlay.querySelectorAll("[data-flow-close]").forEach((b) => b.addEventListener("click", () => overlay.remove()));
       overlay.querySelector("#tbbFlowModeFastBtn")?.addEventListener("click", () => {
         window.tbbState.flowMockupQualityMode = "fast";
         renderModalBody();
@@ -2641,16 +2729,15 @@
         });
       });
 
-      overlay.querySelector("#tbbFlowOpenExternalBtn")?.addEventListener("click", () => {
+      overlay.querySelector("#tbbFlowDownloadLogoPngBtn")?.addEventListener("click", () => {
         if (logoPngUrl) {
           const a = document.createElement("a");
           a.href = logoPngUrl;
-          a.download = `Logo_Import_Google_Flow_${brand.slug || "marca"}.png`;
+          a.download = `Logotipo_${brand.slug || "marca"}.png`;
           document.body.appendChild(a);
           a.click();
           a.remove();
         }
-        window.open(TBB_GOOGLE_FLOW_MOCKUP_URL, "_blank", "noopener,noreferrer");
       });
 
       const triggerRemix = async (onlySlotKey = "") => {
@@ -2660,17 +2747,17 @@
         const runBtn = overlay.querySelector("#tbbFlowRunGenerateBtn");
         if (banner) {
           banner.style.display = "block";
-          banner.textContent = "Conectando con Nano Banana 2.1 (Google Flow Remix of Mockup): aplicando tu logotipo a las superficies del giro...";
+          banner.textContent = tr("Aplicando tu logotipo a las superficies reales de tu negocio...");
         }
         if (runBtn) {
           runBtn.disabled = true;
-          runBtn.textContent = "Generando Mockups con tu Logotipo...";
+          runBtn.textContent = tr("Generando vistas reales...");
         }
         await tbbGenerateChapterVisualsWithFlow(
           brand,
           (done, total, label) => {
             if (banner) {
-              banner.textContent = `Renderizando Mockup (${done}/${total}): ${label}...`;
+              banner.textContent = `${tr("Creando vista")} (${done}/${total}): ${label}...`;
             }
           },
           {
@@ -2908,7 +2995,13 @@
     const cs = (typeof window.canvasState === "object" && window.canvasState) ? window.canvasState : {};
     const st = window.tbbState || {};
     const s0 = window.step0State || {};
-    if (st.geminiBusy) return "";
+    if (st.geminiBusy) {
+      if (!st._geminiBusyStartedAt || (Date.now() - st._geminiBusyStartedAt) > 50000) {
+        st.geminiBusy = false;
+      } else {
+        return "";
+      }
+    }
 
     const bName = (cs.brandName && !/^(mi nueva marca|marca en creaci[oó]n.*)$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca";
     const giro = (cs.custom_business_type || s0.customBusinessType || cs.step0_short_essence || "Servicios profesionales").trim();
@@ -2955,139 +3048,162 @@
     );
 
     st.geminiBusy = true;
+    st._geminiBusyStartedAt = Date.now();
     st.geminiStatusText = shouldAttachReferenceImage
       ? `Aura evolucionando tu logotipo («${modeObj.shortPill}» · ${pri}, ${sec})...`
       : `Aura diseñando tu logotipo («${modeObj.shortPill}») con 100% del ADN de «${bName}»...`;
     if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
 
-    const prompt = tbbBuildNanoBananaCreativeDirectorPrompt({
-      userHint: userHint,
-      creativeMode: creativeModeKey,
-      hasReferenceImage: shouldAttachReferenceImage,
-      isExternalUpload: Boolean(externalUploadUrl && previousIterationImgUrl === externalUploadUrl),
-      hasLegacyDnaContext: Boolean(externalUploadUrl)
-    });
-
-    const requestParts = [];
-    if (shouldAttachReferenceImage && /^data:image\/(png|jpeg|jpg|webp);base64,/i.test(previousIterationImgUrl)) {
-      const m = previousIterationImgUrl.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,(.+)$/);
-      if (m) {
-        requestParts.push({
-          inlineData: {
-            mimeType: m[1],
-            data: m[2]
-          }
-        });
-      }
-    }
-    requestParts.push({ text: prompt });
-
-    const proxyUrl = (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
-    const models = ["gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview", "gemini-2.5-flash-image", "gemini-3.1-flash-lite-image"];
     let rawImgUrl = "";
+    try {
+      const prompt = tbbBuildNanoBananaCreativeDirectorPrompt({
+        userHint: userHint,
+        creativeMode: creativeModeKey,
+        hasReferenceImage: shouldAttachReferenceImage,
+        isExternalUpload: Boolean(externalUploadUrl && previousIterationImgUrl === externalUploadUrl),
+        hasLegacyDnaContext: Boolean(externalUploadUrl)
+      });
 
-    for (const model of models) {
-      try {
-        const resp = await fetch(proxyUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            model: model,
-            contents: [{ parts: requestParts }],
-            generationConfig: { responseModalities: ["IMAGE", "TEXT"] }
-          })
-        });
-        if (!resp.ok) continue;
-        const data = await resp.json();
-        const parts = data?.candidates?.[0]?.content?.parts || [];
-        for (const p of parts) {
-          if (p?.inlineData?.data) {
-            const mime = p.inlineData.mimeType || "image/png";
-            rawImgUrl = `data:${mime};base64,${p.inlineData.data}`;
+      const requestParts = [];
+      const resolvedRefImg = (window.TBBArtworkVaultIDB && window.TBBArtworkVaultIDB.resolveSync(previousIterationImgUrl)) || previousIterationImgUrl;
+      if (shouldAttachReferenceImage && /^data:image\/(png|jpeg|jpg|webp);base64,/i.test(resolvedRefImg)) {
+        const m = resolvedRefImg.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,(.+)$/);
+        if (m) {
+          requestParts.push({
+            inlineData: {
+              mimeType: m[1],
+              data: m[2]
+            }
+          });
+        }
+      }
+      requestParts.push({ text: prompt });
+
+      const proxyEndpoints = [
+        (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy",
+        "https://thebestbrand.app/api/v1/gemini/proxy"
+      ].filter((v, idx, arr) => v && arr.indexOf(v) === idx);
+      const models = ["gemini-3.1-flash-image-preview", "gemini-3-pro-image-preview", "gemini-2.5-flash-image", "gemini-3.1-flash-lite-image"];
+
+      outerModelLoop:
+      for (const model of models) {
+        for (const endpoint of proxyEndpoints) {
+          const ctrl = new AbortController();
+          const tmr = setTimeout(() => ctrl.abort(), 45000);
+          try {
+            const resp = await fetch(endpoint, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              signal: ctrl.signal,
+              body: JSON.stringify({
+                model: model,
+                contents: [{ parts: requestParts }],
+                generationConfig: { responseModalities: ["IMAGE", "TEXT"] }
+              })
+            });
+            clearTimeout(tmr);
+            if (!resp.ok) {
+              if (resp.status === 404 || resp.status === 405 || resp.status === 502 || resp.status === 503) continue;
+              break;
+            }
+            const data = await resp.json();
+            const parts = data?.candidates?.[0]?.content?.parts || [];
+            for (const p of parts) {
+              if (p?.inlineData?.data) {
+                const mime = p.inlineData.mimeType || "image/png";
+                rawImgUrl = `data:${mime};base64,${p.inlineData.data}`;
+                break outerModelLoop;
+              }
+            }
             break;
+          } catch (err) {
+            clearTimeout(tmr);
           }
         }
-        if (rawImgUrl) break;
-      } catch (err) {
-        console.warn("Nano Banana logo error:", err);
       }
+
+      if (rawImgUrl) {
+        let centeredPng = rawImgUrl;
+        let tracedCurves = "";
+        try {
+          centeredPng = (await tbbAutoTrimAndCenterRasterLogo(rawImgUrl, 1024, 0.84)) || rawImgUrl;
+        } catch (e) {}
+        try {
+          tracedCurves = (await tbbVectorizeRasterLogoToSvgCurves(centeredPng)) || "";
+        } catch (e) {}
+
+        cs.nano_banana_full_artwork_url = rawImgUrl;
+        cs.nano_banana_symbol_url = centeredPng;
+        cs.uploaded_logo_traced_curves_svg = tracedCurves || "";
+        if (window.step0State) {
+          window.step0State.uploadedLogoTracedCurvesSvg = tracedCurves || "";
+        }
+
+        if (!Array.isArray(st.logoIterations)) {
+          st.logoIterations = [];
+        }
+
+        const replacePlaceholderFirst = Boolean(
+          options.replaceInitialPlaceholder &&
+          st.logoIterations.length === 1 &&
+          st.logoIterations[0].isInitialSystemic &&
+          !st.logoIterations[0].isNanoBananaGenerated &&
+          !st.logoIterations[0].isUploadedUserLogo
+        );
+
+        const nextIdx = replacePlaceholderFirst ? 1 : (st.logoIterations.length + 1);
+        const shortPillLabel = `#${nextIdx} · ${modeObj.shortPill}`;
+        const summaryPrompt40w = `Identidad visual oficial («${modeObj.label}») para «${bName}» (${giro.slice(0, 36)}), integrando su ADN estratégico, paleta oficial (${pri}, ${sec}, ${acc}) y trazado en curvas Bézier.`;
+
+        const nbEntry = {
+          idx: nextIdx,
+          isInitialSystemic: false,
+          isUploadedUserLogo: false,
+          isNanoBananaGenerated: true,
+          creativeMode: creativeModeKey,
+          nanoBananaFullArtworkUrl: rawImgUrl,
+          nanoBananaSymbolUrl: centeredPng,
+          uploadedLogoDataUrl: centeredPng,
+          tracedCurvesSvg: tracedCurves || "",
+          uploadedLogoSvgMarkup: "",
+          shortPill: shortPillLabel,
+          paradigm: st.logoParadigm || "detailed_emblem",
+          archetype: "nanobanana_masterpiece",
+          conceptLabel: `${modeObj.label} · Diseño Oficial`,
+          pri: pri,
+          sec: sec,
+          accentHex: acc,
+          scale: 1.0,
+          darkBg: Boolean(st.logoDarkBg),
+          fontFamily: cs.primary_font || st.selectedFontFamily || "Cormorant Garamond",
+          layout: "masterpiece_lockup",
+          mods: {},
+          geminiCustomSvg: "",
+          svgOverlayAdditions: "",
+          note: userHint || seedIdea || `${modeObj.label} para ${bName}`,
+          prompt: summaryPrompt40w,
+          geminiPrompt40w: summaryPrompt40w
+        };
+
+        if (replacePlaceholderFirst) {
+          st.logoIterations[0] = nbEntry;
+          st.logoIterationIndex = 1;
+        } else {
+          st.logoIterations.push(nbEntry);
+          st.logoIterationIndex = st.logoIterations.length;
+        }
+        st._draftLogoPromptText = "";
+        if (typeof window.saveBrandSessionToLocalStorage === "function") window.saveBrandSessionToLocalStorage();
+        if (typeof window.triggerAuraEmpatheticFeedback === "function") {
+          window.triggerAuraEmpatheticFeedback("input_logo_done", `${modeObj.label}: ${userHint || seedIdea || bName}`, true);
+        }
+      }
+    } finally {
+      st.geminiBusy = false;
+      st._geminiBusyStartedAt = 0;
+      st.geminiStatusText = "";
+      if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
     }
-
-    if (rawImgUrl) {
-      const centeredPng = await tbbAutoTrimAndCenterRasterLogo(rawImgUrl, 1024, 0.84);
-      const tracedCurves = await tbbVectorizeRasterLogoToSvgCurves(centeredPng);
-
-      // Guardar referencia en canvasState para exportación .SVG/.AI/.DOCX/.PPTX sin secuestrar la bandera de logo externo subido en Paso 0
-      cs.nano_banana_full_artwork_url = rawImgUrl;
-      cs.nano_banana_symbol_url = centeredPng;
-      cs.uploaded_logo_traced_curves_svg = tracedCurves || "";
-      if (window.step0State) {
-        window.step0State.uploadedLogoTracedCurvesSvg = tracedCurves || "";
-      }
-
-      if (!Array.isArray(st.logoIterations)) {
-        st.logoIterations = [];
-      }
-
-      // Si la iteración #1 era únicamente el placeholder geométrico inicial y no una obra de NanoBanana ni un logo subido por el usuario, reemplazarla limpiamente en la primera generación automática
-      const replacePlaceholderFirst = Boolean(
-        options.replaceInitialPlaceholder &&
-        st.logoIterations.length === 1 &&
-        st.logoIterations[0].isInitialSystemic &&
-        !st.logoIterations[0].isNanoBananaGenerated &&
-        !st.logoIterations[0].isUploadedUserLogo
-      );
-
-      const nextIdx = replacePlaceholderFirst ? 1 : (st.logoIterations.length + 1);
-      const shortPillLabel = `#${nextIdx} · ${modeObj.shortPill}`;
-      const summaryPrompt40w = `Identidad visual oficial («${modeObj.label}») para «${bName}» (${giro.slice(0, 36)}), integrando su ADN estratégico, paleta oficial (${pri}, ${sec}, ${acc}) y trazado en curvas Bézier.`;
-
-      const nbEntry = {
-        idx: nextIdx,
-        isInitialSystemic: false,
-        isUploadedUserLogo: false,
-        isNanoBananaGenerated: true,
-        creativeMode: creativeModeKey,
-        nanoBananaFullArtworkUrl: rawImgUrl,
-        nanoBananaSymbolUrl: centeredPng,
-        uploadedLogoDataUrl: centeredPng,
-        tracedCurvesSvg: tracedCurves || "",
-        uploadedLogoSvgMarkup: "",
-        shortPill: shortPillLabel,
-        paradigm: st.logoParadigm || "detailed_emblem",
-        archetype: "nanobanana_masterpiece",
-        conceptLabel: `${modeObj.label} · Diseño Oficial`,
-        pri: pri,
-        sec: sec,
-        accentHex: acc,
-        scale: 1.0,
-        darkBg: Boolean(st.logoDarkBg),
-        fontFamily: cs.primary_font || st.selectedFontFamily || "Cormorant Garamond",
-        layout: "masterpiece_lockup",
-        mods: {},
-        geminiCustomSvg: "",
-        svgOverlayAdditions: "",
-        note: userHint || seedIdea || `${modeObj.label} para ${bName}`,
-        prompt: summaryPrompt40w,
-        geminiPrompt40w: summaryPrompt40w
-      };
-
-      if (replacePlaceholderFirst) {
-        st.logoIterations[0] = nbEntry;
-        st.logoIterationIndex = 1;
-      } else {
-        st.logoIterations.push(nbEntry);
-        st.logoIterationIndex = st.logoIterations.length;
-      }
-      if (typeof window.saveBrandSessionToLocalStorage === "function") window.saveBrandSessionToLocalStorage();
-      if (typeof window.triggerAuraEmpatheticFeedback === "function") {
-        window.triggerAuraEmpatheticFeedback("input_logo_done", `${modeObj.label}: ${userHint || seedIdea || bName}`, true);
-      }
-    }
-
-    st.geminiBusy = false;
-    st.geminiStatusText = "";
-    if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
     return rawImgUrl;
   }
   window.tbbGenerateNanoBananaBrandSymbol = tbbGenerateNanoBananaBrandSymbol;
@@ -3320,7 +3436,7 @@
 
       if (triggerBtn) {
         triggerBtn.disabled = false;
-        triggerBtn.textContent = `✓ Kit Híbrido Descargado (${priFont} + ${secFont} + ${monoFont})`;
+        triggerBtn.textContent = `Kit Híbrido Descargado (${priFont} + ${secFont} + ${monoFont})`;
         setTimeout(() => { if (origHtml) triggerBtn.innerHTML = origHtml; }, 2800);
       }
       return blob;
@@ -3384,14 +3500,14 @@
     setTimeout(() => { tbbEnsureUploadedLogoCentered(); }, 350);
   }
 
-  console.log("✓ Suite Ejecutiva de Entregables (.SVG/.AI Curvas, .DOCX, .PPTX, Firma .HTML, Kit Fuentes .ZIP, Auto-Center & Google Flow Visuals V83.0) activa.");
+  console.log("Suite Ejecutiva de Entregables (.SVG/.AI Curvas, .DOCX, .PPTX, Firma .HTML, Kit Fuentes .ZIP, Auto-Center & Google Flow Visuals V83.0) activa.");
 })();
 
   window.tbbDownloadAllDeliverablesBundleZip = async function (btnEl) {
     const orig = btnEl ? btnEl.textContent : "";
     if (btnEl) {
       btnEl.disabled = true;
-      btnEl.textContent = "📦 Empaquetando tus archivos...";
+      btnEl.textContent = "Empaquetando tus archivos...";
     }
     try {
       if (typeof window.tbbExportLogoInCurves === "function") {
@@ -3416,7 +3532,7 @@
       setTimeout(() => {
         if (btnEl) {
           btnEl.disabled = false;
-          btnEl.textContent = orig || "📦 Descargar Paquete Completo";
+          btnEl.textContent = orig || "Descargar Paquete Completo";
         }
       }, 2100);
     }

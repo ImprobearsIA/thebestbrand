@@ -178,7 +178,7 @@
         </text>
         <!-- Texto Curvado Inferior (Calidad & Origen) -->
         <text font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="9" letter-spacing="3" fill="${pri}">
-          <textPath href="#${sealId}_bottom" startOffset="50%" text-anchor="middle">★ CALIDAD CERTIFICADA · 2026 ★</textPath>
+          <textPath href="#${sealId}_bottom" startOffset="50%" text-anchor="middle">CALIDAD CERTIFICADA · 2026 </textPath>
         </text>
         <!-- Símbolo en el Corazón del Sello (130, 130 exacto) -->
         <g transform="translate(75, 75) scale(0.55)">
@@ -1223,7 +1223,7 @@
           <div class="tbb-editorial-pillar" style="border-left-color:${pri}; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
               <span class="tbb-editorial-kicker" style="color:${pri};">ESTÁNDAR COMUNICACIONAL APROBADO</span>
-              <div class="tbb-card-title" style="color:${pri}; font-size:20px;">✓ SÍ HABLAMOS ASÍ</div>
+              <div class="tbb-card-title" style="color:${pri}; font-size:20px;">SÍ HABLAMOS ASÍ</div>
               <ul style="margin:14px 0 0 0; padding-left:20px; font-size:15.8px; line-height:1.82; color:#1E293B;">
                 <li><strong>Claro y Ejecutivo:</strong> Frases concisas que aportan valor desde el primer renglón.</li>
                 <li><strong>Didáctico y Cercano:</strong> Dominio técnico explicado en lenguaje humano y transparente.</li>
@@ -1239,7 +1239,7 @@
           <div class="tbb-editorial-pillar" style="border-left-color:${acc}; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
               <span class="tbb-editorial-kicker" style="color:${acc};">RESTRICCIÓN DE ESTILO VERBAL</span>
-              <div class="tbb-card-title" style="color:${darkInk}; font-size:20px;">✕ JAMÁS HABLAMOS ASÍ</div>
+              <div class="tbb-card-title" style="color:${darkInk}; font-size:20px;">JAMÁS HABLAMOS ASÍ</div>
               <ul style="margin:14px 0 0 0; padding-left:20px; font-size:15.8px; line-height:1.82; color:#1E293B;">
                 <li><strong>Cero Arrogancia:</strong> Prohibido usar tecnicismos rebuscados para confundir al cliente.</li>
                 <li><strong>Cero Clichés Vacíos:</strong> Evitar muletillas genéricas sin sustento operativo real.</li>
@@ -1731,7 +1731,7 @@
             <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; padding-left:14px; transform:scaleX(1.35); transform-origin:left center; opacity:0.85;">
               <div style="width:56px; height:56px;"><svg viewBox="0 0 200 200" width="56" height="56" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
-            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO DEFORMAR PROPORCIÓN</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">NO DEFORMAR PROPORCIÓN</div>
             <div style="font-size:13.5px; color:#475569; line-height:1.45;">Prohibido estirar horizontal o verticalmente fuera de 1:1.</div>
           </div>
 
@@ -1739,7 +1739,7 @@
             <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; padding-left:14px; filter:drop-shadow(4px 4px 6px #000);">
               <div style="width:56px; height:56px;"><svg viewBox="0 0 200 200" width="56" height="56" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
-            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO SOMBRAS GRISES</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">NO SOMBRAS GRISES</div>
             <div style="font-size:13.5px; color:#475569; line-height:1.45;">Prohibido añadir sombras paralelas o resplandores.</div>
           </div>
 
@@ -1747,7 +1747,7 @@
             <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; padding-left:14px; opacity:0.35; filter:grayscale(80%);">
               <div style="width:56px; height:56px;"><svg viewBox="0 0 200 200" width="56" height="56" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
-            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO ALTERAR PALETA</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">NO ALTERAR PALETA</div>
             <div style="font-size:13.5px; color:#475569; line-height:1.45;">Usar exclusivamente los códigos cromáticos oficiales.</div>
           </div>
 
@@ -1755,7 +1755,7 @@
             <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; padding-left:14px; transform:rotate(24deg); transform-origin:left center;">
               <div style="width:56px; height:56px;"><svg viewBox="0 0 200 200" width="56" height="56" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
-            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO INCLINAR EN ÁNGULO</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">NO INCLINAR EN ÁNGULO</div>
             <div style="font-size:13.5px; color:#475569; line-height:1.45;">El símbolo siempre se asienta sobre su eje ortogonal.</div>
           </div>
 
@@ -1763,7 +1763,7 @@
             <div style="height:72px; width:110px; display:flex; align-items:center; justify-content:center; background:${sec}; border-radius:8px 20px 8px 8px;">
               <div style="width:52px; height:52px; opacity:0.45;"><svg viewBox="0 0 200 200" width="52" height="52" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">${symCore}</svg></div>
             </div>
-            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO BAJO CONTRASTE</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">NO BAJO CONTRASTE</div>
             <div style="font-size:13.5px; color:#475569; line-height:1.45;">Jamás montar sobre fondos sin contraste óptico suficiente.</div>
           </div>
 
@@ -1771,7 +1771,7 @@
             <div style="height:72px; display:flex; align-items:center; justify-content:flex-start; font-family:serif; font-style:italic; font-size:20px; font-weight:400; color:${midGray};">
               ${esc(bUpper)}
             </div>
-            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">✕ NO SUSTITUIR TIPOGRAFÍA</div>
+            <div style="color:${acc}; font-weight:900; font-size:15px; margin:8px 0 4px 0;">NO SUSTITUIR TIPOGRAFÍA</div>
             <div style="font-size:13.5px; color:#475569; line-height:1.45;">Respetar siempre la familia tipográfica institucional.</div>
           </div>
         </div>
@@ -2329,8 +2329,10 @@
               <div>
                 <div style="font-family:'${priFont}', sans-serif; font-size:18px; font-weight:900; color:${darkInk};">${esc(bName)}</div>
                 <div style="font-size:12.5px; font-weight:800; color:${acc}; letter-spacing:0.6px; margin-bottom:4px;">DIRECCIÓN GENERAL · ${esc(shortCategory.toUpperCase().slice(0, 32))}</div>
-                <div style="font-size:13.5px; color:#334155; line-height:1.5;">
-                  ✉ contacto@${esc(slug.replace(/_/g, ""))}.com &nbsp;|&nbsp; 🌐 www.${esc(slug.replace(/_/g, ""))}.com
+                <div style="font-size:13.5px; color:#334155; line-height:1.5; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="display:inline-flex;align-items:center;gap:4px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="1.8"/></svg> contacto@${esc(slug.replace(/_/g, ""))}.com</span>
+                  <span>|</span>
+                  <span style="display:inline-flex;align-items:center;gap:4px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" stroke="currentColor" stroke-width="1.6"/></svg> www.${esc(slug.replace(/_/g, ""))}.com</span>
                 </div>
               </div>
             </div>
@@ -2436,9 +2438,9 @@
               ${suite.horizontal}
             </div>
             <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-              <span style="background:${pri}; color:#FFFFFF; font-size:11.5px; font-weight:800; padding:5px 12px; border-radius:999px;">✓ 0 Etiquetas &lt;text&gt;</span>
-              <span style="background:#0F172A; color:#FFFFFF; font-size:11.5px; font-weight:800; padding:5px 12px; border-radius:999px;">✓ Centrado Óptico 0.00px</span>
-              <span style="background:${acc}; color:#FFFFFF; font-size:11.5px; font-weight:800; padding:5px 12px; border-radius:999px;">✓ Curvas Bézier (.SVG / .AI)</span>
+              <span style="background:${pri}; color:#FFFFFF; font-size:11.5px; font-weight:800; padding:5px 12px; border-radius:999px;">0 Etiquetas &lt;text&gt;</span>
+              <span style="background:#0F172A; color:#FFFFFF; font-size:11.5px; font-weight:800; padding:5px 12px; border-radius:999px;">Centrado Óptico 0.00px</span>
+              <span style="background:${acc}; color:#FFFFFF; font-size:11.5px; font-weight:800; padding:5px 12px; border-radius:999px;">Curvas Bézier (.SVG / .AI)</span>
             </div>
           </div>
 
@@ -2640,7 +2642,7 @@ Instrucciones obligatorias:
     } else if (typeof window.renderTbbZeroScrollStage === "function") {
       window.renderTbbZeroScrollStage();
     }
-    console.log("✓ Sesión limpia establecida con éxito.");
+    console.log("Sesión limpia establecida con éxito.");
   }
 
   // --- INYECCIÓN SEGURA DE ESTILOS EDITORIALES DENTRO DE STUDIO.HTML (PASO 6) ---
@@ -2877,7 +2879,7 @@ Instrucciones obligatorias:
     const elS = document.getElementById("triFoldPreviewSeal");
     if (elS) elS.innerHTML = suite.seal;
 
-    console.log("✓ Terna de Logotipos Tri-Fold actualizada en UI para:", brand.name);
+    console.log("Terna de Logotipos Tri-Fold actualizada en UI para:", brand.name);
   };
 
   window.downloadTriFoldAsset = async function (type, format) {
@@ -3482,7 +3484,7 @@ Instrucciones obligatorias:
         setBtnStatus(`Generando Lámina ${cur} de ${tot}...`, true);
       });
 
-      setBtnStatus(`✓ Manual PDF de ${totalCount} Láminas Listo`, false);
+      setBtnStatus(`Manual PDF de ${totalCount} Láminas Listo`, false);
       setTimeout(() => {
         if (triggerBtn && origHtml) triggerBtn.innerHTML = origHtml;
       }, 3500);
@@ -3613,5 +3615,5 @@ Solo incluye en "updated_canvas" los campos que se desprendan directamente de lo
 
   window.executeDirectGeminiSocraticTurn = executeDirectGeminiSocraticTurn;
 
-  console.log("✓ Motor Generativo Editorial TheBestBrand V81.0 cargado con éxito.");
+  console.log("Motor Generativo Editorial TheBestBrand V81.0 cargado con éxito.");
 })();

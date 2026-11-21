@@ -759,7 +759,7 @@
         <div style="background:#F8FAFC; border:1px solid #93C5FD; border-left:3.5px solid #1D4ED8; border-radius:10px; padding:7px 10px; margin-top:4px; display:flex; align-items:center; gap:8px;">
           <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#1D4ED8; animation:pulse 1s infinite; flex-shrink:0;"></span>
           <div style="font-size:0.72rem; font-weight:600; color:#0D2540;">
-            ✦ Consultando dictamen en vivo de <strong>${author.name}</strong>...
+            Consultando dictamen en vivo de <strong>${author.name}</strong>...
           </div>
         </div>
       `;
@@ -867,7 +867,7 @@
               <span style="font-family:'Montserrat',sans-serif; font-size:0.72rem; font-weight:700; color:#0D2540;">${author.name}</span>
             </div>
             <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:700; color:#047857; background:#ECFDF5; padding:2px 6px; border-radius:5px; border:1px solid #A7F3D0;">
-              ✦ ${audit.verdict} (${audit.score})
+              ${audit.verdict} (${audit.score})
             </span>
           </div>
           <p style="font-size:0.74rem; color:#334155; line-height:1.35; margin:0 0 6px 0; font-style:italic;">
@@ -878,7 +878,7 @@
             <div style="font-size:0.78rem; font-weight:600; color:#090D16; line-height:1.32;">${audit.executiveCopy}</div>
           </div>
           <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbApplyAuthorExecutiveCopy(${s}, '${fieldRole}', '${encodeURIComponent(audit.executiveCopy)}')" style="min-height:32px !important; padding:4px 10px !important; font-size:0.72rem !important; font-weight:600 !important; width:100%; border-radius:8px !important;">
-            ✓ Usar Redacción de ${author.shortName}
+            Usar Redacción de ${author.shortName}
           </button>
         </div>
       `;
@@ -920,7 +920,7 @@
     if (container) {
       container.innerHTML = `
         <div style="background:#ECFDF5; border:1px solid #A7F3D0; border-radius:8px; padding:8px 12px; font-size:0.78rem; font-weight:800; color:#047857; text-align:center;">
-          ✓ Redacción ejecutiva aplicada al campo y sincronizada con el Manual de 30 Hojas.
+          Redacción ejecutiva aplicada al campo y sincronizada con el Manual de 30 Hojas.
         </div>
       `;
       setTimeout(() => {
@@ -2672,7 +2672,7 @@
           ${meta.authorQuote ? `<span style="color:#64748B;font-size:7.2px;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(meta.authorQuote)}</span>` : ""}
         </div>
         <div style="font-family:'JetBrains Mono',monospace;font-size:7.0px;font-weight:800;color:#047857;letter-spacing:0.06em;background:#ECFDF5;padding:1px 6px;border-radius:4px;border:1px solid #A7F3D0;white-space:nowrap;flex-shrink:0;">
-          ✦ ${esc(meta.auditVerdict || "DICTAMEN METODOLÓGICO: APROBADO")}
+          ${esc(meta.auditVerdict || "DICTAMEN METODOLÓGICO: APROBADO")}
         </div>
       </div>
     `;
@@ -6153,7 +6153,7 @@
 
         ctx.fillStyle = "#15803D";
         ctx.font = "800 13px Montserrat, sans-serif";
-        ctx.fillText("✓ CÓMO HABLAMOS (RECOMENDADO)", dosX + 16, 272);
+        ctx.fillText("CÓMO HABLAMOS (RECOMENDADO)", dosX + 16, 272);
 
         const dosList = [
           "«Diseñamos sistemas que reducen la fricción y liberan tu tiempo.»",
@@ -6179,7 +6179,7 @@
 
         ctx.fillStyle = "#B91C1C";
         ctx.font = "800 13px Montserrat, sans-serif";
-        ctx.fillText("✕ LO QUE NUNCA DECIMOS (PROHIBIDO)", dontsX + 16, 272);
+        ctx.fillText("LO QUE NUNCA DECIMOS (PROHIBIDO)", dontsX + 16, 272);
 
         const dontsList = [
           "«Somos los líderes número uno indiscutibles del mercado global.»",
@@ -6636,9 +6636,17 @@
         scratchItems.forEach((sc, scIdx) => {
           const scy = 440 + scIdx * 58;
           drawRoundedRect(ctx, scX2 + 20, scy, scW2 - 40, 50, isRect ? 3 : 8, "#F8FAFC", "#E2E8F0", 1);
-          ctx.fillStyle = "#10B981";
-          ctx.font = "900 14px Montserrat, sans-serif";
-          ctx.fillText("✓", scX2 + 36, scy + 32);
+          ctx.save();
+          ctx.strokeStyle = "#10B981";
+          ctx.lineWidth = 2.4;
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.beginPath();
+          ctx.moveTo(scX2 + 34, scy + 26);
+          ctx.lineTo(scX2 + 39, scy + 31);
+          ctx.lineTo(scX2 + 48, scy + 21);
+          ctx.stroke();
+          ctx.restore();
 
           ctx.fillStyle = pal.darkInk;
           ctx.font = "800 12.5px Montserrat, sans-serif";
@@ -6836,7 +6844,7 @@
           ctx.fillStyle = "#10B981";
           ctx.font = "900 13px Montserrat, sans-serif";
           ctx.textAlign = "right";
-          ctx.fillText(rf[1] + " ★", prX + prW - 40, rfy + 24);
+          ctx.fillText(rf[1], prX + prW - 40, rfy + 24);
           ctx.textAlign = "left";
 
           ctx.fillStyle = "#475569";
@@ -7779,9 +7787,17 @@
           const cky = 246 + cIdx * 62;
           drawRoundedRect(ctx, chX + 24, cky, chW - 48, 54, isRect ? 3 : 10, "#F8FAFC", "#E2E8F0", 1);
 
-          ctx.fillStyle = "#10B981";
-          ctx.font = "900 15px Montserrat, sans-serif";
-          ctx.fillText("✓", chX + 40, cky + 33);
+          ctx.save();
+          ctx.strokeStyle = "#10B981";
+          ctx.lineWidth = 2.5;
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+          ctx.beginPath();
+          ctx.moveTo(chX + 38, cky + 27);
+          ctx.lineTo(chX + 43, cky + 32);
+          ctx.lineTo(chX + 52, cky + 22);
+          ctx.stroke();
+          ctx.restore();
 
           ctx.fillStyle = pal.pri;
           ctx.font = "800 11px Montserrat, sans-serif";
@@ -7978,7 +7994,7 @@
       if (triggerBtn) {
         triggerBtn.disabled = false;
         triggerBtn.style.opacity = "1";
-        triggerBtn.textContent = "✓ Manual PDF de 30 Láminas Listo";
+        triggerBtn.textContent = "Manual PDF de 30 Láminas Listo";
         setTimeout(() => { triggerBtn.innerHTML = origText; }, 3500);
       }
 

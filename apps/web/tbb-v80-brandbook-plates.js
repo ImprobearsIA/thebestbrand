@@ -591,7 +591,7 @@ function generateBrandbook30Plates(brand) {
           
           <div class="tbb-dosdonts-grid">
             <div class="tbb-dos-card">
-              <div class="tbb-dd-head tbb-dd-yes">✓ CÓMO HABLAMOS (SÍ)</div>
+              <div class="tbb-dd-head tbb-dd-yes" style="display:inline-flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>CÓMO HABLAMOS (SÍ)</span></div>
               <ul>
                 <li>«Tu marca queda lista para operar hoy mismo con certeza legal.»</li>
                 <li>«Diseñamos sistemas que reducen la fricción y liberan tu tiempo.»</li>
@@ -600,7 +600,7 @@ function generateBrandbook30Plates(brand) {
               </ul>
             </div>
             <div class="tbb-donts-card">
-              <div class="tbb-dd-head tbb-dd-no">✗ QUÉ EVITAMOS (NO)</div>
+              <div class="tbb-dd-head tbb-dd-no" style="display:inline-flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span>QUÉ EVITAMOS (NO)</span></div>
               <ul>
                 <li>«Somos una agencia disruptiva holística 360 multi-touch.»</li>
                 <li>«Tardaremos 6 semanas en idear el primer concepto creativo.»</li>
@@ -1285,7 +1285,7 @@ function generateBrandbook30Plates(brand) {
         <div class="tbb-prob-card">
           <div class="tbb-prob-preview">
             <div style="transform: scaleX(1.4); opacity:0.8;">${logoSym(70)}</div>
-            <div class="tbb-prob-cross">✕</div>
+            <div class="tbb-prob-cross"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg></div>
           </div>
           <div class="tbb-prob-desc"><strong>No Distorsionar:</strong> Jamás alterar la relación de aspecto ni estirar horizontal o verticalmente.</div>
         </div>
@@ -1293,7 +1293,7 @@ function generateBrandbook30Plates(brand) {
         <div class="tbb-prob-card">
           <div class="tbb-prob-preview">
             <div style="filter: drop-shadow(4px 4px 6px #000);">${logoSym(70)}</div>
-            <div class="tbb-prob-cross">✕</div>
+            <div class="tbb-prob-cross"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg></div>
           </div>
           <div class="tbb-prob-desc"><strong>No Sombras Grises:</strong> Prohibido añadir sombras paralelas o difuminados artificiales en PDF.</div>
         </div>
@@ -1301,7 +1301,7 @@ function generateBrandbook30Plates(brand) {
         <div class="tbb-prob-card">
           <div class="tbb-prob-preview">
             <div style="filter: hue-rotate(120deg);">${logoSym(70)}</div>
-            <div class="tbb-prob-cross">✕</div>
+            <div class="tbb-prob-cross"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg></div>
           </div>
           <div class="tbb-prob-desc"><strong>No Cambiar Colores:</strong> Usar estrictamente la paleta oficial (Navy, Zafiro, Naranja y Blanco).</div>
         </div>
@@ -1309,7 +1309,7 @@ function generateBrandbook30Plates(brand) {
         <div class="tbb-prob-card">
           <div class="tbb-prob-preview">
             <div style="transform: rotate(25deg);">${logoSym(70)}</div>
-            <div class="tbb-prob-cross">✕</div>
+            <div class="tbb-prob-cross"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg></div>
           </div>
           <div class="tbb-prob-desc"><strong>No Rotar en Ángulo Libre:</strong> El isotipo siempre se orienta con sus ejes en cruz vertical perfecta.</div>
         </div>
@@ -1317,7 +1317,7 @@ function generateBrandbook30Plates(brand) {
         <div class="tbb-prob-card">
           <div class="tbb-prob-preview">
             <div style="background:#E11D48; padding:8px; border-radius:4px;">${logoSym(60)}</div>
-            <div class="tbb-prob-cross">✕</div>
+            <div class="tbb-prob-cross"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg></div>
           </div>
           <div class="tbb-prob-desc"><strong>No Fondos Contrastantes Malos:</strong> Jamás montar el logo sobre fondos rojos, verdes o estridentes.</div>
         </div>
@@ -1325,7 +1325,7 @@ function generateBrandbook30Plates(brand) {
         <div class="tbb-prob-card">
           <div class="tbb-prob-preview">
             <div style="font-family:'Comic Sans MS', sans-serif; font-size:16px; font-weight:bold; color:${pri};">${bUpper}</div>
-            <div class="tbb-prob-cross">✕</div>
+            <div class="tbb-prob-cross"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg></div>
           </div>
           <div class="tbb-prob-desc"><strong>No Alterar Tipografía:</strong> Usar exclusivamente la fuente institucional aprobada (Montserrat 900).</div>
         </div>

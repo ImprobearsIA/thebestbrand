@@ -10,7 +10,7 @@
   const SUPPORTED_LANGS = {
     es: {
       code: "es",
-      flag: "🇪🇸",
+      flag: "",
       locale: "es-MX",
       label: "Español",
       shortLabel: "ES",
@@ -19,7 +19,7 @@
     },
     en: {
       code: "en",
-      flag: "🇺🇸",
+      flag: "",
       locale: "en-US",
       label: "English",
       shortLabel: "EN",
@@ -28,7 +28,7 @@
     },
     pt: {
       code: "pt",
-      flag: "🇧🇷",
+      flag: "",
       locale: "pt-BR",
       label: "Português",
       shortLabel: "PT",
@@ -37,7 +37,7 @@
     },
     fr: {
       code: "fr",
-      flag: "🇫🇷",
+      flag: "",
       locale: "fr-FR",
       label: "Français",
       shortLabel: "FR",
@@ -46,7 +46,7 @@
     },
     de: {
       code: "de",
-      flag: "🇩🇪",
+      flag: "",
       locale: "de-DE",
       label: "Deutsch",
       shortLabel: "DE",
@@ -55,7 +55,7 @@
     },
     it: {
       code: "it",
-      flag: "🇮🇹",
+      flag: "",
       locale: "it-IT",
       label: "Italiano",
       shortLabel: "IT",
@@ -1187,82 +1187,233 @@
     };
   };
 
+  window._tbbCapsuleBufferCache = window._tbbCapsuleBufferCache || new Map();
+
   window.playAuraVivaCapsuleClip = function (clipKeyOrStep, langOverride, hooks = {}) {
-    ensureBrowserAudioUnlockedSync();
+    const ctx = ensureBrowserAudioUnlockedSync() || window.sharedAcousticCtx;
     TBBAudioDirector.stopAll("start_aura_viva_capsule", true);
     const myGen = TBBAudioDirector.genId;
     const myTicket = ++TBBAudioDirector.ticketId;
     const meta = window.getAuraVivaCapsuleMeta(clipKeyOrStep, langOverride);
 
-    const aud = new Audio(meta.url);
-    aud.preload = "auto";
-    aud.muted = Boolean(window.voiceMuted && !hooks.forceUnmute);
-    // Los clips aura_viva_*.mp3 ya vienen procesados a ritmo ágil 1.14x y <=14.5s
-    aud.defaultPlaybackRate = 1.0;
-    aud.playbackRate = 1.0;
+    if (typeof hooks.onText === "function" && meta.text) {
+      try { hooks.onText(meta.text); } catch (e) {}
+    }
 
-    try {
-      const ctx = window.sharedAcousticCtx;
-      if (ctx && ctx.createMediaElementSource) {
-        const mediaSrc = ctx.createMediaElementSource(aud);
-        const analyser = TBBAudioDirector.getOrCreateAnalyser(ctx);
-        if (analyser) mediaSrc.connect(analyser);
-        else mediaSrc.connect(ctx.destination);
+    const isMuted = Boolean(window.voiceMuted && !hooks.forceUnmute);
+    let activeBufSrc = null;
+    let fallbackAud = null;
+    let progressTimer = null;
+    let maxGuardTimer = null;
+    let startedAtCtxTime = 0;
+    let finishedOnce = false;
+
+    const handle = {
+      url: meta.url,
+      muted: isMuted,
+      paused: true,
+      currentTime: 0,
+      duration: 14.5,
+      pause() {
+        this.paused = true;
+        if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+        if (activeBufSrc) {
+          try { activeBufSrc.onended = null; activeBufSrc.stop(0); activeBufSrc.disconnect(); } catch (e) {}
+          TBBAudioDirector.activeBufferSources.delete(activeBufSrc);
+          activeBufSrc = null;
+        }
+        if (fallbackAud) {
+          try { fallbackAud.pause(); } catch (e) {}
+        }
+        window.isSpeakingLive = false;
+        if (typeof hooks.onStateChange === "function") {
+          try { hooks.onStateChange(this); } catch (e) {}
+        }
+      },
+      removeAttribute() {},
+      load() {}
+    };
+
+    const fireFinished = () => {
+      if (finishedOnce) return;
+      finishedOnce = true;
+      if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+      if (maxGuardTimer) { clearTimeout(maxGuardTimer); maxGuardTimer = null; }
+      handle.paused = true;
+      window.isSpeakingLive = false;
+      if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+        try { window.tbbSyncSpeakingIndicatorUI(false); } catch (e) {}
       }
-    } catch (e) {}
+      if (typeof hooks.onStateChange === "function") {
+        try { hooks.onStateChange(handle); } catch (e) {}
+      }
+      if (typeof hooks.onEnded === "function") {
+        try { hooks.onEnded(handle); } catch (e) {}
+      }
+      if (typeof hooks.onDone === "function") {
+        try { hooks.onDone(handle); } catch (e) {}
+      }
+    };
 
-    TBBAudioDirector.activeCapsuleAudio = aud;
-    TBBAudioDirector.activeHtmlAudios.add(aud);
+    TBBAudioDirector.activeCapsuleAudio = handle;
     TBBAudioDirector.capsuleHooks = hooks;
 
-    const maxGuardTimer = setTimeout(() => {
-      if (TBBAudioDirector.activeCapsuleAudio === aud) {
-        try { aud.pause(); } catch (e) {}
-        window.isSpeakingLive = false;
-        if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
-        if (typeof hooks.onEnded === "function") hooks.onEnded(aud);
+    if (isMuted) {
+      if (typeof hooks.onStateChange === "function") {
+        try { hooks.onStateChange(handle); } catch (e) {}
+      }
+      if (typeof hooks.onDone === "function") {
+        setTimeout(() => {
+          if (myGen === TBBAudioDirector.genId && myTicket === TBBAudioDirector.ticketId) {
+            fireFinished();
+          }
+        }, 400);
+      }
+      return handle;
+    }
+
+    maxGuardTimer = setTimeout(() => {
+      if (TBBAudioDirector.activeCapsuleAudio === handle) {
+        handle.pause();
+        fireFinished();
       }
     }, 15200);
 
-    aud.onplay = () => {
-      if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) {
-        try { aud.pause(); } catch (e) {}
-        return;
-      }
-      window.isSpeakingLive = true;
-      if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
-    };
-    aud.onpause = () => {
-      window.isSpeakingLive = false;
-      if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
-    };
-    aud.ontimeupdate = () => {
-      if (aud.currentTime >= 15.0) {
-        try { aud.pause(); } catch (e) {}
-      }
-      if (typeof hooks.onTimeUpdate === "function") hooks.onTimeUpdate(aud);
-    };
-    aud.onended = () => {
-      clearTimeout(maxGuardTimer);
-      window.isSpeakingLive = false;
-      if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
-      if (typeof hooks.onEnded === "function") hooks.onEnded(aud);
-    };
-    aud.onerror = () => {
-      clearTimeout(maxGuardTimer);
-      window.isSpeakingLive = false;
-      if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
-    };
+    (async () => {
+      // 1. Ruta Primaria: WebAudio AudioBufferSourceNode desbloqueado (100% inmune a bloqueo de <audio> en iOS WKWebView / TestFlight)
+      if (ctx && typeof ctx.decodeAudioData === "function") {
+        try {
+          if (ctx.state === "suspended") {
+            await ctx.resume().catch(() => {});
+          }
+          if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) return;
 
-    if (!aud.muted) {
-      aud.play().catch(() => {
-        window.isSpeakingLive = false;
-        if (typeof hooks.onStateChange === "function") hooks.onStateChange(aud);
-      });
-    } else if (typeof hooks.onStateChange === "function") {
-      hooks.onStateChange(aud);
-    }
-    return aud;
+          let decoded = window._tbbCapsuleBufferCache.get(meta.url) || null;
+          if (!decoded) {
+            const dlCtrl = TBBAudioDirector.registerController(new AbortController());
+            const dlTimeout = setTimeout(() => dlCtrl.abort(), 7000);
+            try {
+              const resp = await fetch(meta.url, { signal: dlCtrl.signal });
+              clearTimeout(dlTimeout);
+              TBBAudioDirector.unregisterController(dlCtrl);
+              if (resp.ok) {
+                const arrBuf = await resp.arrayBuffer();
+                if (arrBuf && arrBuf.byteLength > 256) {
+                  decoded = await ctx.decodeAudioData(arrBuf.slice(0));
+                  if (decoded) {
+                    window._tbbCapsuleBufferCache.set(meta.url, decoded);
+                  }
+                }
+              }
+            } catch (fetchErr) {
+              clearTimeout(dlTimeout);
+              TBBAudioDirector.unregisterController(dlCtrl);
+            }
+          }
+
+          if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) return;
+
+          if (decoded && ctx.state === "running") {
+            const src = ctx.createBufferSource();
+            src.buffer = decoded;
+            src.playbackRate.value = 1.0;
+            const analyser = TBBAudioDirector.getOrCreateAnalyser(ctx);
+            if (analyser) src.connect(analyser);
+            else src.connect(ctx.destination);
+
+            activeBufSrc = src;
+            window._tbbActiveAudioSource = src;
+            TBBAudioDirector.activeBufferSources.add(src);
+            handle.duration = Math.min(15.0, decoded.duration || 14.5);
+            handle.paused = false;
+            startedAtCtxTime = ctx.currentTime;
+            window.isSpeakingLive = true;
+            if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+              try { window.tbbSyncSpeakingIndicatorUI(true); } catch (e) {}
+            }
+            if (typeof hooks.onStateChange === "function") {
+              try { hooks.onStateChange(handle); } catch (e) {}
+            }
+
+            progressTimer = setInterval(() => {
+              if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId || handle.paused) {
+                clearInterval(progressTimer);
+                progressTimer = null;
+                return;
+              }
+              handle.currentTime = Math.max(0, ctx.currentTime - startedAtCtxTime);
+              if (handle.currentTime >= 15.0) {
+                handle.pause();
+                fireFinished();
+                return;
+              }
+              if (typeof hooks.onTimeUpdate === "function") {
+                try { hooks.onTimeUpdate(handle); } catch (e) {}
+              }
+            }, 120);
+
+            src.onended = () => {
+              TBBAudioDirector.activeBufferSources.delete(src);
+              if (window._tbbActiveAudioSource === src) window._tbbActiveAudioSource = null;
+              activeBufSrc = null;
+              fireFinished();
+            };
+
+            src.start(0);
+            return;
+          }
+        } catch (webAudioErr) {}
+      }
+
+      if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) return;
+
+      // 2. Respaldo HTML5 Audio independiente (SIN createMediaElementSource para no quedar silenciado si AudioContext está suspendido)
+      try {
+        const aud = new Audio(meta.url);
+        aud.preload = "auto";
+        aud.playsInline = true;
+        aud.defaultPlaybackRate = 1.0;
+        aud.playbackRate = 1.0;
+        fallbackAud = aud;
+        TBBAudioDirector.activeHtmlAudios.add(aud);
+
+        aud.onplay = () => {
+          if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) {
+            try { aud.pause(); } catch (e) {}
+            return;
+          }
+          handle.paused = false;
+          window.isSpeakingLive = true;
+          if (typeof hooks.onStateChange === "function") hooks.onStateChange(handle);
+        };
+        aud.onpause = () => {
+          handle.paused = true;
+          window.isSpeakingLive = false;
+          if (typeof hooks.onStateChange === "function") hooks.onStateChange(handle);
+        };
+        aud.ontimeupdate = () => {
+          handle.currentTime = aud.currentTime || 0;
+          handle.duration = Math.min(15.0, aud.duration || 14.5);
+          if (aud.currentTime >= 15.0) {
+            try { aud.pause(); } catch (e) {}
+            fireFinished();
+            return;
+          }
+          if (typeof hooks.onTimeUpdate === "function") hooks.onTimeUpdate(handle);
+        };
+        aud.onended = () => fireFinished();
+        aud.onerror = () => fireFinished();
+
+        const p = aud.play();
+        if (p && typeof p.catch === "function") {
+          p.catch(() => fireFinished());
+        }
+      } catch (fallbackErr) {
+        fireFinished();
+      }
+    })();
+
+    return handle;
   };
 
   window.speakAuraBriefResponse = async function (text, maxDurationMs = 9500) {
@@ -1832,6 +1983,124 @@
       // Step 0.1
       "PASO 0 · 1 DE 3 · OBJETIVO": "STEP 0 · 1 OF 3 · OBJECTIVE",
       "¿Cuál es tu objetivo principal al construir tu marca hoy?": "What is your main goal in building your brand today?",
+      "¿Cuál es tu objetivo principal hoy?": "What is your main goal today?",
+      "Cápsula": "Capsule",
+      "Opinión": "Feedback",
+      "Confirmar Logo": "Confirm Logo",
+      "Evolucionar": "Evolve",
+      "Claro/Oscuro": "Light/Dark",
+      "#1 · Autor": "#1 · Signature",
+      "1. Emblema": "1. Emblem",
+      "2. Monograma": "2. Monogram",
+      "3. Insignia": "3. Crest",
+      "4. Minimalista": "4. Minimalist",
+      "1. Monograma y Ligadura": "1. Monogram & Ligature",
+      "Geometría modular e iniciales": "Modular geometry & initials",
+      "2. Emblema y Escudo": "2. Emblem & Shield",
+      "Heráldica y simetría axial": "Heraldry & axial symmetry",
+      "3. Símbolo Continuo": "3. Continuous Symbol",
+      "Fluidez orgánica y áurea": "Organic & golden flow",
+      "4. Volumen 3D y Prisma": "4. 3D Volume & Prism",
+      "Facetas y refracción de luz": "Facets & light refraction",
+      "Símbolo u objeto de partida (Opcional · ej. alas, estrella, escudo, montaña):": "Starting symbol or object (Optional · e.g. wings, star, shield, mountain):",
+      "Opcional: escribe tu símbolo inicial...": "Optional: type your starting symbol...",
+      "Pide un ajuste (ej. más simple)...": "Ask for a tweak (e.g. simpler)...",
+      "AURA DISEÑANDO TU LOGOTIPO...": "AURA DESIGNING YOUR LOGO...",
+      "Paso 0 · Tu Negocio": "Step 0 · Your Business",
+      "Paso 1 · Tu Esencia": "Step 1 · Your Essence",
+      "Paso 2 · Dónde te Ven": "Step 2 · Where Seen",
+      "Paso 3 · Nombre y Eslogan": "Step 3 · Name & Tagline",
+      "Paso 4 · Estilo y Letras": "Step 4 · Style & Fonts",
+      "Paso 5 · Colores y Logo": "Step 5 · Colors & Logo",
+      "Paso 6 · Tu Brandbook (+30 págs)": "Step 6 · Your Brandbook (30+ p)",
+      "AURA EN VIVO": "AURA LIVE",
+      "Escuchando": "Playing",
+      "Escuchar": "Listen",
+      "Repetir": "Replay",
+      "Saltar": "Skip",
+      "ADN": "DNA",
+      "Ej. taza, caja, vehículo...": "E.g. mug, box, vehicle...",
+      "Emblema de Autor": "Signature Emblem",
+      "Monograma + Símbolos": "Monogram + Symbols",
+      "Insignia / Sello": "Crest / Seal",
+      "Lineal Minimalista": "Minimalist Line",
+      "Emblema Artístico Multi-Elemento": "Multi-Element Artistic Emblem",
+      "Monograma Integrado con Símbolos del Giro": "Monogram Integrated with Sector Symbols",
+      "Insignia, Carta o Sello Arquitectónico de Autor": "Signature Architectural Crest or Seal",
+      "Síntesis Lineal Contemporánea de Alta Costura": "Contemporary High-Couture Line Synthesis",
+      "Esfera y Alas Prismáticas 3D": "3D Prismatic Sphere & Wings",
+      "Hélice Continua y Espacio Negativo 3D": "3D Continuous Helix & Negative Space",
+      "Prisma y Estrella Refractora 3D": "3D Refracting Prism & Star",
+      "Escudo y Emblema de Autoridad 3D": "3D Crest & Emblem of Authority",
+      "Faro Escultural Liquid Glass 3D": "3D Liquid Glass Sculptural Beacon",
+      "Geometría Multicapa Fluida": "Fluid Multi-Layer Geometry",
+      "Insignia Escénica en Capas": "Layered Scenic Crest",
+      "Monograma Constructivo de Alto Contraste": "High-Contrast Constructive Monogram",
+      "Integrando el ADN de tu marca, giro y paleta cromática...": "Integrating your brand DNA, sector, and color palette...",
+      "Gastronomía, Alimentos y Hospitalidad": "Food, Beverage & Hospitality",
+      "Salud, Clínica Especializada y Bienestar": "Healthcare, Specialized Clinic & Wellness",
+      "Moda, Retail, E-Commerce y Diseño de Producto": "Fashion, Retail, E-Commerce & Product Design",
+      "Educación, Academia y Formación": "Education, Academy & Training",
+      "Tecnología, Consultoría y Servicios": "Technology, Consulting & Services",
+      "UNIFORME": "UNIFORM",
+      "EMPAQUE": "PACKAGING",
+      "MENÚ DIGITAL": "DIGITAL MENU",
+      "CUADRO": "FRAMED PRINT",
+      "INTERIOR": "INTERIOR",
+      "APP MÓVIL": "MOBILE APP",
+      "RECEPCIÓN": "RECEPTION",
+      "CARPETA": "FOLDER",
+      "KIT": "KIT",
+      "SEÑALÉTICA": "SIGNAGE",
+      "PRENDA": "GARMENT",
+      "VITRINA": "STOREFRONT",
+      "TIENDA MÓVIL": "MOBILE SHOP",
+      "ACCESORIO": "ACCESSORY",
+      "EXTERIOR": "OUTDOOR",
+      "LIBRO": "BOOK",
+      "PLATAFORMA": "PLATFORM",
+      "INSIGNIA": "BADGE",
+      "CAMPUS": "CAMPUS",
+      "OFICINA": "OFFICE",
+      "Cápsula breve de máximo 15 segundos en lenguaje claro:": "Short 15-second capsule in plain language:",
+      "Progreso guardado automáticamente para": "Progress automatically saved for",
+      "VISTA EN LA VIDA REAL": "REAL-LIFE PREVIEW",
+      "Tu marca aplicada a tu giro": "Your brand applied to your sector",
+      "Sector": "Sector",
+      "Elige dónde quieres ver tu logo:": "Choose where to preview your logo:",
+      "Selección automática (6)": "Auto selection (6)",
+      "Otra superficie (ej. taza, caja, vehículo, etiqueta...)": "Other surface (e.g. mug, box, vehicle, label...)",
+      "Rápido": "Fast",
+      "Alta Calidad": "High Quality",
+      "Guardar PNG": "Save PNG",
+      "Generar y actualizar en mi Brandbook": "Generate & update in my Brandbook",
+      "APLICACIONES REALES PARA TU BRANDBOOK": "REAL-WORLD APPLICATIONS FOR YOUR BRANDBOOK",
+      "Cerrar": "Close",
+      "Generar nueva vista": "Generate new view",
+      "Laptop": "Laptop",
+      "Celular / App": "Mobile / App",
+      "Pantalla 4K": "4K Display",
+      "Camisa / Uniforme": "Shirt / Uniform",
+      "Gorra / Casco": "Cap / Helmet",
+      "Bolsa / Empaque": "Bag / Packaging",
+      "Pin Metálico": "Metal Pin",
+      "Manual Impreso": "Printed Brandbook",
+      "Póster": "Poster",
+      "Vitrina / Cristal": "Storefront Glass",
+      "Espectacular": "Billboard",
+      "Mural / Fachada": "Building Facade",
+      "CASCO": "HELMET",
+      "ESPECTACULAR": "BILLBOARD",
+      "INDUMENTARIA": "APPAREL",
+      "DOSSIER": "BRANDBOOK",
+      "FACHADA": "FACADE",
+      "Arquitectura, Ingeniería, Construcción e Inmobiliaria": "Architecture, Engineering, Construction & Real Estate",
+      "Casco de Ingeniería y Plano": "Engineering Helmet & Blueprint",
+      "Presentación en Laptop": "Laptop Presentation",
+      "Valla y Espectacular de Obra": "Site Billboard & Signage",
+      "Camisa Técnica Bordada": "Embroidered Technical Shirt",
+      "Memoria y Dossier Impreso": "Printed Brandbook & Dossier",
+      "Fachada Corporativa": "Corporate Facade",
       "Crear mi primera marca desde cero": "Create my first brand from scratch",
       "Evolucionar y profesionalizar mi marca actual": "Evolve and professionalize my current brand",
       "Crear una nueva sub-marca o división": "Create a new sub-brand or division",
@@ -2024,8 +2293,8 @@
       "Paso 4 · Personalidad": "Step 4 · Personality",
       "Paso 5 · Logotipos": "Step 5 · Logos",
       "Paso 6 · Manual más de 30 páginas": "Step 6 · 30+ Page Brandbook",
-      "⚡ Cargar Admin (TheBestBrand)": "⚡ Load Admin (TheBestBrand)",
-      "⚡ Admin TBB": "⚡ Admin TBB",
+      "Cargar Admin (TheBestBrand)": "Load Admin (TheBestBrand)",
+      "Admin TBB": "Admin TBB",
       "Web ↗": "Web ↗",
       "CONSEJERO OFICIAL": "OFFICIAL ADVISOR",
       "Relevancia de Categoría & Brand Equity": "Category Relevance & Brand Equity",
@@ -2035,7 +2304,7 @@
       "Rigor Simbólico & Test de Rand": "Symbolic Rigor & Rand's Test",
       "Ingeniería Kansei & Proporción 70/20/10": "Kansei Engineering & 70/20/10 Ratio",
       "Estrategia Competitiva & Gobernanza": "Competitive Strategy & Governance",
-      "✓ Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas": "✓ Your official logo is active in the engine, on the canvas, and across all 36 plates",
+      "Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas": "Your official logo is active in the engine, on the canvas, and across all 36 plates",
       "Si lo subes, el motor lo mantendrá como tu logotipo oficial en todo el recorrido y en las 30 láminas.": "If you upload it, the engine will keep it as your official logo throughout the journey and across all 36 plates.",
       "Corregir ortografía y expresar mi idea con claridad ejecutiva": "Fix spelling & express my idea with executive clarity",
       "Corregir ortografía y redactar mi idea con claridad": "Fix spelling & write my idea with clarity",
@@ -2080,7 +2349,7 @@
       "2. Suiza & Tecnológica": "2. Swiss & Tech",
       "3. Editorial & Lujo Serif": "3. Editorial & Luxury Serif",
       "4. Vanguardia & Impacto": "4. Vanguard & Impact",
-      "5. ✦ Adobe Fonts (Híbrido)": "5. ✦ Adobe Fonts (Hybrid)",
+      "5. Adobe Fonts (Híbrido)": "5. Adobe Fonts (Hybrid)",
       "Modo Híbrido (Opcional · Web Project ID):": "Hybrid Mode (Optional · Web Project ID):",
       "Conectar Kit": "Connect Kit",
       "3 .TTF LIBRES": "3 FREE .TTF",
@@ -2093,7 +2362,7 @@
       "Cuerpo": "Body",
       "Acentos": "Accents",
       "Descargar Kit Híbrido de Fuentes (.ZIP)": "Download Hybrid Font Kit (.ZIP)",
-      "✦ Símbolo The Best Brand Vector": "✦ The Best Brand Vector Symbol",
+      "Símbolo The Best Brand Vector": "The Best Brand Vector Symbol",
       "Generando Símbolo IA...": "Generating AI Symbol...",
       "#1 · Tu Logo Base": "#1 · Your Base Logo",
       "#1 · Base": "#1 · Base",
@@ -2208,8 +2477,8 @@
       "Paso 4 · Personalidad": "Passo 4 · Personalidade",
       "Paso 5 · Logotipos": "Passo 5 · Logotipos",
       "Paso 6 · Manual más de 30 páginas": "Passo 6 · Manual mais de 30 páginas",
-      "⚡ Cargar Admin (TheBestBrand)": "⚡ Carregar Admin (TheBestBrand)",
-      "⚡ Admin TBB": "⚡ Admin TBB",
+      "Cargar Admin (TheBestBrand)": "Carregar Admin (TheBestBrand)",
+      "Admin TBB": "Admin TBB",
       "CONSEJERO OFICIAL": "CONSELHEIRO OFICIAL",
       "Relevancia de Categoría & Brand Equity": "Relevância de Categoria e Brand Equity",
       "Propósito Nuclear & El Círculo Dorado": "Propósito Central e O Círculo Dourado",
@@ -2218,7 +2487,7 @@
       "Rigor Simbólico & Test de Rand": "Rigor Simbólico e Teste de Rand",
       "Ingeniería Kansei & Proporción 70/20/10": "Engenharia Kansei e Proporção 70/20/10",
       "Estrategia Competitiva & Gobernanza": "Estratégia Competitiva e Governança",
-      "✓ Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas": "✓ Seu logotipo oficial está ativo no motor, na tela e nas mais de 30 páginas",
+      "Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas": "Seu logotipo oficial está ativo no motor, na tela e nas mais de 30 páginas",
       "Si lo subes, el motor lo mantendrá como tu logotipo oficial en todo el recorrido y en las 30 láminas.": "Se você enviá-lo, o motor o manterá como seu logotipo oficial em toda a jornada e nas mais de 30 páginas.",
       "Corregir ortografía y expresar mi idea con claridad ejecutiva": "Corrigir ortografia e expressar minha ideia com clareza executiva",
       "Corregir ortografía y redactar mi idea con claridad": "Corrigir ortografia e redigir minha ideia com clareza",
@@ -2279,9 +2548,9 @@
       "2. Suiza & Tecnológica": "2. Suíça e Tecnológica",
       "3. Editorial & Lujo Serif": "3. Editorial e Luxo Serif",
       "4. Vanguardia & Impacto": "4. Vanguarda e Impacto",
-      "5. ✦ Adobe Fonts (Híbrido)": "5. ✦ Adobe Fonts (Híbrido)",
+      "5. Adobe Fonts (Híbrido)": "5. Adobe Fonts (Híbrido)",
       "Descargar Kit Híbrido de Fuentes (.ZIP)": "Baixar Kit Híbrido de Fontes (.ZIP)",
-      "✦ Símbolo The Best Brand Vector": "✦ Símbolo The Best Brand Vector",
+      "Símbolo The Best Brand Vector": "Símbolo The Best Brand Vector",
       "#1 · Tu Logo Base": "#1 · Seu Logo Base",
       "#1 · Base": "#1 · Base",
       "Ilustrar Capítulos (Flow IA)": "Ilustrar Capítulos (Flow IA)",
@@ -2388,8 +2657,8 @@
       "Paso 4 · Personalidad": "Étape 4 · Personnalité",
       "Paso 5 · Logotipos": "Étape 5 · Logos",
       "Paso 6 · Manual más de 30 páginas": "Étape 6 · Manuel plus de 30 pages",
-      "⚡ Cargar Admin (TheBestBrand)": "⚡ Charger Admin (TheBestBrand)",
-      "⚡ Admin TBB": "⚡ Admin TBB",
+      "Cargar Admin (TheBestBrand)": "Charger Admin (TheBestBrand)",
+      "Admin TBB": "Admin TBB",
       "CONSEJERO OFICIAL": "CONSEILLER OFFICIEL",
       "Relevancia de Categoría & Brand Equity": "Pertinence de Catégorie & Capital Marque",
       "Propósito Nuclear & El Círculo Dorado": "Raison d'Être & Le Cercle d'Or",
@@ -2398,7 +2667,7 @@
       "Rigor Simbólico & Test de Rand": "Rigueur Symbolique & Test de Rand",
       "Ingeniería Kansei & Proporción 70/20/10": "Ingénierie Kansei & Ratio 70/20/10",
       "Estrategia Competitiva & Gobernanza": "Stratégie Compétitive & Gouvernance",
-      "✓ Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas": "✓ Votre logo officiel est actif dans le moteur, sur le canevas et sur les plus de 30 pages",
+      "Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas": "Votre logo officiel est actif dans le moteur, sur le canevas et sur les plus de 30 pages",
       "Si lo subes, el motor lo mantendrá como tu logotipo oficial en todo el recorrido y en las 30 láminas.": "Si vous l'importez, le moteur le conservera comme logo officiel tout au long du parcours et sur les plus de 30 pages.",
       "Corregir ortografía y expresar mi idea con claridad ejecutiva": "Corriger l'orthographe et exprimer mon idée avec clarté exécutive",
       "Corregir ortografía y redactar mi idea con claridad": "Corriger l'orthographe et rédiger mon idée avec clarté",
@@ -2459,9 +2728,9 @@
       "2. Suiza & Tecnológica": "2. Suisse & Technologique",
       "3. Editorial & Lujo Serif": "3. Éditorial & Luxe Serif",
       "4. Vanguardia & Impacto": "4. Avant-Garde & Impact",
-      "5. ✦ Adobe Fonts (Híbrido)": "5. ✦ Adobe Fonts (Hybride)",
+      "5. Adobe Fonts (Híbrido)": "5. Adobe Fonts (Hybride)",
       "Descargar Kit Híbrido de Fuentes (.ZIP)": "Télécharger le Kit Hybride de Polices (.ZIP)",
-      "✦ Símbolo The Best Brand Vector": "✦ Symbole The Best Brand Vector",
+      "Símbolo The Best Brand Vector": "Symbole The Best Brand Vector",
       "#1 · Tu Logo Base": "#1 · Votre Logo de Base",
       "#1 · Base": "#1 · Base",
       "Ilustrar Capítulos (Flow IA)": "Illustrer les Chapitres (Flow IA)",
@@ -2514,8 +2783,8 @@
       "Paso 4 · Personalidad": "Schritt 4 · Persönlichkeit",
       "Paso 5 · Logotipos": "Schritt 5 · Logos",
       "Paso 6 · Manual más de 30 páginas": "Schritt 6 · +30-Seiten-Handbuch",
-      "⚡ Cargar Admin (TheBestBrand)": "⚡ Admin laden (TheBestBrand)",
-      "⚡ Admin TBB": "⚡ Admin TBB",
+      "Cargar Admin (TheBestBrand)": "Admin laden (TheBestBrand)",
+      "Admin TBB": "Admin TBB",
       "Web ↗": "Web ↗",
       "CONSEJERO OFICIAL": "OFFIZIELLER BERATER",
       "Relevancia de Categoría & Brand Equity": "Kategorie-Relevanz & Markenwert",
@@ -2545,7 +2814,7 @@
       "Subir mi Logo Actual": "Mein aktuelles Logo hochladen",
       "Cambiar": "Ändern",
       "Quitar": "Entfernen",
-      "✓ Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas": "✓ Dein offizielles Logo ist in der Engine, auf dem Canvas und auf allen über 30 Seiten aktiv",
+      "Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas": "Dein offizielles Logo ist in der Engine, auf dem Canvas und auf allen über 30 Seiten aktiv",
       "Si lo subes, el motor lo mantendrá como tu logotipo oficial en todo el recorrido y en las 30 láminas.": "Wenn du es hochlädst, behält das System es als dein offizielles Logo im gesamten Prozess und auf allen über 30 Seiten bei.",
       "Si lo subes, podrás mantenerlo tal cual o pedirle al motor generador que lo tome como base para evolucionarlo.": "Wenn du es hochlädst, kannst du es unverändert übernehmen oder als Basis für eine Evolution nutzen.",
       "Logo actual cargado en el motor": "Aktuelles Logo im System geladen",
@@ -2638,7 +2907,7 @@
       "2. Suiza & Tecnológica": "2. Schweizer & Technologisch",
       "3. Editorial & Lujo Serif": "3. Editorial & Luxus-Serif",
       "4. Vanguardia & Impacto": "4. Avantgarde & Impact",
-      "5. ✦ Adobe Fonts (Híbrido)": "5. ✦ Adobe Fonts (Hybrid)",
+      "5. Adobe Fonts (Híbrido)": "5. Adobe Fonts (Hybrid)",
       "Modo Híbrido (Opcional · Web Project ID):": "Hybrid-Modus (Optional · Web Project ID):",
       "Conectar Kit": "Kit verbinden",
       "3 .TTF LIBRES": "3 FREIE .TTF",
@@ -2685,7 +2954,7 @@
       "Evolucionar mi Logo": "Mein Logo weiterentwickeln",
       "Cambiar Base": "Basis wechseln",
       "Fondo Claro/Oscuro": "Heller/Dunkler Hintergrund",
-      "✦ Símbolo The Best Brand Vector": "✦ The Best Brand Vector Symbol",
+      "Símbolo The Best Brand Vector": "The Best Brand Vector Symbol",
       "Generando Símbolo IA...": "KI-Symbol wird generiert...",
       "#1 · Tu Logo Base": "#1 · Dein Basislogo",
       "#1 · Base": "#1 · Basis",
@@ -2792,8 +3061,8 @@
       "Paso 4 · Personalidad": "Passo 4 · Personalità",
       "Paso 5 · Logotipos": "Passo 5 · Loghi",
       "Paso 6 · Manual más de 30 páginas": "Passo 6 · Manuale oltre 30 pagine",
-      "⚡ Cargar Admin (TheBestBrand)": "⚡ Carica Admin (TheBestBrand)",
-      "⚡ Admin TBB": "⚡ Admin TBB",
+      "Cargar Admin (TheBestBrand)": "Carica Admin (TheBestBrand)",
+      "Admin TBB": "Admin TBB",
       "Web ↗": "Web ↗",
       "CONSEJERO OFICIAL": "CONSIGLIERE UFFICIALE",
       "Relevancia de Categoría & Brand Equity": "Rilevanza di Categoria & Brand Equity",
@@ -2823,7 +3092,7 @@
       "Subir mi Logo Actual": "Carica il Mio Logo Attuale",
       "Cambiar": "Cambia",
       "Quitar": "Rimuovi",
-      "✓ Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas": "✓ Il tuo logo ufficiale è attivo nel motore, sulla tela e nelle oltre 30 pagine",
+      "Tu logotipo oficial está activo en el motor, en el lienzo y en las 30 láminas": "Il tuo logo ufficiale è attivo nel motore, sulla tela e nelle oltre 30 pagine",
       "Si lo subes, el motor lo mantendrá como tu logotipo oficial en todo el recorrido y en las 30 láminas.": "Se lo carichi, il motore lo manterrà come logo ufficiale in tutto il percorso e nelle oltre 30 pagine.",
       "Si lo subes, podrás mantenerlo tal cual o pedirle al motor generador que lo tome como base para evolucionarlo.": "Se lo carichi, potrai mantenerlo così com'è o usarlo come base per farlo evolvere.",
       "Logo actual cargado en el motor": "Logo attuale caricato nel motore",
@@ -2916,7 +3185,7 @@
       "2. Suiza & Tecnológica": "2. Svizzera & Tecnologica",
       "3. Editorial & Lujo Serif": "3. Editoriale & Lusso Serif",
       "4. Vanguardia & Impacto": "4. Avanguardia & Impatto",
-      "5. ✦ Adobe Fonts (Híbrido)": "5. ✦ Adobe Fonts (Ibrido)",
+      "5. Adobe Fonts (Híbrido)": "5. Adobe Fonts (Ibrido)",
       "Modo Híbrido (Opcional · Web Project ID):": "Modalità Ibrida (Opzionale · Web Project ID):",
       "Conectar Kit": "Collega Kit",
       "3 .TTF LIBRES": "3 .TTF LIBERI",
@@ -2963,7 +3232,7 @@
       "Evolucionar mi Logo": "Fai Evolvere il Mio Logo",
       "Cambiar Base": "Cambia Base",
       "Fondo Claro/Oscuro": "Sfondo Chiaro/Scuro",
-      "✦ Símbolo The Best Brand Vector": "✦ Simbolo The Best Brand Vector",
+      "Símbolo The Best Brand Vector": "Simbolo The Best Brand Vector",
       "Generando Símbolo IA...": "Generazione Simbolo IA...",
       "#1 · Tu Logo Base": "#1 · Il Tuo Logo Base",
       "#1 · Base": "#1 · Base",
@@ -3055,7 +3324,51 @@
       [/PASO\s+(\d+)\s*·\s*LÁMINA\s+(\d+)\s+DE\s+30/g, "STEP $1 · PLATE $2 OF 30"],
       [/Paso\s+(\d+)\s*·\s*Sub-paso\s+(\d+)/g, "Step $1 · Sub-step $2"],
       [/Video\s+Paso\s+(\d+)/g, "Video Step $1"],
+      [/Cápsula\s+(?:Paso|Step)\s+(\d+)/g, "Capsule Step $1"],
       [/Paso\s+(\d+)/g, "Step $1"],
+      [/Elige la estructura base y un símbolo inicial opcional para\s+«([^»]+)»/g, "Choose the base structure and an optional starting symbol for «$1»"],
+      [/Paradigma sugerido:\s*/g, "Suggested paradigm: "],
+      [/Aura diseñando tu logotipo \(([^)]+)\) con 100% del ADN de «([^»]+)»\.\.\./g, "Aura designing your logo ($1) with 100% of «$2» DNA..."],
+      [/«Emblema de Autor»/g, "«Signature Emblem»"],
+      [/«Monograma \+ Símbolos»/g, "«Monogram + Symbols»"],
+      [/«Insignia \/ Sello»/g, "«Crest / Seal»"],
+      [/«Lineal Minimalista»/g, "«Minimalist Line»"],
+      [/Propuesta #(\d+) del Sistema/g, "System Proposal #$1"],
+      [/ADN \(([^)]+)\):\s*Propuesta #(\d+) del Sistema/g, "DNA ($1): System Proposal #$2"],
+      [/Casco de Ingeniería\s*·\s*/g, "Engineering Helmet · "],
+      [/Presentación en Laptop\s*·\s*/g, "Laptop Presentation · "],
+      [/Valla y (?:Espectacular|Billboard)\s*·\s*/g, "Site Billboard · "],
+      [/Camisa Técnica y Obra\s*·\s*/g, "Technical Field Shirt · "],
+      [/Memoria y Dossier\s*·\s*/g, "Project Dossier · "],
+      [/Fachada Corporativa\s*·\s*/g, "Corporate Facade · "],
+      [/Indumentaria \/ Mandil\s*·\s*/g, "Chef Apron & Uniform · "],
+      [/Bolsa y Empaque\s*·\s*/g, "Takeaway Bag & Box · "],
+      [/Vitrina y Cristal\s*·\s*/g, "Storefront Window · "],
+      [/Menú Digital y Pedidos\s*·\s*/g, "Digital Menu & App · "],
+      [/Cuadro y Empaque\s*·\s*/g, "Framed Print & Pouch · "],
+      [/Mural Interior y Rótulo\s*·\s*/g, "Interior Feature Wall · "],
+      [/Bata e Indumentaria\s*·\s*/g, "Clinic Coat & Uniform · "],
+      [/App de Citas y Portal\s*·\s*/g, "Patient Portal App · "],
+      [/Cristal de Recepción\s*·\s*/g, "Reception Glass · "],
+      [/Carpeta Clínica\s*·\s*/g, "Clinical Welcome Folder · "],
+      [/Kit y Bolsa de Cuidado\s*·\s*/g, "Wellness Care Kit · "],
+      [/Muro de Recepción\s*·\s*/g, "Reception Feature Wall · "],
+      [/Prenda Principal\s*·\s*/g, "Signature Garment · "],
+      [/Bolsa de Tienda\s*·\s*/g, "Boutique Shopping Bag · "],
+      [/Vitrina de Tienda\s*·\s*/g, "Storefront Display · "],
+      [/Tienda en Línea Móvil\s*·\s*/g, "Mobile Online Store · "],
+      [/Gorra y Caja de Entrega\s*·\s*/g, "Cap & Unboxing Kit · "],
+      [/Anuncio Urbano\s*·\s*/g, "Urban Billboard · "],
+      [/Manual y Libro\s*·\s*/g, "Hardcover Textbook · "],
+      [/Plataforma en Laptop\s*·\s*/g, "Laptop Platform · "],
+      [/Póster Institucional\s*·\s*/g, "Keynote Poster · "],
+      [/Indumentaria Institucional\s*·\s*/g, "Institutional Apparel · "],
+      [/Pin y Reconocimiento\s*·\s*/g, "Enamel Pin & Seal · "],
+      [/App Móvil y Portal\s*·\s*/g, "Mobile App & Portal · "],
+      [/Acceso en Cristal\s*·\s*/g, "Office Glass Entrance · "],
+      [/Carpeta y Propuesta\s*·\s*/g, "Executive Strategy Folder · "],
+      [/Kit de Bienvenida\s*·\s*/g, "Executive Welcome Kit · "],
+      [/Recepción y Rótulo 3D\s*·\s*/g, "3D Lobby Signage · "],
       [/Siguiente\s+Lámina\s*\((\d+)\/(\d+)\)/g, "Next Plate ($1/$2)"],
       [/Lámina\s+(\d+):/g, "Plate $1:"],
       [/LÁMINA\s+(\d+)\s+DE\s+30/g, "PLATE $1 OF 30"],
@@ -3153,7 +3466,7 @@
       [/PASO 4 · 4 DE 5 · SISTEMA TIPOGRÁFICO HÍBRIDO \(OPEN SOURCE \.TTF \+ ADOBE FONTS TYPEKIT · 100% COPYRIGHT\)/g, "STEP 4 · 4 OF 5 · HYBRID TYPOGRAPHIC SYSTEM (OPEN SOURCE .TTF + ADOBE FONTS TYPEKIT · 100% COPYRIGHT)"],
       [/1\. Elige la familia de estilo \(o conecta Adobe Fonts\) y 2\. Toca la tríada para/g, "1. Choose the style family (or connect Adobe Fonts) & 2. Tap the triad for"],
       [/Ej\. xab1cde o URL https:\/\/use\.typekit\.net\/xab1cde\.css/g, "E.g. xab1cde or URL https://use.typekit.net/xab1cde.css"],
-      [/✓ 100% Legal: Web\/Curvas\/PDF \+ \.TTF Libres en tu \.ZIP/g, "✓ 100% Legal: Web/Vectors/PDF + Free .TTF in your .ZIP"],
+      [/100% Legal: Web\/Curvas\/PDF \+ \.TTF Libres en tu \.ZIP/g, "100% Legal: Web/Vectors/PDF + Free .TTF in your .ZIP"],
       [/Arquitectura, Obra Civil y Liderazgo Corporativo/g, "Architecture, Civil Engineering & Corporate Leadership"],
       [/Editorial Contemporánea y Alta Claridad/g, "Contemporary Editorial & High Clarity"],
       [/Minimalismo Geométrico y Cercanía/g, "Geometric Minimalism & Warmth"],
@@ -3170,7 +3483,7 @@
       [/Industrial, Deporte e Infraestructura Pesada/g, "Industrial, Sports & Heavy Infrastructure"],
       [/Titulares de Alto Impacto y Gran Escala/g, "High-Impact & Large-Scale Headlines"],
       [/Movilidad, Urbanismo y Lifestyle/g, "Mobility, Urbanism & Lifestyle"],
-      [/✓ Sistema Híbrido Activo:/g, "✓ Active Hybrid System:"],
+      [/Sistema Híbrido Activo:/g, "Active Hybrid System:"],
       [/\(Logo\/Títulos\)/g, "(Logo/Headlines)"],
       [/\(Cuerpo\)/g, "(Body)"],
       [/\(Datos\)/g, "(Data)"],
@@ -3185,7 +3498,7 @@
       [/Consejo Metodológico · DICTAMEN METODOLÓGICO: APROBADO/g, "Methodological Council · VERDICT: APPROVED"],
       [/PORTADA MONUMENTAL/g, "MONUMENTAL COVER"],
       [/LIENZO CLARO C-00 CERTIFICADO/g, "CERTIFIED C-00 LIGHT CANVAS"],
-      [/✓ Fotografía Editorial 4:3 Lista/g, "✓ 4:3 Editorial Photo Ready"],
+      [/Fotografía Editorial 4:3 Lista/g, "4:3 Editorial Photo Ready"],
       [/PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS Y PRODUCCIÓN EJECUTIVA V83\.0/g, "STEP 6 · 2 OF 2 · EXECUTIVE DOWNLOAD & PRODUCTION VAULT V83.0"],
       [/Manual Oficial \((36\s+(?:Láminas|Plates))\), Vectores \(\.SVG \/ \.AI\), Kit Híbrido de Fuentes \(\.TTF \+ Typekit\) y Suite Editable de/g, "Official Brandbook ($1), Vectors (.SVG / .AI), Hybrid Font Kit (.TTF + Typekit) & Editable Suite of"],
       [/Todos tus activos listos para imprenta, Adobe Illustrator, Gmail\/Outlook, Word, PowerPoint y tu sistema tipográfico híbrido 100% libre de riesgos de copyright\./g, "All your assets ready for print, Adobe Illustrator, Gmail/Outlook, Word, PowerPoint, and your 100% copyright-safe hybrid font system."],
@@ -3287,7 +3600,7 @@
       [/1\. Elige la familia de estilo \(o conecta Adobe Fonts\) y 2\. Toca la tríada para/g, "1. Escolha a família de estilo (ou conecte Adobe Fonts) e 2. Toque na tríade para"],
       [/Modo Híbrido \(Opcional · Web Project ID\):/g, "Modo Híbrido (Opcional · Web Project ID):"],
       [/Ej\. xab1cde o URL https:\/\/use\.typekit\.net\/xab1cde\.css/g, "Ex. xab1cde ou URL https://use.typekit.net/xab1cde.css"],
-      [/✓ 100% Legal: Web\/Curvas\/PDF \+ \.TTF Libres en tu \.ZIP/g, "✓ 100% Legal: Web/Curvas/PDF + .TTF Livres no seu .ZIP"],
+      [/100% Legal: Web\/Curvas\/PDF \+ \.TTF Libres en tu \.ZIP/g, "100% Legal: Web/Curvas/PDF + .TTF Livres no seu .ZIP"],
       [/3 \.TTF LIBRES/g, "3 .TTF LIVRES"],
       [/Arquitectura, Obra Civil y Liderazgo Corporativo/g, "Arquitetura, Engenharia Civil e Liderança Corporativa"],
       [/Editorial Contemporánea y Alta Claridad/g, "Editorial Contemporânea e Alta Clareza"],
@@ -3297,7 +3610,7 @@
       [/Rigor Suizo y Sistemas Digitales/g, "Rigor Suíço e Sistemas Digitais"],
       [/Fintech, Futuro y Claridad Algorítmica/g, "Fintech, Futuro e Clareza Algorítmica"],
       [/Consultoría Estratégica y Banca Moderna/g, "Consultoria Estratégica e Finanças Modernas"],
-      [/✓ Sistema Híbrido Activo:/g, "✓ Sistema Híbrido Ativo:"],
+      [/Sistema Híbrido Activo:/g, "Sistema Híbrido Ativo:"],
       [/\(Logo\/Títulos\)/g, "(Logo/Títulos)"],
       [/\(Cuerpo\)/g, "(Corpo)"],
       [/\(Datos\)/g, "(Dados)"],
@@ -3310,7 +3623,7 @@
       [/Consejo Metodológico · DICTAMEN METODOLÓGICO: APROBADO/g, "Conselho Metodológico · PARECER: APROVADO"],
       [/PORTADA MONUMENTAL/g, "CAPA MONUMENTAL"],
       [/LIENZO CLARO C-00 CERTIFICADO/g, "FUNDO CLARO C-00 CERTIFICADO"],
-      [/✓ Fotografía Editorial 4:3 Lista/g, "✓ Fotografia Editorial 4:3 Pronta"],
+      [/Fotografía Editorial 4:3 Lista/g, "Fotografia Editorial 4:3 Pronta"],
       [/PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS Y PRODUCCIÓN EJECUTIVA V83\.0/g, "PASSO 6 · 2 DE 2 · CENTRAL DE DOWNLOADS E PRODUÇÃO EXECUTIVA V83.0"],
       [/Manual Oficial \([^)]+\), Vectores \(\.SVG \/ \.AI\), Kit Híbrido de Fuentes \(\.TTF \+ Typekit\) y Suite Editable de/g, "Manual Oficial (mais de 30 páginas), Vetores (.SVG / .AI), Kit Híbrido de Fontes (.TTF + Typekit) e Suite Editável de"],
       [/Todos tus activos listos para imprenta, Adobe Illustrator, Gmail\/Outlook, Word, PowerPoint y tu sistema tipográfico híbrido 100% libre de riesgos de copyright\./g, "Todos os seus ativos prontos para gráfica, Adobe Illustrator, Gmail/Outlook, Word, PowerPoint e seu sistema tipográfico híbrido 100% livre de riscos de direitos autorais."],
@@ -3411,7 +3724,7 @@
       [/1\. Elige la familia de estilo \(o conecta Adobe Fonts\) y 2\. Toca la tríada para/g, "1. Choisissez la famille de style (ou connectez Adobe Fonts) et 2. Touchez la triade pour"],
       [/Modo Híbrido \(Opcional · Web Project ID\):/g, "Mode Hybride (Optionnel · Web Project ID) :"],
       [/Ej\. xab1cde o URL https:\/\/use\.typekit\.net\/xab1cde\.css/g, "Ex. xab1cde ou URL https://use.typekit.net/xab1cde.css"],
-      [/✓ 100% Legal: Web\/Curvas\/PDF \+ \.TTF Libres en tu \.ZIP/g, "✓ 100% Légal : Web/Vecteurs/PDF + .TTF Libres dans votre .ZIP"],
+      [/100% Legal: Web\/Curvas\/PDF \+ \.TTF Libres en tu \.ZIP/g, "100% Légal : Web/Vecteurs/PDF + .TTF Libres dans votre .ZIP"],
       [/3 \.TTF LIBRES/g, "3 .TTF LIBRES"],
       [/Arquitectura, Obra Civil y Liderazgo Corporativo/g, "Architecture, Génie Civil et Leadership Corporatif"],
       [/Editorial Contemporánea y Alta Claridad/g, "Éditorial Contemporain et Haute Clarté"],
@@ -3421,7 +3734,7 @@
       [/Rigor Suizo y Sistemas Digitales/g, "Rigueur Suisse et Systèmes Numériques"],
       [/Fintech, Futuro y Claridad Algorítmica/g, "Fintech, Futur et Clarté Algorithmique"],
       [/Consultoría Estratégica y Banca Moderna/g, "Conseil Stratégique et Banque Moderne"],
-      [/✓ Sistema Híbrido Activo:/g, "✓ Système Hybride Actif :"],
+      [/Sistema Híbrido Activo:/g, "Système Hybride Actif :"],
       [/\(Logo\/Títulos\)/g, "(Logo/Titres)"],
       [/\(Cuerpo\)/g, "(Corps)"],
       [/\(Datos\)/g, "(Données)"],
@@ -3434,7 +3747,7 @@
       [/Consejo Metodológico · DICTAMEN METODOLÓGICO: APROBADO/g, "Conseil Méthodologique · AVIS : APPROUVÉ"],
       [/PORTADA MONUMENTAL/g, "COUVERTURE MONUMENTALE"],
       [/LIENZO CLARO C-00 CERTIFICADO/g, "FOND CLAIR C-00 CERTIFIÉ"],
-      [/✓ Fotografía Editorial 4:3 Lista/g, "✓ Photographie Éditoriale 4:3 Prête"],
+      [/Fotografía Editorial 4:3 Lista/g, "Photographie Éditoriale 4:3 Prête"],
       [/PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS Y PRODUCCIÓN EJECUTIVA V83\.0/g, "ÉTAPE 6 · 2 SUR 2 · COFFRE DE TÉLÉCHARGEMENTS ET PRODUCTION EXÉCUTIVE V83.0"],
       [/Manual Oficial \([^)]+\), Vectores \(\.SVG \/ \.AI\), Kit Híbrido de Fuentes \(\.TTF \+ Typekit\) y Suite Editable de/g, "Manuel Officiel (plus de 30 pages), Vecteurs (.SVG / .AI), Kit Hybride de Polices (.TTF + Typekit) et Suite Éditable de"],
       [/Todos tus activos listos para imprenta, Adobe Illustrator, Gmail\/Outlook, Word, PowerPoint y tu sistema tipográfico híbrido 100% libre de riesgos de copyright\./g, "Tous vos actifs prêts pour l'impression, Adobe Illustrator, Gmail/Outlook, Word, PowerPoint et votre système typographique hybride 100% libre de droits."],
@@ -3528,7 +3841,7 @@
       [/PASO 4 · 4 DE 5 · SISTEMA TIPOGRÁFICO HÍBRIDO \(OPEN SOURCE \.TTF \+ ADOBE FONTS TYPEKIT · 100% COPYRIGHT\)/g, "SCHRITT 4 · 4 VON 5 · HYBRIDES TYPOGRAFIESYSTEM (OPEN SOURCE .TTF + ADOBE FONTS TYPEKIT · 100% COPYRIGHT)"],
       [/1\. Elige la familia de estilo \(o conecta Adobe Fonts\) y 2\. Toca la tríada para/g, "1. Wähle die Stilfamilie (oder verbinde Adobe Fonts) & 2. Tippe auf die Triade für"],
       [/Ej\. xab1cde o URL https:\/\/use\.typekit\.net\/xab1cde\.css/g, "Z. B. xab1cde oder URL https://use.typekit.net/xab1cde.css"],
-      [/✓ 100% Legal: Web\/Curvas\/PDF \+ \.TTF Libres en tu \.ZIP/g, "✓ 100% Legal: Web/Vektoren/PDF + Freie .TTF in deiner .ZIP"],
+      [/100% Legal: Web\/Curvas\/PDF \+ \.TTF Libres en tu \.ZIP/g, "100% Legal: Web/Vektoren/PDF + Freie .TTF in deiner .ZIP"],
       [/Arquitectura, Obra Civil y Liderazgo Corporativo/g, "Architektur, Ingenieurbau & Unternehmensführung"],
       [/Editorial Contemporánea y Alta Claridad/g, "Zeitgenössisches Editorial & Höchste Klarheit"],
       [/Minimalismo Geométrico y Cercanía/g, "Geometrischer Minimalismus & Nähe"],
@@ -3537,7 +3850,7 @@
       [/Rigor Suizo y Sistemas Digitales/g, "Schweizer Präzision & Digitale Systeme"],
       [/Fintech, Futuro y Claridad Algorítmica/g, "Fintech, Zukunft & Algorithmische Klarheit"],
       [/Consultoría Estratégica y Banca Moderna/g, "Strategieberatung & Modernes Banking"],
-      [/✓ Sistema Híbrido Activo:/g, "✓ Aktives Hybridsystem:"],
+      [/Sistema Híbrido Activo:/g, "Aktives Hybridsystem:"],
       [/\(Logo\/Títulos\)/g, "(Logo/Titel)"],
       [/\(Cuerpo\)/g, "(Fließtext)"],
       [/\(Datos\)/g, "(Daten)"],
@@ -3553,7 +3866,7 @@
       [/Consejo Metodológico · DICTAMEN METODOLÓGICO: APROBADO/g, "Methodenrat · PRÜFURTEIL: ZERTIFIZIERT"],
       [/PORTADA MONUMENTAL/g, "MONUMENTALES COVER"],
       [/LIENZO CLARO C-00 CERTIFICADO/g, "ZERTIFIZIERTER HELLER CANVAS C-00"],
-      [/✓ Fotografía Editorial 4:3 Lista/g, "✓ 4:3 Editorial-Fotografie bereit"],
+      [/Fotografía Editorial 4:3 Lista/g, "4:3 Editorial-Fotografie bereit"],
       [/PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS Y PRODUCCIÓN EJECUTIVA V83\.0/g, "SCHRITT 6 · 2 VON 2 · EXEKUTIVER DOWNLOAD- & PRODUKTIONSTRESOR V83.0"],
       [/Manual Oficial \([^)]+\), Vectores \(\.SVG \/ \.AI\), Kit Híbrido de Fuentes \(\.TTF \+ Typekit\) y Suite Editable de/g, "Offizielles Handbuch (über 30 Seiten), Vektoren (.SVG / .AI), Hybrides Schriften-Kit (.TTF + Typekit) & Editierbare Suite von"],
       [/Todos tus activos listos para imprenta, Adobe Illustrator, Gmail\/Outlook, Word, PowerPoint y tu sistema tipográfico híbrido 100% libre de riesgos de copyright\./g, "Alle deine Assets bereit für Druck, Adobe Illustrator, Gmail/Outlook, Word, PowerPoint und dein 100% urheberrechtssicheres hybrides Schriftsystem."],
@@ -3647,7 +3960,7 @@
       [/PASO 4 · 4 DE 5 · SISTEMA TIPOGRÁFICO HÍBRIDO \(OPEN SOURCE \.TTF \+ ADOBE FONTS TYPEKIT · 100% COPYRIGHT\)/g, "PASSO 4 · 4 DI 5 · SISTEMA TIPOGRAFICO IBRIDO (OPEN SOURCE .TTF + ADOBE FONTS TYPEKIT · 100% COPYRIGHT)"],
       [/1\. Elige la familia de estilo \(o conecta Adobe Fonts\) y 2\. Toca la tríada para/g, "1. Scegli la famiglia di stile (o collega Adobe Fonts) e 2. Tocca la triade per"],
       [/Ej\. xab1cde o URL https:\/\/use\.typekit\.net\/xab1cde\.css/g, "Es. xab1cde o URL https://use.typekit.net/xab1cde.css"],
-      [/✓ 100% Legal: Web\/Curvas\/PDF \+ \.TTF Libres en tu \.ZIP/g, "✓ 100% Legale: Web/Curve/PDF + .TTF Liberi nel tuo .ZIP"],
+      [/100% Legal: Web\/Curvas\/PDF \+ \.TTF Libres en tu \.ZIP/g, "100% Legale: Web/Curve/PDF + .TTF Liberi nel tuo .ZIP"],
       [/Arquitectura, Obra Civil y Liderazgo Corporativo/g, "Architettura, Ingegneria Civile e Leadership Aziendale"],
       [/Editorial Contemporánea y Alta Claridad/g, "Editoria Contemporanea e Alta Chiarezza"],
       [/Minimalismo Geométrico y Cercanía/g, "Minimalismo Geometrico e Vicinanza"],
@@ -3656,7 +3969,7 @@
       [/Rigor Suizo y Sistemas Digitales/g, "Rigore Svizzero e Sistemi Digitali"],
       [/Fintech, Futuro y Claridad Algorítmica/g, "Fintech, Futuro e Chiarezza Algoritmica"],
       [/Consultoría Estratégica y Banca Moderna/g, "Consulenza Strategica e Banking Moderno"],
-      [/✓ Sistema Híbrido Activo:/g, "✓ Sistema Ibrido Attivo:"],
+      [/Sistema Híbrido Activo:/g, "Sistema Ibrido Attivo:"],
       [/\(Logo\/Títulos\)/g, "(Logo/Titoli)"],
       [/\(Cuerpo\)/g, "(Corpo)"],
       [/\(Datos\)/g, "(Dati)"],
@@ -3672,7 +3985,7 @@
       [/Consejo Metodológico · DICTAMEN METODOLÓGICO: APROBADO/g, "Consiglio Metodologico · PARERE: APPROVATO"],
       [/PORTADA MONUMENTAL/g, "COPERTINA MONUMENTALE"],
       [/LIENZO CLARO C-00 CERTIFICADO/g, "TELA CHIARA C-00 CERTIFICATA"],
-      [/✓ Fotografía Editorial 4:3 Lista/g, "✓ Fotografia Editoriale 4:3 Pronta"],
+      [/Fotografía Editorial 4:3 Lista/g, "Fotografia Editoriale 4:3 Pronta"],
       [/PASO 6 · 2 DE 2 · BÓVEDA DE DESCARGAS Y PRODUCCIÓN EJECUTIVA V83\.0/g, "PASSO 6 · 2 DI 2 · CASSAFORTE DI DOWNLOAD E PRODUZIONE ESECUTIVA V83.0"],
       [/Manual Oficial \([^)]+\), Vectores \(\.SVG \/ \.AI\), Kit Híbrido de Fuentes \(\.TTF \+ Typekit\) y Suite Editable de/g, "Manuale Ufficiale (oltre 30 pagine), Vettori (.SVG / .AI), Kit Ibrido di Font (.TTF + Typekit) e Suite Modificabile di"],
       [/Todos tus activos listos para imprenta, Adobe Illustrator, Gmail\/Outlook, Word, PowerPoint y tu sistema tipográfico híbrido 100% libre de riesgos de copyright\./g, "Tutti i tuoi asset pronti per la stampa, Adobe Illustrator, Gmail/Outlook, Word, PowerPoint e il tuo sistema tipografico ibrido 100% libero da rischi di copyright."],
@@ -3719,8 +4032,12 @@
     if (!trimmed) return rawStr;
 
     const dict = EXACT_TRANSLATIONS[lang] || EXACT_TRANSLATIONS.en;
+    const enDict = EXACT_TRANSLATIONS.en || {};
     if (dict[trimmed]) {
       return rawStr.replace(trimmed, dict[trimmed]);
+    }
+    if (enDict[trimmed]) {
+      return rawStr.replace(trimmed, enDict[trimmed]);
     }
 
     let out = rawStr;
@@ -3764,7 +4081,7 @@
 
     for (let i = 0; i < textNodes.length; i++) {
       const node = textNodes[i];
-      if (node._tbbOrigEs === undefined) {
+      if (node._tbbOrigEs === undefined || (node._tbbLastOut !== undefined && node.nodeValue !== node._tbbLastOut)) {
         node._tbbOrigEs = node.nodeValue;
       }
       const orig = node._tbbOrigEs;
@@ -3775,6 +4092,7 @@
       } else {
         node.nodeValue = window.tbbTranslateText(orig, lang);
       }
+      node._tbbLastOut = node.nodeValue;
     }
 
     const attrEls = rootEl.querySelectorAll("[placeholder], [title], [aria-label]");
@@ -3932,7 +4250,7 @@
       }
       const curLang = window.tbbGetLang();
       topSel.innerHTML = Object.values(SUPPORTED_LANGS).map(l =>
-        `<option value="${l.code}" ${l.code === curLang ? "selected" : ""}>${l.flag || ""} ${l.shortLabel}</option>`
+        `<option value="${l.code}" ${l.code === curLang ? "selected" : ""}>${l.shortLabel}</option>`
       ).join("");
       topSel.value = curLang;
     }
@@ -3995,12 +4313,15 @@
         `3. FORBIDDEN: NEVER cite academic authors, books, theories, Kansei, Osgood, SMILE, Kaizen, or jargon. ZERO EMOJIS.`
       ].filter(Boolean).join("\n");
 
-      const modelsToTry = ["gemini-3.8-flash", "gemini-flash-lite-latest"];
+      const modelsToTry = ["gemini-flash-lite-latest", "gemini-3.8-flash"];
       for (const m of modelsToTry) {
         if (myGenId !== TBBAudioDirector.genId) return;
         const ctrl = TBBAudioDirector.registerController(new AbortController());
         const tId = setTimeout(() => ctrl.abort(), 3800);
         try {
+          const genCfg = m.includes("3.8")
+            ? { temperature: 0.55, maxOutputTokens: 220, thinkingConfig: { thinkingBudget: 0 } }
+            : { temperature: 0.55, maxOutputTokens: 160 };
           const resp = await fetch("/api/v1/gemini/proxy", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -4008,7 +4329,7 @@
             body: JSON.stringify({
               model: m,
               contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: { temperature: 0.55, maxOutputTokens: 55 }
+              generationConfig: genCfg
             })
           });
           clearTimeout(tId);
@@ -4017,13 +4338,16 @@
           if (!resp.ok) continue;
           const data = await resp.json();
           let reply = (data.candidates?.[0]?.content?.parts || [])
+            .filter(p => !p.thought)
             .map(p => p.text || "")
             .join(" ")
+            .replace(/^(?:Business\s+Activity|Brand\s+Essence|Context|Step\s+\d+(?:\.\d+)?|Aura)\s*:\s*/i, "")
             .replace(/[\r\n]+/g, " ")
             .replace(/\s+/g, " ")
             .trim();
           reply = enforceMax10sSpokenText(reply);
-          if (reply && reply.length >= 10 && myGenId === TBBAudioDirector.genId) {
+          const wordCount = reply ? reply.split(/\s+/).filter(Boolean).length : 0;
+          if (reply && wordCount >= 5 && !/[:\-–—]$/.test(reply) && myGenId === TBBAudioDirector.genId) {
             if (typeof window.updateAuraTopPresenceDOM === "function") {
               window.updateAuraTopPresenceDOM(reply);
             }
@@ -4267,8 +4591,26 @@
     if (navMenu) navMenu.textContent = ui.navMenu;
   };
 
+  function flushActiveStudioInputsBeforeRender() {
+    try {
+      const stage = document.getElementById("tbbCenterAtomicStage");
+      if (stage) {
+        stage.querySelectorAll('input:not([type="file"]):not([type="checkbox"]):not([type="radio"]), textarea').forEach((el) => {
+          try {
+            el.dispatchEvent(new Event("input", { bubbles: true }));
+          } catch (e) {}
+        });
+      }
+      const s5Iter = document.getElementById("tbbSingleLogoIterationBox");
+      if (s5Iter && typeof s5Iter.value === "string" && window.tbbState) {
+        window.tbbState._draftLogoPromptText = s5Iter.value;
+      }
+    } catch (e) {}
+  }
+
   window.tbbSetLanguage = function (langCode, skipCloudSync = false) {
     const cleanCode = SUPPORTED_LANGS[langCode] ? langCode : "es";
+    flushActiveStudioInputsBeforeRender();
     window.tbbCurrentLang = cleanCode;
     try {
       syncAllLangStorageKeys(cleanCode);
@@ -4287,7 +4629,8 @@
 
     if (typeof window.renderTbbZeroScrollStage === "function") {
       window.renderTbbZeroScrollStage();
-    } else {
+    }
+    if (typeof window.tbbApplyCurrentLanguageToDOM === "function") {
       window.tbbApplyCurrentLanguageToDOM();
     }
 
@@ -4373,21 +4716,42 @@
 })();
 
 
-// === [#0305] INCREMENTAL 5-SECOND VOICE INTERVIEW CHECKPOINT AUTOSAVE ===
+// === [#0305] DEBOUNCED EVENT-DRIVEN VOICE INTERVIEW CHECKPOINT AUTOSAVE (NO 5S POLLING) ===
 window.TBB_VOICE_SESSION_AUTOSAVE = {
   STORAGE_KEY: "tbb_v82_voice_interview_checkpoint",
+  _debounceTimer: null,
+  compactClone: function(obj) {
+    if (!obj || typeof obj !== "object") return {};
+    const out = {};
+    for (const k of Object.keys(obj)) {
+      const v = obj[k];
+      if (typeof v === "string" && v.length > 24000) continue;
+      out[k] = v;
+    }
+    return out;
+  },
   saveCheckpoint: function(stateObj) {
     try {
+      const rawState = stateObj || window.tbbCurrentBrandState || {};
       const payload = {
         savedAt: new Date().toISOString(),
         lang: localStorage.getItem("tbb_app_lang") || "es",
-        state: stateObj || window.tbbCurrentBrandState || {}
+        state: this.compactClone(rawState)
       };
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(payload));
       return true;
     } catch (e) {
       return false;
     }
+  },
+  scheduleSave: function(delayMs = 1200) {
+    if (this._debounceTimer) clearTimeout(this._debounceTimer);
+    this._debounceTimer = setTimeout(() => {
+      this._debounceTimer = null;
+      if (window.tbbCurrentBrandState && Object.keys(window.tbbCurrentBrandState).length > 0) {
+        this.saveCheckpoint(window.tbbCurrentBrandState);
+      }
+    }, delayMs);
   },
   restoreCheckpoint: function() {
     try {
@@ -4399,9 +4763,7 @@ window.TBB_VOICE_SESSION_AUTOSAVE = {
   }
 };
 if (typeof window !== "undefined") {
-  setInterval(function() {
-    if (window.tbbCurrentBrandState && Object.keys(window.tbbCurrentBrandState).length > 0) {
-      window.TBB_VOICE_SESSION_AUTOSAVE.saveCheckpoint(window.tbbCurrentBrandState);
-    }
-  }, 5000);
+  ["change", "pagehide"].forEach((evName) => {
+    window.addEventListener(evName, () => window.TBB_VOICE_SESSION_AUTOSAVE.scheduleSave(800), { passive: true });
+  });
 }

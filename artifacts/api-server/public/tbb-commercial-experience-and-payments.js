@@ -40,8 +40,12 @@
     arrowLeft: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19 12H5m0 0l5-5m-5 5l5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
     shield: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 5-3.2 8.7-7 10-3.8-1.3-7-5-7-10V6l7-3z" stroke="currentColor" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="#FF7A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
     card: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="#FF7A00" stroke-width="2"/></svg>`,
-    volume: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H3v6h3l5 4V5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="#FF7A00" stroke-width="2" stroke-linecap="round"/></svg>`,
-    user: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.8" stroke="currentColor" stroke-width="2"/><path d="M5 20c1.6-3.4 4.2-5 7-5s5.4 1.6 7 5" stroke="#FF7A00" stroke-width="2" stroke-linecap="round"/></svg>`
+    volume: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H3v6h3l5 4V5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    user: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.8" stroke="currentColor" stroke-width="1.8"/><path d="M5 20c1.6-3.4 4.2-5 7-5s5.4 1.6 7 5" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    feedback: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="12" r="1" fill="#FF7A00"/><circle cx="12.5" cy="12" r="1" fill="#FF7A00"/><circle cx="15.5" cy="12" r="1" fill="#FF7A00"/></svg>`,
+    clock: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.75"/><path d="M12 7v5l3 2" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    menu: `<svg class="tbb-svg-ic" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+    star: `<svg class="tbb-svg-ic" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5-4.8-4.6 6.6-.9L12 2.5z" fill="#FF7A00"/></svg>`
   };
   window.TBB_ICONS = TBB_ICONS;
 
@@ -74,6 +78,9 @@
 
   function getLang() {
     try {
+      const params = new URLSearchParams(window.location.search || "");
+      const urlL = (params.get("lang") || "").toLowerCase().trim().slice(0, 2);
+      if (["es", "en", "fr", "pt", "de", "it"].includes(urlL)) return urlL;
       const raw =
         localStorage.getItem(LANG_STORAGE_KEY) ||
         localStorage.getItem("tbb_app_lang") ||
@@ -98,14 +105,28 @@
 
   const I18N = {
     es: {
-      navHome: "1. Inicio",
-      navDeliverables: "2. Qué Recibes",
-      navHowItWorks: "3. Cómo Funciona",
-      navRealCases: "4. Ejemplos Reales",
-      navReferences: "5. Referencias",
+      navHome: "Inicio",
+      navDeliverables: "Qué Recibes",
+      navHowItWorks: "Cómo Funciona",
+      navRealCases: "Ejemplos Reales",
+      navReferences: "Referencias",
+      navFeedback: "Opinión",
       navMyAccount: "Mi Cuenta",
       navBuyCta: "Tu Marca · $49 USD",
       navLicenseActive: "Licencia Pro Activa",
+      stepWord: "Paso",
+      steps4to6Label: "Pasos 4–6",
+      continueProStudio: "Continuar en Estudio Completo (Pasos 4–6 Activos)",
+      viewSampleBtn: "Ver muestra",
+      downloadSampleBtn: "Descargar ejemplo",
+      startFreeDemoNow: "Empezar gratis en la Demo ahora",
+      unlock9FilesBtn: "Desbloquear los 9 archivos · $49 USD",
+      tryStepLiveBtn: "Probar este paso en vivo",
+      feedbackTitle: "Cuéntanos qué mejorarías",
+      feedbackSub: "Tu comentario llega directo a nuestro equipo junto con la sección actual",
+      feedbackPlaceholder: "Escribe con tus propias palabras qué te gustó, qué te confundió o qué cambiarías...",
+      feedbackSubmitBtn: "Enviar comentario al equipo",
+      feedbackThanksMsg: "¡Gracias! Tu comentario ya llegó directo al equipo.",
       taglineBadge: "YOUR BRAND, NOW!!!",
       heroHeadline: "Tu marca completa y lista para vender en menos de 60 minutos.",
       heroSubheadline: "Obtén un Brandbook profesional de más de 30 páginas, tu logotipo en curvas, colores, tipografías y papelería editable guiado paso a paso por Aura. Empieza gratis ahora mismo.",
@@ -174,14 +195,28 @@
       footerDesc: "Tu marca profesional con Brandbook de +30 páginas y archivos editables en menos de 60 minutos. 100% propiedad intelectual del cliente."
     },
     en: {
-      navHome: "1. Home",
-      navDeliverables: "2. What You Get",
-      navHowItWorks: "3. How It Works",
-      navRealCases: "4. Real Examples",
-      navReferences: "5. References",
+      navHome: "Home",
+      navDeliverables: "What You Get",
+      navHowItWorks: "How It Works",
+      navRealCases: "Real Examples",
+      navReferences: "References",
+      navFeedback: "Feedback",
       navMyAccount: "My Account",
       navBuyCta: "Your Brand · $49 USD",
       navLicenseActive: "Pro License Active",
+      stepWord: "Step",
+      steps4to6Label: "Steps 4–6",
+      continueProStudio: "Continue in Full Studio (Steps 4–6 Active)",
+      viewSampleBtn: "View sample",
+      downloadSampleBtn: "Download sample",
+      startFreeDemoNow: "Start free in the Live Demo now",
+      unlock9FilesBtn: "Unlock all 9 files · $49 USD",
+      tryStepLiveBtn: "Try this step live",
+      feedbackTitle: "Tell us what you would improve",
+      feedbackSub: "Your feedback goes straight to our engineering & design team with your current section",
+      feedbackPlaceholder: "Share in plain words what you liked, what felt unclear, or what you would improve...",
+      feedbackSubmitBtn: "Send feedback to the team",
+      feedbackThanksMsg: "Thank you! Your feedback reached our team.",
       taglineBadge: "YOUR BRAND, NOW!!!",
       heroHeadline: "Your complete, ready-to-sell brand in under 60 minutes.",
       heroSubheadline: "Get a professional 30+ page Brandbook, vector logos, color system, fonts, and editable templates guided step by step by Aura. Start free right now.",
@@ -250,14 +285,28 @@
       footerDesc: "Your complete brand with a 30+ page Brandbook and editable production files in under 60 minutes. 100% client IP ownership."
     },
     fr: {
-      navHome: "1. Accueil",
-      navDeliverables: "2. Ce que vous recevez",
-      navHowItWorks: "3. Comment ça marche",
-      navRealCases: "4. Exemples réels",
-      navReferences: "5. Références",
+      navHome: "Accueil",
+      navDeliverables: "Ce que vous recevez",
+      navHowItWorks: "Comment ça marche",
+      navRealCases: "Exemples réels",
+      navReferences: "Références",
+      navFeedback: "Avis",
       navMyAccount: "Mon Compte",
       navBuyCta: "Votre Marque · 49 $ USD",
       navLicenseActive: "Licence Pro Active",
+      stepWord: "Étape",
+      steps4to6Label: "Étapes 4–6",
+      continueProStudio: "Continuer dans le Studio Complet (Étapes 4–6)",
+      viewSampleBtn: "Voir l'aperçu",
+      downloadSampleBtn: "Télécharger l'exemple",
+      startFreeDemoNow: "Commencer gratuitement dans la Démo",
+      unlock9FilesBtn: "Débloquer les 9 fichiers · 49 $ USD",
+      tryStepLiveBtn: "Essayer cette étape en direct",
+      feedbackTitle: "Dites-nous ce que vous amélioreriez",
+      feedbackSub: "Votre message arrive directement à notre équipe avec la section actuelle",
+      feedbackPlaceholder: "Écrivez simplement ce qui vous a plu ou ce que vous changeriez...",
+      feedbackSubmitBtn: "Envoyer l'avis à l'équipe",
+      feedbackThanksMsg: "Merci ! Votre message a bien été transmis.",
       taglineBadge: "YOUR BRAND, NOW!!!",
       heroHeadline: "Votre marque complète et prête à vendre en moins de 60 minutes.",
       heroSubheadline: "Obtenez un Brandbook professionnel de plus de 30 pages, vos logos vectoriels, couleurs, polices et modèles guidé pas à pas par Aura. Commencez gratuitement.",
@@ -326,14 +375,28 @@
       footerDesc: "Votre marque complète avec Brandbook de +30 pages et fichiers prêts à l'emploi en moins de 60 minutes. 100 % propriété client."
     },
     pt: {
-      navHome: "1. Início",
-      navDeliverables: "2. O Que Recebe",
-      navHowItWorks: "3. Como Funciona",
-      navRealCases: "4. Exemplos Reais",
-      navReferences: "5. Referências",
+      navHome: "Início",
+      navDeliverables: "O Que Recebe",
+      navHowItWorks: "Como Funciona",
+      navRealCases: "Exemplos Reais",
+      navReferences: "Referências",
+      navFeedback: "Opinião",
       navMyAccount: "Minha Conta",
       navBuyCta: "Sua Marca · $49 USD",
       navLicenseActive: "Licença Pro Ativa",
+      stepWord: "Passo",
+      steps4to6Label: "Passos 4–6",
+      continueProStudio: "Continuar no Estúdio Completo (Passos 4–6)",
+      viewSampleBtn: "Ver amostra",
+      downloadSampleBtn: "Transferir exemplo",
+      startFreeDemoNow: "Começar grátis na Demo agora",
+      unlock9FilesBtn: "Desbloquear os 9 ficheiros · $49 USD",
+      tryStepLiveBtn: "Testar este passo ao vivo",
+      feedbackTitle: "Conte-nos o que melhoraria",
+      feedbackSub: "O seu comentário chega diretamente à nossa equipa com a secção atual",
+      feedbackPlaceholder: "Escreva pelas suas palavras o que gostou ou o que mudaria...",
+      feedbackSubmitBtn: "Enviar comentário à equipa",
+      feedbackThanksMsg: "Obrigado! O seu comentário chegou à equipa.",
       taglineBadge: "YOUR BRAND, NOW!!!",
       heroHeadline: "A sua marca completa e pronta para vender em menos de 60 minutos.",
       heroSubheadline: "Receba um Brandbook profissional com mais de 30 páginas, logótipo em curvas, cores, fontes e modelos editáveis guiado passo a passo pela Aura. Comece grátis agora.",
@@ -402,14 +465,28 @@
       footerDesc: "A sua marca profissional com Brandbook de +30 páginas e ficheiros editáveis em menos de 60 minutos. 100% propriedade do cliente."
     },
     de: {
-      navHome: "1. Start",
-      navDeliverables: "2. Was Sie erhalten",
-      navHowItWorks: "3. So funktioniert's",
-      navRealCases: "4. Echte Beispiele",
-      navReferences: "5. Referenzen",
+      navHome: "Start",
+      navDeliverables: "Was Sie erhalten",
+      navHowItWorks: "So funktioniert's",
+      navRealCases: "Echte Beispiele",
+      navReferences: "Referenzen",
+      navFeedback: "Feedback",
       navMyAccount: "Mein Konto",
       navBuyCta: "Ihre Marke · $49 USD",
       navLicenseActive: "Pro-Lizenz Aktiv",
+      stepWord: "Schritt",
+      steps4to6Label: "Schritte 4–6",
+      continueProStudio: "Im Vollstudio fortfahren (Schritte 4–6)",
+      viewSampleBtn: "Vorschau ansehen",
+      downloadSampleBtn: "Muster herunterladen",
+      startFreeDemoNow: "Jetzt kostenlos in der Live-Demo starten",
+      unlock9FilesBtn: "Alle 9 Dateien freischalten · $49 USD",
+      tryStepLiveBtn: "Diesen Schritt live testen",
+      feedbackTitle: "Sagen Sie uns, was wir verbessern können",
+      feedbackSub: "Ihr Feedback geht direkt an unser Team inklusive aktuellem Bereich",
+      feedbackPlaceholder: "Schreiben Sie kurz, was Ihnen gefallen hat oder was klarer sein könnte...",
+      feedbackSubmitBtn: "Feedback senden",
+      feedbackThanksMsg: "Vielen Dank! Ihr Feedback wurde gesendet.",
       taglineBadge: "YOUR BRAND, NOW!!!",
       heroHeadline: "Ihre komplette, verkaufsfertige Marke in unter 60 Minuten.",
       heroSubheadline: "Erhalten Sie ein professionelles Brandbook mit über 30 Seiten, Vektor-Logos, Farben, Schriften und Vorlagen – Schritt für Schritt geführt von Aura. Jetzt kostenlos starten.",
@@ -478,14 +555,28 @@
       footerDesc: "Ihre komplette Marke mit 30+ Seiten Brandbook und Produktionsdateien in unter 60 Minuten. 100 % Eigentum des Kunden."
     },
     it: {
-      navHome: "1. Inizio",
-      navDeliverables: "2. Cosa Ricevi",
-      navHowItWorks: "3. Come Funziona",
-      navRealCases: "4. Esempi Reali",
-      navReferences: "5. Riferimenti",
+      navHome: "Inizio",
+      navDeliverables: "Cosa Ricevi",
+      navHowItWorks: "Come Funziona",
+      navRealCases: "Esempi Reali",
+      navReferences: "Riferimenti",
+      navFeedback: "Opinione",
       navMyAccount: "Il Mio Account",
       navBuyCta: "Il Tuo Brand · $49 USD",
       navLicenseActive: "Licenza Pro Attiva",
+      stepWord: "Passo",
+      steps4to6Label: "Passi 4–6",
+      continueProStudio: "Continua nello Studio Completo (Passi 4–6)",
+      viewSampleBtn: "Vedi anteprima",
+      downloadSampleBtn: "Scarica esempio",
+      startFreeDemoNow: "Inizia gratis nella Demo ora",
+      unlock9FilesBtn: "Sblocca i 9 file · $49 USD",
+      tryStepLiveBtn: "Prova questo passo dal vivo",
+      feedbackTitle: "Raccontaci cosa miglioreresti",
+      feedbackSub: "Il tuo messaggio arriva direttamente al nostro team con la sezione attuale",
+      feedbackPlaceholder: "Scrivi con parole tue cosa ti è piaciuto o cosa miglioreresti...",
+      feedbackSubmitBtn: "Invia commento al team",
+      feedbackThanksMsg: "Grazie! Il tuo messaggio è arrivato al team.",
       taglineBadge: "YOUR BRAND, NOW!!!",
       heroHeadline: "Il tuo brand completo e pronto a vendere in meno di 60 minuti.",
       heroSubheadline: "Ottieni un Brandbook professionale di oltre 30 pagine, logo vettoriale, colori, font e modelli modificabili guidato passo dopo passo da Aura. Inizia gratis ora.",
@@ -566,7 +657,7 @@
       num: "01",
       format: ".PDF + .HTML",
       sampleUrl: "/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf",
-      thumb: "/assets/app_captures/arco_30_paso6_1_brandbook_lamina01_portada.png",
+      thumb: "/assets/app_captures/pdf_lamina_01_portada.png",
       plateNum: 1,
       isPrimaryBrandbook: true,
       i18n: {
@@ -582,7 +673,7 @@
       num: "02",
       format: ".SVG · VECTOR",
       sampleUrl: "/assets/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.svg",
-      thumb: "/assets/app_captures/arco_31_paso6_1_brandbook_lamina13_terna.png",
+      thumb: "/assets/app_captures/pdf_lamina_13_terna_curvas.png",
       plateNum: 2,
       i18n: {
         es: { title: "Tus Logotipos que nunca se pixelan (.SVG)", desc: "Tres versiones listas (horizontal, cuadrado para perfil y sello circular) que puedes agrandar desde un celular hasta un espectacular sin que pierdan nitidez." },
@@ -597,7 +688,7 @@
       num: "03",
       format: ".AI · IMPRENTA",
       sampleUrl: "/assets/samples/Logotipo_Horizontal_Curvas_arco_ingenieria.ai",
-      thumb: "/assets/app_captures/arco_28_paso5_2_iter5_lineal_minimalista.png",
+      thumb: "/assets/logos/arco_iter5_full.png",
       plateNum: 3,
       i18n: {
         es: { title: "Archivo Maestro para Imprenta y Bordado (.AI)", desc: "El archivo original editable para Adobe Illustrator que te pide cualquier imprenta profesional para tarjetas, cajas, letreros o uniformes bordados." },
@@ -627,7 +718,7 @@
       num: "05",
       format: ".DOCX · WORD",
       sampleUrl: "/assets/samples/Plantilla_Hoja_Membretada_arco_ingenieria.docx",
-      thumb: "/assets/app_captures/arco_33_paso6_2_boveda_ejecutiva_descargas.png",
+      thumb: "/assets/app_captures/pdf_lamina_30_papeleria_hoja_membretada.png",
       plateNum: 5,
       i18n: {
         es: { title: "Hoja Membretada Editable (.DOCX)", desc: "Plantilla lista para abrir en Word o Google Docs con tu logo y tus colores para enviar cotizaciones, contratos y cartas formales." },
@@ -642,7 +733,7 @@
       num: "06",
       format: ".PPTX · SLIDES",
       sampleUrl: "/assets/samples/Plantilla_Presentacion_Ejecutiva_arco_ingenieria.pptx",
-      thumb: "/assets/app_captures/arco_32_paso6_1_brandbook_lamina21_paleta.png",
+      thumb: "/assets/app_captures/pdf_lamina_21_paleta_cromatica.png",
       plateNum: 6,
       i18n: {
         es: { title: "Presentación Comercial 16:9 Editable (.PPTX)", desc: "Diapositivas listas en PowerPoint, Keynote o Google Slides con el diseño de tu marca para presentar tu negocio a clientes o socios." },
@@ -657,7 +748,7 @@
       num: "07",
       format: ".HTML · CORREO",
       sampleUrl: "/assets/samples/Firma_Corporativa_Luis_Ponce_ARCO_Ingenieria.html",
-      thumb: "/assets/app_captures/arco_34_modal_firma_corporativa_luis_ponce.png",
+      thumb: "/assets/avi/brandbook_plate_digital_ecosystem.jpg",
       plateNum: 7,
       i18n: {
         es: { title: "Firma Profesional para tu Correo (.HTML)", desc: "Lista para copiar y pegar en Gmail, Outlook o Apple Mail con tu logo, tu puesto y botones directos de contacto." },
@@ -672,7 +763,7 @@
       num: "08",
       format: ".ZIP · FUENTES",
       sampleUrl: "/assets/samples/Kit_Fuentes_Oficiales_arco_ingenieria.zip",
-      thumb: "/assets/app_captures/arco_21_paso4_4_tipografia_montserrat_arquitectura.png",
+      thumb: "/assets/app_captures/pdf_lamina_25_tipografia_montserrat.png",
       plateNum: 8,
       i18n: {
         es: { title: "Paquete de Letras Oficiales Instalables (.ZIP)", desc: "Los archivos de las tipografías oficiales de tu marca con licencia comercial libre para instalarlos en tu computadora en dos clics." },
@@ -687,7 +778,7 @@
       num: "09",
       format: ".JSON / .SVG",
       sampleUrl: "/assets/samples/Sello_Circular_Curvas_arco_ingenieria.svg",
-      thumb: "/assets/app_captures/arco_23_paso5_1_rueda_circular_colores_arco.png",
+      thumb: "/assets/app_captures/pdf_lamina_16_reticula_8x3x.png",
       plateNum: 9,
       i18n: {
         es: { title: "Sello Circular + Códigos para tu Sitio Web (.JSON)", desc: "Incluye tu sello redondo para stickers o empaques y la hoja exacta de colores y estilos para que cualquier programador o creador web arme tu página en minutos." },
@@ -823,7 +914,7 @@
     { id: 2, badge: "Opción #2", name: "Emblema Arquitectónico", desc: "Actualiza la letra cursiva antigua por una tipografía firme e integra el puente estructural.", logoImg: "/assets/logos/arco_iter2_full.png", screenImg: "/assets/app_captures/arco_25_paso5_2_iter2_emblema_autor.png" },
     { id: 3, badge: "Opción #3", name: "Monograma «A» Estructural", desc: "Une la inicial «A» en gris acero con un doble arco envolvente limpio y fácil de bordar.", logoImg: "/assets/logos/arco_iter3_full.png", screenImg: "/assets/app_captures/arco_26_paso5_2_iter3_monograma_giro.png" },
     { id: 4, badge: "Opción #4", name: "Sello Circular para Cascos y Planos", desc: "Versión redonda pensada para sellos oficiales, cascos de obra y stickers.", logoImg: "/assets/logos/arco_iter4_full.png", screenImg: "/assets/app_captures/arco_27_paso5_2_iter4_insignia_sello.png" },
-    { id: 5, badge: "★ Elegido por el Cliente", name: "Lineal Minimalista (#5)", desc: "Arco estructural limpio con dos torres esbeltas. Elegido para construir su Brandbook de 36 páginas.", logoImg: "/assets/logos/arco_iter5_full.png", screenImg: "/assets/app_captures/arco_28_paso5_2_iter5_lineal_minimalista.png" },
+    { id: 5, badge: "Elegido por el Cliente", name: "Lineal Minimalista (#5)", desc: "Arco estructural limpio con dos torres esbeltas. Elegido para construir su Brandbook de 36 páginas.", logoImg: "/assets/logos/arco_iter5_full.png", screenImg: "/assets/app_captures/pdf_lamina_13_terna_curvas.png" },
     { id: 6, badge: "Opción #6", name: "Variante Refinada por Voz/Texto", desc: "Ajuste pedido en una frase para fusionar la inicial con las torres residenciales.", logoImg: "/assets/logos/arco_iter6_full.png", screenImg: "/assets/app_captures/arco_29_paso5_2_iter6_evolucion_conversacional_final.png" }
   ];
 
@@ -1204,14 +1295,14 @@
                     data-demo-step-pill="${idx}"
                     class="tbb-step-jump-pill ${curDemoStep === idx ? "active" : ""}"
                     onclick="window.tbbJumpDemoToStep(${idx})"
-                  >Paso ${idx}</button>
+                  >${escHtml(t("stepWord"))} ${idx}</button>
                 `).join("")}
                 <button
                   type="button"
                   data-demo-step-pill="4"
                   class="tbb-step-jump-pill is-pro-step ${curDemoStep >= 4 ? "active" : ""}"
                   onclick="window.tbbJumpDemoToStep(4)"
-                >${isPro ? TBB_ICONS.unlock : TBB_ICONS.lock} <span>Paso 4–6</span></button>
+                >${isPro ? TBB_ICONS.unlock : TBB_ICONS.lock} <span>${escHtml(t("steps4to6Label"))}</span></button>
               </div>
 
               <div class="tbb-live-demo-toolbar-actions">
@@ -1256,7 +1347,7 @@
               ${isPro ? `
                 <button type="button" class="tbb-btn-primary" onclick="window.tbbOpenImmersiveStudioClone(4)">
                   ${TBB_ICONS.unlock}
-                  <span>Continuar en Estudio Completo (Pasos 4–6 Activos)</span>
+                  <span>${escHtml(t("continueProStudio"))}</span>
                   ${TBB_ICONS.arrowRight}
                 </button>
               ` : `
@@ -1303,20 +1394,27 @@
             ${OFFICIAL_9_DELIVERABLES.map((dl) => {
               const loc = dl.i18n[l] || dl.i18n.es;
               const fileName = String(dl.sampleUrl).split("/").pop();
+              const fmtMap = {
+                ".AI · IMPRENTA": { es: ".AI · IMPRENTA", en: ".AI · PRINT", fr: ".AI · IMPRIMERIE", pt: ".AI · GRÁFICA", de: ".AI · DRUCK", it: ".AI · STAMPA" },
+                ".PNG · ALTA CALIDAD": { es: ".PNG · ALTA CALIDAD", en: ".PNG · HIGH RES", fr: ".PNG · HAUTE QUALITÉ", pt: ".PNG · ALTA QUALIDADE", de: ".PNG · HOCHAUFLÖSEND", it: ".PNG · ALTA RISOLUZIONE" },
+                ".HTML · CORREO": { es: ".HTML · CORREO", en: ".HTML · EMAIL", fr: ".HTML · E-MAIL", pt: ".HTML · E-MAIL", de: ".HTML · E-MAIL", it: ".HTML · EMAIL" },
+                ".ZIP · FUENTES": { es: ".ZIP · FUENTES", en: ".ZIP · FONTS", fr: ".ZIP · POLICES", pt: ".ZIP · FONTES", de: ".ZIP · SCHRIFTEN", it: ".ZIP · FONT" }
+              };
+              const locFormat = (fmtMap[dl.format] && (fmtMap[dl.format][l] || fmtMap[dl.format].en)) || dl.format;
               return `
                 <article class="tbb-deliv-card ${dl.isPrimaryBrandbook ? "is-featured" : ""}">
                   <div class="tbb-deliv-thumb-wrap" onclick="window.tbbOpenPlateLightboxModal(${dl.plateNum}, '${escHtml(dl.thumb)}', '${escHtml(loc.title)}', '${escHtml(dl.sampleUrl)}')">
                     <img src="${escHtml(tbbImgSrc(dl.thumb))}" onerror="window.tbbImgFallback(this)" alt="${escHtml(loc.title)}" loading="lazy" />
-                    <span class="tbb-deliv-format-pill">${escHtml(dl.num)} · ${escHtml(dl.format)}</span>
+                    <span class="tbb-deliv-format-pill">${escHtml(dl.num)} · ${escHtml(locFormat)}</span>
                   </div>
                   <div class="tbb-deliv-body">
                     <h3>${escHtml(loc.title)}</h3>
                     <p>${escHtml(loc.desc)}</p>
                     <div class="tbb-deliv-actions">
                       <button type="button" class="tbb-btn-secondary" onclick="window.tbbOpenPlateLightboxModal(${dl.plateNum}, '${escHtml(dl.thumb)}', '${escHtml(loc.title)}', '${escHtml(dl.sampleUrl)}')">
-                        ${TBB_ICONS.expand} <span>Ver muestra</span>
+                        ${TBB_ICONS.expand} <span>${escHtml(t("viewSampleBtn"))}</span>
                       </button>
-                      <a href="${escHtml(dl.sampleUrl)}" download="${escHtml(fileName)}" class="tbb-link-btn">Descargar ejemplo ↓</a>
+                      <a href="${escHtml(dl.sampleUrl)}" download="${escHtml(fileName)}" class="tbb-link-btn">${escHtml(t("downloadSampleBtn"))} ${TBB_ICONS.deliverables}</a>
                     </div>
                   </div>
                 </article>
@@ -1341,12 +1439,12 @@
           <div class="tbb-centered-cta-row">
             <button type="button" class="tbb-btn-primary" onclick="window.tbbSwitchMainSection(1)">
               ${TBB_ICONS.play}
-              <span>Empezar gratis en la Demo ahora</span>
+              <span>${escHtml(t("startFreeDemoNow"))}</span>
               ${TBB_ICONS.arrowRight}
             </button>
             <button type="button" class="tbb-btn-secondary" onclick="window.tbbOpenBuyAppCheckoutModal('founder_pro')">
               ${TBB_ICONS.unlock}
-              <span>Desbloquear los 9 archivos · $49 USD</span>
+              <span>${escHtml(t("unlock9FilesBtn"))}</span>
             </button>
           </div>
         </div>
@@ -1387,7 +1485,7 @@
                   <div class="tbb-how-step-copy">
                     <div class="tbb-how-step-meta">
                       <span class="tbb-step-pill-tag ${stItem.free ? "is-free" : "is-pro"}">${escHtml(loc.badge)}</span>
-                      <span class="tbb-step-time-pill">⏱ ~${escHtml(stItem.time)}</span>
+                      <span class="tbb-step-time-pill">${TBB_ICONS.clock} ~${escHtml(stItem.time)}</span>
                     </div>
                     <h2>${escHtml(loc.title)}</h2>
                     <p>${escHtml(loc.body)}</p>
@@ -1397,7 +1495,7 @@
                         <span>${escHtml(t("howListenCapsule"))}</span>
                       </button>
                       <button type="button" class="tbb-link-btn" onclick="window.tbbSwitchMainSection(1); setTimeout(()=>window.tbbJumpDemoToStep(${stItem.step}), 120);">
-                        Probar este paso en vivo →
+                        <span>${escHtml(t("tryStepLiveBtn"))}</span> ${TBB_ICONS.arrowRight}
                       </button>
                     </div>
                   </div>
@@ -1991,6 +2089,22 @@
   // CHECKOUT LIMPIO $49 USD CON STRIPE CHECKOUT + CÓDIGO COLAPSABLE + RESTAURACIÓN DE CUENTA
   // (Cero tarjetas falsas precargadas, cero cupones gratuitos públicos expuestos)
   // ============================================================================
+  function saveDemoMigrationEverywhere(snapshotObj) {
+    if (!snapshotObj || typeof snapshotObj !== "object") return;
+    try {
+      const compact = {};
+      for (const k of Object.keys(snapshotObj)) {
+        const val = snapshotObj[k];
+        if (typeof val === "string" && val.length > 50000) continue;
+        compact[k] = val;
+      }
+      const serialized = JSON.stringify(compact);
+      localStorage.setItem("tbb_migrated_steps_0_to_3_v56", serialized);
+      localStorage.setItem("tbb_demo_steps_0_to_3_backup", serialized);
+      localStorage.setItem("tbb_demo_steps0to3_migration_v92", serialized);
+    } catch (e) {}
+  }
+
   window.tbbGetPendingDemoMigrationSnapshot = function () {
     const st = window.tbbCommercialDemoState || {};
     if (st.migratedSteps0to3Snapshot && typeof st.migratedSteps0to3Snapshot === "object") {
@@ -1998,8 +2112,10 @@
     }
     try {
       const raw =
-        localStorage.getItem("tbb_studio_autosave_v45") ||
+        localStorage.getItem("tbb_migrated_steps_0_to_3_v56") ||
         localStorage.getItem("tbb_demo_steps_0_to_3_backup") ||
+        localStorage.getItem("tbb_demo_steps0to3_migration_v92") ||
+        localStorage.getItem("tbb_studio_autosave_v45") ||
         localStorage.getItem("tbb_canvas_state_v1");
       if (raw) {
         const parsed = JSON.parse(raw);
@@ -2125,9 +2241,7 @@
       submitBtn.style.opacity = "0.75";
     }
 
-    try {
-      localStorage.setItem("tbb_migrated_steps_0_to_3_v56", JSON.stringify(migrationSnapshot));
-    } catch (e) {}
+    saveDemoMigrationEverywhere(migrationSnapshot);
 
     try {
       // Ruta principal: Crear sesión real de Stripe Checkout (o canje verificado 100% en backend)
@@ -2297,7 +2411,7 @@
             <button type="button" class="tbb-btn-secondary" onclick="window.tbbApplyPromoCouponCode()">${escHtml(t("checkoutPromoApply"))}</button>
             ${coupon ? `<button type="button" class="tbb-link-btn" onclick="window.tbbClearPromoCouponCode()">Quitar</button>` : ""}
           </div>
-          ${coupon ? `<div class="tbb-promo-ok-msg">✓ Código <strong>${escHtml(coupon.code)}</strong> aplicado — Total: <strong>$${finalPrice.toFixed(2)} USD</strong></div>` : ""}
+          ${coupon ? `<div class="tbb-promo-ok-msg">${TBB_ICONS.check} Código <strong>${escHtml(coupon.code)}</strong> aplicado — Total: <strong>$${finalPrice.toFixed(2)} USD</strong></div>` : ""}
           <div id="tbbCheckoutPromoStatusMsg" class="tbb-promo-err-msg" style="display:none;"></div>
         ` : ""}
       </div>
@@ -2485,8 +2599,9 @@
               </select>
             </label>
 
-            <button type="button" class="tbb-header-account-btn" onclick="window.tbbOpenWebFeedbackModal()" title="Enviar comentario o sugerencia">
-              <span>💬 Opinión</span>
+            <button type="button" class="tbb-header-account-btn" onclick="window.tbbOpenWebFeedbackModal()" title="${escHtml(t("feedbackTitle"))}">
+              ${TBB_ICONS.feedback}
+              <span>${escHtml(t("navFeedback"))}</span>
             </button>
 
             <button type="button" class="tbb-header-account-btn" onclick="window.tbbOpenRestoreAccountModal()">
@@ -2500,11 +2615,12 @@
               onclick="${isPro ? "window.tbbOpenImmersiveStudioClone(4)" : "window.tbbOpenBuyAppCheckoutModal('founder_pro')"}"
             >
               ${isPro ? TBB_ICONS.unlock : TBB_ICONS.spark}
-              <span>${escHtml(isPro ? t("navLicenseActive") : t("navBuyCta"))}</span>
+              <span class="tbb-buy-lbl-full">${escHtml(isPro ? t("navLicenseActive") : t("navBuyCta"))}</span>
+              <span class="tbb-buy-lbl-short">${isPro ? "Pro" : "$49"}</span>
             </button>
 
-            <button type="button" class="tbb-mobile-menu-btn" onclick="window.tbbOpenMobileNavDrawer()" aria-label="Menú">
-              ☰
+            <button type="button" class="tbb-mobile-menu-btn" onclick="window.tbbOpenMobileNavDrawer()" aria-label="Menu">
+              ${TBB_ICONS.menu}
             </button>
           </div>
         </div>
@@ -2524,7 +2640,7 @@
                 </button>
               `).join("")}
               <button type="button" class="tbb-mobile-drawer-item" onclick="window.tbbCloseMobileNavDrawer(); window.tbbOpenWebFeedbackModal();">
-                <span>💬</span> <span class="tbb-drawer-lbl">Enviar comentario</span> ${TBB_ICONS.arrowRight}
+                ${TBB_ICONS.feedback} <span class="tbb-drawer-lbl">${escHtml(t("navFeedback"))}</span> ${TBB_ICONS.arrowRight}
               </button>
               <button type="button" class="tbb-mobile-drawer-item" onclick="window.tbbCloseMobileNavDrawer(); window.tbbOpenRestoreAccountModal();">
                 ${TBB_ICONS.user} <span class="tbb-drawer-lbl">${escHtml(t("navMyAccount"))}</span> ${TBB_ICONS.arrowRight}
@@ -2596,7 +2712,7 @@
         if (msg) {
           msg.className = "tbb-promo-ok-msg";
           msg.style.display = "block";
-          msg.textContent = "✓ ¡Gracias! Tu comentario ya llegó directo al equipo.";
+          msg.textContent = t("feedbackThanksMsg");
         }
         setTimeout(() => window.tbbCloseWebFeedbackModal(), 1100);
       } else {
@@ -2606,7 +2722,7 @@
       if (msg) {
         msg.className = "tbb-promo-err-msg";
         msg.style.display = "block";
-        msg.textContent = "No pudimos enviarlo en este momento. Intenta nuevamente.";
+        msg.textContent = "Connection error. Please try again.";
       }
     } finally {
       if (btn) btn.disabled = false;
@@ -2628,14 +2744,14 @@
     ov.innerHTML = `
       <div class="tbb-modal-card" onclick="event.stopPropagation()">
         <div class="tbb-modal-head">
-          <h3>💬 Cuéntanos qué mejorarías</h3>
+          <h3 style="display:flex;align-items:center;gap:8px;">${TBB_ICONS.feedback} <span>${escHtml(t("feedbackTitle"))}</span></h3>
           <button type="button" class="tbb-icon-close-btn" onclick="window.tbbCloseWebFeedbackModal()">${TBB_ICONS.close}</button>
         </div>
-        <p class="tbb-muted-p" style="margin:0 0 12px;">Tu comentario llega directo a nuestro equipo junto con la sección actual (<strong>/${escHtml(secMeta.slug)}</strong>).</p>
-        <textarea id="tbbWebFeedbackText" rows="4" placeholder="Escribe con tus propias palabras qué te gustó, qué te confundió o qué cambiarías..." class="tbb-input" style="height:auto;padding:12px;"></textarea>
+        <p class="tbb-muted-p" style="margin:0 0 12px;">${escHtml(t("feedbackSub"))} (<strong>/${escHtml(secMeta.slug)}</strong>).</p>
+        <textarea id="tbbWebFeedbackText" rows="4" placeholder="${escHtml(t("feedbackPlaceholder"))}" class="tbb-input" style="height:auto;padding:12px;"></textarea>
         <div id="tbbWebFeedbackStatus" class="tbb-promo-err-msg" style="display:none;margin-top:10px;"></div>
         <button id="tbbWebFeedbackBtn" type="button" class="tbb-btn-primary is-full" style="margin-top:14px;" onclick="window.tbbSubmitWebFeedback()">
-          <span>Enviar comentario al equipo</span> ${TBB_ICONS.arrowRight}
+          <span>${escHtml(t("feedbackSubmitBtn"))}</span> ${TBB_ICONS.arrowRight}
         </button>
       </div>
     `;
@@ -2665,12 +2781,21 @@
 
     window.tbbRefreshCommercialPortalDOM();
 
-    const ifr = document.getElementById("tbbRealStudioDemoIframe");
-    if (ifr && ifr.contentWindow) {
+    document.querySelectorAll('iframe[src*="studio"], #tbbRealStudioDemoIframe').forEach((ifr) => {
       try {
-        ifr.contentWindow.postMessage({ type: "TBB_SET_LANGUAGE", lang: clean }, "*");
+        const curSrc = ifr.getAttribute("src") || "";
+        if (curSrc && /[?&]lang=/.test(curSrc)) {
+          const nextSrc = curSrc.replace(/([?&]lang=)[a-zA-Z-]+/, "$1" + encodeURIComponent(clean));
+          if (nextSrc !== curSrc) ifr.setAttribute("src", nextSrc);
+        }
+        if (ifr.contentWindow) {
+          if (typeof ifr.contentWindow.tbbSetLanguage === "function") {
+            ifr.contentWindow.tbbSetLanguage(clean);
+          }
+          ifr.contentWindow.postMessage({ type: "TBB_SET_LANGUAGE", lang: clean }, "*");
+        }
       } catch (e) {}
-    }
+    });
   };
   window.tbbChangeCommercialLanguage = window.tbbSwitchCommercialLanguage;
 
@@ -2719,20 +2844,20 @@
         border-bottom: 1px solid #E2E8F0;
       }
       .tbb-header-inner {
-        max-width: 1280px;
+        max-width: 1380px;
         margin: 0 auto;
-        padding: 10px 20px;
+        padding: 10px 18px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 14px;
+        gap: 10px;
       }
-      .tbb-brand-logo-link { display: inline-flex; align-items: center; text-decoration: none; }
-      .tbb-header-wordmark-svg { height: 42px; width: auto; display: block; }
+      .tbb-brand-logo-link { display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+      .tbb-header-wordmark-svg { height: 36px; width: auto; display: block; }
       .tbb-desktop-nav {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
         background: #F8FAFC;
         padding: 4px;
         border-radius: 999px;
@@ -2741,14 +2866,14 @@
       .tbb-nav-tab-btn {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 8px 14px;
+        gap: 5px;
+        padding: 7px 11px;
         border-radius: 999px;
         border: none;
         background: transparent;
         color: #334155;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.9rem;
+        font-size: 0.875rem;
         font-weight: 600;
         cursor: pointer;
         transition: background 0.18s ease, color 0.18s ease;
@@ -2756,13 +2881,13 @@
       }
       .tbb-nav-tab-btn:hover { color: #0D2540; background: #EEF2F6; }
       .tbb-nav-tab-btn.active { background: #0D2540; color: #FFFFFF; }
-      .tbb-header-actions { display: flex; align-items: center; gap: 8px; }
+      .tbb-header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
       .tbb-lang-select-wrap {
         display: inline-flex;
         align-items: center;
-        gap: 5px;
-        height: 40px;
-        padding: 0 10px;
+        gap: 4px;
+        height: 38px;
+        padding: 0 9px;
         border-radius: 999px;
         border: 1px solid #CBD5E1;
         background: #FFFFFF;
@@ -2781,9 +2906,9 @@
       .tbb-header-account-btn {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        height: 40px;
-        padding: 0 14px;
+        gap: 5px;
+        height: 38px;
+        padding: 0 11px;
         border-radius: 999px;
         border: 1px solid #CBD5E1;
         background: #FFFFFF;
@@ -2792,24 +2917,32 @@
         font-size: 0.875rem;
         font-weight: 600;
         cursor: pointer;
+        white-space: nowrap;
       }
       .tbb-header-buy-btn {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 6px;
-        height: 40px;
-        padding: 0 16px;
+        height: 38px;
+        padding: 0 15px;
         border-radius: 999px;
         border: none;
         background: #FF7A00;
         color: #FFFFFF;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.9rem;
+        font-size: 0.875rem;
         font-weight: 600;
         cursor: pointer;
         box-shadow: 0 4px 12px rgba(255, 122, 0, 0.25);
         white-space: nowrap;
       }
+      .tbb-header-buy-btn svg path,
+      .tbb-primary-cta-btn svg path,
+      .tbb-orange-btn svg path {
+        fill: currentColor;
+      }
+      .tbb-buy-lbl-short { display: none; }
       .tbb-header-buy-btn.is-pro { background: #059669; box-shadow: none; }
       .tbb-mobile-menu-btn {
         display: none;
@@ -3514,24 +3647,24 @@
         align-items: center;
       }
       .tbb-capsule-orb-stage {
-        background: radial-gradient(circle at 50% 42%, #1E3A8A 0%, #0D2540 76%);
+        background: #FFFFFF;
         border-radius: 20px;
-        padding: 18px 14px;
+        padding: 12px;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 10px;
       }
-      .tbb-capsule-live-tag { color: #BAE6FD; font-size: 0.875rem; font-weight: 600; }
+      .tbb-capsule-live-tag { color: #426EAE; background: #F4F8FC; border: 1px solid #DCE6F2; padding: 3px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
       .tbb-capsule-replay-btn {
         display: inline-flex;
         align-items: center;
         gap: 6px;
         padding: 7px 14px;
         border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.28);
-        background: rgba(255,255,255,0.12);
-        color: #FFFFFF;
+        border: 1px solid #CBD5E1;
+        background: #F8FAFC;
+        color: #0D2540;
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 0.875rem;
         font-weight: 600;
@@ -3681,9 +3814,10 @@
       @media (max-width: 680px) {
         .tbb-container { padding: 0 16px; }
         .tbb-section { padding: 26px 0 56px; }
-        .tbb-header-wordmark-svg { height: 34px; }
-        .tbb-header-buy-btn span { display: none; }
-        .tbb-header-buy-btn { padding: 0 12px; }
+        .tbb-header-wordmark-svg { height: 32px; }
+        .tbb-buy-lbl-full { display: none; }
+        .tbb-buy-lbl-short { display: inline; font-weight: 700; font-size: 0.875rem; }
+        .tbb-header-buy-btn { padding: 0 12px; gap: 4px; }
         .tbb-live-demo-frame-shell { height: 76vh; min-height: 520px; }
         .tbb-case-iter-selector-grid { grid-template-columns: 1fr; }
       }
@@ -3929,9 +4063,7 @@
             btn.classList.toggle("active", Number(btn.getAttribute("data-demo-step-pill")) === snap.step);
           });
         }
-        try {
-          localStorage.setItem("tbb_demo_steps_0_to_3_backup", JSON.stringify(snap));
-        } catch (e) {}
+        saveDemoMigrationEverywhere(snap);
       }
 
       if (msg.type === "TBB_EXIT_IMMERSIVE_STUDIO") {
@@ -3948,9 +4080,7 @@
         const snap = msg.stateSnapshot || msg.payload;
         if (snap && typeof snap === "object") {
           st.migratedSteps0to3Snapshot = snap;
-          try {
-            localStorage.setItem("tbb_demo_steps_0_to_3_backup", JSON.stringify(snap));
-          } catch (e) {}
+          saveDemoMigrationEverywhere(snap);
         }
         window.tbbOpenBuyAppCheckoutModal("founder_pro");
       }
