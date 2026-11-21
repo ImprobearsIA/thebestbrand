@@ -12347,7 +12347,7 @@
           idx: 0,
           title: "Familia 01 · Monograma o Iniciales Geométricas",
           context: "Ideal para Apps, Sellos, Papelería y Bordado Limpio",
-          imgSrc: "/assets/avi/step4_dir1_thumb.webp",
+          imgSrc: window.tbbResolveAssetUrl("/assets/avi/step4_dir1_thumb.webp"),
           affinity: aff1,
           refs: "Inspiración: Apple · Braun · Chanel · Louis Vuitton",
           desc: `Convierte las iniciales (${initials}) de tu marca en un símbolo limpio, fácil de recordar y perfecto para íconos digitales y bordado (${strokeW} mm).`
@@ -12356,7 +12356,7 @@
           idx: 1,
           title: "Familia 02 · Escudo o Insignia de Autoridad",
           context: "Ideal para Prestigio Institucional, Empaques y Certificación",
-          imgSrc: "/assets/avi/step4_dir2_thumb.webp",
+          imgSrc: window.tbbResolveAssetUrl("/assets/avi/step4_dir2_thumb.webp"),
           affinity: aff2,
           refs: "Inspiración: Porsche · Rolex · Clubes & Universidades",
           desc: `Enmarca tu símbolo dentro de un escudo protector que transmite respaldo, tradición, seguridad y alto valor percibido.`
@@ -12365,7 +12365,7 @@
           idx: 2,
           title: "Familia 03 · Símbolo Fluido de un Solo Trazo",
           context: "Ideal para Marcas Cercanas, Humanas y de Memoria Instantánea",
-          imgSrc: "/assets/avi/step4_dir3_thumb.webp",
+          imgSrc: window.tbbResolveAssetUrl("/assets/avi/step4_dir3_thumb.webp"),
           affinity: aff3,
           refs: "Inspiración: Airbnb · Nike · MasterCard",
           desc: `Un símbolo continuo y cálido dibujado con curvas suaves que transmite cercanía humana, movimiento y fluidez.`
@@ -12374,7 +12374,7 @@
           idx: 3,
           title: "Familia 04 · Símbolo Tridimensional o Prisma",
           context: "Ideal para Tecnología, Innovación, Ingeniería y Futuro",
-          imgSrc: "/assets/avi/step4_dir4_thumb.webp",
+          imgSrc: window.tbbResolveAssetUrl("/assets/avi/step4_dir4_thumb.webp"),
           affinity: aff4,
           refs: "Inspiración: Tesla · Polestar · Mitsubishi",
           desc: `Facetas angulares con efecto de volumen y luz que proyectan vanguardia tecnológica, precisión e innovación.`
@@ -14853,10 +14853,10 @@
 
       // Rescatar los 7 deslizadores y la Familia Base de la Fase 4
       const masterFamilies = [
-        { title: "Familia 01 · Monograma o Iniciales Geométricas", img: "/assets/avi/step4_dir1_thumb.webp" },
-        { title: "Familia 02 · Escudo o Insignia Protectora", img: "/assets/avi/step4_dir2_thumb.webp" },
-        { title: "Familia 03 · Símbolo Fluido de un Solo Trazo", img: "/assets/avi/step4_dir3_thumb.webp" },
-        { title: "Familia 04 · Símbolo Tridimensional o Prisma", img: "/assets/avi/step4_dir4_thumb.webp" }
+        { title: "Familia 01 · Monograma o Iniciales Geométricas", img: window.tbbResolveAssetUrl("/assets/avi/step4_dir1_thumb.webp") },
+        { title: "Familia 02 · Escudo o Insignia Protectora", img: window.tbbResolveAssetUrl("/assets/avi/step4_dir2_thumb.webp") },
+        { title: "Familia 03 · Símbolo Fluido de un Solo Trazo", img: window.tbbResolveAssetUrl("/assets/avi/step4_dir3_thumb.webp") },
+        { title: "Familia 04 · Símbolo Tridimensional o Prisma", img: window.tbbResolveAssetUrl("/assets/avi/step4_dir4_thumb.webp") }
       ];
       const chosenFamilyObj = masterFamilies[selectedLiveSketchIndex || 0] || masterFamilies[0];
 
