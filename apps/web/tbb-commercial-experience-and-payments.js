@@ -3575,25 +3575,25 @@
       .tbb-header-inner {
         max-width: 1380px;
         margin: 0 auto;
-        padding: 10px 20px;
+        padding: 10px 16px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 10px;
+        gap: 8px;
       }
       .tbb-brand-logo-link {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         text-decoration: none;
         flex-shrink: 0;
         transition: transform 0.18s var(--tbb-ds-ease-out);
       }
       .tbb-brand-logo-link:active { transform: scale(0.985); }
-      .tbb-header-wordmark-svg { height: 42px; width: auto; display: block; }
+      .tbb-header-wordmark-svg { height: 40px; width: auto; display: block; }
       .tbb-header-brand-orb {
-        width: 42px;
-        height: 42px;
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
         object-fit: contain;
         display: block;
@@ -3602,16 +3602,16 @@
       }
       .tbb-header-brand-divider {
         width: 1.5px;
-        height: 24px;
+        height: 22px;
         background: rgba(13, 37, 64, 0.15);
         border-radius: 2px;
         flex-shrink: 0;
       }
       .tbb-header-brand-wordmark {
         font-family: 'Montserrat', sans-serif;
-        font-size: 1.06rem;
+        font-size: 0.96rem;
         font-weight: 800;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.025em;
         color: #0D2540;
         line-height: 1;
         white-space: nowrap;
@@ -3629,14 +3629,14 @@
       .tbb-nav-tab-btn {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 7px 13px;
+        gap: 5px;
+        padding: 7px 11px;
         border-radius: 999px;
         border: none;
         background: transparent;
         color: #334155;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.875rem;
+        font-size: 0.85rem;
         font-weight: 600;
         cursor: pointer;
         transition: transform 0.16s var(--tbb-ds-ease-press), opacity 0.16s ease;
@@ -5047,18 +5047,23 @@
       @media (max-width: 680px) {
         .tbb-container { padding: 0 16px; }
         .tbb-section { padding: 26px 0 56px; }
+        .tbb-header-inner { padding: 9px 12px; gap: 6px; }
         .tbb-header-wordmark-svg { height: 34px; }
-        .tbb-brand-logo-link { gap: 7px; }
-        .tbb-header-brand-orb { width: 34px; height: 34px; }
-        .tbb-header-brand-divider { height: 20px; }
-        .tbb-header-brand-wordmark { font-size: 0.82rem; letter-spacing: 0.025em; }
+        .tbb-brand-logo-link { gap: 6px; min-width: 0; }
+        .tbb-header-brand-orb { width: 31px; height: 31px; }
+        .tbb-header-brand-divider { display: none; }
+        .tbb-header-brand-wordmark { font-size: 0.78rem; letter-spacing: 0.015em; }
+        .tbb-header-actions { gap: 5px; }
+        .tbb-lang-select-wrap { height: 34px; padding: 0 7px; }
+        .tbb-lang-select-dropdown { font-size: 0.8rem; }
+        .tbb-header-buy-btn { height: 34px; padding: 0 10px; gap: 4px; }
+        .tbb-mobile-menu-btn { width: 36px; height: 36px; }
         .tbb-home-hero-demo-section { padding-top: 18px; }
         .tbb-hero-brand-showcase { gap: 10px; margin-bottom: 16px; }
         .tbb-hero-brand-orb-wrap, .tbb-hero-brand-orb-img { width: 92px; height: 92px; }
         .tbb-hero-brand-name { font-size: 1.55rem; letter-spacing: 0.08em; }
         .tbb-buy-lbl-full { display: none; }
-        .tbb-buy-lbl-short { display: inline; font-weight: 700; font-size: 0.875rem; }
-        .tbb-header-buy-btn { padding: 0 12px; gap: 4px; }
+        .tbb-buy-lbl-short { display: inline; font-weight: 700; font-size: 0.84rem; }
         .tbb-studio-window-dots { display: none; }
         .tbb-view-toggle-group { display: none !important; }
         .tbb-live-demo-toolbar-actions { width: 100%; }
