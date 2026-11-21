@@ -24498,7 +24498,7 @@
               if (lblAct) lblAct.textContent = st.geminiBusy ? "Creando..." : "Refinar";
               if (iconAct) iconAct.innerHTML = window.TBBVectorArt("iterate", "#0D2540", 16);
             }
-            if (lblNext) lblNext.textContent = "Confirmar y Crear Brandbook →";
+            if (lblNext) lblNext.textContent = "Crear Brandbook →";
 
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 12px; gap:6px;">
@@ -24754,8 +24754,9 @@
           st.plateIdx = Math.max(0, Math.min(totalPlates - 1, Number(st.plateIdx || 0)));
           const curPlate = metaList[st.plateIdx];
           const activeItStep6 = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
-          const activeLogoSig6 = (activeItStep6 && (activeItStep6.nanoBananaSymbolUrl || activeItStep6.uploadedLogoDataUrl || activeItStep6.geminiCustomSvg || "")).slice(0, 48);
-          const brandSig6 = `${bName}|${activeLogoSig6}|${cs.primary_color || st.logoPriHex || ""}|${(cs.custom_business_type || "").slice(0, 32)}`;
+          const brandSig6 = typeof window.tbbComputeBrandbookSignature === "function"
+            ? window.tbbComputeBrandbookSignature()
+            : `${bName}|${st.logoIterationIndex || 1}|${(cs.custom_business_type || "").slice(0, 32)}`;
           const isPresetBrand6 = Boolean(cs.isOfficialAdminTbbPreset || cs.isOfficialImproBearsPreset);
 
           if (st.subStep === 1) {
@@ -26240,7 +26241,7 @@
 
         const ov = document.createElement("div");
         ov.id = "tbbStep3IdeaEditorModal";
-        ov.style.cssText = "position:fixed;inset:0;z-index:9800;background:rgba(13,37,64,0.48);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;";
+        ov.style.cssText = "position:fixed;inset:0;z-index:10060;background:rgba(13,37,64,0.48);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;";
         ov.innerHTML = `
           <div onclick="event.stopPropagation()" style="width:100%;max-width:560px;background:#FFFFFF;border-radius:22px;border:1px solid rgba(13,37,64,0.12);box-shadow:0 24px 60px -12px rgba(13,37,64,0.25);padding:20px 22px;display:flex;flex-direction:column;gap:12px;">
             <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
@@ -26346,6 +26347,15 @@
         }
       };
 
+      window.tbbComputeBrandbookSignature = function () {
+        const st = window.tbbState || {};
+        const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+        const bName = window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca";
+        const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
+        const logoKey = (activeIt && (activeIt.nanoBananaFullArtworkUrl || activeIt.nanoBananaSymbolUrl || activeIt.uploadedLogoDataUrl || activeIt.geminiCustomSvg || "")) || cs.nano_banana_symbol_url || "";
+        return `${bName}|it${st.logoIterationIndex || 1}|${String(logoKey).slice(0, 40)}|${(cs.custom_business_type || "").slice(0, 32)}`;
+      };
+
       // Pipeline Real de Creación y Síntesis Editorial con IA para el Brandbook (Paso 5.2 -> Paso 6.1)
       window.tbbCompileCustomBrandbookWithAI = async function (forceRebuild = false) {
         const st = window.tbbState || {};
@@ -26366,8 +26376,7 @@
           if (activeIt.sec) cs.secondary_color = activeIt.sec;
         }
 
-        const activeLogoSig = ((activeIt && (activeIt.nanoBananaSymbolUrl || activeIt.uploadedLogoDataUrl || activeIt.geminiCustomSvg || "")) || cs.nano_banana_symbol_url || "").slice(0, 48);
-        const targetSig = `${bName}|${activeLogoSig}|${cs.primary_color || st.logoPriHex || ""}|${(cs.custom_business_type || "").slice(0, 32)}`;
+        const targetSig = window.tbbComputeBrandbookSignature();
         if (!forceRebuild && cs._compiledBrandbookSig === targetSig) return;
 
         st._brandbookCompilingWithAI = true;
@@ -26424,7 +26433,7 @@
           updateCompileProgress(96, `4/4 Maquetando las páginas editoriales de «${bName}»...`);
           await new Promise(r => setTimeout(r, 240));
 
-          cs._compiledBrandbookSig = `${bName}|${activeLogoSig}|${cs.primary_color || st.logoPriHex || ""}|${(cs.custom_business_type || "").slice(0, 32)}`;
+          cs._compiledBrandbookSig = window.tbbComputeBrandbookSignature();
           if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
         } catch (err) {
           console.warn("Brandbook AI compile warning:", err);

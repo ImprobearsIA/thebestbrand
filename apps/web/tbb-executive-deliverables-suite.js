@@ -2994,8 +2994,7 @@
 
     sections.push(
       `=== 1. BRAND ESSENCE & CONTEXT ===`,
-      `• Brand Name to spell accurately: "${bName}"`,
-      tagline && !/sin\s*(texto|eslogan|subt[ií]tulo)/i.test(userInstruction) ? `• Optional short subtitle (only if clean and legible): "${tagline.slice(0, 42)}"` : "",
+      `• Brand Name to spell accurately: "${bName}" (render ONLY the brand name "${bName}" and symbol/monogram — do NOT add small subtext or long taglines underneath unless explicitly requested by the user)`,
       `• What the business does: ${giro}`,
       why ? `• Purpose: ${why.slice(0, 160)}` : "",
       what ? `• Key Differentiator: ${what.slice(0, 160)}` : "",
