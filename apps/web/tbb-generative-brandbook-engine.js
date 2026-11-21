@@ -677,64 +677,67 @@
 
   // --- GENERADOR DE LAS 30 LÁMINAS DESDE CERO ---
   function generateBrandbook30Plates(brand) {
-    const bName = brand.name || "The Best Brand";
+    const csRef = (typeof window !== "undefined" && window.canvasState) ? window.canvasState : {};
+    const rawCandidateName = String(brand.name || "").trim();
+    const isAccidentalTbbDefault = !csRef.isOfficialAdminTbbPreset && /^the\s*best\s*brand$/i.test(rawCandidateName);
+    const bName = (rawCandidateName && !isAccidentalTbbDefault) ? rawCandidateName : "Mi Marca";
     const bUpper = bName.toUpperCase();
-    const slug = brand.slug || bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
-    const tagline = brand.tagline || "BRAND IDENTITY ATELIER";
-    const giro = brand.giro || "Servicios profesionales e identidad de marca";
-    const categoryRaw = brand.category || "Servicios Generales";
+    const slug = (brand.slug && !isAccidentalTbbDefault) ? brand.slug : (bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "mi_marca");
+    const tagline = (brand.tagline && !/^BRAND IDENTITY ATELIER$/i.test(brand.tagline)) ? brand.tagline : (brand.giro ? brand.giro.slice(0, 48).toUpperCase() : "CALIDAD, CLARIDAD Y CONFIANZA");
+    const giro = brand.giro || "Servicios y productos especializados enfocados en entregar valor real al cliente";
+    const categoryRaw = brand.category || giro || "Servicios Profesionales";
     const shortCategory = extractShortCategoryBadge(categoryRaw, giro, bName);
     const category = shortCategory;
-    const buyer = brand.buyer || "Clientes y empresas que buscan excelencia";
-    const why = brand.why || "Porque el propósito auténtico conecta con las personas y trasciende.";
-    const how = brand.how || "Procesos rigurosos, atención cercana y tecnología de vanguardia.";
-    const what = brand.what || "Soluciones y productos de la más alta calidad y trazabilidad.";
-    const persona = brand.persona || "Líder apasionado, confiable, empático y enfocado en resultados.";
-    const niza = brand.niza || "Clase Internacional de Registro";
+    const buyer = brand.buyer || `Clientes y organizaciones que buscan calidad, confianza y atención clara en ${shortCategory.toLowerCase()}`;
+    const why = brand.why || `Porque resolver de forma confiable y humana las necesidades reales de nuestros clientes transforma su experiencia en ${shortCategory.toLowerCase()}.`;
+    const how = brand.how || `Atención cercana, procesos ordenados, estándares verificables de calidad y compromiso puntual en cada entrega de ${bName}.`;
+    const what = brand.what || `${giro}.`;
+    const persona = brand.persona || `Cercano, confiable, profesional y resolutivo: escucha con atención, habla claro y cumple cada promesa con excelencia.`;
+    const niza = brand.niza || "Clasificación Internacional de Niza";
     const tpBefore = brand.tpBefore || ["Presencia digital clara", "Atención ágil", "Diagnóstico inicial", "Propuesta transparente"];
     const tpDuring = brand.tpDuring || ["Bienvenida cálida", "Ejecución profesional", "Acompañamiento en vivo", "Cobro y entrega clara"];
-    const tpAfter = brand.tpAfter || ["Manual y garantía", "Seguimiento post-venta", "Beneficios leales", "Encuesta de calidad"];
+    const tpAfter = brand.tpAfter || ["Garantía y respaldo", "Seguimiento post-venta", "Beneficios de lealtad", "Mejora continua"];
 
-    // Síntesis editorial estructurada para evitar cajas gigantes de texto y textos duplicados entre láminas
+    // Síntesis editorial estructurada 100% adaptada al negocio del usuario (CERO frases de plantilla de TheBestBrand)
     const giroSplit = splitEditorialLeadAndBody(
       giro,
-      `Ecosistema integral de identidad y estrategia para ${bName}`,
-      "Transformamos la visión del líder en un sistema visual y operativo listo para crecer.",
+      `Propuesta comercial y especialidad de ${bName}`,
+      `Soluciones enfocadas en ${shortCategory.toLowerCase()} diseñadas para brindar resultados claros, confiables y memorables.`,
       12,
       26
     );
     const whySplit = splitEditorialLeadAndBody(
       why,
-      "Pasar del caos al sistema liberando tiempo mental al líder",
-      "Erradicamos la improvisación visual y los procesos lentos mediante ingeniería de marca accesible y rigurosa.",
+      `Propósito esencial que impulsa a ${bName}`,
+      `Existimos para elevar el estándar de ${shortCategory.toLowerCase()} con atención genuina, orden y resultados tangibles para cada cliente.`,
       10,
       22
     );
     const howSplit = splitEditorialLeadAndBody(
       how,
-      "Co-creación guiada paso a paso con IA y geometría en curvas",
-      "1. Diagnóstico en lenguaje claro · 2. Iteración de logotipo en vivo · 3. Bóveda inmediata de entregables.",
+      `Método de trabajo y sello de calidad de ${bName}`,
+      `1. Escucha activa y diagnóstico claro · 2. Ejecución cuidada en cada detalle · 3. Entrega puntual y seguimiento cercano.`,
       10,
       24
     );
     const whatSplit = splitEditorialLeadAndBody(
       what,
-      "Identidad vectorial en curvas, kit tipográfico y manual de 36 láminas",
-      "Entregamos activos 100% editables (.SVG, .AI, .PDF, .DOCX, .PPTX y fuentes) listos para imprenta y operación.",
+      `Oferta de valor principal de ${bName}`,
+      `Productos y servicios de ${shortCategory.toLowerCase()} respaldados por consistencia, claridad y atención dedicada.`,
       10,
       22
     );
     const personaSplit = splitEditorialLeadAndBody(
       persona,
-      "Socio leal con mente de ingeniero, fuerza tranquila y trato cálido",
-      `Si ${bName} fuera una persona, escucharía primero con atención la idea del cliente, hablaría claro sin tecnicismos rebuscados y profesionalizaría cada detalle hombro a hombro sin imponer su ego.`,
+      `Personalidad cercana, confiable y profesional de ${bName}`,
+      `Si ${bName} fuera una persona, escucharía primero la necesidad real del cliente, hablaría con total claridad y cuidaría cada detalle de principio a fin.`,
       10,
       26
     );
     const buyerSplit = splitEditorialLeadAndBody(
       buyer,
-      "Fundadores, directores y empresarios que exigen orden y excelencia",
-      "Líderes prácticos que valoran su tiempo, buscan certeza técnica en sus entregables y quieren que su empresa proyecte confianza inmediata desde el primer contacto.",
+      `Perfil de cliente ideal al que sirve ${bName}`,
+      `Personas y empresas que valoran la confianza, el trato directo y resultados bien ejecutados en ${shortCategory.toLowerCase()}.`,
       10,
       26
     );
@@ -2460,12 +2463,21 @@
     `);
 
     const totalStr = String(plates.length).padStart(2, "0");
-    return plates.map((p) => p.replace(/__TOTAL_PLATES__/g, totalStr));
+    const cdnAssetOrigin = (typeof window !== "undefined" && window.TBB_CDN_ASSET_ORIGIN) ? window.TBB_CDN_ASSET_ORIGIN : "";
+    return plates.map((p) => {
+      let out = p.replace(/__TOTAL_PLATES__/g, totalStr);
+      if (cdnAssetOrigin) {
+        out = out.replace(/src="\/assets\//g, `src="${cdnAssetOrigin}/assets/`);
+      }
+      return out;
+    });
   }
 
   // --- COMPILADOR DE DOCUMENTO HTML COMPLETO ---
   function generateFullBrandbookDocHtml(brand) {
-    const bName = brand.name || "The Best Brand";
+    const csRef = (typeof window !== "undefined" && window.canvasState) ? window.canvasState : {};
+    const rawCandidateName = String(brand.name || "").trim();
+    const bName = (rawCandidateName && !(!csRef.isOfficialAdminTbbPreset && /^the\s*best\s*brand$/i.test(rawCandidateName))) ? rawCandidateName : "Mi Marca";
     const styles = getDynamicBrandbookStyles();
     const plates = generateBrandbook30Plates(brand);
     const adobeKitId = String(brand.adobeTypekitId || "").replace(/[^a-zA-Z0-9_-]/g, "").trim();

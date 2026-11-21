@@ -2740,11 +2740,12 @@
             <div class="tbb-mockup-gallery">
               ${slotPreviewList.map((item, idx) => {
                 const slotMeta = (activeEntry._metaBySlot && activeEntry._metaBySlot[item.key]) || giroPlan.slots[item.key];
-                const imgSrc = activeEntry[item.key] || activeEntry[item.alias] || item.defaultImg;
+                const rawImgSrc = activeEntry[item.key] || activeEntry[item.alias] || item.defaultImg;
+                const imgSrc = (typeof window.tbbResolveAssetUrl === "function") ? window.tbbResolveAssetUrl(rawImgSrc) : rawImgSrc;
                 return `
                   <div class="tbb-mockup-slot-card" data-slot-card="${item.key}">
                     <div style="position:relative;width:100%;aspect-ratio:4/3;background:#F8FAFC;border-radius:12px;overflow:hidden;">
-                      <img src="${imgSrc}" alt="${xmlEsc(tr(slotMeta.title))}" style="width:100%;height:100%;object-fit:cover;display:block;" />
+                      <img src="${imgSrc}" onerror="if(window.tbbImgFallback){window.tbbImgFallback(this);}" alt="${xmlEsc(tr(slotMeta.title))}" style="width:100%;height:100%;object-fit:cover;display:block;" />
                       <span style="position:absolute;top:8px;left:8px;background:rgba(255,255,255,0.92);backdrop-filter:blur(6px);color:#0D2540;font-size:0.875rem;font-weight:600;font-variant-numeric:tabular-nums;padding:3px 10px;border-radius:999px;border:1px solid rgba(13,37,64,0.09);">
                         0${idx + 1} · ${xmlEsc(tr(slotMeta.badge))}
                       </span>
@@ -2864,27 +2865,27 @@
   const TBB_NANOBANANA_CREATIVE_MODES = {
     emblem_masterpiece: {
       id: "emblem_masterpiece",
-      shortPill: "Emblema de Autor",
-      label: "Emblema Artístico Multi-Elemento",
-      directive: "COMPOSITION MODE — RICH MULTI-ELEMENT ARTISTIC EMBLEM & EDITORIAL LOCKUP: Create a breathtaking, museum-grade brand identity composition that weaves together multiple symbolic elements of the brand's essence, craft, origin, and value proposition into a cohesive centerpiece emblem, paired harmoniously with the brand name and descriptor in refined high-contrast editorial typography. Allow intricate linework, dimensional reliefs, artisanal textures, and rich symbolic storytelling (never a generic flat single-shape clipart icon)."
+      shortPill: "Símbolo + Nombre",
+      label: "Símbolo de Marca + Tipografía",
+      directive: "COMPOSITION MODE — CLEAN ICONIC SYMBOL + WORDMARK LOCKUP: Design a versatile, memorable brand mark with ONE clear, purposeful central symbol (1 to 2 cohesive shapes, never an overcrowded collage) paired cleanly with the brand name in balanced typography. Prioritize instant recognition at both billboard and mobile app icon sizes."
     },
     monogram_fusion: {
       id: "monogram_fusion",
-      shortPill: "Monograma + Símbolos",
-      label: "Monograma Integrado con Símbolos del Giro",
-      directive: "COMPOSITION MODE — BESPOKE INTERLOCKING MONOGRAM FUSED WITH SECTOR SYMBOLS: Design a masterful custom typographic monogram using the brand's initials as the architectural spine, organically intertwined and fused with the signature symbolic motifs, tools, flora, or textures of the business sector. Include the full brand name and tagline in balanced editorial typography below or around the emblem."
+      shortPill: "Monograma",
+      label: "Monograma Tipográfico de Identidad",
+      directive: "COMPOSITION MODE — CLEAN CUSTOM MONOGRAM / LETTERMARK: Build a bold, distinctive typographic monogram from the brand's initials with crisp geometry and smart negative space (optionally nodding subtly to ONE cue of the sector, without clutter), paired cleanly with the full brand name."
     },
     editorial_crest: {
       id: "editorial_crest",
       shortPill: "Insignia / Sello",
-      label: "Insignia, Carta o Sello Arquitectónico de Autor",
-      directive: "COMPOSITION MODE — ARCHITECTURAL CREST, TAROT/LOTERÍA CARD OR HERALDIC ATELIER SEAL: Frame the brand's core symbolic scene and metaphors inside a bespoke architectural border, modern crest, engraved seal, or gallery card proportion with fine ornamental corner geometry, sacred symmetry, and integrated banner/cartouche typography for the brand name and descriptor."
+      label: "Insignia o Sello Contemporáneo",
+      directive: "COMPOSITION MODE — CLEAN CONTEMPORARY BADGE OR SEAL: Frame a clear central mark and the brand name inside a clean geometric badge, stamp, or modern emblem silhouette with balanced proportions, crisp edges, and zero excessive filigree."
     },
     minimal_couture: {
       id: "minimal_couture",
-      shortPill: "Lineal Minimalista",
-      label: "Síntesis Lineal Contemporánea de Alta Costura",
-      directive: "COMPOSITION MODE — CONTEMPORARY HIGH-COUTURE MONOLINE & GEOMETRIC SYNTHESIS: Distill the brand's metaphors and monogram into an ultra-refined, high-contrast continuous line and sacred-geometry vector emblem (Pentagram / Savvy Studio / Michelin fine-dining aesthetic) with razor-sharp negative space and gallery-grade editorial typography."
+      shortPill: "Minimalista Sólido",
+      label: "Síntesis Minimalista Geométrica",
+      directive: "COMPOSITION MODE — BOLD GEOMETRIC & SOLID MINIMALISM (Paul Rand / Chermayeff & Geismar / Apple / Stripe standard): Distill the brand essence into an ultra-clean, iconic mark using bold solid vector shapes, clever positive/negative space, and 1 to 2 flat colors—DO NOT restrict to thin monoline wireframes; use confident solid forms and razor-clean typography."
     }
   };
   window.TBB_NANOBANANA_CREATIVE_MODES = TBB_NANOBANANA_CREATIVE_MODES;
@@ -2896,34 +2897,35 @@
       if (isNaN(n)) return def;
       return n > 1 ? n / 100 : n;
     };
-    const orgGeo = norm(s.organico_geometrico, 0.50);
-    const tradInn = norm(s.tradicional_innovador, 0.65);
-    const serJug = norm(s.serio_jugueton, 0.35);
-    const accExcl = norm(s.accesible_exclusivo, 0.72);
-    const sutilImp = norm(s.sutil_impactante, 0.70);
-    const humTec = norm(s.humano_tecnologico, 0.45);
-    const simComp = norm(s.simple_complejo, 0.68);
+    const orgGeo = norm(s.organico_geometrico, 0.52);
+    const tradInn = norm(s.tradicional_innovador, 0.58);
+    const serJug = norm(s.serio_jugueton, 0.42);
+    const accExcl = norm(s.accesible_exclusivo, 0.50);
+    const sutilImp = norm(s.sutil_impactante, 0.55);
+    const humTec = norm(s.humano_tecnologico, 0.50);
+    const simComp = norm(s.simple_complejo, 0.35);
 
     const traits = [];
-    if (orgGeo < 0.42) traits.push("organic hand-sculpted curves, botanical/artisanal fluidity, and natural tactile contours");
-    else if (orgGeo > 0.62) traits.push("golden-ratio architectural geometry, precision symmetry, and structural facets");
-    else traits.push("harmonious fusion of organic artisanal curves with modernist architectural geometry");
+    if (orgGeo < 0.40) traits.push("smooth organic curves and friendly flowing contours");
+    else if (orgGeo > 0.62) traits.push("crisp architectural geometry and clean proportions");
+    else traits.push("balanced blend of clean geometry and approachable curves");
 
-    if (tradInn < 0.42) traits.push("deep cultural heritage, classic woodcut/engraving mastery, and timeless permanence");
-    else if (tradInn > 0.65) traits.push("avant-garde contemporary reinterpretation, modernist gallery aesthetic, and visionary originality");
-    else traits.push("contemporary reinterpretation of classic heritage (bridge between ancestral roots and modernist design)");
+    if (tradInn < 0.40) traits.push("timeless classic authority");
+    else if (tradInn > 0.65) traits.push("fresh contemporary originality");
 
-    if (accExcl > 0.60) traits.push("Michelin-starred / haute-couture luxury prestige, museum-grade refinement, and collector sophistication");
-    else if (accExcl < 0.38) traits.push("warm, inviting, approachable human magnetism");
+    if (serJug > 0.58) traits.push("playful, expressive, energetic personality and visual wit");
+    else if (serJug < 0.32) traits.push("calm institutional sobriety");
 
-    if (simComp > 0.58) traits.push("rich multi-layered symbolic detail, intricate textures, and rewarding visual depth");
-    else if (simComp < 0.35) traits.push("distilled iconic synthesis and immediate visual clarity");
+    if (accExcl > 0.72) traits.push("refined boutique elegance");
+    else if (accExcl < 0.42) traits.push("warm, friendly, accessible appeal");
 
-    if (humTec < 0.48) traits.push("warm human craft, tactile materials (burnished clay, brushed copper, gold leaf, natural fibers)");
-    else if (humTec > 0.65) traits.push("precision optical surfaces, luminous gradients, and high-tech clarity");
+    if (simComp < 0.55) traits.push("clean, uncluttered vector simplicity (maximum 2 focal shapes, generous negative space, zero visual noise)");
+    else if (simComp > 0.78) traits.push("expressive illustrative craft with controlled clarity");
 
-    if (sutilImp > 0.60) traits.push("commanding stage presence and unforgettable visual contrast");
-    if (serJug > 0.62) traits.push("clever visual wit, cultural charm, and expressive character");
+    if (humTec < 0.38) traits.push("warm human touch");
+    else if (humTec > 0.68) traits.push("clean digital precision");
+
+    if (sutilImp > 0.68) traits.push("bold high-contrast impact");
 
     return traits.join("; ");
   }
@@ -2933,31 +2935,29 @@
     const st = window.tbbState || {};
     const s0 = window.step0State || {};
 
-    const bName = (cs.brandName && !/^(mi nueva marca|marca en creaci[oó]n.*)$/i.test(cs.brandName))
-      ? cs.brandName.trim()
-      : "Tu Marca";
+    const isPlaceholderName = (n) => {
+      const s = String(n || "").trim();
+      if (!s) return true;
+      if (/^(mi nueva marca|mi marca|tu marca|marca en creaci[oó]n.*)$/i.test(s)) return true;
+      if (!cs.isOfficialAdminTbbPreset && /^the\s*best\s*brand$/i.test(s)) return true;
+      return false;
+    };
+    const bName = !isPlaceholderName(cs.brandName) ? cs.brandName.trim() : "Tu Marca";
     const words = bName.replace(/([a-z])([A-Z])/g, "$1 $2").split(/\s+/).filter(Boolean);
     const initials = (words.length >= 2 ? (words[0][0] + words[1][0]) : bName.slice(0, 2)).toUpperCase() || "TM";
 
-    const giro = (cs.custom_business_type || s0.customBusinessType || cs.step0_short_essence || "Empresa de alto valor").trim();
-    const tagline = (cs.tagline || cs.step0_short_essence || "").trim();
+    const giro = (cs.custom_business_type || s0.customBusinessType || cs.step0_short_essence || "Servicios y productos profesionales").trim();
+    const tagline = (cs.tagline || "").trim();
     const why = (cs.golden_circle || "").trim();
-    const how = (cs.process_steps_text || "").trim();
     const what = (cs.value_offer || "").trim();
     const persona = (cs.brand_persona || "").trim();
     const buyer = (cs.ideal_customer || cs.step0_buyer_actor || "").trim();
-    const coreMsg = (cs.core_message || "").trim();
-
-    const tpBefore = Array.isArray(cs.tp_before) ? cs.tp_before.join(", ") : "";
-    const tpDuring = Array.isArray(cs.tp_during) ? cs.tp_during.join(", ") : "";
-    const tpAfter = Array.isArray(cs.tp_after) ? cs.tp_after.join(", ") : "";
 
     const namingRoots = [cs.naming_axis_1, cs.naming_axis_2, cs.naming_axis_3, cs.naming_axis_4]
       .map(x => String(x || "").trim())
       .filter(Boolean)
       .join(" · ");
 
-    // Corregido: leer tanto cs.step4_seed_idea (nombre real del campo en Paso 4.5) como cs.step4_logo_seed_idea
     const savedSeedIdea = String(cs.step4_seed_idea || cs.step4_logo_seed_idea || "").trim();
     const userInstruction = String(options.userHint || "").trim();
     const creativeModeKey = options.creativeMode || st.nanoBananaCreativeMode || "emblem_masterpiece";
@@ -2965,88 +2965,73 @@
 
     const activePalette = (typeof window.tbbGetActiveBrandPalette === "function")
       ? window.tbbGetActiveBrandPalette()
-      : (Array.isArray(cs.brand_palette_colors) && cs.brand_palette_colors.length ? cs.brand_palette_colors : [st.logoPriHex || "#9E3B24", st.logoSecHex || "#C89D54", cs.accent_color || "#14110F"]);
-    const paletteStr = activePalette.join(", ");
+      : (Array.isArray(cs.brand_palette_colors) && cs.brand_palette_colors.length ? cs.brand_palette_colors : [st.logoPriHex || "#0D2540", st.logoSecHex || "#FF7A00", cs.accent_color || "#426EAE"]);
+    const paletteStr = activePalette.slice(0, 4).join(", ");
     const pri = activePalette[0] || st.logoPriHex || "#0D2540";
-    const sec = activePalette[1] || st.logoSecHex || "#C89D54";
+    const sec = activePalette[1] || st.logoSecHex || "#FF7A00";
     const acc = activePalette[2] || cs.accent_color || sec;
 
-    const chosenFont = cs.primary_font || st.selectedFontFamily || "Cormorant Garamond";
+    const chosenFont = cs.primary_font || st.selectedFontFamily || "Montserrat";
     const kanseiArtDirection = tbbTranslateKanseiSlidersToArtDirection(cs);
-    const famIdx = Number(cs.selected_family_index ?? 0);
-    const familyNames = [
-      "Constructive Monogram & Central Emblem",
-      "Heraldic Crest, Card & Authority Seal",
-      "Continuous Symbol & Negative Space Synthesis",
-      "Sculptural 3D Volume & Tactile Relief"
-    ];
-    const structuralFamily = familyNames[famIdx % 4] || familyNames[0];
-    const wantsLiquidGlass = /liquid\s*glass|apple|vision\s*os|ios\s*27|cristal\s*l[ií]quido|transl[uú]cido|refracci[oó]n/i.test(`${userInstruction} ${savedSeedIdea} ${persona} ${st.logoParadigm || ""}`);
     const isDarkCanvas = Boolean(st.logoDarkBg);
-
     const hasReferenceImage = Boolean(options.hasReferenceImage);
     const isExternalUpload = Boolean(options.isExternalUpload);
 
     const sections = [
-      `You are NanoBanana PRO, World-Class Executive Creative Director & Master Brand Identity Designer (Pentagram, Savvy Studio, Anagrama, Chermayeff & Geismar level).`,
-      `Design a complete, jaw-dropping, high-craft brand identity logo presentation for the brand "${bName}" (Monogram Initials: "${initials}"${tagline ? `, Official Tagline / Descriptor: "${tagline}"` : ""}).`,
-      "",
-      `=== 1. COMPLETE BRAND DNA & STRATEGIC DOSSIER (100% SPECIFIC TO THIS COMPANY) ===`,
-      `• Business Sector / Giro & Concept: ${giro}`,
-      why ? `• Purpose & Golden Circle (WHY): ${why}` : "",
-      how ? `• Signature Methodology & Craft (HOW): ${how}` : "",
-      what ? `• Core Value Proposition & Product/Service (WHAT): ${what}` : "",
-      persona ? `• Brand Character & Persona: ${persona}` : "",
-      buyer ? `• Ideal Customer Profile & Tier: ${buyer}` : "",
-      coreMsg ? `• Central Brand Promise: ${coreMsg}` : "",
-      (tpBefore || tpDuring || tpAfter) ? `• Physical & Digital Touchpoint Atmosphere: ${[tpBefore, tpDuring, tpAfter].filter(Boolean).join(" | ")}` : "",
-      namingRoots ? `• Symbolic & Etymological Roots: ${namingRoots}` : "",
-      savedSeedIdea ? `• Founder's Visual Metaphors & Seed Symbol Idea: ${savedSeedIdea}` : "",
-      "",
-      `=== 2. ART DIRECTION, KANSEI AESTHETICS & PALETTE ===`,
-      `• Creative Mode Selected: ${modeObj.directive}`,
-      `• Kansei / Osgood Aesthetic Profile: ${kanseiArtDirection}`,
-      `• Base Structural Family Preference: ${structuralFamily}`,
-      `• Typography Direction: ${chosenFont} (render the brand title "${bName.toUpperCase()}"${tagline ? ` and subtitle "${tagline.toUpperCase()}"` : ""} with impeccable kerning, hierarchy, and proportion)`,
-      `• Official Brand Color Palette (2 to 6 colors): ${paletteStr} (Primary: ${pri}, Secondary: ${sec}, Accent: ${acc}). Use rich tonal depth, metallic gold/copper/terracotta/mineral highlights or luminous gradients coherent with these exact hex colors.`,
-      wantsLiquidGlass
-        ? `• Special Materiality: Apple visionOS / iOS 27 Optical Liquid Glass refraction, caustic highlights, and multi-layered translucent crystal depth.`
-        : `• Special Materiality: High-craft tactile illustration & vector engraving mastery—combine crisp geometric lines, organic cultural/industrial motifs, subtle dimensional relief, and gallery-grade finish.`,
-      isDarkCanvas
-        ? `• Canvas Presentation: Present the complete logo lockup centered on a refined, uniform deep obsidian/charcoal studio background (#12100E) with generous breathing room around the entire composition.`
-        : `• Canvas Presentation: Present the complete logo lockup centered on a clean, uniform warm ivory/parchment or pure studio background (#FAF6F0 or #FFFFFF) with generous breathing room around the entire composition.`
+      `You are a Principal Brand Identity Designer (Pentagram, Chermayeff & Geismar, Wolff Olins level).`,
+      `Design ONLY a single, clean, isolated professional vector-style brand logo for "${bName}" (Initials: "${initials}").`,
+      ""
     ];
+
+    if (userInstruction) {
+      sections.push(
+        `=== 0. SUPREME USER DIRECTION (HIGHEST PRIORITY — OVERRIDES ANY DEFAULT STYLE OR COMPLEXITY) ===`,
+        `• THE FOUNDER EXPLICITLY REQUESTED: "${userInstruction}"`,
+        `• OBEY THIS REQUEST 100% WITH COMPLETE CREATIVE FREEDOM: If the founder asks for retro, playful, fun, flat, bold, ultra-simple, mascot, typographic-only, geometric, thick solid shapes, fewer elements, or a totally new idea, execute EXACTLY that aesthetic cleanly without adding unrequested ornaments, crests, textures, or extra symbols.`,
+        ""
+      );
+    }
+
+    sections.push(
+      `=== 1. BRAND ESSENCE & CONTEXT ===`,
+      `• Brand Name to spell accurately: "${bName}"`,
+      tagline && !/sin\s*(texto|eslogan|subt[ií]tulo)/i.test(userInstruction) ? `• Optional short subtitle (only if clean and legible): "${tagline.slice(0, 42)}"` : "",
+      `• What the business does: ${giro}`,
+      why ? `• Purpose: ${why.slice(0, 160)}` : "",
+      what ? `• Key Differentiator: ${what.slice(0, 160)}` : "",
+      persona ? `• Personality: ${persona.slice(0, 140)}` : "",
+      buyer ? `• Audience: ${buyer.slice(0, 120)}` : "",
+      namingRoots ? `• Key Concepts: ${namingRoots.slice(0, 140)}` : "",
+      savedSeedIdea ? `• Optional Symbol / Idea Preference: ${savedSeedIdea}` : "",
+      "",
+      `=== 2. VISUAL STYLE, TYPOGRAPHY & COLOR ===`,
+      userInstruction
+        ? `• Layout Guide (subordinate to User Direction above): ${modeObj.label}`
+        : `• Selected Logo Structure: ${modeObj.directive}`,
+      `• Brand Personality Calibration: ${kanseiArtDirection}`,
+      `• Typography Style: Clean, well-kerned "${chosenFont}" style lettering`,
+      `• Official Brand Colors: ${paletteStr} (Primary: ${pri}, Secondary: ${sec}, Accent: ${acc}) — use clean solid colors (or subtle clean gradients only if requested).`,
+      isDarkCanvas
+        ? `• Background: Completely flat, solid, uniform dark background (#111622) edge-to-edge with generous empty margin around the logo.`
+        : `• Background: Completely flat, solid, pure white background (#FFFFFF) edge-to-edge with generous empty margin around the logo.`
+    );
 
     if (hasReferenceImage) {
       sections.push(
         "",
-        `=== 3. CONVERSATIONAL IMAGE-TO-IMAGE EVOLUTION DIRECTIVE ===`,
+        `=== 3. REFERENCE IMAGE REFINEMENT ===`,
         isExternalUpload
-          ? `• An existing legacy company logo image is attached. MODERNIZE and REDESIGN it to world-class contemporary architectural/corporate studio standards in the "${modeObj.label}" style (${modeObj.directive}): replace any dated script or calligraphic lettering with bold, modern, high-authority typography ("${chosenFont}"), preserve and elevate its signature visual DNA (such as its double sweeping arch, structural pillars/towers, and iconic "${initials}" monogram) and its official color palette (${pri}, ${sec}, ${acc}), integrating authentic symbols of its business (${giro}${savedSeedIdea ? `, ${savedSeedIdea}` : ""}) into a cohesive, master-crafted contemporary brand identity.`
-          : `• The attached image is the PREVIOUS ITERATION of "${bName}". Evolve, refine, and transform that design directly according to the user's request below while maintaining strong brand continuity.`,
-        userInstruction
-          ? `• USER'S SPECIFIC REFINEMENT / ITERATION REQUEST: "${userInstruction}". Execute this request with bold artistic intelligence and unmistakable visual impact.`
-          : `• Evolution goal: Elevate the composition into the "${modeObj.label}" style (${modeObj.directive}), enriching the symbolic storytelling and typographic integration.`
-      );
-    } else {
-      sections.push(
-        "",
-        `=== 3. DISTINCT CREATIVE MODE COMPOSITION DIRECTIVE (${modeObj.label.toUpperCase()}) ===`,
-        `• Create a 100% NEW, visually distinct composition specifically engineered for the "${modeObj.label}" paradigm: ${modeObj.directive}`,
-        options.hasLegacyDnaContext
-          ? `• LEGACY BRAND DNA TO HONOR & MODERNIZE: Keep the recognizable soul of "${bName}" (its iconic "${initials}" structural monogram, double sweeping engineering arch, high-rise architectural silhouette, and official palette ${pri}, ${sec}, ${acc}), but reimagine the entire layout into a fresh "${modeObj.label}" structure with modern "${chosenFont}" typography.`
-          : "",
-        userInstruction
-          ? `• SPECIFIC CREATIVE INSTRUCTION FROM THE FOUNDER: "${userInstruction}". Make sure every element requested here is visibly, artistically, and unmistakably represented in the centerpiece logo composition.`
-          : ""
+          ? `• An existing company logo is attached. Modernize and clean it up while preserving its recognizable core idea and palette (${pri}, ${sec}).`
+          : `• The attached image is the previous draft of "${bName}". Modify it directly according to "${userInstruction || modeObj.label}" — if the previous draft was too busy or complex, simplify and declutter it boldly.`
       );
     }
 
     sections.push(
       "",
-      `=== 4. QUALITY GUARANTEES ===`,
-      `• NEVER output a simplistic, generic, single-shape flat icon. Synthesize the specific metaphors of "${bName}" (${giro}${savedSeedIdea ? `, ${savedSeedIdea}` : ""}) into a bespoke, culturally and commercially resonant work of art.`,
-      `• Ensure all lettering ("${bName.toUpperCase()}") is spelled accurately, legibly, and integrated with master-level graphic design balance.`
+      `=== 4. STRICT ANTI-CLUTTER & PURE ISOLATED ARTWORK RULES ===`,
+      `• DO NOT over-ornament: avoid busy multi-object mashups, unrequested heraldic shields, heavy 3D metallic embossing, or excessive tiny details. Great logos are clear, confident, and memorable.`,
+      `• For Minimalist requests, use strong solid geometric forms and smart negative space (NEVER limit minimalism to thin wireframe lines unless the user specifically asks for thin lines).`,
+      `• STRICTLY FORBIDDEN: NEVER draw UI cards, rounded presentation frames, "APP ICON" boxes, color palette swatches, mockups, paper textures, drop-shadowed boards, badges/pills with iteration numbers, or extra labels around the logo. Output ONLY the clean logo itself centered on the flat solid background.`
     );
 
     return sections.filter(Boolean).join("\n");
@@ -3065,7 +3050,14 @@
       }
     }
 
-    const bName = (cs.brandName && !/^(mi nueva marca|marca en creaci[oó]n.*)$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca";
+    const isPlaceholderBrand = (n) => {
+      const s = String(n || "").trim();
+      if (!s) return true;
+      if (/^(mi nueva marca|mi marca|tu marca|marca en creaci[oó]n.*)$/i.test(s)) return true;
+      if (!cs.isOfficialAdminTbbPreset && /^the\s*best\s*brand$/i.test(s)) return true;
+      return false;
+    };
+    const bName = !isPlaceholderBrand(cs.brandName) ? cs.brandName.trim() : "Tu Marca";
     const giro = (cs.custom_business_type || s0.customBusinessType || cs.step0_short_essence || "Servicios profesionales").trim();
     const seedIdea = String(userHint || cs.step4_seed_idea || cs.step4_logo_seed_idea || "").trim();
 
@@ -3082,30 +3074,29 @@
       ? cs.uploaded_logo_colors
       : (Array.isArray(s0.uploadedLogoColors) ? s0.uploadedLogoColors : []);
 
-    const pri = activePalette[0] || uploadedCols[0] || st.logoPriHex || cs.primary_color || "#9E3B24";
-    const sec = activePalette[1] || uploadedCols[1] || st.logoSecHex || cs.secondary_color || "#C89D54";
+    const pri = activePalette[0] || uploadedCols[0] || st.logoPriHex || cs.primary_color || "#0D2540";
+    const sec = activePalette[1] || uploadedCols[1] || st.logoSecHex || cs.secondary_color || "#FF7A00";
     const acc = activePalette[2] || uploadedCols[2] || cs.accent_color || sec;
 
-    // Determinar si hay una imagen previa para evolución conversacional (ya sea la iteración activa de NanoBanana o un logo subido por el usuario)
+    // Determinar si hay una imagen previa para evolución conversacional (evitando arrastrar sobrecarga cuando el usuario pide cambio radical, retro, minimalista o limpiar desde cero)
     const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
     const externalUploadUrl = (cs.user_uploaded_external_logo && (cs.raw_uploaded_logo_data_url || cs.base_uploaded_logo_data_url || cs.uploaded_logo_data_url))
       || (s0.userUploadedExternalLogo && s0.uploadedLogoDataUrl)
       || "";
 
-    // Cuando el usuario pulsa uno de los 4 botones de modo creativo (switchCreativeMode), queremos una composición
-    // verdaderamente distinta para ese modo (no una edición menor de la iteración anterior de NanoBanana).
+    const asksFreshStyleShift = /\b(desde cero|otra idea|otro concepto|distinto|diferente|menos cargado|m[aá]s simple|m[aá]s limpio|minimal|plano|2d|retro|divertid|juguet[oó]n|cambia todo|nuevo estilo|sin tanto|qu[ií]tale lo cargado)\b/i.test(String(userHint || ""));
     const isSwitchingCreativeMode = Boolean(options.switchCreativeMode);
-    const previousIterationImgUrl = isSwitchingCreativeMode
-      ? (creativeModeKey === "emblem_masterpiece" ? externalUploadUrl : "")
+    const previousIterationImgUrl = (isSwitchingCreativeMode || asksFreshStyleShift)
+      ? (externalUploadUrl && !asksFreshStyleShift ? externalUploadUrl : "")
       : ((activeIt && (activeIt.nanoBananaFullArtworkUrl || activeIt.nanoBananaSymbolUrl || (activeIt.isUploadedUserLogo && activeIt.uploadedLogoDataUrl)))
           || externalUploadUrl
           || "");
 
-    // Usar imagen previa como referencia cuando el usuario escribe un ajuste conversacional o en la modernización inicial del logo subido
     const shouldAttachReferenceImage = Boolean(
       previousIterationImgUrl &&
       !options.freshFromScratch &&
-      (!isSwitchingCreativeMode || creativeModeKey === "emblem_masterpiece") &&
+      !asksFreshStyleShift &&
+      (!isSwitchingCreativeMode || Boolean(externalUploadUrl)) &&
       (Boolean(userHint) || Boolean(externalUploadUrl) || Boolean(options.evolveCurrent))
     );
 
@@ -3351,7 +3342,9 @@
         : {};
       const cs = window.canvasState || {};
       const st = window.tbbState || {};
-      const bName = brand.name || cs.brandName || "TheBestBrand";
+      const bName = (typeof window.tbbGetUserBrandDisplay === "function")
+        ? window.tbbGetUserBrandDisplay("Mi Marca")
+        : (brand.name || cs.brandName || "Mi Marca");
       const safeSlug = String(brand.slug || bName).replace(/[^a-zA-Z0-9_-]+/g, "_") || "Marca";
 
       const priFont = brand.primaryFont || cs.primary_font || st.selectedFontFamily || "Montserrat";
@@ -3377,7 +3370,10 @@
           if (seenFiles.has(entryPath)) continue;
           seenFiles.add(entryPath);
           try {
-            const resp = await fetch(`/assets/fonts/${fname}`);
+            const fontAssetUrl = (typeof window.tbbResolveAssetUrl === "function")
+              ? window.tbbResolveAssetUrl(`/assets/fonts/${fname}`)
+              : `/assets/fonts/${fname}`;
+            const resp = await fetch(fontAssetUrl);
             if (resp.ok) {
               const buf = await resp.arrayBuffer();
               zipEntries.push({ name: entryPath, data: new Uint8Array(buf) });

@@ -113,31 +113,91 @@
   <meta name="theme-color" content="#F8F9FA" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='28' fill='%2318181B'/%3E%3Ctext x='50' y='64' font-family='sans-serif' font-weight='900' font-size='42' fill='%23FFFFFF' text-anchor='middle'%3ETB%3C/text%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='45' fill='%2318181B'/%3E%3Ctext x='90' y='115' font-family='sans-serif' font-weight='900' font-size='78' fill='%23FFFFFF' text-anchor='middle'%3ETB%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function () {
+      var host = String((window.location && window.location.hostname) || "").toLowerCase();
+      var needsCdn = (host === "thebestbrand.app" || host === "www.thebestbrand.app");
+      var CDN_PRIMARY = "https://thebestbrand-studio.web.app";
+      var CDN_BACKUP = "https://thebestbrand-api-studio-production.up.railway.app";
+      window.TBB_CDN_ASSET_ORIGIN = needsCdn ? CDN_PRIMARY : "";
+      window.tbbResolveAssetUrl = function (rawUrl) {
+        var s = String(rawUrl || "").trim();
+        if (!s || /^data:|^blob:|^https?:\/\//i.test(s)) return s;
+        if (needsCdn && /^\/(assets|samples)\//i.test(s)) {
+          return CDN_PRIMARY + s;
+        }
+        return s;
+      };
+      if (needsCdn && typeof window.fetch === "function") {
+        var _origFetch = window.fetch.bind(window);
+        window.fetch = function (input, init) {
+          if (typeof input === "string" && /^\/(assets|samples)\//i.test(input)) {
+            return _origFetch(CDN_PRIMARY + input, init).catch(function () {
+              return _origFetch(CDN_BACKUP + input, init);
+            });
+          }
+          return _origFetch(input, init);
+        };
+      }
+      window.addEventListener("error", function (ev) {
+        var el = ev && ev.target;
+        if (!el || !el.tagName) return;
+        var tag = el.tagName.toUpperCase();
+        if (tag !== "IMG" && tag !== "AUDIO" && tag !== "SOURCE" && tag !== "VIDEO" && tag !== "SCRIPT") return;
+        var cur = el.getAttribute("src") || "";
+        if (!cur || /^data:|^blob:/i.test(cur)) return;
+        var relMatch = cur.match(/(\/(?:assets|samples)\/[^?#]+(?:\?[^#]*)?)/i);
+        if (!relMatch) return;
+        var relPath = relMatch[1];
+        var stage = Number(el.getAttribute("data-tbb-cdn-retry") || "0");
+        if (tag === "SCRIPT") {
+          if (stage === 0) {
+            el.setAttribute("data-tbb-cdn-retry", "1");
+            var s2 = document.createElement("script");
+            s2.src = (cur.indexOf(CDN_PRIMARY) === -1 ? CDN_PRIMARY : CDN_BACKUP) + relPath;
+            document.head.appendChild(s2);
+          }
+          return;
+        }
+        if (stage === 0 && cur.indexOf(CDN_PRIMARY) === -1) {
+          el.setAttribute("data-tbb-cdn-retry", "1");
+          el.src = CDN_PRIMARY + relPath;
+        } else if (stage <= 1 && cur.indexOf(CDN_BACKUP) === -1) {
+          el.setAttribute("data-tbb-cdn-retry", "2");
+          el.src = CDN_BACKUP + relPath;
+        }
+      }, true);
+    })();
+  </script>
   <style id="tbbLocalCoreFontsV129">
   @font-face {
     font-family: 'Plus Jakarta Sans';
-    src: url('/assets/fonts/PlusJakartaSans-Regular.ttf') format('truetype');
+    src: url('https://thebestbrand-studio.web.app/assets/fonts/PlusJakartaSans-Regular.ttf') format('truetype'),
+         url('/assets/fonts/PlusJakartaSans-Regular.ttf') format('truetype');
     font-weight: 400 500;
     font-style: normal;
     font-display: swap;
   }
   @font-face {
     font-family: 'Plus Jakarta Sans';
-    src: url('/assets/fonts/PlusJakartaSans-Bold.ttf') format('truetype');
+    src: url('https://thebestbrand-studio.web.app/assets/fonts/PlusJakartaSans-Bold.ttf') format('truetype'),
+         url('/assets/fonts/PlusJakartaSans-Bold.ttf') format('truetype');
     font-weight: 600 700;
     font-style: normal;
     font-display: swap;
   }
   @font-face {
     font-family: 'Montserrat';
-    src: url('/assets/fonts/Montserrat-Bold.ttf') format('truetype');
+    src: url('https://thebestbrand-studio.web.app/assets/fonts/Montserrat-Bold.ttf') format('truetype'),
+         url('/assets/fonts/Montserrat-Bold.ttf') format('truetype');
     font-weight: 600 800;
     font-style: normal;
     font-display: swap;
   }
   @font-face {
     font-family: 'JetBrains Mono';
-    src: url('/assets/fonts/JetBrainsMono-Regular.ttf') format('truetype');
+    src: url('https://thebestbrand-studio.web.app/assets/fonts/JetBrainsMono-Regular.ttf') format('truetype'),
+         url('/assets/fonts/JetBrainsMono-Regular.ttf') format('truetype');
     font-weight: 400 700;
     font-style: normal;
     font-display: swap;
@@ -5743,11 +5803,31 @@
     let selectedLiveSketchIndex = 0;
 
     var canvasState = window.canvasState = {
-      brandName: "TheBestBrand",
-      tagline: "Identidad Estratégica y Visual de Alto Impacto",
+      brandName: "",
+      tagline: "",
       primary_font: "Plus Jakarta Sans",
-      selected_colors_hex: ["#FAF8F5", "#090D16", "#C59B27", "#D4AF37"],
+      selected_colors_hex: ["#FFFFFF", "#090D16", "#0D2540", "#426EAE"],
       selected_kit_index: 0
+    };
+
+    window.tbbIsPlaceholderBrandName = function (rawName) {
+      const s = String(rawName == null ? "" : rawName).trim();
+      if (!s) return true;
+      if (/^(mi nueva marca|mi marca|tu marca|marca en creaci[oó]n.*|proyecto gastron.*)$/i.test(s)) return true;
+      if (!(window.canvasState && window.canvasState.isOfficialAdminTbbPreset) && /^the\s*best\s*brand$/i.test(s)) return true;
+      return false;
+    };
+
+    window.tbbGetUserBrandDisplay = function (fallback = "Tu Marca") {
+      const cs = window.canvasState || {};
+      const raw = String(cs.brandName || "").trim();
+      if (!window.tbbIsPlaceholderBrandName(raw)) return raw;
+      const s0Name = String((window.step0State && window.step0State.existingBrandName) || "").trim();
+      if (!window.tbbIsPlaceholderBrandName(s0Name)) return s0Name;
+      if (Array.isArray(window.acceptedNamingVault) && window.acceptedNamingVault[0]?.name && !window.tbbIsPlaceholderBrandName(window.acceptedNamingVault[0].name)) {
+        return String(window.acceptedNamingVault[0].name).trim();
+      }
+      return fallback;
     };
 
     // CENTRALIZED CORPORATE BACKEND ACCOUNT (ZERO USER API KEYS)
@@ -8628,7 +8708,7 @@
 
     function renderBespokeJourneyVisuals() {
       const rawBrandName = (canvasState.brandName || "").trim();
-      const bName = (rawBrandName && !/^mi nueva marca$/i.test(rawBrandName)) ? rawBrandName : "TheBestBrand";
+      const bName = (rawBrandName && !window.tbbIsPlaceholderBrandName(rawBrandName)) ? rawBrandName : (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca");
       const monogram = bName.slice(0, 2).toUpperCase();
       const shortBrand = bName.length > 12 ? bName.slice(0, 11) + "…" : bName.toUpperCase();
       const colors = canvasState.selected_colors_hex || ["#FAF8F5", "#090D16", "#C59B27", "#D4AF37"];
@@ -8716,7 +8796,9 @@
 
     function loadOfficialTheBestBrandIdentity() {
       playAcousticClick(880, 0.05);
+      canvasState.isOfficialAdminTbbPreset = true;
       const officialIdentity = {
+        isOfficialAdminTbbPreset: true,
         brandName: "TheBestBrand",
         tagline: "Donde la visión del fundador se convierte en una marca memorable y lista para el mundo",
         primary_font: "Plus Jakarta Sans",
@@ -8852,31 +8934,35 @@
     // =========================================================================
     function ensureOfficialBrandNameLockedBeforeVisualSteps() {
       const currentName = String(canvasState.brandName || "").trim();
-      const isPlaceholder = !currentName || /^mi nueva marca$/i.test(currentName);
+      const isPlaceholder = window.tbbIsPlaceholderBrandName ? window.tbbIsPlaceholderBrandName(currentName) : (!currentName || /^(mi nueva marca|the\s*best\s*brand)$/i.test(currentName));
       const customInpVal = (document.getElementById("customBrandNameInput")?.value || "").trim();
       const step0InpVal = (document.getElementById("step0BrandNameInput")?.value || "").trim();
       const candidatesInpRaw = (document.getElementById("namingCandidatesInput")?.value || "").trim();
       const firstCandVal = candidatesInpRaw ? candidatesInpRaw.split(",")[0].trim() : "";
 
-      if (customInpVal && !/^mi nueva marca$/i.test(customInpVal)) {
+      if (customInpVal && !window.tbbIsPlaceholderBrandName(customInpVal)) {
         if (currentName.toLowerCase() !== customInpVal.toLowerCase() || !canvasState.userLockedBrandName) {
           lockOfficialBrandNameAcrossApp(customInpVal, { preserveCustomInput: true, forceExplicitUserInput: true });
         }
         return;
       }
-      if (step0InpVal && !/^mi nueva marca$/i.test(step0InpVal) && (isPlaceholder || !canvasState.userLockedBrandName)) {
+      if (step0InpVal && !window.tbbIsPlaceholderBrandName(step0InpVal) && (isPlaceholder || !canvasState.userLockedBrandName)) {
         lockOfficialBrandNameAcrossApp(step0InpVal, { forceExplicitUserInput: true });
         return;
       }
-      if (window.acceptedNamingVault && window.acceptedNamingVault.length > 0 && window.acceptedNamingVault[0]?.name && (isPlaceholder || !canvasState.userLockedBrandName)) {
+      if (window.acceptedNamingVault && window.acceptedNamingVault.length > 0 && window.acceptedNamingVault[0]?.name && !window.tbbIsPlaceholderBrandName(window.acceptedNamingVault[0].name) && (isPlaceholder || !canvasState.userLockedBrandName)) {
         lockOfficialBrandNameAcrossApp(window.acceptedNamingVault[0].name, { silent: true, forceExplicitUserInput: true });
         return;
       }
-      if (firstCandVal && !/^mi nueva marca$/i.test(firstCandVal) && (isPlaceholder || !canvasState.userLockedBrandName)) {
+      if (firstCandVal && !window.tbbIsPlaceholderBrandName(firstCandVal) && (isPlaceholder || !canvasState.userLockedBrandName)) {
         lockOfficialBrandNameAcrossApp(firstCandVal, { silent: true, forceExplicitUserInput: true });
         return;
       }
-      if (isPlaceholder && Array.isArray(currentSixNamingOptions) && currentSixNamingOptions.length > 0 && currentSixNamingOptions[0]?.name) {
+      if (isPlaceholder && Array.isArray(window._tbbAiGeneratedNamingCandidates) && window._tbbAiGeneratedNamingCandidates.length > 0 && window._tbbAiGeneratedNamingCandidates[0]?.name) {
+        lockOfficialBrandNameAcrossApp(window._tbbAiGeneratedNamingCandidates[0].name, { silent: true, forceExplicitUserInput: true });
+        return;
+      }
+      if (isPlaceholder && Array.isArray(currentSixNamingOptions) && currentSixNamingOptions.length > 0 && currentSixNamingOptions[0]?.name && !window.tbbIsPlaceholderBrandName(currentSixNamingOptions[0].name)) {
         lockOfficialBrandNameAcrossApp(currentSixNamingOptions[0].name, { silent: true, forceExplicitUserInput: true });
       }
     }
@@ -8906,7 +8992,7 @@
         savedAt: new Date().toISOString(),
         currentStep: (window.tbbState && typeof window.tbbState.step === "number") ? window.tbbState.step : (typeof currentStep !== "undefined" ? currentStep : 3),
         subStep: (window.tbbState && window.tbbState.subStep) || 1,
-        brandName: cs.brandName || s0.existingBrandName || "TheBestBrand",
+        brandName: cs.brandName || s0.existingBrandName || (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca"),
         sector: cs.custom_business_type || cs.step0_short_essence || s0.customBusinessType || "",
         whyPurpose: cs.golden_circle || "",
         howMethod: cs.process_steps_text || cs.brand_persona || "",
@@ -9214,7 +9300,7 @@
         if (typeof renderStep5bTouchpointMockup === "function") {
           renderStep5bTouchpointMockup();
         }
-        if (Object.keys(userPairSelections || {}).length >= 24 && (!window.lastStudioLogosPayload || window.lastStudioLogosPayload.brand_name !== (canvasState.brandName || "TheBestBrand").trim())) {
+        if (Object.keys(userPairSelections || {}).length >= 24 && (!window.lastStudioLogosPayload || window.lastStudioLogosPayload.brand_name !== (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim())) {
           generateLiveAIStudioLogoProposals(true);
         }
       } else if (stepNum === 6) {
@@ -9620,7 +9706,7 @@
     let transitionVideoStartTime = 0;
 
     function extractSmartBrandMonogram(rawName) {
-      const clean = String(rawName || "TheBestBrand").trim();
+      const clean = String(rawName || (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca")).trim();
       const words = clean.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g, " ").trim().split(/\s+/).filter(Boolean);
       if (words.length >= 2) {
         return words.map(w => w[0]).join("").slice(0, 3).toUpperCase();
@@ -9654,7 +9740,7 @@
     }
 
     function syncSequentialDiscoveryState() {
-      const bName = (canvasState.brandName || "TheBestBrand").trim();
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const initials = extractSmartBrandMonogram(bName);
       const whySummary = canvasState.golden_circle || "Transformar ideas complejas en marcas memorables con precisión algorítmica.";
       const valueSummary = canvasState.value_offer || "Identidad estratégica y visual lista para imprenta y entorno digital.";
@@ -10137,7 +10223,7 @@
         canvasState.brandName = bName;
         canvasState.userLockedBrandName = true;
       }
-      if (!bName) bName = "TheBestBrand";
+      if (!bName) bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca");
       const monogram = extractSmartBrandMonogram(bName);
       const cleanSlug = bName.toLowerCase().replace(/[^a-z0-9]/g, "") || "thebestbrand";
       const phoneticCode = bName.toUpperCase().replace(/[AEIOUÁÉÍÓÚ\s·.]/g, "").slice(0, 5) || monogram;
@@ -10427,43 +10513,63 @@
       const pauseSvg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`;
       const playSvg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5l12 7-12 7V5z"/></svg>`;
       if (btnTxtEl) btnTxtEl.textContent = spec.cta;
-      if (progBar) progBar.style.width = "12%";
-      if (timeLbl) timeLbl.textContent = "0:15";
+      if (progBar) progBar.style.width = "6%";
+      if (timeLbl) timeLbl.textContent = "0:00";
       if (icoEl) icoEl.innerHTML = pauseSvg;
-      if (txtEl) txtEl.textContent = trCap("Escuchando");
+      if (txtEl) txtEl.textContent = trCap("Cargando voz...");
 
       const legacyVid = document.getElementById("transitionTheoryVideoPlayer");
       if (legacyVid) {
         try { legacyVid.pause(); legacyVid.removeAttribute("src"); } catch (e) {}
       }
 
-      const playCapsuleNow = () => {
-        if (typeof window.playAuraVivaCapsuleClip === "function") {
-          const startedAt = Date.now();
-          const progTimer = setInterval(() => {
-            if (!modal.classList.contains("open")) { clearInterval(progTimer); return; }
-            const elapsed = (Date.now() - startedAt) / 1000;
-            const pct = Math.min(100, Math.round((elapsed / 12) * 100));
-            if (progBar) progBar.style.width = pct + "%";
-            if (timeLbl) timeLbl.textContent = `0:${String(Math.min(15, Math.floor(elapsed))).padStart(2, "0")}`;
-            if (!window.isSpeakingLive && elapsed > 1.2) {
-              clearInterval(progTimer);
-              if (progBar) progBar.style.width = "100%";
-              if (icoEl) icoEl.innerHTML = playSvg;
-              if (txtEl) txtEl.textContent = trCap("Escuchar");
+      const playCapsuleNow = (fromUserTap = false) => {
+        if (fromUserTap) {
+          window.voiceMuted = false;
+          voiceMuted = false;
+          try {
+            if (window.sharedAcousticCtx && window.sharedAcousticCtx.state === "suspended") {
+              window.sharedAcousticCtx.resume().catch(() => {});
             }
-          }, 180);
-
+          } catch (e) {}
+        }
+        if (typeof window.playAuraVivaCapsuleClip === "function") {
           window.playAuraVivaCapsuleClip(resolvedToStep, curLang, {
+            forceUnmute: Boolean(fromUserTap),
             onText: (tStr) => {
               const trBox = document.getElementById("tbbLiveCapsuleTranscriptBox");
               if (trBox && tStr) trBox.textContent = `“${tStr}”`;
             },
+            onStateChange: (hdl) => {
+              if (!hdl) return;
+              if (!hdl.paused && !hdl.autoplayBlocked) {
+                if (icoEl) icoEl.innerHTML = pauseSvg;
+                if (txtEl) txtEl.textContent = trCap("Escuchando");
+              } else if (hdl.autoplayBlocked) {
+                if (progBar) progBar.style.width = "0%";
+                if (icoEl) icoEl.innerHTML = playSvg;
+                if (txtEl) txtEl.textContent = trCap("Reproducir cápsula");
+              }
+            },
+            onAutoplayBlocked: () => {
+              if (progBar) progBar.style.width = "0%";
+              if (timeLbl) timeLbl.textContent = "0:14";
+              if (icoEl) icoEl.innerHTML = playSvg;
+              if (txtEl) txtEl.textContent = trCap("Reproducir cápsula");
+            },
+            onTimeUpdate: (hdl) => {
+              const dur = Math.max(4, Number(hdl && hdl.duration) || 14.0);
+              const cur = Math.max(0, Number(hdl && hdl.currentTime) || 0);
+              const pct = Math.min(100, Math.round((cur / dur) * 100));
+              if (progBar) progBar.style.width = pct + "%";
+              if (timeLbl) timeLbl.textContent = `0:${String(Math.min(15, Math.floor(cur))).padStart(2, "0")}`;
+              if (icoEl) icoEl.innerHTML = pauseSvg;
+              if (txtEl) txtEl.textContent = trCap("Escuchando");
+            },
             onDone: () => {
-              clearInterval(progTimer);
               if (progBar) progBar.style.width = "100%";
               if (icoEl) icoEl.innerHTML = playSvg;
-              if (txtEl) txtEl.textContent = trCap("Escuchar");
+              if (txtEl) txtEl.textContent = trCap("Volver a escuchar");
             }
           });
         } else if (typeof window.speakAuraBriefResponse === "function") {
@@ -10474,7 +10580,7 @@
       window.tbbReplayCapsuleAudio = function () {
         if (icoEl) icoEl.innerHTML = pauseSvg;
         if (txtEl) txtEl.textContent = trCap("Escuchando");
-        playCapsuleNow();
+        playCapsuleNow(true);
       };
       window.tbbToggleCapsuleAudioPlayPause = function () {
         if (window.isSpeakingLive) {
@@ -10492,7 +10598,10 @@
         window.tbbTranslateDOMSubtree(modal, curLang);
       }
       if (!window.voiceMuted) {
-        playCapsuleNow();
+        playCapsuleNow(false);
+      } else {
+        if (icoEl) icoEl.innerHTML = playSvg;
+        if (txtEl) txtEl.textContent = trCap("Escuchar");
       }
     }
 
@@ -10711,7 +10820,7 @@
     }
 
     function splitBrandOpticalWordmarkParts(rawBrand, uppercase = false) {
-      const raw = String(rawBrand || "TheBestBrand").trim();
+      const raw = String(rawBrand || (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca")).trim();
       const splitCamel = raw.replace(/([a-z0-9áéíóúñ])([A-ZÁÉÍÓÚÑ])/g, "$1 $2").trim();
       const parts = splitCamel.split(/\s+/).filter(Boolean);
       if (parts.length >= 2) {
@@ -10732,7 +10841,7 @@
       if (typeof updateJonyIveSeedBadgesUI === "function") {
         updateJonyIveSeedBadgesUI();
       }
-      const rawBrand = (canvasState.brandName || "TheBestBrand").trim();
+      const rawBrand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const { initials } = splitBrandNameInto1to1Deck(rawBrand);
       const tagline = (canvasState.tagline || canvasState.core_message || "IDENTIDAD DE CLASE MUNDIAL").trim();
       const indKey = detectBrandStudioIndustryKey(rawBrand);
@@ -11075,7 +11184,7 @@
       const seed = parseInt(window.logoStudioVariationSeed || 0, 10) || 0;
 
       const fg = onDark ? "#FAF8F5" : "#090D16";
-      const rawBrand = (canvasState.brandName || "TheBestBrand").trim();
+      const rawBrand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const { initials } = splitBrandNameInto1to1Deck(rawBrand);
       const safeInit = escapeHTML((initials || "TBB").slice(0, 3).toUpperCase());
       const fontName = canvasState.primary_font || "Space Grotesk";
@@ -11567,7 +11676,7 @@
 
     function downloadSingleProposalSVG(idx = 0) {
       playAcousticClick(860, 0.04);
-      const rawBrand = (canvasState.brandName || "TheBestBrand").trim();
+      const rawBrand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const proposals = window.currentRenderedStudioProposals || [];
       const chosen = proposals[idx] || proposals[0];
       if (!chosen || !chosen.svg) {
@@ -11599,7 +11708,7 @@
       if (typeof updateJonyIveSeedBadgesUI === "function") {
         updateJonyIveSeedBadgesUI();
       }
-      const rawBrand = (canvasState.brandName || "TheBestBrand").trim();
+      const rawBrand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const { line1, line2, initials } = splitBrandNameInto1to1Deck(rawBrand);
       const votedCount = Object.keys(userPairSelections || {}).length;
       const [bgHex, inkHex, rawPriHex, secHex] = canvasState.selected_colors_hex || ["#FAF8F5", "#090D16", "#D4AF37", "#38BDF8"];
@@ -12030,7 +12139,7 @@
       if (btnSynth) btnSynth.textContent = " Diseñando con The Best Brand Studio...";
       if (badge) badge.textContent = ` ${modeLabel}`;
 
-      const rawBrand = (canvasState.brandName || "TheBestBrand").trim();
+      const rawBrand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const rawTaVal = (promptTa && promptTa.value.trim()) ? promptTa.value.trim() : "";
       const customPrompt = (
         promptTa &&
@@ -12216,7 +12325,7 @@
     function renderLiveStep4LogoSketches() {
       const grid = document.getElementById("liveStep4SketchesGrid");
       if (!grid) return;
-      const brand = (canvasState.brandName || "TheBestBrand").trim();
+      const brand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const initials = brand.substring(0, 2).toUpperCase();
 
       const orgGeo = parseFloat(bipolarSliderValues["organico_geometrico"] || 0.7);
@@ -13532,7 +13641,7 @@
     ];
 
     function splitBrandNameInto1to1Deck(raw) {
-      const bName = (raw || "TheBestBrand").trim();
+      const bName = String(raw || (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca")).trim();
       const words = bName.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/[_-]+/g, " ").trim().split(/\s+/);
       let line1 = words[0] ? words[0].toUpperCase() : "THE";
       let line2 = words.slice(1).join(" ").toUpperCase() || "BRAND";
@@ -13795,7 +13904,7 @@
       const subtitleMode = isA ? pair.aSubtitleMode : pair.bSubtitleMode;
 
       const { line1, line2 } = splitBrandNameInto1to1Deck(rawBrandName);
-      const fullBrand = (rawBrandName || "TheBestBrand").trim();
+      const fullBrand = String(rawBrandName || (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca")).trim();
 
       // Separar camelCase o siglas para que la comparación Mayúsculas vs Minúsculas sea 100% evidente
       const readableWords = fullBrand
@@ -13912,7 +14021,7 @@
           closureSummary.innerHTML = `Con tus selecciones A/B habrás definido con precisión quirúrgica los <strong>24 atributos aislados</strong> de tu logotipo, unidos a tu Propósito (Fase 1), Touchpoints (Fase 2), Nombre y Registro (Fase 3) y Familia Arquitectónica (Fase 4).`;
         } else {
           const pillsHtml = chosenTraits.map(t => `<span class="trait-discovery-pill" style="margin:2px;"><span class="dot"></span>#${t.id} ${t.label}</span>`).join(" ");
-          closureSummary.innerHTML = `Has definido <strong>${chosenTraits.length} de ${SIXTY_PROFESSIONAL_PAIRS.length} atributos aislados</strong> para <strong>${canvasState.brandName || 'TheBestBrand'}</strong>:<div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:6px;">${pillsHtml}</div>`;
+          closureSummary.innerHTML = `Has definido <strong>${chosenTraits.length} de ${SIXTY_PROFESSIONAL_PAIRS.length} atributos aislados</strong> para <strong>${(window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca")}</strong>:<div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:6px;">${pillsHtml}</div>`;
         }
       }
     }
@@ -13921,7 +14030,7 @@
       const container = document.getElementById("pairArenaContainer");
       if (!container) return;
       const pair = SIXTY_PROFESSIONAL_PAIRS[currentPairIdx % SIXTY_PROFESSIONAL_PAIRS.length];
-      const bName = canvasState.brandName || "TheBestBrand";
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca");
       const chosen = userPairSelections[pair.id];
 
       let visA = "";
@@ -14268,7 +14377,7 @@
     function buildPureOutlinedSymbolPaths(symbolType, priColor, secColor, inkColor) {
       const indKey = detectBrandStudioIndustryKey();
       const isDarkBg = (inkColor === "#FFFFFF" || inkColor === "#FAF8F5");
-      const rawBrand = (canvasState.brandName || "TheBestBrand").trim();
+      const rawBrand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const varIdx = parseInt(canvasState.selected_kit_index || 0, 10) || 0;
       return buildBespokePentagramSymbolPaths(indKey, priColor, secColor, inkColor, isDarkBg, rawBrand, varIdx);
     }
@@ -14295,7 +14404,7 @@
       const paletteStrip = document.getElementById("step6HeroPaletteStrip");
       const fontSig = document.getElementById("step6HeroFontSignature");
 
-      const rawBrand = (canvasState.brandName || "TheBestBrand").trim();
+      const rawBrand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const taglineText = (canvasState.tagline || canvasState.step0_short_essence || canvasState.value_offer || "Identidad Estratégica y Visual de Alto Impacto").trim();
       const [bgHex, inkHex, rawPriHex, secHex] = canvasState.selected_colors_hex || ["#FAF8F5", "#090D16", "#C59B27", "#D4AF37"];
       const priHex = (!rawPriHex || /^#(090D16|0F172A|1E293B|000000)$/i.test(rawPriHex)) ? "#C59B27" : rawPriHex;
@@ -14442,7 +14551,7 @@
     function renderPrintShopCheatsheet() {
       const container = document.getElementById("printShopCheatsheetContainer");
       if (!container) return;
-      const bName = (canvasState.brandName || "TheBestBrand").toUpperCase();
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").toUpperCase();
       const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex;
       const kit = FIVE_IDENTITY_PROPOSALS[canvasState.selected_kit_index || 0];
       const symWhite = buildPureOutlinedSymbolPaths(kit.symbolType, priHex, secHex, "#FFFFFF");
@@ -14660,7 +14769,7 @@
     function renderEightApplicationsGrid() {
       const container = document.getElementById("brandApplicationsGrid");
       if (!container) return;
-      const bName = (canvasState.brandName || "TheBestBrand").toUpperCase();
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").toUpperCase();
       const colors = canvasState.selected_colors_hex;
       const fontName = canvasState.primary_font || "Syne";
       const apps = [
@@ -14695,7 +14804,7 @@
 
     function downloadSingleApplicationSVG(appCode, appTitle) {
       playAcousticClick(800, 0.04);
-      const bName = (canvasState.brandName || "TheBestBrand").toUpperCase();
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").toUpperCase();
       const svgContent = buildApplicationSVG(appCode, bName, canvasState.selected_colors_hex, canvasState.primary_font);
       const blob = new Blob([svgContent], { type: "image/svg+xml;charset=utf-8" });
       const url = URL.createObjectURL(blob);
@@ -14711,7 +14820,7 @@
       }
       const container = document.getElementById("illustratedBrandbookSheetsContainer");
       if (!container) return;
-      const rawBrand = (canvasState.brandName || "TheBestBrand").trim();
+      const rawBrand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const bName = rawBrand.toUpperCase();
       const cleanSlug = rawBrand.toLowerCase().replace(/[^a-z0-9]/g, "") || "thebestbrand";
       const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex || ["#FAF8F5", "#090D16", "#C59B27", "#D4AF37"];
@@ -15355,7 +15464,7 @@
     }
 
     function buildBeneficBrandbookRequestBody() {
-      const authName = (typeof resolveAuthoritativeBrandName === "function" ? resolveAuthoritativeBrandName() : canvasState.brandName) || "TheBestBrand";
+      const authName = (typeof resolveAuthoritativeBrandName === "function" ? resolveAuthoritativeBrandName() : "") || (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca");
       canvasState.brandName = authName;
       const s1 = (compiledBrandbookData && compiledBrandbookData.section_1_positioning) || {};
       const rawTp = tpExtractedItems || { before: [], during: [], after: [] };
@@ -15759,7 +15868,7 @@
 
     function exportLogoSVGCurves() {
       playAcousticClick(850, 0.04);
-      const brand = (canvasState.brandName || "TheBestBrand").trim();
+      const brand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       if (canvasState.selected_logo_svg && canvasState.selected_logo_svg.includes("<svg")) {
         const cleanSvg = canvasState.selected_logo_svg.trim().startsWith("<?xml")
           ? canvasState.selected_logo_svg.trim()
@@ -15796,7 +15905,7 @@
 
     function exportBrandbookJSON() {
       playAcousticClick(700, 0.03);
-      const brand = canvasState.brandName || "TheBestBrand";
+      const brand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca");
       const blob = new Blob([JSON.stringify(canvasState, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -16323,7 +16432,7 @@
         box.style.display = "none";
         return;
       }
-      const bName = canvasState.brandName || "TheBestBrand";
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca");
       const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex || ["#090D16", "#FAF8F5", "#D4AF37", "#38BDF8"];
       const indKey = detectBrandStudioIndustryKey(bName);
       const sym1 = buildBespokePentagramSymbolPaths(indKey, priHex, secHex || "#D4AF37", inkHex, true);
@@ -16354,7 +16463,7 @@
       const descEl = document.getElementById("step5bTouchpointMockupDesc");
       const prevEl = document.getElementById("step5bTouchpointMockupPreview");
       if (!descEl || !prevEl) return;
-      const bName = canvasState.brandName || "TheBestBrand";
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca");
       const firstTp = (tpExtractedItems.before && tpExtractedItems.before[0]) || (tpExtractedItems.during && tpExtractedItems.during[0]) || "App Icon iOS/Android & Cabecera Web";
       const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex || ["#FAF8F5", "#090D16", "#D4AF37", "#38BDF8"];
       const indKey = detectBrandStudioIndustryKey(bName);
@@ -16367,7 +16476,7 @@
     }
 
     function renderStep6EmployeeOnePagerAndAudit() {
-      const bName = canvasState.brandName || "TheBestBrand";
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca");
       const tpCount = (tpExtractedItems.before?.length || 0) + (tpExtractedItems.during?.length || 0) + (tpExtractedItems.after?.length || 0);
       const [bgHex, inkHex, priHex, secHex] = canvasState.selected_colors_hex || ["#090D16", "#FAF8F5", "#D4AF37", "#38BDF8"];
       const fontName = canvasState.primary_font || "Plus Jakarta Sans";
@@ -17027,7 +17136,15 @@
       if (Array.isArray(parsed.reservedSubbrandVault)) {
         window.reservedSubbrandVault = [...parsed.reservedSubbrandVault];
       }
-      if ((!canvasState.userLockedBrandName || /^mi nueva marca$/i.test(String(canvasState.brandName || "").trim())) && window.acceptedNamingVault && window.acceptedNamingVault.length > 0 && window.acceptedNamingVault[0]?.name) {
+      // Auto-saneamiento: si una sesión de usuario heredó accidentalmente "TheBestBrand" sin ser el preset de administrador, limpiarlo
+      if (!canvasState.isOfficialAdminTbbPreset && /^the\s*best\s*brand$/i.test(String(canvasState.brandName || "").trim())) {
+        canvasState.brandName = "";
+        canvasState.userLockedBrandName = false;
+        if (/^Identidad Estrat[eé]gica y Visual de Alto Impacto$/i.test(String(canvasState.tagline || "").trim())) {
+          canvasState.tagline = "";
+        }
+      }
+      if ((!canvasState.userLockedBrandName || (window.tbbIsPlaceholderBrandName && window.tbbIsPlaceholderBrandName(canvasState.brandName))) && window.acceptedNamingVault && window.acceptedNamingVault.length > 0 && window.acceptedNamingVault[0]?.name && !(window.tbbIsPlaceholderBrandName && window.tbbIsPlaceholderBrandName(window.acceptedNamingVault[0].name))) {
         canvasState.brandName = String(window.acceptedNamingVault[0].name).trim();
         canvasState.userLockedBrandName = true;
       }
@@ -18496,7 +18613,7 @@
       const wireframeBox = document.getElementById("comingSoonWebMockupWireframe");
       if (!modal) return;
 
-      const bName = (canvasState.brandName || "TheBestBrand").trim();
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const slug = bName.toLowerCase().replace(/[^a-z0-9]/g, "") || "mimarca";
       const promise = canvasState.core_message || canvasState.value_offer || canvasState.golden_circle || "Transformamos la experiencia de nuestros clientes con excelencia y calidez en cada detalle.";
       const tpBefore = (tpExtractedItems.before && tpExtractedItems.before[0]) || "Descubrimiento y contacto inmediato";
@@ -18575,7 +18692,7 @@
 
     function activateWebsitePriorityWaitlist() {
       playAcousticClick(960, 0.06);
-      const bName = (canvasState.brandName || "TheBestBrand").trim();
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const btn = document.getElementById("btnActivateWebWaitlist");
       const badge = document.getElementById("comingSoonWebInlineBadge");
       if (btn) {
@@ -18598,7 +18715,7 @@
       const previewBox = document.getElementById("comingSoonSocialLivePreviewBox");
       if (!modal) return;
 
-      const bName = (canvasState.brandName || "TheBestBrand").trim();
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const handle = "@" + (bName.toLowerCase().replace(/[^a-z0-9]/g, "") || "mimarca");
       const purpose = canvasState.golden_circle || "Elevar el estándar de nuestra categoría con excelencia comprobable.";
       const offer = canvasState.value_offer || canvasState.core_message || "Metodología propia con resultados medibles y atención personalizada sin fricción.";
@@ -18703,7 +18820,7 @@
 
     function activateSocialStrategyPriorityWaitlist() {
       playAcousticClick(980, 0.06);
-      const bName = (canvasState.brandName || "TheBestBrand").trim();
+      const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca").trim();
       const btn = document.getElementById("btnActivateSocialWaitlist");
       const badge = document.getElementById("comingSoonSocialInlineBadge");
       if (btn) {
@@ -22699,9 +22816,54 @@
           const priCol = activeIt.pri || st.logoPriHex || "#0078C0";
           const secCol = activeIt.sec || st.logoSecHex || "#88E0E0";
           const accCol = activeIt.accentHex || cs.accent_color || "#585850";
-          const modeLabel = (activeIt.isUploadedUserLogo ? "TU LOGOTIPO BASE ORIGINAL" : (activeIt.shortPill || activeIt.conceptLabel || "DISEÑO OFICIAL DE MARCA")).toUpperCase().slice(0, 32);
+          const modeLabel = (activeIt.isUploadedUserLogo ? "TU LOGOTIPO BASE ORIGINAL" : (activeIt.shortPill || activeIt.conceptLabel || "DISEÑO DE MARCA")).toUpperCase().slice(0, 30);
+          const isMobileStage = (typeof window !== "undefined" && window.innerWidth > 0 && window.innerWidth <= 580);
+          const safeSubShort = subtitle.length > 24 ? subtitle.slice(0, 23).trim() + "…" : subtitle;
 
-          const nbSvgOut = `
+          const nbSvgOut = isMobileStage ? `
+            <svg viewBox="0 0 460 440" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="max-height:100%; display:block; margin:0 auto;">
+              <defs>
+                <linearGradient id="bgDual_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="${bgTop}"/>
+                  <stop offset="100%" stop-color="${bgBot}"/>
+                </linearGradient>
+                <linearGradient id="sqSurf_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="${isDark ? '#1E293B' : '#FFFFFF'}"/>
+                  <stop offset="100%" stop-color="${isDark ? '#020617' : '#F1F5F9'}"/>
+                </linearGradient>
+                <linearGradient id="sqRimBevel_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="${secCol}" stop-opacity="0.9"/>
+                  <stop offset="50%" stop-color="${priCol}" stop-opacity="0.7"/>
+                  <stop offset="100%" stop-color="${secCol}" stop-opacity="0.9"/>
+                </linearGradient>
+                <clipPath id="artFrameClip_${uid}">
+                  <rect x="10" y="10" width="440" height="352" rx="16"/>
+                </clipPath>
+                <clipPath id="sqClip_${uid}">
+                  <rect x="0" y="0" width="48" height="48" rx="12"/>
+                </clipPath>
+              </defs>
+              <rect width="460" height="440" rx="16" fill="url(#bgDual_${uid})"/>
+              <rect x="10" y="10" width="440" height="352" rx="16" fill="${isDark ? '#0F172A' : '#FFFFFF'}" stroke="url(#sqRimBevel_${uid})" stroke-width="1.6"/>
+              <g clip-path="url(#artFrameClip_${uid})">
+                <image href="${fullArtUrl}" xlink:href="${fullArtUrl}" x="18" y="18" width="424" height="336" preserveAspectRatio="xMidYMid meet"/>
+              </g>
+              <rect x="10" y="370" width="440" height="60" rx="14" fill="${isDark ? '#111827' : '#FFFFFF'}" stroke="${isDark ? '#334155' : '#E2E8F0'}" stroke-width="1.2"/>
+              <g transform="translate(20, 376)">
+                <rect x="0" y="0" width="48" height="48" rx="12" fill="url(#sqSurf_${uid})" stroke="url(#sqRimBevel_${uid})" stroke-width="1.6"/>
+                <g clip-path="url(#sqClip_${uid})">
+                  <image href="${symArtUrl}" xlink:href="${symArtUrl}" x="3" y="3" width="42" height="42" preserveAspectRatio="xMidYMid meet"/>
+                </g>
+              </g>
+              <text x="80" y="396" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="800" font-size="13.5" letter-spacing="0.4">${escapeHTML(rawBrand.toUpperCase().slice(0, 20))}</text>
+              <text x="80" y="414" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="10.2">${escapeHTML(modeLabel)}</text>
+              <g transform="translate(352, 389)">
+                <circle cx="14" cy="11" r="9.5" fill="${priCol}" stroke="#FFFFFF" stroke-width="1.5"/>
+                <circle cx="38" cy="11" r="9.5" fill="${secCol}" stroke="#FFFFFF" stroke-width="1.5"/>
+                <circle cx="62" cy="11" r="9.5" fill="${accCol}" stroke="#FFFFFF" stroke-width="1.5"/>
+              </g>
+            </svg>
+          ` : `
             <svg viewBox="0 0 760 440" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="max-height:100%; display:block; margin:0 auto;">
               <defs>
                 <linearGradient id="bgDual_${uid}" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -22719,7 +22881,7 @@
                   <stop offset="100%" stop-color="${secCol}" stop-opacity="0.95"/>
                 </linearGradient>
                 <filter id="sqShad_${uid}" x="-20%" y="-20%" width="145%" height="145%">
-                  <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#090D16" flood-opacity="0.24"/>
+                  <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#090D16" flood-opacity="0.20"/>
                 </filter>
                 <clipPath id="artFrameClip_${uid}">
                   <rect x="14" y="14" width="504" height="412" rx="18"/>
@@ -22731,46 +22893,49 @@
               <rect width="760" height="440" rx="18" fill="url(#bgDual_${uid})"/>
 
               <!-- Escenario Principal Izquierdo: Obra Completa en Marco de Galería (504x412 px) -->
-              <rect x="14" y="14" width="504" height="412" rx="18" fill="${isDark ? '#12100E' : '#FFFFFF'}" stroke="url(#sqRimBevel_${uid})" stroke-width="2.2" filter="url(#sqShad_${uid})"/>
+              <rect x="14" y="14" width="504" height="412" rx="18" fill="${isDark ? '#0F172A' : '#FFFFFF'}" stroke="url(#sqRimBevel_${uid})" stroke-width="2" filter="url(#sqShad_${uid})"/>
               <g clip-path="url(#artFrameClip_${uid})">
                 <image href="${fullArtUrl}" xlink:href="${fullArtUrl}" x="22" y="22" width="488" height="396" preserveAspectRatio="xMidYMid meet"/>
               </g>
-              <rect x="26" y="24" width="218" height="24" rx="12" fill="rgba(9,13,22,0.82)" stroke="${secCol}" stroke-width="1"/>
-              <text x="135" y="40" text-anchor="middle" fill="#FDE68A" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="9.2" letter-spacing="0.7">${escapeHTML(modeLabel)}</text>
+              <rect x="26" y="24" width="218" height="24" rx="12" fill="rgba(13,37,64,0.84)" stroke="${secCol}" stroke-width="1"/>
+              <text x="135" y="40" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.2" letter-spacing="0.6">${escapeHTML(modeLabel)}</text>
 
               <!-- Columna Derecha: Ícono App 1:1 en Squircle + ADN Cromático Activo -->
               <rect x="532" y="14" width="214" height="412" rx="18" fill="${isDark ? '#111827' : '#FFFFFF'}" stroke="${isDark ? '#334155' : '#CBD5E1'}" stroke-width="1.5"/>
-              <text x="639" y="44" text-anchor="middle" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="900" font-size="13.5" letter-spacing="0.5">APP ICON 1:1</text>
-              <text x="639" y="61" text-anchor="middle" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.5">Símbolo Centrado &amp; Vectorizado</text>
+              <text x="639" y="44" text-anchor="middle" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="800" font-size="13" letter-spacing="0.5">APP ICON 1:1</text>
+              <text x="639" y="61" text-anchor="middle" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="9.5">Símbolo Centrado &amp; Vector</text>
 
               <g transform="translate(551, 74)">
-                <rect x="0" y="0" width="176" height="176" rx="40" fill="url(#sqSurf_${uid})" stroke="url(#sqRimBevel_${uid})" stroke-width="2.6" filter="url(#sqShad_${uid})"/>
+                <rect x="0" y="0" width="176" height="176" rx="40" fill="url(#sqSurf_${uid})" stroke="url(#sqRimBevel_${uid})" stroke-width="2.4" filter="url(#sqShad_${uid})"/>
                 <g clip-path="url(#sqClip_${uid})">
                   <image href="${symArtUrl}" xlink:href="${symArtUrl}" x="8" y="8" width="160" height="160" preserveAspectRatio="xMidYMid meet"/>
                 </g>
-                <rect x="3" y="3" width="170" height="170" rx="37" fill="none" stroke="#FFFFFF" stroke-width="1.8" opacity="0.75"/>
+                <rect x="3" y="3" width="170" height="170" rx="37" fill="none" stroke="#FFFFFF" stroke-width="1.6" opacity="0.75"/>
               </g>
 
               <!-- Ficha Técnica de Marca y Paleta Activa -->
-              <text x="639" y="282" text-anchor="middle" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="900" font-size="13.5" letter-spacing="0.5">${escapeHTML(rawBrand.toUpperCase().slice(0, 18))}</text>
-              <text x="639" y="299" text-anchor="middle" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="8.2">${escapeHTML(subtitle.length > 26 ? subtitle.slice(0, 25).trim() + "…" : subtitle)}</text>
+              <text x="639" y="282" text-anchor="middle" fill="${txtMain}" font-family="'${chosenFont}', sans-serif" font-weight="800" font-size="13.2" letter-spacing="0.5">${escapeHTML(rawBrand.toUpperCase().slice(0, 18))}</text>
+              <text x="639" y="299" text-anchor="middle" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="8.2">${escapeHTML(safeSubShort)}</text>
 
               <g transform="translate(551, 316)">
                 <rect x="0" y="0" width="176" height="44" rx="10" fill="${isDark ? '#1E293B' : '#F8FAFC'}" stroke="${isDark ? '#334155' : '#E2E8F0'}" stroke-width="1"/>
                 <circle cx="28" cy="22" r="11" fill="${priCol}" stroke="#FFFFFF" stroke-width="1.5"/>
                 <circle cx="58" cy="22" r="11" fill="${secCol}" stroke="#FFFFFF" stroke-width="1.5"/>
                 <circle cx="88" cy="22" r="11" fill="${accCol}" stroke="#FFFFFF" stroke-width="1.5"/>
-                <text x="110" y="19" fill="${txtMain}" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="8.5">${escapeHTML(priCol)}</text>
-                <text x="110" y="32" fill="${txtSub}" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="8.2">${escapeHTML(secCol)}</text>
+                <text x="110" y="19" fill="${txtMain}" font-family="'JetBrains Mono', monospace" font-weight="700" font-size="8.5">${escapeHTML(priCol)}</text>
+                <text x="110" y="32" fill="${txtSub}" font-family="'JetBrains Mono', monospace" font-weight="600" font-size="8.2">${escapeHTML(secCol)}</text>
               </g>
 
               <rect x="551" y="372" width="176" height="36" rx="10" fill="${isDark ? 'rgba(30,58,138,0.35)' : '#EFF6FF'}" stroke="#93C5FD" stroke-width="1"/>
-              <text x="639" y="388" text-anchor="middle" fill="${isDark ? '#93C5FD' : '#1D4ED8'}" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="8.2">CURVAS BÉZIER TRAZADAS</text>
-              <text x="639" y="401" text-anchor="middle" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="7.8">Listo para .SVG · .AI · Manual 30p</text>
+              <text x="639" y="388" text-anchor="middle" fill="${isDark ? '#93C5FD' : '#1D4ED8'}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="8.5">VECTOR LISTO PARA EXPORTAR</text>
+              <text x="639" y="401" text-anchor="middle" fill="${txtSub}" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="7.8">.SVG · .AI · Brandbook +30p</text>
             </svg>
           `;
           if (typeof canvasState === "object" && canvasState) {
-            canvasState.selected_logo_svg = nbSvgOut;
+            const pureCleanLogoSvg = (activeIt.vectorizedSvg && activeIt.vectorizedSvg.includes("<svg"))
+              ? activeIt.vectorizedSvg
+              : `<svg viewBox="0 0 512 512" width="512" height="512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect width="512" height="512" rx="24" fill="${isDark ? '#0F172A' : '#FFFFFF'}"/><image href="${fullArtUrl}" xlink:href="${fullArtUrl}" x="16" y="16" width="480" height="480" preserveAspectRatio="xMidYMid meet"/></svg>`;
+            canvasState.selected_logo_svg = pureCleanLogoSvg;
           }
           return nbSvgOut;
         }
@@ -23125,7 +23290,7 @@
       // Cliente universal para consultar Gemini en tiempo real a través del proxy seguro (/api/v1/gemini/proxy)
       window.tbbCallGeminiAI = async function (promptText, opts = {}) {
         const apiKey = window.TBB_GEMINI_KEY || "";
-        const models = opts.models || ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite"];
+        const models = opts.models || ["gemini-3.8-flash", "gemini-3-flash-preview", "gemini-2.5-flash", "gemini-3.6-flash", "gemini-3.5-flash"];
         const genConfig = { temperature: opts.temperature !== undefined ? opts.temperature : 0.65 };
         if (opts.json) genConfig.responseMimeType = "application/json";
 
@@ -23154,23 +23319,19 @@
         return "";
       };
 
-      window.requestLiveGeminiAuraEmpatheticComment = async function (contextLabel, userValue) {
+      window.requestLiveGeminiAuraEmpatheticComment = async function (contextLabel, userValue, speakOnReply = false, fallbackSpeechMsg = "") {
         const st = window.tbbState;
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const dossier = window.tbbBuildFullBrandContextDossier();
         const cleanVal = String(userValue || cs.custom_business_type || "").trim();
-        if (cleanVal.length < 4 && dossier.length < 45) return;
+        if (cleanVal.length < 4 && dossier.length < 45) {
+          if (speakOnReply && fallbackSpeechMsg && typeof window.speakAuraBriefResponse === "function") {
+            window.speakAuraBriefResponse(fallbackSpeechMsg, 9500);
+          }
+          return;
+        }
         const recentUsed = (st.auraUsedMessages || []).slice(-10).join(" | ");
-
-        const stepAuthors = {
-          0: "Peter Drucker, Marty Neumeier, David Aaker o Sagi Haviv",
-          1: "Simon Sinek, Alex Osterwalder, Donald Miller o Philip Kotler",
-          2: "Jan Carlzon, Lemon y Verhoef o Don Norman",
-          3: "Alexandra Watkins, David Placek, Al Ries o Alina Wheeler",
-          4: "Mitsuo Nagamachi, Charles Osgood, Robert Bringhurst o Adrian Frutiger",
-          5: "Paul Rand, Sagi Haviv, Jony Ive, Josef Albers o Max Wertheimer",
-          6: "Massimo Vignelli, Josef Müller-Brockmann, Alina Wheeler o Danne y Blackburn"
-        };
+        const reqStepSig = `${st.step}.${st.subStep}`;
 
         const prompt = [
           "Eres Aura, la mentora estratégica de marca de TheBestBrand.",
@@ -23180,8 +23341,8 @@
           cleanVal ? `Último dato ingresado o acción: "${cleanVal.slice(0, 200)}".` : "",
           `Frases recientes prohibidas de repetir: [${recentUsed}].`,
           "REGLAS ESTRICTAS:",
-          "1. Escribe UNA SOLA oración breve (máximo 22 palabras) comentando ESPECÍFICAMENTE sobre el negocio/marca que el usuario está creando (menciona su giro, beneficio o idea concreta).",
-          "2. PROHIBIDO citar autores, libros o teorías académicas. Habla con lenguaje sencillo, cálido y directo para cualquier joven de 16 años (máximo 16 palabras).",
+          "1. Escribe UNA SOLA oración breve (máximo 18 palabras) guiando o comentando ESPECÍFICAMENTE sobre el negocio/marca que el usuario está creando.",
+          "2. PROHIBIDO citar autores, libros o teorías académicas. Habla con lenguaje sencillo, cálido y directo (entendible a los 16 años).",
           "3. CERO EMOJIS. Devuelve únicamente el texto plano en español."
         ].filter(Boolean).join("\n");
 
@@ -23189,14 +23350,23 @@
           let reply = await window.tbbCallGeminiAI(prompt, { temperature: 0.6 });
           reply = reply.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").replace(/^["«“]|["»”]$/g, "").replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "").trim();
           const words = reply.split(" ").filter(Boolean);
-          if (words.length > 26) {
-            reply = words.slice(0, 26).join(" ") + ".";
+          if (words.length > 22) {
+            reply = words.slice(0, 22).join(" ") + ".";
           }
-          if (reply && reply.length >= 16 && !st.auraUsedMessages.includes(reply)) {
+          if (reply && reply.length >= 12 && !st.auraUsedMessages.includes(reply)) {
             st.auraUsedMessages.push(reply);
-            window.updateAuraTopPresenceDOM(reply);
+            if (`${st.step}.${st.subStep}` === reqStepSig) {
+              window.updateAuraTopPresenceDOM(reply);
+              if (speakOnReply && typeof window.speakAuraBriefResponse === "function") {
+                window.speakAuraBriefResponse(reply, 9500);
+              }
+            }
+            return;
           }
         } catch (e) {}
+        if (speakOnReply && fallbackSpeechMsg && `${st.step}.${st.subStep}` === reqStepSig && typeof window.speakAuraBriefResponse === "function") {
+          window.speakAuraBriefResponse(fallbackSpeechMsg, 9500);
+        }
       };
 
       window.triggerAuraEmpatheticFeedback = function (eventType, detailText = "", askLiveGemini = true, speakNow = true) {
@@ -23378,7 +23548,7 @@
           window.updateAuraTopPresenceDOM(nextMsg);
           if (hasBrandContext && typeof window.requestLiveGeminiAuraEmpatheticComment === "function") {
             window.pulseAuraTopOrbActivity(2200);
-            window.requestLiveGeminiAuraEmpatheticComment(`substep_${st.step}_${st.subStep}`, cs.custom_business_type || cs.value_offer || cs.golden_circle || "");
+            window.requestLiveGeminiAuraEmpatheticComment(`substep_${st.step}_${st.subStep}`, cs.custom_business_type || cs.value_offer || cs.golden_circle || "", hadPreviousKey, nextMsg);
           } else {
             if (hadPreviousKey && typeof window.speakAuraBriefResponse === "function") {
               window.speakAuraBriefResponse(nextMsg, 9500);
@@ -23676,10 +23846,10 @@
         // ---------------------------------------------------------------------
         if (st.step === 3) {
           const isPlaceholderBrand = (nameStr) => {
+            if (typeof window.tbbIsPlaceholderBrandName === "function") return window.tbbIsPlaceholderBrandName(nameStr);
             const s = String(nameStr || "").trim();
             if (!s) return true;
-            if (/^(mi nueva marca|marca en creaci[oó]n.*|proyecto gastron.*|tu marca)$/i.test(s)) return true;
-            if (cs.nameless_discovery_mode && /^the\s*best\s*brand$/i.test(s)) return true;
+            if (/^(mi nueva marca|mi marca|tu marca|marca en creaci[oó]n.*|proyecto gastron.*|the\s*best\s*brand)$/i.test(s)) return true;
             return false;
           };
           const curBrand = !isPlaceholderBrand(cs.brandName) ? String(cs.brandName).trim() : "";
@@ -23708,43 +23878,52 @@
 
           if (st.subStep === 1) {
             if (lblNext) lblNext.textContent = hasRealAiCandidates ? "Ver 6 Propuestas de IA →" : "Generar 6 Nombres con IA →";
+            const ideaPillars = [
+              { idx: 1, num: "01", title: "¿Qué hace o vende tu negocio?", val: axesObj.axis1, hint: "Toca para explicar con amplitud tus productos o servicios..." },
+              { idx: 2, num: "02", title: "¿Qué beneficio principal entregas?", val: axesObj.axis2, hint: "Toca para detallar cómo mejoras la vida de tu cliente..." },
+              { idx: 3, num: "03", title: "¿Qué personalidad o estilo buscas?", val: axesObj.axis3, hint: "Toca para describir el tono (ej. cercano, retro, moderno, serio)..." },
+              { idx: 4, num: "04", title: "Palabras, raíces o ideas propias", val: axesObj.axis4, hint: "Toca para anotar palabras clave, raíces o ideas que te gusten..." }
+            ];
             stage.innerHTML = `
-              <div class="tbb-atomic-card" style="padding:12px 16px; gap:10px;">
+              <div class="tbb-atomic-card" style="padding:14px 16px; gap:10px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
                   <div>
-                    <div style="font-family:var(--font-mono); font-size:0.875rem; font-weight:800; color:#1D4ED8;">PASO 3 · 1 DE 3 · IDEAS Y PALABRAS CLAVE PARA TU NOMBRE</div>
-                    <h2 style="font-family:var(--font-display); font-size:1.06rem; font-weight:900; color:#090D16; margin:2px 0 0 0;">
-                      Revisa o edita las 4 ideas clave extraídas de tu marca para que la IA cree tus nombres
+                    <div style="font-size:0.8125rem; font-weight:700; color:#426EAE; letter-spacing:0.03em; text-transform:uppercase;">PASO 3 · 1 DE 3 · TUS IDEAS PARA CREAR EL NOMBRE</div>
+                    <h2 style="font-family:'Montserrat', var(--font-display); font-size:1.08rem; font-weight:700; letter-spacing:-0.02em; color:#0D2540; margin:2px 0 0 0;">
+                      Toca cualquier botón para abrir su cuadro amplio y explicar tu idea con calma
                     </h2>
                   </div>
-                  <button type="button" id="tbbBtnSynthesizeAxesAI" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbSynthesizeNamingAxesWithAI(true)" style="min-height:32px !important; padding:4px 10px !important; font-size:0.875rem !important; border-color:#1D4ED8 !important; color:#1D4ED8 !important; flex-shrink:0;">
-                    ${window._tbbAiNamingAxesLoading ? "Analizando tu marca con IA..." : "Sintetizar 4 casillas con IA según mi marca"}
+                  <button type="button" id="tbbBtnSynthesizeAxesAI" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbSynthesizeNamingAxesWithAI(true)" style="min-height:36px !important; padding:5px 12px !important; font-size:0.84rem !important; border-color:rgba(66,110,174,0.35) !important; color:#0D2540 !important; flex-shrink:0;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2.8l2.1 6.1 6.1 2.1-6.1 2.1L12 19.2l-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8z" stroke="#FF7A00" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                    <span>${window._tbbAiNamingAxesLoading ? "Analizando tu marca..." : "Autocompletar ideas con IA"}</span>
                   </button>
                 </div>
 
-                <!-- 4 Casillas 100% Editables por el Usuario -->
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                  <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
-                    <label for="tbbNamingAxis1Input" style="font-family:var(--font-mono); font-size:0.875rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">1. ¿QUÉ HACE O VENDE TU NEGOCIO?</label>
-                    <input type="text" id="tbbNamingAxis1Input" value="${String(axesObj.axis1 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(1, this.value)" placeholder="Ej. Marcadores deportivos para transmisiones en OBS..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.875rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
-                  </div>
-                  <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
-                    <label for="tbbNamingAxis2Input" style="font-family:var(--font-mono); font-size:0.875rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">2. ¿QUÉ BENEFICIO PRINCIPAL ENTREGAS?</label>
-                    <input type="text" id="tbbNamingAxis2Input" value="${String(axesObj.axis2 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(2, this.value)" placeholder="Ej. Emoción de estadio profesional en cada transmisión..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.875rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
-                  </div>
-                  <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
-                    <label for="tbbNamingAxis3Input" style="font-family:var(--font-mono); font-size:0.875rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">3. ¿QUÉ ESTILO O PERSONALIDAD BUSCAS?</label>
-                    <input type="text" id="tbbNamingAxis3Input" value="${String(axesObj.axis3 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(3, this.value)" placeholder="Ej. Dinámico, apasionado, televisivo, tecnológico..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.875rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
-                  </div>
-                  <div style="background:#F8FAFC; border:1.5px solid #93C5FD; border-radius:11px; padding:6px 10px; display:flex; flex-direction:column; gap:3px;">
-                    <label for="tbbNamingAxis4Input" style="font-family:var(--font-mono); font-size:0.875rem; font-weight:900; color:#1D4ED8; letter-spacing:0.03em;">4. PALABRAS O RAÍCES SUGERIDAS / PROPIAS</label>
-                    <input type="text" id="tbbNamingAxis4Input" value="${String(axesObj.axis4 || "").replace(/"/g, '&quot;')}" oninput="window.tbbUpdateNamingAxis(4, this.value)" placeholder="Ej. Gridiron, Score, Live, Broadcast, Pro, Touchdown..." style="width:100%; height:32px; padding:0 8px; border-radius:7px; border:1.5px solid #CBD5E1; background:#FFFFFF; font-size:0.875rem; font-weight:800; color:#090D16; box-sizing:border-box;" />
-                  </div>
+                <!-- 4 Botones Interactivos que Abren un Cuadro de Texto Amplio (Modal Cómodo con Voz + IA) -->
+                <div class="tbb-step3-idea-cards-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:8px;">
+                  ${ideaPillars.map(p => {
+                    const cleanVal = String(p.val || "").trim();
+                    const hasVal = cleanVal.length > 0;
+                    return `
+                      <button type="button" onclick="window.tbbOpenStep3IdeaModal(${p.idx})" style="background:${hasVal ? '#FFFFFF' : '#F8FAFC'}; border:1.5px solid ${hasVal ? 'rgba(66,110,174,0.38)' : 'rgba(13,37,64,0.12)'}; border-radius:14px; padding:10px 12px; display:flex; flex-direction:column; align-items:stretch; justify-content:space-between; gap:6px; text-align:left; cursor:pointer; min-height:78px; box-shadow:0 1px 2px rgba(13,37,64,0.04); transition:transform 0.14s ease, border-color 0.14s ease;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; width:100%;">
+                          <span style="font-size:0.8125rem; font-weight:700; color:#426EAE;">${p.num} · ${escapeHTML(p.title)}</span>
+                          <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.78rem; font-weight:600; color:${hasVal ? '#0D2540' : '#FF7A00'}; background:${hasVal ? '#F1F5F9' : '#FFF7ED'}; border:1px solid ${hasVal ? 'rgba(13,37,64,0.10)' : 'rgba(255,122,0,0.28)'}; border-radius:999px; padding:2px 8px; flex-shrink:0;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span>${hasVal ? "Editar" : "Explicar"}</span>
+                          </span>
+                        </div>
+                        <div style="font-size:0.9rem; font-weight:${hasVal ? '600' : '500'}; color:${hasVal ? '#0D2540' : '#64748B'}; line-height:1.38; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; width:100%;">
+                          ${hasVal ? escapeHTML(cleanVal) : escapeHTML(p.hint)}
+                        </div>
+                      </button>
+                    `;
+                  }).join("")}
                 </div>
 
-                <!-- Selector de Estilo de Nombre (Al seleccionar, genera con IA para ese estilo) -->
+                <!-- Selector de Estilo de Nombre -->
                 <div>
-                  <div style="font-size:0.875rem; font-weight:700; color:#334155; margin-bottom:4px;">Elige el estilo de nombre que quieres que la IA genere para tu marca:</div>
+                  <div style="font-size:0.85rem; font-weight:600; color:#334155; margin-bottom:4px;">Elige el estilo de nombre que quieres que la IA genere:</div>
                   <div class="tbb-naming-styles-grid">
                     ${[
                       { id: "compuesto", lbl: "1. Compuesto" },
@@ -23752,7 +23931,7 @@
                       { id: "directo", lbl: "3. Directo" },
                       { id: "creativo", lbl: "4. Creativo" }
                     ].map(t => `
-                      <button type="button" class="tbb-duo-btn ${activeStyle === t.id ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectNamingStyle('${t.id}', this);" style="min-height:36px !important; padding:4px 8px !important; font-size:0.8rem !important; min-width:0;">
+                      <button type="button" class="tbb-duo-btn ${activeStyle === t.id ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectNamingStyle('${t.id}', this);" style="min-height:36px !important; padding:4px 8px !important; font-size:0.82rem !important; min-width:0;">
                         ${t.lbl}
                       </button>
                     `).join("")}
@@ -23760,21 +23939,21 @@
                 </div>
 
                 ${curBrand ? `
-                  <div style="background:#ECFDF5; border:1.5px solid #10B981; border-radius:14px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
-                    <span style="font-size:0.92rem; font-weight:600; color:#065F46;">Ya indicaste tu nombre: <strong>${escapeHTML(curBrand)}</strong></span>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbState.subStep=3; window.renderTbbZeroScrollStage();" style="min-height:40px !important; padding:6px 14px !important; font-size:0.88rem !important;">
-                      Conservar «${escapeHTML(curBrand)}» e ir a mi Eslogan →
+                  <div style="background:#ECFDF5; border:1.5px solid #10B981; border-radius:14px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+                    <span style="font-size:0.9rem; font-weight:600; color:#065F46;">Nombre actual elegido: <strong>${escapeHTML(curBrand)}</strong></span>
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbState.subStep=3; window.renderTbbZeroScrollStage();" style="min-height:38px !important; padding:5px 12px !important; font-size:0.86rem !important;">
+                      Conservar «${escapeHTML(curBrand)}» e ir al Eslogan →
                     </button>
                   </div>
                 ` : ""}
-                <!-- Barra para escribir nombre directo o generar 6 propuestas con IA en vivo -->
-                <div style="background:#EFF6FF; border:1.5px solid #93C5FD; border-radius:13px; padding:8px 12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                  <label for="tbbStep3DirectNameInput" style="font-size:0.875rem; font-weight:800; color:#0D2540; flex-shrink:0;">
-                    ¿Ya tienes un nombre? Escríbelo o genera con IA:
+
+                <div style="background:#F8FAFC; border:1px solid rgba(13,37,64,0.12); border-radius:13px; padding:8px 12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <label for="tbbStep3DirectNameInput" style="font-size:0.85rem; font-weight:700; color:#0D2540; flex-shrink:0;">
+                    ¿Ya tienes nombre?
                   </label>
-                  <input type="text" id="tbbStep3DirectNameInput" value="${curBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Escribe tu nombre aquí o presiona Generar 6 Propuestas con IA →" style="flex:1; min-width:170px; height:36px; padding:0 12px; border-radius:9px; border:2px solid #090D16; background:#FFFFFF; font-size:0.90rem; font-weight:900; color:#090D16; box-sizing:border-box;" />
-                  <button type="button" id="tbbBtnGenerateNamingAI_1" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbGenerateLiveAINamingProposals(this, true)" style="min-height:36px !important; padding:0 12px !important; font-size:0.875rem !important; flex-shrink:0;">
-                    ${window._tbbAiNamingIsLoading ? "Creando 6 nombres con IA..." : "Generar 6 Propuestas con IA →"}
+                  <input type="text" id="tbbStep3DirectNameInput" value="${curBrand.replace(/"/g, '&quot;')}" oninput="tbbUpdateBrandNameFromInput(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); window.onTbbAtomicNext();}" placeholder="Escríbelo aquí o genera propuestas con IA..." style="flex:1; min-width:160px; height:38px; padding:0 12px; border-radius:10px; border:1px solid rgba(13,37,64,0.20); background:#FFFFFF; font-size:0.95rem; font-weight:600; color:#0D2540; box-sizing:border-box;" />
+                  <button type="button" id="tbbBtnGenerateNamingAI_1" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="window.tbbGenerateLiveAINamingProposals(this, true)" style="min-height:38px !important; padding:0 14px !important; font-size:0.86rem !important; flex-shrink:0;">
+                    ${window._tbbAiNamingIsLoading ? "Creando 6 nombres con IA..." : "Generar 6 Nombres con IA →"}
                   </button>
                 </div>
               </div>
@@ -23925,8 +24104,8 @@
                 <div>
                   <div style="font-family:var(--font-mono); font-size:0.875rem; font-weight:800; color:#1D4ED8;">PASO 4 · ${st.subStep} DE 5 · CALIBRACIÓN VISUAL CON REFERENCIAS</div>
                   <h2 style="font-family:var(--font-display); font-size:${isCompact3 ? '1.04rem' : '1.16rem'}; font-weight:900; color:#090D16; margin:2px 0 4px 0;">
-                    <span class="tbb-bipolar-hint-desktop">Desliza o toca las referencias visuales en los extremos para «${cs.brandName || "TheBestBrand"}»</span>
-                    <span class="tbb-bipolar-hint-mobile">Toca cuál de los dos extremos representa mejor a «${cs.brandName || "TheBestBrand"}»</span>
+                    <span class="tbb-bipolar-hint-desktop">Desliza o toca las referencias visuales en los extremos para «${window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Tu Marca") : (cs.brandName || "Tu Marca")}»</span>
+                    <span class="tbb-bipolar-hint-mobile">Toca cuál de los dos extremos representa mejor a «${window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Tu Marca") : (cs.brandName || "Tu Marca")}»</span>
                   </h2>
                 </div>
                 <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:${isCompact3 ? '8px' : '12px'}; min-height:0;">
@@ -24055,7 +24234,7 @@
             const curSecFont = cs.secondary_font || st.selectedSecondaryFont || "Plus Jakarta Sans";
             const curMonoFont = cs.mono_font || st.selectedMonoFont || "JetBrains Mono";
             const curAdobeKitId = cs.adobe_typekit_id || st.adobeTypekitId || "";
-            const previewBrand = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+            const previewBrand = window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Tu Marca") : ((cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca");
 
             if (curAdobeKitId && typeof window.tbbEnsureAdobeTypekitCssInjected === "function") {
               window.tbbEnsureAdobeTypekitCssInjected(curAdobeKitId);
@@ -24127,26 +24306,28 @@
           }
 
           // Paso 4 · 5 de 5: Estructura Base + Idea u Objeto de Partida dentro de la App
+          const resolveImg45 = (u) => (typeof window.tbbResolveAssetUrl === "function" ? window.tbbResolveAssetUrl(u) : u);
           const fams = [
-            { lbl: "1. Monograma y Ligadura", sub: "Geometría modular e iniciales", img: "/assets/avi/step4_dir1_thumb.webp" },
-            { lbl: "2. Emblema y Escudo", sub: "Heráldica y simetría axial", img: "/assets/avi/step4_dir2_thumb.webp" },
-            { lbl: "3. Símbolo Continuo", sub: "Fluidez orgánica y áurea", img: "/assets/avi/step4_dir3_thumb.webp" },
-            { lbl: "4. Volumen 3D y Prisma", sub: "Facetas y refracción de luz", img: "/assets/avi/step4_dir4_thumb.webp" }
+            { lbl: "1. Monograma y Ligadura", sub: "Geometría modular e iniciales", img: resolveImg45("/assets/avi/step4_dir1_thumb.webp") },
+            { lbl: "2. Emblema y Escudo", sub: "Heráldica y simetría axial", img: resolveImg45("/assets/avi/step4_dir2_thumb.webp") },
+            { lbl: "3. Símbolo Continuo", sub: "Fluidez orgánica y áurea", img: resolveImg45("/assets/avi/step4_dir3_thumb.webp") },
+            { lbl: "4. Volumen 3D y Prisma", sub: "Facetas y refracción de luz", img: resolveImg45("/assets/avi/step4_dir4_thumb.webp") }
           ];
-            const curFam = Number(selectedLiveSketchIndex || 0) % 4;
+          const curFam = Number(selectedLiveSketchIndex || 0) % 4;
           const curSeedIdea = cs.step4_seed_idea || "";
+          const step45BrandLabel = window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Tu Marca") : (cs.brandName || "Tu Marca");
           stage.innerHTML = `
             <div class="tbb-atomic-card is-hug-card" style="padding:16px 20px; gap:12px;">
               <div>
                 <div style="font-size:0.875rem; font-weight:700; color:#426EAE; letter-spacing:0.02em;">PASO 4 · 5 DE 5 · ESTRUCTURA BASE E IDEA DE PARTIDA</div>
                 <h2 style="font-family:'Montserrat', var(--font-display); font-size:1.14rem; font-weight:700; letter-spacing:-0.02em; color:#0D2540; margin:2px 0;">
-                  Elige la estructura base y un símbolo inicial opcional para «${cs.brandName || "TheBestBrand"}»
+                  Elige la estructura base y un símbolo inicial opcional para «${escapeHTML(step45BrandLabel)}»
                 </h2>
               </div>
               <div class="tbb-step45-structure-grid">
                 ${fams.map((f, idx) => `
                   <button type="button" class="tbb-duo-btn ${curFam === idx ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbSelectBaseStructureFamily(${idx})" style="display:flex !important; align-items:center !important; justify-content:flex-start !important; gap:10px !important; padding:9px 12px !important; min-height:58px !important; text-align:left !important; width:100% !important; min-width:0 !important;">
-                    <img src="${f.img}" alt="${escapeHTML(f.lbl)}" width="42" height="42" loading="lazy" decoding="async" style="width:42px; height:42px; object-fit:cover; border-radius:9px; border:1px solid #CBD5E1; flex-shrink:0; background:#090D16;" />
+                    <img src="${f.img}" onerror="if(window.tbbImgFallback){window.tbbImgFallback(this);}" alt="${escapeHTML(f.lbl)}" width="44" height="44" loading="eager" decoding="async" style="width:44px; height:44px; object-fit:cover; border-radius:10px; border:1px solid #CBD5E1; flex-shrink:0; background:#0D2540;" />
                     <div style="min-width:0; flex:1; overflow:hidden;">
                       <div style="font-size:0.94rem; font-weight:700; line-height:1.25; color:#0D2540; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${f.lbl}</div>
                       <div style="font-size:0.875rem; font-weight:500; color:#475569; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${f.sub}</div>
@@ -24181,8 +24362,8 @@
             ? (cs.base_uploaded_logo_data_url || cs.uploaded_logo_data_url || window.step0State?.uploadedLogoDataUrl || "")
             : "";
           const existingLogoMode = cs.existing_logo_mode || window.step0State?.existingLogoMode || "evolve";
-          const extColors = cs.uploaded_logo_colors || window.step0State?.uploadedLogoColors || [st.logoPriHex || "#0078C0", st.logoSecHex || "#88E0E0"];
-          const displayBrandStep5 = (cs.brandName && !/^(mi nueva marca|marca en creaci[oó]n.*|proyecto gastron.*)$/i.test(cs.brandName)) ? cs.brandName : "Tu Marca";
+          const extColors = cs.uploaded_logo_colors || window.step0State?.uploadedLogoColors || [st.logoPriHex || "#0D2540", st.logoSecHex || "#426EAE"];
+          const displayBrandStep5 = window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Tu Marca") : ((cs.brandName && !/^(mi nueva marca|marca en creaci[oó]n.*|proyecto gastron.*|the\s*best\s*brand)$/i.test(cs.brandName)) ? cs.brandName : "Tu Marca");
 
           if (hasExternalUploadedLogo) {
             window.tbbSyncUploadedLogoIntoIterations();
@@ -24204,7 +24385,7 @@
               mods: {},
               geminiCustomSvg: "",
               svgOverlayAdditions: "",
-              note: cs.step4_seed_idea ? `Idea inicial en App: ${cs.step4_seed_idea}` : "Propuesta #1 del Sistema",
+              note: cs.step4_seed_idea ? `Idea inicial: ${cs.step4_seed_idea}` : `Síntesis inicial para ${displayBrandStep5}`,
               prompt: pInit.text,
               geminiPrompt40w: pInit.text
             }];
@@ -24212,7 +24393,7 @@
           }
 
           if (st.subStep === 1) {
-            if (lblNext) lblNext.textContent = "Abrir Lienzo de Logotipo";
+            if (lblNext) lblNext.textContent = "Crear mi Logotipo con IA →";
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
                 <div>
@@ -24263,33 +24444,42 @@
               setTimeout(() => window.tbbInitCircularSpectrumWheel(), 0);
             }
           } else {
-            // Sub-vista 5.2: Lienzo de Logotipo NanoBanana PRO a Pantalla Completa + 4 Modos de Dirección Creativa + Iteración Conversacional
-            const firstIt = st.logoIterations && st.logoIterations[0];
+            // Sub-vista 5.2: Lienzo de Logotipo con Creación Inicial Real desde el ADN (Pasos 0 a 5.1) + 4 Modos Limpios + Iteración Abierta
+            const hasAnyAiGeneratedLogo = Array.isArray(st.logoIterations) && st.logoIterations.some(it =>
+              it && (it.isNanoBananaGenerated || it.nanoBananaFullArtworkUrl || it.nanoBananaSymbolUrl || (it.geminiCustomSvg && String(it.geminiCustomSvg).length > 20))
+            );
+            const activePalForKey = (typeof window.tbbGetActiveBrandPalette === "function" ? window.tbbGetActiveBrandPalette() : []).slice(0, 3).join(",");
             const seedIdeaTrim = String(cs.step4_seed_idea || "").trim();
-            const brandKeyForAuto = `${displayBrandStep5}_${seedIdeaTrim.slice(0, 24)}_${hasExternalUploadedLogo ? "ext" : "new"}_${existingLogoMode}`;
+            const brandKeyForAuto = `${displayBrandStep5}_${seedIdeaTrim.slice(0, 24)}_${activePalForKey}_${hasExternalUploadedLogo ? "ext" : "new"}_${existingLogoMode}`;
 
             if (
               st._autoNanoBananaBrandKey !== brandKeyForAuto &&
-              st.logoIterations.length === 1 &&
+              (!hasAnyAiGeneratedLogo || st._forceFirstLogoSynthesisNow) &&
               !st.geminiBusy &&
+              !(cs.isOfficialAdminTbbPreset || cs.isOfficialImproBearsPreset) &&
               typeof window.tbbGenerateNanoBananaBrandSymbol === "function"
             ) {
+              st._autoNanoBananaBrandKey = brandKeyForAuto;
+              st._forceFirstLogoSynthesisNow = false;
+              // Si se habían acumulado borradores sistémicos previos sin IA antes de entrar a 5.2, consolidar en la propuesta #1
+              if (!hasAnyAiGeneratedLogo && !hasExternalUploadedLogo && Array.isArray(st.logoIterations) && st.logoIterations.length > 1) {
+                st.logoIterations = [Object.assign({}, st.logoIterations[st.logoIterations.length - 1], { idx: 1, isInitialSystemic: true })];
+                st.logoIterationIndex = 1;
+              }
               if (hasExternalUploadedLogo && existingLogoMode === "evolve") {
-                st._autoNanoBananaBrandKey = brandKeyForAuto;
                 setTimeout(() => {
                   window.tbbGenerateNanoBananaBrandSymbol(
-                    seedIdeaTrim || `Moderniza el logotipo de ${displayBrandStep5} conservando su esencia estructural y su paleta oficial, elevándolo a nivel estudio arquitectónico internacional.`,
+                    seedIdeaTrim || `Moderniza y limpia el logotipo de ${displayBrandStep5} conservando su idea reconocible y su paleta oficial.`,
                     { creativeMode: st.nanoBananaCreativeMode || "emblem_masterpiece", evolveCurrent: true }
                   );
-                }, 60);
-              } else if (!hasExternalUploadedLogo && firstIt && !firstIt.isNanoBananaGenerated) {
-                st._autoNanoBananaBrandKey = brandKeyForAuto;
+                }, 40);
+              } else if (!hasExternalUploadedLogo) {
                 setTimeout(() => {
                   window.tbbGenerateNanoBananaBrandSymbol(
                     seedIdeaTrim,
                     { creativeMode: st.nanoBananaCreativeMode || "emblem_masterpiece", replaceInitialPlaceholder: true, freshFromScratch: true }
                   );
-                }, 60);
+                }, 40);
               }
             }
 
@@ -24305,39 +24495,45 @@
             if (btnAct) {
               btnAct.classList.remove("is-hidden");
               btnAct.style.display = "inline-flex";
-              if (lblAct) lblAct.textContent = st.geminiBusy ? "Diseñando..." : "Iterar";
+              if (lblAct) lblAct.textContent = st.geminiBusy ? "Creando..." : "Refinar";
               if (iconAct) iconAct.innerHTML = window.TBBVectorArt("iterate", "#0D2540", 16);
             }
-            if (lblNext) lblNext.textContent = "Confirmar Logo";
+            if (lblNext) lblNext.textContent = "Confirmar y Crear Brandbook →";
 
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 12px; gap:6px;">
-                <!-- Fila Superior del Lienzo: Historial de Iteraciones + 4 Modos de Dirección Creativa -->
+                <!-- Fila Superior del Lienzo: Historial + Re-generar Base + Claro/Oscuro + Mockups -->
                 <div style="display:flex; flex-direction:column; gap:6px;">
-                  <div style="display:flex; gap:6px; align-items:center; justify-content:space-between;">
-                    <div id="tbbIterationPillsStrip" style="display:flex; gap:5px; overflow-x:auto; align-items:center; flex:1; min-width:0; padding:2px 2px; scrollbar-width:none; -webkit-overflow-scrolling:touch; scroll-behavior:smooth;">
+                  <div style="display:flex; gap:5px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+                    <div id="tbbIterationPillsStrip" style="display:flex; gap:5px; overflow-x:auto; align-items:center; flex:1 1 140px; min-width:0; padding:2px 2px; scrollbar-width:none; -webkit-overflow-scrolling:touch; scroll-behavior:smooth;">
                       ${st.logoIterations.map((it, idx) => `
-                        <button type="button" class="tbb-duo-btn ${st.logoIterationIndex === idx + 1 ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbRestoreLogoIteration(${idx})" style="min-height:34px !important; padding:4px 11px !important; flex-shrink:0; font-size:0.875rem !important; font-weight:600 !important; white-space:nowrap;">
-                          ${idx === 0 ? (it.isUploadedUserLogo ? "#1 · Base" : "#1 · Autor") : `#${idx + 1}`}
+                        <button type="button" class="tbb-duo-btn ${st.logoIterationIndex === idx + 1 ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="tbbRestoreLogoIteration(${idx})" style="min-height:34px !important; padding:4px 10px !important; flex-shrink:0; font-size:0.84rem !important; font-weight:600 !important; white-space:nowrap;">
+                          ${idx === 0 ? (it.isUploadedUserLogo ? "#1 · Base" : "#1 · Inicial") : `#${idx + 1}`}
                         </button>
                       `).join("")}
                     </div>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; if(window.tbbSyncImproBearsLogoDarkVariant){window.tbbSyncImproBearsLogoDarkVariant();} triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="min-height:34px !important; padding:4px 10px !important; font-size:0.875rem !important; font-weight:600 !important; flex-shrink:0; white-space:nowrap;">
-                      Claro/Oscuro
-                    </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="min-height:36px !important; padding:4px 11px !important; font-size:0.875rem !important; font-weight:600 !important; flex-shrink:0; white-space:nowrap;" title="Abrir vista de aplicaciones reales adaptadas al giro de tu negocio">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="9" r="1.8" fill="#FDE68A"/><path d="M5 16l4.5-4 3.5 2.5 4.5-5L20 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                      <span>Mockups</span>
-                    </button>
+                    <div style="display:flex; gap:5px; align-items:center; flex-shrink:0;">
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" ${st.geminiBusy ? "disabled" : ""} onclick="window.tbbTriggerFirstLogoCreationFromDossier(true)" style="min-height:34px !important; padding:4px 9px !important; font-size:0.82rem !important; font-weight:600 !important; white-space:nowrap;" title="Crear una propuesta completamente nueva a partir de toda la información de tus Pasos 0 al 5">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2.8l2.1 6.1 6.1 2.1-6.1 2.1L12 19.2l-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8z" stroke="#FF7A00" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                        <span>Crear nuevo</span>
+                      </button>
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.logoDarkBg=!window.tbbState.logoDarkBg; if(window.tbbSyncImproBearsLogoDarkVariant){window.tbbSyncImproBearsLogoDarkVariant();} triggerAuraEmpatheticFeedback('input_logo_done', window.tbbState.logoDarkBg ? 'Fondo Oscuro' : 'Fondo Claro', false); renderTbbZeroScrollStage();" style="min-height:34px !important; padding:4px 9px !important; font-size:0.82rem !important; font-weight:600 !important; white-space:nowrap;">
+                        Claro/Oscuro
+                      </button>
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}" style="min-height:34px !important; padding:4px 10px !important; font-size:0.82rem !important; font-weight:600 !important; white-space:nowrap;" title="Abrir vista de aplicaciones reales adaptadas al giro de tu negocio">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="9" r="1.8" fill="#FDE68A"/><path d="M5 16l4.5-4 3.5 2.5 4.5-5L20 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <span>Mockups</span>
+                      </button>
+                    </div>
                   </div>
-                  <div class="tbb-step52-modes-grid">
+                  <div class="tbb-step52-modes-grid" style="display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:5px;">
                     ${[
-                      { id: "emblem_masterpiece", lbl: "1. Emblema", tip: "Composición artística rica multi-elemento con el ADN completo de tu marca" },
-                      { id: "monogram_fusion", lbl: "2. Monograma", tip: "Fusión de iniciales de tu marca con el símbolo central de tu giro y descriptor" },
-                      { id: "editorial_crest", lbl: "3. Insignia", tip: "Escudo, sello arquitectónico o insignia de prestigio institucional" },
-                      { id: "minimal_couture", lbl: "4. Minimalista", tip: "Síntesis geométrica monolineal de alta precisión para grabado, casco, bordado y app" }
+                      { id: "emblem_masterpiece", lbl: "Símbolo", tip: "Símbolo claro y equilibrado acompañado del nombre de tu marca" },
+                      { id: "monogram_fusion", lbl: "Monograma", tip: "Iniciales de tu marca con diseño tipográfico propio" },
+                      { id: "editorial_crest", lbl: "Insignia", tip: "Sello o emblema contemporáneo limpio" },
+                      { id: "minimal_couture", lbl: "Minimalista", tip: "Síntesis geométrica limpia con formas sólidas y espacio negativo" }
                     ].map(cm => `
-                      <button type="button" class="tbb-duo-btn ${activeCreativeMode === cm.id ? 'tbb-duo-btn-emerald' : 'tbb-duo-btn-secondary'}" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value.trim():'', {creativeMode:'${cm.id}', switchCreativeMode:true, evolveCurrent:${Boolean(hasExternalUploadedLogo && cm.id==='emblem_masterpiece')}, freshFromScratch:${Boolean(!hasExternalUploadedLogo || cm.id!=='emblem_masterpiece')}});}" style="min-height:36px !important; padding:4px 8px !important; font-size:0.875rem !important; font-weight:600 !important; white-space:nowrap; min-width:0; width:100%;" title="${cm.tip}">
+                      <button type="button" class="tbb-duo-btn ${activeCreativeMode === cm.id ? 'tbb-duo-btn-emerald' : 'tbb-duo-btn-secondary'}" ${st.geminiBusy ? "disabled" : ""} onclick="if(window.tbbGenerateNanoBananaBrandSymbol){const bx=document.getElementById('tbbSingleLogoIterationBox');window.tbbGenerateNanoBananaBrandSymbol(bx?bx.value.trim():'', {creativeMode:'${cm.id}', switchCreativeMode:true, evolveCurrent:false, freshFromScratch:true});}" style="min-height:34px !important; padding:4px 6px !important; font-size:0.8125rem !important; font-weight:600 !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; width:100%;" title="${cm.tip}">
                         ${cm.lbl}
                       </button>
                     `).join("")}
@@ -24435,7 +24631,7 @@
           const st = window.tbbState || {};
           const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
           const mods = (activeIt && activeIt.mods) || {};
-          const rawBrand = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+          const rawBrand = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca");
           const chosenFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || cs.primary_font || "Plus Jakarta Sans";
           const pri = (activeIt && activeIt.pri) || st.logoPriHex || "#1D4ED8";
           const sec = (activeIt && activeIt.sec) || st.logoSecHex || "#0D2540";
@@ -24507,7 +24703,7 @@
 
         window.downloadCompleteBrandbookHTML = function () {
           const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-          const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+          const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca");
           const slug = bName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "") || "thebestbrand";
           const metaList = (typeof window.getBenefic30PlatesMeta === "function") ? window.getBenefic30PlatesMeta() : [];
           const count = metaList.length || 36;
@@ -24533,7 +24729,7 @@
             return;
           }
           const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-          const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+          const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca");
           const slug = bName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "") || "thebestbrand";
           const fileName = `Logotipo_Oficial_Curvas_${slug}.svg`;
           const svgStr = window.buildSystemicDualLogoSVG();
@@ -24552,13 +24748,58 @@
         };
 
         if (st.step === 6) {
-          const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+          const bName = window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : ((cs.brandName && !/^(mi nueva marca|the\s*best\s*brand)$/i.test(cs.brandName)) ? cs.brandName.trim() : "Mi Marca");
           const metaList = (typeof window.getBenefic30PlatesMeta === "function") ? window.getBenefic30PlatesMeta() : ((typeof window.getUniversalImproBearsGuide30PlatesMeta === "function") ? window.getUniversalImproBearsGuide30PlatesMeta() : (window.IMPROBEARS_30_PLATES_META || []));
           const totalPlates = metaList.length;
           st.plateIdx = Math.max(0, Math.min(totalPlates - 1, Number(st.plateIdx || 0)));
           const curPlate = metaList[st.plateIdx];
+          const activeItStep6 = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
+          const activeLogoSig6 = (activeItStep6 && (activeItStep6.nanoBananaSymbolUrl || activeItStep6.uploadedLogoDataUrl || activeItStep6.geminiCustomSvg || "")).slice(0, 48);
+          const brandSig6 = `${bName}|${activeLogoSig6}|${cs.primary_color || st.logoPriHex || ""}|${(cs.custom_business_type || "").slice(0, 32)}`;
+          const isPresetBrand6 = Boolean(cs.isOfficialAdminTbbPreset || cs.isOfficialImproBearsPreset);
 
           if (st.subStep === 1) {
+            // Si aún no se ha creado el Brandbook específico con IA para esta marca, disparar proceso real de creación antes de mostrar páginas
+            if (!isPresetBrand6 && cs._compiledBrandbookSig !== brandSig6 && !st._brandbookCompilingWithAI && typeof window.tbbCompileCustomBrandbookWithAI === "function") {
+              setTimeout(() => { window.tbbCompileCustomBrandbookWithAI(false); }, 30);
+            }
+
+            if (st._brandbookCompilingWithAI) {
+              if (btnAct) {
+                btnAct.style.display = "none";
+                btnAct.classList.add("is-hidden");
+              }
+              if (lblNext) lblNext.textContent = "Creando Brandbook...";
+              const curStagePct = Math.max(8, Math.min(98, Number(st._brandbookCompilePct || 18)));
+              const curStageLabel = st._brandbookCompileLabel || `Analizando toda la estrategia y logotipo de «${bName}» con IA...`;
+              stage.innerHTML = `
+                <div class="tbb-atomic-card" style="padding:24px 20px; align-items:center; justify-content:center; text-align:center; gap:16px;">
+                  <div style="width:56px; height:56px; border-radius:18px; background:#FFF7ED; border:1.5px solid rgba(255,122,0,0.32); display:flex; align-items:center; justify-content:center;">
+                    <svg class="tbb-spin-spark" width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2.8l2.1 6.1 6.1 2.1-6.1 2.1L12 19.2l-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8z" stroke="#FF7A00" stroke-width="1.9" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div style="max-width:520px;">
+                    <div style="font-size:0.8125rem; font-weight:700; color:#FF7A00; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:6px;">CREANDO TU BRANDBOOK A MEDIDA CON IA</div>
+                    <h2 style="font-family:'Montserrat', var(--font-display); font-size:1.24rem; font-weight:700; letter-spacing:-0.02em; color:#0D2540; margin:0 0 8px 0;">
+                      Redactando e integrando las ${totalPlates} páginas oficiales de «${escapeHTML(bName)}»
+                    </h2>
+                    <p id="tbbStep6LiveCompileStatusText" style="font-size:0.95rem; font-weight:500; color:#475569; margin:0; line-height:1.5;">
+                      ${escapeHTML(curStageLabel)}
+                    </p>
+                  </div>
+                  <div style="width:320px; max-width:90%; height:9px; background:#E2E8F0; border-radius:999px; overflow:hidden;">
+                    <div id="tbbStep6LiveCompileProgressBar" style="width:${curStagePct}%; height:100%; background:linear-gradient(90deg, #0D2540 0%, #426EAE 55%, #FF7A00 100%); border-radius:999px; transition:width 0.28s ease;"></div>
+                  </div>
+                  <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; font-size:0.82rem; font-weight:600; color:#475569;">
+                    <span style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:999px; padding:4px 10px;">1. Estrategia y Tono de Voz</span>
+                    <span style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:999px; padding:4px 10px;">2. Tu Logotipo Paso 5</span>
+                    <span style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:999px; padding:4px 10px;">3. Paleta y Tipografía</span>
+                    <span style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:999px; padding:4px 10px;">4. Maquetación +30 Páginas</span>
+                  </div>
+                </div>
+              `;
+              return;
+            }
+
             if (btnAct) {
               btnAct.classList.remove("is-hidden");
               btnAct.style.display = "inline-flex";
@@ -24568,47 +24809,44 @@
             if (lblNext) lblNext.textContent = "Ir a Descargas";
 
             const activePlateMarkup = window.renderBeneficSinglePlateHTML(st.plateIdx, false);
-            const hasUserUploadedLogo = Boolean(cs.uploaded_logo_data_url || cs.uploaded_logo_svg_markup || window.step0State?.uploadedLogoDataUrl || window.step0State?.uploadedLogoSvgMarkup);
+            const hasUserUploadedLogo = Boolean(cs.uploaded_logo_data_url || cs.nano_banana_symbol_url || cs.uploaded_logo_svg_markup || window.step0State?.uploadedLogoDataUrl || window.step0State?.uploadedLogoSvgMarkup);
 
             stage.innerHTML = `
               <div class="tbb-atomic-card is-step6-plate" style="padding:10px 14px; gap:8px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
                   <div style="min-width:180px; flex:1 1 200px;">
                     <div style="font-family:var(--font-mono); font-size:0.875rem; font-weight:800; color:#1D4ED8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                      PASO 6 · LÁMINA ${curPlate.num} DE ${totalPlates} · ${curPlate.sec}
+                      PASO 6 · LÁMINA ${curPlate.num} DE ${totalPlates} · ${escapeHTML(bName.toUpperCase())}
                     </div>
                     <div style="font-family:var(--font-display); font-size:0.94rem; font-weight:900; color:#090D16; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                       ${curPlate.num}. ${curPlate.title}
                     </div>
-                    <div style="display:flex; align-items:center; gap:6px; margin-top:2px; flex-wrap:wrap;">
-                      <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#426EAE;"></span>
-                      <span style="font-family:'JetBrains Mono',monospace; font-size:0.875rem; font-weight:800; color:#0D2540; background:#F1F5F9; padding:1px 6px; border-radius:4px; border:1px solid #CBD5E1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                        ${curPlate.leadAuthor || "Consejo Metodológico"} · ${curPlate.auditVerdict || "DICTAMEN METODOLÓGICO: APROBADO"}
-                      </span>
-                      ${hasUserUploadedLogo ? `<span style="font-family:'JetBrains Mono',monospace; font-size:0.875rem; font-weight:800; color:#FF7A00; background:#FFF7ED; padding:1px 6px; border-radius:4px; border:1px solid #FDBA74;">TU LOGOTIPO OFICIAL CENTRADO EN CURVAS</span>` : ""}
-                    </div>
                   </div>
                   <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; flex:1 1 auto; justify-content:flex-end;">
-                    <select aria-label="Seleccionar lámina del manual" onchange="window.tbbState.plateIdx=Number(this.value); triggerAuraEmpatheticFeedback('input_plate_nav', 'Lámina ' + (Number(this.value)+1), false); renderTbbZeroScrollStage();" style="height:40px; padding:0 8px; border-radius:10px; border:2px solid #CBD5E1; font-family:var(--font-ui); font-size:0.875rem; font-weight:800; color:#090D16; background:#F8FAFC; cursor:pointer; flex:1 1 135px; max-width:210px;">
+                    <select aria-label="Seleccionar lámina del manual" onchange="window.tbbState.plateIdx=Number(this.value); triggerAuraEmpatheticFeedback('input_plate_nav', 'Lámina ' + (Number(this.value)+1), false); renderTbbZeroScrollStage();" style="height:38px; padding:0 8px; border-radius:10px; border:1.5px solid #CBD5E1; font-family:var(--font-ui); font-size:0.85rem; font-weight:700; color:#090D16; background:#F8FAFC; cursor:pointer; flex:1 1 135px; max-width:210px;">
                       ${metaList.map((m, idx) => `<option value="${idx}" ${idx === st.plateIdx ? "selected" : ""}>Lámina ${m.num}: ${escapeHTML(m.title.slice(0, 26))}</option>`).join("")}
                     </select>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.plateIdx=(window.tbbState.plateIdx-1+${totalPlates})%${totalPlates}; triggerAuraEmpatheticFeedback('input_plate_nav', 'Lámina anterior', false); renderTbbZeroScrollStage();" style="padding:7px 10px !important; min-height:40px !important; font-size:0.875rem !important;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="window.tbbState.plateIdx=(window.tbbState.plateIdx-1+${totalPlates})%${totalPlates}; triggerAuraEmpatheticFeedback('input_plate_nav', 'Lámina anterior', false); renderTbbZeroScrollStage();" style="padding:6px 10px !important; min-height:38px !important; font-size:0.85rem !important;">
                       Anterior
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbState.plateIdx=(window.tbbState.plateIdx+1)%${totalPlates}; triggerAuraEmpatheticFeedback('input_plate_nav', 'Siguiente lámina', false); renderTbbZeroScrollStage();" style="padding:7px 10px !important; min-height:40px !important; font-size:0.875rem !important;">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-primary" onclick="window.tbbState.plateIdx=(window.tbbState.plateIdx+1)%${totalPlates}; triggerAuraEmpatheticFeedback('input_plate_nav', 'Siguiente lámina', false); renderTbbZeroScrollStage();" style="padding:6px 10px !important; min-height:38px !important; font-size:0.85rem !important;">
                       Siguiente
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}else if(window.tbbGenerateChapterVisualsWithFlow){window.tbbGenerateChapterVisualsWithFlow(this);}" style="padding:7px 10px !important; min-height:40px !important; font-size:0.875rem !important;" title="Abrir vista de aplicaciones reales según el giro de tu negocio">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="if(window.tbbCompileCustomBrandbookWithAI){window.tbbCompileCustomBrandbookWithAI(true);}" style="padding:6px 10px !important; min-height:38px !important; font-size:0.84rem !important;" title="Volver a redactar y compilar las páginas de tu Brandbook con IA según tus respuestas actuales">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2.8l2.1 6.1 6.1 2.1-6.1 2.1L12 19.2l-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8z" stroke="#FF7A00" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                      <span>Re-crear con IA</span>
+                    </button>
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="if(window.tbbOpenGoogleFlowMockupStudioModal){window.tbbOpenGoogleFlowMockupStudioModal();}else if(window.tbbGenerateChapterVisualsWithFlow){window.tbbGenerateChapterVisualsWithFlow(this);}" style="padding:6px 10px !important; min-height:38px !important; font-size:0.84rem !important;" title="Abrir vista de aplicaciones reales según el giro de tu negocio">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="9" r="1.8" fill="currentColor"/><path d="M5 16l4.5-4 3.5 2.5 4.5-5L20 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       <span>Aplicaciones Reales</span>
                     </button>
-                    <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Descarga PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{window.openPrintable30PlatesBrandbook();}" style="padding:7px 12px !important; min-height:40px !important; font-size:0.875rem !important; flex:1 1 auto;" title="Generar y guardar las ${totalPlates} láminas completas hoja por hoja en archivo PDF">
+                    <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" onclick="triggerAuraEmpatheticFeedback('input_plate_nav', 'Descarga PDF ${totalPlates} Láminas', false); if(window.downloadReal30PlatesPDFDirect){window.downloadReal30PlatesPDFDirect(this);}else{window.openPrintable30PlatesBrandbook();}" style="padding:6px 12px !important; min-height:38px !important; font-size:0.85rem !important; flex:1 1 auto;" title="Generar y guardar las ${totalPlates} láminas completas hoja por hoja en archivo PDF">
                       Exportar PDF (${totalPlates} Láminas)
                     </button>
                   </div>
                 </div>
 
-                <!-- Lienzo Editorial en Curvas de la Lámina Activa (Guía ImproBears C-00) -->
+                <!-- Lienzo Editorial en Curvas de la Lámina Activa -->
                 <div id="tbbStep6PlateViewport" style="flex:1; min-height:0; overflow:hidden; display:flex; flex-direction:column; position:relative;">
                   ${activePlateMarkup}
                 </div>
@@ -24617,49 +24855,6 @@
             setTimeout(() => {
               if (typeof window.scaleImproBearsPlateInStage === "function") {
                 window.scaleImproBearsPlateInStage();
-              }
-              const brandSig = `${bName}|${(cs.uploaded_logo_data_url || "").slice(0, 48)}|${cs.primary_color || st.logoPriHex || ""}|${(cs.custom_business_type || "").slice(0, 24)}`;
-              // Disparar automáticamente las 5 ilustraciones reales de capítulo con Nano Banana / Flow IA al entrar al Paso 6
-              if (typeof window.tbbGenerateChapterVisualsWithFlow === "function") {
-                const btnFlowAuto = document.querySelector("button[onclick*='tbbGenerateChapterVisualsWithFlow']");
-                window.tbbGenerateChapterVisualsWithFlow(btnFlowAuto || undefined);
-              }
-              if (window._tbbStep6PendingCeremony && window._tbbLastStep6SynthesizedSig !== brandSig) {
-                window._tbbStep6PendingCeremony = false;
-                window._tbbLastStep6SynthesizedSig = brandSig;
-                const vp = document.getElementById("tbbStep6PlateViewport");
-                if (vp && !document.getElementById("tbbStep6LiveAssemblyOverlay")) {
-                  const ov = document.createElement("div");
-                  ov.id = "tbbStep6LiveAssemblyOverlay";
-                  ov.style.cssText = "position:absolute;inset:0;background:rgba(255,255,255,0.94);backdrop-filter:blur(4px);z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;border-radius:12px;transition:opacity 0.28s ease;";
-                  ov.innerHTML = `
-                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.875rem;font-weight:800;color:#FF7A00;letter-spacing:1.4px;margin-bottom:6px;">ARMANDO TU BRANDBOOK OFICIAL</div>
-                    <div style="font-family:'Montserrat',sans-serif;font-size:1.05rem;font-weight:900;color:#0D2540;margin-bottom:10px;text-align:center;">Construyendo las ${totalPlates} Láminas de «${escapeHTML(bName)}»</div>
-                    <div id="tbbStep6AsmTxt" style="font-size:0.875rem;color:#475569;font-weight:700;margin-bottom:12px;">Integrando logotipo activo, paleta y retícula A4 Horizontal (01/${totalPlates})...</div>
-                    <div style="width:260px;max-width:85%;height:8px;background:#E2E8F0;border-radius:999px;overflow:hidden;">
-                      <div id="tbbStep6AsmBar" style="width:6%;height:100%;background:linear-gradient(90deg,#0D2540,#FF7A00);border-radius:999px;transition:width 0.12s linear;"></div>
-                    </div>
-                  `;
-                  vp.appendChild(ov);
-                  let pStep = 1;
-                  const asmTimer = setInterval(() => {
-                    pStep = Math.min(totalPlates, pStep + 4);
-                    const bar = document.getElementById("tbbStep6AsmBar");
-                    const txt = document.getElementById("tbbStep6AsmTxt");
-                    if (bar) bar.style.width = Math.round((pStep / totalPlates) * 100) + "%";
-                    if (txt) {
-                      const mItem = metaList[pStep - 1] || { title: "" };
-                      txt.textContent = `Maquetando Lámina ${String(pStep).padStart(2, "0")}/${totalPlates} · ${mItem.title.slice(0, 38)}...`;
-                    }
-                    if (pStep >= totalPlates) {
-                      clearInterval(asmTimer);
-                      setTimeout(() => {
-                        ov.style.opacity = "0";
-                        setTimeout(() => ov.remove(), 290);
-                      }, 180);
-                    }
-                  }, 135);
-                }
               }
             }, 30);
           } else {
@@ -25002,7 +25197,12 @@
           direct_geometric: "direct_uber_monolith"
         };
         window.triggerAuraEmpatheticFeedback("input_logo_done", meta.label, false);
-        window.tbbAppendLogoIteration(`Paradigma: ${meta.label}`, paradigmToArch[paradigmId] || window.resolveActiveLogoArchetype());
+        if (st.step === 5 && st.subStep === 2) {
+          window.tbbAppendLogoIteration(`Paradigma: ${meta.label}`, paradigmToArch[paradigmId] || window.resolveActiveLogoArchetype());
+        } else {
+          window.tbbSyncInitialLogoIterationWithAppState();
+          window.renderTbbZeroScrollStage();
+        }
       };
 
       window.tbbSelectSystemicPalette = function (pri, sec, label) {
@@ -25023,7 +25223,12 @@
         const curIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
         const prevMods = (curIt && curIt.mods) ? Object.assign({}, curIt.mods) : {};
         window.triggerAuraEmpatheticFeedback("input_logo_done", `Paleta ${label}`, false);
-        window.tbbAppendLogoIteration(`Paleta: ${label}`, (curIt && curIt.archetype) || window.resolveActiveLogoArchetype(), prevMods);
+        if (st.step === 5 && st.subStep === 2) {
+          window.tbbAppendLogoIteration(`Paleta: ${label}`, (curIt && curIt.archetype) || window.resolveActiveLogoArchetype(), prevMods);
+        } else {
+          window.tbbSyncInitialLogoIterationWithAppState();
+          window.renderTbbZeroScrollStage();
+        }
       };
 
       // =========================================================================
@@ -25168,7 +25373,7 @@
             curIt.secHex = sec;
             curIt.accentHex = acc;
           }
-          if (triggerIteration && st.step === 5) {
+          if (triggerIteration && st.step === 5 && st.subStep === 2) {
             const prevMods = (curIt && curIt.mods) ? Object.assign({}, curIt.mods) : {};
             window.tbbAppendLogoIteration(labelHint || `Paleta (${clean.length} colores): ${clean.slice(0, 3).join(" · ")}`, (curIt && curIt.archetype) || window.resolveActiveLogoArchetype(), prevMods);
           }
@@ -25994,6 +26199,249 @@
         window.renderTbbZeroScrollStage();
       };
 
+      // Modal amplio para explicar con comodidad cualquiera de las 4 ideas del Paso 3.1 (con voz + IA)
+      window.tbbOpenStep3IdeaModal = function (axisIdx) {
+        const idx = Math.max(1, Math.min(4, Number(axisIdx) || 1));
+        const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+        const axes = (typeof window.tbbGetUniversalNamingAxes === "function") ? window.tbbGetUniversalNamingAxes() : {};
+        const metaMap = {
+          1: {
+            title: "1. ¿Qué hace o vende tu negocio?",
+            sub: "Explica con tus propias palabras qué ofreces y para quién, sin límite de espacio.",
+            placeholder: "Ej. Creamos marcadores y gráficos interactivos en tiempo real para transmisiones deportivas en vivo por YouTube y OBS, pensados para ligas colegiales y creadores...",
+            role: "giro",
+            val: axes.axis1 || ""
+          },
+          2: {
+            title: "2. ¿Qué beneficio principal entregas?",
+            sub: "Cuenta qué problema resuelves o cómo haces sentir a tu cliente cuando te elige.",
+            placeholder: "Ej. Que cualquier partido amateur o independiente se vea y se sienta con la emoción de una transmisión profesional de televisión en minutos...",
+            role: "value_offer",
+            val: axes.axis2 || ""
+          },
+          3: {
+            title: "3. ¿Qué personalidad o estilo buscas?",
+            sub: "Describe cómo te gustaría que suene y se perciba el nombre de tu marca.",
+            placeholder: "Ej. Dinámico, apasionado, cercano, con un toque retro divertido y fácil de recordar cuando alguien lo menciona en vivo...",
+            role: "brand_persona",
+            val: axes.axis3 || ""
+          },
+          4: {
+            title: "4. Palabras, raíces o ideas propias",
+            sub: "Anota palabras sueltas, conceptos, sílabas o nombres tentativos que te inspiren.",
+            placeholder: "Ej. Huddle, Cast, Score, Pulso, Arena, En Vivo, Emparrillado, Play...",
+            role: "core_message",
+            val: axes.axis4 || ""
+          }
+        };
+        const spec = metaMap[idx];
+        let existing = document.getElementById("tbbStep3IdeaEditorModal");
+        if (existing) existing.remove();
+
+        const ov = document.createElement("div");
+        ov.id = "tbbStep3IdeaEditorModal";
+        ov.style.cssText = "position:fixed;inset:0;z-index:9800;background:rgba(13,37,64,0.48);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;";
+        ov.innerHTML = `
+          <div onclick="event.stopPropagation()" style="width:100%;max-width:560px;background:#FFFFFF;border-radius:22px;border:1px solid rgba(13,37,64,0.12);box-shadow:0 24px 60px -12px rgba(13,37,64,0.25);padding:20px 22px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+              <div>
+                <div style="font-size:0.8rem;font-weight:700;color:#426EAE;text-transform:uppercase;letter-spacing:0.04em;">PASO 3 · IDEA ${idx} DE 4</div>
+                <h3 style="font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:700;color:#0D2540;margin:2px 0 4px 0;">${escapeHTML(spec.title)}</h3>
+                <p style="font-size:0.9rem;color:#475569;margin:0;line-height:1.45;">${escapeHTML(spec.sub)}</p>
+              </div>
+              <button type="button" id="tbbCloseStep3IdeaModalBtn" aria-label="Cerrar" style="width:36px;height:36px;border-radius:50%;border:1px solid #CBD5E1;background:#F8FAFC;color:#0D2540;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+
+            <textarea id="tbbStep3ExpandedAxisTextarea" rows="5" placeholder="${escapeHTML(spec.placeholder)}" style="width:100%;min-height:132px;padding:13px 14px;border-radius:14px;border:1.5px solid rgba(13,37,64,0.20);background:#F8FAFC;color:#0D2540;font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;font-weight:500;line-height:1.55;resize:vertical;box-sizing:border-box;">${escapeHTML(spec.val)}</textarea>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <button type="button" id="tbbStep3IdeaVoiceBtn" class="tbb-duo-btn tbb-duo-btn-secondary" style="min-height:40px !important;padding:6px 12px !important;font-size:0.875rem !important;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="11" rx="3" stroke="#0D2540" stroke-width="1.8"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round"/></svg>
+                <span>Dictar con voz</span>
+              </button>
+              <button type="button" id="tbbStep3IdeaSuggestAiBtn" class="tbb-duo-btn tbb-duo-btn-secondary" style="min-height:40px !important;padding:6px 12px !important;font-size:0.875rem !important;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2.8l2.1 6.1 6.1 2.1-6.1 2.1L12 19.2l-2.1-6.1-6.1-2.1 6.1-2.1L12 2.8z" stroke="#FF7A00" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                <span>Dame una idea con IA</span>
+              </button>
+              <button type="button" id="tbbStep3IdeaPolishBtn" class="tbb-duo-btn tbb-duo-btn-secondary" style="min-height:40px !important;padding:6px 12px !important;font-size:0.875rem !important;">
+                <span>Mejorar redacción</span>
+              </button>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:8px;border-top:1px solid #E2E8F0;padding-top:12px;">
+              <button type="button" id="tbbCancelStep3IdeaBtn" class="tbb-duo-btn tbb-duo-btn-secondary" style="min-height:42px !important;padding:6px 16px !important;font-size:0.9rem !important;">Cancelar</button>
+              <button type="button" id="tbbSaveStep3IdeaBtn" class="tbb-duo-btn tbb-duo-btn-emerald" style="min-height:42px !important;padding:6px 20px !important;font-size:0.92rem !important;">Guardar idea</button>
+            </div>
+          </div>
+        `;
+        ov.onclick = (ev) => { if (ev.target === ov) ov.remove(); };
+        document.body.appendChild(ov);
+
+        const ta = document.getElementById("tbbStep3ExpandedAxisTextarea");
+        if (ta) setTimeout(() => { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }, 30);
+
+        document.getElementById("tbbCloseStep3IdeaModalBtn").onclick = () => ov.remove();
+        document.getElementById("tbbCancelStep3IdeaBtn").onclick = () => ov.remove();
+        document.getElementById("tbbStep3IdeaVoiceBtn").onclick = () => {
+          if (typeof toggleContinuousVoice === "function") toggleContinuousVoice("tbbStep3ExpandedAxisTextarea");
+        };
+        document.getElementById("tbbStep3IdeaPolishBtn").onclick = () => {
+          if (typeof window.tbbPolishInputFieldClarity === "function") {
+            window.tbbPolishInputFieldClarity("tbbStep3ExpandedAxisTextarea", spec.role);
+          }
+        };
+        document.getElementById("tbbStep3IdeaSuggestAiBtn").onclick = async function () {
+          const btn = this;
+          const prevTxt = btn.innerHTML;
+          btn.disabled = true;
+          btn.textContent = "Pensando idea para tu marca...";
+          try {
+            const dossier = typeof window.tbbBuildFullBrandContextDossier === "function" ? window.tbbBuildFullBrandContextDossier() : (cs.custom_business_type || "");
+            const p = `Basado en esta marca:\n${dossier}\n\nRedacta una propuesta clara, específica y natural (1 a 2 oraciones, sin comillas ni listas numeradas) para responder: "${spec.title}".`;
+            const suggestion = await window.tbbCallGeminiAI(p, { temperature: 0.65 });
+            if (suggestion && ta) {
+              ta.value = suggestion.replace(/^["«“]|["»”]$/g, "").trim();
+            }
+          } catch (e) {}
+          btn.disabled = false;
+          btn.innerHTML = prevTxt;
+        };
+        document.getElementById("tbbSaveStep3IdeaBtn").onclick = () => {
+          const newVal = ta ? String(ta.value || "").trim() : "";
+          window.tbbUpdateNamingAxis(idx, newVal);
+          ov.remove();
+          window.renderTbbZeroScrollStage();
+          if (newVal && typeof window.triggerAuraEmpatheticFeedback === "function") {
+            window.triggerAuraEmpatheticFeedback("input_step1", newVal, true, true);
+          }
+        };
+      };
+
+      // Trigger explícito de Creación Inicial del Logotipo en Paso 5.2 usando 100% del ADN previo
+      window.tbbTriggerFirstLogoCreationFromDossier = async function (fromExplicitButton = false) {
+        const st = window.tbbState || {};
+        const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+        if (st.geminiBusy) return;
+        const bName = window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Tu Marca") : (cs.brandName || "Tu Marca");
+        const seedIdea = String(cs.step4_seed_idea || "").trim();
+        const hasExt = Boolean(
+          (cs.user_uploaded_external_logo && (cs.base_uploaded_logo_data_url || cs.uploaded_logo_data_url)) ||
+          (window.step0State?.userUploadedExternalLogo && window.step0State?.uploadedLogoDataUrl)
+        );
+        const extMode = cs.existing_logo_mode || window.step0State?.existingLogoMode || "evolve";
+        if (typeof window.tbbGenerateNanoBananaBrandSymbol === "function") {
+          await window.tbbGenerateNanoBananaBrandSymbol(
+            hasExt && extMode === "evolve"
+              ? (seedIdea || `Moderniza el logotipo de ${bName} conservando su idea central y aplicando la paleta oficial seleccionada.`)
+              : seedIdea,
+            {
+              creativeMode: st.nanoBananaCreativeMode || "emblem_masterpiece",
+              replaceInitialPlaceholder: !fromExplicitButton,
+              freshFromScratch: !hasExt || extMode !== "evolve",
+              evolveCurrent: Boolean(hasExt && extMode === "evolve")
+            }
+          );
+        }
+      };
+
+      // Pipeline Real de Creación y Síntesis Editorial con IA para el Brandbook (Paso 5.2 -> Paso 6.1)
+      window.tbbCompileCustomBrandbookWithAI = async function (forceRebuild = false) {
+        const st = window.tbbState || {};
+        const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
+        if (st._brandbookCompilingWithAI) return;
+        if (!forceRebuild && (cs.isOfficialAdminTbbPreset || cs.isOfficialImproBearsPreset)) return;
+
+        const bName = window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca";
+        const activeIt = (Array.isArray(st.logoIterations) && st.logoIterations[st.logoIterationIndex - 1]) || null;
+        if (activeIt) {
+          if (activeIt.nanoBananaSymbolUrl || activeIt.uploadedLogoDataUrl) {
+            cs.nano_banana_symbol_url = activeIt.nanoBananaSymbolUrl || activeIt.uploadedLogoDataUrl;
+          }
+          if (activeIt.nanoBananaFullArtworkUrl) {
+            cs.nano_banana_full_artwork_url = activeIt.nanoBananaFullArtworkUrl;
+          }
+          if (activeIt.pri) cs.primary_color = activeIt.pri;
+          if (activeIt.sec) cs.secondary_color = activeIt.sec;
+        }
+
+        const activeLogoSig = ((activeIt && (activeIt.nanoBananaSymbolUrl || activeIt.uploadedLogoDataUrl || activeIt.geminiCustomSvg || "")) || cs.nano_banana_symbol_url || "").slice(0, 48);
+        const targetSig = `${bName}|${activeLogoSig}|${cs.primary_color || st.logoPriHex || ""}|${(cs.custom_business_type || "").slice(0, 32)}`;
+        if (!forceRebuild && cs._compiledBrandbookSig === targetSig) return;
+
+        st._brandbookCompilingWithAI = true;
+        st._brandbookCompilePct = 16;
+        st._brandbookCompileLabel = `1/4 Sintetizando manifiesto, propuesta de valor y tono de voz con IA para «${bName}»...`;
+        if (st.step === 6 && typeof window.renderTbbZeroScrollStage === "function") {
+          window.renderTbbZeroScrollStage();
+        }
+
+        const updateCompileProgress = (pct, label) => {
+          st._brandbookCompilePct = pct;
+          st._brandbookCompileLabel = label;
+          const bar = document.getElementById("tbbStep6LiveCompileProgressBar");
+          const txt = document.getElementById("tbbStep6LiveCompileStatusText");
+          if (bar) bar.style.width = `${pct}%`;
+          if (txt) txt.textContent = label;
+        };
+
+        try {
+          const dossier = typeof window.tbbBuildFullBrandContextDossier === "function" ? window.tbbBuildFullBrandContextDossier() : "";
+          const synthPrompt = [
+            `Eres un Director Editorial Senior de Identidad Corporativa creando el Brandbook Oficial de "${bName}".`,
+            `Información real capturada del fundador en los Pasos 0 al 5:`,
+            dossier,
+            ``,
+            `Redacta textos estratégicos claros, auténticos y 100% específicos para "${bName}" (CERO frases genéricas de agencia, CERO menciones a TheBestBrand, CERO emojis).`,
+            `Cada campo debe tener 2 oraciones ricas y bien estructuradas (entre 22 y 42 palabras por campo) para maquetar el Brandbook ejecutivo:`,
+            `Devuelve ÚNICAMENTE un objeto JSON válido con estas claves exactas:`,
+            `{"tagline":"Eslogan conciso y memorable (4 a 8 palabras)","golden_circle":"Propósito esencial del negocio: por qué existe y qué impacto real genera en sus clientes","value_offer":"Oferta de valor diferenciada: qué entrega exactamente y por qué los clientes la prefieren","process_steps_text":"Método en 3 etapas claras separadas por · (1. ... · 2. ... · 3. ...)","brand_persona":"Personalidad y tono de comunicación de la marca como persona","ideal_customer":"Perfil concreto del cliente ideal y qué necesidad resuelve para él","core_message":"Promesa central de la marca en una frase contundente"}`
+          ].join("\n");
+
+          const rawJson = await window.tbbCallGeminiAI(synthPrompt, { temperature: 0.45, json: true });
+          updateCompileProgress(54, `2/4 Integrando el logotipo oficial elegido en el Paso 5 y retícula constructiva de «${bName}»...`);
+
+          const cleanStr = String(rawJson || "").replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+          const b0 = cleanStr.indexOf("{");
+          const b1 = cleanStr.lastIndexOf("}");
+          if (b0 !== -1 && b1 > b0) {
+            const parsed = JSON.parse(cleanStr.slice(b0, b1 + 1));
+            if (parsed.tagline && (!cs.tagline || forceRebuild)) cs.tagline = String(parsed.tagline).trim();
+            if (parsed.golden_circle && (forceRebuild || String(cs.golden_circle || "").split(/\s+/).length < 14)) cs.golden_circle = String(parsed.golden_circle).trim();
+            if (parsed.value_offer && (forceRebuild || String(cs.value_offer || "").split(/\s+/).length < 14)) cs.value_offer = String(parsed.value_offer).trim();
+            if (parsed.process_steps_text && (forceRebuild || String(cs.process_steps_text || "").split(/\s+/).length < 12)) cs.process_steps_text = String(parsed.process_steps_text).trim();
+            if (parsed.brand_persona && (forceRebuild || String(cs.brand_persona || "").split(/\s+/).length < 12)) cs.brand_persona = String(parsed.brand_persona).trim();
+            if (parsed.ideal_customer && (forceRebuild || String(cs.ideal_customer || "").split(/\s+/).length < 12)) cs.ideal_customer = String(parsed.ideal_customer).trim();
+            if (parsed.core_message) cs.core_message = String(parsed.core_message).trim();
+          }
+
+          updateCompileProgress(78, `3/4 Calculando códigos Pantone, CMYK, HEX, tipografías y aplicaciones del giro...`);
+          if (typeof window.tbbGenerateChapterVisualsWithFlow === "function") {
+            window.tbbGenerateChapterVisualsWithFlow(undefined).catch(() => {});
+          }
+          await new Promise(r => setTimeout(r, 380));
+          updateCompileProgress(96, `4/4 Maquetando las páginas editoriales de «${bName}»...`);
+          await new Promise(r => setTimeout(r, 240));
+
+          cs._compiledBrandbookSig = `${bName}|${activeLogoSig}|${cs.primary_color || st.logoPriHex || ""}|${(cs.custom_business_type || "").slice(0, 32)}`;
+          if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
+        } catch (err) {
+          console.warn("Brandbook AI compile warning:", err);
+          cs._compiledBrandbookSig = targetSig;
+        } finally {
+          st._brandbookCompilingWithAI = false;
+          st._brandbookCompilePct = 100;
+          st._brandbookCompileLabel = "";
+          if (typeof window.renderTbbZeroScrollStage === "function") {
+            window.renderTbbZeroScrollStage();
+          }
+          if (st.step === 6 && typeof window.triggerAuraEmpatheticFeedback === "function") {
+            window.triggerAuraEmpatheticFeedback("substep_6_1", bName, true, true);
+          }
+        }
+      };
+
       window.onTbbAtomicCenterAction = async function () {
         const st = window.tbbState;
         if (st.step === 0 && st.subStep === 3) {
@@ -26009,23 +26457,22 @@
           const box = document.getElementById("tbbSingleLogoIterationBox");
           const txt = box ? box.value.trim() : "";
           const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-          const brandName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "The Best Brand";
-          const giro = (cs.custom_business_type || cs.step0_short_essence || "Aplicación digital de identidad corporativa").trim();
-          const init = brandName.split(/\s+/).map(w => w[0] || "").join("").slice(0, 2).toUpperCase() || "TB";
+          const brandName = window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Tu Marca") : ((cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca");
+          const giro = (cs.custom_business_type || cs.step0_short_essence || "Servicios y productos profesionales").trim();
+          const init = brandName.split(/\s+/).map(w => w[0] || "").join("").slice(0, 2).toUpperCase() || "TM";
 
           if (box) box.value = "";
-          window.triggerAuraEmpatheticFeedback("input_logo_start", txt || "Nueva evolución creativa con NanoBanana PRO", false);
+          window.triggerAuraEmpatheticFeedback("input_logo_start", txt || `Nueva propuesta para ${brandName}`, true, true);
 
-          // Detectar si el usuario pidió explícitamente uno de los 4 modos en su texto
+          // Respetar el modo solo si el usuario lo pide explícitamente; nunca restringir ni sobrecargar su ajuste libre
           let detectedMode = st.nanoBananaCreativeMode || "emblem_masterpiece";
-          if (/\b(monograma|iniciales|entrelazad|letras)\b/i.test(txt)) detectedMode = "monogram_fusion";
-          else if (/\b(carta|loter[ií]a|sello|escudo|insignia|marco|tarot|emblema enmarcado)\b/i.test(txt)) detectedMode = "editorial_crest";
-          else if (/\b(minimal|lineal|l[ií]neas|monol[ií]nea|sencillo|limpio|geom[eé]trico puro)\b/i.test(txt)) detectedMode = "minimal_couture";
+          if (/\b(monograma|iniciales|entrelazad|letras solas)\b/i.test(txt)) detectedMode = "monogram_fusion";
+          else if (/\b(sello|escudo|insignia|badge|emblema circular)\b/i.test(txt)) detectedMode = "editorial_crest";
+          else if (/\b(minimal|sencillo|limpio|simple|menos cargado|geom[eé]trico|plano)\b/i.test(txt)) detectedMode = "minimal_couture";
 
-          // PRIORIDAD 1: Motor de Imagen NanoBanana PRO con Evolución Conversacional Imagen-a-Imagen
           if (typeof window.tbbGenerateNanoBananaBrandSymbol === "function") {
             const nbImg = await window.tbbGenerateNanoBananaBrandSymbol(
-              txt || `Evoluciona el diseño de "${brandName}" (${giro}) con una composición más rica, memorable y emblemática.`,
+              txt || `Crea una alternativa visual limpia, distinta y memorable para "${brandName}" (${giro}).`,
               {
                 creativeMode: detectedMode,
                 evolveCurrent: Boolean(txt),
@@ -26047,13 +26494,13 @@
                 "gem",
                 init,
                 giro.slice(0, 18).toUpperCase(),
-                (prevIt && prevIt.pri) || st.logoPriHex || "#1D4ED8",
-                (prevIt && prevIt.sec) || st.logoSecHex || "#0D2540",
+                (prevIt && prevIt.pri) || st.logoPriHex || "#0D2540",
+                (prevIt && prevIt.sec) || st.logoSecHex || "#FF7A00",
                 prevMods
               );
 
           const newEntry = window.tbbAppendLogoIteration(
-            txt || `Propuesta Abierta Gemini #${(st.logoIterations?.length || 1) + 1}`,
+            txt || `Propuesta Gemini #${(st.logoIterations?.length || 1) + 1}`,
             prevArch,
             prevMods,
             (prevIt && prevIt.geminiCustomSvg) || "",
@@ -26062,7 +26509,7 @@
           );
           window.tbbRunLiveGeminiLogoIteration(
             newEntry,
-            txt || `Diseña una nueva propuesta visual y objeto principal distinto para la marca "${brandName}" (${giro})`,
+            txt || `Diseña una nueva propuesta visual limpia y distinta para "${brandName}" (${giro})`,
             prevSvgMarkup
           );
           return;
@@ -26162,6 +26609,26 @@
             cs.tagline = String(tagInp.value || "").trim();
           }
           if (typeof saveBrandSessionToLocalStorage === "function") saveBrandSessionToLocalStorage();
+        } else if (st.step === 5 && st.subStep === 1) {
+          // Trigger explícito: al pasar de Paso 5.1 a Paso 5.2, asegurar síntesis real del primer intento si aún no hay logo IA
+          if (typeof ensureOfficialBrandNameLockedBeforeVisualSteps === "function") {
+            ensureOfficialBrandNameLockedBeforeVisualSteps();
+          }
+          const hasRealAiLogoYet = Array.isArray(st.logoIterations) && st.logoIterations.some(it =>
+            it && (it.isNanoBananaGenerated || it.nanoBananaFullArtworkUrl || it.nanoBananaSymbolUrl || (it.geminiCustomSvg && String(it.geminiCustomSvg).length > 20))
+          );
+          if (!hasRealAiLogoYet && !(cs.isOfficialAdminTbbPreset || cs.isOfficialImproBearsPreset)) {
+            st._autoNanoBananaBrandKey = "";
+            st._forceFirstLogoSynthesisNow = true;
+          }
+        } else if (st.step === 5 && st.subStep === 2) {
+          // Trigger explícito: al confirmar el logotipo y pasar al Paso 6, compilar y redactar con IA el Brandbook personalizado
+          if (typeof ensureOfficialBrandNameLockedBeforeVisualSteps === "function") {
+            ensureOfficialBrandNameLockedBeforeVisualSteps();
+          }
+          if (!(cs.isOfficialAdminTbbPreset || cs.isOfficialImproBearsPreset)) {
+            cs._compiledBrandbookSig = "";
+          }
         }
 
         const maxSub = SUBSTEPS_COUNT[st.step] || 1;
@@ -27114,7 +27581,7 @@
             type: "TBB_DEMO_PROGRESS_SYNC",
             step: snap.currentStep,
             subStep: snap.subStep,
-            brandName: (canvasState && canvasState.brandName) || "TheBestBrand",
+            brandName: (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Mi Marca") : "Mi Marca"),
             tagline: (canvasState && canvasState.tagline) || "YOUR BRAND, NOW!!!",
             businessGiro: (canvasState && canvasState.custom_business_type) || "",
             whyPurpose: (canvasState && canvasState.golden_circle) || "",
@@ -27476,16 +27943,16 @@
       text-align: left !important;
     }
   </style>
-  <script src="/assets/vendor/opentype.min.js?v=1.3.4"></script>
-  <script src="/assets/vendor/html2canvas.min.js?v=1.4.1"></script>
-  <script src="/tbb-executive-deliverables-suite.js?v=131.0"></script>
-  <script src="/tbb-cloud-vector-outliner.js?v=131.0"></script>
-  <script src="/tbb-v80-brandbook-plates.js?v=131.0"></script>
-  <script src="/universal-brandbook-30-engine.js?v=131.0"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=131.0"></script>
-  <script src="/improbears-preset-engine.js?v=131.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=131.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=131.0"></script>
+  <script src="https://thebestbrand-studio.web.app/assets/vendor/opentype.min.js?v=1.3.4" crossorigin="anonymous"></script>
+  <script src="https://thebestbrand-studio.web.app/assets/vendor/html2canvas.min.js?v=1.4.1" crossorigin="anonymous"></script>
+  <script src="/tbb-executive-deliverables-suite.js?v=132.0"></script>
+  <script src="/tbb-cloud-vector-outliner.js?v=132.0"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=132.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=132.0"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=132.0"></script>
+  <script src="/improbears-preset-engine.js?v=132.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=132.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=132.0"></script>
 
   <style id="tbbDuolingoOrganicErgonomicsV129">
     html.a11y-large-mode { font-size: 18.5px !important; }

@@ -17,7 +17,7 @@
 
   const LANG_STORAGE_KEY = "tbb_active_ui_lang_v52";
   const LICENSE_STORAGE_KEY = "tbb_pro_license_v56";
-  const ASSET_VERSION = "131.0";
+  const ASSET_VERSION = "132.0";
 
   // Unified 1.65px Architectural Stroke SVG Iconography (0% Unicode Emojis / Dingbats)
   const TBB_ICONS = {
@@ -69,13 +69,40 @@
       .replace(/'/g, "&#39;");
   }
 
+  const TBB_CDN_PRIMARY = "https://thebestbrand-studio.web.app";
+  const TBB_CDN_BACKUP = "https://thebestbrand-api-studio-production.up.railway.app";
+
   function tbbImgSrc(url) {
-    return String(url || "");
+    const s = String(url || "").trim();
+    if (!s || /^data:|^blob:|^https?:\/\//i.test(s)) return s;
+    if (typeof window.tbbResolveAssetUrl === "function") {
+      return window.tbbResolveAssetUrl(s);
+    }
+    const host = String((window.location && window.location.hostname) || "").toLowerCase();
+    if ((host === "thebestbrand.app" || host === "www.thebestbrand.app") && /^\/(assets|samples)\//i.test(s)) {
+      return TBB_CDN_PRIMARY + s;
+    }
+    return s;
   }
   window.tbbImgFallback = function (imgEl, fallbackSrc) {
-    if (!imgEl || imgEl.dataset.tbbFbTried === "1") return;
-    imgEl.dataset.tbbFbTried = "1";
-    if (fallbackSrc) imgEl.src = fallbackSrc;
+    if (!imgEl) return;
+    const cur = imgEl.getAttribute("src") || "";
+    const relMatch = cur.match(/(\/(?:assets|samples)\/[^?#]+(?:\?[^#]*)?)/i);
+    const step = Number(imgEl.dataset.tbbFbStep || "0");
+    if (relMatch && step === 0 && cur.indexOf(TBB_CDN_PRIMARY) === -1) {
+      imgEl.dataset.tbbFbStep = "1";
+      imgEl.src = TBB_CDN_PRIMARY + relMatch[1];
+      return;
+    }
+    if (relMatch && step <= 1 && cur.indexOf(TBB_CDN_BACKUP) === -1) {
+      imgEl.dataset.tbbFbStep = "2";
+      imgEl.src = TBB_CDN_BACKUP + relMatch[1];
+      return;
+    }
+    if (fallbackSrc && imgEl.dataset.tbbFbTried !== "1") {
+      imgEl.dataset.tbbFbTried = "1";
+      imgEl.src = tbbImgSrc(fallbackSrc);
+    }
   };
   window.tbbHandleSampleClick = function () {
     return true;
@@ -1633,7 +1660,7 @@
                       <button type="button" class="tbb-btn-secondary" onclick="window.tbbOpenPlateLightboxModal(${dl.plateNum}, '${escHtml(lightboxThumb)}', '${escHtml(loc.title)}', '${escHtml(dl.sampleUrl)}')">
                         ${TBB_ICONS.expand} <span>${escHtml(t("viewSampleBtn"))}</span>
                       </button>
-                      <a href="${escHtml(dl.sampleUrl)}" download="${escHtml(fileName)}" class="tbb-link-btn"><span>${escHtml(t("downloadSampleBtn"))}</span> ${TBB_ICONS.deliverables}</a>
+                      <a href="${escHtml(tbbImgSrc(dl.sampleUrl))}" download="${escHtml(fileName)}" class="tbb-link-btn"><span>${escHtml(t("downloadSampleBtn"))}</span> ${TBB_ICONS.deliverables}</a>
                     </div>
                   </div>
                 </article>
@@ -1875,10 +1902,10 @@
             </div>
             <div class="tbb-ba-stage">
               <div class="tbb-ba-layer is-after">
-                <img src="/assets/logos/arco_iter5_full.png" alt="${escHtml(trWeb("Después · Vector Limpio"))}" />
+                <img src="${escHtml(tbbImgSrc('/assets/logos/arco_iter5_full.png'))}" onerror="window.tbbImgFallback(this)" alt="${escHtml(trWeb("Después · Vector Limpio"))}" />
               </div>
               <div id="tbbBeforeClipLayer" class="tbb-ba-layer is-before" style="clip-path:inset(0 ${100 - baVal}% 0 0);">
-                <img src="/assets/logos/arco_ingenieria_logo4k_original.png" alt="${escHtml(trWeb("Antes · Logo Original"))}" />
+                <img src="${escHtml(tbbImgSrc('/assets/logos/arco_ingenieria_logo4k_original.png'))}" onerror="window.tbbImgFallback(this)" alt="${escHtml(trWeb("Antes · Logo Original"))}" />
               </div>
               <span class="tbb-ba-tag is-before-tag">${escHtml(trWeb("Antes · Logo Original"))}</span>
               <span class="tbb-ba-tag is-after-tag">${escHtml(trWeb("Después · Vector Limpio"))}</span>
@@ -1918,7 +1945,7 @@
         <h2>${escHtml(trWeb(activeIter.name))}</h2>
         <p>${escHtml(trWeb(activeIter.desc))}</p>
         <div class="tbb-case-main-img-wrap" onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(activeIter.logoImg)}', '${escHtml(trWeb(activeIter.name))}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')">
-          <img src="${escHtml(tbbImgSrc(activeIter.logoImg))}" alt="${escHtml(trWeb(activeIter.name))}" />
+          <img src="${escHtml(tbbImgSrc(activeIter.logoImg))}" onerror="window.tbbImgFallback(this)" alt="${escHtml(trWeb(activeIter.name))}" />
         </div>
       `;
       document.querySelectorAll(".tbb-case-iter-btn").forEach((btn) => {
@@ -1949,7 +1976,7 @@
               <h2>${escHtml(trWeb(activeIter.name))}</h2>
               <p>${escHtml(trWeb(activeIter.desc))}</p>
               <div class="tbb-case-main-img-wrap" onclick="window.tbbOpenPlateLightboxModal(1, '${escHtml(activeIter.logoImg)}', '${escHtml(trWeb(activeIter.name))}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')">
-                <img src="${escHtml(tbbImgSrc(activeIter.logoImg))}" alt="${escHtml(trWeb(activeIter.name))}" />
+                <img src="${escHtml(tbbImgSrc(activeIter.logoImg))}" onerror="window.tbbImgFallback(this)" alt="${escHtml(trWeb(activeIter.name))}" />
               </div>
             </div>
 
@@ -1961,7 +1988,7 @@
                   class="tbb-case-iter-btn ${it.id === selId ? "active" : ""}"
                   onclick="window.tbbSelectArcoCaseIteration(${it.id})"
                 >
-                  <img src="${escHtml(tbbImgSrc(it.logoImg))}" alt="${escHtml(trWeb(it.name))}" loading="lazy" />
+                  <img src="${escHtml(tbbImgSrc(it.logoImg))}" onerror="window.tbbImgFallback(this)" alt="${escHtml(trWeb(it.name))}" loading="lazy" />
                   <strong>${escHtml(trWeb(it.name))}</strong>
                   <span>${escHtml(trWeb(it.badge))}</span>
                 </button>
@@ -1980,7 +2007,7 @@
                   onclick="window.tbbOpenPlateLightboxModal(${idx + 1}, '${escHtml(pl.img)}', '${escHtml(trWeb(pl.code))} · ${escHtml(trWeb(pl.title))}', '/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf')"
                 >
                   <div class="tbb-plate-crop-frame">
-                    <img src="${escHtml(tbbImgSrc(pl.img))}" alt="${escHtml(trWeb(pl.title))}" loading="lazy" />
+                    <img src="${escHtml(tbbImgSrc(pl.img))}" onerror="window.tbbImgFallback(this)" alt="${escHtml(trWeb(pl.title))}" loading="lazy" />
                   </div>
                   <div class="tbb-plate-thumb-caption">
                     <span>${escHtml(trWeb(pl.code))}</span>
@@ -1992,7 +2019,7 @@
           </div>
 
           <div class="tbb-centered-cta-row">
-            <a href="/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf" target="_blank" rel="noopener" class="tbb-btn-secondary">
+            <a href="${escHtml(tbbImgSrc('/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf'))}" target="_blank" rel="noopener" class="tbb-btn-secondary">
               ${TBB_ICONS.deliverables}
               <span>${escHtml(trWeb("Abrir PDF Completo de Muestra (36 páginas)"))}</span>
             </a>
@@ -2437,7 +2464,7 @@
   window.tbbOpenPlateLightboxModal = function (plateNum, customImgUrl, customTitle, customSampleUrl) {
     const imgUrl = customImgUrl || "/assets/app_captures/pdf_lamina_01_portada.png";
     const titleStr = customTitle || (getLang() === "en" ? "High-Resolution Sample" : "Muestra en Alta Resolución");
-    const sampleHref = customSampleUrl || "/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf";
+    const sampleHref = tbbImgSrc(customSampleUrl || "/assets/samples/Manual_Marca_36_Laminas_ARCO_Ingenieria_Luis_Ponce.pdf");
     const dlFileName = String(sampleHref).split("/").pop();
 
     let ov = document.getElementById("tbbPlateLightboxOverlay");

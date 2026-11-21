@@ -2060,12 +2060,23 @@
   }
   window.getActiveCanvasState = getActiveCanvasState;
 
+  function resolveCleanBrandbookBrandName(cs, brandNameOpt) {
+    if (brandNameOpt && String(brandNameOpt).trim()) return String(brandNameOpt).trim();
+    if (typeof window !== "undefined" && typeof window.tbbGetUserBrandDisplay === "function") {
+      return window.tbbGetUserBrandDisplay("Mi Marca");
+    }
+    const raw = String((cs && cs.brandName) || "").trim();
+    if (!raw || /^(mi nueva marca|marca en creaci[oó]n.*)$/i.test(raw)) return "Mi Marca";
+    if (!(cs && cs.isOfficialAdminTbbPreset) && /^the\s*best\s*brand$/i.test(raw)) return "Mi Marca";
+    return raw;
+  }
+
   // Metadatos Oficiales de las 30 Láminas adaptados dinámicamente a la Arquitectura de Marca, Oferta y Estilo de Trazos del Usuario
   window.getUniversalImproBearsGuide30PlatesMeta = function (brandNameOpt) {
     const cs = getActiveCanvasState();
     const st = window.tbbState || {};
     const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
-    const bName = brandNameOpt || ((cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand");
+    const bName = resolveCleanBrandbookBrandName(cs, brandNameOpt);
     const bUpper = bName.toUpperCase();
     const rawGiro = (cs.custom_business_type || cs.step0_short_essence || "Soluciones Estratégicas, Ingeniería de Valor y Experiencia de Marca").trim();
     const bGiro = window.tbbRefineUserCopyOrthoAndClarity(rawGiro, "giro", bName, rawGiro);
@@ -2409,8 +2420,8 @@
   window.buildActiveBrandProfileForV80 = function () {
     const cs = getActiveCanvasState();
     const st = window.tbbState || {};
-    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "The Best Brand";
-    const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "the_best_brand";
+    const bName = resolveCleanBrandbookBrandName(cs);
+    const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "mi_marca";
     
     const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
     const uploadedUrl = (activeIt && (activeIt.nanoBananaSymbolUrl || activeIt.nanoBananaFullArtworkUrl || activeIt.uploadedLogoDataUrl))
@@ -2511,7 +2522,7 @@
     const idx = Math.max(0, Math.min(29, Number(plateIdx || 0)));
     const cs = getActiveCanvasState();
     const st = window.tbbState || {};
-    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+    const bName = resolveCleanBrandbookBrandName(cs);
 
     // Motor V80 Flawless (Lienzo Claro #FFFFFF · Directiva Max C-00)
     if (window.TBB_V80_PLATES_GENERATOR && typeof window.TBB_V80_PLATES_GENERATOR.generateBrandbook30Plates === "function") {
@@ -4679,7 +4690,9 @@
     if (typeof window.html2canvas === "function") return Promise.resolve(window.html2canvas);
     return new Promise((resolve, reject) => {
       const s = document.createElement("script");
-      s.src = "/assets/vendor/html2canvas.min.js?v=1.4.1";
+      s.src = (typeof window.tbbResolveAssetUrl === "function")
+        ? window.tbbResolveAssetUrl("/assets/vendor/html2canvas.min.js?v=1.4.1")
+        : "/assets/vendor/html2canvas.min.js?v=1.4.1";
       s.onload = () => resolve(window.html2canvas);
       s.onerror = () => {
         const sFallback = document.createElement("script");
@@ -4837,7 +4850,7 @@
     const cs = getActiveCanvasState();
     const st = window.tbbState || {};
     const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
-    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+    const bName = resolveCleanBrandbookBrandName(cs);
     const pal = extractColorsFromLogoState(activeIt, st);
 
     if (!document.getElementById("tbb-v80-styles") && window.TBB_V80_PLATES_GENERATOR && typeof window.TBB_V80_PLATES_GENERATOR.getTheBestBrandStyles === "function") {
@@ -5075,7 +5088,7 @@
     const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
     const mods = (activeIt && activeIt.mods) || {};
 
-    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+    const bName = resolveCleanBrandbookBrandName(cs);
     const bUpper = bName.toUpperCase();
     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
     const rawIndustry = (cs.custom_business_type || cs.step0_short_essence || "Soluciones Estratégicas, Ingeniería de Valor y Experiencia de Marca").trim();
@@ -7965,7 +7978,7 @@
   // Genera y descarga el archivo .PDF real de 30 láminas hoja por hoja respetando 100% el logotipo subido y los datos de sesión
   window.downloadReal30PlatesPDFDirect = async function (triggerBtn) {
     const cs = getActiveCanvasState();
-    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+    const bName = resolveCleanBrandbookBrandName(cs);
     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
     const fileName = `Manual_Marca_30_Laminas_${slug}.pdf`;
 
@@ -8021,7 +8034,7 @@
   window.buildUniversal30PlatesStandaloneHTML = function () {
     const cs = getActiveCanvasState();
     const st = window.tbbState || {};
-    const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "TheBestBrand";
+    const bName = resolveCleanBrandbookBrandName(cs);
     const slug = bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "thebestbrand";
     const isTBB = /the_?best_?brand/i.test(slug);
 
@@ -8032,7 +8045,7 @@
 
     const activeIt = (st.logoIterations && st.logoIterations[st.logoIterationIndex - 1]) || null;
     const pal = extractColorsFromLogoState(activeIt, st);
-    const originUrl = window.location.origin;
+    const originUrl = window.TBB_CDN_ASSET_ORIGIN || window.location.origin;
 
     const sheets = [];
     for (let i = 0; i < 30; i++) {

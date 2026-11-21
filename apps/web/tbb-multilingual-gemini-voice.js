@@ -839,11 +839,23 @@
     }
 
     const apiKey = getGeminiApiKey();
+    const curHost = String((window.location && window.location.hostname) || "").toLowerCase();
+    const isFrozenEdgeDomain = (curHost === "thebestbrand.app" || curHost === "www.thebestbrand.app");
 
-    // 1. Ruta Rápida Principal: `/api/v1/tts/aura-fast` (caché RAM/disco server-side + recorte de silencio)
-    {
+    const saveClipToCaches = (payload) => {
+      if (window._tbbGeminiTtsCache.size >= 80) {
+        const firstKey = window._tbbGeminiTtsCache.keys().next().value;
+        window._tbbGeminiTtsCache.delete(firstKey);
+      }
+      window._tbbGeminiTtsCache.set(cacheKey, payload);
+      idbSaveVoiceClip(cacheKey, payload);
+      return payload;
+    };
+
+    // 1. Ruta Rápida Local/Railway: `/api/v1/tts/aura-fast` (solo cuando el host actual lo soporta sin 404)
+    if (!isFrozenEdgeDomain && !window._tbbAuraFastUnavailable) {
       const fastCtrl = TBBAudioDirector.registerController(new AbortController());
-      const fastTimer = setTimeout(() => fastCtrl.abort(), 5200);
+      const fastTimer = setTimeout(() => fastCtrl.abort(), 4500);
       try {
         const resFast = await fetch("/api/v1/tts/aura-fast", {
           method: "POST",
@@ -858,26 +870,21 @@
         });
         clearTimeout(fastTimer);
         TBBAudioDirector.unregisterController(fastCtrl);
-        if (resFast.ok) {
+        if (resFast.status === 404) {
+          window._tbbAuraFastUnavailable = true;
+        } else if (resFast.ok) {
           const dataTts = await resFast.json();
           if (dataTts && dataTts.audio_wav_base64) {
             const rawBytes = base64ToUint8Array(dataTts.audio_wav_base64);
             if (rawBytes && rawBytes.byteLength > 100) {
-              const payload = {
+              return saveClipToCaches({
                 wavBytes: rawBytes,
                 durationSec: 6.0,
                 sampleRate: 24000,
                 modelUsed: "aura-fast-aoede",
                 voiceName,
                 langCode
-              };
-              if (window._tbbGeminiTtsCache.size >= 80) {
-                const firstKey = window._tbbGeminiTtsCache.keys().next().value;
-                window._tbbGeminiTtsCache.delete(firstKey);
-              }
-              window._tbbGeminiTtsCache.set(cacheKey, payload);
-              idbSaveVoiceClip(cacheKey, payload);
-              return payload;
+              });
             }
           }
         }
@@ -891,16 +898,16 @@
       return null;
     }
 
-    // 2. Respaldo Proxy Gemini TTS si `/api/v1/tts/aura-fast` no respondió
+    // 2. Ruta Primaria en Producción (`thebestbrand.app`): Gemini Native Neural TTS (`Aoede` 24kHz) vía `/api/v1/gemini/proxy`
     const now = Date.now();
-    for (let i = 0; i < 2 && i < GEMINI_TTS_MODELS.length; i++) {
+    for (let i = 0; i < GEMINI_TTS_MODELS.length; i++) {
       const modelName = GEMINI_TTS_MODELS[i];
       const cooldownUntil = window._tbbGeminiModel429CooldownUntil[modelName] || 0;
       if (now < cooldownUntil) continue;
       if (reqGenId !== TBBAudioDirector.genId || reqTicketId !== TBBAudioDirector.ticketId) return null;
 
       const controller = TBBAudioDirector.registerController(new AbortController());
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      const timeoutId = setTimeout(() => controller.abort(), 6500);
       try {
         const res = await fetch("/api/v1/gemini/proxy", {
           method: "POST",
@@ -920,7 +927,7 @@
         clearTimeout(timeoutId);
         TBBAudioDirector.unregisterController(controller);
         if (res.status === 429) {
-          window._tbbGeminiModel429CooldownUntil[modelName] = Date.now() + 10 * 60 * 1000;
+          window._tbbGeminiModel429CooldownUntil[modelName] = Date.now() + 5 * 60 * 1000;
           continue;
         }
         if (!res.ok) continue;
@@ -937,25 +944,62 @@
           maxDurationSec
         );
         if (norm && norm.wavBytes && norm.wavBytes.byteLength > 100) {
-          if (window._tbbGeminiTtsCache.size >= 80) {
-            const firstKey = window._tbbGeminiTtsCache.keys().next().value;
-            window._tbbGeminiTtsCache.delete(firstKey);
-          }
-          const payload = {
+          return saveClipToCaches({
             wavBytes: norm.wavBytes,
             durationSec: norm.durationSec,
             sampleRate: norm.sampleRate,
             modelUsed: modelName,
             voiceName,
             langCode
-          };
-          window._tbbGeminiTtsCache.set(cacheKey, payload);
-          idbSaveVoiceClip(cacheKey, payload);
-          return payload;
+          });
         }
       } catch (err) {
         clearTimeout(timeoutId);
         TBBAudioDirector.unregisterController(controller);
+      }
+    }
+
+    if (reqGenId !== TBBAudioDirector.genId || reqTicketId !== TBBAudioDirector.ticketId) {
+      return null;
+    }
+
+    // 3. Respaldo `/api/tts/gemini` (200 OK verificado en Cloud Run `thebestbrand.app`) + Railway Failover
+    const fallbackTtsUrls = [
+      "/api/tts/gemini",
+      "https://thebestbrand-api-studio-production.up.railway.app/api/v1/tts/aura-fast"
+    ];
+    for (const fbUrl of fallbackTtsUrls) {
+      if (reqGenId !== TBBAudioDirector.genId || reqTicketId !== TBBAudioDirector.ticketId) return null;
+      const fbCtrl = TBBAudioDirector.registerController(new AbortController());
+      const fbTimer = setTimeout(() => fbCtrl.abort(), 6000);
+      try {
+        const resFb = await fetch(fbUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: fbCtrl.signal,
+          body: JSON.stringify({ text: cleanText, lang: langCode, voice_name: voiceName })
+        });
+        clearTimeout(fbTimer);
+        TBBAudioDirector.unregisterController(fbCtrl);
+        if (!resFb.ok) continue;
+        const dataFb = await resFb.json();
+        const b64 = dataFb && (dataFb.audio_wav_base64 || dataFb.audio_base64);
+        if (b64) {
+          const rawBytes = base64ToUint8Array(b64);
+          if (rawBytes && rawBytes.byteLength > 100) {
+            return saveClipToCaches({
+              wavBytes: rawBytes,
+              durationSec: 6.0,
+              sampleRate: 24000,
+              modelUsed: fbUrl,
+              voiceName,
+              langCode
+            });
+          }
+        }
+      } catch (e) {
+        clearTimeout(fbTimer);
+        TBBAudioDirector.unregisterController(fbCtrl);
       }
     }
     return null;
@@ -1184,10 +1228,21 @@
     const lang = SUPPORTED_LANGS[langOverride] ? langOverride : window.tbbGetLang();
     const key = typeof clipKeyOrStep === "number" ? `step_${Math.max(0, Math.min(6, clipKeyOrStep))}` : String(clipKeyOrStep || "step_0");
     const dict = AURA_VIVA_CAPSULE_TEXTS[key] || AURA_VIVA_CAPSULE_TEXTS.step_0;
+    const relPath = `/assets/audio/capsules/aura_viva_${key}_${lang}.mp3?v=132.0`;
+    const curHost = String((window.location && window.location.hostname) || "").toLowerCase();
+    const needsCdn = (curHost === "thebestbrand.app" || curHost === "www.thebestbrand.app");
+    const primaryUrl = needsCdn
+      ? `https://thebestbrand-studio.web.app${relPath}`
+      : (typeof window.tbbResolveAssetUrl === "function" ? window.tbbResolveAssetUrl(relPath) : relPath);
     return {
       key,
       lang,
-      url: `/assets/audio/capsules/aura_viva_${key}_${lang}.mp3?v=129.0`,
+      url: primaryUrl,
+      backupUrls: [
+        `https://thebestbrand-studio.web.app${relPath}`,
+        `https://thebestbrand-api-studio-production.up.railway.app${relPath}`,
+        relPath
+      ].filter((u, i, a) => u && a.indexOf(u) === i),
       text: dict[lang] || dict.es
     };
   };
@@ -1217,6 +1272,7 @@
       url: meta.url,
       muted: isMuted,
       paused: true,
+      autoplayBlocked: false,
       currentTime: 0,
       duration: 14.5,
       pause() {
@@ -1260,6 +1316,22 @@
       }
     };
 
+    const fireAutoplayBlocked = () => {
+      if (finishedOnce) return;
+      if (maxGuardTimer) { clearTimeout(maxGuardTimer); maxGuardTimer = null; }
+      handle.paused = true;
+      handle.autoplayBlocked = true;
+      window.isSpeakingLive = false;
+      if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+        try { window.tbbSyncSpeakingIndicatorUI(false); } catch (e) {}
+      }
+      if (typeof hooks.onAutoplayBlocked === "function") {
+        try { hooks.onAutoplayBlocked(handle); } catch (e) {}
+      } else if (typeof hooks.onStateChange === "function") {
+        try { hooks.onStateChange(handle); } catch (e) {}
+      }
+    };
+
     TBBAudioDirector.activeCapsuleAudio = handle;
     TBBAudioDirector.capsuleHooks = hooks;
 
@@ -1278,44 +1350,55 @@
     }
 
     maxGuardTimer = setTimeout(() => {
-      if (TBBAudioDirector.activeCapsuleAudio === handle) {
+      if (TBBAudioDirector.activeCapsuleAudio === handle && !handle.autoplayBlocked) {
         handle.pause();
         fireFinished();
       }
-    }, 15200);
+    }, 16500);
 
     (async () => {
+      let fetchedArrayBuffer = null;
+      let workingAudioUrl = meta.url;
+      let decoded = window._tbbCapsuleBufferCache.get(meta.key + "::" + meta.lang) || null;
+
+      if (!decoded) {
+        for (const candidateUrl of meta.backupUrls) {
+          if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) return;
+          const dlCtrl = TBBAudioDirector.registerController(new AbortController());
+          const dlTimeout = setTimeout(() => dlCtrl.abort(), 6500);
+          try {
+            const resp = await fetch(candidateUrl, { signal: dlCtrl.signal, mode: "cors" });
+            clearTimeout(dlTimeout);
+            TBBAudioDirector.unregisterController(dlCtrl);
+            if (resp.ok) {
+              const arrBuf = await resp.arrayBuffer();
+              if (arrBuf && arrBuf.byteLength > 256) {
+                fetchedArrayBuffer = arrBuf;
+                workingAudioUrl = candidateUrl;
+                break;
+              }
+            }
+          } catch (fetchErr) {
+            clearTimeout(dlTimeout);
+            TBBAudioDirector.unregisterController(dlCtrl);
+          }
+        }
+      }
+
+      if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) return;
+
       // 1. Ruta Primaria: WebAudio AudioBufferSourceNode desbloqueado (100% inmune a bloqueo de <audio> en iOS WKWebView / TestFlight)
       if (ctx && typeof ctx.decodeAudioData === "function") {
         try {
           if (ctx.state === "suspended") {
             await ctx.resume().catch(() => {});
           }
-          if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) return;
-
-          let decoded = window._tbbCapsuleBufferCache.get(meta.url) || null;
-          if (!decoded) {
-            const dlCtrl = TBBAudioDirector.registerController(new AbortController());
-            const dlTimeout = setTimeout(() => dlCtrl.abort(), 7000);
-            try {
-              const resp = await fetch(meta.url, { signal: dlCtrl.signal });
-              clearTimeout(dlTimeout);
-              TBBAudioDirector.unregisterController(dlCtrl);
-              if (resp.ok) {
-                const arrBuf = await resp.arrayBuffer();
-                if (arrBuf && arrBuf.byteLength > 256) {
-                  decoded = await ctx.decodeAudioData(arrBuf.slice(0));
-                  if (decoded) {
-                    window._tbbCapsuleBufferCache.set(meta.url, decoded);
-                  }
-                }
-              }
-            } catch (fetchErr) {
-              clearTimeout(dlTimeout);
-              TBBAudioDirector.unregisterController(dlCtrl);
+          if (!decoded && fetchedArrayBuffer) {
+            decoded = await ctx.decodeAudioData(fetchedArrayBuffer.slice(0));
+            if (decoded) {
+              window._tbbCapsuleBufferCache.set(meta.key + "::" + meta.lang, decoded);
             }
           }
-
           if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) return;
 
           if (decoded && ctx.state === "running") {
@@ -1331,6 +1414,7 @@
             TBBAudioDirector.activeBufferSources.add(src);
             handle.duration = Math.min(15.0, decoded.duration || 14.5);
             handle.paused = false;
+            handle.autoplayBlocked = false;
             startedAtCtxTime = ctx.currentTime;
             window.isSpeakingLive = true;
             if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
@@ -1372,9 +1456,14 @@
 
       if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) return;
 
-      // 2. Respaldo HTML5 Audio independiente (SIN createMediaElementSource para no quedar silenciado si AudioContext está suspendido)
+      // 2. Respaldo HTML5 Audio independiente (usando Blob local si ya descargó el MP3 para evitar doble red y problemas CORS)
+      let blobAudioUrl = "";
       try {
-        const aud = new Audio(meta.url);
+        if (fetchedArrayBuffer) {
+          blobAudioUrl = URL.createObjectURL(new Blob([fetchedArrayBuffer], { type: "audio/mpeg" }));
+        }
+        const aud = new Audio(blobAudioUrl || workingAudioUrl);
+        if (!blobAudioUrl) aud.crossOrigin = "anonymous";
         aud.preload = "auto";
         aud.playsInline = true;
         aud.defaultPlaybackRate = 1.0;
@@ -1382,13 +1471,25 @@
         fallbackAud = aud;
         TBBAudioDirector.activeHtmlAudios.add(aud);
 
+        const revokeBlob = () => {
+          if (blobAudioUrl) {
+            try { URL.revokeObjectURL(blobAudioUrl); } catch (e) {}
+            blobAudioUrl = "";
+          }
+        };
+
         aud.onplay = () => {
           if (myGen !== TBBAudioDirector.genId || myTicket !== TBBAudioDirector.ticketId) {
             try { aud.pause(); } catch (e) {}
+            revokeBlob();
             return;
           }
           handle.paused = false;
+          handle.autoplayBlocked = false;
           window.isSpeakingLive = true;
+          if (typeof window.tbbSyncSpeakingIndicatorUI === "function") {
+            try { window.tbbSyncSpeakingIndicatorUI(true); } catch (e) {}
+          }
           if (typeof hooks.onStateChange === "function") hooks.onStateChange(handle);
         };
         aud.onpause = () => {
@@ -1401,17 +1502,36 @@
           handle.duration = Math.min(15.0, aud.duration || 14.5);
           if (aud.currentTime >= 15.0) {
             try { aud.pause(); } catch (e) {}
+            revokeBlob();
             fireFinished();
             return;
           }
           if (typeof hooks.onTimeUpdate === "function") hooks.onTimeUpdate(handle);
         };
-        aud.onended = () => fireFinished();
-        aud.onerror = () => fireFinished();
+        aud.onended = () => { revokeBlob(); fireFinished(); };
+        aud.onerror = async () => {
+          revokeBlob();
+          // Último respaldo: sintetizar cápsula en vivo con Aoede si todos los CDN fallaron
+          try {
+            const synth = await window.tbbSynthesizeGeminiTTSWav(meta.text, { lang: meta.lang, genId: myGen, ticketId: myTicket, maxDurationSec: 12 });
+            if (synth && synth.wavBytes && myGen === TBBAudioDirector.genId && myTicket === TBBAudioDirector.ticketId) {
+              const ok = await playWavBytesInBrowser(synth.wavBytes, 13000, { genId: myGen, ticketId: myTicket, playbackRate: 1.06 });
+              if (ok) { fireFinished(); return; }
+            }
+          } catch (e) {}
+          fireFinished();
+        };
 
         const p = aud.play();
         if (p && typeof p.catch === "function") {
-          p.catch(() => fireFinished());
+          p.catch(err => {
+            revokeBlob();
+            if (err && (err.name === "NotAllowedError" || /interact|gesture|not allowed/i.test(String(err.message || "")))) {
+              fireAutoplayBlocked();
+            } else {
+              fireFinished();
+            }
+          });
         }
       } catch (fallbackErr) {
         fireFinished();
@@ -1454,12 +1574,37 @@
       return;
     }
 
+    let played = false;
     if (synthResult && synthResult.wavBytes) {
-      await playWavBytesInBrowser(synthResult.wavBytes, maxDurationMs, {
+      played = await playWavBytesInBrowser(synthResult.wavBytes, maxDurationMs, {
         genId: myGenId,
         ticketId: myReqId,
         playbackRate: AURA_DIALOGUE_PLAYBACK_RATE
       });
+    }
+
+    // Respaldo nativo del sistema si la red falló para que Aura jamás quede muda tras un clic del usuario
+    if (!played && myGenId === TBBAudioDirector.genId && myReqId === TBBAudioDirector.ticketId && !window.voiceMuted && "speechSynthesis" in window) {
+      try {
+        window.speechSynthesis.cancel();
+        const ut = new SpeechSynthesisUtterance(cleanText);
+        const cfg = window.tbbGetLangConfig();
+        ut.lang = (cfg && cfg.locale) || "es-MX";
+        ut.rate = 1.06;
+        ut.onstart = () => {
+          window.isSpeakingLive = true;
+          if (typeof window.tbbSyncSpeakingIndicatorUI === "function") window.tbbSyncSpeakingIndicatorUI(true);
+        };
+        ut.onend = () => {
+          window.isSpeakingLive = false;
+          if (typeof window.tbbSyncSpeakingIndicatorUI === "function") window.tbbSyncSpeakingIndicatorUI(false);
+        };
+        ut.onerror = () => {
+          window.isSpeakingLive = false;
+          if (typeof window.tbbSyncSpeakingIndicatorUI === "function") window.tbbSyncSpeakingIndicatorUI(false);
+        };
+        window.speechSynthesis.speak(ut);
+      } catch (e) {}
     }
   };
 

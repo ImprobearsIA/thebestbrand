@@ -3639,7 +3639,7 @@ function generateFullBrandbookDocHtml(brand) {
     getTheBestBrandStyles: getUniversalBrandbookStyles,
     generateFullBrandbookDocHtml: generateFullBrandbookDocHtml,
     renderTheBestBrandPlate: function (idx) {
-      var isTbb = /the\s*best\s*brand/i.test(window.canvasState?.brandName || "TheBestBrand");
+      var isTbb = Boolean(window.canvasState?.isOfficialAdminTbbPreset && /the\s*best\s*brand/i.test(window.canvasState?.brandName || ""));
       var brandData = isTbb ? {
         name: "The Best Brand",
         slug: "the_best_brand",

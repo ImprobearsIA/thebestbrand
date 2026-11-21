@@ -43,6 +43,40 @@
     ],
     "headers": [
       {
+        "source": "/assets/**",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          },
+          {
+            "key": "Access-Control-Allow-Methods",
+            "value": "GET, HEAD, OPTIONS"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
+      },
+      {
+        "source": "/samples/**",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          },
+          {
+            "key": "Access-Control-Allow-Methods",
+            "value": "GET, HEAD, OPTIONS"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
+      },
+      {
         "source": "/",
         "headers": [
           {
@@ -58,6 +92,10 @@
       {
         "source": "**",
         "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          },
           {
             "key": "Cache-Control",
             "value": "no-store, no-cache, must-revalidate, max-age=0"

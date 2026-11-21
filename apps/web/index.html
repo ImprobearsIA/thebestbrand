@@ -44,52 +44,96 @@
   }
   </script>
 
+  <script>
+    (function () {
+      var host = String(window.location && window.location.hostname || "").toLowerCase();
+      var needsCdn = (host === "thebestbrand.app" || host === "www.thebestbrand.app");
+      var CDN_PRIMARY = "https://thebestbrand-studio.web.app";
+      var CDN_BACKUP = "https://thebestbrand-api-studio-production.up.railway.app";
+      window.TBB_CDN_ASSET_ORIGIN = needsCdn ? CDN_PRIMARY : "";
+      window.tbbResolveAssetUrl = function (rawUrl) {
+        var s = String(rawUrl || "").trim();
+        if (!s || /^data:|^blob:|^https?:\/\//i.test(s)) return s;
+        if (needsCdn && /^\/(assets|samples)\//i.test(s)) {
+          return CDN_PRIMARY + s;
+        }
+        return s;
+      };
+      window.addEventListener("error", function (ev) {
+        var el = ev && ev.target;
+        if (!el || !el.tagName) return;
+        var tag = el.tagName.toUpperCase();
+        if (tag !== "IMG" && tag !== "AUDIO" && tag !== "SOURCE" && tag !== "VIDEO") return;
+        var cur = el.getAttribute("src") || "";
+        if (!cur || /^data:|^blob:/i.test(cur)) return;
+        var relMatch = cur.match(/(\/(?:assets|samples)\/[^?#]+(?:\?[^#]*)?)/i);
+        if (!relMatch) return;
+        var relPath = relMatch[1];
+        var stage = Number(el.getAttribute("data-tbb-cdn-retry") || "0");
+        if (stage === 0 && cur.indexOf(CDN_PRIMARY) === -1) {
+          el.setAttribute("data-tbb-cdn-retry", "1");
+          el.src = CDN_PRIMARY + relPath;
+        } else if (stage <= 1 && cur.indexOf(CDN_BACKUP) === -1) {
+          el.setAttribute("data-tbb-cdn-retry", "2");
+          el.src = CDN_BACKUP + relPath;
+        }
+      }, true);
+    })();
+  </script>
+
   <style id="tbbAwwwardsStylesheet">
     @font-face {
       font-family: 'Plus Jakarta Sans';
-      src: url('/assets/fonts/PlusJakartaSans-Regular.ttf') format('truetype');
+      src: url('https://thebestbrand-studio.web.app/assets/fonts/PlusJakartaSans-Regular.ttf') format('truetype'),
+           url('/assets/fonts/PlusJakartaSans-Regular.ttf') format('truetype');
       font-weight: 400;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'Plus Jakarta Sans';
-      src: url('/assets/fonts/PlusJakartaSans-Regular.ttf') format('truetype');
+      src: url('https://thebestbrand-studio.web.app/assets/fonts/PlusJakartaSans-Regular.ttf') format('truetype'),
+           url('/assets/fonts/PlusJakartaSans-Regular.ttf') format('truetype');
       font-weight: 500;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'Plus Jakarta Sans';
-      src: url('/assets/fonts/PlusJakartaSans-Bold.ttf') format('truetype');
+      src: url('https://thebestbrand-studio.web.app/assets/fonts/PlusJakartaSans-Bold.ttf') format('truetype'),
+           url('/assets/fonts/PlusJakartaSans-Bold.ttf') format('truetype');
       font-weight: 600;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'Plus Jakarta Sans';
-      src: url('/assets/fonts/PlusJakartaSans-Bold.ttf') format('truetype');
+      src: url('https://thebestbrand-studio.web.app/assets/fonts/PlusJakartaSans-Bold.ttf') format('truetype'),
+           url('/assets/fonts/PlusJakartaSans-Bold.ttf') format('truetype');
       font-weight: 700;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'Montserrat';
-      src: url('/assets/fonts/Montserrat-Regular.ttf') format('truetype');
+      src: url('https://thebestbrand-studio.web.app/assets/fonts/Montserrat-Regular.ttf') format('truetype'),
+           url('/assets/fonts/Montserrat-Regular.ttf') format('truetype');
       font-weight: 500;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'Montserrat';
-      src: url('/assets/fonts/Montserrat-Bold.ttf') format('truetype');
+      src: url('https://thebestbrand-studio.web.app/assets/fonts/Montserrat-Bold.ttf') format('truetype'),
+           url('/assets/fonts/Montserrat-Bold.ttf') format('truetype');
       font-weight: 600;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'Montserrat';
-      src: url('/assets/fonts/Montserrat-Bold.ttf') format('truetype');
+      src: url('https://thebestbrand-studio.web.app/assets/fonts/Montserrat-Bold.ttf') format('truetype'),
+           url('/assets/fonts/Montserrat-Bold.ttf') format('truetype');
       font-weight: 700;
       font-style: normal;
       font-display: swap;
@@ -269,7 +313,7 @@
       updateScrollBar();
     })();
   </script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=131.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=131.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=132.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=132.0"></script>
 </body>
 </html>
