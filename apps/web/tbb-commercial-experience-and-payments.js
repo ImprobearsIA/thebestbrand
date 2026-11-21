@@ -2504,18 +2504,20 @@
 
     ov.innerHTML = `
       <div class="tbb-modal-card is-capsule" onclick="event.stopPropagation()">
-        <div class="tbb-modal-head">
+        <div class="tbb-modal-head is-capsule-head">
           <div class="tbb-capsule-top-pills">
             ${[0, 1, 2, 3, 4, 5, 6].map((idx) => `
               <button type="button" class="tbb-mini-pill ${idx === s ? "active" : ""}" onclick="window.tbbOpenVideoPopupModal(${idx}, '${l}')">0${idx}</button>
             `).join("")}
           </div>
-          <div class="tbb-capsule-lang-pills">
-            ${modalLangs.map((ml) => `
-              <button type="button" class="tbb-mini-pill ${ml.code === l ? "is-orange" : ""}" onclick="window.tbbOpenVideoPopupModal(${s}, '${ml.code}')">${ml.label}</button>
-            `).join("")}
+          <div class="tbb-capsule-head-right">
+            <div class="tbb-capsule-lang-pills">
+              ${modalLangs.map((ml) => `
+                <button type="button" class="tbb-mini-pill ${ml.code === l ? "is-orange" : ""}" onclick="window.tbbOpenVideoPopupModal(${s}, '${ml.code}')">${ml.label}</button>
+              `).join("")}
+            </div>
+            <button type="button" class="tbb-icon-close-btn" onclick="window.tbbCloseVideoPopupModal()" aria-label="Cerrar">${TBB_ICONS.close}</button>
           </div>
-          <button type="button" class="tbb-icon-close-btn" onclick="window.tbbCloseVideoPopupModal()" aria-label="Cerrar">${TBB_ICONS.close}</button>
         </div>
 
         <div class="tbb-capsule-grid">
@@ -3846,8 +3848,8 @@
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
-        gap: 12px;
-        padding: 12px 18px;
+        gap: 10px;
+        padding: 11px 16px;
         background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
         border-bottom: 1px solid rgba(13, 37, 64, 0.08);
       }
@@ -3877,14 +3879,14 @@
       .tbb-step-jump-pill {
         display: inline-flex;
         align-items: center;
-        gap: 5px;
-        padding: 6px 12px;
+        gap: 4px;
+        padding: 5px 10px;
         border-radius: 999px;
         border: 1px solid rgba(13, 37, 64, 0.10);
         background: #FFFFFF;
         color: #334155;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.875rem;
+        font-size: 0.84rem;
         font-weight: 600;
         font-variant-numeric: tabular-nums;
         cursor: pointer;
@@ -4669,15 +4671,17 @@
         transition: transform 0.15s var(--tbb-ds-ease-press);
       }
       .tbb-icon-close-btn:active { transform: scale(0.94); }
-      .tbb-capsule-top-pills, .tbb-capsule-lang-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+      .tbb-capsule-top-pills, .tbb-capsule-lang-pills { display: flex; gap: 4px; flex-wrap: nowrap; }
+      .tbb-capsule-head-right { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-left: auto; }
+      .tbb-modal-head.is-capsule-head { gap: 8px; padding-bottom: 11px; margin-bottom: 12px; }
       .tbb-mini-pill {
-        padding: 5px 11px;
+        padding: 4px 9px;
         border-radius: 999px;
         border: 1px solid rgba(13, 37, 64, 0.12);
         background: #F8FAFC;
         color: #0D2540;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.875rem;
+        font-size: 0.8125rem;
         font-weight: 600;
         font-variant-numeric: tabular-nums;
         cursor: pointer;
@@ -4947,6 +4951,10 @@
         .tbb-view-toggle-group { display: none !important; }
         .tbb-live-demo-toolbar-actions { width: 100%; }
         .tbb-toolbar-expand-btn.is-real-trial-cta { width: 100%; justify-content: center; min-height: 46px; font-size: 0.94rem; }
+        .tbb-modal-card.is-capsule { padding: 16px; }
+        .tbb-capsule-head-right { width: 100%; }
+        .tbb-capsule-top-pills { width: 100%; justify-content: space-between; }
+        .tbb-capsule-top-pills .tbb-mini-pill, .tbb-capsule-lang-pills .tbb-mini-pill { padding: 4px 7.5px; font-size: 0.78rem; }
         .tbb-live-demo-frame-shell { height: 76vh; min-height: 520px; }
         .tbb-atelier-spread-stage { grid-template-columns: 1fr; }
         .tbb-case-iter-selector-grid { grid-template-columns: 1fr; }

@@ -2044,6 +2044,14 @@
 
     const text = `${giroFull} ${brandNameRaw || ""} ${categoryRaw || ""} ${tpBeforeLabel} ${tpDuringLabel} ${tpAfterLabel}`.toLowerCase();
 
+    const trimAtWordBoundary = (str, maxLen = 26) => {
+      const s = String(str || "").trim();
+      if (s.length <= maxLen) return s;
+      const cut = s.slice(0, maxLen);
+      const sp = cut.lastIndexOf(" ");
+      return (sp > 10 ? cut.slice(0, sp) : cut).replace(/[,;:\-·]+$/, "").trim();
+    };
+
     const enrichPlanWithRealTouchpoints = (plan) => {
       if (!plan || !plan.slots) return plan;
       const giroNote = giroFull ? `Specific business industry: "${giroFull.slice(0, 140)}".` : "";
@@ -2054,17 +2062,17 @@
         plan.slots.buyer.promptObject = `${plan.slots.buyer.promptObject}. ${giroNote} Target customer context: ${buyerCtx}.`;
       }
       if (plan.slots.tpBefore && tpBeforeLabel) {
-        plan.slots.tpBefore.title = `${tpBeforeArr[0].slice(0, 28)} · ${bName}`;
+        plan.slots.tpBefore.title = `${trimAtWordBoundary(tpBeforeArr[0], 28)} · ${bName}`;
         plan.slots.tpBefore.badge = "ANTES · DESCUBRIMIENTO";
         plan.slots.tpBefore.promptObject = `Authentic real-world pre-purchase discovery touchpoint for "${bName}" (${giroFull || plan.sectorLabel}): showcase "${tpBeforeLabel}" in a photorealistic scene native to this exact business type, integrating the imported "${bName}" logo naturally onto the main physical or digital surface (NO unrelated office folders unless this business is consulting).`;
       }
       if (plan.slots.tpDuring && tpDuringLabel) {
-        plan.slots.tpDuring.title = `${tpDuringArr[0].slice(0, 28)} · ${bName}`;
+        plan.slots.tpDuring.title = `${trimAtWordBoundary(tpDuringArr[0], 28)} · ${bName}`;
         plan.slots.tpDuring.badge = "DURANTE · SERVICIO";
         plan.slots.tpDuring.promptObject = `Authentic real-world active service / live usage touchpoint for "${bName}" (${giroFull || plan.sectorLabel}): showcase "${tpDuringLabel}" in action for this exact industry, integrating the imported "${bName}" logo naturally and clearly onto the product, interface, equipment, or environment.`;
       }
       if (plan.slots.tpAfter && tpAfterLabel) {
-        plan.slots.tpAfter.title = `${tpAfterArr[0].slice(0, 28)} · ${bName}`;
+        plan.slots.tpAfter.title = `${trimAtWordBoundary(tpAfterArr[0], 28)} · ${bName}`;
         plan.slots.tpAfter.badge = "DESPUÉS · LEALTAD";
         plan.slots.tpAfter.promptObject = `Authentic real-world post-purchase follow-up and loyalty touchpoint for "${bName}" (${giroFull || plan.sectorLabel}): showcase "${tpAfterLabel}" tailored specifically to this exact industry, featuring the imported "${bName}" logo with photorealistic lighting and materials.`;
       }
