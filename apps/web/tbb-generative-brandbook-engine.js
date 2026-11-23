@@ -163,14 +163,14 @@
     return best;
   }
 
-  function trimTaglineAtWordBoundary(str, maxChars = 46) {
+  function trimTaglineAtWordBoundary(str, maxChars = 56) {
     const clean = String(str || "").replace(/\s+/g, " ").trim();
     if (!clean) return "";
     if (clean.length <= maxChars) return clean;
     const sliced = clean.slice(0, maxChars + 1);
     const lastSpace = sliced.lastIndexOf(" ");
     let cut = (lastSpace > Math.floor(maxChars * 0.45)) ? sliced.slice(0, lastSpace) : clean.slice(0, maxChars);
-    const dangling = /\s+(DE|DEL|LA|EL|LOS|LAS|UN|UNA|EN|CON|POR|PARA|Y|E|O|A|AL)$/i;
+    const dangling = /\s+(DE|DEL|LA|EL|LOS|LAS|UN|UNA|EN|CON|POR|PARA|Y|E|O|A|AL|TU|TUS|SU|SUS|MI|MIS|NUESTRO|NUESTRA)$/i;
     while (dangling.test(cut) && cut.includes(" ")) {
       cut = cut.replace(dangling, "").trim();
     }
@@ -183,7 +183,8 @@
     const bName = brand.name || "The Best Brand";
     const bUpper = bName.toUpperCase();
     const tagline = brand.tagline || "IDENTIDAD OFICIAL DE MARCA";
-    const taglineUpper = trimTaglineAtWordBoundary(tagline.toUpperCase(), 46);
+    const taglineUpper = trimTaglineAtWordBoundary(tagline.toUpperCase(), 56);
+    const taglineFontSize = taglineUpper.length > 44 ? 8.4 : 9.2;
     const pri = (brand.colors && brand.colors.pri) || "#0D2540";
     const sec = (brand.colors && brand.colors.sec) || "#426EAE";
     const acc = (brand.colors && brand.colors.acc) || "#FF7A00";
@@ -218,7 +219,7 @@
         `}
         ${taglineUpper ? `
           <line x1="150" y1="106" x2="310" y2="106" stroke="${lightGray}" stroke-width="1.4"/>
-          <text x="230" y="122" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.2" letter-spacing="2.0" fill="${pri}">${esc(taglineUpper)}</text>
+          <text x="230" y="122" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="${taglineFontSize}" letter-spacing="1.8" fill="${pri}">${esc(taglineUpper)}</text>
         ` : ""}
       </svg>
     ` : `

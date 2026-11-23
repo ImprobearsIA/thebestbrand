@@ -20596,10 +20596,10 @@
       width: 100%;
       max-width: 920px;
       margin: 0 auto;
-      padding: 6px 14px;
+      padding: 6px 10px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       box-sizing: border-box;
     }
 
@@ -20692,22 +20692,26 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
       width: 100%;
-      flex: 1;
+      flex: 0 0 auto;
+      height: auto;
       align-content: start;
-      min-height: 0;
     }
     .tbb-step32-proposal-btn {
       min-width: 0 !important;
       width: 100% !important;
       max-width: 100% !important;
+      height: auto !important;
+      min-height: 74px !important;
       box-sizing: border-box !important;
       overflow: hidden !important;
+      white-space: normal !important;
+      line-height: 1.25 !important;
     }
     .tbb-step32-proposal-roots {
       font-size: 0.82rem;
       font-weight: 600;
       color: #475569;
-      line-height: 1.28;
+      line-height: 1.32;
       white-space: normal;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -20718,7 +20722,12 @@
     @media (max-width: 680px) {
       .tbb-step32-proposals-grid {
         grid-template-columns: minmax(0, 1fr) !important;
-        gap: 7px !important;
+        gap: 8px !important;
+      }
+      .tbb-step32-proposal-btn {
+        padding: 10px 12px !important;
+        min-height: 78px !important;
+        gap: 4px !important;
       }
     }
     @media (max-width: 640px) {
@@ -21380,7 +21389,7 @@
     <div class="tbb-splash-card">
       <div class="tbb-splash-pill">
         <span style="width:8px; height:8px; border-radius:999px; background:#FF7A00; display:inline-block; box-shadow:0 0 10px #FF7A00;"></span>
-        <span>THE BEST BRAND · YOUR BRAND, NOW!!! · V135.0</span>
+        <span>THE BEST BRAND · YOUR BRAND, NOW!!! · V135.1</span>
       </div>
       <div class="tbb-splash-orb-stage">
         <canvas id="tbbSplashAuraCanvas" width="448" height="448"></canvas>
@@ -21420,7 +21429,7 @@
       <div id="tbbDiscreteProgressTrack" title="Progreso del paso actual">
         <div id="tbbDiscreteProgressFill" style="width:20%;"></div>
       </div>
-      <select id="tbbTopQuickStepJumper" aria-label="Saltar al Paso" onchange="tbbJumpToStep(Number(this.value), 1);" style="height:36px; padding:0 10px; border-radius:10px; border:1.5px solid #CBD5E1; border-bottom:2.5px solid #FF7A00; background:#FFFFFF; font-family:'Plus Jakarta Sans',sans-serif; font-size:0.875rem; font-weight:600; color:#0D2540; cursor:pointer;">
+      <select id="tbbTopQuickStepJumper" aria-label="Saltar al Paso" onchange="tbbJumpToStep(Number(this.value), 1);" style="height:36px; max-width:210px; padding:0 8px; border-radius:10px; border:1.5px solid #CBD5E1; border-bottom:2.5px solid #FF7A00; background:#FFFFFF; font-family:'Plus Jakarta Sans',sans-serif; font-size:0.84rem; font-weight:600; color:#0D2540; cursor:pointer;">
         <option value="0">Paso 0 · Tu Negocio</option>
         <option value="1">Paso 1 · Tu Esencia</option>
         <option value="2">Paso 2 · Dónde te Ven</option>
@@ -24070,7 +24079,8 @@
             if (lblAct) lblAct.textContent = "Hablar";
             if (iconAct) iconAct.innerHTML = window.TBBVectorArt("mic", "#0D2540", 18);
           }
-          if (lblNext) lblNext.textContent = st.subStep < 5 ? "Continuar" : "Completar Paso 1";
+          const isCompactStep1Btn = (typeof window !== "undefined" && window.innerWidth <= 420);
+          if (lblNext) lblNext.textContent = st.subStep < 5 ? "Continuar" : (isCompactStep1Btn ? "Ir al Paso 2" : "Completar Paso 1");
           const ideasOpen = Boolean(st._openIdeasSubStep === st.subStep);
 
           stage.innerHTML = `
@@ -24332,12 +24342,12 @@
                       const safeName = String(item.name || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                       const safeTag = String(item.tagline || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                       return `
-                        <button type="button" class="tbb-duo-btn tbb-step32-proposal-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectEvaluatedNamingCandidate('${safeName}', '${safeTag}');" style="display:flex !important; flex-direction:column !important; align-items:flex-start !important; justify-content:space-between !important; text-align:left !important; padding:8px 11px !important; min-height:66px !important; gap:3px !important;">
+                        <button type="button" class="tbb-duo-btn tbb-step32-proposal-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectEvaluatedNamingCandidate('${safeName}', '${safeTag}');" style="display:flex !important; flex-direction:column !important; align-items:flex-start !important; justify-content:flex-start !important; text-align:left !important; padding:9px 11px !important; height:auto !important; min-height:76px !important; gap:4px !important;">
                           <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:6px; min-width:0;">
                             <span style="font-family:var(--font-display); font-size:0.92rem; font-weight:900; color:#090D16; letter-spacing:0.01em; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHTML(item.name)}</span>
-                            <span style="font-family:var(--font-mono); font-size:0.8rem; font-weight:900; background:${isSel ? '#1D4ED8' : '#EFF6FF'}; color:${isSel ? '#FFFFFF' : '#1D4ED8'}; padding:2px 6px; border-radius:6px; flex-shrink:0;">[${escapeHTML(item.monogram)}]</span>
+                            <span style="font-family:var(--font-mono); font-size:0.78rem; font-weight:900; background:${isSel ? '#1D4ED8' : '#EFF6FF'}; color:${isSel ? '#FFFFFF' : '#1D4ED8'}; padding:2px 6px; border-radius:6px; flex-shrink:0;">[${escapeHTML(item.monogram)}]</span>
                           </div>
-                          <div style="font-size:0.82rem; font-weight:800; color:#1D4ED8; line-height:1.18; width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHTML(item.tech)}</div>
+                          <div style="font-size:0.81rem; font-weight:800; color:#1D4ED8; line-height:1.25; width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHTML(item.tech)}</div>
                           <div class="tbb-step32-proposal-roots">${escapeHTML(item.roots)}</div>
                         </button>
                       `;
@@ -28319,7 +28329,7 @@
   <script src="/tbb-cloud-vector-outliner.js?v=135.0"></script>
   <script src="/tbb-v80-brandbook-plates.js?v=135.0"></script>
   <script src="/universal-brandbook-30-engine.js?v=135.0"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=135.0"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=135.1"></script>
   <script src="/improbears-preset-engine.js?v=135.0"></script>
   <script src="/tbb-multilingual-gemini-voice.js?v=135.0"></script>
   <script src="/tbb-commercial-experience-and-payments.js?v=135.0"></script>
