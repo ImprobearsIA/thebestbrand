@@ -2067,7 +2067,7 @@
     }
     const raw = String((cs && cs.brandName) || "").trim();
     if (!raw || /^(mi nueva marca|marca en creaci[oó]n.*)$/i.test(raw)) return "Mi Marca";
-    if (!(cs && cs.isOfficialAdminTbbPreset) && /^the\s*best\s*brand$/i.test(raw)) return "Mi Marca";
+    if (!(cs && (cs.isOfficialAdminTbbPreset || cs.user_explicit_brand_name || cs.userLockedBrandName)) && /^the\s*best\s*brand$/i.test(raw)) return "Mi Marca";
     return raw;
   }
 

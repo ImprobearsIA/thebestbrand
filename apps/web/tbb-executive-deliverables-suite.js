@@ -3078,10 +3078,11 @@
     const s0 = window.step0State || {};
 
     const isPlaceholderName = (n) => {
+      if (typeof window.tbbIsPlaceholderBrandName === "function") return window.tbbIsPlaceholderBrandName(n);
       const s = String(n || "").trim();
       if (!s) return true;
       if (/^(mi nueva marca|mi marca|tu marca|marca en creaci[oó]n.*)$/i.test(s)) return true;
-      if (!cs.isOfficialAdminTbbPreset && /^the\s*best\s*brand$/i.test(s)) return true;
+      if (!(cs.isOfficialAdminTbbPreset || cs.user_explicit_brand_name || cs.userLockedBrandName) && /^the\s*best\s*brand$/i.test(s)) return true;
       return false;
     };
     const bName = !isPlaceholderName(cs.brandName) ? cs.brandName.trim() : "Tu Marca";
@@ -3192,10 +3193,11 @@
     }
 
     const isPlaceholderBrand = (n) => {
+      if (typeof window.tbbIsPlaceholderBrandName === "function") return window.tbbIsPlaceholderBrandName(n);
       const s = String(n || "").trim();
       if (!s) return true;
       if (/^(mi nueva marca|mi marca|tu marca|marca en creaci[oó]n.*)$/i.test(s)) return true;
-      if (!cs.isOfficialAdminTbbPreset && /^the\s*best\s*brand$/i.test(s)) return true;
+      if (!(cs.isOfficialAdminTbbPreset || cs.user_explicit_brand_name || cs.userLockedBrandName) && /^the\s*best\s*brand$/i.test(s)) return true;
       return false;
     };
     const bName = !isPlaceholderBrand(cs.brandName) ? cs.brandName.trim() : "Tu Marca";
@@ -3243,12 +3245,14 @@
 
     st.geminiBusy = true;
     st._geminiBusyStartedAt = Date.now();
+    st._logoGenErrorMsg = "";
     st.geminiStatusText = shouldAttachReferenceImage
       ? `Aura evolucionando tu logotipo («${modeObj.shortPill}» · ${pri}, ${sec})...`
       : `Aura diseñando tu logotipo («${modeObj.shortPill}») con 100% del ADN de «${bName}»...`;
     if (typeof window.renderTbbZeroScrollStage === "function") window.renderTbbZeroScrollStage();
 
     let rawImgUrl = "";
+    let lastHttpStatus = 0;
     try {
       const prompt = tbbBuildNanoBananaCreativeDirectorPrompt({
         userHint: userHint,
@@ -3283,9 +3287,9 @@
       for (const model of models) {
         for (const endpoint of proxyEndpoints) {
           const ctrl = new AbortController();
-          const tmr = setTimeout(() => ctrl.abort(), 45000);
+          const tmr = setTimeout(() => ctrl.abort(), 50000);
           try {
-            const resp = await fetch(endpoint, {
+            const resp = await (window.tbbFetchWithRetry || fetch)(endpoint, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               signal: ctrl.signal,
@@ -3294,10 +3298,14 @@
                 contents: [{ parts: requestParts }],
                 generationConfig: { responseModalities: ["IMAGE", "TEXT"] }
               })
-            });
+            }, 3);
             clearTimeout(tmr);
+            lastHttpStatus = resp.status;
             if (!resp.ok) {
-              if (resp.status === 404 || resp.status === 405 || resp.status === 502 || resp.status === 503) continue;
+              // Ante 429 o 5xx tras reintentos, continuar con el siguiente modelo/endpoint de respaldo en vez de abortar
+              if (resp.status === 429 || resp.status === 404 || resp.status === 405 || resp.status === 500 || resp.status === 502 || resp.status === 503 || resp.status === 504) {
+                continue;
+              }
               break;
             }
             const data = await resp.json();
@@ -3316,7 +3324,14 @@
         }
       }
 
+      if (!rawImgUrl) {
+        st._logoGenErrorMsg = lastHttpStatus === 429
+          ? "El estudio de diseño recibió varias solicitudes al mismo tiempo. Espera unos segundos y toca «Reintentar diseño con IA»."
+          : "No se pudo completar la generación visual en este intento. Toca «Reintentar diseño con IA» para volver a crear tu logotipo.";
+      }
+
       if (rawImgUrl) {
+        st._logoGenErrorMsg = "";
         let centeredPng = rawImgUrl;
         let tracedCurves = "";
         try {

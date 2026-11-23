@@ -5814,8 +5814,190 @@
       const s = String(rawName == null ? "" : rawName).trim();
       if (!s) return true;
       if (/^(mi nueva marca|mi marca|tu marca|marca en creaci[oó]n.*|proyecto gastron.*)$/i.test(s)) return true;
-      if (!(window.canvasState && window.canvasState.isOfficialAdminTbbPreset) && /^the\s*best\s*brand$/i.test(s)) return true;
+      const csRef = window.canvasState || {};
+      const userExplicit = Boolean(csRef.isOfficialAdminTbbPreset || csRef.user_explicit_brand_name || csRef.userLockedBrandName);
+      if (!userExplicit && /^the\s*best\s*brand$/i.test(s)) return true;
       return false;
+    };
+
+    // Utilidad universal de reintentos con backoff exponencial (maneja 429 / 502 / 503 / 504 de forma resiliente)
+    window.tbbFetchWithRetry = async function (url, options = {}, maxRetries = 3) {
+      const delays = [1100, 2400, 4800];
+      let lastResp = null;
+      let lastErr = null;
+      for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+          const resp = await fetch(url, options);
+          lastResp = resp;
+          if (resp.ok || (resp.status !== 429 && resp.status !== 502 && resp.status !== 503 && resp.status !== 504)) {
+            return resp;
+          }
+          if (attempt < maxRetries) {
+            const raHeader = Number(resp.headers && resp.headers.get ? resp.headers.get("Retry-After") : 0);
+            const baseWait = (raHeader > 0 && raHeader <= 6) ? (raHeader * 1000) : (delays[attempt] || 3200);
+            const jitter = Math.round(Math.random() * 450);
+            await new Promise((r) => setTimeout(r, baseWait + jitter));
+            continue;
+          }
+          return resp;
+        } catch (err) {
+          lastErr = err;
+          if (err && err.name === "AbortError") throw err;
+          if (attempt < maxRetries) {
+            const jitter = Math.round(Math.random() * 400);
+            await new Promise((r) => setTimeout(r, (delays[attempt] || 2200) + jitter));
+            continue;
+          }
+          throw lastErr;
+        }
+      }
+      return lastResp;
+    };
+
+    // Catálogo perceptual oficial Pantone Solid Coated (emparejamiento por distancia RGB real, nunca por fórmula módulo)
+    window.tbbMatchPantoneCoated = function (hex) {
+      const raw = String(hex || "").trim().toUpperCase();
+      const clean = raw.replace("#", "");
+      if (!/^[0-9A-F]{3}([0-9A-F]{3})?$/.test(clean)) return "Pantone 296 C";
+      const full = clean.length === 3 ? clean.split("").map((c) => c + c).join("") : clean;
+      const fullHex = "#" + full;
+      const exactMap = {
+        "#FFFFFF": "Blanco Puro (Papel)",
+        "#FAF8F5": "Pantone Warm Gray 1 C",
+        "#F8FAFC": "Pantone Cool Gray 1 C",
+        "#090D16": "Pantone Black 6 C",
+        "#0D2540": "Pantone 296 C",
+        "#426EAE": "Pantone 7683 C",
+        "#FF7A00": "Pantone 1505 C",
+        "#4C9DE6": "Pantone 2925 C",
+        "#1D4ED8": "Pantone 2728 C"
+      };
+      if (exactMap[fullHex]) return exactMap[fullHex];
+      const num = parseInt(full, 16);
+      const r = (num >> 16) & 255;
+      const g = (num >> 8) & 255;
+      const b = num & 255;
+      const swatches = [
+        { name: "Blanco Puro (Papel)", r: 255, g: 255, b: 255 },
+        { name: "Pantone Cool Gray 1 C", r: 217, g: 217, b: 214 },
+        { name: "Pantone Cool Gray 5 C", r: 177, g: 179, b: 179 },
+        { name: "Pantone Cool Gray 9 C", r: 117, g: 120, b: 123 },
+        { name: "Pantone Cool Gray 11 C", r: 83, g: 86, b: 90 },
+        { name: "Pantone Warm Gray 2 C", r: 203, g: 196, b: 188 },
+        { name: "Pantone Warm Gray 7 C", r: 150, g: 140, b: 131 },
+        { name: "Pantone Black 6 C", r: 16, g: 24, b: 32 },
+        { name: "Pantone Black 7 C", r: 61, g: 57, b: 53 },
+        { name: "Pantone 296 C", r: 4, g: 28, b: 44 },
+        { name: "Pantone 289 C", r: 12, g: 35, b: 64 },
+        { name: "Pantone 281 C", r: 0, g: 32, b: 91 },
+        { name: "Pantone 286 C", r: 0, g: 50, b: 160 },
+        { name: "Pantone 2728 C", r: 0, g: 71, b: 187 },
+        { name: "Pantone 7683 C", r: 66, g: 110, b: 174 },
+        { name: "Pantone 2935 C", r: 0, g: 87, b: 184 },
+        { name: "Pantone 300 C", r: 0, g: 94, b: 184 },
+        { name: "Pantone 2925 C", r: 0, g: 156, b: 222 },
+        { name: "Pantone 279 C", r: 65, g: 143, b: 222 },
+        { name: "Pantone 298 C", r: 65, g: 182, b: 230 },
+        { name: "Pantone 3125 C", r: 0, g: 174, b: 199 },
+        { name: "Pantone 320 C", r: 0, g: 156, b: 166 },
+        { name: "Pantone 5463 C", r: 15, g: 58, b: 64 },
+        { name: "Pantone 3282 C", r: 0, g: 132, b: 126 },
+        { name: "Pantone 3308 C", r: 0, g: 76, b: 69 },
+        { name: "Pantone 3435 C", r: 21, g: 71, b: 52 },
+        { name: "Pantone 348 C", r: 0, g: 132, b: 61 },
+        { name: "Pantone 355 C", r: 0, g: 150, b: 57 },
+        { name: "Pantone 361 C", r: 67, g: 176, b: 42 },
+        { name: "Pantone 376 C", r: 132, g: 189, b: 0 },
+        { name: "Pantone 7739 C", r: 49, g: 155, b: 66 },
+        { name: "Pantone 555 C", r: 32, g: 92, b: 64 },
+        { name: "Pantone 116 C", r: 255, g: 205, b: 0 },
+        { name: "Pantone 1235 C", r: 255, g: 184, b: 28 },
+        { name: "Pantone 7549 C", r: 255, g: 181, b: 0 },
+        { name: "Pantone 871 C (Metallic)", r: 132, g: 117, b: 78 },
+        { name: "Pantone 7558 C", r: 133, g: 77, b: 14 },
+        { name: "Pantone 1375 C", r: 255, g: 158, b: 27 },
+        { name: "Pantone 1505 C", r: 255, g: 105, b: 0 },
+        { name: "Pantone 1585 C", r: 255, g: 106, b: 19 },
+        { name: "Pantone 1655 C", r: 252, g: 76, b: 2 },
+        { name: "Pantone 7579 C", r: 220, g: 88, b: 42 },
+        { name: "Pantone 1795 C", r: 210, g: 38, b: 48 },
+        { name: "Pantone 186 C", r: 200, g: 16, b: 46 },
+        { name: "Pantone 1807 C", r: 164, g: 52, b: 58 },
+        { name: "Pantone 202 C", r: 134, g: 38, b: 51 },
+        { name: "Pantone 219 C", r: 218, g: 24, b: 132 },
+        { name: "Pantone 2395 C", r: 196, g: 0, b: 158 },
+        { name: "Pantone 266 C", r: 117, g: 59, b: 189 },
+        { name: "Pantone 2685 C", r: 51, g: 0, b: 114 },
+        { name: "Pantone 2725 C", r: 104, g: 91, b: 199 },
+        { name: "Pantone 469 C", r: 105, g: 63, b: 35 },
+        { name: "Pantone 4645 C", r: 166, g: 124, b: 96 },
+        { name: "Pantone 7502 C", r: 214, g: 196, b: 160 }
+      ];
+      let best = swatches[0].name;
+      let bestDist = Infinity;
+      for (let i = 0; i < swatches.length; i++) {
+        const s = swatches[i];
+        const dr = r - s.r;
+        const dg = g - s.g;
+        const db = b - s.b;
+        const rMean = (r + s.r) * 0.5;
+        const d = (2 + rMean / 256) * dr * dr + 4 * dg * dg + (2 + (255 - rMean) / 256) * db * db;
+        if (d < bestDist) {
+          bestDist = d;
+          best = s.name;
+        }
+      }
+      return best;
+    };
+
+    // Clasificador oficial de Clase de Niza (IMPI / WIPO) con límites de palabra estrictos y prioridad de industria
+    window.tbbClassifyNiceClassForGiro = function (giroRaw, brandNameRaw = "") {
+      const combined = `${giroRaw || ""} ${brandNameRaw || ""}`.toLowerCase();
+      // Remover frases de arquitectura de marca/negocio para jamás confundirlas con construcción civil
+      const withoutBrandArch = combined
+        .replace(/arquitectura\s+de\s+(?:marca|marcas|\d+\s+divisiones|negocio|identidad|portafolio|submarcas)/gi, " ")
+        .replace(/arquitectura\s+(?:empresarial|corporativa|comercial|de\s+soluciones|estrat[eé]gica)/gi, " ");
+
+      if (/\b(improbears|business\s+improvement|marca\s+madre|firma\s+global\s+de\s+mejora\s+empresarial)\b/i.test(combined)) {
+        return "Clase 35 (Consultoría empresarial, gestión comercial y estrategia de negocios) y Clase 42 (Soluciones tecnológicas y transformación digital)";
+      }
+      if (/\b(transport\w*|log[ií]stic\w*|carga|flete\w*|flota|autotransport\w*|paqueter[ií]a|mensajer[ií]a|mudanza\w*|tr[aá]iler\w*|almacenamiento|distribuci[oó]n\s+terrestre)\b/i.test(combined)) {
+        return "Clase 39 (Transporte terrestre, logística, almacenamiento y distribución de mercancías)";
+      }
+      if (/\b(retiro|geri[aá]tric\w*|adultos?\s+mayores?|asilo|residencia\s+asistida|enfermer[ií]a|cl[ií]nica|hospital|m[eé]dic\w*|fisioterapia|rehabilitaci[oó]n|cuidado\s+integral|salud\s+integral)\b/i.test(combined)) {
+        return "Clase 44 (Cuidados médicos, enfermería y bienestar integral) y Clase 43 (Residencia asistida y hospedaje especializado)";
+      }
+      if (/\b(inmobiliar\w*|bienes\s+ra[ií]ces|propiedades|plusval[ií]a|corretaje|bienes\s+inmuebles|asesor[ií]a\s+patrimonial|broker\s+inmobiliario|venta\s+de\s+casas|rentas?\s+residenciales?)\b/i.test(combined)) {
+        return "Clase 36 (Servicios inmobiliarios, corretaje, valuación y asesoría patrimonial)";
+      }
+      if (/\b(marcador\s+deportivo|scoreboard|aplicaci[oó]n\s+profesional\s+de\s+marcador|plataforma\s+global\s+saas|software\s+deportivo)\b/i.test(combined)) {
+        return "Clase 9 (Software y aplicaciones digitales) y Clase 42 (SaaS, desarrollo tecnológico e inteligencia artificial)";
+      }
+      if (/\b(campamento\w*|verano|colegio|escuela|educaci[oó]n|formaci[oó]n|talleres?|liderazgo|coaching|habilidades\s+gerenciales|trabajo\s+en\s+equipo|teambuilding|cursos?|academia|capacitaci[oó]n|aventura\s+infantil)\b/i.test(combined)) {
+        return "Clase 41 (Educación, formación ejecutiva, campamentos y actividades recreativas)";
+      }
+      if (/\b(broadcast|youtube|streaming|canal\s+deportivo|highlights|podcast|producci[oó]n\s+audiovisual|narraci[oó]n|transmisi[oó]n\s+en\s+vivo|esports|videojuegos)\b/i.test(combined)) {
+        return "Clase 41 (Producción audiovisual y entretenimiento deportivo) y Clase 38 (Transmisión y difusión digital en vivo)";
+      }
+      if (/\b(ingredientes?\s+funcionales?|ingredientes?\s+alimentarios?|enzimas?|emulsificantes?|formulaciones?\s+industriales?|l[uú]pulo|hopzoil|materias?\s+primas?\s+alimentarias?|industria\s+alimentaria|cervecera)\b/i.test(combined)) {
+        return "Clase 1 (Ingredientes funcionales y enzimas industriales) y Clase 30 (Preparaciones e ingredientes alimentarios)";
+      }
+      if (/\b(contable\w*|contabilidad|fiscal\w*|impuestos?|auditor[ií]a|sat\b|n[oó]mina|consultor[ií]a\s+empresarial|business\s+improvement|marca\s+madre|gesti[oó]n\s+comercial|asesor[ií]a\s+financiera|despacho\s+contable|estrategia\s+de\s+negocio)\b/i.test(combined)) {
+        const hasTech = /\b(ia|inteligencia\s+artificial|software|automatizaci[oó]n|digital|studio|ai)\b/i.test(combined);
+        return hasTech
+          ? "Clase 35 (Consultoría empresarial, gestión comercial y estrategia de negocios) y Clase 42 (Soluciones tecnológicas y transformación digital)"
+          : "Clase 35 (Consultoría empresarial, contabilidad, auditoría fiscal y gestión comercial)";
+      }
+      if (/\b(constructora|construcci[oó]n|obra\s+civil|edificaci[oó]n|urbanizaci[oó]n|ingenier[ií]a\s+civil|desarrolladora\s+inmobiliaria|arquitecto\w*|proyecto\s+arquitect[oó]nico)\b/i.test(withoutBrandArch)) {
+        return "Clase 37 (Construcción, obra civil y edificación) y Clase 42 (Ingeniería estructural y proyectos arquitectónicos)";
+      }
+      if (/\b(restaurante\w*|cafeter[ií]a\w*|cocina\s+de\s+autor|chef|bar\b|hotel\w*|hospedaje|panader[ií]a|reposter[ií]a|taquer[ií]a|gastronom[ií]a\s+gourmet|catering)\b/i.test(combined)) {
+        return "Clase 43 (Servicios de restauración, gastronomía y hospitalidad) y Clase 30 (Alimentos preparados y bebidas)";
+      }
+      if (/\b(software|saas|app\b|aplicaci[oó]n|marcador\w*|scoreboard|plataforma\s+digital|inteligencia\s+artificial|brandbook|identidad\s+de\s+marca|tecnolog[ií]a\s+digital)\b/i.test(combined)) {
+        return "Clase 9 (Software y aplicaciones digitales) y Clase 42 (SaaS, desarrollo tecnológico e inteligencia artificial)";
+      }
+      return "Clase 35 (Gestión comercial, estrategia de marca y servicios corporativos) y Clase 42 (Consultoría especializada)";
     };
 
     window.tbbGetUserBrandDisplay = function (fallback = "Tu Marca") {
@@ -7030,7 +7212,7 @@
               reader.readAsDataURL(blob);
             });
             if (base64Audio) {
-              const resp = await fetch("/api/v1/gemini/proxy", {
+              const resp = await (window.tbbFetchWithRetry || fetch)("/api/v1/gemini/proxy", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -10507,7 +10689,7 @@
       }
       if (listEl) {
         const defaultBrandLbl = curLang === "en" ? "your brand" : curLang === "fr" ? "votre marque" : curLang === "pt" ? "sua marca" : curLang === "de" ? "Ihre Marke" : curLang === "it" ? "il tuo brand" : "Tu marca";
-        const bNameNow = (window.canvasState && window.canvasState.brandName && !/^the\s*best\s*brand$/i.test(window.canvasState.brandName)) ? window.canvasState.brandName : defaultBrandLbl;
+        const bNameNow = (window.canvasState && window.canvasState.brandName && !(window.tbbIsPlaceholderBrandName ? window.tbbIsPlaceholderBrandName(window.canvasState.brandName) : /^the\s*best\s*brand$/i.test(window.canvasState.brandName))) ? window.canvasState.brandName : defaultBrandLbl;
         listEl.innerHTML = `<div style="font-size:0.9rem;color:#334155;">${trCap("Progreso guardado automáticamente para")} <strong>${bNameNow}</strong>.</div>`;
       }
       const pauseSvg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`;
@@ -17137,7 +17319,7 @@
         window.reservedSubbrandVault = [...parsed.reservedSubbrandVault];
       }
       // Auto-saneamiento: si una sesión de usuario heredó accidentalmente "TheBestBrand" sin ser el preset de administrador, limpiarlo
-      if (!canvasState.isOfficialAdminTbbPreset && /^the\s*best\s*brand$/i.test(String(canvasState.brandName || "").trim())) {
+      if (!(canvasState.isOfficialAdminTbbPreset || canvasState.user_explicit_brand_name || canvasState.userLockedBrandName) && /^the\s*best\s*brand$/i.test(String(canvasState.brandName || "").trim())) {
         canvasState.brandName = "";
         canvasState.userLockedBrandName = false;
         if (/^Identidad Estrat[eé]gica y Visual de Alto Impacto$/i.test(String(canvasState.tagline || "").trim())) {
@@ -20505,6 +20687,61 @@
       gap: 6px;
       width: 100%;
     }
+    .tbb-step32-proposals-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      width: 100%;
+      flex: 1;
+      align-content: start;
+      min-height: 0;
+    }
+    .tbb-step32-proposal-btn {
+      min-width: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+    }
+    .tbb-step32-proposal-roots {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #475569;
+      line-height: 1.28;
+      white-space: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      width: 100%;
+    }
+    @media (max-width: 680px) {
+      .tbb-step32-proposals-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 7px !important;
+      }
+    }
+    @media (max-width: 640px) {
+      #tbbStepActionRow {
+        gap: 6px !important;
+      }
+      #tbbStepActionRow .tbb-duo-btn {
+        min-height: 46px !important;
+        height: 46px !important;
+        padding: 0 10px !important;
+        font-size: 0.82rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+      .tbb-atomic-card.is-step1-card {
+        padding: 14px 14px !important;
+        gap: 10px !important;
+      }
+      #tbbStep1AnswerInput {
+        min-height: 126px !important;
+      }
+    }
     @media (max-width: 620px) {
       .tbb-step52-modes-grid,
       .tbb-naming-styles-grid,
@@ -20730,6 +20967,35 @@
     #tbbBtnTopStepVideo {
       white-space: nowrap !important;
       flex-shrink: 0 !important;
+    }
+
+    @media (max-width: 1024px) and (min-width: 769px) {
+      #tbbTopDiscreteBar {
+        gap: 6px !important;
+        padding: 6px 10px !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+      }
+      #tbbDiscreteProgressTrack {
+        flex: 1 1 42px !important;
+        min-width: 34px !important;
+        max-width: 80px !important;
+      }
+      #tbbTopQuickStepJumper {
+        flex: 0 1 182px !important;
+        min-width: 120px !important;
+        max-width: 182px !important;
+        font-size: 0.80rem !important;
+        padding: 0 7px !important;
+        height: 36px !important;
+      }
+      #tbbTopDiscreteBar .tbb-duo-btn {
+        padding: 4px 9px !important;
+        font-size: 0.80rem !important;
+        min-height: 36px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+      }
     }
 
     @media (max-width: 768px) {
@@ -21114,7 +21380,7 @@
     <div class="tbb-splash-card">
       <div class="tbb-splash-pill">
         <span style="width:8px; height:8px; border-radius:999px; background:#FF7A00; display:inline-block; box-shadow:0 0 10px #FF7A00;"></span>
-        <span>THE BEST BRAND · YOUR BRAND, NOW!!! · V82.4</span>
+        <span>THE BEST BRAND · YOUR BRAND, NOW!!! · V135.0</span>
       </div>
       <div class="tbb-splash-orb-stage">
         <canvas id="tbbSplashAuraCanvas" width="448" height="448"></canvas>
@@ -22417,10 +22683,24 @@
         if (!dataUrl && !svgMarkup) return;
         if (!st) return;
         const mode = cs.existing_logo_mode || s0.existingLogoMode || "keep";
-        const pri = (cs.uploaded_logo_colors && cs.uploaded_logo_colors[0]) || st.logoPriHex || "#0078C0";
-        const sec = (cs.uploaded_logo_colors && cs.uploaded_logo_colors[1]) || st.logoSecHex || "#88E0E0";
-        const acc = (cs.uploaded_logo_colors && cs.uploaded_logo_colors[2]) || cs.accent_color || sec;
-        const bName = (cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca";
+        const userPal = (Array.isArray(cs.brand_palette_colors) && cs.brand_palette_colors.length >= 2) ? cs.brand_palette_colors : null;
+        const preferUserPal = Boolean(cs.user_edited_palette && userPal);
+        const pri = (preferUserPal && userPal[0])
+          || (cs.user_edited_palette && (st.logoPriHex || cs.primary_color))
+          || (cs.uploaded_logo_colors && cs.uploaded_logo_colors[0])
+          || st.logoPriHex
+          || "#0078C0";
+        const sec = (preferUserPal && userPal[1])
+          || (cs.user_edited_palette && (st.logoSecHex || cs.secondary_color))
+          || (cs.uploaded_logo_colors && cs.uploaded_logo_colors[1])
+          || st.logoSecHex
+          || "#88E0E0";
+        const acc = (preferUserPal && userPal[2])
+          || (cs.user_edited_palette && cs.accent_color)
+          || (cs.uploaded_logo_colors && cs.uploaded_logo_colors[2])
+          || cs.accent_color
+          || sec;
+        const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("Tu Marca") : ((cs.brandName && !/^mi nueva marca$/i.test(cs.brandName)) ? cs.brandName.trim() : "Tu Marca"));
 
         const baseIterObj = {
           idx: 1,
@@ -22515,8 +22795,9 @@
               cs.accent_color = extractedAcc;
               cs.selected_colors_hex = ["#FFFFFF", "#090D16", extractedPri, extractedSec];
               cs.brand_palette_colors = [extractedPri, extractedSec, extractedAcc, "#F8FAFC"];
+              cs.user_edited_palette = false;
               if (typeof window.tbbSyncBrandPaletteToEngine === "function") {
-                window.tbbSyncBrandPaletteToEngine([extractedPri, extractedSec, extractedAcc, "#F8FAFC"], false);
+                window.tbbSyncBrandPaletteToEngine([extractedPri, extractedSec, extractedAcc, "#F8FAFC"], false, "", false);
               }
 
               const st = window.tbbState;
@@ -22610,8 +22891,9 @@
             cs.accent_color = extractedAcc;
             cs.selected_colors_hex = ["#FFFFFF", "#090D16", extractedPri, extractedSec];
             cs.brand_palette_colors = [extractedPri, extractedSec, extractedAcc, "#F8FAFC"];
+            cs.user_edited_palette = false;
             if (typeof window.tbbSyncBrandPaletteToEngine === "function") {
-              window.tbbSyncBrandPaletteToEngine([extractedPri, extractedSec, extractedAcc, "#F8FAFC"], false);
+              window.tbbSyncBrandPaletteToEngine([extractedPri, extractedSec, extractedAcc, "#F8FAFC"], false, "", false);
             }
 
             // Pre-trazar versión 100% en curvas Bézier para exportación inmediata en .SVG / .AI
@@ -22892,13 +23174,13 @@
               </defs>
               <rect width="760" height="440" rx="18" fill="url(#bgDual_${uid})"/>
 
-              <!-- Escenario Principal Izquierdo: Obra Completa en Marco de Galería (504x412 px) -->
+              <!-- Escenario Principal Izquierdo: Obra Completa en Marco de Galería (504x412 px, margen superior reservado para pill) -->
               <rect x="14" y="14" width="504" height="412" rx="18" fill="${isDark ? '#0F172A' : '#FFFFFF'}" stroke="url(#sqRimBevel_${uid})" stroke-width="2" filter="url(#sqShad_${uid})"/>
               <g clip-path="url(#artFrameClip_${uid})">
-                <image href="${fullArtUrl}" xlink:href="${fullArtUrl}" x="22" y="22" width="488" height="396" preserveAspectRatio="xMidYMid meet"/>
+                <image href="${fullArtUrl}" xlink:href="${fullArtUrl}" x="28" y="56" width="476" height="358" preserveAspectRatio="xMidYMid meet"/>
               </g>
-              <rect x="26" y="24" width="218" height="24" rx="12" fill="rgba(13,37,64,0.84)" stroke="${secCol}" stroke-width="1"/>
-              <text x="135" y="40" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.2" letter-spacing="0.6">${escapeHTML(modeLabel)}</text>
+              <rect x="26" y="22" width="222" height="24" rx="12" fill="rgba(13,37,64,0.88)" stroke="${secCol}" stroke-width="1"/>
+              <text x="137" y="38" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.2" letter-spacing="0.6">${escapeHTML(modeLabel)}</text>
 
               <!-- Columna Derecha: Ícono App 1:1 en Squircle + ADN Cromático Activo -->
               <rect x="532" y="14" width="214" height="412" rx="18" fill="${isDark ? '#111827' : '#FFFFFF'}" stroke="${isDark ? '#334155' : '#CBD5E1'}" stroke-width="1.5"/>
@@ -23105,7 +23387,7 @@
         const st = window.tbbState;
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         if (!Array.isArray(st.auraUsedMessages)) st.auraUsedMessages = [];
-        const bName = (cs.brandName && !/^(mi nueva marca|the\s*best\s*brand|marca en creaci.*)$/i.test(cs.brandName)) ? cs.brandName.trim() : "tu marca";
+        const bName = (window.tbbGetUserBrandDisplay ? window.tbbGetUserBrandDisplay("tu marca") : ((cs.brandName && !/^(mi nueva marca|marca en creaci.*)$/i.test(cs.brandName)) ? cs.brandName.trim() : "tu marca"));
         const bGiro = (cs.custom_business_type || cs.step0_short_essence || "tu proyecto").trim().split(/\s+/).slice(0, 4).join(" ");
         const cleanDetail = String(detailText || "").replace(/\s+/g, " ").trim().split(/\s+/).slice(0, 4).join(" ");
 
@@ -23263,7 +23545,7 @@
         const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
         const st = window.tbbState || {};
         const lines = [];
-        if (cs.brandName && !/^(mi nueva marca|the\s*best\s*brand|marca en creaci.*)$/i.test(cs.brandName)) {
+        if (cs.brandName && !(window.tbbIsPlaceholderBrandName ? window.tbbIsPlaceholderBrandName(cs.brandName) : /^(mi nueva marca|the\s*best\s*brand|marca en creaci.*)$/i.test(cs.brandName))) {
           lines.push(`- Nombre actual o preliminar: "${cs.brandName}"`);
         }
         if (cs.custom_business_type) lines.push(`- Giro y Actividad del negocio (Paso 0.3): "${cs.custom_business_type}"`);
@@ -23299,7 +23581,7 @@
             const endpointUrl = apiKey
               ? `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`
               : (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
-            const resp = await fetch(endpointUrl, {
+            const resp = await (window.tbbFetchWithRetry || fetch)(endpointUrl, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -23332,39 +23614,74 @@
         }
         const recentUsed = (st.auraUsedMessages || []).slice(-10).join(" | ");
         const reqStepSig = `${st.step}.${st.subStep}`;
+        window._tbbAuraReqSeq = (window._tbbAuraReqSeq || 0) + 1;
+        const myReqSeq = window._tbbAuraReqSeq;
+
+        const phaseHumanLabels = {
+          "0.1": "Paso 0.1 — Objetivo inicial del proyecto",
+          "0.2": "Paso 0.2 — Nombre existente o logotipo base",
+          "0.3": "Paso 0.3 — Giro y actividad principal del negocio",
+          "1.1": "Paso 1.1 — Propósito esencial (Por qué existe la marca)",
+          "1.2": "Paso 1.2 — Oferta de valor diferenciada",
+          "1.3": "Paso 1.3 — Método y proceso de entrega al cliente",
+          "1.4": "Paso 1.4 — Personalidad y tono de comunicación",
+          "1.5": "Paso 1.5 — Perfil del cliente ideal",
+          "2.1": "Paso 2.1 — Touchpoints antes de la compra",
+          "2.2": "Paso 2.2 — Touchpoints durante la experiencia",
+          "2.3": "Paso 2.3 — Touchpoints después de la compra",
+          "3.1": "Paso 3.1 — Ideas clave para crear o conservar el nombre",
+          "3.2": "Paso 3.2 — Selección de propuestas de nombre",
+          "3.3": "Paso 3.3 — Confirmación de nombre oficial, eslogan y Clase de Niza",
+          "4.1": "Paso 4.1 — Calibración de estilo visual (parte 1)",
+          "4.2": "Paso 4.2 — Calibración de carácter visual (parte 2)",
+          "4.3": "Paso 4.3 — Calibración de geometría y forma (parte 3)",
+          "4.4": "Paso 4.4 — Elección de tipografía institucional",
+          "4.5": "Paso 4.5 — Estructura y concepto de símbolo visual",
+          "5.1": "Paso 5.1 — Acabado, logotipo base y paleta cromática oficial",
+          "5.2": "Paso 5.2 — Revisión y evolución del logotipo oficial",
+          "6.1": "Paso 6.1 — Brandbook Oficial (+30 láminas) terminado y listo para explorar hoja por hoja o descargar en PDF",
+          "6.2": "Paso 6.2 — Bóveda final de descargas (PDF, vectores, fuentes y plantillas)"
+        };
+        const humanStepContext = phaseHumanLabels[reqStepSig] || `Paso ${reqStepSig} (${contextLabel})`;
 
         const prompt = [
           "Eres Aura, la mentora estratégica de marca de TheBestBrand.",
           "INFORMACIÓN ESPECÍFICA DE LA MARCA QUE SE ESTÁ CREANDO:",
           dossier,
-          `Paso actual: Paso ${st.step}.${st.subStep} (${contextLabel}).`,
-          cleanVal ? `Último dato ingresado o acción: "${cleanVal.slice(0, 200)}".` : "",
+          `FASE ACTUAL EXACTA: ${humanStepContext} (evento: ${contextLabel}).`,
+          cleanVal ? `Contexto reciente: "${cleanVal.slice(0, 200)}".` : "",
           `Frases recientes prohibidas de repetir: [${recentUsed}].`,
           "REGLAS ESTRICTAS:",
-          "1. Escribe UNA SOLA oración breve (máximo 18 palabras) guiando o comentando ESPECÍFICAMENTE sobre el negocio/marca que el usuario está creando.",
-          "2. PROHIBIDO citar autores, libros o teorías académicas. Habla con lenguaje sencillo, cálido y directo (entendible a los 16 años).",
-          "3. CERO EMOJIS. Devuelve únicamente el texto plano en español."
+          "1. Escribe UNA SOLA oración breve (máximo 18 palabras) enfocada EXCLUSIVAMENTE en la FASE ACTUAL EXACTA indicada arriba y en el negocio del usuario.",
+          "2. Si la fase actual es Paso 6.1 o 6.2, celebra que el Brandbook oficial ya está listo e invita a explorar sus láminas o descargar el PDF (PROHIBIDO hablar de elegir el nombre o pasos anteriores).",
+          "3. PROHIBIDO citar autores, libros o teorías académicas. Habla con lenguaje sencillo, cálido y directo.",
+          "4. CERO EMOJIS. Devuelve únicamente el texto plano en español."
         ].filter(Boolean).join("\n");
 
         try {
-          let reply = await window.tbbCallGeminiAI(prompt, { temperature: 0.6 });
+          let reply = await window.tbbCallGeminiAI(prompt, { temperature: 0.55 });
           reply = reply.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").replace(/^["«“]|["»”]$/g, "").replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "").trim();
           const words = reply.split(" ").filter(Boolean);
           if (words.length > 22) {
             reply = words.slice(0, 22).join(" ") + ".";
           }
+          // Blindaje anti-obsolescencia: nunca permitir que una respuesta tardía de un paso anterior sobreescriba un paso más reciente ni hable de nombres en Paso 6
+          if (myReqSeq !== window._tbbAuraReqSeq || `${st.step}.${st.subStep}` !== reqStepSig) {
+            return;
+          }
+          if (st.step === 6 && /\b(elecci[oó]n de nombre|excelente nombre|buen nombre|elegiste el nombre)\b/i.test(reply)) {
+            return;
+          }
           if (reply && reply.length >= 12 && !st.auraUsedMessages.includes(reply)) {
             st.auraUsedMessages.push(reply);
-            if (`${st.step}.${st.subStep}` === reqStepSig) {
-              window.updateAuraTopPresenceDOM(reply);
-              if (speakOnReply && typeof window.speakAuraBriefResponse === "function") {
-                window.speakAuraBriefResponse(reply, 9500);
-              }
+            window.updateAuraTopPresenceDOM(reply);
+            if (speakOnReply && typeof window.speakAuraBriefResponse === "function") {
+              window.speakAuraBriefResponse(reply, 9500);
             }
             return;
           }
         } catch (e) {}
-        if (speakOnReply && fallbackSpeechMsg && `${st.step}.${st.subStep}` === reqStepSig && typeof window.speakAuraBriefResponse === "function") {
+        if (speakOnReply && fallbackSpeechMsg && myReqSeq === window._tbbAuraReqSeq && `${st.step}.${st.subStep}` === reqStepSig && typeof window.speakAuraBriefResponse === "function") {
           window.speakAuraBriefResponse(fallbackSpeechMsg, 9500);
         }
       };
@@ -23534,8 +23851,8 @@
         if (counterEl) counterEl.textContent = `Paso ${st.step} · ${st.subStep}/${totalSub}`;
         const videoLblEl = document.getElementById("tbbLblTopVideo");
         if (videoLblEl) {
-          const isNarrowMobile = window.innerWidth <= 520;
-          videoLblEl.textContent = isNarrowMobile ? "Cápsula" : `Cápsula Paso ${st.step}`;
+          const isCompactTopBar = window.innerWidth <= 920;
+          videoLblEl.textContent = isCompactTopBar ? "Cápsula" : `Cápsula Paso ${st.step}`;
         }
 
         // Actualizar mensaje breve de Aura con IA real basada en la información de la marca al cambiar de sub-paso
@@ -23623,7 +23940,7 @@
               cs.step0_nameless_mode ||
               curAssets === "nameless_discovery" ||
               /^Marca en Creaci|^Proyecto Gastron/i.test(curName) ||
-              (curAssets === "none" && (!curName || /^the\s*best\s*brand$/i.test(curName)))
+              (curAssets === "none" && (!curName || (window.tbbIsPlaceholderBrandName ? window.tbbIsPlaceholderBrandName(curName) : /^the\s*best\s*brand$/i.test(curName))))
             );
             const displayInputName = (isNamelessDiscovery || /^Marca en Creaci|^Proyecto Gastron/i.test(curName)) ? "" : curName;
             stage.innerHTML = `
@@ -23757,7 +24074,7 @@
           const ideasOpen = Boolean(st._openIdeasSubStep === st.subStep);
 
           stage.innerHTML = `
-            <div class="tbb-atomic-card is-hug-card" style="padding:20px 22px; gap:14px;">
+            <div class="tbb-atomic-card is-hug-card is-step1-card" style="padding:20px 22px; gap:14px;">
               <div>
                 <div style="font-size:0.875rem; font-weight:600; color:#426EAE; margin-bottom:4px;">Paso 1 · Pregunta ${st.subStep} de 5 · ${cleanQTitle}</div>
                 <h2 style="font-family:'Montserrat', var(--font-display); font-size:1.22rem; font-weight:700; letter-spacing:-0.02em; color:#0D2540; margin:0; line-height:1.3;">
@@ -23766,7 +24083,7 @@
               </div>
 
               <div style="display:flex; flex-direction:column; gap:12px;">
-                <textarea id="tbbStep1AnswerInput" rows="3" oninput="tbbSaveStep1Answer('${qObj.key}', this.value)" placeholder="Escribe con tus propias palabras o toca Hablar abajo..." style="width:100%; padding:13px 15px; border-radius:14px; border:1.5px solid rgba(13,37,64,0.16); font-size:1rem; font-weight:500; color:#0D2540; background:#F8FAFC; resize:none; box-sizing:border-box; line-height:1.52;">${curVal}</textarea>
+                <textarea id="tbbStep1AnswerInput" rows="5" oninput="tbbSaveStep1Answer('${qObj.key}', this.value)" placeholder="Escribe con tus propias palabras o toca Hablar abajo..." style="width:100%; min-height:128px; max-height:36vh; padding:13px 15px; border-radius:14px; border:1.5px solid rgba(13,37,64,0.16); font-size:1rem; font-weight:500; color:#0D2540; background:#F8FAFC; resize:vertical; overflow-y:auto; box-sizing:border-box; line-height:1.52;">${curVal}</textarea>
 
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                   <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" id="tbbBtnToggleStep1Ideas" onclick="window.tbbToggleStep1Ideas()" style="min-height:42px !important; padding:6px 14px !important; font-size:0.9rem !important; font-weight:600 !important; border-color:#CBD5E1 !important; color:#0D2540 !important;">
@@ -24009,19 +24326,19 @@
                     </div>
                   </div>
                 ` : `
-                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; flex:1; align-content:center; min-height:0;">
+                  <div class="tbb-step32-proposals-grid">
                     ${dynamicCandidates.slice(0, 6).map(item => {
                       const isSel = curBrand && curBrand.toLowerCase() === String(item.name || "").toLowerCase();
                       const safeName = String(item.name || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                       const safeTag = String(item.tagline || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
                       return `
-                        <button type="button" class="tbb-duo-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectEvaluatedNamingCandidate('${safeName}', '${safeTag}');" style="display:flex !important; flex-direction:column !important; align-items:flex-start !important; justify-content:space-between !important; text-align:left !important; padding:6px 10px !important; min-height:58px !important; gap:2px !important;">
-                          <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:6px;">
-                            <span style="font-family:var(--font-display); font-size:0.90rem; font-weight:900; color:#090D16; letter-spacing:0.01em;">${item.name}</span>
-                            <span style="font-family:var(--font-mono); font-size:0.875rem; font-weight:900; background:${isSel ? '#1D4ED8' : '#EFF6FF'}; color:${isSel ? '#FFFFFF' : '#1D4ED8'}; padding:2px 6px; border-radius:6px; flex-shrink:0;">[${item.monogram}]</span>
+                        <button type="button" class="tbb-duo-btn tbb-step32-proposal-btn ${isSel ? 'tbb-duo-btn-selected' : 'tbb-duo-btn-secondary'}" onclick="window.tbbSelectEvaluatedNamingCandidate('${safeName}', '${safeTag}');" style="display:flex !important; flex-direction:column !important; align-items:flex-start !important; justify-content:space-between !important; text-align:left !important; padding:8px 11px !important; min-height:66px !important; gap:3px !important;">
+                          <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:6px; min-width:0;">
+                            <span style="font-family:var(--font-display); font-size:0.92rem; font-weight:900; color:#090D16; letter-spacing:0.01em; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHTML(item.name)}</span>
+                            <span style="font-family:var(--font-mono); font-size:0.8rem; font-weight:900; background:${isSel ? '#1D4ED8' : '#EFF6FF'}; color:${isSel ? '#FFFFFF' : '#1D4ED8'}; padding:2px 6px; border-radius:6px; flex-shrink:0;">[${escapeHTML(item.monogram)}]</span>
                           </div>
-                          <div style="font-size:0.875rem; font-weight:800; color:#1D4ED8; line-height:1.15;">${item.tech}</div>
-                          <div style="font-size:0.875rem; font-weight:600; color:#475569; line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${item.roots}</div>
+                          <div style="font-size:0.82rem; font-weight:800; color:#1D4ED8; line-height:1.18; width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHTML(item.tech)}</div>
+                          <div class="tbb-step32-proposal-roots">${escapeHTML(item.roots)}</div>
                         </button>
                       `;
                     }).join("")}
@@ -24041,17 +24358,12 @@
             const taglineVal = cs.tagline || cs.step0_short_essence || "EXCELENCIA Y CLARIDAD EN CADA DETALLE";
             const giroLowNice = String(cs.custom_business_type || cs.step0_short_essence || "").toLowerCase();
             let autoNiceClass = cs.primary_nice_class || "";
-            if (!autoNiceClass) {
-              if (/construc|arquitect|obra\s*civil|edificac|inmobiliar|urbanizac|ingenier[ií]a\s*civil|desarrollador/i.test(giroLowNice)) {
-                autoNiceClass = "Clase 37 (Construcción, edificación residencial, obra civil y urbanización) y Clase 42 (Ingeniería estructural y proyectos arquitectónicos)";
-              } else if (/restauran|gastronom|cocina|chef|alimento|bebida|hospitalidad|caf[eé]|bar/i.test(giroLowNice)) {
-                autoNiceClass = "Clase 43 (Servicios de restauración, alta gastronomía y hospitalidad) y Clase 30/33 (Productos gourmet y bebidas)";
-              } else if (/software|saas|app|tecnolog|ia|inteligencia\s*artificial| marcador|streaming|plataforma/i.test(giroLowNice)) {
-                autoNiceClass = "Clase 9 (Software descargable y aplicaciones digitales) y Clase 42 (SaaS, desarrollo tecnológico e inteligencia artificial)";
-              } else {
-                autoNiceClass = "Clase 35 (Gestión comercial, estrategia de marca y servicios corporativos) y Clase 42 (Consultoría técnica especializada)";
-              }
+            if (!autoNiceClass || cs._niceClassSourceGiro !== giroLowNice) {
+              autoNiceClass = (typeof window.tbbClassifyNiceClassForGiro === "function")
+                ? window.tbbClassifyNiceClassForGiro(giroLowNice, confirmedBrand)
+                : "Clase 35 (Gestión comercial, estrategia de marca y servicios corporativos) y Clase 42 (Consultoría especializada)";
               cs.primary_nice_class = autoNiceClass;
+              cs._niceClassSourceGiro = giroLowNice;
             }
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
@@ -24393,7 +24705,7 @@
           }
 
           if (st.subStep === 1) {
-            if (lblNext) lblNext.textContent = "Crear mi Logotipo con IA →";
+            if (lblNext) lblNext.textContent = (hasExternalUploadedLogo && existingLogoMode === "keep") ? "Confirmar mi Logotipo →" : "Crear mi Logotipo con IA →";
             stage.innerHTML = `
               <div class="tbb-atomic-card" style="padding:10px 14px; gap:6px;">
                 <div>
@@ -24566,6 +24878,14 @@
                       </div>
                     </div>
                   ` : ""}
+                  ${(!st.geminiBusy && st._logoGenErrorMsg) ? `
+                    <div role="alert" style="position:absolute; left:12px; right:12px; bottom:10px; z-index:8; background:#FFF7ED; border:1.5px solid #FDBA74; border-radius:12px; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; box-shadow:0 8px 20px rgba(13,37,64,0.12);">
+                      <span style="font-size:0.82rem; font-weight:600; color:#9A3412; flex:1; min-width:180px;">${escapeHTML(st._logoGenErrorMsg)}</span>
+                      <button type="button" class="tbb-duo-btn tbb-duo-btn-gold" onclick="if(window.tbbState){window.tbbState._logoGenErrorMsg='';} window.tbbTriggerFirstLogoCreationFromDossier(true);" style="min-height:32px !important; padding:4px 12px !important; font-size:0.82rem !important; white-space:nowrap;">
+                        Reintentar diseño con IA
+                      </button>
+                    </div>
+                  ` : ""}
                 </div>
 
                 <!-- Síntesis Estratégica de la Iteración Activa -->
@@ -24608,22 +24928,11 @@
           return `C:${c} M:${m} Y:${y} K:${kPct}`;
         };
 
-        window.hexToPantoneApprox = window.hexToPantoneApprox || function (hex, idx) {
-          const h = String(hex || "").toUpperCase();
-          const map = {
-            "#1D4ED8": "Pantone 2728 C",
-            "#0D2540": "Pantone 1655 C",
-            "#047857": "Pantone 348 C",
-            "#D97706": "Pantone 7549 C",
-            "#991B1B": "Pantone 1807 C",
-            "#DB2777": "Pantone 219 C",
-            "#7C3AED": "Pantone 266 C",
-            "#090D16": "Pantone Black 6 C",
-            "#D4AF37": "Pantone 871 C (Metallic)",
-            "#0284C7": "Pantone 2925 C",
-            "#F8FAFC": "Pantone Cool Gray 1 C"
-          };
-          return map[h] || ["Pantone 2728 C", "Pantone 1655 C", "Pantone Black 6 C", "Pantone Cool Gray 1 C"][idx % 4];
+        window.hexToPantoneApprox = function (hex, idx) {
+          if (typeof window.tbbMatchPantoneCoated === "function") {
+            return window.tbbMatchPantoneCoated(hex);
+          }
+          return ["Pantone 296 C", "Pantone 7683 C", "Pantone 1505 C", "Pantone 2925 C"][(idx || 0) % 4];
         };
 
         window.buildLockupHorizontalOrStackedForBrandbook = window.buildLockupHorizontalOrStackedForBrandbook || function (uidSuffix, isDark, wPx, hPx) {
@@ -24801,13 +25110,14 @@
               return;
             }
 
+            const isCompactStep6Bar = (typeof window !== "undefined" && window.innerWidth <= 640);
             if (btnAct) {
               btnAct.classList.remove("is-hidden");
               btnAct.style.display = "inline-flex";
-              if (lblAct) lblAct.textContent = `Siguiente Lámina (${st.plateIdx + 1}/${totalPlates})`;
+              if (lblAct) lblAct.textContent = isCompactStep6Bar ? `Lámina ${st.plateIdx + 1}/${totalPlates}` : `Siguiente Lámina (${st.plateIdx + 1}/${totalPlates})`;
               if (iconAct) iconAct.innerHTML = window.TBBVectorArt("next", "#FDE68A", 18);
             }
-            if (lblNext) lblNext.textContent = "Ir a Descargas";
+            if (lblNext) lblNext.textContent = isCompactStep6Bar ? "Descargas" : "Ir a Descargas";
 
             const activePlateMarkup = window.renderBeneficSinglePlateHTML(st.plateIdx, false);
             const hasUserUploadedLogo = Boolean(cs.uploaded_logo_data_url || cs.nano_banana_symbol_url || cs.uploaded_logo_svg_markup || window.step0State?.uploadedLogoDataUrl || window.step0State?.uploadedLogoSvgMarkup);
@@ -24959,6 +25269,7 @@
         if (typeof canvasState === "object" && canvasState) {
           canvasState.brandName = clean;
           canvasState.userLockedBrandName = Boolean(clean);
+          canvasState.user_explicit_brand_name = Boolean(clean);
           if (clean) {
             canvasState.nameless_discovery_mode = false;
             canvasState.step0_nameless_mode = false;
@@ -25337,7 +25648,7 @@
         return initial;
       };
 
-      window.tbbSyncBrandPaletteToEngine = function (colorsArray, triggerIteration = false, labelHint = "") {
+      window.tbbSyncBrandPaletteToEngine = function (colorsArray, triggerIteration = false, labelHint = "", isUserAction = true) {
         const clean = (Array.isArray(colorsArray) ? colorsArray : [])
           .map(c => String(c || "").trim().toUpperCase())
           .filter(c => /^#[0-9A-F]{6}$/i.test(c))
@@ -25362,6 +25673,9 @@
           canvasState.secondary_color = sec;
           canvasState.accent_color = acc;
           canvasState.selected_colors_hex = [bgLight, inkDark, pri, sec, ...clean.slice(2)];
+          if (isUserAction !== false) {
+            canvasState.user_edited_palette = true;
+          }
         }
 
         if (Array.isArray(st.logoIterations) && st.logoIterations.length > 0) {
@@ -25373,6 +25687,14 @@
             curIt.priHex = pri;
             curIt.secHex = sec;
             curIt.accentHex = acc;
+          }
+          // Si la Iteración #1 es el logotipo subido en modo Mantener, mantener sincronizada la paleta oficial editada por el usuario
+          if (st.logoIterations[0] && st.logoIterations[0].isUploadedUserLogo && isUserAction !== false) {
+            st.logoIterations[0].pri = pri;
+            st.logoIterations[0].sec = sec;
+            st.logoIterations[0].priHex = pri;
+            st.logoIterations[0].secHex = sec;
+            st.logoIterations[0].accentHex = acc;
           }
           if (triggerIteration && st.step === 5 && st.subStep === 2) {
             const prevMods = (curIt && curIt.mods) ? Object.assign({}, curIt.mods) : {};
@@ -26112,7 +26434,7 @@
             const endpointUrl = apiKey
               ? `https://generativelanguage.googleapis.com/v1beta/models/${modelCfg.name}:generateContent?key=${apiKey}`
               : (window.TBB_API_BASE || "") + "/api/v1/gemini/proxy";
-            const resp = await fetch(endpointUrl, {
+            const resp = await (window.tbbFetchWithRetry || fetch)(endpointUrl, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -26372,8 +26694,10 @@
           if (activeIt.nanoBananaFullArtworkUrl) {
             cs.nano_banana_full_artwork_url = activeIt.nanoBananaFullArtworkUrl;
           }
-          if (activeIt.pri) cs.primary_color = activeIt.pri;
-          if (activeIt.sec) cs.secondary_color = activeIt.sec;
+          if (!cs.user_edited_palette) {
+            if (activeIt.pri) cs.primary_color = activeIt.pri;
+            if (activeIt.sec) cs.secondary_color = activeIt.sec;
+          }
         }
 
         const targetSig = window.tbbComputeBrandbookSignature();
@@ -26474,8 +26798,15 @@
           if (typeof window.renderTbbZeroScrollStage === "function") {
             window.renderTbbZeroScrollStage();
           }
-          if (st.step === 6 && typeof window.triggerAuraEmpatheticFeedback === "function") {
-            window.triggerAuraEmpatheticFeedback("substep_6_1", bName, true, true);
+          if (st.step === 6) {
+            const totalP = (typeof window.getBenefic30PlatesMeta === "function" ? window.getBenefic30PlatesMeta().length : 36) || 36;
+            const readyMsg = `¡Tu Brandbook oficial de ${totalP} láminas para ${bName} está listo! Explora cada página o descárgalo en PDF.`;
+            if (typeof window.updateAuraTopPresenceDOM === "function") {
+              window.updateAuraTopPresenceDOM(readyMsg);
+            }
+            if (typeof window.requestLiveGeminiAuraEmpatheticComment === "function") {
+              window.requestLiveGeminiAuraEmpatheticComment("substep_6_1", `Brandbook oficial de ${totalP} láminas para ${bName} compilado y listo para explorar y descargar en PDF`, false, readyMsg);
+            }
           }
         }
       };
@@ -27412,6 +27743,7 @@
         if (typeof canvasState === "object" && canvasState) {
           canvasState.brandName = cleanName;
           canvasState.userLockedBrandName = true;
+          canvasState.user_explicit_brand_name = true;
           canvasState.nameless_discovery_mode = false;
           canvasState.step0_nameless_mode = false;
           if (candidateTagline) {
@@ -27983,14 +28315,14 @@
   </style>
   <script src="https://thebestbrand-studio.web.app/assets/vendor/opentype.min.js?v=1.3.4" crossorigin="anonymous"></script>
   <script src="https://thebestbrand-studio.web.app/assets/vendor/html2canvas.min.js?v=1.4.1" crossorigin="anonymous"></script>
-  <script src="/tbb-executive-deliverables-suite.js?v=133.0"></script>
-  <script src="/tbb-cloud-vector-outliner.js?v=133.0"></script>
-  <script src="/tbb-v80-brandbook-plates.js?v=133.0"></script>
-  <script src="/universal-brandbook-30-engine.js?v=133.0"></script>
-  <script src="/tbb-generative-brandbook-engine.js?v=133.0"></script>
-  <script src="/improbears-preset-engine.js?v=133.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=133.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=133.0"></script>
+  <script src="/tbb-executive-deliverables-suite.js?v=135.0"></script>
+  <script src="/tbb-cloud-vector-outliner.js?v=135.0"></script>
+  <script src="/tbb-v80-brandbook-plates.js?v=135.0"></script>
+  <script src="/universal-brandbook-30-engine.js?v=135.0"></script>
+  <script src="/tbb-generative-brandbook-engine.js?v=135.0"></script>
+  <script src="/improbears-preset-engine.js?v=135.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=135.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=135.0"></script>
 
   <style id="tbbDuolingoOrganicErgonomicsV129">
     html.a11y-large-mode { font-size: 18.5px !important; }

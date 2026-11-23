@@ -68,7 +68,10 @@
   }
 
   function hexToPantone(hex, idx = 1) {
-    const h = String(hex || "").toUpperCase();
+    if (typeof window !== "undefined" && typeof window.tbbMatchPantoneCoated === "function") {
+      return window.tbbMatchPantoneCoated(hex);
+    }
+    const h = String(hex || "").trim().toUpperCase();
     const known = {
       "#0D2540": "Pantone 296 C",
       "#426EAE": "Pantone 7683 C",
@@ -78,14 +81,100 @@
       "#0B1E36": "Pantone 289 C",
       "#854D0E": "Pantone 7558 C",
       "#0F3A40": "Pantone 5463 C",
+      "#090D16": "Pantone Black 6 C",
       "#18181B": "Pantone Black 7 C",
       "#713F12": "Pantone 7552 C",
-      "#FFFFFF": "Blanco Puro (Papel)"
+      "#FFFFFF": "Blanco Puro (Papel)",
+      "#F8FAFC": "Pantone Cool Gray 1 C",
+      "#FAF8F5": "Pantone Warm Gray 1 C"
     };
     if (known[h]) return known[h];
     const { r, g, b } = hexToRgb(h);
-    const code = 200 + ((r * 3 + g * 5 + b * 7 + idx * 23) % 780);
-    return `Pantone ${code} C`;
+    const swatches = [
+      { name: "Blanco Puro (Papel)", r: 255, g: 255, b: 255 },
+      { name: "Pantone Cool Gray 1 C", r: 217, g: 217, b: 214 },
+      { name: "Pantone Cool Gray 5 C", r: 177, g: 179, b: 179 },
+      { name: "Pantone Cool Gray 9 C", r: 117, g: 120, b: 123 },
+      { name: "Pantone Cool Gray 11 C", r: 83, g: 86, b: 90 },
+      { name: "Pantone Warm Gray 2 C", r: 203, g: 196, b: 188 },
+      { name: "Pantone Warm Gray 7 C", r: 150, g: 140, b: 131 },
+      { name: "Pantone Black 6 C", r: 16, g: 24, b: 32 },
+      { name: "Pantone Black 7 C", r: 61, g: 57, b: 53 },
+      { name: "Pantone 296 C", r: 4, g: 28, b: 44 },
+      { name: "Pantone 289 C", r: 12, g: 35, b: 64 },
+      { name: "Pantone 281 C", r: 0, g: 32, b: 91 },
+      { name: "Pantone 286 C", r: 0, g: 50, b: 160 },
+      { name: "Pantone 2728 C", r: 0, g: 71, b: 187 },
+      { name: "Pantone 7683 C", r: 66, g: 110, b: 174 },
+      { name: "Pantone 2935 C", r: 0, g: 87, b: 184 },
+      { name: "Pantone 300 C", r: 0, g: 94, b: 184 },
+      { name: "Pantone 2925 C", r: 0, g: 156, b: 222 },
+      { name: "Pantone 279 C", r: 65, g: 143, b: 222 },
+      { name: "Pantone 298 C", r: 65, g: 182, b: 230 },
+      { name: "Pantone 3125 C", r: 0, g: 174, b: 199 },
+      { name: "Pantone 320 C", r: 0, g: 156, b: 166 },
+      { name: "Pantone 5463 C", r: 15, g: 58, b: 64 },
+      { name: "Pantone 3282 C", r: 0, g: 132, b: 126 },
+      { name: "Pantone 3308 C", r: 0, g: 76, b: 69 },
+      { name: "Pantone 3435 C", r: 21, g: 71, b: 52 },
+      { name: "Pantone 348 C", r: 0, g: 132, b: 61 },
+      { name: "Pantone 355 C", r: 0, g: 150, b: 57 },
+      { name: "Pantone 361 C", r: 67, g: 176, b: 42 },
+      { name: "Pantone 376 C", r: 132, g: 189, b: 0 },
+      { name: "Pantone 7739 C", r: 49, g: 155, b: 66 },
+      { name: "Pantone 555 C", r: 32, g: 92, b: 64 },
+      { name: "Pantone 116 C", r: 255, g: 205, b: 0 },
+      { name: "Pantone 1235 C", r: 255, g: 184, b: 28 },
+      { name: "Pantone 7549 C", r: 255, g: 181, b: 0 },
+      { name: "Pantone 871 C (Metallic)", r: 132, g: 117, b: 78 },
+      { name: "Pantone 7558 C", r: 133, g: 77, b: 14 },
+      { name: "Pantone 1375 C", r: 255, g: 158, b: 27 },
+      { name: "Pantone 1505 C", r: 255, g: 105, b: 0 },
+      { name: "Pantone 1585 C", r: 255, g: 106, b: 19 },
+      { name: "Pantone 1655 C", r: 252, g: 76, b: 2 },
+      { name: "Pantone 7579 C", r: 220, g: 88, b: 42 },
+      { name: "Pantone 1795 C", r: 210, g: 38, b: 48 },
+      { name: "Pantone 186 C", r: 200, g: 16, b: 46 },
+      { name: "Pantone 1807 C", r: 164, g: 52, b: 58 },
+      { name: "Pantone 202 C", r: 134, g: 38, b: 51 },
+      { name: "Pantone 219 C", r: 218, g: 24, b: 132 },
+      { name: "Pantone 2395 C", r: 196, g: 0, b: 158 },
+      { name: "Pantone 266 C", r: 117, g: 59, b: 189 },
+      { name: "Pantone 2685 C", r: 51, g: 0, b: 114 },
+      { name: "Pantone 2725 C", r: 104, g: 91, b: 199 },
+      { name: "Pantone 469 C", r: 105, g: 63, b: 35 },
+      { name: "Pantone 4645 C", r: 166, g: 124, b: 96 },
+      { name: "Pantone 7502 C", r: 214, g: 196, b: 160 }
+    ];
+    let best = "Pantone 296 C";
+    let bestDist = Infinity;
+    for (let i = 0; i < swatches.length; i++) {
+      const s = swatches[i];
+      const dr = r - s.r;
+      const dg = g - s.g;
+      const db = b - s.b;
+      const rMean = (r + s.r) * 0.5;
+      const d = (2 + rMean / 256) * dr * dr + 4 * dg * dg + (2 + (255 - rMean) / 256) * db * db;
+      if (d < bestDist) {
+        bestDist = d;
+        best = s.name;
+      }
+    }
+    return best;
+  }
+
+  function trimTaglineAtWordBoundary(str, maxChars = 46) {
+    const clean = String(str || "").replace(/\s+/g, " ").trim();
+    if (!clean) return "";
+    if (clean.length <= maxChars) return clean;
+    const sliced = clean.slice(0, maxChars + 1);
+    const lastSpace = sliced.lastIndexOf(" ");
+    let cut = (lastSpace > Math.floor(maxChars * 0.45)) ? sliced.slice(0, lastSpace) : clean.slice(0, maxChars);
+    const dangling = /\s+(DE|DEL|LA|EL|LOS|LAS|UN|UNA|EN|CON|POR|PARA|Y|E|O|A|AL)$/i;
+    while (dangling.test(cut) && cut.includes(" ")) {
+      cut = cut.replace(dangling, "").trim();
+    }
+    return cut.replace(/[,;:\-–—.]+$/, "").trim();
   }
 
   // --- MOTOR DE GENERACIÓN DE TERNA DE LOGOTIPOS PROFESIONAL ---
@@ -93,8 +182,8 @@
   function generateTriFoldLogoSuite(brand) {
     const bName = brand.name || "The Best Brand";
     const bUpper = bName.toUpperCase();
-    const tagline = brand.tagline || "BRAND IDENTITY ATELIER";
-    const taglineUpper = tagline.toUpperCase();
+    const tagline = brand.tagline || "IDENTIDAD OFICIAL DE MARCA";
+    const taglineUpper = trimTaglineAtWordBoundary(tagline.toUpperCase(), 46);
     const pri = (brand.colors && brand.colors.pri) || "#0D2540";
     const sec = (brand.colors && brand.colors.sec) || "#426EAE";
     const acc = (brand.colors && brand.colors.acc) || "#FF7A00";
@@ -111,8 +200,28 @@
     const symCore = brand.svgCore || symbolPair.pos;
     const symCoreNeg = brand.svgCoreNeg || (brand.svgCore ? toCaladoNegativeSvg(brand.svgCore) : symbolPair.neg);
 
-    // 1. LOGO HORIZONTAL (Ratio 3.5:1 · Centro óptico exacto del isotipo 200x200 en Y=60: 10 + 0.5*100 = 60)
-    const logoHorizontal = `
+    // Si la marca utiliza un logotipo oficial subido o una obra completa generada con IA que ya integra el nombre,
+    // evitar duplicar el nombre de marca al lado y exhibir la obra completa centrada en gran escala con el eslogan limpio debajo.
+    const isFullArtworkLockup = Boolean(brand.isFullArtworkWithWordmark || brand.hasUploadedLogo);
+    const fullArtHref = brand.fullArtworkUrl || brand.uploadedLogoDataUrl || "";
+    const horizTitleSize = bUpper.length > 20 ? 18 : (bUpper.length > 14 ? 22 : 26);
+
+    // 1. LOGO HORIZONTAL
+    const logoHorizontal = isFullArtworkLockup ? `
+      <svg viewBox="0 0 460 132" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block; max-height:118px;">
+        ${fullArtHref ? `
+          <image data-tbb-uploaded-logo="1" href="${fullArtHref}" xlink:href="${fullArtHref}" x="70" y="4" width="320" height="94" preserveAspectRatio="xMidYMid meet"/>
+        ` : `
+          <g transform="translate(182, 2) scale(0.48)">
+            ${symCore}
+          </g>
+        `}
+        ${taglineUpper ? `
+          <line x1="150" y1="106" x2="310" y2="106" stroke="${lightGray}" stroke-width="1.4"/>
+          <text x="230" y="122" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.2" letter-spacing="2.0" fill="${pri}">${esc(taglineUpper)}</text>
+        ` : ""}
+      </svg>
+    ` : `
       <svg viewBox="0 0 460 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block; max-height:100px;">
         <!-- Isotipo Reducido centrado en (60, 60) -->
         <g transform="translate(10, 10) scale(0.5)">
@@ -121,20 +230,34 @@
         <!-- Línea Divisoria Vertical Fina -->
         <line x1="125" y1="24" x2="125" y2="96" stroke="${lightGray}" stroke-width="1.8"/>
         <!-- Textos Tipográficos con Kerning y Escala Óptima -->
-        <text x="145" y="56" font-family="'${priFont}', 'Montserrat', sans-serif" font-weight="900" font-size="26" letter-spacing="1.8" fill="${darkInk}">${esc(bUpper)}</text>
-        <text x="146" y="79" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.5" letter-spacing="2.4" fill="${pri}">${esc(taglineUpper.slice(0, 42))}</text>
+        <text x="145" y="56" font-family="'${priFont}', 'Montserrat', sans-serif" font-weight="900" font-size="${horizTitleSize}" letter-spacing="1.4" fill="${darkInk}">${esc(bUpper)}</text>
+        <text x="146" y="79" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.5" letter-spacing="2.1" fill="${pri}">${esc(taglineUpper)}</text>
       </svg>
     `;
 
-    // 1B. LOGO HORIZONTAL EN NEGATIVO (Centro óptico exacto en Y=60)
-    const logoHorizontalNeg = `
+    // 1B. LOGO HORIZONTAL EN NEGATIVO
+    const logoHorizontalNeg = isFullArtworkLockup ? `
+      <svg viewBox="0 0 460 132" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block; max-height:118px;">
+        <rect x="64" y="4" width="332" height="96" rx="16" fill="#FFFFFF" fill-opacity="0.98"/>
+        ${fullArtHref ? `
+          <image data-tbb-uploaded-logo="1" href="${fullArtHref}" xlink:href="${fullArtHref}" x="78" y="10" width="304" height="84" preserveAspectRatio="xMidYMid meet"/>
+        ` : `
+          <g transform="translate(184, 6) scale(0.46)">
+            ${symCore}
+          </g>
+        `}
+        ${taglineUpper ? `
+          <text x="230" y="120" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.2" letter-spacing="2.0" fill="${acc}">${esc(taglineUpper)}</text>
+        ` : ""}
+      </svg>
+    ` : `
       <svg viewBox="0 0 460 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block; max-height:100px;">
         <g transform="translate(10, 10) scale(0.5)">
           ${symCoreNeg}
         </g>
         <line x1="125" y1="24" x2="125" y2="96" stroke="rgba(255,255,255,0.25)" stroke-width="1.8"/>
-        <text x="145" y="56" font-family="'${priFont}', 'Montserrat', sans-serif" font-weight="900" font-size="26" letter-spacing="1.8" fill="#FFFFFF">${esc(bUpper)}</text>
-        <text x="146" y="79" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.5" letter-spacing="2.4" fill="${acc}">${esc(taglineUpper.slice(0, 42))}</text>
+        <text x="145" y="56" font-family="'${priFont}', 'Montserrat', sans-serif" font-weight="900" font-size="${horizTitleSize}" letter-spacing="1.4" fill="#FFFFFF">${esc(bUpper)}</text>
+        <text x="146" y="79" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9.5" letter-spacing="2.1" fill="${acc}">${esc(taglineUpper)}</text>
       </svg>
     `;
 
@@ -160,6 +283,8 @@
 
     // 3. SELLO DE AUTOR / EMBLEMA DE PACKAGING (Centro exacto 130,130: 75 + 0.55*100 = 130.0)
     const sealId = "sealPath_" + Math.random().toString(36).slice(2, 8);
+    const sealFontSize = bUpper.length > 20 ? 9.5 : (bUpper.length > 15 ? 10.8 : 12);
+    const sealLetterSp = bUpper.length > 18 ? 2.0 : 3.2;
     const logoSeal = `
       <svg viewBox="0 0 260 260" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:block;">
         <defs>
@@ -173,7 +298,7 @@
         <!-- Aro Central Blanco -->
         <circle cx="130" cy="130" r="76" fill="#FFFFFF" stroke="${pri}" stroke-width="1.8"/>
         <!-- Texto Curvado Superior (Nombre de la Marca) -->
-        <text font-family="'${priFont}', 'Montserrat', sans-serif" font-weight="900" font-size="12" letter-spacing="3.5" fill="${darkInk}">
+        <text font-family="'${priFont}', 'Montserrat', sans-serif" font-weight="900" font-size="${sealFontSize}" letter-spacing="${sealLetterSp}" fill="${darkInk}">
           <textPath href="#${sealId}_top" startOffset="50%" text-anchor="middle">${esc(bUpper)}</textPath>
         </text>
         <!-- Texto Curvado Inferior (Calidad & Origen) -->
@@ -524,32 +649,110 @@
   }
 
   // --- MOTOR DE SÍNTESIS EDITORIAL EJECUTIVA (CERO CUADROS GIGANTES DE TEXTO / CERO REDUNDANCIA) ---
+  function stripUrlsAndDomains(text) {
+    return String(text || "")
+      .replace(/\([^)]*(?:https?:\/\/|www\.|\.(?:com|mx|app|org|net|io|co)\b)[^)]*\)/gi, " ")
+      .replace(/\bhttps?:\/\/\S+/gi, " ")
+      .replace(/\b(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|mx|app|org|net|io|co)(?:\.[a-z]{2})?\b/gi, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   function extractShortCategoryBadge(categoryRaw, giroRaw, bName) {
-    const combined = `${categoryRaw || ""} ${giroRaw || ""} ${bName || ""}`.toLowerCase();
+    const cleanGiro = stripUrlsAndDomains(giroRaw);
+    const cleanCat = stripUrlsAndDomains(categoryRaw);
+    const combined = `${cleanCat} ${cleanGiro} ${bName || ""}`.toLowerCase();
+    const withoutBrandArch = combined
+      .replace(/arquitectura\s+de\s+(?:marca|marcas|\d+\s+divisiones|negocio|identidad|portafolio|submarcas)/gi, " ")
+      .replace(/arquitectura\s+(?:empresarial|corporativa|comercial|de\s+soluciones|estrat[eé]gica)/gi, " ");
+
     if (/improbears/i.test(bName || "")) {
       return "Business Improvement · 4 Divisiones Homologadas";
     }
-    const rawTrim = String(categoryRaw || "").trim();
+    if (/\b(transport\w*|log[ií]stic\w*|carga|flete\w*|flota|autotransport\w*|paqueter[ií]a|tr[aá]iler\w*|distribuci[oó]n\s+terrestre)\b/i.test(combined)) {
+      return "Transporte Terrestre y Logística Integral";
+    }
+    if (/\b(retiro|geri[aá]tric\w*|adultos?\s+mayores?|asilo|residencia\s+asistida|enfermer[ií]a|cuidado\s+integral|cl[ií]nica|salud\s+integral)\b/i.test(combined)) {
+      return "Residencia y Cuidado Integral";
+    }
+    if (/\b(inmobiliar\w*|bienes\s+ra[ií]ces|propiedades|plusval[ií]a|bienes\s+inmuebles|asesor[ií]a\s+patrimonial|corretaje)\b/i.test(combined)) {
+      return "Servicios Inmobiliarios y Patrimoniales";
+    }
+    if (/\b(campamento\w*|verano|aventura\s+infantil|camp\b|recreaci[oó]n\s+infantil|actividades\s+al\s+aire\s+libre)\b/i.test(combined)) {
+      return "Campamentos Educativos y Aventura";
+    }
+    if (/\b(liderazgo|habilidades\s+gerenciales|trabajo\s+en\s+equipo|coaching|teambuilding|formaci[oó]n\s+ejecutiva|talleres?\s+empresariales?)\b/i.test(combined)) {
+      return "Consultoría de Liderazgo y Equipos";
+    }
+    if (/\b(despacho\s+contable|contable\w*|contabilidad|fiscal\w*|impuestos?|auditor[ií]a|sat\b|n[oó]mina)\b/i.test(combined)) {
+      return "Despacho Contable y Estrategia Fiscal";
+    }
+    if (/\b(marcador\s+deportivo|scoreboard|aplicaci[oó]n\s+profesional\s+de\s+marcador)\b/i.test(combined)) {
+      return "Tecnología Deportiva y Experiencia en Tiempo Real";
+    }
+    if (/\b(broadcast|youtube|streaming|canal\s+deportivo|highlights|narraci[oó]n|transmisi[oó]n\s+en\s+vivo)\b/i.test(combined)) {
+      return "Broadcast y Producción Deportiva";
+    }
+    if (/\b(marcador\w*|torneo|liga\w*|deport\w*)\b/i.test(combined)) {
+      return "Tecnología Deportiva y Experiencia en Tiempo Real";
+    }
+    if (/\b(ingredientes?\s+funcionales?|ingredientes?\s+alimentarios?|enzimas?|emulsificantes?|cervec\w*|l[uú]pulo|hopzoil|formulaciones?\s+industriales?)\b/i.test(combined)) {
+      return "Ingeniería de Ingredientes y Soluciones Alimentarias";
+    }
+    if (/\b(inteligencia\s+artificial|identidad\s+de\s+marca|saas|brandbook|logotipo|the\s*best\s*brand)\b/i.test(combined)) {
+      return "Plataforma SaaS e Identidad de Marca con IA";
+    }
+    if (/\b(constructora|construcci[oó]n|obra\s+civil|ingenier[ií]a\s+civil|infraestructura|edificaci[oó]n|proyecto\s+arquitect[oó]nico)\b/i.test(withoutBrandArch)) {
+      return "Ingeniería Civil, Arquitectura e Infraestructura";
+    }
+    if (/\b(restaurante\w*|cafeter[ií]a|chef|cocina\s+de\s+autor|gastronom[ií]a\s+gourmet|hospitalidad)\b/i.test(combined)) {
+      return "Alta Gastronomía y Hospitalidad";
+    }
+    if (/\b(consultor\w*|estrategia|negocio|business\s+improvement)\b/i.test(combined)) {
+      return "Consultoría Estratégica y Sistemas de Negocio";
+    }
+    const rawTrim = cleanCat;
     if (rawTrim && rawTrim.split(/\s+/).length <= 5 && rawTrim.length <= 42) {
       return rawTrim;
     }
-    if (/inteligencia artificial|identidad de marca|saas|brandbook|logotipo|the\s*best\s*brand/i.test(combined)) {
-      return "Plataforma SaaS e Identidad de Marca con IA";
-    }
-    if (/constructora|obra civil|ingenier[ií]a civil|infraestructura|arquitectura/i.test(combined)) {
-      return "Ingeniería Civil, Arquitectura e Infraestructura";
-    }
-    if (/alimento|ingrediente|cervec|bebida|gastronom/i.test(combined)) {
-      return "Ingeniería de Ingredientes y Soluciones Alimentarias";
-    }
-    if (/deport|liga|marcador|torneo|broadcast/i.test(combined)) {
-      return "Tecnología Deportiva y Experiencia en Tiempo Real";
-    }
-    if (/consultor|estrategia|negocio/i.test(combined)) {
-      return "Consultoría Estratégica y Sistemas de Negocio";
-    }
-    const words = String(giroRaw || categoryRaw || "Servicios Especializados").replace(/[.,;:]+/g, "").trim().split(/\s+/).slice(0, 5).join(" ");
+    const words = String(cleanGiro || cleanCat || "Servicios Especializados")
+      .replace(/[()[\]{}.,;:]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .split(/\s+/)
+      .slice(0, 5)
+      .join(" ");
     return words || "Soluciones Estratégicas y Servicios";
+  }
+
+  function formatNiceCoverSummary(nizaRaw) {
+    const clean = String(nizaRaw || "Clasificación Internacional de Niza").replace(/\s+/g, " ").trim();
+    if (!clean) return "Clasificación Internacional de Niza";
+    if (clean.length <= 118) return clean;
+    // Si tiene dos clases ("Clase X (...) y Clase Y (...)"), conservar la primera cláusula completa con paréntesis balanceado
+    const firstClauseMatch = clean.match(/^(Clase\s+\d+\s*\([^)]+\))/i);
+    if (firstClauseMatch && firstClauseMatch[1]) {
+      const restClassMatch = clean.slice(firstClauseMatch[1].length).match(/\by\s+(Clase\s+\d+)/i);
+      return restClassMatch ? `${firstClauseMatch[1]} y ${restClassMatch[1]}.` : `${firstClauseMatch[1]}.`;
+    }
+    // Evitar cortes en paréntesis abiertos o palabras colgantes
+    let cut = clean.slice(0, 110);
+    const lastSp = cut.lastIndexOf(" ");
+    if (lastSp > 60) cut = cut.slice(0, lastSp);
+    cut = cut.replace(/\s*\([^)]*$/, "").replace(/\s+y\s+clase$/i, "").replace(/[,;:\-–—.]+$/, "").trim();
+    return cut ? `${cut}.` : clean;
+  }
+
+  function formatCoverPurposeSummary(whyRaw, fallbackLead) {
+    let clean = String(whyRaw || "").replace(/\s+/g, " ").trim();
+    if (!clean || clean.length < 14) return fallbackLead || "Propósito estratégico de marca.";
+    clean = clean
+      .replace(/^(?:porque\s+existimos\s+para\s+|existimos\s+para\s+|porque\s+creemos\s+que\s+|porque\s+)/i, "")
+      .trim();
+    if (!clean) return fallbackLead || "Propósito estratégico de marca.";
+    clean = clean.charAt(0).toUpperCase() + clean.slice(1);
+    const summary = trimToWordBoundary(clean, 18);
+    return summary || fallbackLead;
   }
 
   const DANGLING_SPANISH_WORDS = /^(?:de|del|a|al|en|con|por|para|sin|sobre|entre|hacia|hasta|desde|contra|según|segun|tras|mediante|durante|y|e|o|u|ni|que|quien|quienes|cual|cuales|cuyo|cuya|cuyos|cuyas|donde|cuando|como|pero|mas|sino|aunque|porque|pues|si|no|muy|tan|más|mas|menos|mi|mis|tu|tus|su|sus|nuestro|nuestra|nuestros|nuestras|el|la|los|las|un|una|unos|unas|lo|le|les|me|te|se|nos|ha|han|he|hemos|es|son|fue|fueron|ser|estar|está|estan|están|impulsada|impulsado|basada|basado|enfocada|enfocado|orientada|orientado|diseñada|diseñado|creada|creado|pensada|pensado)$/i;
@@ -587,6 +790,10 @@
       candidate = words.slice(0, maxWords).join(" ");
     }
     let stripped = stripTrailingDanglingWords(candidate);
+    // Eliminar paréntesis abiertos sin cerrar que hayan quedado truncados al final
+    if ((stripped.match(/\(/g) || []).length > (stripped.match(/\)/g) || []).length) {
+      stripped = stripTrailingDanglingWords(stripped.replace(/\s*\([^)]*$/, ""));
+    }
     if (!/[.!?]$/.test(stripped)) stripped += ".";
     return stripped;
   }
@@ -679,7 +886,8 @@
   function generateBrandbook30Plates(brand) {
     const csRef = (typeof window !== "undefined" && window.canvasState) ? window.canvasState : {};
     const rawCandidateName = String(brand.name || "").trim();
-    const isAccidentalTbbDefault = !csRef.isOfficialAdminTbbPreset && /^the\s*best\s*brand$/i.test(rawCandidateName);
+    const userExplicitName = Boolean(csRef.isOfficialAdminTbbPreset || csRef.user_explicit_brand_name || csRef.userLockedBrandName);
+    const isAccidentalTbbDefault = !userExplicitName && /^the\s*best\s*brand$/i.test(rawCandidateName);
     const bName = (rawCandidateName && !isAccidentalTbbDefault) ? rawCandidateName : "Mi Marca";
     const bUpper = bName.toUpperCase();
     const slug = (brand.slug && !isAccidentalTbbDefault) ? brand.slug : (bName.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "mi_marca");
@@ -970,11 +1178,11 @@
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; border-top:1.5px solid ${lightGray}; padding-top:14px;">
               <div style="border-left:3.5px solid ${acc}; padding-left:14px;">
                 <div style="font-size:11.5px; font-weight:800; color:${acc}; letter-spacing:0.5px;">PROPÓSITO NUCLEAR</div>
-                <div style="font-size:14px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.45;">${esc(whySplit.lead)}.</div>
+                <div style="font-size:14px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.45;">${esc(formatCoverPurposeSummary(why, whySplit.lead))}</div>
               </div>
               <div style="border-left:3.5px solid ${sec}; padding-left:14px;">
                 <div style="font-size:11.5px; font-weight:800; color:${sec}; letter-spacing:0.5px;">CLASIFICACIÓN NIZA</div>
-                <div style="font-size:14px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.45;">${esc(trimToWordBoundary(niza, 11))}</div>
+                <div style="font-size:14px; font-weight:700; color:${darkInk}; margin-top:4px; line-height:1.45;">${esc(formatNiceCoverSummary(niza))}</div>
               </div>
             </div>
           </div>
@@ -1824,57 +2032,55 @@
     // =========================================================================
     // LÁMINA 21: PALETA CROMÁTICA OFICIAL (HEX, RGB, CMYK, PANTONE)
     // =========================================================================
+    const rawUserPal = (brand.colors && Array.isArray(brand.colors.paletteList) && brand.colors.paletteList.length >= 2)
+      ? brand.colors.paletteList.map((c) => String(c || "").trim().toUpperCase()).filter((c) => /^#[0-9A-F]{6}$/.test(c))
+      : [pri, sec, acc];
+    const plate21Swatches = [];
+    const roleLabels21 = ["COLOR PRIMARIO", "COLOR SECUNDARIO", "COLOR DE ACENTO", "COLOR COMPLEMENTARIO", "TONO DE SOPORTE", "TONO AUXILIAR"];
+    const uniqueChromaticPal = [];
+    rawUserPal.forEach((hex) => {
+      if (!uniqueChromaticPal.includes(hex) && !/^#(FFFFFF|F8FAFC|FAF8F5)$/i.test(hex)) {
+        uniqueChromaticPal.push(hex);
+      }
+    });
+    if (uniqueChromaticPal.length === 0) uniqueChromaticPal.push(pri, sec, acc);
+    uniqueChromaticPal.slice(0, 6).forEach((hex, idx) => {
+      plate21Swatches.push({
+        label: roleLabels21[idx] || `COLOR OFICIAL #${idx + 1}`,
+        hex: hex,
+        pantone: hexToPantone(hex, idx + 1)
+      });
+    });
+    // Si la paleta tiene 2 o 3 tonos cromáticos, complementar con Tinta de Texto para completar 4 fichas balanceadas
+    if (plate21Swatches.length < 4 && !plate21Swatches.some((sw) => sw.hex === darkInk.toUpperCase())) {
+      plate21Swatches.push({
+        label: "TINTA DE TEXTO",
+        hex: darkInk,
+        pantone: hexToPantone(darkInk, 4)
+      });
+    }
+    const swatchCols = Math.max(2, Math.min(4, plate21Swatches.length));
+    const plate21Title = `Paleta Cromática Oficial de ${plate21Swatches.length} Tonos Clave`;
+
     plates.push(`
       <article class="tbb-plate" id="plate-21">
-        ${hdr("SECCIÓN 04", "COLORIMETRÍA Y TIPOGRAFÍA", 21, "Paleta Cromática Oficial de 4 Tonos Clave")}
-        <div class="tbb-grid-4col" style="align-items:center;">
-          <!-- 1. PRIMARIO -->
-          <div class="tbb-swatch">
-            <div class="tbb-swatch-box" style="background:${pri};"></div>
-            <div class="tbb-swatch-meta" style="border-left-color:${pri};">
-              <strong style="color:${darkInk}; font-size:15.5px;">COLOR PRIMARIO</strong><br/>
-              HEX: <code>${pri}</code><br/>
-              RGB: ${hexToRgb(pri).r}, ${hexToRgb(pri).g}, ${hexToRgb(pri).b}<br/>
-              CMYK: ${hexToCmyk(pri)}<br/>
-              ${hexToPantone(pri, 1)}
-            </div>
-          </div>
-
-          <!-- 2. SECUNDARIO -->
-          <div class="tbb-swatch">
-            <div class="tbb-swatch-box" style="background:${sec};"></div>
-            <div class="tbb-swatch-meta" style="border-left-color:${sec};">
-              <strong style="color:${darkInk}; font-size:15.5px;">COLOR SECUNDARIO</strong><br/>
-              HEX: <code>${sec}</code><br/>
-              RGB: ${hexToRgb(sec).r}, ${hexToRgb(sec).g}, ${hexToRgb(sec).b}<br/>
-              CMYK: ${hexToCmyk(sec)}<br/>
-              ${hexToPantone(sec, 2)}
-            </div>
-          </div>
-
-          <!-- 3. ACENTO -->
-          <div class="tbb-swatch">
-            <div class="tbb-swatch-box" style="background:${acc};"></div>
-            <div class="tbb-swatch-meta" style="border-left-color:${acc};">
-              <strong style="color:${darkInk}; font-size:15.5px;">COLOR DE ACENTO</strong><br/>
-              HEX: <code>${acc}</code><br/>
-              RGB: ${hexToRgb(acc).r}, ${hexToRgb(acc).g}, ${hexToRgb(acc).b}<br/>
-              CMYK: ${hexToCmyk(acc)}<br/>
-              ${hexToPantone(acc, 3)}
-            </div>
-          </div>
-
-          <!-- 4. TINTA OSCURA -->
-          <div class="tbb-swatch">
-            <div class="tbb-swatch-box" style="background:${darkInk};"></div>
-            <div class="tbb-swatch-meta" style="border-left-color:${darkInk};">
-              <strong style="color:${darkInk}; font-size:15.5px;">TINTA DE TEXTO</strong><br/>
-              HEX: <code>${darkInk}</code><br/>
-              RGB: ${hexToRgb(darkInk).r}, ${hexToRgb(darkInk).g}, ${hexToRgb(darkInk).b}<br/>
-              CMYK: ${hexToCmyk(darkInk)}<br/>
-              Pantone Black 6 C
-            </div>
-          </div>
+        ${hdr("SECCIÓN 04", "COLORIMETRÍA Y TIPOGRAFÍA", 21, plate21Title)}
+        <div style="display:grid; grid-template-columns:repeat(${swatchCols}, minmax(0, 1fr)); gap:22px; flex:1; align-items:center;">
+          ${plate21Swatches.map((sw) => {
+            const rgb = hexToRgb(sw.hex);
+            return `
+              <div class="tbb-swatch">
+                <div class="tbb-swatch-box" style="background:${sw.hex}; border:1px solid rgba(13,37,64,0.12);"></div>
+                <div class="tbb-swatch-meta" style="border-left-color:${sw.hex};">
+                  <strong style="color:${darkInk}; font-size:15px;">${esc(sw.label)}</strong><br/>
+                  HEX: <code>${esc(sw.hex)}</code><br/>
+                  RGB: ${rgb.r}, ${rgb.g}, ${rgb.b}<br/>
+                  CMYK: ${esc(hexToCmyk(sw.hex))}<br/>
+                  ${esc(sw.pantone)}
+                </div>
+              </div>
+            `;
+          }).join("")}
         </div>
         ${ftr(21)}
       </article>
@@ -2516,7 +2722,8 @@
   function generateFullBrandbookDocHtml(brand) {
     const csRef = (typeof window !== "undefined" && window.canvasState) ? window.canvasState : {};
     const rawCandidateName = String(brand.name || "").trim();
-    const bName = (rawCandidateName && !(!csRef.isOfficialAdminTbbPreset && /^the\s*best\s*brand$/i.test(rawCandidateName))) ? rawCandidateName : "Mi Marca";
+    const userExplicitName = Boolean(csRef.isOfficialAdminTbbPreset || csRef.user_explicit_brand_name || csRef.userLockedBrandName);
+    const bName = (rawCandidateName && !(!userExplicitName && /^the\s*best\s*brand$/i.test(rawCandidateName))) ? rawCandidateName : "Mi Marca";
     const styles = getDynamicBrandbookStyles();
     const plates = generateBrandbook30Plates(brand);
     const adobeKitId = String(brand.adobeTypekitId || "").replace(/[^a-zA-Z0-9_-]/g, "").trim();
@@ -2572,7 +2779,7 @@ Instrucciones obligatorias:
         ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`
         : `${baseOrigin}/api/v1/gemini/proxy`;
 
-      const res = await fetch(url, {
+      const res = await (window.tbbFetchWithRetry || fetch)(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -3060,27 +3267,48 @@ Instrucciones obligatorias:
       ? cs.selected_colors_hex
       : ["#FFFFFF", "#090D16", "#0D2540", "#426EAE"];
 
-    const pri = (activeIt && (activeIt.pri || activeIt.priHex))
+    const userBrandPalette = (Array.isArray(cs.brand_palette_colors) && cs.brand_palette_colors.length >= 2)
+      ? cs.brand_palette_colors.map((c) => String(c || "").trim().toUpperCase()).filter((c) => /^#[0-9A-F]{6}$/.test(c))
+      : [];
+    const preferUserEditedPal = Boolean(cs.user_edited_palette && userBrandPalette.length >= 2);
+
+    const pri = (preferUserEditedPal && userBrandPalette[0])
+      || (cs.user_edited_palette && (st.logoPriHex || cs.primary_color))
+      || (activeIt && (activeIt.pri || activeIt.priHex))
       || st.logoPriHex
       || cs.primary_color
       || (Array.isArray(cs.uploaded_logo_colors) && cs.uploaded_logo_colors[0])
       || priColors[2]
       || "#0D2540";
 
-    const sec = (activeIt && (activeIt.sec || activeIt.secHex))
+    const sec = (preferUserEditedPal && userBrandPalette[1])
+      || (cs.user_edited_palette && (st.logoSecHex || cs.secondary_color))
+      || (activeIt && (activeIt.sec || activeIt.secHex))
       || st.logoSecHex
       || cs.secondary_color
       || (Array.isArray(cs.uploaded_logo_colors) && cs.uploaded_logo_colors[1])
       || priColors[3]
       || "#426EAE";
 
-    const acc = (activeIt && activeIt.accentHex)
+    const acc = (preferUserEditedPal && userBrandPalette[2])
+      || (cs.user_edited_palette && cs.accent_color)
+      || (activeIt && activeIt.accentHex)
       || cs.accent_color
       || (Array.isArray(cs.uploaded_logo_colors) && cs.uploaded_logo_colors[2])
       || (Array.isArray(s0.uploadedLogoColors) && s0.uploadedLogoColors[2])
       || (hasUploadedLogo ? sec : (priColors[0] && !/^#(?:fff(?:fff)?|faf8f5|f8fafc)$/i.test(priColors[0]) ? priColors[0] : "#FF7A00"));
 
     const darkInk = (priColors[1] && !/^#fff/i.test(priColors[1])) ? priColors[1] : "#090D16";
+    const resolvedFullArtworkUrl = isOrigUploadSelected
+      ? (cs.raw_uploaded_logo_data_url || activeIt?.uploadedLogoDataUrl || uploadedUrl || "")
+      : ((activeIt && (activeIt.nanoBananaFullArtworkUrl || (activeIt.isUploadedUserLogo ? (cs.raw_uploaded_logo_data_url || activeIt.uploadedLogoDataUrl) : "")))
+        || cs.nano_banana_full_artwork_url
+        || (hasUploadedLogo ? (cs.raw_uploaded_logo_data_url || uploadedUrl) : "")
+        || "");
+    const isFullArtworkWithWordmark = Boolean(
+      hasUploadedLogo ||
+      (activeIt && (activeIt.isNanoBananaGenerated || activeIt.nanoBananaFullArtworkUrl || activeIt.isUploadedUserLogo))
+    );
 
     const mods = (activeIt && activeIt.mods) || {};
     const priFont = (activeIt && activeIt.fontFamily) || mods.fontFamily || st.selectedFontFamily || cs.primary_font || "Montserrat";
@@ -3151,7 +3379,7 @@ Instrucciones obligatorias:
       how: (cs.process_steps_text || "Metodología rigurosa, tecnología de última generación y trato humano.").trim(),
       what: (cs.value_offer || "Identidad oficial de marca, manual de 30 láminas y activos vectoriales.").trim(),
       persona: (cs.brand_persona || "Líder apasionado, confiable, empático y enfocado en resultados.").trim(),
-      niza: cs.primary_nice_class || "Clase Oficial de Registro de Marca",
+      niza: cs.primary_nice_class || (typeof window.tbbClassifyNiceClassForGiro === "function" ? window.tbbClassifyNiceClassForGiro(giroText, bName) : "Clase Oficial de Registro de Marca"),
       tpBefore: tpB,
       tpDuring: tpD,
       tpAfter: tpA,
@@ -3160,6 +3388,7 @@ Instrucciones obligatorias:
         sec: sec,
         acc: acc,
         darkInk: darkInk,
+        paletteList: userBrandPalette.length >= 2 ? userBrandPalette : [pri, sec, acc],
         midGray: "#707070",
         lightGray: "#E6E6E6",
         softBg: "#FAF8F5",
@@ -3178,6 +3407,8 @@ Instrucciones obligatorias:
       isEstablished: hasUploadedLogo,
       hasUploadedLogo: hasUploadedLogo,
       uploadedLogoDataUrl: uploadedUrl || "",
+      isFullArtworkWithWordmark: isFullArtworkWithWordmark,
+      fullArtworkUrl: resolvedFullArtworkUrl || uploadedUrl || "",
       isMultibrand: /improbears/i.test(bName),
       svgCore: pureSymbolPos,
       svgCoreNeg: pureSymbolNeg
@@ -3618,7 +3849,7 @@ Solo incluye en "updated_canvas" los campos que se desprendan directamente de lo
         const url = apiKey
           ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`
           : `${baseOrigin}/api/v1/gemini/proxy`;
-        const res = await fetch(url, {
+        const res = await (window.tbbFetchWithRetry || fetch)(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
