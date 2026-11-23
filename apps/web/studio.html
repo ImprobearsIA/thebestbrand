@@ -5898,6 +5898,10 @@
         { name: "Pantone 2925 C", r: 0, g: 156, b: 222 },
         { name: "Pantone 279 C", r: 65, g: 143, b: 222 },
         { name: "Pantone 298 C", r: 65, g: 182, b: 230 },
+        { name: "Pantone 317 C", r: 184, g: 232, b: 234 },
+        { name: "Pantone 318 C", r: 136, g: 219, b: 223 },
+        { name: "Pantone 324 C", r: 154, g: 219, b: 218 },
+        { name: "Pantone 325 C", r: 100, g: 204, b: 201 },
         { name: "Pantone 3125 C", r: 0, g: 174, b: 199 },
         { name: "Pantone 320 C", r: 0, g: 156, b: 166 },
         { name: "Pantone 5463 C", r: 15, g: 58, b: 64 },
@@ -23678,7 +23682,7 @@
           if (myReqSeq !== window._tbbAuraReqSeq || `${st.step}.${st.subStep}` !== reqStepSig) {
             return;
           }
-          if (st.step === 6 && /\b(elecci[oó]n de nombre|excelente nombre|buen nombre|elegiste el nombre)\b/i.test(reply)) {
+          if (st.step === 6 && /\b(elecci[oó]n de nombre|excelente nombre|buen nombre|elegiste el nombre|tu nombre actual|nombre actual suena)\b/i.test(reply)) {
             return;
           }
           if (reply && reply.length >= 12 && !st.auraUsedMessages.includes(reply)) {
