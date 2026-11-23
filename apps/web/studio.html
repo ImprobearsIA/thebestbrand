@@ -10752,7 +10752,15 @@
       if (tagEl) tagEl.textContent = `AURA VIVA · ${curLang.toUpperCase()} · ≤15s`;
       if (theoryFrameworkEl) theoryFrameworkEl.textContent = `AURA VIVA · VOZ ÚNICA (${curLang.toUpperCase()})`;
       if (titleEl) titleEl.textContent = spec.title;
-      if (subEl) subEl.textContent = trCap("Instrucciones del paso con Aura (máx. 15 segundos):");
+      const capSubMap = {
+        es: "Instrucciones del paso con Aura (máx. 15 segundos):",
+        en: "Step instructions with Aura (max. 15 seconds):",
+        fr: "Instructions de l'étape avec Aura (15 secondes max.) :",
+        pt: "Instruções do passo com a Aura (máx. 15 segundos):",
+        de: "Schritt-Anleitung mit Aura (max. 15 Sekunden):",
+        it: "Istruzioni del passo con Aura (max. 15 secondi):"
+      };
+      if (subEl) subEl.textContent = capSubMap[curLang] || capSubMap.es;
       if (theoryCardsGrid) {
         theoryCardsGrid.innerHTML = `<div id="tbbLiveCapsuleTranscriptBox" style="background:#F8FAFC;border-left:4px solid #FF7A00;padding:12px 14px;border-radius:12px;font-size:0.96rem;color:#0F172A;line-height:1.55;">“${canonicalBodyText}”</div>`;
       }
@@ -19889,9 +19897,7 @@
         renderLiveBrandContinuityStrip();
       }
       updateJourneyRoadmap();
-      if (typeof switchStep0SubCard === "function") {
-        switchStep0SubCard(1);
-      }
+      window.currentStep0SubCard = 1;
       if (typeof updateStep1PillarWayfindingUI === "function") {
         updateStep1PillarWayfindingUI(1);
       }
@@ -19910,7 +19916,14 @@
           }, 250);
         }
       } else if (!restoredAny) {
-        navigateToScreen("step0");
+        if (window.tbbState) {
+          window.tbbState.activeMode = "step";
+          window.tbbState.step = 0;
+          window.tbbState.subStep = 1;
+        }
+        if (typeof window.renderTbbZeroScrollStage === "function") {
+          window.renderTbbZeroScrollStage();
+        }
       } else if (typeof window.renderTbbZeroScrollStage === "function") {
         window.renderTbbZeroScrollStage();
       }
@@ -19918,6 +19931,9 @@
         updateDuolingoPureFocusUI();
       }
       window._tbbBootCompleted = true;
+      if (typeof window.tbbMaybeOpenStep0IntroCapsule === "function") {
+        window.tbbMaybeOpenStep0IntroCapsule();
+      }
       if (window.tbbUserAccount && window.tbbUserAccount.email && window.tbbUserAccount.security_verified) {
         tbbSyncAccountVaultVerifiedUI();
         tbbStartRealtimeMultiDeviceSyncLoop();
@@ -28110,10 +28126,14 @@
         if (typeof window.tbbPreloadStepCapsules === "function") {
           window.tbbPreloadStepCapsules(curStepBoot);
         }
-        const isEmbeddedFrame = Boolean(params.get("embed") || (window.self !== window.top));
-        const skipIntroVideo = params.get("novideo") === "1" || isEmbeddedFrame || Boolean(params.get("brand") || params.get("admin") || params.get("step") !== null || stripeSid);
-        const hasExistingBiz = Boolean(typeof canvasState === "object" && canvasState && String(canvasState.custom_business_type || "").trim().length > 2);
-        if (!skipIntroVideo && !window._tbbFounderIntroVideoShown && curStepBoot === 0 && !hasExistingBiz && typeof openPhaseTransitionVideoCapsule === "function") {
+        window.tbbMaybeOpenStep0IntroCapsule = function () {
+          if (window._tbbFounderIntroVideoShown) return;
+          const pNow = new URLSearchParams(window.location.search);
+          const isEmb = Boolean(pNow.get("embed") || (window.self !== window.top));
+          const skipIntro = pNow.get("novideo") === "1" || isEmb || Boolean(pNow.get("brand") || pNow.get("admin") || pNow.get("step") !== null || pNow.get("stripe_session_id"));
+          const stepNow = window.tbbState ? Number(window.tbbState.step || 0) : 0;
+          const hasBiz = Boolean(typeof canvasState === "object" && canvasState && String(canvasState.custom_business_type || "").trim().length > 2);
+          if (skipIntro || stepNow !== 0 || hasBiz || typeof openPhaseTransitionVideoCapsule !== "function") return;
           window._tbbFounderIntroVideoShown = true;
           const launchStep0Intro = () => {
             if (window.tbbState && Number(window.tbbState.step || 0) === 0 && !document.getElementById("phaseTransitionVideoModal")?.classList.contains("open")) {
@@ -28125,6 +28145,9 @@
           } else {
             window.addEventListener("load", launchStep0Intro, { once: true });
           }
+        };
+        if (window._tbbBootCompleted) {
+          window.tbbMaybeOpenStep0IntroCapsule();
         }
         return;
         ov.style.display = "flex";
@@ -28362,8 +28385,8 @@
   <script src="/universal-brandbook-30-engine.js?v=135.0"></script>
   <script src="/tbb-generative-brandbook-engine.js?v=135.1"></script>
   <script src="/improbears-preset-engine.js?v=135.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=137.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=137.0"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=137.1"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=137.1"></script>
 
   <style id="tbbDuolingoOrganicErgonomicsV129">
     html.a11y-large-mode { font-size: 18.5px !important; }
