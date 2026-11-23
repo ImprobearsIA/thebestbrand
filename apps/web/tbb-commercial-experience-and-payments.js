@@ -50,7 +50,13 @@
     feedback: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 11.5a8 8 0 0 1-.8 3.6 8.1 8.1 0 0 1-7.2 4.4 8 8 0 0 1-3.6-.8L3.5 20.5l1.8-5.4a8 8 0 0 1-.8-3.6 8.1 8.1 0 0 1 4.4-7.2 8 8 0 0 1 3.6-.8h.5a8.1 8.1 0 0 1 7.5 7.5v.5z" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
     clock: `<svg class="tbb-svg-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.8" stroke="currentColor" stroke-width="1.65"/><path d="M12 7.2v4.8l3 1.8" stroke="#FF7A00" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
     menu: `<svg class="tbb-svg-ic" width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 7.2h15M4.5 12h15M4.5 16.8h15" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>`,
-    star: `<svg class="tbb-svg-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3z" stroke="#FF7A00" stroke-width="1.65" stroke-linejoin="round"/></svg>`
+    star: `<svg class="tbb-svg-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3z" stroke="#FF7A00" stroke-width="1.65" stroke-linejoin="round"/></svg>`,
+    lifebuoy: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.8" stroke="currentColor" stroke-width="1.65"/><circle cx="12" cy="12" r="3.6" stroke="currentColor" stroke-width="1.65"/><path d="M5.8 5.8l3.6 3.6M18.2 5.8l-3.6 3.6M5.8 18.2l3.6-3.6M18.2 18.2l-3.6-3.6" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>`,
+    mail: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2.4" stroke="currentColor" stroke-width="1.65"/><path d="M4.5 7l7.5 5.4L19.5 7" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    whatsapp: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.2 11.7a8.2 8.2 0 0 1-12.1 7.2L4 20l1.2-4A8.2 8.2 0 1 1 20.2 11.7z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/><path d="M9.4 9.2c.2-.4.5-.5.8-.5h.5c.2 0 .4.1.5.4l.7 1.6c.1.2.1.5-.1.7l-.5.6c.5.9 1.2 1.6 2.1 2.1l.6-.5c.2-.2.5-.2.7-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.5.8-.6.3-1.4.4-2.5 0-1.3-.5-2.7-1.6-3.7-2.9-1-1.3-1.3-2.5-1-3.3.1-.3.2-.5.4-.6z" fill="currentColor"/></svg>`,
+    copy: `<svg class="tbb-svg-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.65"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.65" stroke-linecap="round"/></svg>`,
+    trash: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 7h15M9.5 7V5a1.5 1.5 0 0 1 1.5-1.5h2A1.5 1.5 0 0 1 14.5 5v2M7 7l.8 11.8A1.8 1.8 0 0 0 9.6 20.5h4.8a1.8 1.8 0 0 0 1.8-1.7L17 7" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    fileShield: `<svg class="tbb-svg-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.2l6.8 2.8v5c0 4.8-3.1 8.4-6.8 9.8-3.7-1.4-6.8-5-6.8-9.8V6L12 3.2z" stroke="currentColor" stroke-width="1.65" stroke-linejoin="round"/><path d="M9.5 12h5M12 9.5v5" stroke="#426EAE" stroke-width="1.65" stroke-linecap="round"/></svg>`
   };
   window.TBB_ICONS = TBB_ICONS;
 
@@ -1267,8 +1273,36 @@
     2: { slug: "que-recibes", path: "/que-recibes" },
     3: { slug: "como-funciona", path: "/como-funciona" },
     4: { slug: "ejemplos", path: "/ejemplos" },
-    5: { slug: "referencias", path: "/referencias" }
+    5: { slug: "referencias", path: "/referencias" },
+    6: { slug: "soporte", path: "/soporte" },
+    7: { slug: "privacidad", path: "/privacidad" },
+    8: { slug: "eliminar-cuenta", path: "/eliminar-cuenta" }
   };
+
+  function buildReloadSafeSectionUrl(secNum) {
+    const s = Number(secNum) || 1;
+    const meta = SUBPAGE_META[s] || SUBPAGE_META[1];
+    try {
+      const params = new URLSearchParams(window.location.search || "");
+      params.delete("tab");
+      if (s === 1) {
+        params.delete("section");
+        const qs = params.toString();
+        return "/" + (qs ? "?" + qs : "");
+      }
+      const host = String((window.location && window.location.hostname) || "").toLowerCase();
+      const useQueryRouting = host === "thebestbrand.app" || host === "www.thebestbrand.app";
+      if (useQueryRouting) {
+        params.set("section", meta.slug);
+        return "/?" + params.toString();
+      }
+      params.delete("section");
+      const qs = params.toString();
+      return meta.path + (qs ? "?" + qs : "");
+    } catch (e) {
+      return s === 1 ? "/" : ("/?section=" + meta.slug);
+    }
+  }
 
   function hardStopAllWebAudio(reason) {
     if (window.TBBAudioDirector && typeof window.TBBAudioDirector.bumpGeneration === "function") {
@@ -1290,23 +1324,25 @@
       "2": 2, "que-recibes": 2, "entregables": 2, "pack-descargas": 2, "downloads": 2,
       "3": 3, "como-funciona": 3, "recorrido": 3, "app-tour": 3, "tour": 3,
       "4": 4, "ejemplos": 4, "casos-reales": 4, "cases": 4,
-      "5": 5, "referencias": 5, "bases-teoricas": 5, "bases-tecnicas": 5, "theory": 5
+      "5": 5, "referencias": 5, "bases-teoricas": 5, "bases-tecnicas": 5, "theory": 5,
+      "6": 6, "soporte": 6, "support": 6, "ayuda": 6, "help": 6,
+      "7": 7, "privacidad": 7, "privacy": 7,
+      "8": 8, "eliminar-cuenta": 8, "delete-account": 8, "cuenta": 8, "gestion-cuenta": 8, "account": 8
     };
     const sec = map[String(slugOrNum || "1").toLowerCase()] || 1;
     window.tbbSwitchMainSection(sec);
   };
 
   window.tbbSwitchMainSection = function (sectionNum, skipPushState) {
-    const s = [1, 2, 3, 4, 5].includes(Number(sectionNum)) ? Number(sectionNum) : 1;
+    const s = [1, 2, 3, 4, 5, 6, 7, 8].includes(Number(sectionNum)) ? Number(sectionNum) : 1;
     hardStopAllWebAudio("switch_tab_" + s);
     window.tbbCloseVideoPopupModal();
     window.tbbCloseMobileNavDrawer();
     window.tbbCommercialDemoState.activeMainSection = s;
 
     if (!skipPushState && window.history && window.history.pushState) {
-      const meta = SUBPAGE_META[s] || SUBPAGE_META[1];
       try {
-        window.history.pushState({ section: s }, "", meta.path + window.location.search);
+        window.history.pushState({ section: s }, "", buildReloadSafeSectionUrl(s));
       } catch (e) {}
     }
 
@@ -1317,6 +1353,10 @@
       window.scrollTo(0, 0);
     }
   };
+
+  window.tbbOpenSupportHelpPage = function () { window.tbbSwitchMainSection(6); };
+  window.tbbOpenPrivacyPolicyPage = function () { window.tbbSwitchMainSection(7); };
+  window.tbbOpenAccountManagementPage = function () { window.tbbSwitchMainSection(8); };
 
   window.tbbOpenMobileNavDrawer = function () {
     const dr = document.getElementById("tbbMobileDrawerOverlay");
@@ -2299,12 +2339,901 @@
     `;
   };
 
+  // ============================================================================
+  // SECCIONES 6, 7 y 8: SOPORTE Y AYUDA · PRIVACIDAD · GESTIÓN DE CUENTA (V134.0)
+  // 100% Lienzo Claro #FFFFFF · 0% Emojis · 6 Idiomas · Ticket en Vivo (Neon)
+  // ============================================================================
+  const SUPPORT_LEGAL_I18N = {
+    es: {
+      backHome: "Volver a Inicio y Demo",
+      supportBadge: "CENTRO DE SOPORTE OFICIAL · THE BEST BRAND",
+      supportTitle: "¿En qué te podemos ayudar hoy?",
+      supportLead: "Atención humana directa, respuestas inmediatas y soporte técnico para usuarios en Web, iPhone (iOS), iPad, Mac y Android.",
+      jumpChannels: "Canales directos",
+      jumpFaq: "Preguntas frecuentes",
+      jumpTicket: "Enviar ticket",
+      jumpAccount: "Recuperar mi marca",
+      waTag: "RESPUESTA RÁPIDA · ATENCIÓN HUMANA",
+      waTitle: "Soporte Directo por WhatsApp",
+      waDesc: "Escríbenos directamente si tienes dudas con tu marca, tu pago, tu acceso o algún detalle técnico en la app.",
+      waBtn: "Escribir por WhatsApp ahora",
+      waPrefill: "Hola equipo de The Best Brand, necesito ayuda con mi cuenta o mi marca.",
+      mailTag: "SOPORTE TÉCNICO Y FACTURACIÓN",
+      mailTitle: "Correo Oficial de Soporte",
+      mailDesc: "Para facturación empresarial, soporte a agencias, licencias múltiples o seguimiento detallado. Respuesta en menos de 24 horas hábiles.",
+      mailBtn: "Enviar correo",
+      copyEmailBtn: "Copiar correo",
+      copiedLbl: "Correo copiado",
+      restoreTag: "SINCRONIZACIÓN MULTIDISPOSITIVO",
+      restoreTitle: "Recuperar Cuenta o Licencia",
+      restoreDesc: "¿Ya activaste tu licencia o iniciaste tu marca en otro dispositivo? Restaura tu acceso en segundos con tu correo.",
+      restoreBtn: "Restaurar mi cuenta",
+      manageAccountLink: "Ir a Gestión y Eliminación de Cuenta",
+      faqKicker: "AUTOSERVICIO INMEDIATO",
+      faqTitle: "Preguntas Frecuentes",
+      faqLead: "Todo lo esencial sobre entregas, propiedad intelectual, pagos, códigos y uso de Aura.",
+      faqs: [
+        {
+          q: "¿Qué incluye exactamente el pago único de $49 USD?",
+          a: "Incluye el desbloqueo completo de los Pasos 4, 5 y 6 para tu marca: generación de propuestas profesionales de logotipo, tu Brandbook completo de más de 30 páginas (PDF, DOCX y PPTX) y los 9 paquetes de archivos editables (SVG, AI, PDF vectorial, PNG de alta resolución con fondo transparente, versiones claras/oscuras y kit para redes). Es pago único, sin rentas ni suscripciones mensuales."
+        },
+        {
+          q: "¿El 100% de los derechos comerciales de mi marca y logotipo son míos?",
+          a: "Sí. El 100% de la propiedad intelectual y los derechos de explotación comercial de tu logotipo, paleta, textos estratégicos y Brandbook pertenecen exclusivamente a tu empresa o proyecto desde el momento de la descarga, sin regalías ni restricciones."
+        },
+        {
+          q: "¿Puedo probar la app gratis antes de pagar?",
+          a: "Sí. Los Pasos 0, 1, 2 y 3 (diagnóstico, propósito, audiencia ideal, puntos de contacto, nombre y personalidad de marca) son completamente gratuitos. Al activar tu licencia, todo tu progreso se conserva intacto para continuar de inmediato en el Paso 4."
+        },
+        {
+          q: "¿Pierdo mi avance si cambio de celular, cierro el navegador o paso de la web a iPhone?",
+          a: "No. Cuando guardas o activas tu cuenta con tu correo electrónico, tu licencia y progreso quedan respaldados en la nube. Puedes restaurar tu cuenta desde cualquier navegador o dispositivo usando el botón Mi Cuenta."
+        },
+        {
+          q: "¿Qué hago si la voz de Aura no suena en mi iPhone o navegador?",
+          a: "Primero verifica que el interruptor lateral de silencio de tu iPhone esté desactivado y que el volumen multimedia esté arriba. Luego toca el botón de reproducir audio en la tarjeta de Aura para habilitar la sesión de sonido del navegador o de iOS."
+        },
+        {
+          q: "Tengo un código de invitado o promoción. ¿Dónde lo ingreso?",
+          a: "Toca el botón naranja de $49 USD en la barra superior, haz clic en «¿Tienes un código promocional?» e ingrésalo para aplicar tu descuento o acceso de evaluador inmediatamente."
+        },
+        {
+          q: "¿Puedo solicitar factura fiscal o un paquete para agencias con varias marcas?",
+          a: "Sí. Escríbenos por WhatsApp o envía un ticket en el formulario de abajo con tu comprobante de Stripe y tus datos fiscales (RFC / Tax ID y razón social) y te enviamos tu factura en menos de 24 horas hábiles."
+        },
+        {
+          q: "¿Cómo reviso la privacidad de mis datos o solicito eliminar mi cuenta?",
+          a: "Cumplimos con derechos ARCO, Apple App Store Guideline 5.1.1(v) y Google Play Data Safety. Puedes consultar todos los detalles en nuestra Política de Privacidad o ejecutar la eliminación definitiva en cualquier momento desde Gestión de Cuenta.",
+          showLegalActions: true
+        }
+      ],
+      ticketKicker: "TICKET DIRECTO AL EQUIPO",
+      ticketTitle: "Envíanos tu consulta o reporte técnico",
+      ticketLead: "Tu mensaje llega directo a nuestra mesa de soporte técnico y te respondemos por correo en menos de 24 horas hábiles.",
+      fieldName: "Tu nombre",
+      fieldNamePh: "Ej. Ana López",
+      fieldEmail: "Tu correo electrónico",
+      fieldEmailPh: "tu-correo@empresa.com",
+      fieldTopic: "Tema de tu consulta",
+      topics: [
+        { val: "soporte_tecnico", lbl: "Problema técnico / Audio de Aura / Generación" },
+        { val: "pagos_stripe", lbl: "Pagos, Stripe o código promocional" },
+        { val: "recuperar_cuenta", lbl: "Recuperar mi marca o licencia Pro" },
+        { val: "facturacion_agencia", lbl: "Facturación fiscal o plan para agencias" },
+        { val: "sugerencia", lbl: "Sugerencia o comentario general" }
+      ],
+      fieldMessage: "Cuéntanos cómo podemos ayudarte",
+      fieldMessagePh: "Describe tu duda, el paso donde estás o el correo con el que te registraste...",
+      ticketSubmit: "Enviar solicitud de soporte",
+      ticketSubmitting: "Enviando solicitud...",
+      ticketErrRequired: "Por favor escribe tu correo electrónico y un mensaje de al menos 6 caracteres.",
+      ticketOkPrefix: "Solicitud registrada con éxito. Folio:",
+      ticketOkDetail: "Nuestro equipo te responderá muy pronto a tu correo.",
+      ticketErrConn: "No pudimos enviar el formulario en este momento. Puedes escribirnos directo por WhatsApp o a jorge.benitez@improbears.com.",
+      legalStripTitle: "Accesos rápidos legales y de cuenta",
+      privacyBtn: "Política de Privacidad",
+      accountBtn: "Gestión de Cuenta",
+      demoBtn: "Ir a la Demo Gratis",
+      // PRIVACY PAGE
+      privBadge: "CUMPLIMIENTO APP STORE (iOS / iPadOS / macOS) · GOOGLE PLAY · DERECHOS ARCO",
+      privTitle: "Política de Privacidad y Protección de Datos",
+      privLead: "Responsable: ImproBears — Business Improvement (improbears.com / thebestbrand.app). Contacto oficial de privacidad: jorge.benitez@improbears.com.",
+      privSections: [
+        {
+          n: "01",
+          t: "Datos Recopilados y Finalidad Exclusiva",
+          p: "The Best Brand recopila únicamente la información que proporcionas voluntariamente: nombre del titular, correo electrónico de respaldo de cuenta, respuestas estratégicas de marca en los Pasos 0 al 6 e imágenes de logotipo que subas para rediseño. Estos datos se usan exclusivamente para construir tu identidad visual, logotipo vectorial y Brandbook de más de 30 páginas."
+        },
+        {
+          n: "02",
+          t: "Uso de Micrófono y Voz de Aura (NSMicrophoneUsageDescription / RECORD_AUDIO)",
+          p: "En iPhone, iPad, Mac, Android y navegador web, el permiso de micrófono se activa únicamente cuando pulsas el botón de dictado por voz para responder a Aura. Tu audio nunca se vende ni se comparte con terceros con fines publicitarios."
+        },
+        {
+          n: "03",
+          t: "Descarga de Archivos y Galería de Dispositivo",
+          p: "El acceso de escritura a archivos o galería se utiliza únicamente cuando decides guardar tus entregables oficiales en tu dispositivo (Brandbook PDF de +30 páginas, SVG, AI, PNG transparente, DOCX, PPTX y paquete ZIP)."
+        },
+        {
+          n: "04",
+          t: "Pagos Seguros (Stripe) y Propiedad Intelectual 100% del Cliente",
+          p: "Los pagos se procesan mediante Stripe con cifrado PCI-DSS Nivel 1; The Best Brand nunca almacena números completos de tarjeta. Todos los entregables y derechos comerciales de tu marca te pertenecen al 100%."
+        },
+        {
+          n: "05",
+          t: "Derechos ARCO y Eliminación Definitiva de Cuenta",
+          p: "En cumplimiento con Apple App Store Guideline 5.1.1(v), Google Play Data Safety y normativa de protección de datos, puedes consultar, rectificar o eliminar permanentemente tu cuenta y todos los proyectos asociados en cualquier momento desde Gestión de Cuenta o escribiendo a jorge.benitez@improbears.com."
+        }
+      ],
+      // ACCOUNT PAGE
+      accBadge: "GESTIÓN DE CUENTA · APPLE GUIDELINE 5.1.1(v) & GOOGLE PLAY DATA SAFETY",
+      accTitle: "Gestión de Cuenta y Eliminación de Datos",
+      accLead: "Restaura tu licencia en cualquier dispositivo o solicita la eliminación definitiva de tu cuenta y proyectos almacenados.",
+      accRestoreCardTitle: "Restaurar mi cuenta y licencia Pro",
+      accRestoreCardDesc: "Si ya desbloqueaste tu marca o guardaste tu progreso en otro teléfono o computadora, inicia sesión con tu correo para sincronizar todo al instante.",
+      accRestoreCardBtn: "Abrir acceso a Mi Cuenta",
+      accNeedHelpBtn: "Contactar a Soporte y Ayuda",
+      accDeleteCardTitle: "Eliminación definitiva de cuenta y datos",
+      accDeleteCardDesc: "Esta acción borra permanentemente tu cuenta y el historial de marcas asociado en nuestros servidores. Es irreversible.",
+      accEmailLbl: "Correo electrónico de tu cuenta",
+      accPassLbl: "Contraseña de tu cuenta (si configuraste una)",
+      accPassPh: "Opcional si accediste sin contraseña",
+      accConfirmChk: "Confirmo que deseo eliminar permanentemente mi cuenta y todos los datos asociados.",
+      accDeleteBtn: "Eliminar mi cuenta y datos permanentemente",
+      accDeletingBtn: "Procesando eliminación...",
+      accErrConfirm: "Marca la casilla de confirmación y escribe un correo electrónico válido.",
+      accDeleteOk: "Tu cuenta y todos los datos asociados han sido eliminados permanentemente de nuestros servidores.",
+      accDeleteLoggedOk: "Tu solicitud de eliminación definitiva quedó registrada en nuestro sistema de privacidad y se completará en menos de 24 horas hábiles.",
+      accDeleteErr: "No se pudo verificar la cuenta. Revisa tu contraseña o contáctanos en Soporte y Ayuda."
+    },
+    en: {
+      backHome: "Back to Home & Live Demo",
+      supportBadge: "OFFICIAL SUPPORT CENTER · THE BEST BRAND",
+      supportTitle: "How can we help you today?",
+      supportLead: "Direct human assistance, instant answers, and technical support for Web, iPhone (iOS), iPad, Mac, and Android.",
+      jumpChannels: "Direct channels",
+      jumpFaq: "FAQ",
+      jumpTicket: "Send ticket",
+      jumpAccount: "Restore my brand",
+      waTag: "FAST RESPONSE · HUMAN SUPPORT",
+      waTitle: "Direct WhatsApp Support",
+      waDesc: "Message our team directly for help with your brand, checkout, promo code, or any technical question.",
+      waBtn: "Chat on WhatsApp now",
+      waPrefill: "Hi The Best Brand team, I need help with my account or brand.",
+      mailTag: "TECHNICAL SUPPORT & BILLING",
+      mailTitle: "Official Support Email",
+      mailDesc: "For business invoicing, agency packs, multiple licenses, or detailed follow-up. Reply within 24 business hours.",
+      mailBtn: "Send email",
+      copyEmailBtn: "Copy email",
+      copiedLbl: "Email copied",
+      restoreTag: "CROSS-DEVICE SYNC",
+      restoreTitle: "Restore Account or License",
+      restoreDesc: "Already unlocked your brand or started on another device? Restore full access in seconds with your email.",
+      restoreBtn: "Restore my account",
+      manageAccountLink: "Go to Account Management & Deletion",
+      faqKicker: "INSTANT SELF-SERVICE",
+      faqTitle: "Frequently Asked Questions",
+      faqLead: "Everything you need to know about deliverables, full commercial rights, pricing, codes, and Aura voice.",
+      faqs: [
+        {
+          q: "What is included in the $49 USD one-time payment?",
+          a: "Full unlock of Steps 4, 5, and 6 for your brand: bespoke logo design proposals, your complete 30+ page Brandbook (PDF, DOCX, PPTX), and all 9 editable file packages (SVG, AI, vector PDF, transparent high-res PNG, light/dark lockups, and social kit). One-time payment—zero recurring subscriptions."
+        },
+        {
+          q: "Do I own 100% of the commercial rights to my logo and brand?",
+          a: "Yes. 100% of the intellectual property and commercial usage rights for your logo, color system, copy, and Brandbook belong exclusively to you from the moment you download them—royalty-free."
+        },
+        {
+          q: "Can I try the app for free before paying?",
+          a: "Yes. Steps 0, 1, 2, and 3 (strategy, purpose, target audience, touchpoints, naming, and visual personality) are 100% free on web and mobile. When you unlock Pro, your progress carries seamlessly into Step 4."
+        },
+        {
+          q: "Will I lose my brand if I switch devices or close my browser?",
+          a: "No. Once you save or activate your account with your email, your license and brand progress stay backed up in the cloud. Restore anytime via My Account on Web, iPhone, iPad, Mac, or Android."
+        },
+        {
+          q: "What should I do if Aura's voice is not playing on iPhone or browser?",
+          a: "Check that your iPhone physical silent switch is off and media volume is turned up, then tap the audio playback button on Aura's card to activate audio playback."
+        },
+        {
+          q: "I have a guest or promo code. Where do I enter it?",
+          a: "Click the orange $49 USD button in the top bar, open 'Have a promo code?', and enter your code to apply your discount or tester access immediately."
+        },
+        {
+          q: "Can I request a tax invoice or an agency multi-brand package?",
+          a: "Yes. Message us on WhatsApp or submit the support form below with your Stripe receipt and billing details, and we will send your invoice within 24 business hours."
+        },
+        {
+          q: "How do I review data privacy or permanently delete my account?",
+          a: "We comply with Apple App Store Guideline 5.1.1(v), Google Play Data Safety, and data protection rights. Review our Privacy Policy or delete your account permanently anytime in Account Management.",
+          showLegalActions: true
+        }
+      ],
+      ticketKicker: "DIRECT SUPPORT TICKET",
+      ticketTitle: "Send us a question or technical report",
+      ticketLead: "Your request goes straight to our engineering & support desk with an email reply in under 24 business hours.",
+      fieldName: "Your name",
+      fieldNamePh: "e.g. Alex Morgan",
+      fieldEmail: "Your email address",
+      fieldEmailPh: "you@company.com",
+      fieldTopic: "Topic",
+      topics: [
+        { val: "soporte_tecnico", lbl: "Technical issue / Aura voice / Generation" },
+        { val: "pagos_stripe", lbl: "Payments, Stripe, or promo code" },
+        { val: "recuperar_cuenta", lbl: "Recover my brand or Pro license" },
+        { val: "facturacion_agencia", lbl: "Invoicing or agency plan" },
+        { val: "sugerencia", lbl: "General feedback or question" }
+      ],
+      fieldMessage: "How can we help?",
+      fieldMessagePh: "Tell us what happened, which step you are on, or the email you registered with...",
+      ticketSubmit: "Send support request",
+      ticketSubmitting: "Sending request...",
+      ticketErrRequired: "Please enter a valid email and a message of at least 6 characters.",
+      ticketOkPrefix: "Support ticket received. Reference:",
+      ticketOkDetail: "Our team will reply shortly to your email.",
+      ticketErrConn: "We could not submit right now. Please message us directly on WhatsApp or email jorge.benitez@improbears.com.",
+      legalStripTitle: "Quick legal & account links",
+      privacyBtn: "Privacy Policy",
+      accountBtn: "Account Management",
+      demoBtn: "Go to Free Demo",
+      privBadge: "APPLE APP STORE (iOS / iPadOS / macOS) · GOOGLE PLAY · DATA PRIVACY COMPLIANCE",
+      privTitle: "Privacy Policy & Data Protection",
+      privLead: "Controller: ImproBears — Business Improvement (improbears.com / thebestbrand.app). Official privacy contact: jorge.benitez@improbears.com.",
+      privSections: [
+        {
+          n: "01",
+          t: "Information Collected & Exclusive Purpose",
+          p: "The Best Brand collects only the data you voluntarily provide: account holder name, backup email address, strategic brand answers across Steps 0 to 6, and any existing logo image you upload. This data is used solely to build your visual identity, vector logo, and 30+ page Brandbook."
+        },
+        {
+          n: "02",
+          t: "Microphone & Aura Voice Input (NSMicrophoneUsageDescription / RECORD_AUDIO)",
+          p: "On iPhone, iPad, Mac, Android, and Web, microphone permission is used strictly when you press the voice dictation control to answer Aura's studio questions. Voice audio is never sold or shared with third-party advertisers."
+        },
+        {
+          n: "03",
+          t: "File Downloads & Device Photo Library",
+          p: "File/gallery write access is used exclusively when you choose to save your official deliverables (30+ page Brandbook PDF, SVG, AI, transparent PNG, DOCX, PPTX, and ZIP archive)."
+        },
+        {
+          n: "04",
+          t: "Secure Stripe Payments & 100% Client IP Ownership",
+          p: "Payments are processed securely via PCI-DSS Level 1 Stripe Checkout; The Best Brand never stores full card numbers. You retain 100% ownership and commercial rights over your brand outputs."
+        },
+        {
+          n: "05",
+          t: "Permanent Account Deletion & Privacy Rights",
+          p: "In compliance with Apple App Store Guideline 5.1.1(v) and Google Play Data Safety, you may access, update, or permanently delete your account and associated brand records anytime via Account Management or by emailing jorge.benitez@improbears.com."
+        }
+      ],
+      accBadge: "ACCOUNT MANAGEMENT · APPLE GUIDELINE 5.1.1(v) & GOOGLE PLAY DATA SAFETY",
+      accTitle: "Account Management & Data Deletion",
+      accLead: "Restore your Pro license across devices or permanently remove your account and stored brand workspaces.",
+      accRestoreCardTitle: "Restore Account & Pro License",
+      accRestoreCardDesc: "Already unlocked your brand or started on another phone or computer? Sign in with your email to sync your access immediately.",
+      accRestoreCardBtn: "Open My Account Sign-In",
+      accNeedHelpBtn: "Contact Support & Help",
+      accDeleteCardTitle: "Permanent Account & Data Deletion",
+      accDeleteCardDesc: "This permanently deletes your account and associated brand workspaces from our servers. This action cannot be undone.",
+      accEmailLbl: "Account email address",
+      accPassLbl: "Account password (if configured)",
+      accPassPh: "Optional if created without password",
+      accConfirmChk: "I confirm I want to permanently delete my account and all associated data.",
+      accDeleteBtn: "Permanently Delete My Account & Data",
+      accDeletingBtn: "Processing deletion...",
+      accErrConfirm: "Please enter a valid email address and check the confirmation box.",
+      accDeleteOk: "Your account and all associated data have been permanently deleted from our servers.",
+      accDeleteLoggedOk: "Your permanent deletion request has been logged with our privacy team and will be completed within 24 business hours.",
+      accDeleteErr: "We could not verify that account. Check your password or contact Support & Help."
+    }
+  };
+
+  const SUPPORT_LEGAL_OVERRIDES = {
+    fr: {
+      backHome: "Retour à l'Accueil et Démo",
+      supportBadge: "CENTRE D'AIDE OFFICIEL · THE BEST BRAND",
+      supportTitle: "Comment pouvons-nous vous aider ?",
+      supportLead: "Assistance humaine directe, réponses immédiates et support technique pour Web, iPhone, iPad, Mac et Android.",
+      waTitle: "Support Direct WhatsApp",
+      waBtn: "Écrire sur WhatsApp",
+      mailTitle: "Email Officiel de Support",
+      mailBtn: "Envoyer un email",
+      copyEmailBtn: "Copier l'email",
+      copiedLbl: "Email copié",
+      restoreTitle: "Restaurer un Compte ou une Licence",
+      restoreBtn: "Restaurer mon compte",
+      faqTitle: "Questions Fréquentes",
+      ticketTitle: "Envoyer une demande au support",
+      ticketSubmit: "Envoyer la demande",
+      privacyBtn: "Confidentialité",
+      accountBtn: "Gestion du Compte",
+      privTitle: "Politique de Confidentialité",
+      accTitle: "Gestion et Suppression du Compte",
+      accDeleteBtn: "Supprimer définitivement mon compte"
+    },
+    pt: {
+      backHome: "Voltar ao Início e Demo",
+      supportBadge: "CENTRAL DE SUPORTE OFICIAL · THE BEST BRAND",
+      supportTitle: "Como podemos ajudar hoje?",
+      supportLead: "Atendimento humano direto, respostas imediatas e suporte técnico para Web, iPhone, iPad, Mac e Android.",
+      waTitle: "Suporte Direto via WhatsApp",
+      waBtn: "Falar no WhatsApp",
+      mailTitle: "E-mail Oficial de Suporte",
+      mailBtn: "Enviar e-mail",
+      copyEmailBtn: "Copiar e-mail",
+      copiedLbl: "E-mail copiado",
+      restoreTitle: "Restaurar Conta ou Licença",
+      restoreBtn: "Restaurar minha conta",
+      faqTitle: "Perguntas Frequentes",
+      ticketTitle: "Envie sua dúvida ou chamado técnico",
+      ticketSubmit: "Enviar solicitação de suporte",
+      privacyBtn: "Privacidade",
+      accountBtn: "Gestão de Conta",
+      privTitle: "Política de Privacidade e Proteção de Dados",
+      accTitle: "Gestão e Exclusão de Conta",
+      accDeleteBtn: "Excluir minha conta e dados permanentemente"
+    },
+    de: {
+      backHome: "Zurück zu Start & Live-Demo",
+      supportBadge: "OFFIZIELLES SUPPORT-CENTER · THE BEST BRAND",
+      supportTitle: "Wie können wir Ihnen heute helfen?",
+      supportLead: "Direkter menschlicher Support, sofortige Antworten und technische Hilfe für Web, iPhone, iPad, Mac und Android.",
+      waTitle: "Direkter WhatsApp-Support",
+      waBtn: "Auf WhatsApp schreiben",
+      mailTitle: "Offizielle Support-E-Mail",
+      mailBtn: "E-Mail senden",
+      copyEmailBtn: "E-Mail kopieren",
+      copiedLbl: "E-Mail kopiert",
+      restoreTitle: "Konto oder Lizenz wiederherstellen",
+      restoreBtn: "Mein Konto wiederherstellen",
+      faqTitle: "Häufig gestellte Fragen",
+      ticketTitle: "Support-Anfrage senden",
+      ticketSubmit: "Anfrage absenden",
+      privacyBtn: "Datenschutz",
+      accountBtn: "Kontoverwaltung",
+      privTitle: "Datenschutzerklärung",
+      accTitle: "Kontoverwaltung & Kontolöschung",
+      accDeleteBtn: "Konto und Daten dauerhaft löschen"
+    },
+    it: {
+      backHome: "Torna a Home e Demo",
+      supportBadge: "CENTRO SUPPORTO UFFICIALE · THE BEST BRAND",
+      supportTitle: "Come possiamo aiutarti oggi?",
+      supportLead: "Assistenza umana diretta, risposte immediate e supporto tecnico per Web, iPhone, iPad, Mac e Android.",
+      waTitle: "Supporto Diretto WhatsApp",
+      waBtn: "Scrivi su WhatsApp",
+      mailTitle: "Email Ufficiale di Supporto",
+      mailBtn: "Invia email",
+      copyEmailBtn: "Copia email",
+      copiedLbl: "Email copiata",
+      restoreTitle: "Ripristina Account o Licenza",
+      restoreBtn: "Ripristina il mio account",
+      faqTitle: "Domande Frequenti",
+      ticketTitle: "Invia una richiesta al supporto",
+      ticketSubmit: "Invia richiesta di supporto",
+      privacyBtn: "Privacy",
+      accountBtn: "Gestione Account",
+      privTitle: "Informativa sulla Privacy",
+      accTitle: "Gestione ed Eliminazione Account",
+      accDeleteBtn: "Elimina definitivamente account e dati"
+    }
+  };
+
+  function getSupportCopy() {
+    const l = getLang();
+    if (l === "es") return SUPPORT_LEGAL_I18N.es;
+    if (l === "en") return SUPPORT_LEGAL_I18N.en;
+    const base = l === "pt" ? SUPPORT_LEGAL_I18N.es : SUPPORT_LEGAL_I18N.en;
+    return Object.assign({}, base, SUPPORT_LEGAL_OVERRIDES[l] || {});
+  }
+
+  window.tbbToggleSupportFaq = function (idx) {
+    const item = document.querySelector(`[data-tbb-faq-item="${idx}"]`);
+    if (!item) return;
+    const isOpen = item.classList.toggle("is-open");
+    const btn = item.querySelector("button[aria-expanded]");
+    if (btn) btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  };
+
+  window.tbbCopySupportEmail = function (btnEl) {
+    const email = "jorge.benitez@improbears.com";
+    const sc = getSupportCopy();
+    const finish = () => {
+      if (!btnEl) return;
+      const orig = btnEl.dataset.origLabel || sc.copyEmailBtn;
+      btnEl.dataset.origLabel = orig;
+      const span = btnEl.querySelector("span");
+      if (span) span.textContent = sc.copiedLbl;
+      btnEl.classList.add("is-copied");
+      setTimeout(() => {
+        if (span) span.textContent = orig;
+        btnEl.classList.remove("is-copied");
+      }, 2200);
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(finish).catch(finish);
+      } else {
+        const tmp = document.createElement("textarea");
+        tmp.value = email;
+        tmp.style.cssText = "position:fixed;left:-9999px;";
+        document.body.appendChild(tmp);
+        tmp.select();
+        document.execCommand("copy");
+        tmp.remove();
+        finish();
+      }
+    } catch (e) {
+      finish();
+    }
+  };
+
+  window.tbbSubmitSupportTicket = async function () {
+    const sc = getSupportCopy();
+    const nameEl = document.getElementById("tbbSupportNameInput");
+    const emailEl = document.getElementById("tbbSupportEmailInput");
+    const topicEl = document.getElementById("tbbSupportTopicSelect");
+    const msgEl = document.getElementById("tbbSupportMessageInput");
+    const statusEl = document.getElementById("tbbSupportTicketStatus");
+    const btnEl = document.getElementById("tbbSupportTicketSubmitBtn");
+
+    const name = String(nameEl ? nameEl.value : "").trim();
+    const email = String(emailEl ? emailEl.value : "").trim();
+    const topic = String(topicEl ? topicEl.value : "soporte_tecnico").trim();
+    const message = String(msgEl ? msgEl.value : "").trim();
+
+    if (!email || email.indexOf("@") === -1 || message.length < 6) {
+      if (statusEl) {
+        statusEl.className = "tbb-promo-err-msg";
+        statusEl.style.display = "block";
+        statusEl.textContent = sc.ticketErrRequired;
+      }
+      return;
+    }
+
+    if (btnEl) {
+      btnEl.disabled = true;
+      const sp = btnEl.querySelector("span");
+      if (sp) sp.textContent = sc.ticketSubmitting;
+    }
+
+    const st = window.tbbCommercialDemoState || {};
+    const payload = JSON.stringify({
+      source: "web_support_center",
+      platform: /iPhone|iPad|iPod/i.test(navigator.userAgent || "") ? "ios_web" : (/Android/i.test(navigator.userAgent || "") ? "android_web" : "desktop_web"),
+      brand_name: st.brandName || "",
+      customer_email: email,
+      step_num: 6,
+      sub_step: 0,
+      lang: getLang(),
+      viewport: `${window.innerWidth}x${window.innerHeight}`,
+      category: "support_ticket",
+      comment_text: `[${topic}] ${name ? name + " — " : ""}${message}`,
+      metadata: {
+        name: name,
+        email: email,
+        topic: topic,
+        path: window.location.pathname + window.location.search
+      }
+    });
+
+    try {
+      let res = null;
+      try {
+        res = await fetch("/api/v1/feedback/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: payload
+        });
+      } catch (e) {}
+      if (!res || !res.ok) {
+        res = await fetch(TBB_CDN_BACKUP + "/api/v1/feedback/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: payload
+        });
+      }
+      const data = await res.json().catch(() => ({}));
+      if (res && res.ok) {
+        const refId = data.feedback_id || ("SUP-" + String(Date.now()).slice(-6));
+        if (msgEl) msgEl.value = "";
+        if (statusEl) {
+          statusEl.className = "tbb-promo-ok-msg";
+          statusEl.style.display = "block";
+          statusEl.innerHTML = `<strong>${escHtml(sc.ticketOkPrefix)} ${escHtml(refId)}</strong><br>${escHtml(sc.ticketOkDetail)}`;
+        }
+      } else {
+        throw new Error("support_submit_failed");
+      }
+    } catch (err) {
+      if (statusEl) {
+        statusEl.className = "tbb-promo-err-msg";
+        statusEl.style.display = "block";
+        statusEl.textContent = sc.ticketErrConn;
+      }
+    } finally {
+      if (btnEl) {
+        btnEl.disabled = false;
+        const sp = btnEl.querySelector("span");
+        if (sp) sp.textContent = sc.ticketSubmit;
+      }
+    }
+  };
+
+  window.tbbSubmitAccountDeletionRequest = async function () {
+    const sc = getSupportCopy();
+    const emailEl = document.getElementById("tbbAccDelEmailInput");
+    const passEl = document.getElementById("tbbAccDelPassInput");
+    const chkEl = document.getElementById("tbbAccDelConfirmCheck");
+    const statusEl = document.getElementById("tbbAccDelStatusMsg");
+    const btnEl = document.getElementById("tbbAccDelSubmitBtn");
+
+    const email = String(emailEl ? emailEl.value : "").trim();
+    const password = String(passEl ? passEl.value : "").trim();
+    const confirmed = Boolean(chkEl && chkEl.checked);
+
+    if (!email || email.indexOf("@") === -1 || !confirmed) {
+      if (statusEl) {
+        statusEl.className = "tbb-promo-err-msg";
+        statusEl.style.display = "block";
+        statusEl.textContent = sc.accErrConfirm;
+      }
+      return;
+    }
+
+    if (btnEl) {
+      btnEl.disabled = true;
+      const sp = btnEl.querySelector("span");
+      if (sp) sp.textContent = sc.accDeletingBtn;
+    }
+
+    const bodyJson = JSON.stringify({ email, password });
+    try {
+      let res = null;
+      try {
+        res = await fetch("/api/v1/account/delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: bodyJson
+        });
+      } catch (e) {}
+      if (!res || res.status === 404 || res.status === 405 || res.status >= 500) {
+        res = await fetch(TBB_CDN_BACKUP + "/api/v1/account/delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: bodyJson
+        });
+      }
+      const data = await res.json().catch(() => ({}));
+      if (res && res.ok && data && data.ok) {
+        try { localStorage.clear(); } catch (e) {}
+        if (statusEl) {
+          statusEl.className = "tbb-promo-ok-msg";
+          statusEl.style.display = "block";
+          statusEl.textContent = sc.accDeleteOk;
+        }
+      } else if (res && res.status === 401) {
+        if (statusEl) {
+          statusEl.className = "tbb-promo-err-msg";
+          statusEl.style.display = "block";
+          statusEl.textContent = (data && data.message) || sc.accDeleteErr;
+        }
+      } else {
+        // Fallback: log deletion request directly into privacy queue so zero requests are ever dropped
+        const fbRes = await fetch(TBB_CDN_BACKUP + "/api/v1/feedback/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            source: "web_account_deletion",
+            platform: "web",
+            customer_email: email,
+            step_num: 8,
+            sub_step: 0,
+            lang: getLang(),
+            category: "account_deletion_request",
+            comment_text: `Account permanent deletion request for ${email}`
+          })
+        });
+        if (fbRes && fbRes.ok) {
+          if (statusEl) {
+            statusEl.className = "tbb-promo-ok-msg";
+            statusEl.style.display = "block";
+            statusEl.textContent = sc.accDeleteLoggedOk;
+          }
+        } else {
+          throw new Error("delete_failed");
+        }
+      }
+    } catch (err) {
+      if (statusEl) {
+        statusEl.className = "tbb-promo-err-msg";
+        statusEl.style.display = "block";
+        statusEl.textContent = sc.accDeleteErr;
+      }
+    } finally {
+      if (btnEl) {
+        btnEl.disabled = false;
+        const sp = btnEl.querySelector("span");
+        if (sp) sp.textContent = sc.accDeleteBtn;
+      }
+    }
+  };
+
+  window.tbbBuildSubpage6SupportHTML = function () {
+    const sc = getSupportCopy();
+    const waUrl = `https://wa.me/524421812822?text=${encodeURIComponent(sc.waPrefill)}`;
+    const mailUrl = `mailto:jorge.benitez@improbears.com?subject=${encodeURIComponent("Soporte The Best Brand")}`;
+    return `
+      <section class="tbb-section tbb-support-section">
+        <div class="tbb-container">
+          <div class="tbb-support-top-bar">
+            <button type="button" class="tbb-back-home-pill" onclick="window.tbbSwitchMainSection(1)">
+              ${TBB_ICONS.arrowLeft} <span>${escHtml(sc.backHome)}</span>
+            </button>
+            <div class="tbb-support-jump-pills">
+              <a href="#tbbSupportChannels" class="tbb-support-jump-pill">${escHtml(sc.jumpChannels)}</a>
+              <a href="#tbbSupportFaq" class="tbb-support-jump-pill">${escHtml(sc.jumpFaq)}</a>
+              <a href="#tbbSupportTicket" class="tbb-support-jump-pill">${escHtml(sc.jumpTicket)}</a>
+            </div>
+          </div>
+
+          <div class="tbb-section-head">
+            <span class="tbb-kicker-badge">${TBB_ICONS.lifebuoy} <span>${escHtml(sc.supportBadge)}</span></span>
+            <h1 class="tbb-h1">${escHtml(sc.supportTitle)}</h1>
+            <p class="tbb-lead">${escHtml(sc.supportLead)}</p>
+          </div>
+
+          <div id="tbbSupportChannels" class="tbb-support-channels-grid">
+            <article class="tbb-support-channel-card is-primary-channel">
+              <div class="tbb-support-channel-top">
+                <span class="tbb-support-channel-icon is-orange">${TBB_ICONS.whatsapp}</span>
+                <span class="tbb-support-channel-tag is-orange">${escHtml(sc.waTag)}</span>
+              </div>
+              <h2>${escHtml(sc.waTitle)}</h2>
+              <p>${escHtml(sc.waDesc)}</p>
+              <div class="tbb-support-channel-actions">
+                <a href="${escHtml(waUrl)}" target="_blank" rel="noopener" class="tbb-btn-primary is-full" style="text-decoration:none;justify-content:center;">
+                  ${TBB_ICONS.whatsapp} <span>${escHtml(sc.waBtn)}</span> ${TBB_ICONS.arrowUpRight}
+                </a>
+              </div>
+            </article>
+
+            <article class="tbb-support-channel-card">
+              <div class="tbb-support-channel-top">
+                <span class="tbb-support-channel-icon is-blue">${TBB_ICONS.mail}</span>
+                <span class="tbb-support-channel-tag">${escHtml(sc.mailTag)}</span>
+              </div>
+              <h2>${escHtml(sc.mailTitle)}</h2>
+              <p>${escHtml(sc.mailDesc)}</p>
+              <div class="tbb-support-email-pill">jorge.benitez@improbears.com</div>
+              <div class="tbb-support-channel-actions is-row">
+                <a href="${escHtml(mailUrl)}" class="tbb-btn-secondary" style="text-decoration:none;flex:1;justify-content:center;">
+                  ${TBB_ICONS.mail} <span>${escHtml(sc.mailBtn)}</span>
+                </a>
+                <button type="button" class="tbb-btn-secondary" onclick="window.tbbCopySupportEmail(this)">
+                  ${TBB_ICONS.copy} <span>${escHtml(sc.copyEmailBtn)}</span>
+                </button>
+              </div>
+            </article>
+
+            <article class="tbb-support-channel-card">
+              <div class="tbb-support-channel-top">
+                <span class="tbb-support-channel-icon is-navy">${TBB_ICONS.user}</span>
+                <span class="tbb-support-channel-tag">${escHtml(sc.restoreTag)}</span>
+              </div>
+              <h2>${escHtml(sc.restoreTitle)}</h2>
+              <p>${escHtml(sc.restoreDesc)}</p>
+              <div class="tbb-support-channel-actions">
+                <button type="button" class="tbb-btn-secondary is-full" style="justify-content:center;" onclick="window.tbbOpenRestoreAccountModal()">
+                  ${TBB_ICONS.unlock} <span>${escHtml(sc.restoreBtn)}</span> ${TBB_ICONS.arrowRight}
+                </button>
+                <button type="button" class="tbb-support-text-link" onclick="window.tbbSwitchMainSection(8)">
+                  <span>${escHtml(sc.manageAccountLink)}</span> ${TBB_ICONS.arrowRight}
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div id="tbbSupportFaq" class="tbb-subsection-block">
+            <div class="tbb-support-block-head">
+              <span class="tbb-support-mini-kicker">${escHtml(sc.faqKicker)}</span>
+              <h2 class="tbb-h2">${escHtml(sc.faqTitle)}</h2>
+              <p class="tbb-muted-p">${escHtml(sc.faqLead)}</p>
+            </div>
+            <div class="tbb-support-faq-list">
+              ${sc.faqs.map((f, idx) => `
+                <article class="tbb-support-faq-item ${idx === 0 ? "is-open" : ""}" data-tbb-faq-item="${idx}">
+                  <button type="button" class="tbb-support-faq-trigger" aria-expanded="${idx === 0 ? "true" : "false"}" onclick="window.tbbToggleSupportFaq(${idx})">
+                    <span>${escHtml(f.q)}</span>
+                    <span class="tbb-support-faq-chevron">${TBB_ICONS.chevronDown}</span>
+                  </button>
+                  <div class="tbb-support-faq-panel">
+                    <p>${escHtml(f.a)}</p>
+                    ${f.showLegalActions ? `
+                      <div class="tbb-support-faq-inline-actions">
+                        <button type="button" class="tbb-btn-secondary" onclick="window.tbbSwitchMainSection(7)">${TBB_ICONS.fileShield} <span>${escHtml(sc.privacyBtn)}</span></button>
+                        <button type="button" class="tbb-btn-secondary" onclick="window.tbbSwitchMainSection(8)">${TBB_ICONS.user} <span>${escHtml(sc.accountBtn)}</span></button>
+                      </div>
+                    ` : ""}
+                  </div>
+                </article>
+              `).join("")}
+            </div>
+          </div>
+
+          <div id="tbbSupportTicket" class="tbb-support-ticket-card">
+            <div class="tbb-support-ticket-head">
+              <span class="tbb-support-mini-kicker">${escHtml(sc.ticketKicker)}</span>
+              <h2 class="tbb-h2" style="margin:6px 0 8px;">${escHtml(sc.ticketTitle)}</h2>
+              <p class="tbb-muted-p" style="margin:0;">${escHtml(sc.ticketLead)}</p>
+            </div>
+            <div class="tbb-support-ticket-grid">
+              <label class="tbb-field-label">
+                <span>${escHtml(sc.fieldName)}</span>
+                <input id="tbbSupportNameInput" type="text" class="tbb-input" placeholder="${escHtml(sc.fieldNamePh)}" />
+              </label>
+              <label class="tbb-field-label">
+                <span>${escHtml(sc.fieldEmail)}</span>
+                <input id="tbbSupportEmailInput" type="email" class="tbb-input" placeholder="${escHtml(sc.fieldEmailPh)}" required />
+              </label>
+            </div>
+            <label class="tbb-field-label" style="margin-top:12px;">
+              <span>${escHtml(sc.fieldTopic)}</span>
+              <select id="tbbSupportTopicSelect" class="tbb-input" style="background:#FFFFFF;">
+                ${sc.topics.map((tp) => `<option value="${escHtml(tp.val)}">${escHtml(tp.lbl)}</option>`).join("")}
+              </select>
+            </label>
+            <label class="tbb-field-label" style="margin-top:12px;">
+              <span>${escHtml(sc.fieldMessage)}</span>
+              <textarea id="tbbSupportMessageInput" rows="4" class="tbb-input" style="height:auto;padding:12px 14px;" placeholder="${escHtml(sc.fieldMessagePh)}"></textarea>
+            </label>
+            <div id="tbbSupportTicketStatus" style="display:none;margin-top:12px;"></div>
+            <div class="tbb-support-ticket-footer">
+              <button id="tbbSupportTicketSubmitBtn" type="button" class="tbb-btn-primary" onclick="window.tbbSubmitSupportTicket()">
+                ${TBB_ICONS.feedback} <span>${escHtml(sc.ticketSubmit)}</span> ${TBB_ICONS.arrowRight}
+              </button>
+              <a href="${escHtml(waUrl)}" target="_blank" rel="noopener" class="tbb-btn-secondary" style="text-decoration:none;">
+                ${TBB_ICONS.whatsapp} <span>${escHtml(sc.waBtn)}</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="tbb-support-bottom-strip">
+            <span class="tbb-support-bottom-label">${escHtml(sc.legalStripTitle)}</span>
+            <div class="tbb-support-bottom-btns">
+              <button type="button" class="tbb-btn-secondary" onclick="window.tbbSwitchMainSection(7)">${TBB_ICONS.fileShield} <span>${escHtml(sc.privacyBtn)}</span></button>
+              <button type="button" class="tbb-btn-secondary" onclick="window.tbbSwitchMainSection(8)">${TBB_ICONS.user} <span>${escHtml(sc.accountBtn)}</span></button>
+              <button type="button" class="tbb-btn-primary" onclick="window.tbbSwitchMainSection(1)">${TBB_ICONS.spark} <span>${escHtml(sc.demoBtn)}</span> ${TBB_ICONS.arrowRight}</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  };
+
+  window.tbbBuildSubpage7PrivacyHTML = function () {
+    const sc = getSupportCopy();
+    return `
+      <section class="tbb-section tbb-legal-section">
+        <div class="tbb-container" style="max-width:960px;">
+          <div class="tbb-support-top-bar">
+            <button type="button" class="tbb-back-home-pill" onclick="window.tbbSwitchMainSection(1)">
+              ${TBB_ICONS.arrowLeft} <span>${escHtml(sc.backHome)}</span>
+            </button>
+            <button type="button" class="tbb-support-jump-pill" onclick="window.tbbSwitchMainSection(6)">
+              ${TBB_ICONS.lifebuoy} <span>${escHtml(FOOTER_LEGAL_I18N[getLang()] ? FOOTER_LEGAL_I18N[getLang()].support : "Soporte y Ayuda")}</span>
+            </button>
+          </div>
+
+          <div class="tbb-section-head">
+            <span class="tbb-kicker-badge">${TBB_ICONS.fileShield} <span>${escHtml(sc.privBadge)}</span></span>
+            <h1 class="tbb-h1">${escHtml(sc.privTitle)}</h1>
+            <p class="tbb-lead">${escHtml(sc.privLead)}</p>
+          </div>
+
+          <div class="tbb-legal-cards-stack">
+            ${sc.privSections.map((secItem) => `
+              <article class="tbb-legal-policy-card">
+                <span class="tbb-legal-num-pill">${escHtml(secItem.n)}</span>
+                <div>
+                  <h2>${escHtml(secItem.t)}</h2>
+                  <p>${escHtml(secItem.p)}</p>
+                </div>
+              </article>
+            `).join("")}
+          </div>
+
+          <div class="tbb-support-bottom-strip" style="margin-top:28px;">
+            <span class="tbb-support-bottom-label">jorge.benitez@improbears.com</span>
+            <div class="tbb-support-bottom-btns">
+              <button type="button" class="tbb-btn-secondary" onclick="window.tbbSwitchMainSection(6)">${TBB_ICONS.lifebuoy} <span>${escHtml(FOOTER_LEGAL_I18N[getLang()] ? FOOTER_LEGAL_I18N[getLang()].support : "Soporte y Ayuda")}</span></button>
+              <button type="button" class="tbb-btn-primary" onclick="window.tbbSwitchMainSection(8)">${TBB_ICONS.user} <span>${escHtml(sc.accountBtn)}</span> ${TBB_ICONS.arrowRight}</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  };
+
+  window.tbbBuildSubpage8AccountHTML = function () {
+    const sc = getSupportCopy();
+    return `
+      <section class="tbb-section tbb-account-section">
+        <div class="tbb-container" style="max-width:1040px;">
+          <div class="tbb-support-top-bar">
+            <button type="button" class="tbb-back-home-pill" onclick="window.tbbSwitchMainSection(1)">
+              ${TBB_ICONS.arrowLeft} <span>${escHtml(sc.backHome)}</span>
+            </button>
+            <button type="button" class="tbb-support-jump-pill" onclick="window.tbbSwitchMainSection(6)">
+              ${TBB_ICONS.lifebuoy} <span>${escHtml(FOOTER_LEGAL_I18N[getLang()] ? FOOTER_LEGAL_I18N[getLang()].support : "Soporte y Ayuda")}</span>
+            </button>
+          </div>
+
+          <div class="tbb-section-head">
+            <span class="tbb-kicker-badge">${TBB_ICONS.user} <span>${escHtml(sc.accBadge)}</span></span>
+            <h1 class="tbb-h1">${escHtml(sc.accTitle)}</h1>
+            <p class="tbb-lead">${escHtml(sc.accLead)}</p>
+          </div>
+
+          <div class="tbb-account-mgmt-grid">
+            <article class="tbb-support-channel-card">
+              <div class="tbb-support-channel-top">
+                <span class="tbb-support-channel-icon is-blue">${TBB_ICONS.unlock}</span>
+                <span class="tbb-support-channel-tag">${escHtml(sc.restoreTag)}</span>
+              </div>
+              <h2>${escHtml(sc.accRestoreCardTitle)}</h2>
+              <p>${escHtml(sc.accRestoreCardDesc)}</p>
+              <div class="tbb-support-channel-actions">
+                <button type="button" class="tbb-btn-primary is-full" style="justify-content:center;" onclick="window.tbbOpenRestoreAccountModal()">
+                  ${TBB_ICONS.user} <span>${escHtml(sc.accRestoreCardBtn)}</span> ${TBB_ICONS.arrowRight}
+                </button>
+                <button type="button" class="tbb-btn-secondary is-full" style="justify-content:center;" onclick="window.tbbSwitchMainSection(6)">
+                  ${TBB_ICONS.lifebuoy} <span>${escHtml(sc.accNeedHelpBtn)}</span>
+                </button>
+              </div>
+            </article>
+
+            <article class="tbb-support-channel-card is-danger-card">
+              <div class="tbb-support-channel-top">
+                <span class="tbb-support-channel-icon is-danger">${TBB_ICONS.trash}</span>
+                <span class="tbb-support-channel-tag is-danger">APPLE 5.1.1(v) · ARCO</span>
+              </div>
+              <h2>${escHtml(sc.accDeleteCardTitle)}</h2>
+              <p>${escHtml(sc.accDeleteCardDesc)}</p>
+              <div class="tbb-checkout-fields" style="margin-top:8px;">
+                <label class="tbb-field-label">
+                  <span>${escHtml(sc.accEmailLbl)}</span>
+                  <input id="tbbAccDelEmailInput" type="email" class="tbb-input" placeholder="${escHtml(sc.fieldEmailPh)}" required />
+                </label>
+                <label class="tbb-field-label">
+                  <span>${escHtml(sc.accPassLbl)}</span>
+                  <input id="tbbAccDelPassInput" type="password" class="tbb-input" placeholder="${escHtml(sc.accPassPh)}" />
+                </label>
+                <label class="tbb-danger-check-row">
+                  <input id="tbbAccDelConfirmCheck" type="checkbox" />
+                  <span>${escHtml(sc.accConfirmChk)}</span>
+                </label>
+                <div id="tbbAccDelStatusMsg" style="display:none;"></div>
+                <button id="tbbAccDelSubmitBtn" type="button" class="tbb-btn-danger is-full" onclick="window.tbbSubmitAccountDeletionRequest()">
+                  ${TBB_ICONS.trash} <span>${escHtml(sc.accDeleteBtn)}</span>
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    `;
+  };
+
   window.tbbRenderActiveSubpageHTML = function (secNumber) {
     const s = Number(secNumber) || 1;
     if (s === 2) return window.tbbBuildSubpage2DeliverablesHTML();
     if (s === 3) return window.tbbBuildSubpage3HowItWorksHTML();
     if (s === 4) return window.tbbBuildSubpage4RealCasesHTML();
     if (s === 5) return window.tbbBuildSubpage5ReferencesHTML();
+    if (s === 6) return window.tbbBuildSubpage6SupportHTML();
+    if (s === 7) return window.tbbBuildSubpage7PrivacyHTML();
+    if (s === 8) return window.tbbBuildSubpage8AccountHTML();
     return window.tbbBuildSubpage1HomeHTML();
   };
 
@@ -3124,11 +4053,22 @@
       return;
     }
     try {
-      const res = await fetch("/api/v1/account/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
+      const loginBody = JSON.stringify({ email, password });
+      let res = null;
+      try {
+        res = await fetch("/api/v1/account/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: loginBody
+        });
+      } catch (e) {}
+      if (!res || res.status === 404 || res.status === 405 || res.status >= 500) {
+        res = await fetch(TBB_CDN_BACKUP + "/api/v1/account/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: loginBody
+        });
+      }
       const data = await res.json();
       if (res.ok && data && data.user) {
         const u = data.user;
@@ -3259,6 +4199,9 @@
                   ${tb.icon} <span class="tbb-drawer-lbl">${escHtml(tb.label)}</span> ${TBB_ICONS.arrowRight}
                 </button>
               `).join("")}
+              <button type="button" class="tbb-mobile-drawer-item ${sec === 6 ? "active" : ""}" onclick="window.tbbSwitchMainSection(6)">
+                ${TBB_ICONS.lifebuoy} <span class="tbb-drawer-lbl">${escHtml((FOOTER_LEGAL_I18N[l] || FOOTER_LEGAL_I18N.es).support)}</span> ${TBB_ICONS.arrowRight}
+              </button>
               <button type="button" class="tbb-mobile-drawer-item" onclick="window.tbbCloseMobileNavDrawer(); window.tbbOpenWebFeedbackModal();">
                 ${TBB_ICONS.feedback} <span class="tbb-drawer-lbl">${escHtml(t("navFeedback"))}</span> ${TBB_ICONS.arrowRight}
               </button>
@@ -3398,25 +4341,26 @@
       navEl.innerHTML = `
         <a href="/" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(1);}" style="color:#0D2540; font-weight:600; text-decoration:none;">${escHtml(t("navHome"))}</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="/entregables" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(2);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navDeliverables"))}</a>
+        <a href="/?section=que-recibes" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(2);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navDeliverables"))}</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="/como-funciona" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(3);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navHowItWorks"))}</a>
+        <a href="/?section=como-funciona" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(3);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navHowItWorks"))}</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="/ejemplos" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(4);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navRealCases"))}</a>
+        <a href="/?section=ejemplos" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(4);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navRealCases"))}</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="/referencias" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(5);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navReferences"))}</a>
+        <a href="/?section=referencias" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(5);}" style="color:#0D2540; font-weight:500; text-decoration:none;">${escHtml(t("navReferences"))}</a>
         <span style="color:#CBD5E1;">·</span>
         <a href="#desbloquear" onclick="if(window.tbbOpenBuyAppCheckoutModal){event.preventDefault(); window.tbbOpenBuyAppCheckoutModal('pro_atelier');}" style="color:#FF7A00; font-weight:600; text-decoration:none;">${escHtml(t("navBuyCta"))}</a>
       `;
     }
     const legEl = document.getElementById("tbbFooterLegalLinks");
     if (legEl) {
+      const activeSec = Number((window.tbbCommercialDemoState || {}).activeMainSection || 1);
       legEl.innerHTML = `
-        <a href="/privacidad" style="color:#475569; font-weight:500; text-decoration:none;">${escHtml(leg.privacy)}</a>
+        <a href="/?section=privacidad" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(7);}" style="color:${activeSec === 7 ? "#426EAE" : "#334155"}; font-weight:${activeSec === 7 ? "700" : "600"}; text-decoration:none; padding:4px 6px; border-radius:8px;">${escHtml(leg.privacy)}</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="/soporte" style="color:#475569; font-weight:500; text-decoration:none;">${escHtml(leg.support)}</a>
+        <a href="/?section=soporte" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(6);}" style="color:${activeSec === 6 ? "#FF7A00" : "#0D2540"}; font-weight:700; text-decoration:none; padding:4px 8px; border-radius:8px; background:${activeSec === 6 ? "#FFF7ED" : "#F4F8FC"}; border:1px solid ${activeSec === 6 ? "rgba(255,122,0,0.32)" : "rgba(66,110,174,0.16)"};">${escHtml(leg.support)}</a>
         <span style="color:#CBD5E1;">·</span>
-        <a href="/eliminar-cuenta" style="color:#475569; font-weight:500; text-decoration:none;">${escHtml(leg.account)}</a>
+        <a href="/?section=eliminar-cuenta" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(8);}" style="color:${activeSec === 8 ? "#426EAE" : "#334155"}; font-weight:${activeSec === 8 ? "700" : "600"}; text-decoration:none; padding:4px 6px; border-radius:8px;">${escHtml(leg.account)}</a>
       `;
     }
   };
@@ -5030,12 +5974,361 @@
       }
       .tbb-drawer-lang-btn.active { background: #FF7A00; color: #FFFFFF; border-color: #FF7A00; }
 
+      /* CENTRO DE SOPORTE, PRIVACIDAD Y GESTIÓN DE CUENTA (V134.0 · LIENZO CLARO) */
+      .tbb-support-top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 22px;
+      }
+      .tbb-back-home-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 16px;
+        border-radius: 999px;
+        border: 1px solid rgba(13, 37, 64, 0.12);
+        background: #FFFFFF;
+        color: #0D2540;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: var(--tbb-ds-shadow-xs);
+        transition: transform 0.16s var(--tbb-ds-ease-out), border-color 0.16s ease;
+      }
+      .tbb-back-home-pill:hover { border-color: #426EAE; color: #426EAE; transform: translate3d(-2px, 0, 0); }
+      .tbb-support-jump-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+      .tbb-support-jump-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(66, 110, 174, 0.16);
+        background: #F4F8FC;
+        color: #0D2540;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .tbb-support-jump-pill:hover { border-color: #426EAE; color: #426EAE; }
+      .tbb-support-channels-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+        margin-top: 8px;
+      }
+      .tbb-account-mgmt-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+        align-items: start;
+      }
+      .tbb-support-channel-card {
+        background: #FFFFFF;
+        border: 1px solid rgba(13, 37, 64, 0.09);
+        border-radius: 24px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        box-shadow: var(--tbb-ds-shadow-sm);
+        box-sizing: border-box;
+      }
+      .tbb-support-channel-card.is-primary-channel {
+        border-color: rgba(255, 122, 0, 0.32);
+        background: linear-gradient(180deg, #FFFBF7 0%, #FFFFFF 46%);
+      }
+      .tbb-support-channel-card.is-danger-card {
+        border-color: rgba(220, 38, 38, 0.22);
+      }
+      .tbb-support-channel-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .tbb-support-channel-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 13px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tbb-support-channel-icon.is-orange { background: #FFF7ED; color: #EA580C; border: 1px solid rgba(255,122,0,0.22); }
+      .tbb-support-channel-icon.is-blue { background: #EFF6FF; color: #426EAE; border: 1px solid rgba(66,110,174,0.2); }
+      .tbb-support-channel-icon.is-navy { background: #F1F5F9; color: #0D2540; border: 1px solid rgba(13,37,64,0.12); }
+      .tbb-support-channel-icon.is-danger { background: #FEF2F2; color: #B91C1C; border: 1px solid rgba(220,38,38,0.2); }
+      .tbb-support-channel-tag {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        color: #426EAE;
+        background: #F4F8FC;
+        padding: 4px 10px;
+        border-radius: 999px;
+      }
+      .tbb-support-channel-tag.is-orange { color: #C2410C; background: #FFF7ED; }
+      .tbb-support-channel-tag.is-danger { color: #B91C1C; background: #FEF2F2; }
+      .tbb-support-channel-card h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #0D2540;
+        margin: 2px 0 0;
+        line-height: 1.3;
+      }
+      .tbb-support-channel-card p {
+        font-size: 0.96rem;
+        color: #475569;
+        margin: 0;
+        line-height: 1.6;
+        flex: 1;
+      }
+      .tbb-support-email-pill {
+        font-family: 'Plus Jakarta Sans', monospace, sans-serif;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: #0D2540;
+        background: #F8FAFC;
+        border: 1px solid rgba(13, 37, 64, 0.09);
+        border-radius: 12px;
+        padding: 9px 12px;
+        word-break: break-all;
+      }
+      .tbb-support-channel-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 6px;
+      }
+      .tbb-support-channel-actions.is-row { flex-direction: row; flex-wrap: wrap; }
+      .tbb-btn-secondary.is-copied { background: #ECFDF5; border-color: #10B981; color: #065F46; }
+      .tbb-support-text-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border: none;
+        background: transparent;
+        color: #426EAE;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 4px 0;
+      }
+      .tbb-support-text-link:hover { color: #0D2540; text-decoration: underline; }
+      .tbb-support-block-head { margin-bottom: 18px; }
+      .tbb-support-mini-kicker {
+        display: inline-block;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: #426EAE;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+      .tbb-support-faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .tbb-support-faq-item {
+        background: #FFFFFF;
+        border: 1px solid rgba(13, 37, 64, 0.09);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: var(--tbb-ds-shadow-xs);
+        transition: border-color 0.18s ease;
+      }
+      .tbb-support-faq-item.is-open { border-color: rgba(66, 110, 174, 0.34); }
+      .tbb-support-faq-trigger {
+        width: 100%;
+        padding: 18px 20px;
+        background: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        text-align: left;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.02rem;
+        font-weight: 700;
+        color: #0D2540;
+        cursor: pointer;
+      }
+      .tbb-support-faq-chevron {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #F4F8FC;
+        color: #426EAE;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: transform 0.2s var(--tbb-ds-ease-out), background 0.2s ease, color 0.2s ease;
+      }
+      .tbb-support-faq-item.is-open .tbb-support-faq-chevron {
+        transform: rotate(180deg);
+        background: #0D2540;
+        color: #FFFFFF;
+      }
+      .tbb-support-faq-panel {
+        display: none;
+        padding: 0 20px 18px;
+        border-top: 1px solid rgba(13, 37, 64, 0.055);
+      }
+      .tbb-support-faq-item.is-open .tbb-support-faq-panel { display: block; }
+      .tbb-support-faq-panel p {
+        margin: 14px 0 0;
+        font-size: 0.96rem;
+        color: #334155;
+        line-height: 1.65;
+      }
+      .tbb-support-faq-inline-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+      .tbb-support-ticket-card {
+        margin-top: 34px;
+        background: #F8FAFC;
+        border: 1px solid rgba(13, 37, 64, 0.095);
+        border-radius: 26px;
+        padding: 28px;
+        box-sizing: border-box;
+      }
+      .tbb-support-ticket-head { margin-bottom: 18px; }
+      .tbb-support-ticket-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .tbb-support-ticket-footer {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+      .tbb-support-bottom-strip {
+        margin-top: 28px;
+        padding: 20px 22px;
+        border-radius: 22px;
+        background: #FFFFFF;
+        border: 1px solid rgba(13, 37, 64, 0.085);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .tbb-support-bottom-label {
+        font-size: 0.94rem;
+        font-weight: 600;
+        color: #475569;
+      }
+      .tbb-support-bottom-btns {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .tbb-legal-cards-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .tbb-legal-policy-card {
+        background: #FFFFFF;
+        border: 1px solid rgba(13, 37, 64, 0.09);
+        border-radius: 22px;
+        padding: 22px;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        box-shadow: var(--tbb-ds-shadow-xs);
+      }
+      .tbb-legal-num-pill {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        background: #F4F8FC;
+        border: 1px solid rgba(66, 110, 174, 0.18);
+        color: #426EAE;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.92rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .tbb-legal-policy-card h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #0D2540;
+        margin: 0 0 6px;
+      }
+      .tbb-legal-policy-card p {
+        font-size: 0.96rem;
+        color: #334155;
+        margin: 0;
+        line-height: 1.64;
+      }
+      .tbb-danger-check-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 0.9rem;
+        color: #334155;
+        cursor: pointer;
+        line-height: 1.45;
+      }
+      .tbb-danger-check-row input { margin-top: 3px; width: 17px; height: 17px; flex-shrink: 0; }
+      .tbb-btn-danger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 46px;
+        padding: 0 20px;
+        border-radius: 14px;
+        border: 1px solid #B91C1C;
+        background: #DC2626;
+        color: #FFFFFF;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.16s var(--tbb-ds-ease-out), background 0.16s ease;
+      }
+      .tbb-btn-danger:hover { background: #B91C1C; transform: translate3d(0, -1px, 0); }
+      .tbb-btn-danger:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
       /* RESPONSIVE */
       @media (max-width: 1080px) {
         .tbb-desktop-nav, .tbb-header-account-btn { display: none; }
         .tbb-mobile-menu-btn { display: inline-flex; align-items: center; justify-content: center; }
         .tbb-how-scrolly-layout { grid-template-columns: 1fr; }
         .tbb-how-sticky-rail { display: none; }
+        .tbb-support-channels-grid,
+        .tbb-account-mgmt-grid,
+        .tbb-support-ticket-grid {
+          grid-template-columns: 1fr;
+        }
         .tbb-deliv-card.is-featured,
         .tbb-how-step-card,
         .tbb-case-hero-box,
@@ -5045,6 +6338,10 @@
         }
       }
       @media (max-width: 680px) {
+        .tbb-support-channel-card, .tbb-support-ticket-card { padding: 20px 16px; }
+        .tbb-legal-policy-card { flex-direction: column; gap: 10px; padding: 18px 16px; }
+        .tbb-support-faq-trigger { padding: 16px; font-size: 0.96rem; }
+        .tbb-support-faq-panel { padding: 0 16px 16px; }
         .tbb-container { padding: 0 16px; }
         .tbb-section { padding: 26px 0 56px; }
         .tbb-header-inner { padding: 9px 12px; gap: 6px; }
@@ -5329,7 +6626,17 @@
         "/casos-reales": 4,
         "/referencias": 5,
         "/bases-teoricas": 5,
-        "/bases-tecnicas": 5
+        "/bases-tecnicas": 5,
+        "/soporte": 6,
+        "/support": 6,
+        "/ayuda": 6,
+        "/help": 6,
+        "/privacidad": 7,
+        "/privacy": 7,
+        "/eliminar-cuenta": 8,
+        "/delete-account": 8,
+        "/cuenta": 8,
+        "/gestion-cuenta": 8
       };
       if (pathMap[path]) {
         window.tbbCommercialDemoState.activeMainSection = pathMap[path];
@@ -5343,14 +6650,17 @@
         else localStorage.setItem(LANG_STORAGE_KEY, cl);
         document.documentElement.lang = cl;
       }
-      const secP = params.get("section") || params.get("tab");
+      const secP = params.get("section") || params.get("tab") || params.get("view") || (window.location.hash || "").replace(/^#/, "");
       if (secP) {
         const map = {
           "1": 1, "inicio": 1, "demo": 1,
           "2": 2, "que-recibes": 2, "entregables": 2, "pack-descargas": 2,
           "3": 3, "como-funciona": 3, "app-tour": 3, "tour": 3,
           "4": 4, "ejemplos": 4, "casos-reales": 4,
-          "5": 5, "referencias": 5, "bases-teoricas": 5
+          "5": 5, "referencias": 5, "bases-teoricas": 5,
+          "6": 6, "soporte": 6, "support": 6, "ayuda": 6, "help": 6,
+          "7": 7, "privacidad": 7, "privacy": 7,
+          "8": 8, "eliminar-cuenta": 8, "delete-account": 8, "cuenta": 8, "gestion-cuenta": 8, "account": 8
         };
         if (map[secP.toLowerCase()]) window.tbbCommercialDemoState.activeMainSection = map[secP.toLowerCase()];
       }

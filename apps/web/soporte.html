@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Soporte Oficial y Centro de Ayuda | The Best Brand</title>
+  <meta name="description" content="Centro de soporte oficial de The Best Brand (ImproBears AI) para Web, iPhone, iPad, Mac y Android. Atención humana directa por WhatsApp, correo y ticket.">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="icon" type="image/png" href="https://thebestbrand-studio.web.app/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --navy:#0D2540; --blue:#426EAE; --orange:#FF7A00; --muted:#475569; --line:rgba(13,37,64,0.09); }
+    * { box-sizing: border-box; }
+    body { margin:0; background:#FFFFFF; color:var(--navy); font-family:'Plus Jakarta Sans',-apple-system,sans-serif; line-height:1.62; -webkit-font-smoothing:antialiased; }
+    .hdr { position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.88); backdrop-filter:blur(16px); border-bottom:1px solid var(--line); }
+    .hdr-in { max-width:1120px; margin:0 auto; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .brand { display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:var(--navy); font-family:'Montserrat',sans-serif; font-weight:800; letter-spacing:0.06em; font-size:0.95rem; }
+    .brand img { width:34px; height:34px; border-radius:50%; }
+    .wrap { max-width:1120px; margin:0 auto; padding:36px 20px 72px; }
+    .kicker { display:inline-flex; align-items:center; gap:7px; padding:6px 14px; border-radius:999px; background:#F4F8FC; border:1px solid rgba(66,110,174,0.18); color:var(--blue); font-size:0.8rem; font-weight:700; letter-spacing:0.04em; }
+    h1 { font-family:'Montserrat',sans-serif; font-size:clamp(1.85rem,3.6vw,2.75rem); font-weight:800; margin:14px 0 10px; letter-spacing:-0.02em; line-height:1.15; }
+    .lead { color:var(--muted); font-size:1.05rem; max-width:64ch; margin:0 0 28px; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-bottom:36px; }
+    .card { background:#FFFFFF; border:1px solid var(--line); border-radius:22px; padding:22px; display:flex; flex-direction:column; gap:10px; box-shadow:0 8px 24px -10px rgba(13,37,64,0.08); }
+    .card.is-orange { border-color:rgba(255,122,0,0.34); background:linear-gradient(180deg,#FFFBF7 0%,#FFFFFF 48%); }
+    .card h2 { font-family:'Montserrat',sans-serif; font-size:1.15rem; margin:0; }
+    .card p { margin:0; color:var(--muted); font-size:0.95rem; flex:1; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:0 18px; border-radius:999px; font-weight:700; font-size:0.94rem; text-decoration:none; cursor:pointer; border:1px solid transparent; font-family:inherit; }
+    .btn-primary { background:var(--orange); color:#FFFFFF; }
+    .btn-secondary { background:#F8FAFC; color:var(--navy); border-color:rgba(13,37,64,0.14); }
+    .faq-list { display:flex; flex-direction:column; gap:10px; margin:16px 0 36px; }
+    details { background:#FFFFFF; border:1px solid var(--line); border-radius:16px; padding:16px 18px; }
+    summary { font-family:'Montserrat',sans-serif; font-weight:700; font-size:1rem; cursor:pointer; color:var(--navy); }
+    details p { margin:12px 0 0; color:#334155; font-size:0.95rem; }
+    .ticket { background:#F8FAFC; border:1px solid var(--line); border-radius:24px; padding:26px; }
+    .row2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    label { display:flex; flex-direction:column; gap:5px; font-size:0.9rem; font-weight:600; margin-bottom:12px; }
+    input, select, textarea { width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(13,37,64,0.16); background:#FFFFFF; font-family:inherit; font-size:0.98rem; color:var(--navy); }
+    .msg { display:none; padding:10px 14px; border-radius:12px; font-size:0.92rem; font-weight:600; margin:10px 0; }
+    .msg.ok { display:block; background:#ECFDF5; color:#065F46; border:1px solid #10B981; }
+    .msg.err { display:block; background:#FEF2F2; color:#B91C1C; border:1px solid #EF4444; }
+    .foot { margin-top:34px; padding-top:20px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; font-size:0.9rem; color:var(--muted); }
+    .foot a { color:var(--blue); text-decoration:none; font-weight:600; }
+    @media (max-width:860px) { .grid, .row2 { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header class="hdr">
+    <div class="hdr-in">
+      <a class="brand" href="https://thebestbrand.app/">
+        <img src="https://thebestbrand-studio.web.app/assets/logos/Isotipo_Oficial_TheBestBrand_LiquidGlass_1024px.png" alt="The Best Brand">
+        <span>THE BEST BRAND</span>
+      </a>
+      <a class="btn btn-secondary" href="https://thebestbrand.app/">Volver a Inicio y Demo</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <span class="kicker">CENTRO DE SOPORTE OFICIAL · THE BEST BRAND</span>
+    <h1>¿En qué te podemos ayudar hoy?</h1>
+    <p class="lead">Atención humana directa, respuestas inmediatas y soporte técnico para usuarios de Web, iPhone (iOS), iPad, Mac y Android.</p>
+
+    <div class="grid">
+      <article class="card is-orange">
+        <h2>Soporte Directo por WhatsApp</h2>
+        <p>Escríbenos directamente para soporte inmediato sobre tu marca, licencia, pago o audio de Aura.</p>
+        <a class="btn btn-primary" href="https://wa.me/524421812822?text=Hola%20equipo%20de%20The%20Best%20Brand%2C%20necesito%20ayuda%20con%20mi%20cuenta%20o%20mi%20marca." target="_blank" rel="noopener">Escribir por WhatsApp ahora</a>
+      </article>
+      <article class="card">
+        <h2>Correo Oficial y Facturación</h2>
+        <p>Para facturación empresarial, paquetes de agencias o seguimiento técnico. Respuesta en menos de 24 horas hábiles.<br><strong>jorge.benitez@improbears.com</strong></p>
+        <a class="btn btn-secondary" href="mailto:jorge.benitez@improbears.com?subject=Soporte%20The%20Best%20Brand">Enviar correo a Soporte</a>
+      </article>
+      <article class="card">
+        <h2>Recuperar o Gestionar Cuenta</h2>
+        <p>Restaura tu acceso Pro en otro dispositivo o gestiona tus derechos de privacidad y eliminación de cuenta.</p>
+        <a class="btn btn-secondary" href="/eliminar-cuenta">Ir a Gestión de Cuenta</a>
+      </article>
+    </div>
+
+    <h2 style="font-family:'Montserrat',sans-serif;font-size:1.5rem;margin:0 0 6px;">Preguntas Frecuentes</h2>
+    <div class="faq-list">
+      <details open><summary>¿Qué incluye el pago único de $49 USD?</summary><p>Desbloqueo completo de los Pasos 4, 5 y 6 para tu marca: propuestas de logotipo, Brandbook de más de 30 páginas (PDF, DOCX y PPTX) y 9 archivos editables (SVG, AI, PDF, PNG transparente y kit social). Pago único, sin suscripciones.</p></details>
+      <details><summary>¿El 100% de los derechos comerciales son míos?</summary><p>Sí. El 100% de la propiedad intelectual y los derechos de uso comercial de tu logotipo y Brandbook pertenecen exclusivamente a tu empresa o proyecto.</p></details>
+      <details><summary>¿Qué hago si la voz de Aura no suena en iPhone o navegador?</summary><p>Verifica que el interruptor físico de silencio del iPhone esté desactivado, sube el volumen multimedia y toca el botón de audio en la tarjeta de Aura.</p></details>
+      <details><summary>¿Cómo ingreso un código promocional o de invitado?</summary><p>En thebestbrand.app toca el botón naranja de $49 USD en la barra superior y despliega la opción de código promocional para aplicarlo al instante.</p></details>
+    </div>
+
+    <section class="ticket">
+      <h2 style="font-family:'Montserrat',sans-serif;font-size:1.45rem;margin:0 0 6px;">Envíanos una solicitud de soporte</h2>
+      <p style="margin:0 0 18px;color:var(--muted);">Tu mensaje se registra directo en nuestra mesa de soporte técnico y te respondemos en menos de 24 horas hábiles.</p>
+      <form id="supForm">
+        <div class="row2">
+          <label>Tu nombre<input id="supName" type="text" placeholder="Ej. Ana López"></label>
+          <label>Tu correo electrónico<input id="supEmail" type="email" required placeholder="tu-correo@empresa.com"></label>
+        </div>
+        <label>Tema
+          <select id="supTopic">
+            <option value="soporte_tecnico">Problema técnico / Audio de Aura / Generación</option>
+            <option value="pagos_stripe">Pagos, Stripe o código promocional</option>
+            <option value="recuperar_cuenta">Recuperar mi marca o licencia Pro</option>
+            <option value="facturacion_agencia">Facturación fiscal o plan para agencias</option>
+            <option value="sugerencia">Sugerencia o comentario general</option>
+          </select>
+        </label>
+        <label>Mensaje<textarea id="supMsg" rows="4" required placeholder="Describe tu duda o el paso donde te encuentras..."></textarea></label>
+        <div id="supStatus" class="msg"></div>
+        <button id="supBtn" type="submit" class="btn btn-primary">Enviar solicitud de soporte</button>
+      </form>
+    </section>
+
+    <footer class="foot">
+      <span>THE BEST BRAND · A Product of ImproBears AI</span>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <a href="https://thebestbrand.app/">Inicio</a>
+        <a href="/privacidad">Política de Privacidad</a>
+        <a href="/eliminar-cuenta">Gestión de Cuenta</a>
+      </div>
+    </footer>
+  </main>
+  <script>
+    document.getElementById('supForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var st = document.getElementById('supStatus');
+      var btn = document.getElementById('supBtn');
+      var name = document.getElementById('supName').value.trim();
+      var email = document.getElementById('supEmail').value.trim();
+      var topic = document.getElementById('supTopic').value;
+      var msg = document.getElementById('supMsg').value.trim();
+      if (!email || msg.length < 6) {
+        st.className = 'msg err';
+        st.textContent = 'Por favor escribe tu correo y un mensaje de al menos 6 caracteres.';
+        return;
+      }
+      btn.disabled = true;
+      var payload = JSON.stringify({
+        source: 'standalone_support_page',
+        platform: /iPhone|iPad|iPod/i.test(navigator.userAgent || '') ? 'ios_web' : 'web',
+        customer_email: email,
+        step_num: 6,
+        sub_step: 0,
+        lang: 'es',
+        category: 'support_ticket',
+        comment_text: '[' + topic + '] ' + (name ? name + ' — ' : '') + msg
+      });
+      try {
+        var r = await fetch('/api/v1/feedback/submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload }).catch(function(){ return null; });
+        if (!r || !r.ok) {
+          r = await fetch('https://thebestbrand-api-studio-production.up.railway.app/api/v1/feedback/submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload });
+        }
+        var d = await r.json().catch(function(){ return {}; });
+        if (r && r.ok) {
+          document.getElementById('supMsg').value = '';
+          st.className = 'msg ok';
+          st.textContent = 'Solicitud registrada con éxito (Folio: ' + (d.feedback_id || 'SUP') + '). Te responderemos en menos de 24 horas hábiles.';
+        } else {
+          throw new Error('fail');
+        }
+      } catch (err) {
+        st.className = 'msg err';
+        st.textContent = 'No pudimos enviar el formulario. Escríbenos por WhatsApp o a jorge.benitez@improbears.com.';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

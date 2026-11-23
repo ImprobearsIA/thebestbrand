@@ -37,6 +37,30 @@
         "destination": "/brandbook_editorial_thebestbrand.html"
       },
       {
+        "source": "/soporte",
+        "destination": "/soporte.html"
+      },
+      {
+        "source": "/support",
+        "destination": "/soporte.html"
+      },
+      {
+        "source": "/privacidad",
+        "destination": "/privacidad.html"
+      },
+      {
+        "source": "/privacy",
+        "destination": "/privacidad.html"
+      },
+      {
+        "source": "/eliminar-cuenta",
+        "destination": "/eliminar-cuenta.html"
+      },
+      {
+        "source": "/delete-account",
+        "destination": "/eliminar-cuenta.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
