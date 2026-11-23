@@ -5975,6 +5975,23 @@
       .tbb-drawer-lang-btn.active { background: #FF7A00; color: #FFFFFF; border-color: #FF7A00; }
 
       /* CENTRO DE SOPORTE, PRIVACIDAD Y GESTIÓN DE CUENTA (V134.0 · LIENZO CLARO) */
+      .tbb-support-section .tbb-section-head,
+      .tbb-legal-section .tbb-section-head,
+      .tbb-account-section .tbb-section-head {
+        text-align: left;
+        align-items: flex-start;
+        margin-bottom: 24px;
+      }
+      .tbb-support-section .tbb-lead,
+      .tbb-legal-section .tbb-lead,
+      .tbb-account-section .tbb-lead {
+        margin-left: 0;
+        margin-right: 0;
+        text-align: left;
+      }
+      #tbbSupportChannels, #tbbSupportFaq, #tbbSupportTicket {
+        scroll-margin-top: 88px;
+      }
       .tbb-support-top-bar {
         display: flex;
         align-items: center;
@@ -6109,7 +6126,12 @@
         gap: 10px;
         margin-top: 6px;
       }
-      .tbb-support-channel-actions.is-row { flex-direction: row; flex-wrap: wrap; }
+      .tbb-support-channel-actions.is-row { flex-direction: row; flex-wrap: nowrap; }
+      .tbb-support-channel-actions.is-row .tbb-btn-secondary {
+        white-space: nowrap;
+        padding: 0 13px;
+        font-size: 0.88rem;
+      }
       .tbb-btn-secondary.is-copied { background: #ECFDF5; border-color: #10B981; color: #065F46; }
       .tbb-support-text-link {
         display: inline-flex;
