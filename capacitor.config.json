@@ -3,13 +3,12 @@
   "appName": "The Best Brand",
   "webDir": "apps/native-shell",
   "server": {
-    "url": "https://thebestbrand.app/studio",
+    "url": "https://thebestbrand.app/studio?native_app=1",
     "cleartext": false,
     "allowNavigation": [
       "thebestbrand.app",
       "*.thebestbrand.app",
-      "*.improbears.com",
-      "checkout.stripe.com"
+      "*.improbears.com"
     ]
   },
   "ios": {

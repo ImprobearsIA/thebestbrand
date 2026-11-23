@@ -9,9 +9,37 @@
     var embedMode = params.get("embed") || "";
     var isImmersiveClone = embedMode === "immersive_clone";
     var isIphoneEmbed = Boolean(embedMode);
+    var ua = navigator.userAgent || "";
+    var isNativeCap = Boolean(window.Capacitor && (typeof window.Capacitor.isNativePlatform !== "function" || window.Capacitor.isNativePlatform()));
+    var isNativeParam = /^(1|true|ios|android|native)$/i.test(params.get("native_app") || params.get("app") || "") || /^(ios|android|native)$/i.test(embedMode);
+    var isIosWkWebView = /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(ua);
+    var isAndroidWebView = /; wv\)/i.test(ua) && /Android/i.test(ua);
+    var isNativeStoreApp = isNativeCap || isNativeParam || isIosWkWebView || isAndroidWebView;
     var isDemo = isEmbedded || isDemoParam;
+
     if ((isIphoneEmbed || isEmbedded) && !isImmersiveClone) {
       document.documentElement.classList.add("tbb-embed-iphone-mode");
+    }
+    if (isNativeStoreApp) {
+      window.tbbIsNativeStoreApp = true;
+      document.documentElement.classList.add("tbb-native-store-app");
+      var nativeHideStyle = document.createElement("style");
+      nativeHideStyle.id = "tbbNativeStoreAppShieldCss";
+      nativeHideStyle.textContent = "#tbbBtnTopCommercialWeb, #tbbBtnTopBuyAppNow, #tbbAlwaysOnBuyFloatingBar, #tbbBtnCommercialFromSplash, #tbbBtnTopAdminTbb, #tbbTopDiscreteBar a[href='/'], #tbbCommercialPortalModal, .tbb-web-stripe-only, #tbbTopQuickStepJumper option[value='admin_tbb'] { display: none !important; }";
+      document.head.appendChild(nativeHideStyle);
+      window.addEventListener("DOMContentLoaded", function() {
+        if (document.body) {
+          document.body.classList.add("tbb-native-store-app");
+        }
+        ["tbbBtnTopCommercialWeb", "tbbBtnTopBuyAppNow", "tbbAlwaysOnBuyFloatingBar", "tbbBtnCommercialFromSplash", "tbbBtnTopAdminTbb"].forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) el.style.setProperty("display", "none", "important");
+        });
+        var webLinks = document.querySelectorAll("#tbbTopDiscreteBar a[href='/']");
+        for (var i = 0; i < webLinks.length; i++) {
+          webLinks[i].style.setProperty("display", "none", "important");
+        }
+      });
     }
     if (isDemo) {
       window.tbbIsDemoMode = true;
@@ -28336,7 +28364,7 @@
   <script src="/tbb-generative-brandbook-engine.js?v=135.1"></script>
   <script src="/improbears-preset-engine.js?v=135.0"></script>
   <script src="/tbb-multilingual-gemini-voice.js?v=135.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=135.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=136.0"></script>
 
   <style id="tbbDuolingoOrganicErgonomicsV129">
     html.a11y-large-mode { font-size: 18.5px !important; }

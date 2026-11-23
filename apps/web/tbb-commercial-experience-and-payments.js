@@ -17,7 +17,324 @@
 
   const LANG_STORAGE_KEY = "tbb_active_ui_lang_v52";
   const LICENSE_STORAGE_KEY = "tbb_pro_license_v56";
-  const ASSET_VERSION = "132.0";
+  const ASSET_VERSION = "136.0";
+
+  // ============================================================================
+  // ENLACES OFICIALES DE TIENDAS (APPLE APP STORE & GOOGLE PLAY)
+  // Cambiar appStoreLive / googlePlayLive a true en cuanto pasen a publicacion
+  // ============================================================================
+  const TBB_OFFICIAL_STORE_LINKS = {
+    bundleId: "com.improbears.thebestbrand",
+    appleAppId: "6836450465",
+    appStoreUrl: "https://apps.apple.com/app/id6836450465",
+    appStoreLive: false,
+    testFlightPublicUrl: "",
+    googlePlayUrl: "https://play.google.com/store/apps/details?id=com.improbears.thebestbrand",
+    googlePlayLive: false,
+    androidAlphaApkUrl: "https://thebestbrand-studio.web.app/assets/releases/TheBestBrand_Alpha_v1.0.0.apk",
+    supportEmail: "soporte@thebestbrand.app"
+  };
+  window.TBB_OFFICIAL_STORE_LINKS = TBB_OFFICIAL_STORE_LINKS;
+
+  function isNativeStoreAppRuntime() {
+    if (window.tbbIsNativeStoreApp) return true;
+    try {
+      if (window.Capacitor && (typeof window.Capacitor.isNativePlatform !== "function" || window.Capacitor.isNativePlatform())) {
+        return true;
+      }
+      const p = new URLSearchParams(window.location.search || "");
+      if (/^(1|true|ios|android|native)$/i.test(p.get("native_app") || p.get("app") || "")) return true;
+      if (/^(ios|android|native)$/i.test(p.get("embed") || "")) return true;
+      const ua = navigator.userAgent || "";
+      if (/(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(ua)) return true;
+      if (/; wv\)/i.test(ua) && /Android/i.test(ua)) return true;
+    } catch (e) {}
+    return false;
+  }
+  window.tbbIsNativeStoreAppRuntime = isNativeStoreAppRuntime;
+
+  const STORE_BADGES_I18N = {
+    es: {
+      stripLabel: "Úsala en la Web ahora mismo o descárgala en tus dispositivos:",
+      appleSub: "Descárgalo en el",
+      appleTitle: "App Store",
+      appleTagPre: "Beta iOS · Mac",
+      googleSub: "Disponible en",
+      googleTitle: "Google Play",
+      googleTagPre: "APK Beta listo",
+      modalAppleEyebrow: "APPLE APP STORE · iOS · iPadOS · macOS",
+      modalAppleTitle: "The Best Brand para iPhone, iPad y Mac",
+      modalAppleBody: "Nuestra app nativa (App ID 6836450465) está completando su aprobación en el App Store y ya funciona en acceso anticipado vía TestFlight. Mientras tanto, puedes usar el estudio completo desde Safari sin instalar nada.",
+      modalAppleCtaWeb: "Abrir Estudio en Web ahora",
+      modalAppleCtaBeta: "Pedir invitación TestFlight",
+      modalAppleUrlLabel: "Enlace oficial reservado en App Store",
+      modalGoogleEyebrow: "GOOGLE PLAY · ANDROID",
+      modalGoogleTitle: "The Best Brand para Android",
+      modalGoogleBody: "La publicación oficial en Google Play (com.improbears.thebestbrand) está en preparación. Si deseas instalar la app en Android hoy mismo, descarga el instalador oficial Beta (.APK · 5.3 MB) o úsala directo en Chrome.",
+      modalGoogleCtaApk: "Descargar App Android Beta (.APK)",
+      modalGoogleCtaWeb: "Abrir Estudio en Web ahora",
+      modalGoogleUrlLabel: "Enlace oficial reservado en Google Play",
+      copyBtn: "Copiar enlace",
+      copiedBtn: "Enlace copiado",
+      syncNote: "Tu cuenta y las marcas que crees en la Web se sincronizan automáticamente con las apps móviles al iniciar sesión."
+    },
+    en: {
+      stripLabel: "Use it on the Web right now or get it on your devices:",
+      appleSub: "Download on the",
+      appleTitle: "App Store",
+      appleTagPre: "iOS · Mac Beta",
+      googleSub: "Get it on",
+      googleTitle: "Google Play",
+      googleTagPre: "Beta APK ready",
+      modalAppleEyebrow: "APPLE APP STORE · iOS · iPadOS · macOS",
+      modalAppleTitle: "The Best Brand for iPhone, iPad & Mac",
+      modalAppleBody: "Our native app (App ID 6836450465) is completing App Store review and is currently available in early access via TestFlight. Meanwhile, you can use the full Studio right in Safari with zero installation.",
+      modalAppleCtaWeb: "Open Web Studio now",
+      modalAppleCtaBeta: "Request TestFlight invite",
+      modalAppleUrlLabel: "Reserved official App Store link",
+      modalGoogleEyebrow: "GOOGLE PLAY · ANDROID",
+      modalGoogleTitle: "The Best Brand for Android",
+      modalGoogleBody: "Our official Google Play listing (com.improbears.thebestbrand) is preparing for launch. You can install the official Android Beta (.APK · 5.3 MB) today or run the Studio directly in Chrome.",
+      modalGoogleCtaApk: "Download Android Beta (.APK)",
+      modalGoogleCtaWeb: "Open Web Studio now",
+      modalGoogleUrlLabel: "Reserved official Google Play link",
+      copyBtn: "Copy link",
+      copiedBtn: "Link copied",
+      syncNote: "Your account and any brands created on the Web sync automatically with the mobile apps when you sign in."
+    },
+    fr: {
+      stripLabel: "Utilisez-le sur le Web dès maintenant ou sur vos appareils :",
+      appleSub: "Télécharger dans",
+      appleTitle: "App Store",
+      appleTagPre: "Bêta iOS · Mac",
+      googleSub: "Disponible sur",
+      googleTitle: "Google Play",
+      googleTagPre: "APK Bêta prêt",
+      modalAppleEyebrow: "APPLE APP STORE · iOS · iPadOS · macOS",
+      modalAppleTitle: "The Best Brand pour iPhone, iPad et Mac",
+      modalAppleBody: "Notre application native (App ID 6836450465) finalise la validation App Store et est disponible en accès anticipé sur TestFlight.",
+      modalAppleCtaWeb: "Ouvrir le Studio Web maintenant",
+      modalAppleCtaBeta: "Demander une invitation TestFlight",
+      modalAppleUrlLabel: "Lien officiel réservé App Store",
+      modalGoogleEyebrow: "GOOGLE PLAY · ANDROID",
+      modalGoogleTitle: "The Best Brand pour Android",
+      modalGoogleBody: "La sortie sur Google Play (com.improbears.thebestbrand) est en préparation. Téléchargez la Bêta officielle Android (.APK · 5,3 Mo) dès aujourd'hui.",
+      modalGoogleCtaApk: "Télécharger Android Bêta (.APK)",
+      modalGoogleCtaWeb: "Ouvrir le Studio Web maintenant",
+      modalGoogleUrlLabel: "Lien officiel réservé Google Play",
+      copyBtn: "Copier le lien",
+      copiedBtn: "Lien copié",
+      syncNote: "Votre compte Web se synchronise automatiquement avec les applications mobiles."
+    },
+    pt: {
+      stripLabel: "Use na Web agora mesmo ou nos seus dispositivos:",
+      appleSub: "Baixar na",
+      appleTitle: "App Store",
+      appleTagPre: "Beta iOS · Mac",
+      googleSub: "Disponível no",
+      googleTitle: "Google Play",
+      googleTagPre: "APK Beta pronto",
+      modalAppleEyebrow: "APPLE APP STORE · iOS · iPadOS · macOS",
+      modalAppleTitle: "The Best Brand para iPhone, iPad e Mac",
+      modalAppleBody: "Nosso app nativo (App ID 6836450465) está concluindo a aprovação na App Store e já funciona em acesso antecipado via TestFlight.",
+      modalAppleCtaWeb: "Abrir Estúdio Web agora",
+      modalAppleCtaBeta: "Pedir convite TestFlight",
+      modalAppleUrlLabel: "Link oficial reservado na App Store",
+      modalGoogleEyebrow: "GOOGLE PLAY · ANDROID",
+      modalGoogleTitle: "The Best Brand para Android",
+      modalGoogleBody: "A publicação oficial no Google Play (com.improbears.thebestbrand) está em preparação. Você já pode baixar o instalador oficial Beta (.APK · 5,3 MB).",
+      modalGoogleCtaApk: "Baixar App Android Beta (.APK)",
+      modalGoogleCtaWeb: "Abrir Estúdio Web agora",
+      modalGoogleUrlLabel: "Link oficial reservado no Google Play",
+      copyBtn: "Copiar link",
+      copiedBtn: "Link copiado",
+      syncNote: "Sua conta na Web sincroniza automaticamente com os aplicativos móveis."
+    },
+    de: {
+      stripLabel: "Jetzt direkt im Web nutzen oder auf Ihren Geräten:",
+      appleSub: "Laden im",
+      appleTitle: "App Store",
+      appleTagPre: "iOS · Mac Beta",
+      googleSub: "Jetzt bei",
+      googleTitle: "Google Play",
+      googleTagPre: "Beta APK bereit",
+      modalAppleEyebrow: "APPLE APP STORE · iOS · iPadOS · macOS",
+      modalAppleTitle: "The Best Brand für iPhone, iPad & Mac",
+      modalAppleBody: "Unsere native App (App ID 6836450465) befindet sich in der App-Store-Freigabe und ist im TestFlight-Vorabzugang verfügbar.",
+      modalAppleCtaWeb: "Web-Studio jetzt öffnen",
+      modalAppleCtaBeta: "TestFlight-Einladung anfordern",
+      modalAppleUrlLabel: "Reservierter App-Store-Link",
+      modalGoogleEyebrow: "GOOGLE PLAY · ANDROID",
+      modalGoogleTitle: "The Best Brand für Android",
+      modalGoogleBody: "Die Veröffentlichung bei Google Play (com.improbears.thebestbrand) ist in Vorbereitung. Sie können heute die offizielle Android-Beta (.APK · 5,3 MB) installieren.",
+      modalGoogleCtaApk: "Android Beta (.APK) laden",
+      modalGoogleCtaWeb: "Web-Studio jetzt öffnen",
+      modalGoogleUrlLabel: "Reservierter Google-Play-Link",
+      copyBtn: "Link kopieren",
+      copiedBtn: "Link kopiert",
+      syncNote: "Ihr Web-Konto wird automatisch mit den mobilen Apps synchronisiert."
+    },
+    it: {
+      stripLabel: "Usalo subito sul Web o sui tuoi dispositivi:",
+      appleSub: "Scarica su",
+      appleTitle: "App Store",
+      appleTagPre: "Beta iOS · Mac",
+      googleSub: "Disponibile su",
+      googleTitle: "Google Play",
+      googleTagPre: "APK Beta pronto",
+      modalAppleEyebrow: "APPLE APP STORE · iOS · iPadOS · macOS",
+      modalAppleTitle: "The Best Brand per iPhone, iPad e Mac",
+      modalAppleBody: "La nostra app nativa (App ID 6836450465) è in fase di approvazione su App Store ed è già disponibile in accesso anticipato su TestFlight.",
+      modalAppleCtaWeb: "Apri Studio Web ora",
+      modalAppleCtaBeta: "Richiedi invito TestFlight",
+      modalAppleUrlLabel: "Link ufficiale riservato App Store",
+      modalGoogleEyebrow: "GOOGLE PLAY · ANDROID",
+      modalGoogleTitle: "The Best Brand per Android",
+      modalGoogleBody: "La pubblicazione su Google Play (com.improbears.thebestbrand) è in preparazione. Puoi installare oggi la Beta ufficiale Android (.APK · 5,3 MB).",
+      modalGoogleCtaApk: "Scarica Android Beta (.APK)",
+      modalGoogleCtaWeb: "Apri Studio Web ora",
+      modalGoogleUrlLabel: "Link ufficiale riservato Google Play",
+      copyBtn: "Copia link",
+      copiedBtn: "Link copiato",
+      syncNote: "Il tuo account Web si sincronizza automaticamente con le app mobili."
+    }
+  };
+
+  function renderOfficialStoreBadgesHTML(placement = "hero") {
+    const l = getLang();
+    const s = STORE_BADGES_I18N[l] || STORE_BADGES_I18N.es;
+    const cfg = TBB_OFFICIAL_STORE_LINKS;
+    const appleSvg = `<svg class="tbb-store-badge-icon" width="22" height="26" viewBox="0 0 24 28" fill="none" aria-hidden="true"><path d="M19.65 14.85c-.03-2.92 2.38-4.33 2.49-4.4-1.36-1.99-3.47-2.26-4.22-2.29-1.79-.18-3.51 1.06-4.42 1.06-.92 0-2.33-1.03-3.83-1-1.97.03-3.79 1.15-4.81 2.91-2.06 3.57-.53 8.85 1.48 11.75.98 1.42 2.15 3.01 3.69 2.95 1.48-.06 2.04-.96 3.83-.96 1.79 0 2.3.96 3.86.93 1.6-.03 2.61-1.45 3.59-2.88 1.13-1.65 1.6-3.25 1.63-3.33-.04-.02-3.26-1.25-3.29-4.74zM16.75 6.2c.82-1 1.37-2.38 1.22-3.76-1.18.05-2.61.79-3.45 1.78-.76.87-1.42 2.28-1.24 3.63 1.32.1 2.66-.67 3.47-1.65z" fill="#FFFFFF"/></svg>`;
+    const playSvg = `<svg class="tbb-store-badge-icon" width="22" height="24" viewBox="0 0 24 26" fill="none" aria-hidden="true"><path d="M1.32 1.07C1.03 1.38.86 1.86.86 2.49v21.02c0 .63.17 1.11.46 1.42l.08.07 11.78-11.78v-.28L1.4 1l-.08.07z" fill="#4285F4"/><path d="M17.1 17.15l-3.92-3.93v-.28l3.92-3.93.09.05 4.65 2.64c1.33.75 1.33 1.99 0 2.75l-4.65 2.64-.09.06z" fill="#FBBC04"/><path d="M17.19 17.09L13.18 13.08 1.32 24.93c.44.46 1.16.52 1.98.06l13.89-7.9z" fill="#EA4335"/><path d="M17.19 9.07L3.3 1.17C2.48.71 1.76.77 1.32 1.23l11.86 11.85 4.01-4.01z" fill="#34A853"/></svg>`;
+
+    const appleHref = cfg.appStoreLive ? cfg.appStoreUrl : (cfg.testFlightPublicUrl || cfg.appStoreUrl);
+    const appleAttrs = cfg.appStoreLive || cfg.testFlightPublicUrl
+      ? `href="${escHtml(appleHref)}" target="_blank" rel="noopener"`
+      : `href="${escHtml(cfg.appStoreUrl)}" onclick="event.preventDefault(); window.tbbOpenStoreAppModal('apple');"`;
+
+    const googleHref = cfg.googlePlayLive ? cfg.googlePlayUrl : cfg.googlePlayUrl;
+    const googleAttrs = cfg.googlePlayLive
+      ? `href="${escHtml(googleHref)}" target="_blank" rel="noopener"`
+      : `href="${escHtml(cfg.googlePlayUrl)}" onclick="event.preventDefault(); window.tbbOpenStoreAppModal('google');"`;
+
+    return `
+      <div class="tbb-store-badges-strip is-${escHtml(placement)}" role="region" aria-label="${escHtml(s.stripLabel)}">
+        <span class="tbb-store-badges-label">${escHtml(s.stripLabel)}</span>
+        <div class="tbb-store-badges-row">
+          <a class="tbb-store-badge is-apple" ${appleAttrs} aria-label="${escHtml(s.appleSub + ' ' + s.appleTitle)}">
+            ${appleSvg}
+            <span class="tbb-store-badge-copy">
+              <span class="tbb-store-badge-sub">${escHtml(s.appleSub)}</span>
+              <span class="tbb-store-badge-main">${escHtml(s.appleTitle)}</span>
+            </span>
+            ${!cfg.appStoreLive ? `<span class="tbb-store-badge-status">${escHtml(s.appleTagPre)}</span>` : ""}
+          </a>
+          <a class="tbb-store-badge is-google" ${googleAttrs} aria-label="${escHtml(s.googleSub + ' ' + s.googleTitle)}">
+            ${playSvg}
+            <span class="tbb-store-badge-copy">
+              <span class="tbb-store-badge-sub">${escHtml(s.googleSub)}</span>
+              <span class="tbb-store-badge-main">${escHtml(s.googleTitle)}</span>
+            </span>
+            ${!cfg.googlePlayLive ? `<span class="tbb-store-badge-status">${escHtml(s.googleTagPre)}</span>` : ""}
+          </a>
+        </div>
+      </div>
+    `;
+  }
+  window.tbbRenderOfficialStoreBadgesHTML = renderOfficialStoreBadgesHTML;
+
+  window.tbbCopyStoreOfficialUrl = function (urlStr, btnEl) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(urlStr);
+      }
+    } catch (e) {}
+    if (btnEl) {
+      const s = STORE_BADGES_I18N[getLang()] || STORE_BADGES_I18N.es;
+      const orig = btnEl.textContent;
+      btnEl.textContent = s.copiedBtn;
+      setTimeout(() => { btnEl.textContent = orig; }, 2200);
+    }
+  };
+
+  window.tbbCloseStoreAppModal = function () {
+    const ov = document.getElementById("tbbStoreDownloadModalOverlay");
+    if (ov) ov.classList.remove("open");
+  };
+
+  window.tbbOpenStoreAppModal = function (platform) {
+    const isApple = platform !== "google";
+    const s = STORE_BADGES_I18N[getLang()] || STORE_BADGES_I18N.es;
+    const cfg = TBB_OFFICIAL_STORE_LINKS;
+    const canonicalUrl = isApple ? cfg.appStoreUrl : cfg.googlePlayUrl;
+    const mailSub = encodeURIComponent("Solicitud acceso Beta TestFlight — The Best Brand (iOS / macOS)");
+    const mailBody = encodeURIComponent("Hola equipo The Best Brand,\n\nMe gustaría recibir invitación a TestFlight para probar The Best Brand en mi iPhone/iPad/Mac.\n\nMi correo de Apple ID es: ");
+    const testFlightMailto = `mailto:${cfg.supportEmail}?subject=${mailSub}&body=${mailBody}`;
+
+    let ov = document.getElementById("tbbStoreDownloadModalOverlay");
+    if (!ov) {
+      ov = document.createElement("div");
+      ov.id = "tbbStoreDownloadModalOverlay";
+      ov.className = "tbb-modal-overlay";
+      ov.style.zIndex = "100065";
+      ov.onclick = (e) => { if (e.target === ov) window.tbbCloseStoreAppModal(); };
+      document.body.appendChild(ov);
+    }
+
+    ov.innerHTML = `
+      <div class="tbb-modal-card" onclick="event.stopPropagation()">
+        <div class="tbb-modal-head">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <img src="${TBB_ISOTIPO_DATA_URI}" alt="The Best Brand" style="width:42px;height:42px;border-radius:12px;" />
+            <div>
+              <span class="tbb-eyebrow">${isApple ? TBB_ICONS.phone : TBB_ICONS.spark} <span>${escHtml(isApple ? s.modalAppleEyebrow : s.modalGoogleEyebrow)}</span></span>
+              <h3>${escHtml(isApple ? s.modalAppleTitle : s.modalGoogleTitle)}</h3>
+            </div>
+          </div>
+          <button type="button" class="tbb-icon-close-btn" onclick="window.tbbCloseStoreAppModal()" aria-label="Cerrar">${TBB_ICONS.close}</button>
+        </div>
+
+        <p class="tbb-muted-p" style="margin:0 0 16px;">${escHtml(isApple ? s.modalAppleBody : s.modalGoogleBody)}</p>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          ${isApple ? `
+            <button type="button" class="tbb-btn-primary is-full" onclick="window.tbbCloseStoreAppModal(); window.tbbOpenImmersiveStudioClone(0);">
+              ${TBB_ICONS.expand}
+              <span>${escHtml(s.modalAppleCtaWeb)}</span>
+              ${TBB_ICONS.arrowRight}
+            </button>
+            <a href="${escHtml(cfg.testFlightPublicUrl || testFlightMailto)}" ${cfg.testFlightPublicUrl ? 'target="_blank" rel="noopener"' : ''} class="tbb-btn-secondary is-full" style="justify-content:center;text-decoration:none;">
+              ${TBB_ICONS.phone}
+              <span>${escHtml(s.modalAppleCtaBeta)}</span>
+            </a>
+          ` : `
+            <a href="${escHtml(cfg.androidAlphaApkUrl)}" target="_blank" rel="noopener" class="tbb-btn-primary is-full" style="justify-content:center;text-decoration:none;">
+              ${TBB_ICONS.deliverables}
+              <span>${escHtml(s.modalGoogleCtaApk)}</span>
+              ${TBB_ICONS.arrowRight}
+            </a>
+            <button type="button" class="tbb-btn-secondary is-full" onclick="window.tbbCloseStoreAppModal(); window.tbbOpenImmersiveStudioClone(0);">
+              ${TBB_ICONS.expand}
+              <span>${escHtml(s.modalGoogleCtaWeb)}</span>
+            </button>
+          `}
+        </div>
+
+        <div class="tbb-store-url-box">
+          <div class="tbb-store-url-meta">${escHtml(isApple ? s.modalAppleUrlLabel : s.modalGoogleUrlLabel)}</div>
+          <div class="tbb-store-url-row">
+            <code>${escHtml(canonicalUrl)}</code>
+            <button type="button" class="tbb-store-copy-btn" onclick="window.tbbCopyStoreOfficialUrl('${escHtml(canonicalUrl)}', this)">${escHtml(s.copyBtn)}</button>
+          </div>
+        </div>
+
+        <div class="tbb-checkout-footer-note" style="margin-top:12px;">
+          <span>${escHtml(s.syncNote)}</span>
+        </div>
+      </div>
+    `;
+    ov.classList.add("open");
+  };
 
   // Unified 1.65px Architectural Stroke SVG Iconography (0% Unicode Emojis / Dingbats)
   const TBB_ICONS = {
@@ -1517,6 +1834,7 @@
               <span class="tbb-value-pill" role="listitem">${TBB_ICONS.check} <span>${escHtml(t("heroPill3"))}</span></span>
               <button type="button" class="tbb-value-pill is-highlight is-interactive-cta" role="listitem" onclick="window.tbbOpenImmersiveStudioClone(0)" title="${escHtml(t("heroStartFullscreenBtn"))}">${TBB_ICONS.spark} <span>${escHtml(t("heroPill4"))}</span> ${TBB_ICONS.arrowRight}</button>
             </div>
+            ${renderOfficialStoreBadgesHTML("hero")}
           </div>
 
           <!-- DEMO EN VIVO COMO PROTAGONISTA DE INICIO (ATELIER STUDIO WINDOW · 1-ROW TITLEBAR) -->
@@ -3974,6 +4292,51 @@
 
   window.tbbOpenBuyAppCheckoutModal = function (planId) {
     if (planId) window.tbbCommercialDemoState.selectedPlan = planId;
+    // Blindaje Apple App Store (3.1.1 / 3.1.3b) & Google Play Billing:
+    // dentro de apps nativas iOS/Android NUNCA abrir Stripe web ni mencionar precios web;
+    // ofrecer unicamente activacion nativa in-app o restaurar cuenta existente por correo.
+    if (isNativeStoreAppRuntime()) {
+      let ovNat = document.getElementById("tbbBuyAppCheckoutModalOverlay");
+      if (!ovNat) {
+        ovNat = document.createElement("div");
+        ovNat.id = "tbbBuyAppCheckoutModalOverlay";
+        ovNat.className = "tbb-modal-overlay";
+        ovNat.style.zIndex = "100050";
+        ovNat.onclick = (e) => { if (e.target === ovNat) window.tbbCloseBuyAppCheckoutModal(); };
+        ovNat.innerHTML = `<div id="tbbCheckoutModalContentBox" class="tbb-modal-card" onclick="event.stopPropagation()"></div>`;
+        document.body.appendChild(ovNat);
+      }
+      const boxNat = document.getElementById("tbbCheckoutModalContentBox");
+      const isEnNat = getLang() === "en";
+      if (boxNat) {
+        boxNat.innerHTML = `
+          <div class="tbb-modal-head">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <img src="${TBB_ISOTIPO_DATA_URI}" alt="The Best Brand" style="width:42px;height:42px;border-radius:12px;" />
+              <div>
+                <span class="tbb-eyebrow">${TBB_ICONS.shield} <span>${isEnNat ? "IN-APP ACCESS & ACCOUNT SYNC" : "ACCESO IN-APP Y SINCRONIZACIÓN"}</span></span>
+                <h3>${isEnNat ? "Unlock Full Brand Studio" : "Desbloquea tu Estudio Completo"}</h3>
+              </div>
+            </div>
+            <button type="button" class="tbb-icon-close-btn" onclick="window.tbbCloseBuyAppCheckoutModal()">${TBB_ICONS.close}</button>
+          </div>
+          <p class="tbb-muted-p" style="margin:0 0 14px;">
+            ${isEnNat
+              ? "Sign in with your existing account to restore an active license across devices, or enter an authorized evaluation pass."
+              : "Inicia sesión con tu cuenta para restaurar tu licencia activa en este dispositivo o ingresa un pase autorizado de evaluación."}
+          </p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button type="button" class="tbb-btn-primary is-full" onclick="window.tbbCloseBuyAppCheckoutModal(); window.tbbOpenRestoreAccountModal();">
+              ${TBB_ICONS.unlock}
+              <span>${isEnNat ? "Restore Purchases / Sign In" : "Restaurar Compras / Iniciar Sesión"}</span>
+              ${TBB_ICONS.arrowRight}
+            </button>
+          </div>
+        `;
+      }
+      ovNat.classList.add("open");
+      return;
+    }
     let ov = document.getElementById("tbbBuyAppCheckoutModalOverlay");
     if (!ov) {
       ov = document.createElement("div");
@@ -4362,6 +4725,10 @@
         <span style="color:#CBD5E1;">·</span>
         <a href="/?section=eliminar-cuenta" onclick="if(window.tbbSwitchMainSection){event.preventDefault(); window.tbbSwitchMainSection(8);}" style="color:${activeSec === 8 ? "#426EAE" : "#334155"}; font-weight:${activeSec === 8 ? "700" : "600"}; text-decoration:none; padding:4px 6px; border-radius:8px;">${escHtml(leg.account)}</a>
       `;
+    }
+    const footerStoresEl = document.getElementById("tbbFooterStoreBadges");
+    if (footerStoresEl) {
+      footerStoresEl.innerHTML = renderOfficialStoreBadgesHTML("footer");
     }
   };
 
@@ -4829,6 +5196,151 @@
       }
       .tbb-value-pill.is-interactive-cta:hover { transform: translate3d(0, -1.5px, 0); }
       .tbb-value-pill.is-interactive-cta:active { transform: translate3d(0, 1px, 0) scale(0.98); }
+
+      /* BADGES OFICIALES APP STORE & GOOGLE PLAY (ESTANDAR APPLE / GOOGLE) */
+      .tbb-store-badges-strip {
+        margin-top: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .tbb-store-badges-strip.is-footer {
+        margin-top: 4px;
+        margin-bottom: 4px;
+      }
+      .tbb-store-badges-label {
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: #475569;
+        letter-spacing: 0.01em;
+      }
+      .tbb-store-badges-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+      }
+      .tbb-store-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        min-height: 52px;
+        min-width: 194px;
+        padding: 8px 16px 8px 14px;
+        border-radius: 13px;
+        background: #0B1220;
+        color: #FFFFFF;
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: 0 6px 18px -6px rgba(13, 37, 64, 0.28);
+        transition: transform 0.16s var(--tbb-ds-ease-out), box-shadow 0.16s ease, background 0.16s ease;
+        position: relative;
+        box-sizing: border-box;
+      }
+      .tbb-store-badge:hover {
+        transform: translate3d(0, -2px, 0);
+        background: #111B2E;
+        box-shadow: 0 12px 24px -8px rgba(13, 37, 64, 0.34);
+      }
+      .tbb-store-badge:active {
+        transform: translate3d(0, 1px, 0) scale(0.985);
+      }
+      .tbb-store-badge-icon {
+        flex-shrink: 0;
+        display: block;
+      }
+      .tbb-store-badge-copy {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 1.12;
+        text-align: left;
+      }
+      .tbb-store-badge-sub {
+        font-size: 0.66rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.80);
+        letter-spacing: 0.02em;
+      }
+      .tbb-store-badge-main {
+        font-family: 'Montserrat', 'Plus Jakarta Sans', sans-serif;
+        font-size: 1.02rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        letter-spacing: -0.015em;
+        margin-top: 1px;
+      }
+      .tbb-store-badge-status {
+        margin-left: auto;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: rgba(255, 122, 0, 0.20);
+        border: 1px solid rgba(255, 122, 0, 0.45);
+        color: #FDBA74;
+        font-size: 0.66rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .tbb-store-url-box {
+        margin-top: 16px;
+        background: #F8FAFC;
+        border: 1px solid rgba(13, 37, 64, 0.12);
+        border-radius: 14px;
+        padding: 12px 14px;
+      }
+      .tbb-store-url-meta {
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: #426EAE;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 6px;
+      }
+      .tbb-store-url-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .tbb-store-url-row code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.80rem;
+        font-weight: 600;
+        color: #0D2540;
+        word-break: break-all;
+        flex: 1;
+        min-width: 160px;
+      }
+      .tbb-store-copy-btn {
+        background: #FFFFFF;
+        border: 1px solid #CBD5E1;
+        color: #0D2540;
+        border-radius: 9px;
+        padding: 6px 12px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .tbb-store-copy-btn:hover { background: #F1F5F9; }
+      @media (max-width: 520px) {
+        .tbb-store-badges-row {
+          width: 100%;
+          gap: 10px;
+        }
+        .tbb-store-badge {
+          flex: 1 1 160px;
+          min-width: 0;
+          padding: 8px 12px;
+          gap: 9px;
+        }
+        .tbb-store-badge-main {
+          font-size: 0.94rem;
+        }
+      }
 
       /* BOTONES TÁCTILES CON FÍSICA GPU (SCALE + TRANSLATE3D) */
       .tbb-btn-primary, .tbb-btn-secondary {
