@@ -5547,7 +5547,7 @@
   </div>
 
   <!-- CLOSING & TRANSITION AURA CAPSULE MODAL (CÍRCULO FLOTANTE VIVO DE AURA SOBRE LIENZO CLARO #FFFFFF · CERO CAJA OSCURA) -->
-  <div class="welcome-modal-overlay" id="phaseTransitionVideoModal" style="z-index: 9999; padding: 14px; background: rgba(13, 37, 64, 0.46); backdrop-filter: blur(10px); overflow-y: auto;" onclick="if(event.target===this){if(window.TBBAudioDirector){window.TBBAudioDirector.bumpGeneration('close_capsule');} this.classList.remove('open');}">
+  <div class="welcome-modal-overlay" id="phaseTransitionVideoModal" style="z-index: 9999; padding: 14px; background: rgba(13, 37, 64, 0.46); backdrop-filter: blur(10px); overflow-y: auto;" onclick="if(event.target===this && window.tbbCloseStepCapsuleModal){window.tbbCloseStepCapsuleModal('close_capsule_backdrop');}">
     <div class="welcome-modal-card" style="max-width: 680px; width: 100%; max-height: calc(100dvh - 28px); overflow-y: auto !important; overflow-x: hidden !important; align-items: stretch !important; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 28px; box-shadow: 0 24px 64px rgba(13, 37, 64, 0.18); color: #0D2540; padding: 20px 24px; display: flex; flex-direction: column; justify-content: flex-start; gap: 16px; text-align: center; box-sizing: border-box;" onclick="event.stopPropagation()">
       <!-- 1. Cabecera Limpia + Selector de Idioma (ISO) + Pasos Simples 0..6 -->
       <div style="display:flex; flex-direction:column; gap:10px; border-bottom:1px solid #E2E8F0; padding-bottom:12px; flex-shrink:0;">
@@ -5569,7 +5569,7 @@
               <button type="button" class="tbb-video-lang-pill" data-vlang="de" onclick="window.tbbSetStudioVideoLang('de')" style="font-size:0.75rem; font-weight:700; padding:4px 9px; border-radius:999px; border:none; background:transparent; color:#0F172A; cursor:pointer;">DE</button>
               <button type="button" class="tbb-video-lang-pill" data-vlang="it" onclick="window.tbbSetStudioVideoLang('it')" style="font-size:0.75rem; font-weight:700; padding:4px 9px; border-radius:999px; border:none; background:transparent; color:#0F172A; cursor:pointer;">IT</button>
             </div>
-            <button type="button" onclick="if(window.TBBAudioDirector){window.TBBAudioDirector.bumpGeneration('skip_capsule');} document.getElementById('phaseTransitionVideoModal').classList.remove('open');" style="width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; background:#F8FAFC; border:1px solid #CBD5E1; color:#0D2540; border-radius:999px; cursor:pointer;" aria-label="Cerrar">
+            <button type="button" onclick="if(window.tbbCloseStepCapsuleModal){window.tbbCloseStepCapsuleModal('close_capsule_btn');}" style="width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; background:#F8FAFC; border:1px solid #CBD5E1; color:#0D2540; border-radius:999px; cursor:pointer;" aria-label="Cerrar">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             </button>
           </div>
@@ -5646,7 +5646,7 @@
           <button type="button" class="tbb-duo-btn tbb-duo-btn-emerald" id="btnFinishTransitionVideo" onclick="finishTransitionVideoAndEnterNextStep()" style="flex:1; min-width:190px;">
             <span id="btnFinishTransitionVideoText">Continuar</span>
           </button>
-          <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="if(window.TBBAudioDirector){window.TBBAudioDirector.bumpGeneration('skip_capsule');} document.getElementById('phaseTransitionVideoModal').classList.remove('open');" style="padding:0 18px;">
+          <button type="button" class="tbb-duo-btn tbb-duo-btn-secondary" onclick="if(window.tbbCloseStepCapsuleModal){window.tbbCloseStepCapsuleModal('skip_capsule_btn');}" style="padding:0 18px;">
             <span>Saltar</span>
           </button>
         </div>
@@ -6881,7 +6881,12 @@
     function activateTextOnlyMode() {
       playAcousticClick(680, 0.04);
       voiceMuted = true;
+      window.voiceMuted = true;
       isSpeakingLive = false;
+      window.isSpeakingLive = false;
+      if (window.TBBAudioDirector && typeof window.TBBAudioDirector.bumpGeneration === "function") {
+        window.TBBAudioDirector.bumpGeneration("text_only_mode");
+      }
       try {
         if ("speechSynthesis" in window) window.speechSynthesis.cancel();
       } catch (e) {}
@@ -6918,6 +6923,7 @@
         activateTextOnlyMode();
       } else {
         voiceMuted = false;
+        window.voiceMuted = false;
         const badge = document.getElementById("voiceToggleBadge");
         if (badge) {
           badge.textContent = " Voz Aura";
@@ -6925,12 +6931,9 @@
         }
         const stateLabel = document.getElementById("avatarStateLabel");
         if (stateLabel) {
-          stateLabel.textContent = "AURA · Hablando en voz alta (Voz Activa)";
+          stateLabel.textContent = "AURA · Voz Activa para Instrucciones de Paso";
         }
         showBriefTextOnlyOptionToast(9000);
-        if (!isSpeakingLive) {
-          playAuraInitialGreeting();
-        }
       }
 
       if (currentStep === 1) {
@@ -6944,6 +6947,10 @@
     function silenceAuraImmediatelyForUserBargeIn() {
       window.auraSpeechTicketId = (window.auraSpeechTicketId || 0) + 1;
       isSpeakingLive = false;
+      window.isSpeakingLive = false;
+      if (window.TBBAudioDirector && typeof window.TBBAudioDirector.bumpGeneration === "function") {
+        window.TBBAudioDirector.bumpGeneration("user_barge_in");
+      }
       try {
         if (currentAudioObj) {
           currentAudioObj.pause();
@@ -7124,6 +7131,7 @@
         activateTextOnlyMode();
       } else {
         voiceMuted = false;
+        window.voiceMuted = false;
         const badge = document.getElementById("voiceToggleBadge");
         if (badge) {
           badge.textContent = " Voz Aura";
@@ -7131,9 +7139,8 @@
         }
         const stateLabel = document.getElementById("avatarStateLabel");
         if (stateLabel) {
-          stateLabel.textContent = "AURA · Hablando en voz alta (Voz Activa)";
+          stateLabel.textContent = "AURA · Voz Activa para Instrucciones de Paso";
         }
-        playAuraInitialGreeting();
       }
     }
 
@@ -10058,27 +10065,32 @@
     window.tbbSetStudioVideoLang = function (newLang) {
       const clean = String(newLang || "es").toLowerCase().trim().slice(0, 2);
       const valid = ["es", "en", "fr", "pt", "de", "it"].includes(clean) ? clean : "es";
+      let handledByMultilingualEngine = false;
       try {
         localStorage.setItem("tbb_active_ui_lang_v52", valid);
         localStorage.setItem("tbb_app_lang", valid);
         document.documentElement.lang = valid;
         if (typeof window.tbbSetLanguage === "function") {
+          // tbbSetLanguage ya detiene el audio anterior y relanza la cápsula abierta en el nuevo idioma (evita doble disparo)
           window.tbbSetLanguage(valid, true);
+          handledByMultilingualEngine = true;
         } else if (typeof window.tbbSetLang === "function") {
           window.tbbSetLang(valid);
         }
       } catch (e) {}
-      const p = window._tbbActiveTransitionModalParams || {
-        fromStep: Math.max(0, (window.tbbState?.step || 0) - 1),
-        toStep: window.tbbState?.step || 0,
-        options: { keepCurrentSubStep: true }
-      };
-      const modal = document.getElementById("phaseTransitionVideoModal");
-      if (modal && modal.classList.contains("open")) {
-        openPhaseTransitionVideoCapsule(p.fromStep, p.toStep, p.options || { keepCurrentSubStep: true });
-      }
-      if (typeof window.renderTbbZeroScrollStage === "function") {
-        window.renderTbbZeroScrollStage();
+      if (!handledByMultilingualEngine) {
+        const p = window._tbbActiveTransitionModalParams || {
+          fromStep: Math.max(0, (window.tbbState?.step || 0) - 1),
+          toStep: window.tbbState?.step || 0,
+          options: { keepCurrentSubStep: true }
+        };
+        const modal = document.getElementById("phaseTransitionVideoModal");
+        if (modal && modal.classList.contains("open")) {
+          openPhaseTransitionVideoCapsule(p.fromStep, p.toStep, p.options || { keepCurrentSubStep: true });
+        }
+        if (typeof window.renderTbbZeroScrollStage === "function") {
+          window.renderTbbZeroScrollStage();
+        }
       }
     };
 
@@ -10620,6 +10632,24 @@
 
     let pendingTransitionOptions = null;
 
+    window.tbbCloseStepCapsuleModal = function (reason = "close_capsule") {
+      if (window.TBBAudioDirector && typeof window.TBBAudioDirector.bumpGeneration === "function") {
+        window.TBBAudioDirector.bumpGeneration(reason);
+      }
+      const videoPlayer = document.getElementById("transitionTheoryVideoPlayer");
+      if (videoPlayer) {
+        try { videoPlayer.pause(); } catch (e) {}
+      }
+      const modal = document.getElementById("phaseTransitionVideoModal");
+      if (modal) modal.classList.remove("open");
+      if (typeof transitionVideoAnimId !== "undefined" && transitionVideoAnimId) {
+        cancelAnimationFrame(transitionVideoAnimId);
+        transitionVideoAnimId = null;
+      }
+      pendingTransitionToStep = null;
+      pendingTransitionOptions = null;
+    };
+
     window.openPhaseTransitionVideoCapsule = openPhaseTransitionVideoCapsule;
     function openPhaseTransitionVideoCapsule(fromStep, toStep, options = {}) {
       if (window.TBBAudioDirector && typeof window.TBBAudioDirector.bumpGeneration === "function") {
@@ -10644,13 +10674,17 @@
 
       if (!window._tbbVisitedCapsuleSteps) window._tbbVisitedCapsuleSteps = {};
       const isManualTrigger = Boolean(options && (options.manualOpen || options.keepCurrentSubStep));
-      if (!isManualTrigger && window._tbbVisitedCapsuleSteps[resolvedToStep]) {
+      const isStepBoundaryAdvance = resolvedFromStep !== resolvedToStep;
+      // NUNCA bloquear una transición real al terminar un paso (prevStep -> nextStep) por haber abierto "Cápsula" antes.
+      if (!isManualTrigger && !isStepBoundaryAdvance && window._tbbVisitedCapsuleSteps[resolvedToStep]) {
         if (typeof window.tbbJumpToStep === "function") {
           window.tbbJumpToStep(resolvedToStep, 1);
         }
         return;
       }
-      window._tbbVisitedCapsuleSteps[resolvedToStep] = true;
+      if (!isManualTrigger) {
+        window._tbbVisitedCapsuleSteps[resolvedToStep] = true;
+      }
 
       pendingTransitionToStep = resolvedToStep;
       pendingTransitionOptions = options || {};
@@ -10698,6 +10732,9 @@
       };
       const langPack = simpleCapsules[curLang] || simpleCapsules.es;
       const spec = langPack[resolvedToStep] || langPack[0];
+      // Usar siempre el guion canónico exacto del MP3 grabado (en los 6 idiomas) para que texto y voz coincidan al 100%
+      const canonicalMeta = (typeof window.getAuraVivaCapsuleMeta === "function") ? window.getAuraVivaCapsuleMeta(resolvedToStep, curLang) : null;
+      const canonicalBodyText = (canonicalMeta && canonicalMeta.text) ? canonicalMeta.text : spec.body;
 
       const tagEl = document.getElementById("transitionVideoChapterTag");
       const titleEl = document.getElementById("transitionVideoTitle");
@@ -10715,9 +10752,9 @@
       if (tagEl) tagEl.textContent = `AURA VIVA · ${curLang.toUpperCase()} · ≤15s`;
       if (theoryFrameworkEl) theoryFrameworkEl.textContent = `AURA VIVA · VOZ ÚNICA (${curLang.toUpperCase()})`;
       if (titleEl) titleEl.textContent = spec.title;
-      if (subEl) subEl.textContent = trCap("Cápsula breve de máximo 15 segundos en lenguaje claro:");
+      if (subEl) subEl.textContent = trCap("Instrucciones del paso con Aura (máx. 15 segundos):");
       if (theoryCardsGrid) {
-        theoryCardsGrid.innerHTML = `<div id="tbbLiveCapsuleTranscriptBox" style="background:#F8FAFC;border-left:4px solid #FF7A00;padding:12px 14px;border-radius:12px;font-size:0.96rem;color:#0F172A;line-height:1.55;">“${spec.body}”</div>`;
+        theoryCardsGrid.innerHTML = `<div id="tbbLiveCapsuleTranscriptBox" style="background:#F8FAFC;border-left:4px solid #FF7A00;padding:12px 14px;border-radius:12px;font-size:0.96rem;color:#0F172A;line-height:1.55;">“${canonicalBodyText}”</div>`;
       }
       if (listEl) {
         const defaultBrandLbl = curLang === "en" ? "your brand" : curLang === "fr" ? "votre marque" : curLang === "pt" ? "sua marca" : curLang === "de" ? "Ihre Marke" : curLang === "it" ? "il tuo brand" : "Tu marca";
@@ -10727,10 +10764,10 @@
       const pauseSvg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`;
       const playSvg = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5l12 7-12 7V5z"/></svg>`;
       if (btnTxtEl) btnTxtEl.textContent = spec.cta;
-      if (progBar) progBar.style.width = "6%";
+      if (progBar) progBar.style.width = "0%";
       if (timeLbl) timeLbl.textContent = "0:00";
-      if (icoEl) icoEl.innerHTML = pauseSvg;
-      if (txtEl) txtEl.textContent = trCap("Cargando voz...");
+      if (icoEl) icoEl.innerHTML = window.voiceMuted ? playSvg : pauseSvg;
+      if (txtEl) txtEl.textContent = trCap(window.voiceMuted ? "Escuchar" : "Cargando voz...");
 
       const legacyVid = document.getElementById("transitionTheoryVideoPlayer");
       if (legacyVid) {
@@ -10741,6 +10778,9 @@
         if (fromUserTap) {
           window.voiceMuted = false;
           voiceMuted = false;
+          if (typeof mountBespokeNavIcons === "function") {
+            try { mountBespokeNavIcons(); } catch (e) {}
+          }
           try {
             if (window.sharedAcousticCtx && window.sharedAcousticCtx.state === "suspended") {
               window.sharedAcousticCtx.resume().catch(() => {});
@@ -10762,14 +10802,17 @@
               } else if (hdl.autoplayBlocked) {
                 if (progBar) progBar.style.width = "0%";
                 if (icoEl) icoEl.innerHTML = playSvg;
-                if (txtEl) txtEl.textContent = trCap("Reproducir cápsula");
+                if (txtEl) txtEl.textContent = trCap("Escuchar instrucciones");
+              } else {
+                if (icoEl) icoEl.innerHTML = playSvg;
+                if (txtEl) txtEl.textContent = trCap("Escuchar");
               }
             },
             onAutoplayBlocked: () => {
               if (progBar) progBar.style.width = "0%";
-              if (timeLbl) timeLbl.textContent = "0:14";
+              if (timeLbl) timeLbl.textContent = "0:00";
               if (icoEl) icoEl.innerHTML = playSvg;
-              if (txtEl) txtEl.textContent = trCap("Reproducir cápsula");
+              if (txtEl) txtEl.textContent = trCap("Escuchar instrucciones");
             },
             onTimeUpdate: (hdl) => {
               const dur = Math.max(4, Number(hdl && hdl.duration) || 14.0);
@@ -10787,7 +10830,7 @@
             }
           });
         } else if (typeof window.speakAuraBriefResponse === "function") {
-          window.speakAuraBriefResponse(spec.body, 12000);
+          window.speakAuraBriefResponse(canonicalBodyText, 12000);
         }
       };
 
@@ -10797,7 +10840,9 @@
         playCapsuleNow(true);
       };
       window.tbbToggleCapsuleAudioPlayPause = function () {
-        if (window.isSpeakingLive) {
+        const activeCap = window.TBBAudioDirector && window.TBBAudioDirector.activeCapsuleAudio;
+        const isCurrentlyPlaying = Boolean(window.isSpeakingLive || (activeCap && !activeCap.paused && !activeCap.autoplayBlocked));
+        if (isCurrentlyPlaying) {
           if (window.TBBAudioDirector) window.TBBAudioDirector.bumpGeneration("pause_capsule");
           if (icoEl) icoEl.innerHTML = playSvg;
           if (txtEl) txtEl.textContent = trCap("Escuchar");
@@ -10811,6 +10856,9 @@
       if (typeof window.tbbTranslateDOMSubtree === "function" && curLang !== "es") {
         window.tbbTranslateDOMSubtree(modal, curLang);
       }
+      if (typeof window.tbbPreloadStepCapsules === "function") {
+        window.tbbPreloadStepCapsules(resolvedToStep, curLang);
+      }
       if (!window.voiceMuted) {
         playCapsuleNow(false);
       } else {
@@ -10822,23 +10870,9 @@
     function renderTransitionVideoLoop() {}
 
     function finishTransitionVideoAndEnterNextStep() {
-      if (window.TBBAudioDirector && typeof window.TBBAudioDirector.bumpGeneration === "function") {
-        window.TBBAudioDirector.bumpGeneration("finish_capsule");
-      }
-      const videoPlayer = document.getElementById("transitionTheoryVideoPlayer");
-      if (videoPlayer) {
-        try { videoPlayer.pause(); } catch (e) {}
-      }
-      const modal = document.getElementById("phaseTransitionVideoModal");
-      if (modal) modal.classList.remove("open");
-      if (typeof transitionVideoAnimId !== "undefined" && transitionVideoAnimId) {
-        cancelAnimationFrame(transitionVideoAnimId);
-        transitionVideoAnimId = null;
-      }
       const opts = pendingTransitionOptions || {};
       const target = pendingTransitionToStep ?? Math.min(6, currentStep + 1);
-      pendingTransitionToStep = null;
-      pendingTransitionOptions = null;
+      window.tbbCloseStepCapsuleModal("finish_capsule");
       window._auraGuideShownOnce = true;
 
       if (opts.goToJourneyMap) {
@@ -10846,7 +10880,9 @@
         return;
       }
       if (opts.keepCurrentSubStep && window.tbbState) {
-        window.renderTbbZeroScrollStage();
+        return;
+      }
+      if (window.tbbState && window.tbbState.activeMode === "step" && Number(window.tbbState.step) === Number(target) && Number(window.tbbState.subStep) === 1) {
         return;
       }
       if (typeof window.tbbJumpToStep === "function") {
@@ -16364,6 +16400,9 @@
 
     function speakCandidateBrandName(nameStr) {
       playAcousticClick(840, 0.03);
+      if (window.TBBAudioDirector && typeof window.TBBAudioDirector.bumpGeneration === "function") {
+        window.TBBAudioDirector.bumpGeneration("pronounce_name");
+      }
       if (typeof requestAndPlayGeminiVoice === "function") {
         requestAndPlayGeminiVoice(`${nameStr}. ${canvasState.tagline || "Una marca diseñada para trascender con claridad y confianza."}`);
         return;
@@ -21492,7 +21531,7 @@
       <div id="tbbAuraOrbHeroOuterWrap">
         <canvas id="tbbLiveAuraOrbCanvas" width="384" height="384" style="cursor:default;" title="Aura · Mentora de Marca"></canvas>
       </div>
-      <div id="tbbAuraTopPresenceRow" onclick="if(window.speakAuraBriefResponse){ window.voiceMuted=false; voiceMuted=false; const tEl=document.getElementById('tbbAuraEmpatheticText'); window.speakAuraBriefResponse((tEl && tEl.textContent) || window.tbbState?.auraCurrentMessage || ''); }" style="cursor:pointer;" title="Haz clic para escuchar a Aura con la voz en vivo de Aura">
+      <div id="tbbAuraTopPresenceRow" onclick="if(window.tbbToggleSpeakCurrentInstruction){window.tbbToggleSpeakCurrentInstruction();}" style="cursor:pointer;" title="Haz clic para escuchar o pausar la instrucción actual">
         <div id="tbbAuraEmpatheticBubble">
           <div id="tbbAuraPresenceMetaBadge">
             <span style="width:7px; height:7px; border-radius:999px; background:#E04700; display:inline-block; flex-shrink:0;"></span>
@@ -23556,6 +23595,36 @@
         return list[0];
       };
 
+      window.tbbSyncSpeakingIndicatorUI = function (speaking) {
+        try {
+          const row = document.getElementById("tbbAuraTopPresenceRow");
+          if (row) row.classList.toggle("is-speaking-live", Boolean(speaking));
+          const orb = document.getElementById("tbbLiveAuraOrbCanvas");
+          if (orb) orb.classList.toggle("speaking", Boolean(speaking));
+          const btnV = document.getElementById("tbbBtnTopVoice");
+          if (btnV) btnV.style.borderColor = speaking ? "#FF7A00" : "";
+        } catch (e) {}
+      };
+
+      window.tbbToggleSpeakCurrentInstruction = function () {
+        if (window.isSpeakingLive) {
+          if (window.TBBAudioDirector && typeof window.TBBAudioDirector.bumpGeneration === "function") {
+            window.TBBAudioDirector.bumpGeneration("user_toggle_stop");
+          }
+          return;
+        }
+        window.voiceMuted = false;
+        voiceMuted = false;
+        if (typeof mountBespokeNavIcons === "function") {
+          try { mountBespokeNavIcons(); } catch (e) {}
+        }
+        const tEl = document.getElementById("tbbAuraEmpatheticText");
+        const msg = (tEl && tEl.textContent && tEl.textContent.trim()) || window.tbbState?.auraCurrentMessage || "";
+        if (msg && typeof window.speakAuraBriefResponse === "function") {
+          window.speakAuraBriefResponse(msg, 9500);
+        }
+      };
+
       window.updateAuraTopPresenceDOM = function (msgText, roleSubLabel) {
         const st = window.tbbState;
         if (msgText) {
@@ -23642,108 +23711,24 @@
         return "";
       };
 
+      // Política V137.0 (Cero comentarios de retroalimentación entre preguntas):
+      // Se eliminan los comentarios hablados y las respuestas tardías entre preguntas.
+      // La voz de Aura habla únicamente al finalizar un paso / iniciar el nuevo paso (cápsula) o cuando el usuario pulsa escuchar.
+      window.TBB_STUDIO_VOICE_POLICY = "step_boundaries_only";
+
       window.requestLiveGeminiAuraEmpatheticComment = async function (contextLabel, userValue, speakOnReply = false, fallbackSpeechMsg = "") {
-        const st = window.tbbState;
-        const cs = (typeof canvasState === "object" && canvasState) ? canvasState : {};
-        const dossier = window.tbbBuildFullBrandContextDossier();
-        const cleanVal = String(userValue || cs.custom_business_type || "").trim();
-        if (cleanVal.length < 4 && dossier.length < 45) {
-          if (speakOnReply && fallbackSpeechMsg && typeof window.speakAuraBriefResponse === "function") {
-            window.speakAuraBriefResponse(fallbackSpeechMsg, 9500);
-          }
-          return;
+        if (fallbackSpeechMsg && typeof window.updateAuraTopPresenceDOM === "function") {
+          window.updateAuraTopPresenceDOM(fallbackSpeechMsg);
         }
-        const recentUsed = (st.auraUsedMessages || []).slice(-10).join(" | ");
-        const reqStepSig = `${st.step}.${st.subStep}`;
-        window._tbbAuraReqSeq = (window._tbbAuraReqSeq || 0) + 1;
-        const myReqSeq = window._tbbAuraReqSeq;
-
-        const phaseHumanLabels = {
-          "0.1": "Paso 0.1 — Objetivo inicial del proyecto",
-          "0.2": "Paso 0.2 — Nombre existente o logotipo base",
-          "0.3": "Paso 0.3 — Giro y actividad principal del negocio",
-          "1.1": "Paso 1.1 — Propósito esencial (Por qué existe la marca)",
-          "1.2": "Paso 1.2 — Oferta de valor diferenciada",
-          "1.3": "Paso 1.3 — Método y proceso de entrega al cliente",
-          "1.4": "Paso 1.4 — Personalidad y tono de comunicación",
-          "1.5": "Paso 1.5 — Perfil del cliente ideal",
-          "2.1": "Paso 2.1 — Touchpoints antes de la compra",
-          "2.2": "Paso 2.2 — Touchpoints durante la experiencia",
-          "2.3": "Paso 2.3 — Touchpoints después de la compra",
-          "3.1": "Paso 3.1 — Ideas clave para crear o conservar el nombre",
-          "3.2": "Paso 3.2 — Selección de propuestas de nombre",
-          "3.3": "Paso 3.3 — Confirmación de nombre oficial, eslogan y Clase de Niza",
-          "4.1": "Paso 4.1 — Calibración de estilo visual (parte 1)",
-          "4.2": "Paso 4.2 — Calibración de carácter visual (parte 2)",
-          "4.3": "Paso 4.3 — Calibración de geometría y forma (parte 3)",
-          "4.4": "Paso 4.4 — Elección de tipografía institucional",
-          "4.5": "Paso 4.5 — Estructura y concepto de símbolo visual",
-          "5.1": "Paso 5.1 — Acabado, logotipo base y paleta cromática oficial",
-          "5.2": "Paso 5.2 — Revisión y evolución del logotipo oficial",
-          "6.1": "Paso 6.1 — Brandbook Oficial (+30 láminas) terminado y listo para explorar hoja por hoja o descargar en PDF",
-          "6.2": "Paso 6.2 — Bóveda final de descargas (PDF, vectores, fuentes y plantillas)"
-        };
-        const humanStepContext = phaseHumanLabels[reqStepSig] || `Paso ${reqStepSig} (${contextLabel})`;
-
-        const prompt = [
-          "Eres Aura, la mentora estratégica de marca de TheBestBrand.",
-          "INFORMACIÓN ESPECÍFICA DE LA MARCA QUE SE ESTÁ CREANDO:",
-          dossier,
-          `FASE ACTUAL EXACTA: ${humanStepContext} (evento: ${contextLabel}).`,
-          cleanVal ? `Contexto reciente: "${cleanVal.slice(0, 200)}".` : "",
-          `Frases recientes prohibidas de repetir: [${recentUsed}].`,
-          "REGLAS ESTRICTAS:",
-          "1. Escribe UNA SOLA oración breve (máximo 18 palabras) enfocada EXCLUSIVAMENTE en la FASE ACTUAL EXACTA indicada arriba y en el negocio del usuario.",
-          "2. Si la fase actual es Paso 6.1 o 6.2, celebra que el Brandbook oficial ya está listo e invita a explorar sus láminas o descargar el PDF (PROHIBIDO hablar de elegir el nombre o pasos anteriores).",
-          "3. PROHIBIDO citar autores, libros o teorías académicas. Habla con lenguaje sencillo, cálido y directo.",
-          "4. CERO EMOJIS. Devuelve únicamente el texto plano en español."
-        ].filter(Boolean).join("\n");
-
-        try {
-          let reply = await window.tbbCallGeminiAI(prompt, { temperature: 0.55 });
-          reply = reply.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").replace(/^["«“]|["»”]$/g, "").replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "").trim();
-          const words = reply.split(" ").filter(Boolean);
-          if (words.length > 22) {
-            reply = words.slice(0, 22).join(" ") + ".";
-          }
-          // Blindaje anti-obsolescencia: nunca permitir que una respuesta tardía de un paso anterior sobreescriba un paso más reciente ni hable de nombres en Paso 6
-          if (myReqSeq !== window._tbbAuraReqSeq || `${st.step}.${st.subStep}` !== reqStepSig) {
-            return;
-          }
-          if (st.step === 6 && /\b(elecci[oó]n de nombre|excelente nombre|buen nombre|elegiste el nombre|tu nombre actual|nombre actual suena)\b/i.test(reply)) {
-            return;
-          }
-          if (reply && reply.length >= 12 && !st.auraUsedMessages.includes(reply)) {
-            st.auraUsedMessages.push(reply);
-            window.updateAuraTopPresenceDOM(reply);
-            if (speakOnReply && typeof window.speakAuraBriefResponse === "function") {
-              window.speakAuraBriefResponse(reply, 9500);
-            }
-            return;
-          }
-        } catch (e) {}
-        if (speakOnReply && fallbackSpeechMsg && myReqSeq === window._tbbAuraReqSeq && `${st.step}.${st.subStep}` === reqStepSig && typeof window.speakAuraBriefResponse === "function") {
-          window.speakAuraBriefResponse(fallbackSpeechMsg, 9500);
-        }
+        return;
       };
 
-      window.triggerAuraEmpatheticFeedback = function (eventType, detailText = "", askLiveGemini = true, speakNow = true) {
+      window.triggerAuraEmpatheticFeedback = function (eventType, detailText = "", askLiveGemini = false, speakNow = false) {
         if (auraInputDebounceTimer) {
           clearTimeout(auraInputDebounceTimer);
           auraInputDebounceTimer = null;
         }
-        if (String(eventType).startsWith("typing_")) return;
-
-        const msg = window.getNextNonRepetitiveAuraMessage(eventType, detailText);
-        window.updateAuraTopPresenceDOM(msg);
-        if (speakNow) {
-          window.speakAuraBriefResponse(msg, 9500);
-        } else {
-          window.pulseAuraTopOrbActivity(2200);
-        }
-        if (askLiveGemini !== false) {
-          window.requestLiveGeminiAuraEmpatheticComment(eventType, detailText);
-        }
+        return;
       };
 
       window.tbbSwitchVideoCapsuleTheme = function (targetStepIdx) {
@@ -23896,23 +23881,14 @@
           videoLblEl.textContent = isCompactTopBar ? "Cápsula" : `Cápsula Paso ${st.step}`;
         }
 
-        // Actualizar mensaje breve de Aura con IA real basada en la información de la marca al cambiar de sub-paso
+        // Actualizar instrucción escrita de Aura de forma silenciosa al cambiar de pregunta (Cero audio entre preguntas)
         const subStepKey = `${st.step}.${st.subStep}`;
         if (st.auraLastSubStepKey !== subStepKey) {
-          const hadPreviousKey = Boolean(st.auraLastSubStepKey);
           st.auraLastSubStepKey = subStepKey;
-          const hasBrandContext = Boolean((cs.custom_business_type && cs.custom_business_type.trim().length > 6) || (cs.golden_circle && cs.golden_circle.trim().length > 6) || (cs.value_offer && cs.value_offer.trim().length > 6));
           const nextMsg = window.getNextNonRepetitiveAuraMessage(`substep_${st.step}_${st.subStep}`);
           window.updateAuraTopPresenceDOM(nextMsg);
-          if (hasBrandContext && typeof window.requestLiveGeminiAuraEmpatheticComment === "function") {
-            window.pulseAuraTopOrbActivity(2200);
-            window.requestLiveGeminiAuraEmpatheticComment(`substep_${st.step}_${st.subStep}`, cs.custom_business_type || cs.value_offer || cs.golden_circle || "", hadPreviousKey, nextMsg);
-          } else {
-            if (hadPreviousKey && typeof window.speakAuraBriefResponse === "function") {
-              window.speakAuraBriefResponse(nextMsg, 9500);
-            } else {
-              window.pulseAuraTopOrbActivity(1800);
-            }
+          if (typeof window.tbbPreloadStepCapsules === "function") {
+            window.tbbPreloadStepCapsules(st.step);
           }
         } else {
           window.updateAuraTopPresenceDOM();
@@ -27871,14 +27847,17 @@
         voiceMuted = nextMuted;
         window.voiceMuted = nextMuted;
         if (nextMuted) {
-          if (typeof window.tbbStopAllAuraVoicePlayback === "function") {
-            window.tbbStopAllAuraVoicePlayback();
+          if (window.TBBAudioDirector && typeof window.TBBAudioDirector.bumpGeneration === "function") {
+            window.TBBAudioDirector.bumpGeneration("user_mute");
+          } else if (typeof window.tbbStopAllAuraVoicePlayback === "function") {
+            window.tbbStopAllAuraVoicePlayback("user_mute");
           }
         } else {
-          const textEl = document.getElementById("tbbAuraEmpatheticText");
-          const curMsg = (textEl && textEl.textContent && textEl.textContent.trim()) || window.tbbState?.auraCurrentMessage || "";
-          if (curMsg && typeof window.speakAuraBriefResponse === "function") {
-            window.speakAuraBriefResponse(curMsg, 9500);
+          // Al reactivar audio, NO hablar encima de la pregunta actual:
+          // solo reproducir si la cápsula de instrucciones de paso está abierta en pantalla.
+          const capMod = document.getElementById("phaseTransitionVideoModal");
+          if (capMod && capMod.classList.contains("open") && typeof window.tbbReplayCapsuleAudio === "function") {
+            window.tbbReplayCapsuleAudio();
           }
         }
         mountBespokeNavIcons();
@@ -28127,6 +28106,26 @@
               }
             }).catch(() => {});
         }
+        const curStepBoot = window.tbbState ? Number(window.tbbState.step || 0) : 0;
+        if (typeof window.tbbPreloadStepCapsules === "function") {
+          window.tbbPreloadStepCapsules(curStepBoot);
+        }
+        const isEmbeddedFrame = Boolean(params.get("embed") || (window.self !== window.top));
+        const skipIntroVideo = params.get("novideo") === "1" || isEmbeddedFrame || Boolean(params.get("brand") || params.get("admin") || params.get("step") !== null || stripeSid);
+        const hasExistingBiz = Boolean(typeof canvasState === "object" && canvasState && String(canvasState.custom_business_type || "").trim().length > 2);
+        if (!skipIntroVideo && !window._tbbFounderIntroVideoShown && curStepBoot === 0 && !hasExistingBiz && typeof openPhaseTransitionVideoCapsule === "function") {
+          window._tbbFounderIntroVideoShown = true;
+          const launchStep0Intro = () => {
+            if (window.tbbState && Number(window.tbbState.step || 0) === 0 && !document.getElementById("phaseTransitionVideoModal")?.classList.contains("open")) {
+              openPhaseTransitionVideoCapsule(0, 0, { keepCurrentSubStep: true, isStepIntro: true });
+            }
+          };
+          if (typeof window.playAuraVivaCapsuleClip === "function") {
+            launchStep0Intro();
+          } else {
+            window.addEventListener("load", launchStep0Intro, { once: true });
+          }
+        }
         return;
         ov.style.display = "flex";
         ov.classList.remove("is-dismissed");
@@ -28363,8 +28362,8 @@
   <script src="/universal-brandbook-30-engine.js?v=135.0"></script>
   <script src="/tbb-generative-brandbook-engine.js?v=135.1"></script>
   <script src="/improbears-preset-engine.js?v=135.0"></script>
-  <script src="/tbb-multilingual-gemini-voice.js?v=135.0"></script>
-  <script src="/tbb-commercial-experience-and-payments.js?v=136.1"></script>
+  <script src="/tbb-multilingual-gemini-voice.js?v=137.0"></script>
+  <script src="/tbb-commercial-experience-and-payments.js?v=137.0"></script>
 
   <style id="tbbDuolingoOrganicErgonomicsV129">
     html.a11y-large-mode { font-size: 18.5px !important; }

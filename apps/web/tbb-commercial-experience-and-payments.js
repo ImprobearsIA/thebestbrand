@@ -17,7 +17,7 @@
 
   const LANG_STORAGE_KEY = "tbb_active_ui_lang_v52";
   const LICENSE_STORAGE_KEY = "tbb_pro_license_v56";
-  const ASSET_VERSION = "136.1";
+  const ASSET_VERSION = "137.0";
 
   // ============================================================================
   // ENLACES OFICIALES DE TIENDAS (APPLE APP STORE & GOOGLE PLAY)
@@ -3885,7 +3885,7 @@
     } else if (typeof window.speakAuraBriefResponse === "function") {
       const capGroup = AURA_CAPSULE_SUMMARIES[s] || AURA_CAPSULE_SUMMARIES[0];
       const cap = capGroup[l] || capGroup.es;
-      window.speakAuraBriefResponse(cap.text, l);
+      window.speakAuraBriefResponse(cap.text, 12000);
     }
   };
 
