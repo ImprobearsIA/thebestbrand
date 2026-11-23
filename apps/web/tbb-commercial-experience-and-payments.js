@@ -17,7 +17,7 @@
 
   const LANG_STORAGE_KEY = "tbb_active_ui_lang_v52";
   const LICENSE_STORAGE_KEY = "tbb_pro_license_v56";
-  const ASSET_VERSION = "136.0";
+  const ASSET_VERSION = "136.1";
 
   // ============================================================================
   // ENLACES OFICIALES DE TIENDAS (APPLE APP STORE & GOOGLE PLAY)
@@ -283,10 +283,10 @@
 
     ov.innerHTML = `
       <div class="tbb-modal-card" onclick="event.stopPropagation()">
-        <div class="tbb-modal-head">
-          <div style="display:flex;align-items:center;gap:12px;">
-            <img src="${TBB_ISOTIPO_DATA_URI}" alt="The Best Brand" style="width:42px;height:42px;border-radius:12px;" />
-            <div>
+        <div class="tbb-modal-head is-compact-nowrap">
+          <div style="display:flex;align-items:flex-start;gap:12px;min-width:0;flex:1;">
+            <img src="${TBB_ISOTIPO_DATA_URI}" alt="The Best Brand" style="width:42px;height:42px;border-radius:12px;flex-shrink:0;" />
+            <div style="min-width:0;flex:1;">
               <span class="tbb-eyebrow">${isApple ? TBB_ICONS.phone : TBB_ICONS.spark} <span>${escHtml(isApple ? s.modalAppleEyebrow : s.modalGoogleEyebrow)}</span></span>
               <h3>${escHtml(isApple ? s.modalAppleTitle : s.modalGoogleTitle)}</h3>
             </div>
@@ -321,11 +321,11 @@
         </div>
 
         <div class="tbb-store-url-box">
-          <div class="tbb-store-url-meta">${escHtml(isApple ? s.modalAppleUrlLabel : s.modalGoogleUrlLabel)}</div>
-          <div class="tbb-store-url-row">
-            <code>${escHtml(canonicalUrl)}</code>
+          <div class="tbb-store-url-head">
+            <span class="tbb-store-url-meta">${escHtml(isApple ? s.modalAppleUrlLabel : s.modalGoogleUrlLabel)}</span>
             <button type="button" class="tbb-store-copy-btn" onclick="window.tbbCopyStoreOfficialUrl('${escHtml(canonicalUrl)}', this)">${escHtml(s.copyBtn)}</button>
           </div>
+          <code class="tbb-store-url-code">${escHtml(canonicalUrl)}</code>
         </div>
 
         <div class="tbb-checkout-footer-note" style="margin-top:12px;">
@@ -4310,15 +4310,15 @@
       const isEnNat = getLang() === "en";
       if (boxNat) {
         boxNat.innerHTML = `
-          <div class="tbb-modal-head">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <img src="${TBB_ISOTIPO_DATA_URI}" alt="The Best Brand" style="width:42px;height:42px;border-radius:12px;" />
-              <div>
+          <div class="tbb-modal-head is-compact-nowrap">
+            <div style="display:flex;align-items:flex-start;gap:12px;min-width:0;flex:1;">
+              <img src="${TBB_ISOTIPO_DATA_URI}" alt="The Best Brand" style="width:42px;height:42px;border-radius:12px;flex-shrink:0;" />
+              <div style="min-width:0;flex:1;">
                 <span class="tbb-eyebrow">${TBB_ICONS.shield} <span>${isEnNat ? "IN-APP ACCESS & ACCOUNT SYNC" : "ACCESO IN-APP Y SINCRONIZACIÓN"}</span></span>
                 <h3>${isEnNat ? "Unlock Full Brand Studio" : "Desbloquea tu Estudio Completo"}</h3>
               </div>
             </div>
-            <button type="button" class="tbb-icon-close-btn" onclick="window.tbbCloseBuyAppCheckoutModal()">${TBB_ICONS.close}</button>
+            <button type="button" class="tbb-icon-close-btn" onclick="window.tbbCloseBuyAppCheckoutModal()" aria-label="Cerrar">${TBB_ICONS.close}</button>
           </div>
           <p class="tbb-muted-p" style="margin:0 0 14px;">
             ${isEnNat
@@ -5204,6 +5204,7 @@
         flex-direction: column;
         align-items: center;
         gap: 10px;
+        width: 100%;
       }
       .tbb-store-badges-strip.is-footer {
         margin-top: 4px;
@@ -5214,21 +5215,24 @@
         font-weight: 600;
         color: #475569;
         letter-spacing: 0.01em;
+        text-align: center;
       }
       .tbb-store-badges-row {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        align-items: center;
+        align-items: stretch;
         gap: 12px;
+        width: 100%;
       }
       .tbb-store-badge {
         display: inline-flex;
         align-items: center;
         gap: 11px;
-        min-height: 52px;
-        min-width: 194px;
-        padding: 8px 16px 8px 14px;
+        min-height: 54px;
+        min-width: 256px;
+        max-width: 100%;
+        padding: 9px 15px 9px 14px;
         border-radius: 13px;
         background: #0B1220;
         color: #FFFFFF;
@@ -5238,6 +5242,7 @@
         transition: transform 0.16s var(--tbb-ds-ease-out), box-shadow 0.16s ease, background 0.16s ease;
         position: relative;
         box-sizing: border-box;
+        overflow: hidden;
       }
       .tbb-store-badge:hover {
         transform: translate3d(0, -2px, 0);
@@ -5257,12 +5262,14 @@
         align-items: flex-start;
         line-height: 1.12;
         text-align: left;
+        min-width: 0;
       }
       .tbb-store-badge-sub {
         font-size: 0.66rem;
         font-weight: 500;
         color: rgba(255, 255, 255, 0.80);
         letter-spacing: 0.02em;
+        white-space: nowrap;
       }
       .tbb-store-badge-main {
         font-family: 'Montserrat', 'Plus Jakarta Sans', sans-serif;
@@ -5271,6 +5278,7 @@
         color: #FFFFFF;
         letter-spacing: -0.015em;
         margin-top: 1px;
+        white-space: nowrap;
       }
       .tbb-store-badge-status {
         margin-left: auto;
@@ -5282,6 +5290,7 @@
         font-size: 0.66rem;
         font-weight: 700;
         white-space: nowrap;
+        flex-shrink: 0;
       }
       .tbb-store-url-box {
         margin-top: 16px;
@@ -5290,55 +5299,64 @@
         border-radius: 14px;
         padding: 12px 14px;
       }
-      .tbb-store-url-meta {
-        font-size: 0.74rem;
-        font-weight: 700;
-        color: #426EAE;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        margin-bottom: 6px;
-      }
-      .tbb-store-url-row {
+      .tbb-store-url-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 10px;
-        flex-wrap: wrap;
+        margin-bottom: 8px;
       }
-      .tbb-store-url-row code {
+      .tbb-store-url-meta {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #426EAE;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .tbb-store-url-code {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
         font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-        font-size: 0.80rem;
+        font-size: 0.75rem;
+        line-height: 1.4;
         font-weight: 600;
         color: #0D2540;
-        word-break: break-all;
-        flex: 1;
-        min-width: 160px;
+        background: #FFFFFF;
+        border: 1px solid rgba(13, 37, 64, 0.08);
+        border-radius: 9px;
+        padding: 8px 10px;
+        overflow-wrap: anywhere;
+        word-break: normal;
       }
       .tbb-store-copy-btn {
         background: #FFFFFF;
         border: 1px solid #CBD5E1;
         color: #0D2540;
         border-radius: 9px;
-        padding: 6px 12px;
-        font-size: 0.78rem;
+        padding: 5px 11px;
+        font-size: 0.76rem;
         font-weight: 700;
         cursor: pointer;
         white-space: nowrap;
+        flex-shrink: 0;
       }
       .tbb-store-copy-btn:hover { background: #F1F5F9; }
-      @media (max-width: 520px) {
+      @media (max-width: 600px) {
         .tbb-store-badges-row {
+          flex-direction: column;
+          align-items: center;
           width: 100%;
           gap: 10px;
         }
         .tbb-store-badge {
-          flex: 1 1 160px;
+          width: min(100%, 316px);
           min-width: 0;
-          padding: 8px 12px;
-          gap: 9px;
+          padding: 9px 14px;
+          gap: 11px;
         }
         .tbb-store-badge-main {
-          font-size: 0.94rem;
+          font-size: 0.98rem;
         }
       }
 
@@ -6216,10 +6234,16 @@
         margin-bottom: 16px;
         border-bottom: 1px solid rgba(13, 37, 64, 0.08);
       }
-      .tbb-modal-head h3 { font-family: 'Montserrat', sans-serif; font-size: 1.24rem; font-weight: 700; margin: 4px 0 0; color: #0D2540; }
+      .tbb-modal-head.is-compact-nowrap {
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .tbb-modal-head h3 { font-family: 'Montserrat', sans-serif; font-size: 1.18rem; line-height: 1.24; font-weight: 700; margin: 5px 0 0; color: #0D2540; }
       .tbb-icon-close-btn {
         width: 38px;
         height: 38px;
+        flex-shrink: 0;
         border-radius: 50%;
         border: 1px solid rgba(13, 37, 64, 0.12);
         background: #F8FAFC;
